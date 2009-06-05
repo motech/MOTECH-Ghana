@@ -29,6 +29,10 @@
 			<groupId>javax.ejb</groupId>
 			<artifactId>ejb-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>sun-jaxws</groupId>
+			<artifactId>jsr181-api</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>
