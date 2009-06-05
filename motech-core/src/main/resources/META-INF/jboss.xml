@@ -1,0 +1,7 @@
+<!DOCTYPE jboss PUBLIC "-//JBoss//DTD JBOSS 5.0//EN" "http://www.jboss.org/j2ee/dtd/jboss_5_0.dtd">
+<jboss>
+	<webservices>
+		<context-root>motechws</context-root>
+	</webservices>
+</jboss>
+      

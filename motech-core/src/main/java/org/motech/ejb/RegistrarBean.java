@@ -3,6 +3,8 @@ package org.motech.ejb;
 import java.util.Date;
 
 import javax.ejb.Stateless;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -12,11 +14,13 @@ import org.motech.model.Nurse;
 import org.motech.model.Pregnancy;
 
 @Stateless
+@WebService
 public class RegistrarBean implements Registrar {
 
 	@PersistenceContext
 	EntityManager em;
 
+	@WebMethod
 	public void registerMother(String nurseId, String serialId, String name,
 			String community, String location, Date dueDate, Integer age,
 			Integer parity, Integer hemoglobin) {
