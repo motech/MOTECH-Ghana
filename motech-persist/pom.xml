@@ -8,26 +8,15 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.motech</groupId>
-	<artifactId>motech-core</artifactId>
+	<artifactId>motech-persist</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<packaging>ejb</packaging>
-	<name>MoTeCH - Core</name>
-	<description>The core library for the motech project.</description>
+	<name>MoTeCH - Persist</name>
+	<description>The shared persistence unit for the motech project.</description>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.motech</groupId>
-			<artifactId>motech-persist</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>persistence-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.ejb</groupId>
-			<artifactId>ejb-api</artifactId>
 		</dependency>
 	</dependencies>
 
