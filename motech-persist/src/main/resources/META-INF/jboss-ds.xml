@@ -8,11 +8,7 @@
 		<isSameRM-override-value>false</isSameRM-override-value>
 		<xa-datasource-class>org.apache.derby.jdbc.EmbeddedXADataSource</xa-datasource-class>
 
-		<!--
-			path to the database. (${jboss.server.data.dir}${/}derby${/}default
-			didn't work on win)
-		-->
-		<xa-datasource-property name="DatabaseName">derby/motech</xa-datasource-property>
+		<xa-datasource-property name="DatabaseName">${jboss.server.data.dir}${/}derby${/}/motech</xa-datasource-property>
 		<xa-datasource-property name="User">sa</xa-datasource-property>
 		<xa-datasource-property name="Password"></xa-datasource-property>
 		<xa-datasource-property name="CreateDatabase">create</xa-datasource-property>
