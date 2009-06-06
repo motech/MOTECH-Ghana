@@ -39,16 +39,22 @@ public class RegistrarBean implements Registrar {
 		m.setLocation(location);
 		m.setAge(age);
 		m.setGender(Gender.female);
-		em.persist(m);
 
 		Pregnancy p = new Pregnancy();
 		p.setParity(parity);
 		p.setHemoglobin(hemoglobin);
 		p.setDueDate(dueDate);
-		em.persist(p);
-
 		p.setMother(m);
+
+		// Hookup relationships
+		n.getPregnancies().add(p);
 		p.setNurse(n);
+		
+		m.getPregnancies().add(p);
+		p.setMother(m);
+
+		// Persist (persists pregnancy transitively)
+		em.persist(m);
 	}
 
 }
