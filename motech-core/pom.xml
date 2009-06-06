@@ -30,8 +30,16 @@
 			<artifactId>ejb-api</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>jsr250-api</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>sun-jaxws</groupId>
 			<artifactId>jsr181-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
 		</dependency>
 	</dependencies>
 

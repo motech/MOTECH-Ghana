@@ -2,12 +2,18 @@ package org.motech.ejb;
 
 import java.util.Date;
 
+import javax.annotation.Resource;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.ejb.Timeout;
+import javax.ejb.Timer;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.motech.model.Gender;
 import org.motech.model.Mother;
 import org.motech.model.Nurse;
@@ -16,6 +22,11 @@ import org.motech.model.Pregnancy;
 @Stateless
 @WebService
 public class RegistrarBean implements Registrar {
+
+	private static Log log = LogFactory.getLog(RegistrarBean.class);
+
+	@Resource
+	SessionContext ctx;
 
 	@PersistenceContext
 	EntityManager em;
@@ -49,12 +60,22 @@ public class RegistrarBean implements Registrar {
 		// Hookup relationships
 		n.getPregnancies().add(p);
 		p.setNurse(n);
-		
+
 		m.getPregnancies().add(p);
 		p.setMother(m);
 
 		// Persist (persists pregnancy transitively)
 		em.persist(m);
+
+		// Schedule notification to go out in 15 seconds
+		Long motherId = m.getId();
+		Date callbackDate = new Date(System.currentTimeMillis() + (15 * 1000));
+		ctx.getTimerService().createTimer(callbackDate,
+				"registered mother: " + motherId);
 	}
 
+	@Timeout
+	public void sendRegNotification(Timer timer) {
+		log.info("registration notification - " + timer.getInfo());
+	}
 }
