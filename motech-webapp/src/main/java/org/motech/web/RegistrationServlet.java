@@ -1,7 +1,6 @@
 package org.motech.web;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,6 +15,8 @@ import org.apache.commons.logging.LogFactory;
 import org.motech.ejb.Registrar;
 
 public class RegistrationServlet extends HttpServlet {
+
+	private static final long serialVersionUID = 4561954777101725182L;
 
 	private static Log log = LogFactory.getLog(RegistrationServlet.class);
 
