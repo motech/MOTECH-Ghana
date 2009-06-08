@@ -9,13 +9,18 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.NamedQueries;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "nurses")
+@NamedQueries( {
+  @NamedQuery(name = "findNurseByPhoneNumber", query = "select n from Nurse n where n.phoneNumber = :phoneNumber")
+} )
 public class Nurse {
-
+	
 	private Long id;
 	private String name;
 	private String clinic;

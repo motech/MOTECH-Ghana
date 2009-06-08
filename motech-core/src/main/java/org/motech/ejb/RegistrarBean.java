@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import org.motech.model.Gender;
 import org.motech.model.Mother;
 import org.motech.model.Nurse;
+import org.motech.model.Patient;
 import org.motech.model.Pregnancy;
 
 @Stateless
@@ -21,25 +22,62 @@ public class RegistrarBean implements Registrar {
 	EntityManager em;
 
 	@WebMethod
-	public void registerMother(String nurseId, String serialId, String name,
-			String community, String location, Date dueDate, Integer age,
-			Integer parity, Integer hemoglobin) {
+	public void registerMother(String nursePhoneNumber, String serialId, String name,
+			String community, String location, Integer age, Integer nhis,
+			Date dueDate, Integer parity, Integer hemoglobin) {
 
-		// TODO: Rely on nurse registration, lookup instead
+		// TODO: Rely on nurse registration, needed for lookup in registerPregnancy
+		registerNurse("Mark", nursePhoneNumber, "A-Clinic");
+
+		registerPatient(serialId, name, community, location, age, 
+			Gender.female.toString(), nhis);
+		
+		registerPregnancy(nursePhoneNumber, serialId, dueDate, parity, hemoglobin);
+	}
+	
+	@WebMethod
+	public void registerNurse(String name, String phoneNumber, String clinic) {
 		Nurse n = new Nurse();
-		n.setName("Mark");
-		n.setPhoneNumber("8795309");
-		n.setClinic("A-Clinic");
+		n.setName(name);
+		n.setPhoneNumber(phoneNumber);
+		n.setClinic(clinic);
 		em.persist(n);
-
+	}
+	
+	@WebMethod
+	public void registerPatient(String serialId, String name, String community, 
+			String location, Integer age, String gender, Integer nhis) {
+			
+		Patient p = new Patient();
+		p.setSerial(serialId);
+		p.setName(name);
+		p.setCommunity(community);
+		p.setLocation(location);
+		p.setAge(age);
+		p.setGender(Gender.valueOf(gender));
+		p.setNhis(nhis);
+		
+		em.persist(p);
+	}
+		
+	@WebMethod
+	public void registerPregnancy(String nursePhoneNumber, String serialId,
+			Date dueDate, Integer parity, Integer hemoglobin) {
+		
+		Nurse n = (Nurse)em.createNamedQuery("findNurseByPhoneNumber")
+			.setParameter("phoneNumber", nursePhoneNumber).getSingleResult();
+		
+		// TODO: Assumes registered previously as Patient and not Mother
+		//Mother m = (Mother)em.createNamedQuery("findMotherBySerial")
+		//	.setParameter("serial", serialId).getSingleResult();
+		
+		Patient a = (Patient)em.createNamedQuery("findPatientBySerial")
+			.setParameter("serial", serialId).getSingleResult();
+		
 		Mother m = new Mother();
-		m.setSerial(serialId);
-		m.setName(name);
-		m.setCommunity(community);
-		m.setLocation(location);
-		m.setAge(age);
-		m.setGender(Gender.female);
-
+		m.setPatient(a);
+		a.setMother(m);
+		
 		Pregnancy p = new Pregnancy();
 		p.setParity(parity);
 		p.setHemoglobin(hemoglobin);
@@ -52,8 +90,8 @@ public class RegistrarBean implements Registrar {
 		
 		m.getPregnancies().add(p);
 		p.setMother(m);
-
-		// Persist (persists pregnancy transitively)
+		
+		// Persist (Mother persists pregnancy and patient transitively)
 		em.persist(m);
 	}
 

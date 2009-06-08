@@ -1,15 +1,19 @@
 package org.motech.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "patients")
-@Inheritance(strategy = InheritanceType.JOINED)
+@NamedQueries( {
+  @NamedQuery(name = "findPatientBySerial", query = "select p from Patient p where p.serial = :serial")
+} )
 public class Patient {
 
 	private Long id;
@@ -20,6 +24,7 @@ public class Patient {
 	private String community;
 	private Gender gender;
 	private Integer nhis;
+	private Mother mother;
 	
 	@Id
 	@GeneratedValue
@@ -86,5 +91,13 @@ public class Patient {
 	public void setCommunity(String community) {
 		this.community = community;
 	}
+	
+	@OneToOne(mappedBy = "patient", optional = true, cascade = CascadeType.ALL)
+	public Mother getMother() {
+		return mother;
+	}
 
+	public void setMother(Mother mother) {
+		this.mother = mother;
+	}
 }
