@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class Pregnancy {
 	private Long id;
 	private Date dueDate;
-	private Mother mother;
+	private MaternalData maternalData;
 	private Nurse nurse;
 	private Integer parity;
 	private Integer hemoglobin;
@@ -46,13 +46,13 @@ public class Pregnancy {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "mother_id")
-	public Mother getMother() {
-		return mother;
+	@JoinColumn(name = "maternaldata_id")
+	public MaternalData getMaternalData() {
+		return maternalData;
 	}
 
-	public void setMother(Mother mother) {
-		this.mother = mother;
+	public void setMaternalData(MaternalData maternalData) {
+		this.maternalData = maternalData;
 	}
 
 	@ManyToOne

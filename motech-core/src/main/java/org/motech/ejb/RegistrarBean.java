@@ -8,8 +8,9 @@ import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.motech.model.Clinic;
 import org.motech.model.Gender;
-import org.motech.model.Mother;
+import org.motech.model.MaternalData;
 import org.motech.model.Nurse;
 import org.motech.model.Patient;
 import org.motech.model.Pregnancy;
@@ -37,10 +38,14 @@ public class RegistrarBean implements Registrar {
 	
 	@WebMethod
 	public void registerNurse(String name, String phoneNumber, String clinic) {
+		Clinic c = new Clinic();
+		c.setName(clinic);
+		em.persist(c);
+		
 		Nurse n = new Nurse();
 		n.setName(name);
 		n.setPhoneNumber(phoneNumber);
-		n.setClinic(clinic);
+		n.setClinic(c);
 		em.persist(n);
 	}
 	
@@ -67,29 +72,29 @@ public class RegistrarBean implements Registrar {
 		Nurse n = (Nurse)em.createNamedQuery("findNurseByPhoneNumber")
 			.setParameter("phoneNumber", nursePhoneNumber).getSingleResult();
 		
-		// TODO: Assumes registered previously as Patient and not Mother
-		//Mother m = (Mother)em.createNamedQuery("findMotherBySerial")
-		//	.setParameter("serial", serialId).getSingleResult();
-		
 		Patient a = (Patient)em.createNamedQuery("findPatientBySerial")
 			.setParameter("serial", serialId).getSingleResult();
 		
-		Mother m = new Mother();
+
+		// TODO: Assumes MaternalData does not already exist
+		//if a.getMaternalData() is null
+		
+		MaternalData m = new MaternalData();
 		m.setPatient(a);
-		a.setMother(m);
+		a.setMaternalData(m);
 		
 		Pregnancy p = new Pregnancy();
 		p.setParity(parity);
 		p.setHemoglobin(hemoglobin);
 		p.setDueDate(dueDate);
-		p.setMother(m);
+		p.setMaternalData(m);
 
 		// Hookup relationships
 		n.getPregnancies().add(p);
 		p.setNurse(n);
 		
 		m.getPregnancies().add(p);
-		p.setMother(m);
+		p.setMaternalData(m);
 		
 		// Persist (Mother persists pregnancy and patient transitively)
 		em.persist(m);

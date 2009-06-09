@@ -9,6 +9,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.OneToMany;
@@ -23,7 +25,7 @@ public class Nurse {
 	
 	private Long id;
 	private String name;
-	private String clinic;
+	private Clinic clinic;
 	private String phoneNumber;
 	private List<Pregnancy> pregnancies = new ArrayList<Pregnancy>();
 
@@ -45,11 +47,13 @@ public class Nurse {
 		this.name = name;
 	}
 
-	public String getClinic() {
+	@ManyToOne
+	@JoinColumn(name = "clinic_id")
+	public Clinic getClinic() {
 		return clinic;
 	}
 
-	public void setClinic(String clinic) {
+	public void setClinic(Clinic clinic) {
 		this.clinic = clinic;
 	}
 
