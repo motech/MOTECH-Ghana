@@ -13,8 +13,8 @@ public interface Registrar {
 
 	void registerNurse(String name, String phoneNumber, String clinic);
 	
-	void registerPatient(String serialId, String name, String community, 
-			String location, Integer age, String gender, Integer nhis);
+	void registerPatient(String nursePhoneNumber, String serialId, String name, 
+			String community, String location, Integer age, String gender, Integer nhis);
 	
 	void registerPregnancy(String nursePhoneNumber, String serialId,
 			Date dueDate, Integer parity, Integer hemoglobin);

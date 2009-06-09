@@ -31,7 +31,7 @@ public class RegistrarBean implements Registrar {
 		// TODO: Rely on nurse registration, needed for lookup in registerPregnancy
 		registerNurse("Mark", nursePhoneNumber, "A-Clinic");
 
-		registerPatient(serialId, name, community, location, age, 
+		registerPatient(nursePhoneNumber, serialId, name, community, location, age, 
 			Gender.female.toString(), nhis);
 		
 		registerPregnancy(nursePhoneNumber, serialId, dueDate, parity, hemoglobin);
@@ -51,9 +51,12 @@ public class RegistrarBean implements Registrar {
 	}
 	
 	@WebMethod
-	public void registerPatient(String serialId, String name, String community, 
-			String location, Integer age, String gender, Integer nhis) {
+	public void registerPatient(String nursePhoneNumber, String serialId, String name, 
+			String community, String location, Integer age, String gender, Integer nhis) {
 			
+		Nurse n = (Nurse)em.createNamedQuery("findNurseByPhoneNumber")
+			.setParameter("phoneNumber", nursePhoneNumber).getSingleResult();
+		
 		Patient p = new Patient();
 		p.setSerial(serialId);
 		p.setName(name);
@@ -62,6 +65,7 @@ public class RegistrarBean implements Registrar {
 		p.setAge(age);
 		p.setGender(Gender.valueOf(gender));
 		p.setNhis(nhis);
+		p.setClinic(n.getClinic());
 		
 		em.persist(p);
 	}
@@ -73,10 +77,10 @@ public class RegistrarBean implements Registrar {
 		Nurse n = (Nurse)em.createNamedQuery("findNurseByPhoneNumber")
 			.setParameter("phoneNumber", nursePhoneNumber).getSingleResult();
 		
-		Patient a = (Patient)em.createNamedQuery("findPatientBySerial")
-			.setParameter("serial", serialId).getSingleResult();
+		Patient a = (Patient)em.createNamedQuery("findPatientByClinicSerial")
+			.setParameter("serial", serialId).setParameter("clinicId", n.getClinic().getId())
+			.getSingleResult();
 		
-
 		// TODO: Assumes MaternalData does not already exist
 		//if a.getMaternalData() is null
 		
@@ -110,8 +114,9 @@ public class RegistrarBean implements Registrar {
 		Nurse n = (Nurse)em.createNamedQuery("findNurseByPhoneNumber")
 			.setParameter("phoneNumber", nursePhoneNumber).getSingleResult();
 		
-		Patient a = (Patient)em.createNamedQuery("findPatientBySerial")
-			.setParameter("serial", serialId).getSingleResult();
+		Patient a = (Patient)em.createNamedQuery("findPatientByClinicSerial")
+			.setParameter("serial", serialId).setParameter("clinicId", n.getClinic().getId())
+			.getSingleResult();
 			
 		MaternalVisit v = new MaternalVisit();
 		v.setDate(new Date());
