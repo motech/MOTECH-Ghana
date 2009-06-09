@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import org.motech.model.Clinic;
 import org.motech.model.Gender;
 import org.motech.model.MaternalData;
+import org.motech.model.MaternalVisit;
 import org.motech.model.Nurse;
 import org.motech.model.Patient;
 import org.motech.model.Pregnancy;
@@ -84,6 +85,7 @@ public class RegistrarBean implements Registrar {
 		a.setMaternalData(m);
 		
 		Pregnancy p = new Pregnancy();
+		p.setRegistrationDate(new Date());
 		p.setParity(parity);
 		p.setHemoglobin(hemoglobin);
 		p.setDueDate(dueDate);
@@ -100,4 +102,35 @@ public class RegistrarBean implements Registrar {
 		em.persist(m);
 	}
 
+	public void recordMaternalVisit(String nursePhoneNumber, String serialId,
+			Integer tetanus, Integer ipt, Integer itn, Integer visitNumber,
+			Integer onARV, Integer prePMTCT, Integer testPMTCT, 
+			Integer postPMTCT, Integer hemoglobinAt36Weeks ) {
+		
+		Nurse n = (Nurse)em.createNamedQuery("findNurseByPhoneNumber")
+			.setParameter("phoneNumber", nursePhoneNumber).getSingleResult();
+		
+		Patient a = (Patient)em.createNamedQuery("findPatientBySerial")
+			.setParameter("serial", serialId).getSingleResult();
+			
+		MaternalVisit v = new MaternalVisit();
+		v.setDate(new Date());
+		v.setNurse(n);
+		v.setTetanus(tetanus);
+		v.setIpt(ipt);
+		v.setItn(itn);
+		v.setVisitNumber(visitNumber);
+		v.setOnARV(onARV);
+		v.setPrePMTCT(prePMTCT);
+		v.setTestPMTCT(testPMTCT);
+		v.setPostPMTCT(postPMTCT);
+		v.setHemoglobinAt36Weeks(hemoglobinAt36Weeks);
+		
+		MaternalData m = a.getMaternalData();
+		v.setMaternalData(m);
+		m.getMaternalVisits().add(v);
+		
+		em.persist(m);
+	}
+	
 }

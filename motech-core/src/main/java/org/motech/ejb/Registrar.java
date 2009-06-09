@@ -19,4 +19,8 @@ public interface Registrar {
 	void registerPregnancy(String nursePhoneNumber, String serialId,
 			Date dueDate, Integer parity, Integer hemoglobin);
 
+	void recordMaternalVisit(String nursePhoneNumber, String serialId,
+			Integer tetanus, Integer ipt, Integer itn, Integer visitNumber,
+			Integer onARV, Integer prePMTCT, Integer testPMTCT, 
+			Integer postPMTCT, Integer hemoglobinAt36Weeks );
 }

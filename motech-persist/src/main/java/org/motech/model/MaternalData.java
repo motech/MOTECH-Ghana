@@ -21,6 +21,7 @@ public class MaternalData {
 	private Long id;
 	private Patient patient;
 	private List<Pregnancy> pregnancies = new ArrayList<Pregnancy>();
+	private List<MaternalVisit> maternalVisits = new ArrayList<MaternalVisit>();
 	
 	@Id
 	@GeneratedValue
@@ -50,4 +51,14 @@ public class MaternalData {
 	public void setPregnancies(List<Pregnancy> pregnancies) {
 		this.pregnancies = pregnancies;
 	}
+
+	@OneToMany(mappedBy = "maternalData", cascade = { PERSIST, MERGE })
+	public List<MaternalVisit> getMaternalVisits() {
+		return maternalVisits;
+	}
+
+	public void setMaternalVisits(List<MaternalVisit> maternalVisits) {
+		this.maternalVisits = maternalVisits;
+	}
+		
 }

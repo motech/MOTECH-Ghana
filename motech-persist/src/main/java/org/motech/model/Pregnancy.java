@@ -12,10 +12,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "pregnancies")
 public class Pregnancy {
+	
 	private Long id;
-	private Date dueDate;
+	private Date registrationDate;
 	private MaternalData maternalData;
 	private Nurse nurse;
+	private Date dueDate;
 	private Integer parity;
 	private Integer hemoglobin;
 	private Date deliveryDate;
@@ -37,12 +39,12 @@ public class Pregnancy {
 		this.id = id;
 	}
 
-	public Date getDueDate() {
-		return dueDate;
+	public Date getRegistrationDate() {
+		return registrationDate;
 	}
 
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
 	}
 
 	@ManyToOne
@@ -65,6 +67,14 @@ public class Pregnancy {
 		this.nurse = nurse;
 	}
 
+	public Date getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
+	}
+	
 	public Integer getParity() {
 		return parity;
 	}
