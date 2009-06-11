@@ -6,26 +6,20 @@ import static javax.persistence.CascadeType.PERSIST;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "nurses")
-@NamedQueries( { @NamedQuery(name = "findNurseByPhoneNumber", query = "select n from Nurse n where n.phoneNumber = :phoneNumber") })
-public class Nurse {
+@Table(name = "maternaldata")
+public class MaternalData {
 
 	private Long id;
-	private String name;
-	private Clinic clinic;
-	private String phoneNumber;
+	private Patient patient;
 	private List<Pregnancy> pregnancies = new ArrayList<Pregnancy>();
 	private List<MaternalVisit> maternalVisits = new ArrayList<MaternalVisit>();
 
@@ -39,34 +33,17 @@ public class Nurse {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	@OneToOne(optional = false)
+	@JoinColumn(name = "patient_id")
+	public Patient getPatient() {
+		return patient;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "clinic_id")
-	public Clinic getClinic() {
-		return clinic;
-	}
-
-	public void setClinic(Clinic clinic) {
-		this.clinic = clinic;
-	}
-
-	@Column(unique = true)
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	@OneToMany(mappedBy = "nurse", cascade = { PERSIST, MERGE })
+	@OneToMany(mappedBy = "maternalData", cascade = { PERSIST, MERGE })
 	public List<Pregnancy> getPregnancies() {
 		return pregnancies;
 	}
@@ -75,7 +52,7 @@ public class Nurse {
 		this.pregnancies = pregnancies;
 	}
 
-	@OneToMany(mappedBy = "nurse", cascade = { PERSIST, MERGE })
+	@OneToMany(mappedBy = "maternalData", cascade = { PERSIST, MERGE })
 	public List<MaternalVisit> getMaternalVisits() {
 		return maternalVisits;
 	}

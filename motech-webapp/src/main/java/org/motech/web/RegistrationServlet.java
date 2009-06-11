@@ -28,11 +28,12 @@ public class RegistrationServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		try {
-			String nurseId = req.getParameter("nurseId");
+			String nursePhone = req.getParameter("nursePhone");
 			String serialId = req.getParameter("serialId");
 			String name = req.getParameter("name");
 			String community = req.getParameter("community");
 			String location = req.getParameter("location");
+			Integer nhis = Integer.valueOf(req.getParameter("nhis"));
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 			Date dueDate = dateFormat.parse(req.getParameter("dueDate"));
@@ -42,8 +43,9 @@ public class RegistrationServlet extends HttpServlet {
 			Integer hemoglobin = Integer
 					.valueOf(req.getParameter("hemoglobin"));
 
-			registrationService.registerMother(nurseId, serialId, name,
-					community, location, dueDate, age, parity, hemoglobin);
+			registrationService
+					.registerMother(nursePhone, serialId, name, community,
+							location, age, nhis, dueDate, parity, hemoglobin);
 		} catch (Exception e) {
 			log.error("Failed to register", e);
 			throw new ServletException("Failed to register", e);

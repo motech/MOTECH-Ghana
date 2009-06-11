@@ -1,6 +1,6 @@
 <form action="${pageContext.request.contextPath}/regTest" method="post">
-	<label for="nurseId">Nurse Id:</label>
-	<input name="nurseId" />
+	<label for="nursePhone">Nurse Phone:</label>
+	<input name="nursePhone" />
 	
 	<label for="serialId">Serial Id:</label>
 	<input name="serialId" />
@@ -13,6 +13,9 @@
 	
 	<label for="location">Location:</label>
 	<input name="location" />
+	
+	<label for="nhis">NHIS:</label>
+	<input name="nhis" />
 	
 	<label for="dueDate">Due Date:</label>
 	<input name="dueDate" />

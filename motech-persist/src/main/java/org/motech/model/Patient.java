@@ -1,26 +1,32 @@
 package org.motech.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "patients")
-@Inheritance(strategy = InheritanceType.JOINED)
+@NamedQueries( { @NamedQuery(name = "findPatientByClinicSerial", query = "select p from Patient p where p.serial = :serial and p.clinic.id = :clinicId") })
 public class Patient {
 
 	private Long id;
 	private String serial;
+	private Clinic clinic;
 	private String name;
 	private String location;
 	private Integer age;
 	private String community;
 	private Gender gender;
 	private Integer nhis;
-	
+	private MaternalData maternalData;
+
 	@Id
 	@GeneratedValue
 	public Long getId() {
@@ -37,6 +43,16 @@ public class Patient {
 
 	public void setSerial(String serial) {
 		this.serial = serial;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "clinic_id")
+	public Clinic getClinic() {
+		return clinic;
+	}
+
+	public void setClinic(Clinic clinic) {
+		this.clinic = clinic;
 	}
 
 	public String getName() {
@@ -87,4 +103,12 @@ public class Patient {
 		this.community = community;
 	}
 
+	@OneToOne(mappedBy = "patient", cascade = CascadeType.ALL)
+	public MaternalData getMaternalData() {
+		return maternalData;
+	}
+
+	public void setMaternalData(MaternalData maternalData) {
+		this.maternalData = maternalData;
+	}
 }
