@@ -17,6 +17,9 @@
 	<label for="nhis">NHIS:</label>
 	<input name="nhis" />
 	
+	<label for="patientPhone">Phone:</label>
+	<input name="patientPhone" />
+	
 	<label for="dueDate">Due Date:</label>
 	<input name="dueDate" />
 	

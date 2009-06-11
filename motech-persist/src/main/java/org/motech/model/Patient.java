@@ -28,6 +28,7 @@ public class Patient {
 	private Gender gender;
 	private Integer nhis;
 	private MaternalData maternalData;
+	private String phoneNumber;
 	
 	@Id
 	@GeneratedValue
@@ -113,4 +114,13 @@ public class Patient {
 	public void setMaternalData(MaternalData maternalData) {
 		this.maternalData = maternalData;
 	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+	
 }

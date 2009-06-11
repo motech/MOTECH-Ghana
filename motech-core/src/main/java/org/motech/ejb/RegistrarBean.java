@@ -3,8 +3,6 @@ package org.motech.ejb;
 import java.util.Date;
 
 import javax.ejb.Stateless;
-import javax.jws.WebMethod;
-import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -17,27 +15,23 @@ import org.motech.model.Patient;
 import org.motech.model.Pregnancy;
 
 @Stateless
-@WebService
 public class RegistrarBean implements Registrar {
 
 	@PersistenceContext
 	EntityManager em;
 
-	@WebMethod
-	public void registerMother(String nursePhoneNumber, String serialId, String name,
-			String community, String location, Integer age, Integer nhis,
-			Date dueDate, Integer parity, Integer hemoglobin) {
+	public void registerMother(String nursePhoneNumber, Date date, String serialId, 
+			String name, String community, String location, Integer age, Integer nhis,
+			String phoneNumber, Date dueDate, Integer parity, Integer hemoglobin) {
 
 		// TODO: Rely on nurse registration, needed for lookup in registerPregnancy
-		registerNurse("Mark", nursePhoneNumber, "A-Clinic");
 
 		registerPatient(nursePhoneNumber, serialId, name, community, location, age, 
-			Gender.female.toString(), nhis);
+			Gender.female.toString(), nhis, phoneNumber);
 		
-		registerPregnancy(nursePhoneNumber, serialId, dueDate, parity, hemoglobin);
+		registerPregnancy(nursePhoneNumber, date, serialId, dueDate, parity, hemoglobin);
 	}
 	
-	@WebMethod
 	public void registerNurse(String name, String phoneNumber, String clinic) {
 		Clinic c = new Clinic();
 		c.setName(clinic);
@@ -50,12 +44,11 @@ public class RegistrarBean implements Registrar {
 		em.persist(n);
 	}
 	
-	@WebMethod
 	public void registerPatient(String nursePhoneNumber, String serialId, String name, 
-			String community, String location, Integer age, String gender, Integer nhis) {
+			String community, String location, Integer age, String gender, Integer nhis,
+			String phoneNumber) {
 			
-		Nurse n = (Nurse)em.createNamedQuery("findNurseByPhoneNumber")
-			.setParameter("phoneNumber", nursePhoneNumber).getSingleResult();
+		Nurse n = getNurse(nursePhoneNumber);
 		
 		Patient p = new Patient();
 		p.setSerial(serialId);
@@ -65,21 +58,18 @@ public class RegistrarBean implements Registrar {
 		p.setAge(age);
 		p.setGender(Gender.valueOf(gender));
 		p.setNhis(nhis);
+		p.setPhoneNumber(phoneNumber);
 		p.setClinic(n.getClinic());
 		
 		em.persist(p);
 	}
 		
-	@WebMethod
-	public void registerPregnancy(String nursePhoneNumber, String serialId,
-			Date dueDate, Integer parity, Integer hemoglobin) {
+	public void registerPregnancy(String nursePhoneNumber, Date date, 
+			String serialId, Date dueDate, Integer parity, Integer hemoglobin) {
 		
-		Nurse n = (Nurse)em.createNamedQuery("findNurseByPhoneNumber")
-			.setParameter("phoneNumber", nursePhoneNumber).getSingleResult();
+		Nurse n = getNurse(nursePhoneNumber);
 		
-		Patient a = (Patient)em.createNamedQuery("findPatientByClinicSerial")
-			.setParameter("serial", serialId).setParameter("clinicId", n.getClinic().getId())
-			.getSingleResult();
+		Patient a = getPatient(serialId, n.getClinic().getId());
 		
 		// TODO: Assumes MaternalData does not already exist
 		//if a.getMaternalData() is null
@@ -89,7 +79,7 @@ public class RegistrarBean implements Registrar {
 		a.setMaternalData(m);
 		
 		Pregnancy p = new Pregnancy();
-		p.setRegistrationDate(new Date());
+		p.setRegistrationDate(date);
 		p.setParity(parity);
 		p.setHemoglobin(hemoglobin);
 		p.setDueDate(dueDate);
@@ -106,20 +96,17 @@ public class RegistrarBean implements Registrar {
 		em.persist(m);
 	}
 
-	public void recordMaternalVisit(String nursePhoneNumber, String serialId,
+	public void recordMaternalVisit(String nursePhoneNumber, Date date, String serialId,
 			Integer tetanus, Integer ipt, Integer itn, Integer visitNumber,
 			Integer onARV, Integer prePMTCT, Integer testPMTCT, 
 			Integer postPMTCT, Integer hemoglobinAt36Weeks ) {
 		
-		Nurse n = (Nurse)em.createNamedQuery("findNurseByPhoneNumber")
-			.setParameter("phoneNumber", nursePhoneNumber).getSingleResult();
+		Nurse n = getNurse(nursePhoneNumber);
 		
-		Patient a = (Patient)em.createNamedQuery("findPatientByClinicSerial")
-			.setParameter("serial", serialId).setParameter("clinicId", n.getClinic().getId())
-			.getSingleResult();
+		Patient a = getPatient(serialId, n.getClinic().getId());
 			
 		MaternalVisit v = new MaternalVisit();
-		v.setDate(new Date());
+		v.setDate(date);
 		v.setNurse(n);
 		v.setTetanus(tetanus);
 		v.setIpt(ipt);
@@ -138,4 +125,14 @@ public class RegistrarBean implements Registrar {
 		em.persist(m);
 	}
 	
+	private Nurse getNurse( String phoneNumber ) {
+		return (Nurse)em.createNamedQuery("findNurseByPhoneNumber")
+			.setParameter("phoneNumber", phoneNumber).getSingleResult();
+	}
+	
+	private Patient getPatient( String serialId, Long clinicId ) {
+		return (Patient)em.createNamedQuery("findPatientByClinicSerial")
+			.setParameter("serial", serialId).setParameter("clinicId", clinicId)
+			.getSingleResult();
+	}
 }
