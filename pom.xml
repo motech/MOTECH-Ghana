@@ -14,6 +14,8 @@
 		<module>motech-core</module>
 		<module>motech-webapp</module>
 		<module>motech-app</module>
+		<module>motech-wsclient</module>
+		<module>motech-it</module>
 	</modules>
 
 	<repositories>
@@ -55,6 +57,12 @@
 				<artifactId>jsr181-api</artifactId>
 				<version>1.0</version>
 				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>3.8.2</version>
+				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

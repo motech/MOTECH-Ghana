@@ -1,0 +1,108 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.motech</groupId>
+		<artifactId>motech</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.motech</groupId>
+	<artifactId>motech-wsclient</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>MoTeCH - WS Client</name>
+	<description>Portable client code for interacting with motech web services.</description>
+
+	<repositories>
+		<repository>
+			<id>java.net</id>
+			<url>http://download.java.net/maven/1/</url>
+			<layout>legacy</layout>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<checksumPolicy>ignore</checksumPolicy>
+			</releases>
+		</repository>
+		<repository>
+			<id>java.net2</id>
+			<url>http://download.java.net/maven/2/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>java.net2</id>
+			<url>http://download.java.net/maven/2/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+			<version>2.1</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxws-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>gen-wsdl</id>
+						<goals>
+							<goal>wsgen</goal>
+						</goals>
+						<phase>generate-sources</phase>
+						<configuration>
+							<sei>org.motech.service.RegistrarService</sei>
+							<genWsdl>true</genWsdl>
+							<destDir />
+						</configuration>
+					</execution>
+					<execution>
+						<id>gen-client</id>
+						<goals>
+							<goal>wsimport</goal>
+						</goals>
+						<configuration>
+							<wsdlDirectory>${project.build.directory}/jaxws/wsgen/wsdl</wsdlDirectory>
+							<wsdlLocation>${endpointUrl}</wsdlLocation>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.sun.xml.ws</groupId>
+						<artifactId>jaxws-tools</artifactId>
+						<version>2.1.1</version>
+					</dependency>
+					<dependency>
+						<groupId>javax.ejb</groupId>
+						<artifactId>ejb-api</artifactId>
+						<version>3.0</version>
+					</dependency>
+					<dependency>
+						<groupId>org.motech</groupId>
+						<artifactId>motech-core</artifactId>
+						<version>1.0-SNAPSHOT</version>
+						<scope>provided</scope>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+	<properties>
+		<endpointUrl>http://127.0.0.1:8080/motechws/RegistrarService</endpointUrl>
+	</properties>
+</project>
