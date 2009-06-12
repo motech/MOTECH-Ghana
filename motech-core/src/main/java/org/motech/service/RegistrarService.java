@@ -3,14 +3,16 @@ package org.motech.service;
 import java.util.Date;
 
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import org.motech.ejb.Registrar;
 
-@WebService
-public class RegistrarService {
+@Stateless
+@WebService(name = "Registrar", serviceName = "RegistrarService", portName = "RegistrarPort", targetNamespace = "http://ws.motech.org/")
+public class RegistrarService implements RegistrarWS {
 
 	@EJB
 	Registrar registrationBean;
@@ -36,8 +38,7 @@ public class RegistrarService {
 	}
 
 	@WebMethod
-	public void registerNurse(
-			@WebParam(name = "name") String name,
+	public void registerNurse(@WebParam(name = "name") String name,
 			@WebParam(name = "phoneNumber") String phoneNumber,
 			@WebParam(name = "clinic") String clinic) {
 
