@@ -23,6 +23,9 @@
 			<id>jboss-repo</id>
 			<name>JBoss Maven2 Repository</name>
 			<url>http://repository.jboss.com/maven2/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 
