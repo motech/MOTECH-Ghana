@@ -29,7 +29,7 @@ public class RegistrarBean implements Registrar {
 		// registerPregnancy
 
 		registerPatient(nursePhoneNumber, serialId, name, community, location,
-				age, Gender.female.toString(), nhis, phoneNumber);
+				age, Gender.female, nhis, phoneNumber);
 
 		registerPregnancy(nursePhoneNumber, date, serialId, dueDate, parity,
 				hemoglobin);
@@ -49,7 +49,7 @@ public class RegistrarBean implements Registrar {
 
 	public void registerPatient(String nursePhoneNumber, String serialId,
 			String name, String community, String location, Integer age,
-			String gender, Integer nhis, String phoneNumber) {
+			Gender gender, Integer nhis, String phoneNumber) {
 
 		Nurse n = getNurse(nursePhoneNumber);
 
@@ -59,7 +59,7 @@ public class RegistrarBean implements Registrar {
 		p.setCommunity(community);
 		p.setLocation(location);
 		p.setAge(age);
-		p.setGender(Gender.valueOf(gender));
+		p.setGender(gender);
 		p.setNhis(nhis);
 		p.setPhoneNumber(phoneNumber);
 		p.setClinic(n.getClinic());

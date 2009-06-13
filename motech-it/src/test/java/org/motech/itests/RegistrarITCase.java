@@ -9,6 +9,7 @@ import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
 
+import org.motech.ws.Gender;
 import org.motech.ws.Registrar;
 import org.motech.ws.RegistrarService;
 
@@ -44,7 +45,7 @@ public class RegistrarITCase extends TestCase {
 
 	public void testRegPatient() throws Exception {
 		reg.registerPatient("37694676488", "HONEYGRAHAMS", "Super Dave",
-				"DHJGDJK", "HDHJHDJK", 23, "male", 1232, "4674676747");
+				"DHJGDJK", "HDHJHDJK", 23, Gender.MALE, 1232, "4674676747");
 	}
 
 	public void testRegPregnancy() throws Exception {

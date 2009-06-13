@@ -8,6 +8,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import org.motech.model.Gender;
 import org.motech.svc.Registrar;
 
 @Stateless
@@ -53,7 +54,7 @@ public class RegistrarService implements RegistrarWS {
 			@WebParam(name = "community") String community,
 			@WebParam(name = "location") String location,
 			@WebParam(name = "age") Integer age,
-			@WebParam(name = "gender") String gender,
+			@WebParam(name = "gender") Gender gender,
 			@WebParam(name = "nhis") Integer nhis,
 			@WebParam(name = "phoneNumber") String phoneNumber) {
 

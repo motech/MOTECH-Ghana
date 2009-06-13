@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.ejb.Local;
 
+import org.motech.model.Gender;
+
 @Local
 public interface RegistrarWS {
 
@@ -16,7 +18,7 @@ public interface RegistrarWS {
 
 	public void registerPatient(String nursePhoneNumber, String serialId,
 			String name, String community, String location, Integer age,
-			String gender, Integer nhis, String phoneNumber);
+			Gender gender, Integer nhis, String phoneNumber);
 
 	public void registerPregnancy(String nursePhoneNumber, Date date,
 			String serialId, Date dueDate, Integer parity, Integer hemoglobin);
