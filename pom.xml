@@ -27,6 +27,14 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+			<id>ejb3unit-repo</id>
+			<name>EJB3Unit Maven2 Repository</name>
+			<url>http://ejb3unit.sourceforge.net/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
 	</repositories>
 
 	<dependencyManagement>
@@ -65,6 +73,12 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>3.8.2</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.bm</groupId>
+				<artifactId>ejb3unit</artifactId>
+				<version>2.0.0-RC-1</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
