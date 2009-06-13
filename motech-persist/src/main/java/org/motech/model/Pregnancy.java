@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "pregnancies")
 public class Pregnancy {
-	
+
 	private Long id;
 	private Date registrationDate;
 	private MaternalData maternalData;
@@ -74,7 +74,7 @@ public class Pregnancy {
 	public void setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
 	}
-	
+
 	public Integer getParity() {
 		return parity;
 	}

@@ -13,9 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "patients")
-@NamedQueries( {
-  @NamedQuery(name = "findPatientByClinicSerial", query = "select p from Patient p where p.serial = :serial and p.clinic.id = :clinicId")
-} )
+@NamedQueries( { @NamedQuery(name = "findPatientByClinicSerial", query = "select p from Patient p where p.serial = :serial and p.clinic.id = :clinicId") })
 public class Patient {
 
 	private Long id;
@@ -29,7 +27,7 @@ public class Patient {
 	private Integer nhis;
 	private MaternalData maternalData;
 	private String phoneNumber;
-	
+
 	@Id
 	@GeneratedValue
 	public Long getId() {
@@ -47,7 +45,7 @@ public class Patient {
 	public void setSerial(String serial) {
 		this.serial = serial;
 	}
-	
+
 	@ManyToOne
 	@JoinColumn(name = "clinic_id")
 	public Clinic getClinic() {
@@ -105,7 +103,7 @@ public class Patient {
 	public void setCommunity(String community) {
 		this.community = community;
 	}
-	
+
 	@OneToOne(mappedBy = "patient", cascade = CascadeType.ALL)
 	public MaternalData getMaternalData() {
 		return maternalData;
@@ -122,5 +120,5 @@ public class Patient {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
+
 }

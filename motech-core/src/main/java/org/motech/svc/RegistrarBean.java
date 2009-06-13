@@ -20,36 +20,39 @@ public class RegistrarBean implements Registrar {
 	@PersistenceContext
 	EntityManager em;
 
-	public void registerMother(String nursePhoneNumber, Date date, String serialId, 
-			String name, String community, String location, Integer age, Integer nhis,
-			String phoneNumber, Date dueDate, Integer parity, Integer hemoglobin) {
+	public void registerMother(String nursePhoneNumber, Date date,
+			String serialId, String name, String community, String location,
+			Integer age, Integer nhis, String phoneNumber, Date dueDate,
+			Integer parity, Integer hemoglobin) {
 
-		// TODO: Rely on nurse registration, needed for lookup in registerPregnancy
+		// TODO: Rely on nurse registration, needed for lookup in
+		// registerPregnancy
 
-		registerPatient(nursePhoneNumber, serialId, name, community, location, age, 
-			Gender.female.toString(), nhis, phoneNumber);
-		
-		registerPregnancy(nursePhoneNumber, date, serialId, dueDate, parity, hemoglobin);
+		registerPatient(nursePhoneNumber, serialId, name, community, location,
+				age, Gender.female.toString(), nhis, phoneNumber);
+
+		registerPregnancy(nursePhoneNumber, date, serialId, dueDate, parity,
+				hemoglobin);
 	}
-	
+
 	public void registerNurse(String name, String phoneNumber, String clinic) {
 		Clinic c = new Clinic();
 		c.setName(clinic);
 		em.persist(c);
-		
+
 		Nurse n = new Nurse();
 		n.setName(name);
 		n.setPhoneNumber(phoneNumber);
 		n.setClinic(c);
 		em.persist(n);
 	}
-	
-	public void registerPatient(String nursePhoneNumber, String serialId, String name, 
-			String community, String location, Integer age, String gender, Integer nhis,
-			String phoneNumber) {
-			
+
+	public void registerPatient(String nursePhoneNumber, String serialId,
+			String name, String community, String location, Integer age,
+			String gender, Integer nhis, String phoneNumber) {
+
 		Nurse n = getNurse(nursePhoneNumber);
-		
+
 		Patient p = new Patient();
 		p.setSerial(serialId);
 		p.setName(name);
@@ -60,24 +63,24 @@ public class RegistrarBean implements Registrar {
 		p.setNhis(nhis);
 		p.setPhoneNumber(phoneNumber);
 		p.setClinic(n.getClinic());
-		
+
 		em.persist(p);
 	}
-		
-	public void registerPregnancy(String nursePhoneNumber, Date date, 
+
+	public void registerPregnancy(String nursePhoneNumber, Date date,
 			String serialId, Date dueDate, Integer parity, Integer hemoglobin) {
-		
+
 		Nurse n = getNurse(nursePhoneNumber);
-		
+
 		Patient a = getPatient(serialId, n.getClinic().getId());
-		
+
 		// TODO: Assumes MaternalData does not already exist
-		//if a.getMaternalData() is null
-		
+		// if a.getMaternalData() is null
+
 		MaternalData m = new MaternalData();
 		m.setPatient(a);
 		a.setMaternalData(m);
-		
+
 		Pregnancy p = new Pregnancy();
 		p.setRegistrationDate(date);
 		p.setParity(parity);
@@ -88,23 +91,23 @@ public class RegistrarBean implements Registrar {
 		// Hookup relationships
 		n.getPregnancies().add(p);
 		p.setNurse(n);
-		
+
 		m.getPregnancies().add(p);
 		p.setMaternalData(m);
-		
+
 		// Persist (Mother persists pregnancy and patient transitively)
 		em.persist(m);
 	}
 
-	public void recordMaternalVisit(String nursePhoneNumber, Date date, String serialId,
-			Integer tetanus, Integer ipt, Integer itn, Integer visitNumber,
-			Integer onARV, Integer prePMTCT, Integer testPMTCT, 
-			Integer postPMTCT, Integer hemoglobinAt36Weeks ) {
-		
+	public void recordMaternalVisit(String nursePhoneNumber, Date date,
+			String serialId, Integer tetanus, Integer ipt, Integer itn,
+			Integer visitNumber, Integer onARV, Integer prePMTCT,
+			Integer testPMTCT, Integer postPMTCT, Integer hemoglobinAt36Weeks) {
+
 		Nurse n = getNurse(nursePhoneNumber);
-		
+
 		Patient a = getPatient(serialId, n.getClinic().getId());
-			
+
 		MaternalVisit v = new MaternalVisit();
 		v.setDate(date);
 		v.setNurse(n);
@@ -117,22 +120,22 @@ public class RegistrarBean implements Registrar {
 		v.setTestPMTCT(testPMTCT);
 		v.setPostPMTCT(postPMTCT);
 		v.setHemoglobinAt36Weeks(hemoglobinAt36Weeks);
-		
+
 		MaternalData m = a.getMaternalData();
 		v.setMaternalData(m);
 		m.getMaternalVisits().add(v);
-		
+
 		em.persist(m);
 	}
-	
-	private Nurse getNurse( String phoneNumber ) {
-		return (Nurse)em.createNamedQuery("findNurseByPhoneNumber")
-			.setParameter("phoneNumber", phoneNumber).getSingleResult();
+
+	private Nurse getNurse(String phoneNumber) {
+		return (Nurse) em.createNamedQuery("findNurseByPhoneNumber")
+				.setParameter("phoneNumber", phoneNumber).getSingleResult();
 	}
-	
-	private Patient getPatient( String serialId, Long clinicId ) {
-		return (Patient)em.createNamedQuery("findPatientByClinicSerial")
-			.setParameter("serial", serialId).setParameter("clinicId", clinicId)
-			.getSingleResult();
+
+	private Patient getPatient(String serialId, Long clinicId) {
+		return (Patient) em.createNamedQuery("findPatientByClinicSerial")
+				.setParameter("serial", serialId).setParameter("clinicId",
+						clinicId).getSingleResult();
 	}
 }

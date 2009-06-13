@@ -19,18 +19,16 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "nurses")
-@NamedQueries( {
-  @NamedQuery(name = "findNurseByPhoneNumber", query = "select n from Nurse n where n.phoneNumber = :phoneNumber")
-} )
+@NamedQueries( { @NamedQuery(name = "findNurseByPhoneNumber", query = "select n from Nurse n where n.phoneNumber = :phoneNumber") })
 public class Nurse {
-	
+
 	private Long id;
 	private String name;
 	private Clinic clinic;
 	private String phoneNumber;
 	private List<Pregnancy> pregnancies = new ArrayList<Pregnancy>();
 	private List<MaternalVisit> maternalVisits = new ArrayList<MaternalVisit>();
-	
+
 	@Id
 	@GeneratedValue
 	public Long getId() {
@@ -85,5 +83,5 @@ public class Nurse {
 	public void setMaternalVisits(List<MaternalVisit> maternalVisits) {
 		this.maternalVisits = maternalVisits;
 	}
-	
+
 }

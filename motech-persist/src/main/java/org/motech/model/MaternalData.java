@@ -22,7 +22,7 @@ public class MaternalData {
 	private Patient patient;
 	private List<Pregnancy> pregnancies = new ArrayList<Pregnancy>();
 	private List<MaternalVisit> maternalVisits = new ArrayList<MaternalVisit>();
-	
+
 	@Id
 	@GeneratedValue
 	public Long getId() {
@@ -60,5 +60,5 @@ public class MaternalData {
 	public void setMaternalVisits(List<MaternalVisit> maternalVisits) {
 		this.maternalVisits = maternalVisits;
 	}
-		
+
 }
