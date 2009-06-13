@@ -1,4 +1,4 @@
-package org.motech.service;
+package org.motech.ws;
 
 import java.util.Date;
 
@@ -8,7 +8,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-import org.motech.ejb.Registrar;
+import org.motech.svc.Registrar;
 
 @Stateless
 @WebService(name = "Registrar", serviceName = "RegistrarService", portName = "RegistrarPort", targetNamespace = "http://ws.motech.org/")

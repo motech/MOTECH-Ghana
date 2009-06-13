@@ -65,7 +65,7 @@
 						</goals>
 						<phase>generate-sources</phase>
 						<configuration>
-							<sei>org.motech.service.RegistrarService</sei>
+							<sei>org.motech.ws.RegistrarService</sei>
 							<genWsdl>true</genWsdl>
 							<destDir />
 						</configuration>

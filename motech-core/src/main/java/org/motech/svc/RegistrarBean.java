@@ -1,4 +1,4 @@
-package org.motech.ejb;
+package org.motech.svc;
 
 import java.util.Date;
 

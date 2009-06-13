@@ -1,4 +1,4 @@
-package org.motech.service;
+package org.motech.ws;
 
 import java.util.Date;
 
