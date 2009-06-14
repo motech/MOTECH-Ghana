@@ -25,6 +25,7 @@ public class Nurse {
 	private String phoneNumber;
 	private List<Pregnancy> pregnancies = new ArrayList<Pregnancy>();
 	private List<MaternalVisit> maternalVisits = new ArrayList<MaternalVisit>();
+	private List<FutureServiceDelivery> futureServices = new ArrayList<FutureServiceDelivery>();
 
 	@Id
 	@GeneratedValue
@@ -79,6 +80,15 @@ public class Nurse {
 
 	public void setMaternalVisits(List<MaternalVisit> maternalVisits) {
 		this.maternalVisits = maternalVisits;
+	}
+
+	@OneToMany(mappedBy = "nurse", cascade = { PERSIST, MERGE })
+	public List<FutureServiceDelivery> getFutureServices() {
+		return futureServices;
+	}
+
+	public void setFutureServices(List<FutureServiceDelivery> futureServices) {
+		this.futureServices = futureServices;
 	}
 
 }

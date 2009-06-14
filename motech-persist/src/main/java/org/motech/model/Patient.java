@@ -1,11 +1,18 @@
 package org.motech.model;
 
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -24,6 +31,7 @@ public class Patient {
 	private Integer nhis;
 	private MaternalData maternalData;
 	private String phoneNumber;
+	private List<FutureServiceDelivery> futureServices = new ArrayList<FutureServiceDelivery>();
 
 	@Id
 	@GeneratedValue
@@ -116,6 +124,15 @@ public class Patient {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	@OneToMany(mappedBy = "patient", cascade = { PERSIST, MERGE })
+	public List<FutureServiceDelivery> getFutureServices() {
+		return futureServices;
+	}
+
+	public void setFutureServices(List<FutureServiceDelivery> futureServices) {
+		this.futureServices = futureServices;
 	}
 
 }
