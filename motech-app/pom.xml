@@ -43,7 +43,7 @@
 						<webModule>
 							<groupId>org.motech</groupId>
 							<artifactId>motech-webapp</artifactId>
-							<contextRoot>/motech</contextRoot>
+							<contextRoot>/${motech.webcontext}</contextRoot>
 						</webModule>
 						<ejbModule>
 							<groupId>org.motech</groupId>

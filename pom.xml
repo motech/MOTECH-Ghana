@@ -105,4 +105,10 @@
 		</pluginManagement>
 	</build>
 
+	<properties>
+		<motech.webcontext>motech</motech.webcontext>
+		<motech.wscontext>motechws</motech.wscontext>
+		<jboss.home>${env.JBOSS_HOME}</jboss.home>
+	</properties>
+
 </project>

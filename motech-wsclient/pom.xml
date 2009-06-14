@@ -109,6 +109,6 @@
 		</plugins>
 	</build>
 	<properties>
-		<endpointUrl>http://127.0.0.1:8080/motechws/RegistrarService</endpointUrl>
+		<endpointUrl>http://localhost:8080/${motech.wscontext}/RegistrarService</endpointUrl>
 	</properties>
 </project>

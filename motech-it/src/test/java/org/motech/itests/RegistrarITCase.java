@@ -1,7 +1,9 @@
 package org.motech.itests;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.GregorianCalendar;
+import java.util.Properties;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -20,9 +22,13 @@ public class RegistrarITCase extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		reg = new RegistrarService(new URL(
-				"http://127.0.0.1:8080/motechws/RegistrarService?wsdl"),
-				new QName("http://ws.motech.org/", "RegistrarService"))
+		Properties testProps = new Properties();
+		InputStream testPropStream = getClass().getResourceAsStream(
+				"/motech-it-test.properties");
+		testProps.load(testPropStream);
+		reg = new RegistrarService(new URL(testProps
+				.getProperty("motech.wsdlurl")), new QName(
+				"http://ws.motech.org/", "RegistrarService"))
 				.getRegistrarPort();
 		time = DatatypeFactory.newInstance().newXMLGregorianCalendar(
 				new GregorianCalendar());

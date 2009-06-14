@@ -88,7 +88,7 @@
 										<groupId>org.motech</groupId>
 										<artifactId>motech-app</artifactId>
 										<type>ear</type>
-										<pingURL>http://127.0.0.1:8080/motech/</pingURL>
+										<pingURL>http://localhost:8080/${motech.webcontext}</pingURL>
 									</deployable>
 								</deployables>
 							</deployer>
@@ -125,9 +125,6 @@
 					</plugin>
 				</plugins>
 			</build>
-			<properties>
-				<jboss.home>${env.JBOSS_HOME}</jboss.home>
-			</properties>
 		</profile>
 	</profiles>
 
@@ -146,6 +143,15 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>motech-it-test.properties</include>
+				</includes>
+			</testResource>
+		</testResources>
 	</build>
 </project>
 	

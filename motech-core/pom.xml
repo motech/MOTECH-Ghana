@@ -40,6 +40,15 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>META-INF/jboss.xml</include>
+				</includes>
+			</resource>
+		</resources>
 		<testResources>
 			<testResource>
 				<directory>src/test/resources</directory>
