@@ -12,14 +12,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "nurses")
-@NamedQueries( { @NamedQuery(name = "findNurseByPhoneNumber", query = "select n from Nurse n where n.phoneNumber = :phoneNumber") })
 public class Nurse {
 
 	private Long id;
@@ -28,6 +25,7 @@ public class Nurse {
 	private String phoneNumber;
 	private List<Pregnancy> pregnancies = new ArrayList<Pregnancy>();
 	private List<MaternalVisit> maternalVisits = new ArrayList<MaternalVisit>();
+	private List<FutureServiceDelivery> futureServices = new ArrayList<FutureServiceDelivery>();
 
 	@Id
 	@GeneratedValue
@@ -82,6 +80,15 @@ public class Nurse {
 
 	public void setMaternalVisits(List<MaternalVisit> maternalVisits) {
 		this.maternalVisits = maternalVisits;
+	}
+
+	@OneToMany(mappedBy = "nurse", cascade = { PERSIST, MERGE })
+	public List<FutureServiceDelivery> getFutureServices() {
+		return futureServices;
+	}
+
+	public void setFutureServices(List<FutureServiceDelivery> futureServices) {
+		this.futureServices = futureServices;
 	}
 
 }

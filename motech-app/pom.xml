@@ -51,6 +51,7 @@
 						</ejbModule>
 					</modules>
 					<defaultLibBundleDir>/lib</defaultLibBundleDir>
+					<version>5</version>
 				</configuration>
 			</plugin>
 		</plugins>

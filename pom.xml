@@ -14,6 +14,8 @@
 		<module>motech-core</module>
 		<module>motech-webapp</module>
 		<module>motech-app</module>
+		<module>motech-wsclient</module>
+		<module>motech-it</module>
 	</modules>
 
 	<repositories>
@@ -21,6 +23,17 @@
 			<id>jboss-repo</id>
 			<name>JBoss Maven2 Repository</name>
 			<url>http://repository.jboss.com/maven2/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>ejb3unit-repo</id>
+			<name>EJB3Unit Maven2 Repository</name>
+			<url>http://ejb3unit.sourceforge.net/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 
@@ -61,6 +74,18 @@
 				<artifactId>jsr181-api</artifactId>
 				<version>1.0</version>
 				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>3.8.2</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.bm</groupId>
+				<artifactId>ejb3unit</artifactId>
+				<version>2.0.0-RC-1</version>
+				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

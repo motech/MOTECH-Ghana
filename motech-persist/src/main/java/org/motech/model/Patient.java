@@ -1,19 +1,23 @@
 package org.motech.model;
 
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "patients")
-@NamedQueries( { @NamedQuery(name = "findPatientByClinicSerial", query = "select p from Patient p where p.serial = :serial and p.clinic.id = :clinicId") })
 public class Patient {
 
 	private Long id;
@@ -26,6 +30,8 @@ public class Patient {
 	private Gender gender;
 	private Integer nhis;
 	private MaternalData maternalData;
+	private String phoneNumber;
+	private List<FutureServiceDelivery> futureServices = new ArrayList<FutureServiceDelivery>();
 
 	@Id
 	@GeneratedValue
@@ -111,4 +117,22 @@ public class Patient {
 	public void setMaternalData(MaternalData maternalData) {
 		this.maternalData = maternalData;
 	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	@OneToMany(mappedBy = "patient", cascade = { PERSIST, MERGE })
+	public List<FutureServiceDelivery> getFutureServices() {
+		return futureServices;
+	}
+
+	public void setFutureServices(List<FutureServiceDelivery> futureServices) {
+		this.futureServices = futureServices;
+	}
+
 }
