@@ -74,12 +74,13 @@ public class RegistrarBean implements Registrar {
 
 		Patient a = getPatient(serialId, n.getClinic().getId());
 
-		// TODO: Assumes MaternalData does not already exist
-		// if a.getMaternalData() is null
-
-		MaternalData m = new MaternalData();
-		m.setPatient(a);
-		a.setMaternalData(m);
+		MaternalData m = a.getMaternalData();
+		// Check if a Maternal Visit or Pregnancy have been recorded previously
+		if (m == null) {
+			m = new MaternalData();
+			m.setPatient(a);
+			a.setMaternalData(m);
+		}
 
 		Pregnancy p = new Pregnancy();
 		p.setRegistrationDate(date);
@@ -122,6 +123,13 @@ public class RegistrarBean implements Registrar {
 		v.setHemoglobinAt36Weeks(hemoglobinAt36Weeks);
 
 		MaternalData m = a.getMaternalData();
+		// Check if a Maternal Visit or Pregnancy have been recorded previously
+		if (m == null) {
+			m = new MaternalData();
+			m.setPatient(a);
+			a.setMaternalData(m);
+		}
+
 		v.setMaternalData(m);
 		m.getMaternalVisits().add(v);
 
