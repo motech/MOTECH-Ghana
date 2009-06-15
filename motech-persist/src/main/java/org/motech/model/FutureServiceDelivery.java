@@ -18,6 +18,8 @@ public class FutureServiceDelivery {
 	private Nurse nurse;
 	private Date date;
 	private String service;
+	private Date patientNotifiedDate;
+	private Date nurseNotifiedDate;
 
 	@Id
 	@GeneratedValue
@@ -63,6 +65,22 @@ public class FutureServiceDelivery {
 
 	public void setService(String service) {
 		this.service = service;
+	}
+
+	public Date getPatientNotifiedDate() {
+		return patientNotifiedDate;
+	}
+
+	public void setPatientNotifiedDate(Date patientNotifiedDate) {
+		this.patientNotifiedDate = patientNotifiedDate;
+	}
+
+	public Date getNurseNotifiedDate() {
+		return nurseNotifiedDate;
+	}
+
+	public void setNurseNotifiedDate(Date nurseNotifiedDate) {
+		this.nurseNotifiedDate = nurseNotifiedDate;
 	}
 
 }
