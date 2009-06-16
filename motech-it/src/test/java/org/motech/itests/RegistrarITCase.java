@@ -11,9 +11,9 @@ import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
 
-import org.motech.ws.Gender;
-import org.motech.ws.Registrar;
-import org.motech.ws.RegistrarService;
+import org.motech.Gender;
+import org.motech.Registrar;
+import org.motech.RegistrarService;
 
 public class RegistrarITCase extends TestCase {
 
@@ -28,8 +28,7 @@ public class RegistrarITCase extends TestCase {
 		testProps.load(testPropStream);
 		reg = new RegistrarService(new URL(testProps
 				.getProperty("motech.wsdlurl")), new QName(
-				"http://ws.motech.org/", "RegistrarService"))
-				.getRegistrarPort();
+				"http://motech.org/", "RegistrarService")).getRegistrarPort();
 		time = DatatypeFactory.newInstance().newXMLGregorianCalendar(
 				new GregorianCalendar());
 	}

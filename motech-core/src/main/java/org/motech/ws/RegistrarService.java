@@ -12,7 +12,7 @@ import org.motech.model.Gender;
 import org.motech.svc.Registrar;
 
 @Stateless
-@WebService(name = "Registrar", serviceName = "RegistrarService", portName = "RegistrarPort", targetNamespace = "http://ws.motech.org/")
+@WebService(name = "Registrar", serviceName = "RegistrarService", portName = "RegistrarPort", targetNamespace = "http://motech.org/")
 public class RegistrarService implements RegistrarWS {
 
 	@EJB
