@@ -29,30 +29,37 @@ public class RegistrarBeanTest extends BaseSessionBeanFixture<RegistrarBean> {
 	public void testRegisterNurse() {
 		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
-		Registrar regBean = getBeanToTest();
-		regBean.registerNurse("Karen", "7777777777", "B-Clinic");
-		assertEquals(1, em.createQuery(
-				"select n from Nurse n where name = :name").setParameter(
-				"name", "Karen").getResultList().size());
-		em.getTransaction().rollback();
+		try {
+			Registrar regBean = getBeanToTest();
+			regBean.registerNurse("Karen", "7777777777", "B-Clinic");
+			assertEquals(1, em.createQuery(
+					"select n from Nurse n where name = :name").setParameter(
+					"name", "Karen").getResultList().size());
+		} finally {
+			em.getTransaction().rollback();
+		}
 	}
 
 	public void testRegisterPregnancy() {
 		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
-		Registrar regBean = getBeanToTest();
-		regBean.registerNurse("Karen", "7777777777", "B-Clinic");
-		regBean.registerPatient("7777777777", "ghdg438", "Patient",
-				"Community", "Location", 21, Gender.female, 21, "2828282828");
-		regBean.registerPregnancy("7777777777", new Date(), "ghdg438",
-				new Date(), 2, 289);
-		assertEquals(
-				1,
-				em
-						.createQuery(
-								"select p from Pregnancy p where p.maternalData.patient.serial = :serialId")
-						.setParameter("serialId", "ghdg438").getResultList()
-						.size());
-		em.getTransaction().rollback();
+		try {
+			Registrar regBean = getBeanToTest();
+			regBean.registerNurse("Karen", "7777777777", "B-Clinic");
+			regBean.registerPatient("7777777777", "ghdg438", "Patient",
+					"Community", "Location", 21, Gender.female, 21,
+					"2828282828");
+			regBean.registerPregnancy("7777777777", new Date(), "ghdg438",
+					new Date(), 2, 289);
+			assertEquals(
+					1,
+					em
+							.createQuery(
+									"select p from Pregnancy p where p.maternalData.patient.serial = :serialId")
+							.setParameter("serialId", "ghdg438")
+							.getResultList().size());
+		} finally {
+			em.getTransaction().rollback();
+		}
 	}
 }
