@@ -33,8 +33,8 @@ public class RegistrarBeanTest extends BaseSessionBeanFixture<RegistrarBean> {
 			Registrar regBean = getBeanToTest();
 			regBean.registerNurse("Samuel", "8888888888", "C-Clinic");
 			regBean.registerMother("8888888888", new Date(), "g48748",
-					"Brandy", "Community", "Location", 16, 23, "3838383838",
-					new Date(), 3, 43);
+					"Brandy", "Community", "Location", new Date(), 23,
+					"3838383838", new Date(), 3, 43);
 			assertEquals(1, em.createQuery(
 					"select p from Patient p where p.serial = :serial")
 					.setParameter("serial", "g48748").getResultList().size());
@@ -64,8 +64,8 @@ public class RegistrarBeanTest extends BaseSessionBeanFixture<RegistrarBean> {
 			Registrar regBean = getBeanToTest();
 			regBean.registerNurse("Cindy", "3783783738", "P-Clinic");
 			regBean.registerPatient("3783783738", "4ui4hu4", "Charles",
-					"Somewhere", "Somewhere smaller", 34, Gender.female, 23,
-					"378878787873");
+					"Somewhere", "Somewhere smaller", new Date(),
+					Gender.female, 23, "378878787873");
 			assertEquals(1, em.createQuery(
 					"select p from Patient p where serial = :serial")
 					.setParameter("serial", "4ui4hu4").getResultList().size());
@@ -81,7 +81,7 @@ public class RegistrarBeanTest extends BaseSessionBeanFixture<RegistrarBean> {
 			Registrar regBean = getBeanToTest();
 			regBean.registerNurse("Karen", "7777777777", "B-Clinic");
 			regBean.registerPatient("7777777777", "ghdg438", "Patient",
-					"Community", "Location", 21, Gender.female, 21,
+					"Community", "Location", new Date(), Gender.female, 21,
 					"2828282828");
 			regBean.registerPregnancy("7777777777", new Date(), "ghdg438",
 					new Date(), 2, 289);
@@ -104,7 +104,7 @@ public class RegistrarBeanTest extends BaseSessionBeanFixture<RegistrarBean> {
 			Registrar regBean = getBeanToTest();
 			regBean.registerNurse("Daniel", "3478478784", "F-Clinic");
 			regBean.registerPatient("3478478784", "d99d89d", "AMother",
-					"ACommunity", "ALocation", 17, Gender.female, 3,
+					"ACommunity", "ALocation", new Date(), Gender.female, 3,
 					"2828282828");
 			regBean.recordMaternalVisit("3478478784", new Date(), "d99d89d",
 					34, 32, 3, 38, 27, 29, 28, 93, 28);

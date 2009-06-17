@@ -22,14 +22,14 @@ public class RegistrarBean implements Registrar {
 
 	public void registerMother(String nursePhoneNumber, Date date,
 			String serialId, String name, String community, String location,
-			Integer age, Integer nhis, String phoneNumber, Date dueDate,
+			Date dateOfBirth, Integer nhis, String phoneNumber, Date dueDate,
 			Integer parity, Integer hemoglobin) {
 
 		// TODO: Rely on nurse registration, needed for lookup in
 		// registerPregnancy
 
 		registerPatient(nursePhoneNumber, serialId, name, community, location,
-				age, Gender.female, nhis, phoneNumber);
+				dateOfBirth, Gender.female, nhis, phoneNumber);
 
 		registerPregnancy(nursePhoneNumber, date, serialId, dueDate, parity,
 				hemoglobin);
@@ -48,7 +48,7 @@ public class RegistrarBean implements Registrar {
 	}
 
 	public void registerPatient(String nursePhoneNumber, String serialId,
-			String name, String community, String location, Integer age,
+			String name, String community, String location, Date dateOfBirth,
 			Gender gender, Integer nhis, String phoneNumber) {
 
 		Nurse n = getNurse(nursePhoneNumber);
@@ -58,7 +58,7 @@ public class RegistrarBean implements Registrar {
 		p.setName(name);
 		p.setCommunity(community);
 		p.setLocation(location);
-		p.setAge(age);
+		p.setDateOfBirth(dateOfBirth);
 		p.setGender(gender);
 		p.setNhis(nhis);
 		p.setPhoneNumber(phoneNumber);

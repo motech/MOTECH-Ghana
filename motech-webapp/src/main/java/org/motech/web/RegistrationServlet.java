@@ -39,7 +39,8 @@ public class RegistrationServlet extends HttpServlet {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 			Date dueDate = dateFormat.parse(req.getParameter("dueDate"));
 
-			Integer age = Integer.valueOf(req.getParameter("age"));
+			Date dateOfBirth = dateFormat
+					.parse(req.getParameter("dateOfBirth"));
 			Integer parity = Integer.valueOf(req.getParameter("parity"));
 			Integer hemoglobin = Integer
 					.valueOf(req.getParameter("hemoglobin"));
@@ -48,7 +49,7 @@ public class RegistrationServlet extends HttpServlet {
 					"A Clinic");
 
 			registrationService.registerMother(nursePhone, new Date(),
-					serialId, name, community, location, age, nhis,
+					serialId, name, community, location, dateOfBirth, nhis,
 					patientPhone, dueDate, parity, hemoglobin);
 		} catch (Exception e) {
 			log.error("Failed to register", e);

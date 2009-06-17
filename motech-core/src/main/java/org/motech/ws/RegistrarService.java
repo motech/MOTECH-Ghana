@@ -26,7 +26,7 @@ public class RegistrarService implements RegistrarWS {
 			@WebParam(name = "name") String name,
 			@WebParam(name = "community") String community,
 			@WebParam(name = "location") String location,
-			@WebParam(name = "age") Integer age,
+			@WebParam(name = "dateOfBirth") Date dateOfBirth,
 			@WebParam(name = "nhis") Integer nhis,
 			@WebParam(name = "phoneNumber") String phoneNumber,
 			@WebParam(name = "dueDate") Date dueDate,
@@ -34,8 +34,8 @@ public class RegistrarService implements RegistrarWS {
 			@WebParam(name = "hemoglobin") Integer hemoglobin) {
 
 		registrationBean.registerMother(nursePhoneNumber, date, serialId, name,
-				community, location, age, nhis, phoneNumber, dueDate, parity,
-				hemoglobin);
+				community, location, dateOfBirth, nhis, phoneNumber, dueDate,
+				parity, hemoglobin);
 	}
 
 	@WebMethod
@@ -53,13 +53,13 @@ public class RegistrarService implements RegistrarWS {
 			@WebParam(name = "name") String name,
 			@WebParam(name = "community") String community,
 			@WebParam(name = "location") String location,
-			@WebParam(name = "age") Integer age,
+			@WebParam(name = "dateOfBirth") Date dateOfBirth,
 			@WebParam(name = "gender") Gender gender,
 			@WebParam(name = "nhis") Integer nhis,
 			@WebParam(name = "phoneNumber") String phoneNumber) {
 
 		registrationBean.registerPatient(nursePhoneNumber, serialId, name,
-				community, location, age, gender, nhis, phoneNumber);
+				community, location, dateOfBirth, gender, nhis, phoneNumber);
 	}
 
 	@WebMethod

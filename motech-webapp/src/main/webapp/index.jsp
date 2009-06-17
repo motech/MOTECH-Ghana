@@ -23,8 +23,8 @@
 	<label for="dueDate">Due Date:</label>
 	<input name="dueDate" />
 	
-	<label for="age">Age:</label>
-	<input name="age" />
+	<label for="dateOfBirth">Date of Birth:</label>
+	<input name="dateOfBirth" />
 	
 	<label for="parity">Parity:</label>
 	<input name="parity" />
@@ -35,16 +35,19 @@
 	<input type="submit" />
 
 	<!-- 
-				String nurseId = req.getParameter("nurseId");
+				String nursePhone = req.getParameter("nursePhone");
 			String serialId = req.getParameter("serialId");
 			String name = req.getParameter("name");
 			String community = req.getParameter("community");
 			String location = req.getParameter("location");
+			Integer nhis = Integer.valueOf(req.getParameter("nhis"));
+			String patientPhone = req.getParameter("patientPhone");
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 			Date dueDate = dateFormat.parse(req.getParameter("dueDate"));
 
-			Integer age = Integer.valueOf(req.getParameter("age"));
+			Date dateOfBirth = dateFormat
+					.parse(req.getParameter("dateOfBirth"));
 			Integer parity = Integer.valueOf(req.getParameter("parity"));
 			Integer hemoglobin = Integer
 					.valueOf(req.getParameter("hemoglobin"));

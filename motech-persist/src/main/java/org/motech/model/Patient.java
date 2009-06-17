@@ -4,6 +4,7 @@ import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -28,7 +29,7 @@ public class Patient {
 	private Clinic clinic;
 	private String name;
 	private String location;
-	private Integer age;
+	private Date dateOfBirth;
 	private String community;
 	private Gender gender;
 	private Integer nhis;
@@ -80,12 +81,12 @@ public class Patient {
 		this.location = location;
 	}
 
-	public Integer getAge() {
-		return age;
+	public Date getDateOfBirth() {
+		return dateOfBirth;
 	}
 
-	public void setAge(Integer age) {
-		this.age = age;
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	public Gender getGender() {

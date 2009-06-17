@@ -10,14 +10,14 @@ import org.motech.model.Gender;
 public interface Registrar {
 
 	void registerMother(String nursePhoneNumber, Date date, String serialId,
-			String name, String community, String location, Integer age,
+			String name, String community, String location, Date dateOfBirth,
 			Integer nhis, String phoneNumber, Date dueDate, Integer parity,
 			Integer hemoglobin);
 
 	void registerNurse(String name, String phoneNumber, String clinic);
 
 	void registerPatient(String nursePhoneNumber, String serialId, String name,
-			String community, String location, Integer age, Gender gender,
+			String community, String location, Date dateOfBirth, Gender gender,
 			Integer nhis, String phoneNumber);
 
 	void registerPregnancy(String nursePhoneNumber, Date date, String serialId,

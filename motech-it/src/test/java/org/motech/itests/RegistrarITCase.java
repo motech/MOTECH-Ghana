@@ -45,12 +45,12 @@ public class RegistrarITCase extends TestCase {
 
 	public void testRegMother() throws Exception {
 		reg.registerMother("37694676488", time, "CAPNCRUNCH", "Betty",
-				"KFJHKF", "HDJHJDKD", 12, 313, "4674676747", time, 1, 1);
+				"KFJHKF", "HDJHJDKD", time, 313, "4674676747", time, 1, 1);
 	}
 
 	public void testRegPatient() throws Exception {
 		reg.registerPatient("37694676488", "HONEYGRAHAMS", "Super Dave",
-				"DHJGDJK", "HDHJHDJK", 23, Gender.MALE, 1232, "4674676747");
+				"DHJGDJK", "HDHJHDJK", time, Gender.MALE, 1232, "4674676747");
 	}
 
 	public void testRegPregnancy() throws Exception {
