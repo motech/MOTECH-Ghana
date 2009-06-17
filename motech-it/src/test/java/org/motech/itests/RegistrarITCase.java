@@ -57,4 +57,8 @@ public class RegistrarITCase extends TestCase {
 		reg.registerPregnancy("37694676488", time, "HONEYGRAHAMS", time, 2, 23);
 	}
 
+	public void testRecMaternalVisit() throws Exception {
+		reg.recordMaternalVisit("37694676488", time, "HONEYGRAHAMS", 1, 1, 1,
+				1, 0, 0, 0, 0, 24);
+	}
 }
