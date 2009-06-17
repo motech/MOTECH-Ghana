@@ -1,9 +1,12 @@
 package org.motech.svc;
 
+import java.util.Date;
+
 import javax.persistence.EntityManager;
 
 import org.motech.model.Clinic;
 import org.motech.model.FutureServiceDelivery;
+import org.motech.model.Gender;
 import org.motech.model.MaternalData;
 import org.motech.model.MaternalVisit;
 import org.motech.model.Nurse;
@@ -28,9 +31,28 @@ public class RegistrarBeanTest extends BaseSessionBeanFixture<RegistrarBean> {
 		em.getTransaction().begin();
 		Registrar regBean = getBeanToTest();
 		regBean.registerNurse("Karen", "7777777777", "B-Clinic");
-		em.getTransaction().commit();
 		assertEquals(1, em.createQuery(
 				"select n from Nurse n where name = :name").setParameter(
 				"name", "Karen").getResultList().size());
+		em.getTransaction().rollback();
+	}
+
+	public void testRegisterPregnancy() {
+		EntityManager em = getEntityManager();
+		em.getTransaction().begin();
+		Registrar regBean = getBeanToTest();
+		regBean.registerNurse("Karen", "7777777777", "B-Clinic");
+		regBean.registerPatient("7777777777", "ghdg438", "Patient",
+				"Community", "Location", 21, Gender.female, 21, "2828282828");
+		regBean.registerPregnancy("7777777777", new Date(), "ghdg438",
+				new Date(), 2, 289);
+		assertEquals(
+				1,
+				em
+						.createQuery(
+								"select p from Pregnancy p where p.maternalData.patient.serial = :serialId")
+						.setParameter("serialId", "ghdg438").getResultList()
+						.size());
+		em.getTransaction().rollback();
 	}
 }
