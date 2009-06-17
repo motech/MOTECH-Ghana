@@ -26,6 +26,23 @@ public class RegistrarBeanTest extends BaseSessionBeanFixture<RegistrarBean> {
 		super(RegistrarBean.class, USED_ENTITIES);
 	}
 
+	public void testRegisterMother() {
+		EntityManager em = getEntityManager();
+		em.getTransaction().begin();
+		try {
+			Registrar regBean = getBeanToTest();
+			regBean.registerNurse("Samuel", "8888888888", "C-Clinic");
+			regBean.registerMother("8888888888", new Date(), "g48748",
+					"Brandy", "Community", "Location", 16, 23, "3838383838",
+					new Date(), 3, 43);
+			assertEquals(1, em.createQuery(
+					"select p from Patient p where p.serial = :serial")
+					.setParameter("serial", "g48748").getResultList().size());
+		} finally {
+			em.getTransaction().rollback();
+		}
+	}
+
 	public void testRegisterNurse() {
 		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
