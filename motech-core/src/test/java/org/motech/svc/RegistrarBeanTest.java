@@ -57,6 +57,23 @@ public class RegistrarBeanTest extends BaseSessionBeanFixture<RegistrarBean> {
 		}
 	}
 
+	public void testRegisterPatient() {
+		EntityManager em = getEntityManager();
+		em.getTransaction().begin();
+		try {
+			Registrar regBean = getBeanToTest();
+			regBean.registerNurse("Cindy", "3783783738", "P-Clinic");
+			regBean.registerPatient("3783783738", "4ui4hu4", "Charles",
+					"Somewhere", "Somewhere smaller", 34, Gender.female, 23,
+					"378878787873");
+			assertEquals(1, em.createQuery(
+					"select p from Patient p where serial = :serial")
+					.setParameter("serial", "4ui4hu4").getResultList().size());
+		} finally {
+			em.getTransaction().rollback();
+		}
+	}
+
 	public void testRegisterPregnancy() {
 		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
