@@ -1,6 +1,7 @@
 package org.motech.svc;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -136,14 +137,34 @@ public class RegistrarBean implements Registrar {
 		em.persist(m);
 	}
 
-	private Nurse getNurse(String phoneNumber) {
+	public Nurse getNurse(String phoneNumber) {
 		return (Nurse) em.createNamedQuery("findNurseByPhoneNumber")
 				.setParameter("phoneNumber", phoneNumber).getSingleResult();
 	}
 
-	private Patient getPatient(String serialId, Long clinicId) {
+	public List<Nurse> getNurses() {
+		return (List<Nurse>) em.createNamedQuery("findAllNurses")
+				.getResultList();
+	}
+
+	public Patient getPatient(String serialId, Long clinicId) {
 		return (Patient) em.createNamedQuery("findPatientByClinicSerial")
 				.setParameter("serial", serialId).setParameter("clinicId",
 						clinicId).getSingleResult();
+	}
+
+	public List<Patient> getPatients() {
+		return (List<Patient>) em.createNamedQuery("findAllPatients")
+				.getResultList();
+	}
+
+	public List<Pregnancy> getPregnancies() {
+		return (List<Pregnancy>) em.createNamedQuery("findAllPregnancies")
+				.getResultList();
+	}
+
+	public List<MaternalVisit> getMaternalVisits() {
+		return (List<MaternalVisit>) em.createNamedQuery(
+				"findAllMaternalVisits").getResultList();
 	}
 }

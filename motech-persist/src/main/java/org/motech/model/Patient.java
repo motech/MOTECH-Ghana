@@ -21,7 +21,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "patients")
-@NamedQueries( { @NamedQuery(name = "findPatientByClinicSerial", query = "select p from Patient p where p.serial = :serial and p.clinic.id = :clinicId") })
+@NamedQueries( {
+		@NamedQuery(name = "findPatientByClinicSerial", query = "select p from Patient p where p.serial = :serial and p.clinic.id = :clinicId"),
+		@NamedQuery(name = "findAllPatients", query = "select p from Patient p") })
 public class Patient {
 
 	private Long id;

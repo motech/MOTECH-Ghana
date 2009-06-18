@@ -22,6 +22,12 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.motech</groupId>
+			<artifactId>motech-persist</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 		</dependency>

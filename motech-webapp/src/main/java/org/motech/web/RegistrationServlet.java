@@ -51,6 +51,15 @@ public class RegistrationServlet extends HttpServlet {
 			registrationService.registerMother(nursePhone, new Date(),
 					serialId, name, community, location, dateOfBirth, nhis,
 					patientPhone, dueDate, parity, hemoglobin);
+
+			req.setAttribute("allNurses", registrationService.getNurses());
+			req.setAttribute("allPatients", registrationService.getPatients());
+			req.setAttribute("allPregnancies", registrationService
+					.getPregnancies());
+			req.setAttribute("allMaternalVisits", registrationService
+					.getMaternalVisits());
+
+			req.getRequestDispatcher("/index.jsp").forward(req, resp);
 		} catch (Exception e) {
 			log.error("Failed to register", e);
 			throw new ServletException("Failed to register", e);

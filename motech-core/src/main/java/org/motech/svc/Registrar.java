@@ -1,10 +1,15 @@
 package org.motech.svc;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.Local;
 
 import org.motech.model.Gender;
+import org.motech.model.MaternalVisit;
+import org.motech.model.Nurse;
+import org.motech.model.Patient;
+import org.motech.model.Pregnancy;
 
 @Local
 public interface Registrar {
@@ -27,4 +32,16 @@ public interface Registrar {
 			String serialId, Integer tetanus, Integer ipt, Integer itn,
 			Integer visitNumber, Integer onARV, Integer prePMTCT,
 			Integer testPMTCT, Integer postPMTCT, Integer hemoglobinAt36Weeks);
+
+	Nurse getNurse(String phoneNumber);
+
+	List<Nurse> getNurses();
+
+	Patient getPatient(String serialId, Long clinicId);
+
+	List<Patient> getPatients();
+
+	List<Pregnancy> getPregnancies();
+
+	List<MaternalVisit> getMaternalVisits();
 }

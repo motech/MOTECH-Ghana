@@ -19,7 +19,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "nurses")
-@NamedQueries( { @NamedQuery(name = "findNurseByPhoneNumber", query = "select n from Nurse n where n.phoneNumber = :phoneNumber") })
+@NamedQueries( {
+		@NamedQuery(name = "findNurseByPhoneNumber", query = "select n from Nurse n where n.phoneNumber = :phoneNumber"),
+		@NamedQuery(name = "findAllNurses", query = "select n from Nurse n") })
 public class Nurse {
 
 	private Long id;

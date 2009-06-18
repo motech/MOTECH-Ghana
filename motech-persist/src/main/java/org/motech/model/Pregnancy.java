@@ -7,10 +7,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "pregnancies")
+@NamedQueries( { @NamedQuery(name = "findAllPregnancies", query = "select p from Pregnancy p") })
 public class Pregnancy {
 
 	private Long id;
