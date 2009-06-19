@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import org.motech.model.Clinic;
 import org.motech.model.FutureServiceDelivery;
 import org.motech.model.Gender;
+import org.motech.model.Log;
 import org.motech.model.MaternalData;
 import org.motech.model.MaternalVisit;
 import org.motech.model.Nurse;
@@ -20,7 +21,7 @@ public class RegistrarBeanTest extends BaseSessionBeanFixture<RegistrarBean> {
 	@SuppressWarnings("unchecked")
 	private static Class[] USED_ENTITIES = new Class[] { Nurse.class,
 			Clinic.class, Patient.class, MaternalData.class, Pregnancy.class,
-			MaternalVisit.class, FutureServiceDelivery.class };
+			MaternalVisit.class, FutureServiceDelivery.class, Log.class };
 
 	public RegistrarBeanTest() {
 		super(RegistrarBean.class, USED_ENTITIES);

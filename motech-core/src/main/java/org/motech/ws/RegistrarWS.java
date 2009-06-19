@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.ejb.Local;
 
 import org.motech.model.Gender;
+import org.motech.model.LogType;
 
 @Local
 public interface RegistrarWS {
@@ -27,5 +28,7 @@ public interface RegistrarWS {
 			String serialId, Integer tetanus, Integer ipt, Integer itn,
 			Integer visitNumber, Integer onARV, Integer prePMTCT,
 			Integer testPMTCT, Integer postPMTCT, Integer hemoglobinAt36Weeks);
+
+	public void log(LogType type, String message);
 
 }

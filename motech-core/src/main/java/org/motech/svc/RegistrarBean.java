@@ -3,12 +3,14 @@ package org.motech.svc;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.motech.model.Clinic;
 import org.motech.model.Gender;
+import org.motech.model.LogType;
 import org.motech.model.MaternalData;
 import org.motech.model.MaternalVisit;
 import org.motech.model.Nurse;
@@ -20,6 +22,9 @@ public class RegistrarBean implements Registrar {
 
 	@PersistenceContext
 	EntityManager em;
+
+	@EJB
+	Logger loggerBean;
 
 	public void registerMother(String nursePhoneNumber, Date date,
 			String serialId, String name, String community, String location,
@@ -46,6 +51,9 @@ public class RegistrarBean implements Registrar {
 		n.setPhoneNumber(phoneNumber);
 		n.setClinic(c);
 		em.persist(n);
+
+		loggerBean.log(LogType.success, "Nurse Registered: " + name + ","
+				+ phoneNumber);
 	}
 
 	public void registerPatient(String nursePhoneNumber, String serialId,
@@ -66,6 +74,9 @@ public class RegistrarBean implements Registrar {
 		p.setClinic(n.getClinic());
 
 		em.persist(p);
+
+		loggerBean.log(LogType.success, "Patient Registered: " + serialId + ","
+				+ n.getClinic().getId());
 	}
 
 	public void registerPregnancy(String nursePhoneNumber, Date date,
@@ -99,6 +110,9 @@ public class RegistrarBean implements Registrar {
 
 		// Persist (Mother persists pregnancy and patient transitively)
 		em.persist(m);
+
+		loggerBean.log(LogType.success, "Pregnancy Registered: " + serialId
+				+ "," + dueDate);
 	}
 
 	public void recordMaternalVisit(String nursePhoneNumber, Date date,
@@ -135,6 +149,9 @@ public class RegistrarBean implements Registrar {
 		m.getMaternalVisits().add(v);
 
 		em.persist(m);
+
+		loggerBean.log(LogType.success, "Maternal Visit Registered: "
+				+ serialId + "," + date);
 	}
 
 	public Nurse getNurse(String phoneNumber) {

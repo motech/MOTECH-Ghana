@@ -12,6 +12,7 @@ import javax.xml.namespace.QName;
 import junit.framework.TestCase;
 
 import org.motech.Gender;
+import org.motech.LogType;
 import org.motech.Registrar;
 import org.motech.RegistrarService;
 
@@ -60,5 +61,9 @@ public class RegistrarITCase extends TestCase {
 	public void testRecMaternalVisit() throws Exception {
 		reg.recordMaternalVisit("37694676488", time, "HONEYGRAHAMS", 1, 1, 1,
 				1, 0, 0, 0, 0, 24);
+	}
+
+	public void testLog() throws Exception {
+		reg.log(LogType.SUCCESS, "LOG MESSAGE");
 	}
 }

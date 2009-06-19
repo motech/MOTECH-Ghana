@@ -9,6 +9,8 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import org.motech.model.Gender;
+import org.motech.model.LogType;
+import org.motech.svc.Logger;
 import org.motech.svc.Registrar;
 
 @Stateless
@@ -17,6 +19,9 @@ public class RegistrarService implements RegistrarWS {
 
 	@EJB
 	Registrar registrationBean;
+
+	@EJB
+	Logger loggerBean;
 
 	@WebMethod
 	public void registerMother(
@@ -95,4 +100,10 @@ public class RegistrarService implements RegistrarWS {
 				postPMTCT, hemoglobinAt36Weeks);
 	}
 
+	@WebMethod
+	public void log(@WebParam(name = "type") LogType type,
+			@WebParam(name = "message") String message) {
+
+		loggerBean.log(type, message);
+	}
 }
