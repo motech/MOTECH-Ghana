@@ -105,6 +105,12 @@
 		</pluginManagement>
 	</build>
 
+	<scm>
+		<url>https://svn.rcg.usm.maine.edu/redmine/repositories/browse/motech/trunk</url>
+		<connection>scm:svn:https://svn.rcg.usm.maine.edu/svn/motech/trunk/</connection>
+		<developerConnection>scm:svn:https://svn.rcg.usm.maine.edu/svn/motech/trunk/</developerConnection>
+	</scm>
+
 	<properties>
 		<motech.webcontext>motech</motech.webcontext>
 		<motech.wscontext>motechws</motech.wscontext>
