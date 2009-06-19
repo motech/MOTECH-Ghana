@@ -101,6 +101,12 @@
 						<ejbVersion>3.0</ejbVersion>
 					</configuration>
 				</plugin>
+				<plugin>
+					<artifactId>maven-release-plugin</artifactId>
+					<configuration>
+						<preparationGoals>clean verify -DenableIT=true</preparationGoals>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
