@@ -7,10 +7,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "futureservicedelivery")
+@Table(name = "futureservicedeliveries")
+@NamedQueries( { @NamedQuery(name = "findAllFutureServiceDeliveries", query = "select f from FutureServiceDelivery f") })
 public class FutureServiceDelivery {
 
 	private Long id;

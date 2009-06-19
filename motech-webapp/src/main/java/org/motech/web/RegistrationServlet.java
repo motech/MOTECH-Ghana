@@ -52,6 +52,9 @@ public class RegistrationServlet extends HttpServlet {
 					serialId, name, community, location, dateOfBirth, nhis,
 					patientPhone, dueDate, parity, hemoglobin);
 
+			registrationService.recordMaternalVisit(nursePhone, new Date(),
+					serialId, 0, 0, 0, 1, 0, 0, 0, 0, 0);
+
 			req.setAttribute("allNurses", registrationService.getNurses());
 			req.setAttribute("allPatients", registrationService.getPatients());
 			req.setAttribute("allPregnancies", registrationService

@@ -1,5 +1,5 @@
 <%@ page import="org.motech.model.*, java.util.*, java.text.SimpleDateFormat" %>
-<h1>Register Pregnant Woman</h1>
+<h1>Register Pregnant Woman and Record Maternal Visit</h1>
 <form action="${pageContext.request.contextPath}/regTest" method="post">
 	<label for="nursePhone">Nurse Phone:</label>
 	<input name="nursePhone" />

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import org.motech.model.FutureServiceDelivery;
 import org.motech.model.Gender;
 import org.motech.model.MaternalVisit;
 import org.motech.model.Nurse;
@@ -44,4 +45,6 @@ public interface Registrar {
 	List<Pregnancy> getPregnancies();
 
 	List<MaternalVisit> getMaternalVisits();
+
+	List<FutureServiceDelivery> getFutureServiceDeliveries();
 }

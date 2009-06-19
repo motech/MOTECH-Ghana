@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.motech.model.Clinic;
+import org.motech.model.FutureServiceDelivery;
 import org.motech.model.Gender;
 import org.motech.model.LogType;
 import org.motech.model.MaternalData;
@@ -152,6 +153,20 @@ public class RegistrarBean implements Registrar {
 
 		loggerBean.log(LogType.success, "Maternal Visit Registered: "
 				+ serialId + "," + date);
+
+		// Date 30 seconds in future
+		Date nextServiceDate = new Date(System.currentTimeMillis() + (30 * 1000));
+
+		FutureServiceDelivery f = new FutureServiceDelivery();
+		f.setDate(nextServiceDate);
+		f.setNurse(n);
+		f.setPatient(a);
+		f.setService("Maternal Visit");
+
+		em.persist(f);
+
+		loggerBean.log(LogType.success, "Future Service Delivery Scheduled: "
+				+ serialId + "," + nextServiceDate);
 	}
 
 	public Nurse getNurse(String phoneNumber) {
@@ -183,5 +198,10 @@ public class RegistrarBean implements Registrar {
 	public List<MaternalVisit> getMaternalVisits() {
 		return (List<MaternalVisit>) em.createNamedQuery(
 				"findAllMaternalVisits").getResultList();
+	}
+
+	public List<FutureServiceDelivery> getFutureServiceDeliveries() {
+		return (List<FutureServiceDelivery>) em.createNamedQuery(
+				"findAllFutureServiceDeliveries").getResultList();
 	}
 }
