@@ -9,6 +9,28 @@
 	<name>MoTeCH</name>
 	<description>A prototype system for the motech project.</description>
 
+	<url>http://motech.rcg.usm.maine.edu/</url>
+
+	<developers>
+		<developer>
+			<id>batkinson</id>
+			<name>Brent Atkinson</name>
+			<timezone>-5</timezone>
+			<email>batkinson@usm.maine.edu</email>
+		</developer>
+	</developers>
+
+	<ciManagement>
+		<notifiers>
+			<notifier>
+				<type>mail</type>
+				<configuration>
+					<address>batkinson@usm.maine.edu</address>
+				</configuration>
+			</notifier>
+		</notifiers>
+	</ciManagement>
+
 	<modules>
 		<module>motech-persist</module>
 		<module>motech-core</module>
@@ -122,5 +144,31 @@
 		<motech.wscontext>motechws</motech.wscontext>
 		<jboss.home>${env.JBOSS_HOME}</jboss.home>
 	</properties>
+
+	<profiles>
+		<profile>
+			<id>ci</id>
+			<activation>
+				<file>
+					<exists>/home/build/ci-server</exists>
+				</file>
+			</activation>
+			<distributionManagement>
+				<repository>
+					<id>motech-dist</id>
+					<name>Motech Releases Repository</name>
+					<url>file:///home/build/repositories/internal</url>
+				</repository>
+				<snapshotRepository>
+					<id>motech-dist</id>
+					<name>Motech Snapshots Repository</name>
+					<url>file:///home/build/repositories/snapshots</url>
+				</snapshotRepository>
+			</distributionManagement>
+			<properties>
+				<jboss.home>/usr/jboss</jboss.home>
+			</properties>
+		</profile>
+	</profiles>
 
 </project>
