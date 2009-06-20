@@ -21,6 +21,8 @@
 	</developers>
 
 	<ciManagement>
+		<system>continuum</system>
+		<url>http://motech.rcg.usm.maine.edu/continuum/</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>
