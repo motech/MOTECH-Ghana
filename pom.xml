@@ -165,9 +165,6 @@
 					<url>file:///home/build/repositories/snapshots</url>
 				</snapshotRepository>
 			</distributionManagement>
-			<properties>
-				<jboss.home>/usr/jboss</jboss.home>
-			</properties>
 		</profile>
 	</profiles>
 
