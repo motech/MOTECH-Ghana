@@ -20,22 +20,22 @@
 
 	<repositories>
 		<repository>
-			<id>jboss-repo</id>
-			<name>JBoss Maven2 Repository</name>
-			<url>http://repository.jboss.com/maven2/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>ejb3unit-repo</id>
-			<name>EJB3Unit Maven2 Repository</name>
-			<url>http://ejb3unit.sourceforge.net/maven2</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
+			<id>motech-repo</id>
+			<name>Motech Maven Repository</name>
+			<url>http://motech.rcg.usm.maine.edu/archiva/repository/all</url>
 		</repository>
 	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>motech-repo</id>
+			<name>Motech Maven Repository</name>
+			<url>http://motech.rcg.usm.maine.edu/archiva/repository/all</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<dependencyManagement>
 		<dependencies>

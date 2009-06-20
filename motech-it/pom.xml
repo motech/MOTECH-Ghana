@@ -40,15 +40,6 @@
 					<name>enableIT</name>
 				</property>
 			</activation>
-			<pluginRepositories>
-				<pluginRepository>
-					<id>codehaus snapshot repository</id>
-					<url>http://snapshots.repository.codehaus.org/</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-				</pluginRepository>
-			</pluginRepositories>
 			<build>
 				<plugins>
 					<plugin>
