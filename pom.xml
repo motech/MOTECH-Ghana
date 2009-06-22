@@ -18,6 +18,11 @@
 			<timezone>-5</timezone>
 			<email>batkinson@usm.maine.edu</email>
 		</developer>
+		<developer>
+			<id>mblanch</id>
+			<name>Matt Blanchette</name>
+			<email>matt.blanchette@gmail.com</email>
+		</developer>
 	</developers>
 
 	<ciManagement>
@@ -30,8 +35,19 @@
 					<address>batkinson@usm.maine.edu</address>
 				</configuration>
 			</notifier>
+			<notifier>
+				<type>mail</type>
+				<configuration>
+					<address>matt.blanchette@gmail.com</address>
+				</configuration>
+			</notifier>
 		</notifiers>
 	</ciManagement>
+
+	<issueManagement>
+		<system>redmine</system>
+		<url>http://svn.rcg.usm.maine.edu/redmine/projects/motech/issues</url>
+	</issueManagement>
 
 	<modules>
 		<module>motech-persist</module>
