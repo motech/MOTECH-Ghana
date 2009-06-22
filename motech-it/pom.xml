@@ -65,11 +65,16 @@
 								<properties>
 									<cargo.jboss.configuration>default</cargo.jboss.configuration>
 									<cargo.rmi.port>1099</cargo.rmi.port>
+									<cargo.jvmargs>-XX:MaxPermSize=256m</cargo.jvmargs>
 								</properties>
 								<configfiles>
 									<configfile>
 										<file>${jboss.home}/server/default/conf/jboss-log4j.xml</file>
 										<tofile>conf/jboss-log4j.xml</tofile>
+									</configfile>
+									<configfile>
+										<file>${jboss.home}/server/default/data/hypersonic/localDB.script</file>
+										<tofile>data/hypersonic/localDB.script</tofile>
 									</configfile>
 								</configfiles>
 							</configuration>
