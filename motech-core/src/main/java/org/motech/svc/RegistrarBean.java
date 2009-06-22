@@ -3,8 +3,12 @@ package org.motech.svc;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ejb.Timeout;
+import javax.ejb.Timer;
+import javax.ejb.TimerService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -20,6 +24,9 @@ import org.motech.model.Pregnancy;
 
 @Stateless
 public class RegistrarBean implements Registrar {
+
+	@Resource
+	TimerService timerService;
 
 	@PersistenceContext
 	EntityManager em;
@@ -155,7 +162,9 @@ public class RegistrarBean implements Registrar {
 				+ serialId + "," + date);
 
 		// Date 30 seconds in future
-		Date nextServiceDate = new Date(System.currentTimeMillis() + (30 * 1000));
+		long nextServiceTime = 30 * 1000;
+		Date nextServiceDate = new Date(System.currentTimeMillis()
+				+ nextServiceTime);
 
 		FutureServiceDelivery f = new FutureServiceDelivery();
 		f.setDate(nextServiceDate);
@@ -167,6 +176,24 @@ public class RegistrarBean implements Registrar {
 
 		loggerBean.log(LogType.success, "Future Service Delivery Scheduled: "
 				+ serialId + "," + nextServiceDate);
+
+		// Schedule notifications to go out in 30 seconds
+		// EJB3Unit TimerService cannot handle Date, only long
+		timerService.createTimer(nextServiceTime, null);
+	}
+
+	@Timeout
+	public void sendNotifications(Timer timer) {
+		List<FutureServiceDelivery> futureServices = getFutureServiceDeliveries();
+		Date notificationDate = new Date();
+		for (FutureServiceDelivery service : futureServices) {
+			loggerBean.log(LogType.success,
+					"Future Service Delivery Notifications: "
+							+ service.getNurse().getPhoneNumber() + ","
+							+ service.getPatient().getPhoneNumber());
+			service.setNurseNotifiedDate(notificationDate);
+			service.setPatientNotifiedDate(notificationDate);
+		}
 	}
 
 	public Nurse getNurse(String phoneNumber) {
