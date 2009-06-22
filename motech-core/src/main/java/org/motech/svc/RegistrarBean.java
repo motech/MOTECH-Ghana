@@ -201,6 +201,7 @@ public class RegistrarBean implements Registrar {
 				.setParameter("phoneNumber", phoneNumber).getSingleResult();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Nurse> getNurses() {
 		return (List<Nurse>) em.createNamedQuery("findAllNurses")
 				.getResultList();
@@ -212,21 +213,25 @@ public class RegistrarBean implements Registrar {
 						clinicId).getSingleResult();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Patient> getPatients() {
 		return (List<Patient>) em.createNamedQuery("findAllPatients")
 				.getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Pregnancy> getPregnancies() {
 		return (List<Pregnancy>) em.createNamedQuery("findAllPregnancies")
 				.getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<MaternalVisit> getMaternalVisits() {
 		return (List<MaternalVisit>) em.createNamedQuery(
 				"findAllMaternalVisits").getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<FutureServiceDelivery> getFutureServiceDeliveries() {
 		return (List<FutureServiceDelivery>) em.createNamedQuery(
 				"findAllFutureServiceDeliveries").getResultList();
