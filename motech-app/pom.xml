@@ -11,7 +11,7 @@
 	<artifactId>motech-app</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>ear</packaging>
-	<name>MoTeCH - EAR</name>
+	<name>MoTeCH Server - EAR</name>
 	<description>Ear packaging for the motech project.</description>
 
 	<dependencies>

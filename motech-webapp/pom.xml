@@ -11,7 +11,7 @@
 	<artifactId>motech-webapp</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>MoTeCH - WAR</name>
+	<name>MoTeCH Server - WAR</name>
 	<description>The web application module for the motech project.</description>
 
 	<dependencies>

@@ -6,10 +6,10 @@
 	<artifactId>motech</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>MoTeCH</name>
+	<name>MoTeCH Server</name>
 	<description>A prototype system for the motech project.</description>
 
-	<url>http://motech.rcg.usm.maine.edu/</url>
+	<url>http://motech.rcg.usm.maine.edu/redmine/projects/show/motech</url>
 
 	<developers>
 		<developer>
@@ -46,7 +46,7 @@
 
 	<issueManagement>
 		<system>redmine</system>
-		<url>http://svn.rcg.usm.maine.edu/redmine/projects/motech/issues</url>
+		<url>http://motech.rcg.usm.maine.edu/redmine/projects/motech/issues</url>
 	</issueManagement>
 
 	<modules>
@@ -152,9 +152,9 @@
 	</build>
 
 	<scm>
-		<url>https://svn.rcg.usm.maine.edu/redmine/repositories/browse/motech/trunk</url>
-		<connection>scm:svn:https://svn.rcg.usm.maine.edu/svn/motech/trunk/</connection>
-		<developerConnection>scm:svn:https://svn.rcg.usm.maine.edu/svn/motech/trunk/</developerConnection>
+		<url>https://motech.rcg.usm.maine.edu/redmine/repositories/browse/motech/trunk</url>
+		<connection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/trunk/</connection>
+		<developerConnection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/trunk/</developerConnection>
 	</scm>
 
 	<properties>

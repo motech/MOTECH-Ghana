@@ -10,7 +10,7 @@
 	<groupId>org.motech</groupId>
 	<artifactId>motech-it</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<name>MoTeCH - Integration Tests</name>
+	<name>MoTeCH Server - Integration Tests</name>
 	<description>Integration tests for the motech project.</description>
 
 	<dependencies>
