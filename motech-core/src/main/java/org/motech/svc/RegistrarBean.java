@@ -184,7 +184,10 @@ public class RegistrarBean implements Registrar {
 
 	@Timeout
 	public void sendNotifications(Timer timer) {
-		List<FutureServiceDelivery> futureServices = getFutureServiceDeliveries();
+		Date startDate = new Date(System.currentTimeMillis() - (30 * 1000));
+		Date endDate = new Date(System.currentTimeMillis() + (30 * 1000));
+		List<FutureServiceDelivery> futureServices = getFutureServiceDeliveries(
+				startDate, endDate);
 		Date notificationDate = new Date();
 		for (FutureServiceDelivery service : futureServices) {
 			loggerBean.log(LogType.success,
@@ -232,8 +235,17 @@ public class RegistrarBean implements Registrar {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<FutureServiceDelivery> getFutureServiceDeliveries() {
+	public List<FutureServiceDelivery> getFutureServiceDeliveries(Date start,
+			Date end) {
 		return (List<FutureServiceDelivery>) em.createNamedQuery(
-				"findAllFutureServiceDeliveries").getResultList();
+				"findFutureServiceDeliveriesByDate").setParameter("startDate",
+				start).setParameter("endDate", end).getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<FutureServiceDelivery> getFutureServiceDeliveries(Patient p) {
+		return (List<FutureServiceDelivery>) em.createNamedQuery(
+				"findFutureServiceDeliveriesForPatient").setParameter(
+				"patientId", p.getId()).getResultList();
 	}
 }

@@ -13,7 +13,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "futureservicedeliveries")
-@NamedQueries( { @NamedQuery(name = "findAllFutureServiceDeliveries", query = "select f from FutureServiceDelivery f") })
+@NamedQueries( {
+		@NamedQuery(name = "findFutureServiceDeliveriesForPatient", query = "select f from FutureServiceDelivery f where f.patient.id = :patientId"),
+		@NamedQuery(name = "findFutureServiceDeliveriesByDate", query = "select f from FutureServiceDelivery f where f.date between :startDate and :endDate") })
 public class FutureServiceDelivery {
 
 	private Long id;

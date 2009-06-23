@@ -46,5 +46,7 @@ public interface Registrar {
 
 	List<MaternalVisit> getMaternalVisits();
 
-	List<FutureServiceDelivery> getFutureServiceDeliveries();
+	List<FutureServiceDelivery> getFutureServiceDeliveries(Date start, Date end);
+	
+	List<FutureServiceDelivery> getFutureServiceDeliveries(Patient p);
 }
