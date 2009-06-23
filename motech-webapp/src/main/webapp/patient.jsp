@@ -1,8 +1,8 @@
-<meta name="heading" content="Quick Test" />
-<h2>Register Pregnant Woman and Record Maternal Visit</h2>
+<meta name="heading" content="Patient Registration" />
+<h2>Register a Patient</h2>
 <form action="${pageContext.request.contextPath}/regTest" method="post">
 <table>
-	<input type="hidden" name="testAction" value="quick" />
+	<input type="hidden" name="testAction" value="patient" />
 	<tr>
 		<td><label for="nursePhone">Nurse Phone:</label></td>
 		<td><input name="nursePhone" value="5555555555" /></td>
@@ -32,20 +32,12 @@
 		<td><input name="patientPhone" value="5555555555" /></td>
 	</tr>
 	<tr>
-		<td><label for="dueDate">Due Date:</label></td>
-		<td><input name="dueDate" value="08/01/2009" /></td>
-	</tr>
-	<tr>
 		<td><label for="dateOfBirth">Date of Birth:</label></td>
 		<td><input name="dateOfBirth" value="08/01/1983" /></td>
 	</tr>
 	<tr>
-		<td><label for="parity">Parity:</label></td>
-		<td><input name="parity" value="4" /></td>
-	</tr>
-	<tr>
-		<td><label for="hemoglobin">Hemoglobin:</label></td>
-		<td><input name="hemoglobin" value="47" /></td>
+		<td><label for="gender">Gender:</label></td>
+		<td><input name="gender" value="male" /></td>
 	</tr>
 	<tr>
 		<td colspan="2"><input type="submit" /></td>

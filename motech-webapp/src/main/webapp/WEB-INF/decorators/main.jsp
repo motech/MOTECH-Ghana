@@ -6,7 +6,12 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>Motech Server - <decorator:title default="Untitled"/></title>
 <c:url value="/styles/style.css" var="styleUrl" />
-<c:url value="/" var="quickTestUrl"/>
+<c:url value="/" var="quickTestUrl" />
+<c:url value="/nurse.jsp" var="regNurseUrl" />
+<c:url value="/patient.jsp" var="regPatientUrl" />
+<c:url value="/pregnancy.jsp" var="regPregUrl" />
+<c:url value="/maternalVisit.jsp" var="regMatVisitUrl" />
+<c:url value="/regTest" var="viewDataUrl" />
 <link href="${styleUrl}" rel="stylesheet" type="text/css" media="screen" />
 <decorator:head />
 </head>
@@ -48,11 +53,11 @@
 					<h2>Sections</h2>
 					<ul>
 						<li><a href="${quickTestUrl}">Quick Test</a> <span>Test many things at once</span></li>
-						<%-- li><a href="#">Register Nurse</a> <span>Register a new Nurse</span></li>
-						<li><a href="#">Register Patient</a> <span>Register a new Patient</span> </li>
-						<li><a href="#">Register Pregnancy</a> <span>Register a new Pregnancy</span> </li>
-						<li><a href="#">Record Maternal Visit</a> <span>Record a Maternal Visit</span></li>
-						<li><a href="#">View Data</a> <span>View a summary of the recorded data</span></li --%>
+						<li><a href="${regNurseUrl}">Register Nurse</a> <span>Register a new Nurse</span></li>
+						<li><a href="${regPatientUrl}">Register Patient</a> <span>Register a new Patient</span> </li>
+						<li><a href="${regPregUrl}">Register Pregnancy</a> <span>Register a new Pregnancy</span> </li>
+						<li><a href="${regMatVisitUrl}">Record Maternal Visit</a> <span>Record a Maternal Visit</span></li>
+						<li><a href="${viewDataUrl}">View Data</a> <span>View a summary of the recorded data</span></li>
 					</ul>
 				</li>
 			</ul>
