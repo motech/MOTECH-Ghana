@@ -62,7 +62,7 @@ public class RegistrationServlet extends HttpServlet {
 			req.setAttribute("allMaternalVisits", registrationService
 					.getMaternalVisits());
 
-			req.getRequestDispatcher("/index.jsp").forward(req, resp);
+			req.getRequestDispatcher("/viewdata.jsp").forward(req, resp);
 		} catch (Exception e) {
 			log.error("Failed to register", e);
 			throw new ServletException("Failed to register", e);
