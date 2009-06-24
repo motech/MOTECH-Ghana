@@ -30,3 +30,19 @@
 	<tr><td>${matVisit.id}</td><td><fmt:formatDate value="${matVisit.date}"/></td><td>${matVisit.maternalData.patient.id}</td></tr>
 </c:forEach>
 </table>
+
+<h3>Future Service Deliveries</h3>
+<table><tr><th>Id</th><th>Date</th><th>Patient Id</th><th>Nurse Id</th><th>Service</th><th>Patient Notified</th><th>Nurse Notified</th></tr>
+<c:forEach items="${allFutureServiceDeliveries}" var="service">
+	<tr><td>${service.id}</td><td><fmt:formatDate type="both" value="${service.date}"/></td><td>${service.patient.id}</td><td>${service.nurse.id}</td>
+	<td>${service.service}</td><td><fmt:formatDate type="both" value="${service.patientNotifiedDate}"/></td>
+	<td><fmt:formatDate type="both" value="${service.nurseNotifiedDate}"/></td></tr>
+</c:forEach>
+</table>
+
+<h3>Logs</h3>
+<table><tr><th>Id</th><th>Type</th><th>Date</th><th>Message</th></tr>
+<c:forEach items="${allLogs}" var="log">
+	<tr><td>${log.id}</td><td>${log.type}</td><td><fmt:formatDate type="both" value="${log.date}"/></td><td>${log.message}</td></tr>
+</c:forEach>
+</table>

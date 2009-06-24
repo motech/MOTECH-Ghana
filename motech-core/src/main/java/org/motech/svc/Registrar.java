@@ -7,6 +7,7 @@ import javax.ejb.Local;
 
 import org.motech.model.FutureServiceDelivery;
 import org.motech.model.Gender;
+import org.motech.model.Log;
 import org.motech.model.MaternalVisit;
 import org.motech.model.Nurse;
 import org.motech.model.Patient;
@@ -47,6 +48,10 @@ public interface Registrar {
 	List<MaternalVisit> getMaternalVisits();
 
 	List<FutureServiceDelivery> getFutureServiceDeliveries(Date start, Date end);
-	
+
 	List<FutureServiceDelivery> getFutureServiceDeliveries(Patient p);
+
+	List<FutureServiceDelivery> getFutureServiceDeliveries();
+
+	List<Log> getLogs();
 }

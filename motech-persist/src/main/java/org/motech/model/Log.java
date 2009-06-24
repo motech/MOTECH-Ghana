@@ -11,7 +11,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "logs")
-@NamedQueries( { @NamedQuery(name = "findAllLogsOfType", query = "select l from Log l where l.type = :logType") })
+@NamedQueries( {
+		@NamedQuery(name = "findAllLogsOfType", query = "select l from Log l where l.type = :logType"),
+		@NamedQuery(name = "findAllLogs", query = "select l from Log l") })
 public class Log {
 
 	private Long id;

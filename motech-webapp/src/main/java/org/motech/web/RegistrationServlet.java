@@ -144,6 +144,9 @@ public class RegistrationServlet extends HttpServlet {
 					.getPregnancies());
 			req.setAttribute("allMaternalVisits", registrationService
 					.getMaternalVisits());
+			req.setAttribute("allFutureServiceDeliveries", registrationService
+					.getFutureServiceDeliveries());
+			req.setAttribute("allLogs", registrationService.getLogs());
 
 			req.getRequestDispatcher("/viewdata.jsp").forward(req, resp);
 		} catch (Exception e) {

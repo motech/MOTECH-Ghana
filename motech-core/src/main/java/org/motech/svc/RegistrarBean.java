@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import org.motech.model.Clinic;
 import org.motech.model.FutureServiceDelivery;
 import org.motech.model.Gender;
+import org.motech.model.Log;
 import org.motech.model.LogType;
 import org.motech.model.MaternalData;
 import org.motech.model.MaternalVisit;
@@ -247,5 +248,16 @@ public class RegistrarBean implements Registrar {
 		return (List<FutureServiceDelivery>) em.createNamedQuery(
 				"findFutureServiceDeliveriesForPatient").setParameter(
 				"patientId", p.getId()).getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<FutureServiceDelivery> getFutureServiceDeliveries() {
+		return (List<FutureServiceDelivery>) em.createNamedQuery(
+				"findAllFutureServiceDeliveries").getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Log> getLogs() {
+		return (List<Log>) em.createNamedQuery("findAllLogs").getResultList();
 	}
 }
