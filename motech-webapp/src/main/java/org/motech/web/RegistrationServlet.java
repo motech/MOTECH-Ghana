@@ -135,20 +135,26 @@ public class RegistrationServlet extends HttpServlet {
 				registrationService.recordMaternalVisit(nursePhoneNumber,
 						visitDate, serialId, tetanus, ipt, itn, visitNumber,
 						onARV, prePMTCT, testPMTCT, postPMTCT, hemoglobin);
+			} else {
+				// If no action is set, forward to dataview
+				req.setAttribute("allNurses", registrationService.getNurses());
+				req.setAttribute("allPatients", registrationService
+						.getPatients());
+				req.setAttribute("allPregnancies", registrationService
+						.getPregnancies());
+				req.setAttribute("allMaternalVisits", registrationService
+						.getMaternalVisits());
+				req.setAttribute("allFutureServiceDeliveries",
+						registrationService.getFutureServiceDeliveries());
+				req.setAttribute("allLogs", registrationService.getLogs());
+
+				req.getRequestDispatcher("/viewdata.jsp").forward(req, resp);
+				
+				return;
 			}
 
-			// Dispatch: redirect to view data
-			req.setAttribute("allNurses", registrationService.getNurses());
-			req.setAttribute("allPatients", registrationService.getPatients());
-			req.setAttribute("allPregnancies", registrationService
-					.getPregnancies());
-			req.setAttribute("allMaternalVisits", registrationService
-					.getMaternalVisits());
-			req.setAttribute("allFutureServiceDeliveries", registrationService
-					.getFutureServiceDeliveries());
-			req.setAttribute("allLogs", registrationService.getLogs());
-
-			req.getRequestDispatcher("/viewdata.jsp").forward(req, resp);
+			// Dispatch: redirect to self without params - sends to view
+			resp.sendRedirect(req.getContextPath() + req.getServletPath());
 		} catch (Exception e) {
 			String msg = "Failed action: " + action;
 			log.error(msg, e);
