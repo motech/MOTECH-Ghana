@@ -1,5 +1,15 @@
 <meta name="heading" content="Pregnancy Registration" />
 <h2>Register a Pregnancy</h2>
+<div class="instructions">
+	This allows you to create a new pregnancy record. A pregnacy record is, in
+	essence, a case record. It is initiated when a nurse becomes aware of a new
+	pregnancy. It, along with associated maternal visits, records information 
+	about communication and service delivery during a pregnancy episode.
+	<em>
+		NOTE: A nurse must already exist with the specified phone, and
+		a patient must exist with the specified serial id.
+	</em>
+</div>
 <form action="${pageContext.request.contextPath}/regTest" method="post">
 <table>
 	<input type="hidden" name="testAction" value="pregnancy" />

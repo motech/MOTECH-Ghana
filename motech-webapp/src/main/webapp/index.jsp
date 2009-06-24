@@ -1,5 +1,21 @@
 <meta name="heading" content="Quick Test" />
 <h2>Register Pregnant Woman and Record Maternal Visit</h2>
+<div class="instructions">
+	The 'quick test' is useful for testing a number of actions all at once.
+	It creates:
+	<ul>
+		<li>A new clinic, nurse, patient, pregnancy, maternal visit, 
+			future service delivery record and relationship associations 
+			relating these items.
+		</li>
+		<li>Event log messages for each major action</li>
+		<li>
+			A notification event for 30 seconds after the maternal visit
+			(refresh the data page to see the notification status update)
+		</li>
+	</ul>
+	<em>NOTE: A nurse phone needs to be unique.</em>
+</div>
 <form action="${pageContext.request.contextPath}/regTest" method="post">
 <table>
 	<input type="hidden" name="testAction" value="quick" />

@@ -1,5 +1,16 @@
 <meta name="heading" content="Patient Registration" />
 <h2>Register a Patient</h2>
+<div class="instructions">
+	This test allows you to create a new patient record. A patient record 
+	contains basic demographic information about a patient and is intended as
+	a common link to a nurse, patient episodes (such as pregnancies), visit 
+	records, notification events and more.
+	<em>
+		NOTE: A nurse must already exist with the specified
+		phone, and the patient serialid must be unique to the
+		nurse's clinic.
+	</em>
+</div>
 <form action="${pageContext.request.contextPath}/regTest" method="post">
 <table>
 	<input type="hidden" name="testAction" value="patient" />

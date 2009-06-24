@@ -1,6 +1,16 @@
 <meta name="heading" content="Record Maternal Visit" />
 <h2>Record a Maternal Visit Event</h2>
 <form action="${pageContext.request.contextPath}/regTest" method="post">
+<div class="instructions">
+	This test allows you to create a maternal visit record. A
+	maternal visit contains information about observed conditions,
+	administered diagnostics and delivered services such as 
+	immunizations during a single visit. 
+	<em>
+		NOTE: A nurse with the specified phone and a patient with 
+		the specified serial id must already exist.
+	</em>
+</div>
 <table>
 	<input type="hidden" name="testAction" value="maternalvisit" />
 	<tr>

@@ -343,6 +343,23 @@ a:hover {
 	color: #969696;
 }
 
+.instructions {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	color: black;
+}
+
+.instructions em {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	font-weight: bold;
+	display: block;
+}
+
+.instructions li {
+	line-height: normal;
+}
+
 .errorMsg {
 	color: red;
 	font-weight: bold;
