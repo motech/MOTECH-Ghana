@@ -342,3 +342,9 @@ a:hover {
 #footer a {
 	color: #969696;
 }
+
+.errorMsg {
+	color: red;
+	font-weight: bold;
+	margin: .5em;
+}

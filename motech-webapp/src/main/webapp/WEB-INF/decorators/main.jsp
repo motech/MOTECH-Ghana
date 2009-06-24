@@ -39,6 +39,7 @@
 			<div class="post-bgbtm">
 				<h2 class="title"><a href="#"><decorator:getProperty property="meta.heading"/></a></h2>
 				<div class="entry">
+					<c:if test="${not empty errorMsg}"><div class="errorMsg">${errorMsg}</div></c:if>
 					<decorator:body />
 				</div>
 			</div>

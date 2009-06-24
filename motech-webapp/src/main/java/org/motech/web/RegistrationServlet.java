@@ -3,6 +3,8 @@ package org.motech.web;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -16,6 +18,16 @@ import org.motech.model.Gender;
 import org.motech.svc.Registrar;
 
 public class RegistrationServlet extends HttpServlet {
+
+	static Map<String, String> errorUrls = new HashMap<String, String>();
+
+	static {
+		errorUrls.put("quick", "/");
+		errorUrls.put("nurse", "/nurse.jsp");
+		errorUrls.put("patient", "/patient.jsp");
+		errorUrls.put("pregnancy", "/pregnancy.jsp");
+		errorUrls.put("maternalvisit", "/maternalVisit.jsp");
+	}
 
 	private static final long serialVersionUID = 4561954777101725182L;
 
@@ -37,9 +49,11 @@ public class RegistrationServlet extends HttpServlet {
 	}
 
 	private void processRequest(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException {
+			throws ServletException, IOException {
+
 		// Get the value that determines the action to take
 		String action = req.getParameter("testAction");
+		String errorUrl = errorUrls.get(action);
 
 		try {
 
@@ -149,16 +163,27 @@ public class RegistrationServlet extends HttpServlet {
 				req.setAttribute("allLogs", registrationService.getLogs());
 
 				req.getRequestDispatcher("/viewdata.jsp").forward(req, resp);
-				
+
 				return;
 			}
 
 			// Dispatch: redirect to self without params - sends to view
 			resp.sendRedirect(req.getContextPath() + req.getServletPath());
+
 		} catch (Exception e) {
-			String msg = "Failed action: " + action;
-			log.error(msg, e);
-			throw new ServletException(msg, e);
+
+			// Find the root cause
+			Throwable t = e;
+			while (t.getCause() != null)
+				t = t.getCause();
+
+			// Log the message
+			String logMsg = "Failed action: " + action + " - " + t.getMessage();
+			log.error(logMsg, e);
+
+			// Save error message and forward to originating page
+			req.setAttribute("errorMsg", t.getMessage());
+			req.getRequestDispatcher(errorUrl).forward(req, resp);
 		}
 	}
 }
