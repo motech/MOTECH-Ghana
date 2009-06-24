@@ -18,9 +18,11 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "patients")
+@Table(name = "patients", uniqueConstraints = { @UniqueConstraint(columnNames = {
+		"serial", "clinic_id" }) })
 @NamedQueries( {
 		@NamedQuery(name = "findPatientByClinicSerial", query = "select p from Patient p where p.serial = :serial and p.clinic.id = :clinicId"),
 		@NamedQuery(name = "findAllPatients", query = "select p from Patient p") })
