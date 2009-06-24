@@ -182,7 +182,8 @@ public class RegistrationServlet extends HttpServlet {
 			log.error(logMsg, e);
 
 			// Save error message and forward to originating page
-			req.setAttribute("errorMsg", t.getMessage());
+			req.setAttribute("errorMsg", "Error: " + t.getClass().getName()
+					+ " - " + t.getMessage());
 			req.getRequestDispatcher(errorUrl).forward(req, resp);
 		}
 	}
