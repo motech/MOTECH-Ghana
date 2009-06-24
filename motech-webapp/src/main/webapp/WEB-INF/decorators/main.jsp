@@ -57,7 +57,7 @@
 						<li><a href="${regPatientUrl}">Register Patient</a> <span>Register a new Patient</span> </li>
 						<li><a href="${regPregUrl}">Register Pregnancy</a> <span>Register a new Pregnancy</span> </li>
 						<li><a href="${regMatVisitUrl}">Record Maternal Visit</a> <span>Record a Maternal Visit</span></li>
-						<li><a href="${viewDataUrl}">View Data</a> <span>View a summary of the recorded data</span></li>
+						<li><a href="${viewDataUrl}">View Data</a> <span>View a summary of the data</span></li>
 					</ul>
 				</li>
 			</ul>
