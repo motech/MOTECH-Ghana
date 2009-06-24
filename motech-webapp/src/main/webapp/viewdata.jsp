@@ -1,6 +1,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<meta name="heading" content="View Data" />
+<head>
+	<meta name="heading" content="View Data" />
+	<style>
+		table#logresults td {
+			white-space: nowrap;
+		}
+	</style>
+</head>
 <h2>View Database Contents</h2>
 
 <h3>Nurses</h3>
@@ -41,7 +48,7 @@
 </table>
 
 <h3>Logs</h3>
-<table><tr><th>Id</th><th>Type</th><th>Date</th><th>Message</th></tr>
+<table id="logresults"><tr><th>Id</th><th>Type</th><th>Date</th><th>Message</th></tr>
 <c:forEach items="${allLogs}" var="log">
 	<tr><td>${log.id}</td><td>${log.type}</td><td><fmt:formatDate type="both" value="${log.date}"/></td><td>${log.message}</td></tr>
 </c:forEach>
