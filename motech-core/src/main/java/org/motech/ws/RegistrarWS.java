@@ -15,6 +15,8 @@ public interface RegistrarWS {
 			Date dateOfBirth, Integer nhis, String phoneNumber, Date dueDate,
 			Integer parity, Integer hemoglobin);
 
+	public void registerClinic(String name);
+
 	public void registerNurse(String name, String phoneNumber, String clinic);
 
 	public void registerPatient(String nursePhoneNumber, String serialId,

@@ -14,21 +14,31 @@
 			(refresh the data page to see the notification status update)
 		</li>
 	</ul>
-	<em>NOTE: A nurse phone needs to be unique.</em>
+	<em>
+		NOTE: A nurse phone and clinic name both need to be unique.
+	</em>
 </div>
 <form action="${pageContext.request.contextPath}/regTest" method="post">
 <table>
 	<input type="hidden" name="testAction" value="quick" />
 	<tr>
+		<td><label for="nurseName">Nurse Name:</label></td>
+		<td><input name="nurseName" value="Nurse Name" /></td>
+	</tr>
+	<tr>
 		<td><label for="nursePhone">Nurse Phone:</label></td>
 		<td><input name="nursePhone" value="5555555555" /></td>
+	</tr>
+	<tr>
+		<td><label for="clinicName">Clinic Name:</label></td>
+		<td><input name="clinicName" value="A Clinic" /></td>
 	</tr>
 	<tr>
 		<td><label for="serialId">Serial Id:</label></td>
 		<td><input name="serialId" value="FGH4894894" /></td>
 	</tr>
 	<tr>
-		<td><label for="name">Name:</label></td>
+		<td><label for="name">Patient Name:</label></td>
 		<td><input name="name" value="Patient Name" /></td>
 	</tr>
 	<tr>

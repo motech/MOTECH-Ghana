@@ -32,6 +32,7 @@ public class RegistrarBeanTest extends BaseSessionBeanFixture<RegistrarBean> {
 		em.getTransaction().begin();
 		try {
 			Registrar regBean = getBeanToTest();
+			regBean.registerClinic("C-Clinic");
 			regBean.registerNurse("Samuel", "8888888888", "C-Clinic");
 			regBean.registerMother("8888888888", new Date(), "g48748",
 					"Brandy", "Community", "Location", new Date(), 23,
@@ -49,6 +50,7 @@ public class RegistrarBeanTest extends BaseSessionBeanFixture<RegistrarBean> {
 		em.getTransaction().begin();
 		try {
 			Registrar regBean = getBeanToTest();
+			regBean.registerClinic("B-Clinic");
 			regBean.registerNurse("Karen", "7777777777", "B-Clinic");
 			assertEquals(1, em.createQuery(
 					"select n from Nurse n where name = :name").setParameter(
@@ -63,6 +65,7 @@ public class RegistrarBeanTest extends BaseSessionBeanFixture<RegistrarBean> {
 		em.getTransaction().begin();
 		try {
 			Registrar regBean = getBeanToTest();
+			regBean.registerClinic("P-Clinic");
 			regBean.registerNurse("Cindy", "3783783738", "P-Clinic");
 			regBean.registerPatient("3783783738", "4ui4hu4", "Charles",
 					"Somewhere", "Somewhere smaller", new Date(),
@@ -80,6 +83,7 @@ public class RegistrarBeanTest extends BaseSessionBeanFixture<RegistrarBean> {
 		em.getTransaction().begin();
 		try {
 			Registrar regBean = getBeanToTest();
+			regBean.registerClinic("B-Clinic");
 			regBean.registerNurse("Karen", "7777777777", "B-Clinic");
 			regBean.registerPatient("7777777777", "ghdg438", "Patient",
 					"Community", "Location", new Date(), Gender.female, 21,
@@ -103,6 +107,7 @@ public class RegistrarBeanTest extends BaseSessionBeanFixture<RegistrarBean> {
 		em.getTransaction().begin();
 		try {
 			Registrar regBean = getBeanToTest();
+			regBean.registerClinic("F-Clinic");
 			regBean.registerNurse("Daniel", "3478478784", "F-Clinic");
 			regBean.registerPatient("3478478784", "d99d89d", "AMother",
 					"ACommunity", "ALocation", new Date(), Gender.female, 3,

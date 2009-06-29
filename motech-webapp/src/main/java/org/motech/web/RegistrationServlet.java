@@ -23,6 +23,7 @@ public class RegistrationServlet extends HttpServlet {
 
 	static {
 		errorUrls.put("quick", "/");
+		errorUrls.put("clinic", "/clinic.jsp");
 		errorUrls.put("nurse", "/nurse.jsp");
 		errorUrls.put("patient", "/patient.jsp");
 		errorUrls.put("pregnancy", "/pregnancy.jsp");
@@ -58,7 +59,9 @@ public class RegistrationServlet extends HttpServlet {
 		try {
 
 			// Get parameters
+			String nurseName = req.getParameter("nurseName");
 			String nursePhoneNumber = req.getParameter("nursePhone");
+			String clinicName = req.getParameter("clinicName");
 			String serialId = req.getParameter("serialId");
 			String clinic = req.getParameter("clinic");
 			String name = req.getParameter("name");
@@ -125,8 +128,10 @@ public class RegistrationServlet extends HttpServlet {
 
 			// Dispatch: invoke action
 			if ("quick".equals(action)) {
-				registrationService.registerNurse("Nurse Name",
-						nursePhoneNumber, "A Clinic");
+				registrationService.registerClinic(clinicName);
+
+				registrationService.registerNurse(nurseName, nursePhoneNumber,
+						clinicName);
 
 				registrationService.registerMother(nursePhoneNumber,
 						new Date(), serialId, name, community, location,
@@ -135,6 +140,8 @@ public class RegistrationServlet extends HttpServlet {
 
 				registrationService.recordMaternalVisit(nursePhoneNumber,
 						new Date(), serialId, 0, 0, 0, 1, 0, 0, 0, 0, 0);
+			} else if ("clinic".equals(action)) {
+				registrationService.registerClinic(name);
 			} else if ("nurse".equals(action)) {
 				registrationService.registerNurse(name, nursePhoneNumber,
 						clinic);
@@ -151,6 +158,9 @@ public class RegistrationServlet extends HttpServlet {
 						onARV, prePMTCT, testPMTCT, postPMTCT, hemoglobin);
 			} else {
 				// If no action is set, forward to dataview
+				req
+						.setAttribute("allClinics", registrationService
+								.getClinics());
 				req.setAttribute("allNurses", registrationService.getNurses());
 				req.setAttribute("allPatients", registrationService
 						.getPatients());

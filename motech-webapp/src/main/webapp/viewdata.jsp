@@ -34,12 +34,26 @@
 <c:set var="noResultMsg" value="No results found." />
 
 <div class="results">
+	<h3>Clinics</h3>
+	<c:choose>
+		<c:when test="${not empty allClinics}">
+		<table><tr><th>Id</th><th>Name</th></tr>
+		<c:forEach items="${allClinics}" var="clinic">
+			<tr><td>${clinic.id}</td><td>${clinic.name}</td></tr>
+		</c:forEach>
+		</table>
+		</c:when>
+		<c:otherwise>${noResultMsg}</c:otherwise>
+	</c:choose>
+</div>
+
+<div class="results">
 	<h3>Nurses</h3>
 	<c:choose>
 		<c:when test="${not empty allNurses}">
-		<table><tr><th>Id</th><th>Name</th><th>Phone</th></tr>
+		<table><tr><th>Id</th><th>Name</th><th>Phone</th><th>Clinic Id</th></tr>
 		<c:forEach items="${allNurses}" var="nurse">
-			<tr><td>${nurse.id}</td><td>${nurse.name}</td><td>${nurse.phoneNumber}</td></tr>
+			<tr><td>${nurse.id}</td><td>${nurse.name}</td><td>${nurse.phoneNumber}</td><td>${nurse.clinic.id}</td></tr>
 		</c:forEach>
 		</table>
 		</c:when>
@@ -51,9 +65,9 @@
 	<h3>Patients</h3>
 	<c:choose>
 		<c:when test="${not empty allPatients}">
-		<table class="results"><tr><th>Id</th><th>Name</th><th>Serial</th></tr>
+		<table class="results"><tr><th>Id</th><th>Name</th><th>Serial</th><th>Clinic Id</th></tr>
 		<c:forEach items="${allPatients}" var="patient">
-			<tr><td>${patient.id}</td><td>${patient.name}</td><td>${patient.serial}</td></tr>
+			<tr><td>${patient.id}</td><td>${patient.name}</td><td>${patient.serial}</td><td>${patient.clinic.id}</td></tr>
 		</c:forEach>
 		</table>
 		</c:when>

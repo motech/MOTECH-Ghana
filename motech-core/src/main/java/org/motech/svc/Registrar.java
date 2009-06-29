@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import org.motech.model.Clinic;
 import org.motech.model.FutureServiceDelivery;
 import org.motech.model.Gender;
 import org.motech.model.Log;
@@ -21,6 +22,8 @@ public interface Registrar {
 			Integer nhis, String phoneNumber, Date dueDate, Integer parity,
 			Integer hemoglobin);
 
+	void registerClinic(String name);
+
 	void registerNurse(String name, String phoneNumber, String clinic);
 
 	void registerPatient(String nursePhoneNumber, String serialId, String name,
@@ -34,6 +37,10 @@ public interface Registrar {
 			String serialId, Integer tetanus, Integer ipt, Integer itn,
 			Integer visitNumber, Integer onARV, Integer prePMTCT,
 			Integer testPMTCT, Integer postPMTCT, Integer hemoglobinAt36Weeks);
+
+	Clinic getClinic(String name);
+
+	List<Clinic> getClinics();
 
 	Nurse getNurse(String phoneNumber);
 

@@ -1,10 +1,12 @@
 <meta name="heading" content="Nurse Registration" />
 <h2>Register a Nurse</h2>
 <div class="instructions">
-	This test allows you to create a new nurse record. A nurse is usually
-	associated with an existing clinic. However, to eliminate existing clinics 
-	as a dependency, we currently create a new clinic for each nurse.
-	<em>NOTE: A nurse phone needs to be unique.</em>
+	This test allows you to create a new nurse record. A nurse is
+	associated with an existing clinic.
+	<em>
+		NOTE: A clinic must already exist with the specified name 
+		and a nurse phone needs to be unique.
+	</em>
 </div>
 <form action="${pageContext.request.contextPath}/regTest" method="post">
 <table>

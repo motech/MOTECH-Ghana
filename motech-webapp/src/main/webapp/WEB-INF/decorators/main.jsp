@@ -7,6 +7,7 @@
 <title>Motech Server - <decorator:title default="Untitled"/></title>
 <c:url value="/styles/style.css" var="styleUrl" />
 <c:url value="/" var="quickTestUrl" />
+<c:url value="/clinic.jsp" var="regClinicUrl" />
 <c:url value="/nurse.jsp" var="regNurseUrl" />
 <c:url value="/patient.jsp" var="regPatientUrl" />
 <c:url value="/pregnancy.jsp" var="regPregUrl" />
@@ -54,6 +55,7 @@
 					<h2>Sections</h2>
 					<ul>
 						<li><a href="${quickTestUrl}">Quick Test</a> <span>Test many things at once</span></li>
+						<li><a href="${regClinicUrl}">Register Clinic</a> <span>Register a new Clinic</span></li>
 						<li><a href="${regNurseUrl}">Register Nurse</a> <span>Register a new Nurse</span></li>
 						<li><a href="${regPatientUrl}">Register Patient</a> <span>Register a new Patient</span> </li>
 						<li><a href="${regPregUrl}">Register Pregnancy</a> <span>Register a new Pregnancy</span> </li>

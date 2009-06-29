@@ -44,6 +44,11 @@ public class RegistrarService implements RegistrarWS {
 	}
 
 	@WebMethod
+	public void registerClinic(@WebParam(name = "name") String name) {
+		registrationBean.registerClinic(name);
+	}
+
+	@WebMethod
 	public void registerNurse(@WebParam(name = "name") String name,
 			@WebParam(name = "phoneNumber") String phoneNumber,
 			@WebParam(name = "clinic") String clinic) {

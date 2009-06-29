@@ -40,6 +40,10 @@ public class RegistrarITCase extends TestCase {
 		time = null;
 	}
 
+	public void testRegClinic() throws Exception {
+		reg.registerClinic("A-Clinic");
+	}
+
 	public void testRegNurse() throws Exception {
 		reg.registerNurse("Gaylord", "37694676488", "A-Clinic");
 	}

@@ -50,10 +50,16 @@ public class RegistrarBean implements Registrar {
 				hemoglobin);
 	}
 
-	public void registerNurse(String name, String phoneNumber, String clinic) {
+	public void registerClinic(String name) {
 		Clinic c = new Clinic();
-		c.setName(clinic);
+		c.setName(name);
 		em.persist(c);
+
+		loggerBean.log(LogType.success, "Clinic Registered: " + name);
+	}
+
+	public void registerNurse(String name, String phoneNumber, String clinic) {
+		Clinic c = getClinic(clinic);
 
 		Nurse n = new Nurse();
 		n.setName(name);
@@ -198,6 +204,17 @@ public class RegistrarBean implements Registrar {
 			service.setNurseNotifiedDate(notificationDate);
 			service.setPatientNotifiedDate(notificationDate);
 		}
+	}
+
+	public Clinic getClinic(String name) {
+		return (Clinic) em.createNamedQuery("findClinicByName").setParameter(
+				"name", name).getSingleResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Clinic> getClinics() {
+		return (List<Clinic>) em.createNamedQuery("findAllClinics")
+				.getResultList();
 	}
 
 	public Nurse getNurse(String phoneNumber) {

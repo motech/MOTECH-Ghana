@@ -1,12 +1,18 @@
 package org.motech.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "clinics")
+@NamedQueries( {
+		@NamedQuery(name = "findClinicByName", query = "select c from Clinic c where c.name = :name"),
+		@NamedQuery(name = "findAllClinics", query = "select c from Clinic c") })
 public class Clinic {
 
 	private Long id;
@@ -22,6 +28,7 @@ public class Clinic {
 		this.id = id;
 	}
 
+	@Column(unique = true)
 	public String getName() {
 		return name;
 	}
