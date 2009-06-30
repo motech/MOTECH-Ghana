@@ -3,6 +3,7 @@ package org.motech.model;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,12 +18,20 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.jboss.seam.annotations.Name;
+
 @Entity
+@Name("nurse")
 @Table(name = "nurses")
 @NamedQueries( {
 		@NamedQuery(name = "findNurseByPhoneNumber", query = "select n from Nurse n where n.phoneNumber = :phoneNumber"),
 		@NamedQuery(name = "findAllNurses", query = "select n from Nurse n") })
-public class Nurse {
+public class Nurse implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2748929791134048923L;
 
 	private Long id;
 	private String name;

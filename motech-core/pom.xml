@@ -37,6 +37,22 @@
 			<groupId>com.bm</groupId>
 			<artifactId>ejb3unit</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>3.1.0.GA</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>1.2_02</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -46,6 +62,8 @@
 				<filtering>true</filtering>
 				<includes>
 					<include>META-INF/jboss.xml</include>
+					<include>META-INF/ejb-jar.xml</include>
+					<include>seam.properties</include>
 				</includes>
 			</resource>
 		</resources>

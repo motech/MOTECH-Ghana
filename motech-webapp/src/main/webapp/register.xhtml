@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<head>
+		<title>Register New Clinic, Nurse, and Patient</title>
+	</head>
+	
+	<body>
+		<f:view>
+			<h:form>
+				<s:validateAll>
+					<h:panelGrid columns="2">
+		            	Nurse Name: <h:inputText value="#{nurse.name}" required="true" />
+						Nurse Phone: <h:inputText value="#{nurse.phoneNumber}" required="true" />
+						Clinic Name: <h:inputText value="#{clinic.name}" required="true" />
+						Patient Name: <h:inputText value="#{patient.name}" required="true" />
+						Patient Serial: <h:inputText value="#{patient.serial}" required="true" />
+						Patient Location: <h:inputText value="#{patient.location}" required="true" />
+						Patient Community: <h:inputText value="#{patient.community}" required="true" />
+						Patient Date of Birth: <h:inputText value="#{patient.dateOfBirth}" required="true" >
+							<f:convertDateTime type="DATE" pattern="MM/dd/yyyy" />
+						</h:inputText>
+						Patient NHIS: <h:inputText value="#{patient.nhis}" required="true" />
+						Patient Phone: <h:inputText value="#{patient.phoneNumber}" required="true" />
+					</h:panelGrid>
+				</s:validateAll>
+				<h:messages />
+				<h:commandButton value="Register" action="#{register.register}" />
+			</h:form>
+		</f:view>
+	</body>
+
+</html>

@@ -64,6 +64,15 @@
 			<name>Motech Maven Repository</name>
 			<url>http://motech.rcg.usm.maine.edu/archiva/repository/all</url>
 		</repository>
+		<repository>
+			<id>repository.jboss.org</id>
+			<name>JBoss Repository</name>
+			<layout>default</layout>
+			<url>http://repository.jboss.org/maven2/</url>
+			<snapshots>
+					<enabled>false</enabled>
+			</snapshots>
+		</repository>
 	</repositories>
 
 	<pluginRepositories>
@@ -73,6 +82,15 @@
 			<url>http://motech.rcg.usm.maine.edu/archiva/repository/all</url>
 			<snapshots>
 				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>repository.maven.org</id>
+			<name>Maven Repository</name>
+			<layout>default</layout>
+			<url>http://repo1.maven.org/maven2/</url>
+			<snapshots>
+					<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
@@ -120,6 +138,17 @@
 				<artifactId>ejb3unit</artifactId>
 				<version>2.0.0-RC-1</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.seam</groupId>
+				<artifactId>jboss-seam</artifactId>
+				<version>2.1.1.GA</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.el</groupId>
+						<artifactId>el-api</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
