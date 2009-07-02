@@ -52,7 +52,6 @@
 		<module>motech-persist</module>
 		<module>motech-core</module>
 		<module>motech-webapp</module>
-		<module>motech-app</module>
 		<module>motech-wsclient</module>
 		<module>motech-it</module>
 	</modules>

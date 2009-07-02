@@ -15,12 +15,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.motech</groupId>
-			<artifactId>motech-app</artifactId>
-			<type>ear</type>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.motech</groupId>
 			<artifactId>motech-wsclient</artifactId>
 			<version>1.0-SNAPSHOT</version>
 			<scope>test</scope>
@@ -45,66 +39,6 @@
 						<groupId>org.codehaus.cargo</groupId>
 						<artifactId>cargo-maven2-plugin</artifactId>
 						<version>1.0.1-SNAPSHOT</version>
-						<configuration>
-							<wait>false</wait>
-							<container>
-								<containerId>jboss5x</containerId>
-								<home>${jboss.home}</home>
-								<log>${project.build.directory}/cargo-logs/jboss5.log</log>
-								<output>${project.build.directory}/cargo-logs/console.log</output>
-								<type>installed</type>
-								<append>false</append>
-								<systemProperties>
-									<jboss.server.log.threshold>INFO</jboss.server.log.threshold>
-								</systemProperties>
-							</container>
-							<configuration>
-								<type>standalone</type>
-								<home>${project.build.directory}/jboss5x</home>
-								<properties>
-									<cargo.jboss.configuration>default</cargo.jboss.configuration>
-									<cargo.rmi.port>1099</cargo.rmi.port>
-									<cargo.jvmargs>-XX:MaxPermSize=256m</cargo.jvmargs>
-								</properties>
-								<configfiles>
-									<configfile>
-										<file>${jboss.home}/server/default/conf/jboss-log4j.xml</file>
-										<tofile>conf/jboss-log4j.xml</tofile>
-									</configfile>
-									<configfile>
-										<file>${jboss.home}/server/default/data/hypersonic/localDB.script</file>
-										<tofile>data/hypersonic/localDB.script</tofile>
-									</configfile>
-								</configfiles>
-							</configuration>
-							<deployer>
-								<deployables>
-									<deployable>
-										<groupId>org.motech</groupId>
-										<artifactId>motech-app</artifactId>
-										<type>ear</type>
-										<pingURL>http://localhost:8080/${motech.webcontext}</pingURL>
-									</deployable>
-								</deployables>
-							</deployer>
-						</configuration>
-						<executions>
-							<execution>
-								<id>start-container</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>start</goal>
-									<goal>deploy</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>stop-container</id>
-								<phase>post-integration-test</phase>
-								<goals>
-									<goal>stop</goal>
-								</goals>
-							</execution>
-						</executions>
 					</plugin>
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
