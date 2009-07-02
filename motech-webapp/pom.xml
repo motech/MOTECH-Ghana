@@ -1,15 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.motech</groupId>
 		<artifactId>motech</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0-M0</version>
 	</parent>
 	<groupId>org.motech</groupId>
 	<artifactId>motech-webapp</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0-M0</version>
 	<packaging>war</packaging>
 	<name>MoTeCH Server - WAR</name>
 	<description>The web application module for the motech project.</description>
@@ -18,14 +17,14 @@
 		<dependency>
 			<groupId>org.motech</groupId>
 			<artifactId>motech-core</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0-M0</version>
 			<type>ejb</type>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.motech</groupId>
 			<artifactId>motech-persist</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0-M0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -69,7 +68,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
-				<configuration></configuration>
+				<configuration />
 			</plugin>
 		</plugins>
 	</build>
