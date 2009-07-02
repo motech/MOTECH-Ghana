@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"  %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -21,7 +22,11 @@
 	<div id="header">
 		<div id="logo">
 			<h1><a href="#">Motech Server</a></h1>
-			<p>Prototype Server Test Application</p>
+			<p>Prototype Server Test Application - 
+				<fmt:bundle basename="org.motech.web.messages">
+					Version: <fmt:message key="version" />
+				</fmt:bundle>
+			</p>
 		</div>
 	</div>
 	<!-- end #header -->
