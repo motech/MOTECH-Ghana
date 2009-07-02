@@ -64,15 +64,6 @@
 			<name>Motech Maven Repository</name>
 			<url>http://motech.rcg.usm.maine.edu/archiva/repository/all</url>
 		</repository>
-		<repository>
-			<id>repository.jboss.org</id>
-			<name>JBoss Repository</name>
-			<layout>default</layout>
-			<url>http://repository.jboss.org/maven2/</url>
-			<snapshots>
-					<enabled>false</enabled>
-			</snapshots>
-		</repository>
 	</repositories>
 
 	<pluginRepositories>
@@ -82,15 +73,6 @@
 			<url>http://motech.rcg.usm.maine.edu/archiva/repository/all</url>
 			<snapshots>
 				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>repository.maven.org</id>
-			<name>Maven Repository</name>
-			<layout>default</layout>
-			<url>http://repo1.maven.org/maven2/</url>
-			<snapshots>
-					<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
