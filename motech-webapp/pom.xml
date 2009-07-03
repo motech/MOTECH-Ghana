@@ -41,7 +41,23 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>opensymphony</groupId>
@@ -76,8 +92,31 @@
 						<wtpContextName>/${project.parent.artifactId}</wtpContextName>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<configuration>
+						<webResources>
+							<webResource>
+								<directory>src/main/webapp-filtered</directory>
+								<filtering>true</filtering>
+								<includes>
+									<include>**/*</include>
+								</includes>
+							</webResource>
+						</webResources>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
+	
+	<properties>
+		<dbUsername>sa</dbUsername>
+		<dbPassword></dbPassword>
+		<dbDriver>org.hsqldb.jdbcDriver</dbDriver>
+		<dbUrl>jdbc:hsqldb:.</dbUrl>
+		<dbDialect>org.hibernate.dialect.HSQLDialect</dbDialect>
+	</properties>
 
 </project>
