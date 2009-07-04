@@ -4,11 +4,11 @@
 	<parent>
 		<groupId>org.motech</groupId>
 		<artifactId>motech</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0-MT0</version>
 	</parent>
 	<groupId>org.motech</groupId>
 	<artifactId>motech-it</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0-MT0</version>
 	<name>MoTeCH Server - Integration Tests</name>
 	<description>Integration tests for the motech project.</description>
 
@@ -17,12 +17,12 @@
 			<groupId>org.motech</groupId>
 			<artifactId>motech-app</artifactId>
 			<type>ear</type>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0-MT0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.motech</groupId>
 			<artifactId>motech-wsclient</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0-MT0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
