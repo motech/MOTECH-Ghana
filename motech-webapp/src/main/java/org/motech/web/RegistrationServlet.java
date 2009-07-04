@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motech.test.SampleService;
+import org.springframework.context.ApplicationContext;
 
 public class RegistrationServlet extends HttpServlet {
 
@@ -29,7 +31,7 @@ public class RegistrationServlet extends HttpServlet {
 
 	private static Log log = LogFactory.getLog(RegistrationServlet.class);
 
-//	Registrar registrationService;
+	// Registrar registrationService;
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -45,6 +47,12 @@ public class RegistrationServlet extends HttpServlet {
 
 	private void processRequest(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+
+		ApplicationContext ctx = (ApplicationContext) getServletContext()
+				.getAttribute(
+						"org.springframework.web.context.WebApplicationContext.ROOT");
+		SampleService svc = (SampleService) ctx.getBean("sampleServiceImpl");
+		svc.doSomething();
 
 		// // Get the value that determines the action to take
 		// String action = req.getParameter("testAction");
