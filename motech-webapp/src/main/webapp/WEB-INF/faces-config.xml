@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://java.sun.com/JSF/Configuration">
+	<application>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver
+		</el-resolver>
+		<variable-resolver>
+			org.springframework.web.jsf.SpringBeanVariableResolver
+		</variable-resolver>
+	</application>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/viewdata.jsf</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+</faces-config> 

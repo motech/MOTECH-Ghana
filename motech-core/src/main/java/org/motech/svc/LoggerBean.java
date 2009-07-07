@@ -2,14 +2,16 @@ package org.motech.svc;
 
 import java.util.Date;
 
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.motech.model.Log;
 import org.motech.model.LogType;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-@Stateless
+@Repository
+@Transactional
 public class LoggerBean implements Logger {
 
 	@PersistenceContext

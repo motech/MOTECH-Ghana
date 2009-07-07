@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
+<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <head>
 	<meta name="heading" content="View Data" />
 	<style>
@@ -33,102 +34,254 @@
 
 <c:set var="noResultMsg" value="No results found." />
 
-<div class="results">
+<f:view>
+	<div class="results">
 	<h3>Clinics</h3>
 	<c:choose>
-		<c:when test="${not empty allClinics}">
-		<table><tr><th>Id</th><th>Name</th></tr>
-		<c:forEach items="${allClinics}" var="clinic">
-			<tr><td>${clinic.id}</td><td>${clinic.name}</td></tr>
-		</c:forEach>
-		</table>
+		<c:when test="${not empty registrationServlet.clinics}">
+			<h:dataTable value="#{registrationServlet.clinics}" var="clinic">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Id" />
+					</f:facet>
+					<h:outputText value="#{clinic.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Name" />
+					</f:facet>
+					<h:outputText value="#{clinic.name}" />
+				</h:column>
+			</h:dataTable>
 		</c:when>
 		<c:otherwise>${noResultMsg}</c:otherwise>
-	</c:choose>
-</div>
+	</c:choose></div>
 
-<div class="results">
+	<div class="results">
 	<h3>Nurses</h3>
 	<c:choose>
-		<c:when test="${not empty allNurses}">
-		<table><tr><th>Id</th><th>Name</th><th>Phone</th><th>Clinic Id</th></tr>
-		<c:forEach items="${allNurses}" var="nurse">
-			<tr><td>${nurse.id}</td><td>${nurse.name}</td><td>${nurse.phoneNumber}</td><td>${nurse.clinic.id}</td></tr>
-		</c:forEach>
-		</table>
+		<c:when test="${not empty registrationServlet.nurses}">
+			<h:dataTable value="#{registrationServlet.nurses}" var="nurse">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Id" />
+					</f:facet>
+					<h:outputText value="#{nurse.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Name" />
+					</f:facet>
+					<h:outputText value="#{nurse.name}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Phone" />
+					</f:facet>
+					<h:outputText value="#{nurse.phoneNumber}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Clinic Id" />
+					</f:facet>
+					<h:outputText value="#{nurse.clinic.id}" />
+				</h:column>
+			</h:dataTable>
 		</c:when>
 		<c:otherwise>${noResultMsg}</c:otherwise>
-	</c:choose>
-</div>
+	</c:choose></div>
 
-<div class="results">
+	<div class="results">
 	<h3>Patients</h3>
 	<c:choose>
-		<c:when test="${not empty allPatients}">
-		<table class="results"><tr><th>Id</th><th>Name</th><th>Serial</th><th>Clinic Id</th></tr>
-		<c:forEach items="${allPatients}" var="patient">
-			<tr><td>${patient.id}</td><td>${patient.name}</td><td>${patient.serial}</td><td>${patient.clinic.id}</td></tr>
-		</c:forEach>
-		</table>
+		<c:when test="${not empty registrationServlet.patients}">
+			<h:dataTable value="#{registrationServlet.patients}" var="patient"
+				styleClass="results">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Id" />
+					</f:facet>
+					<h:outputText value="#{patient.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Name" />
+					</f:facet>
+					<h:outputText value="#{patient.name}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Serial" />
+					</f:facet>
+					<h:outputText value="#{patient.serial}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Clinic Id" />
+					</f:facet>
+					<h:outputText value="#{patient.clinic.id}" />
+				</h:column>
+			</h:dataTable>
 		</c:when>
 		<c:otherwise>${noResultMsg}</c:otherwise>
-	</c:choose>
-</div>
+	</c:choose></div>
 
-<div class="results">
+	<div class="results">
 	<h3>Pregnancies</h3>
 	<c:choose>
-		<c:when test="${not empty allPregnancies}">
-		<table class="results"><tr><th>Id</th><th>Patient Id</th><th>Due Date</th></tr>
-		<c:forEach items="${allPregnancies}" var="pregnancy">
-			<tr><td>${pregnancy.id}</td><td>${pregnancy.maternalData.patient.id}</td><td><fmt:formatDate value="${pregnancy.dueDate}"/></td></tr>
-		</c:forEach>
-		</table>
+		<c:when test="${not empty registrationServlet.pregnancies}">
+			<h:dataTable value="#{registrationServlet.pregnancies}"
+				var="pregnancy" styleClass="results">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Id" />
+					</f:facet>
+					<h:outputText value="#{pregnancy.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Patient Id" />
+					</f:facet>
+					<h:outputText value="#{pregnancy.maternalData.patient.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Due Date" />
+					</f:facet>
+					<h:outputText value="#{pregnancy.dueDate}">
+						<f:convertDateTime type="date" timeZone="America/New_York" />
+					</h:outputText>
+				</h:column>
+			</h:dataTable>
 		</c:when>
 		<c:otherwise>${noResultMsg}</c:otherwise>
-	</c:choose>
-</div>
+	</c:choose></div>
 
-<div class="results">
+	<div class="results">
 	<h3>Maternal Visits</h3>
 	<c:choose>
-		<c:when test="${not empty allMaternalVisits}">
-		<table class="results"><tr><th>Id</th><th>Date</th><th>Patient Id</th></tr>
-		<c:forEach items="${allMaternalVisits}" var="matVisit">
-			<tr><td>${matVisit.id}</td><td><fmt:formatDate value="${matVisit.date}"/></td><td>${matVisit.maternalData.patient.id}</td></tr>
-		</c:forEach>
-		</table>
+		<c:when test="${not empty registrationServlet.maternalVisits}">
+			<h:dataTable value="#{registrationServlet.maternalVisits}"
+				var="maternalVisit" styleClass="results">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Id" />
+					</f:facet>
+					<h:outputText value="#{maternalVisit.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Date" />
+					</f:facet>
+					<h:outputText value="#{maternalVisit.date}">
+						<f:convertDateTime type="date" timeZone="America/New_York" />
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Patient Id" />
+					</f:facet>
+					<h:outputText value="#{maternalVisit.maternalData.patient.id}" />
+				</h:column>
+			</h:dataTable>
 		</c:when>
 		<c:otherwise>${noResultMsg}</c:otherwise>
-	</c:choose>
-</div>
+	</c:choose></div>
 
-<div class="results">
+	<div class="results">
 	<h3>Future Service Deliveries</h3>
 	<c:choose>
-		<c:when test="${not empty allFutureServiceDeliveries}">
-		<table class="results wideresults"><tr><th>Id</th><th>Date</th><th>Patient Id</th><th>Nurse Id</th><th>Service</th><th>Patient Notified</th><th>Nurse Notified</th></tr>
-		<c:forEach items="${allFutureServiceDeliveries}" var="service">
-			<tr><td>${service.id}</td><td><fmt:formatDate type="both" value="${service.date}"/></td><td>${service.patient.id}</td><td>${service.nurse.id}</td>
-			<td>${service.service}</td><td><fmt:formatDate type="both" value="${service.patientNotifiedDate}"/></td>
-			<td><fmt:formatDate type="both" value="${service.nurseNotifiedDate}"/></td></tr>
-		</c:forEach>
-		</table>
+		<c:when
+			test="${not empty registrationServlet.futureServiceDeliveries}">
+			<h:dataTable value="#{registrationServlet.futureServiceDeliveries}"
+				var="service" styleClass="results wideresults">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Id" />
+					</f:facet>
+					<h:outputText value="#{service.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Date" />
+					</f:facet>
+					<h:outputText value="#{service.date}">
+						<f:convertDateTime type="both" timeZone="America/New_York" />
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Patient Id" />
+					</f:facet>
+					<h:outputText value="#{service.patient.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Nurse Id" />
+					</f:facet>
+					<h:outputText value="#{service.nurse.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Service" />
+					</f:facet>
+					<h:outputText value="#{service.service}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Patient Notified" />
+					</f:facet>
+					<h:outputText value="#{service.patientNotifiedDate}">
+						<f:convertDateTime type="both" timeZone="America/New_York" />
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Nurse Notified" />
+					</f:facet>
+					<h:outputText value="#{service.nurseNotifiedDate}">
+						<f:convertDateTime type="both" timeZone="America/New_York" />
+					</h:outputText>
+				</h:column>
+			</h:dataTable>
 		</c:when>
 		<c:otherwise>${noResultMsg}</c:otherwise>
-	</c:choose>
-</div>
+	</c:choose></div>
 
-<div class="results">
+	<div class="results">
 	<h3>Logs</h3>
 	<c:choose>
-		<c:when test="${not empty allLogs}">
-		<table class="wideresults"><tr><th>Id</th><th>Type</th><th>Date</th><th>Message</th></tr>
-		<c:forEach items="${allLogs}" var="log">
-			<tr><td>${log.id}</td><td>${log.type}</td><td><fmt:formatDate type="both" value="${log.date}"/></td><td>${log.message}</td></tr>
-		</c:forEach>
-		</table>
+		<c:when test="${not empty registrationServlet.logs}">
+			<h:dataTable value="#{registrationServlet.logs}" var="log"
+				styleClass="wideresults">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Id" />
+					</f:facet>
+					<h:outputText value="#{log.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Type" />
+					</f:facet>
+					<h:outputText value="#{log.type}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Date" />
+					</f:facet>
+					<h:outputText value="#{log.date}">
+						<f:convertDateTime type="both" timeZone="America/New_York" />
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Message" />
+					</f:facet>
+					<h:outputText value="#{log.message}" />
+				</h:column>
+			</h:dataTable>
 		</c:when>
 		<c:otherwise>${noResultMsg}</c:otherwise>
-	</c:choose>
-</div>
+	</c:choose></div>
+</f:view>

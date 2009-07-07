@@ -17,10 +17,6 @@
 			<groupId>javax.persistence</groupId>
 			<artifactId>persistence-api</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.bm</groupId>
-			<artifactId>ejb3unit</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>

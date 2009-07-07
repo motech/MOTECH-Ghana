@@ -3,6 +3,7 @@ package org.motech.model;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,8 +27,10 @@ import javax.persistence.UniqueConstraint;
 @NamedQueries( {
 		@NamedQuery(name = "findPatientByClinicSerial", query = "select p from Patient p where p.serial = :serial and p.clinic.id = :clinicId"),
 		@NamedQuery(name = "findAllPatients", query = "select p from Patient p") })
-public class Patient {
+public class Patient implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private Long id;
 	private String serial;
 	private Clinic clinic;

@@ -1,3 +1,5 @@
+<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
+<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>	
 <meta name="heading" content="Pregnancy Registration" />
 <h2>Register a Pregnancy</h2>
 <div class="instructions">
@@ -10,35 +12,39 @@
 		a patient must exist with the specified serial id.
 	</em>
 </div>
-<form action="${pageContext.request.contextPath}/regTest" method="post">
-<table>
-	<input type="hidden" name="testAction" value="pregnancy" />
-	<tr>
-		<td><label for="nursePhone">Nurse Phone:</label></td>
-		<td><input name="nursePhone" value="5555555555" /></td>
-	</tr>
-	<tr>
-		<td><label for="regDate">Registration Date:</label></td>
-		<td><input name="regDate" value="01/01/2001" /></td>
-	</tr>
-	<tr>
-		<td><label for="serialId">Serial Id:</label></td>
-		<td><input name="serialId" value="FGH4894894" /></td>
-	</tr>
-	<tr>
-		<td><label for="dueDate">Due Date:</label></td>
-		<td><input name="dueDate" value="08/01/2009" /></td>
-	</tr>
-	<tr>
-		<td><label for="parity">Parity:</label></td>
-		<td><input name="parity" value="4" /></td>
-	</tr>
-	<tr>
-		<td><label for="hemoglobin">Hemoglobin:</label></td>
-		<td><input name="hemoglobin" value="47" /></td>
-	</tr>
-	<tr>
-		<td colspan="2"><input type="submit" /></td>
-	</tr>
-</table>
-</form>
+<f:view>
+	<h:form>
+		<h:panelGrid columns="2">
+			<h:outputLabel for="nurse_phone">Nurse Phone:</h:outputLabel>
+			<h:inputText id="nurse_phone"
+				value="#{registrationServlet.nurse.phoneNumber}"></h:inputText>
+
+			<h:outputLabel for="patient_serial">Serial Id:</h:outputLabel>
+			<h:inputText id="patient_serial"
+				value="#{registrationServlet.patient.serial}"></h:inputText>
+
+			<h:outputLabel for="pregnancy_regdate">Registration Date:</h:outputLabel>
+			<h:inputText id="pregnancy_regdate"
+				value="#{registrationServlet.pregnancy.registrationDate}">
+				<f:convertDateTime type="date" dateStyle="short" timeZone="America/New_York" />
+			</h:inputText>
+
+			<h:outputLabel for="pregnancy_duedate">Due Date:</h:outputLabel>
+			<h:inputText id="pregnancy_duedate"
+				value="#{registrationServlet.pregnancy.dueDate}">
+				<f:convertDateTime type="date" dateStyle="short" timeZone="America/New_York" />
+			</h:inputText>
+
+			<h:outputLabel for="pregnancy_parity">Parity:</h:outputLabel>
+			<h:inputText id="pregnancy_parity"
+				value="#{registrationServlet.pregnancy.parity}"></h:inputText>
+
+			<h:outputLabel for="pregnancy_hemoglobin">Hemoglobin:</h:outputLabel>
+			<h:inputText id="pregnancy_hemoglobin"
+				value="#{registrationServlet.pregnancy.hemoglobin}"></h:inputText>
+		</h:panelGrid>
+		<h:commandButton value="Register"
+			action="#{registrationServlet.regPregnancy}"></h:commandButton>
+		<h:messages />
+	</h:form>
+</f:view>

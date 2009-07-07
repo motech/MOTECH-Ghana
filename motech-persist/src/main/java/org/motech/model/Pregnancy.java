@@ -1,5 +1,6 @@
 package org.motech.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -14,8 +15,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "pregnancies")
 @NamedQueries( { @NamedQuery(name = "findAllPregnancies", query = "select p from Pregnancy p") })
-public class Pregnancy {
+public class Pregnancy implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private Long id;
 	private Date registrationDate;
 	private MaternalData maternalData;

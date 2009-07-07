@@ -1,3 +1,5 @@
+<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
+<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <meta name="heading" content="Clinic Registration" />
 <h2>Register a Clinic</h2>
 <div class="instructions">
@@ -6,15 +8,15 @@
 	must be registered prior to nurse or patient registration.
 	<em>NOTE: A clinic name needs to be unique.</em>
 </div>
-<form action="${pageContext.request.contextPath}/regTest" method="post">
-<table>
-	<input type="hidden" name="testAction" value="clinic" />
-	<tr>
-		<td><label for="name">Clinic Name:</label></td>
-		<td><input name="name" value="A-Clinic" /></td>
-	</tr>
-	<tr>
-		<td colspan="2"><input type="submit" /></td>
-	</tr>
-</table>
-</form>
+<f:view>
+	<h:form>
+		<h:panelGrid columns="2">
+			<h:outputLabel for="clinic_name">Name:</h:outputLabel>
+			<h:inputText id="clinic_name"
+				value="#{registrationServlet.clinic.name}"></h:inputText>
+		</h:panelGrid>
+		<h:commandButton value="Register"
+			action="#{registrationServlet.regClinic}"></h:commandButton>
+		<h:messages />
+	</h:form>
+</f:view>

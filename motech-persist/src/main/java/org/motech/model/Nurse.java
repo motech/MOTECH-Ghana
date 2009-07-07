@@ -3,6 +3,7 @@ package org.motech.model;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +23,10 @@ import javax.persistence.Table;
 @NamedQueries( {
 		@NamedQuery(name = "findNurseByPhoneNumber", query = "select n from Nurse n where n.phoneNumber = :phoneNumber"),
 		@NamedQuery(name = "findAllNurses", query = "select n from Nurse n") })
-public class Nurse {
+public class Nurse implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private Long id;
 	private String name;
 	private Clinic clinic;

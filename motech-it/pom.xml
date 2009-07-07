@@ -13,12 +13,12 @@
 	<description>Integration tests for the motech project.</description>
 
 	<dependencies>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.motech</groupId>
 			<artifactId>motech-app</artifactId>
 			<type>ear</type>
 			<version>1.0-SNAPSHOT</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.motech</groupId>
 			<artifactId>motech-wsclient</artifactId>

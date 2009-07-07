@@ -3,6 +3,7 @@ package org.motech.model;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "maternaldata")
-public class MaternalData {
+public class MaternalData implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private Long id;
 	private Patient patient;
 	private List<Pregnancy> pregnancies = new ArrayList<Pregnancy>();

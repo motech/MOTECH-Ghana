@@ -1,5 +1,7 @@
 package org.motech.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +15,9 @@ import javax.persistence.Table;
 @NamedQueries( {
 		@NamedQuery(name = "findClinicByName", query = "select c from Clinic c where c.name = :name"),
 		@NamedQuery(name = "findAllClinics", query = "select c from Clinic c") })
-public class Clinic {
+public class Clinic implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private Long id;
 	private String name;

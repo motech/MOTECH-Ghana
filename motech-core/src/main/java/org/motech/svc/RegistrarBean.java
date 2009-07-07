@@ -3,12 +3,6 @@ package org.motech.svc;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.ejb.Timeout;
-import javax.ejb.Timer;
-import javax.ejb.TimerService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -22,17 +16,18 @@ import org.motech.model.MaternalVisit;
 import org.motech.model.Nurse;
 import org.motech.model.Patient;
 import org.motech.model.Pregnancy;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-@Stateless
+@Repository
+@Transactional
 public class RegistrarBean implements Registrar {
-
-	@Resource
-	TimerService timerService;
 
 	@PersistenceContext
 	EntityManager em;
 
-	@EJB
+	@Autowired
 	Logger loggerBean;
 
 	public void registerMother(String nursePhoneNumber, Date date,
@@ -183,75 +178,71 @@ public class RegistrarBean implements Registrar {
 
 		loggerBean.log(LogType.success, "Future Service Delivery Scheduled: "
 				+ serialId + "," + nextServiceDate);
-
-		// Schedule notifications to go out in 30 seconds
-		// EJB3Unit TimerService cannot handle Date, only long
-		timerService.createTimer(nextServiceTime, null);
 	}
 
-	@Timeout
-	public void sendNotifications(Timer timer) {
-		Date startDate = new Date(System.currentTimeMillis() - (30 * 1000));
-		Date endDate = new Date(System.currentTimeMillis() + (30 * 1000));
-		List<FutureServiceDelivery> futureServices = getFutureServiceDeliveries(
-				startDate, endDate);
-		Date notificationDate = new Date();
-		for (FutureServiceDelivery service : futureServices) {
-			loggerBean.log(LogType.success,
-					"Future Service Delivery Notifications: "
-							+ service.getNurse().getPhoneNumber() + ","
-							+ service.getPatient().getPhoneNumber());
-			service.setNurseNotifiedDate(notificationDate);
-			service.setPatientNotifiedDate(notificationDate);
-		}
+	public void notifyFutureService(FutureServiceDelivery service,
+			Date notificationDate) {
+		
+		service.setNurseNotifiedDate(notificationDate);
+		service.setPatientNotifiedDate(notificationDate);
+		em.merge(service);
 	}
 
+	@Transactional(readOnly = true)
 	public Clinic getClinic(String name) {
 		return (Clinic) em.createNamedQuery("findClinicByName").setParameter(
 				"name", name).getSingleResult();
 	}
 
+	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<Clinic> getClinics() {
 		return (List<Clinic>) em.createNamedQuery("findAllClinics")
 				.getResultList();
 	}
 
+	@Transactional(readOnly = true)
 	public Nurse getNurse(String phoneNumber) {
 		return (Nurse) em.createNamedQuery("findNurseByPhoneNumber")
 				.setParameter("phoneNumber", phoneNumber).getSingleResult();
 	}
 
+	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<Nurse> getNurses() {
 		return (List<Nurse>) em.createNamedQuery("findAllNurses")
 				.getResultList();
 	}
 
+	@Transactional(readOnly = true)
 	public Patient getPatient(String serialId, Long clinicId) {
 		return (Patient) em.createNamedQuery("findPatientByClinicSerial")
 				.setParameter("serial", serialId).setParameter("clinicId",
 						clinicId).getSingleResult();
 	}
 
+	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<Patient> getPatients() {
 		return (List<Patient>) em.createNamedQuery("findAllPatients")
 				.getResultList();
 	}
 
+	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<Pregnancy> getPregnancies() {
 		return (List<Pregnancy>) em.createNamedQuery("findAllPregnancies")
 				.getResultList();
 	}
 
+	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<MaternalVisit> getMaternalVisits() {
 		return (List<MaternalVisit>) em.createNamedQuery(
 				"findAllMaternalVisits").getResultList();
 	}
 
+	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<FutureServiceDelivery> getFutureServiceDeliveries(Date start,
 			Date end) {
@@ -260,6 +251,7 @@ public class RegistrarBean implements Registrar {
 				start).setParameter("endDate", end).getResultList();
 	}
 
+	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<FutureServiceDelivery> getFutureServiceDeliveries(Patient p) {
 		return (List<FutureServiceDelivery>) em.createNamedQuery(
@@ -267,12 +259,14 @@ public class RegistrarBean implements Registrar {
 				"patientId", p.getId()).getResultList();
 	}
 
+	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<FutureServiceDelivery> getFutureServiceDeliveries() {
 		return (List<FutureServiceDelivery>) em.createNamedQuery(
 				"findAllFutureServiceDeliveries").getResultList();
 	}
 
+	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<Log> getLogs() {
 		return (List<Log>) em.createNamedQuery("findAllLogs").getResultList();

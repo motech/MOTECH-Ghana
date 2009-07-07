@@ -1,3 +1,5 @@
+<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
+<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <meta name="heading" content="Nurse Registration" />
 <h2>Register a Nurse</h2>
 <div class="instructions">
@@ -8,23 +10,23 @@
 		and a nurse phone needs to be unique.
 	</em>
 </div>
-<form action="${pageContext.request.contextPath}/regTest" method="post">
-<table>
-	<input type="hidden" name="testAction" value="nurse" />
-	<tr>
-		<td><label for="name">Name:</label></td>
-		<td><input name="name" value="Nurse Name" /></td>
-	</tr>
-	<tr>
-		<td><label for="nursePhone">Nurse Phone:</label></td>
-		<td><input name="nursePhone" value="5555555555" /></td>
-	</tr>
-	<tr>
-		<td><label for="clinic">Clinic:</label></td>
-		<td><input name="clinic" value="A-Clinic" /></td>
-	</tr>
-	<tr>
-		<td colspan="2"><input type="submit" /></td>
-	</tr>
-</table>
-</form>
+<f:view>
+	<h:form>
+		<h:panelGrid columns="2">
+			<h:outputLabel for="nurse_name">Name:</h:outputLabel>
+			<h:inputText id="nurse_name"
+				value="#{registrationServlet.nurse.name}"></h:inputText>
+				
+			<h:outputLabel for="nurse_phone">Phone:</h:outputLabel>
+			<h:inputText id="nurse_phone"
+				value="#{registrationServlet.nurse.phoneNumber}"></h:inputText>
+				
+			<h:outputLabel for="clinic_name">Clinic:</h:outputLabel>
+			<h:inputText id="clinic_name"
+				value="#{registrationServlet.clinic.name}"></h:inputText>
+		</h:panelGrid>
+		<h:commandButton value="Register"
+			action="#{registrationServlet.regNurse}"></h:commandButton>
+		<h:messages />
+	</h:form>
+</f:view>

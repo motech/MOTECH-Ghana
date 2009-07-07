@@ -1,5 +1,6 @@
 package org.motech.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -17,8 +18,10 @@ import javax.persistence.Table;
 		@NamedQuery(name = "findFutureServiceDeliveriesForPatient", query = "select f from FutureServiceDelivery f where f.patient.id = :patientId"),
 		@NamedQuery(name = "findFutureServiceDeliveriesByDate", query = "select f from FutureServiceDelivery f where f.date between :startDate and :endDate"),
 		@NamedQuery(name = "findAllFutureServiceDeliveries", query = "select f from FutureServiceDelivery f") })
-public class FutureServiceDelivery {
+public class FutureServiceDelivery implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private Long id;
 	private Patient patient;
 	private Nurse nurse;

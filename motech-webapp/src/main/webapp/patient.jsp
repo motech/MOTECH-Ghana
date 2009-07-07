@@ -1,3 +1,5 @@
+<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
+<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <meta name="heading" content="Patient Registration" />
 <h2>Register a Patient</h2>
 <div class="instructions">
@@ -11,47 +13,50 @@
 		nurse's clinic.
 	</em>
 </div>
-<form action="${pageContext.request.contextPath}/regTest" method="post">
-<table>
-	<input type="hidden" name="testAction" value="patient" />
-	<tr>
-		<td><label for="nursePhone">Nurse Phone:</label></td>
-		<td><input name="nursePhone" value="5555555555" /></td>
-	</tr>
-	<tr>
-		<td><label for="serialId">Serial Id:</label></td>
-		<td><input name="serialId" value="FGH4894894" /></td>
-	</tr>
-	<tr>
-		<td><label for="name">Name:</label></td>
-		<td><input name="name" value="Patient Name" /></td>
-	</tr>
-	<tr>
-		<td><label for="community">Community:</label></td>
-		<td><input name="community" value="Community" /></td>
-	</tr>
-	<tr>
-		<td><label for="location">Location:</label></td>
-		<td><input name="location" value="Location" /></td>
-	</tr>
-	<tr>
-		<td><label for="nhis">NHIS:</label></td>
-		<td><input name="nhis" value="478" /></td>
-	</tr>
-	<tr>
-		<td><label for="patientPhone">Phone:</label></td>
-		<td><input name="patientPhone" value="5555555555" /></td>
-	</tr>
-	<tr>
-		<td><label for="dateOfBirth">Date of Birth:</label></td>
-		<td><input name="dateOfBirth" value="08/01/1983" /></td>
-	</tr>
-	<tr>
-		<td><label for="gender">Gender:</label></td>
-		<td><input name="gender" value="male" /></td>
-	</tr>
-	<tr>
-		<td colspan="2"><input type="submit" /></td>
-	</tr>
-</table>
-</form>
+<f:view>
+	<h:form>
+		<h:panelGrid columns="2">
+			<h:outputLabel for="nurse_phone">Nurse Phone:</h:outputLabel>
+			<h:inputText id="nurse_phone"
+				value="#{registrationServlet.nurse.phoneNumber}"></h:inputText>
+
+			<h:outputLabel for="patient_serial">Serial Id:</h:outputLabel>
+			<h:inputText id="patient_serial"
+				value="#{registrationServlet.patient.serial}"></h:inputText>
+
+			<h:outputLabel for="patient_name">Name:</h:outputLabel>
+			<h:inputText id="patient_name"
+				value="#{registrationServlet.patient.name}"></h:inputText>
+
+			<h:outputLabel for="patient_community">Community:</h:outputLabel>
+			<h:inputText id="patient_community"
+				value="#{registrationServlet.patient.community}"></h:inputText>
+
+			<h:outputLabel for="patient_location">Location:</h:outputLabel>
+			<h:inputText id="patient_location"
+				value="#{registrationServlet.patient.location}"></h:inputText>
+
+			<h:outputLabel for="patient_nhis">NHIS:</h:outputLabel>
+			<h:inputText id="patient_nhis"
+				value="#{registrationServlet.patient.nhis}"></h:inputText>
+
+			<h:outputLabel for="patient_phone">Phone:</h:outputLabel>
+			<h:inputText id="patient_phone"
+				value="#{registrationServlet.patient.phoneNumber}"></h:inputText>
+
+			<h:outputLabel for="patient_dob">Date of Birth:</h:outputLabel>
+			<h:inputText id="patient_dob"
+				value="#{registrationServlet.patient.dateOfBirth}">
+				<f:convertDateTime type="date" dateStyle="short" timeZone="America/New_York" />
+			</h:inputText>
+
+			<h:outputLabel for="patient_gender">Gender:</h:outputLabel>
+			<h:selectOneMenu id="patient_gender" value="#{registrationServlet.patient.gender}">
+				<f:selectItems value="#{registrationServlet.genders}" />
+			</h:selectOneMenu>
+		</h:panelGrid>
+		<h:commandButton value="Register"
+			action="#{registrationServlet.regPatient}"></h:commandButton>
+		<h:messages />
+	</h:form>
+</f:view>

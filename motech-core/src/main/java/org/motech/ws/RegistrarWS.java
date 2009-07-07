@@ -2,12 +2,9 @@ package org.motech.ws;
 
 import java.util.Date;
 
-import javax.ejb.Local;
-
 import org.motech.model.Gender;
 import org.motech.model.LogType;
 
-@Local
 public interface RegistrarWS {
 
 	public void registerMother(String nursePhoneNumber, Date date,

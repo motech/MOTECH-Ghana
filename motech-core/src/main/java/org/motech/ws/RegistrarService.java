@@ -2,8 +2,6 @@ package org.motech.ws;
 
 import java.util.Date;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -12,15 +10,15 @@ import org.motech.model.Gender;
 import org.motech.model.LogType;
 import org.motech.svc.Logger;
 import org.motech.svc.Registrar;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Stateless
 @WebService(name = "Registrar", serviceName = "RegistrarService", portName = "RegistrarPort", targetNamespace = "http://motech.org/")
 public class RegistrarService implements RegistrarWS {
 
-	@EJB
+	@Autowired
 	Registrar registrationBean;
 
-	@EJB
+	@Autowired
 	Logger loggerBean;
 
 	@WebMethod

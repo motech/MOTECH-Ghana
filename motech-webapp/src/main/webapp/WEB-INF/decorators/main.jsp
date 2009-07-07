@@ -7,13 +7,13 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>Motech Server - <decorator:title default="Untitled"/></title>
 <c:url value="/styles/style.css" var="styleUrl" />
-<c:url value="/" var="quickTestUrl" />
-<c:url value="/clinic.jsp" var="regClinicUrl" />
-<c:url value="/nurse.jsp" var="regNurseUrl" />
-<c:url value="/patient.jsp" var="regPatientUrl" />
-<c:url value="/pregnancy.jsp" var="regPregUrl" />
-<c:url value="/maternalVisit.jsp" var="regMatVisitUrl" />
-<c:url value="/regTest" var="viewDataUrl" />
+<c:url value="/quick.jsf" var="quickTestUrl" />
+<c:url value="/clinic.jsf" var="regClinicUrl" />
+<c:url value="/nurse.jsf" var="regNurseUrl" />
+<c:url value="/patient.jsf" var="regPatientUrl" />
+<c:url value="/pregnancy.jsf" var="regPregUrl" />
+<c:url value="/maternalVisit.jsf" var="regMatVisitUrl" />
+<c:url value="/viewdata.jsf" var="viewDataUrl" />
 <link href="${styleUrl}" rel="stylesheet" type="text/css" media="screen" />
 <decorator:head />
 </head>
@@ -45,7 +45,6 @@
 			<div class="post-bgbtm">
 				<h2 class="title"><a href="#"><decorator:getProperty property="meta.heading"/></a></h2>
 				<div class="entry">
-					<c:if test="${not empty errorMsg}"><div class="errorMsg">${errorMsg}</div></c:if>
 					<decorator:body />
 				</div>
 			</div>

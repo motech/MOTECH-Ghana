@@ -1,5 +1,6 @@
 package org.motech.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -14,8 +15,10 @@ import javax.persistence.Table;
 @NamedQueries( {
 		@NamedQuery(name = "findAllLogsOfType", query = "select l from Log l where l.type = :logType"),
 		@NamedQuery(name = "findAllLogs", query = "select l from Log l") })
-public class Log {
+public class Log implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private Long id;
 	private LogType type;
 	private Date date;

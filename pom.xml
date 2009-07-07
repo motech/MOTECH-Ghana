@@ -52,7 +52,6 @@
 		<module>motech-persist</module>
 		<module>motech-core</module>
 		<module>motech-webapp</module>
-		<module>motech-app</module>
 		<module>motech-wsclient</module>
 		<module>motech-it</module>
 	</modules>
@@ -79,12 +78,21 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring</artifactId>
+				<version>2.5.6.SEC01</version>
+			</dependency>
+			<dependency>
+				<groupId>hsqldb</groupId>
+				<artifactId>hsqldb</artifactId>
+				<version>1.8.0.10</version>
+			</dependency> 
+			<dependency>
 				<groupId>javax.persistence</groupId>
 				<artifactId>persistence-api</artifactId>
 				<version>1.0</version>
-				<scope>provided</scope>
 			</dependency>
-			<dependency>
+			<!--<dependency>
 				<groupId>javax.ejb</groupId>
 				<artifactId>ejb-api</artifactId>
 				<version>3.0</version>
@@ -95,12 +103,11 @@
 				<artifactId>servlet-api</artifactId>
 				<version>2.5</version>
 				<scope>provided</scope>
-			</dependency>
+			</dependency>-->
 			<dependency>
 				<groupId>commons-logging</groupId>
 				<artifactId>commons-logging</artifactId>
 				<version>1.0.4</version>
-				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>sun-jaxws</groupId>
@@ -114,12 +121,12 @@
 				<version>3.8.2</version>
 				<scope>test</scope>
 			</dependency>
-			<dependency>
+			<!--<dependency>
 				<groupId>com.bm</groupId>
 				<artifactId>ejb3unit</artifactId>
 				<version>2.0.0-RC-1</version>
 				<scope>test</scope>
-			</dependency>
+			</dependency>-->
 		</dependencies>
 	</dependencyManagement>
 
@@ -131,13 +138,6 @@
 					<configuration>
 						<source>1.5</source>
 						<target>1.5</target>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-ejb-plugin</artifactId>
-					<configuration>
-						<ejbVersion>3.0</ejbVersion>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -161,7 +161,6 @@
 	<properties>
 		<motech.webcontext>motech</motech.webcontext>
 		<motech.wscontext>motechws</motech.wscontext>
-		<jboss.home>${env.JBOSS_HOME}</jboss.home>
 	</properties>
 
 	<profiles>

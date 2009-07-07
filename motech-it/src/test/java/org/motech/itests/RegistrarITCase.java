@@ -11,14 +11,14 @@ import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
 
-import org.motech.Gender;
+/*import org.motech.Gender;
 import org.motech.LogType;
 import org.motech.Registrar;
-import org.motech.RegistrarService;
+import org.motech.RegistrarService;*/
 
 public class RegistrarITCase extends TestCase {
 
-	XMLGregorianCalendar time;
+/*	XMLGregorianCalendar time;
 	Registrar reg;
 
 	@Override
@@ -69,5 +69,5 @@ public class RegistrarITCase extends TestCase {
 
 	public void testLog() throws Exception {
 		reg.log(LogType.SUCCESS, "LOG MESSAGE");
-	}
+	}*/
 }
