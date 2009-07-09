@@ -7,12 +7,12 @@
 		</id>
 		<one-to-one name="patient" class="org.motech.model.Patient" />
 		<list name="pregnancies" cascade="save-update,merge">
-			<key column="maternaldata_id" not-null="true" />
+			<key column="maternaldata_id" />
 			<index />
 			<one-to-many class="org.motech.model.Pregnancy" />
 		</list>
 		<list name="maternalVisits" cascade="save-update,merge">
-			<key column="maternaldata_id" not-null="true" />
+			<key column="maternaldata_id" />
 			<index />
 			<one-to-many class="org.motech.model.MaternalVisit" />
 		</list>

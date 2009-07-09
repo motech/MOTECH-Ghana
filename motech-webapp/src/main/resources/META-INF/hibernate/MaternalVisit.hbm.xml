@@ -9,7 +9,7 @@
 		<many-to-one name="nurse" column="nurse_id" />
 		<many-to-one name="maternalData" column="maternaldata_id" />
 		<property name="tetanus" />
-		<property name="ipt," />
+		<property name="ipt" />
 		<property name="itn" />
 		<property name="visitNumber" />
 		<property name="onARV" />

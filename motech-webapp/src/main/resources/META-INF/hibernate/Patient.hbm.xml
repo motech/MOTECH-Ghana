@@ -20,7 +20,7 @@
 			constrained="true" cascade="save-update,merge" />
 		<property name="phoneNumber" />
 		<list name="futureServices" cascade="save-update,merge">
-			<key column="patient_id" not-null="true" />
+			<key column="patient_id" />
 			<index />
 			<one-to-many class="org.motech.model.FutureServiceDelivery" />
 		</list>

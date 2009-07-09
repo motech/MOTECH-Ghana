@@ -9,17 +9,17 @@
 		<many-to-one name="clinic" />
 		<property name="phoneNumber" update="true" />
 		<list name="pregnancies" cascade="save-update,merge">
-			<key column="nurse_id" not-null="true" />
+			<key column="nurse_id" />
 			<index />
 			<one-to-many class="org.motech.model.Pregnancy" />
 		</list>
 		<list name="maternalVisits" cascade="save-update,merge">
-			<key column="nurse_id" not-null="true" />
+			<key column="nurse_id" />
 			<index />
 			<one-to-many class="org.motech.model.MaternalVisit" />
 		</list>
 		<list name="futureServices" cascade="save-update,merge">
-			<key column="nurse_id" not-null="true" />
+			<key column="nurse_id" />
 			<index />
 			<one-to-many class="org.motech.model.FutureServiceDelivery" />
 		</list>
