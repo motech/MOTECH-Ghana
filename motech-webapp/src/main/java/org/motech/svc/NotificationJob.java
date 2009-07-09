@@ -3,37 +3,39 @@ package org.motech.svc;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.motech.model.FutureServiceDelivery;
 import org.motech.model.LogType;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 public class NotificationJob extends QuartzJobBean {
 
-	Registrar registrarBean;
-	Logger loggerBean;
+	private static Log log = LogFactory.getLog(NotificationJob.class);
 
-	public Registrar getRegistrarBean() {
-		return registrarBean;
+	private transient ApplicationContext applicationContext;
+
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
 	}
 
-	public void setRegistrarBean(Registrar registrarBean) {
-		this.registrarBean = registrarBean;
-	}
-
-	public Logger getLoggerBean() {
-		return loggerBean;
-	}
-
-	public void setLoggerBean(Logger loggerBean) {
-		this.loggerBean = loggerBean;
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 
 	@Override
-	protected void executeInternal(JobExecutionContext arg0)
+	protected void executeInternal(JobExecutionContext jobContext)
 			throws JobExecutionException {
-		
+
+		log.info("Job run at " + new Date());
+
+		Registrar registrarBean = (Registrar) applicationContext
+				.getBean("registrarBean");
+		Logger loggerBean = (Logger) applicationContext.getBean("loggerBean");
+
 		Date startDate = new Date(System.currentTimeMillis() - (30 * 1000));
 		Date endDate = new Date(System.currentTimeMillis() + (30 * 1000));
 		List<FutureServiceDelivery> futureServices = registrarBean
@@ -45,7 +47,7 @@ public class NotificationJob extends QuartzJobBean {
 						"Future Service Delivery Notifications: "
 								+ service.getNurse().getPhoneNumber() + ","
 								+ service.getPatient().getPhoneNumber());
-				
+
 				registrarBean.notifyFutureService(service, notificationDate);
 			}
 		}
