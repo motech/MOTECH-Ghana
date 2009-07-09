@@ -92,14 +92,24 @@
 				<version>1.1</version>
 			</dependency>
 			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-jcl</artifactId>
+				<version>1.5.8</version>
+			</dependency>
+			<dependency>
 				<groupId>commons-collections</groupId>
 				<artifactId>commons-collections</artifactId>
 				<version>3.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate</artifactId>
-				<version>3.2.6.ga</version>
+				<artifactId>hibernate-core</artifactId>
+				<version>3.3.2.GA</version>
+			</dependency>
+			<dependency>
+				<groupId>javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>3.9.0.GA</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -142,6 +152,21 @@
 				<version>${springVersion}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-core</artifactId>
+				<version>${cxfVersion}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>${cxfVersion}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>${cxfVersion}</version>
+			</dependency>
+			<dependency>
 				<groupId>opensymphony</groupId>
 				<artifactId>quartz</artifactId>
 				<version>1.6.1</version>
@@ -157,6 +182,7 @@
 
 	<properties>
 		<springVersion>2.5.6.SEC01</springVersion>
+		<cxfVersion>2.1</cxfVersion>
 	</properties>
 
 	<build>
