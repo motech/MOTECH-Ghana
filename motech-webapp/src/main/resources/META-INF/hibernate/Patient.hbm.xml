@@ -16,10 +16,9 @@
 		<property name="community" />
 		<property name="gender" />
 		<property name="nhis" />
-		<one-to-one name="maternalData" class="org.motech.model.MaternalData"
-			constrained="true" cascade="save-update,merge" />
+		<one-to-one name="maternalData" class="org.motech.model.MaternalData" cascade="persist,merge" />
 		<property name="phoneNumber" />
-		<list name="futureServices" cascade="save-update,merge">
+		<list name="futureServices" cascade="persist,merge">
 			<key column="patient_id" />
 			<index />
 			<one-to-many class="org.motech.model.FutureServiceDelivery" />

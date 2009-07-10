@@ -200,15 +200,15 @@ public class RegistrarBean implements Registrar {
 
 	public void notifyFutureService(FutureServiceDelivery service,
 			Date notificationDate) {
-		
+
 		Session session = factory.getCurrentSession();
-		
+
 		service.setNurseNotifiedDate(notificationDate);
 		service.setPatientNotifiedDate(notificationDate);
-		
+
 		session.merge(service);
 	}
-	
+
 	public Clinic getClinic(String name) {
 		Session session = factory.getCurrentSession();
 		return (Clinic) session.createCriteria(Clinic.class).add(
@@ -235,9 +235,11 @@ public class RegistrarBean implements Registrar {
 
 	public Patient getPatient(String serialId, Long clinicId) {
 		Session session = factory.getCurrentSession();
-		return (Patient) session.createCriteria(Patient.class).add(
-				Restrictions.eq("serial", serialId)).createCriteria("clinic")
-				.add(Restrictions.idEq(clinicId)).uniqueResult();
+		return (Patient) session
+				.createQuery(
+						"from Patient where serial = :serialId and clinic.id = :clinicId")
+				.setParameter("serialId", serialId).setParameter("clinicId",
+						clinicId).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
