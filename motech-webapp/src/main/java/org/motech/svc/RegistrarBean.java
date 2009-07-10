@@ -252,13 +252,13 @@ public class RegistrarBean implements Registrar {
 	@SuppressWarnings("unchecked")
 	public List<Pregnancy> getPregnancies() {
 		Session session = factory.getCurrentSession();
-		return (List<Pregnancy>) session.createQuery("from Pregnancy").list();
+		return (List<Pregnancy>) session.createQuery("from Pregnancy p join fetch p.maternalData").list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<MaternalVisit> getMaternalVisits() {
 		Session session = factory.getCurrentSession();
-		return (List<MaternalVisit>) session.createQuery("from MaternalVisit")
+		return (List<MaternalVisit>) session.createQuery("from MaternalVisit v join fetch v.maternalData")
 				.list();
 	}
 
