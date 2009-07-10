@@ -211,26 +211,27 @@ public class RegistrarBean implements Registrar {
 
 	public Clinic getClinic(String name) {
 		Session session = factory.getCurrentSession();
-		return (Clinic) session.createCriteria(Clinic.class).add(
-				Restrictions.eq("name", name)).uniqueResult();
+		return (Clinic) session.createQuery("from Clinic where name = :name")
+				.setParameter("name", name).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Clinic> getClinics() {
 		Session session = factory.getCurrentSession();
-		return (List<Clinic>) session.createCriteria(Clinic.class).list();
+		return (List<Clinic>) session.createQuery("from Clinic").list();
 	}
 
 	public Nurse getNurse(String phoneNumber) {
 		Session session = factory.getCurrentSession();
-		return (Nurse) session.createCriteria(Nurse.class).add(
-				Restrictions.eq("phoneNumber", phoneNumber)).uniqueResult();
+		return (Nurse) session.createQuery(
+				"from Nurse where phoneNumber = :phoneNumber").setParameter(
+				"phoneNumber", phoneNumber).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Nurse> getNurses() {
 		Session session = factory.getCurrentSession();
-		return (List<Nurse>) session.createCriteria(Nurse.class).list();
+		return (List<Nurse>) session.createQuery("from Nurse").list();
 	}
 
 	public Patient getPatient(String serialId, Long clinicId) {
@@ -245,43 +246,45 @@ public class RegistrarBean implements Registrar {
 	@SuppressWarnings("unchecked")
 	public List<Patient> getPatients() {
 		Session session = factory.getCurrentSession();
-		return (List<Patient>) session.createCriteria(Patient.class).list();
+		return (List<Patient>) session.createQuery("from Patient").list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Pregnancy> getPregnancies() {
 		Session session = factory.getCurrentSession();
-		return (List<Pregnancy>) session.createCriteria(Pregnancy.class).list();
+		return (List<Pregnancy>) session.createQuery("from Pregnancy").list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<MaternalVisit> getMaternalVisits() {
 		Session session = factory.getCurrentSession();
-		return (List<MaternalVisit>) session
-				.createCriteria(MaternalVisit.class).list();
+		return (List<MaternalVisit>) session.createQuery("from MaternalVisit")
+				.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<FutureServiceDelivery> getFutureServiceDeliveries(
 			Date startDate, Date endDate) {
 		Session session = factory.getCurrentSession();
-		return (List<FutureServiceDelivery>) session.createCriteria(
-				FutureServiceDelivery.class).add(
-				Restrictions.between("date", startDate, endDate)).list();
+		return (List<FutureServiceDelivery>) session
+				.createQuery(
+						"from FutureServiceDelivery where date between :startDate and :endDate")
+				.setParameter("startDate", startDate).setParameter("endDate",
+						endDate).list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<FutureServiceDelivery> getFutureServiceDeliveries(Long patientId) {
 		Session session = factory.getCurrentSession();
-		return (List<FutureServiceDelivery>) session.createCriteria(
-				FutureServiceDelivery.class).createCriteria("patient").add(
-				Restrictions.idEq(patientId)).list();
+		return (List<FutureServiceDelivery>) session.createQuery(
+				"from FutureServiceDelivery where patient.id = :patientId")
+				.setParameter("patientId", patientId).list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<FutureServiceDelivery> getFutureServiceDeliveries() {
 		Session session = factory.getCurrentSession();
-		return (List<FutureServiceDelivery>) session.createCriteria(
-				FutureServiceDelivery.class).list();
+		return (List<FutureServiceDelivery>) session.createQuery(
+				"from FutureServiceDelivery").list();
 	}
 }
