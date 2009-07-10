@@ -30,7 +30,8 @@ public class NotificationJob extends QuartzJobBean {
 	protected void executeInternal(JobExecutionContext jobContext)
 			throws JobExecutionException {
 
-		log.info("Job run at " + new Date());
+		if (log.isDebugEnabled())
+			log.debug("Job run at " + new Date());
 
 		Registrar registrarBean = (Registrar) applicationContext
 				.getBean("registrarBean");
