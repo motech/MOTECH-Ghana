@@ -11,8 +11,10 @@ import org.motech.model.LogType;
 import org.motech.svc.Logger;
 import org.motech.svc.Registrar;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @WebService(name = "Registrar", serviceName = "RegistrarService", portName = "RegistrarPort", targetNamespace = "http://motech.org/")
+@Service
 public class RegistrarService implements RegistrarWS {
 
 	@Autowired

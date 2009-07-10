@@ -101,6 +101,10 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -123,7 +127,7 @@
 					<artifactId>maven-eclipse-plugin</artifactId>
 					<configuration>
 						<wtpversion>1.5</wtpversion>
-						<wtpContextName>/${project.parent.artifactId}</wtpContextName>
+						<wtpContextName>/${webContext}</wtpContextName>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -145,6 +149,82 @@
 		</pluginManagement>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>integration-tests</id>
+			<activation>
+				<property>
+					<name>enableIT</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.cargo</groupId>
+						<artifactId>cargo-maven2-plugin</artifactId>
+						<version>1.0.1-SNAPSHOT</version>
+						<configuration>
+							<wait>false</wait>
+							<container>
+								<containerId>tomcat6x</containerId>
+								<home>${tomcatHome}</home>
+								<log>${project.build.directory}/cargo-logs/tomcat6.log</log>
+								<output>${project.build.directory}/cargo-logs/console.log</output>
+								<type>installed</type>
+								<dependencies>
+									<dependency>
+										<groupId>hsqldb</groupId>
+										<artifactId>hsqldb</artifactId>
+									</dependency>
+								</dependencies>
+							</container>
+							<configuration>
+								<type>standalone</type>
+								<home>${project.build.directory}/tomcat6x</home>
+								<deployables>
+									<deployable>
+										<properties>
+											<context>/${webContext}</context>
+										</properties>
+										<pingURL>http://localhost:8080/${webContext}/</pingURL>
+									</deployable>
+								</deployables>
+							</configuration>
+						</configuration>
+						<executions>
+							<execution>
+								<id>start-container</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>start</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>stop-container</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>failsafe-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<properties>
 		<dbUsername>sa</dbUsername>
 		<dbPassword></dbPassword>
@@ -153,6 +233,8 @@
 		<dbDialect>org.hibernate.dialect.HSQLDialect</dbDialect>
 		<dbShowSQL>true</dbShowSQL>
 		<dbExport>create</dbExport>
+		<webContext>${project.parent.artifactId}</webContext>
+		<tomcatHome>${env.CATALINA_HOME}</tomcatHome>
 	</properties>
 
 </project>

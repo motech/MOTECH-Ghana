@@ -2,9 +2,12 @@ package org.motech.ws;
 
 import java.util.Date;
 
+import javax.jws.WebService;
+
 import org.motech.model.Gender;
 import org.motech.model.LogType;
 
+@WebService
 public interface RegistrarWS {
 
 	public void registerMother(String nursePhoneNumber, Date date,

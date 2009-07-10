@@ -48,7 +48,7 @@
 	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
-	<jaxws:endpoint id="registrarEp" implementor="org.motech.ws.RegistrarService"
+	<jaxws:endpoint id="registrarEp" implementor="#registrarService"
 		address="/RegistrarService" />
 
 	<bean name="notificationJob" class="org.springframework.scheduling.quartz.JobDetailBean">

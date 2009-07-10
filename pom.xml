@@ -177,12 +177,18 @@
 				<version>1.8.0.10</version>
 				<scope>provided</scope>
 			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>3.8.2</version>
+				<scope>test</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<properties>
 		<springVersion>2.5.6.SEC01</springVersion>
-		<cxfVersion>2.1</cxfVersion>
+		<cxfVersion>2.2.2</cxfVersion>
 	</properties>
 
 	<build>
