@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="org.motech.model.MaternalVisit">
+		<id name="id">
+			<generator class="native" />
+		</id>
+		<property name="date" />
+		<many-to-one name="nurse" column="nurse_id" />
+		<many-to-one name="maternalData" column="maternaldata_id" />
+		<property name="tetanus" />
+		<property name="ipt" />
+		<property name="itn" />
+		<property name="visitNumber" />
+		<property name="onARV" />
+		<property name="prePMTCT" />
+		<property name="testPMTCT" />
+		<property name="postPMTCT" />
+		<property name="hemoglobinAt36Weeks" />
+	</class>
+</hibernate-mapping>

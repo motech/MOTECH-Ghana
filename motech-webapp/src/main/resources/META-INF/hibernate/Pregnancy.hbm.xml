@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="org.motech.model.Pregnancy">
+		<id name="id">
+			<generator class="native" />
+		</id>
+		<property name="registrationDate" />
+		<many-to-one name="maternalData" column="maternaldata_id" />
+		<many-to-one name="nurse" column="nurse_id" />
+		<property name="dueDate" />
+		<property name="parity" />
+		<property name="hemoglobin" />
+		<property name="deliveryDate" />
+		<property name="birthOutcome" />
+		<property name="modeOfDelivery" />
+		<property name="deliveredBy" />
+		<property name="causeOfDeath" />
+		<property name="status" />
+		<property name="dischargedOrReferred" />
+		<property name="adoptionPlanned" />
+	</class>
+</hibernate-mapping>

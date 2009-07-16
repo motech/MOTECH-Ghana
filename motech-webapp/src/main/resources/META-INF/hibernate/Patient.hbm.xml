@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="org.motech.model.Patient">
+		<id name="id">
+			<generator class="native" />
+		</id>
+		<properties name="uniqueConstraint" unique="true" insert="true"
+			update="true">
+			<property name="serial" not-null="true" />
+			<many-to-one name="clinic" column="clinic_id" not-null="true" />
+		</properties>
+		<property name="name" />
+		<property name="location" />
+		<property name="dateOfBirth" />
+		<property name="community" />
+		<property name="gender" />
+		<property name="nhis" />
+		<one-to-one name="maternalData" class="org.motech.model.MaternalData" cascade="persist,merge" />
+		<property name="phoneNumber" />
+		<list name="futureServices" cascade="persist,merge">
+			<key column="patient_id" />
+			<index />
+			<one-to-many class="org.motech.model.FutureServiceDelivery" />
+		</list>
+	</class>
+</hibernate-mapping>

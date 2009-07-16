@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.model.Gender;
+import org.motech.svc.Logger;
 import org.motech.svc.Registrar;
+import org.springframework.context.ApplicationContext;
 
 public class RegistrationServlet extends HttpServlet {
 
@@ -34,9 +35,6 @@ public class RegistrationServlet extends HttpServlet {
 
 	private static Log log = LogFactory.getLog(RegistrationServlet.class);
 
-	@EJB
-	Registrar registrationService;
-
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -51,6 +49,13 @@ public class RegistrationServlet extends HttpServlet {
 
 	private void processRequest(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+
+		ApplicationContext ctx = (ApplicationContext) getServletContext()
+				.getAttribute(
+						"org.springframework.web.context.WebApplicationContext.ROOT");
+		Registrar registrationService = (Registrar) ctx
+				.getBean("registrarBean");
+		Logger logService = (Logger) ctx.getBean("loggerBean");
 
 		// Get the value that determines the action to take
 		String action = req.getParameter("testAction");
@@ -170,7 +175,7 @@ public class RegistrationServlet extends HttpServlet {
 						.getMaternalVisits());
 				req.setAttribute("allFutureServiceDeliveries",
 						registrationService.getFutureServiceDeliveries());
-				req.setAttribute("allLogs", registrationService.getLogs());
+				req.setAttribute("allLogs", logService.getLogs());
 
 				req.getRequestDispatcher("/viewdata.jsp").forward(req, resp);
 
