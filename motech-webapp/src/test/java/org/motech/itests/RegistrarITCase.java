@@ -1,6 +1,7 @@
 package org.motech.itests;
 
 import java.util.Date;
+import java.util.logging.LogManager;
 
 import junit.framework.TestCase;
 
@@ -12,20 +13,27 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class RegistrarITCase extends TestCase {
 
-	ApplicationContext ctx = new ClassPathXmlApplicationContext(
-			"META-INF/spring/test-context.xml");
-	RegistrarWS regWs = (RegistrarWS) ctx.getBean("registrarClient");
+	ApplicationContext ctx;
+	RegistrarWS regWs;
 
 	Date time;
 
 	@Override
 	protected void setUp() throws Exception {
+		LogManager.getLogManager().readConfiguration(
+				getClass().getResourceAsStream("/jul-test.properties"));
+		ctx = new ClassPathXmlApplicationContext(
+				"META-INF/spring/test-context.xml");
+		regWs = (RegistrarWS) ctx.getBean("registrarClient");
 		time = new java.util.Date();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		time = null;
+		regWs = null;
+		ctx = null;
+		LogManager.getLogManager().readConfiguration();
 	}
 
 	public void testRegClinic() throws Exception {
