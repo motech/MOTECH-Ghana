@@ -2,35 +2,77 @@ package org.motech.ws;
 
 import java.util.Date;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import org.motech.model.Gender;
 import org.motech.model.LogType;
 
-@WebService
+@WebService(name = "Registrar", serviceName = "RegistrarService", portName = "RegistrarPort", targetNamespace = "http://motech.org/")
 public interface RegistrarWS {
 
-	public void registerMother(String nursePhoneNumber, Date date,
-			String serialId, String name, String community, String location,
-			Date dateOfBirth, Integer nhis, String phoneNumber, Date dueDate,
-			Integer parity, Integer hemoglobin);
+	@WebMethod
+	public void registerMother(
+			@WebParam(name = "nursePhoneNumber") String nursePhoneNumber,
+			@WebParam(name = "date") Date date,
+			@WebParam(name = "serialId") String serialId,
+			@WebParam(name = "name") String name,
+			@WebParam(name = "community") String community,
+			@WebParam(name = "location") String location,
+			@WebParam(name = "dateOfBirth") Date dateOfBirth,
+			@WebParam(name = "nhis") Integer nhis,
+			@WebParam(name = "phoneNumber") String phoneNumber,
+			@WebParam(name = "dueDate") Date dueDate,
+			@WebParam(name = "parity") Integer parity,
+			@WebParam(name = "hemoglobin") Integer hemoglobin);
 
-	public void registerClinic(String name);
+	@WebMethod
+	public void registerClinic(@WebParam(name = "name") String name);
 
-	public void registerNurse(String name, String phoneNumber, String clinic);
+	@WebMethod
+	public void registerNurse(@WebParam(name = "name") String name,
+			@WebParam(name = "phoneNumber") String phoneNumber,
+			@WebParam(name = "clinic") String clinic);
 
-	public void registerPatient(String nursePhoneNumber, String serialId,
-			String name, String community, String location, Date dateOfBirth,
-			Gender gender, Integer nhis, String phoneNumber);
+	@WebMethod
+	public void registerPatient(
+			@WebParam(name = "nursePhoneNumber") String nursePhoneNumber,
+			@WebParam(name = "serialId") String serialId,
+			@WebParam(name = "name") String name,
+			@WebParam(name = "community") String community,
+			@WebParam(name = "location") String location,
+			@WebParam(name = "dateOfBirth") Date dateOfBirth,
+			@WebParam(name = "gender") Gender gender,
+			@WebParam(name = "nhis") Integer nhis,
+			@WebParam(name = "phoneNumber") String phoneNumber);
 
-	public void registerPregnancy(String nursePhoneNumber, Date date,
-			String serialId, Date dueDate, Integer parity, Integer hemoglobin);
+	@WebMethod
+	public void registerPregnancy(
+			@WebParam(name = "nursePhoneNumber") String nursePhoneNumber,
+			@WebParam(name = "date") Date date,
+			@WebParam(name = "serialId") String serialId,
+			@WebParam(name = "dueDate") Date dueDate,
+			@WebParam(name = "parity") Integer parity,
+			@WebParam(name = "hemoglobin") Integer hemoglobin);
 
-	public void recordMaternalVisit(String nursePhoneNumber, Date date,
-			String serialId, Integer tetanus, Integer ipt, Integer itn,
-			Integer visitNumber, Integer onARV, Integer prePMTCT,
-			Integer testPMTCT, Integer postPMTCT, Integer hemoglobinAt36Weeks);
+	@WebMethod
+	public void recordMaternalVisit(
+			@WebParam(name = "nursePhoneNumber") String nursePhoneNumber,
+			@WebParam(name = "date") Date date,
+			@WebParam(name = "serialId") String serialId,
+			@WebParam(name = "tetanus") Integer tetanus,
+			@WebParam(name = "ipt") Integer ipt,
+			@WebParam(name = "itn") Integer itn,
+			@WebParam(name = "visitNumber") Integer visitNumber,
+			@WebParam(name = "onARV") Integer onARV,
+			@WebParam(name = "prePMTCT") Integer prePMTCT,
+			@WebParam(name = "testPMTCT") Integer testPMTCT,
+			@WebParam(name = "postPMTCT") Integer postPMTCT,
+			@WebParam(name = "hemoglobinAt36Weeks") Integer hemoglobinAt36Weeks);
 
-	public void log(LogType type, String message);
+	@WebMethod
+	public void log(@WebParam(name = "type") LogType type,
+			@WebParam(name = "message") String message);
 
 }

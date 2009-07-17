@@ -7,7 +7,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.motech.model.Clinic;
 import org.motech.model.FutureServiceDelivery;
 import org.motech.model.Gender;

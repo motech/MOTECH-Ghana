@@ -1,11 +1,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<jaxws:client id="registrarClient" serviceClass="org.motech.ws.RegistrarWS"
-		address="http://localhost:8080/motech/ws/RegistrarService" />
+	<bean id="registrarClient"
+		class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
+		<property name="serviceInterface" value="org.motech.ws.RegistrarWS" />
+		<property name="wsdlDocumentUrl"
+			value="http://localhost:8080/motech/ws/RegistrarService?wsdl" />
+		<property name="namespaceUri" value="http://motech.org/" />
+		<property name="serviceName" value="RegistrarService" />
+		<property name="portName" value="RegistrarPort" />
+	</bean>
 
 </beans>
