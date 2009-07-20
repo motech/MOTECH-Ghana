@@ -251,23 +251,24 @@ public class RegistrarBean implements Registrar {
 	@SuppressWarnings("unchecked")
 	public List<Pregnancy> getPregnancies() {
 		Session session = factory.getCurrentSession();
-		return (List<Pregnancy>) session.createQuery("from Pregnancy p join fetch p.maternalData").list();
+		return (List<Pregnancy>) session.createQuery(
+				"from Pregnancy p join fetch p.maternalData").list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<MaternalVisit> getMaternalVisits() {
 		Session session = factory.getCurrentSession();
-		return (List<MaternalVisit>) session.createQuery("from MaternalVisit v join fetch v.maternalData")
-				.list();
+		return (List<MaternalVisit>) session.createQuery(
+				"from MaternalVisit v join fetch v.maternalData").list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<FutureServiceDelivery> getFutureServiceDeliveries(
 			Date startDate, Date endDate) {
 		Session session = factory.getCurrentSession();
-		return (List<FutureServiceDelivery>) session
-				.createQuery(
-						"from FutureServiceDelivery where date between :startDate and :endDate")
+		return (List<FutureServiceDelivery>) session.createQuery(
+				"from FutureServiceDelivery s join fetch s.nurse join fetch s.patient "
+						+ "where date between :startDate and :endDate")
 				.setParameter("startDate", startDate).setParameter("endDate",
 						endDate).list();
 	}
