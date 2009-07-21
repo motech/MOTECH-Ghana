@@ -43,7 +43,6 @@ import org.openmrs.PersonName;
 import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.motechmodule.Health;
 import org.openmrs.web.ws.WebServiceSupport;
 
 /**
