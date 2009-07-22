@@ -28,13 +28,17 @@ public class RegistrarBean implements Registrar {
 
 	SessionFactory factory;
 
-	@Autowired
 	Logger loggerBean;
 
 	@Autowired
 	public void setSessionFactory(SessionFactory sf) {
 		log.debug("setting session factory" + sf);
 		factory = sf;
+	}
+
+	@Autowired
+	public void setLogger(Logger logger) {
+		this.loggerBean = logger;
 	}
 
 	public void registerMother(String nursePhoneNumber, Date date,
