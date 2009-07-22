@@ -13,11 +13,9 @@
  */
 package org.openmrs.module.motechmodule;
 
-import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -28,16 +26,14 @@ import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptDescription;
 import org.openmrs.ConceptName;
 import org.openmrs.ConceptNameTag;
-import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
-import org.openmrs.Obs;
-import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonAttributeType;
-import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.Activator;
+import org.openmrs.scheduler.SchedulerException;
+import org.openmrs.scheduler.TaskDefinition;
 
 /**
  * This class contains the logic that is run every time this module is either started or shutdown
@@ -97,6 +93,11 @@ public class MotechModuleActivator implements Activator {
 		// TODO: Add IPT to proper Concept as an Answer, not an immunization
 		addConceptAnswers("IMMUNIZATIONS ORDERED", new String[] { "TETANUS BOOSTER", "YELLOW FEVER VACCINATION",
 		        "INTERMITTENT PREVENTATIVE TREATMENT", "PENTA VACCINATION", "CEREBRO-SPINAL MENINGITIS VACCINATION" });
+		
+		log.info("Verifying Task Exists and is Scheduled");
+		// TODO: Task should start automatically on startup, Boolean.TRUE
+		createTask("Notification Task", "Task to send out SMS notifications", new Date(), new Long(30), Boolean.FALSE,
+		    "org.motech.tasks.NotificationTask");
 	}
 	
 	private void createPersonAttributeType(String name, String description, String format) {
@@ -185,7 +186,38 @@ public class MotechModuleActivator implements Activator {
 			Context.getConceptService().saveConcept(concept);
 		}
 	}
-		
+	
+	private void createTask(String name, String description, Date startDate, Long repeatSeconds, Boolean startOnStartup,
+	                        String taskClass) {
+		TaskDefinition task = Context.getSchedulerService().getTaskByName(name);
+		if (task == null) {
+			task = new TaskDefinition();
+			task.setName(name);
+			task.setDescription(description);
+			task.setStartTime(startDate);
+			task.setRepeatInterval(repeatSeconds);
+			task.setTaskClass(taskClass);
+			task.setStartOnStartup(startOnStartup);
+			Context.getSchedulerService().saveTask(task);
+		}
+		Collection<TaskDefinition> tasks = Context.getSchedulerService().getScheduledTasks();
+		boolean isScheduled = false;
+		for (TaskDefinition taskDefinition : tasks) {
+			if (taskDefinition.getId().equals(task.getId())) {
+				isScheduled = true;
+				break;
+			}
+		}
+		if (!isScheduled) {
+			try {
+				Context.getSchedulerService().scheduleTask(task);
+			}
+			catch (SchedulerException e) {
+				log.error("Cannot schedule " + name, e);
+			}
+		}
+	}
+	
 	/**
 	 * @see org.openmrs.module.Activator#shutdown()
 	 */

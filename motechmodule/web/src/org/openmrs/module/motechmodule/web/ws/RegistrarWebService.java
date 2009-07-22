@@ -78,8 +78,12 @@ public class RegistrarWebService {
 		
 		WebServiceSupport.authenticate(webServiceContext);
 		
+		// TODO: Create nurses as person and use same User for all actions ?
 		User nurse = new User();
 		nurse.setUsername(name);
+		
+		// TODO: Nurse gender hardcoded, required for Person
+		nurse.setGender(Gender.female.toOpenMRSString());
 		
 		PersonName personName = new PersonName();
 		personName.setGivenName(name);
@@ -92,13 +96,13 @@ public class RegistrarWebService {
 		nurse.addAttribute(new PersonAttribute(phoneNumberAttrType, phoneNumber));
 		
 		// TODO: Create Nurse role with proper privileges
-		Role role = Context.getUserService().getRole("System Developer");
+		Role role = Context.getUserService().getRole("Provider");
 		nurse.addRole(role);
 		
 		// TODO: Clinic not used, no connection currently between Nurse and Clinic
 		Location clinicLocation = Context.getLocationService().getLocation(clinic);
-		nurse.addAttribute(new PersonAttribute(Context.getPersonService().getPersonAttributeTypeByName("Health Center"),
-		        clinicLocation.getId().toString()));
+		PersonAttributeType clinicType = Context.getPersonService().getPersonAttributeTypeByName("Health Center");
+		nurse.addAttribute(new PersonAttribute(clinicType, clinicLocation.getId().toString()));
 		
 		Context.getUserService().saveUser(nurse, "password");
 	}
@@ -118,13 +122,18 @@ public class RegistrarWebService {
 		// Must be created previously through API or UI to lookup
 		PatientIdentifierType serialIdType = Context.getPatientService().getPatientIdentifierTypeByName("Ghana Clinic Id");
 		
-		// TODO: Lookup nurse by phone number, get Location from PersonAttribute "Health Center"
-		Location clinicLocation = Context.getLocationService().getLocation("Default Ghana Clinic");
+		User nurse = getUserByPhoneNumber(nursePhoneNumber);
+		
+		PersonAttribute clinic = nurse
+		        .getAttribute(Context.getPersonService().getPersonAttributeTypeByName("Health Center"));
+		Integer clinicId = Integer.valueOf(clinic.getValue());
+		Location clinicLocation = Context.getLocationService().getLocation(clinicId);
 		patient.addIdentifier(new PatientIdentifier(serialId, serialIdType, clinicLocation));
 		
 		PersonName personName = new PersonName();
 		personName.setGivenName(name);
-		// Family name appears required
+		// Family name appears required, PersonName parsePersonName(name)
+		personName.setFamilyName(name);
 		patient.addName(personName);
 		
 		PersonAddress address = new PersonAddress();
@@ -173,14 +182,17 @@ public class RegistrarWebService {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		
-		// TODO: Use person phone number attribute to look up User (Nurse) ? 
-		User nurse = Context.getUserService().getUserByUsername("tester");
+		User nurse = getUserByPhoneNumber(nursePhoneNumber);
 		encounter.setProvider(nurse);
+		
+		PersonAttribute clinic = nurse
+		        .getAttribute(Context.getPersonService().getPersonAttributeTypeByName("Health Center"));
+		Integer clinicId = Integer.valueOf(clinic.getValue());
+		Location clinicLocation = Context.getLocationService().getLocation(clinicId);
 		
 		// Encounter types must be created previously
 		EncounterType encounterType = Context.getEncounterService().getEncounterType("MATERNALVISIT");
 		encounter.setEncounterType(encounterType);
-		Location clinicLocation = Context.getLocationService().getLocation("Default Ghana Clinic");
 		encounter.setLocation(clinicLocation);
 		
 		if (tetanus) {
@@ -229,11 +241,47 @@ public class RegistrarWebService {
 		if (onARV) {
 			Obs arvObs = new Obs();
 			arvObs.setObsDatetime(date);
-			arvObs.setConcept(Context.getConceptService().getConcept("ON ANTIRETROVIRAL THERAPY"));
+			arvObs.setConcept(Context.getConceptService().getConcept("ANTIRETROVIRAL USE DURING PREGNANCY"));
 			arvObs.setPerson(patient);
 			arvObs.setLocation(clinicLocation);
 			arvObs.setEncounter(encounter);
+			arvObs.setValueCoded(Context.getConceptService().getConcept("ON ANTIRETROVIRAL THERAPY"));
 			encounter.addObs(arvObs);
+		}
+		
+		if (prePMTCT) {
+			Obs prePmtctObs = new Obs();
+			prePmtctObs.setObsDatetime(date);
+			prePmtctObs.setConcept(Context.getConceptService().getConcept("PRE PREVENTING MATERNAL TO CHILD TRANSMISSION"));
+			prePmtctObs.setPerson(patient);
+			prePmtctObs.setLocation(clinicLocation);
+			prePmtctObs.setEncounter(encounter);
+			prePmtctObs.setValueNumeric(new Double(1)); // Boolean currently stored as Numeric 1 or 0
+			encounter.addObs(prePmtctObs);
+		}
+		
+		if (testPMTCT) {
+			Obs testPmtctObs = new Obs();
+			testPmtctObs.setObsDatetime(date);
+			testPmtctObs
+			        .setConcept(Context.getConceptService().getConcept("TEST PREVENTING MATERNAL TO CHILD TRANSMISSION"));
+			testPmtctObs.setPerson(patient);
+			testPmtctObs.setLocation(clinicLocation);
+			testPmtctObs.setEncounter(encounter);
+			testPmtctObs.setValueNumeric(new Double(1)); // Boolean currently stored as Numeric 1 or 0
+			encounter.addObs(testPmtctObs);
+		}
+		
+		if (postPMTCT) {
+			Obs postPmtctObs = new Obs();
+			postPmtctObs.setObsDatetime(date);
+			postPmtctObs
+			        .setConcept(Context.getConceptService().getConcept("POST PREVENTING MATERNAL TO CHILD TRANSMISSION"));
+			postPmtctObs.setPerson(patient);
+			postPmtctObs.setLocation(clinicLocation);
+			postPmtctObs.setEncounter(encounter);
+			postPmtctObs.setValueNumeric(new Double(1)); // Boolean currently stored as Numeric 1 or 0
+			encounter.addObs(postPmtctObs);
 		}
 		
 		Obs hemoglobinObs = new Obs();
@@ -268,14 +316,17 @@ public class RegistrarWebService {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		
-		// TODO: Use person phone number attribute to look up User (Nurse) ? 
-		User nurse = Context.getUserService().getUserByUsername("tester");
+		User nurse = getUserByPhoneNumber(nursePhoneNumber);
 		encounter.setProvider(nurse);
+		
+		PersonAttribute clinic = nurse
+		        .getAttribute(Context.getPersonService().getPersonAttributeTypeByName("Health Center"));
+		Integer clinicId = Integer.valueOf(clinic.getValue());
+		Location clinicLocation = Context.getLocationService().getLocation(clinicId);
 		
 		// Encounter types must be created previously
 		EncounterType encounterType = Context.getEncounterService().getEncounterType("MATERNALVISIT");
 		encounter.setEncounterType(encounterType);
-		Location clinicLocation = Context.getLocationService().getLocation("Default Ghana Clinic");
 		encounter.setLocation(clinicLocation);
 		
 		Obs pregSatusObs = new Obs();
@@ -317,4 +368,16 @@ public class RegistrarWebService {
 		Context.getEncounterService().saveEncounter(encounter);
 	}
 	
+	// TODO: Better method to find Nurse by Person Attribute "Phone Number"
+	private User getUserByPhoneNumber(String phoneNumber) {
+		List<User> allUsers = Context.getUserService().getAllUsers();
+		for (User user : allUsers) {
+			PersonAttribute attr = user
+			        .getAttribute(Context.getPersonService().getPersonAttributeTypeByName("Phone Number"));
+			if (attr != null && phoneNumber.equals(attr.getValue())) {
+				return user;
+			}
+		}
+		return null;
+	}
 }
