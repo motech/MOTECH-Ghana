@@ -13,10 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motech.dao.SimpleDao;
 import org.motech.model.Gender;
 import org.motech.svc.Logger;
 import org.motech.svc.Registrar;
 import org.springframework.context.ApplicationContext;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 public class RegistrationServlet extends HttpServlet {
 
@@ -162,23 +166,30 @@ public class RegistrationServlet extends HttpServlet {
 						visitDate, serialId, tetanus, ipt, itn, visitNumber,
 						onARV, prePMTCT, testPMTCT, postPMTCT, hemoglobin);
 			} else {
-				// If no action is set, forward to dataview
-				req
-						.setAttribute("allClinics", registrationService
-								.getClinics());
-				req.setAttribute("allNurses", registrationService.getNurses());
-				req.setAttribute("allPatients", registrationService
-						.getPatients());
-				req.setAttribute("allPregnancies", registrationService
-						.getPregnancies());
-				req.setAttribute("allMaternalVisits", registrationService
-						.getMaternalVisits());
-				req.setAttribute("allFutureServiceDeliveries",
-						registrationService.getFutureServiceDeliveries());
-				req.setAttribute("allLogs", logService.getLogs());
+				SimpleDao dao = (SimpleDao) ctx.getBean("simpleDaoImpl");
+				PlatformTransactionManager txManager = (PlatformTransactionManager) ctx
+						.getBean("txManager");
+				DefaultTransactionDefinition tx = new DefaultTransactionDefinition();
+				TransactionStatus status = txManager.getTransaction(tx);
+				try {
+					// If no action is set, forward to dataview
+					req.setAttribute("allClinics", dao.getClinics());
+					req.setAttribute("allNurses", dao.getNurses());
+					req.setAttribute("allPatients", dao.getPatients());
+					req.setAttribute("allPregnancies", dao.getPregnancies());
+					req.setAttribute("allMaternalVisits", dao
+							.getMaternalVisits());
+					req.setAttribute("allFutureServiceDeliveries", dao
+							.getFutureServiceDeliveries());
+					req.setAttribute("allLogs", logService.getLogs());
 
-				req.getRequestDispatcher("/viewdata.jsp").forward(req, resp);
-
+					req.getRequestDispatcher("/viewdata.jsp")
+							.forward(req, resp);
+				} catch (Throwable t) {
+					txManager.rollback(status);
+					throw new Exception("Error fecthing data", t);
+				}
+				txManager.commit(status);
 				return;
 			}
 

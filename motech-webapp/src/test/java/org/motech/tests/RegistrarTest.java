@@ -12,9 +12,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
-import org.hibernate.Query;
-import org.hibernate.SessionFactory;
-import org.hibernate.classic.Session;
+import org.motech.dao.SimpleDao;
 import org.motech.model.Clinic;
 import org.motech.model.FutureServiceDelivery;
 import org.motech.model.Gender;
@@ -33,19 +31,13 @@ import org.motech.svc.RegistrarBean;
  * it should because the DAO and other business code is intermixed with the
  * registrar service implementation.
  * 
- * TODO: Factor out the DAO and other service code
- * 
- * TODO: Change tests to mock DAO and dependency services
- * 
  * @author batkinson
  * 
  */
 public class RegistrarTest extends TestCase {
 
 	private Logger mockLog;
-	private SessionFactory mockSf;
-	private Session mockSess;
-	private Query mockQuery;
+	private SimpleDao mockDao;
 	private Registrar reg;
 
 	@Override
@@ -54,14 +46,12 @@ public class RegistrarTest extends TestCase {
 
 		// Create mock objects
 		mockLog = createMock(Logger.class);
-		mockSf = createMock(SessionFactory.class);
-		mockSess = createMock(Session.class);
-		mockQuery = createMock(Query.class);
+		mockDao = createMock(SimpleDao.class);
 
 		// Create POJO service, inject mock collaborators
 		RegistrarBean regBean = new RegistrarBean();
 		regBean.setLogger(mockLog);
-		regBean.setSessionFactory(mockSf);
+		regBean.setDao(mockDao);
 
 		reg = regBean;
 	}
@@ -71,17 +61,16 @@ public class RegistrarTest extends TestCase {
 		String name = "A-Clinic";
 
 		// Record the expected interaction, capturing the clinic object
-		expect(mockSf.getCurrentSession()).andReturn(mockSess);
 		Capture<Clinic> c = new Capture<Clinic>();
-		expect(mockSess.save(capture(c))).andReturn(Long.valueOf(1));
+		expect(mockDao.saveClinic(capture(c))).andReturn(Long.valueOf(1));
 		mockLog.log((LogType) anyObject(), (String) anyObject());
-		replay(mockSf, mockSess, mockLog);
+		replay(mockDao, mockLog);
 
 		// Test the method
 		reg.registerClinic(name);
 
 		// Verify that the actual interactions match the expected ones
-		verify(mockSf, mockSess, mockLog);
+		verify(mockDao, mockLog);
 
 		// Check that the saved clinic has the expected name
 		assertEquals(name, c.getValue().getName());
@@ -91,22 +80,17 @@ public class RegistrarTest extends TestCase {
 
 		String name = "Jenny", phone = "8675309", clinic = "A-Clinic";
 
-		expect(mockSf.getCurrentSession()).andReturn(mockSess).times(2);
-
-		expect(mockSess.createQuery((String) anyObject())).andReturn(mockQuery);
-		expect(mockQuery.setParameter("name", clinic)).andReturn(mockQuery);
 		Clinic c = new Clinic();
 		c.setName(clinic);
-		expect(mockQuery.uniqueResult()).andReturn(c);
-
 		Capture<Nurse> nCap = new Capture<Nurse>();
-		expect(mockSess.save(capture(nCap))).andReturn(Integer.valueOf(1));
+		expect(mockDao.getClinic(clinic)).andReturn(c);
+		expect(mockDao.saveNurse(capture(nCap))).andReturn(Long.valueOf(1));
 		mockLog.log((LogType) anyObject(), (String) anyObject());
-		replay(mockSf, mockSess, mockQuery, mockLog);
+		replay(mockDao, mockLog);
 
 		reg.registerNurse(name, phone, clinic);
 
-		verify(mockSf, mockSess, mockQuery, mockLog);
+		verify(mockDao, mockLog);
 
 		Nurse n = nCap.getValue();
 		assertEquals(name, n.getName());
@@ -120,26 +104,21 @@ public class RegistrarTest extends TestCase {
 		Gender gender = Gender.male;
 		Integer nhis = 39;
 
-		expect(mockSf.getCurrentSession()).andReturn(mockSess).times(2);
-
-		expect(mockSess.createQuery((String) anyObject())).andReturn(mockQuery);
-		expect(mockQuery.setParameter("phoneNumber", nursePhoneNumber))
-				.andReturn(mockQuery);
 		Nurse n = new Nurse();
 		Clinic c = new Clinic();
-		n.setPhoneNumber(phoneNumber);
+		n.setPhoneNumber(nursePhoneNumber);
 		n.setClinic(c);
-		expect(mockQuery.uniqueResult()).andReturn(n);
 
 		Capture<Patient> pCap = new Capture<Patient>();
-		expect(mockSess.save(capture(pCap))).andReturn(Integer.valueOf(1));
+		expect(mockDao.getNurse(nursePhoneNumber)).andReturn(n);
+		expect(mockDao.savePatient(capture(pCap))).andReturn(Long.valueOf(1));
 		mockLog.log((LogType) anyObject(), (String) anyObject());
-		replay(mockSf, mockSess, mockQuery, mockLog);
+		replay(mockDao, mockLog);
 
 		reg.registerPatient(nursePhoneNumber, serialId, name, community,
 				location, dateOfBirth, gender, nhis, phoneNumber);
 
-		verify(mockSf, mockSess, mockQuery, mockLog);
+		verify(mockDao, mockLog);
 
 		Patient p = pCap.getValue();
 		assertEquals(p.getClinic(), n.getClinic());
@@ -159,38 +138,27 @@ public class RegistrarTest extends TestCase {
 		Date date = new Date(), dueDate = new Date();
 		Integer parity = 3, hemoglobin = 21;
 
-		expect(mockSf.getCurrentSession()).andReturn(mockSess).times(2);
-
-		expect(mockSess.createQuery((String) anyObject())).andReturn(mockQuery);
-		expect(mockQuery.setParameter("phoneNumber", nursePhoneNumber))
-				.andReturn(mockQuery);
 		Nurse n = new Nurse();
 		Clinic c = new Clinic();
 		c.setId(1L);
 		n.setPhoneNumber(nursePhoneNumber);
 		n.setClinic(c);
-		expect(mockQuery.uniqueResult()).andReturn(n);
 
-		expect(mockSf.getCurrentSession()).andReturn(mockSess);
-
-		expect(mockSess.createQuery((String) anyObject())).andReturn(mockQuery);
-		expect(mockQuery.setParameter("serialId", serialId)).andReturn(
-				mockQuery);
-		expect(mockQuery.setParameter("clinicId", c.getId())).andReturn(
-				mockQuery);
 		Patient p = new Patient();
 		p.setSerial(serialId);
-		expect(mockQuery.uniqueResult()).andReturn(p);
 
+		expect(mockDao.getNurse(nursePhoneNumber)).andReturn(n);
+		expect(mockDao.getPatient(serialId, c.getId())).andReturn(p);
 		Capture<MaternalData> mCap = new Capture<MaternalData>();
-		expect(mockSess.save(capture(mCap))).andReturn(Integer.valueOf(1));
+		expect(mockDao.saveMaternalData(capture(mCap))).andReturn(
+				Long.valueOf(1));
 		mockLog.log((LogType) anyObject(), (String) anyObject());
-		replay(mockSf, mockSess, mockQuery, mockLog);
+		replay(mockDao, mockLog);
 
 		reg.registerPregnancy(nursePhoneNumber, date, serialId, dueDate,
 				parity, hemoglobin);
 
-		verify(mockSf, mockSess, mockQuery, mockLog);
+		verify(mockDao, mockLog);
 
 		MaternalData m = mCap.getValue();
 		Pregnancy pr = m.getPregnancies().get(0);
@@ -208,42 +176,32 @@ public class RegistrarTest extends TestCase {
 		Date date = new Date();
 		Integer tetanus = 20, ipt = 894, itn = 89, visitNumber = 46, onARV = 478, prePMTCT = 43, testPMTCT = 25, postPMTCT = 23, hemoglobinAt36Weeks = 38;
 
-		expect(mockSf.getCurrentSession()).andReturn(mockSess).times(2);
-
-		expect(mockSess.createQuery((String) anyObject())).andReturn(mockQuery);
-		expect(mockQuery.setParameter("phoneNumber", nursePhoneNumber))
-				.andReturn(mockQuery);
 		Nurse n = new Nurse();
 		Clinic c = new Clinic();
 		c.setId(1L);
 		n.setPhoneNumber(nursePhoneNumber);
 		n.setClinic(c);
-		expect(mockQuery.uniqueResult()).andReturn(n);
 
-		expect(mockSf.getCurrentSession()).andReturn(mockSess);
-
-		expect(mockSess.createQuery((String) anyObject())).andReturn(mockQuery);
-		expect(mockQuery.setParameter("serialId", serialId)).andReturn(
-				mockQuery);
-		expect(mockQuery.setParameter("clinicId", c.getId())).andReturn(
-				mockQuery);
 		Patient p = new Patient();
 		p.setSerial(serialId);
-		expect(mockQuery.uniqueResult()).andReturn(p);
 
+		expect(mockDao.getNurse(nursePhoneNumber)).andReturn(n);
+		expect(mockDao.getPatient(serialId, c.getId())).andReturn(p);
 		Capture<MaternalData> mCap = new Capture<MaternalData>();
 		Capture<FutureServiceDelivery> fCap = new Capture<FutureServiceDelivery>();
-		expect(mockSess.save(capture(mCap))).andReturn(Long.valueOf(1L));
+		expect(mockDao.saveMaternalData(capture(mCap))).andReturn(
+				Long.valueOf(1L));
 		mockLog.log((LogType) anyObject(), (String) anyObject());
-		expect(mockSess.save(capture(fCap))).andReturn(Long.valueOf(1L));
+		expect(mockDao.saveFutureServiceDelivery(capture(fCap))).andReturn(
+				Long.valueOf(1L));
 		mockLog.log((LogType) anyObject(), (String) anyObject());
-		replay(mockSf, mockSess, mockQuery, mockLog);
+		replay(mockDao, mockLog);
 
 		reg.recordMaternalVisit(nursePhoneNumber, date, serialId, tetanus, ipt,
 				itn, visitNumber, onARV, prePMTCT, testPMTCT, postPMTCT,
 				hemoglobinAt36Weeks);
 
-		verify(mockSf, mockSess, mockQuery, mockLog);
+		verify(mockDao, mockLog);
 
 		assertEquals(nursePhoneNumber, n.getPhoneNumber());
 		MaternalData m = mCap.getValue();
@@ -259,21 +217,5 @@ public class RegistrarTest extends TestCase {
 		assertEquals(testPMTCT, mv.getTestPMTCT());
 		assertEquals(postPMTCT, mv.getPostPMTCT());
 		assertEquals(hemoglobinAt36Weeks, mv.getHemoglobinAt36Weeks());
-	}
-
-	public void testNotifyFutureService() {
-		Date date = new Date();
-		FutureServiceDelivery fsv = new FutureServiceDelivery();
-
-		expect(mockSf.getCurrentSession()).andReturn(mockSess);
-		expect(mockSess.merge(fsv)).andReturn(Long.valueOf(1));
-		replay(mockSf, mockSess);
-
-		reg.notifyFutureService(fsv, date);
-
-		verify(mockSf, mockSess);
-
-		assertEquals(date, fsv.getNurseNotifiedDate());
-		assertEquals(date, fsv.getPatientNotifiedDate());
 	}
 }
