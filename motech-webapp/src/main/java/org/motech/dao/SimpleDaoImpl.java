@@ -139,4 +139,15 @@ public class SimpleDaoImpl implements SimpleDao {
 		return (List<FutureServiceDelivery>) session.createQuery(
 				"from FutureServiceDelivery").list();
 	}
+
+	public void saveLog(org.motech.model.Log log) {
+		Session session = factory.getCurrentSession();
+		session.save(log);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<org.motech.model.Log> getLogs() {
+		Session session = factory.getCurrentSession();
+		return session.createQuery("from Log").list();
+	}
 }

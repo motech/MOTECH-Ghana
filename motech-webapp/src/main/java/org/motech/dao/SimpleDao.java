@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.motech.model.Clinic;
 import org.motech.model.FutureServiceDelivery;
+import org.motech.model.Log;
 import org.motech.model.MaternalData;
 import org.motech.model.MaternalVisit;
 import org.motech.model.Nurse;
@@ -47,4 +48,8 @@ public interface SimpleDao {
 	List<FutureServiceDelivery> getFutureServiceDeliveries(Long patientId);
 
 	List<FutureServiceDelivery> getFutureServiceDeliveries();
+
+	void saveLog(Log log);
+
+	List<Log> getLogs();
 }
