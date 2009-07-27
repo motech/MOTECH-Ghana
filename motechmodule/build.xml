@@ -1,11 +1,9 @@
 <?xml version="1.0"?>
 <!-- ********************************************************* -->
-<!-- ** Basic Module                                        ** -->
-<!-- **	                                                    ** -->
-<!-- ** @author Ben Wolfe                                   ** -->
-<!-- ** @version 1.0                                        ** -->
+<!-- ** Template: Basic Module                              ** -->
+<!-- ** Template Author: Ben Wolfe                          ** -->
 <!-- ********************************************************* -->
-<project name="BasicModule" default="package-module">
+<project name="MotechModule" default="package-module">
 		
 	<!-- *********************************************************** -->
 	<!-- **                     TARGETS                           ** -->

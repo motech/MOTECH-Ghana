@@ -28,7 +28,9 @@ import javax.xml.ws.WebServiceContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motech.model.FutureServiceDelivery;
 import org.motech.model.Gender;
+import org.motech.model.LogType;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
@@ -43,6 +45,7 @@ import org.openmrs.PersonName;
 import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.motechmodule.MotechService;
 import org.openmrs.web.ws.WebServiceSupport;
 
 /**
@@ -102,7 +105,7 @@ public class RegistrarWebService {
 		// TODO: Clinic not used, no connection currently between Nurse and Clinic
 		Location clinicLocation = Context.getLocationService().getLocation(clinic);
 		PersonAttributeType clinicType = Context.getPersonService().getPersonAttributeTypeByName("Health Center");
-		nurse.addAttribute(new PersonAttribute(clinicType, clinicLocation.getId().toString()));
+		nurse.addAttribute(new PersonAttribute(clinicType, clinicLocation.getLocationId().toString()));
 		
 		Context.getUserService().saveUser(nurse, "password");
 	}
@@ -294,6 +297,19 @@ public class RegistrarWebService {
 		encounter.addObs(hemoglobinObs);
 		
 		Context.getEncounterService().saveEncounter(encounter);
+		
+		// Date 30 seconds in future
+		long nextServiceTimeInSecs = 30;
+		Date nextServiceDate = new Date(System.currentTimeMillis()
+				+ (nextServiceTimeInSecs * 1000));
+
+		FutureServiceDelivery f = new FutureServiceDelivery();
+		f.setDate(nextServiceDate);
+		f.setUser(nurse);
+		f.setPatient(patient);
+		f.setService(Context.getConceptService().getConcept("PREGNANCY VISIT NUMBER"));
+
+		Context.getService(MotechService.class).saveFutureServiceDelivery(f);
 	}
 	
 	@WebMethod

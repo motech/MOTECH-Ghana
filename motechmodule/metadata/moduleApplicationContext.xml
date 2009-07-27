@@ -26,16 +26,46 @@
 	    	</props>
 		</property>
     </bean>
+
+	<!-- Service -->
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list>
+				<value>@MODULE_PACKAGE@.MotechService</value>
+				<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+					<property name="transactionManager">
+						<ref bean="transactionManager" />
+					</property>
+					<property name="target">
+						<bean class="@MODULE_PACKAGE@.impl.MotechServiceImpl">
+							<property name="motechDAO">
+								<bean class="@MODULE_PACKAGE@.db.hibernate.HibernateMotechDAO">
+									<property name="sessionFactory">
+										<ref bean="sessionFactory" />
+									</property>
+								</bean>
+							</property>
+						</bean>
+					</property>
+					<property name="preInterceptors">
+						<list>
+							<ref bean="authorizationInterceptor" />
+						</list>
+					</property>
+					<property name="transactionAttributeSource">
+						<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
 	
     <!-- Controllers -->
-	
     <bean id="motechmoduleFormController" class="@MODULE_PACKAGE@.web.controller.MotechModuleFormController">
 		<property name="commandName"><value>thePatientList</value></property>
 		<property name="formView"><value>/module/@MODULE_ID@/motechmoduleForm</value></property>
 		<property name="successView"><value>motechmoduleLink.form</value></property>
     </bean>
-	
-    <!-- /Controllers -->
     
     <!-- Web Services Section -->
 	<wss:binding url="/ws/registrarservice" service="#registrarservice" /> <!-- MUST start with /ws/ -->

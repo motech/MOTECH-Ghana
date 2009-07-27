@@ -98,6 +98,11 @@
 		<file>messages_es.properties</file>
 	</messages>
 	<!-- /Internationalization -->
-	
+
+	<mappingFiles>
+		Log.hbm.xml
+		FutureServiceDelivery.hbm.xml
+	</mappingFiles>
+
 </module>
 

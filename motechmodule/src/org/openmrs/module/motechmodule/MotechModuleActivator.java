@@ -171,12 +171,12 @@ public class MotechModuleActivator implements Activator {
 		Concept concept = Context.getConceptService().getConcept(conceptName);
 		Set<Integer> currentAnswerIds = new HashSet<Integer>();
 		for (ConceptAnswer answer : concept.getAnswers()) {
-			currentAnswerIds.add(answer.getAnswerConcept().getId());
+			currentAnswerIds.add(answer.getAnswerConcept().getConceptId());
 		}
 		boolean changed = false;
 		for (String answerName : answerNames) {
 			Concept answer = Context.getConceptService().getConcept(answerName);
-			if (!currentAnswerIds.contains(answer.getId())) {
+			if (!currentAnswerIds.contains(answer.getConceptId())) {
 				log.info("Adding Concept Answer " + answerName + " to " + conceptName);
 				changed = true;
 				concept.addAnswer(new ConceptAnswer(answer));
