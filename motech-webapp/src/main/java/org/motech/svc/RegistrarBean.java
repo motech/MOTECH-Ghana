@@ -11,8 +11,10 @@ import org.motech.model.Gender;
 import org.motech.model.LogType;
 import org.motech.model.MaternalData;
 import org.motech.model.MaternalVisit;
+import org.motech.model.NotificationType;
 import org.motech.model.Nurse;
 import org.motech.model.Patient;
+import org.motech.model.PhoneType;
 import org.motech.model.Pregnancy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,14 +43,17 @@ public class RegistrarBean implements Registrar {
 
 	public void registerMother(String nursePhoneNumber, Date date,
 			String serialId, String name, String community, String location,
-			Date dateOfBirth, Integer nhis, String phoneNumber, Date dueDate,
-			Integer parity, Integer hemoglobin) {
+			Date dateOfBirth, Integer nhis, String phoneNumber,
+			PhoneType phoneType, String language,
+			NotificationType notificationType, Date dueDate, Integer parity,
+			Integer hemoglobin) {
 
 		// TODO: Rely on nurse registration, needed for lookup in
 		// registerPregnancy
 
 		registerPatient(nursePhoneNumber, serialId, name, community, location,
-				dateOfBirth, Gender.female, nhis, phoneNumber);
+				dateOfBirth, Gender.female, nhis, phoneNumber, phoneType,
+				language, notificationType);
 
 		registerPregnancy(nursePhoneNumber, date, serialId, dueDate, parity,
 				hemoglobin);
@@ -81,7 +86,9 @@ public class RegistrarBean implements Registrar {
 
 	public void registerPatient(String nursePhoneNumber, String serialId,
 			String name, String community, String location, Date dateOfBirth,
-			Gender gender, Integer nhis, String phoneNumber) {
+			Gender gender, Integer nhis, String phoneNumber,
+			PhoneType phoneType, String language,
+			NotificationType notificationType) {
 
 		Nurse n = dao.getNurse(nursePhoneNumber);
 
@@ -95,6 +102,9 @@ public class RegistrarBean implements Registrar {
 		p.setNhis(nhis);
 		p.setPhoneNumber(phoneNumber);
 		p.setClinic(n.getClinic());
+		p.setPhoneType(phoneType);
+		p.setLanguage(language);
+		p.setNotificationType(notificationType);
 
 		dao.savePatient(p);
 

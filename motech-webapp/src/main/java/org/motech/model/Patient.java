@@ -18,6 +18,9 @@ public class Patient {
 	private MaternalData maternalData;
 	private String phoneNumber;
 	private List<FutureServiceDelivery> futureServices = new ArrayList<FutureServiceDelivery>();
+	private String language;
+	private PhoneType phoneType;
+	private NotificationType notificationType;
 
 	public Long getId() {
 		return id;
@@ -113,6 +116,30 @@ public class Patient {
 
 	public void setFutureServices(List<FutureServiceDelivery> futureServices) {
 		this.futureServices = futureServices;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public PhoneType getPhoneType() {
+		return phoneType;
+	}
+
+	public void setPhoneType(PhoneType phoneType) {
+		this.phoneType = phoneType;
+	}
+
+	public NotificationType getNotificationType() {
+		return notificationType;
+	}
+
+	public void setNotificationType(NotificationType notificationType) {
+		this.notificationType = notificationType;
 	}
 
 }

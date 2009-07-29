@@ -118,9 +118,11 @@ public class SimpleDaoImpl implements SimpleDao {
 	public List<FutureServiceDelivery> getFutureServiceDeliveries(
 			Date startDate, Date endDate) {
 		Session session = factory.getCurrentSession();
-		return (List<FutureServiceDelivery>) session.createQuery(
-				"from FutureServiceDelivery s join fetch s.nurse join fetch s.patient "
-						+ "where date between :startDate and :endDate")
+		return (List<FutureServiceDelivery>) session
+				.createQuery(
+						"from FutureServiceDelivery s join fetch s.nurse join fetch s.patient "
+								+ "where s.date between :startDate and :endDate "
+								+ "and (s.patientNotifiedDate is null or s.nurseNotifiedDate is null)")
 				.setParameter("startDate", startDate).setParameter("endDate",
 						endDate).list();
 	}

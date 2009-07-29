@@ -43,12 +43,39 @@
 		<td><input name="patientPhone" value="5555555555" /></td>
 	</tr>
 	<tr>
+		<td><label for="patientPhoneType">Phone Type:</label></td>
+		<td>
+			<select name="patientPhoneType">
+				<option value="personal">Personal</option>
+				<option value="shared">Shared</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
 		<td><label for="dateOfBirth">Date of Birth:</label></td>
 		<td><input name="dateOfBirth" value="08/01/1983" /></td>
 	</tr>
 	<tr>
 		<td><label for="gender">Gender:</label></td>
-		<td><input name="gender" value="male" /></td>
+		<td>
+			<select name="gender">
+				<option value="male">Male</option>
+				<option value="female">Female</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="language">Language:</label></td>
+		<td><input name="language" value="English" /></td>
+	</tr>
+	<tr>
+		<td><label for="notificationType">Preferred Notification Type:</label></td>
+		<td>
+			<select name="notificationType">
+				<option value="text">Text</option>
+				<option value="voice">Voice</option>
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="2"><input type="submit" /></td>

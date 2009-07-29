@@ -38,12 +38,18 @@ public class NotifierBean implements Notifier {
 		if (futureServices.size() > 0) {
 			Date notificationDate = new Date();
 			for (FutureServiceDelivery service : futureServices) {
-				logger.log(LogType.success,
-						"Future Service Delivery Notifications: "
-								+ service.getNurse().getPhoneNumber() + ","
-								+ service.getPatient().getPhoneNumber());
-				service.setNurseNotifiedDate(notificationDate);
-				service.setPatientNotifiedDate(notificationDate);
+				if (service.getPatientNotifiedDate() == null) {
+					logger.log(LogType.success,
+							"Future Service Delivery Notification, Patient: "
+									+ service.getPatient().getPhoneNumber());
+					service.setPatientNotifiedDate(notificationDate);
+				}
+				if (service.getNurseNotifiedDate() == null) {
+					logger.log(LogType.success,
+							"Future Service Delivery Notification, Nurse: "
+									+ service.getNurse().getPhoneNumber());
+					service.setNurseNotifiedDate(notificationDate);
+				}
 				dao.updateFutureServiceDelivery(service);
 			}
 		}

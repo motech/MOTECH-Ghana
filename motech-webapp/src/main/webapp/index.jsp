@@ -58,6 +58,28 @@
 		<td><input name="patientPhone" value="5555555555" /></td>
 	</tr>
 	<tr>
+		<td><label for="patientPhoneType">Phone Type:</label></td>
+		<td>
+			<select name="patientPhoneType">
+				<option value="personal">Personal</option>
+				<option value="shared">Shared</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="language">Language:</label></td>
+		<td><input name="language" value="English" /></td>
+	</tr>
+	<tr>
+		<td><label for="notificationType">Preferred Notification Type:</label></td>
+		<td>
+			<select name="notificationType">
+				<option value="text">Text</option>
+				<option value="voice">Voice</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
 		<td><label for="dueDate">Due Date:</label></td>
 		<td><input name="dueDate" value="08/01/2009" /></td>
 	</tr>

@@ -15,6 +15,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.dao.SimpleDao;
 import org.motech.model.Gender;
+import org.motech.model.NotificationType;
+import org.motech.model.PhoneType;
 import org.motech.svc.Logger;
 import org.motech.svc.Registrar;
 import org.springframework.context.ApplicationContext;
@@ -80,6 +82,10 @@ public class RegistrationServlet extends HttpServlet {
 			String nhisStr = req.getParameter("nhis");
 			Integer nhis = nhisStr == null ? null : Integer.valueOf(nhisStr);
 			String patientPhoneNumber = req.getParameter("patientPhone");
+			String patientPhoneType = req.getParameter("patientPhoneType");
+			String patientLanguage = req.getParameter("language");
+			String patientNotificationType = req
+					.getParameter("notificationType");
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -144,8 +150,10 @@ public class RegistrationServlet extends HttpServlet {
 
 				registrationService.registerMother(nursePhoneNumber,
 						new Date(), serialId, name, community, location,
-						dateOfBirth, nhis, patientPhoneNumber, dueDate, parity,
-						hemoglobin);
+						dateOfBirth, nhis, patientPhoneNumber, PhoneType
+								.valueOf(patientPhoneType), patientLanguage,
+						NotificationType.valueOf(patientNotificationType),
+						dueDate, parity, hemoglobin);
 
 				registrationService.recordMaternalVisit(nursePhoneNumber,
 						new Date(), serialId, 0, 0, 0, 1, 0, 0, 0, 0, 0);
@@ -157,7 +165,9 @@ public class RegistrationServlet extends HttpServlet {
 			} else if ("patient".equals(action)) {
 				registrationService.registerPatient(nursePhoneNumber, serialId,
 						name, community, location, dateOfBirth, Gender
-								.valueOf(gender), nhis, patientPhoneNumber);
+								.valueOf(gender), nhis, patientPhoneNumber,
+						PhoneType.valueOf(patientPhoneType), patientLanguage,
+						NotificationType.valueOf(patientNotificationType));
 			} else if ("pregnancy".equals(action)) {
 				registrationService.registerPregnancy(nursePhoneNumber,
 						regDate, serialId, dueDate, parity, hemoglobin);

@@ -8,6 +8,8 @@ import javax.jws.WebService;
 
 import org.motech.model.Gender;
 import org.motech.model.LogType;
+import org.motech.model.NotificationType;
+import org.motech.model.PhoneType;
 
 @WebService(name = "Registrar", serviceName = "RegistrarService", portName = "RegistrarPort", targetNamespace = "http://motech.org/")
 public interface RegistrarWS {
@@ -23,6 +25,9 @@ public interface RegistrarWS {
 			@WebParam(name = "dateOfBirth") Date dateOfBirth,
 			@WebParam(name = "nhis") Integer nhis,
 			@WebParam(name = "phoneNumber") String phoneNumber,
+			@WebParam(name = "phoneType") PhoneType phoneType,
+			@WebParam(name = "language") String language,
+			@WebParam(name = "notificationType") NotificationType notificationType,
 			@WebParam(name = "dueDate") Date dueDate,
 			@WebParam(name = "parity") Integer parity,
 			@WebParam(name = "hemoglobin") Integer hemoglobin);
@@ -45,7 +50,10 @@ public interface RegistrarWS {
 			@WebParam(name = "dateOfBirth") Date dateOfBirth,
 			@WebParam(name = "gender") Gender gender,
 			@WebParam(name = "nhis") Integer nhis,
-			@WebParam(name = "phoneNumber") String phoneNumber);
+			@WebParam(name = "phoneNumber") String phoneNumber,
+			@WebParam(name = "phoneType") PhoneType phoneType,
+			@WebParam(name = "language") String language,
+			@WebParam(name = "notificationType") NotificationType notificationType);
 
 	@WebMethod
 	public void registerPregnancy(

@@ -66,6 +66,7 @@ public class NotifierTest extends TestCase {
 				mockDao.getFutureServiceDeliveries((Date) anyObject(),
 						(Date) anyObject())).andReturn(fsds);
 		mockLogger.log((LogType) anyObject(), (String) anyObject());
+		mockLogger.log((LogType) anyObject(), (String) anyObject());
 		mockDao.updateFutureServiceDelivery(fsds.get(0));
 		replay(mockDao, mockLogger);
 		notifier.sendNotifications(interval);
@@ -88,6 +89,7 @@ public class NotifierTest extends TestCase {
 				mockDao.getFutureServiceDeliveries((Date) anyObject(),
 						(Date) anyObject())).andReturn(fsds);
 		for (int i = 0; i < numNotifications; i++) {
+			mockLogger.log((LogType) anyObject(), (String) anyObject());
 			mockLogger.log((LogType) anyObject(), (String) anyObject());
 			mockDao.updateFutureServiceDelivery(fsds.get(i));
 		}

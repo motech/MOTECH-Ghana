@@ -6,6 +6,8 @@ import javax.jws.WebService;
 
 import org.motech.model.Gender;
 import org.motech.model.LogType;
+import org.motech.model.NotificationType;
+import org.motech.model.PhoneType;
 import org.motech.svc.Logger;
 import org.motech.svc.Registrar;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +25,14 @@ public class RegistrarService implements RegistrarWS {
 
 	public void registerMother(String nursePhoneNumber, Date date,
 			String serialId, String name, String community, String location,
-			Date dateOfBirth, Integer nhis, String phoneNumber, Date dueDate,
-			Integer parity, Integer hemoglobin) {
+			Date dateOfBirth, Integer nhis, String phoneNumber,
+			PhoneType phoneType, String language,
+			NotificationType notificationType, Date dueDate, Integer parity,
+			Integer hemoglobin) {
 
 		registrationBean.registerMother(nursePhoneNumber, date, serialId, name,
-				community, location, dateOfBirth, nhis, phoneNumber, dueDate,
-				parity, hemoglobin);
+				community, location, dateOfBirth, nhis, phoneNumber, phoneType,
+				language, notificationType, dueDate, parity, hemoglobin);
 	}
 
 	public void registerClinic(String name) {
@@ -42,10 +46,13 @@ public class RegistrarService implements RegistrarWS {
 
 	public void registerPatient(String nursePhoneNumber, String serialId,
 			String name, String community, String location, Date dateOfBirth,
-			Gender gender, Integer nhis, String phoneNumber) {
+			Gender gender, Integer nhis, String phoneNumber,
+			PhoneType phoneType, String language,
+			NotificationType notificationType) {
 
 		registrationBean.registerPatient(nursePhoneNumber, serialId, name,
-				community, location, dateOfBirth, gender, nhis, phoneNumber);
+				community, location, dateOfBirth, gender, nhis, phoneNumber,
+				phoneType, language, notificationType);
 	}
 
 	public void registerPregnancy(String nursePhoneNumber, Date date,

@@ -7,6 +7,8 @@ import junit.framework.TestCase;
 
 import org.motech.model.Gender;
 import org.motech.model.LogType;
+import org.motech.model.NotificationType;
+import org.motech.model.PhoneType;
 import org.motech.ws.RegistrarWS;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -46,12 +48,15 @@ public class RegistrarITCase extends TestCase {
 
 	public void testRegMother() throws Exception {
 		regWs.registerMother("37694676488", time, "CAPNCRUNCH", "Betty",
-				"KFJHKF", "HDJHJDKD", time, 313, "4674676747", time, 1, 1);
+				"KFJHKF", "HDJHJDKD", time, 313, "4674676747",
+				PhoneType.personal, "English", NotificationType.text, time, 1,
+				1);
 	}
 
 	public void testRegPatient() throws Exception {
 		regWs.registerPatient("37694676488", "HONEYGRAHAMS", "Super Dave",
-				"DHJGDJK", "HDHJHDJK", time, Gender.male, 1232, "4674676747");
+				"DHJGDJK", "HDHJHDJK", time, Gender.male, 1232, "4674676747",
+				PhoneType.personal, "English", NotificationType.text);
 
 	}
 

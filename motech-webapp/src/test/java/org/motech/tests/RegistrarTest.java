@@ -19,8 +19,10 @@ import org.motech.model.Gender;
 import org.motech.model.LogType;
 import org.motech.model.MaternalData;
 import org.motech.model.MaternalVisit;
+import org.motech.model.NotificationType;
 import org.motech.model.Nurse;
 import org.motech.model.Patient;
+import org.motech.model.PhoneType;
 import org.motech.model.Pregnancy;
 import org.motech.svc.Logger;
 import org.motech.svc.Registrar;
@@ -99,10 +101,12 @@ public class RegistrarTest extends TestCase {
 	}
 
 	public void testRegisterPatient() {
-		String nursePhoneNumber = "8675309", serialId = "389489", name = "Jaques", community = "Community", location = "Location", phoneNumber = "5551212";
+		String nursePhoneNumber = "8675309", serialId = "389489", name = "Jaques", community = "Community", location = "Location", phoneNumber = "5551212", language = "English";
 		Date dateOfBirth = new Date();
 		Gender gender = Gender.male;
 		Integer nhis = 39;
+		PhoneType phoneType = PhoneType.personal;
+		NotificationType notificationType = NotificationType.text;
 
 		Nurse n = new Nurse();
 		Clinic c = new Clinic();
@@ -116,7 +120,8 @@ public class RegistrarTest extends TestCase {
 		replay(mockDao, mockLog);
 
 		reg.registerPatient(nursePhoneNumber, serialId, name, community,
-				location, dateOfBirth, gender, nhis, phoneNumber);
+				location, dateOfBirth, gender, nhis, phoneNumber, phoneType,
+				language, notificationType);
 
 		verify(mockDao, mockLog);
 
