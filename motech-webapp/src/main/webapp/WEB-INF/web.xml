@@ -12,6 +12,7 @@
 	<servlet>
 		<servlet-name>jaxws-servlet</servlet-name>
 		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSSpringServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>

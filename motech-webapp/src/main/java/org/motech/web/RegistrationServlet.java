@@ -18,7 +18,7 @@ import org.motech.model.Gender;
 import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
 import org.motech.svc.Logger;
-import org.motech.svc.Registrar;
+import org.motech.ws.RegistrarWS;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -59,8 +59,8 @@ public class RegistrationServlet extends HttpServlet {
 		ApplicationContext ctx = (ApplicationContext) getServletContext()
 				.getAttribute(
 						"org.springframework.web.context.WebApplicationContext.ROOT");
-		Registrar registrationService = (Registrar) ctx
-				.getBean("registrarBean");
+		RegistrarWS registrationService = (RegistrarWS) ctx
+				.getBean("registrarClient");
 		Logger logService = (Logger) ctx.getBean("loggerBean");
 
 		// Get the value that determines the action to take

@@ -77,4 +77,15 @@
 		<property name="configLocation" value="classpath:quartz.properties"/>
 	</bean>
 
+	<bean id="registrarClient"
+		class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
+		<property name="serviceInterface" value="org.motech.ws.RegistrarWS" />
+		<property name="wsdlDocumentUrl"
+			value="http://localhost:8080/motech/ws/RegistrarService?wsdl" />
+		<property name="namespaceUri" value="http://motech.org/" />
+		<property name="serviceName" value="RegistrarService" />
+		<property name="portName" value="RegistrarPort" />
+		<property name="lookupServiceOnStartup" value="false" />
+	</bean>
+
 </beans>
