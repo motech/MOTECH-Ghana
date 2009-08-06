@@ -18,6 +18,8 @@
 		<property name="nhis" />
 		<one-to-one name="maternalData" class="org.motech.model.MaternalData" cascade="persist,merge" />
 		<property name="phoneNumber" />
+		<property name="phoneType" />
+		<property name="notificationType" />
 		<list name="futureServices" cascade="persist,merge">
 			<key column="patient_id" />
 			<index />
