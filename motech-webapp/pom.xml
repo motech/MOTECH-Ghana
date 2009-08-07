@@ -230,7 +230,7 @@
 		<dbDriver>org.hsqldb.jdbcDriver</dbDriver>
 		<dbUrl>jdbc:hsqldb:.</dbUrl>
 		<dbDialect>org.hibernate.dialect.HSQLDialect</dbDialect>
-		<dbShowSQL>true</dbShowSQL>
+		<dbShowSQL>false</dbShowSQL>
 		<dbExport>create</dbExport>
 		<webContext>${project.parent.artifactId}</webContext>
 		<tomcatHome>${env.CATALINA_HOME}</tomcatHome>
