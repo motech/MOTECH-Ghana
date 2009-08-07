@@ -13,13 +13,20 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.motech.dao.SimpleDao;
+import org.motech.model.Clinic;
 import org.motech.model.FutureServiceDelivery;
 import org.motech.model.LogType;
+import org.motech.model.NotificationType;
 import org.motech.model.Nurse;
 import org.motech.model.Patient;
+import org.motech.model.PhoneType;
 import org.motech.svc.Logger;
 import org.motech.svc.Notifier;
 import org.motech.svc.NotifierBean;
+
+import com.dreamoval.motech.omi.service.ContactNumberType;
+import com.dreamoval.motech.omi.service.MessageType;
+import com.dreamoval.motech.webapp.webservices.MessageService;
 
 /**
  * Unit test for notifier service.
@@ -31,6 +38,7 @@ public class NotifierTest extends TestCase {
 
 	Logger mockLogger;
 	SimpleDao mockDao;
+	MessageService mockMobile;
 	Notifier notifier;
 
 	@Override
@@ -38,9 +46,11 @@ public class NotifierTest extends TestCase {
 		super.setUp();
 		mockLogger = createMock(Logger.class);
 		mockDao = createMock(SimpleDao.class);
+		mockMobile = createMock(MessageService.class);
 		NotifierBean notifierBean = new NotifierBean();
 		notifierBean.setDao(mockDao);
 		notifierBean.setLogger(mockLogger);
+		notifierBean.setMobileClient(mockMobile);
 		notifier = notifierBean;
 	}
 
@@ -60,17 +70,26 @@ public class NotifierTest extends TestCase {
 		List<FutureServiceDelivery> fsds = new ArrayList<FutureServiceDelivery>();
 		FutureServiceDelivery fsd = new FutureServiceDelivery();
 		fsd.setNurse(new Nurse());
-		fsd.setPatient(new Patient());
+		Patient p = new Patient();
+		p.setPhoneType(PhoneType.personal);
+		p.setNotificationType(NotificationType.text);
+		p.setClinic(new Clinic());
+		fsd.setPatient(p);
 		fsds.add(fsd);
 		expect(
 				mockDao.getFutureServiceDeliveries((Date) anyObject(),
 						(Date) anyObject())).andReturn(fsds);
 		mockLogger.log((LogType) anyObject(), (String) anyObject());
+		expect(
+				mockMobile.sendPatientMessage((Long) anyObject(),
+						(String) anyObject(), (Date) anyObject(),
+						(String) anyObject(), (ContactNumberType) anyObject(),
+						(MessageType) anyObject())).andReturn(Long.valueOf(1));
 		mockLogger.log((LogType) anyObject(), (String) anyObject());
 		mockDao.updateFutureServiceDelivery(fsds.get(0));
-		replay(mockDao, mockLogger);
+		replay(mockDao, mockLogger, mockMobile);
 		notifier.sendNotifications(interval);
-		verify(mockDao, mockLogger);
+		verify(mockDao, mockLogger, mockMobile);
 	}
 
 	public void testSendManyNotifications() {
@@ -81,7 +100,11 @@ public class NotifierTest extends TestCase {
 		for (int i = 0; i < numNotifications; i++) {
 			FutureServiceDelivery fsd = new FutureServiceDelivery();
 			fsd.setNurse(new Nurse());
-			fsd.setPatient(new Patient());
+			Patient p = new Patient();
+			p.setPhoneType(PhoneType.personal);
+			p.setNotificationType(NotificationType.text);
+			p.setClinic(new Clinic());
+			fsd.setPatient(p);;
 			fsds.add(fsd);
 		}
 
@@ -90,11 +113,18 @@ public class NotifierTest extends TestCase {
 						(Date) anyObject())).andReturn(fsds);
 		for (int i = 0; i < numNotifications; i++) {
 			mockLogger.log((LogType) anyObject(), (String) anyObject());
+			expect(
+					mockMobile.sendPatientMessage((Long) anyObject(),
+							(String) anyObject(), (Date) anyObject(),
+							(String) anyObject(),
+							(ContactNumberType) anyObject(),
+							(MessageType) anyObject())).andReturn(
+					Long.valueOf(i));
 			mockLogger.log((LogType) anyObject(), (String) anyObject());
 			mockDao.updateFutureServiceDelivery(fsds.get(i));
 		}
-		replay(mockDao, mockLogger);
+		replay(mockDao, mockLogger, mockMobile);
 		notifier.sendNotifications(interval);
-		verify(mockDao, mockLogger);
+		verify(mockDao, mockLogger, mockMobile);
 	}
 }
