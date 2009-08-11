@@ -35,7 +35,6 @@
 		<property name="hibernateProperties">
 			<value>
 				hibernate.dialect=${dbDialect}
-				hibernate.show_sql=${dbShowSQL}
 				hibernate.hbm2ddl.auto=${dbExport}
 			</value>
 		</property>
