@@ -18,7 +18,7 @@
 	<!-- <updateURL>https://dev.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL> -->
 	<!-- /Base Module Properties -->
 	
-	<require_version>1.2.0.3400</require_version>
+	<require_version>1.6.0.8669</require_version>
 	
 	<!-- Extensions -->
 	<extension>
@@ -27,12 +27,11 @@
 	</extension>
 	
 	
-	<!-- AOP
+	<!-- AOP -->
 	<advice>
-		<point>org.openmrs.api.FormService</point>
-		<class>@MODULE_PACKAGE@.advice.DuplicateFormAdvisor</class>
+		<point>org.openmrs.api.EncounterService</point>
+		<class>@MODULE_PACKAGE@.advice.SaveEncounterAdvisor</class>
 	</advice>
-	 /AOP -->
 	
 	
 	<!-- Required Privileges 

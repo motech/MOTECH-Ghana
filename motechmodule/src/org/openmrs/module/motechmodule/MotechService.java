@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.motech.model.FutureServiceDelivery;
 import org.motech.model.Log;
+import org.openmrs.User;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,4 +41,7 @@ public interface MotechService extends OpenmrsService {
 	
 	@Transactional(readOnly = true)
 	List<Log> getAllLogs();
+	
+	@Transactional(readOnly = true)
+	User getUserByPhoneNumber(String phoneNumber);
 }

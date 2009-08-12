@@ -33,4 +33,5 @@ public interface MotechDAO {
 	
 	List<Log> getLogs();
 	
+	List<Integer> getUsersByPersonAttribute(Integer personAttributeTypeId, String personAttributeValue);
 }

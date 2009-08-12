@@ -18,6 +18,8 @@ import java.util.List;
 
 import org.motech.model.FutureServiceDelivery;
 import org.motech.model.Log;
+import org.openmrs.User;
+import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.motechmodule.MotechService;
 import org.openmrs.module.motechmodule.db.hibernate.HibernateMotechDAO;
@@ -58,4 +60,11 @@ public class MotechServiceImpl extends BaseOpenmrsService implements MotechServi
 		motechDAO.updateFutureServiceDelivery(service);
 	}
 	
+	public User getUserByPhoneNumber(String phoneNumber) {
+		Integer phoneAttributeTypeId = Context.getPersonService().getPersonAttributeTypeByName("Phone Number")
+		        .getPersonAttributeTypeId();
+		// If more than one user matches phone number, first user in list is returned
+		Integer userId = motechDAO.getUsersByPersonAttribute(phoneAttributeTypeId, phoneNumber).get(0);
+		return Context.getUserService().getUser(userId);
+	}
 }

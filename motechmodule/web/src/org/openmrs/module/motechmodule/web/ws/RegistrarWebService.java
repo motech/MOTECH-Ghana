@@ -28,9 +28,7 @@ import javax.xml.ws.WebServiceContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motech.model.FutureServiceDelivery;
 import org.motech.model.Gender;
-import org.motech.model.LogType;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
@@ -125,7 +123,7 @@ public class RegistrarWebService {
 		// Must be created previously through API or UI to lookup
 		PatientIdentifierType serialIdType = Context.getPatientService().getPatientIdentifierTypeByName("Ghana Clinic Id");
 		
-		User nurse = getUserByPhoneNumber(nursePhoneNumber);
+		User nurse = Context.getService(MotechService.class).getUserByPhoneNumber(nursePhoneNumber);
 		
 		PersonAttribute clinic = nurse
 		        .getAttribute(Context.getPersonService().getPersonAttributeTypeByName("Health Center"));
@@ -185,7 +183,7 @@ public class RegistrarWebService {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		
-		User nurse = getUserByPhoneNumber(nursePhoneNumber);
+		User nurse = Context.getService(MotechService.class).getUserByPhoneNumber(nursePhoneNumber);
 		encounter.setProvider(nurse);
 		
 		PersonAttribute clinic = nurse
@@ -297,19 +295,6 @@ public class RegistrarWebService {
 		encounter.addObs(hemoglobinObs);
 		
 		Context.getEncounterService().saveEncounter(encounter);
-		
-		// Date 30 seconds in future
-		long nextServiceTimeInSecs = 30;
-		Date nextServiceDate = new Date(System.currentTimeMillis()
-				+ (nextServiceTimeInSecs * 1000));
-
-		FutureServiceDelivery f = new FutureServiceDelivery();
-		f.setDate(nextServiceDate);
-		f.setUser(nurse);
-		f.setPatient(patient);
-		f.setService(Context.getConceptService().getConcept("PREGNANCY VISIT NUMBER"));
-
-		Context.getService(MotechService.class).saveFutureServiceDelivery(f);
 	}
 	
 	@WebMethod
@@ -332,7 +317,7 @@ public class RegistrarWebService {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		
-		User nurse = getUserByPhoneNumber(nursePhoneNumber);
+		User nurse = Context.getService(MotechService.class).getUserByPhoneNumber(nursePhoneNumber);
 		encounter.setProvider(nurse);
 		
 		PersonAttribute clinic = nurse
@@ -341,7 +326,7 @@ public class RegistrarWebService {
 		Location clinicLocation = Context.getLocationService().getLocation(clinicId);
 		
 		// Encounter types must be created previously
-		EncounterType encounterType = Context.getEncounterService().getEncounterType("MATERNALVISIT");
+		EncounterType encounterType = Context.getEncounterService().getEncounterType("PREGNANCYVISIT");
 		encounter.setEncounterType(encounterType);
 		encounter.setLocation(clinicLocation);
 		
@@ -383,17 +368,5 @@ public class RegistrarWebService {
 		
 		Context.getEncounterService().saveEncounter(encounter);
 	}
-	
-	// TODO: Better method to find Nurse by Person Attribute "Phone Number"
-	private User getUserByPhoneNumber(String phoneNumber) {
-		List<User> allUsers = Context.getUserService().getAllUsers();
-		for (User user : allUsers) {
-			PersonAttribute attr = user
-			        .getAttribute(Context.getPersonService().getPersonAttributeTypeByName("Phone Number"));
-			if (attr != null && phoneNumber.equals(attr.getValue())) {
-				return user;
-			}
-		}
-		return null;
-	}
+
 }

@@ -82,20 +82,6 @@ public class MotechModuleFormController extends SimpleFormController {
 	@Override
 	protected Collection<Patient> formBackingObject(HttpServletRequest request) throws Exception {
 		
-		// get all patients that have an identifier "1234"
-		// see http://resources.openmrs.org/doc/index.html?org/openmrs/api/PatientService.html for
-		// a list of all PatientService methods
-		Patient p = new Patient();
-		p.setBirthdate(new Date());
-		p.addName(new PersonName("First","Middle","Last"));
-		// Serial Id for Patient
-		// Get patient identifier type by Id?      lookup Location?
-		p.addIdentifier(new PatientIdentifier("Identifier", new PatientIdentifierType(), new Location()));
-		// Phone Number, NHIS?
-		p.addAttribute(new PersonAttribute());
-		// Location/Community?
-		p.addAddress(new PersonAddress());
-		p.setGender("Gender");
 		Collection<Patient> patients = Context.getPatientService().getAllPatients();
 		
 		// this object will be made available to the jsp page under the variable name

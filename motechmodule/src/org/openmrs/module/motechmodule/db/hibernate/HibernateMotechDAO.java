@@ -70,4 +70,14 @@ public class HibernateMotechDAO implements MotechDAO {
 		return (List<Log>) session.createCriteria(Log.class).list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Integer> getUsersByPersonAttribute(Integer personAttributeTypeId, String personAttributeValue) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Integer>) session.createSQLQuery(
+		    "select u.user_id from person p inner join users u on u.user_id = p.person_id "
+		            + "inner join person_attribute a on p.person_id = a.person_id "
+		            + "where a.voided = false and p.voided = false and u.voided = false "
+		            + "and a.person_attribute_type_id = :typeId and a.value = :value group by u.user_id").setInteger(
+		    "typeId", personAttributeTypeId).setString("value", personAttributeValue).list();
+	}
 }
