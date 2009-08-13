@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.motech</groupId>
@@ -239,9 +238,9 @@
 	</build>
 
 	<scm>
-		<url>https://motech.rcg.usm.maine.edu/redmine/repositories/browse/motech/trunk</url>
-		<connection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/trunk</connection>
-		<developerConnection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/trunk</developerConnection>
+		<url>https://motech.rcg.usm.maine.edu/redmine/repositories/browse/motech/branches/1.0-M1.X</url>
+		<connection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/branches/1.0-M1.X</connection>
+		<developerConnection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/branches/1.0-M1.X</developerConnection>
 	</scm>
 
 	<profiles>
