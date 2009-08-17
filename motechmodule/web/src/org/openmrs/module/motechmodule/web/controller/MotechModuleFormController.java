@@ -13,81 +13,145 @@
  */
 package org.openmrs.module.motechmodule.web.controller;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Location;
-import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
+import org.openmrs.EncounterType;
 import org.openmrs.PatientIdentifierType;
-import org.openmrs.PersonAddress;
-import org.openmrs.PersonAttribute;
-import org.openmrs.PersonName;
 import org.openmrs.api.context.Context;
-import org.springframework.validation.BindException;
-import org.springframework.validation.Errors;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.SimpleFormController;
-import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.module.motechmodule.MotechService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-/**
- * This controller backs the /web/module/basicmoduleForm.jsp page. This controller is tied to that
- * jsp page in the /metadata/moduleApplicationContext.xml file
- */
-public class MotechModuleFormController extends SimpleFormController {
+@Controller
+public class MotechModuleFormController {
 	
-	/** Logger for this class and subclasses */
-	protected final Log log = LogFactory.getLog(getClass());
+	protected final Log log = LogFactory.getLog(MotechModuleFormController.class);
 	
-	/**
-	 * Returns any extra data in a key-->value pair kind of way
-	 * 
-	 * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest,
-	 *      java.lang.Object, org.springframework.validation.Errors)
-	 */
-	@Override
-	protected Map<String, Object> referenceData(HttpServletRequest request, Object obj, Errors err) throws Exception {
-		
-		// this method doesn't return any extra data right now, just an empty map
-		return new HashMap<String, Object>();
+	@RequestMapping(value = "/module/motechmodule/quick", method = RequestMethod.GET)
+	public String viewQuickTestForm() {
+		return "/module/motechmodule/quick";
 	}
 	
-	/**
-	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
-	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
-	 *      org.springframework.validation.BindException)
-	 */
-	@Override
-	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object object,
-	                                BindException exceptions) throws Exception {
-		//HttpSession httpSession = request.getSession();
-		
-		return new ModelAndView(new RedirectView(getSuccessView()));
+	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.GET)
+	public String viewClinicForm() {
+		return "/module/motechmodule/clinic";
 	}
 	
-	/**
-	 * This class returns the form backing object. This can be a string, a boolean, or a normal java
-	 * pojo. The type can be set in the /config/moduleApplicationContext.xml file or it can be just
-	 * defined by the return type of this method
-	 * 
-	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
-	 */
-	@Override
-	protected Collection<Patient> formBackingObject(HttpServletRequest request) throws Exception {
+	@RequestMapping(value = "/module/motechmodule/nurse", method = RequestMethod.GET)
+	public String viewNurseForm() {
+		return "/module/motechmodule/nurse";
+	}
+	
+	@RequestMapping(value = "/module/motechmodule/patient", method = RequestMethod.GET)
+	public String viewPatientForm() {
+		return "/module/motechmodule/patient";
+	}
+	
+	@RequestMapping(value = "/module/motechmodule/pregnancy", method = RequestMethod.GET)
+	public String viewPregnancyForm() {
+		return "/module/motechmodule/pregnancy";
+	}
+	
+	@RequestMapping(value = "/module/motechmodule/maternalVisit", method = RequestMethod.GET)
+	public String viewMaternalVisitForm() {
+		return "/module/motechmodule/maternalVisit";
+	}
+	
+	@RequestMapping(value = "/module/motechmodule/quick", method = RequestMethod.POST)
+	public String quickTest(@RequestParam("nurseName") String nurseName, @RequestParam("nursePhone") String nursePhone,
+	                        @RequestParam("clinicName") String clinicName, @RequestParam("serialId") String serialId,
+	                        @RequestParam("name") String name, @RequestParam("community") String community,
+	                        @RequestParam("location") String location, @RequestParam("nhis") String nhis,
+	                        @RequestParam("patientPhone") String patientPhone,
+	                        @RequestParam("patientPhoneType") String patientPhoneType,
+	                        @RequestParam("language") String language,
+	                        @RequestParam("notificationType") String notificationType,
+	                        @RequestParam("dateOfBirth") String dateOfBirth, @RequestParam("dueDate") String dueDate,
+	                        @RequestParam("parity") String parity, @RequestParam("hemoglobin") String hemoglobin) {
+		log.debug("Quick Test");
+		return "redirect:/module/motechmodule/viewdata.form";
+	}
+	
+	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.POST)
+	public String registerClinic(@RequestParam("name") String name) {
+		log.debug("Register Clinic");
+		return "redirect:/module/motechmodule/viewdata.form";
+	}
+	
+	@RequestMapping(value = "/module/motechmodule/nurse", method = RequestMethod.POST)
+	public String registerNurse(@RequestParam("name") String name, @RequestParam("nursePhone") String nursePhone,
+	                            @RequestParam("clinic") String clinic) {
+		log.debug("Register Nurse");
+		return "redirect:/module/motechmodule/viewdata.form";
+	}
+	
+	@RequestMapping(value = "/module/motechmodule/patient", method = RequestMethod.POST)
+	public String registerPatient(@RequestParam("nursePhone") String nursePhone, @RequestParam("serialId") String serialId,
+	                              @RequestParam("name") String name, @RequestParam("community") String community,
+	                              @RequestParam("location") String location, @RequestParam("nhis") String nhis,
+	                              @RequestParam("patientPhone") String patientPhone,
+	                              @RequestParam("patientPhoneType") String patientPhoneType,
+	                              @RequestParam("dateOfBirth") String dateOfBirth, @RequestParam("gender") String gender,
+	                              @RequestParam("language") String language,
+	                              @RequestParam("notificationType") String notificationType) {
+		log.debug("Register Patient");
+		return "redirect:/module/motechmodule/viewdata.form";
+	}
+	
+	@RequestMapping(value = "/module/motechmodule/pregnancy", method = RequestMethod.POST)
+	public String registerPregnancy(@RequestParam("name") String name, @RequestParam("nursePhone") String nursePhone,
+	                                @RequestParam("regDate") String regDate, @RequestParam("serialId") String serialId,
+	                                @RequestParam("dueDate") String dueDate, @RequestParam("parity") String parity,
+	                                @RequestParam("hemoglobin") String hemoglobin) {
+		log.debug("Register Pregnancy");
+		return "redirect:/module/motechmodule/viewdata.form";
+	}
+	
+	@RequestMapping(value = "/module/motechmodule/maternalVisit", method = RequestMethod.POST)
+	public String recordMaternalVisit(@RequestParam("nursePhone") String nursePhone,
+	                                  @RequestParam("visitDate") String visitDate,
+	                                  @RequestParam("serialId") String serialId, @RequestParam("tetanus") String tetanus,
+	                                  @RequestParam("ipt") String ipt, @RequestParam("itn") String itn,
+	                                  @RequestParam("visitNumber") String visitNumber, @RequestParam("onARV") String onARV,
+	                                  @RequestParam("prePMTCT") String prePMTCT,
+	                                  @RequestParam("testPMTCT") String testPMTCT,
+	                                  @RequestParam("postPMTCT") String postPMTCT,
+	                                  @RequestParam("hemoglobin") String hemoglobin) {
+		log.debug("Register Maternal Visit");
+		return "redirect:/module/motechmodule/viewdata.form";
+	}
+	
+	@RequestMapping("/module/motechmodule/viewdata")
+	public String viewData(ModelMap model) {
 		
-		Collection<Patient> patients = Context.getPatientService().getAllPatients();
+		model.addAttribute("allClinics", Context.getLocationService().getAllLocations());
+		model.addAttribute("allNurses", Context.getUserService().getAllUsers());
 		
-		// this object will be made available to the jsp page under the variable name
-		// that is defined in the /metadata/moduleApplicationContext.xml file 
-		// under the "commandName" tag
-		return patients;
+		List<PatientIdentifierType> ghanaPatientIdType = new ArrayList<PatientIdentifierType>();
+		ghanaPatientIdType.add(Context.getPatientService().getPatientIdentifierTypeByName("Ghana Clinic Id"));
+		model.addAttribute("allPatients", Context.getPatientService().getPatients(null, null, ghanaPatientIdType, false));
+		
+		List<EncounterType> maternalVisitType = new ArrayList<EncounterType>();
+		maternalVisitType.add(Context.getEncounterService().getEncounterType("MATERNALVISIT"));
+		model.addAttribute("allMaternalVisits", Context.getEncounterService().getEncounters(null, null, null, null, null,
+		    maternalVisitType, null, false));
+		
+		List<EncounterType> pregnancyType = new ArrayList<EncounterType>();
+		pregnancyType.add(Context.getEncounterService().getEncounterType("PREGNANCYVISIT"));
+		model.addAttribute("allPregnancies", Context.getEncounterService().getEncounters(null, null, null, null, null,
+		    pregnancyType, null, false));
+		
+		model.addAttribute("allFutureServiceDeliveries", Context.getService(MotechService.class)
+		        .getAllFutureServiceDeliveries());
+		model.addAttribute("allLogs", Context.getService(MotechService.class).getAllLogs());
+		
+		return "/module/motechmodule/viewdata";
 	}
 	
 }

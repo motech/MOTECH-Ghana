@@ -19,14 +19,11 @@
            http://jax-ws.dev.java.net/spring/servlet
            http://jax-ws.dev.java.net/spring/servlet.xsd">
 	
-    <bean id="motechmoduleUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-    	<property name="mappings">
-            <props>
-	           <prop key="module/@MODULE_ID@/motechmoduleLink.form">motechmoduleFormController</prop>
-	    	</props>
-		</property>
-    </bean>
-
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+    
+	<!-- Controllers -->
+    <context:component-scan base-package="@MODULE_PACKAGE@.web.controller" />
+	
 	<!-- Service -->
 	<bean parent="serviceContext">
 		<property name="moduleService">
@@ -59,14 +56,7 @@
 			</list>
 		</property>
 	</bean>
-	
-    <!-- Controllers -->
-    <bean id="motechmoduleFormController" class="@MODULE_PACKAGE@.web.controller.MotechModuleFormController">
-		<property name="commandName"><value>thePatientList</value></property>
-		<property name="formView"><value>/module/@MODULE_ID@/motechmoduleForm</value></property>
-		<property name="successView"><value>motechmoduleLink.form</value></property>
-    </bean>
-    
+	    
     <!-- Web Services Section -->
 	<wss:binding url="/ws/registrarservice" service="#registrarservice" /> <!-- MUST start with /ws/ -->
     <ws:service id="registrarservice" bean="#registrarWebService" />
