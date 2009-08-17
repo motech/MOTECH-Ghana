@@ -50,6 +50,8 @@ public class MotechModuleActivator implements Activator {
 	public void startup() {
 		log.info("Starting Motech Module");
 		
+		Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
+		
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_PERSON_ATTRIBUTE_TYPES);
 		
