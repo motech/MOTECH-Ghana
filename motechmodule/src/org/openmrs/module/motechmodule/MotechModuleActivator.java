@@ -13,7 +13,6 @@
  */
 package org.openmrs.module.motechmodule;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
@@ -95,7 +94,8 @@ public class MotechModuleActivator implements Activator {
 			createConcept("PREGNANCY VISIT NUMBER", "Visit Number for Pregnancy", "Misc", "Numeric", admin);
 			createConcept("INTERMITTENT PREVENTATIVE TREATMENT", "Treatment for Malaria", "Drug", "N/A", admin);
 			createConcept("INSECTICIDE-TREATED NET USAGE",
-			    "Question on encounter form: \"Does the patient use insecticide-treated nets?\"", "Question", "Boolean", admin);
+			    "Question on encounter form: \"Does the patient use insecticide-treated nets?\"", "Question", "Boolean",
+			    admin);
 			createConcept("PENTA VACCINATION", "Vaccination booster for infants.", "Drug", "N/A", admin);
 			createConcept("CEREBRO-SPINAL MENINGITIS VACCINATION", "Vaccination against Cerebro-Spinal Meningitis.", "Drug",
 			    "N/A", admin);
@@ -117,7 +117,8 @@ public class MotechModuleActivator implements Activator {
 			log.info("Verifying Concepts Exist as Answers");
 			// TODO: Add IPT to proper Concept as an Answer, not an immunization
 			addConceptAnswers("IMMUNIZATIONS ORDERED", new String[] { "TETANUS BOOSTER", "YELLOW FEVER VACCINATION",
-			        "INTERMITTENT PREVENTATIVE TREATMENT", "PENTA VACCINATION", "CEREBRO-SPINAL MENINGITIS VACCINATION" }, admin);
+			        "INTERMITTENT PREVENTATIVE TREATMENT", "PENTA VACCINATION", "CEREBRO-SPINAL MENINGITIS VACCINATION" },
+			    admin);
 			
 			log.info("Verifying Task Exists and is Scheduled");
 			// TODO: Task should start automatically on startup, Boolean.TRUE
@@ -256,23 +257,16 @@ public class MotechModuleActivator implements Activator {
 			task.setStartOnStartup(startOnStartup);
 			task.setCreatedBy(creator);
 			Context.getSchedulerService().saveTask(task);
+			task = Context.getSchedulerService().getTaskByName(name);
 		}
-		Collection<TaskDefinition> tasks = Context.getSchedulerService().getScheduledTasks();
-		boolean isScheduled = false;
-		for (TaskDefinition taskDefinition : tasks) {
-			if (taskDefinition.getId().equals(task.getId())) {
-				isScheduled = true;
-				break;
-			}
+		
+		try {
+			Context.getSchedulerService().scheduleTask(task);
 		}
-		if (!isScheduled) {
-			try {
-				Context.getSchedulerService().scheduleTask(task);
-			}
-			catch (SchedulerException e) {
-				log.error("Cannot schedule " + name, e);
-			}
+		catch (SchedulerException e) {
+			log.error("Cannot schedule task" + name, e);
 		}
+		
 	}
 	
 	/**
@@ -280,6 +274,15 @@ public class MotechModuleActivator implements Activator {
 	 */
 	public void shutdown() {
 		log.info("Shutting down Motech Module");
+		
+		log.info("Removing Scheduled Task");
+		try {
+			TaskDefinition task = Context.getSchedulerService().getTaskByName("Notification Task");
+			Context.getSchedulerService().shutdownTask(task);
+			Context.getSchedulerService().deleteTask(task.getId());
+		}
+		catch (SchedulerException e) {
+			log.error("Cannot shutdown task", e);
+		}
 	}
-	
 }
