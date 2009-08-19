@@ -72,7 +72,7 @@ public class MotechModuleActivator implements Activator {
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
 		
 		try {
-			User admin = Context.getUserService().getUserByUsername("admin");
+			User admin = Context.getUserService().getUser(1);
 			
 			log.info("Verifying Person Attributes Exist");
 			createPersonAttributeType("Phone Number", "A person's phone number.", "java.lang.String", admin);
@@ -126,6 +126,8 @@ public class MotechModuleActivator implements Activator {
 			
 		}
 		finally {
+			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
+			
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_PERSON_ATTRIBUTE_TYPES);
 			
@@ -252,7 +254,7 @@ public class MotechModuleActivator implements Activator {
 			task.setRepeatInterval(repeatSeconds);
 			task.setTaskClass(taskClass);
 			task.setStartOnStartup(startOnStartup);
-			task.setCreator(creator);
+			task.setCreatedBy(creator);
 			Context.getSchedulerService().saveTask(task);
 		}
 		Collection<TaskDefinition> tasks = Context.getSchedulerService().getScheduledTasks();

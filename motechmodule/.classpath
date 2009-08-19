@@ -6,8 +6,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="metadata"/>
 	<classpathentry kind="lib" path="lib-common/junit-3.8.1.jar"/>
-	<classpathentry kind="lib" path="lib-common/web-openmrs-api-1.6.0.8669-dev.jar"/>
-	<classpathentry kind="lib" path="lib-common/openmrs-api-1.6.0.8669-dev.jar"/>
 	<classpathentry kind="lib" path="lib-common/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="lib-common/spring-2.5.1.jar"/>
 	<classpathentry kind="lib" path="lib-common/spring-webmvc.jar"/>
@@ -15,5 +13,7 @@
 	<classpathentry kind="lib" path="lib-common/hibernate3.jar"/>
 	<classpathentry kind="lib" path="lib-common/quartz-1.5.1.jar"/>
 	<classpathentry kind="lib" path="lib-common/simple-xml-1.6.1-mod.jar"/>
+	<classpathentry kind="lib" path="lib-common/openmrs-api-1.4.4.00.9693.jar"/>
+	<classpathentry kind="lib" path="lib-common/web-openmrs-api-1.4.4.00.9693.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
