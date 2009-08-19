@@ -30,15 +30,30 @@
 	</tr>
 	<tr>
 		<td><label for="tetanus">Tetanus:</label></td>
-		<td><input name="tetanus" value="47" /></td>
+		<td>
+			<select name="tetanus">
+				<option value="true">True</option>
+				<option value="false">False</option>
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td><label for="ipt">IPT:</label></td>
-		<td><input name="ipt" value="47" /></td>
+		<td>
+			<select name="ipt">
+				<option value="true">True</option>
+				<option value="false">False</option>
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td><label for="itn">ITN:</label></td>
-		<td><input name="itn" value="47" /></td>
+		<td>
+			<select name="itn">
+				<option value="true">True</option>
+				<option value="false">False</option>
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td><label for="visitNumber">Visit Number:</label></td>
@@ -46,19 +61,39 @@
 	</tr>
 	<tr>
 		<td><label for="onARV">ARV:</label></td>
-		<td><input name="onARV" value="47" /></td>
+		<td>
+			<select name="onARV">
+				<option value="true">True</option>
+				<option value="false">False</option>
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td><label for="prePMTCT">prePMTCT:</label></td>
-		<td><input name="prePMTCT" value="47" /></td>
+		<td>
+			<select name="prePMTCT">
+				<option value="true">True</option>
+				<option value="false">False</option>
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td><label for="testPMTCT">testPMTCT:</label></td>
-		<td><input name="testPMTCT" value="47" /></td>
+		<td>
+			<select name="testPMTCT">
+				<option value="true">True</option>
+				<option value="false">False</option>
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td><label for="postPMTCT">postPMTCT:</label></td>
-		<td><input name="postPMTCT" value="47" /></td>
+		<td>
+			<select name="postPMTCT">
+				<option value="true">True</option>
+				<option value="false">False</option>
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td><label for="hemoglobin">Hemoglobin:</label></td>

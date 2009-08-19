@@ -13,15 +13,22 @@
  */
 package org.openmrs.module.motechmodule.web.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motech.model.Gender;
 import org.openmrs.EncounterType;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.motechmodule.MotechService;
+import org.openmrs.module.motechmodule.web.ws.RegistrarService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +39,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MotechModuleFormController {
 	
 	protected final Log log = LogFactory.getLog(MotechModuleFormController.class);
+	
+	@Autowired
+	@Qualifier("registrarClient")
+	private RegistrarService registrarClient;
+	
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 	
 	@RequestMapping(value = "/module/motechmodule/quick", method = RequestMethod.GET)
 	public String viewQuickTestForm() {
@@ -73,14 +86,28 @@ public class MotechModuleFormController {
 	                        @RequestParam("language") String language,
 	                        @RequestParam("notificationType") String notificationType,
 	                        @RequestParam("dateOfBirth") String dateOfBirth, @RequestParam("dueDate") String dueDate,
-	                        @RequestParam("parity") String parity, @RequestParam("hemoglobin") String hemoglobin) {
+	                        @RequestParam("parity") String parity, @RequestParam("hemoglobin") String hemoglobin)
+	                                                                                                             throws NumberFormatException,
+	                                                                                                             ParseException {
 		log.debug("Quick Test");
+		registrarClient.registerClinic(clinicName);
+		
+		registrarClient.registerNurse(nurseName, nursePhone, clinicName);
+		
+		registrarClient.registerPatient(nursePhone, serialId, name, community, location, dateFormat.parse(dateOfBirth),
+		    Gender.female, Integer.valueOf(nhis), patientPhone);
+		registrarClient.registerPregnancy(nursePhone, new Date(), serialId, dateFormat.parse(dueDate), Integer
+		        .valueOf(parity), Double.valueOf(hemoglobin));
+		
+		registrarClient.recordMaternalVisit(nursePhone, new Date(), serialId, true, true, true, 1, true, true, true, true,
+		    10.6);
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 	
 	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.POST)
 	public String registerClinic(@RequestParam("name") String name) {
 		log.debug("Register Clinic");
+		registrarClient.registerClinic(name);
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 	
@@ -88,6 +115,7 @@ public class MotechModuleFormController {
 	public String registerNurse(@RequestParam("name") String name, @RequestParam("nursePhone") String nursePhone,
 	                            @RequestParam("clinic") String clinic) {
 		log.debug("Register Nurse");
+		registrarClient.registerNurse(name, nursePhone, clinic);
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 	
@@ -99,8 +127,11 @@ public class MotechModuleFormController {
 	                              @RequestParam("patientPhoneType") String patientPhoneType,
 	                              @RequestParam("dateOfBirth") String dateOfBirth, @RequestParam("gender") String gender,
 	                              @RequestParam("language") String language,
-	                              @RequestParam("notificationType") String notificationType) {
+	                              @RequestParam("notificationType") String notificationType) throws NumberFormatException,
+	                                                                                        ParseException {
 		log.debug("Register Patient");
+		registrarClient.registerPatient(nursePhone, serialId, name, community, location, dateFormat.parse(dateOfBirth),
+		    Gender.valueOf(gender), Integer.valueOf(nhis), patientPhone);
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 	
@@ -108,8 +139,11 @@ public class MotechModuleFormController {
 	public String registerPregnancy(@RequestParam("name") String name, @RequestParam("nursePhone") String nursePhone,
 	                                @RequestParam("regDate") String regDate, @RequestParam("serialId") String serialId,
 	                                @RequestParam("dueDate") String dueDate, @RequestParam("parity") String parity,
-	                                @RequestParam("hemoglobin") String hemoglobin) {
+	                                @RequestParam("hemoglobin") String hemoglobin) throws NumberFormatException,
+	                                                                              ParseException {
 		log.debug("Register Pregnancy");
+		registrarClient.registerPregnancy(nursePhone, dateFormat.parse(regDate), serialId, dateFormat.parse(dueDate),
+		    Integer.valueOf(parity), Double.valueOf(hemoglobin));
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 	
@@ -122,8 +156,12 @@ public class MotechModuleFormController {
 	                                  @RequestParam("prePMTCT") String prePMTCT,
 	                                  @RequestParam("testPMTCT") String testPMTCT,
 	                                  @RequestParam("postPMTCT") String postPMTCT,
-	                                  @RequestParam("hemoglobin") String hemoglobin) {
+	                                  @RequestParam("hemoglobin") String hemoglobin) throws NumberFormatException,
+	                                                                                ParseException {
 		log.debug("Register Maternal Visit");
+		registrarClient.recordMaternalVisit(nursePhone, dateFormat.parse(visitDate), serialId, Boolean.valueOf(tetanus),
+		    Boolean.valueOf(ipt), Boolean.valueOf(itn), Integer.valueOf(visitNumber), Boolean.valueOf(onARV), Boolean
+		            .valueOf(prePMTCT), Boolean.valueOf(testPMTCT), Boolean.valueOf(postPMTCT), Double.valueOf(hemoglobin));
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 	

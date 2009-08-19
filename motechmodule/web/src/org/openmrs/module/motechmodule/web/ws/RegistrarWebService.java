@@ -17,18 +17,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.jws.soap.SOAPBinding.Use;
-import javax.xml.ws.WebServiceContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.model.Gender;
+import org.motech.model.LogType;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
@@ -44,27 +43,24 @@ import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.motechmodule.MotechService;
-import org.openmrs.web.ws.WebServiceSupport;
 
 /**
  * This can be accessed via /openmrs/ws/registrarservice since we mapped it to /ws/registrarservice
  * in the metadata/moduleApplicationContext.xml file.
  */
+
 @WebService
 @SOAPBinding(style = Style.RPC, use = Use.LITERAL)
-public class RegistrarWebService {
+public class RegistrarWebService implements RegistrarService {
 	
 	Log log = LogFactory.getLog(RegistrarWebService.class);
-	
-	@Resource
-	WebServiceContext webServiceContext;
 	
 	//TODO: Add OpenMRS API Exceptions as WebFaults ?
 	
 	@WebMethod
 	public void registerClinic(@WebParam(name = "name") String name) {
 		
-		WebServiceSupport.authenticate(webServiceContext);
+		Context.authenticate("admin", "test");
 		
 		Location clinic = new Location();
 		clinic.setName(name);
@@ -77,7 +73,8 @@ public class RegistrarWebService {
 	public void registerNurse(@WebParam(name = "name") String name, @WebParam(name = "phoneNumber") String phoneNumber,
 	                          @WebParam(name = "clinic") String clinic) {
 		
-		WebServiceSupport.authenticate(webServiceContext);
+		// User creating other users must have atleast the Privileges to be given
+		Context.authenticate("admin", "test");
 		
 		// TODO: Create nurses as person and use same User for all actions ?
 		User nurse = new User();
@@ -116,7 +113,7 @@ public class RegistrarWebService {
 	                            @WebParam(name = "dateOfBirth") Date dateOfBirth, @WebParam(name = "gender") Gender gender,
 	                            @WebParam(name = "nhis") Integer nhis, @WebParam(name = "phoneNumber") String phoneNumber) {
 		
-		WebServiceSupport.authenticate(webServiceContext);
+		Context.authenticate("admin", "test");
 		
 		Patient patient = new Patient();
 		
@@ -169,7 +166,7 @@ public class RegistrarWebService {
 	                                @WebParam(name = "postPMTCT") Boolean postPMTCT,
 	                                @WebParam(name = "hemoglobinAt36Weeks") Double hemoglobinAt36Weeks) {
 		
-		WebServiceSupport.authenticate(webServiceContext);
+		Context.authenticate("admin", "test");
 		
 		PatientIdentifierType serialIdType = Context.getPatientService().getPatientIdentifierTypeByName("Ghana Clinic Id");
 		List<PatientIdentifierType> idTypes = new ArrayList<PatientIdentifierType>();
@@ -303,7 +300,7 @@ public class RegistrarWebService {
 	                              @WebParam(name = "dueDate") Date dueDate, @WebParam(name = "parity") Integer parity,
 	                              @WebParam(name = "hemoglobin") Double hemoglobin) {
 		
-		WebServiceSupport.authenticate(webServiceContext);
+		Context.authenticate("admin", "test");
 		
 		PatientIdentifierType serialIdType = Context.getPatientService().getPatientIdentifierTypeByName("Ghana Clinic Id");
 		List<PatientIdentifierType> idTypes = new ArrayList<PatientIdentifierType>();
@@ -368,5 +365,15 @@ public class RegistrarWebService {
 		
 		Context.getEncounterService().saveEncounter(encounter);
 	}
-
+	
+	@WebMethod
+	public void log(@WebParam(name = "type") LogType type, @WebParam(name = "message") String message) {
+		
+		org.motech.model.Log log = new org.motech.model.Log();
+		log.setDate(new Date());
+		log.setType(type);
+		log.setMessage(message);
+		Context.getService(MotechService.class).saveLog(log);
+	}
+	
 }

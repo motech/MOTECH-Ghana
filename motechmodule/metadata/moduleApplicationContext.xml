@@ -58,9 +58,22 @@
 	</bean>
 	    
     <!-- Web Services Section -->
-	<wss:binding url="/ws/registrarservice" service="#registrarservice" /> <!-- MUST start with /ws/ -->
+	<wss:binding url="/ws/RegistrarService" service="#registrarservice" /> <!-- MUST start with /ws/ -->
     <ws:service id="registrarservice" bean="#registrarWebService" />
 
-    <bean id="registrarWebService" class="org.openmrs.module.motechmodule.web.ws.RegistrarWebService" />
+    <bean id="registrarWebService" class="@MODULE_PACKAGE@.web.ws.RegistrarWebService" />
+    
+    <!-- <bean id="registrarClient" class="@MODULE_PACKAGE@.web.ws.RegistrarServiceStub" /> -->
+    
+    <bean id="registrarClient"
+		class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
+		<property name="serviceInterface" value="@MODULE_PACKAGE@.web.ws.RegistrarService" />
+		<property name="wsdlDocumentUrl"
+			value="http://localhost:8080/openmrs/ws/RegistrarService?wsdl" />
+		<property name="namespaceUri" value="http://ws.web.motechmodule.module.openmrs.org/" />
+		<property name="serviceName" value="RegistrarWebServiceService" />
+		<property name="portName" value="RegistrarWebServicePort" />
+		<property name="lookupServiceOnStartup" value="false" />
+	</bean>
     
 </beans>
