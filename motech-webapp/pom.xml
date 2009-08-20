@@ -115,6 +115,7 @@
 					<include>**/*.properties</include>
 					<include>**/*.xml</include>
 					<include>**/*.sql</include>
+					<include>**/*.schemas</include>
 				</includes>
 			</resource>
 		</resources>
