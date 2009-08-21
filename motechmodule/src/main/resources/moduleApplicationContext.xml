@@ -22,21 +22,21 @@
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
     
 	<!-- Controllers -->
-    <context:component-scan base-package="@MODULE_PACKAGE@.web.controller" />
+    <context:component-scan base-package="${modulePackage}.web.controller" />
 	
 	<!-- Service -->
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>@MODULE_PACKAGE@.MotechService</value>
+				<value>${modulePackage}.MotechService</value>
 				<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager" />
 					</property>
 					<property name="target">
-						<bean class="@MODULE_PACKAGE@.impl.MotechServiceImpl">
+						<bean class="${modulePackage}.impl.MotechServiceImpl">
 							<property name="motechDAO">
-								<bean class="@MODULE_PACKAGE@.db.hibernate.HibernateMotechDAO">
+								<bean class="${modulePackage}.db.hibernate.HibernateMotechDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory" />
 									</property>
@@ -61,13 +61,13 @@
 	<wss:binding url="/ws/RegistrarService" service="#registrarservice" /> <!-- MUST start with /ws/ -->
     <ws:service id="registrarservice" bean="#registrarWebService" />
 
-    <bean id="registrarWebService" class="@MODULE_PACKAGE@.web.ws.RegistrarWebService" />
+    <bean id="registrarWebService" class="${modulePackage}.web.ws.RegistrarWebService" />
     
-    <!-- <bean id="registrarClient" class="@MODULE_PACKAGE@.web.ws.RegistrarServiceStub" /> -->
+    <!-- <bean id="registrarClient" class="${modulePackage}.web.ws.RegistrarServiceStub" /> -->
     
     <bean id="registrarClient"
 		class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
-		<property name="serviceInterface" value="@MODULE_PACKAGE@.web.ws.RegistrarService" />
+		<property name="serviceInterface" value="${modulePackage}.web.ws.RegistrarService" />
 		<property name="wsdlDocumentUrl"
 			value="http://localhost:8080/openmrs/ws/RegistrarService?wsdl" />
 		<property name="namespaceUri" value="http://ws.web.motechmodule.module.openmrs.org/" />

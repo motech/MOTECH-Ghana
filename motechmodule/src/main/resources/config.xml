@@ -4,18 +4,18 @@
 <module configVersion="1.0">
 	
 	<!-- Base Module Properties -->
-	<id>motechmodule</id>
-	<name>MoTeCH Module</name>
-	<version>0.1</version>
-	<package>org.openmrs.module.@MODULE_ID@</package>
+	<id>${project.artifactId}</id>
+	<name>${project.name}</name>
+	<version>${project.version}</version>
+	<package>${modulePackage}</package>
 	<author>Matthew Blanchette</author>
 	<description>
-			MoTeCH Module.
+			${project.description}
 	</description>
 
-	<activator>@MODULE_PACKAGE@.MotechModuleActivator</activator>
+	<activator>${modulePackage}.MotechModuleActivator</activator>
 	
-	<!-- <updateURL>https://dev.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL> -->
+	<!-- <updateURL>https://dev.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL>-->
 	<!-- /Base Module Properties -->
 	
 	<require_version>1.4.4.00.9117</require_version>
@@ -23,14 +23,14 @@
 	<!-- Extensions -->
 	<extension>
 		<point>org.openmrs.admin.list</point>
-		<class>@MODULE_PACKAGE@.extension.html.AdminList</class>
+		<class>${modulePackage}.extension.html.AdminList</class>
 	</extension>
 	
 	
 	<!-- AOP -->
 	<advice>
 		<point>org.openmrs.api.EncounterService</point>
-		<class>@MODULE_PACKAGE@.advice.SaveEncounterAdvisor</class>
+		<class>${modulePackage}.advice.SaveEncounterAdvisor</class>
 	</advice>
 	
 	
@@ -39,7 +39,7 @@
 		<name>Form Entry</name>
 		<description>Allows user to access Form Entry pages/functions</description>
 	</privilege>
-	 /Required Privileges -->
+	 /Required Privileges-->
 
 
 	<!-- Required Global Properties 
@@ -52,7 +52,7 @@
 			and possible values for the global property.
 		</description>
 	</globalProperty>
-	/Required Global Properties -->
+	/Required Global Properties-->
 	
 	<!--
 	<dwr>
