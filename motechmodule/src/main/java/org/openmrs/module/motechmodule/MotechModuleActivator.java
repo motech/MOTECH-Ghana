@@ -37,121 +37,155 @@ import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.util.OpenmrsConstants;
 
 /**
- * This class contains the logic that is run every time this module is either started or shutdown
+ * This class contains the logic that is run every time this module is either
+ * started or shutdown
  */
 public class MotechModuleActivator implements Activator {
-	
+
 	private Log log = LogFactory.getLog(this.getClass());
-	
+
 	/**
 	 * @see org.openmrs.module.Activator#startup()
 	 */
 	public void startup() {
 		log.info("Starting Motech Module");
-		
+
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
-		
-		Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
-		Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_PERSON_ATTRIBUTE_TYPES);
-		
+
+		Context
+				.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
+		Context
+				.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_PERSON_ATTRIBUTE_TYPES);
+
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES);
-		Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_IDENTIFIER_TYPES);
-		
+		Context
+				.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_IDENTIFIER_TYPES);
+
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_LOCATIONS);
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_LOCATIONS);
-		
+
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES);
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_ENCOUNTER_TYPES);
-		
+
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPTS);
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_CONCEPTS);
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPT_DATATYPES);
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPT_CLASSES);
-		
+
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
-		
+
 		try {
 			User admin = Context.getUserService().getUser(1);
-			
+
 			log.info("Verifying Person Attributes Exist");
-			createPersonAttributeType("Phone Number", "A person's phone number.", "java.lang.String", admin);
-			createPersonAttributeType("NHIS Number", "A person's NHIS number.", "java.lang.String", admin);
-			createPersonAttributeType("Language", "A person's language preference.", "java.lang.String", admin);
-			
+			createPersonAttributeType("Phone Number",
+					"A person's phone number.", "java.lang.String", admin);
+			createPersonAttributeType("NHIS Number", "A person's NHIS number.",
+					"java.lang.String", admin);
+			createPersonAttributeType("Language",
+					"A person's language preference.", "java.lang.String",
+					admin);
+
 			log.info("Verifying Patient Identifier Exist");
-			createPatientIdentifierType("Ghana Clinic Id", "Patient Id for Ghana Clinics.", admin);
-			
+			createPatientIdentifierType("Ghana Clinic Id",
+					"Patient Id for Ghana Clinics.", admin);
+
 			log.info("Verifying Default Location Exists");
-			createLocation("Default Ghana Clinic", "Default Ghana Clinic Location", admin);
-			
+			createLocation("Default Ghana Clinic",
+					"Default Ghana Clinic Location", admin);
+
 			log.info("Verifying Encounter Types Exist");
 			createEncounterType("MATERNALVISIT", "Ghana Maternal Visit", admin);
-			createEncounterType("PREGNANCYVISIT", "Ghana Pregnancy Registration or Delivery Visit", admin);
-			createEncounterType("IMMUNIZVISIT", "Ghana Immunization Visit", admin);
+			createEncounterType("PREGNANCYVISIT",
+					"Ghana Pregnancy Registration or Delivery Visit", admin);
+			createEncounterType("IMMUNIZVISIT", "Ghana Immunization Visit",
+					admin);
 			createEncounterType("GENERALVISIT", "Ghana General Visit", admin);
-			
+
 			log.info("Verifying Concepts Exist");
-			createConcept("PREGNANCY VISIT NUMBER", "Visit Number for Pregnancy", "Misc", "Numeric", admin);
-			createConcept("INTERMITTENT PREVENTATIVE TREATMENT", "Treatment for Malaria", "Drug", "N/A", admin);
-			createConcept("INSECTICIDE-TREATED NET USAGE",
-			    "Question on encounter form: \"Does the patient use insecticide-treated nets?\"", "Question", "Boolean",
-			    admin);
-			createConcept("PENTA VACCINATION", "Vaccination booster for infants.", "Drug", "N/A", admin);
-			createConcept("CEREBRO-SPINAL MENINGITIS VACCINATION", "Vaccination against Cerebro-Spinal Meningitis.", "Drug",
-			    "N/A", admin);
-			createConcept("VITAMIN A", "Supplement for Vitamin A.", "Drug", "N/A", admin);
+			createConcept("PREGNANCY VISIT NUMBER",
+					"Visit Number for Pregnancy", "Misc", "Numeric", admin);
+			createConcept("INTERMITTENT PREVENTATIVE TREATMENT",
+					"Treatment for Malaria", "Drug", "N/A", admin);
 			createConcept(
-			    "PRE PREVENTING MATERNAL TO CHILD TRANSMISSION",
-			    "Question on encounter form: \"Did the patient receive Pre Counseling for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
-			    "Question", "Boolean", admin);
+					"INSECTICIDE-TREATED NET USAGE",
+					"Question on encounter form: \"Does the patient use insecticide-treated nets?\"",
+					"Question", "Boolean", admin);
+			createConcept("PENTA VACCINATION",
+					"Vaccination booster for infants.", "Drug", "N/A", admin);
+			createConcept("CEREBRO-SPINAL MENINGITIS VACCINATION",
+					"Vaccination against Cerebro-Spinal Meningitis.", "Drug",
+					"N/A", admin);
+			createConcept("VITAMIN A", "Supplement for Vitamin A.", "Drug",
+					"N/A", admin);
 			createConcept(
-			    "TEST PREVENTING MATERNAL TO CHILD TRANSMISSION",
-			    "Question on encounter form: \"Did the patient receive Testing for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
-			    "Question", "Boolean", admin);
+					"PRE PREVENTING MATERNAL TO CHILD TRANSMISSION",
+					"Question on encounter form: \"Did the patient receive Pre Counseling for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
+					"Question", "Boolean", admin);
 			createConcept(
-			    "POST PREVENTING MATERNAL TO CHILD TRANSMISSION",
-			    "Question on encounter form: \"Did the patient receive Post Counseling for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
-			    "Question", "Boolean", admin);
-			createConcept("HEMOGLOBIN AT 36 WEEKS", "Hemoglobin level at 36 weeks of Pregnancy", "Test", "Numeric", admin);
-			
+					"TEST PREVENTING MATERNAL TO CHILD TRANSMISSION",
+					"Question on encounter form: \"Did the patient receive Testing for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
+					"Question", "Boolean", admin);
+			createConcept(
+					"POST PREVENTING MATERNAL TO CHILD TRANSMISSION",
+					"Question on encounter form: \"Did the patient receive Post Counseling for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
+					"Question", "Boolean", admin);
+			createConcept("HEMOGLOBIN AT 36 WEEKS",
+					"Hemoglobin level at 36 weeks of Pregnancy", "Test",
+					"Numeric", admin);
+
 			log.info("Verifying Concepts Exist as Answers");
 			// TODO: Add IPT to proper Concept as an Answer, not an immunization
-			addConceptAnswers("IMMUNIZATIONS ORDERED", new String[] { "TETANUS BOOSTER", "YELLOW FEVER VACCINATION",
-			        "INTERMITTENT PREVENTATIVE TREATMENT", "PENTA VACCINATION", "CEREBRO-SPINAL MENINGITIS VACCINATION" },
-			    admin);
-			
+			addConceptAnswers("IMMUNIZATIONS ORDERED", new String[] {
+					"TETANUS BOOSTER", "YELLOW FEVER VACCINATION",
+					"INTERMITTENT PREVENTATIVE TREATMENT", "PENTA VACCINATION",
+					"CEREBRO-SPINAL MENINGITIS VACCINATION" }, admin);
+
 			log.info("Verifying Task Exists and is Scheduled");
 			// TODO: Task should start automatically on startup, Boolean.TRUE
-			createTask("Notification Task", "Task to send out SMS notifications", new Date(), new Long(30), Boolean.FALSE,
-			    "org.motech.tasks.NotificationTask", admin);
-			
-		}
-		finally {
+			createTask("Notification Task",
+					"Task to send out SMS notifications", new Date(), new Long(
+							30), Boolean.FALSE,
+					"org.motech.tasks.NotificationTask", admin);
+
+		} finally {
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
-			
-			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
-			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_PERSON_ATTRIBUTE_TYPES);
-			
-			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES);
-			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_IDENTIFIER_TYPES);
-			
+
+			Context
+					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
+			Context
+					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_PERSON_ATTRIBUTE_TYPES);
+
+			Context
+					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES);
+			Context
+					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_IDENTIFIER_TYPES);
+
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_LOCATIONS);
-			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_LOCATIONS);
-			
-			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES);
-			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_ENCOUNTER_TYPES);
-			
+			Context
+					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_LOCATIONS);
+
+			Context
+					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES);
+			Context
+					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_ENCOUNTER_TYPES);
+
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPTS);
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_CONCEPTS);
-			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPT_DATATYPES);
-			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPT_CLASSES);
-			
-			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
+			Context
+					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPT_DATATYPES);
+			Context
+					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPT_CLASSES);
+
+			Context
+					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
 		}
 	}
-	
-	private void createPersonAttributeType(String name, String description, String format, User creator) {
-		PersonAttributeType attrType = Context.getPersonService().getPersonAttributeTypeByName(name);
+
+	private void createPersonAttributeType(String name, String description,
+			String format, User creator) {
+		PersonAttributeType attrType = Context.getPersonService()
+				.getPersonAttributeTypeByName(name);
 		if (attrType == null) {
 			log.info(name + " PersonAttributeType Does Not Exist - Creating");
 			attrType = new PersonAttributeType();
@@ -162,9 +196,11 @@ public class MotechModuleActivator implements Activator {
 			Context.getPersonService().savePersonAttributeType(attrType);
 		}
 	}
-	
-	private void createPatientIdentifierType(String name, String description, User creator) {
-		PatientIdentifierType idType = Context.getPatientService().getPatientIdentifierTypeByName(name);
+
+	private void createPatientIdentifierType(String name, String description,
+			User creator) {
+		PatientIdentifierType idType = Context.getPatientService()
+				.getPatientIdentifierTypeByName(name);
 		if (idType == null) {
 			log.info(name + " PatientIdentifierType Does Not Exist - Creating");
 			idType = new PatientIdentifierType();
@@ -174,7 +210,7 @@ public class MotechModuleActivator implements Activator {
 			Context.getPatientService().savePatientIdentifierType(idType);
 		}
 	}
-	
+
 	private void createLocation(String name, String description, User creator) {
 		Location location = Context.getLocationService().getLocation(name);
 		if (location == null) {
@@ -186,9 +222,11 @@ public class MotechModuleActivator implements Activator {
 			Context.getLocationService().saveLocation(location);
 		}
 	}
-	
-	private void createEncounterType(String name, String description, User creator) {
-		EncounterType encType = Context.getEncounterService().getEncounterType(name);
+
+	private void createEncounterType(String name, String description,
+			User creator) {
+		EncounterType encType = Context.getEncounterService().getEncounterType(
+				name);
 		if (encType == null) {
 			log.info(name + " EncounterType Does Not Exist - Creating");
 			encType = new EncounterType();
@@ -198,8 +236,9 @@ public class MotechModuleActivator implements Activator {
 			Context.getEncounterService().saveEncounterType(encType);
 		}
 	}
-	
-	private Concept createConcept(String name, String description, String className, String dataTypeName, User creator) {
+
+	private Concept createConcept(String name, String description,
+			String className, String dataTypeName, User creator) {
 		// Default "en" Locale matching other existing concepts
 		Locale defaultLocale = Locale.ENGLISH;
 		Concept concept = Context.getConceptService().getConcept(name);
@@ -208,12 +247,16 @@ public class MotechModuleActivator implements Activator {
 			concept = new Concept();
 			ConceptName conceptName = new ConceptName(name, defaultLocale);
 			conceptName.addTag(ConceptNameTag.PREFERRED);
-			// AddTag is workaround since the following results in "preferred_en" instead of "preferred"
-			// itn.setPreferredName(defaultLocale, conceptName) 
+			// AddTag is workaround since the following results in
+			// "preferred_en" instead of "preferred"
+			// itn.setPreferredName(defaultLocale, conceptName)
 			concept.addName(conceptName);
-			concept.addDescription(new ConceptDescription(description, defaultLocale));
-			concept.setConceptClass(Context.getConceptService().getConceptClassByName(className));
-			concept.setDatatype(Context.getConceptService().getConceptDatatypeByName(dataTypeName));
+			concept.addDescription(new ConceptDescription(description,
+					defaultLocale));
+			concept.setConceptClass(Context.getConceptService()
+					.getConceptClassByName(className));
+			concept.setDatatype(Context.getConceptService()
+					.getConceptDatatypeByName(dataTypeName));
 			concept.setCreator(creator);
 			concept = Context.getConceptService().saveConcept(concept);
 		} else {
@@ -221,8 +264,9 @@ public class MotechModuleActivator implements Activator {
 		}
 		return concept;
 	}
-	
-	private void addConceptAnswers(String conceptName, String[] answerNames, User creator) {
+
+	private void addConceptAnswers(String conceptName, String[] answerNames,
+			User creator) {
 		Concept concept = Context.getConceptService().getConcept(conceptName);
 		Set<Integer> currentAnswerIds = new HashSet<Integer>();
 		for (ConceptAnswer answer : concept.getAnswers()) {
@@ -232,7 +276,8 @@ public class MotechModuleActivator implements Activator {
 		for (String answerName : answerNames) {
 			Concept answer = Context.getConceptService().getConcept(answerName);
 			if (!currentAnswerIds.contains(answer.getConceptId())) {
-				log.info("Adding Concept Answer " + answerName + " to " + conceptName);
+				log.info("Adding Concept Answer " + answerName + " to "
+						+ conceptName);
 				changed = true;
 				ConceptAnswer conceptAnswer = new ConceptAnswer(answer);
 				conceptAnswer.setCreator(creator);
@@ -243,9 +288,10 @@ public class MotechModuleActivator implements Activator {
 			Context.getConceptService().saveConcept(concept);
 		}
 	}
-	
-	private void createTask(String name, String description, Date startDate, Long repeatSeconds, Boolean startOnStartup,
-	                        String taskClass, User creator) {
+
+	private void createTask(String name, String description, Date startDate,
+			Long repeatSeconds, Boolean startOnStartup, String taskClass,
+			User creator) {
 		TaskDefinition task = Context.getSchedulerService().getTaskByName(name);
 		if (task == null) {
 			task = new TaskDefinition();
@@ -259,29 +305,28 @@ public class MotechModuleActivator implements Activator {
 			Context.getSchedulerService().saveTask(task);
 			task = Context.getSchedulerService().getTaskByName(name);
 		}
-		
+
 		try {
 			Context.getSchedulerService().scheduleTask(task);
-		}
-		catch (SchedulerException e) {
+		} catch (SchedulerException e) {
 			log.error("Cannot schedule task" + name, e);
 		}
-		
+
 	}
-	
+
 	/**
 	 * @see org.openmrs.module.Activator#shutdown()
 	 */
 	public void shutdown() {
 		log.info("Shutting down Motech Module");
-		
+
 		log.info("Removing Scheduled Task");
 		try {
-			TaskDefinition task = Context.getSchedulerService().getTaskByName("Notification Task");
+			TaskDefinition task = Context.getSchedulerService().getTaskByName(
+					"Notification Task");
 			Context.getSchedulerService().shutdownTask(task);
 			Context.getSchedulerService().deleteTask(task.getId());
-		}
-		catch (SchedulerException e) {
+		} catch (SchedulerException e) {
 			log.error("Cannot shutdown task", e);
 		}
 	}

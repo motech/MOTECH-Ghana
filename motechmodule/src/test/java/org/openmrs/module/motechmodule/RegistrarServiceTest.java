@@ -29,12 +29,13 @@ public class RegistrarServiceTest extends TestCase {
 				getClass().getResourceAsStream("/jul-test.properties"));
 
 		registrarBean = createMock(RegistrarBean.class);
-		
+
 		ctx = new ClassPathXmlApplicationContext("test-context.xml");
-		
-		RegistrarWebService regService  = (RegistrarWebService) ctx.getBean("registrarService");
+
+		RegistrarWebService regService = (RegistrarWebService) ctx
+				.getBean("registrarService");
 		regService.setRegistrarBean(registrarBean);
-		
+
 		regWs = (RegistrarService) ctx.getBean("registrarClient");
 	}
 

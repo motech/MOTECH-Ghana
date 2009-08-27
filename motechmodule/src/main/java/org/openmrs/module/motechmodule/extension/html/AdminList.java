@@ -20,42 +20,43 @@ import org.openmrs.module.Extension;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
 
 /**
- * This class defines the links that will appear on the administration page under the
- * "basicmodule.title" heading. This extension is enabled by defining (uncommenting) it in the
- * /metadata/config.xml file.
+ * This class defines the links that will appear on the administration page
+ * under the "basicmodule.title" heading. This extension is enabled by defining
+ * (uncommenting) it in the /metadata/config.xml file.
  */
 public class AdminList extends AdministrationSectionExt {
-	
+
 	/**
 	 * @see org.openmrs.module.web.extension.AdministrationSectionExt#getMediaType()
 	 */
 	public Extension.MEDIA_TYPE getMediaType() {
 		return Extension.MEDIA_TYPE.html;
 	}
-	
+
 	/**
 	 * @see org.openmrs.module.web.extension.AdministrationSectionExt#getTitle()
 	 */
 	public String getTitle() {
 		return "motechmodule.title";
 	}
-	
+
 	/**
 	 * @see org.openmrs.module.web.extension.AdministrationSectionExt#getLinks()
 	 */
 	public Map<String, String> getLinks() {
-		
+
 		Map<String, String> map = new HashMap<String, String>();
-		
+
 		map.put("module/motechmodule/quick.form", "Quick Test");
 		map.put("module/motechmodule/clinic.form", "Register Clinic");
 		map.put("module/motechmodule/nurse.form", "Register Nurse");
 		map.put("module/motechmodule/patient.form", "Register Patient");
 		map.put("module/motechmodule/pregnancy.form", "Register Pregnancy");
-		map.put("module/motechmodule/maternalVisit.form", "Register Maternal Visit");
+		map.put("module/motechmodule/maternalVisit.form",
+				"Register Maternal Visit");
 		map.put("module/motechmodule/viewdata.form", "View Data");
-		
+
 		return map;
 	}
-	
+
 }

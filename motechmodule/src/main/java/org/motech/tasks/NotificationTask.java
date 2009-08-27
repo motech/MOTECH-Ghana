@@ -27,65 +27,80 @@ import org.openmrs.scheduler.tasks.AbstractTask;
 import org.openmrs.util.OpenmrsConstants;
 
 public class NotificationTask extends AbstractTask {
-	
+
 	private static Log log = LogFactory.getLog(NotificationTask.class);
-	
+
 	/**
 	 * @see org.openmrs.scheduler.tasks.AbstractTask#execute()
 	 */
 	@Override
 	public void execute() {
-		
-		Date startDate = new Date(System.currentTimeMillis() - (this.taskDefinition.getRepeatInterval() * 1000));
-		Date endDate = new Date(System.currentTimeMillis() + (this.taskDefinition.getRepeatInterval() * 1000));
-		
+
+		Date startDate = new Date(System.currentTimeMillis()
+				- (this.taskDefinition.getRepeatInterval() * 1000));
+		Date endDate = new Date(System.currentTimeMillis()
+				+ (this.taskDefinition.getRepeatInterval() * 1000));
+
 		try {
 			Context.openSession();
-			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
-			
-			List<FutureServiceDelivery> futureServices = Context.getService(MotechService.class).getFutureServiceDeliveries(
-			    startDate, endDate);
-			
+			Context
+					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
+
+			List<FutureServiceDelivery> futureServices = Context.getService(
+					MotechService.class).getFutureServiceDeliveries(startDate,
+					endDate);
+
 			if (log.isDebugEnabled()) {
-				log.debug("Notification Task executed, Service Deliveries found: " + futureServices.size());
+				log
+						.debug("Notification Task executed, Service Deliveries found: "
+								+ futureServices.size());
 			}
-			
+
 			if (futureServices.size() > 0) {
 				Date notificationDate = new Date();
-				PersonAttributeType phoneNumberType = Context.getPersonService()
-				        .getPersonAttributeTypeByName("Phone Number");
+				PersonAttributeType phoneNumberType = Context
+						.getPersonService().getPersonAttributeTypeByName(
+								"Phone Number");
 				for (FutureServiceDelivery service : futureServices) {
-					
+
 					if (service.getPatientNotifiedDate() == null) {
-						String patientPhone = service.getPatient().getAttribute(phoneNumberType).getValue();
-						
+						String patientPhone = service.getPatient()
+								.getAttribute(phoneNumberType).getValue();
+
 						org.motech.model.Log motechLog = new org.motech.model.Log();
 						motechLog.setType(LogType.success);
 						motechLog.setDate(notificationDate);
-						motechLog.setMessage("Future Service Delivery Notification, Patient Phone: " + patientPhone);
-						Context.getService(MotechService.class).saveLog(motechLog);
-						
+						motechLog
+								.setMessage("Future Service Delivery Notification, Patient Phone: "
+										+ patientPhone);
+						Context.getService(MotechService.class).saveLog(
+								motechLog);
+
 						service.setPatientNotifiedDate(notificationDate);
 					}
-					
+
 					if (service.getUserNotifiedDate() == null) {
-						String nursePhone = service.getUser().getAttribute(phoneNumberType).getValue();
-						
+						String nursePhone = service.getUser().getAttribute(
+								phoneNumberType).getValue();
+
 						org.motech.model.Log motechLog = new org.motech.model.Log();
 						motechLog.setType(LogType.success);
 						motechLog.setDate(notificationDate);
-						motechLog.setMessage("Future Service Delivery Notification, Nurse Phone: " + nursePhone);
-						Context.getService(MotechService.class).saveLog(motechLog);
-						
+						motechLog
+								.setMessage("Future Service Delivery Notification, Nurse Phone: "
+										+ nursePhone);
+						Context.getService(MotechService.class).saveLog(
+								motechLog);
+
 						service.setUserNotifiedDate(notificationDate);
 					}
-					Context.getService(MotechService.class).updateFutureServiceDelivery(service);
+					Context.getService(MotechService.class)
+							.updateFutureServiceDelivery(service);
 				}
 			}
-		}
-		finally {
+		} finally {
 			Context.closeSession();
 		}
 	}
-	
+
 }

@@ -24,47 +24,52 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.motechmodule.MotechService;
 import org.openmrs.module.motechmodule.db.hibernate.HibernateMotechDAO;
 
-public class MotechServiceImpl extends BaseOpenmrsService implements MotechService {
-	
+public class MotechServiceImpl extends BaseOpenmrsService implements
+		MotechService {
+
 	private HibernateMotechDAO motechDAO;
-	
+
 	public HibernateMotechDAO getMotechDAO() {
 		return motechDAO;
 	}
-	
+
 	public void setMotechDAO(HibernateMotechDAO motechDAO) {
 		this.motechDAO = motechDAO;
 	}
-	
+
 	public List<FutureServiceDelivery> getAllFutureServiceDeliveries() {
 		return motechDAO.getFutureServiceDeliveries();
 	}
-	
+
 	public List<Log> getAllLogs() {
 		return motechDAO.getLogs();
 	}
-	
-	public List<FutureServiceDelivery> getFutureServiceDeliveries(Date startDate, Date endDate) {
+
+	public List<FutureServiceDelivery> getFutureServiceDeliveries(
+			Date startDate, Date endDate) {
 		return motechDAO.getFutureServiceDeliveries(startDate, endDate);
 	}
-	
+
 	public void saveFutureServiceDelivery(FutureServiceDelivery service) {
 		motechDAO.saveFutureServiceDelivery(service);
 	}
-	
+
 	public void saveLog(Log log) {
 		motechDAO.saveLog(log);
 	}
-	
+
 	public void updateFutureServiceDelivery(FutureServiceDelivery service) {
 		motechDAO.updateFutureServiceDelivery(service);
 	}
-	
+
 	public User getUserByPhoneNumber(String phoneNumber) {
-		Integer phoneAttributeTypeId = Context.getPersonService().getPersonAttributeTypeByName("Phone Number")
-		        .getPersonAttributeTypeId();
-		// If more than one user matches phone number, first user in list is returned
-		Integer userId = motechDAO.getUsersByPersonAttribute(phoneAttributeTypeId, phoneNumber).get(0);
+		Integer phoneAttributeTypeId = Context.getPersonService()
+				.getPersonAttributeTypeByName("Phone Number")
+				.getPersonAttributeTypeId();
+		// If more than one user matches phone number, first user in list is
+		// returned
+		Integer userId = motechDAO.getUsersByPersonAttribute(
+				phoneAttributeTypeId, phoneNumber).get(0);
 		return Context.getUserService().getUser(userId);
 	}
 }

@@ -23,25 +23,26 @@ import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface MotechService extends OpenmrsService {
-	
+
 	@Transactional
 	void saveFutureServiceDelivery(FutureServiceDelivery service);
-	
+
 	@Transactional
 	void updateFutureServiceDelivery(FutureServiceDelivery service);
-	
+
 	@Transactional
 	void saveLog(Log log);
-	
+
 	@Transactional(readOnly = true)
 	List<FutureServiceDelivery> getAllFutureServiceDeliveries();
-	
+
 	@Transactional(readOnly = true)
-	List<FutureServiceDelivery> getFutureServiceDeliveries(Date startDate, Date endDate);
-	
+	List<FutureServiceDelivery> getFutureServiceDeliveries(Date startDate,
+			Date endDate);
+
 	@Transactional(readOnly = true)
 	List<Log> getAllLogs();
-	
+
 	@Transactional(readOnly = true)
 	User getUserByPhoneNumber(String phoneNumber);
 }

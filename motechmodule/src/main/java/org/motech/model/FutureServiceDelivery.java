@@ -20,7 +20,7 @@ import org.openmrs.Patient;
 import org.openmrs.User;
 
 public class FutureServiceDelivery {
-	
+
 	private Integer id;
 	private Patient patient;
 	private User user;
@@ -28,61 +28,61 @@ public class FutureServiceDelivery {
 	private Concept service;
 	private Date patientNotifiedDate;
 	private Date userNotifiedDate;
-	
+
 	public Integer getId() {
 		return id;
 	}
-	
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public Patient getPatient() {
 		return patient;
 	}
-	
+
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
-	
+
 	public User getUser() {
 		return user;
 	}
-	
+
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 	public Date getDate() {
 		return date;
 	}
-	
+
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
+
 	public Concept getService() {
 		return service;
 	}
-	
+
 	public void setService(Concept service) {
 		this.service = service;
 	}
-	
+
 	public Date getPatientNotifiedDate() {
 		return patientNotifiedDate;
 	}
-	
+
 	public void setPatientNotifiedDate(Date patientNotifiedDate) {
 		this.patientNotifiedDate = patientNotifiedDate;
 	}
-	
+
 	public Date getUserNotifiedDate() {
 		return userNotifiedDate;
 	}
-	
+
 	public void setUserNotifiedDate(Date userNotifiedDate) {
 		this.userNotifiedDate = userNotifiedDate;
 	}
-	
+
 }

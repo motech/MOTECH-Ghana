@@ -25,33 +25,38 @@ import org.openmrs.module.motechmodule.MotechService;
 import org.springframework.aop.AfterReturningAdvice;
 
 public class SaveEncounterAdvisor implements AfterReturningAdvice {
-	
+
 	private static Log log = LogFactory.getLog(SaveEncounterAdvisor.class);
-	
+
 	/**
 	 * @see org.springframework.aop.AfterReturningAdvice#afterReturning(java.lang.Object,
 	 *      java.lang.reflect.Method, java.lang.Object[], java.lang.Object)
 	 */
-	public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
-		
+	public void afterReturning(Object returnValue, Method method,
+			Object[] args, Object target) throws Throwable {
+
 		if (method.getName().equals("saveEncounter")) {
 			Encounter encounter = (Encounter) returnValue;
-			
-			if (Context.getEncounterService().getEncounterType("MATERNALVISIT").equals(encounter.getEncounterType())) {
-				
+
+			if (Context.getEncounterService().getEncounterType("MATERNALVISIT")
+					.equals(encounter.getEncounterType())) {
+
 				log.debug("Scheduling FutureServiceDelivery");
-				
+
 				// Date 30 seconds in future
 				long nextServiceTimeInSecs = 30;
-				Date nextServiceDate = new Date(System.currentTimeMillis() + (nextServiceTimeInSecs * 1000));
-				
+				Date nextServiceDate = new Date(System.currentTimeMillis()
+						+ (nextServiceTimeInSecs * 1000));
+
 				FutureServiceDelivery f = new FutureServiceDelivery();
 				f.setDate(nextServiceDate);
 				f.setUser(encounter.getProvider());
 				f.setPatient(encounter.getPatient());
-				f.setService(Context.getConceptService().getConcept("PREGNANCY VISIT NUMBER"));
-				
-				Context.getService(MotechService.class).saveFutureServiceDelivery(f);
+				f.setService(Context.getConceptService().getConcept(
+						"PREGNANCY VISIT NUMBER"));
+
+				Context.getService(MotechService.class)
+						.saveFutureServiceDelivery(f);
 			}
 		}
 	}
