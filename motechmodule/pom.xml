@@ -109,13 +109,13 @@
 		<dependency>
 			<groupId>openmrs</groupId>
 			<artifactId>openmrs-api</artifactId>
-			<version>1.4.4</version>
+			<version>${openMRSVersion}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>openmrs</groupId>
 			<artifactId>web-openmrs-api</artifactId>
-			<version>1.4.4</version>
+			<version>${openMRSVersion}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -191,6 +191,7 @@
 	<properties>
 		<modulePackage>org.openmrs.module.${project.artifactId}</modulePackage>
 		<springVersion>2.5.1</springVersion>
+		<openMRSVersion>1.4.4</openMRSVersion>
 	</properties>
 
 </project>
