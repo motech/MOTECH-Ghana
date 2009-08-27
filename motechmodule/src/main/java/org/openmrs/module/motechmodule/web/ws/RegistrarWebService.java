@@ -114,11 +114,6 @@ public class RegistrarWebService implements RegistrarService {
 	}
 
 	@WebMethod(exclude = true)
-	public RegistrarBean getRegistrarBean() {
-		return registrarBean;
-	}
-
-	@WebMethod(exclude = true)
 	public void setRegistrarBean(RegistrarBean registrarBean) {
 		this.registrarBean = registrarBean;
 	}

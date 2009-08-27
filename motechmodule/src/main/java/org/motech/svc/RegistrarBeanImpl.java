@@ -382,65 +382,33 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		motechService.saveLog(log);
 	}
 
-	public ContextAuthenticator getContextAuthenticator() {
-		return contextAuthenticator;
-	}
-
 	public void setContextAuthenticator(
 			ContextAuthenticator contextAuthenticator) {
 		this.contextAuthenticator = contextAuthenticator;
-	}
-
-	public LocationService getLocationService() {
-		return locationService;
 	}
 
 	public void setLocationService(LocationService locationService) {
 		this.locationService = locationService;
 	}
 
-	public PersonService getPersonService() {
-		return personService;
-	}
-
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
-	}
-
-	public UserService getUserService() {
-		return userService;
 	}
 
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
 
-	public PatientService getPatientService() {
-		return patientService;
-	}
-
 	public void setPatientService(PatientService patientService) {
 		this.patientService = patientService;
-	}
-
-	public EncounterService getEncounterService() {
-		return encounterService;
 	}
 
 	public void setEncounterService(EncounterService encounterService) {
 		this.encounterService = encounterService;
 	}
 
-	public ConceptService getConceptService() {
-		return conceptService;
-	}
-
 	public void setConceptService(ConceptService conceptService) {
 		this.conceptService = conceptService;
-	}
-
-	public MotechService getMotechService() {
-		return motechService;
 	}
 
 	public void setMotechService(MotechService motechService) {
