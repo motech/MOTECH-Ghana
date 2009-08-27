@@ -32,7 +32,6 @@ public class SaveEncounterAdvisor implements AfterReturningAdvice {
 	 * @see org.springframework.aop.AfterReturningAdvice#afterReturning(java.lang.Object,
 	 *      java.lang.reflect.Method, java.lang.Object[], java.lang.Object)
 	 */
-	@Override
 	public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
 		
 		if (method.getName().equals("saveEncounter")) {
