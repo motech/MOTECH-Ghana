@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- Beans to add to the current Application context definition -->
-  
+	<!-- Beans to add to the current Application context definition -->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:ws="http://jax-ws.dev.java.net/spring/core"
-       xmlns:wss="http://jax-ws.dev.java.net/spring/servlet"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ws="http://jax-ws.dev.java.net/spring/core"
+	xmlns:wss="http://jax-ws.dev.java.net/spring/servlet" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd
@@ -18,62 +16,84 @@
            http://jax-ws.dev.java.net/spring/core.xsd
            http://jax-ws.dev.java.net/spring/servlet
            http://jax-ws.dev.java.net/spring/servlet.xsd">
-	
-    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
-    
+
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+
 	<!-- Controllers -->
-    <context:component-scan base-package="${modulePackage}.web.controller" />
-	
+	<context:component-scan base-package="${modulePackage}.web.controller" />
+
+	<bean id="motechService" class="${modulePackage}.impl.MotechServiceImpl">
+		<property name="motechDAO">
+			<bean class="${modulePackage}.db.hibernate.HibernateMotechDAO">
+				<property name="sessionFactory">
+					<ref bean="sessionFactory" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+
 	<!-- Service -->
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
 				<value>${modulePackage}.MotechService</value>
-				<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+				<bean
+					class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager" />
 					</property>
-					<property name="target">
-						<bean class="${modulePackage}.impl.MotechServiceImpl">
-							<property name="motechDAO">
-								<bean class="${modulePackage}.db.hibernate.HibernateMotechDAO">
-									<property name="sessionFactory">
-										<ref bean="sessionFactory" />
-									</property>
-								</bean>
-							</property>
-						</bean>
-					</property>
+					<property name="target" ref="motechService" />
 					<property name="preInterceptors">
 						<list>
 							<ref bean="authorizationInterceptor" />
 						</list>
 					</property>
 					<property name="transactionAttributeSource">
-						<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
+						<bean
+							class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
 					</property>
 				</bean>
 			</list>
 		</property>
 	</bean>
-	    
-    <!-- Web Services Section -->
-	<wss:binding url="/ws/RegistrarService" service="#registrarservice" /> <!-- MUST start with /ws/ -->
-    <ws:service id="registrarservice" bean="#registrarWebService" />
 
-    <bean id="registrarWebService" class="${modulePackage}.web.ws.RegistrarWebService" />
-    
-    <!-- <bean id="registrarClient" class="${modulePackage}.web.ws.RegistrarServiceStub" /> -->
-    
-    <bean id="registrarClient"
+	<!-- Web Services Section -->
+	<wss:binding url="/ws/RegistrarService" service="#registrarservice" /> <!-- MUST start with /ws/ -->
+	<ws:service id="registrarservice" bean="#registrarWebService" />
+
+	<bean id="registrarBean" class="org.motech.svc.RegistrarBeanImpl">
+		<property name="personService" ref="personService" />
+		<property name="conceptService" ref="conceptService" />
+		<property name="userService" ref="userService" />
+		<property name="encounterService" ref="encounterService" />
+		<property name="locationService" ref="locationService" />
+		<property name="patientService" ref="patientService" />
+		<property name="motechService" ref="motechService" />
+		<property name="contextAuthenticator">
+			<bean class="${modulePackage}.impl.ContextAuthenticatorImpl" />
+		</property>
+	</bean>
+
+	<bean id="registrarWebService" class="${modulePackage}.web.ws.RegistrarWebService">
+		<property name="registrarBean" ref="registrarBean" />
+	</bean>
+
+	<!--
+		<bean id="registrarClient"
+		class="${modulePackage}.web.ws.RegistrarServiceStub" />
+	-->
+
+	<bean id="registrarClient"
 		class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
 		<property name="serviceInterface" value="${modulePackage}.web.ws.RegistrarService" />
 		<property name="wsdlDocumentUrl"
 			value="http://localhost:8080/openmrs/ws/RegistrarService?wsdl" />
-		<property name="namespaceUri" value="http://ws.web.motechmodule.module.openmrs.org/" />
+		<property name="namespaceUri"
+			value="http://ws.web.motechmodule.module.openmrs.org/" />
 		<property name="serviceName" value="RegistrarWebServiceService" />
 		<property name="portName" value="RegistrarWebServicePort" />
 		<property name="lookupServiceOnStartup" value="false" />
 	</bean>
-    
+
 </beans>
