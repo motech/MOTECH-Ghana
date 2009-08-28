@@ -67,4 +67,25 @@ public class RegistrarServiceTest {
 		String capturedName = stringCap.getValue();
 		assertEquals(clinicName, capturedName);
 	}
+
+	@Test
+	public void testRegisterNurse() {
+		Capture<String> nameCap = new Capture<String>();
+		Capture<String> phoneCap = new Capture<String>();
+		Capture<String> clinicCap = new Capture<String>();
+
+		registrarBean.registerNurse(capture(nameCap), capture(phoneCap),
+				capture(clinicCap));
+
+		replay(registrarBean);
+
+		String name = "Sally", phone = "12075555555", clinic = "C-Clinic";
+		regWs.registerNurse(name, phone, clinic);
+
+		verify(registrarBean);
+
+		assertEquals(name, nameCap.getValue());
+		assertEquals(phone, phoneCap.getValue());
+		assertEquals(clinic, clinicCap.getValue());
+	}
 }
