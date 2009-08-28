@@ -8,7 +8,6 @@ import static org.easymock.EasyMock.verify;
 import java.util.Date;
 import java.util.logging.LogManager;
 
-import org.easymock.Capture;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -114,6 +113,25 @@ public class RegistrarServiceTest {
 		replay(registrarBean);
 
 		regWs.registerPregnancy(nPhone, date, serialId, dueDate, parity, hemo);
+
+		verify(registrarBean);
+	}
+
+	@Test
+	public void testRecordMaternalVisit() {
+		String nPhone = "12077778383", serialId = "ghj347956y";
+		Date date = new Date();
+		Boolean tetanus = true, ipt = false, itn = true, onARV = false, prePMTCT = true, testPMTCT = false, postPMTCT = true;
+		Integer visitNum = 3;
+		Double hemo = 378.34;
+
+		registrarBean.recordMaternalVisit(nPhone, date, serialId, tetanus, ipt,
+				itn, visitNum, onARV, prePMTCT, testPMTCT, postPMTCT, hemo);
+
+		replay(registrarBean);
+
+		regWs.recordMaternalVisit(nPhone, date, serialId, tetanus, ipt, itn,
+				visitNum, onARV, prePMTCT, testPMTCT, postPMTCT, hemo);
 
 		verify(registrarBean);
 	}
