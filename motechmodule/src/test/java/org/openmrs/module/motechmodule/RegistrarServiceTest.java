@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.motech.model.Gender;
+import org.motech.model.LogType;
 import org.motech.svc.RegistrarBean;
 import org.openmrs.module.motechmodule.web.ws.RegistrarService;
 import org.openmrs.module.motechmodule.web.ws.RegistrarWebService;
@@ -132,6 +133,20 @@ public class RegistrarServiceTest {
 
 		regWs.recordMaternalVisit(nPhone, date, serialId, tetanus, ipt, itn,
 				visitNum, onARV, prePMTCT, testPMTCT, postPMTCT, hemo);
+
+		verify(registrarBean);
+	}
+
+	@Test
+	public void testLog() {
+		LogType type = LogType.success;
+		String msg = "logging over ws is slow";
+
+		registrarBean.log(type, msg);
+
+		replay(registrarBean);
+
+		regWs.log(type, msg);
 
 		verify(registrarBean);
 	}
