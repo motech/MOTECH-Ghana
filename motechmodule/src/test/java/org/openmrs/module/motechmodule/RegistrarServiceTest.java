@@ -12,7 +12,6 @@ import java.util.logging.LogManager;
 import org.easymock.Capture;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.motech.svc.RegistrarBean;
@@ -28,7 +27,10 @@ public class RegistrarServiceTest {
 	static RegistrarBean registrarBean;
 
 	@BeforeClass
-	public static void setUpClass() {
+	public static void setUpClass() throws Exception {
+		LogManager.getLogManager().readConfiguration(
+				RegistrarServiceTest.class
+						.getResourceAsStream("/jul-test.properties"));
 		registrarBean = createMock(RegistrarBean.class);
 		ctx = new ClassPathXmlApplicationContext("test-context.xml");
 		RegistrarWebService regService = (RegistrarWebService) ctx
@@ -38,22 +40,16 @@ public class RegistrarServiceTest {
 	}
 
 	@AfterClass
-	public static void tearDownClass() {
+	public static void tearDownClass() throws Exception {
 		ctx = null;
 		regWs = null;
 		registrarBean = null;
-	}
-
-	@Before
-	public void setUp() throws Exception {
-		LogManager.getLogManager().readConfiguration(
-				getClass().getResourceAsStream("/jul-test.properties"));
+		LogManager.getLogManager().readConfiguration();
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		reset(registrarBean);
-		LogManager.getLogManager().readConfiguration();
 	}
 
 	@Test
