@@ -1,54 +1,62 @@
 package org.openmrs.module.motechmodule;
 
+import static junit.framework.Assert.assertEquals;
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
 
 import java.util.logging.LogManager;
 
-import junit.framework.TestCase;
-
 import org.easymock.Capture;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.motech.svc.RegistrarBean;
 import org.openmrs.module.motechmodule.web.ws.RegistrarService;
 import org.openmrs.module.motechmodule.web.ws.RegistrarWebService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class RegistrarServiceTest extends TestCase {
+public class RegistrarServiceTest {
 
-	ApplicationContext ctx;
-	RegistrarService regWs;
+	static ApplicationContext ctx;
+	static RegistrarService regWs;
+	static RegistrarBean registrarBean;
 
-	RegistrarBean registrarBean;
-
-	@Override
-	protected void setUp() throws Exception {
-		LogManager.getLogManager().readConfiguration(
-				getClass().getResourceAsStream("/jul-test.properties"));
-
+	@BeforeClass
+	public static void setUpClass() {
 		registrarBean = createMock(RegistrarBean.class);
-
 		ctx = new ClassPathXmlApplicationContext("test-context.xml");
-
 		RegistrarWebService regService = (RegistrarWebService) ctx
 				.getBean("registrarService");
 		regService.setRegistrarBean(registrarBean);
-
 		regWs = (RegistrarService) ctx.getBean("registrarClient");
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-		regWs = null;
+	@AfterClass
+	public static void tearDownClass() {
 		ctx = null;
-
+		regWs = null;
 		registrarBean = null;
+	}
 
+	@Before
+	public void setUp() throws Exception {
+		LogManager.getLogManager().readConfiguration(
+				getClass().getResourceAsStream("/jul-test.properties"));
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		reset(registrarBean);
 		LogManager.getLogManager().readConfiguration();
 	}
 
+	@Test
 	public void testRegisterClinic() {
 		Capture<String> stringCap = new Capture<String>();
 		registrarBean.registerClinic(capture(stringCap));
@@ -63,5 +71,4 @@ public class RegistrarServiceTest extends TestCase {
 		String capturedName = stringCap.getValue();
 		assertEquals(clinicName, capturedName);
 	}
-
 }
