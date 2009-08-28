@@ -7,13 +7,16 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
 
+import java.util.Date;
 import java.util.logging.LogManager;
 
 import org.easymock.Capture;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.motech.model.Gender;
 import org.motech.svc.RegistrarBean;
 import org.openmrs.module.motechmodule.web.ws.RegistrarService;
 import org.openmrs.module.motechmodule.web.ws.RegistrarWebService;
@@ -25,6 +28,17 @@ public class RegistrarServiceTest {
 	static ApplicationContext ctx;
 	static RegistrarService regWs;
 	static RegistrarBean registrarBean;
+
+	Capture<String> clinicCap;
+	Capture<String> nPhoneCap;
+	Capture<String> serialIdCap;
+	Capture<String> nameCap;
+	Capture<String> communityCap;
+	Capture<String> locationCap;
+	Capture<Date> dobCap;
+	Capture<Gender> genderCap;
+	Capture<Integer> nhisCap;
+	Capture<String> pPhoneCap;
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
@@ -47,15 +61,38 @@ public class RegistrarServiceTest {
 		LogManager.getLogManager().readConfiguration();
 	}
 
+	@Before
+	public void setup() {
+		clinicCap = new Capture<String>();
+		nPhoneCap = new Capture<String>();
+		serialIdCap = new Capture<String>();
+		nameCap = new Capture<String>();
+		communityCap = new Capture<String>();
+		locationCap = new Capture<String>();
+		dobCap = new Capture<Date>();
+		genderCap = new Capture<Gender>();
+		nhisCap = new Capture<Integer>();
+		pPhoneCap = new Capture<String>();
+	}
+
 	@After
 	public void tearDown() throws Exception {
+		clinicCap = null;
+		nPhoneCap = null;
+		serialIdCap = null;
+		nameCap = null;
+		communityCap = null;
+		locationCap = null;
+		dobCap = null;
+		genderCap = null;
+		nhisCap = null;
+		pPhoneCap = null;
 		reset(registrarBean);
 	}
 
 	@Test
 	public void testRegisterClinic() {
-		Capture<String> stringCap = new Capture<String>();
-		registrarBean.registerClinic(capture(stringCap));
+		registrarBean.registerClinic(capture(clinicCap));
 
 		replay(registrarBean);
 
@@ -64,17 +101,12 @@ public class RegistrarServiceTest {
 
 		verify(registrarBean);
 
-		String capturedName = stringCap.getValue();
-		assertEquals(clinicName, capturedName);
+		assertEquals(clinicName, clinicCap.getValue());
 	}
 
 	@Test
 	public void testRegisterNurse() {
-		Capture<String> nameCap = new Capture<String>();
-		Capture<String> phoneCap = new Capture<String>();
-		Capture<String> clinicCap = new Capture<String>();
-
-		registrarBean.registerNurse(capture(nameCap), capture(phoneCap),
+		registrarBean.registerNurse(capture(nameCap), capture(nPhoneCap),
 				capture(clinicCap));
 
 		replay(registrarBean);
@@ -85,7 +117,37 @@ public class RegistrarServiceTest {
 		verify(registrarBean);
 
 		assertEquals(name, nameCap.getValue());
-		assertEquals(phone, phoneCap.getValue());
+		assertEquals(phone, nPhoneCap.getValue());
 		assertEquals(clinic, clinicCap.getValue());
+	}
+
+	@Test
+	public void testRegisterPatient() {
+		registrarBean.registerPatient(capture(nPhoneCap), capture(serialIdCap),
+				capture(nameCap), capture(communityCap), capture(locationCap),
+				capture(dobCap), capture(genderCap), capture(nhisCap),
+				capture(pPhoneCap));
+
+		replay(registrarBean);
+
+		String nPhone = "12075551212", serialId = "387946894", name = "Francis", community = "somepeople", location = "somewhere", pPhone = "120755512525";
+		Date dob = new Date();
+		Gender gender = Gender.female;
+		Integer nhis = 3;
+
+		regWs.registerPatient(nPhone, serialId, name, community, location, dob,
+				gender, nhis, pPhone);
+
+		verify(registrarBean);
+
+		assertEquals(nPhone, nPhoneCap.getValue());
+		assertEquals(serialId, serialIdCap.getValue());
+		assertEquals(name, nameCap.getValue());
+		assertEquals(community, communityCap.getValue());
+		assertEquals(location, locationCap.getValue());
+		assertEquals(pPhone, pPhoneCap.getValue());
+		assertEquals(dob, dobCap.getValue());
+		assertEquals(gender, genderCap.getValue());
+		assertEquals(nhis, nhisCap.getValue());
 	}
 }
