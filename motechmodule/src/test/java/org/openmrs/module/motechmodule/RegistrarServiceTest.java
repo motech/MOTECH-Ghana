@@ -4,6 +4,7 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 import java.util.logging.LogManager;
@@ -149,5 +150,16 @@ public class RegistrarServiceTest {
 		regWs.log(type, msg);
 
 		verify(registrarBean);
+	}
+
+	@Test
+	public void testRegistrarBeanProperty() {
+		RegistrarWebService regWs = new RegistrarWebService();
+
+		regWs.setRegistrarBean(registrarBean);
+		assertEquals(registrarBean, regWs.getRegistrarBean());
+
+		regWs.setRegistrarBean(null);
+		assertEquals(null, regWs.getRegistrarBean());
 	}
 }
