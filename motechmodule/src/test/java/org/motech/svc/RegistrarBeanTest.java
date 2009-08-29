@@ -6,10 +6,17 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+
+import java.util.Date;
+
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
+import org.motech.model.Gender;
 import org.openmrs.Location;
+import org.openmrs.Patient;
+import org.openmrs.PatientIdentifierType;
+import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.Role;
 import org.openmrs.User;
@@ -35,6 +42,16 @@ public class RegistrarBeanTest extends TestCase {
 	ConceptService conceptService;
 	MotechService motechService;
 
+	String phoneAttrName = "Phone Number";
+	String clinicAttrName = "Health Center";
+	String nhisAttrName = "NHIS Number";
+	String providerRoleName = "Provider";
+
+	PersonAttributeType phoneAttributeType;
+	PersonAttributeType clinicAttributeType;
+	PersonAttributeType nhisAttributeType;
+	Role providerRole;
+
 	@Override
 	protected void setUp() throws Exception {
 		contextAuthenticator = createMock(ContextAuthenticator.class);
@@ -45,6 +62,17 @@ public class RegistrarBeanTest extends TestCase {
 		encounterService = createMock(EncounterService.class);
 		conceptService = createMock(ConceptService.class);
 		motechService = createMock(MotechService.class);
+
+		phoneAttributeType = new PersonAttributeType(2);
+		phoneAttributeType.setName(phoneAttrName);
+
+		clinicAttributeType = new PersonAttributeType(3);
+		clinicAttributeType.setName(clinicAttrName);
+
+		nhisAttributeType = new PersonAttributeType(4);
+		nhisAttributeType.setName(nhisAttrName);
+
+		providerRole = new Role(providerRoleName);
 
 		RegistrarBeanImpl regBeanImpl = new RegistrarBeanImpl();
 		regBeanImpl.setContextAuthenticator(contextAuthenticator);
@@ -94,17 +122,7 @@ public class RegistrarBeanTest extends TestCase {
 
 	public void testRegisterNurse() {
 		String name = "Jenny", phone = "12078675309", clinic = "Mayo Clinic";
-		String phoneAttrName = "Phone Number";
-		String clinicAttrName = "Health Center";
-		String providerRoleName = "Provider";
 
-		PersonAttributeType phoneAttributeType = new PersonAttributeType(2);
-		phoneAttributeType.setName(phoneAttrName);
-
-		PersonAttributeType clinicAttributeType = new PersonAttributeType(3);
-		clinicAttributeType.setName(clinicAttrName);
-
-		Role providerRole = new Role(providerRoleName);
 		Location clinicLocation = new Location(1);
 		clinicLocation.setName(clinic);
 
@@ -136,4 +154,62 @@ public class RegistrarBeanTest extends TestCase {
 				.getAttribute(clinicAttributeType).getValue());
 	}
 
+	public void testRegisterPatient() {
+		String nPhone = "12075551212", serialId = "dbvhjdg4784", name = "Gaylord", community = "A Community", location = "A Location", pPhone = "120773733373";
+		Date dob = new Date();
+		Gender gender = Gender.male;
+		Integer nhis = 28;
+
+		String ghanaIdTypeName = "Ghana Clinic Id";
+		PatientIdentifierType ghanaIdType = new PatientIdentifierType(1);
+		ghanaIdType.setName(ghanaIdTypeName);
+
+		Location locationObj = new Location(1);
+		locationObj.setName(location);
+
+		User nurse = new User(1);
+		nurse.addAttribute(new PersonAttribute(phoneAttributeType, pPhone));
+		nurse.addAttribute(new PersonAttribute(clinicAttributeType, locationObj
+				.getLocationId().toString()));
+
+		Capture<Patient> patientCap = new Capture<Patient>();
+
+		contextAuthenticator.authenticate((String) anyObject(),
+				(String) anyObject());
+		expect(patientService.getPatientIdentifierTypeByName(ghanaIdTypeName))
+				.andReturn(ghanaIdType);
+		expect(motechService.getUserByPhoneNumber(nPhone)).andReturn(nurse);
+		expect(personService.getPersonAttributeTypeByName(clinicAttrName))
+				.andReturn(clinicAttributeType);
+		expect(locationService.getLocation(locationObj.getLocationId()))
+				.andReturn(locationObj);
+		expect(personService.getPersonAttributeTypeByName(nhisAttrName))
+				.andReturn(nhisAttributeType);
+		expect(personService.getPersonAttributeTypeByName(phoneAttrName))
+				.andReturn(phoneAttributeType);
+		expect(patientService.savePatient(capture(patientCap))).andReturn(
+				new Patient());
+
+		replay(contextAuthenticator, patientService, motechService,
+				personService, locationService);
+
+		regBean.registerPatient(nPhone, serialId, name, community, location,
+				dob, gender, nhis, pPhone);
+
+		verify(contextAuthenticator, patientService, motechService,
+				personService, locationService);
+
+		Patient patient = patientCap.getValue();
+		assertEquals(serialId, patient.getPatientIdentifier(ghanaIdType)
+				.getIdentifier());
+		assertEquals(name, patient.getGivenName());
+		assertEquals(location, patient.getPersonAddress().getAddress1());
+		assertEquals(community, patient.getPersonAddress().getCityVillage());
+		assertEquals(pPhone, patient.getAttribute(phoneAttributeType)
+				.getValue());
+		assertEquals(dob, patient.getBirthdate());
+		assertEquals(gender.toOpenMRSString(), patient.getGender());
+		assertEquals(nhis.toString(), patient.getAttribute(nhisAttributeType)
+				.getValue());
+	}
 }
