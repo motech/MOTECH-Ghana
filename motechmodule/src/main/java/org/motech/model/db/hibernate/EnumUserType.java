@@ -26,6 +26,7 @@ public class EnumUserType<E extends Enum<E>> implements UserType {
 		return SQL_TYPES;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Class returnedClass() {
 		return clazz;
 	}
@@ -40,6 +41,7 @@ public class EnumUserType<E extends Enum<E>> implements UserType {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void nullSafeSet(PreparedStatement preparedStatement, Object value,
 			int index) throws HibernateException, SQLException {
 		if (null == value) {
