@@ -4,7 +4,7 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 	<appender name="TEST" class="org.apache.log4j.FileAppender">
-		<param name="File" value="${project.build.directory}/test.log" />
+		<param name="File" value="target/test.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
 				value="%d{ABSOLUTE} %5p [%c{1}:%L] - %m%n" />
