@@ -9,9 +9,10 @@ import static org.easymock.EasyMock.verify;
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
-import org.motech.svc.RegistrarBean;
-import org.motech.svc.RegistrarBeanImpl;
 import org.openmrs.Location;
+import org.openmrs.PersonAttributeType;
+import org.openmrs.Role;
+import org.openmrs.User;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.LocationService;
@@ -89,6 +90,50 @@ public class RegistrarBeanTest extends TestCase {
 		Location location = locationCap.getValue();
 		assertEquals(clinicName, location.getName());
 		assertEquals("A Ghana Clinic Location", location.getDescription());
+	}
+
+	public void testRegisterNurse() {
+		String name = "Jenny", phone = "12078675309", clinic = "Mayo Clinic";
+		String phoneAttrName = "Phone Number";
+		String clinicAttrName = "Health Center";
+		String providerRoleName = "Provider";
+
+		PersonAttributeType phoneAttributeType = new PersonAttributeType(2);
+		phoneAttributeType.setName(phoneAttrName);
+
+		PersonAttributeType clinicAttributeType = new PersonAttributeType(3);
+		clinicAttributeType.setName(clinicAttrName);
+
+		Role providerRole = new Role(providerRoleName);
+		Location clinicLocation = new Location(1);
+		clinicLocation.setName(clinic);
+
+		Capture<User> nurseCap = new Capture<User>();
+
+		contextAuthenticator.authenticate((String) anyObject(),
+				(String) anyObject());
+		expect(personService.getPersonAttributeTypeByName(phoneAttrName))
+				.andReturn(phoneAttributeType);
+		expect(userService.getRole(providerRoleName)).andReturn(providerRole);
+		expect(locationService.getLocation(clinic)).andReturn(clinicLocation);
+		expect(personService.getPersonAttributeTypeByName(clinicAttrName))
+				.andReturn(clinicAttributeType);
+		expect(userService.saveUser(capture(nurseCap), (String) anyObject()))
+				.andReturn(new User());
+
+		replay(contextAuthenticator, personService, userService,
+				locationService);
+
+		regBean.registerNurse(name, phone, clinic);
+
+		verify(contextAuthenticator, personService, userService,
+				locationService);
+
+		User nurse = nurseCap.getValue();
+		assertEquals(name, nurse.getGivenName());
+		assertEquals(phone, nurse.getAttribute(phoneAttributeType).getValue());
+		assertEquals(clinicLocation.getLocationId().toString(), nurse
+				.getAttribute(clinicAttributeType).getValue());
 	}
 
 }
