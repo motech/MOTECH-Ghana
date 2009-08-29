@@ -6,6 +6,7 @@ import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.logging.LogManager;
 
@@ -153,13 +154,18 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRegistrarBeanProperty() {
+	public void testRegistrarBeanProperty() throws SecurityException,
+			NoSuchFieldException, IllegalArgumentException,
+			IllegalAccessException {
 		RegistrarWebService regWs = new RegistrarWebService();
 
+		Field regBeanField = regWs.getClass().getDeclaredField("registrarBean");
+		regBeanField.setAccessible(true);
+
 		regWs.setRegistrarBean(registrarBean);
-		assertEquals(registrarBean, regWs.getRegistrarBean());
+		assertEquals(registrarBean, regBeanField.get(regWs));
 
 		regWs.setRegistrarBean(null);
-		assertEquals(null, regWs.getRegistrarBean());
+		assertEquals(null, regBeanField.get(regWs));
 	}
 }
