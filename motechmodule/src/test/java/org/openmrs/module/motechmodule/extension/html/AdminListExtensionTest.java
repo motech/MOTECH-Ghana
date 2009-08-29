@@ -11,7 +11,7 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.motechmodule;
+package org.openmrs.module.motechmodule.extension.html;
 
 import java.util.Map;
 

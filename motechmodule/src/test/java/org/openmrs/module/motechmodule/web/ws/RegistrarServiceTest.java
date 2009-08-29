@@ -1,4 +1,4 @@
-package org.openmrs.module.motechmodule;
+package org.openmrs.module.motechmodule.web.ws;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.replay;

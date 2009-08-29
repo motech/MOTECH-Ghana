@@ -1,4 +1,4 @@
-package org.openmrs.module.motechmodule;
+package org.motech.svc;
 
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.capture;
@@ -18,6 +18,8 @@ import org.openmrs.api.LocationService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
+import org.openmrs.module.motechmodule.ContextAuthenticator;
+import org.openmrs.module.motechmodule.MotechService;
 
 public class RegistrarBeanTest extends TestCase {
 
