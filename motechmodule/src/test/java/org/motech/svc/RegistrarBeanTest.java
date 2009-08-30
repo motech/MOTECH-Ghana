@@ -70,7 +70,12 @@ public class RegistrarBeanTest extends TestCase {
 	String prePMTCTConceptName = "PRE PREVENTING MATERNAL TO CHILD TRANSMISSION";
 	String testPMTCTConceptName = "TEST PREVENTING MATERNAL TO CHILD TRANSMISSION";
 	String postPMTCTConceptName = "POST PREVENTING MATERNAL TO CHILD TRANSMISSION";
-	String hemoConceptName = "HEMOGLOBIN AT 36 WEEKS";
+	String hemo36ConceptName = "HEMOGLOBIN AT 36 WEEKS";
+	String pregVisitName = "PREGNANCYVISIT";
+	String pregStatusConceptName = "PREGNANCY STATUS";
+	String dateConfConceptName = "ESTIMATED DATE OF CONFINEMENT";
+	String gravidaConceptName = "GRAVIDA";
+	String hemoConceptName = "HEMOGLOBIN";
 
 	PatientIdentifierType ghanaIdType;
 	PersonAttributeType phoneAttributeType;
@@ -98,6 +103,15 @@ public class RegistrarBeanTest extends TestCase {
 	Concept testPMTCTConcept;
 	ConceptName postPMTCTConceptNameObj;
 	Concept postPMTCTConcept;
+	ConceptName hemo36ConceptNameObj;
+	Concept hemo36Concept;
+	EncounterType pregVisitType;
+	ConceptName pregStatusConceptNameObj;
+	Concept pregStatusConcept;
+	ConceptName dateConfConceptNameObj;
+	Concept dateConfConcept;
+	ConceptName gravidaConceptNameObj;
+	Concept gravidaConcept;
 	ConceptName hemoConceptNameObj;
 	Concept hemoConcept;
 
@@ -166,9 +180,28 @@ public class RegistrarBeanTest extends TestCase {
 				.getDefault());
 		postPMTCTConcept = new Concept(15);
 
+		hemo36ConceptNameObj = new ConceptName(hemo36ConceptName, Locale
+				.getDefault());
+		hemo36Concept = new Concept(16);
+
+		pregVisitType = new EncounterType(17);
+		pregVisitType.setName(pregVisitName);
+
+		pregStatusConceptNameObj = new ConceptName(pregStatusConceptName,
+				Locale.getDefault());
+		pregStatusConcept = new Concept(18);
+
+		dateConfConceptNameObj = new ConceptName(dateConfConceptName, Locale
+				.getDefault());
+		dateConfConcept = new Concept(19);
+
+		gravidaConceptNameObj = new ConceptName(gravidaConceptName, Locale
+				.getDefault());
+		gravidaConcept = new Concept(20);
+
 		hemoConceptNameObj = new ConceptName(hemoConceptName, Locale
 				.getDefault());
-		hemoConcept = new Concept(16);
+		hemoConcept = new Concept(21);
 
 		RegistrarBeanImpl regBeanImpl = new RegistrarBeanImpl();
 		regBeanImpl.setContextAuthenticator(contextAuthenticator);
@@ -361,8 +394,8 @@ public class RegistrarBeanTest extends TestCase {
 				testPMTCTConcept);
 		expect(conceptService.getConcept(postPMTCTConceptName)).andReturn(
 				postPMTCTConcept);
-		expect(conceptService.getConcept(hemoConceptName)).andReturn(
-				hemoConcept);
+		expect(conceptService.getConcept(hemo36ConceptName)).andReturn(
+				hemo36Concept);
 		expect(encounterService.saveEncounter(capture(encounterCap)))
 				.andReturn(new Encounter());
 
@@ -385,6 +418,70 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(serialId, e.getPatient().getPatientIdentifier()
 				.getIdentifier());
 		assertEquals(date, e.getEncounterDatetime());
+		// TODO: Check each observation exists in encounter, and matches value
+	}
+
+	public void testRegisterPregnancy() {
+		String nPhone = "15555555555", serialId = "AFGHSFG";
+		Date date = new Date();
+		Integer parity = 1;
+		Double hemo = 3893.1;
+
+		Location locationObj = new Location(1);
+		User nurse = new User(1);
+		nurse.addAttribute(new PersonAttribute(phoneAttributeType, nPhone));
+		nurse.addAttribute(new PersonAttribute(clinicAttributeType, locationObj
+				.getLocationId().toString()));
+		Patient patient = new Patient();
+		patient.addIdentifier(new PatientIdentifier(serialId, ghanaIdType,
+				locationObj));
+		List<Patient> patients = new ArrayList<Patient>();
+		patients.add(patient);
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+		Capture<List<PatientIdentifierType>> typeListCap = new Capture<List<PatientIdentifierType>>();
+
+		contextAuthenticator.authenticate((String) anyObject(),
+				(String) anyObject());
+		expect(patientService.getPatientIdentifierTypeByName(ghanaIdTypeName))
+				.andReturn(ghanaIdType);
+		expect(
+				patientService.getPatients(same((String) null), eq(serialId),
+						capture(typeListCap), eq(true))).andReturn(patients);
+		expect(motechService.getUserByPhoneNumber(nPhone)).andReturn(nurse);
+		expect(personService.getPersonAttributeTypeByName(clinicAttrName))
+				.andReturn(clinicAttributeType);
+		expect(locationService.getLocation(1)).andReturn(locationObj);
+		expect(encounterService.getEncounterType(pregVisitName)).andReturn(
+				pregVisitType);
+		expect(conceptService.getConcept(pregStatusConceptName)).andReturn(
+				pregStatusConcept);
+		expect(conceptService.getConcept(dateConfConceptName)).andReturn(
+				dateConfConcept);
+		expect(conceptService.getConcept(gravidaConceptName)).andReturn(
+				gravidaConcept);
+		expect(conceptService.getConcept(hemoConceptName)).andReturn(
+				hemoConcept);
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextAuthenticator, patientService, motechService,
+				personService, locationService, encounterService,
+				conceptService);
+
+		regBean.registerPregnancy(nPhone, date, serialId, date, parity, hemo);
+
+		verify(contextAuthenticator, patientService, motechService,
+				personService, locationService, encounterService,
+				conceptService);
+
+		Encounter e = encounterCap.getValue();
+		assertEquals(nPhone, e.getProvider().getAttribute(phoneAttributeType)
+				.getValue());
+		assertEquals(serialId, e.getPatient().getPatientIdentifier()
+				.getIdentifier());
+		assertEquals(date, e.getEncounterDatetime());
+
 		// TODO: Check each observation exists in encounter, and matches value
 	}
 
