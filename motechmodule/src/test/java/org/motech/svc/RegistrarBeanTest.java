@@ -422,6 +422,72 @@ public class RegistrarBeanTest extends TestCase {
 		// TODO: Check each observation exists in encounter, and matches value
 	}
 
+	public void testRegisterMaternalVisitNoObs() {
+
+		String nPhone = "12078888888", serialId = "478df-389489";
+		Date date = new Date();
+		Boolean tetanus = false, ipt = false, itn = false, onARV = false, prePMTCT = false, testPMTCT = false, postPMTCT = false;
+		Double hemo = 12.3;
+		Integer visit = 1;
+
+		Location locationObj = new Location(1);
+
+		User nurse = new User(1);
+		nurse.addAttribute(new PersonAttribute(phoneAttributeType, nPhone));
+		nurse.addAttribute(new PersonAttribute(clinicAttributeType, locationObj
+				.getLocationId().toString()));
+
+		Patient patient = new Patient();
+		patient.addIdentifier(new PatientIdentifier(serialId, ghanaIdType,
+				locationObj));
+		List<Patient> patients = new ArrayList<Patient>();
+		patients.add(patient);
+
+		Capture<List<PatientIdentifierType>> typeList = new Capture<List<PatientIdentifierType>>();
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		contextAuthenticator.authenticate((String) anyObject(),
+				(String) anyObject());
+		expect(patientService.getPatientIdentifierTypeByName(ghanaIdTypeName))
+				.andReturn(ghanaIdType);
+		expect(
+				patientService.getPatients(same((String) null), eq(serialId),
+						capture(typeList), eq(true))).andReturn(patients);
+		expect(motechService.getUserByPhoneNumber(nPhone)).andReturn(nurse);
+		expect(personService.getPersonAttributeTypeByName(clinicAttrName))
+				.andReturn(clinicAttributeType);
+		expect(locationService.getLocation(1)).andReturn(locationObj);
+		expect(encounterService.getEncounterType(matVisitTypeName)).andReturn(
+				matVisitType);
+		expect(conceptService.getConcept(visitNumConceptName)).andReturn(
+				visitNumConcept);
+		expect(conceptService.getConcept(hemo36ConceptName)).andReturn(
+				hemo36Concept);
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextAuthenticator, patientService, motechService,
+				personService, locationService, encounterService,
+				conceptService);
+
+		regBean.recordMaternalVisit(nPhone, date, serialId, tetanus, ipt, itn,
+				visit, onARV, prePMTCT, testPMTCT, postPMTCT, hemo);
+
+		verify(contextAuthenticator, patientService, motechService,
+				personService, locationService, encounterService,
+				conceptService);
+
+		Encounter e = encounterCap.getValue();
+		assertTrue(typeList.getValue().size() == 1);
+		assertTrue(typeList.getValue().contains(ghanaIdType));
+		assertEquals(nPhone, e.getProvider().getAttribute(phoneAttributeType)
+				.getValue());
+		assertEquals(serialId, e.getPatient().getPatientIdentifier()
+				.getIdentifier());
+		assertEquals(date, e.getEncounterDatetime());
+		// TODO: Verify correct observations are recorded
+	}
+
 	public void testRegisterPregnancy() {
 		String nPhone = "15555555555", serialId = "AFGHSFG";
 		Date date = new Date();
