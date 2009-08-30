@@ -25,6 +25,7 @@ import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
+import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientIdentifierType;
@@ -481,8 +482,25 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(serialId, e.getPatient().getPatientIdentifier()
 				.getIdentifier());
 		assertEquals(date, e.getEncounterDatetime());
+		assertEquals(1.0, getFirstMatchingObs(e, pregStatusConcept)
+				.getValueNumeric());
+		assertEquals(date, getFirstMatchingObs(e, dateConfConcept)
+				.getValueDatetime());
+		assertEquals(Double.valueOf(parity), getFirstMatchingObs(e,
+				gravidaConcept).getValueNumeric());
+		assertEquals(hemo, getFirstMatchingObs(e, hemoConcept)
+				.getValueNumeric());
+	}
 
-		// TODO: Check each observation exists in encounter, and matches value
+	private Obs getFirstMatchingObs(Encounter encounter, Concept concept) {
+		Obs firstObs = null;
+		for (Obs o : encounter.getAllObs()) {
+			if (concept.equals(o.getConcept())) {
+				firstObs = o;
+				break;
+			}
+		}
+		return firstObs;
 	}
 
 	public void testLog() {
