@@ -18,6 +18,8 @@ import junit.framework.TestCase;
 
 import org.easymock.Capture;
 import org.motech.model.Gender;
+import org.motech.model.Log;
+import org.motech.model.LogType;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
@@ -384,5 +386,32 @@ public class RegistrarBeanTest extends TestCase {
 				.getIdentifier());
 		assertEquals(date, e.getEncounterDatetime());
 		// TODO: Check each observation exists in encounter, and matches value
+	}
+
+	public void testLog() {
+		LogType type = LogType.failure;
+		String message = "A simple message";
+		Date beforeCall = new Date();
+
+		Capture<Log> logCap = new Capture<Log>();
+
+		motechService.saveLog(capture(logCap));
+
+		replay(motechService);
+
+		regBean.log(type, message);
+
+		verify(motechService);
+
+		Log log = logCap.getValue();
+		Date logDate = log.getDate();
+		Date afterCall = new Date();
+
+		assertEquals(type, log.getType());
+		assertEquals(message, log.getMessage());
+		assertNotNull("Date is null", logDate);
+		assertFalse("Date not between invocation and return", logDate
+				.before(beforeCall)
+				|| logDate.after(afterCall));
 	}
 }
