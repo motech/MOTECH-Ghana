@@ -79,11 +79,6 @@
 		<property name="registrarBean" ref="registrarBean" />
 	</bean>
 
-	<!--
-		<bean id="registrarClient"
-		class="${modulePackage}.web.ws.RegistrarServiceStub" />
-	-->
-
 	<bean id="registrarClient"
 		class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
 		<property name="serviceInterface" value="${modulePackage}.web.ws.RegistrarService" />
