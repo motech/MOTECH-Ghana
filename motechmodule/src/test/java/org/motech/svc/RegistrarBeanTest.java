@@ -3,18 +3,28 @@ package org.motech.svc;
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.same;
 import static org.easymock.EasyMock.verify;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
 import org.motech.model.Gender;
+import org.openmrs.Concept;
+import org.openmrs.ConceptName;
+import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Patient;
+import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
@@ -42,15 +52,52 @@ public class RegistrarBeanTest extends TestCase {
 	ConceptService conceptService;
 	MotechService motechService;
 
+	String ghanaIdTypeName = "Ghana Clinic Id";
 	String phoneAttrName = "Phone Number";
 	String clinicAttrName = "Health Center";
 	String nhisAttrName = "NHIS Number";
 	String providerRoleName = "Provider";
+	String matVisitTypeName = "MATERNALVISIT";
+	String immunizationConceptName = "IMMUNIZATIONS ORDERED";
+	String tetanusConceptName = "TETANUS BOOSTER";
+	String iptConceptName = "INTERMITTENT PREVENTATIVE TREATMENT";
+	String itnConceptName = "INSECTICIDE-TREATED NET USAGE";
+	String visitNumConceptName = "PREGNANCY VISIT NUMBER";
+	String arvConceptName = "ANTIRETROVIRAL USE DURING PREGNANCY";
+	String onArvConceptName = "ON ANTIRETROVIRAL THERAPY";
+	String prePMTCTConceptName = "PRE PREVENTING MATERNAL TO CHILD TRANSMISSION";
+	String testPMTCTConceptName = "TEST PREVENTING MATERNAL TO CHILD TRANSMISSION";
+	String postPMTCTConceptName = "POST PREVENTING MATERNAL TO CHILD TRANSMISSION";
+	String hemoConceptName = "HEMOGLOBIN AT 36 WEEKS";
 
+	PatientIdentifierType ghanaIdType;
 	PersonAttributeType phoneAttributeType;
 	PersonAttributeType clinicAttributeType;
 	PersonAttributeType nhisAttributeType;
 	Role providerRole;
+	EncounterType matVisitType;
+	ConceptName immunizationConceptNameObj;
+	Concept immunizationConcept;
+	ConceptName tetanusConceptNameObj;
+	Concept tetanusConcept;
+	ConceptName iptConceptNameObj;
+	Concept iptConcept;
+	ConceptName itnConceptNameObj;
+	Concept itnConcept;
+	ConceptName visitNumConceptNameObj;
+	Concept visitNumConcept;
+	ConceptName arvConceptNameObj;
+	Concept arvConcept;
+	ConceptName onArvConceptNameObj;
+	Concept onArvConcept;
+	ConceptName prePMTCTConceptNameObj;
+	Concept prePMTCTConcept;
+	ConceptName testPMTCTConceptNameObj;
+	Concept testPMTCTConcept;
+	ConceptName postPMTCTConceptNameObj;
+	Concept postPMTCTConcept;
+	ConceptName hemoConceptNameObj;
+	Concept hemoConcept;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -63,6 +110,9 @@ public class RegistrarBeanTest extends TestCase {
 		conceptService = createMock(ConceptService.class);
 		motechService = createMock(MotechService.class);
 
+		ghanaIdType = new PatientIdentifierType(1);
+		ghanaIdType.setName(ghanaIdTypeName);
+
 		phoneAttributeType = new PersonAttributeType(2);
 		phoneAttributeType.setName(phoneAttrName);
 
@@ -73,6 +123,50 @@ public class RegistrarBeanTest extends TestCase {
 		nhisAttributeType.setName(nhisAttrName);
 
 		providerRole = new Role(providerRoleName);
+
+		matVisitType = new EncounterType(5);
+		matVisitType.setName(matVisitTypeName);
+
+		immunizationConceptNameObj = new ConceptName(immunizationConceptName,
+				Locale.getDefault());
+		immunizationConcept = new Concept(6);
+
+		tetanusConceptNameObj = new ConceptName(tetanusConceptName, Locale
+				.getDefault());
+		tetanusConcept = new Concept(7);
+
+		iptConceptNameObj = new ConceptName(iptConceptName, Locale.getDefault());
+		iptConcept = new Concept(8);
+
+		itnConceptNameObj = new ConceptName(itnConceptName, Locale.getDefault());
+		itnConcept = new Concept(9);
+
+		visitNumConceptNameObj = new ConceptName(visitNumConceptName, Locale
+				.getDefault());
+		visitNumConcept = new Concept(10);
+
+		arvConceptNameObj = new ConceptName(arvConceptName, Locale.getDefault());
+		arvConcept = new Concept(11);
+
+		onArvConceptNameObj = new ConceptName(onArvConceptName, Locale
+				.getDefault());
+		onArvConcept = new Concept(12);
+
+		prePMTCTConceptNameObj = new ConceptName(prePMTCTConceptName, Locale
+				.getDefault());
+		prePMTCTConcept = new Concept(13);
+
+		testPMTCTConceptNameObj = new ConceptName(testPMTCTConceptName, Locale
+				.getDefault());
+		testPMTCTConcept = new Concept(14);
+
+		postPMTCTConceptNameObj = new ConceptName(postPMTCTConceptName, Locale
+				.getDefault());
+		postPMTCTConcept = new Concept(15);
+
+		hemoConceptNameObj = new ConceptName(hemoConceptName, Locale
+				.getDefault());
+		hemoConcept = new Concept(16);
 
 		RegistrarBeanImpl regBeanImpl = new RegistrarBeanImpl();
 		regBeanImpl.setContextAuthenticator(contextAuthenticator);
@@ -160,15 +254,11 @@ public class RegistrarBeanTest extends TestCase {
 		Gender gender = Gender.male;
 		Integer nhis = 28;
 
-		String ghanaIdTypeName = "Ghana Clinic Id";
-		PatientIdentifierType ghanaIdType = new PatientIdentifierType(1);
-		ghanaIdType.setName(ghanaIdTypeName);
-
 		Location locationObj = new Location(1);
 		locationObj.setName(location);
 
 		User nurse = new User(1);
-		nurse.addAttribute(new PersonAttribute(phoneAttributeType, pPhone));
+		nurse.addAttribute(new PersonAttribute(phoneAttributeType, nPhone));
 		nurse.addAttribute(new PersonAttribute(clinicAttributeType, locationObj
 				.getLocationId().toString()));
 
@@ -211,5 +301,88 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(gender.toOpenMRSString(), patient.getGender());
 		assertEquals(nhis.toString(), patient.getAttribute(nhisAttributeType)
 				.getValue());
+	}
+
+	public void testRegisterMaternalVisit() {
+
+		String nPhone = "12078888888", serialId = "478df-389489";
+		Date date = new Date();
+		Boolean tetanus = true, ipt = true, itn = true, onARV = true, prePMTCT = true, testPMTCT = true, postPMTCT = true;
+		Double hemo = 12.3;
+		Integer visit = 1;
+
+		Location locationObj = new Location(1);
+
+		User nurse = new User(1);
+		nurse.addAttribute(new PersonAttribute(phoneAttributeType, nPhone));
+		nurse.addAttribute(new PersonAttribute(clinicAttributeType, locationObj
+				.getLocationId().toString()));
+
+		Patient patient = new Patient();
+		patient.addIdentifier(new PatientIdentifier(serialId, ghanaIdType,
+				locationObj));
+		List<Patient> patients = new ArrayList<Patient>();
+		patients.add(patient);
+
+		Capture<List<PatientIdentifierType>> typeList = new Capture<List<PatientIdentifierType>>();
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		contextAuthenticator.authenticate((String) anyObject(),
+				(String) anyObject());
+		expect(patientService.getPatientIdentifierTypeByName(ghanaIdTypeName))
+				.andReturn(ghanaIdType);
+		expect(
+				patientService.getPatients(same((String) null), eq(serialId),
+						capture(typeList), eq(true))).andReturn(patients);
+		expect(motechService.getUserByPhoneNumber(nPhone)).andReturn(nurse);
+		expect(personService.getPersonAttributeTypeByName(clinicAttrName))
+				.andReturn(clinicAttributeType);
+		expect(locationService.getLocation(1)).andReturn(locationObj);
+		expect(encounterService.getEncounterType(matVisitTypeName)).andReturn(
+				matVisitType);
+		expect(conceptService.getConcept(immunizationConceptName)).andReturn(
+				immunizationConcept);
+		expect(conceptService.getConcept(tetanusConceptName)).andReturn(
+				tetanusConcept);
+		expect(conceptService.getConcept(immunizationConceptName)).andReturn(
+				immunizationConcept);
+		expect(conceptService.getConcept(iptConceptName)).andReturn(iptConcept);
+		expect(conceptService.getConcept(itnConceptName)).andReturn(itnConcept);
+		expect(conceptService.getConcept(visitNumConceptName)).andReturn(
+				visitNumConcept);
+		expect(conceptService.getConcept(arvConceptName)).andReturn(arvConcept);
+		expect(conceptService.getConcept(onArvConceptName)).andReturn(
+				onArvConcept);
+		expect(conceptService.getConcept(prePMTCTConceptName)).andReturn(
+				prePMTCTConcept);
+		expect(conceptService.getConcept(testPMTCTConceptName)).andReturn(
+				testPMTCTConcept);
+		expect(conceptService.getConcept(postPMTCTConceptName)).andReturn(
+				postPMTCTConcept);
+		expect(conceptService.getConcept(hemoConceptName)).andReturn(
+				hemoConcept);
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextAuthenticator, patientService, motechService,
+				personService, locationService, encounterService,
+				conceptService);
+
+		regBean.recordMaternalVisit(nPhone, date, serialId, tetanus, ipt, itn,
+				visit, onARV, prePMTCT, testPMTCT, postPMTCT, hemo);
+
+		verify(contextAuthenticator, patientService, motechService,
+				personService, locationService, encounterService,
+				conceptService);
+
+		Encounter e = encounterCap.getValue();
+		assertTrue(typeList.getValue().size() == 1);
+		assertTrue(typeList.getValue().contains(ghanaIdType));
+		assertEquals(nPhone, e.getProvider().getAttribute(phoneAttributeType)
+				.getValue());
+		assertEquals(serialId, e.getPatient().getPatientIdentifier()
+				.getIdentifier());
+		assertEquals(date, e.getEncounterDatetime());
+		// TODO: Check each observation exists in encounter, and matches value
 	}
 }
