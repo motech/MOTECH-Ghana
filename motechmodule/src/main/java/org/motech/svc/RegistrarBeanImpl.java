@@ -25,23 +25,18 @@ import org.openmrs.api.LocationService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
-import org.openmrs.module.motechmodule.ContextAuthenticator;
+import org.openmrs.module.motechmodule.ContextService;
 import org.openmrs.module.motechmodule.MotechService;
 
 public class RegistrarBeanImpl implements RegistrarBean {
 
-	private ContextAuthenticator contextAuthenticator;
-	private LocationService locationService;
-	private PersonService personService;
-	private UserService userService;
-	private PatientService patientService;
-	private EncounterService encounterService;
-	private ConceptService conceptService;
-	private MotechService motechService;
+	private ContextService contextService;
 
 	public void registerClinic(String name) {
 
-		contextAuthenticator.authenticate("admin", "test");
+		LocationService locationService = contextService.getLocationService();
+
+		contextService.authenticate("admin", "test");
 
 		Location clinic = new Location();
 		clinic.setName(name);
@@ -52,9 +47,13 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	public void registerNurse(String name, String phoneNumber, String clinic) {
 
+		PersonService personService = contextService.getPersonService();
+		UserService userService = contextService.getUserService();
+		LocationService locationService = contextService.getLocationService();
+
 		// User creating other users must have atleast the Privileges to be
 		// given
-		contextAuthenticator.authenticate("admin", "test");
+		contextService.authenticate("admin", "test");
 
 		// TODO: Create nurses as person and use same User for all actions ?
 		User nurse = new User();
@@ -95,7 +94,12 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			String name, String community, String location, Date dateOfBirth,
 			Gender gender, Integer nhis, String phoneNumber) {
 
-		contextAuthenticator.authenticate("admin", "test");
+		PatientService patientService = contextService.getPatientService();
+		MotechService motechService = contextService.getMotechService();
+		PersonService personService = contextService.getPersonService();
+		LocationService locationService = contextService.getLocationService();
+
+		contextService.authenticate("admin", "test");
 
 		Patient patient = new Patient();
 
@@ -148,7 +152,15 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			Integer visitNumber, Boolean onARV, Boolean prePMTCT,
 			Boolean testPMTCT, Boolean postPMTCT, Double hemoglobinAt36Weeks) {
 
-		contextAuthenticator.authenticate("admin", "test");
+		PatientService patientService = contextService.getPatientService();
+		MotechService motechService = contextService.getMotechService();
+		PersonService personService = contextService.getPersonService();
+		LocationService locationService = contextService.getLocationService();
+		EncounterService encounterService = contextService
+				.getEncounterService();
+		ConceptService conceptService = contextService.getConceptService();
+
+		contextService.authenticate("admin", "test");
 
 		PatientIdentifierType serialIdType = patientService
 				.getPatientIdentifierTypeByName("Ghana Clinic Id");
@@ -302,7 +314,18 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public void registerPregnancy(String nursePhoneNumber, Date date,
 			String serialId, Date dueDate, Integer parity, Double hemoglobin) {
 
-		contextAuthenticator.authenticate("admin", "test");
+		PatientService patientService = contextService.getPatientService();
+		MotechService motechService = contextService.getMotechService();
+		if (motechService == null) {
+			System.out.println("blah2");
+		}
+		PersonService personService = contextService.getPersonService();
+		LocationService locationService = contextService.getLocationService();
+		EncounterService encounterService = contextService
+				.getEncounterService();
+		ConceptService conceptService = contextService.getConceptService();
+
+		contextService.authenticate("admin", "test");
 
 		PatientIdentifierType serialIdType = patientService
 				.getPatientIdentifierTypeByName("Ghana Clinic Id");
@@ -375,6 +398,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	public void log(LogType type, String message) {
 
+		MotechService motechService = contextService.getMotechService();
+
 		org.motech.model.Log log = new org.motech.model.Log();
 		log.setDate(new Date());
 		log.setType(type);
@@ -382,37 +407,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		motechService.saveLog(log);
 	}
 
-	public void setContextAuthenticator(
-			ContextAuthenticator contextAuthenticator) {
-		this.contextAuthenticator = contextAuthenticator;
-	}
-
-	public void setLocationService(LocationService locationService) {
-		this.locationService = locationService;
-	}
-
-	public void setPersonService(PersonService personService) {
-		this.personService = personService;
-	}
-
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
-
-	public void setPatientService(PatientService patientService) {
-		this.patientService = patientService;
-	}
-
-	public void setEncounterService(EncounterService encounterService) {
-		this.encounterService = encounterService;
-	}
-
-	public void setConceptService(ConceptService conceptService) {
-		this.conceptService = conceptService;
-	}
-
-	public void setMotechService(MotechService motechService) {
-		this.motechService = motechService;
+	public void setContextService(ContextService contextService) {
+		this.contextService = contextService;
 	}
 
 }

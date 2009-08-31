@@ -39,14 +39,14 @@ import org.openmrs.api.LocationService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
-import org.openmrs.module.motechmodule.ContextAuthenticator;
+import org.openmrs.module.motechmodule.ContextService;
 import org.openmrs.module.motechmodule.MotechService;
 
 public class RegistrarBeanTest extends TestCase {
 
 	RegistrarBean regBean;
 
-	ContextAuthenticator contextAuthenticator;
+	ContextService contextService;
 	LocationService locationService;
 	PersonService personService;
 	UserService userService;
@@ -118,7 +118,8 @@ public class RegistrarBeanTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		contextAuthenticator = createMock(ContextAuthenticator.class);
+		contextService = createMock(ContextService.class);
+
 		locationService = createMock(LocationService.class);
 		personService = createMock(PersonService.class);
 		userService = createMock(UserService.class);
@@ -205,14 +206,7 @@ public class RegistrarBeanTest extends TestCase {
 		hemoConcept = new Concept(21);
 
 		RegistrarBeanImpl regBeanImpl = new RegistrarBeanImpl();
-		regBeanImpl.setContextAuthenticator(contextAuthenticator);
-		regBeanImpl.setLocationService(locationService);
-		regBeanImpl.setPersonService(personService);
-		regBeanImpl.setUserService(userService);
-		regBeanImpl.setPatientService(patientService);
-		regBeanImpl.setEncounterService(encounterService);
-		regBeanImpl.setConceptService(conceptService);
-		regBeanImpl.setMotechService(motechService);
+		regBeanImpl.setContextService(contextService);
 
 		regBean = regBeanImpl;
 	}
@@ -221,7 +215,7 @@ public class RegistrarBeanTest extends TestCase {
 	protected void tearDown() throws Exception {
 		regBean = null;
 
-		contextAuthenticator = null;
+		contextService = null;
 		locationService = null;
 		personService = null;
 		userService = null;
@@ -232,18 +226,18 @@ public class RegistrarBeanTest extends TestCase {
 	}
 
 	public void testRegisterClinic() {
-		contextAuthenticator.authenticate((String) anyObject(),
-				(String) anyObject());
+		expect(contextService.getLocationService()).andReturn(locationService);
+		contextService.authenticate((String) anyObject(), (String) anyObject());
 		Capture<Location> locationCap = new Capture<Location>();
 		expect(locationService.saveLocation(capture(locationCap))).andReturn(
 				new Location());
 
-		replay(contextAuthenticator, locationService);
+		replay(contextService, locationService);
 
 		String clinicName = "A-Test-Clinic-Name";
 		regBean.registerClinic(clinicName);
 
-		verify(contextAuthenticator, locationService);
+		verify(contextService, locationService);
 
 		Location location = locationCap.getValue();
 		assertEquals(clinicName, location.getName());
@@ -251,6 +245,7 @@ public class RegistrarBeanTest extends TestCase {
 	}
 
 	public void testRegisterNurse() {
+
 		String name = "Jenny", phone = "12078675309", clinic = "Mayo Clinic";
 
 		Location clinicLocation = new Location(1);
@@ -258,8 +253,11 @@ public class RegistrarBeanTest extends TestCase {
 
 		Capture<User> nurseCap = new Capture<User>();
 
-		contextAuthenticator.authenticate((String) anyObject(),
-				(String) anyObject());
+		expect(contextService.getPersonService()).andReturn(personService);
+		expect(contextService.getUserService()).andReturn(userService);
+		expect(contextService.getLocationService()).andReturn(locationService);
+
+		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(personService.getPersonAttributeTypeByName(phoneAttrName))
 				.andReturn(phoneAttributeType);
 		expect(userService.getRole(providerRoleName)).andReturn(providerRole);
@@ -269,13 +267,11 @@ public class RegistrarBeanTest extends TestCase {
 		expect(userService.saveUser(capture(nurseCap), (String) anyObject()))
 				.andReturn(new User());
 
-		replay(contextAuthenticator, personService, userService,
-				locationService);
+		replay(contextService, personService, userService, locationService);
 
 		regBean.registerNurse(name, phone, clinic);
 
-		verify(contextAuthenticator, personService, userService,
-				locationService);
+		verify(contextService, personService, userService, locationService);
 
 		User nurse = nurseCap.getValue();
 		assertEquals(name, nurse.getGivenName());
@@ -285,6 +281,7 @@ public class RegistrarBeanTest extends TestCase {
 	}
 
 	public void testRegisterPatient() {
+
 		String nPhone = "12075551212", serialId = "dbvhjdg4784", name = "Gaylord", community = "A Community", location = "A Location", pPhone = "120773733373";
 		Date dob = new Date();
 		Gender gender = Gender.male;
@@ -300,8 +297,12 @@ public class RegistrarBeanTest extends TestCase {
 
 		Capture<Patient> patientCap = new Capture<Patient>();
 
-		contextAuthenticator.authenticate((String) anyObject(),
-				(String) anyObject());
+		expect(contextService.getPatientService()).andReturn(patientService);
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(contextService.getPersonService()).andReturn(personService);
+		expect(contextService.getLocationService()).andReturn(locationService);
+
+		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(patientService.getPatientIdentifierTypeByName(ghanaIdTypeName))
 				.andReturn(ghanaIdType);
 		expect(motechService.getUserByPhoneNumber(nPhone)).andReturn(nurse);
@@ -316,14 +317,14 @@ public class RegistrarBeanTest extends TestCase {
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				new Patient());
 
-		replay(contextAuthenticator, patientService, motechService,
-				personService, locationService);
+		replay(contextService, patientService, motechService, personService,
+				locationService);
 
 		regBean.registerPatient(nPhone, serialId, name, community, location,
 				dob, gender, nhis, pPhone);
 
-		verify(contextAuthenticator, patientService, motechService,
-				personService, locationService);
+		verify(contextService, patientService, motechService, personService,
+				locationService);
 
 		Patient patient = patientCap.getValue();
 		assertEquals(serialId, patient.getPatientIdentifier(ghanaIdType)
@@ -363,8 +364,15 @@ public class RegistrarBeanTest extends TestCase {
 		Capture<List<PatientIdentifierType>> typeList = new Capture<List<PatientIdentifierType>>();
 		Capture<Encounter> encounterCap = new Capture<Encounter>();
 
-		contextAuthenticator.authenticate((String) anyObject(),
-				(String) anyObject());
+		expect(contextService.getPatientService()).andReturn(patientService);
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(contextService.getPersonService()).andReturn(personService);
+		expect(contextService.getLocationService()).andReturn(locationService);
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(contextService.getConceptService()).andReturn(conceptService);
+
+		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(patientService.getPatientIdentifierTypeByName(ghanaIdTypeName))
 				.andReturn(ghanaIdType);
 		expect(
@@ -400,16 +408,14 @@ public class RegistrarBeanTest extends TestCase {
 		expect(encounterService.saveEncounter(capture(encounterCap)))
 				.andReturn(new Encounter());
 
-		replay(contextAuthenticator, patientService, motechService,
-				personService, locationService, encounterService,
-				conceptService);
+		replay(contextService, patientService, motechService, personService,
+				locationService, encounterService, conceptService);
 
 		regBean.recordMaternalVisit(nPhone, date, serialId, tetanus, ipt, itn,
 				visit, onARV, prePMTCT, testPMTCT, postPMTCT, hemo);
 
-		verify(contextAuthenticator, patientService, motechService,
-				personService, locationService, encounterService,
-				conceptService);
+		verify(contextService, patientService, motechService, personService,
+				locationService, encounterService, conceptService);
 
 		Encounter e = encounterCap.getValue();
 		assertTrue(typeList.getValue().size() == 1);
@@ -470,8 +476,15 @@ public class RegistrarBeanTest extends TestCase {
 		Capture<List<PatientIdentifierType>> typeList = new Capture<List<PatientIdentifierType>>();
 		Capture<Encounter> encounterCap = new Capture<Encounter>();
 
-		contextAuthenticator.authenticate((String) anyObject(),
-				(String) anyObject());
+		expect(contextService.getPatientService()).andReturn(patientService);
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(contextService.getPersonService()).andReturn(personService);
+		expect(contextService.getLocationService()).andReturn(locationService);
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(contextService.getConceptService()).andReturn(conceptService);
+
+		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(patientService.getPatientIdentifierTypeByName(ghanaIdTypeName))
 				.andReturn(ghanaIdType);
 		expect(
@@ -490,16 +503,14 @@ public class RegistrarBeanTest extends TestCase {
 		expect(encounterService.saveEncounter(capture(encounterCap)))
 				.andReturn(new Encounter());
 
-		replay(contextAuthenticator, patientService, motechService,
-				personService, locationService, encounterService,
-				conceptService);
+		replay(contextService, patientService, motechService, personService,
+				locationService, encounterService, conceptService);
 
 		regBean.recordMaternalVisit(nPhone, date, serialId, tetanus, ipt, itn,
 				visit, onARV, prePMTCT, testPMTCT, postPMTCT, hemo);
 
-		verify(contextAuthenticator, patientService, motechService,
-				personService, locationService, encounterService,
-				conceptService);
+		verify(contextService, patientService, motechService, personService,
+				locationService, encounterService, conceptService);
 
 		Encounter e = encounterCap.getValue();
 		assertTrue(typeList.getValue().size() == 1);
@@ -517,7 +528,7 @@ public class RegistrarBeanTest extends TestCase {
 				visitNumConcept).getValueNumeric());
 		assertEquals(hemo, getFirstMatchingObs(e, hemo36Concept)
 				.getValueNumeric());
-		
+
 		assertEquals(0, getNumMatchingObs(e, immunizationConcept));
 		assertEquals(0, getNumMatchingObs(e, itnConcept));
 		assertEquals(0, getNumMatchingObs(e, arvConcept));
@@ -546,8 +557,15 @@ public class RegistrarBeanTest extends TestCase {
 		Capture<Encounter> encounterCap = new Capture<Encounter>();
 		Capture<List<PatientIdentifierType>> typeListCap = new Capture<List<PatientIdentifierType>>();
 
-		contextAuthenticator.authenticate((String) anyObject(),
-				(String) anyObject());
+		expect(contextService.getPatientService()).andReturn(patientService);
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(contextService.getPersonService()).andReturn(personService);
+		expect(contextService.getLocationService()).andReturn(locationService);
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(contextService.getConceptService()).andReturn(conceptService);
+
+		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(patientService.getPatientIdentifierTypeByName(ghanaIdTypeName))
 				.andReturn(ghanaIdType);
 		expect(
@@ -570,15 +588,13 @@ public class RegistrarBeanTest extends TestCase {
 		expect(encounterService.saveEncounter(capture(encounterCap)))
 				.andReturn(new Encounter());
 
-		replay(contextAuthenticator, patientService, motechService,
-				personService, locationService, encounterService,
-				conceptService);
+		replay(contextService, patientService, motechService, personService,
+				locationService, encounterService, conceptService);
 
 		regBean.registerPregnancy(nPhone, date, serialId, date, parity, hemo);
 
-		verify(contextAuthenticator, patientService, motechService,
-				personService, locationService, encounterService,
-				conceptService);
+		verify(contextService, patientService, motechService, personService,
+				locationService, encounterService, conceptService);
 
 		Encounter e = encounterCap.getValue();
 		assertEquals(nPhone, e.getProvider().getAttribute(phoneAttributeType)
@@ -586,7 +602,7 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(serialId, e.getPatient().getPatientIdentifier()
 				.getIdentifier());
 		assertEquals(date, e.getEncounterDatetime());
-		
+
 		assertEquals(4, e.getAllObs().size());
 		assertEquals(Boolean.TRUE, getFirstMatchingObs(e, pregStatusConcept)
 				.getValueAsBoolean());
@@ -638,13 +654,15 @@ public class RegistrarBeanTest extends TestCase {
 
 		Capture<Log> logCap = new Capture<Log>();
 
+		expect(contextService.getMotechService()).andReturn(motechService);
+
 		motechService.saveLog(capture(logCap));
 
-		replay(motechService);
+		replay(contextService, motechService);
 
 		regBean.log(type, message);
 
-		verify(motechService);
+		verify(contextService, motechService);
 
 		Log log = logCap.getValue();
 		Date logDate = log.getDate();
