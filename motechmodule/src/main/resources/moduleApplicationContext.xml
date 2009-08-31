@@ -31,6 +31,7 @@
 				</property>
 			</bean>
 		</property>
+		<property name="mobileService" ref="mobileClient" />
 	</bean>
 
 	<!-- Service -->
@@ -83,5 +84,19 @@
 		<property name="portName" value="RegistrarWebServicePort" />
 		<property name="lookupServiceOnStartup" value="false" />
 	</bean>
+
+	<bean id="mobileClient" class="org.motech.mobile.client.MessageServiceStub" />
+
+	<!-- Uncomment to enable using motech-mobile web service and comment out mobileClient bean above
+	<bean id="mobileClient" 
+		class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
+		<property name="serviceInterface" value="com.dreamoval.motech.webapp.webservices.MessageService" />
+		<property name="wsdlDocumentUrl"
+			value="http://localhost:8080/motech-mobile-webapp/webservices/messaging?wsdl" />
+		<property name="namespaceUri" value="http://webservices.webapp.motech.dreamoval.com/" />
+		<property name="serviceName" value="messagingService" />
+		<property name="portName" value="MessageServiceImplPort" />
+		<property name="lookupServiceOnStartup" value="false" />
+	</bean> -->
 
 </beans>

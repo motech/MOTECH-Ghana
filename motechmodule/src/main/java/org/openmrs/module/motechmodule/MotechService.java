@@ -22,6 +22,8 @@ import org.openmrs.User;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dreamoval.motech.webapp.webservices.MessageService;
+
 public interface MotechService extends OpenmrsService {
 
 	@Transactional
@@ -45,4 +47,6 @@ public interface MotechService extends OpenmrsService {
 
 	@Transactional(readOnly = true)
 	User getUserByPhoneNumber(String phoneNumber);
+
+	MessageService getMobileService();
 }

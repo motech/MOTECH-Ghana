@@ -24,10 +24,13 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.motechmodule.MotechService;
 import org.openmrs.module.motechmodule.db.hibernate.HibernateMotechDAO;
 
+import com.dreamoval.motech.webapp.webservices.MessageService;
+
 public class MotechServiceImpl extends BaseOpenmrsService implements
 		MotechService {
 
 	private HibernateMotechDAO motechDAO;
+	private MessageService mobileService;
 
 	public HibernateMotechDAO getMotechDAO() {
 		return motechDAO;
@@ -72,4 +75,13 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 				phoneAttributeTypeId, phoneNumber).get(0);
 		return Context.getUserService().getUser(userId);
 	}
+
+	public MessageService getMobileService() {
+		return mobileService;
+	}
+
+	public void setMobileService(MessageService mobileService) {
+		this.mobileService = mobileService;
+	}
+
 }

@@ -20,10 +20,16 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.model.FutureServiceDelivery;
 import org.motech.model.LogType;
+import org.openmrs.Patient;
+import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonAttributeType;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.motechmodule.MotechService;
 import org.openmrs.scheduler.tasks.AbstractTask;
+
+import com.dreamoval.motech.omi.service.ContactNumberType;
+import com.dreamoval.motech.omi.service.MessageType;
 
 public class NotificationTask extends AbstractTask {
 
@@ -61,11 +67,19 @@ public class NotificationTask extends AbstractTask {
 				PersonAttributeType phoneNumberType = Context
 						.getPersonService().getPersonAttributeTypeByName(
 								"Phone Number");
+				PatientIdentifierType serialIdType = Context
+						.getPatientService().getPatientIdentifierTypeByName(
+								"Ghana Clinic Id");
 				for (FutureServiceDelivery service : futureServices) {
 
 					if (service.getPatientNotifiedDate() == null) {
-						String patientPhone = service.getPatient()
-								.getAttribute(phoneNumberType).getValue();
+						Patient patient = service.getPatient();
+						String patientPhone = patient.getAttribute(
+								phoneNumberType).getValue();
+						String clinicName = patient.getPatientIdentifier(
+								serialIdType).getLocation().getName();
+						ContactNumberType patientNumberType = null;
+						MessageType messageType = null;
 
 						org.motech.model.Log motechLog = new org.motech.model.Log();
 						motechLog.setType(LogType.success);
@@ -76,12 +90,20 @@ public class NotificationTask extends AbstractTask {
 						Context.getService(MotechService.class).saveLog(
 								motechLog);
 
+						Context.getService(MotechService.class)
+								.getMobileService().sendPatientMessage(
+										new Long(1), clinicName,
+										notificationDate, patientPhone,
+										patientNumberType, messageType);
+
 						service.setPatientNotifiedDate(notificationDate);
 					}
 
 					if (service.getUserNotifiedDate() == null) {
-						String nursePhone = service.getUser().getAttribute(
-								phoneNumberType).getValue();
+						User nurse = service.getUser();
+						String nursePhone = nurse.getAttribute(phoneNumberType)
+								.getValue();
+						String nurseName = nurse.getPersonName().toString();
 
 						org.motech.model.Log motechLog = new org.motech.model.Log();
 						motechLog.setType(LogType.success);
@@ -92,12 +114,19 @@ public class NotificationTask extends AbstractTask {
 						Context.getService(MotechService.class).saveLog(
 								motechLog);
 
+						Context.getService(MotechService.class)
+								.getMobileService().sendCHPSMessage(
+										new Long(1), nurseName, nursePhone,
+										null);
+
 						service.setUserNotifiedDate(notificationDate);
 					}
 					Context.getService(MotechService.class)
 							.updateFutureServiceDelivery(service);
 				}
 			}
+		} catch (Exception e) {
+			log.error(e);
 		} finally {
 			Context.closeSession();
 		}
