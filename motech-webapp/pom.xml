@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>org.motech</groupId>
 	<artifactId>motech-webapp</artifactId>
-	<version>1.0-M1-SNAPSHOT</version>
+	<version>1.0-M1.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>MoTeCH Server - WAR</name>
 	<description>The web application module for the motech project.</description>
