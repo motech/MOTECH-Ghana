@@ -24,7 +24,6 @@ import org.openmrs.PersonAttributeType;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.motechmodule.MotechService;
 import org.openmrs.scheduler.tasks.AbstractTask;
-import org.openmrs.util.OpenmrsConstants;
 
 public class NotificationTask extends AbstractTask {
 
@@ -43,8 +42,9 @@ public class NotificationTask extends AbstractTask {
 
 		try {
 			Context.openSession();
-			Context
-					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
+			if (!Context.isAuthenticated()) {
+				authenticate();
+			}
 
 			List<FutureServiceDelivery> futureServices = Context.getService(
 					MotechService.class).getFutureServiceDeliveries(startDate,
