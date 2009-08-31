@@ -419,7 +419,31 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(serialId, e.getPatient().getPatientIdentifier()
 				.getIdentifier());
 		assertEquals(date, e.getEncounterDatetime());
-		// TODO: Check each observation exists in encounter, and matches value
+
+		assertEquals(9, e.getAllObs().size());
+		assertEquals(2, getNumMatchingObs(e, immunizationConcept));
+		assertEquals(1, getNumMatchingObs(e, immunizationConcept,
+				tetanusConcept));
+		assertEquals(1, getNumMatchingObs(e, immunizationConcept, iptConcept));
+		assertEquals(1, getNumMatchingObs(e, itnConcept));
+		assertEquals(Boolean.TRUE, getFirstMatchingObs(e, itnConcept)
+				.getValueAsBoolean());
+		assertEquals(1, getNumMatchingObs(e, arvConcept, onArvConcept));
+		assertEquals(1, getNumMatchingObs(e, prePMTCTConcept));
+		assertEquals(Boolean.TRUE, getFirstMatchingObs(e, prePMTCTConcept)
+				.getValueAsBoolean());
+		assertEquals(1, getNumMatchingObs(e, testPMTCTConcept));
+		assertEquals(Boolean.TRUE, getFirstMatchingObs(e, testPMTCTConcept)
+				.getValueAsBoolean());
+		assertEquals(1, getNumMatchingObs(e, postPMTCTConcept));
+		assertEquals(Boolean.TRUE, getFirstMatchingObs(e, postPMTCTConcept)
+				.getValueAsBoolean());
+		assertEquals(1, getNumMatchingObs(e, visitNumConcept));
+		assertEquals(Double.valueOf(visit), getFirstMatchingObs(e,
+				visitNumConcept).getValueNumeric());
+		assertEquals(1, getNumMatchingObs(e, hemo36Concept));
+		assertEquals(hemo, getFirstMatchingObs(e, hemo36Concept)
+				.getValueNumeric());
 	}
 
 	public void testRegisterMaternalVisitNoObs() {
@@ -485,7 +509,21 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(serialId, e.getPatient().getPatientIdentifier()
 				.getIdentifier());
 		assertEquals(date, e.getEncounterDatetime());
-		// TODO: Verify correct observations are recorded
+
+		assertEquals(2, e.getAllObs().size());
+		assertEquals(1, getNumMatchingObs(e, visitNumConcept));
+		assertEquals(1, getNumMatchingObs(e, hemo36Concept));
+		assertEquals(Double.valueOf(visit), getFirstMatchingObs(e,
+				visitNumConcept).getValueNumeric());
+		assertEquals(hemo, getFirstMatchingObs(e, hemo36Concept)
+				.getValueNumeric());
+		
+		assertEquals(0, getNumMatchingObs(e, immunizationConcept));
+		assertEquals(0, getNumMatchingObs(e, itnConcept));
+		assertEquals(0, getNumMatchingObs(e, arvConcept));
+		assertEquals(0, getNumMatchingObs(e, prePMTCTConcept));
+		assertEquals(0, getNumMatchingObs(e, testPMTCTConcept));
+		assertEquals(0, getNumMatchingObs(e, postPMTCTConcept));
 	}
 
 	public void testRegisterPregnancy() {
@@ -548,8 +586,10 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(serialId, e.getPatient().getPatientIdentifier()
 				.getIdentifier());
 		assertEquals(date, e.getEncounterDatetime());
-		assertEquals(1.0, getFirstMatchingObs(e, pregStatusConcept)
-				.getValueNumeric());
+		
+		assertEquals(4, e.getAllObs().size());
+		assertEquals(Boolean.TRUE, getFirstMatchingObs(e, pregStatusConcept)
+				.getValueAsBoolean());
 		assertEquals(date, getFirstMatchingObs(e, dateConfConcept)
 				.getValueDatetime());
 		assertEquals(Double.valueOf(parity), getFirstMatchingObs(e,
@@ -567,6 +607,28 @@ public class RegistrarBeanTest extends TestCase {
 			}
 		}
 		return firstObs;
+	}
+
+	private int getNumMatchingObs(Encounter encounter, Concept concept) {
+		int matches = 0;
+		for (Obs o : encounter.getAllObs()) {
+			if (concept.equals(o.getConcept())) {
+				matches++;
+			}
+		}
+		return matches;
+	}
+
+	private int getNumMatchingObs(Encounter encounter, Concept concept,
+			Concept value) {
+		int matches = 0;
+		for (Obs o : encounter.getAllObs()) {
+			if (concept.equals(o.getConcept())
+					&& value.equals(o.getValueCoded())) {
+				matches++;
+			}
+		}
+		return matches;
 	}
 
 	public void testLog() {
