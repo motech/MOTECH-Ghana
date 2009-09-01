@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.motech.model.Gender;
 import org.motech.model.LogType;
+import org.motech.model.NotificationType;
+import org.motech.model.PhoneType;
 
 public interface RegistrarBean {
 
@@ -13,7 +15,9 @@ public interface RegistrarBean {
 
 	public void registerPatient(String nursePhoneNumber, String serialId,
 			String name, String community, String location, Date dateOfBirth,
-			Gender gender, Integer nhis, String phoneNumber);
+			Gender gender, Integer nhis, String phoneNumber,
+			PhoneType phoneType, String language,
+			NotificationType notificationType);
 
 	public void recordMaternalVisit(String nursePhoneNumber, Date date,
 			String serialId, Boolean tetanus, Boolean ipt, Boolean itn,

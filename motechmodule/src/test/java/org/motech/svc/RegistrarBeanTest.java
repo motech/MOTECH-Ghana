@@ -20,6 +20,8 @@ import org.easymock.Capture;
 import org.motech.model.Gender;
 import org.motech.model.Log;
 import org.motech.model.LogType;
+import org.motech.model.NotificationType;
+import org.motech.model.PhoneType;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
@@ -59,6 +61,9 @@ public class RegistrarBeanTest extends TestCase {
 	String phoneAttrName = "Phone Number";
 	String clinicAttrName = "Health Center";
 	String nhisAttrName = "NHIS Number";
+	String languageAttrName = "Language";
+	String phoneTypeAttrName = "Phone Type";
+	String notificationTypeAttrName = "Notification Type";
 	String providerRoleName = "Provider";
 	String matVisitTypeName = "MATERNALVISIT";
 	String immunizationConceptName = "IMMUNIZATIONS ORDERED";
@@ -82,6 +87,9 @@ public class RegistrarBeanTest extends TestCase {
 	PersonAttributeType phoneAttributeType;
 	PersonAttributeType clinicAttributeType;
 	PersonAttributeType nhisAttributeType;
+	PersonAttributeType languageAttributeType;
+	PersonAttributeType phoneTypeAttributeType;
+	PersonAttributeType notificationTypeAttributeType;
 	Role providerRole;
 	EncounterType matVisitType;
 	ConceptName immunizationConceptNameObj;
@@ -139,6 +147,15 @@ public class RegistrarBeanTest extends TestCase {
 
 		nhisAttributeType = new PersonAttributeType(4);
 		nhisAttributeType.setName(nhisAttrName);
+
+		languageAttributeType = new PersonAttributeType(5);
+		languageAttributeType.setName(languageAttrName);
+
+		phoneTypeAttributeType = new PersonAttributeType(6);
+		phoneTypeAttributeType.setName(phoneTypeAttrName);
+
+		notificationTypeAttributeType = new PersonAttributeType(7);
+		notificationTypeAttributeType.setName(notificationTypeAttrName);
 
 		providerRole = new Role(providerRoleName);
 
@@ -286,6 +303,9 @@ public class RegistrarBeanTest extends TestCase {
 		Date dob = new Date();
 		Gender gender = Gender.male;
 		Integer nhis = 28;
+		PhoneType phoneType = PhoneType.personal;
+		String language = "English";
+		NotificationType notificationType = NotificationType.text;
 
 		Location locationObj = new Location(1);
 		locationObj.setName(location);
@@ -314,6 +334,14 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(nhisAttributeType);
 		expect(personService.getPersonAttributeTypeByName(phoneAttrName))
 				.andReturn(phoneAttributeType);
+		expect(personService.getPersonAttributeTypeByName(phoneTypeAttrName))
+				.andReturn(phoneTypeAttributeType);
+		expect(personService.getPersonAttributeTypeByName(languageAttrName))
+				.andReturn(languageAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(notificationTypeAttrName))
+				.andReturn(notificationTypeAttributeType);
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				new Patient());
 
@@ -321,7 +349,8 @@ public class RegistrarBeanTest extends TestCase {
 				locationService);
 
 		regBean.registerPatient(nPhone, serialId, name, community, location,
-				dob, gender, nhis, pPhone);
+				dob, gender, nhis, pPhone, phoneType, language,
+				notificationType);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService);
@@ -338,6 +367,12 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(gender.toOpenMRSString(), patient.getGender());
 		assertEquals(nhis.toString(), patient.getAttribute(nhisAttributeType)
 				.getValue());
+		assertEquals(phoneType.toString(), patient.getAttribute(
+				phoneTypeAttributeType).getValue());
+		assertEquals(language, patient.getAttribute(languageAttributeType)
+				.getValue());
+		assertEquals(notificationType.toString(), patient.getAttribute(
+				notificationTypeAttributeType).getValue());
 	}
 
 	public void testRegisterMaternalVisit() {

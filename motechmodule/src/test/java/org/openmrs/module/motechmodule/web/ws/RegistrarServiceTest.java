@@ -17,9 +17,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.motech.model.Gender;
 import org.motech.model.LogType;
+import org.motech.model.NotificationType;
+import org.motech.model.PhoneType;
 import org.motech.svc.RegistrarBean;
-import org.openmrs.module.motechmodule.web.ws.RegistrarService;
-import org.openmrs.module.motechmodule.web.ws.RegistrarWebService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -91,14 +91,18 @@ public class RegistrarServiceTest {
 		Date dob = new Date();
 		Gender gender = Gender.female;
 		Integer nhis = 3;
+		PhoneType phoneType = PhoneType.personal;
+		String language = "English";
+		NotificationType notificationType = NotificationType.text;
 
 		registrarBean.registerPatient(nPhone, serialId, name, community,
-				location, dob, gender, nhis, pPhone);
+				location, dob, gender, nhis, pPhone, phoneType, language,
+				notificationType);
 
 		replay(registrarBean);
 
 		regWs.registerPatient(nPhone, serialId, name, community, location, dob,
-				gender, nhis, pPhone);
+				gender, nhis, pPhone, phoneType, language, notificationType);
 
 		verify(registrarBean);
 	}

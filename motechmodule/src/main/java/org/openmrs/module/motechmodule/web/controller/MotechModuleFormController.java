@@ -22,6 +22,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.model.Gender;
+import org.motech.model.NotificationType;
+import org.motech.model.PhoneType;
 import org.openmrs.EncounterType;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.api.context.Context;
@@ -102,7 +104,9 @@ public class MotechModuleFormController {
 
 		registrarClient.registerPatient(nursePhone, serialId, name, community,
 				location, dateFormat.parse(dateOfBirth), Gender.female, Integer
-						.valueOf(nhis), patientPhone);
+						.valueOf(nhis), patientPhone, PhoneType
+						.valueOf(patientPhoneType), language, NotificationType
+						.valueOf(notificationType));
 		registrarClient.registerPregnancy(nursePhone, new Date(), serialId,
 				dateFormat.parse(dueDate), Integer.valueOf(parity), Double
 						.valueOf(hemoglobin));
@@ -146,7 +150,9 @@ public class MotechModuleFormController {
 		log.debug("Register Patient");
 		registrarClient.registerPatient(nursePhone, serialId, name, community,
 				location, dateFormat.parse(dateOfBirth),
-				Gender.valueOf(gender), Integer.valueOf(nhis), patientPhone);
+				Gender.valueOf(gender), Integer.valueOf(nhis), patientPhone,
+				PhoneType.valueOf(patientPhoneType), language, NotificationType
+						.valueOf(notificationType));
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 

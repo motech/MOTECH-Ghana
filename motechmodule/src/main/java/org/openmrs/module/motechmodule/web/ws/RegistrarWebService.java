@@ -26,6 +26,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.model.Gender;
 import org.motech.model.LogType;
+import org.motech.model.NotificationType;
+import org.motech.model.PhoneType;
 import org.motech.svc.RegistrarBean;
 
 /**
@@ -67,10 +69,14 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "dateOfBirth") Date dateOfBirth,
 			@WebParam(name = "gender") Gender gender,
 			@WebParam(name = "nhis") Integer nhis,
-			@WebParam(name = "phoneNumber") String phoneNumber) {
+			@WebParam(name = "phoneNumber") String phoneNumber,
+			@WebParam(name = "phoneType") PhoneType phoneType,
+			@WebParam(name = "language") String language,
+			@WebParam(name = "notificationType") NotificationType notificationType) {
 
 		registrarBean.registerPatient(nursePhoneNumber, serialId, name,
-				community, location, dateOfBirth, gender, nhis, phoneNumber);
+				community, location, dateOfBirth, gender, nhis, phoneNumber,
+				phoneType, language, notificationType);
 	}
 
 	@WebMethod

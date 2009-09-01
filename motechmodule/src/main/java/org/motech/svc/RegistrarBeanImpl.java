@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.motech.model.Gender;
 import org.motech.model.LogType;
+import org.motech.model.NotificationType;
+import org.motech.model.PhoneType;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
@@ -92,7 +94,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	public void registerPatient(String nursePhoneNumber, String serialId,
 			String name, String community, String location, Date dateOfBirth,
-			Gender gender, Integer nhis, String phoneNumber) {
+			Gender gender, Integer nhis, String phoneNumber,
+			PhoneType phoneType, String language,
+			NotificationType notificationType) {
 
 		PatientService patientService = contextService.getPatientService();
 		MotechService motechService = contextService.getMotechService();
@@ -143,6 +147,20 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				.getPersonAttributeTypeByName("Phone Number");
 		patient.addAttribute(new PersonAttribute(phoneNumberAttrType,
 				phoneNumber));
+
+		PersonAttributeType phoneTypeAttrType = personService
+				.getPersonAttributeTypeByName("Phone Type");
+		patient.addAttribute(new PersonAttribute(phoneTypeAttrType, phoneType
+				.toString()));
+
+		PersonAttributeType languageAttrType = personService
+				.getPersonAttributeTypeByName("Language");
+		patient.addAttribute(new PersonAttribute(languageAttrType, language));
+
+		PersonAttributeType notificationTypeAttrType = personService
+				.getPersonAttributeTypeByName("Notification Type");
+		patient.addAttribute(new PersonAttribute(notificationTypeAttrType,
+				notificationType.toString()));
 
 		patientService.savePatient(patient);
 	}

@@ -85,6 +85,12 @@ public class MotechModuleActivator implements Activator {
 			createPersonAttributeType("Language",
 					"A person's language preference.", "java.lang.String",
 					admin);
+			createPersonAttributeType("Phone Type",
+					"A person's cell phone type (personal or shared).",
+					"java.lang.String", admin);
+			createPersonAttributeType("Notification Type",
+					"A person's notification type (text or voice).",
+					"java.lang.String", admin);
 
 			log.info("Verifying Patient Identifier Exist");
 			createPatientIdentifierType("Ghana Clinic Id",

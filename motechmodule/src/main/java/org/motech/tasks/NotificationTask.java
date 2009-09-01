@@ -20,6 +20,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.model.FutureServiceDelivery;
 import org.motech.model.LogType;
+import org.motech.model.NotificationType;
+import org.motech.model.PhoneType;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonAttributeType;
@@ -67,6 +69,11 @@ public class NotificationTask extends AbstractTask {
 				PersonAttributeType phoneNumberType = Context
 						.getPersonService().getPersonAttributeTypeByName(
 								"Phone Number");
+				PersonAttributeType phoneType = Context.getPersonService()
+						.getPersonAttributeTypeByName("Phone Type");
+				PersonAttributeType notificationType = Context
+						.getPersonService().getPersonAttributeTypeByName(
+								"Notification Type");
 				PatientIdentifierType serialIdType = Context
 						.getPatientService().getPatientIdentifierTypeByName(
 								"Ghana Clinic Id");
@@ -78,8 +85,14 @@ public class NotificationTask extends AbstractTask {
 								phoneNumberType).getValue();
 						String clinicName = patient.getPatientIdentifier(
 								serialIdType).getLocation().getName();
-						ContactNumberType patientNumberType = null;
-						MessageType messageType = null;
+						String phoneTypeString = patient
+								.getAttribute(phoneType).getValue();
+						String notificationTypeString = patient.getAttribute(
+								notificationType).getValue();
+						ContactNumberType patientNumberType = PhoneType
+								.valueOf(phoneTypeString).toContactNumberType();
+						MessageType messageType = NotificationType.valueOf(
+								notificationTypeString).toMessageType();
 
 						org.motech.model.Log motechLog = new org.motech.model.Log();
 						motechLog.setType(LogType.success);

@@ -8,6 +8,8 @@ import javax.jws.WebService;
 
 import org.motech.model.Gender;
 import org.motech.model.LogType;
+import org.motech.model.NotificationType;
+import org.motech.model.PhoneType;
 
 @WebService
 public interface RegistrarService {
@@ -30,7 +32,10 @@ public interface RegistrarService {
 			@WebParam(name = "dateOfBirth") Date dateOfBirth,
 			@WebParam(name = "gender") Gender gender,
 			@WebParam(name = "nhis") Integer nhis,
-			@WebParam(name = "phoneNumber") String phoneNumber);
+			@WebParam(name = "phoneNumber") String phoneNumber,
+			@WebParam(name = "phoneType") PhoneType phoneType,
+			@WebParam(name = "language") String language,
+			@WebParam(name = "notificationType") NotificationType notificationType);
 
 	@WebMethod
 	public void recordMaternalVisit(
