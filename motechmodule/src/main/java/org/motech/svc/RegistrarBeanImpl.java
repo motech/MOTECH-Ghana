@@ -316,9 +316,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		PatientService patientService = contextService.getPatientService();
 		MotechService motechService = contextService.getMotechService();
-		if (motechService == null) {
-			System.out.println("blah2");
-		}
 		PersonService personService = contextService.getPersonService();
 		LocationService locationService = contextService.getLocationService();
 		EncounterService encounterService = contextService
