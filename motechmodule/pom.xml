@@ -181,6 +181,18 @@
 						<target>1.5</target>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<configuration>
+						<instrumentation>
+							<excludes>
+								<exclude>com/dreamoval/**/*.class</exclude>
+								<exclude>org/motech/**/*Stub.class</exclude>
+							</excludes>
+						</instrumentation>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
