@@ -52,6 +52,7 @@
 		<module>motech-omod</module>
 		<module>motech-core</module>
 		<module>motech-mobile-ws</module>
+		<module>motech-wsclient</module>
 	</modules>
 
 	<repositories>
