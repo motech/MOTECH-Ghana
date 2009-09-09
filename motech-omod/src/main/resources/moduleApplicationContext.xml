@@ -25,7 +25,7 @@
 
 	<bean id="motechService" class="${modulePackage}.impl.MotechServiceImpl">
 		<property name="motechDAO">
-			<bean class="${modulePackage}.db.hibernate.HibernateMotechDAO">
+			<bean class="${corePackage}.model.db.hibernate.HibernateMotechDAO">
 				<property name="sessionFactory">
 					<ref bean="sessionFactory" />
 				</property>
@@ -63,29 +63,28 @@
 	<wss:binding url="/ws/RegistrarService" service="#registrarservice" /> <!-- MUST start with /ws/ -->
 	<ws:service id="registrarservice" bean="#registrarWebService" />
 
-	<bean id="registrarBean" class="org.motech.svc.RegistrarBeanImpl">
+	<bean id="registrarBean" class="${corePackage}.svc.RegistrarBeanImpl">
 		<property name="contextService">
 			<bean class="${modulePackage}.impl.ContextServiceImpl" />
 		</property>
 	</bean>
 
-	<bean id="registrarWebService" class="${modulePackage}.web.ws.RegistrarWebService">
+	<bean id="registrarWebService" class="${corePackage}.ws.RegistrarWebService">
 		<property name="registrarBean" ref="registrarBean" />
 	</bean>
 
 	<bean id="registrarClient"
 		class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
-		<property name="serviceInterface" value="${modulePackage}.web.ws.RegistrarService" />
+		<property name="serviceInterface" value="${corePackage}.ws.RegistrarService" />
 		<property name="wsdlDocumentUrl"
 			value="http://localhost:8080/openmrs/ws/RegistrarService?wsdl" />
-		<property name="namespaceUri"
-			value="http://ws.web.motechmodule.module.openmrs.org/" />
+		<property name="namespaceUri" value="http://ws.motech.org/" />
 		<property name="serviceName" value="RegistrarWebServiceService" />
 		<property name="portName" value="RegistrarWebServicePort" />
 		<property name="lookupServiceOnStartup" value="false" />
 	</bean>
 
-	<bean id="mobileClient" class="org.motech.mobile.client.MessageServiceStub" />
+	<bean id="mobileClient" class="${corePackage}.mobile.client.MessageServiceStub" />
 
 	<!-- Uncomment to enable using motech-mobile web service and comment out mobileClient bean above
 	<bean id="mobileClient" 

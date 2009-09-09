@@ -11,11 +11,11 @@
 		</layout>
 	</appender>
 	
-	<logger name="org.openmrs.module.motechmodule">
+	<logger name="${modulePackage}">
 		<level value="DEBUG" />
 	</logger>
 	
-	<logger name="org.motech">
+	<logger name="${corePackage}">
 		<level value="DEBUG" />
 	</logger>
 	

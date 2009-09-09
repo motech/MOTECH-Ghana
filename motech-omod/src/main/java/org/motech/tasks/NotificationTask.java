@@ -22,12 +22,12 @@ import org.motech.model.FutureServiceDelivery;
 import org.motech.model.LogType;
 import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
+import org.motech.openmrs.module.MotechService;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.motechmodule.MotechService;
 import org.openmrs.scheduler.tasks.AbstractTask;
 
 import com.dreamoval.motech.omi.service.ContactNumberType;

@@ -22,6 +22,8 @@ import org.motech.model.Log;
 import org.motech.model.LogType;
 import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
+import org.motech.openmrs.module.ContextService;
+import org.motech.openmrs.module.MotechService;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
@@ -41,8 +43,6 @@ import org.openmrs.api.LocationService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
-import org.openmrs.module.motechmodule.ContextService;
-import org.openmrs.module.motechmodule.MotechService;
 
 public class RegistrarBeanTest extends TestCase {
 

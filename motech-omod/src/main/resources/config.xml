@@ -4,7 +4,7 @@
 <module configVersion="1.0">
 	
 	<!-- Base Module Properties -->
-	<id>${project.artifactId}</id>
+	<id>${moduleName}</id>
 	<name>${project.name}</name>
 	<version>${project.version}</version>
 	<package>${modulePackage}</package>
