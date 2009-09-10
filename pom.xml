@@ -49,10 +49,10 @@
 	</issueManagement>
 
 	<modules>
-		<module>motech-omod</module>
-		<module>motech-core</module>
 		<module>motech-mobile-ws</module>
+		<module>motech-core</module>
 		<module>motech-wsclient</module>
+		<module>motech-omod</module>
 	</modules>
 
 	<repositories>
