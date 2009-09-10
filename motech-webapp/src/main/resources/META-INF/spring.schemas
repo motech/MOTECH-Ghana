@@ -1,3 +1,0 @@
-# Fix to allow valid schema location for Eclipse and add mappings pointing to the local schema location in jaxws-spring jar
-https\://jax-ws.dev.java.net/spring/core.xsd=spring-jax-ws-core.xsd
-https\://jax-ws.dev.java.net/spring/servlet.xsd=spring-jax-ws-servlet.xsd
