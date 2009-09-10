@@ -45,6 +45,7 @@
 							<goal>wsimport</goal>
 						</goals>
 						<configuration>
+							<packageName>org.motech.ws.client</packageName>
 							<wsdlDirectory>${project.build.directory}/jaxws/wsgen/wsdl</wsdlDirectory>
 							<wsdlLocation>${endpointUrl}</wsdlLocation>
 							<destDir />
