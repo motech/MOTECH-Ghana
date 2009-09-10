@@ -20,6 +20,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motech.tasks.NotificationTask;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptDescription;
@@ -151,8 +152,8 @@ public class MotechModuleActivator implements Activator {
 			// TODO: Task should start automatically on startup, Boolean.TRUE
 			createTask("Notification Task",
 					"Task to send out SMS notifications", new Date(), new Long(
-							30), Boolean.FALSE,
-					"org.motech.tasks.NotificationTask", admin);
+							30), Boolean.FALSE, NotificationTask.class
+							.getName(), admin);
 
 		} finally {
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
