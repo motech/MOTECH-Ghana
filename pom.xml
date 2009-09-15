@@ -97,7 +97,7 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate</artifactId>
-				<version>3.2.5.ga</version>
+				<version>3.2.5.ga-mod</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -139,6 +139,18 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-tx</artifactId>
+				<version>${springVersion}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${springVersion}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
 				<version>${springVersion}</version>
 				<scope>provided</scope>
 			</dependency>
@@ -193,7 +205,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.0</version>
+				<version>4.4</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -201,6 +213,76 @@
 				<artifactId>easymock</artifactId>
 				<version>2.5.1</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>openmrs</groupId>
+				<artifactId>tests-openmrs-api</artifactId>
+				<version>${openMRSVersion}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${springVersion}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>hsqldb</groupId>
+				<artifactId>hsqldb</artifactId>
+				<version>1.8.0.10</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>dbunit</groupId>
+				<artifactId>dbunit</artifactId>
+				<version>2.2</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>c3p0</groupId>
+				<artifactId>c3p0</artifactId>
+				<version>0.9.1</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>mail</artifactId>
+				<version>1.4.2</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>ca.uhn.hapi</groupId>
+				<artifactId>hapi</artifactId>
+				<version>0.5</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jvnet.jax-ws-commons.spring</groupId>
+				<artifactId>jaxws-spring</artifactId>
+				<version>1.8</version>
+				<scope>test</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.sun.xml.stream.buffer</groupId>
+						<artifactId>streambuffer</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.jvnet.staxex</groupId>
+						<artifactId>stax-ex</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.sun.xml.ws</groupId>
+						<artifactId>jaxws-rt</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.sun.xml.bind</groupId>
+						<artifactId>jaxb-impl</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
