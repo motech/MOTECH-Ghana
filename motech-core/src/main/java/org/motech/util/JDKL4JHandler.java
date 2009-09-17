@@ -9,7 +9,9 @@ import java.util.logging.LogRecord;
 
 /**
  * A handler for for java.util.logging. It diverts the logging messages to the
- * log4j framework.
+ * log4j framework. It is useful in general for this purpose, but was initially
+ * written to recapture the logging of libraries that use java.util logging
+ * (notably the JAW-WS RI).
  * 
  * @author batkinson
  * 

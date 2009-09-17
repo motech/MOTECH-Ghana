@@ -24,6 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dreamoval.motech.webapp.webservices.MessageService;
 
+/**
+ * A service interface for much of 'real work' for the motech server OpenMRS
+ * module.
+ */
 public interface MotechService extends OpenmrsService {
 
 	@Transactional

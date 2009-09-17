@@ -26,6 +26,9 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 
 import com.dreamoval.motech.webapp.webservices.MessageService;
 
+/**
+ * An implementation of the MotechService interface using OpenMRS.
+ */
 public class MotechServiceImpl extends BaseOpenmrsService implements
 		MotechService {
 

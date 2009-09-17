@@ -7,6 +7,15 @@ import org.motech.model.LogType;
 import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
 
+/**
+ * The major internal service interface for the motech server project at this
+ * point, the RegistrarBean interface includes all major operations necessary to
+ * support the current project requirements. It is intended that these
+ * operations are transactional, and we fully intend to refactor this interface
+ * into multiple (more appropriate) service interfaces if/when it becomes
+ * necessary. The name is a bit of a misnomer, as it is a vestige of the early
+ * prototypes that handled only registration.
+ */
 public interface RegistrarBean {
 
 	public void registerClinic(String name);

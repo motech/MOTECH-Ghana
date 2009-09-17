@@ -2,6 +2,11 @@ package org.motech.model;
 
 import java.util.Date;
 
+/**
+ * Represents an application log message as opposed to system-level log
+ * messages. This type of message is intended to be persisted to a logging table
+ * for presumably reporting purposes.
+ */
 public class Log {
 
 	private Integer id;

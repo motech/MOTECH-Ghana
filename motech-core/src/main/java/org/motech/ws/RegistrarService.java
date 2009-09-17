@@ -11,6 +11,11 @@ import org.motech.model.LogType;
 import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
 
+/**
+ * The service endpoint interface for the major motech server web service
+ * endpoint. The annotations allow for minimal configuration deployment of
+ * JAX-WS enpoints and clients, with appropriate behavior and metadata.
+ */
 @WebService
 public interface RegistrarService {
 

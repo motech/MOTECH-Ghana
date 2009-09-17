@@ -10,6 +10,13 @@ import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 
+/**
+ * The implementation of the ContextService interface. It simply delegates to
+ * the normal OpenMRS Context.getXService(...) invocations normally found
+ * sprinkled throughout OpenMRS code. When testing, it is likely that this
+ * implementation will not be used. More likely, it will be stubbed as a mock
+ * collaborator to test units in isolation.
+ */
 public class ContextServiceImpl implements ContextService {
 
 	public void authenticate(String username, String password) {

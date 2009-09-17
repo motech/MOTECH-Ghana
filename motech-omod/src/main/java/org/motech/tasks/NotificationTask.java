@@ -33,6 +33,13 @@ import org.openmrs.scheduler.tasks.AbstractTask;
 import com.dreamoval.motech.omi.service.ContactNumberType;
 import com.dreamoval.motech.omi.service.MessageType;
 
+/**
+ * Defines a task implementation that OpenMRS can execute using the built-in
+ * task scheduler. This is how periodic notifications are handled for the
+ * OpenMRS motech server implementation. It periodically runs, looks up stored
+ * FutureServiceDelivery objects and constructs and sends messages to patients
+ * and nurses if required.
+ */
 public class NotificationTask extends AbstractTask {
 
 	private static Log log = LogFactory.getLog(NotificationTask.class);

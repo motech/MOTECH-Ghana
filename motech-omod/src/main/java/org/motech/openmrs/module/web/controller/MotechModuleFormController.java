@@ -37,6 +37,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * A spring webmvc controller, defining operations for the administrative
+ * actions for the OpenMRS admin links.
+ * 
+ * @see org.motech.openmrs.module.extension.html.AdminList
+ */
 @Controller
 public class MotechModuleFormController {
 

@@ -6,6 +6,9 @@ import java.util.List;
 import org.motech.model.FutureServiceDelivery;
 import org.motech.model.Log;
 
+/**
+ * The interface definition for the motech server's data access requirements.
+ */
 public interface MotechDAO {
 
 	Integer saveFutureServiceDelivery(FutureServiceDelivery fsd);

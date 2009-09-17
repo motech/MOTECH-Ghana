@@ -2,6 +2,11 @@ package org.motech.model;
 
 import com.dreamoval.motech.omi.service.ContactNumberType;
 
+/**
+ * Represents the type of phone registered for a patient. It is used to
+ * differentiate between different types of messages based on the type of phone
+ * it is being delivered to.
+ */
 public enum PhoneType {
 	personal, shared;
 

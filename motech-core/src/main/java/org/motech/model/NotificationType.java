@@ -2,6 +2,11 @@ package org.motech.model;
 
 import com.dreamoval.motech.omi.service.MessageType;
 
+/**
+ * A type-safe enumeration representing all valid values of notifications sent
+ * by motech server. It also enables conversion to mobile project's
+ * MessageTypes.
+ */
 public enum NotificationType {
 	text, voice;
 

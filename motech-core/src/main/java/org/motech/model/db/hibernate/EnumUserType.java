@@ -12,6 +12,13 @@ import java.sql.Types;
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
 
+/**
+ * This enables mapping enumerated types to expected values in the database. For
+ * instance, rather than being stored as integers, the values will match the
+ * label in the enumeration.
+ * 
+ * @param <E>
+ */
 public class EnumUserType<E extends Enum<E>> implements UserType {
 
 	private Class<E> clazz = null;

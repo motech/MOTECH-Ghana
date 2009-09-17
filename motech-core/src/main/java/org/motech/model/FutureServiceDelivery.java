@@ -19,6 +19,12 @@ import org.openmrs.Concept;
 import org.openmrs.Patient;
 import org.openmrs.User;
 
+/**
+ * Represents a scheduled service delivery for a patient. It is used to schedule
+ * interactions with the patient, but also allows for interaction with the
+ * associated Nurse (User). It provides atttributes for tracking the date of
+ * correspondence so it is known whether the delivery is pending or complete.
+ */
 public class FutureServiceDelivery {
 
 	private Integer id;

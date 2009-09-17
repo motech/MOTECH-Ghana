@@ -18,6 +18,9 @@ import org.motech.model.PhoneType;
 import org.motech.svc.RegistrarBean;
 
 /**
+ * This is the service enpoint implementation for the major motech server web
+ * service.
+ * 
  * This can be accessed via /openmrs/ws/RegistrarService since we mapped it to
  * /ws/RegistrarService in the metadata/moduleApplicationContext.xml file.
  */

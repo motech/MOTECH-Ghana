@@ -7,6 +7,11 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
 
+/**
+ * An interface providing many operations necessary for interfacing with
+ * OpenMRS. It was created so that we could inject the services rather than
+ * doing registry lookups via the static Context.getService(...) methds.
+ */
 public interface ContextService {
 
 	public void authenticate(String username, String password);

@@ -30,6 +30,10 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
 
+/**
+ * An implementation of the RegistrarBean interface, implemented using a mix of
+ * OpenMRS and module defined services.
+ */
 public class RegistrarBeanImpl implements RegistrarBean {
 
 	private ContextService contextService;

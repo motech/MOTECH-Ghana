@@ -39,7 +39,10 @@ import org.openmrs.util.OpenmrsConstants;
 
 /**
  * This class contains the logic that is run every time this module is either
- * started or shutdown
+ * started or shutdown. It initializes an OpenMRS installation with the
+ * necessary 'stuff' that our module expects to operate in the OpenMRS
+ * environment. It does things like adding Concepts for things like a patient
+ * phone number, as this is required for sending them SMS messages.
  */
 public class MotechModuleActivator implements Activator {
 

@@ -10,6 +10,10 @@ import org.motech.model.FutureServiceDelivery;
 import org.motech.model.Log;
 import org.motech.model.db.MotechDAO;
 
+/**
+ * An implementation of the motech data access object interface, implemented
+ * using the hibernate object relational mapping library.
+ */
 public class HibernateMotechDAO implements MotechDAO {
 
 	private SessionFactory sessionFactory;

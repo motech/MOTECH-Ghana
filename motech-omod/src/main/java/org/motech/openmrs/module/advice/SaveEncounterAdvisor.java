@@ -24,6 +24,11 @@ import org.openmrs.Encounter;
 import org.openmrs.api.context.Context;
 import org.springframework.aop.AfterReturningAdvice;
 
+/**
+ * An OpenMRS AOP interceptor that enables us to perform various tasks upon an
+ * encounter being saved, whether that operation knows about it or not.
+ * Currently, this is how we are handling scheduling notifications.
+ */
 public class SaveEncounterAdvisor implements AfterReturningAdvice {
 
 	private static Log log = LogFactory.getLog(SaveEncounterAdvisor.class);

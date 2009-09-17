@@ -21,6 +21,12 @@ import org.motech.svc.RegistrarBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+/**
+ * Tests for exercising the generated web service client. If these tests pass
+ * we'd like to assert that the generated web service client is capable of
+ * calling our web service. It doesn't ensure that the web service functions
+ * properly, that is the job of the web service tests.
+ */
 public class RegistrarClientTest {
 
 	static ApplicationContext ctx;

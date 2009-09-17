@@ -1,5 +1,10 @@
 package org.motech.model;
 
+/**
+ * Represents an individual's gender in motech server. Used to reference valid
+ * gender values in a type-safe manner. It also knows how to convert to/from
+ * acceptable OpenMRS values.
+ */
 public enum Gender {
 	male, female;
 

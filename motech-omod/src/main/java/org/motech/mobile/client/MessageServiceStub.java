@@ -13,6 +13,12 @@ import com.dreamoval.motech.omi.service.MessageType;
 import com.dreamoval.motech.omi.service.PatientImpl;
 import com.dreamoval.motech.webapp.webservices.MessageService;
 
+/**
+ * A stub implementation of the motech mobile message interface. This enables us
+ * to configure the application to a working state without knowing the presence
+ * of an active we service endpoint. The intent is that when actually deploying
+ * the application, it will be reconfigured to point to the real endpoint.
+ */
 public class MessageServiceStub implements MessageService {
 
 	private static final long serialVersionUID = 1L;
