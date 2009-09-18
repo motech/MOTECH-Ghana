@@ -55,6 +55,14 @@ public class MotechModuleFormController {
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
+	public void setRegistrarClient(RegistrarService registrarClient) {
+		this.registrarClient = registrarClient;
+	}
+
+	public RegistrarService getRegistrarClient() {
+		return registrarClient;
+	}
+
 	@RequestMapping(value = "/module/motechmodule/quick", method = RequestMethod.GET)
 	public String viewQuickTestForm() {
 		return "/module/motechmodule/quick";
@@ -163,7 +171,7 @@ public class MotechModuleFormController {
 	}
 
 	@RequestMapping(value = "/module/motechmodule/pregnancy", method = RequestMethod.POST)
-	public String registerPregnancy(@RequestParam("name") String name,
+	public String registerPregnancy(
 			@RequestParam("nursePhone") String nursePhone,
 			@RequestParam("regDate") String regDate,
 			@RequestParam("serialId") String serialId,
