@@ -6,6 +6,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import org.motech.messaging.MessageNotFoundException;
 import org.motech.model.Gender;
 import org.motech.model.LogType;
 import org.motech.model.NotificationType;
@@ -69,4 +70,9 @@ public interface RegistrarService {
 	@WebMethod
 	public void log(@WebParam(name = "type") LogType type,
 			@WebParam(name = "message") String message);
+
+	@WebMethod
+	public void setMessageStatus(@WebParam(name = "messageId") Long messageId,
+			@WebParam(name = "success") Boolean success)
+			throws MessageNotFoundException;
 }

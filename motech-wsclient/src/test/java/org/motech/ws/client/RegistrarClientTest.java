@@ -4,6 +4,7 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.fail;
 
 import java.util.GregorianCalendar;
 import java.util.logging.LogManager;
@@ -169,6 +170,22 @@ public class RegistrarClientTest {
 		replay(registrarBean);
 
 		regWs.log(LogType.valueOf(type.toString().toUpperCase()), msg);
+
+		verify(registrarBean);
+	}
+
+	@Test
+	public void testSetMessageStatus() {
+		Long messageId = 1L;
+		Boolean success = true;
+
+		replay(registrarBean);
+
+		try {
+			regWs.setMessageStatus(messageId, success);
+			fail("Expected org.motech.messaging.MessageNotFoundException");
+		} catch (Exception e) {
+		}
 
 		verify(registrarBean);
 	}

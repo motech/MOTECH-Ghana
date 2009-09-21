@@ -5,6 +5,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
 import java.util.Date;
@@ -153,6 +154,22 @@ public class RegistrarServiceTest {
 		replay(registrarBean);
 
 		regWs.log(type, msg);
+
+		verify(registrarBean);
+	}
+
+	@Test
+	public void testSetMessageStatus() {
+		Long messageId = 1L;
+		Boolean success = true;
+
+		replay(registrarBean);
+
+		try {
+			regWs.setMessageStatus(messageId, success);
+			fail("Expected org.motech.messaging.MessageNotFoundException");
+		} catch (Exception e) {
+		}
 
 		verify(registrarBean);
 	}

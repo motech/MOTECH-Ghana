@@ -11,6 +11,7 @@ import javax.jws.soap.SOAPBinding.Use;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motech.messaging.MessageNotFoundException;
 import org.motech.model.Gender;
 import org.motech.model.LogType;
 import org.motech.model.NotificationType;
@@ -107,6 +108,14 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "message") String message) {
 
 		registrarBean.log(type, message);
+	}
+
+	@WebMethod
+	public void setMessageStatus(@WebParam(name = "messageId") Long messageId,
+			@WebParam(name = "success") Boolean success)
+			throws MessageNotFoundException {
+
+		throw new MessageNotFoundException();
 	}
 
 	@WebMethod(exclude = true)
