@@ -112,9 +112,7 @@ public class RegistrarWebService implements RegistrarService {
 
 	@WebMethod
 	public void setMessageStatus(@WebParam(name = "messageId") Long messageId,
-			@WebParam(name = "success") Boolean success)
-			throws MessageNotFoundException {
-
+			@WebParam(name = "success") Boolean success) {
 		throw new MessageNotFoundException();
 	}
 
