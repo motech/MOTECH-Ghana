@@ -1,13 +1,16 @@
 package org.motech.messaging;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ScheduledMessage {
 
 	Long id;
 	Date scheduledFor;
 	MessageDefinition message;
-	Long recipientId;
+	Integer recipientId;
+	List<Message> messageAttempts = new ArrayList<Message>();
 
 	public Long getId() {
 		return id;
@@ -33,12 +36,20 @@ public class ScheduledMessage {
 		this.message = message;
 	}
 
-	public Long getRecipientId() {
+	public Integer getRecipientId() {
 		return recipientId;
 	}
 
-	public void setRecipientId(Long recipientId) {
+	public void setRecipientId(Integer recipientId) {
 		this.recipientId = recipientId;
+	}
+
+	public List<Message> getMessageAttempts() {
+		return messageAttempts;
+	}
+
+	public void setMessageAttempts(List<Message> messageAttempts) {
+		this.messageAttempts = messageAttempts;
 	}
 
 }

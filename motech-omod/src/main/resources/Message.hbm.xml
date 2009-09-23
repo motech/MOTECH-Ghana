@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="${corePackage}.messaging">
+	<class name="Message" table="motechmodule_message">
+		<id name="id" type="long" column="motechmodule_message_id">
+			<generator class="native" />
+		</id>
+		<property name="publicId" type="string" column="public_id"
+			not-null="true" unique="true" length="36" />
+		<many-to-one name="schedule"
+			class="${corePackage}.messaging.ScheduledMessage" column="schedule_id"
+			not-null="true" />
+		<property name="attemptDate" type="java.util.Date" column="attempt_date"
+			length="19" />
+		<property name="attemptStatus"
+			type="${corePackage}.model.db.hibernate.MessageStatusEnumType"
+			column="attempt_status" length="15" />
+		<many-to-one name="definition"
+			class="${corePackage}.messaging.MessageDefinition" column="definition_id"
+			not-null="true" />
+	</class>
+</hibernate-mapping>

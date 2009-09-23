@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="${corePackage}.messaging">
+	<class name="ScheduledMessage" table="motechmodule_scheduledmessage">
+		<id name="id" type="long" column="motechmodule_scheduledmessage_id">
+			<generator class="native" />
+		</id>
+		<property name="scheduledFor" type="java.util.Date" column="scheduled_for"
+			not-null="true" length="19" />
+		<many-to-one name="message"
+			class="${corePackage}.messaging.MessageDefinition" column="definition_id"
+			not-null="true" />
+		<property name="recipientId" type="int" column="recipient_id"
+			not-null="true" />
+		<bag name="messageAttempts" table="motechmodule_message" order-by="attempt_date desc"
+			cascade="save-update">
+			<key column="schedule_id" />
+			<one-to-many class="${corePackage}.messaging.Message" />
+		</bag>
+	</class>
+</hibernate-mapping>

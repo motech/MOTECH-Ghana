@@ -13,7 +13,10 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.motech.model.FutureServiceDelivery;
+import org.motech.messaging.Message;
+import org.motech.messaging.MessageDefinition;
+import org.motech.messaging.MessageStatus;
+import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Gender;
 import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
@@ -98,26 +101,38 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 		Patient patient = patients.get(0);
 
-		FutureServiceDelivery f = new FutureServiceDelivery();
-		f.setDate(new Date());
-		f.setPatient(patient);
-		f.setUser(Context.getUserService().getUserByUsername("nursename"));
-		f.setService(Context.getConceptService().getConcept(9));
+		MessageDefinition messageDefinition = new MessageDefinition();
+		messageDefinition.setMessageKey("Test Definition");
+		messageDefinition = Context.getService(MotechService.class)
+				.saveMessageDefinition(messageDefinition);
 
-		Context.getService(MotechService.class).saveFutureServiceDelivery(f);
+		ScheduledMessage scheduledMessage = new ScheduledMessage();
+		scheduledMessage.setScheduledFor(new Date());
+		scheduledMessage.setRecipientId(patient.getPersonId());
+		scheduledMessage.setMessage(messageDefinition);
+
+		Context.getService(MotechService.class).saveScheduledMessage(
+				scheduledMessage);
 
 		task.execute();
 
-		List<FutureServiceDelivery> services = Context.getService(
-				MotechService.class).getAllFutureServiceDeliveries();
-		assertEquals(1, services.size());
+		List<ScheduledMessage> scheduledMessages = Context.getService(
+				MotechService.class).getAllScheduledMessages();
 
-		FutureServiceDelivery service = services.get(0);
+		assertEquals(1, scheduledMessages.size());
 
-		assertNotNull(service.getPatientNotifiedDate());
-		assertNotNull(service.getUserNotifiedDate());
+		ScheduledMessage retrievedScheduledMessage = scheduledMessages.get(0);
+		List<Message> messageAttempts = retrievedScheduledMessage
+				.getMessageAttempts();
 
-		assertEquals(2, Context.getService(MotechService.class).getAllLogs()
+		assertEquals(1, messageAttempts.size());
+
+		Message message = messageAttempts.get(0);
+
+		assertNotNull("Message attempt date is null", message.getAttemptDate());
+		assertEquals(message.getAttemptStatus(), MessageStatus.ATTEMPT_PENDING);
+
+		assertEquals(1, Context.getService(MotechService.class).getAllLogs()
 				.size());
 	}
 

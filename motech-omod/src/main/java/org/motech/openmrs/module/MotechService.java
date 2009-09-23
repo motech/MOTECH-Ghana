@@ -16,7 +16,10 @@ package org.motech.openmrs.module;
 import java.util.Date;
 import java.util.List;
 
-import org.motech.model.FutureServiceDelivery;
+import org.motech.messaging.Message;
+import org.motech.messaging.MessageAttribute;
+import org.motech.messaging.MessageDefinition;
+import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Log;
 import org.openmrs.User;
 import org.openmrs.api.OpenmrsService;
@@ -31,20 +34,43 @@ import com.dreamoval.motech.webapp.webservices.MessageService;
 public interface MotechService extends OpenmrsService {
 
 	@Transactional
-	void saveFutureServiceDelivery(FutureServiceDelivery service);
+	ScheduledMessage saveScheduledMessage(ScheduledMessage scheduledMessage);
 
 	@Transactional
-	void updateFutureServiceDelivery(FutureServiceDelivery service);
+	Message saveMessage(Message message);
 
 	@Transactional
-	void saveLog(Log log);
+	MessageDefinition saveMessageDefinition(MessageDefinition messageDefinition);
+
+	@Transactional
+	MessageAttribute saveMessageAttribute(MessageAttribute messageAttribute);
+
+	@Transactional
+	Log saveLog(Log log);
 
 	@Transactional(readOnly = true)
-	List<FutureServiceDelivery> getAllFutureServiceDeliveries();
+	List<ScheduledMessage> getAllScheduledMessages();
 
 	@Transactional(readOnly = true)
-	List<FutureServiceDelivery> getFutureServiceDeliveries(Date startDate,
-			Date endDate);
+	List<ScheduledMessage> getScheduledMessages(Date startDate, Date endDate);
+
+	@Transactional(readOnly = true)
+	List<Message> getAllMessages();
+
+	@Transactional(readOnly = true)
+	List<Message> getMessages(ScheduledMessage scheduledMessage);
+
+	@Transactional(readOnly = true)
+	Message getMessage(String publicId);
+
+	@Transactional(readOnly = true)
+	List<MessageDefinition> getAllMessageDefinitions();
+
+	@Transactional(readOnly = true)
+	MessageDefinition getMessageDefinition(String messageKey);
+
+	@Transactional(readOnly = true)
+	List<MessageAttribute> getAllMessageAttributes();
 
 	@Transactional(readOnly = true)
 	List<Log> getAllLogs();
@@ -53,4 +79,5 @@ public interface MotechService extends OpenmrsService {
 	User getUserByPhoneNumber(String phoneNumber);
 
 	MessageService getMobileService();
+
 }

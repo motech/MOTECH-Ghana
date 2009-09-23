@@ -2,6 +2,7 @@ package org.motech.messaging;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MessageDefinition {
 
@@ -11,9 +12,10 @@ public class MessageDefinition {
 
 	public Message createMessage(ScheduledMessage schedMessage) {
 		Message message = new Message();
+		message.setPublicId(UUID.randomUUID().toString());
 		message.setSchedule(schedMessage);
 		message.setDefinition(this);
-		message.setLastStatus(MessageStatus.SHOULD_ATTEMPT);
+		message.setAttemptStatus(MessageStatus.SHOULD_ATTEMPT);
 		return message;
 	}
 

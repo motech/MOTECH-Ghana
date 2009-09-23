@@ -18,7 +18,8 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motech.model.FutureServiceDelivery;
+import org.motech.messaging.MessageDefinition;
+import org.motech.messaging.ScheduledMessage;
 import org.motech.openmrs.module.MotechService;
 import org.openmrs.Encounter;
 import org.openmrs.api.context.Context;
@@ -46,23 +47,38 @@ public class SaveEncounterAdvisor implements AfterReturningAdvice {
 			if (Context.getEncounterService().getEncounterType("MATERNALVISIT")
 					.equals(encounter.getEncounterType())) {
 
-				log.debug("Scheduling FutureServiceDelivery");
+				log.debug("Scheduling ScheduledMessage");
 
 				// Date 30 seconds in future
 				long nextServiceTimeInSecs = 30;
 				Date nextServiceDate = new Date(System.currentTimeMillis()
 						+ (nextServiceTimeInSecs * 1000));
 
-				FutureServiceDelivery f = new FutureServiceDelivery();
-				f.setDate(nextServiceDate);
-				f.setUser(encounter.getProvider());
-				f.setPatient(encounter.getPatient());
-				f.setService(Context.getConceptService().getConcept(
-						"PREGNANCY VISIT NUMBER"));
+				MessageDefinition messageDefinition = createMessageDefinition("PREGNANCY VISIT");
 
-				Context.getService(MotechService.class)
-						.saveFutureServiceDelivery(f);
+				ScheduledMessage scheduledMessage = new ScheduledMessage();
+				scheduledMessage.setScheduledFor(nextServiceDate);
+				scheduledMessage.setRecipientId(encounter.getPatient()
+						.getPatientId());
+				scheduledMessage.setMessage(messageDefinition);
+
+				Context.getService(MotechService.class).saveScheduledMessage(
+						scheduledMessage);
 			}
 		}
+	}
+
+	private MessageDefinition createMessageDefinition(String messageKey) {
+		MessageDefinition messageDefinition = Context.getService(
+				MotechService.class).getMessageDefinition(messageKey);
+		if (messageDefinition == null) {
+			log.info(messageKey
+					+ " MessageDefinition Does Not Exist - Creating");
+			messageDefinition = new MessageDefinition();
+			messageDefinition.setMessageKey(messageKey);
+			messageDefinition = Context.getService(MotechService.class)
+					.saveMessageDefinition(messageDefinition);
+		}
+		return messageDefinition;
 	}
 }

@@ -6,7 +6,10 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.motech.model.FutureServiceDelivery;
+import org.motech.messaging.Message;
+import org.motech.messaging.MessageAttribute;
+import org.motech.messaging.MessageDefinition;
+import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Log;
 import org.motech.model.db.MotechDAO;
 
@@ -26,37 +29,10 @@ public class HibernateMotechDAO implements MotechDAO {
 		this.sessionFactory = sessionFactory;
 	}
 
-	public Integer saveFutureServiceDelivery(FutureServiceDelivery fsd) {
+	public Log saveLog(Log log) {
 		Session session = sessionFactory.getCurrentSession();
-		return (Integer) session.save(fsd);
-	}
-
-	public void updateFutureServiceDelivery(FutureServiceDelivery fsd) {
-		Session session = sessionFactory.getCurrentSession();
-		session.merge(fsd);
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<FutureServiceDelivery> getFutureServiceDeliveries(
-			Date startDate, Date endDate) {
-		Session session = sessionFactory.getCurrentSession();
-		return (List<FutureServiceDelivery>) session.createCriteria(
-				FutureServiceDelivery.class).add(
-				Restrictions.between("date", startDate, endDate)).add(
-				Restrictions.or(Restrictions.isNull("patientNotifiedDate"),
-						Restrictions.isNull("userNotifiedDate"))).list();
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<FutureServiceDelivery> getFutureServiceDeliveries() {
-		Session session = sessionFactory.getCurrentSession();
-		return (List<FutureServiceDelivery>) session.createCriteria(
-				FutureServiceDelivery.class).list();
-	}
-
-	public Integer saveLog(Log log) {
-		Session session = sessionFactory.getCurrentSession();
-		return (Integer) session.save(log);
+		session.saveOrUpdate(log);
+		return log;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -78,4 +54,89 @@ public class HibernateMotechDAO implements MotechDAO {
 				.setInteger("typeId", personAttributeTypeId).setString("value",
 						personAttributeValue).list();
 	}
+
+	public ScheduledMessage saveScheduledMessage(
+			ScheduledMessage scheduledMessage) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(scheduledMessage);
+		return scheduledMessage;
+	}
+
+	public Message saveMessage(Message message) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(message);
+		return message;
+	}
+
+	public MessageDefinition saveMessageDefinition(
+			MessageDefinition messageDefinition) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(messageDefinition);
+		return messageDefinition;
+	}
+
+	public MessageAttribute saveMessageAttribute(
+			MessageAttribute messageAttribute) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(messageAttribute);
+		return messageAttribute;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<ScheduledMessage> getScheduledMessages() {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<ScheduledMessage>) session.createCriteria(
+				ScheduledMessage.class).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<ScheduledMessage> getScheduledMessages(Date startDate,
+			Date endDate) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<ScheduledMessage>) session.createCriteria(
+				ScheduledMessage.class).add(
+				Restrictions.between("scheduledFor", startDate, endDate))
+				.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Message> getMessages() {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Message>) session.createCriteria(Message.class).list();
+	}
+
+	public Message getMessage(String publicId) {
+		Session session = sessionFactory.getCurrentSession();
+		return (Message) session.createCriteria(Message.class).add(
+				Restrictions.eq("publicId", publicId)).uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Message> getMessages(ScheduledMessage scheduledMessage) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Message>) session.createCriteria(Message.class).add(
+				Restrictions.eq("schedule", scheduledMessage)).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<MessageDefinition> getMessageDefinitions() {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<MessageDefinition>) session.createCriteria(
+				MessageDefinition.class).list();
+	}
+
+	public MessageDefinition getMessageDefinition(String messageKey) {
+		Session session = sessionFactory.getCurrentSession();
+		return (MessageDefinition) session.createCriteria(
+				MessageDefinition.class).add(
+				Restrictions.eq("messageKey", messageKey)).uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<MessageAttribute> getMessageAttributes() {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<MessageAttribute>) session.createCriteria(
+				MessageAttribute.class).list();
+	}
+
 }

@@ -16,7 +16,10 @@ package org.motech.openmrs.module.impl;
 import java.util.Date;
 import java.util.List;
 
-import org.motech.model.FutureServiceDelivery;
+import org.motech.messaging.Message;
+import org.motech.messaging.MessageAttribute;
+import org.motech.messaging.MessageDefinition;
+import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Log;
 import org.motech.model.db.hibernate.HibernateMotechDAO;
 import org.motech.openmrs.module.MotechService;
@@ -43,29 +46,64 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		this.motechDAO = motechDAO;
 	}
 
-	public List<FutureServiceDelivery> getAllFutureServiceDeliveries() {
-		return motechDAO.getFutureServiceDeliveries();
-	}
-
 	public List<Log> getAllLogs() {
 		return motechDAO.getLogs();
 	}
 
-	public List<FutureServiceDelivery> getFutureServiceDeliveries(
-			Date startDate, Date endDate) {
-		return motechDAO.getFutureServiceDeliveries(startDate, endDate);
+	public List<ScheduledMessage> getAllScheduledMessages() {
+		return motechDAO.getScheduledMessages();
 	}
 
-	public void saveFutureServiceDelivery(FutureServiceDelivery service) {
-		motechDAO.saveFutureServiceDelivery(service);
+	public List<ScheduledMessage> getScheduledMessages(Date startDate,
+			Date endDate) {
+		return motechDAO.getScheduledMessages(startDate, endDate);
 	}
 
-	public void saveLog(Log log) {
-		motechDAO.saveLog(log);
+	public List<Message> getAllMessages() {
+		return motechDAO.getMessages();
 	}
 
-	public void updateFutureServiceDelivery(FutureServiceDelivery service) {
-		motechDAO.updateFutureServiceDelivery(service);
+	public List<Message> getMessages(ScheduledMessage scheduledMessage) {
+		return motechDAO.getMessages(scheduledMessage);
+	}
+
+	public Message getMessage(String publicId) {
+		return motechDAO.getMessage(publicId);
+	}
+
+	public List<MessageDefinition> getAllMessageDefinitions() {
+		return motechDAO.getMessageDefinitions();
+	}
+
+	public MessageDefinition getMessageDefinition(String messageKey) {
+		return motechDAO.getMessageDefinition(messageKey);
+	}
+
+	public List<MessageAttribute> getAllMessageAttributes() {
+		return motechDAO.getMessageAttributes();
+	}
+
+	public Log saveLog(Log log) {
+		return motechDAO.saveLog(log);
+	}
+
+	public ScheduledMessage saveScheduledMessage(
+			ScheduledMessage scheduledMessage) {
+		return motechDAO.saveScheduledMessage(scheduledMessage);
+	}
+
+	public Message saveMessage(Message message) {
+		return motechDAO.saveMessage(message);
+	}
+
+	public MessageDefinition saveMessageDefinition(
+			MessageDefinition messageDefinition) {
+		return motechDAO.saveMessageDefinition(messageDefinition);
+	}
+
+	public MessageAttribute saveMessageAttribute(
+			MessageAttribute messageAttribute) {
+		return motechDAO.saveMessageAttribute(messageAttribute);
 	}
 
 	public User getUserByPhoneNumber(String phoneNumber) {

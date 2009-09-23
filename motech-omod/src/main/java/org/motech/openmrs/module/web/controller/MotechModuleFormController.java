@@ -237,8 +237,8 @@ public class MotechModuleFormController {
 				.getEncounters(null, null, null, null, null, pregnancyType,
 						false));
 
-		model.addAttribute("allFutureServiceDeliveries", Context.getService(
-				MotechService.class).getAllFutureServiceDeliveries());
+		model.addAttribute("allScheduledMessages", Context.getService(
+				MotechService.class).getAllScheduledMessages());
 		model.addAttribute("allLogs", Context.getService(MotechService.class)
 				.getAllLogs());
 

@@ -41,7 +41,10 @@
 
 	<mappingFiles>
 		Log.hbm.xml
-		FutureServiceDelivery.hbm.xml
+		ScheduledMessage.hbm.xml
+		Message.hbm.xml
+		MessageDefinition.hbm.xml
+		MessageAttribute.hbm.xml
 	</mappingFiles>
 
 </module>

@@ -82,13 +82,12 @@
 </div>
 
 <div>
-	<h3>Future Service Deliveries</h3>
+	<h3>Scheduled Messages</h3>
 	<c:choose>
-		<c:when test="${not empty allFutureServiceDeliveries}">
-		<table><tr><th>Id</th><th>Date</th><th>Patient Notified</th><th>Nurse Notified</th></tr>
-		<c:forEach items="${allFutureServiceDeliveries}" var="service">
-			<tr><td>${service.id}</td><td><openmrs:formatDate type="both" date="${service.date}"/></td><td><openmrs:formatDate type="both" date="${service.patientNotifiedDate}"/></td>
-			<td><openmrs:formatDate type="both" date="${service.userNotifiedDate}"/></td></tr>
+		<c:when test="${not empty allScheduledMessages}">
+		<table><tr><th>Id</th><th>Date</th></tr>
+		<c:forEach items="${allScheduledMessages}" var="message">
+			<tr><td>${message.id}</td><td><openmrs:formatDate type="both" date="${message.scheduledFor}"/></td></tr>
 		</c:forEach>
 		</table>
 		</c:when>

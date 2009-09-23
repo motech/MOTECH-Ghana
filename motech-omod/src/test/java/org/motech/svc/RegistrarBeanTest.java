@@ -691,7 +691,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(contextService.getMotechService()).andReturn(motechService);
 
-		motechService.saveLog(capture(logCap));
+		expect(motechService.saveLog(capture(logCap))).andReturn(new Log());
 
 		replay(contextService, motechService);
 

@@ -5,11 +5,10 @@ import java.util.Date;
 public class Message {
 
 	Long id;
-	Long publicId;
+	String publicId;
 	ScheduledMessage schedule;
-	Date lastAttempt;
-	MessageStatus lastStatus;
-	int attempts;
+	Date attemptDate;
+	MessageStatus attemptStatus;
 	MessageDefinition definition;
 
 	public Long getId() {
@@ -20,11 +19,11 @@ public class Message {
 		this.id = id;
 	}
 
-	public Long getPublicId() {
+	public String getPublicId() {
 		return publicId;
 	}
 
-	public void setPublicId(Long publicId) {
+	public void setPublicId(String publicId) {
 		this.publicId = publicId;
 	}
 
@@ -36,28 +35,20 @@ public class Message {
 		this.schedule = schedule;
 	}
 
-	public Date getLastAttempt() {
-		return lastAttempt;
+	public Date getAttemptDate() {
+		return attemptDate;
 	}
 
-	public void setLastAttempt(Date lastAttempt) {
-		this.lastAttempt = lastAttempt;
+	public void setAttemptDate(Date attemptDate) {
+		this.attemptDate = attemptDate;
 	}
 
-	public MessageStatus getLastStatus() {
-		return lastStatus;
+	public MessageStatus getAttemptStatus() {
+		return attemptStatus;
 	}
 
-	public void setLastStatus(MessageStatus lastStatus) {
-		this.lastStatus = lastStatus;
-	}
-
-	public int getAttempts() {
-		return attempts;
-	}
-
-	public void setAttempts(int attempts) {
-		this.attempts = attempts;
+	public void setAttemptStatus(MessageStatus attemptStatus) {
+		this.attemptStatus = attemptStatus;
 	}
 
 	public MessageDefinition getDefinition() {

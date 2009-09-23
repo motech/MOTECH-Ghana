@@ -18,7 +18,10 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motech.model.FutureServiceDelivery;
+import org.motech.messaging.Message;
+import org.motech.messaging.MessageDefinition;
+import org.motech.messaging.MessageStatus;
+import org.motech.messaging.ScheduledMessage;
 import org.motech.model.LogType;
 import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
@@ -61,17 +64,17 @@ public class NotificationTask extends AbstractTask {
 				authenticate();
 			}
 
-			List<FutureServiceDelivery> futureServices = Context.getService(
-					MotechService.class).getFutureServiceDeliveries(startDate,
+			List<ScheduledMessage> scheduledMessages = Context.getService(
+					MotechService.class).getScheduledMessages(startDate,
 					endDate);
 
 			if (log.isDebugEnabled()) {
 				log
-						.debug("Notification Task executed, Service Deliveries found: "
-								+ futureServices.size());
+						.debug("Notification Task executed, Scheduled Messages found: "
+								+ scheduledMessages.size());
 			}
 
-			if (futureServices.size() > 0) {
+			if (scheduledMessages.size() > 0) {
 				Date notificationDate = new Date();
 				PersonAttributeType phoneNumberType = Context
 						.getPersonService().getPersonAttributeTypeByName(
@@ -84,65 +87,99 @@ public class NotificationTask extends AbstractTask {
 				PatientIdentifierType serialIdType = Context
 						.getPatientService().getPatientIdentifierTypeByName(
 								"Ghana Clinic Id");
-				for (FutureServiceDelivery service : futureServices) {
+				for (ScheduledMessage scheduledMessage : scheduledMessages) {
 
-					if (service.getPatientNotifiedDate() == null) {
-						Patient patient = service.getPatient();
-						String patientPhone = patient.getAttribute(
-								phoneNumberType).getValue();
-						String clinicName = patient.getPatientIdentifier(
-								serialIdType).getLocation().getName();
-						String phoneTypeString = patient
-								.getAttribute(phoneType).getValue();
-						String notificationTypeString = patient.getAttribute(
-								notificationType).getValue();
-						ContactNumberType patientNumberType = PhoneType
-								.valueOf(phoneTypeString).toContactNumberType();
-						MessageType messageType = NotificationType.valueOf(
-								notificationTypeString).toMessageType();
+					List<Message> attempts = scheduledMessage
+							.getMessageAttempts();
+
+					// No attempts yet made or message has still not be
+					// delivered successfully
+					if (attempts.size() == 0
+							|| attempts.get(0).getAttemptStatus() != MessageStatus.DELIVERED) {
+
+						MessageDefinition messageDefinition = scheduledMessage
+								.getMessage();
+						Message message = messageDefinition
+								.createMessage(scheduledMessage);
+						message.setAttemptDate(notificationDate);
 
 						org.motech.model.Log motechLog = new org.motech.model.Log();
-						motechLog.setType(LogType.success);
 						motechLog.setDate(notificationDate);
-						motechLog
-								.setMessage("Future Service Delivery Notification, Patient Phone: "
-										+ patientPhone);
+
+						Patient patient = Context.getPatientService()
+								.getPatient(scheduledMessage.getRecipientId());
+						User nurse = Context.getUserService().getUser(
+								scheduledMessage.getRecipientId());
+
+						if (patient != null) {
+							String patientPhone = patient.getAttribute(
+									phoneNumberType).getValue();
+							String clinicName = patient.getPatientIdentifier(
+									serialIdType).getLocation().getName();
+							String phoneTypeString = patient.getAttribute(
+									phoneType).getValue();
+							String notificationTypeString = patient
+									.getAttribute(notificationType).getValue();
+							ContactNumberType patientNumberType = PhoneType
+									.valueOf(phoneTypeString)
+									.toContactNumberType();
+							MessageType messageType = NotificationType.valueOf(
+									notificationTypeString).toMessageType();
+
+							motechLog
+									.setMessage("Scheduled Message Notification, Patient Phone: "
+											+ patientPhone);
+
+							try {
+								Context.getService(MotechService.class)
+										.getMobileService().sendPatientMessage(
+												new Long(1), clinicName,
+												notificationDate, patientPhone,
+												patientNumberType, messageType);
+								message
+										.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
+								motechLog.setType(LogType.success);
+							} catch (Exception e) {
+								log.error("Mobile patient message failure", e);
+								message
+										.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
+								motechLog.setType(LogType.failure);
+							}
+
+						} else if (nurse != null) {
+							String nursePhone = nurse.getAttribute(
+									phoneNumberType).getValue();
+							String nurseName = nurse.getPersonName().toString();
+
+							motechLog
+									.setMessage("Scheduled Message Notification, Nurse Phone: "
+											+ nursePhone);
+
+							try {
+								Context.getService(MotechService.class)
+										.getMobileService().sendCHPSMessage(
+												new Long(1), nurseName,
+												nursePhone, null);
+								message
+										.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
+								motechLog.setType(LogType.success);
+							} catch (Exception e) {
+								log.error("Mobile nurse message failure", e);
+								message
+										.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
+								motechLog.setType(LogType.failure);
+							}
+
+						}
 						Context.getService(MotechService.class).saveLog(
 								motechLog);
 
+						scheduledMessage.getMessageAttempts().add(message);
 						Context.getService(MotechService.class)
-								.getMobileService().sendPatientMessage(
-										new Long(1), clinicName,
-										notificationDate, patientPhone,
-										patientNumberType, messageType);
+								.saveScheduledMessage(scheduledMessage);
 
-						service.setPatientNotifiedDate(notificationDate);
 					}
 
-					if (service.getUserNotifiedDate() == null) {
-						User nurse = service.getUser();
-						String nursePhone = nurse.getAttribute(phoneNumberType)
-								.getValue();
-						String nurseName = nurse.getPersonName().toString();
-
-						org.motech.model.Log motechLog = new org.motech.model.Log();
-						motechLog.setType(LogType.success);
-						motechLog.setDate(notificationDate);
-						motechLog
-								.setMessage("Future Service Delivery Notification, Nurse Phone: "
-										+ nursePhone);
-						Context.getService(MotechService.class).saveLog(
-								motechLog);
-
-						Context.getService(MotechService.class)
-								.getMobileService().sendCHPSMessage(
-										new Long(1), nurseName, nursePhone,
-										null);
-
-						service.setUserNotifiedDate(notificationDate);
-					}
-					Context.getService(MotechService.class)
-							.updateFutureServiceDelivery(service);
 				}
 			}
 		} catch (Exception e) {

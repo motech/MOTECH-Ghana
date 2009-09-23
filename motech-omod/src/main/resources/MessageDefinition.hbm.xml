@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="${corePackage}.messaging">
+	<class name="MessageDefinition" table="motechmodule_messagedefinition">
+		<id name="id" type="long" column="motechmodule_messagedefinition_id">
+			<generator class="native" />
+		</id>
+		<property name="messageKey" type="string" column="message_key"
+			not-null="true" unique="true" length="255" />
+		<bag name="messageAttributes" table="motechmodule_messagedefinition_attribute"
+			cascade="save-update">
+			<key column="definition_id" />
+			<many-to-many class="${corePackage}.messaging.MessageAttribute"
+				column="attribute_id" />
+		</bag>
+	</class>
+</hibernate-mapping>

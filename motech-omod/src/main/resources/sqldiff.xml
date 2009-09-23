@@ -48,4 +48,63 @@
 		</sql>
 	</diff>
 	
+	<diff>
+		<version>1.0.1</version>
+		<author>Matthew Blanchette</author>
+		<date>Sep 22nd 2009</date>
+		<description>
+			Remove futureservicedelivery table and add new messaging tables.
+		</description>
+		<sql>
+			DROP TABLE IF EXISTS `motechmodule_futureservicedelivery`;
+
+			CREATE TABLE IF NOT EXISTS `motechmodule_messageattribute` (
+				`motechmodule_messageattribute_id` bigint NOT NULL auto_increment,
+				`attribute_name` varchar(255) NOT NULL UNIQUE,
+				`attribute_property` varchar(255) NOT NULL,
+				PRIMARY KEY (`motechmodule_messageattribute_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+			CREATE TABLE IF NOT EXISTS `motechmodule_messagedefinition` (
+				`motechmodule_messagedefinition_id` bigint NOT NULL auto_increment,
+				`message_key` varchar(255) NOT NULL UNIQUE,
+				PRIMARY KEY (`motechmodule_messagedefinition_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+			CREATE TABLE IF NOT EXISTS `motechmodule_messagedefinition_attribute` (
+				`definition_id` bigint NOT NULL,
+				`attribute_id` bigint NOT NULL,
+				PRIMARY KEY (`definition_id`),
+				CONSTRAINT `Definition of attributes` FOREIGN KEY (`definition_id`)
+				REFERENCES `motechmodule_messagedefinition` (`motechmodule_messagedefinition_id`),
+				CONSTRAINT `Attribute of definitions` FOREIGN KEY (`attribute_id`)
+				REFERENCES `motechmodule_messageattribute` (`motechmodule_messageattribute_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+			CREATE TABLE IF NOT EXISTS `motechmodule_scheduledmessage` (
+				`motechmodule_scheduledmessage_id` bigint NOT NULL auto_increment,
+				`scheduled_for` datetime NOT NULL,
+				`definition_id` bigint NOT NULL,
+				`recipient_id` int NOT NULL,
+				PRIMARY KEY (`motechmodule_scheduledmessage_id`),
+				CONSTRAINT `Definition of message schedule` FOREIGN KEY (`definition_id`)
+				REFERENCES `motechmodule_messagedefinition` (`motechmodule_messagedefinition_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+			CREATE TABLE IF NOT EXISTS `motechmodule_message` (
+				`motechmodule_message_id` bigint NOT NULL auto_increment,
+				`public_id` varchar(36) NOT NULL UNIQUE,
+				`schedule_id` bigint NOT NULL,
+				`attempt_date` datetime,
+				`attempt_status` varchar(15),
+				`definition_id` bigint NOT NULL,
+				PRIMARY KEY (`motechmodule_message_id`),
+				CONSTRAINT `Schedule of message attempt` FOREIGN KEY (`schedule_id`)
+				REFERENCES `motechmodule_scheduledmessage` (`motechmodule_scheduledmessage_id`),
+				CONSTRAINT `Definition of message attempt` FOREIGN KEY (`definition_id`)
+				REFERENCES `motechmodule_messagedefinition` (`motechmodule_messagedefinition_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		</sql>
+	</diff>
+	
 </sqldiff>
