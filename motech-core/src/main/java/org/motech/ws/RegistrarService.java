@@ -6,7 +6,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-import org.motech.messaging.MessageNotFoundException;
 import org.motech.model.Gender;
 import org.motech.model.LogType;
 import org.motech.model.NotificationType;
