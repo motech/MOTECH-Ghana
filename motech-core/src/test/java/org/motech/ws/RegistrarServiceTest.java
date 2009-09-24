@@ -160,7 +160,7 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testSetMessageStatus() {
-		Long messageId = 1L;
+		String messageId = "12345678-1234-1234-1234-123456789012";
 		Boolean success = true;
 
 		replay(registrarBean);

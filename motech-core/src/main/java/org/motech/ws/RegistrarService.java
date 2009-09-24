@@ -71,6 +71,7 @@ public interface RegistrarService {
 			@WebParam(name = "message") String message);
 
 	@WebMethod
-	public void setMessageStatus(@WebParam(name = "messageId") Long messageId,
+	public void setMessageStatus(
+			@WebParam(name = "messageId") String messageId,
 			@WebParam(name = "success") Boolean success);
 }

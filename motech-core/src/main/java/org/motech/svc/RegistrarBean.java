@@ -37,4 +37,6 @@ public interface RegistrarBean {
 			String serialId, Date dueDate, Integer parity, Double hemoglobin);
 
 	public void log(LogType type, String message);
+
+	public void setMessageStatus(String messageId, Boolean success);
 }

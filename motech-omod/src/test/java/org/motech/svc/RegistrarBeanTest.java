@@ -17,6 +17,9 @@ import java.util.Locale;
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
+import org.motech.messaging.Message;
+import org.motech.messaging.MessageNotFoundException;
+import org.motech.messaging.MessageStatus;
 import org.motech.model.Gender;
 import org.motech.model.Log;
 import org.motech.model.LogType;
@@ -709,5 +712,68 @@ public class RegistrarBeanTest extends TestCase {
 		assertFalse("Date not between invocation and return", logDate
 				.before(beforeCall)
 				|| logDate.after(afterCall));
+	}
+
+	public void testSetMessageStatusFoundSuccess() {
+		String messageId = "12345678-1234-1234-1234-123456789012";
+		Boolean success = true;
+
+		Capture<Message> messageCap = new Capture<Message>();
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(motechService.getMessage(messageId)).andReturn(new Message());
+		expect(motechService.saveMessage(capture(messageCap))).andReturn(
+				new Message());
+
+		replay(contextService, motechService);
+
+		regBean.setMessageStatus(messageId, success);
+
+		verify(contextService, motechService);
+
+		Message message = messageCap.getValue();
+		assertEquals(MessageStatus.DELIVERED, message.getAttemptStatus());
+	}
+
+	public void testSetMessageStatusFoundUnsuccess() {
+		String messageId = "12345678-1234-1234-1234-123456789012";
+		Boolean success = false;
+
+		Capture<Message> messageCap = new Capture<Message>();
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(motechService.getMessage(messageId)).andReturn(new Message());
+		expect(motechService.saveMessage(capture(messageCap))).andReturn(
+				new Message());
+
+		replay(contextService, motechService);
+
+		regBean.setMessageStatus(messageId, success);
+
+		verify(contextService, motechService);
+
+		Message message = messageCap.getValue();
+		assertEquals(MessageStatus.ATTEMPT_FAIL, message.getAttemptStatus());
+	}
+
+	public void testSetMessageStatusNotFound() {
+		String messageId = "12345678-1234-1234-1234-123456789012";
+		Boolean success = true;
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(motechService.getMessage(messageId)).andReturn(null);
+
+		replay(contextService, motechService);
+
+		try {
+			regBean.setMessageStatus(messageId, success);
+			fail("Expected org.motech.messaging.MessageNotFoundException: none thrown");
+		} catch (MessageNotFoundException e) {
+
+		} catch (Exception e) {
+			fail("Expected org.motech.messaging.MessageNotFoundException: other thrown");
+		}
+
+		verify(contextService, motechService);
 	}
 }

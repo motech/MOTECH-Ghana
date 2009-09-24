@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.motech.messaging.Message;
+import org.motech.messaging.MessageNotFoundException;
+import org.motech.messaging.MessageStatus;
 import org.motech.model.Gender;
 import org.motech.model.LogType;
 import org.motech.model.NotificationType;
@@ -428,6 +431,23 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	public void setContextService(ContextService contextService) {
 		this.contextService = contextService;
+	}
+
+	public void setMessageStatus(String messageId, Boolean success) {
+
+		MotechService motechService = contextService.getMotechService();
+
+		Message message = motechService.getMessage(messageId);
+		if (message == null) {
+			throw new MessageNotFoundException();
+		}
+
+		if (success) {
+			message.setAttemptStatus(MessageStatus.DELIVERED);
+		} else {
+			message.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
+		}
+		motechService.saveMessage(message);
 	}
 
 }
