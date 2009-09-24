@@ -16,6 +16,7 @@ package org.motech.openmrs.module;
 import java.util.Date;
 import java.util.List;
 
+import org.motech.model.Blackout;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
@@ -80,4 +81,9 @@ public interface MotechService extends OpenmrsService {
 
 	MessageService getMobileService();
 
+	@Transactional(readOnly = true)
+	Blackout getBlackoutSettings();
+
+	@Transactional
+	void setBlackoutSettings(Blackout blackout);
 }

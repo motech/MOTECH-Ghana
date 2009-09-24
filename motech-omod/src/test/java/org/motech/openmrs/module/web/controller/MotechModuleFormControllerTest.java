@@ -4,30 +4,42 @@ import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
+import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
+import org.motech.model.Blackout;
 import org.motech.model.Gender;
 import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
+import org.motech.openmrs.module.ContextService;
+import org.motech.openmrs.module.MotechService;
 import org.motech.ws.RegistrarService;
+import org.springframework.ui.ModelMap;
 
 public class MotechModuleFormControllerTest extends TestCase {
 
 	RegistrarService registrarService;
 	MotechModuleFormController controller;
+	ContextService contextService;
+	MotechService motechService;
 
 	@Override
 	protected void setUp() {
 		registrarService = createMock(RegistrarService.class);
+		motechService = createMock(MotechService.class);
+		contextService = createMock(ContextService.class);
 		controller = new MotechModuleFormController();
 		controller.setRegistrarClient(registrarService);
+		controller.setContextService(contextService);
 	}
 
 	@Override
@@ -227,5 +239,93 @@ public class MotechModuleFormControllerTest extends TestCase {
 		assertEquals(testPMTCT, testPMTCTCapture.getValue().toString());
 		assertEquals(postPMTCT, postPMTCTCapture.getValue().toString());
 		assertEquals(hemoglobin, hemoglobin36Capture.getValue().toString());
+	}
+
+	public void testViewBlackoutForm() throws ParseException {
+
+		Time startTime = Time.valueOf("07:00:00"), endTime = Time
+				.valueOf("19:00:00");
+
+		Blackout interval = new Blackout(startTime, endTime);
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(motechService.getBlackoutSettings()).andReturn(interval);
+
+		replay(contextService, motechService);
+
+		ModelMap model = new ModelMap();
+		String path = controller.viewBlackoutSettings(model);
+
+		verify(contextService, motechService);
+
+		assertEquals("/module/motechmodule/blackout", path);
+		assertEquals(model.get("startTime"), startTime);
+		assertEquals(model.get("endTime"), endTime);
+	}
+
+	public void testViewBlackoutFormNoData() throws ParseException {
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(motechService.getBlackoutSettings()).andReturn(null);
+
+		replay(contextService, motechService);
+
+		ModelMap model = new ModelMap();
+		String path = controller.viewBlackoutSettings(model);
+
+		verify(contextService, motechService);
+
+		assertEquals("/module/motechmodule/blackout", path);
+	}
+
+	public void testSaveBlackoutSettings() throws ParseException {
+
+		String startTime = "07:00:00", endTime = "19:00:00";
+
+		Capture<Blackout> boCap = new Capture<Blackout>();
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+
+		expect(motechService.getBlackoutSettings()).andReturn(null);
+		motechService.setBlackoutSettings(capture(boCap));
+
+		replay(contextService, motechService);
+
+		ModelMap model = new ModelMap();
+		String path = controller
+				.saveBlackoutSettings(startTime, endTime, model);
+
+		verify(contextService, motechService);
+
+		assertEquals("/module/motechmodule/blackout", path);
+		assertEquals(startTime, model.get("startTime").toString());
+		assertEquals(endTime, model.get("endTime").toString());
+		assertEquals(startTime, boCap.getValue().getStartTime().toString());
+		assertEquals(endTime, boCap.getValue().getEndTime().toString());
+	}
+
+	public void testUpdateBlackoutSettings() throws ParseException {
+
+		String startTime = "07:00:00", endTime = "19:00:00";
+
+		Capture<Blackout> boCap = new Capture<Blackout>();
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+
+		Blackout blackout = new Blackout(null, null);
+		expect(motechService.getBlackoutSettings()).andReturn(blackout);
+		motechService.setBlackoutSettings(capture(boCap));
+
+		replay(contextService, motechService);
+
+		ModelMap model = new ModelMap();
+		String path = controller
+				.saveBlackoutSettings(startTime, endTime, model);
+
+		verify(contextService, motechService);
+
+		assertEquals("/module/motechmodule/blackout", path);
+		assertEquals(startTime, model.get("startTime").toString());
+		assertEquals(endTime, model.get("endTime").toString());
+		assertEquals(startTime, boCap.getValue().getStartTime().toString());
+		assertEquals(endTime, boCap.getValue().getEndTime().toString());
 	}
 }

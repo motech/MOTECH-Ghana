@@ -63,10 +63,10 @@
 	<wss:binding url="/ws/RegistrarService" service="#registrarservice" /> <!-- MUST start with /ws/ -->
 	<ws:service id="registrarservice" bean="#registrarWebService" />
 
+	<bean id="contextService" class="${modulePackage}.impl.ContextServiceImpl" />
+
 	<bean id="registrarBean" class="${corePackage}.svc.RegistrarBeanImpl">
-		<property name="contextService">
-			<bean class="${modulePackage}.impl.ContextServiceImpl" />
-		</property>
+		<property name="contextService" ref="contextService" />
 	</bean>
 
 	<bean id="registrarWebService" class="${corePackage}.ws.RegistrarWebService">

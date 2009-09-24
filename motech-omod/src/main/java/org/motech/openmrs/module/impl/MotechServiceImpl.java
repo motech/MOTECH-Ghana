@@ -16,12 +16,13 @@ package org.motech.openmrs.module.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.motech.model.Blackout;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
 import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Log;
-import org.motech.model.db.hibernate.HibernateMotechDAO;
+import org.motech.model.db.MotechDAO;
 import org.motech.openmrs.module.MotechService;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
@@ -35,14 +36,14 @@ import com.dreamoval.motech.webapp.webservices.MessageService;
 public class MotechServiceImpl extends BaseOpenmrsService implements
 		MotechService {
 
-	private HibernateMotechDAO motechDAO;
+	private MotechDAO motechDAO;
 	private MessageService mobileService;
 
-	public HibernateMotechDAO getMotechDAO() {
+	public MotechDAO getMotechDAO() {
 		return motechDAO;
 	}
 
-	public void setMotechDAO(HibernateMotechDAO motechDAO) {
+	public void setMotechDAO(MotechDAO motechDAO) {
 		this.motechDAO = motechDAO;
 	}
 
@@ -125,4 +126,11 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		this.mobileService = mobileService;
 	}
 
+	public Blackout getBlackoutSettings() {
+		return motechDAO.getBlackoutSettings();
+	}
+
+	public void setBlackoutSettings(Blackout blackout) {
+		motechDAO.setBlackoutSettings(blackout);
+	}
 }

@@ -45,6 +45,7 @@
 		Message.hbm.xml
 		MessageDefinition.hbm.xml
 		MessageAttribute.hbm.xml
+		Blackout.hbm.xml
 	</mappingFiles>
 
 </module>

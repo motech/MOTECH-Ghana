@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="${corePackage}.model">
+	<class name="Blackout" table="motechmodule_blackout">
+		<id name="id" column="motechmodule_blackout_id">
+			<generator class="native" />
+		</id>
+		<property name="startTime" type="java.sql.Time" column="start_time" />
+		<property name="endTime" type="java.sql.Time" column="end_time" />
+	</class>
+</hibernate-mapping>

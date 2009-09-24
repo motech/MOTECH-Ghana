@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.motech.model.Blackout;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
@@ -137,6 +138,16 @@ public class HibernateMotechDAO implements MotechDAO {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<MessageAttribute>) session.createCriteria(
 				MessageAttribute.class).list();
+	}
+
+	public Blackout getBlackoutSettings() {
+		Blackout settings = (Blackout) sessionFactory.getCurrentSession()
+				.createCriteria(Blackout.class).uniqueResult();
+		return settings;
+	}
+
+	public void setBlackoutSettings(Blackout settings) {
+		sessionFactory.getCurrentSession().saveOrUpdate(settings);
 	}
 
 }

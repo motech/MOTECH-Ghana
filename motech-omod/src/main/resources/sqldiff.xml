@@ -45,6 +45,13 @@
 				`log_message` varchar(100) NOT NULL,
 				PRIMARY KEY (`motechmodule_log_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			CREATE TABLE IF NOT EXISTS `motechmodule_blackout` (
+				`motechmodule_blackout_id` int(11) NOT NULL auto_increment,
+				`start_time` time NOT NULL,
+				`end_time` time NOT NULL,
+				PRIMARY KEY(`motechmodule_blackout_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		</sql>
 	</diff>
 	

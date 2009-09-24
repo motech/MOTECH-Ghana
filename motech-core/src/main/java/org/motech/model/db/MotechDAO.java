@@ -3,6 +3,7 @@ package org.motech.model.db;
 import java.util.Date;
 import java.util.List;
 
+import org.motech.model.Blackout;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
@@ -43,5 +44,9 @@ public interface MotechDAO {
 
 	MessageDefinition getMessageDefinition(String messageKey);
 
+	Blackout getBlackoutSettings();
+
+	void setBlackoutSettings(Blackout blackout);
+	
 	List<MessageAttribute> getMessageAttributes();
 }

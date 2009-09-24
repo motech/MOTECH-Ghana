@@ -19,6 +19,14 @@
 		<level value="DEBUG" />
 	</logger>
 	
+	<!-- 
+	   Enable this to view the sql statements that hibernate generates
+	<logger name="org.hibernate.SQL">
+		<level value="DEBUG" />
+	</logger>
+	--> 
+	 
+	
 	<root>
 		<level value="ERROR" />
 		<appender-ref ref="CONSOLE" />

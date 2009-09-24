@@ -13,6 +13,7 @@
  */
 package org.motech.openmrs.module.web.controller;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,9 +22,11 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motech.model.Blackout;
 import org.motech.model.Gender;
 import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
+import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.ws.RegistrarService;
 import org.openmrs.EncounterType;
@@ -52,6 +55,13 @@ public class MotechModuleFormController {
 	@Autowired
 	@Qualifier("registrarClient")
 	private RegistrarService registrarClient;
+
+	private ContextService contextService;
+
+	@Autowired
+	public void setContextService(ContextService contextService) {
+		this.contextService = contextService;
+	}
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -243,6 +253,46 @@ public class MotechModuleFormController {
 				.getAllLogs());
 
 		return "/module/motechmodule/viewdata";
+	}
+
+	@RequestMapping("/module/motechmodule/blackout")
+	public String viewBlackoutSettings(ModelMap model) {
+
+		Blackout blackout = contextService.getMotechService()
+				.getBlackoutSettings();
+
+		if (blackout != null) {
+			model.addAttribute("startTime", blackout.getStartTime());
+			model.addAttribute("endTime", blackout.getEndTime());
+		}
+
+		return "/module/motechmodule/blackout";
+	}
+
+	@RequestMapping(value = "/module/motechmodule/blackout", method = RequestMethod.POST)
+	public String saveBlackoutSettings(
+			@RequestParam("startTime") String startTime,
+			@RequestParam("endTime") String endTime, ModelMap model) {
+
+		MotechService motechService = contextService.getMotechService();
+		Blackout blackout = motechService.getBlackoutSettings();
+
+		Time startTimeCvt = Time.valueOf(startTime);
+		Time endTimeCvt = Time.valueOf(endTime);
+
+		if (blackout != null) {
+			blackout.setStartTime(startTimeCvt);
+			blackout.setEndTime(endTimeCvt);
+		} else {
+			blackout = new Blackout(startTimeCvt, endTimeCvt);
+		}
+
+		motechService.setBlackoutSettings(blackout);
+
+		model.addAttribute("startTime", blackout.getStartTime());
+		model.addAttribute("endTime", blackout.getEndTime());
+
+		return "/module/motechmodule/blackout";
 	}
 
 }

@@ -55,6 +55,7 @@ public class AdminList extends AdministrationSectionExt {
 		map.put("module/motechmodule/maternalVisit.form",
 				"Register Maternal Visit");
 		map.put("module/motechmodule/viewdata.form", "View Data");
+		map.put("module/motechmodule/blackout.form", "Blackout Interval");
 
 		return map;
 	}
