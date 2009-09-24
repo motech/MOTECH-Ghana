@@ -23,17 +23,6 @@
 	<!-- Controllers -->
 	<context:component-scan base-package="${modulePackage}.web.controller" />
 
-	<bean id="motechService" class="${modulePackage}.impl.MotechServiceImpl">
-		<property name="motechDAO">
-			<bean class="${corePackage}.model.db.hibernate.HibernateMotechDAO">
-				<property name="sessionFactory">
-					<ref bean="sessionFactory" />
-				</property>
-			</bean>
-		</property>
-		<property name="mobileService" ref="mobileClient" />
-	</bean>
-
 	<!-- Service -->
 	<bean parent="serviceContext">
 		<property name="moduleService">
@@ -44,7 +33,18 @@
 					<property name="transactionManager">
 						<ref bean="transactionManager" />
 					</property>
-					<property name="target" ref="motechService" />
+					<property name="target">
+						<bean class="${modulePackage}.impl.MotechServiceImpl">
+							<property name="motechDAO">
+								<bean class="${corePackage}.model.db.hibernate.HibernateMotechDAO">
+									<property name="sessionFactory">
+										<ref bean="sessionFactory" />
+									</property>
+								</bean>
+							</property>
+							<property name="mobileService" ref="mobileClient" />
+						</bean>
+					</property>
 					<property name="preInterceptors">
 						<list>
 							<ref bean="authorizationInterceptor" />
