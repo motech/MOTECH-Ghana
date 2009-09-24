@@ -331,6 +331,8 @@ public class MotechModuleActivator implements Activator {
 		log.info("Shutting down Motech Module");
 
 		log.info("Removing Scheduled Task");
+
+		Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
 		try {
 			TaskDefinition task = Context.getSchedulerService().getTaskByName(
 					"Notification Task");
@@ -338,6 +340,9 @@ public class MotechModuleActivator implements Activator {
 			Context.getSchedulerService().deleteTask(task.getId());
 		} catch (SchedulerException e) {
 			log.error("Cannot shutdown task", e);
+		} finally {
+			Context
+					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
 		}
 	}
 }
