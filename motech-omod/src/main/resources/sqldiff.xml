@@ -111,12 +111,9 @@
 				`schedule_id` bigint NOT NULL,
 				`attempt_date` datetime,
 				`attempt_status` varchar(15),
-				`definition_id` bigint NOT NULL,
 				PRIMARY KEY (`motechmodule_message_id`),
 				CONSTRAINT `Schedule of message attempt` FOREIGN KEY (`schedule_id`)
-				REFERENCES `motechmodule_scheduledmessage` (`motechmodule_scheduledmessage_id`),
-				CONSTRAINT `Definition of message attempt` FOREIGN KEY (`definition_id`)
-				REFERENCES `motechmodule_messagedefinition` (`motechmodule_messagedefinition_id`)
+				REFERENCES `motechmodule_scheduledmessage` (`motechmodule_scheduledmessage_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		</sql>
 	</diff>

@@ -106,10 +106,16 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 		messageDefinition = Context.getService(MotechService.class)
 				.saveMessageDefinition(messageDefinition);
 
+		Date scheduledMessageDate = new Date();
 		ScheduledMessage scheduledMessage = new ScheduledMessage();
-		scheduledMessage.setScheduledFor(new Date());
+		scheduledMessage.setScheduledFor(scheduledMessageDate);
 		scheduledMessage.setRecipientId(patient.getPersonId());
 		scheduledMessage.setMessage(messageDefinition);
+
+		Message firstMessageAttempt = messageDefinition
+				.createMessage(scheduledMessage);
+		firstMessageAttempt.setAttemptDate(scheduledMessageDate);
+		scheduledMessage.getMessageAttempts().add(firstMessageAttempt);
 
 		Context.getService(MotechService.class).saveScheduledMessage(
 				scheduledMessage);

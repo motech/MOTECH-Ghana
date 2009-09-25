@@ -19,6 +19,7 @@ import java.util.List;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
+import org.motech.messaging.MessageStatus;
 import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Blackout;
 import org.motech.model.Log;
@@ -67,6 +68,11 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public List<Message> getMessages(ScheduledMessage scheduledMessage) {
 		return motechDAO.getMessages(scheduledMessage);
+	}
+
+	public List<Message> getMessages(Date startDate, Date endDate,
+			MessageStatus status) {
+		return motechDAO.getMessages(startDate, endDate, status);
 	}
 
 	public Message getMessage(String publicId) {

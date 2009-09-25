@@ -14,7 +14,6 @@ public class MessageDefinition {
 		Message message = new Message();
 		message.setPublicId(UUID.randomUUID().toString());
 		message.setSchedule(schedMessage);
-		message.setDefinition(this);
 		message.setAttemptStatus(MessageStatus.SHOULD_ATTEMPT);
 		return message;
 	}

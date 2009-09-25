@@ -18,6 +18,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motech.messaging.Message;
 import org.motech.messaging.MessageDefinition;
 import org.motech.messaging.ScheduledMessage;
 import org.motech.openmrs.module.MotechService;
@@ -61,6 +62,11 @@ public class SaveEncounterAdvisor implements AfterReturningAdvice {
 				scheduledMessage.setRecipientId(encounter.getPatient()
 						.getPatientId());
 				scheduledMessage.setMessage(messageDefinition);
+
+				Message message = messageDefinition
+						.createMessage(scheduledMessage);
+				message.setAttemptDate(nextServiceDate);
+				scheduledMessage.getMessageAttempts().add(message);
 
 				Context.getService(MotechService.class).saveScheduledMessage(
 						scheduledMessage);

@@ -6,6 +6,7 @@ import java.util.List;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
+import org.motech.messaging.MessageStatus;
 import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Blackout;
 import org.motech.model.Log;
@@ -36,6 +37,8 @@ public interface MotechDAO {
 	List<ScheduledMessage> getScheduledMessages(Date startDate, Date endDate);
 
 	List<Message> getMessages();
+
+	List<Message> getMessages(Date startDate, Date endDate, MessageStatus status);
 
 	Message getMessage(String publicId);
 

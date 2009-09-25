@@ -15,8 +15,5 @@
 		<property name="attemptStatus"
 			type="${corePackage}.model.db.hibernate.MessageStatusEnumType"
 			column="attempt_status" length="15" />
-		<many-to-one name="definition"
-			class="${corePackage}.messaging.MessageDefinition" column="definition_id"
-			not-null="true" />
 	</class>
 </hibernate-mapping>

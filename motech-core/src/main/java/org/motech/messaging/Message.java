@@ -9,7 +9,6 @@ public class Message {
 	ScheduledMessage schedule;
 	Date attemptDate;
 	MessageStatus attemptStatus;
-	MessageDefinition definition;
 
 	public Long getId() {
 		return id;
@@ -49,14 +48,6 @@ public class Message {
 
 	public void setAttemptStatus(MessageStatus attemptStatus) {
 		this.attemptStatus = attemptStatus;
-	}
-
-	public MessageDefinition getDefinition() {
-		return definition;
-	}
-
-	public void setDefinition(MessageDefinition definition) {
-		this.definition = definition;
 	}
 
 }

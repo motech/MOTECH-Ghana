@@ -9,6 +9,7 @@ import org.hibernate.criterion.Restrictions;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
+import org.motech.messaging.MessageStatus;
 import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Blackout;
 import org.motech.model.Log;
@@ -105,6 +106,15 @@ public class HibernateMotechDAO implements MotechDAO {
 	public List<Message> getMessages() {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<Message>) session.createCriteria(Message.class).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Message> getMessages(Date startDate, Date endDate,
+			MessageStatus status) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Message>) session.createCriteria(Message.class).add(
+				Restrictions.between("attemptDate", startDate, endDate)).add(
+				Restrictions.eq("attemptStatus", status)).list();
 	}
 
 	public Message getMessage(String publicId) {
