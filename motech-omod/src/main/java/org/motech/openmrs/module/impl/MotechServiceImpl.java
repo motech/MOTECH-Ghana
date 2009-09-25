@@ -16,12 +16,13 @@ package org.motech.openmrs.module.impl;
 import java.util.Date;
 import java.util.List;
 
-import org.motech.model.Blackout;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
 import org.motech.messaging.ScheduledMessage;
+import org.motech.model.Blackout;
 import org.motech.model.Log;
+import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
 import org.motech.openmrs.module.MotechService;
 import org.openmrs.User;
@@ -132,5 +133,25 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public void setBlackoutSettings(Blackout blackout) {
 		motechDAO.setBlackoutSettings(blackout);
+	}
+
+	public TroubledPhone getTroubledPhone(String phoneNumber) {
+		return motechDAO.getTroubledPhoneByNumber(phoneNumber);
+	}
+
+	public void addTroubledPhone(String phoneNumber) {
+		TroubledPhone tp = motechDAO.getTroubledPhoneByNumber(phoneNumber);
+		if (tp == null) {
+			tp = new TroubledPhone();
+			tp.setPhoneNumber(phoneNumber);
+			motechDAO.saveTroubledPhone(tp);
+		}
+	}
+
+	public void removeTroubledPhone(String phoneNumber) {
+		TroubledPhone tp = motechDAO.getTroubledPhoneByNumber(phoneNumber);
+		if (tp != null) {
+			motechDAO.removeTroubledPhone(tp.getId());
+		}
 	}
 }

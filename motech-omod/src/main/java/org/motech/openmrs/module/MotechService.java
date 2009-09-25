@@ -16,12 +16,13 @@ package org.motech.openmrs.module;
 import java.util.Date;
 import java.util.List;
 
-import org.motech.model.Blackout;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
 import org.motech.messaging.ScheduledMessage;
+import org.motech.model.Blackout;
 import org.motech.model.Log;
+import org.motech.model.TroubledPhone;
 import org.openmrs.User;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,4 +87,13 @@ public interface MotechService extends OpenmrsService {
 
 	@Transactional
 	void setBlackoutSettings(Blackout blackout);
+
+	@Transactional(readOnly = true)
+	TroubledPhone getTroubledPhone(String phoneNumber);
+
+	@Transactional
+	void addTroubledPhone(String phoneNumber);
+
+	@Transactional
+	void removeTroubledPhone(String phoneNumber);
 }

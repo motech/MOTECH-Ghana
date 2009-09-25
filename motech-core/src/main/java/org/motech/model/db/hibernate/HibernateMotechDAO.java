@@ -6,12 +6,13 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.motech.model.Blackout;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
 import org.motech.messaging.ScheduledMessage;
+import org.motech.model.Blackout;
 import org.motech.model.Log;
+import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
 
 /**
@@ -150,4 +151,28 @@ public class HibernateMotechDAO implements MotechDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(settings);
 	}
 
+	public void saveTroubledPhone(TroubledPhone phone) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(phone);
+	}
+
+	public TroubledPhone getTroubledPhone(Long id) {
+		Session session = sessionFactory.getCurrentSession();
+		TroubledPhone tp = (TroubledPhone) session.get(TroubledPhone.class, id);
+		return tp;
+	}
+
+	public void removeTroubledPhone(Long id) {
+		Session session = sessionFactory.getCurrentSession();
+		TroubledPhone tp = getTroubledPhone(id);
+		session.delete(tp);
+	}
+
+	public TroubledPhone getTroubledPhoneByNumber(String phoneNumber) {
+		Session session = sessionFactory.getCurrentSession();
+		TroubledPhone tp = (TroubledPhone) session.createCriteria(
+				TroubledPhone.class).add(
+				Restrictions.eq("phoneNumber", phoneNumber)).uniqueResult();
+		return tp;
+	}
 }

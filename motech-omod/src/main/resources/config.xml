@@ -46,6 +46,7 @@
 		MessageDefinition.hbm.xml
 		MessageAttribute.hbm.xml
 		Blackout.hbm.xml
+		TroubledPhone.hbm.xml
 	</mappingFiles>
 
 </module>

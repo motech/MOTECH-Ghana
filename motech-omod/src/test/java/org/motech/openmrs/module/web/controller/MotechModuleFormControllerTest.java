@@ -20,6 +20,7 @@ import org.motech.model.Blackout;
 import org.motech.model.Gender;
 import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
+import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.ws.RegistrarService;
@@ -327,5 +328,58 @@ public class MotechModuleFormControllerTest extends TestCase {
 		assertEquals(endTime, model.get("endTime").toString());
 		assertEquals(startTime, boCap.getValue().getStartTime().toString());
 		assertEquals(endTime, boCap.getValue().getEndTime().toString());
+	}
+
+	public void testLookupTroubledPhoneNoPhone() {
+
+		String phone = null;
+
+		ModelMap model = new ModelMap();
+		String path = controller.handleTroubledPhone(phone, null, model);
+
+		assertNull(model.get("troubledPhone"));
+		assertEquals("/module/motechmodule/troubledphone", path);
+	}
+
+	public void testLookupTroubledPhone() {
+
+		String phone = "378378373";
+		TroubledPhone tp = new TroubledPhone();
+		tp.setId(38903L);
+		tp.setPhoneNumber(phone);
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(motechService.getTroubledPhone(phone)).andReturn(tp);
+
+		replay(contextService, motechService);
+
+		ModelMap model = new ModelMap();
+		String path = controller.handleTroubledPhone(phone, null, model);
+
+		verify(contextService, motechService);
+
+		assertEquals(tp, model.get("troubledPhone"));
+		assertEquals("/module/motechmodule/troubledphone", path);
+	}
+
+	public void testRemoveTroubledPhone() {
+		String phone = "378378373";
+		TroubledPhone tp = new TroubledPhone();
+		tp.setId(38903L);
+		tp.setPhoneNumber(phone);
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(motechService.getTroubledPhone(phone)).andReturn(tp);
+		motechService.removeTroubledPhone(phone);
+
+		replay(contextService, motechService);
+
+		ModelMap model = new ModelMap();
+		String path = controller.handleTroubledPhone(phone, true, model);
+
+		verify(contextService, motechService);
+
+		assertNull(model.get("troubledPhone"));
+		assertEquals("/module/motechmodule/troubledphone", path);
 	}
 }

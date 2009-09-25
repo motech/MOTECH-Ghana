@@ -26,6 +26,7 @@ import org.motech.model.Blackout;
 import org.motech.model.Gender;
 import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
+import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.ws.RegistrarService;
@@ -295,4 +296,25 @@ public class MotechModuleFormController {
 		return "/module/motechmodule/blackout";
 	}
 
+	@RequestMapping(value = "/module/motechmodule/troubledphone", method = RequestMethod.GET)
+	public String handleTroubledPhone(
+			@RequestParam(required = false, value = "phoneNumber") String phoneNumber,
+			@RequestParam(required = false, value = "remove") Boolean remove,
+			ModelMap model) {
+
+		if (phoneNumber != null && !phoneNumber.trim().isEmpty()) {
+
+			MotechService motechService = contextService.getMotechService();
+
+			TroubledPhone troubledPhone = motechService
+					.getTroubledPhone(phoneNumber);
+
+			if (remove == Boolean.TRUE)
+				motechService.removeTroubledPhone(phoneNumber);
+			else if (troubledPhone != null)
+				model.addAttribute(troubledPhone);
+		}
+
+		return "/module/motechmodule/troubledphone";
+	}
 }

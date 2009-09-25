@@ -3,12 +3,13 @@ package org.motech.model.db;
 import java.util.Date;
 import java.util.List;
 
-import org.motech.model.Blackout;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
 import org.motech.messaging.ScheduledMessage;
+import org.motech.model.Blackout;
 import org.motech.model.Log;
+import org.motech.model.TroubledPhone;
 
 /**
  * The interface definition for the motech server's data access requirements.
@@ -47,6 +48,14 @@ public interface MotechDAO {
 	Blackout getBlackoutSettings();
 
 	void setBlackoutSettings(Blackout blackout);
-	
+
 	List<MessageAttribute> getMessageAttributes();
+
+	TroubledPhone getTroubledPhone(Long id);
+
+	TroubledPhone getTroubledPhoneByNumber(String phoneNumber);
+
+	void removeTroubledPhone(Long id);
+
+	void saveTroubledPhone(TroubledPhone phone);
 }
