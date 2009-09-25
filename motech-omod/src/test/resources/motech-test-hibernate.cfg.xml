@@ -5,10 +5,6 @@
 
 <hibernate-configuration>
 	<session-factory>
-		<mapping resource="ScheduledMessage.hbm.xml" />
-		<mapping resource="Message.hbm.xml" />
-		<mapping resource="MessageDefinition.hbm.xml" />
-		<mapping resource="MessageAttribute.hbm.xml" />
-		<mapping resource="Log.hbm.xml" />
+		${hibernateConfigMappingFiles}
 	</session-factory>
 </hibernate-configuration>

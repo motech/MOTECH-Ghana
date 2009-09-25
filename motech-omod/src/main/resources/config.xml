@@ -40,13 +40,7 @@
 	<!-- /Internationalization -->
 
 	<mappingFiles>
-		Log.hbm.xml
-		ScheduledMessage.hbm.xml
-		Message.hbm.xml
-		MessageDefinition.hbm.xml
-		MessageAttribute.hbm.xml
-		Blackout.hbm.xml
-		TroubledPhone.hbm.xml
+		${openmrsConfigMappingFiles}
 	</mappingFiles>
 
 </module>
