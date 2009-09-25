@@ -277,25 +277,33 @@ public class MotechModuleActivator implements Activator {
 
 	private void addConceptAnswers(String conceptName, String[] answerNames,
 			User creator) {
-		Concept concept = Context.getConceptService().getConcept(conceptName);
-		Set<Integer> currentAnswerIds = new HashSet<Integer>();
-		for (ConceptAnswer answer : concept.getAnswers()) {
-			currentAnswerIds.add(answer.getAnswerConcept().getConceptId());
-		}
-		boolean changed = false;
-		for (String answerName : answerNames) {
-			Concept answer = Context.getConceptService().getConcept(answerName);
-			if (!currentAnswerIds.contains(answer.getConceptId())) {
-				log.info("Adding Concept Answer " + answerName + " to "
-						+ conceptName);
-				changed = true;
-				ConceptAnswer conceptAnswer = new ConceptAnswer(answer);
-				conceptAnswer.setCreator(creator);
-				concept.addAnswer(conceptAnswer);
+		try {
+			Context.openSession();
+
+			Concept concept = Context.getConceptService().getConcept(
+					conceptName);
+			Set<Integer> currentAnswerIds = new HashSet<Integer>();
+			for (ConceptAnswer answer : concept.getAnswers()) {
+				currentAnswerIds.add(answer.getAnswerConcept().getConceptId());
 			}
-		}
-		if (changed) {
-			Context.getConceptService().saveConcept(concept);
+			boolean changed = false;
+			for (String answerName : answerNames) {
+				Concept answer = Context.getConceptService().getConcept(
+						answerName);
+				if (!currentAnswerIds.contains(answer.getConceptId())) {
+					log.info("Adding Concept Answer " + answerName + " to "
+							+ conceptName);
+					changed = true;
+					ConceptAnswer conceptAnswer = new ConceptAnswer(answer);
+					conceptAnswer.setCreator(creator);
+					concept.addAnswer(conceptAnswer);
+				}
+			}
+			if (changed) {
+				Context.getConceptService().saveConcept(concept);
+			}
+		} finally {
+			Context.closeSession();
 		}
 	}
 
