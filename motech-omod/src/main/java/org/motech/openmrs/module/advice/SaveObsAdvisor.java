@@ -22,7 +22,8 @@ import org.motech.messaging.Message;
 import org.motech.messaging.MessageDefinition;
 import org.motech.messaging.ScheduledMessage;
 import org.motech.openmrs.module.MotechService;
-import org.openmrs.Encounter;
+import org.openmrs.Concept;
+import org.openmrs.Obs;
 import org.openmrs.api.context.Context;
 import org.springframework.aop.AfterReturningAdvice;
 
@@ -31,9 +32,9 @@ import org.springframework.aop.AfterReturningAdvice;
  * encounter being saved, whether that operation knows about it or not.
  * Currently, this is how we are handling scheduling notifications.
  */
-public class SaveEncounterAdvisor implements AfterReturningAdvice {
+public class SaveObsAdvisor implements AfterReturningAdvice {
 
-	private static Log log = LogFactory.getLog(SaveEncounterAdvisor.class);
+	private static Log log = LogFactory.getLog(SaveObsAdvisor.class);
 
 	/**
 	 * @see org.springframework.aop.AfterReturningAdvice#afterReturning(java.lang.Object,
@@ -42,11 +43,12 @@ public class SaveEncounterAdvisor implements AfterReturningAdvice {
 	public void afterReturning(Object returnValue, Method method,
 			Object[] args, Object target) throws Throwable {
 
-		if (method.getName().equals("saveEncounter")) {
-			Encounter encounter = (Encounter) returnValue;
+		if (method.getName().equals("saveObs")) {
+			Obs obs = (Obs) returnValue;
+			Concept pregVisitConcept = Context.getConceptService().getConcept(
+					"PREGNANCY VISIT NUMBER");
 
-			if (Context.getEncounterService().getEncounterType("MATERNALVISIT")
-					.equals(encounter.getEncounterType())) {
+			if (pregVisitConcept.equals(obs.getConcept())) {
 
 				log.debug("Scheduling ScheduledMessage");
 
@@ -59,8 +61,7 @@ public class SaveEncounterAdvisor implements AfterReturningAdvice {
 
 				ScheduledMessage scheduledMessage = new ScheduledMessage();
 				scheduledMessage.setScheduledFor(nextServiceDate);
-				scheduledMessage.setRecipientId(encounter.getPatient()
-						.getPatientId());
+				scheduledMessage.setRecipientId(obs.getPerson().getPersonId());
 				scheduledMessage.setMessage(messageDefinition);
 
 				Message message = messageDefinition

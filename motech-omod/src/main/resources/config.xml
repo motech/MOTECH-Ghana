@@ -26,8 +26,8 @@
 	
 	<!-- AOP -->
 	<advice>
-		<point>org.openmrs.api.EncounterService</point>
-		<class>${modulePackage}.advice.SaveEncounterAdvisor</class>
+		<point>org.openmrs.api.ObsService</point>
+		<class>${modulePackage}.advice.SaveObsAdvisor</class>
 	</advice>
 
 

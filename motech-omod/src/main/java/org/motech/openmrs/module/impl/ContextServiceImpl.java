@@ -5,6 +5,7 @@ import org.motech.openmrs.module.MotechService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.LocationService;
+import org.openmrs.api.ObsService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
@@ -41,6 +42,10 @@ public class ContextServiceImpl implements ContextService {
 
 	public EncounterService getEncounterService() {
 		return Context.getEncounterService();
+	}
+
+	public ObsService getObsService() {
+		return Context.getObsService();
 	}
 
 	public ConceptService getConceptService() {

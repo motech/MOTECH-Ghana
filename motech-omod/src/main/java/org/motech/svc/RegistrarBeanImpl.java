@@ -29,6 +29,7 @@ import org.openmrs.User;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.LocationService;
+import org.openmrs.api.ObsService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
@@ -183,6 +184,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		LocationService locationService = contextService.getLocationService();
 		EncounterService encounterService = contextService
 				.getEncounterService();
+		ObsService obsService = contextService.getObsService();
 		ConceptService conceptService = contextService.getConceptService();
 
 		contextService.authenticate("admin", "test");
@@ -214,6 +216,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				.getEncounterType("MATERNALVISIT");
 		encounter.setEncounterType(encounterType);
 		encounter.setLocation(clinicLocation);
+		encounter = encounterService.saveEncounter(encounter);
 
 		if (tetanus) {
 			Obs tetanusObs = new Obs();
@@ -225,7 +228,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			tetanusObs.setEncounter(encounter);
 			tetanusObs.setValueCoded(conceptService
 					.getConcept("TETANUS BOOSTER"));
-			encounter.addObs(tetanusObs);
+			obsService.saveObs(tetanusObs, null);
 		}
 
 		// TODO: Add IPT to proper Concept as an Answer, not an immunization
@@ -239,7 +242,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			iptObs.setEncounter(encounter);
 			iptObs.setValueCoded(conceptService
 					.getConcept("INTERMITTENT PREVENTATIVE TREATMENT"));
-			encounter.addObs(iptObs);
+			obsService.saveObs(iptObs, null);
 		}
 
 		if (itn) {
@@ -252,7 +255,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			itnObs.setEncounter(encounter);
 			itnObs.setValueNumeric(new Double(1)); // Boolean currently stored
 			// as Numeric 1 or 0
-			encounter.addObs(itnObs);
+			obsService.saveObs(itnObs, null);
 		}
 
 		Obs visitNumberObs = new Obs();
@@ -263,7 +266,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		visitNumberObs.setLocation(clinicLocation);
 		visitNumberObs.setEncounter(encounter);
 		visitNumberObs.setValueNumeric(new Double(visitNumber));
-		encounter.addObs(visitNumberObs);
+		obsService.saveObs(visitNumberObs, null);
 
 		if (onARV) {
 			Obs arvObs = new Obs();
@@ -275,7 +278,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			arvObs.setEncounter(encounter);
 			arvObs.setValueCoded(conceptService
 					.getConcept("ON ANTIRETROVIRAL THERAPY"));
-			encounter.addObs(arvObs);
+			obsService.saveObs(arvObs, null);
 		}
 
 		if (prePMTCT) {
@@ -290,7 +293,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			prePmtctObs.setValueNumeric(new Double(1)); // Boolean currently
 			// stored as Numeric 1
 			// or 0
-			encounter.addObs(prePmtctObs);
+			obsService.saveObs(prePmtctObs, null);
 		}
 
 		if (testPMTCT) {
@@ -305,7 +308,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			testPmtctObs.setValueNumeric(new Double(1)); // Boolean currently
 			// stored as Numeric
 			// 1 or 0
-			encounter.addObs(testPmtctObs);
+			obsService.saveObs(testPmtctObs, null);
 		}
 
 		if (postPMTCT) {
@@ -320,7 +323,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			postPmtctObs.setValueNumeric(new Double(1)); // Boolean currently
 			// stored as Numeric
 			// 1 or 0
-			encounter.addObs(postPmtctObs);
+			obsService.saveObs(postPmtctObs, null);
 		}
 
 		Obs hemoglobinObs = new Obs();
@@ -331,9 +334,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		hemoglobinObs.setLocation(clinicLocation);
 		hemoglobinObs.setEncounter(encounter);
 		hemoglobinObs.setValueNumeric(hemoglobinAt36Weeks);
-		encounter.addObs(hemoglobinObs);
-
-		encounterService.saveEncounter(encounter);
+		obsService.saveObs(hemoglobinObs, null);
 	}
 
 	public void registerPregnancy(String nursePhoneNumber, Date date,
@@ -345,6 +346,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		LocationService locationService = contextService.getLocationService();
 		EncounterService encounterService = contextService
 				.getEncounterService();
+		ObsService obsService = contextService.getObsService();
 		ConceptService conceptService = contextService.getConceptService();
 
 		contextService.authenticate("admin", "test");
@@ -376,6 +378,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				.getEncounterType("PREGNANCYVISIT");
 		encounter.setEncounterType(encounterType);
 		encounter.setLocation(clinicLocation);
+		encounter = encounterService.saveEncounter(encounter);
 
 		Obs pregSatusObs = new Obs();
 		pregSatusObs.setObsDatetime(date);
@@ -385,7 +388,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		pregSatusObs.setEncounter(encounter);
 		pregSatusObs.setValueNumeric(new Double(1)); // Boolean currently stored
 		// as Numeric 1 or 0
-		encounter.addObs(pregSatusObs);
+		obsService.saveObs(pregSatusObs, null);
 
 		Obs dueDateObs = new Obs();
 		dueDateObs.setObsDatetime(date);
@@ -395,7 +398,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		dueDateObs.setLocation(clinicLocation);
 		dueDateObs.setEncounter(encounter);
 		dueDateObs.setValueDatetime(dueDate);
-		encounter.addObs(dueDateObs);
+		obsService.saveObs(dueDateObs, null);
 
 		Obs parityObs = new Obs();
 		parityObs.setObsDatetime(date);
@@ -404,7 +407,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		parityObs.setLocation(clinicLocation);
 		parityObs.setEncounter(encounter);
 		parityObs.setValueNumeric(new Double(parity));
-		encounter.addObs(parityObs);
+		obsService.saveObs(parityObs, null);
 
 		Obs hemoglobinObs = new Obs();
 		hemoglobinObs.setObsDatetime(date);
@@ -413,9 +416,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		hemoglobinObs.setLocation(clinicLocation);
 		hemoglobinObs.setEncounter(encounter);
 		hemoglobinObs.setValueNumeric(hemoglobin);
-		encounter.addObs(hemoglobinObs);
-
-		encounterService.saveEncounter(encounter);
+		obsService.saveObs(hemoglobinObs, null);
 	}
 
 	public void log(LogType type, String message) {

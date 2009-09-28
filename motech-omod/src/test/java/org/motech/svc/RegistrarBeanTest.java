@@ -43,6 +43,7 @@ import org.openmrs.User;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.LocationService;
+import org.openmrs.api.ObsService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
@@ -57,6 +58,7 @@ public class RegistrarBeanTest extends TestCase {
 	UserService userService;
 	PatientService patientService;
 	EncounterService encounterService;
+	ObsService obsService;
 	ConceptService conceptService;
 	MotechService motechService;
 
@@ -136,6 +138,7 @@ public class RegistrarBeanTest extends TestCase {
 		userService = createMock(UserService.class);
 		patientService = createMock(PatientService.class);
 		encounterService = createMock(EncounterService.class);
+		obsService = createMock(ObsService.class);
 		conceptService = createMock(ConceptService.class);
 		motechService = createMock(MotechService.class);
 
@@ -241,6 +244,7 @@ public class RegistrarBeanTest extends TestCase {
 		userService = null;
 		patientService = null;
 		encounterService = null;
+		obsService = null;
 		conceptService = null;
 		motechService = null;
 	}
@@ -387,13 +391,14 @@ public class RegistrarBeanTest extends TestCase {
 		Integer visit = 1;
 
 		Location locationObj = new Location(1);
+		locationObj.setName("Test Location");
 
 		User nurse = new User(1);
 		nurse.addAttribute(new PersonAttribute(phoneAttributeType, nPhone));
 		nurse.addAttribute(new PersonAttribute(clinicAttributeType, locationObj
 				.getLocationId().toString()));
 
-		Patient patient = new Patient();
+		Patient patient = new Patient(2);
 		patient.addIdentifier(new PatientIdentifier(serialId, ghanaIdType,
 				locationObj));
 		List<Patient> patients = new ArrayList<Patient>();
@@ -401,6 +406,15 @@ public class RegistrarBeanTest extends TestCase {
 
 		Capture<List<PatientIdentifierType>> typeList = new Capture<List<PatientIdentifierType>>();
 		Capture<Encounter> encounterCap = new Capture<Encounter>();
+		Capture<Obs> tetanusObsCap = new Capture<Obs>();
+		Capture<Obs> iptObsCap = new Capture<Obs>();
+		Capture<Obs> itnObsCap = new Capture<Obs>();
+		Capture<Obs> visitNumberObsCap = new Capture<Obs>();
+		Capture<Obs> arvObsCap = new Capture<Obs>();
+		Capture<Obs> preObsCap = new Capture<Obs>();
+		Capture<Obs> testObsCap = new Capture<Obs>();
+		Capture<Obs> postObsCap = new Capture<Obs>();
+		Capture<Obs> hemoglobinObsCap = new Capture<Obs>();
 
 		expect(contextService.getPatientService()).andReturn(patientService);
 		expect(contextService.getMotechService()).andReturn(motechService);
@@ -408,6 +422,7 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getLocationService()).andReturn(locationService);
 		expect(contextService.getEncounterService())
 				.andReturn(encounterService);
+		expect(contextService.getObsService()).andReturn(obsService);
 		expect(contextService.getConceptService()).andReturn(conceptService);
 
 		contextService.authenticate((String) anyObject(), (String) anyObject());
@@ -422,41 +437,61 @@ public class RegistrarBeanTest extends TestCase {
 		expect(locationService.getLocation(1)).andReturn(locationObj);
 		expect(encounterService.getEncounterType(matVisitTypeName)).andReturn(
 				matVisitType);
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
 		expect(conceptService.getConcept(immunizationConceptName)).andReturn(
 				immunizationConcept);
 		expect(conceptService.getConcept(tetanusConceptName)).andReturn(
 				tetanusConcept);
+		expect(obsService.saveObs(capture(tetanusObsCap), (String) anyObject()))
+				.andReturn(new Obs());
 		expect(conceptService.getConcept(immunizationConceptName)).andReturn(
 				immunizationConcept);
 		expect(conceptService.getConcept(iptConceptName)).andReturn(iptConcept);
+		expect(obsService.saveObs(capture(iptObsCap), (String) anyObject()))
+				.andReturn(new Obs());
 		expect(conceptService.getConcept(itnConceptName)).andReturn(itnConcept);
+		expect(obsService.saveObs(capture(itnObsCap), (String) anyObject()))
+				.andReturn(new Obs());
 		expect(conceptService.getConcept(visitNumConceptName)).andReturn(
 				visitNumConcept);
+		expect(
+				obsService.saveObs(capture(visitNumberObsCap),
+						(String) anyObject())).andReturn(new Obs());
 		expect(conceptService.getConcept(arvConceptName)).andReturn(arvConcept);
 		expect(conceptService.getConcept(onArvConceptName)).andReturn(
 				onArvConcept);
+		expect(obsService.saveObs(capture(arvObsCap), (String) anyObject()))
+				.andReturn(new Obs());
 		expect(conceptService.getConcept(prePMTCTConceptName)).andReturn(
 				prePMTCTConcept);
+		expect(obsService.saveObs(capture(preObsCap), (String) anyObject()))
+				.andReturn(new Obs());
 		expect(conceptService.getConcept(testPMTCTConceptName)).andReturn(
 				testPMTCTConcept);
+		expect(obsService.saveObs(capture(testObsCap), (String) anyObject()))
+				.andReturn(new Obs());
 		expect(conceptService.getConcept(postPMTCTConceptName)).andReturn(
 				postPMTCTConcept);
+		expect(obsService.saveObs(capture(postObsCap), (String) anyObject()))
+				.andReturn(new Obs());
 		expect(conceptService.getConcept(hemo36ConceptName)).andReturn(
 				hemo36Concept);
-		expect(encounterService.saveEncounter(capture(encounterCap)))
-				.andReturn(new Encounter());
+		expect(
+				obsService.saveObs(capture(hemoglobinObsCap),
+						(String) anyObject())).andReturn(new Obs());
 
 		replay(contextService, patientService, motechService, personService,
-				locationService, encounterService, conceptService);
+				locationService, encounterService, obsService, conceptService);
 
 		regBean.recordMaternalVisit(nPhone, date, serialId, tetanus, ipt, itn,
 				visit, onARV, prePMTCT, testPMTCT, postPMTCT, hemo);
 
 		verify(contextService, patientService, motechService, personService,
-				locationService, encounterService, conceptService);
+				locationService, encounterService, obsService, conceptService);
 
 		Encounter e = encounterCap.getValue();
-		assertTrue(typeList.getValue().size() == 1);
+		assertEquals(1, typeList.getValue().size());
 		assertTrue(typeList.getValue().contains(ghanaIdType));
 		assertEquals(nPhone, e.getProvider().getAttribute(phoneAttributeType)
 				.getValue());
@@ -464,30 +499,77 @@ public class RegistrarBeanTest extends TestCase {
 				.getIdentifier());
 		assertEquals(date, e.getEncounterDatetime());
 
-		assertEquals(9, e.getAllObs().size());
-		assertEquals(2, getNumMatchingObs(e, immunizationConcept));
-		assertEquals(1, getNumMatchingObs(e, immunizationConcept,
-				tetanusConcept));
-		assertEquals(1, getNumMatchingObs(e, immunizationConcept, iptConcept));
-		assertEquals(1, getNumMatchingObs(e, itnConcept));
-		assertEquals(Boolean.TRUE, getFirstMatchingObs(e, itnConcept)
-				.getValueAsBoolean());
-		assertEquals(1, getNumMatchingObs(e, arvConcept, onArvConcept));
-		assertEquals(1, getNumMatchingObs(e, prePMTCTConcept));
-		assertEquals(Boolean.TRUE, getFirstMatchingObs(e, prePMTCTConcept)
-				.getValueAsBoolean());
-		assertEquals(1, getNumMatchingObs(e, testPMTCTConcept));
-		assertEquals(Boolean.TRUE, getFirstMatchingObs(e, testPMTCTConcept)
-				.getValueAsBoolean());
-		assertEquals(1, getNumMatchingObs(e, postPMTCTConcept));
-		assertEquals(Boolean.TRUE, getFirstMatchingObs(e, postPMTCTConcept)
-				.getValueAsBoolean());
-		assertEquals(1, getNumMatchingObs(e, visitNumConcept));
-		assertEquals(Double.valueOf(visit), getFirstMatchingObs(e,
-				visitNumConcept).getValueNumeric());
-		assertEquals(1, getNumMatchingObs(e, hemo36Concept));
-		assertEquals(hemo, getFirstMatchingObs(e, hemo36Concept)
-				.getValueNumeric());
+		Obs tetanusObs = tetanusObsCap.getValue();
+		assertEquals(e.getEncounterDatetime(), tetanusObs.getObsDatetime());
+		assertEquals(e.getPatient().getPatientId(), tetanusObs.getPerson()
+				.getPersonId());
+		assertEquals(e.getLocation(), tetanusObs.getLocation());
+		assertEquals(immunizationConcept, tetanusObs.getConcept());
+		assertEquals(tetanusConcept, tetanusObs.getValueCoded());
+
+		Obs iptObs = iptObsCap.getValue();
+		assertEquals(e.getEncounterDatetime(), iptObs.getObsDatetime());
+		assertEquals(e.getPatient().getPatientId(), iptObs.getPerson()
+				.getPersonId());
+		assertEquals(e.getLocation(), iptObs.getLocation());
+		assertEquals(immunizationConcept, iptObs.getConcept());
+		assertEquals(iptConcept, iptObs.getValueCoded());
+
+		Obs itnObs = itnObsCap.getValue();
+		assertEquals(e.getEncounterDatetime(), itnObs.getObsDatetime());
+		assertEquals(e.getPatient().getPatientId(), itnObs.getPerson()
+				.getPersonId());
+		assertEquals(e.getLocation(), itnObs.getLocation());
+		assertEquals(itnConcept, itnObs.getConcept());
+		assertEquals(Boolean.TRUE, itnObs.getValueAsBoolean());
+
+		Obs visitNumberObs = visitNumberObsCap.getValue();
+		assertEquals(e.getEncounterDatetime(), visitNumberObs.getObsDatetime());
+		assertEquals(e.getPatient().getPatientId(), visitNumberObs.getPerson()
+				.getPersonId());
+		assertEquals(e.getLocation(), visitNumberObs.getLocation());
+		assertEquals(visitNumConcept, visitNumberObs.getConcept());
+		assertEquals(Double.valueOf(visit), visitNumberObs.getValueNumeric());
+
+		Obs arvObs = arvObsCap.getValue();
+		assertEquals(e.getEncounterDatetime(), arvObs.getObsDatetime());
+		assertEquals(e.getPatient().getPatientId(), arvObs.getPerson()
+				.getPersonId());
+		assertEquals(e.getLocation(), arvObs.getLocation());
+		assertEquals(arvConcept, arvObs.getConcept());
+		assertEquals(onArvConcept, arvObs.getValueCoded());
+
+		Obs preObs = preObsCap.getValue();
+		assertEquals(e.getEncounterDatetime(), preObs.getObsDatetime());
+		assertEquals(e.getPatient().getPatientId(), preObs.getPerson()
+				.getPersonId());
+		assertEquals(e.getLocation(), preObs.getLocation());
+		assertEquals(prePMTCTConcept, preObs.getConcept());
+		assertEquals(Boolean.TRUE, preObs.getValueAsBoolean());
+
+		Obs testObs = testObsCap.getValue();
+		assertEquals(e.getEncounterDatetime(), testObs.getObsDatetime());
+		assertEquals(e.getPatient().getPatientId(), testObs.getPerson()
+				.getPersonId());
+		assertEquals(e.getLocation(), testObs.getLocation());
+		assertEquals(testPMTCTConcept, testObs.getConcept());
+		assertEquals(Boolean.TRUE, testObs.getValueAsBoolean());
+
+		Obs postObs = postObsCap.getValue();
+		assertEquals(e.getEncounterDatetime(), postObs.getObsDatetime());
+		assertEquals(e.getPatient().getPatientId(), postObs.getPerson()
+				.getPersonId());
+		assertEquals(e.getLocation(), postObs.getLocation());
+		assertEquals(postPMTCTConcept, postObs.getConcept());
+		assertEquals(Boolean.TRUE, postObs.getValueAsBoolean());
+
+		Obs hemoglobinObs = hemoglobinObsCap.getValue();
+		assertEquals(e.getEncounterDatetime(), hemoglobinObs.getObsDatetime());
+		assertEquals(e.getPatient().getPatientId(), hemoglobinObs.getPerson()
+				.getPersonId());
+		assertEquals(e.getLocation(), hemoglobinObs.getLocation());
+		assertEquals(hemo36Concept, hemoglobinObs.getConcept());
+		assertEquals(hemo, hemoglobinObs.getValueNumeric());
 	}
 
 	public void testRegisterMaternalVisitNoObs() {
@@ -499,13 +581,14 @@ public class RegistrarBeanTest extends TestCase {
 		Integer visit = 1;
 
 		Location locationObj = new Location(1);
+		locationObj.setName("Test Location");
 
 		User nurse = new User(1);
 		nurse.addAttribute(new PersonAttribute(phoneAttributeType, nPhone));
 		nurse.addAttribute(new PersonAttribute(clinicAttributeType, locationObj
 				.getLocationId().toString()));
 
-		Patient patient = new Patient();
+		Patient patient = new Patient(2);
 		patient.addIdentifier(new PatientIdentifier(serialId, ghanaIdType,
 				locationObj));
 		List<Patient> patients = new ArrayList<Patient>();
@@ -513,6 +596,8 @@ public class RegistrarBeanTest extends TestCase {
 
 		Capture<List<PatientIdentifierType>> typeList = new Capture<List<PatientIdentifierType>>();
 		Capture<Encounter> encounterCap = new Capture<Encounter>();
+		Capture<Obs> visitNumberObsCap = new Capture<Obs>();
+		Capture<Obs> hemoglobinObsCap = new Capture<Obs>();
 
 		expect(contextService.getPatientService()).andReturn(patientService);
 		expect(contextService.getMotechService()).andReturn(motechService);
@@ -520,6 +605,7 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getLocationService()).andReturn(locationService);
 		expect(contextService.getEncounterService())
 				.andReturn(encounterService);
+		expect(contextService.getObsService()).andReturn(obsService);
 		expect(contextService.getConceptService()).andReturn(conceptService);
 
 		contextService.authenticate((String) anyObject(), (String) anyObject());
@@ -534,24 +620,30 @@ public class RegistrarBeanTest extends TestCase {
 		expect(locationService.getLocation(1)).andReturn(locationObj);
 		expect(encounterService.getEncounterType(matVisitTypeName)).andReturn(
 				matVisitType);
-		expect(conceptService.getConcept(visitNumConceptName)).andReturn(
-				visitNumConcept);
-		expect(conceptService.getConcept(hemo36ConceptName)).andReturn(
-				hemo36Concept);
 		expect(encounterService.saveEncounter(capture(encounterCap)))
 				.andReturn(new Encounter());
+		expect(conceptService.getConcept(visitNumConceptName)).andReturn(
+				visitNumConcept);
+		expect(
+				obsService.saveObs(capture(visitNumberObsCap),
+						(String) anyObject())).andReturn(new Obs());
+		expect(conceptService.getConcept(hemo36ConceptName)).andReturn(
+				hemo36Concept);
+		expect(
+				obsService.saveObs(capture(hemoglobinObsCap),
+						(String) anyObject())).andReturn(new Obs());
 
 		replay(contextService, patientService, motechService, personService,
-				locationService, encounterService, conceptService);
+				locationService, encounterService, obsService, conceptService);
 
 		regBean.recordMaternalVisit(nPhone, date, serialId, tetanus, ipt, itn,
 				visit, onARV, prePMTCT, testPMTCT, postPMTCT, hemo);
 
 		verify(contextService, patientService, motechService, personService,
-				locationService, encounterService, conceptService);
+				locationService, encounterService, obsService, conceptService);
 
 		Encounter e = encounterCap.getValue();
-		assertTrue(typeList.getValue().size() == 1);
+		assertEquals(1, typeList.getValue().size());
 		assertTrue(typeList.getValue().contains(ghanaIdType));
 		assertEquals(nPhone, e.getProvider().getAttribute(phoneAttributeType)
 				.getValue());
@@ -559,20 +651,21 @@ public class RegistrarBeanTest extends TestCase {
 				.getIdentifier());
 		assertEquals(date, e.getEncounterDatetime());
 
-		assertEquals(2, e.getAllObs().size());
-		assertEquals(1, getNumMatchingObs(e, visitNumConcept));
-		assertEquals(1, getNumMatchingObs(e, hemo36Concept));
-		assertEquals(Double.valueOf(visit), getFirstMatchingObs(e,
-				visitNumConcept).getValueNumeric());
-		assertEquals(hemo, getFirstMatchingObs(e, hemo36Concept)
-				.getValueNumeric());
+		Obs visitNumberObs = visitNumberObsCap.getValue();
+		assertEquals(e.getEncounterDatetime(), visitNumberObs.getObsDatetime());
+		assertEquals(e.getPatient().getPatientId(), visitNumberObs.getPerson()
+				.getPersonId());
+		assertEquals(e.getLocation(), visitNumberObs.getLocation());
+		assertEquals(visitNumConcept, visitNumberObs.getConcept());
+		assertEquals(Double.valueOf(visit), visitNumberObs.getValueNumeric());
 
-		assertEquals(0, getNumMatchingObs(e, immunizationConcept));
-		assertEquals(0, getNumMatchingObs(e, itnConcept));
-		assertEquals(0, getNumMatchingObs(e, arvConcept));
-		assertEquals(0, getNumMatchingObs(e, prePMTCTConcept));
-		assertEquals(0, getNumMatchingObs(e, testPMTCTConcept));
-		assertEquals(0, getNumMatchingObs(e, postPMTCTConcept));
+		Obs hemoglobinObs = hemoglobinObsCap.getValue();
+		assertEquals(e.getEncounterDatetime(), hemoglobinObs.getObsDatetime());
+		assertEquals(e.getPatient().getPatientId(), hemoglobinObs.getPerson()
+				.getPersonId());
+		assertEquals(e.getLocation(), hemoglobinObs.getLocation());
+		assertEquals(hemo36Concept, hemoglobinObs.getConcept());
+		assertEquals(hemo, hemoglobinObs.getValueNumeric());
 	}
 
 	public void testRegisterPregnancy() {
@@ -582,11 +675,14 @@ public class RegistrarBeanTest extends TestCase {
 		Double hemo = 3893.1;
 
 		Location locationObj = new Location(1);
+		locationObj.setName("Test Location");
+
 		User nurse = new User(1);
 		nurse.addAttribute(new PersonAttribute(phoneAttributeType, nPhone));
 		nurse.addAttribute(new PersonAttribute(clinicAttributeType, locationObj
 				.getLocationId().toString()));
-		Patient patient = new Patient();
+
+		Patient patient = new Patient(2);
 		patient.addIdentifier(new PatientIdentifier(serialId, ghanaIdType,
 				locationObj));
 		List<Patient> patients = new ArrayList<Patient>();
@@ -594,6 +690,10 @@ public class RegistrarBeanTest extends TestCase {
 
 		Capture<Encounter> encounterCap = new Capture<Encounter>();
 		Capture<List<PatientIdentifierType>> typeListCap = new Capture<List<PatientIdentifierType>>();
+		Capture<Obs> pregStatusObsCap = new Capture<Obs>();
+		Capture<Obs> dueDateObsCap = new Capture<Obs>();
+		Capture<Obs> parityObsCap = new Capture<Obs>();
+		Capture<Obs> hemoglobinObsCap = new Capture<Obs>();
 
 		expect(contextService.getPatientService()).andReturn(patientService);
 		expect(contextService.getMotechService()).andReturn(motechService);
@@ -601,6 +701,7 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getLocationService()).andReturn(locationService);
 		expect(contextService.getEncounterService())
 				.andReturn(encounterService);
+		expect(contextService.getObsService()).andReturn(obsService);
 		expect(contextService.getConceptService()).andReturn(conceptService);
 
 		contextService.authenticate((String) anyObject(), (String) anyObject());
@@ -615,24 +716,34 @@ public class RegistrarBeanTest extends TestCase {
 		expect(locationService.getLocation(1)).andReturn(locationObj);
 		expect(encounterService.getEncounterType(pregVisitName)).andReturn(
 				pregVisitType);
-		expect(conceptService.getConcept(pregStatusConceptName)).andReturn(
-				pregStatusConcept);
-		expect(conceptService.getConcept(dateConfConceptName)).andReturn(
-				dateConfConcept);
-		expect(conceptService.getConcept(gravidaConceptName)).andReturn(
-				gravidaConcept);
-		expect(conceptService.getConcept(hemoConceptName)).andReturn(
-				hemoConcept);
 		expect(encounterService.saveEncounter(capture(encounterCap)))
 				.andReturn(new Encounter());
+		expect(conceptService.getConcept(pregStatusConceptName)).andReturn(
+				pregStatusConcept);
+		expect(
+				obsService.saveObs(capture(pregStatusObsCap),
+						(String) anyObject())).andReturn(new Obs());
+		expect(conceptService.getConcept(dateConfConceptName)).andReturn(
+				dateConfConcept);
+		expect(obsService.saveObs(capture(dueDateObsCap), (String) anyObject()))
+				.andReturn(new Obs());
+		expect(conceptService.getConcept(gravidaConceptName)).andReturn(
+				gravidaConcept);
+		expect(obsService.saveObs(capture(parityObsCap), (String) anyObject()))
+				.andReturn(new Obs());
+		expect(conceptService.getConcept(hemoConceptName)).andReturn(
+				hemoConcept);
+		expect(
+				obsService.saveObs(capture(hemoglobinObsCap),
+						(String) anyObject())).andReturn(new Obs());
 
 		replay(contextService, patientService, motechService, personService,
-				locationService, encounterService, conceptService);
+				locationService, encounterService, obsService, conceptService);
 
 		regBean.registerPregnancy(nPhone, date, serialId, date, parity, hemo);
 
 		verify(contextService, patientService, motechService, personService,
-				locationService, encounterService, conceptService);
+				locationService, encounterService, obsService, conceptService);
 
 		Encounter e = encounterCap.getValue();
 		assertEquals(nPhone, e.getProvider().getAttribute(phoneAttributeType)
@@ -641,48 +752,37 @@ public class RegistrarBeanTest extends TestCase {
 				.getIdentifier());
 		assertEquals(date, e.getEncounterDatetime());
 
-		assertEquals(4, e.getAllObs().size());
-		assertEquals(Boolean.TRUE, getFirstMatchingObs(e, pregStatusConcept)
-				.getValueAsBoolean());
-		assertEquals(date, getFirstMatchingObs(e, dateConfConcept)
-				.getValueDatetime());
-		assertEquals(Double.valueOf(parity), getFirstMatchingObs(e,
-				gravidaConcept).getValueNumeric());
-		assertEquals(hemo, getFirstMatchingObs(e, hemoConcept)
-				.getValueNumeric());
-	}
+		Obs pregStatusObs = pregStatusObsCap.getValue();
+		assertEquals(e.getEncounterDatetime(), pregStatusObs.getObsDatetime());
+		assertEquals(e.getPatient().getPatientId(), pregStatusObs.getPerson()
+				.getPersonId());
+		assertEquals(e.getLocation(), pregStatusObs.getLocation());
+		assertEquals(pregStatusConcept, pregStatusObs.getConcept());
+		assertEquals(Boolean.TRUE, pregStatusObs.getValueAsBoolean());
 
-	private Obs getFirstMatchingObs(Encounter encounter, Concept concept) {
-		Obs firstObs = null;
-		for (Obs o : encounter.getAllObs()) {
-			if (concept.equals(o.getConcept())) {
-				firstObs = o;
-				break;
-			}
-		}
-		return firstObs;
-	}
+		Obs dueDateObs = dueDateObsCap.getValue();
+		assertEquals(e.getEncounterDatetime(), dueDateObs.getObsDatetime());
+		assertEquals(e.getPatient().getPatientId(), dueDateObs.getPerson()
+				.getPersonId());
+		assertEquals(e.getLocation(), dueDateObs.getLocation());
+		assertEquals(dateConfConcept, dueDateObs.getConcept());
+		assertEquals(date, dueDateObs.getValueDatetime());
 
-	private int getNumMatchingObs(Encounter encounter, Concept concept) {
-		int matches = 0;
-		for (Obs o : encounter.getAllObs()) {
-			if (concept.equals(o.getConcept())) {
-				matches++;
-			}
-		}
-		return matches;
-	}
+		Obs parityObs = parityObsCap.getValue();
+		assertEquals(e.getEncounterDatetime(), parityObs.getObsDatetime());
+		assertEquals(e.getPatient().getPatientId(), parityObs.getPerson()
+				.getPersonId());
+		assertEquals(e.getLocation(), parityObs.getLocation());
+		assertEquals(gravidaConcept, parityObs.getConcept());
+		assertEquals(Double.valueOf(parity), parityObs.getValueNumeric());
 
-	private int getNumMatchingObs(Encounter encounter, Concept concept,
-			Concept value) {
-		int matches = 0;
-		for (Obs o : encounter.getAllObs()) {
-			if (concept.equals(o.getConcept())
-					&& value.equals(o.getValueCoded())) {
-				matches++;
-			}
-		}
-		return matches;
+		Obs hemoglobinObs = hemoglobinObsCap.getValue();
+		assertEquals(e.getEncounterDatetime(), hemoglobinObs.getObsDatetime());
+		assertEquals(e.getPatient().getPatientId(), hemoglobinObs.getPerson()
+				.getPersonId());
+		assertEquals(e.getLocation(), hemoglobinObs.getLocation());
+		assertEquals(hemoConcept, hemoglobinObs.getConcept());
+		assertEquals(hemo, hemoglobinObs.getValueNumeric());
 	}
 
 	public void testLog() {
