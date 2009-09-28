@@ -344,7 +344,10 @@ public class MotechModuleActivator implements Activator {
 		try {
 			TaskDefinition task = Context.getSchedulerService().getTaskByName(
 					"Notification Task");
-			Context.getSchedulerService().shutdownTask(task);
+			// Only shutdown if task has not already been shutdown
+			if (task.getStarted()) {
+				Context.getSchedulerService().shutdownTask(task);
+			}
 			Context.getSchedulerService().deleteTask(task.getId());
 		} catch (SchedulerException e) {
 			log.error("Cannot shutdown task", e);
