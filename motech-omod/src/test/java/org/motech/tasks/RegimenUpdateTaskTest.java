@@ -1,10 +1,10 @@
 package org.motech.tasks;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -13,10 +13,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.motech.messaging.Message;
-import org.motech.messaging.MessageScheduler;
-import org.motech.messaging.MessageSchedulerImpl;
-import org.motech.messaging.MessageStatus;
 import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Gender;
 import org.motech.model.NotificationType;
@@ -27,11 +23,10 @@ import org.motech.svc.RegistrarBean;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.api.context.Context;
-import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.SkipBaseSetup;
 
-public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
+public class RegimenUpdateTaskTest extends BaseModuleContextSensitiveTest {
 
 	static MotechModuleActivator activator;
 
@@ -71,7 +66,7 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 	@Test
 	@SkipBaseSetup
-	public void testSingleNotify() {
+	public void testRegimenUpdate() throws InterruptedException {
 		RegistrarBean regService = ((RegistrarBean) applicationContext
 				.getBean("registrarBean"));
 
@@ -87,10 +82,7 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 		assertEquals(1, Context.getPatientService().getAllPatients().size());
 
-		NotificationTask task = new NotificationTask();
-		TaskDefinition taskDef = new TaskDefinition();
-		taskDef.setRepeatInterval(30L);
-		task.initialize(taskDef);
+		RegimenUpdateTask task = new RegimenUpdateTask();
 
 		List<Patient> patients = Context.getPatientService().getPatients(
 				"patientname",
@@ -103,32 +95,45 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 		Patient patient = patients.get(0);
 
-		MessageScheduler messageScheduler = new MessageSchedulerImpl();
-		// Schedule message 5 seconds in future
-		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
-		messageScheduler.scheduleMessage("Test Definition", 2L, patient
-				.getPersonId(), messageDate);
+		// Set patient registration date at 4 minutes in past
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MINUTE, -4);
+		patient.setDateCreated(calendar.getTime());
+		patient = Context.getPatientService().savePatient(patient);
 
 		task.execute();
 
 		List<ScheduledMessage> scheduledMessages = Context.getService(
 				MotechService.class).getAllScheduledMessages();
 
-		assertEquals(1, scheduledMessages.size());
+		assertEquals(2, scheduledMessages.size());
 
-		ScheduledMessage retrievedScheduledMessage = scheduledMessages.get(0);
-		List<Message> messageAttempts = retrievedScheduledMessage
-				.getMessageAttempts();
+		assertEquals("tetanus.info.3", scheduledMessages.get(0).getMessage()
+				.getMessageKey());
+		assertEquals("tetanus.reminder.1", scheduledMessages.get(1)
+				.getMessage().getMessageKey());
 
-		assertEquals(1, messageAttempts.size());
+		// Add tetanus immunization 4 minutes in past
+		regService.recordMaternalVisit("nursePhoneNumber", calendar.getTime(),
+				"serialId", true, false, false, 1, false, false, false, false,
+				10.0);
 
-		Message message = messageAttempts.get(0);
+		task.execute();
 
-		assertNotNull("Message attempt date is null", message.getAttemptDate());
-		assertEquals(MessageStatus.ATTEMPT_PENDING, message.getAttemptStatus());
+		scheduledMessages = Context.getService(MotechService.class)
+				.getAllScheduledMessages();
 
-		assertEquals(1, Context.getService(MotechService.class).getAllLogs()
-				.size());
+		assertEquals(3, scheduledMessages.size());
+
+		assertEquals("tetanus.info.3", scheduledMessages.get(0).getMessage()
+				.getMessageKey());
+		// Original reminder for first immunization not removed
+		assertEquals("tetanus.reminder.1", scheduledMessages.get(1)
+				.getMessage().getMessageKey());
+		// New second reminder for second immunization
+		// Second immunization prompt skipped since past time
+		assertEquals("tetanus.reminder.2", scheduledMessages.get(2)
+				.getMessage().getMessageKey());
 	}
 
 }

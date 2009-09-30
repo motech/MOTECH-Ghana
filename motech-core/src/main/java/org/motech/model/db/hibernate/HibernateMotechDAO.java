@@ -103,6 +103,17 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
+	public List<ScheduledMessage> getScheduledMessages(Integer recipientId,
+			Long messageDefinitionId, Date messageDate) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<ScheduledMessage>) session.createCriteria(
+				ScheduledMessage.class).add(
+				Restrictions.eq("recipientId", recipientId)).add(
+				Restrictions.eq("message.id", messageDefinitionId)).add(
+				Restrictions.eq("scheduledFor", messageDate)).list();
+	}
+
+	@SuppressWarnings("unchecked")
 	public List<Message> getMessages() {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<Message>) session.createCriteria(Message.class).list();

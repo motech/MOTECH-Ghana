@@ -86,10 +86,8 @@ public class RegimenNumStateChangeTest extends TestCase {
 	public void testDetermineStartState() {
 		expect(
 				patientObsService.getNumberOfObs(patient, polioRegimen
-						.getName())).andReturn(0).atLeastOnce();
-		expect(
-				patientObsService.getLastObsDate(patient, polioRegimen
-						.getName())).andReturn(obs1);
+						.getConceptName(), polioRegimen.getConceptValue()))
+				.andReturn(0).atLeastOnce();
 
 		replay(patientObsService);
 
@@ -103,10 +101,8 @@ public class RegimenNumStateChangeTest extends TestCase {
 	public void testDetermineSecondState() {
 		expect(
 				patientObsService.getNumberOfObs(patient, polioRegimen
-						.getName())).andReturn(1).atLeastOnce();
-		expect(
-				patientObsService.getLastObsDate(patient, polioRegimen
-						.getName())).andReturn(obs1);
+						.getConceptName(), polioRegimen.getConceptValue()))
+				.andReturn(1).atLeastOnce();
 
 		replay(patientObsService);
 
@@ -120,10 +116,8 @@ public class RegimenNumStateChangeTest extends TestCase {
 	public void testDetermineEndState() {
 		expect(
 				patientObsService.getNumberOfObs(patient, polioRegimen
-						.getName())).andReturn(4).atLeastOnce();
-		expect(
-				patientObsService.getLastObsDate(patient, polioRegimen
-						.getName())).andReturn(obs4);
+						.getConceptName(), polioRegimen.getConceptValue()))
+				.andReturn(4).atLeastOnce();
 
 		replay(patientObsService);
 
@@ -137,10 +131,8 @@ public class RegimenNumStateChangeTest extends TestCase {
 	public void testMoveState() {
 		expect(
 				patientObsService.getNumberOfObs(patient, polioRegimen
-						.getName())).andReturn(2).atLeastOnce();
-		expect(
-				patientObsService.getLastObsDate(patient, polioRegimen
-						.getName())).andReturn(obs2);
+						.getConceptName(), polioRegimen.getConceptValue()))
+				.andReturn(2).atLeastOnce();
 
 		replay(patientObsService);
 
@@ -155,10 +147,8 @@ public class RegimenNumStateChangeTest extends TestCase {
 
 		expect(
 				patientObsService.getNumberOfObs(patient, polioRegimen
-						.getName())).andReturn(3).atLeastOnce();
-		expect(
-				patientObsService.getLastObsDate(patient, polioRegimen
-						.getName())).andReturn(obs3);
+						.getConceptName(), polioRegimen.getConceptValue()))
+				.andReturn(3).atLeastOnce();
 
 		replay(patientObsService);
 
@@ -172,10 +162,8 @@ public class RegimenNumStateChangeTest extends TestCase {
 	public void testNotMoveState() {
 		expect(
 				patientObsService.getNumberOfObs(patient, polioRegimen
-						.getName())).andReturn(3).atLeastOnce();
-		expect(
-				patientObsService.getLastObsDate(patient, polioRegimen
-						.getName())).andReturn(obs3);
+						.getConceptName(), polioRegimen.getConceptValue()))
+				.andReturn(3).atLeastOnce();
 
 		replay(patientObsService);
 
@@ -190,10 +178,8 @@ public class RegimenNumStateChangeTest extends TestCase {
 
 		expect(
 				patientObsService.getNumberOfObs(patient, polioRegimen
-						.getName())).andReturn(3).atLeastOnce();
-		expect(
-				patientObsService.getLastObsDate(patient, polioRegimen
-						.getName())).andReturn(obs3);
+						.getConceptName(), polioRegimen.getConceptValue()))
+				.andReturn(3).atLeastOnce();
 
 		replay(patientObsService);
 
@@ -207,10 +193,8 @@ public class RegimenNumStateChangeTest extends TestCase {
 	public void testNotMoveEndState() {
 		expect(
 				patientObsService.getNumberOfObs(patient, polioRegimen
-						.getName())).andReturn(4).atLeastOnce();
-		expect(
-				patientObsService.getLastObsDate(patient, polioRegimen
-						.getName())).andReturn(obs4);
+						.getConceptName(), polioRegimen.getConceptValue()))
+				.andReturn(4).atLeastOnce();
 
 		replay(patientObsService);
 

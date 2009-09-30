@@ -6,7 +6,7 @@ import org.openmrs.Patient;
 
 public interface PatientObsService {
 
-	int getNumberOfObs(Patient patient, String conceptName);
+	int getNumberOfObs(Patient patient, String conceptName, String conceptValue);
 
-	Date getLastObsDate(Patient patient, String conceptName);
+	Date getLastObsDate(Patient patient, String conceptName, String conceptValue);
 }

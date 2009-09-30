@@ -17,6 +17,9 @@
            http://jax-ws.dev.java.net/spring/servlet
            http://jax-ws.dev.java.net/spring/servlet.xsd">
 
+	<import resource="tetanus-info-regimen.xml"/>
+	<import resource="tetanus-immuniz-regimen.xml"/>
+
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
 
@@ -43,6 +46,22 @@
 								</bean>
 							</property>
 							<property name="mobileService" ref="mobileClient" />
+							<property name="regimens">
+								<map>
+									<entry>
+										<key>
+											<value>tetanusInfo</value>
+										</key>
+										<ref bean="tetanusInfo" />
+									</entry>
+									<entry>
+										<key>
+											<value>tetanusImmunization</value>
+										</key>
+										<ref bean="tetanusImmunization" />
+									</entry>
+								</map>
+							</property>
 						</bean>
 					</property>
 					<property name="preInterceptors">

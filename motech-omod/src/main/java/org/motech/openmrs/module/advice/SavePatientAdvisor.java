@@ -19,20 +19,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.event.Regimen;
 import org.motech.openmrs.module.MotechService;
-import org.openmrs.Concept;
-import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.springframework.aop.AfterReturningAdvice;
 
 /**
- * An OpenMRS AOP interceptor that enables us to perform various tasks upon an
- * observation being saved, whether that operation knows about it or not.
- * Currently, this is how we are handling calling the event engine.
+ * An OpenMRS AOP interceptor that enables us to perform various tasks upon a
+ * patient being saved, whether that operation knows about it or not. Currently,
+ * this is how we are handling calling the event engine.
  */
-public class SaveObsAdvisor implements AfterReturningAdvice {
+public class SavePatientAdvisor implements AfterReturningAdvice {
 
-	private static Log log = LogFactory.getLog(SaveObsAdvisor.class);
+	private static Log log = LogFactory.getLog(SavePatientAdvisor.class);
 
 	/**
 	 * @see org.springframework.aop.AfterReturningAdvice#afterReturning(java.lang.Object,
@@ -41,26 +39,22 @@ public class SaveObsAdvisor implements AfterReturningAdvice {
 	public void afterReturning(Object returnValue, Method method,
 			Object[] args, Object target) throws Throwable {
 
-		if (method.getName().equals("saveObs")) {
-			Obs obs = (Obs) returnValue;
+		if (method.getName().equals("savePatient")) {
+			Patient patient = (Patient) returnValue;
 
-			Concept immunizationConcept = Context.getConceptService()
-					.getConcept("IMMUNIZATIONS ORDERED");
-			Concept tetanusConcept = Context.getConceptService().getConcept(
-					"TETANUS BOOSTER");
+			Regimen tetanusInformationRegimen = Context.getService(
+					MotechService.class).getRegimen("tetanusInfo");
 
-			if (immunizationConcept.equals(obs.getConcept())
-					&& tetanusConcept.equals(obs.getValueCoded())) {
+			Regimen tetanusImmunizationRegimen = Context.getService(
+					MotechService.class).getRegimen("tetanusImmunization");
 
-				log.debug("Save Obs - Update Tetanus Immunization Regimen");
+			log.debug("Save Patient - Update Tetanus Information Regimen");
 
-				Regimen tetanusImmunizationRegimen = Context.getService(
-						MotechService.class).getRegimen("tetanusImmunization");
+			tetanusInformationRegimen.determineState(patient);
 
-				Patient patient = Context.getPatientService().getPatient(
-						obs.getPerson().getPersonId());
-				tetanusImmunizationRegimen.determineState(patient);
-			}
+			log.debug("Save Patient - Update Tetanus Immunization Regimen");
+
+			tetanusImmunizationRegimen.determineState(patient);
 		}
 	}
 

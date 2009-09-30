@@ -3,6 +3,7 @@ package org.motech.event.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.motech.event.Command;
 import org.motech.event.Regimen;
 import org.motech.event.RegimenState;
 import org.motech.event.RegimenStateTransition;
@@ -13,6 +14,8 @@ public class RegimenImpl extends BaseInterfaceImpl implements Regimen {
 	private RegimenState startState;
 	private RegimenState endState;
 	private Map<Patient, RegimenState> patientStates = new HashMap<Patient, RegimenState>();
+	private String conceptName;
+	private String conceptValue;
 
 	public RegimenState getStartState() {
 		return startState;
@@ -30,6 +33,22 @@ public class RegimenImpl extends BaseInterfaceImpl implements Regimen {
 		this.endState = endState;
 	}
 
+	public String getConceptName() {
+		return conceptName;
+	}
+
+	public void setConceptName(String conceptName) {
+		this.conceptName = conceptName;
+	}
+
+	public String getConceptValue() {
+		return conceptValue;
+	}
+
+	public void setConceptValue(String conceptValue) {
+		this.conceptValue = conceptValue;
+	}
+
 	public RegimenState determineState(Patient patient) {
 		RegimenState state = startState;
 		RegimenStateTransition transition = state.getTransition(patient);
@@ -39,8 +58,14 @@ public class RegimenImpl extends BaseInterfaceImpl implements Regimen {
 		}
 
 		// Perform state action using date
-		state.getDateOfAction(patient);
-		state.getCommand().execute();
+		Command command = state.getCommand();
+		if (command instanceof ScheduleMessageCommand) {
+			((ScheduleMessageCommand) command).setMessageDate(state
+					.getDateOfAction(patient));
+			((ScheduleMessageCommand) command).setMessageRecipientId(patient
+					.getPatientId());
+		}
+		command.execute();
 
 		return state;
 	}
@@ -63,10 +88,6 @@ public class RegimenImpl extends BaseInterfaceImpl implements Regimen {
 		transition.getCommand().execute();
 		RegimenState newState = transition.getNextState();
 		patientStates.put(patient, newState);
-
-		// Perform state action using date
-		newState.getDateOfAction(patient);
-		newState.getCommand().execute();
 
 		return newState;
 	}

@@ -7,6 +7,8 @@
 		</id>
 		<property name="messageKey" type="string" column="message_key"
 			not-null="true" unique="true" length="255" />
+		<property name="publicId" type="long" column="public_id"
+			not-null="true" unique="true" />
 		<bag name="messageAttributes" table="motechmodule_messagedefinition_attribute"
 			cascade="save-update">
 			<key column="definition_id" />

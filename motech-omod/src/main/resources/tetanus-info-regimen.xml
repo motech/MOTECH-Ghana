@@ -1,0 +1,152 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="nopCommand" class="org.motech.event.impl.NopCommand" />
+	<bean id="patientObsService" class="org.motech.event.impl.PatientObsServiceImpl" />
+	<bean id="messageScheduler" class="org.motech.messaging.MessageSchedulerImpl" />
+	
+	<bean id="tetanusInfo" class="org.motech.event.impl.RegimenImpl">
+		<property name="name" value="Tetanus Information Regimen" />
+		<property name="startState" ref="tetanusInfoState1" />
+		<property name="endState" ref="tetanusInfoState5" />
+	</bean>
+
+	<bean id="tetanusInfoState1" class="org.motech.event.impl.RegimenStateImpl">
+		<property name="name" value="Tetanus Info State 1" />
+		<property name="timeValue" value="1" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="patient_registration" />
+		<property name="command">
+			<bean class="org.motech.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tetanus.info.1" />
+				<property name="publicId" value="1" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="regimen" ref="tetanusInfo" />
+		<property name="patientObsService" ref="patientObsService" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tetanusInfoState1" />
+					<property name="nextState" ref="tetanusInfoState2" />
+				</bean>
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tetanusInfoState1" />
+					<property name="nextState" ref="tetanusInfoState1" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tetanusInfoState2" class="org.motech.event.impl.RegimenStateImpl">
+		<property name="name" value="Tetanus Info State 2" />
+		<property name="timeValue" value="2" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="patient_registration" />
+		<property name="command">
+			<bean class="org.motech.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tetanus.info.2" />
+				<property name="publicId" value="2" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="regimen" ref="tetanusInfo" />
+		<property name="patientObsService" ref="patientObsService" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tetanusInfoState2" />
+					<property name="nextState" ref="tetanusInfoState3" />
+				</bean>
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tetanusInfoState2" />
+					<property name="nextState" ref="tetanusInfoState2" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tetanusInfoState3" class="org.motech.event.impl.RegimenStateImpl">
+		<property name="name" value="Tetanus Info State 3" />
+		<property name="timeValue" value="5" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="patient_registration" />
+		<property name="command">
+			<bean class="org.motech.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tetanus.info.3" />
+				<property name="publicId" value="3" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="regimen" ref="tetanusInfo" />
+		<property name="patientObsService" ref="patientObsService" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tetanusInfoState3" />
+					<property name="nextState" ref="tetanusInfoState4" />
+				</bean>
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tetanusInfoState3" />
+					<property name="nextState" ref="tetanusInfoState3" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="tetanusInfoState4" class="org.motech.event.impl.RegimenStateImpl">
+		<property name="name" value="Tetanus Info State 4" />
+		<property name="timeValue" value="6" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="patient_registration" />
+		<property name="command">
+			<bean class="org.motech.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tetanus.info.4" />
+				<property name="publicId" value="4" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="regimen" ref="tetanusInfo" />
+		<property name="patientObsService" ref="patientObsService" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tetanusInfoState4" />
+					<property name="nextState" ref="tetanusInfoState5" />
+				</bean>
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tetanusInfoState4" />
+					<property name="nextState" ref="tetanusInfoState4" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="tetanusInfoState5" class="org.motech.event.impl.RegimenStateImpl">
+		<property name="name" value="Tetanus Info EndState 5" />
+		<property name="command" ref="nopCommand" />
+		<property name="regimen" ref="tetanusInfo" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tetanusInfoState5" />
+					<property name="nextState" ref="tetanusInfoState5" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>

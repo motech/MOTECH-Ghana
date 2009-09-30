@@ -30,6 +30,7 @@ import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.scheduler.tasks.AbstractTask;
+import org.openmrs.util.OpenmrsConstants;
 
 import com.dreamoval.motech.omi.service.ContactNumberType;
 import com.dreamoval.motech.omi.service.MessageType;
@@ -51,16 +52,18 @@ public class NotificationTask extends AbstractTask {
 	@Override
 	public void execute() {
 
-		Date startDate = new Date(System.currentTimeMillis()
-				- (this.taskDefinition.getRepeatInterval() * 1000));
+		Date startDate = new Date();
 		Date endDate = new Date(System.currentTimeMillis()
 				+ (this.taskDefinition.getRepeatInterval() * 1000));
 
 		try {
 			Context.openSession();
-			if (!Context.isAuthenticated()) {
-				authenticate();
-			}
+			Context
+					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
+			Context
+					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES);
+			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PATIENTS);
+			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
 
 			List<Message> shouldAttemptMessages = Context.getService(
 					MotechService.class).getMessages(startDate, endDate,
@@ -90,6 +93,8 @@ public class NotificationTask extends AbstractTask {
 					org.motech.model.Log motechLog = new org.motech.model.Log();
 					motechLog.setDate(notificationDate);
 
+					Long messageId = shouldAttemptMessage.getSchedule()
+							.getMessage().getPublicId();
 					Integer recipientId = shouldAttemptMessage.getSchedule()
 							.getRecipientId();
 					Patient patient = Context.getPatientService().getPatient(
@@ -112,12 +117,12 @@ public class NotificationTask extends AbstractTask {
 
 						motechLog
 								.setMessage("Scheduled Message Notification, Patient Phone: "
-										+ patientPhone);
+										+ patientPhone + ": " + messageId);
 
 						try {
 							Context.getService(MotechService.class)
 									.getMobileService().sendPatientMessage(
-											new Long(1), clinicName,
+											messageId, clinicName,
 											notificationDate, patientPhone,
 											patientNumberType, messageType);
 							shouldAttemptMessage
@@ -137,12 +142,12 @@ public class NotificationTask extends AbstractTask {
 
 						motechLog
 								.setMessage("Scheduled Message Notification, Nurse Phone: "
-										+ nursePhone);
+										+ nursePhone + ": " + messageId);
 
 						try {
 							Context.getService(MotechService.class)
 									.getMobileService().sendCHPSMessage(
-											new Long(1), nurseName, nursePhone,
+											messageId, nurseName, nursePhone,
 											null);
 							shouldAttemptMessage
 									.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
@@ -164,6 +169,12 @@ public class NotificationTask extends AbstractTask {
 		} catch (Exception e) {
 			log.error(e);
 		} finally {
+			Context
+					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
+			Context
+					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES);
+			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PATIENTS);
+			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
 			Context.closeSession();
 		}
 	}

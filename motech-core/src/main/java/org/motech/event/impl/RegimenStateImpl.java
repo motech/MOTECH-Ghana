@@ -102,10 +102,6 @@ public class RegimenStateImpl extends BaseInterfaceImpl implements RegimenState 
 
 	public Date getDateOfAction(Patient patient) {
 
-		String conceptName = regimen.getName();
-		Date lastObsDate = patientObsService.getLastObsDate(patient,
-				conceptName);
-
 		if (timePeriod != null && timeReference != null) {
 
 			Calendar calendar = Calendar.getInstance();
@@ -114,11 +110,18 @@ public class RegimenStateImpl extends BaseInterfaceImpl implements RegimenState 
 				calendar.setTime(patient.getBirthdate());
 				break;
 			case previous_obs:
-				calendar.setTime(lastObsDate);
+				calendar.setTime(patientObsService.getLastObsDate(patient,
+						regimen.getConceptName(), regimen.getConceptValue()));
+				break;
+			case patient_registration:
+				calendar.setTime(patient.getDateCreated());
 				break;
 			}
 
 			switch (timePeriod) {
+			case minute:
+				calendar.add(Calendar.MINUTE, timeValue);
+				break;
 			case week:
 				// Add weeks as days
 				calendar.add(Calendar.DATE, timeValue * 7);
@@ -127,6 +130,7 @@ public class RegimenStateImpl extends BaseInterfaceImpl implements RegimenState 
 				calendar.add(Calendar.MONTH, timeValue);
 				break;
 			case year:
+				calendar.add(Calendar.YEAR, timeValue);
 				break;
 			}
 

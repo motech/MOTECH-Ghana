@@ -8,6 +8,7 @@ public class MessageDefinition {
 
 	Long id;
 	String messageKey;
+	Long publicId;
 	List<MessageAttribute> messageAttributes = new ArrayList<MessageAttribute>();
 
 	public Message createMessage(ScheduledMessage schedMessage) {
@@ -32,6 +33,14 @@ public class MessageDefinition {
 
 	public void setMessageKey(String messageKey) {
 		this.messageKey = messageKey;
+	}
+
+	public Long getPublicId() {
+		return publicId;
+	}
+
+	public void setPublicId(Long publicId) {
+		this.publicId = publicId;
 	}
 
 	public List<MessageAttribute> getMessageAttributes() {

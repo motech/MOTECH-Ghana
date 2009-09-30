@@ -77,7 +77,8 @@ public class RegimenDateStateChangeTest extends TestCase {
 	public void testDetermineWeek1() {
 		expect(
 				patientObsService.getLastObsDate(patient, pregnancyRegimen
-						.getName())).andReturn(week1).atLeastOnce();
+						.getConceptName(), pregnancyRegimen.getConceptValue()))
+				.andReturn(week1).atLeastOnce();
 
 		replay(patientObsService);
 
@@ -91,7 +92,8 @@ public class RegimenDateStateChangeTest extends TestCase {
 	public void testDetermineWeek2() {
 		expect(
 				patientObsService.getLastObsDate(patient, pregnancyRegimen
-						.getName())).andReturn(week2).atLeastOnce();
+						.getConceptName(), pregnancyRegimen.getConceptValue()))
+				.andReturn(week2).atLeastOnce();
 
 		replay(patientObsService);
 
@@ -105,7 +107,8 @@ public class RegimenDateStateChangeTest extends TestCase {
 	public void testDetermineWeek3() {
 		expect(
 				patientObsService.getLastObsDate(patient, pregnancyRegimen
-						.getName())).andReturn(week3).atLeastOnce();
+						.getConceptName(), pregnancyRegimen.getConceptValue()))
+				.andReturn(week3).atLeastOnce();
 
 		replay(patientObsService);
 
@@ -119,7 +122,8 @@ public class RegimenDateStateChangeTest extends TestCase {
 	public void testDetermineEndState() {
 		expect(
 				patientObsService.getLastObsDate(patient, pregnancyRegimen
-						.getName())).andReturn(week41).atLeastOnce();
+						.getConceptName(), pregnancyRegimen.getConceptValue()))
+				.andReturn(week41).atLeastOnce();
 
 		replay(patientObsService);
 

@@ -4,6 +4,8 @@ import org.openmrs.Patient;
 
 public interface Regimen extends BaseInterface {
 
+	RegimenState determineState(Patient patient);
+
 	RegimenState updateState(Patient patient);
 
 	RegimenState getState(Patient patient);
@@ -11,4 +13,8 @@ public interface Regimen extends BaseInterface {
 	RegimenState getStartState();
 
 	RegimenState getEndState();
+
+	String getConceptName();
+
+	String getConceptValue();
 }

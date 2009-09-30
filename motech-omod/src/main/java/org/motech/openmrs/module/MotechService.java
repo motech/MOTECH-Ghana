@@ -16,6 +16,7 @@ package org.motech.openmrs.module;
 import java.util.Date;
 import java.util.List;
 
+import org.motech.event.Regimen;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
@@ -58,6 +59,10 @@ public interface MotechService extends OpenmrsService {
 	List<ScheduledMessage> getScheduledMessages(Date startDate, Date endDate);
 
 	@Transactional(readOnly = true)
+	List<ScheduledMessage> getScheduledMessages(Integer recipientId,
+			Long messageDefinitionId, Date messageDate);
+
+	@Transactional(readOnly = true)
 	List<Message> getAllMessages();
 
 	@Transactional(readOnly = true)
@@ -85,6 +90,8 @@ public interface MotechService extends OpenmrsService {
 	User getUserByPhoneNumber(String phoneNumber);
 
 	MessageService getMobileService();
+
+	Regimen getRegimen(String regimenName);
 
 	@Transactional(readOnly = true)
 	Blackout getBlackoutSettings();

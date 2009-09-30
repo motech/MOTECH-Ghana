@@ -21,6 +21,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.tasks.NotificationTask;
+import org.motech.tasks.RegimenUpdateTask;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptDescription;
@@ -156,6 +157,10 @@ public class MotechModuleActivator implements Activator {
 			createTask("Notification Task",
 					"Task to send out SMS notifications", new Date(), new Long(
 							30), Boolean.FALSE, NotificationTask.class
+							.getName(), admin);
+			createTask("Regimen Update Task",
+					"Task to update regimen state for patients", new Date(),
+					new Long(30), Boolean.FALSE, RegimenUpdateTask.class
 							.getName(), admin);
 
 		} finally {
@@ -332,25 +337,33 @@ public class MotechModuleActivator implements Activator {
 
 	}
 
+	private void removeTask(String name) {
+		TaskDefinition task = Context.getSchedulerService().getTaskByName(name);
+		if (task != null) {
+			// Only shutdown if task has not already been shutdown
+			if (task.getStarted()) {
+				try {
+					Context.getSchedulerService().shutdownTask(task);
+				} catch (SchedulerException e) {
+					log.error("Cannot shutdown task: " + name, e);
+				}
+			}
+			Context.getSchedulerService().deleteTask(task.getId());
+		}
+	}
+
 	/**
 	 * @see org.openmrs.module.Activator#shutdown()
 	 */
 	public void shutdown() {
 		log.info("Shutting down Motech Module");
 
-		log.info("Removing Scheduled Task");
+		log.info("Removing Scheduled Tasks");
 
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
 		try {
-			TaskDefinition task = Context.getSchedulerService().getTaskByName(
-					"Notification Task");
-			// Only shutdown if task has not already been shutdown
-			if (task.getStarted()) {
-				Context.getSchedulerService().shutdownTask(task);
-			}
-			Context.getSchedulerService().deleteTask(task.getId());
-		} catch (SchedulerException e) {
-			log.error("Cannot shutdown task", e);
+			removeTask("Notification Task");
+			removeTask("Regimen Update Task");
 		} finally {
 			Context
 					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);

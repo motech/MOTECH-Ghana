@@ -1,5 +1,6 @@
 package org.motech.event.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,28 +13,55 @@ import org.openmrs.api.context.Context;
 
 public class PatientObsServiceImpl implements PatientObsService {
 
-	public int getNumberOfObs(Patient patient, String conceptName) {
-		Concept concept = Context.getConceptService().getConcept(conceptName);
-		List<Obs> obsList = Context.getObsService()
-				.getObservationsByPersonAndConcept((Person) patient, concept);
+	private List<Obs> getMatchingObs(Patient patient, String conceptName,
+			String conceptValue) {
+
+		List<Concept> questions = null;
+		if (conceptName != null) {
+			Concept concept = Context.getConceptService().getConcept(
+					conceptName);
+			questions = new ArrayList<Concept>();
+			questions.add(concept);
+		}
+
+		List<Concept> answers = null;
+		if (conceptValue != null) {
+			Concept conceptAnswer = Context.getConceptService().getConcept(
+					conceptValue);
+			answers = new ArrayList<Concept>();
+			answers.add(conceptAnswer);
+		}
+
+		List<Person> whom = new ArrayList<Person>();
+		whom.add((Person) patient);
+
+		// patients, encounters, questions, answers, persontype, locations,
+		// sort, max returned, group id, from date, to date, include voided
+		List<Obs> obsList = Context.getObsService().getObservations(whom, null,
+				questions, answers, null, null, null, null, null, null, null,
+				false);
+
+		return obsList;
+	}
+
+	public int getNumberOfObs(Patient patient, String conceptName,
+			String conceptValue) {
+
+		List<Obs> obsList = getMatchingObs(patient, conceptName, conceptValue);
+
 		return obsList.size();
 	}
 
-	public Date getLastObsDate(Patient patient, String conceptName) {
+	public Date getLastObsDate(Patient patient, String conceptName,
+			String conceptValue) {
+
 		Date latestObsDate = null;
 
-		Concept concept = Context.getConceptService().getConcept(conceptName);
-		List<Obs> obsList = Context.getObsService()
-				.getObservationsByPersonAndConcept((Person) patient, concept);
+		// List default sorted by Obs datetime
+		List<Obs> obsList = getMatchingObs(patient, conceptName, conceptValue);
 
-		for (Obs obs : obsList) {
-			if (obs.getConcept().equals(concept)) {
-				if (latestObsDate == null
-						|| obs.getObsDatetime().getTime() > latestObsDate
-								.getTime()) {
-					latestObsDate = obs.getObsDatetime();
-				}
-			}
+		if (obsList.size() > 0) {
+			latestObsDate = obsList.get(0).getObsDatetime();
 		}
 		return latestObsDate;
 	}

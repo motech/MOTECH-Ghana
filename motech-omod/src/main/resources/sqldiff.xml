@@ -53,6 +53,7 @@
 			CREATE TABLE IF NOT EXISTS `motechmodule_messagedefinition` (
 				`motechmodule_messagedefinition_id` bigint NOT NULL auto_increment,
 				`message_key` varchar(255) NOT NULL UNIQUE,
+				`public_id` bigint NOT NULL UNIQUE,
 				PRIMARY KEY (`motechmodule_messagedefinition_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

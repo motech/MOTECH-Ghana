@@ -36,6 +36,9 @@ public interface MotechDAO {
 
 	List<ScheduledMessage> getScheduledMessages(Date startDate, Date endDate);
 
+	List<ScheduledMessage> getScheduledMessages(Integer recipientId,
+			Long messageDefinitionId, Date messageDate);
+
 	List<Message> getMessages();
 
 	List<Message> getMessages(Date startDate, Date endDate, MessageStatus status);

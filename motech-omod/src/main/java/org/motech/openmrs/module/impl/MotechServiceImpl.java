@@ -15,7 +15,9 @@ package org.motech.openmrs.module.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import org.motech.event.Regimen;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
@@ -40,6 +42,7 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	private MotechDAO motechDAO;
 	private MessageService mobileService;
+	private Map<String, Regimen> regimens;
 
 	public MotechDAO getMotechDAO() {
 		return motechDAO;
@@ -47,6 +50,18 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public void setMotechDAO(MotechDAO motechDAO) {
 		this.motechDAO = motechDAO;
+	}
+
+	public Map<String, Regimen> getRegimens() {
+		return regimens;
+	}
+
+	public void setRegimens(Map<String, Regimen> regimens) {
+		this.regimens = regimens;
+	}
+
+	public Regimen getRegimen(String regimenName) {
+		return regimens.get(regimenName);
 	}
 
 	public List<Log> getAllLogs() {
@@ -73,6 +88,12 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	public List<Message> getMessages(Date startDate, Date endDate,
 			MessageStatus status) {
 		return motechDAO.getMessages(startDate, endDate, status);
+	}
+
+	public List<ScheduledMessage> getScheduledMessages(Integer recipientId,
+			Long messageDefinitionId, Date messageDate) {
+		return motechDAO.getScheduledMessages(recipientId, messageDefinitionId,
+				messageDate);
 	}
 
 	public Message getMessage(String publicId) {

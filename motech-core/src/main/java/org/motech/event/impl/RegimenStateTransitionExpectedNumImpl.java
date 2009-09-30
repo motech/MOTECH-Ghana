@@ -11,8 +11,10 @@ public class RegimenStateTransitionExpectedNumImpl extends
 
 	@Override
 	public boolean evaluate(Patient patient) {
-		String conceptName = prevState.getRegimen().getName();
-		int obsNum = patientObsService.getNumberOfObs(patient, conceptName);
+		String conceptName = prevState.getRegimen().getConceptName();
+		String conceptValue = prevState.getRegimen().getConceptValue();
+		int obsNum = patientObsService.getNumberOfObs(patient, conceptName,
+				conceptValue);
 
 		if (prevState.equals(nextState)) {
 			return obsNum == expectedNumber;
