@@ -70,76 +70,93 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 	@Test
 	@SkipBaseSetup
 	public void testSingleNotify() {
-		RegistrarBean regService = ((RegistrarBean) applicationContext
-				.getBean("registrarBean"));
 
-		regService.registerNurse("nursename", "nursePhoneNumber",
-				"Default Ghana Clinic");
+		try {
+			Context.openSession();
 
-		assertEquals(2, Context.getUserService().getAllUsers().size());
+			RegistrarBean regService = ((RegistrarBean) applicationContext
+					.getBean("registrarBean"));
 
-		regService.registerPatient("nursePhoneNumber", "serialId",
-				"patientname", "community", "location", new Date(),
-				Gender.female, 1, "patientphoneNumber", PhoneType.personal,
-				"language", NotificationType.text);
+			regService.registerNurse("nursename", "nursePhoneNumber",
+					"Default Ghana Clinic");
 
-		assertEquals(1, Context.getPatientService().getAllPatients().size());
+			assertEquals(2, Context.getUserService().getAllUsers().size());
+
+			regService.registerPatient("nursePhoneNumber", "serialId",
+					"patientname", "community", "location", new Date(),
+					Gender.female, 1, "patientphoneNumber", PhoneType.personal,
+					"language", NotificationType.text);
+
+			assertEquals(3, Context.getPatientService().getAllPatients().size());
+
+			List<Patient> patients = Context.getPatientService()
+					.getPatients(
+							"patientname",
+							"serialId",
+							new ArrayList<PatientIdentifierType>(Arrays
+									.asList(Context.getPatientService()
+											.getPatientIdentifierTypeByName(
+													"Ghana Clinic Id"))), true);
+
+			assertEquals(1, patients.size());
+
+			Patient patient = patients.get(0);
+
+			MessageDefinition messageDefinition = new MessageDefinition();
+			messageDefinition.setMessageKey("Test Definition");
+			messageDefinition = Context.getService(MotechService.class)
+					.saveMessageDefinition(messageDefinition);
+
+			Date scheduledMessageDate = new Date();
+			ScheduledMessage scheduledMessage = new ScheduledMessage();
+			scheduledMessage.setScheduledFor(scheduledMessageDate);
+			scheduledMessage.setRecipientId(patient.getPersonId());
+			scheduledMessage.setMessage(messageDefinition);
+
+			Message firstMessageAttempt = messageDefinition
+					.createMessage(scheduledMessage);
+			firstMessageAttempt.setAttemptDate(scheduledMessageDate);
+			scheduledMessage.getMessageAttempts().add(firstMessageAttempt);
+
+			Context.getService(MotechService.class).saveScheduledMessage(
+					scheduledMessage);
+		} finally {
+			Context.closeSession();
+		}
 
 		NotificationTask task = new NotificationTask();
 		TaskDefinition taskDef = new TaskDefinition();
 		taskDef.setRepeatInterval(30L);
 		task.initialize(taskDef);
-
-		List<Patient> patients = Context.getPatientService().getPatients(
-				"patientname",
-				"serialId",
-				new ArrayList<PatientIdentifierType>(Arrays.asList(Context
-						.getPatientService().getPatientIdentifierTypeByName(
-								"Ghana Clinic Id"))), true);
-
-		assertEquals(1, patients.size());
-
-		Patient patient = patients.get(0);
-
-		MessageDefinition messageDefinition = new MessageDefinition();
-		messageDefinition.setMessageKey("Test Definition");
-		messageDefinition = Context.getService(MotechService.class)
-				.saveMessageDefinition(messageDefinition);
-
-		Date scheduledMessageDate = new Date();
-		ScheduledMessage scheduledMessage = new ScheduledMessage();
-		scheduledMessage.setScheduledFor(scheduledMessageDate);
-		scheduledMessage.setRecipientId(patient.getPersonId());
-		scheduledMessage.setMessage(messageDefinition);
-
-		Message firstMessageAttempt = messageDefinition
-				.createMessage(scheduledMessage);
-		firstMessageAttempt.setAttemptDate(scheduledMessageDate);
-		scheduledMessage.getMessageAttempts().add(firstMessageAttempt);
-
-		Context.getService(MotechService.class).saveScheduledMessage(
-				scheduledMessage);
-
 		task.execute();
 
-		List<ScheduledMessage> scheduledMessages = Context.getService(
-				MotechService.class).getAllScheduledMessages();
+		try {
+			Context.openSession();
 
-		assertEquals(1, scheduledMessages.size());
+			List<ScheduledMessage> scheduledMessages = Context.getService(
+					MotechService.class).getAllScheduledMessages();
 
-		ScheduledMessage retrievedScheduledMessage = scheduledMessages.get(0);
-		List<Message> messageAttempts = retrievedScheduledMessage
-				.getMessageAttempts();
+			assertEquals(1, scheduledMessages.size());
 
-		assertEquals(1, messageAttempts.size());
+			ScheduledMessage retrievedScheduledMessage = scheduledMessages
+					.get(0);
+			List<Message> messageAttempts = retrievedScheduledMessage
+					.getMessageAttempts();
 
-		Message message = messageAttempts.get(0);
+			assertEquals(1, messageAttempts.size());
 
-		assertNotNull("Message attempt date is null", message.getAttemptDate());
-		assertEquals(message.getAttemptStatus(), MessageStatus.ATTEMPT_PENDING);
+			Message message = messageAttempts.get(0);
 
-		assertEquals(1, Context.getService(MotechService.class).getAllLogs()
-				.size());
+			assertNotNull("Message attempt date is null", message
+					.getAttemptDate());
+			assertEquals(MessageStatus.ATTEMPT_PENDING, message
+					.getAttemptStatus());
+
+			assertEquals(1, Context.getService(MotechService.class)
+					.getAllLogs().size());
+		} finally {
+			Context.closeSession();
+		}
 	}
 
 }

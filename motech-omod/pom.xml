@@ -81,8 +81,16 @@
 			<artifactId>hsqldb</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>dbunit</groupId>
+			<groupId>org.dbunit</groupId>
 			<artifactId>dbunit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -128,6 +136,40 @@
 		<dependency>
 			<groupId>com.sun.xml.ws</groupId>
 			<artifactId>jaxws-rt</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.directwebremoting</groupId>
+			<artifactId>dwr</artifactId>
+			<version>2.0.5-mod</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -191,12 +233,10 @@
 							<goal>execute</goal>
 						</goals>
 						<configuration>
-							<source>							
-								hbmFiles = new File(project.basedir,'/src/main/resources').listFiles().findAll{ it =~ /\.hbm\.xml$/ }*.name
-								
-								project.properties.openmrsConfigMappingFiles = hbmFiles.join('\n\t\t')
-								project.properties.hibernateConfigMappingFiles = 
-									'&lt;mapping resource="' + hbmFiles.join('" /&gt;\n\t\t&lt;mapping resource="') + '" /&gt;'
+							<source>
+								hbmFiles = new File(project.basedir,'/src/main/resources').listFiles().findAll{it =~ /\.hbm\.xml$/ }*.name
+								project.properties.openmrsConfigMappingFiles = hbmFiles.join('\n\t\t') 
+								project.properties.hibernateConfigMappingFiles = '&lt;mapping resource="' + hbmFiles.join('" /&gt;\n\t\t&lt;mapping resource="') + '" /&gt;'
 							</source>
 						</configuration>
 					</execution>
