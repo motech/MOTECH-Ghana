@@ -16,9 +16,8 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>org.motech</groupId>
-			<artifactId>motech-mobile-ws</artifactId>
-			<version>1.0-M2-SNAPSHOT</version>
+			<groupId>com.dreamoval.motech</groupId>
+			<artifactId>motech-mobile-wsclient</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>

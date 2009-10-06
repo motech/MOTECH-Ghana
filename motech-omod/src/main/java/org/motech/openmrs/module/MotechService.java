@@ -29,7 +29,7 @@ import org.openmrs.User;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dreamoval.motech.webapp.webservices.MessageService;
+import com.dreamoval.motech.omi.ws.client.MessageServiceImpl;
 
 /**
  * A service interface for much of 'real work' for the motech server OpenMRS
@@ -89,7 +89,7 @@ public interface MotechService extends OpenmrsService {
 	@Transactional(readOnly = true)
 	User getUserByPhoneNumber(String phoneNumber);
 
-	MessageService getMobileService();
+	MessageServiceImpl getMobileService();
 
 	Regimen getRegimen(String regimenName);
 

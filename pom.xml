@@ -49,7 +49,6 @@
 	</issueManagement>
 
 	<modules>
-		<module>motech-mobile-ws</module>
 		<module>motech-core</module>
 		<module>motech-wsclient</module>
 		<module>motech-omod</module>
@@ -76,6 +75,11 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>com.dreamoval.motech</groupId>
+				<artifactId>motech-mobile-wsclient</artifactId>
+				<version>1.0-M2-SNAPSHOT</version>
+			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>servlet-api</artifactId>

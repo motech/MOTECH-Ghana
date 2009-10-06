@@ -16,24 +16,23 @@ package org.motech.tasks;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageStatus;
 import org.motech.model.LogType;
-import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
 import org.motech.openmrs.module.MotechService;
 import org.openmrs.Patient;
-import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.scheduler.tasks.AbstractTask;
 import org.openmrs.util.OpenmrsConstants;
 
-import com.dreamoval.motech.omi.service.ContactNumberType;
-import com.dreamoval.motech.omi.service.MessageType;
+import com.dreamoval.motech.omi.ws.client.ContactNumberType;
 
 /**
  * Defines a task implementation that OpenMRS can execute using the built-in
@@ -85,9 +84,7 @@ public class NotificationTask extends AbstractTask {
 				PersonAttributeType notificationType = Context
 						.getPersonService().getPersonAttributeTypeByName(
 								"Notification Type");
-				PatientIdentifierType serialIdType = Context
-						.getPatientService().getPatientIdentifierTypeByName(
-								"Ghana Clinic Id");
+
 				for (Message shouldAttemptMessage : shouldAttemptMessages) {
 
 					org.motech.model.Log motechLog = new org.motech.model.Log();
@@ -102,18 +99,21 @@ public class NotificationTask extends AbstractTask {
 					User nurse = Context.getUserService().getUser(recipientId);
 
 					if (patient != null) {
+						String patientName = patient.getPersonName().toString();
 						String patientPhone = patient.getAttribute(
 								phoneNumberType).getValue();
-						String clinicName = patient.getPatientIdentifier(
-								serialIdType).getLocation().getName();
 						String phoneTypeString = patient
 								.getAttribute(phoneType).getValue();
 						String notificationTypeString = patient.getAttribute(
 								notificationType).getValue();
 						ContactNumberType patientNumberType = PhoneType
 								.valueOf(phoneTypeString).toContactNumberType();
-						MessageType messageType = NotificationType.valueOf(
-								notificationTypeString).toMessageType();
+
+						String langCode = null;
+						String mediaType = notificationTypeString;
+						long mobileNotificationType = 0;
+						XMLGregorianCalendar moibleStartDate = null;
+						XMLGregorianCalendar mobileEndDate = null;
 
 						motechLog
 								.setMessage("Scheduled Message Notification, Patient Phone: "
@@ -122,9 +122,11 @@ public class NotificationTask extends AbstractTask {
 						try {
 							Context.getService(MotechService.class)
 									.getMobileService().sendPatientMessage(
-											messageId, clinicName,
-											notificationDate, patientPhone,
-											patientNumberType, messageType);
+											messageId, patientName,
+											patientPhone, patientNumberType,
+											langCode, mediaType,
+											mobileNotificationType,
+											moibleStartDate, mobileEndDate);
 							shouldAttemptMessage
 									.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
 							motechLog.setType(LogType.success);
@@ -140,6 +142,12 @@ public class NotificationTask extends AbstractTask {
 								.getValue();
 						String nurseName = nurse.getPersonName().toString();
 
+						String langCode = null;
+						String mediaType = null;
+						long mobileNotificationType = 0;
+						XMLGregorianCalendar moibleStartDate = null;
+						XMLGregorianCalendar mobileEndDate = null;
+
 						motechLog
 								.setMessage("Scheduled Message Notification, Nurse Phone: "
 										+ nursePhone + ": " + messageId);
@@ -148,7 +156,10 @@ public class NotificationTask extends AbstractTask {
 							Context.getService(MotechService.class)
 									.getMobileService().sendCHPSMessage(
 											messageId, nurseName, nursePhone,
-											null);
+											null, langCode, mediaType,
+											mobileNotificationType,
+											moibleStartDate, mobileEndDate);
+
 							shouldAttemptMessage
 									.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
 							motechLog.setType(LogType.success);

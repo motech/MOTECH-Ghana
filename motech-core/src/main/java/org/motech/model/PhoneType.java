@@ -1,6 +1,6 @@
 package org.motech.model;
 
-import com.dreamoval.motech.omi.service.ContactNumberType;
+import com.dreamoval.motech.omi.ws.client.ContactNumberType;
 
 /**
  * Represents the type of phone registered for a patient. It is used to

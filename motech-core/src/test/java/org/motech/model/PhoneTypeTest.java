@@ -2,7 +2,7 @@ package org.motech.model;
 
 import junit.framework.TestCase;
 
-import com.dreamoval.motech.omi.service.ContactNumberType;
+import com.dreamoval.motech.omi.ws.client.ContactNumberType;
 
 public class PhoneTypeTest extends TestCase {
 
@@ -13,7 +13,7 @@ public class PhoneTypeTest extends TestCase {
 				.toContactNumberType());
 	}
 
-	public void testValueOfOpenMRS() {
+	public void testValueOfContactNumberType() {
 		assertEquals(PhoneType.personal, PhoneType
 				.fromContactNumberType(ContactNumberType.PERSONAL));
 		assertEquals(PhoneType.shared, PhoneType
