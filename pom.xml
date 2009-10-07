@@ -79,6 +79,12 @@
 				<groupId>com.dreamoval.motech</groupId>
 				<artifactId>motech-mobile-wsclient</artifactId>
 				<version>1.0-M2-SNAPSHOT</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.dreamoval.motech</groupId>
+						<artifactId>motech-mobile-omi</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
