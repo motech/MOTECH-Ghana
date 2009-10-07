@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import com.dreamoval.motech.omi.ws.client.ArrayList;
 import com.dreamoval.motech.omi.ws.client.ContactNumberType;
 import com.dreamoval.motech.omi.ws.client.MessageServiceImpl;
+import com.dreamoval.motech.omi.ws.client.MessageType;
 
 /**
  * A stub implementation of the motech mobile message interface. This enables us
@@ -23,7 +24,7 @@ public class MessageServiceStub implements MessageServiceImpl {
 
 	public String sendCHPSMessage(long messageId, String workerName,
 			String workerNumber, ArrayList patientList, String langCode,
-			String mediaType, long notificationType,
+			MessageType mediaType, long notificationType,
 			XMLGregorianCalendar startDate, XMLGregorianCalendar endDate) {
 
 		log.info("Motech Mobile Web Service Message\n"
@@ -60,7 +61,7 @@ public class MessageServiceStub implements MessageServiceImpl {
 
 	public String sendPatientMessage(long messageId, String patientName,
 			String patientNumber, ContactNumberType patientNumberType,
-			String langCode, String mediaType, long notificationType,
+			String langCode, MessageType mediaType, long notificationType,
 			XMLGregorianCalendar startDate, XMLGregorianCalendar endDate) {
 
 		log.info("Motech Mobile Web Service Message\n"

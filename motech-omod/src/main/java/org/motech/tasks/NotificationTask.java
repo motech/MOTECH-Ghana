@@ -23,6 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageStatus;
 import org.motech.model.LogType;
+import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
 import org.motech.openmrs.module.MotechService;
 import org.openmrs.Patient;
@@ -33,6 +34,7 @@ import org.openmrs.scheduler.tasks.AbstractTask;
 import org.openmrs.util.OpenmrsConstants;
 
 import com.dreamoval.motech.omi.ws.client.ContactNumberType;
+import com.dreamoval.motech.omi.ws.client.MessageType;
 
 /**
  * Defines a task implementation that OpenMRS can execute using the built-in
@@ -110,7 +112,8 @@ public class NotificationTask extends AbstractTask {
 								.valueOf(phoneTypeString).toContactNumberType();
 
 						String langCode = null;
-						String mediaType = notificationTypeString;
+						MessageType mediaType = NotificationType.valueOf(
+								notificationTypeString).toMessageType();
 						long mobileNotificationType = 0;
 						XMLGregorianCalendar moibleStartDate = null;
 						XMLGregorianCalendar mobileEndDate = null;
@@ -143,7 +146,7 @@ public class NotificationTask extends AbstractTask {
 						String nurseName = nurse.getPersonName().toString();
 
 						String langCode = null;
-						String mediaType = null;
+						MessageType mediaType = null;
 						long mobileNotificationType = 0;
 						XMLGregorianCalendar moibleStartDate = null;
 						XMLGregorianCalendar mobileEndDate = null;
