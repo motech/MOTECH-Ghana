@@ -1,6 +1,5 @@
 package org.motech.event;
 
-import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
@@ -45,7 +44,9 @@ public class TetanusImmunizRegimenTest extends TestCase {
 		patient = new Patient();
 		patient.setPatientId(patientId);
 
-		ctx = new ClassPathXmlApplicationContext("tetanus-immuniz-regimen.xml");
+		ctx = new ClassPathXmlApplicationContext(
+				new String[] { "tetanus-immuniz-regimen.xml",
+						"test-common-regimen-beans.xml" });
 
 		regimen = (RegimenImpl) ctx.getBean("tetanusImmunization");
 
@@ -57,7 +58,9 @@ public class TetanusImmunizRegimenTest extends TestCase {
 		state6 = (RegimenStateImpl) ctx.getBean("tetanusState2Reminder2");
 		state7 = (RegimenStateImpl) ctx.getBean("tetanusState3");
 
-		patientObsService = createMock(PatientObsService.class);
+		// EasyMock setup in Spring config
+		patientObsService = (PatientObsService) ctx
+				.getBean("patientObsService");
 
 		state1.setPatientObsService(patientObsService);
 		for (RegimenStateTransition transition : state1.getTransitions()) {
@@ -102,7 +105,8 @@ public class TetanusImmunizRegimenTest extends TestCase {
 			}
 		}
 
-		messageScheduler = createMock(MessageScheduler.class);
+		// EasyMock setup in Spring config
+		messageScheduler = (MessageScheduler) ctx.getBean("messageScheduler");
 
 		((ScheduleMessageCommand) state1.getCommand())
 				.setMessageScheduler(messageScheduler);
@@ -150,14 +154,15 @@ public class TetanusImmunizRegimenTest extends TestCase {
 				.getCommand()).getMessageKey();
 		Long publicId = ((ScheduleMessageCommand) expectedState.getCommand())
 				.getPublicId();
+		String groupId = regimen.getName();
 
 		expect(
 				patientObsService.getNumberOfObs(patient, regimen
 						.getConceptName(), regimen.getConceptValue()))
 				.andReturn(numberOfTetanusObs);
 
-		messageScheduler.scheduleMessage(messageKey, publicId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, publicId, groupId,
+				patientId, messageDate);
 
 		replay(patientObsService, messageScheduler);
 
@@ -180,14 +185,15 @@ public class TetanusImmunizRegimenTest extends TestCase {
 				.getCommand()).getMessageKey();
 		Long publicId = ((ScheduleMessageCommand) expectedState.getCommand())
 				.getPublicId();
+		String groupId = regimen.getName();
 
 		expect(
 				patientObsService.getNumberOfObs(patient, regimen
 						.getConceptName(), regimen.getConceptValue()))
 				.andReturn(numberOfTetanusObs).anyTimes();
 
-		messageScheduler.scheduleMessage(messageKey, publicId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, publicId, groupId,
+				patientId, messageDate);
 
 		replay(patientObsService, messageScheduler);
 
@@ -210,14 +216,15 @@ public class TetanusImmunizRegimenTest extends TestCase {
 				.getCommand()).getMessageKey();
 		Long publicId = ((ScheduleMessageCommand) expectedState.getCommand())
 				.getPublicId();
+		String groupId = regimen.getName();
 
 		expect(
 				patientObsService.getNumberOfObs(patient, regimen
 						.getConceptName(), regimen.getConceptValue()))
 				.andReturn(numberOfTetanusObs).anyTimes();
 
-		messageScheduler.scheduleMessage(messageKey, publicId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, publicId, groupId,
+				patientId, messageDate);
 
 		replay(patientObsService, messageScheduler);
 
@@ -241,6 +248,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 				.getCommand()).getMessageKey();
 		Long publicId = ((ScheduleMessageCommand) expectedState.getCommand())
 				.getPublicId();
+		String groupId = regimen.getName();
 
 		expect(
 				patientObsService.getNumberOfObs(patient, regimen
@@ -251,8 +259,8 @@ public class TetanusImmunizRegimenTest extends TestCase {
 						.getConceptName(), regimen.getConceptValue()))
 				.andReturn(lastObsDate).anyTimes();
 
-		messageScheduler.scheduleMessage(messageKey, publicId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, publicId, groupId,
+				patientId, messageDate);
 
 		replay(patientObsService, messageScheduler);
 
@@ -276,6 +284,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 				.getCommand()).getMessageKey();
 		Long publicId = ((ScheduleMessageCommand) expectedState.getCommand())
 				.getPublicId();
+		String groupId = regimen.getName();
 
 		expect(
 				patientObsService.getNumberOfObs(patient, regimen
@@ -286,8 +295,8 @@ public class TetanusImmunizRegimenTest extends TestCase {
 						.getConceptName(), regimen.getConceptValue()))
 				.andReturn(lastObsDate).anyTimes();
 
-		messageScheduler.scheduleMessage(messageKey, publicId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, publicId, groupId,
+				patientId, messageDate);
 
 		replay(patientObsService, messageScheduler);
 
@@ -311,6 +320,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 				.getCommand()).getMessageKey();
 		Long publicId = ((ScheduleMessageCommand) expectedState.getCommand())
 				.getPublicId();
+		String groupId = regimen.getName();
 
 		expect(
 				patientObsService.getNumberOfObs(patient, regimen
@@ -321,8 +331,8 @@ public class TetanusImmunizRegimenTest extends TestCase {
 						.getConceptName(), regimen.getConceptValue()))
 				.andReturn(lastObsDate).anyTimes();
 
-		messageScheduler.scheduleMessage(messageKey, publicId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, publicId, groupId,
+				patientId, messageDate);
 
 		replay(patientObsService, messageScheduler);
 
@@ -342,6 +352,8 @@ public class TetanusImmunizRegimenTest extends TestCase {
 				patientObsService.getNumberOfObs(patient, regimen
 						.getConceptName(), regimen.getConceptValue()))
 				.andReturn(numberOfTetanusObs).anyTimes();
+		messageScheduler.removeAllUnsentMessages(patient.getPatientId(),
+				regimen.getName());
 
 		replay(patientObsService, messageScheduler);
 
@@ -363,6 +375,8 @@ public class TetanusImmunizRegimenTest extends TestCase {
 				patientObsService.getNumberOfObs(patient, regimen
 						.getConceptName(), regimen.getConceptValue()))
 				.andReturn(numberOfTetanusObs).anyTimes();
+		messageScheduler.removeAllUnsentMessages(patient.getPatientId(),
+				regimen.getName());
 
 		replay(patientObsService, messageScheduler);
 

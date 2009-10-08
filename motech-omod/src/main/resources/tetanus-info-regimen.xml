@@ -4,10 +4,6 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="nopCommand" class="org.motech.event.impl.NopCommand" />
-	<bean id="patientObsService" class="org.motech.event.impl.PatientObsServiceImpl" />
-	<bean id="messageScheduler" class="org.motech.messaging.MessageSchedulerImpl" />
-	
 	<bean id="tetanusInfo" class="org.motech.event.impl.RegimenImpl">
 		<property name="name" value="Tetanus Information Regimen" />
 		<property name="startState" ref="tetanusInfoState1" />

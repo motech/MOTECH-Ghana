@@ -199,8 +199,13 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				idTypes, true);
 		Patient patient = patients.get(0);
 
+		Date visitDate = date;
+		if (visitDate == null) {
+			visitDate = new Date();
+		}
+
 		Encounter encounter = new Encounter();
-		encounter.setEncounterDatetime(date);
+		encounter.setEncounterDatetime(visitDate);
 		encounter.setPatient(patient);
 
 		User nurse = motechService.getUserByPhoneNumber(nursePhoneNumber);
@@ -220,7 +225,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		if (tetanus) {
 			Obs tetanusObs = new Obs();
-			tetanusObs.setObsDatetime(date);
+			tetanusObs.setObsDatetime(visitDate);
 			tetanusObs.setConcept(conceptService
 					.getConcept("IMMUNIZATIONS ORDERED"));
 			tetanusObs.setPerson(patient);
@@ -234,7 +239,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		// TODO: Add IPT to proper Concept as an Answer, not an immunization
 		if (ipt) {
 			Obs iptObs = new Obs();
-			iptObs.setObsDatetime(date);
+			iptObs.setObsDatetime(visitDate);
 			iptObs.setConcept(conceptService
 					.getConcept("IMMUNIZATIONS ORDERED"));
 			iptObs.setPerson(patient);
@@ -247,7 +252,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		if (itn) {
 			Obs itnObs = new Obs();
-			itnObs.setObsDatetime(date);
+			itnObs.setObsDatetime(visitDate);
 			itnObs.setConcept(conceptService
 					.getConcept("INSECTICIDE-TREATED NET USAGE"));
 			itnObs.setPerson(patient);
@@ -259,7 +264,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 
 		Obs visitNumberObs = new Obs();
-		visitNumberObs.setObsDatetime(date);
+		visitNumberObs.setObsDatetime(visitDate);
 		visitNumberObs.setConcept(conceptService
 				.getConcept("PREGNANCY VISIT NUMBER"));
 		visitNumberObs.setPerson(patient);
@@ -270,7 +275,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		if (onARV) {
 			Obs arvObs = new Obs();
-			arvObs.setObsDatetime(date);
+			arvObs.setObsDatetime(visitDate);
 			arvObs.setConcept(conceptService
 					.getConcept("ANTIRETROVIRAL USE DURING PREGNANCY"));
 			arvObs.setPerson(patient);
@@ -283,7 +288,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		if (prePMTCT) {
 			Obs prePmtctObs = new Obs();
-			prePmtctObs.setObsDatetime(date);
+			prePmtctObs.setObsDatetime(visitDate);
 			prePmtctObs
 					.setConcept(conceptService
 							.getConcept("PRE PREVENTING MATERNAL TO CHILD TRANSMISSION"));
@@ -298,7 +303,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		if (testPMTCT) {
 			Obs testPmtctObs = new Obs();
-			testPmtctObs.setObsDatetime(date);
+			testPmtctObs.setObsDatetime(visitDate);
 			testPmtctObs
 					.setConcept(conceptService
 							.getConcept("TEST PREVENTING MATERNAL TO CHILD TRANSMISSION"));
@@ -313,7 +318,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		if (postPMTCT) {
 			Obs postPmtctObs = new Obs();
-			postPmtctObs.setObsDatetime(date);
+			postPmtctObs.setObsDatetime(visitDate);
 			postPmtctObs
 					.setConcept(conceptService
 							.getConcept("POST PREVENTING MATERNAL TO CHILD TRANSMISSION"));
@@ -327,7 +332,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 
 		Obs hemoglobinObs = new Obs();
-		hemoglobinObs.setObsDatetime(date);
+		hemoglobinObs.setObsDatetime(visitDate);
 		hemoglobinObs.setConcept(conceptService
 				.getConcept("HEMOGLOBIN AT 36 WEEKS"));
 		hemoglobinObs.setPerson(patient);
@@ -361,8 +366,13 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				idTypes, true);
 		Patient patient = patients.get(0);
 
+		Date visitDate = date;
+		if (visitDate == null) {
+			visitDate = new Date();
+		}
+
 		Encounter encounter = new Encounter();
-		encounter.setEncounterDatetime(date);
+		encounter.setEncounterDatetime(visitDate);
 		encounter.setPatient(patient);
 
 		User nurse = motechService.getUserByPhoneNumber(nursePhoneNumber);
@@ -381,7 +391,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		encounter = encounterService.saveEncounter(encounter);
 
 		Obs pregSatusObs = new Obs();
-		pregSatusObs.setObsDatetime(date);
+		pregSatusObs.setObsDatetime(visitDate);
 		pregSatusObs.setConcept(conceptService.getConcept("PREGNANCY STATUS"));
 		pregSatusObs.setPerson(patient);
 		pregSatusObs.setLocation(clinicLocation);
@@ -391,7 +401,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		obsService.saveObs(pregSatusObs, null);
 
 		Obs dueDateObs = new Obs();
-		dueDateObs.setObsDatetime(date);
+		dueDateObs.setObsDatetime(visitDate);
 		dueDateObs.setConcept(conceptService
 				.getConcept("ESTIMATED DATE OF CONFINEMENT"));
 		dueDateObs.setPerson(patient);
@@ -401,7 +411,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		obsService.saveObs(dueDateObs, null);
 
 		Obs parityObs = new Obs();
-		parityObs.setObsDatetime(date);
+		parityObs.setObsDatetime(visitDate);
 		parityObs.setConcept(conceptService.getConcept("GRAVIDA"));
 		parityObs.setPerson(patient);
 		parityObs.setLocation(clinicLocation);
@@ -410,7 +420,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		obsService.saveObs(parityObs, null);
 
 		Obs hemoglobinObs = new Obs();
-		hemoglobinObs.setObsDatetime(date);
+		hemoglobinObs.setObsDatetime(visitDate);
 		hemoglobinObs.setConcept(conceptService.getConcept("HEMOGLOBIN"));
 		hemoglobinObs.setPerson(patient);
 		hemoglobinObs.setLocation(clinicLocation);

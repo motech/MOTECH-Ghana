@@ -13,6 +13,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.motech.messaging.MessageStatus;
 import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Gender;
 import org.motech.model.NotificationType;
@@ -26,6 +27,11 @@ import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.SkipBaseSetup;
 
+/**
+ * BaseModuleContextSensitiveTest loads both the OpenMRS core and module spring
+ * contexts and hibernate mappings, providing the OpenMRS Context for both
+ * OpenMRS core and module services.
+ */
 public class RegimenUpdateTaskTest extends BaseModuleContextSensitiveTest {
 
 	static MotechModuleActivator activator;
@@ -127,9 +133,11 @@ public class RegimenUpdateTaskTest extends BaseModuleContextSensitiveTest {
 
 		assertEquals("tetanus.info.3", scheduledMessages.get(0).getMessage()
 				.getMessageKey());
-		// Original reminder for first immunization not removed
+		// Original reminder for first immunization, now cancelled
 		assertEquals("tetanus.reminder.1", scheduledMessages.get(1)
 				.getMessage().getMessageKey());
+		assertEquals(MessageStatus.CANCELLED, scheduledMessages.get(1)
+				.getMessageAttempts().get(0).getAttemptStatus());
 		// New second reminder for second immunization
 		// Second immunization prompt skipped since past time
 		assertEquals("tetanus.reminder.2", scheduledMessages.get(2)

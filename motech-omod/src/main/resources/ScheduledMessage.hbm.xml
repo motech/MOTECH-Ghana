@@ -17,5 +17,10 @@
 			<key column="schedule_id" />
 			<one-to-many class="${corePackage}.messaging.Message" />
 		</bag>
+		<set name="groupIds" table="motechmodule_scheduledmessage_group">
+			<key column="schedule_id" />
+			<element column="group_id" type="string" length="100"
+				not-null="true" />
+		</set>
 	</class>
 </hibernate-mapping>

@@ -1,39 +1,18 @@
 package org.motech.event.impl;
 
-import java.util.Date;
-
 import org.motech.event.Command;
 import org.motech.messaging.MessageScheduler;
 
-public class ScheduleMessageCommand implements Command {
+public class RemoveMessagesCommand implements Command {
 
-	String messageKey;
-	Long publicId;
 	String messageGroup;
 	Integer messageRecipientId;
-	Date messageDate;
 	MessageScheduler messageScheduler;
 
 	public void execute() {
 
-		messageScheduler.scheduleMessage(messageKey, publicId, messageGroup,
-				messageRecipientId, messageDate);
-	}
-
-	public String getMessageKey() {
-		return messageKey;
-	}
-
-	public void setMessageKey(String messageKey) {
-		this.messageKey = messageKey;
-	}
-
-	public Long getPublicId() {
-		return publicId;
-	}
-
-	public void setPublicId(Long publicId) {
-		this.publicId = publicId;
+		messageScheduler.removeAllUnsentMessages(messageRecipientId,
+				messageGroup);
 	}
 
 	public String getMessageGroup() {
@@ -50,14 +29,6 @@ public class ScheduleMessageCommand implements Command {
 
 	public void setMessageRecipientId(Integer messageRecipientId) {
 		this.messageRecipientId = messageRecipientId;
-	}
-
-	public Date getMessageDate() {
-		return messageDate;
-	}
-
-	public void setMessageDate(Date messageDate) {
-		this.messageDate = messageDate;
 	}
 
 	public MessageScheduler getMessageScheduler() {

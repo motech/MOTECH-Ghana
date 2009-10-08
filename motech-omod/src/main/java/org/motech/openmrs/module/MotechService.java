@@ -72,6 +72,10 @@ public interface MotechService extends OpenmrsService {
 	List<Message> getMessages(Date startDate, Date endDate, MessageStatus status);
 
 	@Transactional(readOnly = true)
+	List<Message> getMessages(Integer recipientId, String scheduleGroupId,
+			MessageStatus status);
+
+	@Transactional(readOnly = true)
 	Message getMessage(String publicId);
 
 	@Transactional(readOnly = true)

@@ -22,7 +22,7 @@
 	</tr>
 	<tr>
 		<td><label for="visitDate">Date of Visit:</label></td>
-		<td><input name="visitDate" value="01/01/2007" /></td>
+		<td><input name="visitDate" value="" /></td>
 	</tr>
 	<tr>
 		<td><label for="serialId">Serial Id:</label></td>

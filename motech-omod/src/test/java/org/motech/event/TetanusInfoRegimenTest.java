@@ -1,6 +1,5 @@
 package org.motech.event;
 
-import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
@@ -41,7 +40,8 @@ public class TetanusInfoRegimenTest extends TestCase {
 		patient = new Patient();
 		patient.setPatientId(patientId);
 
-		ctx = new ClassPathXmlApplicationContext("tetanus-info-regimen.xml");
+		ctx = new ClassPathXmlApplicationContext(new String[] {
+				"tetanus-info-regimen.xml", "test-common-regimen-beans.xml" });
 
 		regimen = (RegimenImpl) ctx.getBean("tetanusInfo");
 
@@ -51,14 +51,17 @@ public class TetanusInfoRegimenTest extends TestCase {
 		state4 = (RegimenStateImpl) ctx.getBean("tetanusInfoState4");
 		state5 = (RegimenStateImpl) ctx.getBean("tetanusInfoState5");
 
-		patientObsService = createMock(PatientObsService.class);
+		// EasyMock setup in Spring config
+		patientObsService = (PatientObsService) ctx
+				.getBean("patientObsService");
 
 		state1.setPatientObsService(patientObsService);
 		state2.setPatientObsService(patientObsService);
 		state3.setPatientObsService(patientObsService);
 		state4.setPatientObsService(patientObsService);
 
-		messageScheduler = createMock(MessageScheduler.class);
+		// EasyMock setup in Spring config
+		messageScheduler = (MessageScheduler) ctx.getBean("messageScheduler");
 
 		((ScheduleMessageCommand) state1.getCommand())
 				.setMessageScheduler(messageScheduler);
@@ -97,9 +100,10 @@ public class TetanusInfoRegimenTest extends TestCase {
 				.getMessageKey();
 		Long publicId = ((ScheduleMessageCommand) state1.getCommand())
 				.getPublicId();
+		String groupId = regimen.getName();
 
-		messageScheduler.scheduleMessage(messageKey, publicId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, publicId, groupId,
+				patientId, messageDate);
 
 		replay(patientObsService, messageScheduler);
 
@@ -120,9 +124,10 @@ public class TetanusInfoRegimenTest extends TestCase {
 				.getMessageKey();
 		Long publicId = ((ScheduleMessageCommand) state2.getCommand())
 				.getPublicId();
+		String groupId = regimen.getName();
 
-		messageScheduler.scheduleMessage(messageKey, publicId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, publicId, groupId,
+				patientId, messageDate);
 
 		replay(patientObsService, messageScheduler);
 
@@ -143,9 +148,10 @@ public class TetanusInfoRegimenTest extends TestCase {
 				.getMessageKey();
 		Long publicId = ((ScheduleMessageCommand) state3.getCommand())
 				.getPublicId();
+		String groupId = regimen.getName();
 
-		messageScheduler.scheduleMessage(messageKey, publicId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, publicId, groupId,
+				patientId, messageDate);
 
 		replay(patientObsService, messageScheduler);
 
@@ -166,9 +172,10 @@ public class TetanusInfoRegimenTest extends TestCase {
 				.getMessageKey();
 		Long publicId = ((ScheduleMessageCommand) state4.getCommand())
 				.getPublicId();
+		String groupId = regimen.getName();
 
-		messageScheduler.scheduleMessage(messageKey, publicId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, publicId, groupId,
+				patientId, messageDate);
 
 		replay(patientObsService, messageScheduler);
 

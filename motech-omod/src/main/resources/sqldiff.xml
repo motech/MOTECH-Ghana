@@ -77,6 +77,13 @@
 				REFERENCES `motechmodule_messagedefinition` (`motechmodule_messagedefinition_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+			CREATE TABLE IF NOT EXISTS `motechmodule_scheduledmessage_group` (
+				`schedule_id` bigint NOT NULL,
+				`group_id` varchar(100) NOT NULL,
+				CONSTRAINT `Scheduled message with group id` FOREIGN KEY (`schedule_id`)
+				REFERENCES `motechmodule_scheduledmessage` (`motechmodule_scheduledmessage_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
 			CREATE TABLE IF NOT EXISTS `motechmodule_message` (
 				`motechmodule_message_id` bigint NOT NULL auto_increment,
 				`public_id` varchar(36) NOT NULL UNIQUE,

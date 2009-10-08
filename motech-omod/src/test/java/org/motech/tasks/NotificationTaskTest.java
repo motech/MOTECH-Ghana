@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.motech.messaging.Message;
-import org.motech.messaging.MessageScheduler;
 import org.motech.messaging.MessageSchedulerImpl;
 import org.motech.messaging.MessageStatus;
 import org.motech.messaging.ScheduledMessage;
@@ -23,6 +22,7 @@ import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
 import org.motech.openmrs.module.MotechModuleActivator;
 import org.motech.openmrs.module.MotechService;
+import org.motech.openmrs.module.impl.ContextServiceImpl;
 import org.motech.svc.RegistrarBean;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
@@ -31,6 +31,11 @@ import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.SkipBaseSetup;
 
+/**
+ * BaseModuleContextSensitiveTest loads both the OpenMRS core and module spring
+ * contexts and hibernate mappings, providing the OpenMRS Context for both
+ * OpenMRS core and module services.
+ */
 public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 	static MotechModuleActivator activator;
@@ -103,11 +108,12 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 		Patient patient = patients.get(0);
 
-		MessageScheduler messageScheduler = new MessageSchedulerImpl();
+		MessageSchedulerImpl messageScheduler = new MessageSchedulerImpl();
+		messageScheduler.setContextService(new ContextServiceImpl());
 		// Schedule message 5 seconds in future
 		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
-		messageScheduler.scheduleMessage("Test Definition", 2L, patient
-				.getPersonId(), messageDate);
+		messageScheduler.scheduleMessage("Test Definition", 2L, "Test Group",
+				patient.getPersonId(), messageDate);
 
 		task.execute();
 

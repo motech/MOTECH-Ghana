@@ -3,6 +3,8 @@ package org.motech.event.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.motech.event.Command;
 import org.motech.event.Regimen;
 import org.motech.event.RegimenState;
@@ -10,6 +12,8 @@ import org.motech.event.RegimenStateTransition;
 import org.openmrs.Patient;
 
 public class RegimenImpl extends BaseInterfaceImpl implements Regimen {
+
+	private static Log log = LogFactory.getLog(RegimenImpl.class);
 
 	private RegimenState startState;
 	private RegimenState endState;
@@ -57,6 +61,11 @@ public class RegimenImpl extends BaseInterfaceImpl implements Regimen {
 			transition = state.getTransition(patient);
 		}
 
+		if (log.isDebugEnabled()) {
+			log.debug("Regimen determineState: patient id: "
+					+ patient.getPatientId() + ", state: " + state.getName());
+		}
+
 		// Perform state action using date
 		Command command = state.getCommand();
 		if (command instanceof ScheduleMessageCommand) {
@@ -64,6 +73,11 @@ public class RegimenImpl extends BaseInterfaceImpl implements Regimen {
 					.getDateOfAction(patient));
 			((ScheduleMessageCommand) command).setMessageRecipientId(patient
 					.getPatientId());
+			((ScheduleMessageCommand) command).setMessageGroup(this.getName());
+		} else if (command instanceof RemoveMessagesCommand) {
+			((RemoveMessagesCommand) command).setMessageRecipientId(patient
+					.getPatientId());
+			((RemoveMessagesCommand) command).setMessageGroup(this.getName());
 		}
 		command.execute();
 

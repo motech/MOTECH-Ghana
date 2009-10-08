@@ -192,8 +192,9 @@ public class MotechModuleFormController {
 			throws NumberFormatException, ParseException {
 		log.debug("Register Pregnancy");
 		registrarClient.registerPregnancy(nursePhone,
-				dateFormat.parse(regDate), serialId, dateFormat.parse(dueDate),
-				Integer.valueOf(parity), Double.valueOf(hemoglobin));
+				(!regDate.equals("") ? dateFormat.parse(regDate) : null),
+				serialId, dateFormat.parse(dueDate), Integer.valueOf(parity),
+				Double.valueOf(hemoglobin));
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 
@@ -212,12 +213,13 @@ public class MotechModuleFormController {
 			@RequestParam("hemoglobin") String hemoglobin)
 			throws NumberFormatException, ParseException {
 		log.debug("Register Maternal Visit");
-		registrarClient.recordMaternalVisit(nursePhone, dateFormat
-				.parse(visitDate), serialId, Boolean.valueOf(tetanus), Boolean
-				.valueOf(ipt), Boolean.valueOf(itn), Integer
-				.valueOf(visitNumber), Boolean.valueOf(onARV), Boolean
-				.valueOf(prePMTCT), Boolean.valueOf(testPMTCT), Boolean
-				.valueOf(postPMTCT), Double.valueOf(hemoglobin));
+		registrarClient.recordMaternalVisit(nursePhone,
+				(!visitDate.equals("") ? dateFormat.parse(visitDate) : null),
+				serialId, Boolean.valueOf(tetanus), Boolean.valueOf(ipt),
+				Boolean.valueOf(itn), Integer.valueOf(visitNumber), Boolean
+						.valueOf(onARV), Boolean.valueOf(prePMTCT), Boolean
+						.valueOf(testPMTCT), Boolean.valueOf(postPMTCT), Double
+						.valueOf(hemoglobin));
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 

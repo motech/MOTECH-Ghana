@@ -128,6 +128,22 @@ public class HibernateMotechDAO implements MotechDAO {
 				Restrictions.eq("attemptStatus", status)).list();
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Message> getMessages(Integer recipientId,
+			String scheduleGroupId, MessageStatus status) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Message>) session
+				.createQuery(
+						"select m from "
+								+ Message.class.getName()
+								+ " m inner join m.schedule s "
+								+ "where m.attemptStatus = :status and "
+								+ "s.recipientId = :recipientId and :groupId in elements(s.groupIds)")
+				.setParameter("status", status).setInteger("recipientId",
+						recipientId).setString("groupId", scheduleGroupId)
+				.list();
+	}
+
 	public Message getMessage(String publicId) {
 		Session session = sessionFactory.getCurrentSession();
 		return (Message) session.createCriteria(Message.class).add(

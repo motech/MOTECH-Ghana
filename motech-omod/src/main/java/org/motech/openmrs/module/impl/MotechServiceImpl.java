@@ -96,6 +96,11 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 				messageDate);
 	}
 
+	public List<Message> getMessages(Integer recipientId,
+			String scheduleGroupId, MessageStatus status) {
+		return motechDAO.getMessages(recipientId, scheduleGroupId, status);
+	}
+
 	public Message getMessage(String publicId) {
 		return motechDAO.getMessage(publicId);
 	}
