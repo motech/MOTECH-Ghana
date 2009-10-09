@@ -107,6 +107,9 @@ public interface MotechService extends OpenmrsService {
 	TroubledPhone getTroubledPhone(String phoneNumber);
 
 	@Transactional
+	void saveTroubledPhone(TroubledPhone troubledPhone);
+
+	@Transactional
 	void addTroubledPhone(String phoneNumber);
 
 	@Transactional

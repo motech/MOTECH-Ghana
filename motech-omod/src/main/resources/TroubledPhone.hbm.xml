@@ -7,5 +7,6 @@
 		</id>
 		<property name="phoneNumber" column="phone_number" unique="true" />
 		<property name="creationTime" column="creation_time" />
+		<property name="sendFailures" column="send_failures" />
 	</class>
 </hibernate-mapping>

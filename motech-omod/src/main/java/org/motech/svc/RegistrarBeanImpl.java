@@ -11,6 +11,7 @@ import org.motech.model.Gender;
 import org.motech.model.LogType;
 import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
+import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.openmrs.Encounter;
@@ -20,6 +21,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientIdentifierType;
+import org.openmrs.Person;
 import org.openmrs.PersonAddress;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
@@ -447,16 +449,39 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public void setMessageStatus(String messageId, Boolean success) {
 
 		MotechService motechService = contextService.getMotechService();
+		PersonService personService = contextService.getPersonService();
 
 		Message message = motechService.getMessage(messageId);
 		if (message == null) {
 			throw new MessageNotFoundException();
 		}
 
+		Integer recipientId = message.getSchedule().getRecipientId();
+		Person messageRecipient = personService.getPerson(recipientId);
+		PersonAttributeType phoneNumberAttrType = personService
+				.getPersonAttributeTypeByName("Phone Number");
+		PersonAttribute phoneAttribute = messageRecipient
+				.getAttribute(phoneNumberAttrType);
+		String phoneNumber = phoneAttribute.getValue();
+		TroubledPhone troubledPhone = motechService
+				.getTroubledPhone(phoneNumber);
+
 		if (success) {
 			message.setAttemptStatus(MessageStatus.DELIVERED);
+
+			if (troubledPhone != null) {
+				motechService.removeTroubledPhone(phoneNumber);
+			}
 		} else {
 			message.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
+
+			if (troubledPhone == null) {
+				motechService.addTroubledPhone(phoneNumber);
+			} else {
+				Integer sendFailures = troubledPhone.getSendFailures() + 1;
+				troubledPhone.setSendFailures(sendFailures);
+				motechService.saveTroubledPhone(troubledPhone);
+			}
 		}
 		motechService.saveMessage(message);
 	}

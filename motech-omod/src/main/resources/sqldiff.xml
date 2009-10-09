@@ -40,6 +40,7 @@
 				`motechmodule_tphone_id` int(11) NOT NULL auto_increment,
 				`phone_number` varchar(50) NOT NULL,
 				`creation_time` timestamp NOT NULL DEFAULT current_timestamp,
+				`send_failures` int NOT NULL DEFAULT 1,
 				PRIMARY KEY(`motechmodule_tphone_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

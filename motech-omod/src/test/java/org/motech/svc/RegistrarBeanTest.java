@@ -20,11 +20,13 @@ import org.easymock.Capture;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageNotFoundException;
 import org.motech.messaging.MessageStatus;
+import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Gender;
 import org.motech.model.Log;
 import org.motech.model.LogType;
 import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
+import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.openmrs.Concept;
@@ -36,6 +38,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientIdentifierType;
+import org.openmrs.Person;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.Role;
@@ -814,56 +817,181 @@ public class RegistrarBeanTest extends TestCase {
 				|| logDate.after(afterCall));
 	}
 
-	public void testSetMessageStatusFoundSuccess() {
+	public void testSetMessageStatusSuccessMessageFoundNotTroubled() {
 		String messageId = "12345678-1234-1234-1234-123456789012";
 		Boolean success = true;
+
+		Integer recipientId = 2;
+		String phoneNumber = "1234567890";
+		Person recipient = new Person();
+		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
+				phoneNumber));
+		TroubledPhone troubledPhone = null;
+		Message message = new Message();
+		ScheduledMessage scheduledMessage = new ScheduledMessage();
+		scheduledMessage.setRecipientId(recipientId);
+		message.setSchedule(scheduledMessage);
 
 		Capture<Message> messageCap = new Capture<Message>();
 
 		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getMessage(messageId)).andReturn(new Message());
+		expect(contextService.getPersonService()).andReturn(personService);
+		expect(motechService.getMessage(messageId)).andReturn(message);
+		expect(personService.getPerson(recipientId)).andReturn(recipient);
+		expect(personService.getPersonAttributeTypeByName(phoneAttrName))
+				.andReturn(phoneAttributeType);
+		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
+				troubledPhone);
 		expect(motechService.saveMessage(capture(messageCap))).andReturn(
-				new Message());
+				message);
 
-		replay(contextService, motechService);
+		replay(contextService, motechService, personService);
 
 		regBean.setMessageStatus(messageId, success);
 
-		verify(contextService, motechService);
+		verify(contextService, motechService, personService);
 
-		Message message = messageCap.getValue();
-		assertEquals(MessageStatus.DELIVERED, message.getAttemptStatus());
+		Message capturedMessage = messageCap.getValue();
+		assertEquals(MessageStatus.DELIVERED, capturedMessage
+				.getAttemptStatus());
 	}
 
-	public void testSetMessageStatusFoundUnsuccess() {
+	public void testSetMessageStatusSuccessMessageFoundTroubled() {
+		String messageId = "12345678-1234-1234-1234-123456789012";
+		Boolean success = true;
+
+		Integer recipientId = 2;
+		String phoneNumber = "1234567890";
+		Person recipient = new Person();
+		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
+				phoneNumber));
+		TroubledPhone troubledPhone = new TroubledPhone();
+		Message message = new Message();
+		ScheduledMessage scheduledMessage = new ScheduledMessage();
+		scheduledMessage.setRecipientId(recipientId);
+		message.setSchedule(scheduledMessage);
+
+		Capture<Message> messageCap = new Capture<Message>();
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(contextService.getPersonService()).andReturn(personService);
+		expect(motechService.getMessage(messageId)).andReturn(message);
+		expect(personService.getPerson(recipientId)).andReturn(recipient);
+		expect(personService.getPersonAttributeTypeByName(phoneAttrName))
+				.andReturn(phoneAttributeType);
+		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
+				troubledPhone);
+		motechService.removeTroubledPhone(phoneNumber);
+		expect(motechService.saveMessage(capture(messageCap))).andReturn(
+				message);
+
+		replay(contextService, motechService, personService);
+
+		regBean.setMessageStatus(messageId, success);
+
+		verify(contextService, motechService, personService);
+
+		Message capturedMessage = messageCap.getValue();
+		assertEquals(MessageStatus.DELIVERED, capturedMessage
+				.getAttemptStatus());
+	}
+
+	public void testSetMessageStatusFailureMessageFoundNotTroubled() {
 		String messageId = "12345678-1234-1234-1234-123456789012";
 		Boolean success = false;
 
+		Integer recipientId = 2;
+		String phoneNumber = "1234567890";
+		Person recipient = new Person();
+		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
+				phoneNumber));
+		TroubledPhone troubledPhone = null;
+		Message message = new Message();
+		ScheduledMessage scheduledMessage = new ScheduledMessage();
+		scheduledMessage.setRecipientId(recipientId);
+		message.setSchedule(scheduledMessage);
+
 		Capture<Message> messageCap = new Capture<Message>();
 
 		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getMessage(messageId)).andReturn(new Message());
+		expect(contextService.getPersonService()).andReturn(personService);
+		expect(motechService.getMessage(messageId)).andReturn(message);
+		expect(personService.getPerson(recipientId)).andReturn(recipient);
+		expect(personService.getPersonAttributeTypeByName(phoneAttrName))
+				.andReturn(phoneAttributeType);
+		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
+				troubledPhone);
+		motechService.addTroubledPhone(phoneNumber);
 		expect(motechService.saveMessage(capture(messageCap))).andReturn(
-				new Message());
+				message);
 
-		replay(contextService, motechService);
+		replay(contextService, motechService, personService);
 
 		regBean.setMessageStatus(messageId, success);
 
-		verify(contextService, motechService);
+		verify(contextService, motechService, personService);
 
-		Message message = messageCap.getValue();
-		assertEquals(MessageStatus.ATTEMPT_FAIL, message.getAttemptStatus());
+		Message capturedMessage = messageCap.getValue();
+		assertEquals(MessageStatus.ATTEMPT_FAIL, capturedMessage
+				.getAttemptStatus());
 	}
 
-	public void testSetMessageStatusNotFound() {
+	public void testSetMessageStatusFailureMessageFoundTroubled() {
+		String messageId = "12345678-1234-1234-1234-123456789012";
+		Boolean success = false;
+
+		Integer recipientId = 2;
+		String phoneNumber = "1234567890";
+		Person recipient = new Person();
+		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
+				phoneNumber));
+		Integer previousFailures = 1;
+		TroubledPhone troubledPhone = new TroubledPhone();
+		troubledPhone.setSendFailures(previousFailures);
+		Message message = new Message();
+		ScheduledMessage scheduledMessage = new ScheduledMessage();
+		scheduledMessage.setRecipientId(recipientId);
+		message.setSchedule(scheduledMessage);
+
+		Capture<TroubledPhone> troubledPhoneCap = new Capture<TroubledPhone>();
+		Capture<Message> messageCap = new Capture<Message>();
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(contextService.getPersonService()).andReturn(personService);
+		expect(motechService.getMessage(messageId)).andReturn(message);
+		expect(personService.getPerson(recipientId)).andReturn(recipient);
+		expect(personService.getPersonAttributeTypeByName(phoneAttrName))
+				.andReturn(phoneAttributeType);
+		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
+				troubledPhone);
+		motechService.saveTroubledPhone(capture(troubledPhoneCap));
+		expect(motechService.saveMessage(capture(messageCap))).andReturn(
+				message);
+
+		replay(contextService, motechService, personService);
+
+		regBean.setMessageStatus(messageId, success);
+
+		verify(contextService, motechService, personService);
+
+		Message capturedMessage = messageCap.getValue();
+		assertEquals(MessageStatus.ATTEMPT_FAIL, capturedMessage
+				.getAttemptStatus());
+
+		Integer expectedFailures = 2;
+		TroubledPhone capturedTroubledPhone = troubledPhoneCap.getValue();
+		assertEquals(expectedFailures, capturedTroubledPhone.getSendFailures());
+	}
+
+	public void testSetMessageStatusMessageNotFound() {
 		String messageId = "12345678-1234-1234-1234-123456789012";
 		Boolean success = true;
 
 		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(contextService.getPersonService()).andReturn(personService);
 		expect(motechService.getMessage(messageId)).andReturn(null);
 
-		replay(contextService, motechService);
+		replay(contextService, motechService, personService);
 
 		try {
 			regBean.setMessageStatus(messageId, success);
@@ -874,6 +1002,6 @@ public class RegistrarBeanTest extends TestCase {
 			fail("Expected org.motech.messaging.MessageNotFoundException: other thrown");
 		}
 
-		verify(contextService, motechService);
+		verify(contextService, motechService, personService);
 	}
 }

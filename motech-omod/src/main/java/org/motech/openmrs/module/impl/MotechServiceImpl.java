@@ -171,6 +171,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return motechDAO.getTroubledPhoneByNumber(phoneNumber);
 	}
 
+	public void saveTroubledPhone(TroubledPhone troubledPhone) {
+		motechDAO.saveTroubledPhone(troubledPhone);
+	}
+
 	public void addTroubledPhone(String phoneNumber) {
 		TroubledPhone tp = motechDAO.getTroubledPhoneByNumber(phoneNumber);
 		if (tp == null) {

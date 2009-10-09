@@ -28,6 +28,7 @@ import org.openmrs.ConceptDescription;
 import org.openmrs.ConceptName;
 import org.openmrs.ConceptNameTag;
 import org.openmrs.EncounterType;
+import org.openmrs.GlobalProperty;
 import org.openmrs.Location;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonAttributeType;
@@ -78,6 +79,9 @@ public class MotechModuleActivator implements Activator {
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPT_CLASSES);
 
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
+
+		Context
+				.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_GLOBAL_PROPERTIES);
 
 		try {
 			User admin = Context.getUserService().getUser(1);
@@ -163,6 +167,11 @@ public class MotechModuleActivator implements Activator {
 					new Long(30), Boolean.FALSE, RegimenUpdateTask.class
 							.getName(), admin);
 
+			log.info("Verifying Global Properties Exist");
+			createGlobalProperty("motechmodule.troubled_phone_failures",
+					new Integer(4).toString(),
+					"Number of sending failures when phone is considered troubled");
+
 		} finally {
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
 
@@ -194,6 +203,9 @@ public class MotechModuleActivator implements Activator {
 
 			Context
 					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
+
+			Context
+					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_GLOBAL_PROPERTIES);
 		}
 	}
 
@@ -335,6 +347,16 @@ public class MotechModuleActivator implements Activator {
 			log.error("Cannot schedule task" + name, e);
 		}
 
+	}
+
+	private void createGlobalProperty(String name, String value,
+			String description) {
+		GlobalProperty property = Context.getAdministrationService()
+				.getGlobalPropertyObject(name);
+		if (property == null) {
+			property = new GlobalProperty(name, value, description);
+			Context.getAdministrationService().saveGlobalProperty(property);
+		}
 	}
 
 	private void removeTask(String name) {

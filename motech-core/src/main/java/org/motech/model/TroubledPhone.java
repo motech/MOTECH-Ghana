@@ -7,6 +7,7 @@ public class TroubledPhone {
 	private Long id;
 	private String phoneNumber;
 	private Timestamp creationTime;
+	private Integer sendFailures;
 
 	public Long getId() {
 		return id;
@@ -30,6 +31,14 @@ public class TroubledPhone {
 
 	public void setCreationTime(Timestamp creationTime) {
 		this.creationTime = creationTime;
+	}
+
+	public Integer getSendFailures() {
+		return sendFailures;
+	}
+
+	public void setSendFailures(Integer sendFailures) {
+		this.sendFailures = sendFailures;
 	}
 
 }

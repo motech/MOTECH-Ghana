@@ -25,6 +25,7 @@ import org.motech.messaging.MessageStatus;
 import org.motech.model.LogType;
 import org.motech.model.NotificationType;
 import org.motech.model.PhoneType;
+import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.MotechService;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttributeType;
@@ -118,26 +119,51 @@ public class NotificationTask extends AbstractTask {
 						XMLGregorianCalendar moibleStartDate = null;
 						XMLGregorianCalendar mobileEndDate = null;
 
-						motechLog
-								.setMessage("Scheduled Message Notification, Patient Phone: "
-										+ patientPhone + ": " + messageId);
-
-						try {
-							Context.getService(MotechService.class)
-									.getMobileService().sendPatientMessage(
-											messageId, patientName,
-											patientPhone, patientNumberType,
-											langCode, mediaType,
-											mobileNotificationType,
-											moibleStartDate, mobileEndDate);
-							shouldAttemptMessage
-									.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
-							motechLog.setType(LogType.success);
-						} catch (Exception e) {
-							log.error("Mobile patient message failure", e);
-							shouldAttemptMessage
-									.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
+						// Cancel message if patient phone is considered
+						// troubled
+						TroubledPhone troubledPhone = Context.getService(
+								MotechService.class).getTroubledPhone(
+								patientPhone);
+						Integer maxFailures = Integer
+								.parseInt(Context
+										.getAdministrationService()
+										.getGlobalProperty(
+												"motechmodule.troubled_phone_failures"));
+						if (troubledPhone != null
+								&& troubledPhone.getSendFailures() >= maxFailures) {
+							motechLog
+									.setMessage("Attempt to send to Troubled Phone, Patient Phone: "
+											+ patientPhone
+											+ ", Message cancelled: "
+											+ messageId);
 							motechLog.setType(LogType.failure);
+
+							shouldAttemptMessage
+									.setAttemptStatus(MessageStatus.CANCELLED);
+
+						} else {
+							motechLog
+									.setMessage("Scheduled Message Notification, Patient Phone: "
+											+ patientPhone + ": " + messageId);
+
+							try {
+								Context.getService(MotechService.class)
+										.getMobileService().sendPatientMessage(
+												messageId, patientName,
+												patientPhone,
+												patientNumberType, langCode,
+												mediaType,
+												mobileNotificationType,
+												moibleStartDate, mobileEndDate);
+								shouldAttemptMessage
+										.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
+								motechLog.setType(LogType.success);
+							} catch (Exception e) {
+								log.error("Mobile patient message failure", e);
+								shouldAttemptMessage
+										.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
+								motechLog.setType(LogType.failure);
+							}
 						}
 
 					} else if (nurse != null) {
@@ -151,26 +177,50 @@ public class NotificationTask extends AbstractTask {
 						XMLGregorianCalendar moibleStartDate = null;
 						XMLGregorianCalendar mobileEndDate = null;
 
-						motechLog
-								.setMessage("Scheduled Message Notification, Nurse Phone: "
-										+ nursePhone + ": " + messageId);
-
-						try {
-							Context.getService(MotechService.class)
-									.getMobileService().sendCHPSMessage(
-											messageId, nurseName, nursePhone,
-											null, langCode, mediaType,
-											mobileNotificationType,
-											moibleStartDate, mobileEndDate);
-
-							shouldAttemptMessage
-									.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
-							motechLog.setType(LogType.success);
-						} catch (Exception e) {
-							log.error("Mobile nurse message failure", e);
-							shouldAttemptMessage
-									.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
+						// Cancel message if nurse phone is considered troubled
+						TroubledPhone troubledPhone = Context.getService(
+								MotechService.class).getTroubledPhone(
+								nursePhone);
+						Integer maxFailures = Integer
+								.parseInt(Context
+										.getAdministrationService()
+										.getGlobalProperty(
+												"motechmodule.troubled_phone_failures"));
+						if (troubledPhone != null
+								&& troubledPhone.getSendFailures() >= maxFailures) {
+							motechLog
+									.setMessage("Attempt to send to Troubled Phone, Nurse Phone: "
+											+ nursePhone
+											+ ", Message cancelled: "
+											+ messageId);
 							motechLog.setType(LogType.failure);
+
+							shouldAttemptMessage
+									.setAttemptStatus(MessageStatus.CANCELLED);
+
+						} else {
+							motechLog
+									.setMessage("Scheduled Message Notification, Nurse Phone: "
+											+ nursePhone + ": " + messageId);
+
+							try {
+								Context.getService(MotechService.class)
+										.getMobileService().sendCHPSMessage(
+												messageId, nurseName,
+												nursePhone, null, langCode,
+												mediaType,
+												mobileNotificationType,
+												moibleStartDate, mobileEndDate);
+
+								shouldAttemptMessage
+										.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
+								motechLog.setType(LogType.success);
+							} catch (Exception e) {
+								log.error("Mobile nurse message failure", e);
+								shouldAttemptMessage
+										.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
+								motechLog.setType(LogType.failure);
+							}
 						}
 
 					}
