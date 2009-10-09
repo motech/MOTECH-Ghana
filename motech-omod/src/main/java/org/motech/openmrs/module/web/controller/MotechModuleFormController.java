@@ -23,13 +23,13 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.model.Blackout;
-import org.motech.model.Gender;
-import org.motech.model.NotificationType;
-import org.motech.model.PhoneType;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
-import org.motech.ws.RegistrarService;
+import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.Gender;
+import org.motechproject.ws.MediaType;
+import org.motechproject.ws.server.RegistrarService;
 import org.openmrs.EncounterType;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.api.context.Context;
@@ -116,7 +116,7 @@ public class MotechModuleFormController {
 			@RequestParam("patientPhone") String patientPhone,
 			@RequestParam("patientPhoneType") String patientPhoneType,
 			@RequestParam("language") String language,
-			@RequestParam("notificationType") String notificationType,
+			@RequestParam("mediaType") String mediaType,
 			@RequestParam("dateOfBirth") String dateOfBirth,
 			@RequestParam("dueDate") String dueDate,
 			@RequestParam("parity") String parity,
@@ -128,10 +128,10 @@ public class MotechModuleFormController {
 		registrarClient.registerNurse(nurseName, nursePhone, clinicName);
 
 		registrarClient.registerPatient(nursePhone, serialId, name, community,
-				location, dateFormat.parse(dateOfBirth), Gender.female, Integer
-						.valueOf(nhis), patientPhone, PhoneType
-						.valueOf(patientPhoneType), language, NotificationType
-						.valueOf(notificationType));
+				location, dateFormat.parse(dateOfBirth), Gender.FEMALE, Integer
+						.valueOf(nhis), patientPhone, ContactNumberType
+						.valueOf(patientPhoneType), language, MediaType
+						.valueOf(mediaType));
 		registrarClient.registerPregnancy(nursePhone, new Date(), serialId,
 				dateFormat.parse(dueDate), Integer.valueOf(parity), Double
 						.valueOf(hemoglobin));
@@ -170,14 +170,14 @@ public class MotechModuleFormController {
 			@RequestParam("dateOfBirth") String dateOfBirth,
 			@RequestParam("gender") String gender,
 			@RequestParam("language") String language,
-			@RequestParam("notificationType") String notificationType)
+			@RequestParam("mediaType") String mediaType)
 			throws NumberFormatException, ParseException {
 		log.debug("Register Patient");
 		registrarClient.registerPatient(nursePhone, serialId, name, community,
 				location, dateFormat.parse(dateOfBirth),
 				Gender.valueOf(gender), Integer.valueOf(nhis), patientPhone,
-				PhoneType.valueOf(patientPhoneType), language, NotificationType
-						.valueOf(notificationType));
+				ContactNumberType.valueOf(patientPhoneType), language,
+				MediaType.valueOf(mediaType));
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 

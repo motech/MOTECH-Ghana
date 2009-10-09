@@ -2,6 +2,8 @@ package org.motech.model;
 
 import java.util.Date;
 
+import org.motechproject.ws.LogType;
+
 /**
  * Represents an application log message as opposed to system-level log
  * messages. This type of message is intended to be persisted to a logging table

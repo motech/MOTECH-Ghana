@@ -97,8 +97,8 @@ public class MotechModuleActivator implements Activator {
 			createPersonAttributeType("Phone Type",
 					"A person's cell phone type (personal or shared).",
 					"java.lang.String", admin);
-			createPersonAttributeType("Notification Type",
-					"A person's notification type (text or voice).",
+			createPersonAttributeType("Media Type",
+					"A person's preferred phone media type (text or voice).",
 					"java.lang.String", admin);
 
 			log.info("Verifying Patient Identifier Exist");

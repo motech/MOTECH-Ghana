@@ -11,11 +11,12 @@ import javax.jws.soap.SOAPBinding.Use;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motech.model.Gender;
-import org.motech.model.LogType;
-import org.motech.model.NotificationType;
-import org.motech.model.PhoneType;
 import org.motech.svc.RegistrarBean;
+import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.Gender;
+import org.motechproject.ws.LogType;
+import org.motechproject.ws.MediaType;
+import org.motechproject.ws.server.RegistrarService;
 
 /**
  * This is the service enpoint implementation for the major motech server web
@@ -25,7 +26,7 @@ import org.motech.svc.RegistrarBean;
  * /ws/RegistrarService in the metadata/moduleApplicationContext.xml file.
  */
 
-@WebService
+@WebService(targetNamespace = "http://server.ws.motechproject.org/")
 @SOAPBinding(style = Style.RPC, use = Use.LITERAL)
 public class RegistrarWebService implements RegistrarService {
 
@@ -60,13 +61,13 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "gender") Gender gender,
 			@WebParam(name = "nhis") Integer nhis,
 			@WebParam(name = "phoneNumber") String phoneNumber,
-			@WebParam(name = "phoneType") PhoneType phoneType,
+			@WebParam(name = "contactNumberType") ContactNumberType contactNumberType,
 			@WebParam(name = "language") String language,
-			@WebParam(name = "notificationType") NotificationType notificationType) {
+			@WebParam(name = "mediaType") MediaType mediaType) {
 
 		registrarBean.registerPatient(nursePhoneNumber, serialId, name,
 				community, location, dateOfBirth, gender, nhis, phoneNumber,
-				phoneType, language, notificationType);
+				contactNumberType, language, mediaType);
 	}
 
 	@WebMethod

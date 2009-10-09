@@ -25,11 +25,10 @@ import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Blackout;
 import org.motech.model.Log;
 import org.motech.model.TroubledPhone;
+import org.motechproject.ws.mobile.MessageService;
 import org.openmrs.User;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dreamoval.motech.omi.ws.client.MessageServiceImpl;
 
 /**
  * A service interface for much of 'real work' for the motech server OpenMRS
@@ -93,7 +92,7 @@ public interface MotechService extends OpenmrsService {
 	@Transactional(readOnly = true)
 	User getUserByPhoneNumber(String phoneNumber);
 
-	MessageServiceImpl getMobileService();
+	MessageService getMobileService();
 
 	Regimen getRegimen(String regimenName);
 

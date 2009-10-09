@@ -16,11 +16,12 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.motech.model.Gender;
-import org.motech.model.LogType;
-import org.motech.model.NotificationType;
-import org.motech.model.PhoneType;
 import org.motech.svc.RegistrarBean;
+import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.Gender;
+import org.motechproject.ws.LogType;
+import org.motechproject.ws.MediaType;
+import org.motechproject.ws.server.RegistrarService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -90,20 +91,20 @@ public class RegistrarServiceTest {
 	public void testRegisterPatient() {
 		String nPhone = "12075551212", serialId = "387946894", name = "Francis", community = "somepeople", location = "somewhere", pPhone = "120755512525";
 		Date dob = new Date();
-		Gender gender = Gender.female;
+		Gender gender = Gender.FEMALE;
 		Integer nhis = 3;
-		PhoneType phoneType = PhoneType.personal;
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		String language = "English";
-		NotificationType notificationType = NotificationType.text;
+		MediaType mediaType = MediaType.TEXT;
 
 		registrarBean.registerPatient(nPhone, serialId, name, community,
 				location, dob, gender, nhis, pPhone, phoneType, language,
-				notificationType);
+				mediaType);
 
 		replay(registrarBean);
 
 		regWs.registerPatient(nPhone, serialId, name, community, location, dob,
-				gender, nhis, pPhone, phoneType, language, notificationType);
+				gender, nhis, pPhone, phoneType, language, mediaType);
 
 		verify(registrarBean);
 	}
@@ -146,7 +147,7 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testLog() {
-		LogType type = LogType.success;
+		LogType type = LogType.SUCCESS;
 		String msg = "logging over ws is slow";
 
 		registrarBean.log(type, msg);

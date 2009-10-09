@@ -17,13 +17,13 @@ import junit.framework.TestCase;
 
 import org.easymock.Capture;
 import org.motech.model.Blackout;
-import org.motech.model.Gender;
-import org.motech.model.NotificationType;
-import org.motech.model.PhoneType;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
-import org.motech.ws.RegistrarService;
+import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.Gender;
+import org.motechproject.ws.MediaType;
+import org.motechproject.ws.server.RegistrarService;
 import org.springframework.ui.ModelMap;
 
 public class MotechModuleFormControllerTest extends TestCase {
@@ -52,14 +52,14 @@ public class MotechModuleFormControllerTest extends TestCase {
 	public void testQuickTest() throws Exception {
 		String nurseName = "Nurse Name", nursePhone = "Nurse Phone", clinicName = "Clinic Name";
 		String serialId = "Serial Id", name = "Patient Name", community = "Community", location = "Location", dateOfBirth = "01/01/2009";
-		String nhis = "1", patientPhone = "Patient Phone", patientPhoneType = "personal", language = "Language", notificationType = "text";
+		String nhis = "1", patientPhone = "Patient Phone", patientPhoneType = "PERSONAL", language = "Language", mediaType = "TEXT";
 		String dueDate = "01/01/2009", parity = "1", hemoglobin = "1.1";
 
 		Capture<Date> dateOfBirthCapture = new Capture<Date>();
 		Capture<Gender> genderCapture = new Capture<Gender>();
 		Capture<Integer> nhisCapture = new Capture<Integer>();
-		Capture<PhoneType> phoneTypeCapture = new Capture<PhoneType>();
-		Capture<NotificationType> notificationTypeCapture = new Capture<NotificationType>();
+		Capture<ContactNumberType> phoneTypeCapture = new Capture<ContactNumberType>();
+		Capture<MediaType> mediaTypeCapture = new Capture<MediaType>();
 		Capture<Date> dueDateCapture = new Capture<Date>();
 		Capture<Integer> parityCapture = new Capture<Integer>();
 		Capture<Double> hemoglobinCapture = new Capture<Double>();
@@ -71,7 +71,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 				capture(dateOfBirthCapture), capture(genderCapture),
 				capture(nhisCapture), eq(patientPhone),
 				capture(phoneTypeCapture), eq(language),
-				capture(notificationTypeCapture));
+				capture(mediaTypeCapture));
 		registrarService.registerPregnancy(eq(nursePhone), (Date) anyObject(),
 				eq(serialId), capture(dueDateCapture), capture(parityCapture),
 				capture(hemoglobinCapture));
@@ -86,8 +86,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 
 		controller.quickTest(nurseName, nursePhone, clinicName, serialId, name,
 				community, location, nhis, patientPhone, patientPhoneType,
-				language, notificationType, dateOfBirth, dueDate, parity,
-				hemoglobin);
+				language, mediaType, dateOfBirth, dueDate, parity, hemoglobin);
 
 		verify(registrarService);
 
@@ -95,11 +94,10 @@ public class MotechModuleFormControllerTest extends TestCase {
 
 		assertEquals(dateOfBirth, dateFormat.format(dateOfBirthCapture
 				.getValue()));
-		assertEquals(Gender.female, genderCapture.getValue());
+		assertEquals(Gender.FEMALE, genderCapture.getValue());
 		assertEquals(nhis, nhisCapture.getValue().toString());
 		assertEquals(patientPhoneType, phoneTypeCapture.getValue().toString());
-		assertEquals(notificationType, notificationTypeCapture.getValue()
-				.toString());
+		assertEquals(mediaType, mediaTypeCapture.getValue().toString());
 		assertEquals(dueDate, dateFormat.format(dueDateCapture.getValue()));
 		assertEquals(parity, parityCapture.getValue().toString());
 		assertEquals(hemoglobin, hemoglobinCapture.getValue().toString());
@@ -132,27 +130,27 @@ public class MotechModuleFormControllerTest extends TestCase {
 	public void testRegisterPatient() throws Exception {
 		String nursePhone = "Nurse Phone";
 		String serialId = "Serial Id", name = "Patient Name", community = "Community", location = "Location", dateOfBirth = "01/01/2009";
-		String nhis = "1", patientPhone = "Patient Phone", patientPhoneType = "personal", language = "Language", notificationType = "text";
-		String gender = "female";
+		String nhis = "1", patientPhone = "Patient Phone", patientPhoneType = "PERSONAL", language = "Language", mediaType = "TEXT";
+		String gender = "FEMALE";
 
 		Capture<Date> dateOfBirthCapture = new Capture<Date>();
 		Capture<Gender> genderCapture = new Capture<Gender>();
 		Capture<Integer> nhisCapture = new Capture<Integer>();
-		Capture<PhoneType> phoneTypeCapture = new Capture<PhoneType>();
-		Capture<NotificationType> notificationTypeCapture = new Capture<NotificationType>();
+		Capture<ContactNumberType> phoneTypeCapture = new Capture<ContactNumberType>();
+		Capture<MediaType> mediaTypeCapture = new Capture<MediaType>();
 
 		registrarService.registerPatient(eq(nursePhone), eq(serialId),
 				eq(name), eq(community), eq(location),
 				capture(dateOfBirthCapture), capture(genderCapture),
 				capture(nhisCapture), eq(patientPhone),
 				capture(phoneTypeCapture), eq(language),
-				capture(notificationTypeCapture));
+				capture(mediaTypeCapture));
 
 		replay(registrarService);
 
 		controller.registerPatient(nursePhone, serialId, name, community,
 				location, nhis, patientPhone, patientPhoneType, dateOfBirth,
-				gender, language, notificationType);
+				gender, language, mediaType);
 
 		verify(registrarService);
 
@@ -163,8 +161,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 		assertEquals(gender, genderCapture.getValue().toString());
 		assertEquals(nhis, nhisCapture.getValue().toString());
 		assertEquals(patientPhoneType, phoneTypeCapture.getValue().toString());
-		assertEquals(notificationType, notificationTypeCapture.getValue()
-				.toString());
+		assertEquals(mediaType, mediaTypeCapture.getValue().toString());
 	}
 
 	public void testRegisterPregnancy() throws Exception {

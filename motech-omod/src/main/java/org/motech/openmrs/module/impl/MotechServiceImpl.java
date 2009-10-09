@@ -28,11 +28,10 @@ import org.motech.model.Log;
 import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
 import org.motech.openmrs.module.MotechService;
+import org.motechproject.ws.mobile.MessageService;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
-
-import com.dreamoval.motech.omi.ws.client.MessageServiceImpl;
 
 /**
  * An implementation of the MotechService interface using OpenMRS.
@@ -41,7 +40,7 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		MotechService {
 
 	private MotechDAO motechDAO;
-	private MessageServiceImpl mobileService;
+	private MessageService mobileService;
 	private Map<String, Regimen> regimens;
 
 	public MotechDAO getMotechDAO() {
@@ -151,11 +150,11 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return Context.getUserService().getUser(userId);
 	}
 
-	public MessageServiceImpl getMobileService() {
+	public MessageService getMobileService() {
 		return mobileService;
 	}
 
-	public void setMobileService(MessageServiceImpl mobileService) {
+	public void setMobileService(MessageService mobileService) {
 		this.mobileService = mobileService;
 	}
 

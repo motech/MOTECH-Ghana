@@ -15,12 +15,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.motech.messaging.MessageStatus;
 import org.motech.messaging.ScheduledMessage;
-import org.motech.model.Gender;
-import org.motech.model.NotificationType;
-import org.motech.model.PhoneType;
 import org.motech.openmrs.module.MotechModuleActivator;
 import org.motech.openmrs.module.MotechService;
 import org.motech.svc.RegistrarBean;
+import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.Gender;
+import org.motechproject.ws.MediaType;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.api.context.Context;
@@ -83,8 +83,8 @@ public class RegimenUpdateTaskTest extends BaseModuleContextSensitiveTest {
 
 		regService.registerPatient("nursePhoneNumber", "serialId",
 				"patientname", "community", "location", new Date(),
-				Gender.female, 1, "patientphoneNumber", PhoneType.personal,
-				"language", NotificationType.text);
+				Gender.FEMALE, 1, "patientphoneNumber",
+				ContactNumberType.PERSONAL, "language", MediaType.TEXT);
 
 		assertEquals(1, Context.getPatientService().getAllPatients().size());
 

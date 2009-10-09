@@ -7,13 +7,14 @@ import java.util.List;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageNotFoundException;
 import org.motech.messaging.MessageStatus;
-import org.motech.model.Gender;
-import org.motech.model.LogType;
-import org.motech.model.NotificationType;
-import org.motech.model.PhoneType;
+import org.motech.model.GenderTypeConverter;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
+import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.Gender;
+import org.motechproject.ws.LogType;
+import org.motechproject.ws.MediaType;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
@@ -72,7 +73,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		nurse.setUsername(name);
 
 		// TODO: Nurse gender hardcoded, required for Person
-		nurse.setGender(Gender.female.toOpenMRSString());
+		nurse.setGender(GenderTypeConverter.toOpenMRSString(Gender.FEMALE));
 
 		PersonName personName = new PersonName();
 		personName.setGivenName(name);
@@ -105,8 +106,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public void registerPatient(String nursePhoneNumber, String serialId,
 			String name, String community, String location, Date dateOfBirth,
 			Gender gender, Integer nhis, String phoneNumber,
-			PhoneType phoneType, String language,
-			NotificationType notificationType) {
+			ContactNumberType contactNumberType, String language,
+			MediaType mediaType) {
 
 		PatientService patientService = contextService.getPatientService();
 		MotechService motechService = contextService.getMotechService();
@@ -144,7 +145,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		patient.setBirthdate(dateOfBirth);
 
 		// Should be "M" or "F"
-		patient.setGender(gender.toOpenMRSString());
+		patient.setGender(GenderTypeConverter.toOpenMRSString(gender));
 
 		// Must be created previously through API or UI to lookup
 		PersonAttributeType nhisAttrType = personService
@@ -160,17 +161,17 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		PersonAttributeType phoneTypeAttrType = personService
 				.getPersonAttributeTypeByName("Phone Type");
-		patient.addAttribute(new PersonAttribute(phoneTypeAttrType, phoneType
-				.toString()));
+		patient.addAttribute(new PersonAttribute(phoneTypeAttrType,
+				contactNumberType.toString()));
 
 		PersonAttributeType languageAttrType = personService
 				.getPersonAttributeTypeByName("Language");
 		patient.addAttribute(new PersonAttribute(languageAttrType, language));
 
-		PersonAttributeType notificationTypeAttrType = personService
-				.getPersonAttributeTypeByName("Notification Type");
-		patient.addAttribute(new PersonAttribute(notificationTypeAttrType,
-				notificationType.toString()));
+		PersonAttributeType mediaTypeAttrType = personService
+				.getPersonAttributeTypeByName("Media Type");
+		patient.addAttribute(new PersonAttribute(mediaTypeAttrType, mediaType
+				.toString()));
 
 		patientService.savePatient(patient);
 	}

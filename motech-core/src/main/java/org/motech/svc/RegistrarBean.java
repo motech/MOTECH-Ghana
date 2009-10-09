@@ -2,10 +2,10 @@ package org.motech.svc;
 
 import java.util.Date;
 
-import org.motech.model.Gender;
-import org.motech.model.LogType;
-import org.motech.model.NotificationType;
-import org.motech.model.PhoneType;
+import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.Gender;
+import org.motechproject.ws.LogType;
+import org.motechproject.ws.MediaType;
 
 /**
  * The major internal service interface for the motech server project at this
@@ -25,8 +25,8 @@ public interface RegistrarBean {
 	public void registerPatient(String nursePhoneNumber, String serialId,
 			String name, String community, String location, Date dateOfBirth,
 			Gender gender, Integer nhis, String phoneNumber,
-			PhoneType phoneType, String language,
-			NotificationType notificationType);
+			ContactNumberType contactNumberType, String language,
+			MediaType mediaType);
 
 	public void recordMaternalVisit(String nursePhoneNumber, Date date,
 			String serialId, Boolean tetanus, Boolean ipt, Boolean itn,

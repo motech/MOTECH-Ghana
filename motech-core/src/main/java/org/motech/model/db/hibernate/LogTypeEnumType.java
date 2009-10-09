@@ -1,6 +1,6 @@
 package org.motech.model.db.hibernate;
 
-import org.motech.model.LogType;
+import org.motechproject.ws.LogType;
 
 /**
  * An instantiated usertype, allowing storing readable values for the LogType

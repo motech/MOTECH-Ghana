@@ -21,14 +21,15 @@ import org.motech.messaging.Message;
 import org.motech.messaging.MessageNotFoundException;
 import org.motech.messaging.MessageStatus;
 import org.motech.messaging.ScheduledMessage;
-import org.motech.model.Gender;
+import org.motech.model.GenderTypeConverter;
 import org.motech.model.Log;
-import org.motech.model.LogType;
-import org.motech.model.NotificationType;
-import org.motech.model.PhoneType;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
+import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.Gender;
+import org.motechproject.ws.LogType;
+import org.motechproject.ws.MediaType;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
@@ -71,7 +72,7 @@ public class RegistrarBeanTest extends TestCase {
 	String nhisAttrName = "NHIS Number";
 	String languageAttrName = "Language";
 	String phoneTypeAttrName = "Phone Type";
-	String notificationTypeAttrName = "Notification Type";
+	String mediaTypeAttrName = "Media Type";
 	String providerRoleName = "Provider";
 	String matVisitTypeName = "MATERNALVISIT";
 	String immunizationConceptName = "IMMUNIZATIONS ORDERED";
@@ -97,7 +98,7 @@ public class RegistrarBeanTest extends TestCase {
 	PersonAttributeType nhisAttributeType;
 	PersonAttributeType languageAttributeType;
 	PersonAttributeType phoneTypeAttributeType;
-	PersonAttributeType notificationTypeAttributeType;
+	PersonAttributeType mediaTypeAttributeType;
 	Role providerRole;
 	EncounterType matVisitType;
 	ConceptName immunizationConceptNameObj;
@@ -163,8 +164,8 @@ public class RegistrarBeanTest extends TestCase {
 		phoneTypeAttributeType = new PersonAttributeType(6);
 		phoneTypeAttributeType.setName(phoneTypeAttrName);
 
-		notificationTypeAttributeType = new PersonAttributeType(7);
-		notificationTypeAttributeType.setName(notificationTypeAttrName);
+		mediaTypeAttributeType = new PersonAttributeType(7);
+		mediaTypeAttributeType.setName(mediaTypeAttrName);
 
 		providerRole = new Role(providerRoleName);
 
@@ -311,11 +312,11 @@ public class RegistrarBeanTest extends TestCase {
 
 		String nPhone = "12075551212", serialId = "dbvhjdg4784", name = "Gaylord", community = "A Community", location = "A Location", pPhone = "120773733373";
 		Date dob = new Date();
-		Gender gender = Gender.male;
+		Gender gender = Gender.MALE;
 		Integer nhis = 28;
-		PhoneType phoneType = PhoneType.personal;
+		ContactNumberType contactNumberType = ContactNumberType.PERSONAL;
 		String language = "English";
-		NotificationType notificationType = NotificationType.text;
+		MediaType mediaType = MediaType.TEXT;
 
 		Location locationObj = new Location(1);
 		locationObj.setName(location);
@@ -348,10 +349,8 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(phoneTypeAttributeType);
 		expect(personService.getPersonAttributeTypeByName(languageAttrName))
 				.andReturn(languageAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(notificationTypeAttrName))
-				.andReturn(notificationTypeAttributeType);
+		expect(personService.getPersonAttributeTypeByName(mediaTypeAttrName))
+				.andReturn(mediaTypeAttributeType);
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				new Patient());
 
@@ -359,8 +358,8 @@ public class RegistrarBeanTest extends TestCase {
 				locationService);
 
 		regBean.registerPatient(nPhone, serialId, name, community, location,
-				dob, gender, nhis, pPhone, phoneType, language,
-				notificationType);
+				dob, gender, nhis, pPhone, contactNumberType, language,
+				mediaType);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService);
@@ -374,15 +373,16 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(pPhone, patient.getAttribute(phoneAttributeType)
 				.getValue());
 		assertEquals(dob, patient.getBirthdate());
-		assertEquals(gender.toOpenMRSString(), patient.getGender());
+		assertEquals(GenderTypeConverter.toOpenMRSString(gender), patient
+				.getGender());
 		assertEquals(nhis.toString(), patient.getAttribute(nhisAttributeType)
 				.getValue());
-		assertEquals(phoneType.toString(), patient.getAttribute(
+		assertEquals(contactNumberType.toString(), patient.getAttribute(
 				phoneTypeAttributeType).getValue());
 		assertEquals(language, patient.getAttribute(languageAttributeType)
 				.getValue());
-		assertEquals(notificationType.toString(), patient.getAttribute(
-				notificationTypeAttributeType).getValue());
+		assertEquals(mediaType.toString(), patient.getAttribute(
+				mediaTypeAttributeType).getValue());
 	}
 
 	public void testRegisterMaternalVisit() {
@@ -789,7 +789,7 @@ public class RegistrarBeanTest extends TestCase {
 	}
 
 	public void testLog() {
-		LogType type = LogType.failure;
+		LogType type = LogType.FAILURE;
 		String message = "A simple message";
 		Date beforeCall = new Date();
 

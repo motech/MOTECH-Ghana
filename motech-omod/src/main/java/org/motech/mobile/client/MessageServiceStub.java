@@ -1,14 +1,13 @@
 package org.motech.mobile.client;
 
-import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.dreamoval.motech.omi.ws.client.ArrayList;
-import com.dreamoval.motech.omi.ws.client.ContactNumberType;
-import com.dreamoval.motech.omi.ws.client.MessageServiceImpl;
-import com.dreamoval.motech.omi.ws.client.MessageType;
+import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.MediaType;
+import org.motechproject.ws.Patient;
+import org.motechproject.ws.mobile.MessageService;
 
 /**
  * A stub implementation of the motech mobile message interface. This enables us
@@ -16,16 +15,16 @@ import com.dreamoval.motech.omi.ws.client.MessageType;
  * of an active we service endpoint. The intent is that when actually deploying
  * the application, it will be reconfigured to point to the real endpoint.
  */
-public class MessageServiceStub implements MessageServiceImpl {
+public class MessageServiceStub implements MessageService {
 
 	private static final long serialVersionUID = 1L;
 
 	private static Log log = LogFactory.getLog(MessageServiceStub.class);
 
-	public String sendCHPSMessage(long messageId, String workerName,
-			String workerNumber, ArrayList patientList, String langCode,
-			MessageType mediaType, long notificationType,
-			XMLGregorianCalendar startDate, XMLGregorianCalendar endDate) {
+	public String sendCHPSMessage(Long messageId, String workerName,
+			String workerNumber, Patient[] patients, String langCode,
+			MediaType mediaType, Long notificationType, Date startDate,
+			Date endDate) {
 
 		log.info("Motech Mobile Web Service Message\n"
 				+ "---------------------------\n" + "<sendCHPSMessage>\n"
@@ -59,10 +58,10 @@ public class MessageServiceStub implements MessageServiceImpl {
 		return "1";
 	}
 
-	public String sendPatientMessage(long messageId, String patientName,
+	public String sendPatientMessage(Long messageId, String patientName,
 			String patientNumber, ContactNumberType patientNumberType,
-			String langCode, MessageType mediaType, long notificationType,
-			XMLGregorianCalendar startDate, XMLGregorianCalendar endDate) {
+			String langCode, MediaType mediaType, Long notificationType,
+			Date startDate, Date endDate) {
 
 		log.info("Motech Mobile Web Service Message\n"
 				+ "---------------------------\n" + "<sendPatientMessage>\n"

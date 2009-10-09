@@ -16,8 +16,8 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>com.dreamoval.motech</groupId>
-			<artifactId>motech-mobile-wsclient</artifactId>
+			<groupId>org.motechproject</groupId>
+			<artifactId>motech-wsapi</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>

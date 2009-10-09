@@ -12,10 +12,10 @@
 
 	<bean id="registrarClient"
 		class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
-		<property name="serviceInterface" value="org.motech.ws.RegistrarService" />
+		<property name="serviceInterface" value="org.motechproject.ws.server.RegistrarService" />
 		<property name="wsdlDocumentUrl"
 			value="http://localhost:8880/openmrs/ws/RegistrarService?wsdl" />
-		<property name="namespaceUri" value="http://ws.motech.org/" />
+		<property name="namespaceUri" value="http://server.ws.motechproject.org/" />
 		<property name="serviceName" value="RegistrarWebServiceService" />
 		<property name="portName" value="RegistrarWebServicePort" />
 		<property name="lookupServiceOnStartup" value="false" />

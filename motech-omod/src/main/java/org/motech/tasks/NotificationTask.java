@@ -16,26 +16,21 @@ package org.motech.tasks;
 import java.util.Date;
 import java.util.List;
 
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageStatus;
-import org.motech.model.LogType;
-import org.motech.model.NotificationType;
-import org.motech.model.PhoneType;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.MotechService;
+import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.LogType;
+import org.motechproject.ws.MediaType;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.scheduler.tasks.AbstractTask;
 import org.openmrs.util.OpenmrsConstants;
-
-import com.dreamoval.motech.omi.ws.client.ContactNumberType;
-import com.dreamoval.motech.omi.ws.client.MessageType;
 
 /**
  * Defines a task implementation that OpenMRS can execute using the built-in
@@ -84,9 +79,8 @@ public class NotificationTask extends AbstractTask {
 								"Phone Number");
 				PersonAttributeType phoneType = Context.getPersonService()
 						.getPersonAttributeTypeByName("Phone Type");
-				PersonAttributeType notificationType = Context
-						.getPersonService().getPersonAttributeTypeByName(
-								"Notification Type");
+				PersonAttributeType mediaAttrType = Context.getPersonService()
+						.getPersonAttributeTypeByName("Media Type");
 
 				for (Message shouldAttemptMessage : shouldAttemptMessages) {
 
@@ -107,17 +101,17 @@ public class NotificationTask extends AbstractTask {
 								phoneNumberType).getValue();
 						String phoneTypeString = patient
 								.getAttribute(phoneType).getValue();
-						String notificationTypeString = patient.getAttribute(
-								notificationType).getValue();
-						ContactNumberType patientNumberType = PhoneType
-								.valueOf(phoneTypeString).toContactNumberType();
+						String mediaTypeString = patient.getAttribute(
+								mediaAttrType).getValue();
+						ContactNumberType patientNumberType = ContactNumberType
+								.valueOf(phoneTypeString);
 
 						String langCode = null;
-						MessageType mediaType = NotificationType.valueOf(
-								notificationTypeString).toMessageType();
-						long mobileNotificationType = 0;
-						XMLGregorianCalendar moibleStartDate = null;
-						XMLGregorianCalendar mobileEndDate = null;
+						MediaType mediaType = MediaType
+								.valueOf(mediaTypeString);
+						Long notificationType = 0L;
+						Date messageStartDate = null;
+						Date messageEndDate = null;
 
 						// Cancel message if patient phone is considered
 						// troubled
@@ -136,7 +130,7 @@ public class NotificationTask extends AbstractTask {
 											+ patientPhone
 											+ ", Message cancelled: "
 											+ messageId);
-							motechLog.setType(LogType.failure);
+							motechLog.setType(LogType.FAILURE);
 
 							shouldAttemptMessage
 									.setAttemptStatus(MessageStatus.CANCELLED);
@@ -152,17 +146,17 @@ public class NotificationTask extends AbstractTask {
 												messageId, patientName,
 												patientPhone,
 												patientNumberType, langCode,
-												mediaType,
-												mobileNotificationType,
-												moibleStartDate, mobileEndDate);
+												mediaType, notificationType,
+												messageStartDate,
+												messageEndDate);
 								shouldAttemptMessage
 										.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
-								motechLog.setType(LogType.success);
+								motechLog.setType(LogType.SUCCESS);
 							} catch (Exception e) {
 								log.error("Mobile patient message failure", e);
 								shouldAttemptMessage
 										.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
-								motechLog.setType(LogType.failure);
+								motechLog.setType(LogType.FAILURE);
 							}
 						}
 
@@ -171,11 +165,12 @@ public class NotificationTask extends AbstractTask {
 								.getValue();
 						String nurseName = nurse.getPersonName().toString();
 
+						org.motechproject.ws.Patient[] patients = new org.motechproject.ws.Patient[0];
 						String langCode = null;
-						MessageType mediaType = null;
-						long mobileNotificationType = 0;
-						XMLGregorianCalendar moibleStartDate = null;
-						XMLGregorianCalendar mobileEndDate = null;
+						MediaType mediaType = null;
+						Long notificationType = 0L;
+						Date messageStartDate = null;
+						Date messageEndDate = null;
 
 						// Cancel message if nurse phone is considered troubled
 						TroubledPhone troubledPhone = Context.getService(
@@ -193,7 +188,7 @@ public class NotificationTask extends AbstractTask {
 											+ nursePhone
 											+ ", Message cancelled: "
 											+ messageId);
-							motechLog.setType(LogType.failure);
+							motechLog.setType(LogType.FAILURE);
 
 							shouldAttemptMessage
 									.setAttemptStatus(MessageStatus.CANCELLED);
@@ -207,19 +202,19 @@ public class NotificationTask extends AbstractTask {
 								Context.getService(MotechService.class)
 										.getMobileService().sendCHPSMessage(
 												messageId, nurseName,
-												nursePhone, null, langCode,
-												mediaType,
-												mobileNotificationType,
-												moibleStartDate, mobileEndDate);
+												nursePhone, patients, langCode,
+												mediaType, notificationType,
+												messageStartDate,
+												messageEndDate);
 
 								shouldAttemptMessage
 										.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
-								motechLog.setType(LogType.success);
+								motechLog.setType(LogType.SUCCESS);
 							} catch (Exception e) {
 								log.error("Mobile nurse message failure", e);
 								shouldAttemptMessage
 										.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
-								motechLog.setType(LogType.failure);
+								motechLog.setType(LogType.FAILURE);
 							}
 						}
 

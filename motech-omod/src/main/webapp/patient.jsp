@@ -48,8 +48,8 @@
 		<td><label for="patientPhoneType">Phone Type:</label></td>
 		<td>
 			<select name="patientPhoneType">
-				<option value="personal">Personal</option>
-				<option value="shared">Shared</option>
+				<option value="PERSONAL">Personal</option>
+				<option value="SHARED">Shared</option>
 			</select>
 		</td>
 	</tr>
@@ -61,8 +61,8 @@
 		<td><label for="gender">Gender:</label></td>
 		<td>
 			<select name="gender">
-				<option value="male">Male</option>
-				<option value="female">Female</option>
+				<option value="MALE">Male</option>
+				<option value="FEMALE">Female</option>
 			</select>
 		</td>
 	</tr>
@@ -71,11 +71,11 @@
 		<td><input name="language" value="English" /></td>
 	</tr>
 	<tr>
-		<td><label for="notificationType">Preferred Notification Type:</label></td>
+		<td><label for="mediaType">Preferred Media Type:</label></td>
 		<td>
-			<select name="notificationType">
-				<option value="text">Text</option>
-				<option value="voice">Voice</option>
+			<select name="mediaType">
+				<option value="TEXT">Text</option>
+				<option value="VOICE">Voice</option>
 			</select>
 		</td>
 	</tr>
