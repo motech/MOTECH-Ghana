@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.MediaType;
+import org.motechproject.ws.MessageStatus;
 import org.motechproject.ws.Patient;
 import org.motechproject.ws.mobile.MessageService;
 
@@ -21,7 +22,7 @@ public class MessageServiceStub implements MessageService {
 
 	private static Log log = LogFactory.getLog(MessageServiceStub.class);
 
-	public String sendCHPSMessage(Long messageId, String workerName,
+	public MessageStatus sendCHPSMessage(Long messageId, String workerName,
 			String workerNumber, Patient[] patients, String langCode,
 			MediaType mediaType, Long notificationType, Date startDate,
 			Date endDate) {
@@ -55,10 +56,10 @@ public class MessageServiceStub implements MessageService {
 				+ "</endDate>\n"
 				+ "</sendCHPSMessage>\n"
 				+ "--------------------------------------");
-		return "1";
+		return MessageStatus.DELIVERED;
 	}
 
-	public String sendPatientMessage(Long messageId, String patientName,
+	public MessageStatus sendPatientMessage(Long messageId, String patientName,
 			String patientNumber, ContactNumberType patientNumberType,
 			String langCode, MediaType mediaType, Long notificationType,
 			Date startDate, Date endDate) {
@@ -94,7 +95,7 @@ public class MessageServiceStub implements MessageService {
 				+ "</endDate>\n"
 				+ "</sendPatientMessage>\n"
 				+ "--------------------------------------");
-		return "1";
+		return MessageStatus.DELIVERED;
 	}
 
 }
