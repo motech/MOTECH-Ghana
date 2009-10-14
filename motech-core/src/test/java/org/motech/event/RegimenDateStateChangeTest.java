@@ -47,8 +47,9 @@ public class RegimenDateStateChangeTest extends TestCase {
 
 		patient = new Patient();
 
-		ctx = new ClassPathXmlApplicationContext(
-				"pregnancy-regimen-test-context.xml");
+		ctx = new ClassPathXmlApplicationContext(new String[] {
+				"test-common-regimen-beans.xml",
+				"pregnancy-regimen-test-context.xml" });
 		pregnancyRegimen = (Regimen) ctx.getBean("pregnancyRegimen");
 
 		pregnancyState1 = (RegimenState) ctx.getBean("pregnancyState1");

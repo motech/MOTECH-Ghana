@@ -4,12 +4,6 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="nopCommand" class="org.motech.event.impl.NopCommand" />
-
-	<bean id="patientObsService" class="org.easymock.EasyMock" factory-method="createMock">
-		<constructor-arg index="0" value="org.motech.event.PatientObsService" />
-	</bean>
-
 	<bean id="pregnancyRegimen" class="org.motech.event.impl.RegimenImpl">
 		<property name="name" value="Pregnancy" />
 		<property name="startState" ref="pregnancyState1" />

@@ -17,9 +17,8 @@
            http://jax-ws.dev.java.net/spring/servlet
            http://jax-ws.dev.java.net/spring/servlet.xsd">
 
-	<import resource="common-regimen-beans.xml" />
-	<import resource="tetanus-info-regimen.xml" />
-	<import resource="tetanus-immuniz-regimen.xml" />
+	<import resource="classpath*:common-regimen-beans.xml" />
+	<import resource="classpath*:regimen/*.xml" />
 
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />

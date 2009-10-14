@@ -56,8 +56,9 @@ public class RegimenNumStateChangeTest extends TestCase {
 		calendar.add(Calendar.DATE, 4 * 7 + 4); // 4 weeks and 4 days
 		obs5 = calendar.getTime();
 
-		ctx = new ClassPathXmlApplicationContext(
-				"polio-regimen-test-context.xml");
+		ctx = new ClassPathXmlApplicationContext(new String[] {
+				"test-common-regimen-beans.xml",
+				"polio-regimen-test-context.xml" });
 		polioRegimen = (Regimen) ctx.getBean("polioRegimen");
 
 		polioState1 = (RegimenState) ctx.getBean("polioState1");

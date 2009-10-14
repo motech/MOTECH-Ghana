@@ -44,9 +44,9 @@ public class TetanusImmunizRegimenTest extends TestCase {
 		patient = new Patient();
 		patient.setPatientId(patientId);
 
-		ctx = new ClassPathXmlApplicationContext(
-				new String[] { "tetanus-immuniz-regimen.xml",
-						"test-common-regimen-beans.xml" });
+		ctx = new ClassPathXmlApplicationContext(new String[] {
+				"regimen/tetanus-immuniz-regimen.xml",
+				"test-common-regimen-beans.xml" });
 
 		regimen = (RegimenImpl) ctx.getBean("tetanusImmunization");
 
