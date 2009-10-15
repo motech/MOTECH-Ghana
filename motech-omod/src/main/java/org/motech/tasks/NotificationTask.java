@@ -25,6 +25,7 @@ import org.motech.openmrs.module.MotechService;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
+import org.motechproject.ws.NameValuePair;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
@@ -87,7 +88,8 @@ public class NotificationTask extends AbstractTask {
 					org.motech.model.Log motechLog = new org.motech.model.Log();
 					motechLog.setDate(notificationDate);
 
-					Long messageId = shouldAttemptMessage.getSchedule()
+					String messageId = shouldAttemptMessage.getPublicId();
+					Long notificationType = shouldAttemptMessage.getSchedule()
 							.getMessage().getPublicId();
 					Integer recipientId = shouldAttemptMessage.getSchedule()
 							.getRecipientId();
@@ -96,7 +98,8 @@ public class NotificationTask extends AbstractTask {
 					User nurse = Context.getUserService().getUser(recipientId);
 
 					if (patient != null) {
-						String patientName = patient.getPersonName().toString();
+						String patientFirstName = patient.getPersonName()
+								.getGivenName();
 						String patientPhone = patient.getAttribute(
 								phoneNumberType).getValue();
 						String phoneTypeString = patient
@@ -106,10 +109,13 @@ public class NotificationTask extends AbstractTask {
 						ContactNumberType patientNumberType = ContactNumberType
 								.valueOf(phoneTypeString);
 
+						NameValuePair[] personalInfo = new NameValuePair[1];
+						personalInfo[0] = new NameValuePair();
+						personalInfo[0].setName("PatientFirstName");
+						personalInfo[0].setValue(patientFirstName);
 						String langCode = null;
 						MediaType mediaType = MediaType
 								.valueOf(mediaTypeString);
-						Long notificationType = 0L;
 						Date messageStartDate = null;
 						Date messageEndDate = null;
 
@@ -129,7 +135,7 @@ public class NotificationTask extends AbstractTask {
 									.setMessage("Attempt to send to Troubled Phone, Patient Phone: "
 											+ patientPhone
 											+ ", Message cancelled: "
-											+ messageId);
+											+ notificationType);
 							motechLog.setType(LogType.FAILURE);
 
 							shouldAttemptMessage
@@ -138,12 +144,14 @@ public class NotificationTask extends AbstractTask {
 						} else {
 							motechLog
 									.setMessage("Scheduled Message Notification, Patient Phone: "
-											+ patientPhone + ": " + messageId);
+											+ patientPhone
+											+ ": "
+											+ notificationType);
 
 							try {
 								Context.getService(MotechService.class)
 										.getMobileService().sendPatientMessage(
-												messageId, patientName,
+												messageId, personalInfo,
 												patientPhone,
 												patientNumberType, langCode,
 												mediaType, notificationType,
@@ -163,12 +171,16 @@ public class NotificationTask extends AbstractTask {
 					} else if (nurse != null) {
 						String nursePhone = nurse.getAttribute(phoneNumberType)
 								.getValue();
-						String nurseName = nurse.getPersonName().toString();
+						String nurseFirstName = nurse.getPersonName()
+								.getGivenName();
 
+						NameValuePair[] personalInfo = new NameValuePair[1];
+						personalInfo[0] = new NameValuePair();
+						personalInfo[0].setName("NurseFirstName");
+						personalInfo[0].setValue(nurseFirstName);
 						org.motechproject.ws.Patient[] patients = new org.motechproject.ws.Patient[0];
 						String langCode = null;
 						MediaType mediaType = null;
-						Long notificationType = 0L;
 						Date messageStartDate = null;
 						Date messageEndDate = null;
 
@@ -187,7 +199,7 @@ public class NotificationTask extends AbstractTask {
 									.setMessage("Attempt to send to Troubled Phone, Nurse Phone: "
 											+ nursePhone
 											+ ", Message cancelled: "
-											+ messageId);
+											+ notificationType);
 							motechLog.setType(LogType.FAILURE);
 
 							shouldAttemptMessage
@@ -196,12 +208,14 @@ public class NotificationTask extends AbstractTask {
 						} else {
 							motechLog
 									.setMessage("Scheduled Message Notification, Nurse Phone: "
-											+ nursePhone + ": " + messageId);
+											+ nursePhone
+											+ ": "
+											+ notificationType);
 
 							try {
 								Context.getService(MotechService.class)
 										.getMobileService().sendCHPSMessage(
-												messageId, nurseName,
+												messageId, personalInfo,
 												nursePhone, patients, langCode,
 												mediaType, notificationType,
 												messageStartDate,

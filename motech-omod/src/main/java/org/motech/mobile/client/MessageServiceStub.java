@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.MessageStatus;
+import org.motechproject.ws.NameValuePair;
 import org.motechproject.ws.Patient;
 import org.motechproject.ws.mobile.MessageService;
 
@@ -22,19 +23,26 @@ public class MessageServiceStub implements MessageService {
 
 	private static Log log = LogFactory.getLog(MessageServiceStub.class);
 
-	public MessageStatus sendCHPSMessage(Long messageId, String workerName,
-			String workerNumber, Patient[] patients, String langCode,
-			MediaType mediaType, Long notificationType, Date startDate,
-			Date endDate) {
+	public MessageStatus sendCHPSMessage(String messageId,
+			NameValuePair[] personalInfo, String workerNumber,
+			Patient[] patients, String langCode, MediaType mediaType,
+			Long notificationType, Date startDate, Date endDate) {
+
+		StringBuilder personalInfoString = new StringBuilder();
+		for (NameValuePair pair : personalInfo) {
+			personalInfoString.append("<name>" + pair.getName() + "</name>");
+			personalInfoString.append("<value>" + pair.getValue()
+					+ "</value>\n");
+		}
 
 		log.info("Motech Mobile Web Service Message\n"
 				+ "---------------------------\n" + "<sendCHPSMessage>\n"
 				+ "<messageId>"
 				+ messageId
 				+ "</messageId>\n"
-				+ "<workerName>"
-				+ workerName
-				+ "</workerName>\n"
+				+ "<personalInfo>\n"
+				+ personalInfoString.toString()
+				+ "</personalInfo>\n"
 				+ "<workerNumber>"
 				+ workerNumber
 				+ "</workerNumber>\n"
@@ -59,19 +67,27 @@ public class MessageServiceStub implements MessageService {
 		return MessageStatus.DELIVERED;
 	}
 
-	public MessageStatus sendPatientMessage(Long messageId, String patientName,
-			String patientNumber, ContactNumberType patientNumberType,
-			String langCode, MediaType mediaType, Long notificationType,
-			Date startDate, Date endDate) {
+	public MessageStatus sendPatientMessage(String messageId,
+			NameValuePair[] personalInfo, String patientNumber,
+			ContactNumberType patientNumberType, String langCode,
+			MediaType mediaType, Long notificationType, Date startDate,
+			Date endDate) {
+
+		StringBuilder personalInfoString = new StringBuilder();
+		for (NameValuePair pair : personalInfo) {
+			personalInfoString.append("<name>" + pair.getName() + "</name>");
+			personalInfoString.append("<value>" + pair.getValue()
+					+ "</value>\n");
+		}
 
 		log.info("Motech Mobile Web Service Message\n"
 				+ "---------------------------\n" + "<sendPatientMessage>\n"
 				+ "<messageId>"
 				+ messageId
 				+ "</messageId>\n"
-				+ "<patientName>"
-				+ patientName
-				+ "</patientName>\n"
+				+ "<personalInfo>"
+				+ personalInfoString.toString()
+				+ "</personalInfo>\n"
 				+ "<patientNumber>"
 				+ patientNumber
 				+ "</patientNumber>\n"
