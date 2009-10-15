@@ -3,6 +3,7 @@ package org.motech.svc;
 import java.util.Date;
 
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
@@ -26,7 +27,7 @@ public interface RegistrarBean {
 			String name, String community, String location, Date dateOfBirth,
 			Gender gender, Integer nhis, String phoneNumber,
 			ContactNumberType contactNumberType, String language,
-			MediaType mediaType);
+			MediaType mediaType, DeliveryTime deliveryTime, String[] regimen);
 
 	public void recordMaternalVisit(String nursePhoneNumber, Date date,
 			String serialId, Boolean tetanus, Boolean ipt, Boolean itn,

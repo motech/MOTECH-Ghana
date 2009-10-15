@@ -3,6 +3,7 @@ package org.motech.openmrs.module.web.controller;
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.aryEq;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
@@ -21,6 +22,7 @@ import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.server.RegistrarService;
@@ -71,7 +73,8 @@ public class MotechModuleFormControllerTest extends TestCase {
 				capture(dateOfBirthCapture), capture(genderCapture),
 				capture(nhisCapture), eq(patientPhone),
 				capture(phoneTypeCapture), eq(language),
-				capture(mediaTypeCapture));
+				capture(mediaTypeCapture), eq(DeliveryTime.ANYTIME),
+				aryEq(new String[] {}));
 		registrarService.registerPregnancy(eq(nursePhone), (Date) anyObject(),
 				eq(serialId), capture(dueDateCapture), capture(parityCapture),
 				capture(hemoglobinCapture));
@@ -144,7 +147,8 @@ public class MotechModuleFormControllerTest extends TestCase {
 				capture(dateOfBirthCapture), capture(genderCapture),
 				capture(nhisCapture), eq(patientPhone),
 				capture(phoneTypeCapture), eq(language),
-				capture(mediaTypeCapture));
+				capture(mediaTypeCapture), eq(DeliveryTime.ANYTIME),
+				aryEq(new String[] {}));
 
 		replay(registrarService);
 

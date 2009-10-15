@@ -22,6 +22,7 @@ import org.motech.openmrs.module.MotechService;
 import org.motech.openmrs.module.impl.ContextServiceImpl;
 import org.motech.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
 import org.openmrs.Patient;
@@ -88,7 +89,8 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 		regService.registerPatient("nursePhoneNumber", "serialId",
 				"patientname", "community", "location", new Date(),
 				Gender.FEMALE, 1, "patientphoneNumber",
-				ContactNumberType.PERSONAL, "language", MediaType.TEXT);
+				ContactNumberType.PERSONAL, "language", MediaType.TEXT,
+				DeliveryTime.ANYTIME, new String[] {});
 
 		assertEquals(1, Context.getPatientService().getAllPatients().size());
 

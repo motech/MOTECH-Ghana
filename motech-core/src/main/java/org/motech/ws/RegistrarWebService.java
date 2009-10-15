@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
@@ -27,7 +28,6 @@ import org.motechproject.ws.server.RegistrarService;
  */
 
 @WebService(targetNamespace = "http://server.ws.motechproject.org/")
-@SOAPBinding(style = Style.RPC, use = Use.LITERAL)
 public class RegistrarWebService implements RegistrarService {
 
 	Log log = LogFactory.getLog(RegistrarWebService.class);
@@ -63,11 +63,13 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "phoneNumber") String phoneNumber,
 			@WebParam(name = "contactNumberType") ContactNumberType contactNumberType,
 			@WebParam(name = "language") String language,
-			@WebParam(name = "mediaType") MediaType mediaType) {
+			@WebParam(name = "mediaType") MediaType mediaType,
+			@WebParam(name = "deliveryTime") DeliveryTime deliveryTime,
+			@WebParam(name = "regimen") String[] regimen) {
 
 		registrarBean.registerPatient(nursePhoneNumber, serialId, name,
 				community, location, dateOfBirth, gender, nhis, phoneNumber,
-				contactNumberType, language, mediaType);
+				contactNumberType, language, mediaType, deliveryTime, regimen);
 	}
 
 	@WebMethod

@@ -1,6 +1,8 @@
 package org.motech.ws;
 
 import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.aryEq;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
@@ -18,6 +20,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.motech.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
@@ -97,14 +100,16 @@ public class RegistrarServiceTest {
 		String language = "English";
 		MediaType mediaType = MediaType.TEXT;
 
-		registrarBean.registerPatient(nPhone, serialId, name, community,
-				location, dob, gender, nhis, pPhone, phoneType, language,
-				mediaType);
+		registrarBean.registerPatient(eq(nPhone), eq(serialId), eq(name),
+				eq(community), eq(location), eq(dob), eq(gender), eq(nhis),
+				eq(pPhone), eq(phoneType), eq(language), eq(mediaType),
+				eq(DeliveryTime.ANYTIME), aryEq(new String[] {}));
 
 		replay(registrarBean);
 
 		regWs.registerPatient(nPhone, serialId, name, community, location, dob,
-				gender, nhis, pPhone, phoneType, language, mediaType);
+				gender, nhis, pPhone, phoneType, language, mediaType,
+				DeliveryTime.ANYTIME, new String[] {});
 
 		verify(registrarBean);
 	}

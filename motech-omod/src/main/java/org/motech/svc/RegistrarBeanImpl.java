@@ -12,6 +12,7 @@ import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
@@ -107,7 +108,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			String name, String community, String location, Date dateOfBirth,
 			Gender gender, Integer nhis, String phoneNumber,
 			ContactNumberType contactNumberType, String language,
-			MediaType mediaType) {
+			MediaType mediaType, DeliveryTime deliveryTime, String[] regimen) {
 
 		PatientService patientService = contextService.getPatientService();
 		MotechService motechService = contextService.getMotechService();

@@ -27,6 +27,7 @@ import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.server.RegistrarService;
@@ -131,7 +132,8 @@ public class MotechModuleFormController {
 				location, dateFormat.parse(dateOfBirth), Gender.FEMALE, Integer
 						.valueOf(nhis), patientPhone, ContactNumberType
 						.valueOf(patientPhoneType), language, MediaType
-						.valueOf(mediaType));
+						.valueOf(mediaType), DeliveryTime.ANYTIME,
+				new String[] {});
 		registrarClient.registerPregnancy(nursePhone, new Date(), serialId,
 				dateFormat.parse(dueDate), Integer.valueOf(parity), Double
 						.valueOf(hemoglobin));
@@ -177,7 +179,8 @@ public class MotechModuleFormController {
 				location, dateFormat.parse(dateOfBirth),
 				Gender.valueOf(gender), Integer.valueOf(nhis), patientPhone,
 				ContactNumberType.valueOf(patientPhoneType), language,
-				MediaType.valueOf(mediaType));
+				MediaType.valueOf(mediaType), DeliveryTime.ANYTIME,
+				new String[] {});
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 

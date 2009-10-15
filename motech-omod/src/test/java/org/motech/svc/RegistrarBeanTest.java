@@ -27,6 +27,7 @@ import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
@@ -359,7 +360,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		regBean.registerPatient(nPhone, serialId, name, community, location,
 				dob, gender, nhis, pPhone, contactNumberType, language,
-				mediaType);
+				mediaType, DeliveryTime.ANYTIME, new String [] {});
 
 		verify(contextService, patientService, motechService, personService,
 				locationService);
