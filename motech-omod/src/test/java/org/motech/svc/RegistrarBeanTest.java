@@ -74,6 +74,7 @@ public class RegistrarBeanTest extends TestCase {
 	String languageAttrName = "Language";
 	String phoneTypeAttrName = "Phone Type";
 	String mediaTypeAttrName = "Media Type";
+	String deliveryTimeAttrName = "Delivery Time";
 	String providerRoleName = "Provider";
 	String matVisitTypeName = "MATERNALVISIT";
 	String immunizationConceptName = "IMMUNIZATIONS ORDERED";
@@ -100,6 +101,7 @@ public class RegistrarBeanTest extends TestCase {
 	PersonAttributeType languageAttributeType;
 	PersonAttributeType phoneTypeAttributeType;
 	PersonAttributeType mediaTypeAttributeType;
+	PersonAttributeType deliveryTimeAttributeType;
 	Role providerRole;
 	EncounterType matVisitType;
 	ConceptName immunizationConceptNameObj;
@@ -167,6 +169,9 @@ public class RegistrarBeanTest extends TestCase {
 
 		mediaTypeAttributeType = new PersonAttributeType(7);
 		mediaTypeAttributeType.setName(mediaTypeAttrName);
+
+		deliveryTimeAttributeType = new PersonAttributeType(8);
+		deliveryTimeAttributeType.setName(deliveryTimeAttrName);
 
 		providerRole = new Role(providerRoleName);
 
@@ -318,6 +323,9 @@ public class RegistrarBeanTest extends TestCase {
 		ContactNumberType contactNumberType = ContactNumberType.PERSONAL;
 		String language = "English";
 		MediaType mediaType = MediaType.TEXT;
+		DeliveryTime deliveryTime = DeliveryTime.ANYTIME;
+		String exampleRegimen = "Example regimen";
+		String[] regimen = { exampleRegimen };
 
 		Location locationObj = new Location(1);
 		locationObj.setName(location);
@@ -352,6 +360,8 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(languageAttributeType);
 		expect(personService.getPersonAttributeTypeByName(mediaTypeAttrName))
 				.andReturn(mediaTypeAttributeType);
+		expect(personService.getPersonAttributeTypeByName(deliveryTimeAttrName))
+				.andReturn(deliveryTimeAttributeType);
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				new Patient());
 
@@ -360,7 +370,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		regBean.registerPatient(nPhone, serialId, name, community, location,
 				dob, gender, nhis, pPhone, contactNumberType, language,
-				mediaType, DeliveryTime.ANYTIME, new String [] {});
+				mediaType, deliveryTime, regimen);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService);
@@ -384,6 +394,8 @@ public class RegistrarBeanTest extends TestCase {
 				.getValue());
 		assertEquals(mediaType.toString(), patient.getAttribute(
 				mediaTypeAttributeType).getValue());
+		assertEquals(deliveryTime.toString(), patient.getAttribute(
+				deliveryTimeAttributeType).getValue());
 	}
 
 	public void testRegisterMaternalVisit() {

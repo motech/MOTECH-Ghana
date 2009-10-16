@@ -13,6 +13,7 @@
  */
 package org.motech.tasks;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -23,10 +24,13 @@ import org.motech.messaging.MessageStatus;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.MotechService;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.NameValuePair;
 import org.openmrs.Patient;
+import org.openmrs.Person;
+import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
@@ -116,8 +120,43 @@ public class NotificationTask extends AbstractTask {
 						String langCode = null;
 						MediaType mediaType = MediaType
 								.valueOf(mediaTypeString);
-						Date messageStartDate = null;
-						Date messageEndDate = null;
+						Date messageStartDate = shouldAttemptMessage
+								.getAttemptDate();
+						Date messageEndDate;
+
+						Person recipient = Context.getPersonService()
+								.getPerson(recipientId);
+						PersonAttributeType deliveryTimeType = Context
+								.getPersonService()
+								.getPersonAttributeTypeByName("Delivery Time");
+						PersonAttribute deliveryTimeAttr = recipient
+								.getAttribute(deliveryTimeType);
+						String deliveryTimeString = deliveryTimeAttr.getValue();
+						DeliveryTime deliveryTime = DeliveryTime.ANYTIME;
+						if (deliveryTimeString != null) {
+							deliveryTime = DeliveryTime
+									.valueOf(deliveryTimeString);
+						}
+
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(messageStartDate);
+						switch (deliveryTime) {
+						case MORNING:
+							calendar.set(Calendar.HOUR_OF_DAY, 12);
+							break;
+						case AFTERNOON:
+							calendar.set(Calendar.HOUR_OF_DAY, 17);
+							break;
+						case EVENING:
+							calendar.set(Calendar.HOUR_OF_DAY, 21);
+							break;
+						default:
+							calendar.set(Calendar.HOUR_OF_DAY, 21);
+							break;
+						}
+						calendar.set(Calendar.MINUTE, 0);
+						calendar.set(Calendar.SECOND, 0);
+						messageEndDate = calendar.getTime();
 
 						// Cancel message if patient phone is considered
 						// troubled

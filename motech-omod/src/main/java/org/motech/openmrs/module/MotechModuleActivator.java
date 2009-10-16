@@ -95,10 +95,14 @@ public class MotechModuleActivator implements Activator {
 					"A person's language preference.", "java.lang.String",
 					admin);
 			createPersonAttributeType("Phone Type",
-					"A person's cell phone type (personal or shared).",
+					"A person's cell phone type (PERSONAL or SHARED).",
 					"java.lang.String", admin);
 			createPersonAttributeType("Media Type",
-					"A person's preferred phone media type (text or voice).",
+					"A person's preferred phone media type (TEXT or VOICE).",
+					"java.lang.String", admin);
+			createPersonAttributeType(
+					"Delivery Time",
+					"A person's preferred delivery time (ANYTIME, MORNING, AFTERNOON, or EVENING).",
 					"java.lang.String", admin);
 
 			log.info("Verifying Patient Identifier Exist");

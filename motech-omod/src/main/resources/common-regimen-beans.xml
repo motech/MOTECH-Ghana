@@ -11,5 +11,11 @@
 			<bean parent="contextService" />
 		</property>
 	</bean>
+	<bean id="userPrefmessageScheduler" class="org.motech.messaging.MessageSchedulerImpl">
+		<property name="userPreferenceBased" value="true" />
+		<property name="contextService">
+			<bean parent="contextService" />
+		</property>
+	</bean>
 
 </beans>

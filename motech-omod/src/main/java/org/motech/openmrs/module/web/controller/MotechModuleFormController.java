@@ -17,8 +17,11 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -118,6 +121,8 @@ public class MotechModuleFormController {
 			@RequestParam("patientPhoneType") String patientPhoneType,
 			@RequestParam("language") String language,
 			@RequestParam("mediaType") String mediaType,
+			@RequestParam("deliveryTime") String deliveryTime,
+			@RequestParam("regimen") String[] regimen,
 			@RequestParam("dateOfBirth") String dateOfBirth,
 			@RequestParam("dueDate") String dueDate,
 			@RequestParam("parity") String parity,
@@ -132,8 +137,9 @@ public class MotechModuleFormController {
 				location, dateFormat.parse(dateOfBirth), Gender.FEMALE, Integer
 						.valueOf(nhis), patientPhone, ContactNumberType
 						.valueOf(patientPhoneType), language, MediaType
-						.valueOf(mediaType), DeliveryTime.ANYTIME,
-				new String[] {});
+						.valueOf(mediaType),
+				DeliveryTime.valueOf(deliveryTime),
+				convertToActualRegimen(regimen));
 		registrarClient.registerPregnancy(nursePhone, new Date(), serialId,
 				dateFormat.parse(dueDate), Integer.valueOf(parity), Double
 						.valueOf(hemoglobin));
@@ -141,6 +147,23 @@ public class MotechModuleFormController {
 		registrarClient.recordMaternalVisit(nursePhone, new Date(), serialId,
 				true, true, true, 1, true, true, true, true, 10.6);
 		return "redirect:/module/motechmodule/viewdata.form";
+	}
+
+	private String[] convertToActualRegimen(String[] regimen) {
+		Set<String> regimenInputSet = new HashSet<String>(Arrays
+				.asList(regimen));
+		Set<String> regimenActualSet = new HashSet<String>();
+		if (regimenInputSet.contains("minuteTetanus")) {
+			regimenActualSet.add("tetanusInfo");
+			regimenActualSet.add("tetanusImmunization");
+		}
+		if (regimenInputSet.contains("dailyPregnancy")) {
+			regimenActualSet.add("dailyPregnancyRegimen");
+		}
+		String[] regimenActual = regimenActualSet
+				.toArray(new String[regimenActualSet.size()]);
+
+		return regimenActual;
 	}
 
 	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.POST)
@@ -172,15 +195,21 @@ public class MotechModuleFormController {
 			@RequestParam("dateOfBirth") String dateOfBirth,
 			@RequestParam("gender") String gender,
 			@RequestParam("language") String language,
-			@RequestParam("mediaType") String mediaType)
+			@RequestParam("mediaType") String mediaType,
+			@RequestParam("deliveryTime") String deliveryTime,
+			@RequestParam("regimen") String[] regimen)
 			throws NumberFormatException, ParseException {
 		log.debug("Register Patient");
-		registrarClient.registerPatient(nursePhone, serialId, name, community,
-				location, dateFormat.parse(dateOfBirth),
-				Gender.valueOf(gender), Integer.valueOf(nhis), patientPhone,
-				ContactNumberType.valueOf(patientPhoneType), language,
-				MediaType.valueOf(mediaType), DeliveryTime.ANYTIME,
-				new String[] {});
+
+		registrarClient
+				.registerPatient(nursePhone, serialId, name, community,
+						location, dateFormat.parse(dateOfBirth), Gender
+								.valueOf(gender), Integer.valueOf(nhis),
+						patientPhone, ContactNumberType
+								.valueOf(patientPhoneType), language, MediaType
+								.valueOf(mediaType), DeliveryTime
+								.valueOf(deliveryTime),
+						convertToActualRegimen(regimen));
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 

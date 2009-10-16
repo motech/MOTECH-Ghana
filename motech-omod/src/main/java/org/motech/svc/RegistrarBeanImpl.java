@@ -174,6 +174,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		patient.addAttribute(new PersonAttribute(mediaTypeAttrType, mediaType
 				.toString()));
 
+		PersonAttributeType deliveryAttrType = personService
+				.getPersonAttributeTypeByName("Delivery Time");
+		patient.addAttribute(new PersonAttribute(deliveryAttrType, deliveryTime
+				.toString()));
+
 		patientService.savePatient(patient);
 	}
 

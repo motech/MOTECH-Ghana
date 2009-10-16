@@ -80,6 +80,26 @@
 		</td>
 	</tr>
 	<tr>
+		<td><label for="deliveryTime">Preferred Delivery Time:</label></td>
+		<td>
+			<select name="deliveryTime">
+				<option value="ANYTIME">No Preference</option>
+				<option value="MORNING">Morning  9AM-12PM</option>
+				<option value="AFTERNOON">Afternoon 1PM-5PM</option>
+				<option value="EVENING">Evening 6PM-9PM</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="regimen">Regime Enrollment:</label></td>
+		<td>
+			<select name="regimen" multiple="multiple">
+				<option value="dailyPregnancy">Day-by-day Pregnancy</option>
+				<option value="minuteTetanus">Minute-by-minute Tetanus</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
 		<td colspan="2"><input type="submit" /></td>
 	</tr>
 </table>
