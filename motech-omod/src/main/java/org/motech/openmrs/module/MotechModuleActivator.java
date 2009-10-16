@@ -15,8 +15,10 @@ package org.motech.openmrs.module;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -163,10 +165,12 @@ public class MotechModuleActivator implements Activator {
 
 			log.info("Verifying Task Exists and is Scheduled");
 			// TODO: Task should start automatically on startup, Boolean.TRUE
+			Map<String, String> immProps = new HashMap<String, String>();
+			immProps.put("sendImmediate", "true");
 			createTask("Immediate Notification Task",
 					"Task to send out immediate SMS notifications", new Date(),
 					new Long(30), new Long(0), Boolean.FALSE,
-					NotificationTask.class.getName(), admin);
+					NotificationTask.class.getName(), admin, immProps);
 			Calendar calendar = Calendar.getInstance();
 			calendar.set(Calendar.HOUR_OF_DAY, 23);
 			calendar.set(Calendar.MINUTE, 0);
@@ -174,11 +178,12 @@ public class MotechModuleActivator implements Activator {
 			createTask("Daily Notification Task",
 					"Task to send out SMS notifications for next day", calendar
 							.getTime(), new Long(86400), new Long(3600),
-					Boolean.FALSE, NotificationTask.class.getName(), admin);
+					Boolean.FALSE, NotificationTask.class.getName(), admin,
+					null);
 			createTask("Regimen Update Task",
 					"Task to update regimen state for patients", new Date(),
 					new Long(30), null, Boolean.FALSE, RegimenUpdateTask.class
-							.getName(), admin);
+							.getName(), admin, null);
 
 			log.info("Verifying Global Properties Exist");
 			createGlobalProperty("motechmodule.troubled_phone_failures",
@@ -339,7 +344,7 @@ public class MotechModuleActivator implements Activator {
 
 	private void createTask(String name, String description, Date startDate,
 			Long repeatSeconds, Long timeOffset, Boolean startOnStartup,
-			String taskClass, User creator) {
+			String taskClass, User creator, Map<String, String> properties) {
 		TaskDefinition task = Context.getSchedulerService().getTaskByName(name);
 		if (task == null) {
 			task = new TaskDefinition();
@@ -350,6 +355,8 @@ public class MotechModuleActivator implements Activator {
 			if (timeOffset != null) {
 				task.setProperty("timeOffset", timeOffset.toString());
 			}
+			if (properties != null)
+				task.setProperties(properties);
 			task.setTaskClass(taskClass);
 			task.setStartOnStartup(startOnStartup);
 			task.setCreatedBy(creator);

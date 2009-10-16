@@ -55,6 +55,8 @@ public class NotificationTask extends AbstractTask {
 	public void execute() {
 
 		String timeOffsetString = this.taskDefinition.getProperty("timeOffset");
+		Boolean sendImmediate = "true".equals(taskDefinition
+				.getProperty("sendImmediate"));
 		Long timeOffset = 0L;
 		if (timeOffsetString != null) {
 			timeOffset = Long.valueOf(timeOffsetString);
@@ -133,7 +135,7 @@ public class NotificationTask extends AbstractTask {
 								.valueOf(mediaTypeString);
 						Date messageStartDate = shouldAttemptMessage
 								.getAttemptDate();
-						Date messageEndDate;
+						Date messageEndDate = null;
 
 						Person recipient = Context.getPersonService()
 								.getPerson(recipientId);
@@ -149,25 +151,27 @@ public class NotificationTask extends AbstractTask {
 									.valueOf(deliveryTimeString);
 						}
 
-						Calendar calendar = Calendar.getInstance();
-						calendar.setTime(messageStartDate);
-						switch (deliveryTime) {
-						case MORNING:
-							calendar.set(Calendar.HOUR_OF_DAY, 12);
-							break;
-						case AFTERNOON:
-							calendar.set(Calendar.HOUR_OF_DAY, 17);
-							break;
-						case EVENING:
-							calendar.set(Calendar.HOUR_OF_DAY, 21);
-							break;
-						default:
-							calendar.set(Calendar.HOUR_OF_DAY, 21);
-							break;
+						if (!sendImmediate) {
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(messageStartDate);
+							switch (deliveryTime) {
+							case MORNING:
+								calendar.set(Calendar.HOUR_OF_DAY, 12);
+								break;
+							case AFTERNOON:
+								calendar.set(Calendar.HOUR_OF_DAY, 17);
+								break;
+							case EVENING:
+								calendar.set(Calendar.HOUR_OF_DAY, 21);
+								break;
+							default:
+								calendar.set(Calendar.HOUR_OF_DAY, 21);
+								break;
+							}
+							calendar.set(Calendar.MINUTE, 0);
+							calendar.set(Calendar.SECOND, 0);
+							messageEndDate = calendar.getTime();
 						}
-						calendar.set(Calendar.MINUTE, 0);
-						calendar.set(Calendar.SECOND, 0);
-						messageEndDate = calendar.getTime();
 
 						// Cancel message if patient phone is considered
 						// troubled
