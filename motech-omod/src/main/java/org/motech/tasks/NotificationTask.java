@@ -54,9 +54,17 @@ public class NotificationTask extends AbstractTask {
 	@Override
 	public void execute() {
 
-		Date startDate = new Date();
+		String timeOffsetString = this.taskDefinition.getProperty("timeOffset");
+		Long timeOffset = 0L;
+		if (timeOffsetString != null) {
+			timeOffset = Long.valueOf(timeOffsetString);
+		}
+
+		Date startDate = new Date(System.currentTimeMillis()
+				+ (timeOffset * 1000));
 		Date endDate = new Date(System.currentTimeMillis()
-				+ (this.taskDefinition.getRepeatInterval() * 1000));
+				+ (this.taskDefinition.getRepeatInterval() * 1000)
+				+ (timeOffset * 1000));
 
 		try {
 			Context.openSession();
