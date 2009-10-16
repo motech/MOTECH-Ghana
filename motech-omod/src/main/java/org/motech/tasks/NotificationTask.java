@@ -74,6 +74,9 @@ public class NotificationTask extends AbstractTask {
 					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES);
 			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PATIENTS);
 			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
+			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSONS);
+			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPTS);
+			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_OBS);
 
 			List<Message> shouldAttemptMessages = Context.getService(
 					MotechService.class).getMessages(startDate, endDate,
@@ -293,6 +296,9 @@ public class NotificationTask extends AbstractTask {
 					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES);
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PATIENTS);
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
+			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSONS);
+			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPTS);
+			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_OBS);
 			Context.closeSession();
 		}
 	}
