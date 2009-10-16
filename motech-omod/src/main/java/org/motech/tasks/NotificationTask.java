@@ -133,25 +133,30 @@ public class NotificationTask extends AbstractTask {
 								.getNameValueContent(recipientId);
 						MediaType mediaType = MediaType
 								.valueOf(mediaTypeString);
-						Date messageStartDate = shouldAttemptMessage
-								.getAttemptDate();
+						Date messageStartDate = null;
 						Date messageEndDate = null;
 
-						Person recipient = Context.getPersonService()
-								.getPerson(recipientId);
-						PersonAttributeType deliveryTimeType = Context
-								.getPersonService()
-								.getPersonAttributeTypeByName("Delivery Time");
-						PersonAttribute deliveryTimeAttr = recipient
-								.getAttribute(deliveryTimeType);
-						String deliveryTimeString = deliveryTimeAttr.getValue();
-						DeliveryTime deliveryTime = DeliveryTime.ANYTIME;
-						if (deliveryTimeString != null) {
-							deliveryTime = DeliveryTime
-									.valueOf(deliveryTimeString);
-						}
-
 						if (!sendImmediate) {
+
+							messageStartDate = shouldAttemptMessage
+									.getAttemptDate();
+
+							Person recipient = Context.getPersonService()
+									.getPerson(recipientId);
+							PersonAttributeType deliveryTimeType = Context
+									.getPersonService()
+									.getPersonAttributeTypeByName(
+											"Delivery Time");
+							PersonAttribute deliveryTimeAttr = recipient
+									.getAttribute(deliveryTimeType);
+							String deliveryTimeString = deliveryTimeAttr
+									.getValue();
+							DeliveryTime deliveryTime = DeliveryTime.ANYTIME;
+							if (deliveryTimeString != null) {
+								deliveryTime = DeliveryTime
+										.valueOf(deliveryTimeString);
+							}
+
 							Calendar calendar = Calendar.getInstance();
 							calendar.setTime(messageStartDate);
 							switch (deliveryTime) {
