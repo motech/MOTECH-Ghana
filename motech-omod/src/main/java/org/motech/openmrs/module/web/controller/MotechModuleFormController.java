@@ -109,7 +109,8 @@ public class MotechModuleFormController {
 	}
 
 	@RequestMapping(value = "/module/motechmodule/quick", method = RequestMethod.POST)
-	public String quickTest(@RequestParam("nurseName") String nurseName,
+	public String quickTest(
+			@RequestParam("nurseName") String nurseName,
 			@RequestParam("nursePhone") String nursePhone,
 			@RequestParam("clinicName") String clinicName,
 			@RequestParam("serialId") String serialId,
@@ -122,7 +123,7 @@ public class MotechModuleFormController {
 			@RequestParam("language") String language,
 			@RequestParam("mediaType") String mediaType,
 			@RequestParam("deliveryTime") String deliveryTime,
-			@RequestParam("regimen") String[] regimen,
+			@RequestParam(value = "regimen", required = false) String[] regimen,
 			@RequestParam("dateOfBirth") String dateOfBirth,
 			@RequestParam("dueDate") String dueDate,
 			@RequestParam("parity") String parity,
@@ -150,19 +151,21 @@ public class MotechModuleFormController {
 	}
 
 	private String[] convertToActualRegimen(String[] regimen) {
-		Set<String> regimenInputSet = new HashSet<String>(Arrays
-				.asList(regimen));
-		Set<String> regimenActualSet = new HashSet<String>();
-		if (regimenInputSet.contains("minuteTetanus")) {
-			regimenActualSet.add("tetanusInfo");
-			regimenActualSet.add("tetanusImmunization");
+		String[] regimenActual = new String[] {};
+		if (regimen != null) {
+			Set<String> regimenInputSet = new HashSet<String>(Arrays
+					.asList(regimen));
+			Set<String> regimenActualSet = new HashSet<String>();
+			if (regimenInputSet.contains("minuteTetanus")) {
+				regimenActualSet.add("tetanusInfo");
+				regimenActualSet.add("tetanusImmunization");
+			}
+			if (regimenInputSet.contains("dailyPregnancy")) {
+				regimenActualSet.add("dailyPregnancyRegimen");
+			}
+			regimenActual = regimenActualSet
+					.toArray(new String[regimenActualSet.size()]);
 		}
-		if (regimenInputSet.contains("dailyPregnancy")) {
-			regimenActualSet.add("dailyPregnancyRegimen");
-		}
-		String[] regimenActual = regimenActualSet
-				.toArray(new String[regimenActualSet.size()]);
-
 		return regimenActual;
 	}
 
@@ -197,7 +200,7 @@ public class MotechModuleFormController {
 			@RequestParam("language") String language,
 			@RequestParam("mediaType") String mediaType,
 			@RequestParam("deliveryTime") String deliveryTime,
-			@RequestParam("regimen") String[] regimen)
+			@RequestParam(value = "regimen", required = false) String[] regimen)
 			throws NumberFormatException, ParseException {
 		log.debug("Register Patient");
 
