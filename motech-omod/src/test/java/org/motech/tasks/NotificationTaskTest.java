@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.motech.messaging.Message;
+import org.motech.messaging.MessageDefinition;
 import org.motech.messaging.MessageSchedulerImpl;
 import org.motech.messaging.MessageStatus;
 import org.motech.messaging.ScheduledMessage;
@@ -110,12 +111,19 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 		Patient patient = patients.get(0);
 
+		String messageKey = "Test Definition";
+		MessageDefinition messageDefinition = new MessageDefinition();
+		messageDefinition.setMessageKey(messageKey);
+		messageDefinition.setPublicId(2L);
+		Context.getService(MotechService.class).saveMessageDefinition(
+				messageDefinition);
+
 		MessageSchedulerImpl messageScheduler = new MessageSchedulerImpl();
 		messageScheduler.setContextService(new ContextServiceImpl());
 		// Schedule message 5 seconds in future
 		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
-		messageScheduler.scheduleMessage("Test Definition", 2L, "Test Group",
-				patient.getPersonId(), messageDate);
+		messageScheduler.scheduleMessage(messageKey, "Test Group", patient
+				.getPersonId(), messageDate);
 
 		task.execute();
 

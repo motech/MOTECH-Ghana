@@ -19,7 +19,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.1" />
-				<property name="publicId" value="14" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -49,7 +48,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.2" />
-				<property name="publicId" value="15" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -79,7 +77,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.3" />
-				<property name="publicId" value="16" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -109,7 +106,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.4" />
-				<property name="publicId" value="17" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -139,7 +135,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.5" />
-				<property name="publicId" value="18" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -169,7 +164,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.6" />
-				<property name="publicId" value="19" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -199,7 +193,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.7" />
-				<property name="publicId" value="20" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -229,7 +222,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.8" />
-				<property name="publicId" value="21" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -259,7 +251,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.9" />
-				<property name="publicId" value="22" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -289,7 +280,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.10" />
-				<property name="publicId" value="23" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -319,7 +309,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.11" />
-				<property name="publicId" value="24" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -349,7 +338,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.12" />
-				<property name="publicId" value="25" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -379,7 +367,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.13" />
-				<property name="publicId" value="26" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -409,7 +396,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.14" />
-				<property name="publicId" value="27" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -439,7 +425,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.15" />
-				<property name="publicId" value="28" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -469,7 +454,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.16" />
-				<property name="publicId" value="29" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -499,7 +483,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.17" />
-				<property name="publicId" value="30" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -529,7 +512,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.18" />
-				<property name="publicId" value="31" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -559,7 +541,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.19" />
-				<property name="publicId" value="32" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -589,7 +570,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.20" />
-				<property name="publicId" value="33" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -619,7 +599,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.21" />
-				<property name="publicId" value="34" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -649,7 +628,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.22" />
-				<property name="publicId" value="35" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -679,7 +657,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.23" />
-				<property name="publicId" value="36" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -709,7 +686,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.24" />
-				<property name="publicId" value="37" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -739,7 +715,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.25" />
-				<property name="publicId" value="38" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -769,7 +744,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.26" />
-				<property name="publicId" value="39" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -799,7 +773,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.27" />
-				<property name="publicId" value="40" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -829,7 +802,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.28" />
-				<property name="publicId" value="41" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -859,7 +831,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.29" />
-				<property name="publicId" value="42" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -889,7 +860,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.30" />
-				<property name="publicId" value="43" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -919,7 +889,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.31" />
-				<property name="publicId" value="44" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -949,7 +918,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.32" />
-				<property name="publicId" value="45" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -979,7 +947,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.33" />
-				<property name="publicId" value="46" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -1009,7 +976,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.34" />
-				<property name="publicId" value="47" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -1039,7 +1005,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.35" />
-				<property name="publicId" value="48" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -1069,7 +1034,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.36" />
-				<property name="publicId" value="49" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -1099,7 +1063,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.37" />
-				<property name="publicId" value="50" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -1129,7 +1092,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.38" />
-				<property name="publicId" value="51" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -1159,7 +1121,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.39" />
-				<property name="publicId" value="52" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -1189,7 +1150,6 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.day.40" />
-				<property name="publicId" value="53" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>

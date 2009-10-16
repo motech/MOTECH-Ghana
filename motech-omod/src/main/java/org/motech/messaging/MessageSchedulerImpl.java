@@ -28,13 +28,11 @@ public class MessageSchedulerImpl implements MessageScheduler {
 		this.userPreferenceBased = userPreferenceBased;
 	}
 
-	public void scheduleMessage(String messageKey, Long publicId,
-			String messageGroup, Integer messageRecipientId, Date messageDate) {
+	public void scheduleMessage(String messageKey, String messageGroup,
+			Integer messageRecipientId, Date messageDate) {
 
-		// Create message definition if it does not already exist,
-		// or return existing
-		MessageDefinition messageDefinition = createMessageDefinition(
-				messageKey, publicId);
+		// Return existing message definition
+		MessageDefinition messageDefinition = getMessageDefinition(messageKey);
 
 		// Cancel any unsent messages for the same group, unless matching the
 		// message to schedule
@@ -47,21 +45,10 @@ public class MessageSchedulerImpl implements MessageScheduler {
 				messageGroup, messageDate);
 	}
 
-	private MessageDefinition createMessageDefinition(String messageKey,
-			Long publicId) {
+	private MessageDefinition getMessageDefinition(String messageKey) {
 		MotechService motechService = contextService.getMotechService();
 		MessageDefinition messageDefinition = motechService
 				.getMessageDefinition(messageKey);
-		if (messageDefinition == null) {
-			log.info(messageKey
-					+ " MessageDefinition Does Not Exist - Creating");
-
-			messageDefinition = new MessageDefinition();
-			messageDefinition.setMessageKey(messageKey);
-			messageDefinition.setPublicId(publicId);
-			messageDefinition = motechService
-					.saveMessageDefinition(messageDefinition);
-		}
 		return messageDefinition;
 	}
 

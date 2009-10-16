@@ -92,6 +92,8 @@ public class NotificationTask extends AbstractTask {
 								"Phone Number");
 				PersonAttributeType phoneType = Context.getPersonService()
 						.getPersonAttributeTypeByName("Phone Type");
+				PersonAttributeType languageType = Context.getPersonService()
+						.getPersonAttributeTypeByName("Language");
 				PersonAttributeType mediaAttrType = Context.getPersonService()
 						.getPersonAttributeTypeByName("Media Type");
 
@@ -110,22 +112,20 @@ public class NotificationTask extends AbstractTask {
 					User nurse = Context.getUserService().getUser(recipientId);
 
 					if (patient != null) {
-						String patientFirstName = patient.getPersonName()
-								.getGivenName();
 						String patientPhone = patient.getAttribute(
 								phoneNumberType).getValue();
 						String phoneTypeString = patient
 								.getAttribute(phoneType).getValue();
+						String languageCode = patient
+								.getAttribute(languageType).getValue();
 						String mediaTypeString = patient.getAttribute(
 								mediaAttrType).getValue();
 						ContactNumberType patientNumberType = ContactNumberType
 								.valueOf(phoneTypeString);
 
-						NameValuePair[] personalInfo = new NameValuePair[1];
-						personalInfo[0] = new NameValuePair();
-						personalInfo[0].setName("PatientFirstName");
-						personalInfo[0].setValue(patientFirstName);
-						String langCode = null;
+						NameValuePair[] personalInfo = shouldAttemptMessage
+								.getSchedule().getMessage()
+								.getNameValueContent(recipientId);
 						MediaType mediaType = MediaType
 								.valueOf(mediaTypeString);
 						Date messageStartDate = shouldAttemptMessage
@@ -200,8 +200,9 @@ public class NotificationTask extends AbstractTask {
 										.getMobileService().sendPatientMessage(
 												messageId, personalInfo,
 												patientPhone,
-												patientNumberType, langCode,
-												mediaType, notificationType,
+												patientNumberType,
+												languageCode, mediaType,
+												notificationType,
 												messageStartDate,
 												messageEndDate);
 								shouldAttemptMessage
@@ -218,13 +219,10 @@ public class NotificationTask extends AbstractTask {
 					} else if (nurse != null) {
 						String nursePhone = nurse.getAttribute(phoneNumberType)
 								.getValue();
-						String nurseFirstName = nurse.getPersonName()
-								.getGivenName();
 
-						NameValuePair[] personalInfo = new NameValuePair[1];
-						personalInfo[0] = new NameValuePair();
-						personalInfo[0].setName("NurseFirstName");
-						personalInfo[0].setValue(nurseFirstName);
+						NameValuePair[] personalInfo = shouldAttemptMessage
+								.getSchedule().getMessage()
+								.getNameValueContent(recipientId);
 						org.motechproject.ws.Patient[] patients = new org.motechproject.ws.Patient[0];
 						String langCode = null;
 						MediaType mediaType = null;

@@ -13,6 +13,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.motech.messaging.MessageDefinition;
 import org.motech.messaging.MessageStatus;
 import org.motech.messaging.ScheduledMessage;
 import org.motech.openmrs.module.MotechModuleActivator;
@@ -108,6 +109,28 @@ public class RegimenUpdateTaskTest extends BaseModuleContextSensitiveTest {
 		calendar.add(Calendar.MINUTE, -4);
 		patient.setDateCreated(calendar.getTime());
 		patient = Context.getPatientService().savePatient(patient);
+
+		// Add all needed tetanus message definitions in sqldiff
+		Context.getService(MotechService.class).saveMessageDefinition(
+				new MessageDefinition("tetanus.info.1", 2L));
+		Context.getService(MotechService.class).saveMessageDefinition(
+				new MessageDefinition("tetanus.info.2", 3L));
+		Context.getService(MotechService.class).saveMessageDefinition(
+				new MessageDefinition("tetanus.info.3", 5L));
+		Context.getService(MotechService.class).saveMessageDefinition(
+				new MessageDefinition("tetanus.info.4", 6L));
+		Context.getService(MotechService.class).saveMessageDefinition(
+				new MessageDefinition("tetanus.1.prompt", 4L));
+		Context.getService(MotechService.class).saveMessageDefinition(
+				new MessageDefinition("tetanus.1.reminder.1", 7L));
+		Context.getService(MotechService.class).saveMessageDefinition(
+				new MessageDefinition("tetanus.1.reminder.2", 8L));
+		Context.getService(MotechService.class).saveMessageDefinition(
+				new MessageDefinition("tetanus.2.prompt", 9L));
+		Context.getService(MotechService.class).saveMessageDefinition(
+				new MessageDefinition("tetanus.2.reminder.1", 10L));
+		Context.getService(MotechService.class).saveMessageDefinition(
+				new MessageDefinition("tetanus.2.reminder.2", 11L));
 
 		task.execute();
 

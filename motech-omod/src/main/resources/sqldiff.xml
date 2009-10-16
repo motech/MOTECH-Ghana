@@ -61,7 +61,6 @@
 			CREATE TABLE IF NOT EXISTS `motechmodule_messagedefinition_attribute` (
 				`definition_id` bigint NOT NULL,
 				`attribute_id` bigint NOT NULL,
-				PRIMARY KEY (`definition_id`),
 				CONSTRAINT `Definition of attributes` FOREIGN KEY (`definition_id`)
 				REFERENCES `motechmodule_messagedefinition` (`motechmodule_messagedefinition_id`),
 				CONSTRAINT `Attribute of definitions` FOREIGN KEY (`attribute_id`)
@@ -95,6 +94,31 @@
 				CONSTRAINT `Schedule of message attempt` FOREIGN KEY (`schedule_id`)
 				REFERENCES `motechmodule_scheduledmessage` (`motechmodule_scheduledmessage_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			INSERT INTO `motechmodule_messagedefinition` (`motechmodule_messagedefinition_id`,`message_key`,`public_id`)
+			VALUES (1,'tetanus.info.1',2),(2,'tetanus.info.2',3),(3,'tetanus.info.3',5),(4,'tetanus.info.4',6),
+			(5,'tetanus.1.prompt',4),(6,'tetanus.1.reminder.1',7),(7,'tetanus.1.reminder.2',8),(8,'tetanus.2.prompt',9),
+			(9,'tetanus.2.reminder.1',10),(10,'tetanus.2.reminder.2',11),
+			(11,'pregnancy.day.1',14),(12,'pregnancy.day.2',15),(13,'pregnancy.day.3',16),(14,'pregnancy.day.4',17),
+			(15,'pregnancy.day.5',18),(16,'pregnancy.day.6',19),(17,'pregnancy.day.7',20),(18,'pregnancy.day.8',21),
+			(19,'pregnancy.day.9',22),(20,'pregnancy.day.10',23),(21,'pregnancy.day.11',24),(22,'pregnancy.day.12',25),
+			(23,'pregnancy.day.13',26),(24,'pregnancy.day.14',27),(25,'pregnancy.day.15',28),(26,'pregnancy.day.16',29),
+			(27,'pregnancy.day.17',30),(28,'pregnancy.day.18',31),(29,'pregnancy.day.19',32),(30,'pregnancy.day.20',33),
+			(31,'pregnancy.day.21',34),(32,'pregnancy.day.22',35),(33,'pregnancy.day.23',36),(34,'pregnancy.day.24',37),
+			(35,'pregnancy.day.25',38),(36,'pregnancy.day.26',39),(37,'pregnancy.day.27',40),(38,'pregnancy.day.28',41),
+			(39,'pregnancy.day.29',42),(40,'pregnancy.day.30',43),(41,'pregnancy.day.31',44),(42,'pregnancy.day.32',45),
+			(43,'pregnancy.day.33',46),(44,'pregnancy.day.34',47),(45,'pregnancy.day.35',48),(46,'pregnancy.day.36',49),
+			(47,'pregnancy.day.37',50),(48,'pregnancy.day.38',51),(49,'pregnancy.day.39',52),(50,'pregnancy.day.40',53);
+
+			INSERT INTO `motechmodule_messageattribute` (`motechmodule_messageattribute_id`,`attribute_name`,`attribute_property`)
+			VALUES (1,'PatientFirstName','person.givenName'),(2,'DueDate','obs.concept.name=ESTIMATED DATE OF CONFINEMENT');
+			
+			INSERT INTO `motechmodule_messagedefinition_attribute` (`definition_id`,`attribute_id`) VALUES 
+			(11,1),(11,2),(12,1),(12,2),(13,1),(13,2),(14,1),(14,2),(15,1),(15,2),(16,1),(16,2),(17,1),(17,2),(18,1),(18,2),
+			(19,1),(19,2),(20,1),(20,2),(21,1),(21,2),(22,1),(22,2),(23,1),(23,2),(24,1),(24,2),(25,1),(25,2),(26,1),(26,2),
+			(27,1),(27,2),(28,1),(28,2),(29,1),(29,2),(30,1),(30,2),(31,1),(31,2),(32,1),(32,2),(33,1),(33,2),(34,1),(34,2),
+			(35,1),(35,2),(36,1),(36,2),(37,1),(37,2),(38,1),(38,2),(39,1),(39,2),(40,1),(40,2),(41,1),(41,2),(42,1),(42,2),
+			(43,1),(43,2),(44,1),(44,2),(45,1),(45,2),(46,1),(46,2),(47,1),(47,2),(48,1),(48,2),(49,1),(49,2),(50,1),(50,2);
 		</sql>
 	</diff>
 	

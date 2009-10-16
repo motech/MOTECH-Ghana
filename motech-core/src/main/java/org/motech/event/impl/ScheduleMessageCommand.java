@@ -8,7 +8,6 @@ import org.motech.messaging.MessageScheduler;
 public class ScheduleMessageCommand implements Command {
 
 	String messageKey;
-	Long publicId;
 	String messageGroup;
 	Integer messageRecipientId;
 	Date messageDate;
@@ -16,7 +15,7 @@ public class ScheduleMessageCommand implements Command {
 
 	public void execute() {
 
-		messageScheduler.scheduleMessage(messageKey, publicId, messageGroup,
+		messageScheduler.scheduleMessage(messageKey, messageGroup,
 				messageRecipientId, messageDate);
 	}
 
@@ -26,14 +25,6 @@ public class ScheduleMessageCommand implements Command {
 
 	public void setMessageKey(String messageKey) {
 		this.messageKey = messageKey;
-	}
-
-	public Long getPublicId() {
-		return publicId;
-	}
-
-	public void setPublicId(Long publicId) {
-		this.publicId = publicId;
 	}
 
 	public String getMessageGroup() {

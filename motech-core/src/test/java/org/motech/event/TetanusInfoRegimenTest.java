@@ -99,12 +99,10 @@ public class TetanusInfoRegimenTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) state1.getCommand())
 				.getMessageKey();
-		Long publicId = ((ScheduleMessageCommand) state1.getCommand())
-				.getPublicId();
 		String groupId = regimen.getName();
 
-		messageScheduler.scheduleMessage(messageKey, publicId, groupId,
-				patientId, messageDate);
+		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
+				messageDate);
 
 		replay(patientObsService, messageScheduler);
 
@@ -123,12 +121,10 @@ public class TetanusInfoRegimenTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) state2.getCommand())
 				.getMessageKey();
-		Long publicId = ((ScheduleMessageCommand) state2.getCommand())
-				.getPublicId();
 		String groupId = regimen.getName();
 
-		messageScheduler.scheduleMessage(messageKey, publicId, groupId,
-				patientId, messageDate);
+		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
+				messageDate);
 
 		replay(patientObsService, messageScheduler);
 
@@ -147,12 +143,10 @@ public class TetanusInfoRegimenTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) state3.getCommand())
 				.getMessageKey();
-		Long publicId = ((ScheduleMessageCommand) state3.getCommand())
-				.getPublicId();
 		String groupId = regimen.getName();
 
-		messageScheduler.scheduleMessage(messageKey, publicId, groupId,
-				patientId, messageDate);
+		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
+				messageDate);
 
 		replay(patientObsService, messageScheduler);
 
@@ -171,12 +165,10 @@ public class TetanusInfoRegimenTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) state4.getCommand())
 				.getMessageKey();
-		Long publicId = ((ScheduleMessageCommand) state4.getCommand())
-				.getPublicId();
 		String groupId = regimen.getName();
 
-		messageScheduler.scheduleMessage(messageKey, publicId, groupId,
-				patientId, messageDate);
+		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
+				messageDate);
 
 		replay(patientObsService, messageScheduler);
 
