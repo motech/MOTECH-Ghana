@@ -13,7 +13,7 @@
 	<packaging>jar</packaging>
 	<name>Motech Server Core</name>
 	<description>The core library for the server-side of the MoTeCH project.</description>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.motechproject</groupId>
@@ -63,5 +63,25 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxws-maven-plugin</artifactId>
+				<version>1.12</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>wsgen</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<sei>org.motech.ws.RegistrarWebService</sei>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
