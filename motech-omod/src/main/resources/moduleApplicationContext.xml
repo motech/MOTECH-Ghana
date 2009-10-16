@@ -60,6 +60,12 @@
 										</key>
 										<ref bean="tetanusImmunization" />
 									</entry>
+									<entry>
+										<key>
+											<value>dailyPregnancyRegimen</value>
+										</key>
+										<ref bean="dailyPregnancyRegimen" />
+									</entry>
 								</map>
 							</property>
 						</bean>

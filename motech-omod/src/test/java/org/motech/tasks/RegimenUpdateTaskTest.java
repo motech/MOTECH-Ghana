@@ -118,7 +118,7 @@ public class RegimenUpdateTaskTest extends BaseModuleContextSensitiveTest {
 
 		assertEquals("tetanus.info.3", scheduledMessages.get(0).getMessage()
 				.getMessageKey());
-		assertEquals("tetanus.reminder.1", scheduledMessages.get(1)
+		assertEquals("tetanus.1.reminder.1", scheduledMessages.get(1)
 				.getMessage().getMessageKey());
 
 		// Add tetanus immunization 4 minutes in past
@@ -136,13 +136,13 @@ public class RegimenUpdateTaskTest extends BaseModuleContextSensitiveTest {
 		assertEquals("tetanus.info.3", scheduledMessages.get(0).getMessage()
 				.getMessageKey());
 		// Original reminder for first immunization, now cancelled
-		assertEquals("tetanus.reminder.1", scheduledMessages.get(1)
+		assertEquals("tetanus.1.reminder.1", scheduledMessages.get(1)
 				.getMessage().getMessageKey());
 		assertEquals(MessageStatus.CANCELLED, scheduledMessages.get(1)
 				.getMessageAttempts().get(0).getAttemptStatus());
 		// New second reminder for second immunization
 		// Second immunization prompt skipped since past time
-		assertEquals("tetanus.reminder.2", scheduledMessages.get(2)
+		assertEquals("tetanus.2.reminder.2", scheduledMessages.get(2)
 				.getMessage().getMessageKey());
 	}
 

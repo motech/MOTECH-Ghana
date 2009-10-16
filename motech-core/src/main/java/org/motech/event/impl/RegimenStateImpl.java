@@ -109,9 +109,13 @@ public class RegimenStateImpl extends BaseInterfaceImpl implements RegimenState 
 			case patient_age:
 				calendar.setTime(patient.getBirthdate());
 				break;
-			case previous_obs:
+			case last_obs:
 				calendar.setTime(patientObsService.getLastObsDate(patient,
 						regimen.getConceptName(), regimen.getConceptValue()));
+				break;
+			case last_obs_value:
+				calendar.setTime(patientObsService.getLastObsValue(patient,
+						regimen.getConceptName()));
 				break;
 			case patient_registration:
 				calendar.setTime(patient.getDateCreated());
@@ -122,6 +126,8 @@ public class RegimenStateImpl extends BaseInterfaceImpl implements RegimenState 
 			case minute:
 				calendar.add(Calendar.MINUTE, timeValue);
 				break;
+			case day:
+				calendar.add(Calendar.DATE, timeValue);
 			case week:
 				// Add weeks as days
 				calendar.add(Calendar.DATE, timeValue * 7);

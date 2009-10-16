@@ -18,7 +18,7 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="tetanus.info.1" />
-				<property name="publicId" value="1" />
+				<property name="publicId" value="2" />
 				<property name="messageScheduler" ref="messageScheduler" />
 			</bean>
 		</property>
@@ -48,7 +48,7 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="tetanus.info.2" />
-				<property name="publicId" value="2" />
+				<property name="publicId" value="3" />
 				<property name="messageScheduler" ref="messageScheduler" />
 			</bean>
 		</property>
@@ -78,7 +78,7 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="tetanus.info.3" />
-				<property name="publicId" value="3" />
+				<property name="publicId" value="5" />
 				<property name="messageScheduler" ref="messageScheduler" />
 			</bean>
 		</property>
@@ -108,7 +108,7 @@
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="tetanus.info.4" />
-				<property name="publicId" value="4" />
+				<property name="publicId" value="6" />
 				<property name="messageScheduler" ref="messageScheduler" />
 			</bean>
 		</property>

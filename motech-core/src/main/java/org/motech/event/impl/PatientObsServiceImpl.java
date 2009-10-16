@@ -66,4 +66,13 @@ public class PatientObsServiceImpl implements PatientObsService {
 		return latestObsDate;
 	}
 
+	public Date getLastObsValue(Patient patient, String conceptName) {
+		Date lastestObsValue = null;
+
+		List<Obs> obsList = getMatchingObs(patient, conceptName, null);
+		if (obsList.size() > 0) {
+			lastestObsValue = obsList.get(0).getValueDatetime();
+		}
+		return lastestObsValue;
+	}
 }
