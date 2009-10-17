@@ -29,10 +29,6 @@
 		<point>org.openmrs.api.ObsService</point>
 		<class>${modulePackage}.advice.SaveObsAdvisor</class>
 	</advice>
-	<advice>
-		<point>org.openmrs.api.PatientService</point>
-		<class>${modulePackage}.advice.SavePatientAdvisor</class>
-	</advice>
 
 	<!-- Internationalization -->
 	<!-- All message codes should start with ${project.artifactId}.* -->
