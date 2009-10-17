@@ -34,15 +34,23 @@ public class MessageSchedulerImpl implements MessageScheduler {
 		// Return existing message definition
 		MessageDefinition messageDefinition = getMessageDefinition(messageKey);
 
+		Date scheduledMessageDate;
+		if (!userPreferenceBased) {
+			scheduledMessageDate = messageDate;
+		} else {
+			scheduledMessageDate = determineUserPreferredMessageDate(
+					messageRecipientId, messageDate);
+		}
+
 		// Cancel any unsent messages for the same group, unless matching the
 		// message to schedule
 		removeUnsentMessages(messageRecipientId, messageGroup,
-				messageDefinition, messageDate);
+				messageDefinition, scheduledMessageDate);
 
 		// Create new scheduled message (with pending attempt) for group
 		// if none matching already exist
 		createScheduledMessage(messageRecipientId, messageDefinition,
-				messageGroup, messageDate);
+				messageGroup, scheduledMessageDate);
 	}
 
 	private MessageDefinition getMessageDefinition(String messageKey) {
@@ -100,48 +108,46 @@ public class MessageSchedulerImpl implements MessageScheduler {
 		}
 	}
 
+	private Date determineUserPreferredMessageDate(Integer recipientId,
+			Date messageDate) {
+		Person recipient = contextService.getPersonService().getPerson(
+				recipientId);
+		PersonAttributeType deliveryTimeType = contextService
+				.getPersonService().getPersonAttributeTypeByName(
+						"Delivery Time");
+		PersonAttribute deliveryTimeAttr = recipient
+				.getAttribute(deliveryTimeType);
+		String deliveryTimeString = deliveryTimeAttr.getValue();
+		DeliveryTime deliveryTime = DeliveryTime.ANYTIME;
+		if (deliveryTimeString != null) {
+			deliveryTime = DeliveryTime.valueOf(deliveryTimeString);
+		}
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(messageDate);
+		switch (deliveryTime) {
+		case MORNING:
+			calendar.set(Calendar.HOUR_OF_DAY, 9);
+			break;
+		case AFTERNOON:
+			calendar.set(Calendar.HOUR_OF_DAY, 13);
+			break;
+		case EVENING:
+			calendar.set(Calendar.HOUR_OF_DAY, 18);
+			break;
+		default:
+			calendar.set(Calendar.HOUR_OF_DAY, 9);
+			break;
+		}
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		return calendar.getTime();
+	}
+
 	private void createScheduledMessage(Integer recipientId,
 			MessageDefinition messageDefinition, String messageGroup,
 			Date messageDate) {
 		MotechService motechService = contextService.getMotechService();
-
-		Date scheduledMessageDate;
-		if (!userPreferenceBased) {
-			scheduledMessageDate = messageDate;
-		} else {
-			Person recipient = contextService.getPersonService().getPerson(
-					recipientId);
-			PersonAttributeType deliveryTimeType = contextService
-					.getPersonService().getPersonAttributeTypeByName(
-							"Delivery Time");
-			PersonAttribute deliveryTimeAttr = recipient
-					.getAttribute(deliveryTimeType);
-			String deliveryTimeString = deliveryTimeAttr.getValue();
-			DeliveryTime deliveryTime = DeliveryTime.ANYTIME;
-			if (deliveryTimeString != null) {
-				deliveryTime = DeliveryTime.valueOf(deliveryTimeString);
-			}
-
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(messageDate);
-			switch (deliveryTime) {
-			case MORNING:
-				calendar.set(Calendar.HOUR_OF_DAY, 9);
-				break;
-			case AFTERNOON:
-				calendar.set(Calendar.HOUR_OF_DAY, 13);
-				break;
-			case EVENING:
-				calendar.set(Calendar.HOUR_OF_DAY, 18);
-				break;
-			default:
-				calendar.set(Calendar.HOUR_OF_DAY, 9);
-				break;
-			}
-			calendar.set(Calendar.MINUTE, 0);
-			calendar.set(Calendar.SECOND, 0);
-			scheduledMessageDate = calendar.getTime();
-		}
 
 		List<ScheduledMessage> scheduledMessages = motechService
 				.getScheduledMessages(recipientId, messageDefinition.getId(),
@@ -152,13 +158,13 @@ public class MessageSchedulerImpl implements MessageScheduler {
 					+ " - ScheduledMessage Does Not Exist - Creating");
 
 			ScheduledMessage scheduledMessage = new ScheduledMessage();
-			scheduledMessage.setScheduledFor(scheduledMessageDate);
+			scheduledMessage.setScheduledFor(messageDate);
 			scheduledMessage.setRecipientId(recipientId);
 			scheduledMessage.setMessage(messageDefinition);
 			scheduledMessage.getGroupIds().add(messageGroup);
 
 			Message message = messageDefinition.createMessage(scheduledMessage);
-			message.setAttemptDate(scheduledMessageDate);
+			message.setAttemptDate(messageDate);
 			scheduledMessage.getMessageAttempts().add(message);
 
 			motechService.saveScheduledMessage(scheduledMessage);
