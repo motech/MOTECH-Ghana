@@ -13,10 +13,16 @@ public class RegimenStateTransitionExpectedDateImpl extends
 		Date actionDate;
 		if (nextState.equals(prevState)) {
 			actionDate = nextState.getDateOfAction(patient);
+			if (actionDate == null) {
+				return false;
+			}
 			return currentDate.before(actionDate)
 					|| currentDate.equals(actionDate);
 		} else {
 			actionDate = prevState.getDateOfAction(patient);
+			if (actionDate == null) {
+				return false;
+			}
 			return currentDate.after(actionDate);
 		}
 	}

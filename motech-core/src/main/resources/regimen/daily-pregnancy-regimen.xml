@@ -29,12 +29,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState1" />
-					<property name="nextState" ref="dailyPregnancyState1" />
+					<property name="nextState" ref="dailyPregnancyState2" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState1" />
-					<property name="nextState" ref="dailyPregnancyState2" />
+					<property name="nextState" ref="dailyPregnancyState1" />
 				</bean>
 			</list>
 		</property>
@@ -58,12 +58,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState2" />
-					<property name="nextState" ref="dailyPregnancyState2" />
+					<property name="nextState" ref="dailyPregnancyState3" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState2" />
-					<property name="nextState" ref="dailyPregnancyState3" />
+					<property name="nextState" ref="dailyPregnancyState2" />
 				</bean>
 			</list>
 		</property>
@@ -87,17 +87,17 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState3" />
-					<property name="nextState" ref="dailyPregnancyState3" />
+					<property name="nextState" ref="dailyPregnancyState4" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState3" />
-					<property name="nextState" ref="dailyPregnancyState4" />
+					<property name="nextState" ref="dailyPregnancyState3" />
 				</bean>
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="dailyPregnancyState4" class="org.motech.event.impl.RegimenStateImpl">
 		<property name="name" value="Pregnancy State Day 4" />
 		<property name="timeValue" value="-36" />
@@ -116,17 +116,17 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState4" />
-					<property name="nextState" ref="dailyPregnancyState4" />
+					<property name="nextState" ref="dailyPregnancyState5" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState4" />
-					<property name="nextState" ref="dailyPregnancyState5" />
+					<property name="nextState" ref="dailyPregnancyState4" />
 				</bean>
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="dailyPregnancyState5" class="org.motech.event.impl.RegimenStateImpl">
 		<property name="name" value="Pregnancy State Day 5" />
 		<property name="timeValue" value="-35" />
@@ -145,12 +145,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState5" />
-					<property name="nextState" ref="dailyPregnancyState5" />
+					<property name="nextState" ref="dailyPregnancyState6" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState5" />
-					<property name="nextState" ref="dailyPregnancyState6" />
+					<property name="nextState" ref="dailyPregnancyState5" />
 				</bean>
 			</list>
 		</property>
@@ -174,12 +174,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState6" />
-					<property name="nextState" ref="dailyPregnancyState6" />
+					<property name="nextState" ref="dailyPregnancyState7" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState6" />
-					<property name="nextState" ref="dailyPregnancyState7" />
+					<property name="nextState" ref="dailyPregnancyState6" />
 				</bean>
 			</list>
 		</property>
@@ -203,12 +203,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState7" />
-					<property name="nextState" ref="dailyPregnancyState7" />
+					<property name="nextState" ref="dailyPregnancyState8" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState7" />
-					<property name="nextState" ref="dailyPregnancyState8" />
+					<property name="nextState" ref="dailyPregnancyState7" />
 				</bean>
 			</list>
 		</property>
@@ -232,12 +232,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState8" />
-					<property name="nextState" ref="dailyPregnancyState8" />
+					<property name="nextState" ref="dailyPregnancyState9" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState8" />
-					<property name="nextState" ref="dailyPregnancyState9" />
+					<property name="nextState" ref="dailyPregnancyState8" />
 				</bean>
 			</list>
 		</property>
@@ -261,12 +261,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState9" />
-					<property name="nextState" ref="dailyPregnancyState9" />
+					<property name="nextState" ref="dailyPregnancyState10" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState9" />
-					<property name="nextState" ref="dailyPregnancyState10" />
+					<property name="nextState" ref="dailyPregnancyState9" />
 				</bean>
 			</list>
 		</property>
@@ -290,12 +290,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState10" />
-					<property name="nextState" ref="dailyPregnancyState10" />
+					<property name="nextState" ref="dailyPregnancyState11" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState10" />
-					<property name="nextState" ref="dailyPregnancyState11" />
+					<property name="nextState" ref="dailyPregnancyState10" />
 				</bean>
 			</list>
 		</property>
@@ -319,12 +319,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState11" />
-					<property name="nextState" ref="dailyPregnancyState11" />
+					<property name="nextState" ref="dailyPregnancyState12" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState11" />
-					<property name="nextState" ref="dailyPregnancyState12" />
+					<property name="nextState" ref="dailyPregnancyState11" />
 				</bean>
 			</list>
 		</property>
@@ -348,12 +348,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState12" />
-					<property name="nextState" ref="dailyPregnancyState12" />
+					<property name="nextState" ref="dailyPregnancyState13" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState12" />
-					<property name="nextState" ref="dailyPregnancyState13" />
+					<property name="nextState" ref="dailyPregnancyState12" />
 				</bean>
 			</list>
 		</property>
@@ -377,12 +377,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState13" />
-					<property name="nextState" ref="dailyPregnancyState13" />
+					<property name="nextState" ref="dailyPregnancyState14" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState13" />
-					<property name="nextState" ref="dailyPregnancyState14" />
+					<property name="nextState" ref="dailyPregnancyState13" />
 				</bean>
 			</list>
 		</property>
@@ -406,12 +406,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState14" />
-					<property name="nextState" ref="dailyPregnancyState14" />
+					<property name="nextState" ref="dailyPregnancyState15" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState14" />
-					<property name="nextState" ref="dailyPregnancyState15" />
+					<property name="nextState" ref="dailyPregnancyState14" />
 				</bean>
 			</list>
 		</property>
@@ -435,12 +435,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState15" />
-					<property name="nextState" ref="dailyPregnancyState15" />
+					<property name="nextState" ref="dailyPregnancyState16" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState15" />
-					<property name="nextState" ref="dailyPregnancyState16" />
+					<property name="nextState" ref="dailyPregnancyState15" />
 				</bean>
 			</list>
 		</property>
@@ -464,12 +464,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState16" />
-					<property name="nextState" ref="dailyPregnancyState16" />
+					<property name="nextState" ref="dailyPregnancyState17" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState16" />
-					<property name="nextState" ref="dailyPregnancyState17" />
+					<property name="nextState" ref="dailyPregnancyState16" />
 				</bean>
 			</list>
 		</property>
@@ -493,12 +493,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState17" />
-					<property name="nextState" ref="dailyPregnancyState17" />
+					<property name="nextState" ref="dailyPregnancyState18" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState17" />
-					<property name="nextState" ref="dailyPregnancyState18" />
+					<property name="nextState" ref="dailyPregnancyState17" />
 				</bean>
 			</list>
 		</property>
@@ -522,12 +522,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState18" />
-					<property name="nextState" ref="dailyPregnancyState18" />
+					<property name="nextState" ref="dailyPregnancyState19" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState18" />
-					<property name="nextState" ref="dailyPregnancyState19" />
+					<property name="nextState" ref="dailyPregnancyState18" />
 				</bean>
 			</list>
 		</property>
@@ -551,12 +551,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState19" />
-					<property name="nextState" ref="dailyPregnancyState19" />
+					<property name="nextState" ref="dailyPregnancyState20" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState19" />
-					<property name="nextState" ref="dailyPregnancyState20" />
+					<property name="nextState" ref="dailyPregnancyState19" />
 				</bean>
 			</list>
 		</property>
@@ -580,12 +580,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState20" />
-					<property name="nextState" ref="dailyPregnancyState20" />
+					<property name="nextState" ref="dailyPregnancyState21" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState20" />
-					<property name="nextState" ref="dailyPregnancyState21" />
+					<property name="nextState" ref="dailyPregnancyState20" />
 				</bean>
 			</list>
 		</property>
@@ -609,12 +609,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState21" />
-					<property name="nextState" ref="dailyPregnancyState21" />
+					<property name="nextState" ref="dailyPregnancyState22" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState21" />
-					<property name="nextState" ref="dailyPregnancyState22" />
+					<property name="nextState" ref="dailyPregnancyState21" />
 				</bean>
 			</list>
 		</property>
@@ -638,12 +638,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState22" />
-					<property name="nextState" ref="dailyPregnancyState22" />
+					<property name="nextState" ref="dailyPregnancyState23" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState22" />
-					<property name="nextState" ref="dailyPregnancyState23" />
+					<property name="nextState" ref="dailyPregnancyState22" />
 				</bean>
 			</list>
 		</property>
@@ -667,12 +667,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState23" />
-					<property name="nextState" ref="dailyPregnancyState23" />
+					<property name="nextState" ref="dailyPregnancyState24" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState23" />
-					<property name="nextState" ref="dailyPregnancyState24" />
+					<property name="nextState" ref="dailyPregnancyState23" />
 				</bean>
 			</list>
 		</property>
@@ -696,12 +696,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState24" />
-					<property name="nextState" ref="dailyPregnancyState24" />
+					<property name="nextState" ref="dailyPregnancyState25" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState24" />
-					<property name="nextState" ref="dailyPregnancyState25" />
+					<property name="nextState" ref="dailyPregnancyState24" />
 				</bean>
 			</list>
 		</property>
@@ -725,12 +725,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState25" />
-					<property name="nextState" ref="dailyPregnancyState25" />
+					<property name="nextState" ref="dailyPregnancyState26" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState25" />
-					<property name="nextState" ref="dailyPregnancyState26" />
+					<property name="nextState" ref="dailyPregnancyState25" />
 				</bean>
 			</list>
 		</property>
@@ -754,12 +754,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState26" />
-					<property name="nextState" ref="dailyPregnancyState26" />
+					<property name="nextState" ref="dailyPregnancyState27" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState26" />
-					<property name="nextState" ref="dailyPregnancyState27" />
+					<property name="nextState" ref="dailyPregnancyState26" />
 				</bean>
 			</list>
 		</property>
@@ -783,12 +783,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState27" />
-					<property name="nextState" ref="dailyPregnancyState27" />
+					<property name="nextState" ref="dailyPregnancyState28" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState27" />
-					<property name="nextState" ref="dailyPregnancyState28" />
+					<property name="nextState" ref="dailyPregnancyState27" />
 				</bean>
 			</list>
 		</property>
@@ -812,12 +812,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState28" />
-					<property name="nextState" ref="dailyPregnancyState28" />
+					<property name="nextState" ref="dailyPregnancyState29" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState28" />
-					<property name="nextState" ref="dailyPregnancyState29" />
+					<property name="nextState" ref="dailyPregnancyState28" />
 				</bean>
 			</list>
 		</property>
@@ -841,12 +841,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState29" />
-					<property name="nextState" ref="dailyPregnancyState29" />
+					<property name="nextState" ref="dailyPregnancyState30" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState29" />
-					<property name="nextState" ref="dailyPregnancyState30" />
+					<property name="nextState" ref="dailyPregnancyState29" />
 				</bean>
 			</list>
 		</property>
@@ -870,12 +870,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState30" />
-					<property name="nextState" ref="dailyPregnancyState30" />
+					<property name="nextState" ref="dailyPregnancyState31" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState30" />
-					<property name="nextState" ref="dailyPregnancyState31" />
+					<property name="nextState" ref="dailyPregnancyState30" />
 				</bean>
 			</list>
 		</property>
@@ -899,12 +899,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState31" />
-					<property name="nextState" ref="dailyPregnancyState31" />
+					<property name="nextState" ref="dailyPregnancyState32" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState31" />
-					<property name="nextState" ref="dailyPregnancyState32" />
+					<property name="nextState" ref="dailyPregnancyState31" />
 				</bean>
 			</list>
 		</property>
@@ -928,12 +928,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState32" />
-					<property name="nextState" ref="dailyPregnancyState32" />
+					<property name="nextState" ref="dailyPregnancyState33" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState32" />
-					<property name="nextState" ref="dailyPregnancyState33" />
+					<property name="nextState" ref="dailyPregnancyState32" />
 				</bean>
 			</list>
 		</property>
@@ -957,12 +957,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState33" />
-					<property name="nextState" ref="dailyPregnancyState33" />
+					<property name="nextState" ref="dailyPregnancyState34" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState33" />
-					<property name="nextState" ref="dailyPregnancyState34" />
+					<property name="nextState" ref="dailyPregnancyState33" />
 				</bean>
 			</list>
 		</property>
@@ -986,12 +986,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState34" />
-					<property name="nextState" ref="dailyPregnancyState34" />
+					<property name="nextState" ref="dailyPregnancyState35" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState34" />
-					<property name="nextState" ref="dailyPregnancyState35" />
+					<property name="nextState" ref="dailyPregnancyState34" />
 				</bean>
 			</list>
 		</property>
@@ -1015,12 +1015,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState35" />
-					<property name="nextState" ref="dailyPregnancyState35" />
+					<property name="nextState" ref="dailyPregnancyState36" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState35" />
-					<property name="nextState" ref="dailyPregnancyState36" />
+					<property name="nextState" ref="dailyPregnancyState35" />
 				</bean>
 			</list>
 		</property>
@@ -1044,12 +1044,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState36" />
-					<property name="nextState" ref="dailyPregnancyState36" />
+					<property name="nextState" ref="dailyPregnancyState37" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState36" />
-					<property name="nextState" ref="dailyPregnancyState37" />
+					<property name="nextState" ref="dailyPregnancyState36" />
 				</bean>
 			</list>
 		</property>
@@ -1073,12 +1073,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState37" />
-					<property name="nextState" ref="dailyPregnancyState37" />
+					<property name="nextState" ref="dailyPregnancyState38" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState37" />
-					<property name="nextState" ref="dailyPregnancyState38" />
+					<property name="nextState" ref="dailyPregnancyState37" />
 				</bean>
 			</list>
 		</property>
@@ -1102,12 +1102,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState38" />
-					<property name="nextState" ref="dailyPregnancyState38" />
+					<property name="nextState" ref="dailyPregnancyState39" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState38" />
-					<property name="nextState" ref="dailyPregnancyState39" />
+					<property name="nextState" ref="dailyPregnancyState38" />
 				</bean>
 			</list>
 		</property>
@@ -1131,12 +1131,12 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState39" />
-					<property name="nextState" ref="dailyPregnancyState39" />
+					<property name="nextState" ref="dailyPregnancyState40" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState39" />
-					<property name="nextState" ref="dailyPregnancyState40" />
+					<property name="nextState" ref="dailyPregnancyState39" />
 				</bean>
 			</list>
 		</property>
@@ -1160,17 +1160,17 @@
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState40" />
-					<property name="nextState" ref="dailyPregnancyState40" />
+					<property name="nextState" ref="dailyPregnancyState41" />
 				</bean>
-				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
+				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="dailyPregnancyState40" />
-					<property name="nextState" ref="dailyPregnancyState41" />
+					<property name="nextState" ref="dailyPregnancyState40" />
 				</bean>
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="dailyPregnancyState41" class="org.motech.event.impl.RegimenStateImpl">
 		<property name="name" value="End Pregnancy State Day 41" />
 		<property name="timeValue" value="1" />
