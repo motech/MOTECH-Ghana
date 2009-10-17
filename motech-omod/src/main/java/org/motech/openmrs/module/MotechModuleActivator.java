@@ -173,20 +173,21 @@ public class MotechModuleActivator implements Activator {
 			immProps.put("sendImmediate", "true");
 			createTask("Immediate Notification Task",
 					"Task to send out immediate SMS notifications", new Date(),
-					new Long(30), new Long(0), Boolean.FALSE,
-					NotificationTask.class.getName(), admin, immProps);
+					new Long(30), Boolean.FALSE, NotificationTask.class
+							.getName(), admin, immProps);
 			Calendar calendar = Calendar.getInstance();
 			calendar.set(Calendar.HOUR_OF_DAY, 23);
 			calendar.set(Calendar.MINUTE, 0);
 			calendar.set(Calendar.SECOND, 0);
+			Map<String, String> dailyProps = new HashMap<String, String>();
+			dailyProps.put("timeOffset", new Long(3600).toString());
 			createTask("Daily Notification Task",
 					"Task to send out SMS notifications for next day", calendar
-							.getTime(), new Long(86400), new Long(3600),
-					Boolean.FALSE, NotificationTask.class.getName(), admin,
-					null);
+							.getTime(), new Long(86400), Boolean.FALSE,
+					NotificationTask.class.getName(), admin, dailyProps);
 			createTask("Regimen Update Task",
 					"Task to update regimen state for patients", new Date(),
-					new Long(30), null, Boolean.FALSE, RegimenUpdateTask.class
+					new Long(30), Boolean.FALSE, RegimenUpdateTask.class
 							.getName(), admin, null);
 
 			log.info("Verifying Global Properties Exist");
@@ -347,8 +348,8 @@ public class MotechModuleActivator implements Activator {
 	}
 
 	private void createTask(String name, String description, Date startDate,
-			Long repeatSeconds, Long timeOffset, Boolean startOnStartup,
-			String taskClass, User creator, Map<String, String> properties) {
+			Long repeatSeconds, Boolean startOnStartup, String taskClass,
+			User creator, Map<String, String> properties) {
 		TaskDefinition task = Context.getSchedulerService().getTaskByName(name);
 		if (task == null) {
 			task = new TaskDefinition();
@@ -356,9 +357,6 @@ public class MotechModuleActivator implements Activator {
 			task.setDescription(description);
 			task.setStartTime(startDate);
 			task.setRepeatInterval(repeatSeconds);
-			if (timeOffset != null) {
-				task.setProperty("timeOffset", timeOffset.toString());
-			}
 			if (properties != null)
 				task.setProperties(properties);
 			task.setTaskClass(taskClass);
