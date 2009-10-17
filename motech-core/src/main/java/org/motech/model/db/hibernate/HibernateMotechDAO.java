@@ -15,6 +15,8 @@ import org.motech.model.Blackout;
 import org.motech.model.Log;
 import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
+import org.openmrs.Concept;
+import org.openmrs.Obs;
 
 /**
  * An implementation of the motech data access object interface, implemented
@@ -211,5 +213,25 @@ public class HibernateMotechDAO implements MotechDAO {
 				TroubledPhone.class).add(
 				Restrictions.eq("phoneNumber", phoneNumber)).uniqueResult();
 		return tp;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> getRegimenEnrollment(Integer personId,
+			Concept startConcept, Concept endConcept) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<String>) session.createQuery(
+				"select startobs.valueText from " + Obs.class.getName()
+						+ " as startobs "
+						+ "where startobs.person.personId = :personId and "
+						+ "startobs.concept = :startConcept and "
+						+ "not exists ( from " + Obs.class.getName()
+						+ " as endobs "
+						+ "where endobs.person.personId = :personId and "
+						+ "endobs.concept = :endConcept and "
+						+ "endobs.valueText = startobs.valueText and "
+						+ "endobs.obsDatetime >= startobs.obsDatetime )")
+				.setInteger("personId", personId).setParameter("startConcept",
+						startConcept).setParameter("endConcept", endConcept)
+				.list();
 	}
 }

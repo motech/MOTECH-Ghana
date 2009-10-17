@@ -11,4 +11,6 @@ public interface PatientObsService {
 	Date getLastObsDate(Patient patient, String conceptName, String conceptValue);
 
 	Date getLastObsValue(Patient patient, String conceptName);
+
+	void removeRegimen(Integer personId, String regimenName);
 }

@@ -29,7 +29,9 @@ import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
 import org.motech.openmrs.module.MotechService;
 import org.motechproject.ws.mobile.MessageService;
+import org.openmrs.Concept;
 import org.openmrs.User;
+import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 
@@ -61,6 +63,15 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public Regimen getRegimen(String regimenName) {
 		return regimens.get(regimenName);
+	}
+
+	public List<String> getRegimenEnrollment(Integer personId) {
+		ConceptService conceptService = Context.getConceptService();
+		Concept startConcept = conceptService.getConcept("REGIMEN START");
+		Concept endConcept = conceptService.getConcept("REGIMEN END");
+
+		return motechDAO.getRegimenEnrollment(personId, startConcept,
+				endConcept);
 	}
 
 	public List<Log> getAllLogs() {

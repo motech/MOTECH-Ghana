@@ -128,7 +128,11 @@
 	
 	<bean id="tetanusInfoState5" class="org.motech.event.impl.RegimenStateImpl">
 		<property name="name" value="Tetanus Info EndState 5" />
-		<property name="command" ref="nopCommand" />
+		<property name="command">
+			<bean class="org.motech.event.impl.RemoveRegimenEnrollmentCommand">
+				<property name="patientObsService" ref="patientObsService" />
+			</bean>
+		</property>		
 		<property name="regimen" ref="tetanusInfo" />
 		<property name="transitions">
 			<list>

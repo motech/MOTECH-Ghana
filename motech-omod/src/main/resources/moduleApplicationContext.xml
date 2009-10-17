@@ -50,19 +50,19 @@
 								<map>
 									<entry>
 										<key>
-											<value>tetanusInfo</value>
+											<value>Tetanus Information Regimen</value>
 										</key>
 										<ref bean="tetanusInfo" />
 									</entry>
 									<entry>
 										<key>
-											<value>tetanusImmunization</value>
+											<value>Tetanus Immunization Regimen</value>
 										</key>
 										<ref bean="tetanusImmunization" />
 									</entry>
 									<entry>
 										<key>
-											<value>dailyPregnancyRegimen</value>
+											<value>Daily Pregnancy Regimen</value>
 										</key>
 										<ref bean="dailyPregnancyRegimen" />
 									</entry>

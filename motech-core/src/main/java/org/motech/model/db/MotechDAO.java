@@ -11,6 +11,7 @@ import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Blackout;
 import org.motech.model.Log;
 import org.motech.model.TroubledPhone;
+import org.openmrs.Concept;
 
 /**
  * The interface definition for the motech server's data access requirements.
@@ -67,4 +68,7 @@ public interface MotechDAO {
 	void removeTroubledPhone(Long id);
 
 	void saveTroubledPhone(TroubledPhone phone);
+
+	List<String> getRegimenEnrollment(Integer personId, Concept startConcept,
+			Concept endConcept);
 }

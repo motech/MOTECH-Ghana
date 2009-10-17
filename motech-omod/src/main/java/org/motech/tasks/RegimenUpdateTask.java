@@ -24,8 +24,7 @@ public class RegimenUpdateTask extends AbstractTask {
 	@Override
 	public void execute() {
 
-		log
-				.debug("Regimen Task - Update Tetanus Information and Immuniztion Regimens");
+		log.debug("Regimen Task - Update Enrolled Regimens for all Patients");
 
 		try {
 			Context.openSession();
@@ -34,14 +33,13 @@ public class RegimenUpdateTask extends AbstractTask {
 			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PATIENTS);
 			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPTS);
 			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_OBS);
-
-			Regimen tetanusInformationRegimen = Context.getService(
-					MotechService.class).getRegimen("tetanusInfo");
-
-			Regimen tetanusImmunizationRegimen = Context.getService(
-					MotechService.class).getRegimen("tetanusImmunization");
+			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSONS);
+			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_LOCATIONS);
+			Context.addProxyPrivilege(OpenmrsConstants.PRIV_ADD_OBS);
 
 			PatientService patientService = Context.getPatientService();
+			MotechService motechService = Context
+					.getService(MotechService.class);
 
 			// Get all Patients with the Ghana Clinic Id Type
 			PatientIdentifierType serialIdType = patientService
@@ -51,10 +49,21 @@ public class RegimenUpdateTask extends AbstractTask {
 			List<Patient> patients = patientService.getPatients(null, null,
 					idTypes, true);
 
-			// Update Regimen state for all matching patients
+			// Update Regimen state for enrolled Regimen of all matching
+			// patients
 			for (Patient patient : patients) {
-				tetanusInformationRegimen.determineState(patient);
-				tetanusImmunizationRegimen.determineState(patient);
+				List<String> patientRegimens = motechService
+						.getRegimenEnrollment(patient.getPatientId());
+
+				for (String regimenName : patientRegimens) {
+					Regimen regimen = motechService.getRegimen(regimenName);
+
+					log.debug("Regimen Update - Update State: regimen: "
+							+ regimenName + ", patient: "
+							+ patient.getPatientId());
+
+					regimen.determineState(patient);
+				}
 			}
 		} finally {
 			Context
@@ -62,6 +71,9 @@ public class RegimenUpdateTask extends AbstractTask {
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PATIENTS);
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPTS);
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_OBS);
+			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSONS);
+			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_LOCATIONS);
+			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_ADD_OBS);
 			Context.closeSession();
 		}
 	}

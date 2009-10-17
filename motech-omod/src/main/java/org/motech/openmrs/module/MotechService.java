@@ -96,6 +96,8 @@ public interface MotechService extends OpenmrsService {
 
 	Regimen getRegimen(String regimenName);
 
+	List<String> getRegimenEnrollment(Integer personId);
+
 	@Transactional(readOnly = true)
 	Blackout getBlackoutSettings();
 

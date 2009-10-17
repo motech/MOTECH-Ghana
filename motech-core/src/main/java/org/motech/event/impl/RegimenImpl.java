@@ -1,6 +1,9 @@
 package org.motech.event.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -68,18 +71,42 @@ public class RegimenImpl extends BaseInterfaceImpl implements Regimen {
 
 		// Perform state action using date
 		Command command = state.getCommand();
-		if (command instanceof ScheduleMessageCommand) {
-			((ScheduleMessageCommand) command).setMessageDate(state
-					.getDateOfAction(patient));
-			((ScheduleMessageCommand) command).setMessageRecipientId(patient
-					.getPatientId());
-			((ScheduleMessageCommand) command).setMessageGroup(this.getName());
-		} else if (command instanceof RemoveMessagesCommand) {
-			((RemoveMessagesCommand) command).setMessageRecipientId(patient
-					.getPatientId());
-			((RemoveMessagesCommand) command).setMessageGroup(this.getName());
+		List<Command> allCommands = null;
+		if (command instanceof CompositeCommand) {
+			allCommands = ((CompositeCommand) command).getCommands();
+		} else {
+			allCommands = new ArrayList<Command>();
+			allCommands.add(command);
 		}
-		command.execute();
+		// Handle setting properties for all commands incase composite command
+		boolean performExecute = true;
+		for (Command commandInList : allCommands) {
+			if (commandInList instanceof ScheduleMessageCommand) {
+				Date messageDate = state.getDateOfAction(patient);
+				if (messageDate == null) {
+					performExecute = false;
+				}
+				((ScheduleMessageCommand) commandInList)
+						.setMessageDate(messageDate);
+				((ScheduleMessageCommand) commandInList)
+						.setMessageRecipientId(patient.getPatientId());
+				((ScheduleMessageCommand) commandInList).setMessageGroup(this
+						.getName());
+			} else if (commandInList instanceof RemoveMessagesCommand) {
+				((RemoveMessagesCommand) commandInList)
+						.setMessageRecipientId(patient.getPatientId());
+				((RemoveMessagesCommand) commandInList).setMessageGroup(this
+						.getName());
+			} else if (commandInList instanceof RemoveRegimenEnrollmentCommand) {
+				((RemoveRegimenEnrollmentCommand) commandInList)
+						.setPersonId(patient.getPatientId());
+				((RemoveRegimenEnrollmentCommand) commandInList)
+						.setRegimenName(this.getName());
+			}
+		}
+		if (performExecute) {
+			command.execute();
+		}
 
 		return state;
 	}

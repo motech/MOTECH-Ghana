@@ -1,12 +1,15 @@
 package org.motech.tasks;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -87,7 +90,9 @@ public class RegimenUpdateTaskTest extends BaseModuleContextSensitiveTest {
 				"patientname", "community", "location", new Date(),
 				Gender.FEMALE, 1, "patientphoneNumber",
 				ContactNumberType.PERSONAL, "language", MediaType.TEXT,
-				DeliveryTime.ANYTIME, new String[] {});
+				DeliveryTime.ANYTIME, new String[] {
+						"Tetanus Immunization Regimen",
+						"Tetanus Information Regimen" });
 
 		assertEquals(1, Context.getPatientService().getAllPatients().size());
 
@@ -139,10 +144,15 @@ public class RegimenUpdateTaskTest extends BaseModuleContextSensitiveTest {
 
 		assertEquals(2, scheduledMessages.size());
 
-		assertEquals("tetanus.info.3", scheduledMessages.get(0).getMessage()
-				.getMessageKey());
-		assertEquals("tetanus.1.reminder.1", scheduledMessages.get(1)
-				.getMessage().getMessageKey());
+		// Make sure messages are scheduled (in any order)
+		Set<String> messageKeys = new HashSet<String>();
+		for (ScheduledMessage scheduledMessage : scheduledMessages) {
+			messageKeys.add(scheduledMessage.getMessage().getMessageKey());
+		}
+		assertTrue("Message is scheduled", messageKeys
+				.contains("tetanus.info.3"));
+		assertTrue("Message is scheduled", messageKeys
+				.contains("tetanus.1.reminder.1"));
 
 		// Add tetanus immunization 4 minutes in past
 		regService.recordMaternalVisit("nursePhoneNumber", calendar.getTime(),
@@ -156,17 +166,25 @@ public class RegimenUpdateTaskTest extends BaseModuleContextSensitiveTest {
 
 		assertEquals(3, scheduledMessages.size());
 
-		assertEquals("tetanus.info.3", scheduledMessages.get(0).getMessage()
-				.getMessageKey());
-		// Original reminder for first immunization, now cancelled
-		assertEquals("tetanus.1.reminder.1", scheduledMessages.get(1)
-				.getMessage().getMessageKey());
-		assertEquals(MessageStatus.CANCELLED, scheduledMessages.get(1)
-				.getMessageAttempts().get(0).getAttemptStatus());
+		// Make sure messages are scheduled (in any order)
+		messageKeys = new HashSet<String>();
+		for (ScheduledMessage scheduledMessage : scheduledMessages) {
+			messageKeys.add(scheduledMessage.getMessage().getMessageKey());
+			if (scheduledMessage.getMessage().getMessageKey().equals(
+					"tetanus.1.reminder.1")) {
+				// Original reminder for first immunization, now cancelled
+				assertEquals(MessageStatus.CANCELLED, scheduledMessage
+						.getMessageAttempts().get(0).getAttemptStatus());
+			}
+		}
+		assertTrue("Message is scheduled", messageKeys
+				.contains("tetanus.info.3"));
+		assertTrue("Message is scheduled", messageKeys
+				.contains("tetanus.1.reminder.1"));
 		// New second reminder for second immunization
 		// Second immunization prompt skipped since past time
-		assertEquals("tetanus.2.reminder.2", scheduledMessages.get(2)
-				.getMessage().getMessageKey());
+		assertTrue("Message is scheduled", messageKeys
+				.contains("tetanus.2.reminder.2"));
 	}
 
 }

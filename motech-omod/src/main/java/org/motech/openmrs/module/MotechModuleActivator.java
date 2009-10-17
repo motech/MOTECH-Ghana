@@ -155,6 +155,10 @@ public class MotechModuleActivator implements Activator {
 			createConcept("HEMOGLOBIN AT 36 WEEKS",
 					"Hemoglobin level at 36 weeks of Pregnancy", "Test",
 					"Numeric", admin);
+			createConcept("REGIMEN START", "Name of enrolled Regimen", "Misc",
+					"Text", admin);
+			createConcept("REGIMEN END", "Name of completed Regimen", "Misc",
+					"Text", admin);
 
 			log.info("Verifying Concepts Exist as Answers");
 			// TODO: Add IPT to proper Concept as an Answer, not an immunization

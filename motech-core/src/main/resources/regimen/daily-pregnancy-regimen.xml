@@ -1177,8 +1177,17 @@
 		<property name="timePeriod" value="day" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
-			<bean class="org.motech.event.impl.RemoveMessagesCommand">
-				<property name="messageScheduler" ref="messageScheduler" />
+			<bean class="org.motech.event.impl.CompositeCommand">
+				<property name="commands">
+					<list>
+						<bean class="org.motech.event.impl.RemoveMessagesCommand">
+							<property name="messageScheduler" ref="messageScheduler" />
+						</bean>
+						<bean class="org.motech.event.impl.RemoveRegimenEnrollmentCommand">
+							<property name="patientObsService" ref="patientObsService" />
+						</bean>
+					</list>
+				</property>
 			</bean>
 		</property>
 		<property name="regimen" ref="dailyPregnancyRegimen" />

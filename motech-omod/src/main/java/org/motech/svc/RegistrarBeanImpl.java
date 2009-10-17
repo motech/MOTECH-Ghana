@@ -16,6 +16,7 @@ import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
+import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
@@ -114,6 +115,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		MotechService motechService = contextService.getMotechService();
 		PersonService personService = contextService.getPersonService();
 		LocationService locationService = contextService.getLocationService();
+		ObsService obsService = contextService.getObsService();
+		ConceptService conceptService = contextService.getConceptService();
 
 		contextService.authenticate("admin", "test");
 
@@ -179,7 +182,20 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		patient.addAttribute(new PersonAttribute(deliveryAttrType, deliveryTime
 				.toString()));
 
-		patientService.savePatient(patient);
+		patient = patientService.savePatient(patient);
+
+		Concept regimenStart = conceptService.getConcept("REGIMEN START");
+		Location defaultClinic = locationService
+				.getLocation("Default Ghana Clinic");
+		for (String regimenName : regimen) {
+			Obs regimenStartObs = new Obs();
+			regimenStartObs.setObsDatetime(new Date());
+			regimenStartObs.setConcept(regimenStart);
+			regimenStartObs.setPerson(patient);
+			regimenStartObs.setLocation(defaultClinic);
+			regimenStartObs.setValueText(regimenName);
+			obsService.saveObs(regimenStartObs, null);
+		}
 	}
 
 	public void recordMaternalVisit(String nursePhoneNumber, Date date,

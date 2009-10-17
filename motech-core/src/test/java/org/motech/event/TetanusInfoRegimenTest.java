@@ -10,6 +10,7 @@ import junit.framework.TestCase;
 
 import org.motech.event.impl.RegimenImpl;
 import org.motech.event.impl.RegimenStateImpl;
+import org.motech.event.impl.RemoveRegimenEnrollmentCommand;
 import org.motech.event.impl.ScheduleMessageCommand;
 import org.motech.messaging.MessageScheduler;
 import org.openmrs.Patient;
@@ -72,6 +73,8 @@ public class TetanusInfoRegimenTest extends TestCase {
 				.setMessageScheduler(messageScheduler);
 		((ScheduleMessageCommand) state4.getCommand())
 				.setMessageScheduler(messageScheduler);
+		((RemoveRegimenEnrollmentCommand) state5.getCommand())
+				.setPatientObsService(patientObsService);
 	}
 
 	@Override
@@ -182,6 +185,9 @@ public class TetanusInfoRegimenTest extends TestCase {
 	public void testState5() {
 		// Patient registered 7 minute ago, no messages expected
 		setPatientRegistration(patient, 7);
+
+		patientObsService.removeRegimen(patient.getPatientId(), regimen
+				.getName());
 
 		replay(patientObsService, messageScheduler);
 

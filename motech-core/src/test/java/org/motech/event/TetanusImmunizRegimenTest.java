@@ -9,9 +9,11 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
+import org.motech.event.impl.CompositeCommand;
 import org.motech.event.impl.RegimenImpl;
 import org.motech.event.impl.RegimenStateImpl;
 import org.motech.event.impl.RegimenStateTransitionExpectedNumImpl;
+import org.motech.event.impl.RemoveRegimenEnrollmentCommand;
 import org.motech.event.impl.ScheduleMessageCommand;
 import org.motech.messaging.MessageScheduler;
 import org.openmrs.Patient;
@@ -120,6 +122,16 @@ public class TetanusImmunizRegimenTest extends TestCase {
 				.setMessageScheduler(messageScheduler);
 		((ScheduleMessageCommand) state6.getCommand())
 				.setMessageScheduler(messageScheduler);
+		for (Command command : ((CompositeCommand) state7.getCommand())
+				.getCommands()) {
+			if (command instanceof ScheduleMessageCommand) {
+				((ScheduleMessageCommand) command)
+						.setMessageScheduler(messageScheduler);
+			} else if (command instanceof RemoveRegimenEnrollmentCommand) {
+				((RemoveRegimenEnrollmentCommand) command)
+						.setPatientObsService(patientObsService);
+			}
+		}
 	}
 
 	@Override
@@ -342,6 +354,8 @@ public class TetanusImmunizRegimenTest extends TestCase {
 				.andReturn(numberOfTetanusObs).anyTimes();
 		messageScheduler.removeAllUnsentMessages(patient.getPatientId(),
 				regimen.getName());
+		patientObsService.removeRegimen(patient.getPatientId(), regimen
+				.getName());
 
 		replay(patientObsService, messageScheduler);
 
@@ -365,6 +379,8 @@ public class TetanusImmunizRegimenTest extends TestCase {
 				.andReturn(numberOfTetanusObs).anyTimes();
 		messageScheduler.removeAllUnsentMessages(patient.getPatientId(),
 				regimen.getName());
+		patientObsService.removeRegimen(patient.getPatientId(), regimen
+				.getName());
 
 		replay(patientObsService, messageScheduler);
 

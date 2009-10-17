@@ -6,9 +6,14 @@ import java.util.List;
 
 import org.motech.event.PatientObsService;
 import org.openmrs.Concept;
+import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
+import org.openmrs.api.ConceptService;
+import org.openmrs.api.LocationService;
+import org.openmrs.api.ObsService;
+import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 
 public class PatientObsServiceImpl implements PatientObsService {
@@ -74,5 +79,25 @@ public class PatientObsServiceImpl implements PatientObsService {
 			lastestObsValue = obsList.get(0).getValueDatetime();
 		}
 		return lastestObsValue;
+	}
+
+	public void removeRegimen(Integer personId, String regimenName) {
+		ConceptService conceptService = Context.getConceptService();
+		LocationService locationService = Context.getLocationService();
+		PersonService personService = Context.getPersonService();
+		ObsService obsService = Context.getObsService();
+
+		Concept regimenEnd = conceptService.getConcept("REGIMEN END");
+		Location defaultClinic = locationService
+				.getLocation("Default Ghana Clinic");
+		Person person = personService.getPerson(personId);
+
+		Obs regimenEndObs = new Obs();
+		regimenEndObs.setObsDatetime(new Date());
+		regimenEndObs.setConcept(regimenEnd);
+		regimenEndObs.setPerson(person);
+		regimenEndObs.setLocation(defaultClinic);
+		regimenEndObs.setValueText(regimenName);
+		obsService.saveObs(regimenEndObs, null);
 	}
 }

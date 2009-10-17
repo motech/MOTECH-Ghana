@@ -67,6 +67,7 @@ public class RegistrarBeanTest extends TestCase {
 	ConceptService conceptService;
 	MotechService motechService;
 
+	String defaultLocationName = "Default Ghana Clinic";
 	String ghanaIdTypeName = "Ghana Clinic Id";
 	String phoneAttrName = "Phone Number";
 	String clinicAttrName = "Health Center";
@@ -93,7 +94,10 @@ public class RegistrarBeanTest extends TestCase {
 	String dateConfConceptName = "ESTIMATED DATE OF CONFINEMENT";
 	String gravidaConceptName = "GRAVIDA";
 	String hemoConceptName = "HEMOGLOBIN";
+	String regimenStartConceptName = "REGIMEN START";
+	String regimenEndConceptName = "REGIMEN END";
 
+	Location defaultClinic;
 	PatientIdentifierType ghanaIdType;
 	PersonAttributeType phoneAttributeType;
 	PersonAttributeType clinicAttributeType;
@@ -135,6 +139,10 @@ public class RegistrarBeanTest extends TestCase {
 	Concept gravidaConcept;
 	ConceptName hemoConceptNameObj;
 	Concept hemoConcept;
+	ConceptName regimenStartConceptNameObj;
+	Concept regimenStart;
+	ConceptName regimenEndConceptNameObj;
+	Concept regimenEnd;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -148,6 +156,9 @@ public class RegistrarBeanTest extends TestCase {
 		obsService = createMock(ObsService.class);
 		conceptService = createMock(ConceptService.class);
 		motechService = createMock(MotechService.class);
+
+		defaultClinic = new Location(1);
+		defaultClinic.setName(defaultLocationName);
 
 		ghanaIdType = new PatientIdentifierType(1);
 		ghanaIdType.setName(ghanaIdTypeName);
@@ -237,6 +248,14 @@ public class RegistrarBeanTest extends TestCase {
 		hemoConceptNameObj = new ConceptName(hemoConceptName, Locale
 				.getDefault());
 		hemoConcept = new Concept(21);
+
+		regimenStartConceptNameObj = new ConceptName(regimenStartConceptName,
+				Locale.getDefault());
+		regimenStart = new Concept(22);
+
+		regimenEndConceptNameObj = new ConceptName(regimenEndConceptName,
+				Locale.getDefault());
+		regimenEnd = new Concept(23);
 
 		RegistrarBeanImpl regBeanImpl = new RegistrarBeanImpl();
 		regBeanImpl.setContextService(contextService);
@@ -336,11 +355,14 @@ public class RegistrarBeanTest extends TestCase {
 				.getLocationId().toString()));
 
 		Capture<Patient> patientCap = new Capture<Patient>();
+		Capture<Obs> obsCap = new Capture<Obs>();
 
 		expect(contextService.getPatientService()).andReturn(patientService);
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(contextService.getPersonService()).andReturn(personService);
 		expect(contextService.getLocationService()).andReturn(locationService);
+		expect(contextService.getObsService()).andReturn(obsService);
+		expect(contextService.getConceptService()).andReturn(conceptService);
 
 		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(patientService.getPatientIdentifierTypeByName(ghanaIdTypeName))
@@ -363,17 +385,23 @@ public class RegistrarBeanTest extends TestCase {
 		expect(personService.getPersonAttributeTypeByName(deliveryTimeAttrName))
 				.andReturn(deliveryTimeAttributeType);
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
-				new Patient());
+				new Patient(1));
+		expect(conceptService.getConcept(regimenStartConceptName)).andReturn(
+				regimenStart);
+		expect(locationService.getLocation(defaultLocationName)).andReturn(
+				defaultClinic);
+		expect(obsService.saveObs(capture(obsCap), eq((String) null)))
+				.andReturn(new Obs());
 
 		replay(contextService, patientService, motechService, personService,
-				locationService);
+				locationService, obsService, conceptService);
 
 		regBean.registerPatient(nPhone, serialId, name, community, location,
 				dob, gender, nhis, pPhone, contactNumberType, language,
 				mediaType, deliveryTime, regimen);
 
 		verify(contextService, patientService, motechService, personService,
-				locationService);
+				locationService, obsService, conceptService);
 
 		Patient patient = patientCap.getValue();
 		assertEquals(serialId, patient.getPatientIdentifier(ghanaIdType)
@@ -396,6 +424,10 @@ public class RegistrarBeanTest extends TestCase {
 				mediaTypeAttributeType).getValue());
 		assertEquals(deliveryTime.toString(), patient.getAttribute(
 				deliveryTimeAttributeType).getValue());
+		Obs regimenStartObs = obsCap.getValue();
+		assertEquals(regimenStart, regimenStartObs.getConcept());
+		assertEquals(exampleRegimen, regimenStartObs.getValueText());
+		assertEquals(defaultClinic, regimenStartObs.getLocation());
 	}
 
 	public void testRegisterMaternalVisit() {

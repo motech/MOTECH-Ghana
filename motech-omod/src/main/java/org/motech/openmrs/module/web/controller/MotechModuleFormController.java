@@ -157,11 +157,11 @@ public class MotechModuleFormController {
 					.asList(regimen));
 			Set<String> regimenActualSet = new HashSet<String>();
 			if (regimenInputSet.contains("minuteTetanus")) {
-				regimenActualSet.add("tetanusInfo");
-				regimenActualSet.add("tetanusImmunization");
+				regimenActualSet.add("Tetanus Information Regimen");
+				regimenActualSet.add("Tetanus Immunization Regimen");
 			}
 			if (regimenInputSet.contains("dailyPregnancy")) {
-				regimenActualSet.add("dailyPregnancyRegimen");
+				regimenActualSet.add("Daily Pregnancy Regimen");
 			}
 			regimenActual = regimenActualSet
 					.toArray(new String[regimenActualSet.size()]);
