@@ -36,6 +36,7 @@ public class RegimenUpdateTask extends AbstractTask {
 			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSONS);
 			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_LOCATIONS);
 			Context.addProxyPrivilege(OpenmrsConstants.PRIV_ADD_OBS);
+			Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
 
 			PatientService patientService = Context.getPatientService();
 			MotechService motechService = Context
@@ -74,6 +75,7 @@ public class RegimenUpdateTask extends AbstractTask {
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSONS);
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_LOCATIONS);
 			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_ADD_OBS);
+			Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
 			Context.closeSession();
 		}
 	}

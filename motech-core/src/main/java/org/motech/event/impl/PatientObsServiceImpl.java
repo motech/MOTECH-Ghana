@@ -10,10 +10,12 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
+import org.openmrs.User;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.ObsService;
 import org.openmrs.api.PersonService;
+import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 
 public class PatientObsServiceImpl implements PatientObsService {
@@ -86,17 +88,20 @@ public class PatientObsServiceImpl implements PatientObsService {
 		LocationService locationService = Context.getLocationService();
 		PersonService personService = Context.getPersonService();
 		ObsService obsService = Context.getObsService();
+		UserService userService = Context.getUserService();
 
 		Concept regimenEnd = conceptService.getConcept("REGIMEN END");
 		Location defaultClinic = locationService
 				.getLocation("Default Ghana Clinic");
 		Person person = personService.getPerson(personId);
+		User creator = userService.getUser(1);
 
 		Obs regimenEndObs = new Obs();
 		regimenEndObs.setObsDatetime(new Date());
 		regimenEndObs.setConcept(regimenEnd);
 		regimenEndObs.setPerson(person);
 		regimenEndObs.setLocation(defaultClinic);
+		regimenEndObs.setCreator(creator);
 		regimenEndObs.setValueText(regimenName);
 		obsService.saveObs(regimenEndObs, null);
 	}
