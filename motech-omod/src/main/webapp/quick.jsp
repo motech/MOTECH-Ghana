@@ -70,7 +70,7 @@
 	</tr>
 	<tr>
 		<td><label for="language">Language:</label></td>
-		<td><input name="language" value="English" /></td>
+		<td><input name="language" value="en" /></td>
 	</tr>
 	<tr>
 		<td><label for="mediaType">Preferred Media Type:</label></td>
