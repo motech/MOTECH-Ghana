@@ -59,6 +59,8 @@ public class MotechModuleActivator implements Activator {
 	public void startup() {
 		log.info("Starting Motech Module");
 
+		Context.openSession();
+		
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
 
 		Context
@@ -229,6 +231,8 @@ public class MotechModuleActivator implements Activator {
 
 			Context
 					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_GLOBAL_PROPERTIES);
+
+			Context.closeSession();
 		}
 	}
 
@@ -292,17 +296,21 @@ public class MotechModuleActivator implements Activator {
 		// Default "en" Locale matching other existing concepts
 		Locale defaultLocale = Locale.ENGLISH;
 		Concept concept = Context.getConceptService().getConcept(name);
+		ConceptNameTag prefTag = Context.getConceptService().getConceptNameTagByName(ConceptNameTag.PREFERRED);
 		if (concept == null) {
 			log.info(name + " Concept Does Not Exist - Creating");
 			concept = new Concept();
 			ConceptName conceptName = new ConceptName(name, defaultLocale);
-			conceptName.addTag(ConceptNameTag.PREFERRED);
+			conceptName.addTag(prefTag);
+			conceptName.setCreator(creator);
 			// AddTag is workaround since the following results in
 			// "preferred_en" instead of "preferred"
 			// itn.setPreferredName(defaultLocale, conceptName)
 			concept.addName(conceptName);
-			concept.addDescription(new ConceptDescription(description,
-					defaultLocale));
+			ConceptDescription conceptDescription = new ConceptDescription(description,
+					defaultLocale);
+			conceptDescription.setCreator(creator);
+			concept.addDescription(conceptDescription);
 			concept.setConceptClass(Context.getConceptService()
 					.getConceptClassByName(className));
 			concept.setDatatype(Context.getConceptService()
@@ -317,8 +325,6 @@ public class MotechModuleActivator implements Activator {
 
 	private void addConceptAnswers(String conceptName, String[] answerNames,
 			User creator) {
-		try {
-			Context.openSession();
 
 			Concept concept = Context.getConceptService().getConcept(
 					conceptName);
@@ -336,15 +342,13 @@ public class MotechModuleActivator implements Activator {
 					changed = true;
 					ConceptAnswer conceptAnswer = new ConceptAnswer(answer);
 					conceptAnswer.setCreator(creator);
+					conceptAnswer.setDateCreated(new Date());
 					concept.addAnswer(conceptAnswer);
 				}
 			}
 			if (changed) {
 				Context.getConceptService().saveConcept(concept);
 			}
-		} finally {
-			Context.closeSession();
-		}
 	}
 
 	private void createTask(String name, String description, Date startDate,
@@ -407,6 +411,8 @@ public class MotechModuleActivator implements Activator {
 
 		log.info("Removing Scheduled Tasks");
 
+		Context.openSession();
+		
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
 		try {
 			removeTask("Immediate Notification Task");
@@ -415,6 +421,7 @@ public class MotechModuleActivator implements Activator {
 		} finally {
 			Context
 					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
+			Context.closeSession();
 		}
 	}
 }

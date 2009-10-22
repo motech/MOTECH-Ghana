@@ -78,113 +78,135 @@ public class RegimenUpdateTaskTest extends BaseModuleContextSensitiveTest {
 	@Test
 	@SkipBaseSetup
 	public void testRegimenUpdate() throws InterruptedException {
+
 		RegistrarBean regService = ((RegistrarBean) applicationContext
 				.getBean("registrarBean"));
-
-		regService.registerNurse("nursename", "nursePhoneNumber",
-				"Default Ghana Clinic");
-
-		assertEquals(2, Context.getUserService().getAllUsers().size());
-
-		regService.registerPatient("nursePhoneNumber", "serialId",
-				"patientname", "community", "location", new Date(),
-				Gender.FEMALE, 1, "patientphoneNumber",
-				ContactNumberType.PERSONAL, "language", MediaType.TEXT,
-				DeliveryTime.ANYTIME, new String[] {
-						"Tetanus Immunization Regimen",
-						"Tetanus Information Regimen" });
-
-		assertEquals(1, Context.getPatientService().getAllPatients().size());
-
 		RegimenUpdateTask task = new RegimenUpdateTask();
-
-		List<Patient> patients = Context.getPatientService().getPatients(
-				"patientname",
-				"serialId",
-				new ArrayList<PatientIdentifierType>(Arrays.asList(Context
-						.getPatientService().getPatientIdentifierTypeByName(
-								"Ghana Clinic Id"))), true);
-
-		assertEquals(1, patients.size());
-
-		Patient patient = patients.get(0);
-
-		// Set patient registration date at 4 minutes in past
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.MINUTE, -4);
-		patient.setDateCreated(calendar.getTime());
-		patient = Context.getPatientService().savePatient(patient);
+		List<ScheduledMessage> scheduledMessages = null;
+		Set<String> messageKeys = null;
 
-		// Add all needed tetanus message definitions in sqldiff
-		Context.getService(MotechService.class).saveMessageDefinition(
-				new MessageDefinition("tetanus.info.1", 2L));
-		Context.getService(MotechService.class).saveMessageDefinition(
-				new MessageDefinition("tetanus.info.2", 3L));
-		Context.getService(MotechService.class).saveMessageDefinition(
-				new MessageDefinition("tetanus.info.3", 5L));
-		Context.getService(MotechService.class).saveMessageDefinition(
-				new MessageDefinition("tetanus.info.4", 6L));
-		Context.getService(MotechService.class).saveMessageDefinition(
-				new MessageDefinition("tetanus.1.prompt", 4L));
-		Context.getService(MotechService.class).saveMessageDefinition(
-				new MessageDefinition("tetanus.1.reminder.1", 7L));
-		Context.getService(MotechService.class).saveMessageDefinition(
-				new MessageDefinition("tetanus.1.reminder.2", 8L));
-		Context.getService(MotechService.class).saveMessageDefinition(
-				new MessageDefinition("tetanus.2.prompt", 9L));
-		Context.getService(MotechService.class).saveMessageDefinition(
-				new MessageDefinition("tetanus.2.reminder.1", 10L));
-		Context.getService(MotechService.class).saveMessageDefinition(
-				new MessageDefinition("tetanus.2.reminder.2", 11L));
+		try {
+			Context.openSession();
 
-		task.execute();
+			regService.registerNurse("nursename", "nursePhoneNumber",
+					"Default Ghana Clinic");
 
-		List<ScheduledMessage> scheduledMessages = Context.getService(
-				MotechService.class).getAllScheduledMessages();
+			assertEquals(2, Context.getUserService().getAllUsers().size());
 
-		assertEquals(2, scheduledMessages.size());
+			regService.registerPatient("nursePhoneNumber", "serialId",
+					"patientname", "community", "location", new Date(),
+					Gender.FEMALE, 1, "patientphoneNumber",
+					ContactNumberType.PERSONAL, "language", MediaType.TEXT,
+					DeliveryTime.ANYTIME, new String[] {
+							"Tetanus Immunization Regimen",
+							"Tetanus Information Regimen" });
 
-		// Make sure messages are scheduled (in any order)
-		Set<String> messageKeys = new HashSet<String>();
-		for (ScheduledMessage scheduledMessage : scheduledMessages) {
-			messageKeys.add(scheduledMessage.getMessage().getMessageKey());
+			assertEquals(3, Context.getPatientService().getAllPatients().size());
+
+			List<Patient> patients = Context.getPatientService()
+					.getPatients(
+							"patientname",
+							"serialId",
+							new ArrayList<PatientIdentifierType>(Arrays
+									.asList(Context.getPatientService()
+											.getPatientIdentifierTypeByName(
+													"Ghana Clinic Id"))), true);
+
+			assertEquals(1, patients.size());
+
+			Patient patient = patients.get(0);
+
+			// Set patient registration date at 4 minutes in past
+			calendar.add(Calendar.MINUTE, -4);
+			patient.setDateCreated(calendar.getTime());
+			patient = Context.getPatientService().savePatient(patient);
+
+			// Add all needed tetanus message definitions in sqldiff
+			Context.getService(MotechService.class).saveMessageDefinition(
+					new MessageDefinition("tetanus.info.1", 2L));
+			Context.getService(MotechService.class).saveMessageDefinition(
+					new MessageDefinition("tetanus.info.2", 3L));
+			Context.getService(MotechService.class).saveMessageDefinition(
+					new MessageDefinition("tetanus.info.3", 5L));
+			Context.getService(MotechService.class).saveMessageDefinition(
+					new MessageDefinition("tetanus.info.4", 6L));
+			Context.getService(MotechService.class).saveMessageDefinition(
+					new MessageDefinition("tetanus.1.prompt", 4L));
+			Context.getService(MotechService.class).saveMessageDefinition(
+					new MessageDefinition("tetanus.1.reminder.1", 7L));
+			Context.getService(MotechService.class).saveMessageDefinition(
+					new MessageDefinition("tetanus.1.reminder.2", 8L));
+			Context.getService(MotechService.class).saveMessageDefinition(
+					new MessageDefinition("tetanus.2.prompt", 9L));
+			Context.getService(MotechService.class).saveMessageDefinition(
+					new MessageDefinition("tetanus.2.reminder.1", 10L));
+			Context.getService(MotechService.class).saveMessageDefinition(
+					new MessageDefinition("tetanus.2.reminder.2", 11L));
+		} finally {
+			Context.closeSession();
 		}
-		assertTrue("Message is scheduled", messageKeys
-				.contains("tetanus.info.3"));
-		assertTrue("Message is scheduled", messageKeys
-				.contains("tetanus.1.reminder.1"));
-
-		// Add tetanus immunization 4 minutes in past
-		regService.recordMaternalVisit("nursePhoneNumber", calendar.getTime(),
-				"serialId", true, false, false, 1, false, false, false, false,
-				10.0);
 
 		task.execute();
 
-		scheduledMessages = Context.getService(MotechService.class)
-				.getAllScheduledMessages();
+		try {
+			Context.openSession();
 
-		assertEquals(3, scheduledMessages.size());
+			scheduledMessages = Context.getService(MotechService.class)
+					.getAllScheduledMessages();
 
-		// Make sure messages are scheduled (in any order)
-		messageKeys = new HashSet<String>();
-		for (ScheduledMessage scheduledMessage : scheduledMessages) {
-			messageKeys.add(scheduledMessage.getMessage().getMessageKey());
-			if (scheduledMessage.getMessage().getMessageKey().equals(
-					"tetanus.1.reminder.1")) {
-				// Original reminder for first immunization, now cancelled
-				assertEquals(MessageStatus.CANCELLED, scheduledMessage
-						.getMessageAttempts().get(0).getAttemptStatus());
+			assertEquals(2, scheduledMessages.size());
+
+			// Make sure messages are scheduled (in any order)
+			messageKeys = new HashSet<String>();
+			for (ScheduledMessage scheduledMessage : scheduledMessages) {
+				messageKeys.add(scheduledMessage.getMessage().getMessageKey());
 			}
+			assertTrue("Message is scheduled", messageKeys
+					.contains("tetanus.info.3"));
+			assertTrue("Message is scheduled", messageKeys
+					.contains("tetanus.1.reminder.1"));
+
+			// Add tetanus immunization 4 minutes in past
+			regService.recordMaternalVisit("nursePhoneNumber", calendar
+					.getTime(), "serialId", true, false, false, 1, false,
+					false, false, false, 10.0);
+		} finally {
+			Context.closeSession();
 		}
-		assertTrue("Message is scheduled", messageKeys
-				.contains("tetanus.info.3"));
-		assertTrue("Message is scheduled", messageKeys
-				.contains("tetanus.1.reminder.1"));
-		// New second reminder for second immunization
-		// Second immunization prompt skipped since past time
-		assertTrue("Message is scheduled", messageKeys
-				.contains("tetanus.2.reminder.2"));
+
+		task.execute();
+
+		try {
+			Context.openSession();
+
+			scheduledMessages = Context.getService(MotechService.class)
+					.getAllScheduledMessages();
+
+			assertEquals(3, scheduledMessages.size());
+
+			// Make sure messages are scheduled (in any order)
+			messageKeys = new HashSet<String>();
+			for (ScheduledMessage scheduledMessage : scheduledMessages) {
+				messageKeys.add(scheduledMessage.getMessage().getMessageKey());
+				if (scheduledMessage.getMessage().getMessageKey().equals(
+						"tetanus.1.reminder.1")) {
+					// Original reminder for first immunization, now cancelled
+					assertEquals(MessageStatus.CANCELLED, scheduledMessage
+							.getMessageAttempts().get(0).getAttemptStatus());
+				}
+			}
+			assertTrue("Message is scheduled", messageKeys
+					.contains("tetanus.info.3"));
+			assertTrue("Message is scheduled", messageKeys
+					.contains("tetanus.1.reminder.1"));
+			// New second reminder for second immunization
+			// Second immunization prompt skipped since past time
+			assertTrue("Message is scheduled", messageKeys
+					.contains("tetanus.2.reminder.2"));
+		} finally {
+			Context.closeSession();
+		}
 	}
 
 }
