@@ -15,10 +15,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageDefinition;
+import org.motech.messaging.MessageSchedulerImpl;
 import org.motech.messaging.MessageStatus;
 import org.motech.messaging.ScheduledMessage;
 import org.motech.openmrs.module.MotechModuleActivator;
 import org.motech.openmrs.module.MotechService;
+import org.motech.openmrs.module.impl.ContextServiceImpl;
 import org.motech.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveryTime;
@@ -103,25 +105,20 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 			Patient patient = patients.get(0);
 
+			String messageKey = "Test Definition";
 			MessageDefinition messageDefinition = new MessageDefinition();
-			messageDefinition.setMessageKey("Test Definition");
+			messageDefinition.setMessageKey(messageKey);
 			messageDefinition.setPublicId(2L);
 			messageDefinition = Context.getService(MotechService.class)
 					.saveMessageDefinition(messageDefinition);
 
-			Date scheduledMessageDate = new Date();
-			ScheduledMessage scheduledMessage = new ScheduledMessage();
-			scheduledMessage.setScheduledFor(scheduledMessageDate);
-			scheduledMessage.setRecipientId(patient.getPersonId());
-			scheduledMessage.setMessage(messageDefinition);
-
-			Message firstMessageAttempt = messageDefinition
-					.createMessage(scheduledMessage);
-			firstMessageAttempt.setAttemptDate(scheduledMessageDate);
-			scheduledMessage.getMessageAttempts().add(firstMessageAttempt);
-
-			Context.getService(MotechService.class).saveScheduledMessage(
-					scheduledMessage);
+			// Schedule message 5 seconds in future
+			Date scheduledMessageDate = new Date(
+					System.currentTimeMillis() + 5 * 1000);
+			MessageSchedulerImpl messageScheduler = new MessageSchedulerImpl();
+			messageScheduler.setContextService(new ContextServiceImpl());
+			messageScheduler.scheduleMessage(messageKey, "Test Group", patient
+					.getPersonId(), scheduledMessageDate);
 		} finally {
 			Context.closeSession();
 		}
