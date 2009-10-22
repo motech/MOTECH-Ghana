@@ -318,9 +318,9 @@
 	</build>
 
 	<scm>
-		<url>https://motech.rcg.usm.maine.edu/redmine/repositories/browse/motech/trunk</url>
-		<connection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/trunk</connection>
-		<developerConnection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/trunk</developerConnection>
+		<url>https://motech.rcg.usm.maine.edu/redmine/repositories/browse/motech/branches/1.0-M2.X</url>
+		<connection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/branches/1.0-M2.X</connection>
+		<developerConnection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/branches/1.0-M2.X</developerConnection>
 	</scm>
 
 	<profiles>
