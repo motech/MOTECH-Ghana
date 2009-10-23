@@ -216,7 +216,7 @@
 			<plugin>
 				<groupId>org.motech.openmrs.plugin</groupId>
 				<artifactId>maven-openmrs-plugin</artifactId>
-				<version>1.0-RC2</version>
+				<version>1.0-RC3</version>
 				<extensions>true</extensions>
 			</plugin>
 		</plugins>
