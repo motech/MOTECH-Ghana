@@ -25,7 +25,7 @@
 				`motechmodule_log_id` int(11) NOT NULL auto_increment,
 				`log_type` varchar(7) NOT NULL,
 				`log_datetime` datetime NOT NULL,
-				`log_message` varchar(100) NOT NULL,
+				`log_message` varchar(255) NOT NULL,
 				PRIMARY KEY (`motechmodule_log_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			
