@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageNotFoundException;
 import org.motech.messaging.MessageStatus;
@@ -44,6 +46,8 @@ import org.openmrs.api.UserService;
  * OpenMRS and module defined services.
  */
 public class RegistrarBeanImpl implements RegistrarBean {
+
+	private static Log log = LogFactory.getLog(RegistrarBeanImpl.class);
 
 	private ContextService contextService;
 
@@ -456,9 +460,12 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	public void log(LogType type, String message) {
 
+		log.debug("log WS: type: " + type + ", message: " + message);
+
 		String limitedMessage = message;
 		if (limitedMessage.length() > 255) {
 			limitedMessage = limitedMessage.substring(0, 255);
+			log.debug("log WS: trimmed message: " + limitedMessage);
 		}
 
 		MotechService motechService = contextService.getMotechService();
@@ -475,6 +482,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	}
 
 	public void setMessageStatus(String messageId, Boolean success) {
+
+		log.debug("setMessageStatus WS: messageId: " + messageId
+				+ ", success: " + success);
 
 		contextService.authenticate("admin", "test");
 		MotechService motechService = contextService.getMotechService();
