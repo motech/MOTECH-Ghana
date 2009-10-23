@@ -103,7 +103,7 @@ public class RegistrarServiceTest {
 		String[] regimen = new String[2];
 		regimen[0] = "Example Regimen 1";
 		regimen[1] = "Example Regimen 2";
-		
+
 		registrarBean.registerPatient(eq(nPhone), eq(serialId), eq(name),
 				eq(community), eq(location), eq(dob), eq(gender), eq(nhis),
 				eq(pPhone), eq(phoneType), eq(language), eq(mediaType),

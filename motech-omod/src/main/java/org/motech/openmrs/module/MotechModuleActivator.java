@@ -60,7 +60,7 @@ public class MotechModuleActivator implements Activator {
 		log.info("Starting Motech Module");
 
 		Context.openSession();
-		
+
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
 
 		Context
@@ -296,7 +296,8 @@ public class MotechModuleActivator implements Activator {
 		// Default "en" Locale matching other existing concepts
 		Locale defaultLocale = Locale.ENGLISH;
 		Concept concept = Context.getConceptService().getConcept(name);
-		ConceptNameTag prefTag = Context.getConceptService().getConceptNameTagByName(ConceptNameTag.PREFERRED);
+		ConceptNameTag prefTag = Context.getConceptService()
+				.getConceptNameTagByName(ConceptNameTag.PREFERRED);
 		if (concept == null) {
 			log.info(name + " Concept Does Not Exist - Creating");
 			concept = new Concept();
@@ -307,8 +308,8 @@ public class MotechModuleActivator implements Activator {
 			// "preferred_en" instead of "preferred"
 			// itn.setPreferredName(defaultLocale, conceptName)
 			concept.addName(conceptName);
-			ConceptDescription conceptDescription = new ConceptDescription(description,
-					defaultLocale);
+			ConceptDescription conceptDescription = new ConceptDescription(
+					description, defaultLocale);
 			conceptDescription.setCreator(creator);
 			concept.addDescription(conceptDescription);
 			concept.setConceptClass(Context.getConceptService()
@@ -326,29 +327,27 @@ public class MotechModuleActivator implements Activator {
 	private void addConceptAnswers(String conceptName, String[] answerNames,
 			User creator) {
 
-			Concept concept = Context.getConceptService().getConcept(
-					conceptName);
-			Set<Integer> currentAnswerIds = new HashSet<Integer>();
-			for (ConceptAnswer answer : concept.getAnswers()) {
-				currentAnswerIds.add(answer.getAnswerConcept().getConceptId());
+		Concept concept = Context.getConceptService().getConcept(conceptName);
+		Set<Integer> currentAnswerIds = new HashSet<Integer>();
+		for (ConceptAnswer answer : concept.getAnswers()) {
+			currentAnswerIds.add(answer.getAnswerConcept().getConceptId());
+		}
+		boolean changed = false;
+		for (String answerName : answerNames) {
+			Concept answer = Context.getConceptService().getConcept(answerName);
+			if (!currentAnswerIds.contains(answer.getConceptId())) {
+				log.info("Adding Concept Answer " + answerName + " to "
+						+ conceptName);
+				changed = true;
+				ConceptAnswer conceptAnswer = new ConceptAnswer(answer);
+				conceptAnswer.setCreator(creator);
+				conceptAnswer.setDateCreated(new Date());
+				concept.addAnswer(conceptAnswer);
 			}
-			boolean changed = false;
-			for (String answerName : answerNames) {
-				Concept answer = Context.getConceptService().getConcept(
-						answerName);
-				if (!currentAnswerIds.contains(answer.getConceptId())) {
-					log.info("Adding Concept Answer " + answerName + " to "
-							+ conceptName);
-					changed = true;
-					ConceptAnswer conceptAnswer = new ConceptAnswer(answer);
-					conceptAnswer.setCreator(creator);
-					conceptAnswer.setDateCreated(new Date());
-					concept.addAnswer(conceptAnswer);
-				}
-			}
-			if (changed) {
-				Context.getConceptService().saveConcept(concept);
-			}
+		}
+		if (changed) {
+			Context.getConceptService().saveConcept(concept);
+		}
 	}
 
 	private void createTask(String name, String description, Date startDate,
@@ -412,7 +411,7 @@ public class MotechModuleActivator implements Activator {
 		log.info("Removing Scheduled Tasks");
 
 		Context.openSession();
-		
+
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
 		try {
 			removeTask("Immediate Notification Task");
