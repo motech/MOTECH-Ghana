@@ -59,8 +59,6 @@ public class MotechModuleActivator implements Activator {
 	public void startup() {
 		log.info("Starting Motech Module");
 
-		Context.openSession();
-
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
 
 		Context
@@ -231,8 +229,6 @@ public class MotechModuleActivator implements Activator {
 
 			Context
 					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_GLOBAL_PROPERTIES);
-
-			Context.closeSession();
 		}
 	}
 
