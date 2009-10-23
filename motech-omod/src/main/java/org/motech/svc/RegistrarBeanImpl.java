@@ -456,12 +456,17 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	public void log(LogType type, String message) {
 
+		String limitedMessage = message;
+		if (limitedMessage.length() > 255) {
+			limitedMessage = limitedMessage.substring(0, 255);
+		}
+
 		MotechService motechService = contextService.getMotechService();
 
 		org.motech.model.Log log = new org.motech.model.Log();
 		log.setDate(new Date());
 		log.setType(type);
-		log.setMessage(message);
+		log.setMessage(limitedMessage);
 		motechService.saveLog(log);
 	}
 

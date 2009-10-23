@@ -862,6 +862,47 @@ public class RegistrarBeanTest extends TestCase {
 				|| logDate.after(afterCall));
 	}
 
+	public void testLogMessageTrim() {
+		LogType type = LogType.SUCCESS;
+		// String length trimmed from 306 to 255 characters (max length for log
+		// message)
+		String originalMessage = "This message is just too long and will be trimmed. "
+				+ "This message is just too long and will be trimmed. "
+				+ "This message is just too long and will be trimmed. "
+				+ "This message is just too long and will be trimmed. "
+				+ "This message is just too long and will be trimmed. "
+				+ "This message is just too long and will be trimmed. ";
+		String trimmedMessage = "This message is just too long and will be trimmed. "
+				+ "This message is just too long and will be trimmed. "
+				+ "This message is just too long and will be trimmed. "
+				+ "This message is just too long and will be trimmed. "
+				+ "This message is just too long and will be trimmed. ";
+		Date beforeCall = new Date();
+
+		Capture<Log> logCap = new Capture<Log>();
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+
+		expect(motechService.saveLog(capture(logCap))).andReturn(new Log());
+
+		replay(contextService, motechService);
+
+		regBean.log(type, originalMessage);
+
+		verify(contextService, motechService);
+
+		Log log = logCap.getValue();
+		Date logDate = log.getDate();
+		Date afterCall = new Date();
+
+		assertEquals(type, log.getType());
+		assertEquals(trimmedMessage, log.getMessage());
+		assertNotNull("Date is null", logDate);
+		assertFalse("Date not between invocation and return", logDate
+				.before(beforeCall)
+				|| logDate.after(afterCall));
+	}
+
 	public void testSetMessageStatusSuccessMessageFoundNotTroubled() {
 		String messageId = "12345678-1234-1234-1234-123456789012";
 		Boolean success = true;
