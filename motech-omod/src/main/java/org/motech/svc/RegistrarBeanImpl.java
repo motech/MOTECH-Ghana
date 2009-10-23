@@ -471,6 +471,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	public void setMessageStatus(String messageId, Boolean success) {
 
+		contextService.authenticate("admin", "test");
 		MotechService motechService = contextService.getMotechService();
 		PersonService personService = contextService.getPersonService();
 

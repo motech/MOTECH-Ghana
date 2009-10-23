@@ -879,6 +879,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		Capture<Message> messageCap = new Capture<Message>();
 
+		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(contextService.getPersonService()).andReturn(personService);
 		expect(motechService.getMessage(messageId)).andReturn(message);
@@ -918,6 +919,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		Capture<Message> messageCap = new Capture<Message>();
 
+		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(contextService.getPersonService()).andReturn(personService);
 		expect(motechService.getMessage(messageId)).andReturn(message);
@@ -958,6 +960,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		Capture<Message> messageCap = new Capture<Message>();
 
+		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(contextService.getPersonService()).andReturn(personService);
 		expect(motechService.getMessage(messageId)).andReturn(message);
@@ -1001,6 +1004,7 @@ public class RegistrarBeanTest extends TestCase {
 		Capture<TroubledPhone> troubledPhoneCap = new Capture<TroubledPhone>();
 		Capture<Message> messageCap = new Capture<Message>();
 
+		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(contextService.getPersonService()).andReturn(personService);
 		expect(motechService.getMessage(messageId)).andReturn(message);
@@ -1032,6 +1036,7 @@ public class RegistrarBeanTest extends TestCase {
 		String messageId = "12345678-1234-1234-1234-123456789012";
 		Boolean success = true;
 
+		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(contextService.getPersonService()).andReturn(personService);
 		expect(motechService.getMessage(messageId)).andReturn(null);
