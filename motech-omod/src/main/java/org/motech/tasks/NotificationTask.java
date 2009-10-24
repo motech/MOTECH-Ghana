@@ -23,6 +23,7 @@ import org.motech.messaging.Message;
 import org.motech.messaging.MessageStatus;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.MotechService;
+import org.motech.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.LogType;
@@ -54,9 +55,10 @@ public class NotificationTask extends AbstractTask {
 	@Override
 	public void execute() {
 
-		String timeOffsetString = this.taskDefinition.getProperty("timeOffset");
-		Boolean sendImmediate = "true".equals(taskDefinition
-				.getProperty("sendImmediate"));
+		String timeOffsetString = this.taskDefinition
+				.getProperty(MotechConstants.TASK_PROPERTY_TIME_OFFSET);
+		Boolean sendImmediate = Boolean.valueOf(taskDefinition
+				.getProperty(MotechConstants.TASK_PROPERTY_SEND_IMMEDIATE));
 		Long timeOffset = 0L;
 		if (timeOffsetString != null) {
 			timeOffset = Long.valueOf(timeOffsetString);
@@ -94,13 +96,16 @@ public class NotificationTask extends AbstractTask {
 				Date notificationDate = new Date();
 				PersonAttributeType phoneNumberType = Context
 						.getPersonService().getPersonAttributeTypeByName(
-								"Phone Number");
+								MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
 				PersonAttributeType phoneType = Context.getPersonService()
-						.getPersonAttributeTypeByName("Phone Type");
+						.getPersonAttributeTypeByName(
+								MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
 				PersonAttributeType languageType = Context.getPersonService()
-						.getPersonAttributeTypeByName("Language");
+						.getPersonAttributeTypeByName(
+								MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
 				PersonAttributeType mediaAttrType = Context.getPersonService()
-						.getPersonAttributeTypeByName("Media Type");
+						.getPersonAttributeTypeByName(
+								MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
 
 				for (Message shouldAttemptMessage : shouldAttemptMessages) {
 
@@ -146,7 +151,7 @@ public class NotificationTask extends AbstractTask {
 							PersonAttributeType deliveryTimeType = Context
 									.getPersonService()
 									.getPersonAttributeTypeByName(
-											"Delivery Time");
+											MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
 							PersonAttribute deliveryTimeAttr = recipient
 									.getAttribute(deliveryTimeType);
 							String deliveryTimeString = deliveryTimeAttr
@@ -187,7 +192,7 @@ public class NotificationTask extends AbstractTask {
 								.parseInt(Context
 										.getAdministrationService()
 										.getGlobalProperty(
-												"motechmodule.troubled_phone_failures"));
+												MotechConstants.GLOBAL_PROPERTY_TROUBLED_PHONE));
 						if (troubledPhone != null
 								&& troubledPhone.getSendFailures() >= maxFailures) {
 							motechLog
@@ -249,7 +254,7 @@ public class NotificationTask extends AbstractTask {
 								.parseInt(Context
 										.getAdministrationService()
 										.getGlobalProperty(
-												"motechmodule.troubled_phone_failures"));
+												MotechConstants.GLOBAL_PROPERTY_TROUBLED_PHONE));
 						if (troubledPhone != null
 								&& troubledPhone.getSendFailures() >= maxFailures) {
 							motechLog

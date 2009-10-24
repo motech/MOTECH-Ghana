@@ -13,6 +13,7 @@ import org.motech.model.GenderTypeConverter;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
+import org.motech.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
@@ -40,6 +41,7 @@ import org.openmrs.api.ObsService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
+import org.openmrs.util.OpenmrsConstants;
 
 /**
  * An implementation of the RegistrarBean interface, implemented using a mix of
@@ -55,7 +57,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		LocationService locationService = contextService.getLocationService();
 
-		contextService.authenticate("admin", "test");
+		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
+				MotechConstants.PASSWORD_OPENMRS);
 
 		Location clinic = new Location();
 		clinic.setName(name);
@@ -72,7 +75,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		// User creating other users must have atleast the Privileges to be
 		// given
-		contextService.authenticate("admin", "test");
+		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
+				MotechConstants.PASSWORD_OPENMRS);
 
 		// TODO: Create nurses as person and use same User for all actions ?
 		User nurse = new User();
@@ -89,20 +93,20 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		// Must be created previously through API or UI to lookup
 		PersonAttributeType phoneNumberAttrType = personService
-				.getPersonAttributeTypeByName("Phone Number");
+				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
 		nurse
 				.addAttribute(new PersonAttribute(phoneNumberAttrType,
 						phoneNumber));
 
 		// TODO: Create Nurse role with proper privileges
-		Role role = userService.getRole("Provider");
+		Role role = userService.getRole(OpenmrsConstants.PROVIDER_ROLE);
 		nurse.addRole(role);
 
 		// TODO: Clinic not used, no connection currently between Nurse and
 		// Clinic
 		Location clinicLocation = locationService.getLocation(clinic);
 		PersonAttributeType clinicType = personService
-				.getPersonAttributeTypeByName("Health Center");
+				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER);
 		nurse.addAttribute(new PersonAttribute(clinicType, clinicLocation
 				.getLocationId().toString()));
 
@@ -122,18 +126,20 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		ObsService obsService = contextService.getObsService();
 		ConceptService conceptService = contextService.getConceptService();
 
-		contextService.authenticate("admin", "test");
+		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
+				MotechConstants.PASSWORD_OPENMRS);
 
 		Patient patient = new Patient();
 
 		// Must be created previously through API or UI to lookup
 		PatientIdentifierType serialIdType = patientService
-				.getPatientIdentifierTypeByName("Ghana Clinic Id");
+				.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
 
 		User nurse = motechService.getUserByPhoneNumber(nursePhoneNumber);
 
-		PersonAttribute clinic = nurse.getAttribute(personService
-				.getPersonAttributeTypeByName("Health Center"));
+		PersonAttribute clinic = nurse
+				.getAttribute(personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER));
 		Integer clinicId = Integer.valueOf(clinic.getValue());
 		Location clinicLocation = locationService.getLocation(clinicId);
 		patient.addIdentifier(new PatientIdentifier(serialId, serialIdType,
@@ -157,40 +163,41 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		// Must be created previously through API or UI to lookup
 		PersonAttributeType nhisAttrType = personService
-				.getPersonAttributeTypeByName("NHIS Number");
+				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER);
 		patient
 				.addAttribute(new PersonAttribute(nhisAttrType, nhis.toString()));
 
 		// Must be created previously through API or UI to lookup
 		PersonAttributeType phoneNumberAttrType = personService
-				.getPersonAttributeTypeByName("Phone Number");
+				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
 		patient.addAttribute(new PersonAttribute(phoneNumberAttrType,
 				phoneNumber));
 
 		PersonAttributeType phoneTypeAttrType = personService
-				.getPersonAttributeTypeByName("Phone Type");
+				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
 		patient.addAttribute(new PersonAttribute(phoneTypeAttrType,
 				contactNumberType.toString()));
 
 		PersonAttributeType languageAttrType = personService
-				.getPersonAttributeTypeByName("Language");
+				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
 		patient.addAttribute(new PersonAttribute(languageAttrType, language));
 
 		PersonAttributeType mediaTypeAttrType = personService
-				.getPersonAttributeTypeByName("Media Type");
+				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
 		patient.addAttribute(new PersonAttribute(mediaTypeAttrType, mediaType
 				.toString()));
 
 		PersonAttributeType deliveryAttrType = personService
-				.getPersonAttributeTypeByName("Delivery Time");
+				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
 		patient.addAttribute(new PersonAttribute(deliveryAttrType, deliveryTime
 				.toString()));
 
 		patient = patientService.savePatient(patient);
 
-		Concept regimenStart = conceptService.getConcept("REGIMEN START");
+		Concept regimenStart = conceptService
+				.getConcept(MotechConstants.CONCEPT_REGIMEN_START);
 		Location defaultClinic = locationService
-				.getLocation("Default Ghana Clinic");
+				.getLocation(MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC);
 		for (String regimenName : regimen) {
 			Obs regimenStartObs = new Obs();
 			regimenStartObs.setObsDatetime(new Date());
@@ -216,10 +223,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		ObsService obsService = contextService.getObsService();
 		ConceptService conceptService = contextService.getConceptService();
 
-		contextService.authenticate("admin", "test");
+		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
+				MotechConstants.PASSWORD_OPENMRS);
 
 		PatientIdentifierType serialIdType = patientService
-				.getPatientIdentifierTypeByName("Ghana Clinic Id");
+				.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
 		List<PatientIdentifierType> idTypes = new ArrayList<PatientIdentifierType>();
 		idTypes.add(serialIdType);
 
@@ -240,14 +248,15 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		User nurse = motechService.getUserByPhoneNumber(nursePhoneNumber);
 		encounter.setProvider(nurse);
 
-		PersonAttribute clinic = nurse.getAttribute(personService
-				.getPersonAttributeTypeByName("Health Center"));
+		PersonAttribute clinic = nurse
+				.getAttribute(personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER));
 		Integer clinicId = Integer.valueOf(clinic.getValue());
 		Location clinicLocation = locationService.getLocation(clinicId);
 
 		// Encounter types must be created previously
 		EncounterType encounterType = encounterService
-				.getEncounterType("MATERNALVISIT");
+				.getEncounterType(MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT);
 		encounter.setEncounterType(encounterType);
 		encounter.setLocation(clinicLocation);
 		encounter = encounterService.saveEncounter(encounter);
@@ -256,12 +265,12 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			Obs tetanusObs = new Obs();
 			tetanusObs.setObsDatetime(visitDate);
 			tetanusObs.setConcept(conceptService
-					.getConcept("IMMUNIZATIONS ORDERED"));
+					.getConcept(MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED));
 			tetanusObs.setPerson(patient);
 			tetanusObs.setLocation(clinicLocation);
 			tetanusObs.setEncounter(encounter);
 			tetanusObs.setValueCoded(conceptService
-					.getConcept("TETANUS BOOSTER"));
+					.getConcept(MotechConstants.CONCEPT_TETANUS_BOOSTER));
 			obsService.saveObs(tetanusObs, null);
 		}
 
@@ -270,20 +279,22 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			Obs iptObs = new Obs();
 			iptObs.setObsDatetime(visitDate);
 			iptObs.setConcept(conceptService
-					.getConcept("IMMUNIZATIONS ORDERED"));
+					.getConcept(MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED));
 			iptObs.setPerson(patient);
 			iptObs.setLocation(clinicLocation);
 			iptObs.setEncounter(encounter);
-			iptObs.setValueCoded(conceptService
-					.getConcept("INTERMITTENT PREVENTATIVE TREATMENT"));
+			iptObs
+					.setValueCoded(conceptService
+							.getConcept(MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT));
 			obsService.saveObs(iptObs, null);
 		}
 
 		if (itn) {
 			Obs itnObs = new Obs();
 			itnObs.setObsDatetime(visitDate);
-			itnObs.setConcept(conceptService
-					.getConcept("INSECTICIDE-TREATED NET USAGE"));
+			itnObs
+					.setConcept(conceptService
+							.getConcept(MotechConstants.CONCEPT_INSECTICIDE_TREATED_NET_USAGE));
 			itnObs.setPerson(patient);
 			itnObs.setLocation(clinicLocation);
 			itnObs.setEncounter(encounter);
@@ -295,7 +306,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		Obs visitNumberObs = new Obs();
 		visitNumberObs.setObsDatetime(visitDate);
 		visitNumberObs.setConcept(conceptService
-				.getConcept("PREGNANCY VISIT NUMBER"));
+				.getConcept(MotechConstants.CONCEPT_PREGNANCY_VISIT_NUMBER));
 		visitNumberObs.setPerson(patient);
 		visitNumberObs.setLocation(clinicLocation);
 		visitNumberObs.setEncounter(encounter);
@@ -305,13 +316,15 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		if (onARV) {
 			Obs arvObs = new Obs();
 			arvObs.setObsDatetime(visitDate);
-			arvObs.setConcept(conceptService
-					.getConcept("ANTIRETROVIRAL USE DURING PREGNANCY"));
+			arvObs
+					.setConcept(conceptService
+							.getConcept(MotechConstants.CONCEPT_ANTIRETROVIRAL_USE_DURING_PREGNANCY));
 			arvObs.setPerson(patient);
 			arvObs.setLocation(clinicLocation);
 			arvObs.setEncounter(encounter);
-			arvObs.setValueCoded(conceptService
-					.getConcept("ON ANTIRETROVIRAL THERAPY"));
+			arvObs
+					.setValueCoded(conceptService
+							.getConcept(MotechConstants.CONCEPT_ON_ANTIRETROVIRAL_THERAPY));
 			obsService.saveObs(arvObs, null);
 		}
 
@@ -320,7 +333,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			prePmtctObs.setObsDatetime(visitDate);
 			prePmtctObs
 					.setConcept(conceptService
-							.getConcept("PRE PREVENTING MATERNAL TO CHILD TRANSMISSION"));
+							.getConcept(MotechConstants.CONCEPT_PRE_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION));
 			prePmtctObs.setPerson(patient);
 			prePmtctObs.setLocation(clinicLocation);
 			prePmtctObs.setEncounter(encounter);
@@ -335,7 +348,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			testPmtctObs.setObsDatetime(visitDate);
 			testPmtctObs
 					.setConcept(conceptService
-							.getConcept("TEST PREVENTING MATERNAL TO CHILD TRANSMISSION"));
+							.getConcept(MotechConstants.CONCEPT_TEST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION));
 			testPmtctObs.setPerson(patient);
 			testPmtctObs.setLocation(clinicLocation);
 			testPmtctObs.setEncounter(encounter);
@@ -350,7 +363,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			postPmtctObs.setObsDatetime(visitDate);
 			postPmtctObs
 					.setConcept(conceptService
-							.getConcept("POST PREVENTING MATERNAL TO CHILD TRANSMISSION"));
+							.getConcept(MotechConstants.CONCEPT_POST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION));
 			postPmtctObs.setPerson(patient);
 			postPmtctObs.setLocation(clinicLocation);
 			postPmtctObs.setEncounter(encounter);
@@ -363,7 +376,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		Obs hemoglobinObs = new Obs();
 		hemoglobinObs.setObsDatetime(visitDate);
 		hemoglobinObs.setConcept(conceptService
-				.getConcept("HEMOGLOBIN AT 36 WEEKS"));
+				.getConcept(MotechConstants.CONCEPT_HEMOGLOBIN_AT_36_WEEKS));
 		hemoglobinObs.setPerson(patient);
 		hemoglobinObs.setLocation(clinicLocation);
 		hemoglobinObs.setEncounter(encounter);
@@ -383,10 +396,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		ObsService obsService = contextService.getObsService();
 		ConceptService conceptService = contextService.getConceptService();
 
-		contextService.authenticate("admin", "test");
+		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
+				MotechConstants.PASSWORD_OPENMRS);
 
 		PatientIdentifierType serialIdType = patientService
-				.getPatientIdentifierTypeByName("Ghana Clinic Id");
+				.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
 		List<PatientIdentifierType> idTypes = new ArrayList<PatientIdentifierType>();
 		idTypes.add(serialIdType);
 
@@ -407,21 +421,23 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		User nurse = motechService.getUserByPhoneNumber(nursePhoneNumber);
 		encounter.setProvider(nurse);
 
-		PersonAttribute clinic = nurse.getAttribute(personService
-				.getPersonAttributeTypeByName("Health Center"));
+		PersonAttribute clinic = nurse
+				.getAttribute(personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER));
 		Integer clinicId = Integer.valueOf(clinic.getValue());
 		Location clinicLocation = locationService.getLocation(clinicId);
 
 		// Encounter types must be created previously
 		EncounterType encounterType = encounterService
-				.getEncounterType("PREGNANCYVISIT");
+				.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT);
 		encounter.setEncounterType(encounterType);
 		encounter.setLocation(clinicLocation);
 		encounter = encounterService.saveEncounter(encounter);
 
 		Obs pregSatusObs = new Obs();
 		pregSatusObs.setObsDatetime(visitDate);
-		pregSatusObs.setConcept(conceptService.getConcept("PREGNANCY STATUS"));
+		pregSatusObs.setConcept(conceptService
+				.getConcept(MotechConstants.CONCEPT_PREGNANCY_STATUS));
 		pregSatusObs.setPerson(patient);
 		pregSatusObs.setLocation(clinicLocation);
 		pregSatusObs.setEncounter(encounter);
@@ -431,8 +447,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		Obs dueDateObs = new Obs();
 		dueDateObs.setObsDatetime(visitDate);
-		dueDateObs.setConcept(conceptService
-				.getConcept("ESTIMATED DATE OF CONFINEMENT"));
+		dueDateObs
+				.setConcept(conceptService
+						.getConcept(MotechConstants.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT));
 		dueDateObs.setPerson(patient);
 		dueDateObs.setLocation(clinicLocation);
 		dueDateObs.setEncounter(encounter);
@@ -441,7 +458,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		Obs parityObs = new Obs();
 		parityObs.setObsDatetime(visitDate);
-		parityObs.setConcept(conceptService.getConcept("GRAVIDA"));
+		parityObs.setConcept(conceptService
+				.getConcept(MotechConstants.CONCEPT_GRAVIDA));
 		parityObs.setPerson(patient);
 		parityObs.setLocation(clinicLocation);
 		parityObs.setEncounter(encounter);
@@ -450,7 +468,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		Obs hemoglobinObs = new Obs();
 		hemoglobinObs.setObsDatetime(visitDate);
-		hemoglobinObs.setConcept(conceptService.getConcept("HEMOGLOBIN"));
+		hemoglobinObs.setConcept(conceptService
+				.getConcept(MotechConstants.CONCEPT_HEMOGLOBIN));
 		hemoglobinObs.setPerson(patient);
 		hemoglobinObs.setLocation(clinicLocation);
 		hemoglobinObs.setEncounter(encounter);
@@ -486,7 +505,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		log.debug("setMessageStatus WS: messageId: " + messageId
 				+ ", success: " + success);
 
-		contextService.authenticate("admin", "test");
+		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
+				MotechConstants.PASSWORD_OPENMRS);
 		MotechService motechService = contextService.getMotechService();
 		PersonService personService = contextService.getPersonService();
 
@@ -498,7 +518,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		Integer recipientId = message.getSchedule().getRecipientId();
 		Person messageRecipient = personService.getPerson(recipientId);
 		PersonAttributeType phoneNumberAttrType = personService
-				.getPersonAttributeTypeByName("Phone Number");
+				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
 		PersonAttribute phoneAttribute = messageRecipient
 				.getAttribute(phoneNumberAttrType);
 		String phoneNumber = phoneAttribute.getValue();

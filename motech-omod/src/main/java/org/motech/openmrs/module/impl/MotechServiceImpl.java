@@ -28,6 +28,7 @@ import org.motech.model.Log;
 import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
 import org.motech.openmrs.module.MotechService;
+import org.motech.util.MotechConstants;
 import org.motechproject.ws.mobile.MessageService;
 import org.openmrs.Concept;
 import org.openmrs.User;
@@ -67,8 +68,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public List<String> getRegimenEnrollment(Integer personId) {
 		ConceptService conceptService = Context.getConceptService();
-		Concept startConcept = conceptService.getConcept("REGIMEN START");
-		Concept endConcept = conceptService.getConcept("REGIMEN END");
+		Concept startConcept = conceptService
+				.getConcept(MotechConstants.CONCEPT_REGIMEN_START);
+		Concept endConcept = conceptService
+				.getConcept(MotechConstants.CONCEPT_REGIMEN_END);
 
 		return motechDAO.getRegimenEnrollment(personId, startConcept,
 				endConcept);
@@ -152,7 +155,8 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public User getUserByPhoneNumber(String phoneNumber) {
 		Integer phoneAttributeTypeId = Context.getPersonService()
-				.getPersonAttributeTypeByName("Phone Number")
+				.getPersonAttributeTypeByName(
+						MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER)
 				.getPersonAttributeTypeId();
 		// If more than one user matches phone number, first user in list is
 		// returned

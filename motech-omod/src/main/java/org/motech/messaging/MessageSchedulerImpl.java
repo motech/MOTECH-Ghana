@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
+import org.motech.util.MotechConstants;
 import org.motechproject.ws.DeliveryTime;
 import org.openmrs.Person;
 import org.openmrs.PersonAttribute;
@@ -114,7 +115,7 @@ public class MessageSchedulerImpl implements MessageScheduler {
 				recipientId);
 		PersonAttributeType deliveryTimeType = contextService
 				.getPersonService().getPersonAttributeTypeByName(
-						"Delivery Time");
+						MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
 		PersonAttribute deliveryTimeAttr = recipient
 				.getAttribute(deliveryTimeType);
 		String deliveryTimeString = deliveryTimeAttr.getValue();

@@ -25,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.tasks.NotificationTask;
 import org.motech.tasks.RegimenUpdateTask;
+import org.motech.util.MotechConstants;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptDescription;
@@ -90,88 +91,122 @@ public class MotechModuleActivator implements Activator {
 			User admin = Context.getUserService().getUser(1);
 
 			log.info("Verifying Person Attributes Exist");
-			createPersonAttributeType("Phone Number",
-					"A person's phone number.", "java.lang.String", admin);
-			createPersonAttributeType("NHIS Number", "A person's NHIS number.",
-					"java.lang.String", admin);
-			createPersonAttributeType("Language",
-					"A person's language preference.", "java.lang.String",
-					admin);
-			createPersonAttributeType("Phone Type",
-					"A person's cell phone type (PERSONAL or SHARED).",
-					"java.lang.String", admin);
-			createPersonAttributeType("Media Type",
-					"A person's preferred phone media type (TEXT or VOICE).",
-					"java.lang.String", admin);
 			createPersonAttributeType(
-					"Delivery Time",
+					MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER,
+					"A person's phone number.", String.class.getName(), admin);
+			createPersonAttributeType(
+					MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER,
+					"A person's NHIS number.", String.class.getName(), admin);
+			createPersonAttributeType(
+					MotechConstants.PERSON_ATTRIBUTE_LANGUAGE,
+					"A person's language preference.", String.class.getName(),
+					admin);
+			createPersonAttributeType(
+					MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE,
+					"A person's cell phone type (PERSONAL or SHARED).",
+					String.class.getName(), admin);
+			createPersonAttributeType(
+					MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE,
+					"A person's preferred phone media type (TEXT or VOICE).",
+					String.class.getName(), admin);
+			createPersonAttributeType(
+					MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME,
 					"A person's preferred delivery time (ANYTIME, MORNING, AFTERNOON, or EVENING).",
-					"java.lang.String", admin);
+					String.class.getName(), admin);
 
 			log.info("Verifying Patient Identifier Exist");
-			createPatientIdentifierType("Ghana Clinic Id",
+			createPatientIdentifierType(
+					MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID,
 					"Patient Id for Ghana Clinics.", admin);
 
 			log.info("Verifying Default Location Exists");
-			createLocation("Default Ghana Clinic",
+			createLocation(MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC,
 					"Default Ghana Clinic Location", admin);
 
 			log.info("Verifying Encounter Types Exist");
-			createEncounterType("MATERNALVISIT", "Ghana Maternal Visit", admin);
-			createEncounterType("PREGNANCYVISIT",
+			createEncounterType(MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT,
+					"Ghana Maternal Visit", admin);
+			createEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT,
 					"Ghana Pregnancy Registration or Delivery Visit", admin);
-			createEncounterType("IMMUNIZVISIT", "Ghana Immunization Visit",
-					admin);
-			createEncounterType("GENERALVISIT", "Ghana General Visit", admin);
+			createEncounterType(MotechConstants.ENCOUNTER_TYPE_IMMUNIZVISIT,
+					"Ghana Immunization Visit", admin);
+			createEncounterType(MotechConstants.ENCOUNTER_TYPE_GENERALVISIT,
+					"Ghana General Visit", admin);
 
 			log.info("Verifying Concepts Exist");
-			createConcept("PREGNANCY VISIT NUMBER",
-					"Visit Number for Pregnancy", "Misc", "Numeric", admin);
-			createConcept("INTERMITTENT PREVENTATIVE TREATMENT",
-					"Treatment for Malaria", "Drug", "N/A", admin);
+			createConcept(MotechConstants.CONCEPT_PREGNANCY_VISIT_NUMBER,
+					"Visit Number for Pregnancy",
+					MotechConstants.CONCEPT_CLASS_MISC,
+					MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
 			createConcept(
-					"INSECTICIDE-TREATED NET USAGE",
+					MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT,
+					"Treatment for Malaria",
+					MotechConstants.CONCEPT_CLASS_DRUG,
+					MotechConstants.CONCEPT_DATATYPE_N_A, admin);
+			createConcept(
+					MotechConstants.CONCEPT_INSECTICIDE_TREATED_NET_USAGE,
 					"Question on encounter form: \"Does the patient use insecticide-treated nets?\"",
-					"Question", "Boolean", admin);
-			createConcept("PENTA VACCINATION",
-					"Vaccination booster for infants.", "Drug", "N/A", admin);
-			createConcept("CEREBRO-SPINAL MENINGITIS VACCINATION",
-					"Vaccination against Cerebro-Spinal Meningitis.", "Drug",
-					"N/A", admin);
-			createConcept("VITAMIN A", "Supplement for Vitamin A.", "Drug",
-					"N/A", admin);
+					MotechConstants.CONCEPT_CLASS_QUESTION,
+					MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+			createConcept(MotechConstants.CONCEPT_PENTA_VACCINATION,
+					"Vaccination booster for infants.",
+					MotechConstants.CONCEPT_CLASS_DRUG,
+					MotechConstants.CONCEPT_DATATYPE_N_A, admin);
 			createConcept(
-					"PRE PREVENTING MATERNAL TO CHILD TRANSMISSION",
+					MotechConstants.CONCEPT_CEREBRO_SPINAL_MENINGITIS_VACCINATION,
+					"Vaccination against Cerebro-Spinal Meningitis.",
+					MotechConstants.CONCEPT_CLASS_DRUG,
+					MotechConstants.CONCEPT_DATATYPE_N_A, admin);
+			createConcept(MotechConstants.CONCEPT_VITAMIN_A,
+					"Supplement for Vitamin A.",
+					MotechConstants.CONCEPT_CLASS_DRUG,
+					MotechConstants.CONCEPT_DATATYPE_N_A, admin);
+			createConcept(
+					MotechConstants.CONCEPT_PRE_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
 					"Question on encounter form: \"Did the patient receive Pre Counseling for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
-					"Question", "Boolean", admin);
+					MotechConstants.CONCEPT_CLASS_QUESTION,
+					MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
 			createConcept(
-					"TEST PREVENTING MATERNAL TO CHILD TRANSMISSION",
+					MotechConstants.CONCEPT_TEST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
 					"Question on encounter form: \"Did the patient receive Testing for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
-					"Question", "Boolean", admin);
+					MotechConstants.CONCEPT_CLASS_QUESTION,
+					MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
 			createConcept(
-					"POST PREVENTING MATERNAL TO CHILD TRANSMISSION",
+					MotechConstants.CONCEPT_POST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
 					"Question on encounter form: \"Did the patient receive Post Counseling for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
-					"Question", "Boolean", admin);
-			createConcept("HEMOGLOBIN AT 36 WEEKS",
-					"Hemoglobin level at 36 weeks of Pregnancy", "Test",
-					"Numeric", admin);
-			createConcept("REGIMEN START", "Name of enrolled Regimen", "Misc",
-					"Text", admin);
-			createConcept("REGIMEN END", "Name of completed Regimen", "Misc",
-					"Text", admin);
+					MotechConstants.CONCEPT_CLASS_QUESTION,
+					MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+			createConcept(MotechConstants.CONCEPT_HEMOGLOBIN_AT_36_WEEKS,
+					"Hemoglobin level at 36 weeks of Pregnancy",
+					MotechConstants.CONCEPT_CLASS_TEST,
+					MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+			createConcept(MotechConstants.CONCEPT_REGIMEN_START,
+					"Name of enrolled Regimen",
+					MotechConstants.CONCEPT_CLASS_MISC,
+					MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
+			createConcept(MotechConstants.CONCEPT_REGIMEN_END,
+					"Name of completed Regimen",
+					MotechConstants.CONCEPT_CLASS_MISC,
+					MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
 
 			log.info("Verifying Concepts Exist as Answers");
 			// TODO: Add IPT to proper Concept as an Answer, not an immunization
-			addConceptAnswers("IMMUNIZATIONS ORDERED", new String[] {
-					"TETANUS BOOSTER", "YELLOW FEVER VACCINATION",
-					"INTERMITTENT PREVENTATIVE TREATMENT", "PENTA VACCINATION",
-					"CEREBRO-SPINAL MENINGITIS VACCINATION" }, admin);
+			addConceptAnswers(
+					MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED,
+					new String[] {
+							MotechConstants.CONCEPT_TETANUS_BOOSTER,
+							MotechConstants.CONCEPT_YELLOW_FEVER_VACCINATION,
+							MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT,
+							MotechConstants.CONCEPT_PENTA_VACCINATION,
+							MotechConstants.CONCEPT_CEREBRO_SPINAL_MENINGITIS_VACCINATION },
+					admin);
 
 			log.info("Verifying Task Exists and is Scheduled");
 			// TODO: Task should start automatically on startup, Boolean.TRUE
 			Map<String, String> immProps = new HashMap<String, String>();
-			immProps.put("sendImmediate", "true");
-			createTask("Immediate Notification Task",
+			immProps.put(MotechConstants.TASK_PROPERTY_SEND_IMMEDIATE,
+					Boolean.TRUE.toString());
+			createTask(MotechConstants.TASK_IMMEDIATE_NOTIFICATION,
 					"Task to send out immediate SMS notifications", new Date(),
 					new Long(30), Boolean.FALSE, NotificationTask.class
 							.getName(), admin, immProps);
@@ -180,18 +215,20 @@ public class MotechModuleActivator implements Activator {
 			calendar.set(Calendar.MINUTE, 0);
 			calendar.set(Calendar.SECOND, 0);
 			Map<String, String> dailyProps = new HashMap<String, String>();
-			dailyProps.put("timeOffset", new Long(3600).toString());
-			createTask("Daily Notification Task",
+			dailyProps.put(MotechConstants.TASK_PROPERTY_TIME_OFFSET, new Long(
+					3600).toString());
+			createTask(MotechConstants.TASK_DAILY_NOTIFICATION,
 					"Task to send out SMS notifications for next day", calendar
 							.getTime(), new Long(86400), Boolean.FALSE,
 					NotificationTask.class.getName(), admin, dailyProps);
-			createTask("Regimen Update Task",
+			createTask(MotechConstants.TASK_REGIMEN_UPDATE,
 					"Task to update regimen state for patients", new Date(),
 					new Long(30), Boolean.FALSE, RegimenUpdateTask.class
 							.getName(), admin, null);
 
 			log.info("Verifying Global Properties Exist");
-			createGlobalProperty("motechmodule.troubled_phone_failures",
+			createGlobalProperty(
+					MotechConstants.GLOBAL_PROPERTY_TROUBLED_PHONE,
 					new Integer(4).toString(),
 					"Number of sending failures when phone is considered troubled");
 
@@ -410,9 +447,9 @@ public class MotechModuleActivator implements Activator {
 
 		Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
 		try {
-			removeTask("Immediate Notification Task");
-			removeTask("Daily Notification Task");
-			removeTask("Regimen Update Task");
+			removeTask(MotechConstants.TASK_IMMEDIATE_NOTIFICATION);
+			removeTask(MotechConstants.TASK_DAILY_NOTIFICATION);
+			removeTask(MotechConstants.TASK_REGIMEN_UPDATE);
 		} finally {
 			Context
 					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);

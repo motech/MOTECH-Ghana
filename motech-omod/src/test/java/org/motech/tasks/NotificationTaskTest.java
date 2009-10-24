@@ -22,6 +22,7 @@ import org.motech.openmrs.module.MotechModuleActivator;
 import org.motech.openmrs.module.MotechService;
 import org.motech.openmrs.module.impl.ContextServiceImpl;
 import org.motech.svc.RegistrarBean;
+import org.motech.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
@@ -81,7 +82,7 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 					.getBean("registrarBean"));
 
 			regService.registerNurse("nursename", "nursePhoneNumber",
-					"Default Ghana Clinic");
+					MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC);
 
 			assertEquals(2, Context.getUserService().getAllUsers().size());
 			regService.registerPatient("nursePhoneNumber", "serialId",
@@ -92,14 +93,18 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 			assertEquals(3, Context.getPatientService().getAllPatients().size());
 
-			List<Patient> patients = Context.getPatientService()
+			List<Patient> patients = Context
+					.getPatientService()
 					.getPatients(
 							"patientname",
 							"serialId",
-							new ArrayList<PatientIdentifierType>(Arrays
-									.asList(Context.getPatientService()
-											.getPatientIdentifierTypeByName(
-													"Ghana Clinic Id"))), true);
+							new ArrayList<PatientIdentifierType>(
+									Arrays
+											.asList(Context
+													.getPatientService()
+													.getPatientIdentifierTypeByName(
+															MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))),
+							true);
 
 			assertEquals(1, patients.size());
 

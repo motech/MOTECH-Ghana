@@ -7,6 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.event.Regimen;
 import org.motech.openmrs.module.MotechService;
+import org.motech.util.MotechConstants;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.api.PatientService;
@@ -44,7 +45,7 @@ public class RegimenUpdateTask extends AbstractTask {
 
 			// Get all Patients with the Ghana Clinic Id Type
 			PatientIdentifierType serialIdType = patientService
-					.getPatientIdentifierTypeByName("Ghana Clinic Id");
+					.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
 			List<PatientIdentifierType> idTypes = new ArrayList<PatientIdentifierType>();
 			idTypes.add(serialIdType);
 			List<Patient> patients = patientService.getPatients(null, null,

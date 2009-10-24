@@ -26,6 +26,7 @@ import org.motech.model.Log;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
+import org.motech.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
@@ -52,6 +53,7 @@ import org.openmrs.api.ObsService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
+import org.openmrs.util.OpenmrsConstants;
 
 public class RegistrarBeanTest extends TestCase {
 
@@ -66,36 +68,6 @@ public class RegistrarBeanTest extends TestCase {
 	ObsService obsService;
 	ConceptService conceptService;
 	MotechService motechService;
-
-	String defaultLocationName = "Default Ghana Clinic";
-	String ghanaIdTypeName = "Ghana Clinic Id";
-	String phoneAttrName = "Phone Number";
-	String clinicAttrName = "Health Center";
-	String nhisAttrName = "NHIS Number";
-	String languageAttrName = "Language";
-	String phoneTypeAttrName = "Phone Type";
-	String mediaTypeAttrName = "Media Type";
-	String deliveryTimeAttrName = "Delivery Time";
-	String providerRoleName = "Provider";
-	String matVisitTypeName = "MATERNALVISIT";
-	String immunizationConceptName = "IMMUNIZATIONS ORDERED";
-	String tetanusConceptName = "TETANUS BOOSTER";
-	String iptConceptName = "INTERMITTENT PREVENTATIVE TREATMENT";
-	String itnConceptName = "INSECTICIDE-TREATED NET USAGE";
-	String visitNumConceptName = "PREGNANCY VISIT NUMBER";
-	String arvConceptName = "ANTIRETROVIRAL USE DURING PREGNANCY";
-	String onArvConceptName = "ON ANTIRETROVIRAL THERAPY";
-	String prePMTCTConceptName = "PRE PREVENTING MATERNAL TO CHILD TRANSMISSION";
-	String testPMTCTConceptName = "TEST PREVENTING MATERNAL TO CHILD TRANSMISSION";
-	String postPMTCTConceptName = "POST PREVENTING MATERNAL TO CHILD TRANSMISSION";
-	String hemo36ConceptName = "HEMOGLOBIN AT 36 WEEKS";
-	String pregVisitName = "PREGNANCYVISIT";
-	String pregStatusConceptName = "PREGNANCY STATUS";
-	String dateConfConceptName = "ESTIMATED DATE OF CONFINEMENT";
-	String gravidaConceptName = "GRAVIDA";
-	String hemoConceptName = "HEMOGLOBIN";
-	String regimenStartConceptName = "REGIMEN START";
-	String regimenEndConceptName = "REGIMEN END";
 
 	Location defaultClinic;
 	PatientIdentifierType ghanaIdType;
@@ -158,103 +130,123 @@ public class RegistrarBeanTest extends TestCase {
 		motechService = createMock(MotechService.class);
 
 		defaultClinic = new Location(1);
-		defaultClinic.setName(defaultLocationName);
+		defaultClinic.setName(MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC);
 
 		ghanaIdType = new PatientIdentifierType(1);
-		ghanaIdType.setName(ghanaIdTypeName);
+		ghanaIdType.setName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
 
 		phoneAttributeType = new PersonAttributeType(2);
-		phoneAttributeType.setName(phoneAttrName);
+		phoneAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
 
 		clinicAttributeType = new PersonAttributeType(3);
-		clinicAttributeType.setName(clinicAttrName);
+		clinicAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER);
 
 		nhisAttributeType = new PersonAttributeType(4);
-		nhisAttributeType.setName(nhisAttrName);
+		nhisAttributeType.setName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER);
 
 		languageAttributeType = new PersonAttributeType(5);
-		languageAttributeType.setName(languageAttrName);
+		languageAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
 
 		phoneTypeAttributeType = new PersonAttributeType(6);
-		phoneTypeAttributeType.setName(phoneTypeAttrName);
+		phoneTypeAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
 
 		mediaTypeAttributeType = new PersonAttributeType(7);
-		mediaTypeAttributeType.setName(mediaTypeAttrName);
+		mediaTypeAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
 
 		deliveryTimeAttributeType = new PersonAttributeType(8);
-		deliveryTimeAttributeType.setName(deliveryTimeAttrName);
+		deliveryTimeAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
 
-		providerRole = new Role(providerRoleName);
+		providerRole = new Role(OpenmrsConstants.PROVIDER_ROLE);
 
 		matVisitType = new EncounterType(5);
-		matVisitType.setName(matVisitTypeName);
+		matVisitType.setName(MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT);
 
-		immunizationConceptNameObj = new ConceptName(immunizationConceptName,
-				Locale.getDefault());
+		immunizationConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED, Locale
+						.getDefault());
 		immunizationConcept = new Concept(6);
 
-		tetanusConceptNameObj = new ConceptName(tetanusConceptName, Locale
-				.getDefault());
+		tetanusConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_TETANUS_BOOSTER, Locale.getDefault());
 		tetanusConcept = new Concept(7);
 
-		iptConceptNameObj = new ConceptName(iptConceptName, Locale.getDefault());
+		iptConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT,
+				Locale.getDefault());
 		iptConcept = new Concept(8);
 
-		itnConceptNameObj = new ConceptName(itnConceptName, Locale.getDefault());
+		itnConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_INSECTICIDE_TREATED_NET_USAGE, Locale
+						.getDefault());
 		itnConcept = new Concept(9);
 
-		visitNumConceptNameObj = new ConceptName(visitNumConceptName, Locale
-				.getDefault());
+		visitNumConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_PREGNANCY_VISIT_NUMBER, Locale
+						.getDefault());
 		visitNumConcept = new Concept(10);
 
-		arvConceptNameObj = new ConceptName(arvConceptName, Locale.getDefault());
+		arvConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_ANTIRETROVIRAL_USE_DURING_PREGNANCY,
+				Locale.getDefault());
 		arvConcept = new Concept(11);
 
-		onArvConceptNameObj = new ConceptName(onArvConceptName, Locale
-				.getDefault());
+		onArvConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_ON_ANTIRETROVIRAL_THERAPY, Locale
+						.getDefault());
 		onArvConcept = new Concept(12);
 
-		prePMTCTConceptNameObj = new ConceptName(prePMTCTConceptName, Locale
-				.getDefault());
+		prePMTCTConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_PRE_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
+				Locale.getDefault());
 		prePMTCTConcept = new Concept(13);
 
-		testPMTCTConceptNameObj = new ConceptName(testPMTCTConceptName, Locale
-				.getDefault());
+		testPMTCTConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_TEST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
+				Locale.getDefault());
 		testPMTCTConcept = new Concept(14);
 
-		postPMTCTConceptNameObj = new ConceptName(postPMTCTConceptName, Locale
-				.getDefault());
+		postPMTCTConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_POST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
+				Locale.getDefault());
 		postPMTCTConcept = new Concept(15);
 
-		hemo36ConceptNameObj = new ConceptName(hemo36ConceptName, Locale
-				.getDefault());
+		hemo36ConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_HEMOGLOBIN_AT_36_WEEKS, Locale
+						.getDefault());
 		hemo36Concept = new Concept(16);
 
 		pregVisitType = new EncounterType(17);
-		pregVisitType.setName(pregVisitName);
+		pregVisitType.setName(MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT);
 
-		pregStatusConceptNameObj = new ConceptName(pregStatusConceptName,
-				Locale.getDefault());
+		pregStatusConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_PREGNANCY_STATUS, Locale.getDefault());
 		pregStatusConcept = new Concept(18);
 
-		dateConfConceptNameObj = new ConceptName(dateConfConceptName, Locale
-				.getDefault());
+		dateConfConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT, Locale
+						.getDefault());
 		dateConfConcept = new Concept(19);
 
-		gravidaConceptNameObj = new ConceptName(gravidaConceptName, Locale
-				.getDefault());
+		gravidaConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_GRAVIDA, Locale.getDefault());
 		gravidaConcept = new Concept(20);
 
-		hemoConceptNameObj = new ConceptName(hemoConceptName, Locale
-				.getDefault());
+		hemoConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_HEMOGLOBIN, Locale.getDefault());
 		hemoConcept = new Concept(21);
 
-		regimenStartConceptNameObj = new ConceptName(regimenStartConceptName,
-				Locale.getDefault());
+		regimenStartConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_REGIMEN_START, Locale.getDefault());
 		regimenStart = new Concept(22);
 
-		regimenEndConceptNameObj = new ConceptName(regimenEndConceptName,
-				Locale.getDefault());
+		regimenEndConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_REGIMEN_END, Locale.getDefault());
 		regimenEnd = new Concept(23);
 
 		RegistrarBeanImpl regBeanImpl = new RegistrarBeanImpl();
@@ -311,11 +303,16 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getLocationService()).andReturn(locationService);
 
 		contextService.authenticate((String) anyObject(), (String) anyObject());
-		expect(personService.getPersonAttributeTypeByName(phoneAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
 				.andReturn(phoneAttributeType);
-		expect(userService.getRole(providerRoleName)).andReturn(providerRole);
+		expect(userService.getRole(OpenmrsConstants.PROVIDER_ROLE)).andReturn(
+				providerRole);
 		expect(locationService.getLocation(clinic)).andReturn(clinicLocation);
-		expect(personService.getPersonAttributeTypeByName(clinicAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
 				.andReturn(clinicAttributeType);
 		expect(userService.saveUser(capture(nurseCap), (String) anyObject()))
 				.andReturn(new User());
@@ -365,31 +362,49 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getConceptService()).andReturn(conceptService);
 
 		contextService.authenticate((String) anyObject(), (String) anyObject());
-		expect(patientService.getPatientIdentifierTypeByName(ghanaIdTypeName))
+		expect(
+				patientService
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
 				.andReturn(ghanaIdType);
 		expect(motechService.getUserByPhoneNumber(nPhone)).andReturn(nurse);
-		expect(personService.getPersonAttributeTypeByName(clinicAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
 				.andReturn(clinicAttributeType);
 		expect(locationService.getLocation(locationObj.getLocationId()))
 				.andReturn(locationObj);
-		expect(personService.getPersonAttributeTypeByName(nhisAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER))
 				.andReturn(nhisAttributeType);
-		expect(personService.getPersonAttributeTypeByName(phoneAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
 				.andReturn(phoneAttributeType);
-		expect(personService.getPersonAttributeTypeByName(phoneTypeAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE))
 				.andReturn(phoneTypeAttributeType);
-		expect(personService.getPersonAttributeTypeByName(languageAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE))
 				.andReturn(languageAttributeType);
-		expect(personService.getPersonAttributeTypeByName(mediaTypeAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE))
 				.andReturn(mediaTypeAttributeType);
-		expect(personService.getPersonAttributeTypeByName(deliveryTimeAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME))
 				.andReturn(deliveryTimeAttributeType);
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				new Patient(1));
-		expect(conceptService.getConcept(regimenStartConceptName)).andReturn(
-				regimenStart);
-		expect(locationService.getLocation(defaultLocationName)).andReturn(
-				defaultClinic);
+		expect(conceptService.getConcept(MotechConstants.CONCEPT_REGIMEN_START))
+				.andReturn(regimenStart);
+		expect(
+				locationService
+						.getLocation(MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC))
+				.andReturn(defaultClinic);
 		expect(obsService.saveObs(capture(obsCap), eq((String) null)))
 				.andReturn(new Obs());
 
@@ -474,57 +489,90 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getConceptService()).andReturn(conceptService);
 
 		contextService.authenticate((String) anyObject(), (String) anyObject());
-		expect(patientService.getPatientIdentifierTypeByName(ghanaIdTypeName))
+		expect(
+				patientService
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
 				.andReturn(ghanaIdType);
 		expect(
 				patientService.getPatients(same((String) null), eq(serialId),
 						capture(typeList), eq(true))).andReturn(patients);
 		expect(motechService.getUserByPhoneNumber(nPhone)).andReturn(nurse);
-		expect(personService.getPersonAttributeTypeByName(clinicAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
 				.andReturn(clinicAttributeType);
 		expect(locationService.getLocation(1)).andReturn(locationObj);
-		expect(encounterService.getEncounterType(matVisitTypeName)).andReturn(
-				matVisitType);
+		expect(
+				encounterService
+						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT))
+				.andReturn(matVisitType);
 		expect(encounterService.saveEncounter(capture(encounterCap)))
 				.andReturn(new Encounter());
-		expect(conceptService.getConcept(immunizationConceptName)).andReturn(
-				immunizationConcept);
-		expect(conceptService.getConcept(tetanusConceptName)).andReturn(
-				tetanusConcept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED))
+				.andReturn(immunizationConcept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_TETANUS_BOOSTER))
+				.andReturn(tetanusConcept);
 		expect(obsService.saveObs(capture(tetanusObsCap), (String) anyObject()))
 				.andReturn(new Obs());
-		expect(conceptService.getConcept(immunizationConceptName)).andReturn(
-				immunizationConcept);
-		expect(conceptService.getConcept(iptConceptName)).andReturn(iptConcept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED))
+				.andReturn(immunizationConcept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT))
+				.andReturn(iptConcept);
 		expect(obsService.saveObs(capture(iptObsCap), (String) anyObject()))
 				.andReturn(new Obs());
-		expect(conceptService.getConcept(itnConceptName)).andReturn(itnConcept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_INSECTICIDE_TREATED_NET_USAGE))
+				.andReturn(itnConcept);
 		expect(obsService.saveObs(capture(itnObsCap), (String) anyObject()))
 				.andReturn(new Obs());
-		expect(conceptService.getConcept(visitNumConceptName)).andReturn(
-				visitNumConcept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_PREGNANCY_VISIT_NUMBER))
+				.andReturn(visitNumConcept);
 		expect(
 				obsService.saveObs(capture(visitNumberObsCap),
 						(String) anyObject())).andReturn(new Obs());
-		expect(conceptService.getConcept(arvConceptName)).andReturn(arvConcept);
-		expect(conceptService.getConcept(onArvConceptName)).andReturn(
-				onArvConcept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_ANTIRETROVIRAL_USE_DURING_PREGNANCY))
+				.andReturn(arvConcept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_ON_ANTIRETROVIRAL_THERAPY))
+				.andReturn(onArvConcept);
 		expect(obsService.saveObs(capture(arvObsCap), (String) anyObject()))
 				.andReturn(new Obs());
-		expect(conceptService.getConcept(prePMTCTConceptName)).andReturn(
-				prePMTCTConcept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_PRE_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION))
+				.andReturn(prePMTCTConcept);
 		expect(obsService.saveObs(capture(preObsCap), (String) anyObject()))
 				.andReturn(new Obs());
-		expect(conceptService.getConcept(testPMTCTConceptName)).andReturn(
-				testPMTCTConcept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_TEST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION))
+				.andReturn(testPMTCTConcept);
 		expect(obsService.saveObs(capture(testObsCap), (String) anyObject()))
 				.andReturn(new Obs());
-		expect(conceptService.getConcept(postPMTCTConceptName)).andReturn(
-				postPMTCTConcept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_POST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION))
+				.andReturn(postPMTCTConcept);
 		expect(obsService.saveObs(capture(postObsCap), (String) anyObject()))
 				.andReturn(new Obs());
-		expect(conceptService.getConcept(hemo36ConceptName)).andReturn(
-				hemo36Concept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_HEMOGLOBIN_AT_36_WEEKS))
+				.andReturn(hemo36Concept);
 		expect(
 				obsService.saveObs(capture(hemoglobinObsCap),
 						(String) anyObject())).andReturn(new Obs());
@@ -657,26 +705,36 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getConceptService()).andReturn(conceptService);
 
 		contextService.authenticate((String) anyObject(), (String) anyObject());
-		expect(patientService.getPatientIdentifierTypeByName(ghanaIdTypeName))
+		expect(
+				patientService
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
 				.andReturn(ghanaIdType);
 		expect(
 				patientService.getPatients(same((String) null), eq(serialId),
 						capture(typeList), eq(true))).andReturn(patients);
 		expect(motechService.getUserByPhoneNumber(nPhone)).andReturn(nurse);
-		expect(personService.getPersonAttributeTypeByName(clinicAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
 				.andReturn(clinicAttributeType);
 		expect(locationService.getLocation(1)).andReturn(locationObj);
-		expect(encounterService.getEncounterType(matVisitTypeName)).andReturn(
-				matVisitType);
+		expect(
+				encounterService
+						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT))
+				.andReturn(matVisitType);
 		expect(encounterService.saveEncounter(capture(encounterCap)))
 				.andReturn(new Encounter());
-		expect(conceptService.getConcept(visitNumConceptName)).andReturn(
-				visitNumConcept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_PREGNANCY_VISIT_NUMBER))
+				.andReturn(visitNumConcept);
 		expect(
 				obsService.saveObs(capture(visitNumberObsCap),
 						(String) anyObject())).andReturn(new Obs());
-		expect(conceptService.getConcept(hemo36ConceptName)).andReturn(
-				hemo36Concept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_HEMOGLOBIN_AT_36_WEEKS))
+				.andReturn(hemo36Concept);
 		expect(
 				obsService.saveObs(capture(hemoglobinObsCap),
 						(String) anyObject())).andReturn(new Obs());
@@ -753,34 +811,44 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getConceptService()).andReturn(conceptService);
 
 		contextService.authenticate((String) anyObject(), (String) anyObject());
-		expect(patientService.getPatientIdentifierTypeByName(ghanaIdTypeName))
+		expect(
+				patientService
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
 				.andReturn(ghanaIdType);
 		expect(
 				patientService.getPatients(same((String) null), eq(serialId),
 						capture(typeListCap), eq(true))).andReturn(patients);
 		expect(motechService.getUserByPhoneNumber(nPhone)).andReturn(nurse);
-		expect(personService.getPersonAttributeTypeByName(clinicAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
 				.andReturn(clinicAttributeType);
 		expect(locationService.getLocation(1)).andReturn(locationObj);
-		expect(encounterService.getEncounterType(pregVisitName)).andReturn(
-				pregVisitType);
+		expect(
+				encounterService
+						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT))
+				.andReturn(pregVisitType);
 		expect(encounterService.saveEncounter(capture(encounterCap)))
 				.andReturn(new Encounter());
-		expect(conceptService.getConcept(pregStatusConceptName)).andReturn(
-				pregStatusConcept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_PREGNANCY_STATUS))
+				.andReturn(pregStatusConcept);
 		expect(
 				obsService.saveObs(capture(pregStatusObsCap),
 						(String) anyObject())).andReturn(new Obs());
-		expect(conceptService.getConcept(dateConfConceptName)).andReturn(
-				dateConfConcept);
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT))
+				.andReturn(dateConfConcept);
 		expect(obsService.saveObs(capture(dueDateObsCap), (String) anyObject()))
 				.andReturn(new Obs());
-		expect(conceptService.getConcept(gravidaConceptName)).andReturn(
-				gravidaConcept);
+		expect(conceptService.getConcept(MotechConstants.CONCEPT_GRAVIDA))
+				.andReturn(gravidaConcept);
 		expect(obsService.saveObs(capture(parityObsCap), (String) anyObject()))
 				.andReturn(new Obs());
-		expect(conceptService.getConcept(hemoConceptName)).andReturn(
-				hemoConcept);
+		expect(conceptService.getConcept(MotechConstants.CONCEPT_HEMOGLOBIN))
+				.andReturn(hemoConcept);
 		expect(
 				obsService.saveObs(capture(hemoglobinObsCap),
 						(String) anyObject())).andReturn(new Obs());
@@ -925,7 +993,9 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getPersonService()).andReturn(personService);
 		expect(motechService.getMessage(messageId)).andReturn(message);
 		expect(personService.getPerson(recipientId)).andReturn(recipient);
-		expect(personService.getPersonAttributeTypeByName(phoneAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
 				.andReturn(phoneAttributeType);
 		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
 				troubledPhone);
@@ -965,7 +1035,9 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getPersonService()).andReturn(personService);
 		expect(motechService.getMessage(messageId)).andReturn(message);
 		expect(personService.getPerson(recipientId)).andReturn(recipient);
-		expect(personService.getPersonAttributeTypeByName(phoneAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
 				.andReturn(phoneAttributeType);
 		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
 				troubledPhone);
@@ -1006,7 +1078,9 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getPersonService()).andReturn(personService);
 		expect(motechService.getMessage(messageId)).andReturn(message);
 		expect(personService.getPerson(recipientId)).andReturn(recipient);
-		expect(personService.getPersonAttributeTypeByName(phoneAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
 				.andReturn(phoneAttributeType);
 		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
 				troubledPhone);
@@ -1050,7 +1124,9 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getPersonService()).andReturn(personService);
 		expect(motechService.getMessage(messageId)).andReturn(message);
 		expect(personService.getPerson(recipientId)).andReturn(recipient);
-		expect(personService.getPersonAttributeTypeByName(phoneAttrName))
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
 				.andReturn(phoneAttributeType);
 		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
 				troubledPhone);

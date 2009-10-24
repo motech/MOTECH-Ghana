@@ -29,6 +29,7 @@ import org.motech.model.Blackout;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
+import org.motech.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
@@ -267,7 +268,8 @@ public class MotechModuleFormController {
 
 		List<PatientIdentifierType> ghanaPatientIdType = new ArrayList<PatientIdentifierType>();
 		ghanaPatientIdType.add(Context.getPatientService()
-				.getPatientIdentifierTypeByName("Ghana Clinic Id"));
+				.getPatientIdentifierTypeByName(
+						MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID));
 		model.addAttribute("allPatients", Context.getPatientService()
 				.getPatients(null, null, ghanaPatientIdType, false));
 

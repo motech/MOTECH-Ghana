@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.motech.event.impl.PatientObsServiceImpl;
+import org.motech.util.MotechConstants;
 import org.motechproject.ws.NameValuePair;
 import org.openmrs.Patient;
 import org.openmrs.Person;
@@ -48,7 +49,7 @@ public class MessageDefinition {
 						messageRecipientId);
 				PatientObsServiceImpl obsService = new PatientObsServiceImpl();
 				Date dueDate = obsService.getLastObsValue(patient,
-						"ESTIMATED DATE OF CONFINEMENT");
+						MotechConstants.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT);
 				pair.setValue(dueDate.toString());
 			}
 			nameValueList.add(pair);

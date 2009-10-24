@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.motech.event.PatientObsService;
+import org.motech.util.MotechConstants;
 import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.Obs;
@@ -90,9 +91,10 @@ public class PatientObsServiceImpl implements PatientObsService {
 		ObsService obsService = Context.getObsService();
 		UserService userService = Context.getUserService();
 
-		Concept regimenEnd = conceptService.getConcept("REGIMEN END");
+		Concept regimenEnd = conceptService
+				.getConcept(MotechConstants.CONCEPT_REGIMEN_END);
 		Location defaultClinic = locationService
-				.getLocation("Default Ghana Clinic");
+				.getLocation(MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC);
 		Person person = personService.getPerson(personId);
 		User creator = userService.getUser(1);
 
