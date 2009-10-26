@@ -278,14 +278,14 @@ public class MotechModuleFormController {
 				"MATERNALVISIT"));
 		model.addAttribute("allMaternalVisits", Context.getEncounterService()
 				.getEncounters(null, null, null, null, null, maternalVisitType,
-						false));
+						null, false));
 
 		List<EncounterType> pregnancyType = new ArrayList<EncounterType>();
 		pregnancyType.add(Context.getEncounterService().getEncounterType(
 				"PREGNANCYVISIT"));
 		model.addAttribute("allPregnancies", Context.getEncounterService()
 				.getEncounters(null, null, null, null, null, pregnancyType,
-						false));
+						null, false));
 
 		model.addAttribute("allScheduledMessages", Context.getService(
 				MotechService.class).getAllScheduledMessages());

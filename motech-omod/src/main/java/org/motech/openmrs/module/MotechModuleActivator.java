@@ -397,7 +397,7 @@ public class MotechModuleActivator implements Activator {
 				task.setProperties(properties);
 			task.setTaskClass(taskClass);
 			task.setStartOnStartup(startOnStartup);
-			task.setCreatedBy(creator);
+			task.setCreator(creator);
 			Context.getSchedulerService().saveTask(task);
 			task = Context.getSchedulerService().getTaskByName(name);
 		}
