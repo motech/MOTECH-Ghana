@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+ 
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="CONSOLE" class="org.apache.log4j.FileAppender">
+		<param name="File" value="${project.build.directory}/test-openmrs.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%p - %C{1}.%M(%L) |%d{ISO8601}| %m%n" />
+		</layout>
+	</appender>
+	
+	<logger name="${modulePackage}">
+		<level value="DEBUG" />
+	</logger>
+	
+	<logger name="${corePackage}">
+		<level value="DEBUG" />
+	</logger>
+	
+	<!-- 
+	   Enable this to view the sql statements that hibernate generates
+	<logger name="org.hibernate.SQL">
+		<level value="DEBUG" />
+	</logger>
+	--> 
+	 
+	
+	<root>
+		<level value="ERROR" />
+		<appender-ref ref="CONSOLE" />
+	</root>
+
+</log4j:configuration>
