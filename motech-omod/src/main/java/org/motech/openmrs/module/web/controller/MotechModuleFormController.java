@@ -16,11 +16,9 @@ package org.motech.openmrs.module.web.controller;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -29,15 +27,12 @@ import org.motech.model.Blackout;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
-import org.motech.util.MotechConstants;
+import org.motech.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.server.RegistrarService;
-import org.openmrs.EncounterType;
-import org.openmrs.PatientIdentifierType;
-import org.openmrs.api.context.Context;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -62,21 +57,23 @@ public class MotechModuleFormController {
 	@Qualifier("registrarClient")
 	private RegistrarService registrarClient;
 
+	private RegistrarBean registrarBean;
 	private ContextService contextService;
+
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
 	@Autowired
 	public void setContextService(ContextService contextService) {
 		this.contextService = contextService;
 	}
 
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+	@Autowired
+	public void setRegistrarBean(RegistrarBean registrarBean) {
+		this.registrarBean = registrarBean;
+	}
 
 	public void setRegistrarClient(RegistrarService registrarClient) {
 		this.registrarClient = registrarClient;
-	}
-
-	public RegistrarService getRegistrarClient() {
-		return registrarClient;
 	}
 
 	@RequestMapping(value = "/module/motechmodule/quick", method = RequestMethod.GET)
@@ -262,35 +259,16 @@ public class MotechModuleFormController {
 	@RequestMapping("/module/motechmodule/viewdata")
 	public String viewData(ModelMap model) {
 
-		model.addAttribute("allClinics", Context.getLocationService()
-				.getAllLocations());
-		model.addAttribute("allNurses", Context.getUserService().getAllUsers());
-
-		List<PatientIdentifierType> ghanaPatientIdType = new ArrayList<PatientIdentifierType>();
-		ghanaPatientIdType.add(Context.getPatientService()
-				.getPatientIdentifierTypeByName(
-						MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID));
-		model.addAttribute("allPatients", Context.getPatientService()
-				.getPatients(null, null, ghanaPatientIdType, false));
-
-		List<EncounterType> maternalVisitType = new ArrayList<EncounterType>();
-		maternalVisitType.add(Context.getEncounterService().getEncounterType(
-				"MATERNALVISIT"));
-		model.addAttribute("allMaternalVisits", Context.getEncounterService()
-				.getEncounters(null, null, null, null, null, maternalVisitType,
-						null, false));
-
-		List<EncounterType> pregnancyType = new ArrayList<EncounterType>();
-		pregnancyType.add(Context.getEncounterService().getEncounterType(
-				"PREGNANCYVISIT"));
-		model.addAttribute("allPregnancies", Context.getEncounterService()
-				.getEncounters(null, null, null, null, null, pregnancyType,
-						null, false));
-
-		model.addAttribute("allScheduledMessages", Context.getService(
-				MotechService.class).getAllScheduledMessages());
-		model.addAttribute("allLogs", Context.getService(MotechService.class)
-				.getAllLogs());
+		model.addAttribute("allClinics", registrarBean.getAllClinics());
+		model.addAttribute("allNurses", registrarBean.getAllNurses());
+		model.addAttribute("allPatients", registrarBean.getAllPatients());
+		model.addAttribute("allMaternalVisits", registrarBean
+				.getAllMaternalVisits());
+		model.addAttribute("allPregnancies", registrarBean
+				.getAllPregnancyVisits());
+		model.addAttribute("allScheduledMessages", registrarBean
+				.getAllScheduledMessages());
+		model.addAttribute("allLogs", registrarBean.getAllLogs());
 
 		return "/module/motechmodule/viewdata";
 	}

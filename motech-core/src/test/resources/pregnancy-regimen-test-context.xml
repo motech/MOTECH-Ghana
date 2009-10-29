@@ -17,7 +17,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -41,7 +41,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -65,7 +65,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -89,7 +89,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -113,7 +113,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -137,7 +137,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -161,7 +161,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -185,7 +185,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -209,7 +209,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -233,7 +233,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -257,7 +257,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -281,7 +281,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -305,7 +305,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -329,7 +329,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -353,7 +353,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -377,7 +377,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -401,7 +401,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -425,7 +425,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -449,7 +449,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -473,7 +473,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -497,7 +497,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -521,7 +521,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -545,7 +545,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -569,7 +569,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -593,7 +593,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -617,7 +617,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -641,7 +641,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -665,7 +665,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -689,7 +689,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -713,7 +713,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -737,7 +737,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -761,7 +761,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -785,7 +785,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -809,7 +809,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -833,7 +833,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -857,7 +857,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -881,7 +881,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -905,7 +905,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -929,7 +929,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -953,7 +953,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -977,7 +977,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="pregnancyRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">

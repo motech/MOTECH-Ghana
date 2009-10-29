@@ -10,6 +10,7 @@ import static org.easymock.EasyMock.same;
 import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -355,18 +356,29 @@ public class RegistrarBeanTest extends TestCase {
 		Capture<Obs> obsCap = new Capture<Obs>();
 
 		expect(contextService.getPatientService()).andReturn(patientService);
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(contextService.getPersonService()).andReturn(personService);
+		expect(contextService.getMotechService()).andReturn(motechService)
+				.atLeastOnce();
+		expect(contextService.getPersonService()).andReturn(personService)
+				.atLeastOnce();
 		expect(contextService.getLocationService()).andReturn(locationService);
 		expect(contextService.getObsService()).andReturn(obsService);
 		expect(contextService.getConceptService()).andReturn(conceptService);
+		expect(contextService.getUserService()).andReturn(userService);
 
 		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(
 				patientService
 						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
 				.andReturn(ghanaIdType);
-		expect(motechService.getUserByPhoneNumber(nPhone)).andReturn(nurse);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
+				.andReturn(phoneAttributeType);
+		expect(
+				motechService.getUserIdsByPersonAttribute(phoneAttributeType,
+						nPhone)).andReturn(
+				new ArrayList<Integer>(Arrays.asList(nurse.getUserId())));
+		expect(userService.getUser(nurse.getUserId())).andReturn(nurse);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
@@ -409,14 +421,14 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(new Obs());
 
 		replay(contextService, patientService, motechService, personService,
-				locationService, obsService, conceptService);
+				locationService, obsService, conceptService, userService);
 
 		regBean.registerPatient(nPhone, serialId, name, community, location,
 				dob, gender, nhis, pPhone, contactNumberType, language,
 				mediaType, deliveryTime, regimen);
 
 		verify(contextService, patientService, motechService, personService,
-				locationService, obsService, conceptService);
+				locationService, obsService, conceptService, userService);
 
 		Patient patient = patientCap.getValue();
 		assertEquals(serialId, patient.getPatientIdentifier(ghanaIdType)
@@ -480,13 +492,16 @@ public class RegistrarBeanTest extends TestCase {
 		Capture<Obs> hemoglobinObsCap = new Capture<Obs>();
 
 		expect(contextService.getPatientService()).andReturn(patientService);
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(contextService.getPersonService()).andReturn(personService);
+		expect(contextService.getMotechService()).andReturn(motechService)
+				.atLeastOnce();
+		expect(contextService.getPersonService()).andReturn(personService)
+				.atLeastOnce();
 		expect(contextService.getLocationService()).andReturn(locationService);
 		expect(contextService.getEncounterService())
 				.andReturn(encounterService);
 		expect(contextService.getObsService()).andReturn(obsService);
 		expect(contextService.getConceptService()).andReturn(conceptService);
+		expect(contextService.getUserService()).andReturn(userService);
 
 		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(
@@ -496,7 +511,15 @@ public class RegistrarBeanTest extends TestCase {
 		expect(
 				patientService.getPatients(same((String) null), eq(serialId),
 						capture(typeList), eq(true))).andReturn(patients);
-		expect(motechService.getUserByPhoneNumber(nPhone)).andReturn(nurse);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
+				.andReturn(phoneAttributeType);
+		expect(
+				motechService.getUserIdsByPersonAttribute(phoneAttributeType,
+						nPhone)).andReturn(
+				new ArrayList<Integer>(Arrays.asList(nurse.getUserId())));
+		expect(userService.getUser(nurse.getUserId())).andReturn(nurse);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
@@ -578,13 +601,15 @@ public class RegistrarBeanTest extends TestCase {
 						(String) anyObject())).andReturn(new Obs());
 
 		replay(contextService, patientService, motechService, personService,
-				locationService, encounterService, obsService, conceptService);
+				locationService, encounterService, obsService, conceptService,
+				userService);
 
 		regBean.recordMaternalVisit(nPhone, date, serialId, tetanus, ipt, itn,
 				visit, onARV, prePMTCT, testPMTCT, postPMTCT, hemo);
 
 		verify(contextService, patientService, motechService, personService,
-				locationService, encounterService, obsService, conceptService);
+				locationService, encounterService, obsService, conceptService,
+				userService);
 
 		Encounter e = encounterCap.getValue();
 		assertEquals(1, typeList.getValue().size());
@@ -696,13 +721,16 @@ public class RegistrarBeanTest extends TestCase {
 		Capture<Obs> hemoglobinObsCap = new Capture<Obs>();
 
 		expect(contextService.getPatientService()).andReturn(patientService);
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(contextService.getPersonService()).andReturn(personService);
+		expect(contextService.getMotechService()).andReturn(motechService)
+				.atLeastOnce();
+		expect(contextService.getPersonService()).andReturn(personService)
+				.atLeastOnce();
 		expect(contextService.getLocationService()).andReturn(locationService);
 		expect(contextService.getEncounterService())
 				.andReturn(encounterService);
 		expect(contextService.getObsService()).andReturn(obsService);
 		expect(contextService.getConceptService()).andReturn(conceptService);
+		expect(contextService.getUserService()).andReturn(userService);
 
 		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(
@@ -712,7 +740,15 @@ public class RegistrarBeanTest extends TestCase {
 		expect(
 				patientService.getPatients(same((String) null), eq(serialId),
 						capture(typeList), eq(true))).andReturn(patients);
-		expect(motechService.getUserByPhoneNumber(nPhone)).andReturn(nurse);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
+				.andReturn(phoneAttributeType);
+		expect(
+				motechService.getUserIdsByPersonAttribute(phoneAttributeType,
+						nPhone)).andReturn(
+				new ArrayList<Integer>(Arrays.asList(nurse.getUserId())));
+		expect(userService.getUser(nurse.getUserId())).andReturn(nurse);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
@@ -740,13 +776,15 @@ public class RegistrarBeanTest extends TestCase {
 						(String) anyObject())).andReturn(new Obs());
 
 		replay(contextService, patientService, motechService, personService,
-				locationService, encounterService, obsService, conceptService);
+				locationService, encounterService, obsService, conceptService,
+				userService);
 
 		regBean.recordMaternalVisit(nPhone, date, serialId, tetanus, ipt, itn,
 				visit, onARV, prePMTCT, testPMTCT, postPMTCT, hemo);
 
 		verify(contextService, patientService, motechService, personService,
-				locationService, encounterService, obsService, conceptService);
+				locationService, encounterService, obsService, conceptService,
+				userService);
 
 		Encounter e = encounterCap.getValue();
 		assertEquals(1, typeList.getValue().size());
@@ -802,13 +840,16 @@ public class RegistrarBeanTest extends TestCase {
 		Capture<Obs> hemoglobinObsCap = new Capture<Obs>();
 
 		expect(contextService.getPatientService()).andReturn(patientService);
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(contextService.getPersonService()).andReturn(personService);
+		expect(contextService.getMotechService()).andReturn(motechService)
+				.atLeastOnce();
+		expect(contextService.getPersonService()).andReturn(personService)
+				.atLeastOnce();
 		expect(contextService.getLocationService()).andReturn(locationService);
 		expect(contextService.getEncounterService())
 				.andReturn(encounterService);
 		expect(contextService.getObsService()).andReturn(obsService);
 		expect(contextService.getConceptService()).andReturn(conceptService);
+		expect(contextService.getUserService()).andReturn(userService);
 
 		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(
@@ -818,7 +859,15 @@ public class RegistrarBeanTest extends TestCase {
 		expect(
 				patientService.getPatients(same((String) null), eq(serialId),
 						capture(typeListCap), eq(true))).andReturn(patients);
-		expect(motechService.getUserByPhoneNumber(nPhone)).andReturn(nurse);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
+				.andReturn(phoneAttributeType);
+		expect(
+				motechService.getUserIdsByPersonAttribute(phoneAttributeType,
+						nPhone)).andReturn(
+				new ArrayList<Integer>(Arrays.asList(nurse.getUserId())));
+		expect(userService.getUser(nurse.getUserId())).andReturn(nurse);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
@@ -854,12 +903,14 @@ public class RegistrarBeanTest extends TestCase {
 						(String) anyObject())).andReturn(new Obs());
 
 		replay(contextService, patientService, motechService, personService,
-				locationService, encounterService, obsService, conceptService);
+				locationService, encounterService, obsService, conceptService,
+				userService);
 
 		regBean.registerPregnancy(nPhone, date, serialId, date, parity, hemo);
 
 		verify(contextService, patientService, motechService, personService,
-				locationService, encounterService, obsService, conceptService);
+				locationService, encounterService, obsService, conceptService,
+				userService);
 
 		Encounter e = encounterCap.getValue();
 		assertEquals(nPhone, e.getProvider().getAttribute(phoneAttributeType)

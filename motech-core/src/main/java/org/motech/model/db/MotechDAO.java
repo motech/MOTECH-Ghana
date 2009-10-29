@@ -69,6 +69,6 @@ public interface MotechDAO {
 
 	void saveTroubledPhone(TroubledPhone phone);
 
-	List<String> getRegimenEnrollment(Integer personId, Concept startConcept,
+	List<String> getObsEnrollment(Integer personId, Concept startConcept,
 			Concept endConcept);
 }

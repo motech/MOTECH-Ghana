@@ -15,9 +15,7 @@ package org.motech.openmrs.module.impl;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
-import org.motech.event.Regimen;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
@@ -28,12 +26,9 @@ import org.motech.model.Log;
 import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
 import org.motech.openmrs.module.MotechService;
-import org.motech.util.MotechConstants;
-import org.motechproject.ws.mobile.MessageService;
+import org.motech.svc.RegistrarBean;
 import org.openmrs.Concept;
-import org.openmrs.User;
-import org.openmrs.api.ConceptService;
-import org.openmrs.api.context.Context;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.api.impl.BaseOpenmrsService;
 
 /**
@@ -43,8 +38,8 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		MotechService {
 
 	private MotechDAO motechDAO;
-	private MessageService mobileService;
-	private Map<String, Regimen> regimens;
+
+	private RegistrarBean registrarBean;
 
 	public MotechDAO getMotechDAO() {
 		return motechDAO;
@@ -54,27 +49,17 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		this.motechDAO = motechDAO;
 	}
 
-	public Map<String, Regimen> getRegimens() {
-		return regimens;
+	public RegistrarBean getRegistrarBean() {
+		return registrarBean;
 	}
 
-	public void setRegimens(Map<String, Regimen> regimens) {
-		this.regimens = regimens;
+	public void setRegistrarBean(RegistrarBean registrarBean) {
+		this.registrarBean = registrarBean;
 	}
 
-	public Regimen getRegimen(String regimenName) {
-		return regimens.get(regimenName);
-	}
-
-	public List<String> getRegimenEnrollment(Integer personId) {
-		ConceptService conceptService = Context.getConceptService();
-		Concept startConcept = conceptService
-				.getConcept(MotechConstants.CONCEPT_REGIMEN_START);
-		Concept endConcept = conceptService
-				.getConcept(MotechConstants.CONCEPT_REGIMEN_END);
-
-		return motechDAO.getRegimenEnrollment(personId, startConcept,
-				endConcept);
+	public List<String> getObsEnrollment(Integer personId,
+			Concept startConcept, Concept endConcept) {
+		return motechDAO.getObsEnrollment(personId, startConcept, endConcept);
 	}
 
 	public List<Log> getAllLogs() {
@@ -153,24 +138,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return motechDAO.saveMessageAttribute(messageAttribute);
 	}
 
-	public User getUserByPhoneNumber(String phoneNumber) {
-		Integer phoneAttributeTypeId = Context.getPersonService()
-				.getPersonAttributeTypeByName(
-						MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER)
-				.getPersonAttributeTypeId();
-		// If more than one user matches phone number, first user in list is
-		// returned
-		Integer userId = motechDAO.getUsersByPersonAttribute(
-				phoneAttributeTypeId, phoneNumber).get(0);
-		return Context.getUserService().getUser(userId);
-	}
-
-	public MessageService getMobileService() {
-		return mobileService;
-	}
-
-	public void setMobileService(MessageService mobileService) {
-		this.mobileService = mobileService;
+	public List<Integer> getUserIdsByPersonAttribute(
+			PersonAttributeType personAttributeType, String value) {
+		return motechDAO.getUsersByPersonAttribute(personAttributeType
+				.getPersonAttributeTypeId(), value);
 	}
 
 	public Blackout getBlackoutSettings() {

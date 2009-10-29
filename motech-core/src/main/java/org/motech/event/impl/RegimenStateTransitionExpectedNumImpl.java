@@ -1,19 +1,19 @@
 package org.motech.event.impl;
 
-import org.motech.event.PatientObsService;
+import org.motech.svc.RegistrarBean;
 import org.openmrs.Patient;
 
 public class RegimenStateTransitionExpectedNumImpl extends
 		RegimenStateTransitionImpl {
 
-	private PatientObsService patientObsService;
+	private RegistrarBean registrarBean;
 	private int expectedNumber;
 
 	@Override
 	public boolean evaluate(Patient patient) {
 		String conceptName = prevState.getRegimen().getConceptName();
 		String conceptValue = prevState.getRegimen().getConceptValue();
-		int obsNum = patientObsService.getNumberOfObs(patient, conceptName,
+		int obsNum = registrarBean.getNumberOfObs(patient, conceptName,
 				conceptValue);
 
 		if (prevState.equals(nextState)) {
@@ -23,12 +23,12 @@ public class RegimenStateTransitionExpectedNumImpl extends
 		}
 	}
 
-	public PatientObsService getPatientObsService() {
-		return patientObsService;
+	public RegistrarBean getRegistrarBean() {
+		return registrarBean;
 	}
 
-	public void setPatientObsService(PatientObsService patientObsService) {
-		this.patientObsService = patientObsService;
+	public void setRegistrarBean(RegistrarBean registrarBean) {
+		this.registrarBean = registrarBean;
 	}
 
 	public int getExpectedNumber() {

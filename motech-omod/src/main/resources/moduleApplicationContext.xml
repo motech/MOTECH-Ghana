@@ -19,7 +19,8 @@
 
 	<import resource="classpath*:common-regimen-beans.xml" />
 	<import resource="classpath*:regimen/*.xml" />
-
+	<import resource="classpath*:registrar-bean.xml" />
+	
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
 
@@ -45,29 +46,7 @@
 									</property>
 								</bean>
 							</property>
-							<property name="mobileService" ref="mobileClient" />
-							<property name="regimens">
-								<map>
-									<entry>
-										<key>
-											<value>Tetanus Information Regimen</value>
-										</key>
-										<ref bean="tetanusInfo" />
-									</entry>
-									<entry>
-										<key>
-											<value>Tetanus Immunization Regimen</value>
-										</key>
-										<ref bean="tetanusImmunization" />
-									</entry>
-									<entry>
-										<key>
-											<value>Daily Pregnancy Regimen</value>
-										</key>
-										<ref bean="dailyPregnancyRegimen" />
-									</entry>
-								</map>
-							</property>
+							<property name="registrarBean" ref="registrarBean" />
 						</bean>
 					</property>
 					<property name="preInterceptors">
@@ -88,12 +67,6 @@
 	<wss:binding url="/ws/RegistrarService" service="#registrarservice" /> <!-- MUST start with /ws/ -->
 	<ws:service id="registrarservice" bean="#registrarWebService" />
 
-	<bean id="contextService" class="${modulePackage}.impl.ContextServiceImpl" />
-
-	<bean id="registrarBean" class="${corePackage}.svc.RegistrarBeanImpl">
-		<property name="contextService" ref="contextService" />
-	</bean>
-
 	<bean id="registrarWebService" class="${corePackage}.ws.RegistrarWebService">
 		<property name="registrarBean" ref="registrarBean" />
 	</bean>
@@ -109,9 +82,7 @@
 		<property name="lookupServiceOnStartup" value="false" />
 	</bean>
 
-	<bean id="mobileClient" class="${corePackage}.mobile.client.MessageServiceStub" />
-
-	<!-- Uncomment to enable using motech-mobile web service and comment out mobileClient bean above
+	<!-- Uncomment to enable using motech-mobile web service and comment out mobileClient bean in registrar-bean.xml
 	<bean id="mobileClient" 
 		class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
 		<property name="serviceInterface" value="org.motechproject.ws.mobile.MessageService" />

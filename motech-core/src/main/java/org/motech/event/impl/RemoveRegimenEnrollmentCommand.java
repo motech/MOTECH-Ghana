@@ -1,13 +1,13 @@
 package org.motech.event.impl;
 
 import org.motech.event.Command;
-import org.motech.event.PatientObsService;
+import org.motech.svc.RegistrarBean;
 
 public class RemoveRegimenEnrollmentCommand implements Command {
 
 	Integer personId;
 	String regimenName;
-	PatientObsService patientObsService;
+	RegistrarBean registrarBean;
 
 	public String getRegimenName() {
 		return regimenName;
@@ -25,16 +25,16 @@ public class RemoveRegimenEnrollmentCommand implements Command {
 		this.personId = personId;
 	}
 
-	public PatientObsService getPatientObsService() {
-		return patientObsService;
+	public RegistrarBean getRegistrarBean() {
+		return registrarBean;
 	}
 
-	public void setPatientObsService(PatientObsService patientObsService) {
-		this.patientObsService = patientObsService;
+	public void setRegistrarBean(RegistrarBean registrarBean) {
+		this.registrarBean = registrarBean;
 	}
 
 	public void execute() {
-		patientObsService.removeRegimen(personId, regimenName);
+		registrarBean.removeRegimen(personId, regimenName);
 	}
 
 }

@@ -13,6 +13,7 @@ import org.motech.event.impl.RegimenStateImpl;
 import org.motech.event.impl.RemoveRegimenEnrollmentCommand;
 import org.motech.event.impl.ScheduleMessageCommand;
 import org.motech.messaging.MessageScheduler;
+import org.motech.svc.RegistrarBean;
 import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -32,7 +33,7 @@ public class TetanusInfoRegimenTest extends TestCase {
 	RegimenStateImpl state5;
 
 	MessageScheduler messageScheduler;
-	PatientObsService patientObsService;
+	RegistrarBean registrarBean;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -54,13 +55,12 @@ public class TetanusInfoRegimenTest extends TestCase {
 		state5 = (RegimenStateImpl) ctx.getBean("tetanusInfoState5");
 
 		// EasyMock setup in Spring config
-		patientObsService = (PatientObsService) ctx
-				.getBean("patientObsService");
+		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
 
-		state1.setPatientObsService(patientObsService);
-		state2.setPatientObsService(patientObsService);
-		state3.setPatientObsService(patientObsService);
-		state4.setPatientObsService(patientObsService);
+		state1.setRegistrarBean(registrarBean);
+		state2.setRegistrarBean(registrarBean);
+		state3.setRegistrarBean(registrarBean);
+		state4.setRegistrarBean(registrarBean);
 
 		// EasyMock setup in Spring config
 		messageScheduler = (MessageScheduler) ctx.getBean("messageScheduler");
@@ -74,7 +74,7 @@ public class TetanusInfoRegimenTest extends TestCase {
 		((ScheduleMessageCommand) state4.getCommand())
 				.setMessageScheduler(messageScheduler);
 		((RemoveRegimenEnrollmentCommand) state5.getCommand())
-				.setPatientObsService(patientObsService);
+				.setRegistrarBean(registrarBean);
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class TetanusInfoRegimenTest extends TestCase {
 
 		ctx = null;
 
-		patientObsService = null;
+		registrarBean = null;
 		messageScheduler = null;
 	}
 
@@ -107,11 +107,11 @@ public class TetanusInfoRegimenTest extends TestCase {
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
-		replay(patientObsService, messageScheduler);
+		replay(registrarBean, messageScheduler);
 
 		RegimenState state = regimen.determineState(patient);
 
-		verify(patientObsService, messageScheduler);
+		verify(registrarBean, messageScheduler);
 
 		assertEquals(state1.getName(), state.getName());
 	}
@@ -129,11 +129,11 @@ public class TetanusInfoRegimenTest extends TestCase {
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
-		replay(patientObsService, messageScheduler);
+		replay(registrarBean, messageScheduler);
 
 		RegimenState state = regimen.determineState(patient);
 
-		verify(patientObsService, messageScheduler);
+		verify(registrarBean, messageScheduler);
 
 		assertEquals(state2.getName(), state.getName());
 	}
@@ -151,11 +151,11 @@ public class TetanusInfoRegimenTest extends TestCase {
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
-		replay(patientObsService, messageScheduler);
+		replay(registrarBean, messageScheduler);
 
 		RegimenState state = regimen.determineState(patient);
 
-		verify(patientObsService, messageScheduler);
+		verify(registrarBean, messageScheduler);
 
 		assertEquals(state3.getName(), state.getName());
 	}
@@ -173,11 +173,11 @@ public class TetanusInfoRegimenTest extends TestCase {
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
-		replay(patientObsService, messageScheduler);
+		replay(registrarBean, messageScheduler);
 
 		RegimenState state = regimen.determineState(patient);
 
-		verify(patientObsService, messageScheduler);
+		verify(registrarBean, messageScheduler);
 
 		assertEquals(state4.getName(), state.getName());
 	}
@@ -186,14 +186,13 @@ public class TetanusInfoRegimenTest extends TestCase {
 		// Patient registered 7 minute ago, no messages expected
 		setPatientRegistration(patient, 7);
 
-		patientObsService.removeRegimen(patient.getPatientId(), regimen
-				.getName());
+		registrarBean.removeRegimen(patient.getPatientId(), regimen.getName());
 
-		replay(patientObsService, messageScheduler);
+		replay(registrarBean, messageScheduler);
 
 		RegimenState state = regimen.determineState(patient);
 
-		verify(patientObsService, messageScheduler);
+		verify(registrarBean, messageScheduler);
 
 		assertEquals(state5.getName(), state.getName());
 	}

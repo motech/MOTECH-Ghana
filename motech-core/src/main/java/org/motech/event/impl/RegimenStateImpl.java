@@ -6,17 +6,17 @@ import java.util.Date;
 import java.util.List;
 
 import org.motech.event.Command;
-import org.motech.event.PatientObsService;
 import org.motech.event.Regimen;
 import org.motech.event.RegimenState;
 import org.motech.event.RegimenStateTransition;
 import org.motech.event.TimePeriod;
 import org.motech.event.TimeReference;
+import org.motech.svc.RegistrarBean;
 import org.openmrs.Patient;
 
 public class RegimenStateImpl extends BaseInterfaceImpl implements RegimenState {
 
-	private PatientObsService patientObsService;
+	private RegistrarBean registrarBean;
 	private List<RegimenStateTransition> transitions = new ArrayList<RegimenStateTransition>();
 	private Command command;
 	private Regimen regimen;
@@ -37,12 +37,12 @@ public class RegimenStateImpl extends BaseInterfaceImpl implements RegimenState 
 		return null;
 	}
 
-	public PatientObsService getPatientObsService() {
-		return patientObsService;
+	public RegistrarBean getRegistrarBean() {
+		return registrarBean;
 	}
 
-	public void setPatientObsService(PatientObsService patientObsService) {
-		this.patientObsService = patientObsService;
+	public void setRegistrarBean(RegistrarBean registrarBean) {
+		this.registrarBean = registrarBean;
 	}
 
 	public Command getCommand() {
@@ -110,15 +110,15 @@ public class RegimenStateImpl extends BaseInterfaceImpl implements RegimenState 
 				calendar.setTime(patient.getBirthdate());
 				break;
 			case last_obs:
-				Date obsDate = patientObsService.getLastObsDate(patient,
-						regimen.getConceptName(), regimen.getConceptValue());
+				Date obsDate = registrarBean.getLastObsDate(patient, regimen
+						.getConceptName(), regimen.getConceptValue());
 				if (obsDate == null) {
 					return null;
 				}
 				calendar.setTime(obsDate);
 				break;
 			case last_obs_value:
-				Date obsValueDate = patientObsService.getLastObsValue(patient,
+				Date obsValueDate = registrarBean.getLastObsValue(patient,
 						regimen.getConceptName());
 				if (obsValueDate == null) {
 					return null;

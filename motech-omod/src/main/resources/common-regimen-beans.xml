@@ -5,16 +5,15 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="nopCommand" class="org.motech.event.impl.NopCommand" />
-	<bean id="patientObsService" class="org.motech.event.impl.PatientObsServiceImpl" />
 	<bean id="messageScheduler" class="org.motech.messaging.MessageSchedulerImpl">
-		<property name="contextService">
-			<bean parent="contextService" />
+		<property name="registrarBean">
+			<bean parent="registrarBean" />
 		</property>
 	</bean>
 	<bean id="userPrefmessageScheduler" class="org.motech.messaging.MessageSchedulerImpl">
 		<property name="userPreferenceBased" value="true" />
-		<property name="contextService">
-			<bean parent="contextService" />
+		<property name="registrarBean">
+			<bean parent="registrarBean" />
 		</property>
 	</bean>
 

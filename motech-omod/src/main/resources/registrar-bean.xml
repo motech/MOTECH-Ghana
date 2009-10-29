@@ -1,0 +1,38 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="contextService" class="${modulePackage}.impl.ContextServiceImpl" />
+
+	<bean id="registrarBean" class="${corePackage}.svc.RegistrarBeanImpl">
+		<property name="contextService" ref="contextService" />
+		<property name="mobileService" ref="mobileClient" />
+		<property name="regimens">
+			<map>
+				<entry>
+					<key>
+						<value>Tetanus Information Regimen</value>
+					</key>
+					<ref bean="tetanusInfo" />
+				</entry>
+				<entry>
+					<key>
+						<value>Tetanus Immunization Regimen</value>
+					</key>
+					<ref bean="tetanusImmunization" />
+				</entry>
+				<entry>
+					<key>
+						<value>Daily Pregnancy Regimen</value>
+					</key>
+					<ref bean="dailyPregnancyRegimen" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="mobileClient" class="${corePackage}.mobile.client.MessageServiceStub" />
+
+</beans>

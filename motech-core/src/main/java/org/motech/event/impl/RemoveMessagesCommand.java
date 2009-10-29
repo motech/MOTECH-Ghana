@@ -1,18 +1,17 @@
 package org.motech.event.impl;
 
 import org.motech.event.Command;
-import org.motech.messaging.MessageScheduler;
+import org.motech.svc.RegistrarBean;
 
 public class RemoveMessagesCommand implements Command {
 
 	String messageGroup;
 	Integer messageRecipientId;
-	MessageScheduler messageScheduler;
+	RegistrarBean registrarBean;
 
 	public void execute() {
 
-		messageScheduler.removeAllUnsentMessages(messageRecipientId,
-				messageGroup);
+		registrarBean.removeAllUnsentMessages(messageRecipientId, messageGroup);
 	}
 
 	public String getMessageGroup() {
@@ -31,12 +30,12 @@ public class RemoveMessagesCommand implements Command {
 		this.messageRecipientId = messageRecipientId;
 	}
 
-	public MessageScheduler getMessageScheduler() {
-		return messageScheduler;
+	public RegistrarBean getRegistrarBean() {
+		return registrarBean;
 	}
 
-	public void setMessageScheduler(MessageScheduler messageScheduler) {
-		this.messageScheduler = messageScheduler;
+	public void setRegistrarBean(RegistrarBean registrarBean) {
+		this.registrarBean = registrarBean;
 	}
 
 }

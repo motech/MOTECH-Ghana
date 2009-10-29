@@ -216,7 +216,7 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> getRegimenEnrollment(Integer personId,
+	public List<String> getObsEnrollment(Integer personId,
 			Concept startConcept, Concept endConcept) {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<String>) session.createQuery(

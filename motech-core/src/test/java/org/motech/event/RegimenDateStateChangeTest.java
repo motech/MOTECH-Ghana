@@ -9,6 +9,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
+import org.motech.svc.RegistrarBean;
 import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -29,7 +30,7 @@ public class RegimenDateStateChangeTest extends TestCase {
 	RegimenState pregnancyState4;
 	RegimenState pregnancyState41;
 	RegimenState currentPatientState;
-	PatientObsService patientObsService;
+	RegistrarBean registrarBean;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -59,8 +60,7 @@ public class RegimenDateStateChangeTest extends TestCase {
 		pregnancyState41 = (RegimenState) ctx.getBean("pregnancyState41");
 
 		// EasyMock setup in Spring config
-		patientObsService = (PatientObsService) ctx
-				.getBean("patientObsService");
+		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
 	}
 
 	@Override
@@ -72,65 +72,65 @@ public class RegimenDateStateChangeTest extends TestCase {
 		pregnancyState3 = null;
 		pregnancyState4 = null;
 		pregnancyState41 = null;
-		patientObsService = null;
+		registrarBean = null;
 	}
 
 	public void testDetermineWeek1() {
 		expect(
-				patientObsService.getLastObsDate(patient, pregnancyRegimen
+				registrarBean.getLastObsDate(patient, pregnancyRegimen
 						.getConceptName(), pregnancyRegimen.getConceptValue()))
 				.andReturn(week1).atLeastOnce();
 
-		replay(patientObsService);
+		replay(registrarBean);
 
 		currentPatientState = pregnancyRegimen.getState(patient);
 
-		verify(patientObsService);
+		verify(registrarBean);
 
 		assertEquals(currentPatientState.getName(), pregnancyState1.getName());
 	}
 
 	public void testDetermineWeek2() {
 		expect(
-				patientObsService.getLastObsDate(patient, pregnancyRegimen
+				registrarBean.getLastObsDate(patient, pregnancyRegimen
 						.getConceptName(), pregnancyRegimen.getConceptValue()))
 				.andReturn(week2).atLeastOnce();
 
-		replay(patientObsService);
+		replay(registrarBean);
 
 		currentPatientState = pregnancyRegimen.getState(patient);
 
-		verify(patientObsService);
+		verify(registrarBean);
 
 		assertEquals(currentPatientState.getName(), pregnancyState2.getName());
 	}
 
 	public void testDetermineWeek3() {
 		expect(
-				patientObsService.getLastObsDate(patient, pregnancyRegimen
+				registrarBean.getLastObsDate(patient, pregnancyRegimen
 						.getConceptName(), pregnancyRegimen.getConceptValue()))
 				.andReturn(week3).atLeastOnce();
 
-		replay(patientObsService);
+		replay(registrarBean);
 
 		currentPatientState = pregnancyRegimen.getState(patient);
 
-		verify(patientObsService);
+		verify(registrarBean);
 
 		assertEquals(currentPatientState.getName(), pregnancyState3.getName());
 	}
 
 	public void testDetermineEndState() {
 		expect(
-				patientObsService.getLastObsDate(patient, pregnancyRegimen
+				registrarBean.getLastObsDate(patient, pregnancyRegimen
 						.getConceptName(), pregnancyRegimen.getConceptValue()))
 				.andReturn(week41).atLeastOnce();
 
-		replay(patientObsService);
+		replay(registrarBean);
 
 		currentPatientState = pregnancyRegimen.getState(patient);
 
-		verify(patientObsService);
+		verify(registrarBean);
 
 		assertEquals(currentPatientState.getName(), pregnancyState41.getName());
 	}

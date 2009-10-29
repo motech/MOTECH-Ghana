@@ -17,7 +17,7 @@
 		<property name="timeReference" value="patient_age" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="polioRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedNumImpl">
@@ -25,14 +25,14 @@
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState1" />
 					<property name="nextState" ref="polioState1" />
-					<property name="patientObsService" ref="patientObsService" />
+					<property name="registrarBean" ref="registrarBean" />
 				</bean>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedNumImpl">
 					<property name="expectedNumber" value="1" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState1" />
 					<property name="nextState" ref="polioState2" />
-					<property name="patientObsService" ref="patientObsService" />
+					<property name="registrarBean" ref="registrarBean" />
 				</bean>
 			</list>
 		</property>
@@ -45,7 +45,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="polioRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedNumImpl">
@@ -53,14 +53,14 @@
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState2" />
 					<property name="nextState" ref="polioState2" />
-					<property name="patientObsService" ref="patientObsService" />
+					<property name="registrarBean" ref="registrarBean" />
 				</bean>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedNumImpl">
 					<property name="expectedNumber" value="2" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState2" />
 					<property name="nextState" ref="polioState3" />
-					<property name="patientObsService" ref="patientObsService" />
+					<property name="registrarBean" ref="registrarBean" />
 				</bean>
 			</list>
 		</property>
@@ -73,7 +73,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="polioRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedNumImpl">
@@ -81,14 +81,14 @@
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState3" />
 					<property name="nextState" ref="polioState3" />
-					<property name="patientObsService" ref="patientObsService" />
+					<property name="registrarBean" ref="registrarBean" />
 				</bean>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedNumImpl">
 					<property name="expectedNumber" value="3" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState3" />
 					<property name="nextState" ref="polioState4" />
-					<property name="patientObsService" ref="patientObsService" />
+					<property name="registrarBean" ref="registrarBean" />
 				</bean>
 			</list>
 		</property>
@@ -101,7 +101,7 @@
 		<property name="timeReference" value="last_obs" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="polioRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedNumImpl">
@@ -109,14 +109,14 @@
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState4" />
 					<property name="nextState" ref="polioState4" />
-					<property name="patientObsService" ref="patientObsService" />
+					<property name="registrarBean" ref="registrarBean" />
 				</bean>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedNumImpl">
 					<property name="expectedNumber" value="4" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState4" />
 					<property name="nextState" ref="polioState5" />
-					<property name="patientObsService" ref="patientObsService" />
+					<property name="registrarBean" ref="registrarBean" />
 				</bean>
 			</list>
 		</property>
@@ -126,7 +126,7 @@
 		<property name="name" value="End State 5" />
 		<property name="command" ref="nopCommand" />
 		<property name="regimen" ref="polioRegimen" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionImpl">

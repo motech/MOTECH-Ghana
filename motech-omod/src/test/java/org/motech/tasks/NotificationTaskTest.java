@@ -20,7 +20,6 @@ import org.motech.messaging.MessageStatus;
 import org.motech.messaging.ScheduledMessage;
 import org.motech.openmrs.module.MotechModuleActivator;
 import org.motech.openmrs.module.MotechService;
-import org.motech.openmrs.module.impl.ContextServiceImpl;
 import org.motech.svc.RegistrarBean;
 import org.motech.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
@@ -121,7 +120,7 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 			Date scheduledMessageDate = new Date(
 					System.currentTimeMillis() + 5 * 1000);
 			MessageSchedulerImpl messageScheduler = new MessageSchedulerImpl();
-			messageScheduler.setContextService(new ContextServiceImpl());
+			messageScheduler.setRegistrarBean(regService);
 			messageScheduler.scheduleMessage(messageKey, "Test Group", patient
 					.getPersonId(), scheduledMessageDate);
 		} finally {

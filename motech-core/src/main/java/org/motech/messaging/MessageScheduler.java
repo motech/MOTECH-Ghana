@@ -7,5 +7,4 @@ public interface MessageScheduler {
 	void scheduleMessage(String messageKey, String messageGroup,
 			Integer messageRecipientId, Date messageDate);
 
-	void removeAllUnsentMessages(Integer recipientId, String messageGroup);
 }

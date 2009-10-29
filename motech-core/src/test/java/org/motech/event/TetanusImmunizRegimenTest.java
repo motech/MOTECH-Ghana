@@ -16,6 +16,7 @@ import org.motech.event.impl.RegimenStateTransitionExpectedNumImpl;
 import org.motech.event.impl.RemoveRegimenEnrollmentCommand;
 import org.motech.event.impl.ScheduleMessageCommand;
 import org.motech.messaging.MessageScheduler;
+import org.motech.svc.RegistrarBean;
 import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -37,7 +38,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 	RegimenStateImpl state7;
 
 	MessageScheduler messageScheduler;
-	PatientObsService patientObsService;
+	RegistrarBean registrarBean;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -61,49 +62,48 @@ public class TetanusImmunizRegimenTest extends TestCase {
 		state7 = (RegimenStateImpl) ctx.getBean("tetanusState3");
 
 		// EasyMock setup in Spring config
-		patientObsService = (PatientObsService) ctx
-				.getBean("patientObsService");
+		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
 
-		state1.setPatientObsService(patientObsService);
+		state1.setRegistrarBean(registrarBean);
 		for (RegimenStateTransition transition : state1.getTransitions()) {
 			if (transition instanceof RegimenStateTransitionExpectedNumImpl) {
 				((RegimenStateTransitionExpectedNumImpl) transition)
-						.setPatientObsService(patientObsService);
+						.setRegistrarBean(registrarBean);
 			}
 		}
-		state2.setPatientObsService(patientObsService);
+		state2.setRegistrarBean(registrarBean);
 		for (RegimenStateTransition transition : state2.getTransitions()) {
 			if (transition instanceof RegimenStateTransitionExpectedNumImpl) {
 				((RegimenStateTransitionExpectedNumImpl) transition)
-						.setPatientObsService(patientObsService);
+						.setRegistrarBean(registrarBean);
 			}
 		}
-		state3.setPatientObsService(patientObsService);
+		state3.setRegistrarBean(registrarBean);
 		for (RegimenStateTransition transition : state3.getTransitions()) {
 			if (transition instanceof RegimenStateTransitionExpectedNumImpl) {
 				((RegimenStateTransitionExpectedNumImpl) transition)
-						.setPatientObsService(patientObsService);
+						.setRegistrarBean(registrarBean);
 			}
 		}
-		state4.setPatientObsService(patientObsService);
+		state4.setRegistrarBean(registrarBean);
 		for (RegimenStateTransition transition : state4.getTransitions()) {
 			if (transition instanceof RegimenStateTransitionExpectedNumImpl) {
 				((RegimenStateTransitionExpectedNumImpl) transition)
-						.setPatientObsService(patientObsService);
+						.setRegistrarBean(registrarBean);
 			}
 		}
-		state5.setPatientObsService(patientObsService);
+		state5.setRegistrarBean(registrarBean);
 		for (RegimenStateTransition transition : state5.getTransitions()) {
 			if (transition instanceof RegimenStateTransitionExpectedNumImpl) {
 				((RegimenStateTransitionExpectedNumImpl) transition)
-						.setPatientObsService(patientObsService);
+						.setRegistrarBean(registrarBean);
 			}
 		}
-		state6.setPatientObsService(patientObsService);
+		state6.setRegistrarBean(registrarBean);
 		for (RegimenStateTransition transition : state6.getTransitions()) {
 			if (transition instanceof RegimenStateTransitionExpectedNumImpl) {
 				((RegimenStateTransitionExpectedNumImpl) transition)
-						.setPatientObsService(patientObsService);
+						.setRegistrarBean(registrarBean);
 			}
 		}
 
@@ -129,7 +129,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 						.setMessageScheduler(messageScheduler);
 			} else if (command instanceof RemoveRegimenEnrollmentCommand) {
 				((RemoveRegimenEnrollmentCommand) command)
-						.setPatientObsService(patientObsService);
+						.setRegistrarBean(registrarBean);
 			}
 		}
 	}
@@ -150,7 +150,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 
 		ctx = null;
 
-		patientObsService = null;
+		registrarBean = null;
 		messageScheduler = null;
 	}
 
@@ -167,18 +167,18 @@ public class TetanusImmunizRegimenTest extends TestCase {
 		String groupId = regimen.getName();
 
 		expect(
-				patientObsService.getNumberOfObs(patient, regimen
-						.getConceptName(), regimen.getConceptValue()))
-				.andReturn(numberOfTetanusObs);
+				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
+						regimen.getConceptValue())).andReturn(
+				numberOfTetanusObs);
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
-		replay(patientObsService, messageScheduler);
+		replay(registrarBean, messageScheduler);
 
 		RegimenState state = regimen.determineState(patient);
 
-		verify(patientObsService, messageScheduler);
+		verify(registrarBean, messageScheduler);
 
 		assertEquals(expectedState.getName(), state.getName());
 	}
@@ -196,18 +196,18 @@ public class TetanusImmunizRegimenTest extends TestCase {
 		String groupId = regimen.getName();
 
 		expect(
-				patientObsService.getNumberOfObs(patient, regimen
-						.getConceptName(), regimen.getConceptValue()))
-				.andReturn(numberOfTetanusObs).anyTimes();
+				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
+						regimen.getConceptValue())).andReturn(
+				numberOfTetanusObs).anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
-		replay(patientObsService, messageScheduler);
+		replay(registrarBean, messageScheduler);
 
 		RegimenState state = regimen.determineState(patient);
 
-		verify(patientObsService, messageScheduler);
+		verify(registrarBean, messageScheduler);
 
 		assertEquals(expectedState.getName(), state.getName());
 	}
@@ -225,18 +225,18 @@ public class TetanusImmunizRegimenTest extends TestCase {
 		String groupId = regimen.getName();
 
 		expect(
-				patientObsService.getNumberOfObs(patient, regimen
-						.getConceptName(), regimen.getConceptValue()))
-				.andReturn(numberOfTetanusObs).anyTimes();
+				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
+						regimen.getConceptValue())).andReturn(
+				numberOfTetanusObs).anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
-		replay(patientObsService, messageScheduler);
+		replay(registrarBean, messageScheduler);
 
 		RegimenState state = regimen.determineState(patient);
 
-		verify(patientObsService, messageScheduler);
+		verify(registrarBean, messageScheduler);
 
 		assertEquals(expectedState.getName(), state.getName());
 	}
@@ -255,22 +255,22 @@ public class TetanusImmunizRegimenTest extends TestCase {
 		String groupId = regimen.getName();
 
 		expect(
-				patientObsService.getNumberOfObs(patient, regimen
-						.getConceptName(), regimen.getConceptValue()))
-				.andReturn(numberOfTetanusObs).anyTimes();
+				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
+						regimen.getConceptValue())).andReturn(
+				numberOfTetanusObs).anyTimes();
 		expect(
-				patientObsService.getLastObsDate(patient, regimen
-						.getConceptName(), regimen.getConceptValue()))
-				.andReturn(lastObsDate).anyTimes();
+				registrarBean.getLastObsDate(patient, regimen.getConceptName(),
+						regimen.getConceptValue())).andReturn(lastObsDate)
+				.anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
-		replay(patientObsService, messageScheduler);
+		replay(registrarBean, messageScheduler);
 
 		RegimenState state = regimen.determineState(patient);
 
-		verify(patientObsService, messageScheduler);
+		verify(registrarBean, messageScheduler);
 
 		assertEquals(expectedState.getName(), state.getName());
 	}
@@ -289,22 +289,22 @@ public class TetanusImmunizRegimenTest extends TestCase {
 		String groupId = regimen.getName();
 
 		expect(
-				patientObsService.getNumberOfObs(patient, regimen
-						.getConceptName(), regimen.getConceptValue()))
-				.andReturn(numberOfTetanusObs).anyTimes();
+				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
+						regimen.getConceptValue())).andReturn(
+				numberOfTetanusObs).anyTimes();
 		expect(
-				patientObsService.getLastObsDate(patient, regimen
-						.getConceptName(), regimen.getConceptValue()))
-				.andReturn(lastObsDate).anyTimes();
+				registrarBean.getLastObsDate(patient, regimen.getConceptName(),
+						regimen.getConceptValue())).andReturn(lastObsDate)
+				.anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
-		replay(patientObsService, messageScheduler);
+		replay(registrarBean, messageScheduler);
 
 		RegimenState state = regimen.determineState(patient);
 
-		verify(patientObsService, messageScheduler);
+		verify(registrarBean, messageScheduler);
 
 		assertEquals(expectedState.getName(), state.getName());
 	}
@@ -323,22 +323,22 @@ public class TetanusImmunizRegimenTest extends TestCase {
 		String groupId = regimen.getName();
 
 		expect(
-				patientObsService.getNumberOfObs(patient, regimen
-						.getConceptName(), regimen.getConceptValue()))
-				.andReturn(numberOfTetanusObs).anyTimes();
+				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
+						regimen.getConceptValue())).andReturn(
+				numberOfTetanusObs).anyTimes();
 		expect(
-				patientObsService.getLastObsDate(patient, regimen
-						.getConceptName(), regimen.getConceptValue()))
-				.andReturn(lastObsDate).anyTimes();
+				registrarBean.getLastObsDate(patient, regimen.getConceptName(),
+						regimen.getConceptValue())).andReturn(lastObsDate)
+				.anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
-		replay(patientObsService, messageScheduler);
+		replay(registrarBean, messageScheduler);
 
 		RegimenState state = regimen.determineState(patient);
 
-		verify(patientObsService, messageScheduler);
+		verify(registrarBean, messageScheduler);
 
 		assertEquals(expectedState.getName(), state.getName());
 	}
@@ -349,19 +349,18 @@ public class TetanusImmunizRegimenTest extends TestCase {
 		Integer numberOfTetanusObs = 2;
 
 		expect(
-				patientObsService.getNumberOfObs(patient, regimen
-						.getConceptName(), regimen.getConceptValue()))
-				.andReturn(numberOfTetanusObs).anyTimes();
-		messageScheduler.removeAllUnsentMessages(patient.getPatientId(),
-				regimen.getName());
-		patientObsService.removeRegimen(patient.getPatientId(), regimen
+				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
+						regimen.getConceptValue())).andReturn(
+				numberOfTetanusObs).anyTimes();
+		registrarBean.removeAllUnsentMessages(patient.getPatientId(), regimen
 				.getName());
+		registrarBean.removeRegimen(patient.getPatientId(), regimen.getName());
 
-		replay(patientObsService, messageScheduler);
+		replay(registrarBean, messageScheduler);
 
 		RegimenState state = regimen.determineState(patient);
 
-		verify(patientObsService, messageScheduler);
+		verify(registrarBean, messageScheduler);
 
 		assertEquals(expectedState.getName(), state.getName());
 	}
@@ -374,19 +373,18 @@ public class TetanusImmunizRegimenTest extends TestCase {
 		setPatientRegistration(patient, 10);
 
 		expect(
-				patientObsService.getNumberOfObs(patient, regimen
-						.getConceptName(), regimen.getConceptValue()))
-				.andReturn(numberOfTetanusObs).anyTimes();
-		messageScheduler.removeAllUnsentMessages(patient.getPatientId(),
-				regimen.getName());
-		patientObsService.removeRegimen(patient.getPatientId(), regimen
+				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
+						regimen.getConceptValue())).andReturn(
+				numberOfTetanusObs).anyTimes();
+		registrarBean.removeAllUnsentMessages(patient.getPatientId(), regimen
 				.getName());
+		registrarBean.removeRegimen(patient.getPatientId(), regimen.getName());
 
-		replay(patientObsService, messageScheduler);
+		replay(registrarBean, messageScheduler);
 
 		RegimenState state = regimen.determineState(patient);
 
-		verify(patientObsService, messageScheduler);
+		verify(registrarBean, messageScheduler);
 
 		assertEquals(expectedState.getName(), state.getName());
 	}

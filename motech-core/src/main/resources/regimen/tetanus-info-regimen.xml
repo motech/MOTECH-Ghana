@@ -22,7 +22,7 @@
 			</bean>
 		</property>
 		<property name="regimen" ref="tetanusInfo" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -51,7 +51,7 @@
 			</bean>
 		</property>
 		<property name="regimen" ref="tetanusInfo" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -80,7 +80,7 @@
 			</bean>
 		</property>
 		<property name="regimen" ref="tetanusInfo" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -109,7 +109,7 @@
 			</bean>
 		</property>
 		<property name="regimen" ref="tetanusInfo" />
-		<property name="patientObsService" ref="patientObsService" />
+		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.RegimenStateTransitionExpectedDateImpl">
@@ -130,7 +130,7 @@
 		<property name="name" value="Tetanus Info EndState 5" />
 		<property name="command">
 			<bean class="org.motech.event.impl.RemoveRegimenEnrollmentCommand">
-				<property name="patientObsService" ref="patientObsService" />
+				<property name="registrarBean" ref="registrarBean" />
 			</bean>
 		</property>		
 		<property name="regimen" ref="tetanusInfo" />

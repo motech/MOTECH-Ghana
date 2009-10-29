@@ -16,7 +16,6 @@ package org.motech.openmrs.module;
 import java.util.Date;
 import java.util.List;
 
-import org.motech.event.Regimen;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
@@ -25,8 +24,9 @@ import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Blackout;
 import org.motech.model.Log;
 import org.motech.model.TroubledPhone;
-import org.motechproject.ws.mobile.MessageService;
-import org.openmrs.User;
+import org.motech.svc.RegistrarBean;
+import org.openmrs.Concept;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +35,8 @@ import org.springframework.transaction.annotation.Transactional;
  * module.
  */
 public interface MotechService extends OpenmrsService {
+
+	RegistrarBean getRegistrarBean();
 
 	@Transactional
 	ScheduledMessage saveScheduledMessage(ScheduledMessage scheduledMessage);
@@ -90,13 +92,12 @@ public interface MotechService extends OpenmrsService {
 	List<Log> getAllLogs();
 
 	@Transactional(readOnly = true)
-	User getUserByPhoneNumber(String phoneNumber);
+	List<Integer> getUserIdsByPersonAttribute(
+			PersonAttributeType personAttributeType, String value);
 
-	MessageService getMobileService();
-
-	Regimen getRegimen(String regimenName);
-
-	List<String> getRegimenEnrollment(Integer personId);
+	@Transactional(readOnly = true)
+	List<String> getObsEnrollment(Integer personId, Concept startConcept,
+			Concept endConcept);
 
 	@Transactional(readOnly = true)
 	Blackout getBlackoutSettings();
