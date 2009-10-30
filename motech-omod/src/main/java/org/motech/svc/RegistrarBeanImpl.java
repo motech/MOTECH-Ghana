@@ -110,7 +110,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	public void registerNurse(String name, String phoneNumber, String clinic) {
 
-		PersonService personService = contextService.getPersonService();
 		UserService userService = contextService.getUserService();
 		LocationService locationService = contextService.getLocationService();
 
@@ -133,8 +132,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		nurse.addName(personName);
 
 		// Must be created previously through API or UI to lookup
-		PersonAttributeType phoneNumberAttrType = personService
-				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
+		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
 		nurse
 				.addAttribute(new PersonAttribute(phoneNumberAttrType,
 						phoneNumber));
@@ -146,8 +144,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		// TODO: Clinic not used, no connection currently between Nurse and
 		// Clinic
 		Location clinicLocation = locationService.getLocation(clinic);
-		PersonAttributeType clinicType = personService
-				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER);
+		PersonAttributeType clinicType = getClinicAttributeType();
 		nurse.addAttribute(new PersonAttribute(clinicType, clinicLocation
 				.getLocationId().toString()));
 
@@ -161,10 +158,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			MediaType mediaType, DeliveryTime deliveryTime, String[] regimen) {
 
 		PatientService patientService = contextService.getPatientService();
-		PersonService personService = contextService.getPersonService();
-		LocationService locationService = contextService.getLocationService();
 		ObsService obsService = contextService.getObsService();
-		ConceptService conceptService = contextService.getConceptService();
 
 		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
 				MotechConstants.PASSWORD_OPENMRS);
@@ -172,16 +166,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		Patient patient = new Patient();
 
 		// Must be created previously through API or UI to lookup
-		PatientIdentifierType serialIdType = patientService
-				.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
+		PatientIdentifierType serialIdType = getGhanaPatientIdType();
 
 		User nurse = this.getUserByPhoneNumber(nursePhoneNumber);
 
-		PersonAttribute clinic = nurse
-				.getAttribute(personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER));
-		Integer clinicId = Integer.valueOf(clinic.getValue());
-		Location clinicLocation = locationService.getLocation(clinicId);
+		Location clinicLocation = getNurseClinicLocation(nurse);
 		patient.addIdentifier(new PatientIdentifier(serialId, serialIdType,
 				clinicLocation));
 
@@ -202,49 +191,38 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		patient.setGender(GenderTypeConverter.toOpenMRSString(gender));
 
 		// Must be created previously through API or UI to lookup
-		PersonAttributeType nhisAttrType = personService
-				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER);
+		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
 		patient
 				.addAttribute(new PersonAttribute(nhisAttrType, nhis.toString()));
 
 		// Must be created previously through API or UI to lookup
-		PersonAttributeType phoneNumberAttrType = personService
-				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
+		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
 		patient.addAttribute(new PersonAttribute(phoneNumberAttrType,
 				phoneNumber));
 
-		PersonAttributeType phoneTypeAttrType = personService
-				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
+		PersonAttributeType phoneTypeAttrType = getPhoneTypeAttributeType();
+
 		patient.addAttribute(new PersonAttribute(phoneTypeAttrType,
 				contactNumberType.toString()));
 
-		PersonAttributeType languageAttrType = personService
-				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
+		PersonAttributeType languageAttrType = getLanguageAttributeType();
 		patient.addAttribute(new PersonAttribute(languageAttrType, language));
 
-		PersonAttributeType mediaTypeAttrType = personService
-				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+		PersonAttributeType mediaTypeAttrType = getMediaTypeAttributeType();
 		patient.addAttribute(new PersonAttribute(mediaTypeAttrType, mediaType
 				.toString()));
 
-		PersonAttributeType deliveryAttrType = personService
-				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
+		PersonAttributeType deliveryAttrType = getDeliveryTimeAttributeType();
 		patient.addAttribute(new PersonAttribute(deliveryAttrType, deliveryTime
 				.toString()));
 
 		patient = patientService.savePatient(patient);
 
-		Concept regimenStart = conceptService
-				.getConcept(MotechConstants.CONCEPT_REGIMEN_START);
-		Location defaultClinic = locationService
-				.getLocation(MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC);
+		Concept regimenStart = getRegimenStartConcept();
+		Location defaultClinic = getDefaultGhanaClinicLocation();
 		for (String regimenName : regimen) {
-			Obs regimenStartObs = new Obs();
-			regimenStartObs.setObsDatetime(new Date());
-			regimenStartObs.setConcept(regimenStart);
-			regimenStartObs.setPerson(patient);
-			regimenStartObs.setLocation(defaultClinic);
-			regimenStartObs.setValueText(regimenName);
+			Obs regimenStartObs = createTextValueObs(new Date(), regimenStart,
+					patient, defaultClinic, regimenName, null, null);
 			obsService.saveObs(regimenStartObs, null);
 		}
 	}
@@ -254,26 +232,14 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			Integer visitNumber, Boolean onARV, Boolean prePMTCT,
 			Boolean testPMTCT, Boolean postPMTCT, Double hemoglobinAt36Weeks) {
 
-		PatientService patientService = contextService.getPatientService();
-		PersonService personService = contextService.getPersonService();
-		LocationService locationService = contextService.getLocationService();
 		EncounterService encounterService = contextService
 				.getEncounterService();
 		ObsService obsService = contextService.getObsService();
-		ConceptService conceptService = contextService.getConceptService();
 
 		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
 				MotechConstants.PASSWORD_OPENMRS);
 
-		PatientIdentifierType serialIdType = patientService
-				.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
-		List<PatientIdentifierType> idTypes = new ArrayList<PatientIdentifierType>();
-		idTypes.add(serialIdType);
-
-		// Parameters are Name, Id, Id type, match exactly boolean
-		List<Patient> patients = patientService.getPatients(null, serialId,
-				idTypes, true);
-		Patient patient = patients.get(0);
+		Patient patient = getPatientBySerial(serialId);
 
 		Date visitDate = date;
 		if (visitDate == null) {
@@ -287,165 +253,84 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		User nurse = this.getUserByPhoneNumber(nursePhoneNumber);
 		encounter.setProvider(nurse);
 
-		PersonAttribute clinic = nurse
-				.getAttribute(personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER));
-		Integer clinicId = Integer.valueOf(clinic.getValue());
-		Location clinicLocation = locationService.getLocation(clinicId);
+		Location clinicLocation = getNurseClinicLocation(nurse);
 
 		// Encounter types must be created previously
-		EncounterType encounterType = encounterService
-				.getEncounterType(MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT);
+		EncounterType encounterType = getMaternalVisitEncounterType();
 		encounter.setEncounterType(encounterType);
 		encounter.setLocation(clinicLocation);
 		encounter = encounterService.saveEncounter(encounter);
 
 		if (tetanus) {
-			Obs tetanusObs = new Obs();
-			tetanusObs.setObsDatetime(visitDate);
-			tetanusObs.setConcept(conceptService
-					.getConcept(MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED));
-			tetanusObs.setPerson(patient);
-			tetanusObs.setLocation(clinicLocation);
-			tetanusObs.setEncounter(encounter);
-			tetanusObs.setValueCoded(conceptService
-					.getConcept(MotechConstants.CONCEPT_TETANUS_BOOSTER));
+			Obs tetanusObs = createConceptValueObs(visitDate,
+					getImmunizationsOrderedConcept(), patient, clinicLocation,
+					getTetanusConcept(), encounter, null);
 			obsService.saveObs(tetanusObs, null);
 		}
 
 		// TODO: Add IPT to proper Concept as an Answer, not an immunization
 		if (ipt) {
-			Obs iptObs = new Obs();
-			iptObs.setObsDatetime(visitDate);
-			iptObs.setConcept(conceptService
-					.getConcept(MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED));
-			iptObs.setPerson(patient);
-			iptObs.setLocation(clinicLocation);
-			iptObs.setEncounter(encounter);
-			iptObs
-					.setValueCoded(conceptService
-							.getConcept(MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT));
+			Obs iptObs = createConceptValueObs(visitDate,
+					getImmunizationsOrderedConcept(), patient, clinicLocation,
+					getIPTConcept(), encounter, null);
 			obsService.saveObs(iptObs, null);
 		}
 
 		if (itn) {
-			Obs itnObs = new Obs();
-			itnObs.setObsDatetime(visitDate);
-			itnObs
-					.setConcept(conceptService
-							.getConcept(MotechConstants.CONCEPT_INSECTICIDE_TREATED_NET_USAGE));
-			itnObs.setPerson(patient);
-			itnObs.setLocation(clinicLocation);
-			itnObs.setEncounter(encounter);
-			itnObs.setValueNumeric(new Double(1)); // Boolean currently stored
-			// as Numeric 1 or 0
+			Obs itnObs = createBooleanValueObs(visitDate, getITNConcept(),
+					patient, clinicLocation, itn, encounter, null);
 			obsService.saveObs(itnObs, null);
 		}
 
-		Obs visitNumberObs = new Obs();
-		visitNumberObs.setObsDatetime(visitDate);
-		visitNumberObs.setConcept(conceptService
-				.getConcept(MotechConstants.CONCEPT_PREGNANCY_VISIT_NUMBER));
-		visitNumberObs.setPerson(patient);
-		visitNumberObs.setLocation(clinicLocation);
-		visitNumberObs.setEncounter(encounter);
-		visitNumberObs.setValueNumeric(new Double(visitNumber));
+		Obs visitNumberObs = createNumericValueObs(visitDate,
+				getPregnancyVisitNumberConcept(), patient, clinicLocation,
+				new Double(visitNumber), encounter, null);
 		obsService.saveObs(visitNumberObs, null);
 
 		if (onARV) {
-			Obs arvObs = new Obs();
-			arvObs.setObsDatetime(visitDate);
-			arvObs
-					.setConcept(conceptService
-							.getConcept(MotechConstants.CONCEPT_ANTIRETROVIRAL_USE_DURING_PREGNANCY));
-			arvObs.setPerson(patient);
-			arvObs.setLocation(clinicLocation);
-			arvObs.setEncounter(encounter);
-			arvObs
-					.setValueCoded(conceptService
-							.getConcept(MotechConstants.CONCEPT_ON_ANTIRETROVIRAL_THERAPY));
+			Obs arvObs = createConceptValueObs(visitDate, getARVConcept(),
+					patient, clinicLocation, getOnARVConcept(), encounter, null);
 			obsService.saveObs(arvObs, null);
 		}
 
 		if (prePMTCT) {
-			Obs prePmtctObs = new Obs();
-			prePmtctObs.setObsDatetime(visitDate);
-			prePmtctObs
-					.setConcept(conceptService
-							.getConcept(MotechConstants.CONCEPT_PRE_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION));
-			prePmtctObs.setPerson(patient);
-			prePmtctObs.setLocation(clinicLocation);
-			prePmtctObs.setEncounter(encounter);
-			prePmtctObs.setValueNumeric(new Double(1)); // Boolean currently
-			// stored as Numeric 1
-			// or 0
+			Obs prePmtctObs = createBooleanValueObs(visitDate,
+					getPrePMTCTConcept(), patient, clinicLocation, prePMTCT,
+					encounter, null);
 			obsService.saveObs(prePmtctObs, null);
 		}
 
 		if (testPMTCT) {
-			Obs testPmtctObs = new Obs();
-			testPmtctObs.setObsDatetime(visitDate);
-			testPmtctObs
-					.setConcept(conceptService
-							.getConcept(MotechConstants.CONCEPT_TEST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION));
-			testPmtctObs.setPerson(patient);
-			testPmtctObs.setLocation(clinicLocation);
-			testPmtctObs.setEncounter(encounter);
-			testPmtctObs.setValueNumeric(new Double(1)); // Boolean currently
-			// stored as Numeric
-			// 1 or 0
+			Obs testPmtctObs = createBooleanValueObs(visitDate,
+					getTestPMTCTConcept(), patient, clinicLocation, testPMTCT,
+					encounter, null);
 			obsService.saveObs(testPmtctObs, null);
 		}
 
 		if (postPMTCT) {
-			Obs postPmtctObs = new Obs();
-			postPmtctObs.setObsDatetime(visitDate);
-			postPmtctObs
-					.setConcept(conceptService
-							.getConcept(MotechConstants.CONCEPT_POST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION));
-			postPmtctObs.setPerson(patient);
-			postPmtctObs.setLocation(clinicLocation);
-			postPmtctObs.setEncounter(encounter);
-			postPmtctObs.setValueNumeric(new Double(1)); // Boolean currently
-			// stored as Numeric
-			// 1 or 0
+			Obs postPmtctObs = createBooleanValueObs(visitDate,
+					getPostPMTCTConcept(), patient, clinicLocation, postPMTCT,
+					encounter, null);
 			obsService.saveObs(postPmtctObs, null);
 		}
 
-		Obs hemoglobinObs = new Obs();
-		hemoglobinObs.setObsDatetime(visitDate);
-		hemoglobinObs.setConcept(conceptService
-				.getConcept(MotechConstants.CONCEPT_HEMOGLOBIN_AT_36_WEEKS));
-		hemoglobinObs.setPerson(patient);
-		hemoglobinObs.setLocation(clinicLocation);
-		hemoglobinObs.setEncounter(encounter);
-		hemoglobinObs.setValueNumeric(hemoglobinAt36Weeks);
+		Obs hemoglobinObs = createNumericValueObs(visitDate,
+				getHemoglobin36WeeksConcept(), patient, clinicLocation,
+				hemoglobinAt36Weeks, encounter, null);
 		obsService.saveObs(hemoglobinObs, null);
 	}
 
 	public void registerPregnancy(String nursePhoneNumber, Date date,
 			String serialId, Date dueDate, Integer parity, Double hemoglobin) {
 
-		PatientService patientService = contextService.getPatientService();
-		PersonService personService = contextService.getPersonService();
-		LocationService locationService = contextService.getLocationService();
 		EncounterService encounterService = contextService
 				.getEncounterService();
 		ObsService obsService = contextService.getObsService();
-		ConceptService conceptService = contextService.getConceptService();
 
 		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
 				MotechConstants.PASSWORD_OPENMRS);
 
-		PatientIdentifierType serialIdType = patientService
-				.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
-		List<PatientIdentifierType> idTypes = new ArrayList<PatientIdentifierType>();
-		idTypes.add(serialIdType);
-
-		// Parameters are Name, Id, Id type, match exactly boolean
-		List<Patient> patients = patientService.getPatients(null, serialId,
-				idTypes, true);
-		Patient patient = patients.get(0);
+		Patient patient = getPatientBySerial(serialId);
 
 		Date visitDate = date;
 		if (visitDate == null) {
@@ -459,59 +344,30 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		User nurse = this.getUserByPhoneNumber(nursePhoneNumber);
 		encounter.setProvider(nurse);
 
-		PersonAttribute clinic = nurse
-				.getAttribute(personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER));
-		Integer clinicId = Integer.valueOf(clinic.getValue());
-		Location clinicLocation = locationService.getLocation(clinicId);
+		Location clinicLocation = getNurseClinicLocation(nurse);
 
 		// Encounter types must be created previously
-		EncounterType encounterType = encounterService
-				.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT);
+		EncounterType encounterType = getPregnancyVisitEncounterType();
 		encounter.setEncounterType(encounterType);
 		encounter.setLocation(clinicLocation);
 		encounter = encounterService.saveEncounter(encounter);
 
-		Obs pregSatusObs = new Obs();
-		pregSatusObs.setObsDatetime(visitDate);
-		pregSatusObs.setConcept(conceptService
-				.getConcept(MotechConstants.CONCEPT_PREGNANCY_STATUS));
-		pregSatusObs.setPerson(patient);
-		pregSatusObs.setLocation(clinicLocation);
-		pregSatusObs.setEncounter(encounter);
-		pregSatusObs.setValueNumeric(new Double(1)); // Boolean currently stored
-		// as Numeric 1 or 0
+		Obs pregSatusObs = createBooleanValueObs(visitDate,
+				getPregnancyStatusConcept(), patient, clinicLocation,
+				Boolean.TRUE, encounter, null);
 		obsService.saveObs(pregSatusObs, null);
 
-		Obs dueDateObs = new Obs();
-		dueDateObs.setObsDatetime(visitDate);
-		dueDateObs
-				.setConcept(conceptService
-						.getConcept(MotechConstants.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT));
-		dueDateObs.setPerson(patient);
-		dueDateObs.setLocation(clinicLocation);
-		dueDateObs.setEncounter(encounter);
-		dueDateObs.setValueDatetime(dueDate);
+		Obs dueDateObs = createDateValueObs(visitDate, getDueDateConcept(),
+				patient, clinicLocation, dueDate, encounter, null);
 		obsService.saveObs(dueDateObs, null);
 
-		Obs parityObs = new Obs();
-		parityObs.setObsDatetime(visitDate);
-		parityObs.setConcept(conceptService
-				.getConcept(MotechConstants.CONCEPT_GRAVIDA));
-		parityObs.setPerson(patient);
-		parityObs.setLocation(clinicLocation);
-		parityObs.setEncounter(encounter);
-		parityObs.setValueNumeric(new Double(parity));
+		Obs parityObs = createNumericValueObs(visitDate, getParityConcept(),
+				patient, clinicLocation, new Double(parity), encounter, null);
 		obsService.saveObs(parityObs, null);
 
-		Obs hemoglobinObs = new Obs();
-		hemoglobinObs.setObsDatetime(visitDate);
-		hemoglobinObs.setConcept(conceptService
-				.getConcept(MotechConstants.CONCEPT_HEMOGLOBIN));
-		hemoglobinObs.setPerson(patient);
-		hemoglobinObs.setLocation(clinicLocation);
-		hemoglobinObs.setEncounter(encounter);
-		hemoglobinObs.setValueNumeric(hemoglobin);
+		Obs hemoglobinObs = createNumericValueObs(visitDate,
+				getHemoglobinConcept(), patient, clinicLocation, hemoglobin,
+				encounter, null);
 		obsService.saveObs(hemoglobinObs, null);
 	}
 
@@ -551,11 +407,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		Integer recipientId = message.getSchedule().getRecipientId();
 		Person messageRecipient = personService.getPerson(recipientId);
-		PersonAttributeType phoneNumberAttrType = personService
-				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
-		PersonAttribute phoneAttribute = messageRecipient
-				.getAttribute(phoneNumberAttrType);
-		String phoneNumber = phoneAttribute.getValue();
+		String phoneNumber = getPersonPhoneNumber(messageRecipient);
 		TroubledPhone troubledPhone = motechService
 				.getTroubledPhone(phoneNumber);
 
@@ -581,29 +433,28 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	/* MotechService methods start */
 	public List<String> getRegimenEnrollment(Integer personId) {
-		ConceptService conceptService = contextService.getConceptService();
 		MotechService motechService = contextService.getMotechService();
-		Concept startConcept = conceptService
-				.getConcept(MotechConstants.CONCEPT_REGIMEN_START);
-		Concept endConcept = conceptService
-				.getConcept(MotechConstants.CONCEPT_REGIMEN_END);
+		Concept startConcept = getRegimenStartConcept();
+		Concept endConcept = getRegimenEndConcept();
 
 		return motechService.getObsEnrollment(personId, startConcept,
 				endConcept);
 	}
 
 	public User getUserByPhoneNumber(String phoneNumber) {
-		PersonService personService = contextService.getPersonService();
 		MotechService motechService = contextService.getMotechService();
 		UserService userService = contextService.getUserService();
 
-		PersonAttributeType phoneAttributeType = personService
-				.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
-		// If more than one user matches phone number, first user in list is
-		// returned
-		Integer userId = motechService.getUserIdsByPersonAttribute(
-				phoneAttributeType, phoneNumber).get(0);
-		return userService.getUser(userId);
+		PersonAttributeType phoneAttributeType = getPhoneNumberAttributeType();
+		List<Integer> matchingUsers = motechService
+				.getUserIdsByPersonAttribute(phoneAttributeType, phoneNumber);
+		if (matchingUsers.size() > 0) {
+			// If more than one user matches phone number, first user in list is
+			// returned
+			Integer userId = matchingUsers.get(0);
+			return userService.getUser(userId);
+		}
+		return null;
 	}
 
 	/* MotechService methods end */
@@ -622,9 +473,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public List<Patient> getAllPatients() {
 		PatientService patientService = contextService.getPatientService();
 		List<PatientIdentifierType> ghanaPatientIdType = new ArrayList<PatientIdentifierType>();
-		ghanaPatientIdType
-				.add(patientService
-						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID));
+		ghanaPatientIdType.add(getGhanaPatientIdType());
 		return patientService
 				.getPatients(null, null, ghanaPatientIdType, false);
 	}
@@ -633,9 +482,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		EncounterService encounterService = contextService
 				.getEncounterService();
 		List<EncounterType> pregnancyType = new ArrayList<EncounterType>();
-		pregnancyType
-				.add(encounterService
-						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT));
+		pregnancyType.add(getPregnancyVisitEncounterType());
 		return encounterService.getEncounters(null, null, null, null, null,
 				pregnancyType, null, false);
 	}
@@ -644,9 +491,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		EncounterService encounterService = contextService
 				.getEncounterService();
 		List<EncounterType> maternalVisitType = new ArrayList<EncounterType>();
-		maternalVisitType
-				.add(encounterService
-						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT));
+		maternalVisitType.add(getMaternalVisitEncounterType());
 		return encounterService.getEncounters(null, null, null, null, null,
 				maternalVisitType, null, false);
 	}
@@ -664,24 +509,21 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	/* Controller methods end */
 
 	/* PatientObsService methods start */
-	private List<Obs> getMatchingObs(Patient patient, String conceptName,
-			String conceptValue) {
+	private List<Obs> getMatchingObs(Patient patient, Concept question,
+			Concept answer) {
 
-		ConceptService conceptService = contextService.getConceptService();
 		ObsService obsService = contextService.getObsService();
 
 		List<Concept> questions = null;
-		if (conceptName != null) {
-			Concept concept = conceptService.getConcept(conceptName);
+		if (question != null) {
 			questions = new ArrayList<Concept>();
-			questions.add(concept);
+			questions.add(question);
 		}
 
 		List<Concept> answers = null;
-		if (conceptValue != null) {
-			Concept conceptAnswer = conceptService.getConcept(conceptValue);
+		if (answer != null) {
 			answers = new ArrayList<Concept>();
-			answers.add(conceptAnswer);
+			answers.add(answer);
 		}
 
 		List<Person> whom = new ArrayList<Person>();
@@ -698,18 +540,36 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public int getNumberOfObs(Patient patient, String conceptName,
 			String conceptValue) {
 
-		List<Obs> obsList = getMatchingObs(patient, conceptName, conceptValue);
-
-		return obsList.size();
+		ConceptService conceptService = contextService.getConceptService();
+		return getNumberOfObs(patient, conceptService.getConcept(conceptName),
+				conceptService.getConcept(conceptValue));
 	}
 
 	public Date getLastObsDate(Patient patient, String conceptName,
 			String conceptValue) {
 
+		ConceptService conceptService = contextService.getConceptService();
+		return getLastObsDate(patient, conceptService.getConcept(conceptName),
+				conceptService.getConcept(conceptValue));
+	}
+
+	public Date getLastObsValue(Patient patient, String conceptName) {
+		ConceptService conceptService = contextService.getConceptService();
+		return getLastObsValue(patient, conceptService.getConcept(conceptName));
+	}
+
+	public int getNumberOfObs(Patient patient, Concept concept, Concept value) {
+
+		List<Obs> obsList = getMatchingObs(patient, concept, value);
+		return obsList.size();
+	}
+
+	public Date getLastObsDate(Patient patient, Concept concept, Concept value) {
+
 		Date latestObsDate = null;
 
 		// List default sorted by Obs datetime
-		List<Obs> obsList = getMatchingObs(patient, conceptName, conceptValue);
+		List<Obs> obsList = getMatchingObs(patient, concept, value);
 
 		if (obsList.size() > 0) {
 			latestObsDate = obsList.get(0).getObsDatetime();
@@ -717,10 +577,10 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return latestObsDate;
 	}
 
-	public Date getLastObsValue(Patient patient, String conceptName) {
+	public Date getLastObsValue(Patient patient, Concept concept) {
 		Date lastestObsValue = null;
 
-		List<Obs> obsList = getMatchingObs(patient, conceptName, null);
+		List<Obs> obsList = getMatchingObs(patient, concept, null);
 		if (obsList.size() > 0) {
 			lastestObsValue = obsList.get(0).getValueDatetime();
 		}
@@ -728,37 +588,25 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	}
 
 	public void removeRegimen(Integer personId, String regimenName) {
-		ConceptService conceptService = contextService.getConceptService();
-		LocationService locationService = contextService.getLocationService();
 		PersonService personService = contextService.getPersonService();
 		ObsService obsService = contextService.getObsService();
 		UserService userService = contextService.getUserService();
 
-		Concept regimenEnd = conceptService
-				.getConcept(MotechConstants.CONCEPT_REGIMEN_END);
-		Location defaultClinic = locationService
-				.getLocation(MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC);
+		Concept regimenEnd = getRegimenEndConcept();
+		Location defaultClinic = getDefaultGhanaClinicLocation();
 		Person person = personService.getPerson(personId);
 		User creator = userService.getUser(1);
 
-		Obs regimenEndObs = new Obs();
-		regimenEndObs.setObsDatetime(new Date());
-		regimenEndObs.setConcept(regimenEnd);
-		regimenEndObs.setPerson(person);
-		regimenEndObs.setLocation(defaultClinic);
-		regimenEndObs.setCreator(creator);
-		regimenEndObs.setValueText(regimenName);
+		Obs regimenEndObs = createTextValueObs(new Date(), regimenEnd, person,
+				defaultClinic, regimenName, null, creator);
 		obsService.saveObs(regimenEndObs, null);
 	}
 
 	/* PatientObsService methods end */
 
-	/* MessageDefinition method */
+	/* MessageDefinition methods start */
 	public NameValuePair[] getNameValueContent(
 			MessageDefinition messageDefinition, Integer messageRecipientId) {
-
-		PersonService personService = contextService.getPersonService();
-		PatientService patientService = contextService.getPatientService();
 
 		List<NameValuePair> nameValueList = new ArrayList<NameValuePair>();
 		for (MessageAttribute attribute : messageDefinition
@@ -766,18 +614,29 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			NameValuePair pair = new NameValuePair();
 			pair.setName(attribute.getName());
 			if (attribute.getName().equals("PatientFirstName")) {
-				Person person = personService.getPerson(messageRecipientId);
-				pair.setValue(person.getGivenName());
+				pair.setValue(getPatientFirstName(messageRecipientId));
 			} else if (attribute.getName().equals("DueDate")) {
-				Patient patient = patientService.getPatient(messageRecipientId);
-				Date dueDate = this.getLastObsValue(patient,
-						MotechConstants.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT);
-				pair.setValue(dueDate.toString());
+				pair.setValue(getPatientDueDate(messageRecipientId));
 			}
 			nameValueList.add(pair);
 		}
 		return nameValueList.toArray(new NameValuePair[nameValueList.size()]);
 	}
+
+	public String getPatientFirstName(Integer patientId) {
+		PersonService personService = contextService.getPersonService();
+		Person person = personService.getPerson(patientId);
+		return person.getGivenName();
+	}
+
+	public String getPatientDueDate(Integer patientId) {
+		PatientService patientService = contextService.getPatientService();
+		Patient patient = patientService.getPatient(patientId);
+		Date dueDate = this.getLastObsValue(patient, getDueDateConcept());
+		return dueDate.toString();
+	}
+
+	/* MessageDefinition methods end */
 
 	/* MessageSchedulerImpl methods start */
 	public void scheduleMessage(String messageKey, String messageGroup,
@@ -865,36 +724,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			Date messageDate) {
 		Person recipient = contextService.getPersonService().getPerson(
 				recipientId);
-		PersonAttributeType deliveryTimeType = contextService
-				.getPersonService().getPersonAttributeTypeByName(
-						MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
-		PersonAttribute deliveryTimeAttr = recipient
-				.getAttribute(deliveryTimeType);
-		String deliveryTimeString = deliveryTimeAttr.getValue();
-		DeliveryTime deliveryTime = DeliveryTime.ANYTIME;
-		if (deliveryTimeString != null) {
-			deliveryTime = DeliveryTime.valueOf(deliveryTimeString);
-		}
+		DeliveryTime deliveryTime = getPersonDeliveryTime(recipient);
 
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(messageDate);
-		switch (deliveryTime) {
-		case MORNING:
-			calendar.set(Calendar.HOUR_OF_DAY, 9);
-			break;
-		case AFTERNOON:
-			calendar.set(Calendar.HOUR_OF_DAY, 13);
-			break;
-		case EVENING:
-			calendar.set(Calendar.HOUR_OF_DAY, 18);
-			break;
-		default:
-			calendar.set(Calendar.HOUR_OF_DAY, 9);
-			break;
-		}
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		return calendar.getTime();
+		return determineMessageStartDate(deliveryTime, messageDate);
 	}
 
 	private void createScheduledMessage(Integer recipientId,
@@ -1351,8 +1183,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		ConceptService conceptService = contextService.getConceptService();
 		PatientService patientService = contextService.getPatientService();
 
-		Concept regimenStart = conceptService
-				.getConcept(MotechConstants.CONCEPT_REGIMEN_START);
+		Concept regimenStart = getRegimenStartConcept();
 		Integer obsPersonId = obs.getPerson().getPersonId();
 		Patient patient = patientService.getPatient(obsPersonId);
 
@@ -1415,15 +1246,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			contextService
 					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
 
-			PatientService patientService = contextService.getPatientService();
-
 			// Get all Patients with the Ghana Clinic Id Type
-			PatientIdentifierType serialIdType = patientService
-					.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
-			List<PatientIdentifierType> idTypes = new ArrayList<PatientIdentifierType>();
-			idTypes.add(serialIdType);
-			List<Patient> patients = patientService.getPatients(null, null,
-					idTypes, true);
+			List<Patient> patients = getAllPatients();
 
 			// Update Regimen state for enrolled Regimen of all matching
 			// patients
@@ -1462,7 +1286,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
-	/* NotificationTask method */
+	/* NotificationTask methods start */
 	public void sendMessages(Date startDate, Date endDate, boolean sendImmediate) {
 		try {
 			contextService.openSession();
@@ -1480,11 +1304,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			contextService.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_OBS);
 
 			MotechService motechService = contextService.getMotechService();
-			PersonService personService = contextService.getPersonService();
-			PatientService patientService = contextService.getPatientService();
-			UserService userService = contextService.getUserService();
-			AdministrationService administrationService = contextService
-					.getAdministrationService();
 
 			List<Message> shouldAttemptMessages = motechService.getMessages(
 					startDate, endDate, MessageStatus.SHOULD_ATTEMPT);
@@ -1495,195 +1314,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 								+ shouldAttemptMessages.size());
 			}
 
-			if (shouldAttemptMessages.size() > 0) {
-				Date notificationDate = new Date();
-				PersonAttributeType phoneNumberType = personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
-				PersonAttributeType phoneType = personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
-				PersonAttributeType languageType = personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
-				PersonAttributeType mediaAttrType = personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
-
-				for (Message shouldAttemptMessage : shouldAttemptMessages) {
-
-					org.motech.model.Log motechLog = new org.motech.model.Log();
-					motechLog.setDate(notificationDate);
-
-					String messageId = shouldAttemptMessage.getPublicId();
-					Long notificationType = shouldAttemptMessage.getSchedule()
-							.getMessage().getPublicId();
-					Integer recipientId = shouldAttemptMessage.getSchedule()
-							.getRecipientId();
-					Patient patient = patientService.getPatient(recipientId);
-					User nurse = userService.getUser(recipientId);
-
-					if (patient != null) {
-						String patientPhone = patient.getAttribute(
-								phoneNumberType).getValue();
-						String phoneTypeString = patient
-								.getAttribute(phoneType).getValue();
-						String languageCode = patient
-								.getAttribute(languageType).getValue();
-						String mediaTypeString = patient.getAttribute(
-								mediaAttrType).getValue();
-						ContactNumberType patientNumberType = ContactNumberType
-								.valueOf(phoneTypeString);
-
-						NameValuePair[] personalInfo = this
-								.getNameValueContent(shouldAttemptMessage
-										.getSchedule().getMessage(),
-										recipientId);
-						MediaType mediaType = MediaType
-								.valueOf(mediaTypeString);
-						Date messageStartDate = null;
-						Date messageEndDate = null;
-
-						if (!sendImmediate) {
-
-							messageStartDate = shouldAttemptMessage
-									.getAttemptDate();
-
-							Person recipient = personService
-									.getPerson(recipientId);
-							PersonAttributeType deliveryTimeType = personService
-									.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
-							PersonAttribute deliveryTimeAttr = recipient
-									.getAttribute(deliveryTimeType);
-							String deliveryTimeString = deliveryTimeAttr
-									.getValue();
-							DeliveryTime deliveryTime = DeliveryTime.ANYTIME;
-							if (deliveryTimeString != null) {
-								deliveryTime = DeliveryTime
-										.valueOf(deliveryTimeString);
-							}
-
-							Calendar calendar = Calendar.getInstance();
-							calendar.setTime(messageStartDate);
-							switch (deliveryTime) {
-							case MORNING:
-								calendar.set(Calendar.HOUR_OF_DAY, 12);
-								break;
-							case AFTERNOON:
-								calendar.set(Calendar.HOUR_OF_DAY, 17);
-								break;
-							case EVENING:
-								calendar.set(Calendar.HOUR_OF_DAY, 21);
-								break;
-							default:
-								calendar.set(Calendar.HOUR_OF_DAY, 21);
-								break;
-							}
-							calendar.set(Calendar.MINUTE, 0);
-							calendar.set(Calendar.SECOND, 0);
-							messageEndDate = calendar.getTime();
-						}
-
-						// Cancel message if patient phone is considered
-						// troubled
-						TroubledPhone troubledPhone = motechService
-								.getTroubledPhone(patientPhone);
-						Integer maxFailures = Integer
-								.parseInt(administrationService
-										.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_TROUBLED_PHONE));
-						if (troubledPhone != null
-								&& troubledPhone.getSendFailures() >= maxFailures) {
-							motechLog
-									.setMessage("Attempt to send to Troubled Phone, Patient Phone: "
-											+ patientPhone
-											+ ", Message cancelled: "
-											+ notificationType);
-							motechLog.setType(LogType.FAILURE);
-
-							shouldAttemptMessage
-									.setAttemptStatus(MessageStatus.CANCELLED);
-
-						} else {
-							motechLog
-									.setMessage("Scheduled Message Notification, Patient Phone: "
-											+ patientPhone
-											+ ": "
-											+ notificationType);
-
-							try {
-								mobileService.sendPatientMessage(messageId,
-										personalInfo, patientPhone,
-										patientNumberType, languageCode,
-										mediaType, notificationType,
-										messageStartDate, messageEndDate);
-								shouldAttemptMessage
-										.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
-								motechLog.setType(LogType.SUCCESS);
-							} catch (Exception e) {
-								log.error("Mobile patient message failure", e);
-								shouldAttemptMessage
-										.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
-								motechLog.setType(LogType.FAILURE);
-							}
-						}
-
-					} else if (nurse != null) {
-						String nursePhone = nurse.getAttribute(phoneNumberType)
-								.getValue();
-
-						NameValuePair[] personalInfo = this
-								.getNameValueContent(shouldAttemptMessage
-										.getSchedule().getMessage(),
-										recipientId);
-						org.motechproject.ws.Patient[] patients = new org.motechproject.ws.Patient[0];
-						String langCode = null;
-						MediaType mediaType = null;
-						Date messageStartDate = null;
-						Date messageEndDate = null;
-
-						// Cancel message if nurse phone is considered troubled
-						TroubledPhone troubledPhone = motechService
-								.getTroubledPhone(nursePhone);
-						Integer maxFailures = Integer
-								.parseInt(administrationService
-										.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_TROUBLED_PHONE));
-						if (troubledPhone != null
-								&& troubledPhone.getSendFailures() >= maxFailures) {
-							motechLog
-									.setMessage("Attempt to send to Troubled Phone, Nurse Phone: "
-											+ nursePhone
-											+ ", Message cancelled: "
-											+ notificationType);
-							motechLog.setType(LogType.FAILURE);
-
-							shouldAttemptMessage
-									.setAttemptStatus(MessageStatus.CANCELLED);
-
-						} else {
-							motechLog
-									.setMessage("Scheduled Message Notification, Nurse Phone: "
-											+ nursePhone
-											+ ": "
-											+ notificationType);
-
-							try {
-								mobileService.sendCHPSMessage(messageId,
-										personalInfo, nursePhone, patients,
-										langCode, mediaType, notificationType,
-										messageStartDate, messageEndDate);
-
-								shouldAttemptMessage
-										.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
-								motechLog.setType(LogType.SUCCESS);
-							} catch (Exception e) {
-								log.error("Mobile nurse message failure", e);
-								shouldAttemptMessage
-										.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
-								motechLog.setType(LogType.FAILURE);
-							}
-						}
-
-					}
-					motechService.saveLog(motechLog);
-
-					motechService.saveMessage(shouldAttemptMessage);
-				}
+			for (Message shouldAttemptMessage : shouldAttemptMessages) {
+				sendMessage(shouldAttemptMessage, sendImmediate);
 			}
 		} catch (Exception e) {
 			log.error(e);
@@ -1705,4 +1337,476 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	public void sendMessage(Message message, boolean sendImmediate) {
+		MotechService motechService = contextService.getMotechService();
+		PersonService personService = contextService.getPersonService();
+		PatientService patientService = contextService.getPatientService();
+		UserService userService = contextService.getUserService();
+
+		org.motech.model.Log motechLog = new org.motech.model.Log();
+		motechLog.setDate(new Date());
+
+		Long notificationType = message.getSchedule().getMessage()
+				.getPublicId();
+		Integer recipientId = message.getSchedule().getRecipientId();
+		Person person = personService.getPerson(recipientId);
+
+		String phoneNumber = getPersonPhoneNumber(person);
+
+		// Cancel message if phone number is considered troubled
+		if (isPhoneTroubled(phoneNumber)) {
+			motechLog.setMessage("Attempt to send to Troubled Phone, Phone: "
+					+ phoneNumber + ", Notification cancelled: "
+					+ notificationType);
+			motechLog.setType(LogType.FAILURE);
+
+			message.setAttemptStatus(MessageStatus.CANCELLED);
+
+		} else {
+			motechLog.setMessage("Scheduled Message Notification, Phone: "
+					+ phoneNumber + ", Notification: " + notificationType);
+
+			String messageId = message.getPublicId();
+			String languageCode = getPersonLanguageCode(person);
+			MediaType mediaType = getPersonMediaType(person);
+			NameValuePair[] personalInfo = this.getNameValueContent(message
+					.getSchedule().getMessage(), recipientId);
+
+			Date messageStartDate = null;
+			Date messageEndDate = null;
+
+			if (!sendImmediate) {
+				messageStartDate = message.getAttemptDate();
+
+				DeliveryTime deliveryTime = getPersonDeliveryTime(person);
+				messageEndDate = determineMessageEndDate(deliveryTime,
+						messageStartDate);
+			}
+
+			Patient patient = patientService.getPatient(recipientId);
+			User nurse = userService.getUser(recipientId);
+
+			boolean sendMessageSuccess = false;
+			if (patient != null) {
+				ContactNumberType contactNumberType = getPersonPhoneType(person);
+
+				sendMessageSuccess = sendPatientMessage(messageId,
+						personalInfo, phoneNumber, languageCode, mediaType,
+						notificationType, messageStartDate, messageEndDate,
+						contactNumberType);
+			} else if (nurse != null) {
+				org.motechproject.ws.Patient[] patients = new org.motechproject.ws.Patient[0];
+
+				sendMessageSuccess = sendNurseMessage(messageId, personalInfo,
+						phoneNumber, languageCode, mediaType, notificationType,
+						messageStartDate, messageEndDate, patients);
+			}
+			if (sendMessageSuccess) {
+				message.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
+				motechLog.setType(LogType.SUCCESS);
+			} else {
+				message.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
+				motechLog.setType(LogType.FAILURE);
+			}
+		}
+		motechService.saveLog(motechLog);
+
+		motechService.saveMessage(message);
+	}
+
+	public boolean sendPatientMessage(String messageId,
+			NameValuePair[] personalInfo, String phoneNumber,
+			String languageCode, MediaType mediaType, Long notificationType,
+			Date messageStartDate, Date messageEndDate,
+			ContactNumberType contactType) {
+
+		try {
+			org.motechproject.ws.MessageStatus messageStatus = mobileService
+					.sendPatientMessage(messageId, personalInfo, phoneNumber,
+							contactType, languageCode, mediaType,
+							notificationType, messageStartDate, messageEndDate);
+
+			return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
+		} catch (Exception e) {
+			log.error("Mobile WS patient message failure", e);
+			return false;
+		}
+	}
+
+	public boolean sendNurseMessage(String messageId,
+			NameValuePair[] personalInfo, String phoneNumber,
+			String languageCode, MediaType mediaType, Long notificationType,
+			Date messageStartDate, Date messageEndDate,
+			org.motechproject.ws.Patient[] patients) {
+
+		try {
+			org.motechproject.ws.MessageStatus messageStatus = mobileService
+					.sendCHPSMessage(messageId, personalInfo, phoneNumber,
+							patients, languageCode, mediaType,
+							notificationType, messageStartDate, messageEndDate);
+
+			return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
+		} catch (Exception e) {
+			log.error("Mobile WS nurse message failure", e);
+			return false;
+		}
+	}
+
+	/* NotificationTask methods end */
+
+	/* Factored out methods start */
+	public Obs createNumericValueObs(Date date, Concept concept, Person person,
+			Location location, Double value, Encounter encounter, User creator) {
+
+		Obs obs = createObs(date, concept, person, location, encounter, creator);
+		obs.setValueNumeric(value);
+		return obs;
+	}
+
+	public Obs createBooleanValueObs(Date date, Concept concept, Person person,
+			Location location, Boolean value, Encounter encounter, User creator) {
+
+		Double doubleValue = null;
+		// Boolean currently stored as Numeric 1 or 0
+		if (value) {
+			doubleValue = new Double(1);
+		} else {
+			doubleValue = new Double(0);
+		}
+		return createNumericValueObs(date, concept, person, location,
+				doubleValue, encounter, creator);
+	}
+
+	public Obs createDateValueObs(Date date, Concept concept, Person person,
+			Location location, Date value, Encounter encounter, User creator) {
+
+		Obs obs = createObs(date, concept, person, location, encounter, creator);
+		obs.setValueDatetime(value);
+		return obs;
+	}
+
+	public Obs createConceptValueObs(Date date, Concept concept, Person person,
+			Location location, Concept value, Encounter encounter, User creator) {
+
+		Obs obs = createObs(date, concept, person, location, encounter, creator);
+		obs.setValueCoded(value);
+		return obs;
+	}
+
+	public Obs createTextValueObs(Date date, Concept concept, Person person,
+			Location location, String value, Encounter encounter, User creator) {
+
+		Obs obs = createObs(date, concept, person, location, encounter, creator);
+		obs.setValueText(value);
+		return obs;
+	}
+
+	public Obs createObs(Date date, Concept concept, Person person,
+			Location location, Encounter encounter, User creator) {
+
+		Obs obs = new Obs();
+		obs.setObsDatetime(date);
+		obs.setConcept(concept);
+		obs.setPerson(person);
+		obs.setLocation(location);
+		if (encounter != null) {
+			obs.setEncounter(encounter);
+		}
+		if (creator != null) {
+			obs.setCreator(creator);
+		}
+		return obs;
+	}
+
+	public Patient getPatientBySerial(String serialId) {
+		PatientService patientService = contextService.getPatientService();
+		PatientIdentifierType serialIdType = getGhanaPatientIdType();
+		List<PatientIdentifierType> idTypes = new ArrayList<PatientIdentifierType>();
+		idTypes.add(serialIdType);
+
+		// Parameters are Name, Id, Id type, match exactly boolean
+		List<Patient> patients = patientService.getPatients(null, serialId,
+				idTypes, true);
+		if (patients.size() > 0) {
+			return patients.get(0);
+		}
+		return null;
+	}
+
+	public Location getNurseClinicLocation(User nurse) {
+		LocationService locationService = contextService.getLocationService();
+		PersonAttributeType clinicAttrType = getClinicAttributeType();
+		PersonAttribute clinicAttr = nurse.getAttribute(clinicAttrType);
+		if (clinicAttr != null && clinicAttr.getValue() != null) {
+			Integer clinicId = Integer.valueOf(clinicAttr.getValue());
+			return locationService.getLocation(clinicId);
+		}
+		return null;
+	}
+
+	public String getPersonPhoneNumber(Person person) {
+		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
+		PersonAttribute phoneNumberAttr = person
+				.getAttribute(phoneNumberAttrType);
+		if (phoneNumberAttr != null) {
+			return phoneNumberAttr.getValue();
+		}
+		return null;
+	}
+
+	public String getPersonLanguageCode(Person person) {
+		PersonAttributeType languageAttrType = getLanguageAttributeType();
+		PersonAttribute languageAttr = person.getAttribute(languageAttrType);
+		if (languageAttr != null) {
+			return languageAttr.getValue();
+		}
+		return null;
+	}
+
+	public ContactNumberType getPersonPhoneType(Person person) {
+		PersonAttributeType phoneTypeAttrType = getPhoneTypeAttributeType();
+		PersonAttribute phoneTypeAttr = person.getAttribute(phoneTypeAttrType);
+		if (phoneTypeAttr != null && phoneTypeAttr.getValue() != null) {
+			return ContactNumberType.valueOf(phoneTypeAttr.getValue());
+		}
+		return null;
+	}
+
+	public MediaType getPersonMediaType(Person person) {
+		PersonAttributeType mediaAttrType = getMediaTypeAttributeType();
+		PersonAttribute mediaTypeAttr = person.getAttribute(mediaAttrType);
+		if (mediaTypeAttr != null && mediaTypeAttr.getValue() != null) {
+			return MediaType.valueOf(mediaTypeAttr.getValue());
+		}
+		return null;
+	}
+
+	public DeliveryTime getPersonDeliveryTime(Person person) {
+		PersonAttributeType deliveryTimeType = getDeliveryTimeAttributeType();
+		PersonAttribute deliveryTimeAttr = person
+				.getAttribute(deliveryTimeType);
+		if (deliveryTimeAttr != null && deliveryTimeAttr.getValue() != null) {
+			return DeliveryTime.valueOf(deliveryTimeAttr.getValue());
+		} else {
+			return DeliveryTime.ANYTIME;
+		}
+	}
+
+	public boolean isPhoneTroubled(String phoneNumber) {
+		TroubledPhone troubledPhone = contextService.getMotechService()
+				.getTroubledPhone(phoneNumber);
+		Integer maxFailures = getMaxPhoneNumberFailures();
+		if (maxFailures == null) {
+			return false;
+		}
+		return troubledPhone != null
+				&& troubledPhone.getSendFailures() >= maxFailures;
+	}
+
+	public Integer getMaxPhoneNumberFailures() {
+		String troubledPhoneProperty = getTroubledPhoneProperty();
+		if (troubledPhoneProperty != null) {
+			return Integer.parseInt(troubledPhoneProperty);
+		}
+		return null;
+	}
+
+	public Date determineMessageStartDate(DeliveryTime deliveryTime,
+			Date messageDate) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(messageDate);
+		switch (deliveryTime) {
+		case MORNING:
+			calendar.set(Calendar.HOUR_OF_DAY, 9);
+			break;
+		case AFTERNOON:
+			calendar.set(Calendar.HOUR_OF_DAY, 13);
+			break;
+		case EVENING:
+			calendar.set(Calendar.HOUR_OF_DAY, 18);
+			break;
+		default:
+			calendar.set(Calendar.HOUR_OF_DAY, 9);
+			break;
+		}
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		return calendar.getTime();
+	}
+
+	public Date determineMessageEndDate(DeliveryTime deliveryTime,
+			Date startDate) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(startDate);
+		switch (deliveryTime) {
+		case MORNING:
+			calendar.set(Calendar.HOUR_OF_DAY, 12);
+			break;
+		case AFTERNOON:
+			calendar.set(Calendar.HOUR_OF_DAY, 17);
+			break;
+		case EVENING:
+			calendar.set(Calendar.HOUR_OF_DAY, 21);
+			break;
+		default:
+			calendar.set(Calendar.HOUR_OF_DAY, 21);
+			break;
+		}
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		return calendar.getTime();
+	}
+
+	public PatientIdentifierType getGhanaPatientIdType() {
+		return contextService.getPatientService()
+				.getPatientIdentifierTypeByName(
+						MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
+	}
+
+	public PersonAttributeType getClinicAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER);
+	}
+
+	public PersonAttributeType getPhoneNumberAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
+	}
+
+	public PersonAttributeType getNHISNumberAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER);
+	}
+
+	public PersonAttributeType getPhoneTypeAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
+	}
+
+	public PersonAttributeType getLanguageAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
+	}
+
+	public PersonAttributeType getMediaTypeAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+	}
+
+	public PersonAttributeType getDeliveryTimeAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
+	}
+
+	public Location getDefaultGhanaClinicLocation() {
+		return contextService.getLocationService().getLocation(
+				MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC);
+	}
+
+	public EncounterType getMaternalVisitEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT);
+	}
+
+	public EncounterType getPregnancyVisitEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT);
+	}
+
+	public Concept getRegimenStartConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_REGIMEN_START);
+	}
+
+	public Concept getRegimenEndConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_REGIMEN_END);
+	}
+
+	public Concept getImmunizationsOrderedConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED);
+	}
+
+	public Concept getTetanusConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_TETANUS_BOOSTER);
+	}
+
+	public Concept getIPTConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT);
+	}
+
+	public Concept getITNConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_INSECTICIDE_TREATED_NET_USAGE);
+	}
+
+	public Concept getPregnancyVisitNumberConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_PREGNANCY_VISIT_NUMBER);
+	}
+
+	public Concept getARVConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_ANTIRETROVIRAL_USE_DURING_PREGNANCY);
+	}
+
+	public Concept getOnARVConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_ON_ANTIRETROVIRAL_THERAPY);
+	}
+
+	public Concept getPrePMTCTConcept() {
+		return contextService
+				.getConceptService()
+				.getConcept(
+						MotechConstants.CONCEPT_PRE_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION);
+	}
+
+	public Concept getTestPMTCTConcept() {
+		return contextService
+				.getConceptService()
+				.getConcept(
+						MotechConstants.CONCEPT_TEST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION);
+	}
+
+	public Concept getPostPMTCTConcept() {
+		return contextService
+				.getConceptService()
+				.getConcept(
+						MotechConstants.CONCEPT_POST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION);
+	}
+
+	public Concept getHemoglobin36WeeksConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_HEMOGLOBIN_AT_36_WEEKS);
+	}
+
+	public Concept getPregnancyStatusConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_PREGNANCY_STATUS);
+	}
+
+	public Concept getDueDateConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT);
+	}
+
+	public Concept getParityConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_GRAVIDA);
+	}
+
+	public Concept getHemoglobinConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_HEMOGLOBIN);
+	}
+
+	public String getTroubledPhoneProperty() {
+		return contextService.getAdministrationService().getGlobalProperty(
+				MotechConstants.GLOBAL_PROPERTY_TROUBLED_PHONE);
+	}
+	/* Factored out methods end */
 }
