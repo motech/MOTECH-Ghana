@@ -2,9 +2,7 @@ package org.motech.event.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,7 +18,6 @@ public class RegimenImpl extends BaseInterfaceImpl implements Regimen {
 
 	private RegimenState startState;
 	private RegimenState endState;
-	private Map<Patient, RegimenState> patientStates = new HashMap<Patient, RegimenState>();
 	private String conceptName;
 	private String conceptValue;
 
@@ -111,24 +108,14 @@ public class RegimenImpl extends BaseInterfaceImpl implements Regimen {
 		return state;
 	}
 
-	public RegimenState getState(Patient patient) {
-		RegimenState state = patientStates.get(patient);
-		if (state == null) {
-			state = determineState(patient);
-			patientStates.put(patient, state);
-		}
-		return state;
-	}
-
 	public RegimenState updateState(Patient patient) {
-		RegimenState state = getState(patient);
+		RegimenState state = determineState(patient);
 		if (state.equals(endState)) {
 			return state;
 		}
 		RegimenStateTransition transition = state.getTransition(patient);
 		transition.getCommand().execute();
 		RegimenState newState = transition.getNextState();
-		patientStates.put(patient, newState);
 
 		return newState;
 	}

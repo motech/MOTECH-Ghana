@@ -8,8 +8,6 @@ public interface Regimen extends BaseInterface {
 
 	RegimenState updateState(Patient patient);
 
-	RegimenState getState(Patient patient);
-
 	RegimenState getStartState();
 
 	RegimenState getEndState();

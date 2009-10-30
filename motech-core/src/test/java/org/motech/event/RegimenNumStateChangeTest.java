@@ -92,7 +92,7 @@ public class RegimenNumStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = polioRegimen.getState(patient);
+		currentPatientState = polioRegimen.determineState(patient);
 
 		verify(registrarBean);
 
@@ -107,7 +107,7 @@ public class RegimenNumStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = polioRegimen.getState(patient);
+		currentPatientState = polioRegimen.determineState(patient);
 
 		verify(registrarBean);
 
@@ -122,7 +122,7 @@ public class RegimenNumStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = polioRegimen.getState(patient);
+		currentPatientState = polioRegimen.determineState(patient);
 
 		verify(registrarBean);
 
@@ -137,7 +137,7 @@ public class RegimenNumStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = polioRegimen.getState(patient);
+		currentPatientState = polioRegimen.determineState(patient);
 
 		verify(registrarBean);
 
@@ -168,7 +168,7 @@ public class RegimenNumStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = polioRegimen.getState(patient);
+		currentPatientState = polioRegimen.determineState(patient);
 
 		verify(registrarBean);
 
@@ -199,7 +199,7 @@ public class RegimenNumStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = polioRegimen.getState(patient);
+		currentPatientState = polioRegimen.determineState(patient);
 
 		verify(registrarBean);
 
@@ -207,6 +207,11 @@ public class RegimenNumStateChangeTest extends TestCase {
 
 		// Future calls to updateState return the end state with no actions
 		reset(registrarBean);
+
+		expect(
+				registrarBean.getNumberOfObs(patient, polioRegimen
+						.getConceptName(), polioRegimen.getConceptValue()))
+				.andReturn(4).atLeastOnce();
 
 		replay(registrarBean);
 

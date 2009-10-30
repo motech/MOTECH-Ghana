@@ -83,7 +83,7 @@ public class RegimenDateStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyRegimen.getState(patient);
+		currentPatientState = pregnancyRegimen.determineState(patient);
 
 		verify(registrarBean);
 
@@ -98,7 +98,7 @@ public class RegimenDateStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyRegimen.getState(patient);
+		currentPatientState = pregnancyRegimen.determineState(patient);
 
 		verify(registrarBean);
 
@@ -113,7 +113,7 @@ public class RegimenDateStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyRegimen.getState(patient);
+		currentPatientState = pregnancyRegimen.determineState(patient);
 
 		verify(registrarBean);
 
@@ -128,7 +128,7 @@ public class RegimenDateStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyRegimen.getState(patient);
+		currentPatientState = pregnancyRegimen.determineState(patient);
 
 		verify(registrarBean);
 
