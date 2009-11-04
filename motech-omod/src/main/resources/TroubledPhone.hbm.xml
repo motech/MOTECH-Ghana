@@ -5,8 +5,11 @@
 		<id name="id" column="motechmodule_tphone_id">
 			<generator class="native" />
 		</id>
-		<property name="phoneNumber" column="phone_number" unique="true" />
-		<property name="creationTime" column="creation_time" />
-		<property name="sendFailures" column="send_failures" />
+		<property name="phoneNumber" column="phone_number" unique="true"
+			not-null="true" />
+		<property name="creationTime" column="creation_time"
+			not-null="true" insert="false" />
+		<property name="sendFailures" column="send_failures"
+			not-null="true" insert="false" />
 	</class>
 </hibernate-mapping>
