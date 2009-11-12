@@ -61,9 +61,9 @@
 			CREATE TABLE IF NOT EXISTS `motechmodule_messagedefinition_attribute` (
 				`definition_id` bigint NOT NULL,
 				`attribute_id` bigint NOT NULL,
-				CONSTRAINT `Definition of attributes` FOREIGN KEY (`definition_id`)
+				CONSTRAINT `definition_of_attributes` FOREIGN KEY (`definition_id`)
 				REFERENCES `motechmodule_messagedefinition` (`motechmodule_messagedefinition_id`),
-				CONSTRAINT `Attribute of definitions` FOREIGN KEY (`attribute_id`)
+				CONSTRAINT `attribute_of_definitions` FOREIGN KEY (`attribute_id`)
 				REFERENCES `motechmodule_messageattribute` (`motechmodule_messageattribute_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -73,14 +73,15 @@
 				`definition_id` bigint NOT NULL,
 				`recipient_id` int NOT NULL,
 				PRIMARY KEY (`motechmodule_scheduledmessage_id`),
-				CONSTRAINT `Definition of message schedule` FOREIGN KEY (`definition_id`)
+				CONSTRAINT `person_id_for_recipient` FOREIGN KEY (`recipient_id`) REFERENCES `person` (`person_id`),
+				CONSTRAINT `definition_of_scheduledmessage` FOREIGN KEY (`definition_id`)
 				REFERENCES `motechmodule_messagedefinition` (`motechmodule_messagedefinition_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 			CREATE TABLE IF NOT EXISTS `motechmodule_scheduledmessage_group` (
 				`schedule_id` bigint NOT NULL,
 				`group_id` varchar(100) NOT NULL,
-				CONSTRAINT `Scheduled message with group id` FOREIGN KEY (`schedule_id`)
+				CONSTRAINT `scheduledmessage_with_groups` FOREIGN KEY (`schedule_id`)
 				REFERENCES `motechmodule_scheduledmessage` (`motechmodule_scheduledmessage_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			
@@ -91,7 +92,7 @@
 				`attempt_date` datetime,
 				`attempt_status` varchar(15),
 				PRIMARY KEY (`motechmodule_message_id`),
-				CONSTRAINT `Schedule of message attempt` FOREIGN KEY (`schedule_id`)
+				CONSTRAINT `scheduledmessage_of_message` FOREIGN KEY (`schedule_id`)
 				REFERENCES `motechmodule_scheduledmessage` (`motechmodule_scheduledmessage_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			
@@ -127,7 +128,8 @@
 				`start_date` datetime,
 				`end_date` datetime,
 				PRIMARY KEY (`motechmodule_enrollment_id`),
-				CONSTRAINT `Person enrolled in Program` UNIQUE (`person_id`,`program_name`)
+				CONSTRAINT `person_id_for_person` FOREIGN KEY (`person_id`) REFERENCES `person` (`person_id`),
+				CONSTRAINT `unique_person_in_program` UNIQUE (`person_id`,`program_name`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		</sql>
 	</diff>
