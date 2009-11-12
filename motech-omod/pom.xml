@@ -168,37 +168,20 @@
 						</instrumentation>
 					</configuration>
 				</plugin>
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<configuration>
+						<includeEmptyDirs>true</includeEmptyDirs>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.motech.openmrs.plugin</groupId>
 				<artifactId>maven-openmrs-plugin</artifactId>
-				<version>1.0-RC1</version>
+				<version>1.0-RC4</version>
 				<extensions>true</extensions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.groovy.maven</groupId>
-				<artifactId>gmaven-plugin</artifactId>
-				<version>1.0</version>
-				<executions>
-					<execution>
-						<id>set-mappingfiles-properties</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>execute</goal>
-						</goals>
-						<configuration>
-							<source>							
-								hbmFiles = new File(project.basedir,'/src/main/resources').listFiles().findAll{ it =~ /\.hbm\.xml$/ }*.name
-								
-								project.properties.openmrsConfigMappingFiles = hbmFiles.join('\n\t\t')
-								project.properties.hibernateConfigMappingFiles = 
-									'&lt;mapping resource="' + hbmFiles.join('" /&gt;\n\t\t&lt;mapping resource="') + '" /&gt;'
-							</source>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

@@ -39,7 +39,7 @@
 	<!-- /Internationalization -->
 
 	<mappingFiles>
-		${openmrsConfigMappingFiles}
+		${omodHbmConfig}
 	</mappingFiles>
 
 </module>
