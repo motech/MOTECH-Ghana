@@ -49,7 +49,7 @@ public interface RegistrarBean {
 
 	public void setMessageStatus(String messageId, Boolean success);
 
-	public List<String> getRegimenEnrollment(Integer personId);
+	public List<String> getActiveRegimenEnrollment(Integer personId);
 
 	public User getUserByPhoneNumber(String phoneNumber);
 
@@ -75,7 +75,7 @@ public interface RegistrarBean {
 
 	public Date getLastObsValue(Patient patient, String conceptName);
 
-	public void removeRegimen(Integer personId, String regimenName);
+	public void removeRegimenEnrollment(Integer personId, String regimenName);
 
 	public void scheduleMessage(String messageKey, String messageGroup,
 			Integer messageRecipientId, Date messageDate,

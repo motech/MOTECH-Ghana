@@ -3,6 +3,7 @@ package org.motech.model.db;
 import java.util.Date;
 import java.util.List;
 
+import org.motech.event.RegimenEnrollment;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
@@ -11,7 +12,6 @@ import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Blackout;
 import org.motech.model.Log;
 import org.motech.model.TroubledPhone;
-import org.openmrs.Concept;
 
 /**
  * The interface definition for the motech server's data access requirements.
@@ -69,6 +69,9 @@ public interface MotechDAO {
 
 	void saveTroubledPhone(TroubledPhone phone);
 
-	List<String> getObsEnrollment(Integer personId, Concept startConcept,
-			Concept endConcept);
+	RegimenEnrollment saveRegimenEnrollment(RegimenEnrollment regimenEnrollment);
+
+	List<String> getActiveRegimenEnrollment(Integer personId);
+
+	RegimenEnrollment getRegimenEnrollment(Integer personId, String regimen);
 }

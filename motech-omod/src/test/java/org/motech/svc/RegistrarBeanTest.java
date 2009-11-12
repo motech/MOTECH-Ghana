@@ -18,6 +18,7 @@ import java.util.Locale;
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
+import org.motech.event.RegimenEnrollment;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageNotFoundException;
 import org.motech.messaging.MessageStatus;
@@ -112,10 +113,6 @@ public class RegistrarBeanTest extends TestCase {
 	Concept gravidaConcept;
 	ConceptName hemoConceptNameObj;
 	Concept hemoConcept;
-	ConceptName regimenStartConceptNameObj;
-	Concept regimenStart;
-	ConceptName regimenEndConceptNameObj;
-	Concept regimenEnd;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -242,14 +239,6 @@ public class RegistrarBeanTest extends TestCase {
 				MotechConstants.CONCEPT_HEMOGLOBIN, Locale.getDefault());
 		hemoConcept = new Concept(21);
 
-		regimenStartConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_REGIMEN_START, Locale.getDefault());
-		regimenStart = new Concept(22);
-
-		regimenEndConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_REGIMEN_END, Locale.getDefault());
-		regimenEnd = new Concept(23);
-
 		RegistrarBeanImpl regBeanImpl = new RegistrarBeanImpl();
 		regBeanImpl.setContextService(contextService);
 
@@ -334,6 +323,7 @@ public class RegistrarBeanTest extends TestCase {
 
 	public void testRegisterPatient() {
 
+		Integer patientId = 1;
 		String nPhone = "12075551212", serialId = "dbvhjdg4784", name = "Gaylord", community = "A Community", location = "A Location", pPhone = "120773733373";
 		Date dob = new Date();
 		Gender gender = Gender.MALE;
@@ -354,7 +344,7 @@ public class RegistrarBeanTest extends TestCase {
 				.getLocationId().toString()));
 
 		Capture<Patient> patientCap = new Capture<Patient>();
-		Capture<Obs> obsCap = new Capture<Obs>();
+		Capture<RegimenEnrollment> enrollmentCap = new Capture<RegimenEnrollment>();
 
 		expect(contextService.getPatientService()).andReturn(patientService)
 				.atLeastOnce();
@@ -364,8 +354,6 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getLocationService()).andReturn(locationService)
 				.atLeastOnce();
-		expect(contextService.getObsService()).andReturn(obsService);
-		expect(contextService.getConceptService()).andReturn(conceptService);
 		expect(contextService.getUserService()).andReturn(userService);
 
 		contextService.authenticate((String) anyObject(), (String) anyObject());
@@ -413,25 +401,21 @@ public class RegistrarBeanTest extends TestCase {
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME))
 				.andReturn(deliveryTimeAttributeType);
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
-				new Patient(1));
-		expect(conceptService.getConcept(MotechConstants.CONCEPT_REGIMEN_START))
-				.andReturn(regimenStart);
-		expect(
-				locationService
-						.getLocation(MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC))
-				.andReturn(defaultClinic);
-		expect(obsService.saveObs(capture(obsCap), eq((String) null)))
-				.andReturn(new Obs());
+				new Patient(patientId));
+		expect(motechService.getRegimenEnrollment(patientId, exampleRegimen))
+				.andReturn(null);
+		expect(motechService.saveRegimenEnrollment(capture(enrollmentCap)))
+				.andReturn(new RegimenEnrollment());
 
 		replay(contextService, patientService, motechService, personService,
-				locationService, obsService, conceptService, userService);
+				locationService, userService);
 
 		regBean.registerPatient(nPhone, serialId, name, community, location,
 				dob, gender, nhis, pPhone, contactNumberType, language,
 				mediaType, deliveryTime, regimen);
 
 		verify(contextService, patientService, motechService, personService,
-				locationService, obsService, conceptService, userService);
+				locationService, userService);
 
 		Patient patient = patientCap.getValue();
 		assertEquals(serialId, patient.getPatientIdentifier(ghanaIdType)
@@ -454,10 +438,13 @@ public class RegistrarBeanTest extends TestCase {
 				mediaTypeAttributeType).getValue());
 		assertEquals(deliveryTime.toString(), patient.getAttribute(
 				deliveryTimeAttributeType).getValue());
-		Obs regimenStartObs = obsCap.getValue();
-		assertEquals(regimenStart, regimenStartObs.getConcept());
-		assertEquals(exampleRegimen, regimenStartObs.getValueText());
-		assertEquals(defaultClinic, regimenStartObs.getLocation());
+		RegimenEnrollment enrollment = enrollmentCap.getValue();
+		assertEquals(patientId, enrollment.getPersonId());
+		assertEquals(exampleRegimen, enrollment.getRegimen());
+		assertNotNull("Enrollment start date should not be null", enrollment
+				.getStartDate());
+		assertNull("Enrollment end date should be null", enrollment
+				.getEndDate());
 	}
 
 	public void testRegisterMaternalVisit() {

@@ -13,6 +13,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.event.Regimen;
+import org.motech.event.RegimenEnrollment;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
@@ -158,7 +159,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			MediaType mediaType, DeliveryTime deliveryTime, String[] regimen) {
 
 		PatientService patientService = contextService.getPatientService();
-		ObsService obsService = contextService.getObsService();
 
 		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
 				MotechConstants.PASSWORD_OPENMRS);
@@ -218,12 +218,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		patient = patientService.savePatient(patient);
 
-		Concept regimenStart = getRegimenStartConcept();
-		Location defaultClinic = getDefaultGhanaClinicLocation();
 		for (String regimenName : regimen) {
-			Obs regimenStartObs = createTextValueObs(new Date(), regimenStart,
-					patient, defaultClinic, regimenName, null, null);
-			obsService.saveObs(regimenStartObs, null);
+			addRegimenEnrollment(patient.getPatientId(), regimenName);
 		}
 	}
 
@@ -432,13 +428,10 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	}
 
 	/* MotechService methods start */
-	public List<String> getRegimenEnrollment(Integer personId) {
+	public List<String> getActiveRegimenEnrollment(Integer personId) {
 		MotechService motechService = contextService.getMotechService();
-		Concept startConcept = getRegimenStartConcept();
-		Concept endConcept = getRegimenEndConcept();
 
-		return motechService.getObsEnrollment(personId, startConcept,
-				endConcept);
+		return motechService.getActiveRegimenEnrollment(personId);
 	}
 
 	public User getUserByPhoneNumber(String phoneNumber) {
@@ -585,21 +578,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			lastestObsValue = obsList.get(0).getValueDatetime();
 		}
 		return lastestObsValue;
-	}
-
-	public void removeRegimen(Integer personId, String regimenName) {
-		PersonService personService = contextService.getPersonService();
-		ObsService obsService = contextService.getObsService();
-		UserService userService = contextService.getUserService();
-
-		Concept regimenEnd = getRegimenEndConcept();
-		Location defaultClinic = getDefaultGhanaClinicLocation();
-		Person person = personService.getPerson(personId);
-		User creator = userService.getUser(1);
-
-		Obs regimenEndObs = createTextValueObs(new Date(), regimenEnd, person,
-				defaultClinic, regimenName, null, creator);
-		obsService.saveObs(regimenEndObs, null);
 	}
 
 	/* PatientObsService methods end */
@@ -888,14 +866,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 					"Hemoglobin level at 36 weeks of Pregnancy",
 					MotechConstants.CONCEPT_CLASS_TEST,
 					MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
-			createConcept(MotechConstants.CONCEPT_REGIMEN_START,
-					"Name of enrolled Regimen",
-					MotechConstants.CONCEPT_CLASS_MISC,
-					MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
-			createConcept(MotechConstants.CONCEPT_REGIMEN_END,
-					"Name of completed Regimen",
-					MotechConstants.CONCEPT_CLASS_MISC,
-					MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
 
 			log.info("Verifying Concepts Exist as Answers");
 			// TODO: Add IPT to proper Concept as an Answer, not an immunization
@@ -1183,44 +1153,30 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		ConceptService conceptService = contextService.getConceptService();
 		PatientService patientService = contextService.getPatientService();
 
-		Concept regimenStart = getRegimenStartConcept();
 		Integer obsPersonId = obs.getPerson().getPersonId();
 		Patient patient = patientService.getPatient(obsPersonId);
 
-		if (regimenStart.equals(obs.getConcept())) {
+		// Only determine regimen state for enrolled regimen
+		// concerned with an observed concept
+		// and matching the concept of this obs
 
-			String regimenName = obs.getValueText();
+		List<String> patientRegimens = this
+				.getActiveRegimenEnrollment(obsPersonId);
 
-			log.debug("Save Obs - Update State for newly enrolled Regimen: "
-					+ regimenName);
+		for (String regimenName : patientRegimens) {
+			Regimen regimen = this.getRegimen(regimenName);
 
-			Regimen enrolledRegimen = this.getRegimen(regimenName);
+			Concept regimenConcept = null;
+			if (regimen.getConceptName() != null) {
+				regimenConcept = conceptService.getConcept(regimen
+						.getConceptName());
 
-			enrolledRegimen.determineState(patient);
+				if (obs.getConcept().equals(regimenConcept)) {
+					log
+							.debug("Save Obs - Obs matches Regmen concept, update Regimen: "
+									+ regimenName);
 
-		} else {
-			// Only determine regimen state for enrolled regimen
-			// concerned with an observed concept
-			// and matching the concept of this obs
-
-			List<String> patientRegimens = this
-					.getRegimenEnrollment(obsPersonId);
-
-			for (String regimenName : patientRegimens) {
-				Regimen regimen = this.getRegimen(regimenName);
-
-				Concept regimenConcept = null;
-				if (regimen.getConceptName() != null) {
-					regimenConcept = conceptService.getConcept(regimen
-							.getConceptName());
-
-					if (obs.getConcept().equals(regimenConcept)) {
-						log
-								.debug("Save Obs - Obs matches Regmen concept, update Regimen: "
-										+ regimenName);
-
-						regimen.determineState(patient);
-					}
+					regimen.determineState(patient);
 				}
 			}
 		}
@@ -1253,7 +1209,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			// patients
 			for (Patient patient : patients) {
 				List<String> patientRegimens = this
-						.getRegimenEnrollment(patient.getPatientId());
+						.getActiveRegimenEnrollment(patient.getPatientId());
 
 				for (String regimenName : patientRegimens) {
 					Regimen regimen = this.getRegimen(regimenName);
@@ -1455,6 +1411,31 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	/* NotificationTask methods end */
 
 	/* Factored out methods start */
+	public void addRegimenEnrollment(Integer personId, String regimen) {
+		MotechService motechService = contextService.getMotechService();
+
+		RegimenEnrollment enrollment = motechService.getRegimenEnrollment(
+				personId, regimen);
+		if (enrollment == null) {
+			enrollment = new RegimenEnrollment();
+			enrollment.setPersonId(personId);
+			enrollment.setRegimen(regimen);
+			enrollment.setStartDate(new Date());
+			motechService.saveRegimenEnrollment(enrollment);
+		}
+	}
+
+	public void removeRegimenEnrollment(Integer personId, String regimen) {
+		MotechService motechService = contextService.getMotechService();
+
+		RegimenEnrollment enrollment = motechService.getRegimenEnrollment(
+				personId, regimen);
+		if (enrollment != null) {
+			enrollment.setEndDate(new Date());
+			motechService.saveRegimenEnrollment(enrollment);
+		}
+	}
+
 	public Obs createNumericValueObs(Date date, Concept concept, Person person,
 			Location location, Double value, Encounter encounter, User creator) {
 
@@ -1711,16 +1692,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public EncounterType getPregnancyVisitEncounterType() {
 		return contextService.getEncounterService().getEncounterType(
 				MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT);
-	}
-
-	public Concept getRegimenStartConcept() {
-		return contextService.getConceptService().getConcept(
-				MotechConstants.CONCEPT_REGIMEN_START);
-	}
-
-	public Concept getRegimenEndConcept() {
-		return contextService.getConceptService().getConcept(
-				MotechConstants.CONCEPT_REGIMEN_END);
 	}
 
 	public Concept getImmunizationsOrderedConcept() {

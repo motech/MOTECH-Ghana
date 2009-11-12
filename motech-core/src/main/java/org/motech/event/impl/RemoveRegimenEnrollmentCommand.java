@@ -34,7 +34,7 @@ public class RemoveRegimenEnrollmentCommand implements Command {
 	}
 
 	public void execute() {
-		registrarBean.removeRegimen(personId, regimenName);
+		registrarBean.removeRegimenEnrollment(personId, regimenName);
 	}
 
 }

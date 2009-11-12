@@ -186,7 +186,8 @@ public class TetanusInfoRegimenTest extends TestCase {
 		// Patient registered 7 minute ago, no messages expected
 		setPatientRegistration(patient, 7);
 
-		registrarBean.removeRegimen(patient.getPatientId(), regimen.getName());
+		registrarBean.removeRegimenEnrollment(patient.getPatientId(), regimen
+				.getName());
 
 		replay(registrarBean, messageScheduler);
 

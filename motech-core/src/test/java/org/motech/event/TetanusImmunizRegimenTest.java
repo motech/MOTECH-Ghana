@@ -354,7 +354,8 @@ public class TetanusImmunizRegimenTest extends TestCase {
 				numberOfTetanusObs).anyTimes();
 		registrarBean.removeAllUnsentMessages(patient.getPatientId(), regimen
 				.getName());
-		registrarBean.removeRegimen(patient.getPatientId(), regimen.getName());
+		registrarBean.removeRegimenEnrollment(patient.getPatientId(), regimen
+				.getName());
 
 		replay(registrarBean, messageScheduler);
 
@@ -378,7 +379,8 @@ public class TetanusImmunizRegimenTest extends TestCase {
 				numberOfTetanusObs).anyTimes();
 		registrarBean.removeAllUnsentMessages(patient.getPatientId(), regimen
 				.getName());
-		registrarBean.removeRegimen(patient.getPatientId(), regimen.getName());
+		registrarBean.removeRegimenEnrollment(patient.getPatientId(), regimen
+				.getName());
 
 		replay(registrarBean, messageScheduler);
 

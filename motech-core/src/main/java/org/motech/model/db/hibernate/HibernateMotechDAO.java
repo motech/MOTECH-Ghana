@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.motech.event.RegimenEnrollment;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
@@ -15,8 +16,6 @@ import org.motech.model.Blackout;
 import org.motech.model.Log;
 import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
-import org.openmrs.Concept;
-import org.openmrs.Obs;
 
 /**
  * An implementation of the motech data access object interface, implemented
@@ -215,23 +214,29 @@ public class HibernateMotechDAO implements MotechDAO {
 		return tp;
 	}
 
+	public RegimenEnrollment saveRegimenEnrollment(
+			RegimenEnrollment regimenEnrollment) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(regimenEnrollment);
+		return regimenEnrollment;
+	}
+
 	@SuppressWarnings("unchecked")
-	public List<String> getObsEnrollment(Integer personId,
-			Concept startConcept, Concept endConcept) {
+	public List<String> getActiveRegimenEnrollment(Integer personId) {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<String>) session.createQuery(
-				"select startobs.valueText from " + Obs.class.getName()
-						+ " as startobs "
-						+ "where startobs.person.personId = :personId and "
-						+ "startobs.concept = :startConcept and "
-						+ "not exists ( from " + Obs.class.getName()
-						+ " as endobs "
-						+ "where endobs.person.personId = :personId and "
-						+ "endobs.concept = :endConcept and "
-						+ "endobs.valueText = startobs.valueText and "
-						+ "endobs.obsDatetime >= startobs.obsDatetime )")
-				.setInteger("personId", personId).setParameter("startConcept",
-						startConcept).setParameter("endConcept", endConcept)
-				.list();
+				"select regimen from " + RegimenEnrollment.class.getName()
+						+ " as e where e.personId = :personId and "
+						+ "e.startDate is not null and e.endDate is null")
+				.setInteger("personId", personId).list();
+	}
+
+	public RegimenEnrollment getRegimenEnrollment(Integer personId,
+			String regimen) {
+		Session session = sessionFactory.getCurrentSession();
+		return (RegimenEnrollment) session.createCriteria(
+				RegimenEnrollment.class).add(
+				Restrictions.eq("personId", personId)).add(
+				Restrictions.eq("regimen", regimen)).uniqueResult();
 	}
 }
