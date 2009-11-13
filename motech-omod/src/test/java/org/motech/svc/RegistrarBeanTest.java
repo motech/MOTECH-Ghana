@@ -18,7 +18,7 @@ import java.util.Locale;
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
-import org.motech.event.RegimenEnrollment;
+import org.motech.event.MessageProgramEnrollment;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageNotFoundException;
 import org.motech.messaging.MessageStatus;
@@ -332,8 +332,8 @@ public class RegistrarBeanTest extends TestCase {
 		String language = "English";
 		MediaType mediaType = MediaType.TEXT;
 		DeliveryTime deliveryTime = DeliveryTime.ANYTIME;
-		String exampleRegimen = "Example regimen";
-		String[] regimen = { exampleRegimen };
+		String exampleProgram = "Example program";
+		String[] programs = { exampleProgram };
 
 		Location locationObj = new Location(1);
 		locationObj.setName(location);
@@ -344,7 +344,7 @@ public class RegistrarBeanTest extends TestCase {
 				.getLocationId().toString()));
 
 		Capture<Patient> patientCap = new Capture<Patient>();
-		Capture<RegimenEnrollment> enrollmentCap = new Capture<RegimenEnrollment>();
+		Capture<MessageProgramEnrollment> enrollmentCap = new Capture<MessageProgramEnrollment>();
 
 		expect(contextService.getPatientService()).andReturn(patientService)
 				.atLeastOnce();
@@ -402,17 +402,20 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(deliveryTimeAttributeType);
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				new Patient(patientId));
-		expect(motechService.getRegimenEnrollment(patientId, exampleRegimen))
-				.andReturn(null);
-		expect(motechService.saveRegimenEnrollment(capture(enrollmentCap)))
-				.andReturn(new RegimenEnrollment());
+		expect(
+				motechService.getMessageProgramEnrollment(patientId,
+						exampleProgram)).andReturn(null);
+		expect(
+				motechService
+						.saveMessageProgramEnrollment(capture(enrollmentCap)))
+				.andReturn(new MessageProgramEnrollment());
 
 		replay(contextService, patientService, motechService, personService,
 				locationService, userService);
 
 		regBean.registerPatient(nPhone, serialId, name, community, location,
 				dob, gender, nhis, pPhone, contactNumberType, language,
-				mediaType, deliveryTime, regimen);
+				mediaType, deliveryTime, programs);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService);
@@ -438,9 +441,9 @@ public class RegistrarBeanTest extends TestCase {
 				mediaTypeAttributeType).getValue());
 		assertEquals(deliveryTime.toString(), patient.getAttribute(
 				deliveryTimeAttributeType).getValue());
-		RegimenEnrollment enrollment = enrollmentCap.getValue();
+		MessageProgramEnrollment enrollment = enrollmentCap.getValue();
 		assertEquals(patientId, enrollment.getPersonId());
-		assertEquals(exampleRegimen, enrollment.getRegimen());
+		assertEquals(exampleProgram, enrollment.getProgram());
 		assertNotNull("Enrollment start date should not be null", enrollment
 				.getStartDate());
 		assertNull("Enrollment end date should be null", enrollment

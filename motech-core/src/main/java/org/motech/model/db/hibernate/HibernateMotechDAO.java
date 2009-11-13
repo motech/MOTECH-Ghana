@@ -6,7 +6,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.motech.event.RegimenEnrollment;
+import org.motech.event.MessageProgramEnrollment;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
@@ -214,29 +214,30 @@ public class HibernateMotechDAO implements MotechDAO {
 		return tp;
 	}
 
-	public RegimenEnrollment saveRegimenEnrollment(
-			RegimenEnrollment regimenEnrollment) {
+	public MessageProgramEnrollment saveMessageProgramEnrollment(
+			MessageProgramEnrollment enrollment) {
 		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(regimenEnrollment);
-		return regimenEnrollment;
+		session.saveOrUpdate(enrollment);
+		return enrollment;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> getActiveRegimenEnrollment(Integer personId) {
+	public List<String> getActiveMessageProgramEnrollments(Integer personId) {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<String>) session.createQuery(
-				"select regimen from " + RegimenEnrollment.class.getName()
+				"select program from "
+						+ MessageProgramEnrollment.class.getName()
 						+ " as e where e.personId = :personId and "
 						+ "e.startDate is not null and e.endDate is null")
 				.setInteger("personId", personId).list();
 	}
 
-	public RegimenEnrollment getRegimenEnrollment(Integer personId,
-			String regimen) {
+	public MessageProgramEnrollment getMessageProgramEnrollment(
+			Integer personId, String program) {
 		Session session = sessionFactory.getCurrentSession();
-		return (RegimenEnrollment) session.createCriteria(
-				RegimenEnrollment.class).add(
+		return (MessageProgramEnrollment) session.createCriteria(
+				MessageProgramEnrollment.class).add(
 				Restrictions.eq("personId", personId)).add(
-				Restrictions.eq("regimen", regimen)).uniqueResult();
+				Restrictions.eq("program", program)).uniqueResult();
 	}
 }

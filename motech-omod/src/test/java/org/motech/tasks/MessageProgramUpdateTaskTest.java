@@ -38,7 +38,8 @@ import org.openmrs.test.SkipBaseSetup;
  * contexts and hibernate mappings, providing the OpenMRS Context for both
  * OpenMRS core and module services.
  */
-public class RegimenUpdateTaskTest extends BaseModuleContextSensitiveTest {
+public class MessageProgramUpdateTaskTest extends
+		BaseModuleContextSensitiveTest {
 
 	static MotechModuleActivator activator;
 
@@ -78,11 +79,11 @@ public class RegimenUpdateTaskTest extends BaseModuleContextSensitiveTest {
 
 	@Test
 	@SkipBaseSetup
-	public void testRegimenUpdate() throws InterruptedException {
+	public void testMessageProgramUpdate() throws InterruptedException {
 
 		RegistrarBean regService = ((RegistrarBean) applicationContext
 				.getBean("registrarBean"));
-		RegimenUpdateTask task = new RegimenUpdateTask();
+		MessageProgramUpdateTask task = new MessageProgramUpdateTask();
 		Calendar calendar = Calendar.getInstance();
 		List<ScheduledMessage> scheduledMessages = null;
 		Set<String> messageKeys = null;
@@ -100,8 +101,8 @@ public class RegimenUpdateTaskTest extends BaseModuleContextSensitiveTest {
 					Gender.FEMALE, 1, "patientphoneNumber",
 					ContactNumberType.PERSONAL, "language", MediaType.TEXT,
 					DeliveryTime.ANYTIME, new String[] {
-							"Tetanus Immunization Regimen",
-							"Tetanus Information Regimen" });
+							"Tetanus Immunization Message Program",
+							"Tetanus Information Message Program" });
 
 			assertEquals(3, Context.getPatientService().getAllPatients().size());
 

@@ -16,7 +16,7 @@ package org.motech.openmrs.module;
 import java.util.Date;
 import java.util.List;
 
-import org.motech.event.RegimenEnrollment;
+import org.motech.event.MessageProgramEnrollment;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
@@ -96,13 +96,15 @@ public interface MotechService extends OpenmrsService {
 			PersonAttributeType personAttributeType, String value);
 
 	@Transactional(readOnly = true)
-	List<String> getActiveRegimenEnrollment(Integer personId);
+	List<String> getActiveMessageProgramEnrollments(Integer personId);
 
 	@Transactional(readOnly = true)
-	RegimenEnrollment getRegimenEnrollment(Integer personId, String regimen);
+	MessageProgramEnrollment getMessageProgramEnrollment(Integer personId,
+			String program);
 
 	@Transactional
-	RegimenEnrollment saveRegimenEnrollment(RegimenEnrollment regimenEnrollment);
+	MessageProgramEnrollment saveMessageProgramEnrollment(
+			MessageProgramEnrollment enrollment);
 
 	@Transactional(readOnly = true)
 	Blackout getBlackoutSettings();

@@ -91,9 +91,9 @@
 		</td>
 	</tr>
 	<tr>
-		<td><label for="regimen">Regime Enrollment:</label></td>
+		<td><label for="messagePrograms">Message Program Enrollment:</label></td>
 		<td>
-			<select name="regimen" multiple="multiple">
+			<select name="messagePrograms" multiple="multiple">
 				<option value="dailyPregnancy">Day-by-day Pregnancy</option>
 				<option value="minuteTetanus">Minute-by-minute Tetanus</option>
 			</select>

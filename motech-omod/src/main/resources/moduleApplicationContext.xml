@@ -17,8 +17,8 @@
            http://jax-ws.dev.java.net/spring/servlet
            http://jax-ws.dev.java.net/spring/servlet.xsd">
 
-	<import resource="classpath*:common-regimen-beans.xml" />
-	<import resource="classpath*:regimen/*.xml" />
+	<import resource="classpath*:common-program-beans.xml" />
+	<import resource="classpath*:programs/*.xml" />
 	<import resource="classpath*:registrar-bean.xml" />
 	
 	<bean

@@ -121,7 +121,7 @@ public class MotechModuleFormController {
 			@RequestParam("language") String language,
 			@RequestParam("mediaType") String mediaType,
 			@RequestParam("deliveryTime") String deliveryTime,
-			@RequestParam(value = "regimen", required = false) String[] regimen,
+			@RequestParam(value = "messagePrograms", required = false) String[] messagePrograms,
 			@RequestParam("dateOfBirth") String dateOfBirth,
 			@RequestParam("dueDate") String dueDate,
 			@RequestParam("parity") String parity,
@@ -138,7 +138,7 @@ public class MotechModuleFormController {
 						.valueOf(patientPhoneType), language, MediaType
 						.valueOf(mediaType),
 				DeliveryTime.valueOf(deliveryTime),
-				convertToActualRegimen(regimen));
+				convertToActualMessagePrograms(messagePrograms));
 		registrarClient.registerPregnancy(nursePhone, new Date(), serialId,
 				dateFormat.parse(dueDate), Integer.valueOf(parity), Double
 						.valueOf(hemoglobin));
@@ -148,23 +148,25 @@ public class MotechModuleFormController {
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 
-	private String[] convertToActualRegimen(String[] regimen) {
-		String[] regimenActual = new String[] {};
-		if (regimen != null) {
-			Set<String> regimenInputSet = new HashSet<String>(Arrays
-					.asList(regimen));
-			Set<String> regimenActualSet = new HashSet<String>();
-			if (regimenInputSet.contains("minuteTetanus")) {
-				regimenActualSet.add("Tetanus Information Regimen");
-				regimenActualSet.add("Tetanus Immunization Regimen");
+	private String[] convertToActualMessagePrograms(String[] messagePrograms) {
+		String[] messageProgramsActual = new String[] {};
+		if (messagePrograms != null) {
+			Set<String> messageProgramsInputSet = new HashSet<String>(Arrays
+					.asList(messagePrograms));
+			Set<String> messageProgramsActualSet = new HashSet<String>();
+			if (messageProgramsInputSet.contains("minuteTetanus")) {
+				messageProgramsActualSet
+						.add("Tetanus Information Message Program");
+				messageProgramsActualSet
+						.add("Tetanus Immunization Message Program");
 			}
-			if (regimenInputSet.contains("dailyPregnancy")) {
-				regimenActualSet.add("Daily Pregnancy Regimen");
+			if (messageProgramsInputSet.contains("dailyPregnancy")) {
+				messageProgramsActualSet.add("Daily Pregnancy Message Program");
 			}
-			regimenActual = regimenActualSet
-					.toArray(new String[regimenActualSet.size()]);
+			messageProgramsActual = messageProgramsActualSet
+					.toArray(new String[messageProgramsActualSet.size()]);
 		}
-		return regimenActual;
+		return messageProgramsActual;
 	}
 
 	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.POST)
@@ -198,19 +200,17 @@ public class MotechModuleFormController {
 			@RequestParam("language") String language,
 			@RequestParam("mediaType") String mediaType,
 			@RequestParam("deliveryTime") String deliveryTime,
-			@RequestParam(value = "regimen", required = false) String[] regimen)
+			@RequestParam(value = "messagePrograms", required = false) String[] messagePrograms)
 			throws NumberFormatException, ParseException {
 		log.debug("Register Patient");
 
-		registrarClient
-				.registerPatient(nursePhone, serialId, name, community,
-						location, dateFormat.parse(dateOfBirth), Gender
-								.valueOf(gender), Integer.valueOf(nhis),
-						patientPhone, ContactNumberType
-								.valueOf(patientPhoneType), language, MediaType
-								.valueOf(mediaType), DeliveryTime
-								.valueOf(deliveryTime),
-						convertToActualRegimen(regimen));
+		registrarClient.registerPatient(nursePhone, serialId, name, community,
+				location, dateFormat.parse(dateOfBirth),
+				Gender.valueOf(gender), Integer.valueOf(nhis), patientPhone,
+				ContactNumberType.valueOf(patientPhoneType), language,
+				MediaType.valueOf(mediaType), DeliveryTime
+						.valueOf(deliveryTime),
+				convertToActualMessagePrograms(messagePrograms));
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 

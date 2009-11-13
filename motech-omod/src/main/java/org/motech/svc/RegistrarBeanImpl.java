@@ -12,8 +12,8 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motech.event.Regimen;
-import org.motech.event.RegimenEnrollment;
+import org.motech.event.MessageProgram;
+import org.motech.event.MessageProgramEnrollment;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
@@ -24,8 +24,8 @@ import org.motech.model.GenderTypeConverter;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
+import org.motech.tasks.MessageProgramUpdateTask;
 import org.motech.tasks.NotificationTask;
-import org.motech.tasks.RegimenUpdateTask;
 import org.motech.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveryTime;
@@ -77,7 +77,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	private ContextService contextService;
 	public MessageService mobileService;
-	private Map<String, Regimen> regimens;
+	private Map<String, MessageProgram> messagePrograms;
 
 	public void setContextService(ContextService contextService) {
 		this.contextService = contextService;
@@ -87,12 +87,12 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		this.mobileService = mobileService;
 	}
 
-	public void setRegimens(Map<String, Regimen> regimens) {
-		this.regimens = regimens;
+	public void setMessagePrograms(Map<String, MessageProgram> messagePrograms) {
+		this.messagePrograms = messagePrograms;
 	}
 
-	public Regimen getRegimen(String regimenName) {
-		return regimens.get(regimenName);
+	public MessageProgram getMessageProgram(String programName) {
+		return messagePrograms.get(programName);
 	}
 
 	public void registerClinic(String name) {
@@ -156,7 +156,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			String name, String community, String location, Date dateOfBirth,
 			Gender gender, Integer nhis, String phoneNumber,
 			ContactNumberType contactNumberType, String language,
-			MediaType mediaType, DeliveryTime deliveryTime, String[] regimen) {
+			MediaType mediaType, DeliveryTime deliveryTime,
+			String[] messagePrograms) {
 
 		PatientService patientService = contextService.getPatientService();
 
@@ -218,8 +219,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		patient = patientService.savePatient(patient);
 
-		for (String regimenName : regimen) {
-			addRegimenEnrollment(patient.getPatientId(), regimenName);
+		for (String programName : messagePrograms) {
+			addMessageProgramEnrollment(patient.getPatientId(), programName);
 		}
 	}
 
@@ -428,10 +429,10 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	}
 
 	/* MotechService methods start */
-	public List<String> getActiveRegimenEnrollment(Integer personId) {
+	public List<String> getActiveMessageProgramEnrollments(Integer personId) {
 		MotechService motechService = contextService.getMotechService();
 
-		return motechService.getActiveRegimenEnrollment(personId);
+		return motechService.getActiveMessageProgramEnrollments(personId);
 	}
 
 	public User getUserByPhoneNumber(String phoneNumber) {
@@ -899,10 +900,10 @@ public class RegistrarBeanImpl implements RegistrarBean {
 					"Task to send out SMS notifications for next day", calendar
 							.getTime(), new Long(86400), Boolean.FALSE,
 					NotificationTask.class.getName(), admin, dailyProps);
-			createTask(MotechConstants.TASK_REGIMEN_UPDATE,
-					"Task to update regimen state for patients", new Date(),
-					new Long(30), Boolean.FALSE, RegimenUpdateTask.class
-							.getName(), admin, null);
+			createTask(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE,
+					"Task to update message program state for patients",
+					new Date(), new Long(30), Boolean.FALSE,
+					MessageProgramUpdateTask.class.getName(), admin, null);
 
 			log.info("Verifying Global Properties Exist");
 			createGlobalProperty(
@@ -1138,7 +1139,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		try {
 			removeTask(MotechConstants.TASK_IMMEDIATE_NOTIFICATION);
 			removeTask(MotechConstants.TASK_DAILY_NOTIFICATION);
-			removeTask(MotechConstants.TASK_REGIMEN_UPDATE);
+			removeTask(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE);
 		} finally {
 			contextService
 					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
@@ -1149,41 +1150,41 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	/* Activator methods end */
 
 	/* SaveObsAdvice method */
-	public void updateRegimenState(Obs obs) {
+	public void updateMessageProgramState(Obs obs) {
 		ConceptService conceptService = contextService.getConceptService();
 		PatientService patientService = contextService.getPatientService();
 
 		Integer obsPersonId = obs.getPerson().getPersonId();
 		Patient patient = patientService.getPatient(obsPersonId);
 
-		// Only determine regimen state for enrolled regimen
+		// Only determine message program state for enrolled programs
 		// concerned with an observed concept
 		// and matching the concept of this obs
 
-		List<String> patientRegimens = this
-				.getActiveRegimenEnrollment(obsPersonId);
+		List<String> patientPrograms = this
+				.getActiveMessageProgramEnrollments(obsPersonId);
 
-		for (String regimenName : patientRegimens) {
-			Regimen regimen = this.getRegimen(regimenName);
+		for (String programName : patientPrograms) {
+			MessageProgram program = this.getMessageProgram(programName);
 
-			Concept regimenConcept = null;
-			if (regimen.getConceptName() != null) {
-				regimenConcept = conceptService.getConcept(regimen
+			Concept programConcept = null;
+			if (program.getConceptName() != null) {
+				programConcept = conceptService.getConcept(program
 						.getConceptName());
 
-				if (obs.getConcept().equals(regimenConcept)) {
+				if (obs.getConcept().equals(programConcept)) {
 					log
-							.debug("Save Obs - Obs matches Regmen concept, update Regimen: "
-									+ regimenName);
+							.debug("Save Obs - Obs matches Program concept, update Program: "
+									+ programName);
 
-					regimen.determineState(patient);
+					program.determineState(patient);
 				}
 			}
 		}
 	}
 
-	/* RegimenUpdateTask method */
-	public void updateAllRegimenState() {
+	/* MessageProgramUpdateTask method */
+	public void updateAllMessageProgramsState() {
 		try {
 			contextService.openSession();
 			contextService
@@ -1205,20 +1206,23 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			// Get all Patients with the Ghana Clinic Id Type
 			List<Patient> patients = getAllPatients();
 
-			// Update Regimen state for enrolled Regimen of all matching
+			// Update Message Program state for enrolled Programs of all
+			// matching
 			// patients
 			for (Patient patient : patients) {
-				List<String> patientRegimens = this
-						.getActiveRegimenEnrollment(patient.getPatientId());
+				List<String> patientPrograms = this
+						.getActiveMessageProgramEnrollments(patient
+								.getPatientId());
 
-				for (String regimenName : patientRegimens) {
-					Regimen regimen = this.getRegimen(regimenName);
+				for (String programName : patientPrograms) {
+					MessageProgram program = this
+							.getMessageProgram(programName);
 
-					log.debug("Regimen Update - Update State: regimen: "
-							+ regimenName + ", patient: "
+					log.debug("MessageProgram Update - Update State: program: "
+							+ programName + ", patient: "
 							+ patient.getPatientId());
 
-					regimen.determineState(patient);
+					program.determineState(patient);
 				}
 			}
 		} finally {
@@ -1411,28 +1415,28 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	/* NotificationTask methods end */
 
 	/* Factored out methods start */
-	public void addRegimenEnrollment(Integer personId, String regimen) {
+	public void addMessageProgramEnrollment(Integer personId, String program) {
 		MotechService motechService = contextService.getMotechService();
 
-		RegimenEnrollment enrollment = motechService.getRegimenEnrollment(
-				personId, regimen);
+		MessageProgramEnrollment enrollment = motechService
+				.getMessageProgramEnrollment(personId, program);
 		if (enrollment == null) {
-			enrollment = new RegimenEnrollment();
+			enrollment = new MessageProgramEnrollment();
 			enrollment.setPersonId(personId);
-			enrollment.setRegimen(regimen);
+			enrollment.setProgram(program);
 			enrollment.setStartDate(new Date());
-			motechService.saveRegimenEnrollment(enrollment);
+			motechService.saveMessageProgramEnrollment(enrollment);
 		}
 	}
 
-	public void removeRegimenEnrollment(Integer personId, String regimen) {
+	public void removeMessageProgramEnrollment(Integer personId, String program) {
 		MotechService motechService = contextService.getMotechService();
 
-		RegimenEnrollment enrollment = motechService.getRegimenEnrollment(
-				personId, regimen);
+		MessageProgramEnrollment enrollment = motechService
+				.getMessageProgramEnrollment(personId, program);
 		if (enrollment != null) {
 			enrollment.setEndDate(new Date());
-			motechService.saveRegimenEnrollment(enrollment);
+			motechService.saveMessageProgramEnrollment(enrollment);
 		}
 	}
 

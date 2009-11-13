@@ -3,18 +3,18 @@ package org.motech.event.impl;
 import org.motech.event.Command;
 import org.motech.svc.RegistrarBean;
 
-public class RemoveRegimenEnrollmentCommand implements Command {
+public class RemoveEnrollmentCommand implements Command {
 
 	Integer personId;
-	String regimenName;
+	String programName;
 	RegistrarBean registrarBean;
 
-	public String getRegimenName() {
-		return regimenName;
+	public String getProgramNamee() {
+		return programName;
 	}
 
-	public void setRegimenName(String regimenName) {
-		this.regimenName = regimenName;
+	public void setProgramName(String programName) {
+		this.programName = programName;
 	}
 
 	public Integer getPersonId() {
@@ -34,7 +34,7 @@ public class RemoveRegimenEnrollmentCommand implements Command {
 	}
 
 	public void execute() {
-		registrarBean.removeRegimenEnrollment(personId, regimenName);
+		registrarBean.removeMessageProgramEnrollment(personId, programName);
 	}
 
 }

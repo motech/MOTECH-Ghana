@@ -2,11 +2,11 @@ package org.motech.event;
 
 import java.util.Date;
 
-public class RegimenEnrollment {
+public class MessageProgramEnrollment {
 
 	Long id;
 	Integer personId;
-	String regimen;
+	String program;
 	Date startDate;
 	Date endDate;
 
@@ -26,12 +26,12 @@ public class RegimenEnrollment {
 		this.personId = personId;
 	}
 
-	public String getRegimen() {
-		return regimen;
+	public String getProgram() {
+		return program;
 	}
 
-	public void setRegimen(String regimen) {
-		this.regimen = regimen;
+	public void setProgram(String program) {
+		this.program = program;
 	}
 
 	public Date getStartDate() {

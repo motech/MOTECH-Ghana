@@ -16,7 +16,7 @@ package org.motech.openmrs.module.impl;
 import java.util.Date;
 import java.util.List;
 
-import org.motech.event.RegimenEnrollment;
+import org.motech.event.MessageProgramEnrollment;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
@@ -57,18 +57,18 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		this.registrarBean = registrarBean;
 	}
 
-	public RegimenEnrollment saveRegimenEnrollment(
-			RegimenEnrollment regimenEnrollment) {
-		return motechDAO.saveRegimenEnrollment(regimenEnrollment);
+	public MessageProgramEnrollment saveMessageProgramEnrollment(
+			MessageProgramEnrollment enrollment) {
+		return motechDAO.saveMessageProgramEnrollment(enrollment);
 	}
 
-	public List<String> getActiveRegimenEnrollment(Integer personId) {
-		return motechDAO.getActiveRegimenEnrollment(personId);
+	public List<String> getActiveMessageProgramEnrollments(Integer personId) {
+		return motechDAO.getActiveMessageProgramEnrollments(personId);
 	}
 
-	public RegimenEnrollment getRegimenEnrollment(Integer personId,
-			String regimen) {
-		return motechDAO.getRegimenEnrollment(personId, regimen);
+	public MessageProgramEnrollment getMessageProgramEnrollment(
+			Integer personId, String program) {
+		return motechDAO.getMessageProgramEnrollment(personId, program);
 	}
 
 	public List<Log> getAllLogs() {

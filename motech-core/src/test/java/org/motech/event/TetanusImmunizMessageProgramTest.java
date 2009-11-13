@@ -10,10 +10,10 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import org.motech.event.impl.CompositeCommand;
-import org.motech.event.impl.RegimenImpl;
-import org.motech.event.impl.RegimenStateImpl;
-import org.motech.event.impl.RegimenStateTransitionExpectedNumImpl;
-import org.motech.event.impl.RemoveRegimenEnrollmentCommand;
+import org.motech.event.impl.MessageProgramImpl;
+import org.motech.event.impl.MessageProgramStateImpl;
+import org.motech.event.impl.MessageProgramStateTransitionExpectedNumImpl;
+import org.motech.event.impl.RemoveEnrollmentCommand;
 import org.motech.event.impl.ScheduleMessageCommand;
 import org.motech.messaging.MessageScheduler;
 import org.motech.svc.RegistrarBean;
@@ -21,21 +21,21 @@ import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class TetanusImmunizRegimenTest extends TestCase {
+public class TetanusImmunizMessageProgramTest extends TestCase {
 
 	ApplicationContext ctx;
 
 	Patient patient;
 	Integer patientId;
 
-	RegimenImpl regimen;
-	RegimenStateImpl state1;
-	RegimenStateImpl state2;
-	RegimenStateImpl state3;
-	RegimenStateImpl state4;
-	RegimenStateImpl state5;
-	RegimenStateImpl state6;
-	RegimenStateImpl state7;
+	MessageProgramImpl program;
+	MessageProgramStateImpl state1;
+	MessageProgramStateImpl state2;
+	MessageProgramStateImpl state3;
+	MessageProgramStateImpl state4;
+	MessageProgramStateImpl state5;
+	MessageProgramStateImpl state6;
+	MessageProgramStateImpl state7;
 
 	MessageScheduler messageScheduler;
 	RegistrarBean registrarBean;
@@ -48,61 +48,65 @@ public class TetanusImmunizRegimenTest extends TestCase {
 		patient.setPatientId(patientId);
 
 		ctx = new ClassPathXmlApplicationContext(new String[] {
-				"regimen/tetanus-immuniz-regimen.xml",
-				"test-common-regimen-beans.xml" });
+				"programs/tetanus-immuniz-program.xml",
+				"test-common-program-beans.xml" });
 
-		regimen = (RegimenImpl) ctx.getBean("tetanusImmunization");
+		program = (MessageProgramImpl) ctx.getBean("tetanusImmunization");
 
-		state1 = (RegimenStateImpl) ctx.getBean("tetanusState1");
-		state2 = (RegimenStateImpl) ctx.getBean("tetanusState1Reminder1");
-		state3 = (RegimenStateImpl) ctx.getBean("tetanusState1Reminder2");
-		state4 = (RegimenStateImpl) ctx.getBean("tetanusState2");
-		state5 = (RegimenStateImpl) ctx.getBean("tetanusState2Reminder1");
-		state6 = (RegimenStateImpl) ctx.getBean("tetanusState2Reminder2");
-		state7 = (RegimenStateImpl) ctx.getBean("tetanusState3");
+		state1 = (MessageProgramStateImpl) ctx.getBean("tetanusState1");
+		state2 = (MessageProgramStateImpl) ctx
+				.getBean("tetanusState1Reminder1");
+		state3 = (MessageProgramStateImpl) ctx
+				.getBean("tetanusState1Reminder2");
+		state4 = (MessageProgramStateImpl) ctx.getBean("tetanusState2");
+		state5 = (MessageProgramStateImpl) ctx
+				.getBean("tetanusState2Reminder1");
+		state6 = (MessageProgramStateImpl) ctx
+				.getBean("tetanusState2Reminder2");
+		state7 = (MessageProgramStateImpl) ctx.getBean("tetanusState3");
 
 		// EasyMock setup in Spring config
 		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
 
 		state1.setRegistrarBean(registrarBean);
-		for (RegimenStateTransition transition : state1.getTransitions()) {
-			if (transition instanceof RegimenStateTransitionExpectedNumImpl) {
-				((RegimenStateTransitionExpectedNumImpl) transition)
+		for (MessageProgramStateTransition transition : state1.getTransitions()) {
+			if (transition instanceof MessageProgramStateTransitionExpectedNumImpl) {
+				((MessageProgramStateTransitionExpectedNumImpl) transition)
 						.setRegistrarBean(registrarBean);
 			}
 		}
 		state2.setRegistrarBean(registrarBean);
-		for (RegimenStateTransition transition : state2.getTransitions()) {
-			if (transition instanceof RegimenStateTransitionExpectedNumImpl) {
-				((RegimenStateTransitionExpectedNumImpl) transition)
+		for (MessageProgramStateTransition transition : state2.getTransitions()) {
+			if (transition instanceof MessageProgramStateTransitionExpectedNumImpl) {
+				((MessageProgramStateTransitionExpectedNumImpl) transition)
 						.setRegistrarBean(registrarBean);
 			}
 		}
 		state3.setRegistrarBean(registrarBean);
-		for (RegimenStateTransition transition : state3.getTransitions()) {
-			if (transition instanceof RegimenStateTransitionExpectedNumImpl) {
-				((RegimenStateTransitionExpectedNumImpl) transition)
+		for (MessageProgramStateTransition transition : state3.getTransitions()) {
+			if (transition instanceof MessageProgramStateTransitionExpectedNumImpl) {
+				((MessageProgramStateTransitionExpectedNumImpl) transition)
 						.setRegistrarBean(registrarBean);
 			}
 		}
 		state4.setRegistrarBean(registrarBean);
-		for (RegimenStateTransition transition : state4.getTransitions()) {
-			if (transition instanceof RegimenStateTransitionExpectedNumImpl) {
-				((RegimenStateTransitionExpectedNumImpl) transition)
+		for (MessageProgramStateTransition transition : state4.getTransitions()) {
+			if (transition instanceof MessageProgramStateTransitionExpectedNumImpl) {
+				((MessageProgramStateTransitionExpectedNumImpl) transition)
 						.setRegistrarBean(registrarBean);
 			}
 		}
 		state5.setRegistrarBean(registrarBean);
-		for (RegimenStateTransition transition : state5.getTransitions()) {
-			if (transition instanceof RegimenStateTransitionExpectedNumImpl) {
-				((RegimenStateTransitionExpectedNumImpl) transition)
+		for (MessageProgramStateTransition transition : state5.getTransitions()) {
+			if (transition instanceof MessageProgramStateTransitionExpectedNumImpl) {
+				((MessageProgramStateTransitionExpectedNumImpl) transition)
 						.setRegistrarBean(registrarBean);
 			}
 		}
 		state6.setRegistrarBean(registrarBean);
-		for (RegimenStateTransition transition : state6.getTransitions()) {
-			if (transition instanceof RegimenStateTransitionExpectedNumImpl) {
-				((RegimenStateTransitionExpectedNumImpl) transition)
+		for (MessageProgramStateTransition transition : state6.getTransitions()) {
+			if (transition instanceof MessageProgramStateTransitionExpectedNumImpl) {
+				((MessageProgramStateTransitionExpectedNumImpl) transition)
 						.setRegistrarBean(registrarBean);
 			}
 		}
@@ -127,8 +131,8 @@ public class TetanusImmunizRegimenTest extends TestCase {
 			if (command instanceof ScheduleMessageCommand) {
 				((ScheduleMessageCommand) command)
 						.setMessageScheduler(messageScheduler);
-			} else if (command instanceof RemoveRegimenEnrollmentCommand) {
-				((RemoveRegimenEnrollmentCommand) command)
+			} else if (command instanceof RemoveEnrollmentCommand) {
+				((RemoveEnrollmentCommand) command)
 						.setRegistrarBean(registrarBean);
 			}
 		}
@@ -139,7 +143,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 		patient = null;
 		patientId = null;
 
-		regimen = null;
+		program = null;
 		state1 = null;
 		state2 = null;
 		state3 = null;
@@ -155,7 +159,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 	}
 
 	public void testState1() {
-		RegimenState expectedState = state1;
+		MessageProgramState expectedState = state1;
 		// No tetanus immunizations, patient registered 0 minutes ago, message
 		// expected in 3 minutes
 		Integer numberOfTetanusObs = 0;
@@ -164,11 +168,11 @@ public class TetanusImmunizRegimenTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) expectedState
 				.getCommand()).getMessageKey();
-		String groupId = regimen.getName();
+		String groupId = program.getName();
 
 		expect(
-				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
-						regimen.getConceptValue())).andReturn(
+				registrarBean.getNumberOfObs(patient, program.getConceptName(),
+						program.getConceptValue())).andReturn(
 				numberOfTetanusObs);
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
@@ -176,7 +180,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 
 		replay(registrarBean, messageScheduler);
 
-		RegimenState state = regimen.determineState(patient);
+		MessageProgramState state = program.determineState(patient);
 
 		verify(registrarBean, messageScheduler);
 
@@ -184,7 +188,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 	}
 
 	public void testState2() {
-		RegimenState expectedState = state2;
+		MessageProgramState expectedState = state2;
 		// No tetanus immunizations, patient registered 4 minutes ago, message
 		// expected 6 minutes after registration
 		Integer numberOfTetanusObs = 0;
@@ -193,11 +197,11 @@ public class TetanusImmunizRegimenTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) expectedState
 				.getCommand()).getMessageKey();
-		String groupId = regimen.getName();
+		String groupId = program.getName();
 
 		expect(
-				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
-						regimen.getConceptValue())).andReturn(
+				registrarBean.getNumberOfObs(patient, program.getConceptName(),
+						program.getConceptValue())).andReturn(
 				numberOfTetanusObs).anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
@@ -205,7 +209,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 
 		replay(registrarBean, messageScheduler);
 
-		RegimenState state = regimen.determineState(patient);
+		MessageProgramState state = program.determineState(patient);
 
 		verify(registrarBean, messageScheduler);
 
@@ -213,7 +217,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 	}
 
 	public void testState3() {
-		RegimenState expectedState = state3;
+		MessageProgramState expectedState = state3;
 		// No tetanus immunizations, patient registered 7 minutes ago, message
 		// expected 9 minutes after registration
 		Integer numberOfTetanusObs = 0;
@@ -222,11 +226,11 @@ public class TetanusImmunizRegimenTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) expectedState
 				.getCommand()).getMessageKey();
-		String groupId = regimen.getName();
+		String groupId = program.getName();
 
 		expect(
-				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
-						regimen.getConceptValue())).andReturn(
+				registrarBean.getNumberOfObs(patient, program.getConceptName(),
+						program.getConceptValue())).andReturn(
 				numberOfTetanusObs).anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
@@ -234,7 +238,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 
 		replay(registrarBean, messageScheduler);
 
-		RegimenState state = regimen.determineState(patient);
+		MessageProgramState state = program.determineState(patient);
 
 		verify(registrarBean, messageScheduler);
 
@@ -242,7 +246,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 	}
 
 	public void testState4() {
-		RegimenState expectedState = state4;
+		MessageProgramState expectedState = state4;
 		// 1 tetanus immunization, patient registered 0 minutes ago, message
 		// expected 1 minutes after last tetanus, which was 0 minutes ago
 		Integer numberOfTetanusObs = 1;
@@ -252,15 +256,15 @@ public class TetanusImmunizRegimenTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) expectedState
 				.getCommand()).getMessageKey();
-		String groupId = regimen.getName();
+		String groupId = program.getName();
 
 		expect(
-				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
-						regimen.getConceptValue())).andReturn(
+				registrarBean.getNumberOfObs(patient, program.getConceptName(),
+						program.getConceptValue())).andReturn(
 				numberOfTetanusObs).anyTimes();
 		expect(
-				registrarBean.getLastObsDate(patient, regimen.getConceptName(),
-						regimen.getConceptValue())).andReturn(lastObsDate)
+				registrarBean.getLastObsDate(patient, program.getConceptName(),
+						program.getConceptValue())).andReturn(lastObsDate)
 				.anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
@@ -268,7 +272,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 
 		replay(registrarBean, messageScheduler);
 
-		RegimenState state = regimen.determineState(patient);
+		MessageProgramState state = program.determineState(patient);
 
 		verify(registrarBean, messageScheduler);
 
@@ -276,7 +280,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 	}
 
 	public void testState5() {
-		RegimenState expectedState = state5;
+		MessageProgramState expectedState = state5;
 		// 1 tetanus immunization, patient registered 2 minutes ago, message
 		// expected 3 minutes after last tetanus, which was 2 minutes ago
 		Integer numberOfTetanusObs = 1;
@@ -286,15 +290,15 @@ public class TetanusImmunizRegimenTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) expectedState
 				.getCommand()).getMessageKey();
-		String groupId = regimen.getName();
+		String groupId = program.getName();
 
 		expect(
-				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
-						regimen.getConceptValue())).andReturn(
+				registrarBean.getNumberOfObs(patient, program.getConceptName(),
+						program.getConceptValue())).andReturn(
 				numberOfTetanusObs).anyTimes();
 		expect(
-				registrarBean.getLastObsDate(patient, regimen.getConceptName(),
-						regimen.getConceptValue())).andReturn(lastObsDate)
+				registrarBean.getLastObsDate(patient, program.getConceptName(),
+						program.getConceptValue())).andReturn(lastObsDate)
 				.anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
@@ -302,7 +306,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 
 		replay(registrarBean, messageScheduler);
 
-		RegimenState state = regimen.determineState(patient);
+		MessageProgramState state = program.determineState(patient);
 
 		verify(registrarBean, messageScheduler);
 
@@ -310,7 +314,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 	}
 
 	public void testState6() {
-		RegimenState expectedState = state6;
+		MessageProgramState expectedState = state6;
 		// 1 tetanus immunization, patient registered 4 minutes ago, message
 		// expected 6 minutes after last tetanus, which was 4 minutes ago
 		Integer numberOfTetanusObs = 1;
@@ -320,15 +324,15 @@ public class TetanusImmunizRegimenTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) expectedState
 				.getCommand()).getMessageKey();
-		String groupId = regimen.getName();
+		String groupId = program.getName();
 
 		expect(
-				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
-						regimen.getConceptValue())).andReturn(
+				registrarBean.getNumberOfObs(patient, program.getConceptName(),
+						program.getConceptValue())).andReturn(
 				numberOfTetanusObs).anyTimes();
 		expect(
-				registrarBean.getLastObsDate(patient, regimen.getConceptName(),
-						regimen.getConceptValue())).andReturn(lastObsDate)
+				registrarBean.getLastObsDate(patient, program.getConceptName(),
+						program.getConceptValue())).andReturn(lastObsDate)
 				.anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
@@ -336,7 +340,7 @@ public class TetanusImmunizRegimenTest extends TestCase {
 
 		replay(registrarBean, messageScheduler);
 
-		RegimenState state = regimen.determineState(patient);
+		MessageProgramState state = program.determineState(patient);
 
 		verify(registrarBean, messageScheduler);
 
@@ -344,22 +348,22 @@ public class TetanusImmunizRegimenTest extends TestCase {
 	}
 
 	public void testState7AllObs() {
-		RegimenState expectedState = state7;
+		MessageProgramState expectedState = state7;
 		// 2 tetanus immunizations, no messages expected
 		Integer numberOfTetanusObs = 2;
 
 		expect(
-				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
-						regimen.getConceptValue())).andReturn(
+				registrarBean.getNumberOfObs(patient, program.getConceptName(),
+						program.getConceptValue())).andReturn(
 				numberOfTetanusObs).anyTimes();
-		registrarBean.removeAllUnsentMessages(patient.getPatientId(), regimen
+		registrarBean.removeAllUnsentMessages(patient.getPatientId(), program
 				.getName());
-		registrarBean.removeRegimenEnrollment(patient.getPatientId(), regimen
-				.getName());
+		registrarBean.removeMessageProgramEnrollment(patient.getPatientId(),
+				program.getName());
 
 		replay(registrarBean, messageScheduler);
 
-		RegimenState state = regimen.determineState(patient);
+		MessageProgramState state = program.determineState(patient);
 
 		verify(registrarBean, messageScheduler);
 
@@ -367,24 +371,24 @@ public class TetanusImmunizRegimenTest extends TestCase {
 	}
 
 	public void testState7NoObs() {
-		RegimenState expectedState = state7;
+		MessageProgramState expectedState = state7;
 		// No tetanus immunizations, patient registered 10 minutes ago, no
 		// messages expected
 		Integer numberOfTetanusObs = 0;
 		setPatientRegistration(patient, 10);
 
 		expect(
-				registrarBean.getNumberOfObs(patient, regimen.getConceptName(),
-						regimen.getConceptValue())).andReturn(
+				registrarBean.getNumberOfObs(patient, program.getConceptName(),
+						program.getConceptValue())).andReturn(
 				numberOfTetanusObs).anyTimes();
-		registrarBean.removeAllUnsentMessages(patient.getPatientId(), regimen
+		registrarBean.removeAllUnsentMessages(patient.getPatientId(), program
 				.getName());
-		registrarBean.removeRegimenEnrollment(patient.getPatientId(), regimen
-				.getName());
+		registrarBean.removeMessageProgramEnrollment(patient.getPatientId(),
+				program.getName());
 
 		replay(registrarBean, messageScheduler);
 
-		RegimenState state = regimen.determineState(patient);
+		MessageProgramState state = program.determineState(patient);
 
 		verify(registrarBean, messageScheduler);
 

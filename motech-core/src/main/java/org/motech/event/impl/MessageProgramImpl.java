@@ -7,33 +7,34 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.event.Command;
-import org.motech.event.Regimen;
-import org.motech.event.RegimenState;
-import org.motech.event.RegimenStateTransition;
+import org.motech.event.MessageProgram;
+import org.motech.event.MessageProgramState;
+import org.motech.event.MessageProgramStateTransition;
 import org.openmrs.Patient;
 
-public class RegimenImpl extends BaseInterfaceImpl implements Regimen {
+public class MessageProgramImpl extends BaseInterfaceImpl implements
+		MessageProgram {
 
-	private static Log log = LogFactory.getLog(RegimenImpl.class);
+	private static Log log = LogFactory.getLog(MessageProgramImpl.class);
 
-	private RegimenState startState;
-	private RegimenState endState;
+	private MessageProgramState startState;
+	private MessageProgramState endState;
 	private String conceptName;
 	private String conceptValue;
 
-	public RegimenState getStartState() {
+	public MessageProgramState getStartState() {
 		return startState;
 	}
 
-	public void setStartState(RegimenState startState) {
+	public void setStartState(MessageProgramState startState) {
 		this.startState = startState;
 	}
 
-	public RegimenState getEndState() {
+	public MessageProgramState getEndState() {
 		return endState;
 	}
 
-	public void setEndState(RegimenState endState) {
+	public void setEndState(MessageProgramState endState) {
 		this.endState = endState;
 	}
 
@@ -53,16 +54,16 @@ public class RegimenImpl extends BaseInterfaceImpl implements Regimen {
 		this.conceptValue = conceptValue;
 	}
 
-	public RegimenState determineState(Patient patient) {
-		RegimenState state = startState;
-		RegimenStateTransition transition = state.getTransition(patient);
+	public MessageProgramState determineState(Patient patient) {
+		MessageProgramState state = startState;
+		MessageProgramStateTransition transition = state.getTransition(patient);
 		while (!transition.getNextState().equals(state)) {
 			state = transition.getNextState();
 			transition = state.getTransition(patient);
 		}
 
 		if (log.isDebugEnabled()) {
-			log.debug("Regimen determineState: patient id: "
+			log.debug("Message Program determineState: patient id: "
 					+ patient.getPatientId() + ", state: " + state.getName());
 		}
 
@@ -94,11 +95,11 @@ public class RegimenImpl extends BaseInterfaceImpl implements Regimen {
 						.setMessageRecipientId(patient.getPatientId());
 				((RemoveMessagesCommand) commandInList).setMessageGroup(this
 						.getName());
-			} else if (commandInList instanceof RemoveRegimenEnrollmentCommand) {
-				((RemoveRegimenEnrollmentCommand) commandInList)
-						.setPersonId(patient.getPatientId());
-				((RemoveRegimenEnrollmentCommand) commandInList)
-						.setRegimenName(this.getName());
+			} else if (commandInList instanceof RemoveEnrollmentCommand) {
+				((RemoveEnrollmentCommand) commandInList).setPersonId(patient
+						.getPatientId());
+				((RemoveEnrollmentCommand) commandInList).setProgramName(this
+						.getName());
 			}
 		}
 		if (performExecute) {
@@ -108,14 +109,14 @@ public class RegimenImpl extends BaseInterfaceImpl implements Regimen {
 		return state;
 	}
 
-	public RegimenState updateState(Patient patient) {
-		RegimenState state = determineState(patient);
+	public MessageProgramState updateState(Patient patient) {
+		MessageProgramState state = determineState(patient);
 		if (state.equals(endState)) {
 			return state;
 		}
-		RegimenStateTransition transition = state.getTransition(patient);
+		MessageProgramStateTransition transition = state.getTransition(patient);
 		transition.getCommand().execute();
-		RegimenState newState = transition.getNextState();
+		MessageProgramState newState = transition.getNextState();
 
 		return newState;
 	}

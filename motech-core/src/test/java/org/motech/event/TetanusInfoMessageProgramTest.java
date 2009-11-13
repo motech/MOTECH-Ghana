@@ -8,9 +8,9 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
-import org.motech.event.impl.RegimenImpl;
-import org.motech.event.impl.RegimenStateImpl;
-import org.motech.event.impl.RemoveRegimenEnrollmentCommand;
+import org.motech.event.impl.MessageProgramImpl;
+import org.motech.event.impl.MessageProgramStateImpl;
+import org.motech.event.impl.RemoveEnrollmentCommand;
 import org.motech.event.impl.ScheduleMessageCommand;
 import org.motech.messaging.MessageScheduler;
 import org.motech.svc.RegistrarBean;
@@ -18,19 +18,19 @@ import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class TetanusInfoRegimenTest extends TestCase {
+public class TetanusInfoMessageProgramTest extends TestCase {
 
 	ApplicationContext ctx;
 
 	Patient patient;
 	Integer patientId;
 
-	RegimenImpl regimen;
-	RegimenStateImpl state1;
-	RegimenStateImpl state2;
-	RegimenStateImpl state3;
-	RegimenStateImpl state4;
-	RegimenStateImpl state5;
+	MessageProgramImpl program;
+	MessageProgramStateImpl state1;
+	MessageProgramStateImpl state2;
+	MessageProgramStateImpl state3;
+	MessageProgramStateImpl state4;
+	MessageProgramStateImpl state5;
 
 	MessageScheduler messageScheduler;
 	RegistrarBean registrarBean;
@@ -43,16 +43,16 @@ public class TetanusInfoRegimenTest extends TestCase {
 		patient.setPatientId(patientId);
 
 		ctx = new ClassPathXmlApplicationContext(new String[] {
-				"regimen/tetanus-info-regimen.xml",
-				"test-common-regimen-beans.xml" });
+				"programs/tetanus-info-program.xml",
+				"test-common-program-beans.xml" });
 
-		regimen = (RegimenImpl) ctx.getBean("tetanusInfo");
+		program = (MessageProgramImpl) ctx.getBean("tetanusInfo");
 
-		state1 = (RegimenStateImpl) ctx.getBean("tetanusInfoState1");
-		state2 = (RegimenStateImpl) ctx.getBean("tetanusInfoState2");
-		state3 = (RegimenStateImpl) ctx.getBean("tetanusInfoState3");
-		state4 = (RegimenStateImpl) ctx.getBean("tetanusInfoState4");
-		state5 = (RegimenStateImpl) ctx.getBean("tetanusInfoState5");
+		state1 = (MessageProgramStateImpl) ctx.getBean("tetanusInfoState1");
+		state2 = (MessageProgramStateImpl) ctx.getBean("tetanusInfoState2");
+		state3 = (MessageProgramStateImpl) ctx.getBean("tetanusInfoState3");
+		state4 = (MessageProgramStateImpl) ctx.getBean("tetanusInfoState4");
+		state5 = (MessageProgramStateImpl) ctx.getBean("tetanusInfoState5");
 
 		// EasyMock setup in Spring config
 		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
@@ -73,7 +73,7 @@ public class TetanusInfoRegimenTest extends TestCase {
 				.setMessageScheduler(messageScheduler);
 		((ScheduleMessageCommand) state4.getCommand())
 				.setMessageScheduler(messageScheduler);
-		((RemoveRegimenEnrollmentCommand) state5.getCommand())
+		((RemoveEnrollmentCommand) state5.getCommand())
 				.setRegistrarBean(registrarBean);
 	}
 
@@ -82,7 +82,7 @@ public class TetanusInfoRegimenTest extends TestCase {
 		patient = null;
 		patientId = null;
 
-		regimen = null;
+		program = null;
 		state1 = null;
 		state2 = null;
 		state3 = null;
@@ -102,14 +102,14 @@ public class TetanusInfoRegimenTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) state1.getCommand())
 				.getMessageKey();
-		String groupId = regimen.getName();
+		String groupId = program.getName();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		RegimenState state = regimen.determineState(patient);
+		MessageProgramState state = program.determineState(patient);
 
 		verify(registrarBean, messageScheduler);
 
@@ -124,14 +124,14 @@ public class TetanusInfoRegimenTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) state2.getCommand())
 				.getMessageKey();
-		String groupId = regimen.getName();
+		String groupId = program.getName();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		RegimenState state = regimen.determineState(patient);
+		MessageProgramState state = program.determineState(patient);
 
 		verify(registrarBean, messageScheduler);
 
@@ -146,14 +146,14 @@ public class TetanusInfoRegimenTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) state3.getCommand())
 				.getMessageKey();
-		String groupId = regimen.getName();
+		String groupId = program.getName();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		RegimenState state = regimen.determineState(patient);
+		MessageProgramState state = program.determineState(patient);
 
 		verify(registrarBean, messageScheduler);
 
@@ -168,14 +168,14 @@ public class TetanusInfoRegimenTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) state4.getCommand())
 				.getMessageKey();
-		String groupId = regimen.getName();
+		String groupId = program.getName();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		RegimenState state = regimen.determineState(patient);
+		MessageProgramState state = program.determineState(patient);
 
 		verify(registrarBean, messageScheduler);
 
@@ -186,12 +186,12 @@ public class TetanusInfoRegimenTest extends TestCase {
 		// Patient registered 7 minute ago, no messages expected
 		setPatientRegistration(patient, 7);
 
-		registrarBean.removeRegimenEnrollment(patient.getPatientId(), regimen
-				.getName());
+		registrarBean.removeMessageProgramEnrollment(patient.getPatientId(),
+				program.getName());
 
 		replay(registrarBean, messageScheduler);
 
-		RegimenState state = regimen.determineState(patient);
+		MessageProgramState state = program.determineState(patient);
 
 		verify(registrarBean, messageScheduler);
 

@@ -3,7 +3,7 @@ package org.motech.model.db;
 import java.util.Date;
 import java.util.List;
 
-import org.motech.event.RegimenEnrollment;
+import org.motech.event.MessageProgramEnrollment;
 import org.motech.messaging.Message;
 import org.motech.messaging.MessageAttribute;
 import org.motech.messaging.MessageDefinition;
@@ -69,9 +69,11 @@ public interface MotechDAO {
 
 	void saveTroubledPhone(TroubledPhone phone);
 
-	RegimenEnrollment saveRegimenEnrollment(RegimenEnrollment regimenEnrollment);
+	MessageProgramEnrollment saveMessageProgramEnrollment(
+			MessageProgramEnrollment enrollment);
 
-	List<String> getActiveRegimenEnrollment(Integer personId);
+	List<String> getActiveMessageProgramEnrollments(Integer personId);
 
-	RegimenEnrollment getRegimenEnrollment(Integer personId, String regimen);
+	MessageProgramEnrollment getMessageProgramEnrollment(Integer personId,
+			String program);
 }

@@ -4,13 +4,13 @@ import java.util.Date;
 
 import org.openmrs.Patient;
 
-public interface RegimenState extends BaseInterface {
+public interface MessageProgramState extends BaseInterface {
 
 	Command getCommand();
 
-	RegimenStateTransition getTransition(Patient patient);
+	MessageProgramStateTransition getTransition(Patient patient);
 
-	Regimen getRegimen();
+	MessageProgram getProgram();
 
 	int getTimeValue();
 

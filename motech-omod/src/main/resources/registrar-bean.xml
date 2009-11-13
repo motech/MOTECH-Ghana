@@ -9,25 +9,25 @@
 	<bean id="registrarBean" class="${corePackage}.svc.RegistrarBeanImpl">
 		<property name="contextService" ref="contextService" />
 		<property name="mobileService" ref="mobileClient" />
-		<property name="regimens">
+		<property name="messagePrograms">
 			<map>
 				<entry>
 					<key>
-						<value>Tetanus Information Regimen</value>
+						<value>Tetanus Information Message Program</value>
 					</key>
 					<ref bean="tetanusInfo" />
 				</entry>
 				<entry>
 					<key>
-						<value>Tetanus Immunization Regimen</value>
+						<value>Tetanus Immunization Message Program</value>
 					</key>
 					<ref bean="tetanusImmunization" />
 				</entry>
 				<entry>
 					<key>
-						<value>Daily Pregnancy Regimen</value>
+						<value>Daily Pregnancy Message Program</value>
 					</key>
-					<ref bean="dailyPregnancyRegimen" />
+					<ref bean="dailyPregnancyProgram" />
 				</entry>
 			</map>
 		</property>

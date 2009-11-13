@@ -38,7 +38,7 @@ public class MotechModuleActivator implements Activator {
 		// module spring config not yet available
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
 				new String[] { "registrar-bean.xml",
-						"common-regimen-beans.xml", "regimen/*.xml" });
+						"common-program-beans.xml", "programs/*.xml" });
 		registrarBean = (RegistrarBean) applicationContext
 				.getBean("registrarBean");
 	}

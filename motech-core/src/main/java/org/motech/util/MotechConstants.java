@@ -31,7 +31,7 @@ public final class MotechConstants {
 	public static final String TASK_PROPERTY_TIME_OFFSET = "timeOffset";
 	public static final String TASK_DAILY_NOTIFICATION = "Daily Notification Task";
 	public static final String TASK_IMMEDIATE_NOTIFICATION = "Immediate Notification Task";
-	public static final String TASK_REGIMEN_UPDATE = "Regimen Update Task";
+	public static final String TASK_MESSAGEPROGRAM_UPDATE = "MessageProgram Update Task";
 	public static final String GLOBAL_PROPERTY_TROUBLED_PHONE = "motechmodule.troubled_phone_failures";
 
 	/*

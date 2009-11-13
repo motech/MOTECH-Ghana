@@ -14,7 +14,7 @@ import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class RegimenDateStateChangeTest extends TestCase {
+public class MessageProgramDateStateChangeTest extends TestCase {
 
 	ApplicationContext ctx;
 
@@ -23,13 +23,13 @@ public class RegimenDateStateChangeTest extends TestCase {
 	Date week2;
 	Date week3;
 	Date week41;
-	Regimen pregnancyRegimen;
-	RegimenState pregnancyState1;
-	RegimenState pregnancyState2;
-	RegimenState pregnancyState3;
-	RegimenState pregnancyState4;
-	RegimenState pregnancyState41;
-	RegimenState currentPatientState;
+	MessageProgram pregnancyProgram;
+	MessageProgramState pregnancyState1;
+	MessageProgramState pregnancyState2;
+	MessageProgramState pregnancyState3;
+	MessageProgramState pregnancyState4;
+	MessageProgramState pregnancyState41;
+	MessageProgramState currentPatientState;
 	RegistrarBean registrarBean;
 
 	@Override
@@ -49,15 +49,16 @@ public class RegimenDateStateChangeTest extends TestCase {
 		patient = new Patient();
 
 		ctx = new ClassPathXmlApplicationContext(new String[] {
-				"test-common-regimen-beans.xml",
-				"pregnancy-regimen-test-context.xml" });
-		pregnancyRegimen = (Regimen) ctx.getBean("pregnancyRegimen");
+				"test-common-program-beans.xml",
+				"pregnancy-program-test-context.xml" });
+		pregnancyProgram = (MessageProgram) ctx.getBean("pregnancyProgram");
 
-		pregnancyState1 = (RegimenState) ctx.getBean("pregnancyState1");
-		pregnancyState2 = (RegimenState) ctx.getBean("pregnancyState2");
-		pregnancyState3 = (RegimenState) ctx.getBean("pregnancyState3");
-		pregnancyState4 = (RegimenState) ctx.getBean("pregnancyState4");
-		pregnancyState41 = (RegimenState) ctx.getBean("pregnancyState41");
+		pregnancyState1 = (MessageProgramState) ctx.getBean("pregnancyState1");
+		pregnancyState2 = (MessageProgramState) ctx.getBean("pregnancyState2");
+		pregnancyState3 = (MessageProgramState) ctx.getBean("pregnancyState3");
+		pregnancyState4 = (MessageProgramState) ctx.getBean("pregnancyState4");
+		pregnancyState41 = (MessageProgramState) ctx
+				.getBean("pregnancyState41");
 
 		// EasyMock setup in Spring config
 		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
@@ -66,7 +67,7 @@ public class RegimenDateStateChangeTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		ctx = null;
-		pregnancyRegimen = null;
+		pregnancyProgram = null;
 		pregnancyState1 = null;
 		pregnancyState2 = null;
 		pregnancyState3 = null;
@@ -77,13 +78,13 @@ public class RegimenDateStateChangeTest extends TestCase {
 
 	public void testDetermineWeek1() {
 		expect(
-				registrarBean.getLastObsDate(patient, pregnancyRegimen
-						.getConceptName(), pregnancyRegimen.getConceptValue()))
+				registrarBean.getLastObsDate(patient, pregnancyProgram
+						.getConceptName(), pregnancyProgram.getConceptValue()))
 				.andReturn(week1).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyRegimen.determineState(patient);
+		currentPatientState = pregnancyProgram.determineState(patient);
 
 		verify(registrarBean);
 
@@ -92,13 +93,13 @@ public class RegimenDateStateChangeTest extends TestCase {
 
 	public void testDetermineWeek2() {
 		expect(
-				registrarBean.getLastObsDate(patient, pregnancyRegimen
-						.getConceptName(), pregnancyRegimen.getConceptValue()))
+				registrarBean.getLastObsDate(patient, pregnancyProgram
+						.getConceptName(), pregnancyProgram.getConceptValue()))
 				.andReturn(week2).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyRegimen.determineState(patient);
+		currentPatientState = pregnancyProgram.determineState(patient);
 
 		verify(registrarBean);
 
@@ -107,13 +108,13 @@ public class RegimenDateStateChangeTest extends TestCase {
 
 	public void testDetermineWeek3() {
 		expect(
-				registrarBean.getLastObsDate(patient, pregnancyRegimen
-						.getConceptName(), pregnancyRegimen.getConceptValue()))
+				registrarBean.getLastObsDate(patient, pregnancyProgram
+						.getConceptName(), pregnancyProgram.getConceptValue()))
 				.andReturn(week3).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyRegimen.determineState(patient);
+		currentPatientState = pregnancyProgram.determineState(patient);
 
 		verify(registrarBean);
 
@@ -122,13 +123,13 @@ public class RegimenDateStateChangeTest extends TestCase {
 
 	public void testDetermineEndState() {
 		expect(
-				registrarBean.getLastObsDate(patient, pregnancyRegimen
-						.getConceptName(), pregnancyRegimen.getConceptValue()))
+				registrarBean.getLastObsDate(patient, pregnancyProgram
+						.getConceptName(), pregnancyProgram.getConceptValue()))
 				.andReturn(week41).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyRegimen.determineState(patient);
+		currentPatientState = pregnancyProgram.determineState(patient);
 
 		verify(registrarBean);
 

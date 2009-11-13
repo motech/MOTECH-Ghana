@@ -6,30 +6,31 @@ import java.util.Date;
 import java.util.List;
 
 import org.motech.event.Command;
-import org.motech.event.Regimen;
-import org.motech.event.RegimenState;
-import org.motech.event.RegimenStateTransition;
+import org.motech.event.MessageProgram;
+import org.motech.event.MessageProgramState;
+import org.motech.event.MessageProgramStateTransition;
 import org.motech.event.TimePeriod;
 import org.motech.event.TimeReference;
 import org.motech.svc.RegistrarBean;
 import org.openmrs.Patient;
 
-public class RegimenStateImpl extends BaseInterfaceImpl implements RegimenState {
+public class MessageProgramStateImpl extends BaseInterfaceImpl implements
+		MessageProgramState {
 
 	private RegistrarBean registrarBean;
-	private List<RegimenStateTransition> transitions = new ArrayList<RegimenStateTransition>();
+	private List<MessageProgramStateTransition> transitions = new ArrayList<MessageProgramStateTransition>();
 	private Command command;
-	private Regimen regimen;
+	private MessageProgram program;
 	private int timeValue;
 	private TimePeriod timePeriod;
 	private TimeReference timeReference;
 
-	public void addTransition(RegimenStateTransition transition) {
+	public void addTransition(MessageProgramStateTransition transition) {
 		transitions.add(transition);
 	}
 
-	public RegimenStateTransition getTransition(Patient patient) {
-		for (RegimenStateTransition transition : transitions) {
+	public MessageProgramStateTransition getTransition(Patient patient) {
+		for (MessageProgramStateTransition transition : transitions) {
 			if (transition.evaluate(patient)) {
 				return transition;
 			}
@@ -53,12 +54,12 @@ public class RegimenStateImpl extends BaseInterfaceImpl implements RegimenState 
 		this.command = command;
 	}
 
-	public Regimen getRegimen() {
-		return regimen;
+	public MessageProgram getProgram() {
+		return program;
 	}
 
-	public void setRegimen(Regimen regimen) {
-		this.regimen = regimen;
+	public void setProgram(MessageProgram program) {
+		this.program = program;
 	}
 
 	public int getTimeValue() {
@@ -92,11 +93,11 @@ public class RegimenStateImpl extends BaseInterfaceImpl implements RegimenState 
 		setTimeReference(timeReference);
 	}
 
-	public List<RegimenStateTransition> getTransitions() {
+	public List<MessageProgramStateTransition> getTransitions() {
 		return transitions;
 	}
 
-	public void setTransitions(List<RegimenStateTransition> transitions) {
+	public void setTransitions(List<MessageProgramStateTransition> transitions) {
 		this.transitions = transitions;
 	}
 
@@ -110,8 +111,8 @@ public class RegimenStateImpl extends BaseInterfaceImpl implements RegimenState 
 				calendar.setTime(patient.getBirthdate());
 				break;
 			case last_obs:
-				Date obsDate = registrarBean.getLastObsDate(patient, regimen
-						.getConceptName(), regimen.getConceptValue());
+				Date obsDate = registrarBean.getLastObsDate(patient, program
+						.getConceptName(), program.getConceptValue());
 				if (obsDate == null) {
 					return null;
 				}
@@ -119,7 +120,7 @@ public class RegimenStateImpl extends BaseInterfaceImpl implements RegimenState 
 				break;
 			case last_obs_value:
 				Date obsValueDate = registrarBean.getLastObsValue(patient,
-						regimen.getConceptName());
+						program.getConceptName());
 				if (obsValueDate == null) {
 					return null;
 				}

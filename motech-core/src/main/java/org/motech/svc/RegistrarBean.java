@@ -35,7 +35,8 @@ public interface RegistrarBean {
 			String name, String community, String location, Date dateOfBirth,
 			Gender gender, Integer nhis, String phoneNumber,
 			ContactNumberType contactNumberType, String language,
-			MediaType mediaType, DeliveryTime deliveryTime, String[] regimen);
+			MediaType mediaType, DeliveryTime deliveryTime,
+			String[] messagePrograms);
 
 	public void recordMaternalVisit(String nursePhoneNumber, Date date,
 			String serialId, Boolean tetanus, Boolean ipt, Boolean itn,
@@ -49,7 +50,7 @@ public interface RegistrarBean {
 
 	public void setMessageStatus(String messageId, Boolean success);
 
-	public List<String> getActiveRegimenEnrollment(Integer personId);
+	public List<String> getActiveMessageProgramEnrollments(Integer personId);
 
 	public User getUserByPhoneNumber(String phoneNumber);
 
@@ -75,7 +76,8 @@ public interface RegistrarBean {
 
 	public Date getLastObsValue(Patient patient, String conceptName);
 
-	public void removeRegimenEnrollment(Integer personId, String regimenName);
+	public void removeMessageProgramEnrollment(Integer personId,
+			String programName);
 
 	public void scheduleMessage(String messageKey, String messageGroup,
 			Integer messageRecipientId, Date messageDate,
@@ -87,9 +89,9 @@ public interface RegistrarBean {
 
 	public void removeAllTasks();
 
-	public void updateRegimenState(Obs obs);
+	public void updateMessageProgramState(Obs obs);
 
 	public void sendMessages(Date startDate, Date endDate, boolean sendImmediate);
 
-	public void updateAllRegimenState();
+	public void updateAllMessageProgramsState();
 }

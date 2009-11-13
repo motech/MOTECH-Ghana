@@ -6,13 +6,13 @@ import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.impl.ContextServiceImpl;
 import org.openmrs.scheduler.tasks.AbstractTask;
 
-public class RegimenUpdateTask extends AbstractTask {
+public class MessageProgramUpdateTask extends AbstractTask {
 
-	private static Log log = LogFactory.getLog(RegimenUpdateTask.class);
+	private static Log log = LogFactory.getLog(MessageProgramUpdateTask.class);
 
 	private ContextService contextService;
 
-	public RegimenUpdateTask() {
+	public MessageProgramUpdateTask() {
 		contextService = new ContextServiceImpl();
 	}
 
@@ -25,12 +25,13 @@ public class RegimenUpdateTask extends AbstractTask {
 	 */
 	@Override
 	public void execute() {
-		log.debug("Regimen Task - Update Enrolled Regimens for all Patients");
+		log
+				.debug("Message Program Task - Update Enrolled Programs for all Patients");
 
-		// Session required for Task to get RegimenBean through Context
+		// Session required for Task to get RegistrarBean through Context
 		try {
 			contextService.openSession();
-			contextService.getRegistrarBean().updateAllRegimenState();
+			contextService.getRegistrarBean().updateAllMessageProgramsState();
 		} finally {
 			contextService.closeSession();
 		}

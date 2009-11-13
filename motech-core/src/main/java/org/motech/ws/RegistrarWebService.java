@@ -62,11 +62,12 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "language") String language,
 			@WebParam(name = "mediaType") MediaType mediaType,
 			@WebParam(name = "deliveryTime") DeliveryTime deliveryTime,
-			@WebParam(name = "regimen") String[] regimen) {
+			@WebParam(name = "messagePrograms") String[] messagePrograms) {
 
 		registrarBean.registerPatient(nursePhoneNumber, serialId, name,
 				community, location, dateOfBirth, gender, nhis, phoneNumber,
-				contactNumberType, language, mediaType, deliveryTime, regimen);
+				contactNumberType, language, mediaType, deliveryTime,
+				messagePrograms);
 	}
 
 	@WebMethod

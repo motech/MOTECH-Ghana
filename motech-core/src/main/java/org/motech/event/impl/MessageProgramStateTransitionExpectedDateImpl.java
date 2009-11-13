@@ -4,8 +4,8 @@ import java.util.Date;
 
 import org.openmrs.Patient;
 
-public class RegimenStateTransitionExpectedDateImpl extends
-		RegimenStateTransitionImpl {
+public class MessageProgramStateTransitionExpectedDateImpl extends
+		MessageProgramStateTransitionImpl {
 
 	@Override
 	public boolean evaluate(Patient patient) {

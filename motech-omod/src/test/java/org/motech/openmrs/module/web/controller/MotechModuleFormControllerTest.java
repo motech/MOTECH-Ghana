@@ -55,7 +55,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 		String serialId = "Serial Id", name = "Patient Name", community = "Community", location = "Location", dateOfBirth = "01/01/2009";
 		String nhis = "1", patientPhone = "Patient Phone", patientPhoneType = "PERSONAL", language = "Language", mediaType = "TEXT";
 		String deliveryTime = "ANYTIME";
-		String[] regimen = { "minuteTetanus" };
+		String[] programs = { "minuteTetanus" };
 		String dueDate = "01/01/2009", parity = "1", hemoglobin = "1.1";
 
 		Capture<Date> dateOfBirthCapture = new Capture<Date>();
@@ -64,7 +64,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 		Capture<ContactNumberType> phoneTypeCapture = new Capture<ContactNumberType>();
 		Capture<MediaType> mediaTypeCapture = new Capture<MediaType>();
 		Capture<DeliveryTime> deliveryTimeCapture = new Capture<DeliveryTime>();
-		Capture<String[]> regimenCapture = new Capture<String[]>();
+		Capture<String[]> programCapture = new Capture<String[]>();
 		Capture<Date> dueDateCapture = new Capture<Date>();
 		Capture<Integer> parityCapture = new Capture<Integer>();
 		Capture<Double> hemoglobinCapture = new Capture<Double>();
@@ -77,7 +77,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 				capture(nhisCapture), eq(patientPhone),
 				capture(phoneTypeCapture), eq(language),
 				capture(mediaTypeCapture), capture(deliveryTimeCapture),
-				capture(regimenCapture));
+				capture(programCapture));
 		registrarService.registerPregnancy(eq(nursePhone), (Date) anyObject(),
 				eq(serialId), capture(dueDateCapture), capture(parityCapture),
 				capture(hemoglobinCapture));
@@ -92,7 +92,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 
 		controller.quickTest(nurseName, nursePhone, clinicName, serialId, name,
 				community, location, nhis, patientPhone, patientPhoneType,
-				language, mediaType, deliveryTime, regimen, dateOfBirth,
+				language, mediaType, deliveryTime, programs, dateOfBirth,
 				dueDate, parity, hemoglobin);
 
 		verify(registrarService);
@@ -105,7 +105,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 		assertEquals(nhis, nhisCapture.getValue().toString());
 		assertEquals(patientPhoneType, phoneTypeCapture.getValue().toString());
 		assertEquals(mediaType, mediaTypeCapture.getValue().toString());
-		assertEquals(2, regimenCapture.getValue().length);
+		assertEquals(2, programCapture.getValue().length);
 		assertEquals(dueDate, dateFormat.format(dueDateCapture.getValue()));
 		assertEquals(parity, parityCapture.getValue().toString());
 		assertEquals(hemoglobin, hemoglobinCapture.getValue().toString());
@@ -140,7 +140,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 		String serialId = "Serial Id", name = "Patient Name", community = "Community", location = "Location", dateOfBirth = "01/01/2009";
 		String nhis = "1", patientPhone = "Patient Phone", patientPhoneType = "PERSONAL", language = "Language", mediaType = "TEXT";
 		String deliveryTime = "ANYTIME";
-		String[] regimen = { "minuteTetanus", "dailyPregnancy" };
+		String[] programs = { "minuteTetanus", "dailyPregnancy" };
 		String gender = "FEMALE";
 
 		Capture<Date> dateOfBirthCapture = new Capture<Date>();
@@ -149,7 +149,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 		Capture<ContactNumberType> phoneTypeCapture = new Capture<ContactNumberType>();
 		Capture<MediaType> mediaTypeCapture = new Capture<MediaType>();
 		Capture<DeliveryTime> deliveryTimeCapture = new Capture<DeliveryTime>();
-		Capture<String[]> regimenCapture = new Capture<String[]>();
+		Capture<String[]> programsCapture = new Capture<String[]>();
 
 		registrarService.registerPatient(eq(nursePhone), eq(serialId),
 				eq(name), eq(community), eq(location),
@@ -157,13 +157,13 @@ public class MotechModuleFormControllerTest extends TestCase {
 				capture(nhisCapture), eq(patientPhone),
 				capture(phoneTypeCapture), eq(language),
 				capture(mediaTypeCapture), capture(deliveryTimeCapture),
-				capture(regimenCapture));
+				capture(programsCapture));
 
 		replay(registrarService);
 
 		controller.registerPatient(nursePhone, serialId, name, community,
 				location, nhis, patientPhone, patientPhoneType, dateOfBirth,
-				gender, language, mediaType, deliveryTime, regimen);
+				gender, language, mediaType, deliveryTime, programs);
 
 		verify(registrarService);
 
@@ -176,7 +176,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 		assertEquals(patientPhoneType, phoneTypeCapture.getValue().toString());
 		assertEquals(mediaType, mediaTypeCapture.getValue().toString());
 		assertEquals(deliveryTime, deliveryTimeCapture.getValue().toString());
-		assertEquals(3, regimenCapture.getValue().length);
+		assertEquals(3, programsCapture.getValue().length);
 	}
 
 	public void testRegisterPregnancy() throws Exception {

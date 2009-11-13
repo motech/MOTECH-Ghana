@@ -64,7 +64,7 @@ public class NotificationTask extends AbstractTask {
 				+ (this.taskDefinition.getRepeatInterval() * 1000)
 				+ (timeOffset * 1000));
 
-		// Session required for Task to get RegimenBean through Context
+		// Session required for Task to get RegistrarBean through Context
 		try {
 			contextService.openSession();
 			contextService.getRegistrarBean().sendMessages(startDate, endDate,

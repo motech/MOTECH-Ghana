@@ -100,20 +100,20 @@ public class RegistrarServiceTest {
 		String language = "English";
 		MediaType mediaType = MediaType.TEXT;
 		DeliveryTime deliveryTime = DeliveryTime.ANYTIME;
-		String[] regimen = new String[2];
-		regimen[0] = "Example Regimen 1";
-		regimen[1] = "Example Regimen 2";
+		String[] programs = new String[2];
+		programs[0] = "Example MessageProgram 1";
+		programs[1] = "Example MessageProgram 2";
 
 		registrarBean.registerPatient(eq(nPhone), eq(serialId), eq(name),
 				eq(community), eq(location), eq(dob), eq(gender), eq(nhis),
 				eq(pPhone), eq(phoneType), eq(language), eq(mediaType),
-				eq(deliveryTime), aryEq(regimen));
+				eq(deliveryTime), aryEq(programs));
 
 		replay(registrarBean);
 
 		regWs.registerPatient(nPhone, serialId, name, community, location, dob,
 				gender, nhis, pPhone, phoneType, language, mediaType,
-				deliveryTime, regimen);
+				deliveryTime, programs);
 
 		verify(registrarBean);
 	}

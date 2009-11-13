@@ -15,7 +15,7 @@ import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class RegimenNumStateChangeTest extends TestCase {
+public class MessageProgramNumStateChangeTest extends TestCase {
 
 	ApplicationContext ctx;
 
@@ -26,13 +26,13 @@ public class RegimenNumStateChangeTest extends TestCase {
 	Date obs4;
 	Date obs5;
 	RegistrarBean registrarBean;
-	Regimen polioRegimen;
-	RegimenState polioState1;
-	RegimenState polioState2;
-	RegimenState polioState3;
-	RegimenState polioState4;
-	RegimenState polioState5;
-	RegimenState currentPatientState;
+	MessageProgram polioProgram;
+	MessageProgramState polioState1;
+	MessageProgramState polioState2;
+	MessageProgramState polioState3;
+	MessageProgramState polioState4;
+	MessageProgramState polioState5;
+	MessageProgramState currentPatientState;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -58,15 +58,15 @@ public class RegimenNumStateChangeTest extends TestCase {
 		obs5 = calendar.getTime();
 
 		ctx = new ClassPathXmlApplicationContext(new String[] {
-				"test-common-regimen-beans.xml",
-				"polio-regimen-test-context.xml" });
-		polioRegimen = (Regimen) ctx.getBean("polioRegimen");
+				"test-common-program-beans.xml",
+				"polio-program-test-context.xml" });
+		polioProgram = (MessageProgram) ctx.getBean("polioProgram");
 
-		polioState1 = (RegimenState) ctx.getBean("polioState1");
-		polioState2 = (RegimenState) ctx.getBean("polioState2");
-		polioState3 = (RegimenState) ctx.getBean("polioState3");
-		polioState4 = (RegimenState) ctx.getBean("polioState4");
-		polioState5 = (RegimenState) ctx.getBean("polioState5");
+		polioState1 = (MessageProgramState) ctx.getBean("polioState1");
+		polioState2 = (MessageProgramState) ctx.getBean("polioState2");
+		polioState3 = (MessageProgramState) ctx.getBean("polioState3");
+		polioState4 = (MessageProgramState) ctx.getBean("polioState4");
+		polioState5 = (MessageProgramState) ctx.getBean("polioState5");
 
 		// EasyMock setup in Spring config
 		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
@@ -75,7 +75,7 @@ public class RegimenNumStateChangeTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		ctx = null;
-		polioRegimen = null;
+		polioProgram = null;
 		polioState1 = null;
 		polioState2 = null;
 		polioState3 = null;
@@ -86,13 +86,13 @@ public class RegimenNumStateChangeTest extends TestCase {
 
 	public void testDetermineStartState() {
 		expect(
-				registrarBean.getNumberOfObs(patient, polioRegimen
-						.getConceptName(), polioRegimen.getConceptValue()))
+				registrarBean.getNumberOfObs(patient, polioProgram
+						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(0).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioRegimen.determineState(patient);
+		currentPatientState = polioProgram.determineState(patient);
 
 		verify(registrarBean);
 
@@ -101,13 +101,13 @@ public class RegimenNumStateChangeTest extends TestCase {
 
 	public void testDetermineSecondState() {
 		expect(
-				registrarBean.getNumberOfObs(patient, polioRegimen
-						.getConceptName(), polioRegimen.getConceptValue()))
+				registrarBean.getNumberOfObs(patient, polioProgram
+						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(1).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioRegimen.determineState(patient);
+		currentPatientState = polioProgram.determineState(patient);
 
 		verify(registrarBean);
 
@@ -116,13 +116,13 @@ public class RegimenNumStateChangeTest extends TestCase {
 
 	public void testDetermineEndState() {
 		expect(
-				registrarBean.getNumberOfObs(patient, polioRegimen
-						.getConceptName(), polioRegimen.getConceptValue()))
+				registrarBean.getNumberOfObs(patient, polioProgram
+						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(4).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioRegimen.determineState(patient);
+		currentPatientState = polioProgram.determineState(patient);
 
 		verify(registrarBean);
 
@@ -131,13 +131,13 @@ public class RegimenNumStateChangeTest extends TestCase {
 
 	public void testMoveState() {
 		expect(
-				registrarBean.getNumberOfObs(patient, polioRegimen
-						.getConceptName(), polioRegimen.getConceptValue()))
+				registrarBean.getNumberOfObs(patient, polioProgram
+						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(2).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioRegimen.determineState(patient);
+		currentPatientState = polioProgram.determineState(patient);
 
 		verify(registrarBean);
 
@@ -147,13 +147,13 @@ public class RegimenNumStateChangeTest extends TestCase {
 		reset(registrarBean);
 
 		expect(
-				registrarBean.getNumberOfObs(patient, polioRegimen
-						.getConceptName(), polioRegimen.getConceptValue()))
+				registrarBean.getNumberOfObs(patient, polioProgram
+						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(3).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioRegimen.updateState(patient);
+		currentPatientState = polioProgram.updateState(patient);
 
 		verify(registrarBean);
 
@@ -162,13 +162,13 @@ public class RegimenNumStateChangeTest extends TestCase {
 
 	public void testNotMoveState() {
 		expect(
-				registrarBean.getNumberOfObs(patient, polioRegimen
-						.getConceptName(), polioRegimen.getConceptValue()))
+				registrarBean.getNumberOfObs(patient, polioProgram
+						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(3).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioRegimen.determineState(patient);
+		currentPatientState = polioProgram.determineState(patient);
 
 		verify(registrarBean);
 
@@ -178,13 +178,13 @@ public class RegimenNumStateChangeTest extends TestCase {
 		reset(registrarBean);
 
 		expect(
-				registrarBean.getNumberOfObs(patient, polioRegimen
-						.getConceptName(), polioRegimen.getConceptValue()))
+				registrarBean.getNumberOfObs(patient, polioProgram
+						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(3).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioRegimen.updateState(patient);
+		currentPatientState = polioProgram.updateState(patient);
 
 		verify(registrarBean);
 
@@ -193,13 +193,13 @@ public class RegimenNumStateChangeTest extends TestCase {
 
 	public void testNotMoveEndState() {
 		expect(
-				registrarBean.getNumberOfObs(patient, polioRegimen
-						.getConceptName(), polioRegimen.getConceptValue()))
+				registrarBean.getNumberOfObs(patient, polioProgram
+						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(4).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioRegimen.determineState(patient);
+		currentPatientState = polioProgram.determineState(patient);
 
 		verify(registrarBean);
 
@@ -209,13 +209,13 @@ public class RegimenNumStateChangeTest extends TestCase {
 		reset(registrarBean);
 
 		expect(
-				registrarBean.getNumberOfObs(patient, polioRegimen
-						.getConceptName(), polioRegimen.getConceptValue()))
+				registrarBean.getNumberOfObs(patient, polioProgram
+						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(4).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioRegimen.updateState(patient);
+		currentPatientState = polioProgram.updateState(patient);
 
 		verify(registrarBean);
 
