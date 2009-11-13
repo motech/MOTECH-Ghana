@@ -82,16 +82,4 @@
 		<property name="lookupServiceOnStartup" value="false" />
 	</bean>
 
-	<!-- Uncomment to enable using motech-mobile web service and comment out mobileClient bean in registrar-bean.xml
-	<bean id="mobileClient" 
-		class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
-		<property name="serviceInterface" value="org.motechproject.ws.mobile.MessageService" />
-		<property name="wsdlDocumentUrl"
-			value="http://localhost:8080/motech-mobile-webapp/webservices/messaging?wsdl" />
-		<property name="namespaceUri" value="http://server.ws.motechproject.org/" />
-		<property name="serviceName" value="MessageServiceImplService" />
-		<property name="portName" value="MessageServiceImplPort" />
-		<property name="lookupServiceOnStartup" value="false" />
-	</bean> -->
-
 </beans>
