@@ -32,7 +32,6 @@ import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
-import org.motechproject.ws.server.RegistrarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -54,10 +53,6 @@ public class MotechModuleFormController {
 			.getLog(MotechModuleFormController.class);
 
 	@Autowired
-	@Qualifier("registrarClient")
-	private RegistrarService registrarClient;
-
-	@Autowired
 	@Qualifier("registrarBean")
 	private RegistrarBean registrarBean;
 
@@ -72,10 +67,6 @@ public class MotechModuleFormController {
 
 	public void setRegistrarBean(RegistrarBean registrarBean) {
 		this.registrarBean = registrarBean;
-	}
-
-	public void setRegistrarClient(RegistrarService registrarClient) {
-		this.registrarClient = registrarClient;
 	}
 
 	@RequestMapping(value = "/module/motechmodule/quick", method = RequestMethod.GET)
@@ -130,22 +121,22 @@ public class MotechModuleFormController {
 			@RequestParam("hemoglobin") String hemoglobin)
 			throws NumberFormatException, ParseException {
 		log.debug("Quick Test");
-		registrarClient.registerClinic(clinicName);
+		registrarBean.registerClinic(clinicName);
 
-		registrarClient.registerNurse(nurseName, nursePhone, clinicName);
+		registrarBean.registerNurse(nurseName, nursePhone, clinicName);
 
-		registrarClient.registerPatient(nursePhone, serialId, name, community,
+		registrarBean.registerPatient(nursePhone, serialId, name, community,
 				location, dateFormat.parse(dateOfBirth), Gender.FEMALE, Integer
 						.valueOf(nhis), patientPhone, ContactNumberType
 						.valueOf(patientPhoneType), language, MediaType
 						.valueOf(mediaType),
 				DeliveryTime.valueOf(deliveryTime),
 				convertToActualMessagePrograms(messagePrograms));
-		registrarClient.registerPregnancy(nursePhone, new Date(), serialId,
+		registrarBean.registerPregnancy(nursePhone, new Date(), serialId,
 				dateFormat.parse(dueDate), Integer.valueOf(parity), Double
 						.valueOf(hemoglobin));
 
-		registrarClient.recordMaternalVisit(nursePhone, new Date(), serialId,
+		registrarBean.recordMaternalVisit(nursePhone, new Date(), serialId,
 				true, true, true, 1, true, true, true, true, 10.6);
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
@@ -174,7 +165,7 @@ public class MotechModuleFormController {
 	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.POST)
 	public String registerClinic(@RequestParam("name") String name) {
 		log.debug("Register Clinic");
-		registrarClient.registerClinic(name);
+		registrarBean.registerClinic(name);
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 
@@ -183,7 +174,7 @@ public class MotechModuleFormController {
 			@RequestParam("nursePhone") String nursePhone,
 			@RequestParam("clinic") String clinic) {
 		log.debug("Register Nurse");
-		registrarClient.registerNurse(name, nursePhone, clinic);
+		registrarBean.registerNurse(name, nursePhone, clinic);
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 
@@ -206,7 +197,7 @@ public class MotechModuleFormController {
 			throws NumberFormatException, ParseException {
 		log.debug("Register Patient");
 
-		registrarClient.registerPatient(nursePhone, serialId, name, community,
+		registrarBean.registerPatient(nursePhone, serialId, name, community,
 				location, dateFormat.parse(dateOfBirth),
 				Gender.valueOf(gender), Integer.valueOf(nhis), patientPhone,
 				ContactNumberType.valueOf(patientPhoneType), language,
@@ -226,7 +217,7 @@ public class MotechModuleFormController {
 			@RequestParam("hemoglobin") String hemoglobin)
 			throws NumberFormatException, ParseException {
 		log.debug("Register Pregnancy");
-		registrarClient.registerPregnancy(nursePhone,
+		registrarBean.registerPregnancy(nursePhone,
 				(!regDate.equals("") ? dateFormat.parse(regDate) : null),
 				serialId, dateFormat.parse(dueDate), Integer.valueOf(parity),
 				Double.valueOf(hemoglobin));
@@ -248,7 +239,7 @@ public class MotechModuleFormController {
 			@RequestParam("hemoglobin") String hemoglobin)
 			throws NumberFormatException, ParseException {
 		log.debug("Register Maternal Visit");
-		registrarClient.recordMaternalVisit(nursePhone,
+		registrarBean.recordMaternalVisit(nursePhone,
 				(!visitDate.equals("") ? dateFormat.parse(visitDate) : null),
 				serialId, Boolean.valueOf(tetanus), Boolean.valueOf(ipt),
 				Boolean.valueOf(itn), Integer.valueOf(visitNumber), Boolean

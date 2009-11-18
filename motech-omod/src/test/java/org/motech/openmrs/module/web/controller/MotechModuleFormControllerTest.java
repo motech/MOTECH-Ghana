@@ -20,34 +20,34 @@ import org.motech.model.Blackout;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
+import org.motech.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
-import org.motechproject.ws.server.RegistrarService;
 import org.springframework.ui.ModelMap;
 
 public class MotechModuleFormControllerTest extends TestCase {
 
-	RegistrarService registrarService;
+	RegistrarBean registrarBean;
 	MotechModuleFormController controller;
 	ContextService contextService;
 	MotechService motechService;
 
 	@Override
 	protected void setUp() {
-		registrarService = createMock(RegistrarService.class);
+		registrarBean = createMock(RegistrarBean.class);
 		motechService = createMock(MotechService.class);
 		contextService = createMock(ContextService.class);
 		controller = new MotechModuleFormController();
-		controller.setRegistrarClient(registrarService);
+		controller.setRegistrarBean(registrarBean);
 		controller.setContextService(contextService);
 	}
 
 	@Override
 	protected void tearDown() {
 		controller = null;
-		registrarService = null;
+		registrarBean = null;
 	}
 
 	public void testQuickTest() throws Exception {
@@ -69,33 +69,32 @@ public class MotechModuleFormControllerTest extends TestCase {
 		Capture<Integer> parityCapture = new Capture<Integer>();
 		Capture<Double> hemoglobinCapture = new Capture<Double>();
 
-		registrarService.registerClinic(clinicName);
-		registrarService.registerNurse(nurseName, nursePhone, clinicName);
-		registrarService.registerPatient(eq(nursePhone), eq(serialId),
-				eq(name), eq(community), eq(location),
-				capture(dateOfBirthCapture), capture(genderCapture),
-				capture(nhisCapture), eq(patientPhone),
+		registrarBean.registerClinic(clinicName);
+		registrarBean.registerNurse(nurseName, nursePhone, clinicName);
+		registrarBean.registerPatient(eq(nursePhone), eq(serialId), eq(name),
+				eq(community), eq(location), capture(dateOfBirthCapture),
+				capture(genderCapture), capture(nhisCapture), eq(patientPhone),
 				capture(phoneTypeCapture), eq(language),
 				capture(mediaTypeCapture), capture(deliveryTimeCapture),
 				capture(programCapture));
-		registrarService.registerPregnancy(eq(nursePhone), (Date) anyObject(),
+		registrarBean.registerPregnancy(eq(nursePhone), (Date) anyObject(),
 				eq(serialId), capture(dueDateCapture), capture(parityCapture),
 				capture(hemoglobinCapture));
-		registrarService.recordMaternalVisit(eq(nursePhone),
-				(Date) anyObject(), eq(serialId), (Boolean) anyObject(),
+		registrarBean.recordMaternalVisit(eq(nursePhone), (Date) anyObject(),
+				eq(serialId), (Boolean) anyObject(), (Boolean) anyObject(),
+				(Boolean) anyObject(), (Integer) anyObject(),
 				(Boolean) anyObject(), (Boolean) anyObject(),
-				(Integer) anyObject(), (Boolean) anyObject(),
 				(Boolean) anyObject(), (Boolean) anyObject(),
-				(Boolean) anyObject(), (Double) anyObject());
+				(Double) anyObject());
 
-		replay(registrarService);
+		replay(registrarBean);
 
 		controller.quickTest(nurseName, nursePhone, clinicName, serialId, name,
 				community, location, nhis, patientPhone, patientPhoneType,
 				language, mediaType, deliveryTime, programs, dateOfBirth,
 				dueDate, parity, hemoglobin);
 
-		verify(registrarService);
+		verify(registrarBean);
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -114,25 +113,25 @@ public class MotechModuleFormControllerTest extends TestCase {
 	public void testRegisterClinic() throws Exception {
 		String name = "Clinic Name";
 
-		registrarService.registerClinic(name);
+		registrarBean.registerClinic(name);
 
-		replay(registrarService);
+		replay(registrarBean);
 
 		controller.registerClinic(name);
 
-		verify(registrarService);
+		verify(registrarBean);
 	}
 
 	public void testRegiserNurse() throws Exception {
 		String name = "Nurse Name", nursePhone = "Nurse Phone", clinic = "Clinic Name";
 
-		registrarService.registerNurse(name, nursePhone, clinic);
+		registrarBean.registerNurse(name, nursePhone, clinic);
 
-		replay(registrarService);
+		replay(registrarBean);
 
 		controller.registerNurse(name, nursePhone, clinic);
 
-		verify(registrarService);
+		verify(registrarBean);
 	}
 
 	public void testRegisterPatient() throws Exception {
@@ -151,21 +150,20 @@ public class MotechModuleFormControllerTest extends TestCase {
 		Capture<DeliveryTime> deliveryTimeCapture = new Capture<DeliveryTime>();
 		Capture<String[]> programsCapture = new Capture<String[]>();
 
-		registrarService.registerPatient(eq(nursePhone), eq(serialId),
-				eq(name), eq(community), eq(location),
-				capture(dateOfBirthCapture), capture(genderCapture),
-				capture(nhisCapture), eq(patientPhone),
+		registrarBean.registerPatient(eq(nursePhone), eq(serialId), eq(name),
+				eq(community), eq(location), capture(dateOfBirthCapture),
+				capture(genderCapture), capture(nhisCapture), eq(patientPhone),
 				capture(phoneTypeCapture), eq(language),
 				capture(mediaTypeCapture), capture(deliveryTimeCapture),
 				capture(programsCapture));
 
-		replay(registrarService);
+		replay(registrarBean);
 
 		controller.registerPatient(nursePhone, serialId, name, community,
 				location, nhis, patientPhone, patientPhoneType, dateOfBirth,
 				gender, language, mediaType, deliveryTime, programs);
 
-		verify(registrarService);
+		verify(registrarBean);
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -189,16 +187,16 @@ public class MotechModuleFormControllerTest extends TestCase {
 		Capture<Integer> parityCapture = new Capture<Integer>();
 		Capture<Double> hemoglobinCapture = new Capture<Double>();
 
-		registrarService.registerPregnancy(eq(nursePhone),
+		registrarBean.registerPregnancy(eq(nursePhone),
 				capture(regDateCapture), eq(serialId), capture(dueDateCapture),
 				capture(parityCapture), capture(hemoglobinCapture));
 
-		replay(registrarService);
+		replay(registrarBean);
 
 		controller.registerPregnancy(nursePhone, regDate, serialId, dueDate,
 				parity, hemoglobin);
 
-		verify(registrarService);
+		verify(registrarBean);
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -224,7 +222,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 		Capture<Boolean> postPMTCTCapture = new Capture<Boolean>();
 		Capture<Double> hemoglobin36Capture = new Capture<Double>();
 
-		registrarService.recordMaternalVisit(eq(nursePhone),
+		registrarBean.recordMaternalVisit(eq(nursePhone),
 				capture(visitDateCapture), eq(serialId),
 				capture(tetanusCapture), capture(iptCapture),
 				capture(itnCapture), capture(visitNumberCapture),
@@ -232,13 +230,13 @@ public class MotechModuleFormControllerTest extends TestCase {
 				capture(testPMTCTCapture), capture(postPMTCTCapture),
 				capture(hemoglobin36Capture));
 
-		replay(registrarService);
+		replay(registrarBean);
 
 		controller.recordMaternalVisit(nursePhone, visitDate, serialId,
 				tetanus, ipt, itn, visitNumber, onARV, prePMTCT, testPMTCT,
 				postPMTCT, hemoglobin);
 
-		verify(registrarService);
+		verify(registrarBean);
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
