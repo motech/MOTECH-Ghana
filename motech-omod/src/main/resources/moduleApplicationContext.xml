@@ -46,7 +46,7 @@
 									</property>
 								</bean>
 							</property>
-							<property name="registrarBean" ref="registrarBean" />
+							<property name="registrarBean" ref="registrarBeanProxy" />
 						</bean>
 					</property>
 					<property name="preInterceptors">
@@ -68,7 +68,7 @@
 	<ws:service id="registrarservice" bean="#registrarWebService" />
 
 	<bean id="registrarWebService" class="${corePackage}.ws.RegistrarWebService">
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="registrarBean" ref="registrarBeanProxy" />
 	</bean>
 
 	<bean id="registrarClient"

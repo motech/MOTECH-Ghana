@@ -262,7 +262,7 @@ public class RegistrarBeanTest extends TestCase {
 
 	public void testRegisterClinic() {
 		expect(contextService.getLocationService()).andReturn(locationService);
-		contextService.authenticate((String) anyObject(), (String) anyObject());
+
 		Capture<Location> locationCap = new Capture<Location>();
 		expect(locationService.saveLocation(capture(locationCap))).andReturn(
 				new Location());
@@ -293,7 +293,6 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getUserService()).andReturn(userService);
 		expect(contextService.getLocationService()).andReturn(locationService);
 
-		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
@@ -356,7 +355,6 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getUserService()).andReturn(userService);
 
-		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(
 				patientService
 						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
@@ -498,7 +496,6 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getUserService()).andReturn(userService);
 
-		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(
 				patientService
 						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
@@ -729,7 +726,6 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getUserService()).andReturn(userService);
 
-		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(
 				patientService
 						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
@@ -850,7 +846,6 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getUserService()).andReturn(userService);
 
-		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(
 				patientService
 						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
@@ -1038,7 +1033,6 @@ public class RegistrarBeanTest extends TestCase {
 
 		Capture<Message> messageCap = new Capture<Message>();
 
-		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
@@ -1081,7 +1075,6 @@ public class RegistrarBeanTest extends TestCase {
 
 		Capture<Message> messageCap = new Capture<Message>();
 
-		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
@@ -1125,7 +1118,6 @@ public class RegistrarBeanTest extends TestCase {
 
 		Capture<Message> messageCap = new Capture<Message>();
 
-		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
@@ -1172,7 +1164,6 @@ public class RegistrarBeanTest extends TestCase {
 		Capture<TroubledPhone> troubledPhoneCap = new Capture<TroubledPhone>();
 		Capture<Message> messageCap = new Capture<Message>();
 
-		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
@@ -1207,7 +1198,6 @@ public class RegistrarBeanTest extends TestCase {
 		String messageId = "12345678-1234-1234-1234-123456789012";
 		Boolean success = true;
 
-		contextService.authenticate((String) anyObject(), (String) anyObject());
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(contextService.getPersonService()).andReturn(personService);
 		expect(motechService.getMessage(messageId)).andReturn(null);

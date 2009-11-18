@@ -37,8 +37,6 @@ public final class MotechConstants {
 	/*
 	 * Values already existing in OpenMRS, used by Motech
 	 */
-	public static final String USERNAME_OPENMRS = "admin";
-	public static final String PASSWORD_OPENMRS = "test";
 	public static final String GENDER_MALE_OPENMRS = "M";
 	public static final String GENDER_FEMALE_OPENMRS = "F";
 	public static final String PERSON_ATTRIBUTE_HEALTH_CENTER = "Health Center";

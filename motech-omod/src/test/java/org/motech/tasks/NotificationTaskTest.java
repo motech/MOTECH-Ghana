@@ -76,9 +76,10 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 		try {
 			Context.openSession();
+			Context.authenticate("admin", "test");
 
-			RegistrarBean regService = ((RegistrarBean) applicationContext
-					.getBean("registrarBean"));
+			RegistrarBean regService = Context.getService(MotechService.class)
+					.getRegistrarBean();
 
 			regService.registerNurse("nursename", "nursePhoneNumber",
 					MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC);

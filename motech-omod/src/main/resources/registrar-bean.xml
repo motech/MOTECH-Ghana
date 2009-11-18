@@ -6,6 +6,32 @@
 
 	<bean id="contextService" class="${modulePackage}.impl.ContextServiceImpl" />
 
+	<bean id="registrarBeanProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<value>${corePackage}.svc.RegistrarBean</value>
+		</property>
+		<property name="target" ref="registrarBean" />
+		<property name="interceptorNames">
+			<list>
+				<idref bean="contextSessionAdvice" />
+				<idref bean="authenticateAdvice" />
+				<idref bean="proxyPrivilegesAdvice" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="contextSessionAdvice" class="${modulePackage}.advice.ContextSessionAdvice">
+		<property name="contextService" ref="contextService" />
+	</bean>
+
+	<bean id="authenticateAdvice" class="${modulePackage}.advice.AuthenticateAdvice">
+		<property name="contextService" ref="contextService" />
+	</bean>
+
+	<bean id="proxyPrivilegesAdvice" class="${modulePackage}.advice.ProxyPrivilegesAdvice">
+		<property name="contextService" ref="contextService" />
+	</bean>
+
 	<bean id="registrarBean" class="${corePackage}.svc.RegistrarBeanImpl">
 		<property name="contextService" ref="contextService" />
 		<property name="mobileService" ref="mobileClient" />

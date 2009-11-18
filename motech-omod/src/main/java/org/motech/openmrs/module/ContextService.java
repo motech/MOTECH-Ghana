@@ -1,6 +1,7 @@
 package org.motech.openmrs.module;
 
 import org.motech.svc.RegistrarBean;
+import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
@@ -20,13 +21,25 @@ public interface ContextService {
 
 	public void authenticate(String username, String password);
 
+	public void becomeUser(String systemId);
+
+	public User getAuthenticatedUser();
+
+	public void logout();
+
 	public void openSession();
+
+	public boolean isSessionOpen();
+
+	public boolean isAuthenticated();
 
 	public void closeSession();
 
 	public void addProxyPrivilege(String privilege);
 
 	public void removeProxyPrivilege(String privilege);
+
+	public boolean hasPrivilege(String privilege);
 
 	public LocationService getLocationService();
 

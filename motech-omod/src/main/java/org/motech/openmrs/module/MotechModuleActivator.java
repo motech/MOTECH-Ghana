@@ -40,7 +40,7 @@ public class MotechModuleActivator implements Activator {
 				new String[] { "registrar-bean.xml",
 						"common-program-beans.xml", "programs/*.xml" });
 		registrarBean = (RegistrarBean) applicationContext
-				.getBean("registrarBean");
+				.getBean("registrarBeanProxy");
 	}
 
 	public void setRegistrarBean(RegistrarBean registrarBean) {

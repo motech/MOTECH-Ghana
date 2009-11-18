@@ -99,9 +99,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		LocationService locationService = contextService.getLocationService();
 
-		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
-				MotechConstants.PASSWORD_OPENMRS);
-
 		Location clinic = new Location();
 		clinic.setName(name);
 		clinic.setDescription("A Ghana Clinic Location");
@@ -116,8 +113,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		// User creating other users must have atleast the Privileges to be
 		// given
-		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
-				MotechConstants.PASSWORD_OPENMRS);
 
 		// TODO: Create nurses as person and use same User for all actions ?
 		User nurse = new User();
@@ -160,9 +155,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			String[] messagePrograms) {
 
 		PatientService patientService = contextService.getPatientService();
-
-		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
-				MotechConstants.PASSWORD_OPENMRS);
 
 		Patient patient = new Patient();
 
@@ -232,9 +224,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		EncounterService encounterService = contextService
 				.getEncounterService();
 		ObsService obsService = contextService.getObsService();
-
-		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
-				MotechConstants.PASSWORD_OPENMRS);
 
 		Patient patient = getPatientBySerial(serialId);
 
@@ -324,9 +313,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				.getEncounterService();
 		ObsService obsService = contextService.getObsService();
 
-		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
-				MotechConstants.PASSWORD_OPENMRS);
-
 		Patient patient = getPatientBySerial(serialId);
 
 		Date visitDate = date;
@@ -392,8 +378,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		log.debug("setMessageStatus WS: messageId: " + messageId
 				+ ", success: " + success);
 
-		contextService.authenticate(MotechConstants.USERNAME_OPENMRS,
-				MotechConstants.PASSWORD_OPENMRS);
 		MotechService motechService = contextService.getMotechService();
 		PersonService personService = contextService.getPersonService();
 
@@ -739,217 +723,137 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	/* Activator methods start */
 	public void addInitialData() {
-		contextService.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
 
-		contextService
-				.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
-		contextService
-				.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_PERSON_ATTRIBUTE_TYPES);
+		UserService userService = contextService.getUserService();
+		User admin = userService.getUser(1);
 
-		contextService
-				.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES);
-		contextService
-				.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_IDENTIFIER_TYPES);
+		log.info("Verifying Person Attributes Exist");
+		createPersonAttributeType(
+				MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER,
+				"A person's phone number.", String.class.getName(), admin);
+		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER,
+				"A person's NHIS number.", String.class.getName(), admin);
+		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE,
+				"A person's language preference.", String.class.getName(),
+				admin);
+		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE,
+				"A person's cell phone type (PERSONAL or SHARED).",
+				String.class.getName(), admin);
+		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE,
+				"A person's preferred phone media type (TEXT or VOICE).",
+				String.class.getName(), admin);
+		createPersonAttributeType(
+				MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME,
+				"A person's preferred delivery time (ANYTIME, MORNING, AFTERNOON, or EVENING).",
+				String.class.getName(), admin);
 
-		contextService.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_LOCATIONS);
-		contextService
-				.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_LOCATIONS);
+		log.info("Verifying Patient Identifier Exist");
+		createPatientIdentifierType(
+				MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID,
+				"Patient Id for Ghana Clinics.", admin);
 
-		contextService
-				.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES);
-		contextService
-				.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_ENCOUNTER_TYPES);
+		log.info("Verifying Default Location Exists");
+		createLocation(MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC,
+				"Default Ghana Clinic Location", admin);
 
-		contextService.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPTS);
-		contextService.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_CONCEPTS);
-		contextService
-				.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPT_DATATYPES);
-		contextService
-				.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPT_CLASSES);
+		log.info("Verifying Encounter Types Exist");
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT,
+				"Ghana Maternal Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT,
+				"Ghana Pregnancy Registration or Delivery Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_IMMUNIZVISIT,
+				"Ghana Immunization Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_GENERALVISIT,
+				"Ghana General Visit", admin);
 
-		contextService
-				.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
+		log.info("Verifying Concepts Exist");
+		createConcept(MotechConstants.CONCEPT_PREGNANCY_VISIT_NUMBER,
+				"Visit Number for Pregnancy",
+				MotechConstants.CONCEPT_CLASS_MISC,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(
+				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT,
+				"Treatment for Malaria", MotechConstants.CONCEPT_CLASS_DRUG,
+				MotechConstants.CONCEPT_DATATYPE_N_A, admin);
+		createConcept(
+				MotechConstants.CONCEPT_INSECTICIDE_TREATED_NET_USAGE,
+				"Question on encounter form: \"Does the patient use insecticide-treated nets?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(MotechConstants.CONCEPT_PENTA_VACCINATION,
+				"Vaccination booster for infants.",
+				MotechConstants.CONCEPT_CLASS_DRUG,
+				MotechConstants.CONCEPT_DATATYPE_N_A, admin);
+		createConcept(
+				MotechConstants.CONCEPT_CEREBRO_SPINAL_MENINGITIS_VACCINATION,
+				"Vaccination against Cerebro-Spinal Meningitis.",
+				MotechConstants.CONCEPT_CLASS_DRUG,
+				MotechConstants.CONCEPT_DATATYPE_N_A, admin);
+		createConcept(MotechConstants.CONCEPT_VITAMIN_A,
+				"Supplement for Vitamin A.",
+				MotechConstants.CONCEPT_CLASS_DRUG,
+				MotechConstants.CONCEPT_DATATYPE_N_A, admin);
+		createConcept(
+				MotechConstants.CONCEPT_PRE_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
+				"Question on encounter form: \"Did the patient receive Pre Counseling for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(
+				MotechConstants.CONCEPT_TEST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
+				"Question on encounter form: \"Did the patient receive Testing for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(
+				MotechConstants.CONCEPT_POST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
+				"Question on encounter form: \"Did the patient receive Post Counseling for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(MotechConstants.CONCEPT_HEMOGLOBIN_AT_36_WEEKS,
+				"Hemoglobin level at 36 weeks of Pregnancy",
+				MotechConstants.CONCEPT_CLASS_TEST,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
 
-		contextService
-				.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_GLOBAL_PROPERTIES);
+		log.info("Verifying Concepts Exist as Answers");
+		// TODO: Add IPT to proper Concept as an Answer, not an immunization
+		addConceptAnswers(
+				MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED,
+				new String[] {
+						MotechConstants.CONCEPT_TETANUS_BOOSTER,
+						MotechConstants.CONCEPT_YELLOW_FEVER_VACCINATION,
+						MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT,
+						MotechConstants.CONCEPT_PENTA_VACCINATION,
+						MotechConstants.CONCEPT_CEREBRO_SPINAL_MENINGITIS_VACCINATION },
+				admin);
 
-		try {
-			UserService userService = contextService.getUserService();
-			User admin = userService.getUser(1);
+		log.info("Verifying Task Exists and is Scheduled");
+		// TODO: Task should start automatically on startup, Boolean.TRUE
+		Map<String, String> immProps = new HashMap<String, String>();
+		immProps.put(MotechConstants.TASK_PROPERTY_SEND_IMMEDIATE, Boolean.TRUE
+				.toString());
+		createTask(MotechConstants.TASK_IMMEDIATE_NOTIFICATION,
+				"Task to send out immediate SMS notifications", new Date(),
+				new Long(30), Boolean.FALSE, NotificationTask.class.getName(),
+				admin, immProps);
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Map<String, String> dailyProps = new HashMap<String, String>();
+		dailyProps.put(MotechConstants.TASK_PROPERTY_TIME_OFFSET,
+				new Long(3600).toString());
+		createTask(MotechConstants.TASK_DAILY_NOTIFICATION,
+				"Task to send out SMS notifications for next day", calendar
+						.getTime(), new Long(86400), Boolean.FALSE,
+				NotificationTask.class.getName(), admin, dailyProps);
+		createTask(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE,
+				"Task to update message program state for patients",
+				new Date(), new Long(30), Boolean.FALSE,
+				MessageProgramUpdateTask.class.getName(), admin, null);
 
-			log.info("Verifying Person Attributes Exist");
-			createPersonAttributeType(
-					MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER,
-					"A person's phone number.", String.class.getName(), admin);
-			createPersonAttributeType(
-					MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER,
-					"A person's NHIS number.", String.class.getName(), admin);
-			createPersonAttributeType(
-					MotechConstants.PERSON_ATTRIBUTE_LANGUAGE,
-					"A person's language preference.", String.class.getName(),
-					admin);
-			createPersonAttributeType(
-					MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE,
-					"A person's cell phone type (PERSONAL or SHARED).",
-					String.class.getName(), admin);
-			createPersonAttributeType(
-					MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE,
-					"A person's preferred phone media type (TEXT or VOICE).",
-					String.class.getName(), admin);
-			createPersonAttributeType(
-					MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME,
-					"A person's preferred delivery time (ANYTIME, MORNING, AFTERNOON, or EVENING).",
-					String.class.getName(), admin);
-
-			log.info("Verifying Patient Identifier Exist");
-			createPatientIdentifierType(
-					MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID,
-					"Patient Id for Ghana Clinics.", admin);
-
-			log.info("Verifying Default Location Exists");
-			createLocation(MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC,
-					"Default Ghana Clinic Location", admin);
-
-			log.info("Verifying Encounter Types Exist");
-			createEncounterType(MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT,
-					"Ghana Maternal Visit", admin);
-			createEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT,
-					"Ghana Pregnancy Registration or Delivery Visit", admin);
-			createEncounterType(MotechConstants.ENCOUNTER_TYPE_IMMUNIZVISIT,
-					"Ghana Immunization Visit", admin);
-			createEncounterType(MotechConstants.ENCOUNTER_TYPE_GENERALVISIT,
-					"Ghana General Visit", admin);
-
-			log.info("Verifying Concepts Exist");
-			createConcept(MotechConstants.CONCEPT_PREGNANCY_VISIT_NUMBER,
-					"Visit Number for Pregnancy",
-					MotechConstants.CONCEPT_CLASS_MISC,
-					MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
-			createConcept(
-					MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT,
-					"Treatment for Malaria",
-					MotechConstants.CONCEPT_CLASS_DRUG,
-					MotechConstants.CONCEPT_DATATYPE_N_A, admin);
-			createConcept(
-					MotechConstants.CONCEPT_INSECTICIDE_TREATED_NET_USAGE,
-					"Question on encounter form: \"Does the patient use insecticide-treated nets?\"",
-					MotechConstants.CONCEPT_CLASS_QUESTION,
-					MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
-			createConcept(MotechConstants.CONCEPT_PENTA_VACCINATION,
-					"Vaccination booster for infants.",
-					MotechConstants.CONCEPT_CLASS_DRUG,
-					MotechConstants.CONCEPT_DATATYPE_N_A, admin);
-			createConcept(
-					MotechConstants.CONCEPT_CEREBRO_SPINAL_MENINGITIS_VACCINATION,
-					"Vaccination against Cerebro-Spinal Meningitis.",
-					MotechConstants.CONCEPT_CLASS_DRUG,
-					MotechConstants.CONCEPT_DATATYPE_N_A, admin);
-			createConcept(MotechConstants.CONCEPT_VITAMIN_A,
-					"Supplement for Vitamin A.",
-					MotechConstants.CONCEPT_CLASS_DRUG,
-					MotechConstants.CONCEPT_DATATYPE_N_A, admin);
-			createConcept(
-					MotechConstants.CONCEPT_PRE_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
-					"Question on encounter form: \"Did the patient receive Pre Counseling for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
-					MotechConstants.CONCEPT_CLASS_QUESTION,
-					MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
-			createConcept(
-					MotechConstants.CONCEPT_TEST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
-					"Question on encounter form: \"Did the patient receive Testing for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
-					MotechConstants.CONCEPT_CLASS_QUESTION,
-					MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
-			createConcept(
-					MotechConstants.CONCEPT_POST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
-					"Question on encounter form: \"Did the patient receive Post Counseling for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
-					MotechConstants.CONCEPT_CLASS_QUESTION,
-					MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
-			createConcept(MotechConstants.CONCEPT_HEMOGLOBIN_AT_36_WEEKS,
-					"Hemoglobin level at 36 weeks of Pregnancy",
-					MotechConstants.CONCEPT_CLASS_TEST,
-					MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
-
-			log.info("Verifying Concepts Exist as Answers");
-			// TODO: Add IPT to proper Concept as an Answer, not an immunization
-			addConceptAnswers(
-					MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED,
-					new String[] {
-							MotechConstants.CONCEPT_TETANUS_BOOSTER,
-							MotechConstants.CONCEPT_YELLOW_FEVER_VACCINATION,
-							MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT,
-							MotechConstants.CONCEPT_PENTA_VACCINATION,
-							MotechConstants.CONCEPT_CEREBRO_SPINAL_MENINGITIS_VACCINATION },
-					admin);
-
-			log.info("Verifying Task Exists and is Scheduled");
-			// TODO: Task should start automatically on startup, Boolean.TRUE
-			Map<String, String> immProps = new HashMap<String, String>();
-			immProps.put(MotechConstants.TASK_PROPERTY_SEND_IMMEDIATE,
-					Boolean.TRUE.toString());
-			createTask(MotechConstants.TASK_IMMEDIATE_NOTIFICATION,
-					"Task to send out immediate SMS notifications", new Date(),
-					new Long(30), Boolean.FALSE, NotificationTask.class
-							.getName(), admin, immProps);
-			Calendar calendar = Calendar.getInstance();
-			calendar.set(Calendar.HOUR_OF_DAY, 23);
-			calendar.set(Calendar.MINUTE, 0);
-			calendar.set(Calendar.SECOND, 0);
-			Map<String, String> dailyProps = new HashMap<String, String>();
-			dailyProps.put(MotechConstants.TASK_PROPERTY_TIME_OFFSET, new Long(
-					3600).toString());
-			createTask(MotechConstants.TASK_DAILY_NOTIFICATION,
-					"Task to send out SMS notifications for next day", calendar
-							.getTime(), new Long(86400), Boolean.FALSE,
-					NotificationTask.class.getName(), admin, dailyProps);
-			createTask(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE,
-					"Task to update message program state for patients",
-					new Date(), new Long(30), Boolean.FALSE,
-					MessageProgramUpdateTask.class.getName(), admin, null);
-
-			log.info("Verifying Global Properties Exist");
-			createGlobalProperty(
-					MotechConstants.GLOBAL_PROPERTY_TROUBLED_PHONE,
-					new Integer(4).toString(),
-					"Number of sending failures when phone is considered troubled");
-
-		} finally {
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
-
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_PERSON_ATTRIBUTE_TYPES);
-
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_IDENTIFIER_TYPES);
-
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_LOCATIONS);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_LOCATIONS);
-
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_ENCOUNTER_TYPES);
-
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPTS);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_CONCEPTS);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPT_DATATYPES);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPT_CLASSES);
-
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
-
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_GLOBAL_PROPERTIES);
-		}
+		log.info("Verifying Global Properties Exist");
+		createGlobalProperty(MotechConstants.GLOBAL_PROPERTY_TROUBLED_PHONE,
+				new Integer(4).toString(),
+				"Number of sending failures when phone is considered troubled");
 	}
 
 	private void createPersonAttributeType(String name, String description,
@@ -1132,19 +1036,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public void removeAllTasks() {
 		log.info("Removing Scheduled Tasks");
 
-		contextService.openSession();
-
-		contextService
-				.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
-		try {
-			removeTask(MotechConstants.TASK_IMMEDIATE_NOTIFICATION);
-			removeTask(MotechConstants.TASK_DAILY_NOTIFICATION);
-			removeTask(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE);
-		} finally {
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_SCHEDULER);
-			contextService.closeSession();
-		}
+		removeTask(MotechConstants.TASK_IMMEDIATE_NOTIFICATION);
+		removeTask(MotechConstants.TASK_DAILY_NOTIFICATION);
+		removeTask(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE);
 	}
 
 	/* Activator methods end */
@@ -1185,84 +1079,31 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	/* MessageProgramUpdateTask method */
 	public void updateAllMessageProgramsState() {
-		try {
-			contextService.openSession();
-			contextService
-					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES);
-			contextService
-					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PATIENTS);
-			contextService
-					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPTS);
-			contextService.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_OBS);
-			contextService
-					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSONS);
-			contextService
-					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_LOCATIONS);
-			contextService.addProxyPrivilege(OpenmrsConstants.PRIV_ADD_OBS);
-			contextService.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
-			contextService
-					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
 
-			// Get all Patients with the Ghana Clinic Id Type
-			List<Patient> patients = getAllPatients();
+		// Get all Patients with the Ghana Clinic Id Type
+		List<Patient> patients = getAllPatients();
 
-			// Update Message Program state for enrolled Programs of all
-			// matching
-			// patients
-			for (Patient patient : patients) {
-				List<String> patientPrograms = this
-						.getActiveMessageProgramEnrollments(patient
-								.getPatientId());
+		// Update Message Program state for enrolled Programs of all
+		// matching
+		// patients
+		for (Patient patient : patients) {
+			List<String> patientPrograms = this
+					.getActiveMessageProgramEnrollments(patient.getPatientId());
 
-				for (String programName : patientPrograms) {
-					MessageProgram program = this
-							.getMessageProgram(programName);
+			for (String programName : patientPrograms) {
+				MessageProgram program = this.getMessageProgram(programName);
 
-					log.debug("MessageProgram Update - Update State: program: "
-							+ programName + ", patient: "
-							+ patient.getPatientId());
+				log.debug("MessageProgram Update - Update State: program: "
+						+ programName + ", patient: " + patient.getPatientId());
 
-					program.determineState(patient);
-				}
+				program.determineState(patient);
 			}
-		} finally {
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PATIENTS);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPTS);
-			contextService.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_OBS);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSONS);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_LOCATIONS);
-			contextService.removeProxyPrivilege(OpenmrsConstants.PRIV_ADD_OBS);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
-			contextService.closeSession();
 		}
 	}
 
 	/* NotificationTask methods start */
 	public void sendMessages(Date startDate, Date endDate, boolean sendImmediate) {
 		try {
-			contextService.openSession();
-			contextService
-					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
-			contextService
-					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES);
-			contextService
-					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PATIENTS);
-			contextService.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
-			contextService
-					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSONS);
-			contextService
-					.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPTS);
-			contextService.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_OBS);
-
 			MotechService motechService = contextService.getMotechService();
 
 			List<Message> shouldAttemptMessages = motechService.getMessages(
@@ -1279,21 +1120,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			}
 		} catch (Exception e) {
 			log.error(e);
-		} finally {
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PATIENTS);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_USERS);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PERSONS);
-			contextService
-					.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_CONCEPTS);
-			contextService.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_OBS);
-			contextService.closeSession();
 		}
 	}
 

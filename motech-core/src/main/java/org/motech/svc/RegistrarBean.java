@@ -3,6 +3,8 @@ package org.motech.svc;
 import java.util.Date;
 import java.util.List;
 
+import org.motech.annotation.RunAsAdminUser;
+import org.motech.annotation.RunWithPrivileges;
 import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Log;
 import org.motechproject.ws.ContactNumberType;
@@ -15,6 +17,7 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.User;
+import org.openmrs.util.OpenmrsConstants;
 
 /**
  * The major internal service interface for the motech server project at this
@@ -27,10 +30,13 @@ import org.openmrs.User;
  */
 public interface RegistrarBean {
 
+	@RunAsAdminUser
 	public void registerClinic(String name);
 
+	@RunAsAdminUser
 	public void registerNurse(String name, String phoneNumber, String clinic);
 
+	@RunAsAdminUser
 	public void registerPatient(String nursePhoneNumber, String serialId,
 			String name, String community, String location, Date dateOfBirth,
 			Gender gender, Integer nhis, String phoneNumber,
@@ -38,16 +44,20 @@ public interface RegistrarBean {
 			MediaType mediaType, DeliveryTime deliveryTime,
 			String[] messagePrograms);
 
+	@RunAsAdminUser
 	public void recordMaternalVisit(String nursePhoneNumber, Date date,
 			String serialId, Boolean tetanus, Boolean ipt, Boolean itn,
 			Integer visitNumber, Boolean onARV, Boolean prePMTCT,
 			Boolean testPMTCT, Boolean postPMTCT, Double hemoglobinAt36Weeks);
 
+	@RunAsAdminUser
 	public void registerPregnancy(String nursePhoneNumber, Date date,
 			String serialId, Date dueDate, Integer parity, Double hemoglobin);
 
 	public void log(LogType type, String message);
 
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSONS,
+			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
 	public void setMessageStatus(String messageId, Boolean success);
 
 	public List<String> getActiveMessageProgramEnrollments(Integer personId);
@@ -85,13 +95,44 @@ public interface RegistrarBean {
 
 	public void removeAllUnsentMessages(Integer recipientId, String messageGroup);
 
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_USERS,
+			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
+			OpenmrsConstants.PRIV_MANAGE_PERSON_ATTRIBUTE_TYPES,
+			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES,
+			OpenmrsConstants.PRIV_MANAGE_IDENTIFIER_TYPES,
+			OpenmrsConstants.PRIV_VIEW_LOCATIONS,
+			OpenmrsConstants.PRIV_MANAGE_LOCATIONS,
+			OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES,
+			OpenmrsConstants.PRIV_MANAGE_ENCOUNTER_TYPES,
+			OpenmrsConstants.PRIV_VIEW_CONCEPTS,
+			OpenmrsConstants.PRIV_MANAGE_CONCEPTS,
+			OpenmrsConstants.PRIV_VIEW_CONCEPT_DATATYPES,
+			OpenmrsConstants.PRIV_VIEW_CONCEPT_CLASSES,
+			OpenmrsConstants.PRIV_MANAGE_SCHEDULER,
+			OpenmrsConstants.PRIV_MANAGE_GLOBAL_PROPERTIES })
 	public void addInitialData();
 
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_MANAGE_SCHEDULER })
 	public void removeAllTasks();
 
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PATIENTS,
+			OpenmrsConstants.PRIV_VIEW_CONCEPTS })
 	public void updateMessageProgramState(Obs obs);
 
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
+			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES,
+			OpenmrsConstants.PRIV_VIEW_PATIENTS,
+			OpenmrsConstants.PRIV_VIEW_USERS,
+			OpenmrsConstants.PRIV_VIEW_PERSONS,
+			OpenmrsConstants.PRIV_VIEW_CONCEPTS, OpenmrsConstants.PRIV_VIEW_OBS })
 	public void sendMessages(Date startDate, Date endDate, boolean sendImmediate);
 
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES,
+			OpenmrsConstants.PRIV_VIEW_PATIENTS,
+			OpenmrsConstants.PRIV_VIEW_CONCEPTS,
+			OpenmrsConstants.PRIV_VIEW_OBS, OpenmrsConstants.PRIV_VIEW_PERSONS,
+			OpenmrsConstants.PRIV_VIEW_LOCATIONS,
+			OpenmrsConstants.PRIV_ADD_OBS, OpenmrsConstants.PRIV_VIEW_USERS,
+			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
 	public void updateAllMessageProgramsState();
 }

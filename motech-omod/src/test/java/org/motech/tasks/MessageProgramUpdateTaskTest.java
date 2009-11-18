@@ -81,8 +81,6 @@ public class MessageProgramUpdateTaskTest extends
 	@SkipBaseSetup
 	public void testMessageProgramUpdate() throws InterruptedException {
 
-		RegistrarBean regService = ((RegistrarBean) applicationContext
-				.getBean("registrarBean"));
 		MessageProgramUpdateTask task = new MessageProgramUpdateTask();
 		Calendar calendar = Calendar.getInstance();
 		List<ScheduledMessage> scheduledMessages = null;
@@ -90,6 +88,10 @@ public class MessageProgramUpdateTaskTest extends
 
 		try {
 			Context.openSession();
+			Context.authenticate("admin", "test");
+
+			RegistrarBean regService = Context.getService(MotechService.class)
+					.getRegistrarBean();
 
 			regService.registerNurse("nursename", "nursePhoneNumber",
 					MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC);
@@ -174,6 +176,8 @@ public class MessageProgramUpdateTaskTest extends
 					.contains("tetanus.1.reminder.1"));
 
 			// Add tetanus immunization 4 minutes in past
+			RegistrarBean regService = Context.getService(MotechService.class)
+					.getRegistrarBean();
 			regService.recordMaternalVisit("nursePhoneNumber", calendar
 					.getTime(), "serialId", true, false, false, 1, false,
 					false, false, false, 10.0);

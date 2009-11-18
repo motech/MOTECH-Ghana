@@ -3,6 +3,7 @@ package org.motech.openmrs.module.impl;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.svc.RegistrarBean;
+import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
@@ -27,8 +28,28 @@ public class ContextServiceImpl implements ContextService {
 		Context.authenticate(username, password);
 	}
 
+	public void becomeUser(String systemId) {
+		Context.becomeUser(systemId);
+	}
+
+	public User getAuthenticatedUser() {
+		return Context.getAuthenticatedUser();
+	}
+
+	public void logout() {
+		Context.logout();
+	}
+
 	public void openSession() {
 		Context.openSession();
+	}
+
+	public boolean isSessionOpen() {
+		return Context.isSessionOpen();
+	}
+
+	public boolean isAuthenticated() {
+		return Context.isAuthenticated();
 	}
 
 	public void closeSession() {
@@ -41,6 +62,10 @@ public class ContextServiceImpl implements ContextService {
 
 	public void removeProxyPrivilege(String privilege) {
 		Context.removeProxyPrivilege(privilege);
+	}
+
+	public boolean hasPrivilege(String privilege) {
+		return Context.hasPrivilege(privilege);
 	}
 
 	public LocationService getLocationService() {

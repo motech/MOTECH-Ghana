@@ -57,7 +57,10 @@ public class MotechModuleFormController {
 	@Qualifier("registrarClient")
 	private RegistrarService registrarClient;
 
+	@Autowired
+	@Qualifier("registrarBean")
 	private RegistrarBean registrarBean;
+
 	private ContextService contextService;
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -67,7 +70,6 @@ public class MotechModuleFormController {
 		this.contextService = contextService;
 	}
 
-	@Autowired
 	public void setRegistrarBean(RegistrarBean registrarBean) {
 		this.registrarBean = registrarBean;
 	}
