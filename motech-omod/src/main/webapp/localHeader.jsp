@@ -60,7 +60,7 @@
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
-	<openmrs:hasPrivilege privilege="View MoTech Data">
+	<openmrs:hasPrivilege privilege="View MoTeCH Data">
 		<li <c:if test='<%= request.getRequestURI().contains("viewdata") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/module/motechmodule/viewdata.form">
 				<spring:message code="motechmodule.Data.view"/>
