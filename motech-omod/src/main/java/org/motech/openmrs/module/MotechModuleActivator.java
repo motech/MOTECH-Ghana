@@ -15,10 +15,17 @@ package org.motech.openmrs.module;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motech.openmrs.module.advice.AuthenticateAdvice;
+import org.motech.openmrs.module.advice.ContextSessionAdvice;
+import org.motech.openmrs.module.advice.ProxyPrivilegesAdvice;
+import org.motech.openmrs.module.impl.ContextServiceImpl;
 import org.motech.svc.RegistrarBean;
+import org.motech.svc.RegistrarBeanImpl;
 import org.openmrs.module.Activator;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.openmrs.module.Module;
+import org.openmrs.module.ModuleFactory;
+import org.openmrs.util.OpenmrsClassLoader;
+import org.springframework.aop.framework.ProxyFactory;
 
 /**
  * This class contains the logic that is run every time this module is either
@@ -34,13 +41,50 @@ public class MotechModuleActivator implements Activator {
 	private RegistrarBean registrarBean;
 
 	public MotechModuleActivator() {
-		// Load Spring configs needed to access bean,
-		// module spring config not yet available
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				new String[] { "registrar-bean.xml",
-						"common-program-beans.xml", "programs/*.xml" });
-		registrarBean = (RegistrarBean) applicationContext
-				.getBean("registrarBeanProxy");
+		init(true);
+	}
+
+	public MotechModuleActivator(boolean useModuleClassLoader) {
+		init(useModuleClassLoader);
+	}
+
+	/*
+	 * Module services and spring context are not available to startup or
+	 * shutdown. This is an in-code representation of registrarBeanProxy from
+	 * registrar-bean.xml, with the proxy using the openmrs or module
+	 * classloader
+	 */
+	private void init(boolean useModuleClassLoader) {
+		ContextService contextService = new ContextServiceImpl();
+
+		ContextSessionAdvice contextSessionAdvice = new ContextSessionAdvice();
+		contextSessionAdvice.setContextService(contextService);
+
+		AuthenticateAdvice authenticateAdvice = new AuthenticateAdvice();
+		authenticateAdvice.setContextService(contextService);
+
+		ProxyPrivilegesAdvice proxyPrivilegesAdvice = new ProxyPrivilegesAdvice();
+		proxyPrivilegesAdvice.setContextService(contextService);
+
+		RegistrarBeanImpl registrarBeanImpl = new RegistrarBeanImpl();
+		registrarBeanImpl.setContextService(contextService);
+
+		ProxyFactory registrarBeanProxy = new ProxyFactory();
+		registrarBeanProxy.setTarget(registrarBeanImpl);
+		registrarBeanProxy.addInterface(RegistrarBean.class);
+		registrarBeanProxy.addAdvice(contextSessionAdvice);
+		registrarBeanProxy.addAdvice(authenticateAdvice);
+		registrarBeanProxy.addAdvice(proxyPrivilegesAdvice);
+
+		ClassLoader classLoader = null;
+		if (useModuleClassLoader) {
+			Module motechmodule = ModuleFactory.getModuleById("motechmodule");
+			classLoader = ModuleFactory.getModuleClassLoader(motechmodule);
+		} else {
+			classLoader = OpenmrsClassLoader.getInstance();
+		}
+		registrarBean = (RegistrarBean) registrarBeanProxy
+				.getProxy(classLoader);
 	}
 
 	public void setRegistrarBean(RegistrarBean registrarBean) {

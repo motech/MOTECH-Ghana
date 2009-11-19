@@ -13,7 +13,7 @@ public class MotechModuleActivatorTest extends BaseModuleContextSensitiveTest {
 	@Before
 	public void setUp() throws Exception {
 
-		activator = new MotechModuleActivator();
+		activator = new MotechModuleActivator(false);
 
 		// Perform same steps as BaseSetup (initializeInMemoryDatabase,
 		// executeDataSet, authenticate), except load custom XML dataset

@@ -39,7 +39,7 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		activator = new MotechModuleActivator();
+		activator = new MotechModuleActivator(false);
 	}
 
 	@AfterClass

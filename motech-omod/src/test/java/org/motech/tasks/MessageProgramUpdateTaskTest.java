@@ -45,7 +45,7 @@ public class MessageProgramUpdateTaskTest extends
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		activator = new MotechModuleActivator();
+		activator = new MotechModuleActivator(false);
 	}
 
 	@AfterClass
