@@ -41,7 +41,6 @@ import org.openmrs.ConceptName;
 import org.openmrs.ConceptNameTag;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
-import org.openmrs.GlobalProperty;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
@@ -54,7 +53,6 @@ import org.openmrs.PersonAttributeType;
 import org.openmrs.PersonName;
 import org.openmrs.Role;
 import org.openmrs.User;
-import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.LocationService;
@@ -849,11 +847,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				"Task to update message program state for patients",
 				new Date(), new Long(30), Boolean.FALSE,
 				MessageProgramUpdateTask.class.getName(), admin, null);
-
-		log.info("Verifying Global Properties Exist");
-		createGlobalProperty(MotechConstants.GLOBAL_PROPERTY_TROUBLED_PHONE,
-				new Integer(4).toString(),
-				"Number of sending failures when phone is considered troubled");
 	}
 
 	private void createPersonAttributeType(String name, String description,
@@ -1002,18 +995,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			log.error("Cannot schedule task" + name, e);
 		}
 
-	}
-
-	private void createGlobalProperty(String name, String value,
-			String description) {
-		AdministrationService administrationService = contextService
-				.getAdministrationService();
-		GlobalProperty property = administrationService
-				.getGlobalPropertyObject(name);
-		if (property == null) {
-			property = new GlobalProperty(name, value, description);
-			administrationService.saveGlobalProperty(property);
-		}
 	}
 
 	private void removeTask(String name) {

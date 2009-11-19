@@ -90,6 +90,12 @@
 		<description>Allows registration of a pregnancy via MoTeCH</description>
 	</privilege>
 	
+	<globalProperty>
+		<property>motechmodule.troubled_phone_failures</property>
+		<defaultValue>4</defaultValue>
+		<description>Number of sending failures when phone is considered troubled</description>
+	</globalProperty>
+	
 	<!-- Internationalization -->
 	<!-- All message codes should start with ${project.artifactId}.* -->
 	<messages>
