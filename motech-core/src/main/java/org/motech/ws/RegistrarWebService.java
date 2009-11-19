@@ -34,20 +34,6 @@ public class RegistrarWebService implements RegistrarService {
 	// TODO: Add OpenMRS API Exceptions as WebFaults ?
 
 	@WebMethod
-	public void registerClinic(@WebParam(name = "name") String name) {
-
-		registrarBean.registerClinic(name);
-	}
-
-	@WebMethod
-	public void registerNurse(@WebParam(name = "name") String name,
-			@WebParam(name = "phoneNumber") String phoneNumber,
-			@WebParam(name = "clinic") String clinic) {
-
-		registrarBean.registerNurse(name, phoneNumber, clinic);
-	}
-
-	@WebMethod
 	public void registerPatient(
 			@WebParam(name = "nursePhoneNumber") String nursePhoneNumber,
 			@WebParam(name = "serialId") String serialId,

@@ -65,32 +65,6 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRegisterClinic() {
-		String clinicName = "A-Test-Clinic-Name";
-
-		registrarBean.registerClinic(clinicName);
-
-		replay(registrarBean);
-
-		regWs.registerClinic(clinicName);
-
-		verify(registrarBean);
-	}
-
-	@Test
-	public void testRegisterNurse() {
-		String name = "Sally", phone = "12075555555", clinic = "C-Clinic";
-
-		registrarBean.registerNurse(name, phone, clinic);
-
-		replay(registrarBean);
-
-		regWs.registerNurse(name, phone, clinic);
-
-		verify(registrarBean);
-	}
-
-	@Test
 	public void testRegisterPatient() {
 		String nPhone = "12075551212", serialId = "387946894", name = "Francis", community = "somepeople", location = "somewhere", pPhone = "120755512525";
 		Date dob = new Date();
