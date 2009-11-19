@@ -1,8 +1,9 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-
+<openmrs:require privilege="Manage MoTeCH Troubled Phones" otherwise="/login.htm" redirect="/module/motechmodule/troubledphone.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
 <meta name="heading" content="Troubled Phones" />
+<%@ include file="localHeader.jsp" %>
 <h2>Manage Troubled Phones</h2>
 <div class="instructions">
 	Here you can lookup phone numbers that are considered 'troubled' to the

@@ -26,6 +26,11 @@ import org.openmrs.module.web.extension.AdministrationSectionExt;
  */
 public class AdminList extends AdministrationSectionExt {
 
+	@Override
+	public String getRequiredPrivilege() {
+		return "Manage MoTeCH";
+	}
+
 	/**
 	 * @see org.openmrs.module.web.extension.AdministrationSectionExt#getMediaType()
 	 */

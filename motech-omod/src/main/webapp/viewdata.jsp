@@ -1,7 +1,9 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-
+<openmrs:require privilege="View MoTeCH Data" otherwise="/login.htm" redirect="/module/motechmodule/viewdata.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
+<meta name="heading" content="View Data" />
+<%@ include file="localHeader.jsp" %>
 <h2>View Database Contents</h2>
 <div class="instructions">
 	This section allows you to inspect some pertinent information from the 

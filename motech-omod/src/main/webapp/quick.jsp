@@ -1,7 +1,9 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-
+<openmrs:require privilege="Run MoTeCH Test" otherwise="/login.htm" redirect="/module/motechmodule/quicktest.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
+<meta name="heading" content="Quick Test" />
+<%@ include file="localHeader.jsp" %>
 <h2>Register Pregnant Woman and Record Maternal Visit</h2>
 <div class="instructions">
 	The 'quick test' is useful for testing a number of actions all at once.

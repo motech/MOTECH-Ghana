@@ -23,13 +23,73 @@
 		<class>${modulePackage}.extension.html.AdminList</class>
 	</extension>
 	
+	<extension>
+		<point>org.openmrs.gutter.tools</point>
+		<class>${modulePackage}.extension.html.GutterLink</class>
+	</extension>
 	
 	<!-- AOP -->
 	<advice>
 		<point>org.openmrs.api.ObsService</point>
 		<class>${modulePackage}.advice.SaveObsAdvisor</class>
 	</advice>
+	
+	<!-- Privileges used in module -->
+	<privilege>
+		<name>Manage MoTeCH</name>
+		<description>Allows viewing and interacting with the MoTeCH management functions</description>
+	</privilege>
+	
+	<privilege>
+		<name>Use MoTeCH</name>
+		<description>Enables a user to view the motech menu in the gutter</description>
+	</privilege>
 
+	<privilege>
+		<name>Register MoTeCH Maternal Visit</name>
+		<description>Allows registration of a maternal visit via MoTeCH</description>
+	</privilege>
+	
+	<privilege>
+		<name>Register MoTeCH Clinic</name>
+		<description>Allows registration of a clinic via MoTeCH</description>
+	</privilege>
+	
+	<privilege>
+		<name>Manage MoTeCH Troubled Phones</name>
+		<description>Allows ability to view and enable troubled phones via MoTeCH</description>
+	</privilege>
+		
+	<privilege>
+		<name>Manage MoTeCH Blackout</name>
+		<description>Allows management of global blackout interval for MoTeCH</description>
+	</privilege>
+	
+	<privilege>
+		<name>Run MoTeCH Test</name>
+		<description>Allows MoTeCH quick test</description>
+	</privilege>
+	
+	<privilege>
+		<name>View MoTeCH Data</name>
+		<description>Allows viewing MoTeCH data summary</description>
+	</privilege>
+		
+	<privilege>
+		<name>Register MoTeCH Nurse</name>
+		<description>Allows registration of a nurse via MoTeCH</description>
+	</privilege>
+	
+	<privilege>
+		<name>Register MoTeCH Patient</name>
+		<description>Allows registration of a patient via MoTeCH</description>
+	</privilege>
+	
+	<privilege>
+		<name>Register MoTeCH Pregnancy</name>
+		<description>Allows registration of a pregnancy via MoTeCH</description>
+	</privilege>
+	
 	<!-- Internationalization -->
 	<!-- All message codes should start with ${project.artifactId}.* -->
 	<messages>

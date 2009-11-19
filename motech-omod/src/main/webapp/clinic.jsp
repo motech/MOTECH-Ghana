@@ -1,8 +1,11 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 
+<openmrs:require privilege="Register MoTeCH Clinic" otherwise="/login.htm" redirect="/module/motechmodule/clinic.form" />
+
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
 <meta name="heading" content="Clinic Registration" />
+<%@ include file="localHeader.jsp" %>
 <h2>Register a Clinic</h2>
 <div class="instructions">
 	This test allows you to create a new clinic record. Patients and 

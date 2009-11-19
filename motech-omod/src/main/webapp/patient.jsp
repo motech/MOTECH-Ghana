@@ -1,7 +1,9 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-
+<openmrs:require privilege="Register MoTeCH Patient" otherwise="/login.htm" redirect="/module/motechmodule/patient.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
+<meta name="heading" content="Patient Registration" />
+<%@ include file="localHeader.jsp" %>
 <h2>Register a Patient</h2>
 <div class="instructions">
 	This test allows you to create a new patient record. A patient record 

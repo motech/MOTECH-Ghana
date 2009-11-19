@@ -1,7 +1,9 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-
+<openmrs:require privilege="Register MoTeCH Nurse" otherwise="/login.htm" redirect="/module/motechmodule/nurse.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
+<meta name="heading" content="Nurse Registration" />
+<%@ include file="localHeader.jsp" %>
 <h2>Register a Nurse</h2>
 <div class="instructions">
 	This test allows you to create a new nurse record. A nurse is

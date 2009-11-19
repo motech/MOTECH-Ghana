@@ -1,8 +1,9 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-
+<openmrs:require privilege="Register MoTeCH Maternal Visit" otherwise="/login.htm" redirect="/module/motechmodule/maternalVisit.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
-<meta name="heading" content="Record Maternal Visit" />
+<meta name="heading" content="Maternal Visit Registration" />
+<%@ include file="localHeader.jsp" %>
 <h2>Record a Maternal Visit Event</h2>
 <form method="post">
 <div class="instructions">

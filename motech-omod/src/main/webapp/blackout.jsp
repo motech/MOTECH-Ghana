@@ -1,8 +1,11 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 
+<openmrs:require privilege="Manage MoTeCH Blackout" otherwise="/login.htm" redirect="/module/motechmodule/blackout.form" />
+
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
 <meta name="heading" content="Blackout Settings" />
+<%@ include file="localHeader.jsp" %>
 <h2>Configure Blackout Periods</h2>
 <div class="instructions">
 	Configures a system wide time when messages cannot be sent. The system wide 

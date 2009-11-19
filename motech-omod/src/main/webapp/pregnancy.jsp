@@ -1,7 +1,9 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-
+<openmrs:require privilege="Register MoTeCH Pregnancy" otherwise="/login.htm" redirect="/module/motechmodule/pregnancy.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
+<meta name="heading" content="Pregnancy Registration" />
+<%@ include file="localHeader.jsp" %>
 <h2>Register a Pregnancy</h2>
 <div class="instructions">
 	This allows you to create a new pregnancy record. A pregnacy record is, in
