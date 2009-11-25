@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -27,11 +28,13 @@ import org.motech.model.Blackout;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
+import org.motech.openmrs.module.xml.LocationXStream;
 import org.motech.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
+import org.openmrs.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -75,7 +78,15 @@ public class MotechModuleFormController {
 	}
 
 	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.GET)
-	public String viewClinicForm() {
+	public String viewClinicForm(ModelMap model) {
+		List<Location> locations = registrarBean.getAllClinics();
+
+		LocationXStream xstream = new LocationXStream();
+		String locationsXml = xstream.toLocationHierarchyXML(locations);
+
+		model.addAttribute("locationsXml", locationsXml);
+		model.addAttribute("locations", locations);
+
 		return "/module/motechmodule/clinic";
 	}
 
@@ -121,7 +132,7 @@ public class MotechModuleFormController {
 			@RequestParam("hemoglobin") String hemoglobin)
 			throws NumberFormatException, ParseException {
 		log.debug("Quick Test");
-		registrarBean.registerClinic(clinicName);
+		registrarBean.registerClinic(clinicName, null);
 
 		registrarBean.registerNurse(nurseName, nursePhone, clinicName);
 
@@ -163,9 +174,14 @@ public class MotechModuleFormController {
 	}
 
 	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.POST)
-	public String registerClinic(@RequestParam("name") String name) {
+	public String registerClinic(@RequestParam("name") String name,
+			@RequestParam("parent") String parent) {
 		log.debug("Register Clinic");
-		registrarBean.registerClinic(name);
+		Integer parentId = null;
+		if (!parent.equals("")) {
+			parentId = Integer.valueOf(parent);
+		}
+		registrarBean.registerClinic(name, parentId);
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 

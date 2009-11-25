@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -261,22 +262,41 @@ public class RegistrarBeanTest extends TestCase {
 	}
 
 	public void testRegisterClinic() {
+		String clinicName = "A-Test-Clinic-Name";
+		String description = "A Ghana Clinic Location";
+		Integer clinicId = 3;
+		Integer parentId = 2;
+
 		expect(contextService.getLocationService()).andReturn(locationService);
 
 		Capture<Location> locationCap = new Capture<Location>();
+		Capture<Location> parentCap = new Capture<Location>();
+
 		expect(locationService.saveLocation(capture(locationCap))).andReturn(
+				new Location(clinicId));
+		expect(locationService.getLocation(parentId)).andReturn(
+				new Location(parentId));
+		expect(locationService.saveLocation(capture(parentCap))).andReturn(
 				new Location());
 
 		replay(contextService, locationService);
 
-		String clinicName = "A-Test-Clinic-Name";
-		regBean.registerClinic(clinicName);
+		regBean.registerClinic(clinicName, parentId);
 
 		verify(contextService, locationService);
 
 		Location location = locationCap.getValue();
 		assertEquals(clinicName, location.getName());
-		assertEquals("A Ghana Clinic Location", location.getDescription());
+		assertEquals(description, location.getDescription());
+
+		Location parent = parentCap.getValue();
+		Set<Location> childLocations = parent.getChildLocations();
+		assertEquals(1, childLocations.size());
+
+		Location childLocation = childLocations.iterator().next();
+		assertEquals(clinicId, childLocation.getLocationId());
+		assertEquals(parentId, childLocation.getParentLocation()
+				.getLocationId());
 	}
 
 	public void testRegisterNurse() {

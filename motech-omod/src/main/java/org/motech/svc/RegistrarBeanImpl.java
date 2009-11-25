@@ -93,15 +93,20 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return messagePrograms.get(programName);
 	}
 
-	public void registerClinic(String name) {
+	public void registerClinic(String name, Integer parentId) {
 
 		LocationService locationService = contextService.getLocationService();
 
 		Location clinic = new Location();
 		clinic.setName(name);
 		clinic.setDescription("A Ghana Clinic Location");
+		clinic = locationService.saveLocation(clinic);
 
-		locationService.saveLocation(clinic);
+		if (parentId != null) {
+			Location parent = locationService.getLocation(parentId);
+			parent.addChildLocation(clinic);
+			locationService.saveLocation(parent);
+		}
 	}
 
 	public void registerNurse(String name, String phoneNumber, String clinic) {

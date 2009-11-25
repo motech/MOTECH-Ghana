@@ -31,7 +31,7 @@ import org.openmrs.util.OpenmrsConstants;
 public interface RegistrarBean {
 
 	@RunAsAdminUser
-	public void registerClinic(String name);
+	public void registerClinic(String name, Integer parentId);
 
 	@RunAsAdminUser
 	public void registerNurse(String name, String phoneNumber, String clinic);

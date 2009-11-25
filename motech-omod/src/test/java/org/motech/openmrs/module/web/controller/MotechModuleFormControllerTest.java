@@ -69,7 +69,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 		Capture<Integer> parityCapture = new Capture<Integer>();
 		Capture<Double> hemoglobinCapture = new Capture<Double>();
 
-		registrarBean.registerClinic(clinicName);
+		registrarBean.registerClinic(clinicName, null);
 		registrarBean.registerNurse(nurseName, nursePhone, clinicName);
 		registrarBean.registerPatient(eq(nursePhone), eq(serialId), eq(name),
 				eq(community), eq(location), capture(dateOfBirthCapture),
@@ -110,14 +110,30 @@ public class MotechModuleFormControllerTest extends TestCase {
 		assertEquals(hemoglobin, hemoglobinCapture.getValue().toString());
 	}
 
-	public void testRegisterClinic() throws Exception {
+	public void testRegisterClinicNoParent() throws Exception {
 		String name = "Clinic Name";
+		String parentId = "";
+		Integer integerParentId = null;
 
-		registrarBean.registerClinic(name);
+		registrarBean.registerClinic(name, integerParentId);
 
 		replay(registrarBean);
 
-		controller.registerClinic(name);
+		controller.registerClinic(name, parentId);
+
+		verify(registrarBean);
+	}
+
+	public void testRegisterClinicWithParent() throws Exception {
+		String name = "Clinic Name";
+		String parentId = "2";
+		Integer integerParentId = 2;
+
+		registrarBean.registerClinic(name, integerParentId);
+
+		replay(registrarBean);
+
+		controller.registerClinic(name, parentId);
 
 		verify(registrarBean);
 	}
