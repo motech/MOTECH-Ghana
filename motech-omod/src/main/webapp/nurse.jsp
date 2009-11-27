@@ -25,7 +25,13 @@
 	</tr>
 	<tr>
 		<td><label for="clinic">Clinic:</label></td>
-		<td><input name="clinic" value="A-Clinic" /></td>
+		<td>
+			<select name="clinic">
+				<c:forEach items="${clinics}" var="clinic">
+					<option value="${clinic.locationId}">${clinic.name}</option>
+				</c:forEach>
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="2"><input type="submit" /></td>

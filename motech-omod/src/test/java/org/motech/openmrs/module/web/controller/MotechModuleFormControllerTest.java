@@ -139,19 +139,20 @@ public class MotechModuleFormControllerTest extends TestCase {
 	}
 
 	public void testRegiserNurse() throws Exception {
-		String name = "Nurse Name", nursePhone = "Nurse Phone", clinic = "Clinic Name";
+		String name = "Nurse Name", nursePhone = "Nurse Phone";
+		Integer clinicId = 1;
 
-		registrarBean.registerNurse(name, nursePhone, clinic);
+		registrarBean.registerNurse(name, nursePhone, clinicId);
 
 		replay(registrarBean);
 
-		controller.registerNurse(name, nursePhone, clinic);
+		controller.registerNurse(name, nursePhone, clinicId);
 
 		verify(registrarBean);
 	}
 
 	public void testRegisterPatient() throws Exception {
-		String nursePhone = "Nurse Phone";
+		Integer nurseId = 1;
 		String serialId = "Serial Id", name = "Patient Name", community = "Community", location = "Location", dateOfBirth = "01/01/2009";
 		String nhis = "1", patientPhone = "Patient Phone", patientPhoneType = "PERSONAL", language = "Language", mediaType = "TEXT";
 		String deliveryTime = "ANYTIME";
@@ -166,7 +167,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 		Capture<DeliveryTime> deliveryTimeCapture = new Capture<DeliveryTime>();
 		Capture<String[]> programsCapture = new Capture<String[]>();
 
-		registrarBean.registerPatient(eq(nursePhone), eq(serialId), eq(name),
+		registrarBean.registerPatient(eq(nurseId), eq(serialId), eq(name),
 				eq(community), eq(location), capture(dateOfBirthCapture),
 				capture(genderCapture), capture(nhisCapture), eq(patientPhone),
 				capture(phoneTypeCapture), eq(language),
@@ -175,7 +176,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 
 		replay(registrarBean);
 
-		controller.registerPatient(nursePhone, serialId, name, community,
+		controller.registerPatient(nurseId, serialId, name, community,
 				location, nhis, patientPhone, patientPhoneType, dateOfBirth,
 				gender, language, mediaType, deliveryTime, programs);
 
@@ -194,7 +195,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 	}
 
 	public void testRegisterPregnancy() throws Exception {
-		String nursePhone = "Nurse Phone", serialId = "Serial Id";
+		Integer nurseId = 1, patientId = 2;
 		String regDate = "01/01/2009";
 		String dueDate = "01/01/2009", parity = "1", hemoglobin = "1.1";
 
@@ -203,13 +204,13 @@ public class MotechModuleFormControllerTest extends TestCase {
 		Capture<Integer> parityCapture = new Capture<Integer>();
 		Capture<Double> hemoglobinCapture = new Capture<Double>();
 
-		registrarBean.registerPregnancy(eq(nursePhone),
-				capture(regDateCapture), eq(serialId), capture(dueDateCapture),
-				capture(parityCapture), capture(hemoglobinCapture));
+		registrarBean.registerPregnancy(eq(nurseId), capture(regDateCapture),
+				eq(patientId), capture(dueDateCapture), capture(parityCapture),
+				capture(hemoglobinCapture));
 
 		replay(registrarBean);
 
-		controller.registerPregnancy(nursePhone, regDate, serialId, dueDate,
+		controller.registerPregnancy(nurseId, regDate, patientId, dueDate,
 				parity, hemoglobin);
 
 		verify(registrarBean);
@@ -223,7 +224,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 	}
 
 	public void testRecordMaternalVisit() throws Exception {
-		String nursePhone = "Nurse Phone", serialId = "Serial Id";
+		Integer nurseId = 1, patientId = 2;
 		String visitDate = "01/01/2009", tetanus = "true", ipt = "true", itn = "true", visitNumber = "1";
 		String onARV = "true", prePMTCT = "true", testPMTCT = "true", postPMTCT = "true", hemoglobin = "1.1";
 
@@ -238,8 +239,8 @@ public class MotechModuleFormControllerTest extends TestCase {
 		Capture<Boolean> postPMTCTCapture = new Capture<Boolean>();
 		Capture<Double> hemoglobin36Capture = new Capture<Double>();
 
-		registrarBean.recordMaternalVisit(eq(nursePhone),
-				capture(visitDateCapture), eq(serialId),
+		registrarBean.recordMaternalVisit(eq(nurseId),
+				capture(visitDateCapture), eq(patientId),
 				capture(tetanusCapture), capture(iptCapture),
 				capture(itnCapture), capture(visitNumberCapture),
 				capture(onARVCapture), capture(prePMTCTCapture),
@@ -248,9 +249,9 @@ public class MotechModuleFormControllerTest extends TestCase {
 
 		replay(registrarBean);
 
-		controller.recordMaternalVisit(nursePhone, visitDate, serialId,
-				tetanus, ipt, itn, visitNumber, onARV, prePMTCT, testPMTCT,
-				postPMTCT, hemoglobin);
+		controller.recordMaternalVisit(nurseId, visitDate, patientId, tetanus,
+				ipt, itn, visitNumber, onARV, prePMTCT, testPMTCT, postPMTCT,
+				hemoglobin);
 
 		verify(registrarBean);
 

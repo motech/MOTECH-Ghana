@@ -91,22 +91,28 @@ public class MotechModuleFormController {
 	}
 
 	@RequestMapping(value = "/module/motechmodule/nurse", method = RequestMethod.GET)
-	public String viewNurseForm() {
+	public String viewNurseForm(ModelMap model) {
+		model.addAttribute("clinics", registrarBean.getAllClinics());
 		return "/module/motechmodule/nurse";
 	}
 
 	@RequestMapping(value = "/module/motechmodule/patient", method = RequestMethod.GET)
-	public String viewPatientForm() {
+	public String viewPatientForm(ModelMap model) {
+		model.addAttribute("nurses", registrarBean.getAllNurses());
 		return "/module/motechmodule/patient";
 	}
 
 	@RequestMapping(value = "/module/motechmodule/pregnancy", method = RequestMethod.GET)
-	public String viewPregnancyForm() {
+	public String viewPregnancyForm(ModelMap model) {
+		model.addAttribute("nurses", registrarBean.getAllNurses());
+		model.addAttribute("patients", registrarBean.getAllPatients());
 		return "/module/motechmodule/pregnancy";
 	}
 
 	@RequestMapping(value = "/module/motechmodule/maternalVisit", method = RequestMethod.GET)
-	public String viewMaternalVisitForm() {
+	public String viewMaternalVisitForm(ModelMap model) {
+		model.addAttribute("nurses", registrarBean.getAllNurses());
+		model.addAttribute("patients", registrarBean.getAllPatients());
 		return "/module/motechmodule/maternalVisit";
 	}
 
@@ -188,15 +194,15 @@ public class MotechModuleFormController {
 	@RequestMapping(value = "/module/motechmodule/nurse", method = RequestMethod.POST)
 	public String registerNurse(@RequestParam("name") String name,
 			@RequestParam("nursePhone") String nursePhone,
-			@RequestParam("clinic") String clinic) {
+			@RequestParam("clinic") Integer clinicId) {
 		log.debug("Register Nurse");
-		registrarBean.registerNurse(name, nursePhone, clinic);
+		registrarBean.registerNurse(name, nursePhone, clinicId);
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 
 	@RequestMapping(value = "/module/motechmodule/patient", method = RequestMethod.POST)
 	public String registerPatient(
-			@RequestParam("nursePhone") String nursePhone,
+			@RequestParam("nurse") Integer nurseId,
 			@RequestParam("serialId") String serialId,
 			@RequestParam("name") String name,
 			@RequestParam("community") String community,
@@ -213,7 +219,7 @@ public class MotechModuleFormController {
 			throws NumberFormatException, ParseException {
 		log.debug("Register Patient");
 
-		registrarBean.registerPatient(nursePhone, serialId, name, community,
+		registrarBean.registerPatient(nurseId, serialId, name, community,
 				location, dateFormat.parse(dateOfBirth),
 				Gender.valueOf(gender), Integer.valueOf(nhis), patientPhone,
 				ContactNumberType.valueOf(patientPhoneType), language,
@@ -224,27 +230,25 @@ public class MotechModuleFormController {
 	}
 
 	@RequestMapping(value = "/module/motechmodule/pregnancy", method = RequestMethod.POST)
-	public String registerPregnancy(
-			@RequestParam("nursePhone") String nursePhone,
+	public String registerPregnancy(@RequestParam("nurse") Integer nurseId,
 			@RequestParam("regDate") String regDate,
-			@RequestParam("serialId") String serialId,
+			@RequestParam("patient") Integer patientId,
 			@RequestParam("dueDate") String dueDate,
 			@RequestParam("parity") String parity,
 			@RequestParam("hemoglobin") String hemoglobin)
 			throws NumberFormatException, ParseException {
 		log.debug("Register Pregnancy");
-		registrarBean.registerPregnancy(nursePhone,
+		registrarBean.registerPregnancy(nurseId,
 				(!regDate.equals("") ? dateFormat.parse(regDate) : null),
-				serialId, dateFormat.parse(dueDate), Integer.valueOf(parity),
+				patientId, dateFormat.parse(dueDate), Integer.valueOf(parity),
 				Double.valueOf(hemoglobin));
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 
 	@RequestMapping(value = "/module/motechmodule/maternalVisit", method = RequestMethod.POST)
-	public String recordMaternalVisit(
-			@RequestParam("nursePhone") String nursePhone,
+	public String recordMaternalVisit(@RequestParam("nurse") Integer nurseId,
 			@RequestParam("visitDate") String visitDate,
-			@RequestParam("serialId") String serialId,
+			@RequestParam("patient") Integer patientId,
 			@RequestParam("tetanus") String tetanus,
 			@RequestParam("ipt") String ipt, @RequestParam("itn") String itn,
 			@RequestParam("visitNumber") String visitNumber,
@@ -255,9 +259,9 @@ public class MotechModuleFormController {
 			@RequestParam("hemoglobin") String hemoglobin)
 			throws NumberFormatException, ParseException {
 		log.debug("Register Maternal Visit");
-		registrarBean.recordMaternalVisit(nursePhone,
+		registrarBean.recordMaternalVisit(nurseId,
 				(!visitDate.equals("") ? dateFormat.parse(visitDate) : null),
-				serialId, Boolean.valueOf(tetanus), Boolean.valueOf(ipt),
+				patientId, Boolean.valueOf(tetanus), Boolean.valueOf(ipt),
 				Boolean.valueOf(itn), Integer.valueOf(visitNumber), Boolean
 						.valueOf(onARV), Boolean.valueOf(prePMTCT), Boolean
 						.valueOf(testPMTCT), Boolean.valueOf(postPMTCT), Double

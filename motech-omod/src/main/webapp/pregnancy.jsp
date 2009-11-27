@@ -18,16 +18,28 @@
 <form method="post">
 <table>
 	<tr>
-		<td><label for="nursePhone">Nurse Phone:</label></td>
-		<td><input name="nursePhone" value="5555555555" /></td>
+		<td><label for="nurse">Nurse:</label></td>
+		<td>
+			<select name="nurse">
+				<c:forEach items="${nurses}" var="nurse">
+					<option value="${nurse.userId}">${nurse.personName}</option>
+				</c:forEach>
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td><label for="regDate">Registration Date:</label></td>
 		<td><input name="regDate" value="01/01/2001" /></td>
 	</tr>
 	<tr>
-		<td><label for="serialId">Serial Id:</label></td>
-		<td><input name="serialId" value="FGH4894894" /></td>
+		<td><label for="patient">Patient:</label></td>
+		<td>
+			<select name="patient">
+				<c:forEach items="${patients}" var="patient">
+					<option value="${patient.patientId}">${patient.personName}</option>
+				</c:forEach>
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td><label for="dueDate">Due Date:</label></td>

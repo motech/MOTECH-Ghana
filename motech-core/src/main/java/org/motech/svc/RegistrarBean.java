@@ -34,12 +34,21 @@ public interface RegistrarBean {
 	public void registerClinic(String name, Integer parentId);
 
 	@RunAsAdminUser
-	public void registerNurse(String name, String phoneNumber, String clinic);
+	public void registerNurse(String name, String phoneNumber, String clinicName);
+
+	public void registerNurse(String name, String phoneNumber, Integer clinicId);
 
 	@RunAsAdminUser
 	public void registerPatient(String nursePhoneNumber, String serialId,
 			String name, String community, String location, Date dateOfBirth,
 			Gender gender, Integer nhis, String phoneNumber,
+			ContactNumberType contactNumberType, String language,
+			MediaType mediaType, DeliveryTime deliveryTime,
+			String[] messagePrograms);
+
+	public void registerPatient(Integer nurseId, String serialId, String name,
+			String community, String location, Date dateOfBirth, Gender gender,
+			Integer nhis, String phoneNumber,
 			ContactNumberType contactNumberType, String language,
 			MediaType mediaType, DeliveryTime deliveryTime,
 			String[] messagePrograms);
@@ -50,9 +59,17 @@ public interface RegistrarBean {
 			Integer visitNumber, Boolean onARV, Boolean prePMTCT,
 			Boolean testPMTCT, Boolean postPMTCT, Double hemoglobinAt36Weeks);
 
+	public void recordMaternalVisit(Integer nurseId, Date date,
+			Integer patientId, Boolean tetanus, Boolean ipt, Boolean itn,
+			Integer visitNumber, Boolean onARV, Boolean prePMTCT,
+			Boolean testPMTCT, Boolean postPMTCT, Double hemoglobinAt36Weeks);
+
 	@RunAsAdminUser
 	public void registerPregnancy(String nursePhoneNumber, Date date,
 			String serialId, Date dueDate, Integer parity, Double hemoglobin);
+
+	public void registerPregnancy(Integer nurseId, Date date,
+			Integer patientId, Date dueDate, Integer parity, Double hemoglobin);
 
 	public void log(LogType type, String message);
 

@@ -47,6 +47,7 @@ import org.openmrs.PatientIdentifierType;
 import org.openmrs.Person;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
+import org.openmrs.PersonName;
 import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.ConceptService;
@@ -313,6 +314,8 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getUserService()).andReturn(userService);
 		expect(contextService.getLocationService()).andReturn(locationService);
 
+		expect(personService.parsePersonName(name)).andReturn(
+				new PersonName(name, null, null));
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
@@ -375,6 +378,8 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getUserService()).andReturn(userService);
 
+		expect(personService.parsePersonName(name)).andReturn(
+				new PersonName(name, null, null));
 		expect(
 				patientService
 						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))

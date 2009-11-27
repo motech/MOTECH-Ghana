@@ -50,7 +50,6 @@ import org.openmrs.Person;
 import org.openmrs.PersonAddress;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
-import org.openmrs.PersonName;
 import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.ConceptService;
@@ -109,10 +108,24 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
-	public void registerNurse(String name, String phoneNumber, String clinic) {
+	public void registerNurse(String name, String phoneNumber, String clinicName) {
+		LocationService locationService = contextService.getLocationService();
+		Location clinic = locationService.getLocation(clinicName);
+
+		registerNurse(name, phoneNumber, clinic);
+	}
+
+	public void registerNurse(String name, String phoneNumber, Integer clinicId) {
+		LocationService locationService = contextService.getLocationService();
+		Location clinic = locationService.getLocation(clinicId);
+
+		registerNurse(name, phoneNumber, clinic);
+	}
+
+	private void registerNurse(String name, String phoneNumber, Location clinic) {
 
 		UserService userService = contextService.getUserService();
-		LocationService locationService = contextService.getLocationService();
+		PersonService personService = contextService.getPersonService();
 
 		// User creating other users must have atleast the Privileges to be
 		// given
@@ -124,11 +137,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		// TODO: Nurse gender hardcoded, required for Person
 		nurse.setGender(GenderTypeConverter.toOpenMRSString(Gender.FEMALE));
 
-		PersonName personName = new PersonName();
-		personName.setGivenName(name);
-		// Family name appears required in UI
-		personName.setFamilyName(name);
-		nurse.addName(personName);
+		nurse.addName(personService.parsePersonName(name));
 
 		// Must be created previously through API or UI to lookup
 		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
@@ -142,9 +151,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		// TODO: Clinic not used, no connection currently between Nurse and
 		// Clinic
-		Location clinicLocation = locationService.getLocation(clinic);
 		PersonAttributeType clinicType = getClinicAttributeType();
-		nurse.addAttribute(new PersonAttribute(clinicType, clinicLocation
+		nurse.addAttribute(new PersonAttribute(clinicType, clinic
 				.getLocationId().toString()));
 
 		userService.saveUser(nurse, "password");
@@ -157,24 +165,46 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			MediaType mediaType, DeliveryTime deliveryTime,
 			String[] messagePrograms) {
 
+		User nurse = this.getUserByPhoneNumber(nursePhoneNumber);
+		registerPatient(nurse, serialId, name, community, location,
+				dateOfBirth, gender, nhis, phoneNumber, contactNumberType,
+				language, mediaType, deliveryTime, messagePrograms);
+	}
+
+	public void registerPatient(Integer nurseId, String serialId, String name,
+			String community, String location, Date dateOfBirth, Gender gender,
+			Integer nhis, String phoneNumber,
+			ContactNumberType contactNumberType, String language,
+			MediaType mediaType, DeliveryTime deliveryTime,
+			String[] messagePrograms) {
+
+		UserService userService = contextService.getUserService();
+		User nurse = userService.getUser(nurseId);
+		registerPatient(nurse, serialId, name, community, location,
+				dateOfBirth, gender, nhis, phoneNumber, contactNumberType,
+				language, mediaType, deliveryTime, messagePrograms);
+	}
+
+	private void registerPatient(User nurse, String serialId, String name,
+			String community, String location, Date dateOfBirth, Gender gender,
+			Integer nhis, String phoneNumber,
+			ContactNumberType contactNumberType, String language,
+			MediaType mediaType, DeliveryTime deliveryTime,
+			String[] messagePrograms) {
+
 		PatientService patientService = contextService.getPatientService();
+		PersonService personService = contextService.getPersonService();
 
 		Patient patient = new Patient();
 
 		// Must be created previously through API or UI to lookup
 		PatientIdentifierType serialIdType = getGhanaPatientIdType();
 
-		User nurse = this.getUserByPhoneNumber(nursePhoneNumber);
-
 		Location clinicLocation = getNurseClinicLocation(nurse);
 		patient.addIdentifier(new PatientIdentifier(serialId, serialIdType,
 				clinicLocation));
 
-		PersonName personName = new PersonName();
-		personName.setGivenName(name);
-		// Family name appears required, PersonName parsePersonName(name)
-		personName.setFamilyName(name);
-		patient.addName(personName);
+		patient.addName(personService.parsePersonName(name));
 
 		PersonAddress address = new PersonAddress();
 		address.setAddress1(location);
@@ -224,11 +254,36 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			Integer visitNumber, Boolean onARV, Boolean prePMTCT,
 			Boolean testPMTCT, Boolean postPMTCT, Double hemoglobinAt36Weeks) {
 
+		User nurse = this.getUserByPhoneNumber(nursePhoneNumber);
+		Patient patient = getPatientBySerial(serialId);
+		recordMaternalVisit(nurse, date, patient, tetanus, ipt, itn,
+				visitNumber, onARV, prePMTCT, testPMTCT, postPMTCT,
+				hemoglobinAt36Weeks);
+	}
+
+	public void recordMaternalVisit(Integer nurseId, Date date,
+			Integer patientId, Boolean tetanus, Boolean ipt, Boolean itn,
+			Integer visitNumber, Boolean onARV, Boolean prePMTCT,
+			Boolean testPMTCT, Boolean postPMTCT, Double hemoglobinAt36Weeks) {
+
+		UserService userService = contextService.getUserService();
+		PatientService patientService = contextService.getPatientService();
+
+		User nurse = userService.getUser(nurseId);
+		Patient patient = patientService.getPatient(patientId);
+		recordMaternalVisit(nurse, date, patient, tetanus, ipt, itn,
+				visitNumber, onARV, prePMTCT, testPMTCT, postPMTCT,
+				hemoglobinAt36Weeks);
+	}
+
+	private void recordMaternalVisit(User nurse, Date date, Patient patient,
+			Boolean tetanus, Boolean ipt, Boolean itn, Integer visitNumber,
+			Boolean onARV, Boolean prePMTCT, Boolean testPMTCT,
+			Boolean postPMTCT, Double hemoglobinAt36Weeks) {
+
 		EncounterService encounterService = contextService
 				.getEncounterService();
 		ObsService obsService = contextService.getObsService();
-
-		Patient patient = getPatientBySerial(serialId);
 
 		Date visitDate = date;
 		if (visitDate == null) {
@@ -238,8 +293,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		Encounter encounter = new Encounter();
 		encounter.setEncounterDatetime(visitDate);
 		encounter.setPatient(patient);
-
-		User nurse = this.getUserByPhoneNumber(nursePhoneNumber);
 		encounter.setProvider(nurse);
 
 		Location clinicLocation = getNurseClinicLocation(nurse);
@@ -312,11 +365,28 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public void registerPregnancy(String nursePhoneNumber, Date date,
 			String serialId, Date dueDate, Integer parity, Double hemoglobin) {
 
+		User nurse = this.getUserByPhoneNumber(nursePhoneNumber);
+		Patient patient = getPatientBySerial(serialId);
+		registerPregnancy(nurse, date, patient, dueDate, parity, hemoglobin);
+	}
+
+	public void registerPregnancy(Integer nurseId, Date date,
+			Integer patientId, Date dueDate, Integer parity, Double hemoglobin) {
+
+		UserService userService = contextService.getUserService();
+		PatientService patientService = contextService.getPatientService();
+
+		User nurse = userService.getUser(nurseId);
+		Patient patient = patientService.getPatient(patientId);
+		registerPregnancy(nurse, date, patient, dueDate, parity, hemoglobin);
+	}
+
+	private void registerPregnancy(User nurse, Date date, Patient patient,
+			Date dueDate, Integer parity, Double hemoglobin) {
+
 		EncounterService encounterService = contextService
 				.getEncounterService();
 		ObsService obsService = contextService.getObsService();
-
-		Patient patient = getPatientBySerial(serialId);
 
 		Date visitDate = date;
 		if (visitDate == null) {
@@ -326,8 +396,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		Encounter encounter = new Encounter();
 		encounter.setEncounterDatetime(visitDate);
 		encounter.setPatient(patient);
-
-		User nurse = this.getUserByPhoneNumber(nursePhoneNumber);
 		encounter.setProvider(nurse);
 
 		Location clinicLocation = getNurseClinicLocation(nurse);
