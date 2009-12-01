@@ -1,6 +1,5 @@
-package org.motech.model;
+package org.motech.util;
 
-import org.motech.util.MotechConstants;
 import org.motechproject.ws.Gender;
 
 /**

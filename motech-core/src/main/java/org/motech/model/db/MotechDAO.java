@@ -3,14 +3,14 @@ package org.motech.model.db;
 import java.util.Date;
 import java.util.List;
 
-import org.motech.event.MessageProgramEnrollment;
-import org.motech.messaging.Message;
-import org.motech.messaging.MessageAttribute;
-import org.motech.messaging.MessageDefinition;
-import org.motech.messaging.MessageStatus;
-import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Blackout;
 import org.motech.model.Log;
+import org.motech.model.Message;
+import org.motech.model.MessageAttribute;
+import org.motech.model.MessageDefinition;
+import org.motech.model.MessageProgramEnrollment;
+import org.motech.model.MessageStatus;
+import org.motech.model.ScheduledMessage;
 import org.motech.model.TroubledPhone;
 
 /**

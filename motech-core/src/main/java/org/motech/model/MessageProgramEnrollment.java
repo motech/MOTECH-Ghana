@@ -1,4 +1,4 @@
-package org.motech.event;
+package org.motech.model;
 
 import java.util.Date;
 

@@ -1,8 +1,7 @@
-package org.motech.model;
+package org.motech.util;
 
 import junit.framework.TestCase;
 
-import org.motech.util.MotechConstants;
 import org.motechproject.ws.Gender;
 
 public class GenderTypeConverterTest extends TestCase {

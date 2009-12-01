@@ -1,4 +1,4 @@
-package org.motech.messaging;
+package org.motech.model;
 
 public class MessageAttribute {
 

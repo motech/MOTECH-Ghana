@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.motech.annotation.RunAsAdminUser;
 import org.motech.annotation.RunWithPrivileges;
-import org.motech.messaging.ScheduledMessage;
 import org.motech.model.Log;
+import org.motech.model.ScheduledMessage;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;

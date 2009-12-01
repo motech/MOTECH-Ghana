@@ -1,6 +1,6 @@
 package org.motech.model.db.hibernate;
 
-import org.motech.messaging.MessageStatus;
+import org.motech.model.MessageStatus;
 
 public class MessageStatusEnumType extends EnumUserType<MessageStatus> {
 
