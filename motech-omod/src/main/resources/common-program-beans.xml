@@ -4,13 +4,13 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="nopCommand" class="org.motech.event.impl.NopCommand" />
-	<bean id="messageScheduler" class="org.motech.messaging.MessageSchedulerImpl">
+	<bean id="nopCommand" class="${corePackage}.event.impl.NopCommand" />
+	<bean id="messageScheduler" class="${corePackage}.messaging.impl.MessageSchedulerImpl">
 		<property name="registrarBean">
 			<bean parent="registrarBean" />
 		</property>
 	</bean>
-	<bean id="userPrefmessageScheduler" class="org.motech.messaging.MessageSchedulerImpl">
+	<bean id="userPrefmessageScheduler" class="${corePackage}.messaging.impl.MessageSchedulerImpl">
 		<property name="userPreferenceBased" value="true" />
 		<property name="registrarBean">
 			<bean parent="registrarBean" />

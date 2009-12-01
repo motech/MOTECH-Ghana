@@ -13,7 +13,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.motech.messaging.MessageSchedulerImpl;
+import org.motech.messaging.impl.MessageSchedulerImpl;
 import org.motech.model.Message;
 import org.motech.model.MessageDefinition;
 import org.motech.model.MessageStatus;

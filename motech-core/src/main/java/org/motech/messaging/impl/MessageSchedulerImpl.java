@@ -1,9 +1,10 @@
-package org.motech.messaging;
+package org.motech.messaging.impl;
 
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motech.messaging.MessageScheduler;
 import org.motech.svc.RegistrarBean;
 
 public class MessageSchedulerImpl implements MessageScheduler {

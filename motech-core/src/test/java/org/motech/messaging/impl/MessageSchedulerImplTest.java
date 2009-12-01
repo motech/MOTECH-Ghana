@@ -1,4 +1,4 @@
-package org.motech.messaging;
+package org.motech.messaging.impl;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.replay;
