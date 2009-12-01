@@ -1,4 +1,4 @@
-package org.motech.tasks;
+package org.motech.openmrs.module.tasks;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

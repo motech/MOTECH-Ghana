@@ -11,7 +11,7 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.motech.tasks;
+package org.motech.openmrs.module.tasks;
 
 import java.util.Date;
 

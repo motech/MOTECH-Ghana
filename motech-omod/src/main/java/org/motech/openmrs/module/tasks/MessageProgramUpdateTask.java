@@ -1,4 +1,4 @@
-package org.motech.tasks;
+package org.motech.openmrs.module.tasks;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
