@@ -20,7 +20,7 @@ import org.motech.openmrs.module.advice.ContextSessionAdvice;
 import org.motech.openmrs.module.advice.ProxyPrivilegesAdvice;
 import org.motech.openmrs.module.impl.ContextServiceImpl;
 import org.motech.svc.RegistrarBean;
-import org.motech.svc.RegistrarBeanImpl;
+import org.motech.svc.impl.RegistrarBeanImpl;
 import org.openmrs.module.Activator;
 import org.openmrs.module.Module;
 import org.openmrs.module.ModuleFactory;

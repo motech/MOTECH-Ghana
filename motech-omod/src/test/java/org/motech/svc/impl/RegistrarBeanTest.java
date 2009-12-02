@@ -1,4 +1,4 @@
-package org.motech.svc;
+package org.motech.svc.impl;
 
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.capture;
@@ -28,6 +28,7 @@ import org.motech.model.ScheduledMessage;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
+import org.motech.svc.RegistrarBean;
 import org.motech.util.GenderTypeConverter;
 import org.motech.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;

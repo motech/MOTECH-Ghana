@@ -32,7 +32,7 @@
 		<property name="contextService" ref="contextService" />
 	</bean>
 
-	<bean id="registrarBean" class="${corePackage}.svc.RegistrarBeanImpl">
+	<bean id="registrarBean" class="${corePackage}.svc.impl.RegistrarBeanImpl">
 		<property name="contextService" ref="contextService" />
 		<property name="mobileService" ref="mobileClient" />
 		<property name="messagePrograms">

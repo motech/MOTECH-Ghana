@@ -1,4 +1,4 @@
-package org.motech.svc;
+package org.motech.svc.impl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,6 +25,7 @@ import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.openmrs.module.tasks.MessageProgramUpdateTask;
 import org.motech.openmrs.module.tasks.NotificationTask;
+import org.motech.svc.RegistrarBean;
 import org.motech.util.GenderTypeConverter;
 import org.motech.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
