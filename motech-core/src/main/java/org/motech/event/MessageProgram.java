@@ -1,12 +1,10 @@
 package org.motech.event;
 
-import org.openmrs.Patient;
-
 public interface MessageProgram extends BaseInterface {
 
-	MessageProgramState determineState(Patient patient);
+	MessageProgramState determineState(Integer personId);
 
-	MessageProgramState updateState(Patient patient);
+	MessageProgramState updateState(Integer personId);
 
 	MessageProgramState getStartState();
 

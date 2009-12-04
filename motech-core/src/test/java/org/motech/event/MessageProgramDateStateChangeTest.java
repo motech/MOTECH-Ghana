@@ -10,7 +10,6 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import org.motech.svc.RegistrarBean;
-import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -18,7 +17,7 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 
 	ApplicationContext ctx;
 
-	Patient patient;
+	Integer patientId;
 	Date week1;
 	Date week2;
 	Date week3;
@@ -46,7 +45,7 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 		calendar.add(Calendar.DATE, -41 * 7 - 1); // over 41 weeks in past
 		week41 = calendar.getTime();
 
-		patient = new Patient();
+		patientId = 1;
 
 		ctx = new ClassPathXmlApplicationContext(new String[] {
 				"test-common-program-beans.xml",
@@ -78,13 +77,13 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 
 	public void testDetermineWeek1() {
 		expect(
-				registrarBean.getLastObsDate(patient, pregnancyProgram
+				registrarBean.getLastObsDate(patientId, pregnancyProgram
 						.getConceptName(), pregnancyProgram.getConceptValue()))
 				.andReturn(week1).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyProgram.determineState(patient);
+		currentPatientState = pregnancyProgram.determineState(patientId);
 
 		verify(registrarBean);
 
@@ -93,13 +92,13 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 
 	public void testDetermineWeek2() {
 		expect(
-				registrarBean.getLastObsDate(patient, pregnancyProgram
+				registrarBean.getLastObsDate(patientId, pregnancyProgram
 						.getConceptName(), pregnancyProgram.getConceptValue()))
 				.andReturn(week2).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyProgram.determineState(patient);
+		currentPatientState = pregnancyProgram.determineState(patientId);
 
 		verify(registrarBean);
 
@@ -108,13 +107,13 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 
 	public void testDetermineWeek3() {
 		expect(
-				registrarBean.getLastObsDate(patient, pregnancyProgram
+				registrarBean.getLastObsDate(patientId, pregnancyProgram
 						.getConceptName(), pregnancyProgram.getConceptValue()))
 				.andReturn(week3).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyProgram.determineState(patient);
+		currentPatientState = pregnancyProgram.determineState(patientId);
 
 		verify(registrarBean);
 
@@ -123,13 +122,13 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 
 	public void testDetermineEndState() {
 		expect(
-				registrarBean.getLastObsDate(patient, pregnancyProgram
+				registrarBean.getLastObsDate(patientId, pregnancyProgram
 						.getConceptName(), pregnancyProgram.getConceptValue()))
 				.andReturn(week41).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyProgram.determineState(patient);
+		currentPatientState = pregnancyProgram.determineState(patientId);
 
 		verify(registrarBean);
 

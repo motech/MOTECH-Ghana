@@ -1,5 +1,6 @@
 package org.motech.event;
 
+import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
@@ -14,7 +15,6 @@ import org.motech.event.impl.RemoveEnrollmentCommand;
 import org.motech.event.impl.ScheduleMessageCommand;
 import org.motech.messaging.MessageScheduler;
 import org.motech.svc.RegistrarBean;
-import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -22,7 +22,6 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 
 	ApplicationContext ctx;
 
-	Patient patient;
 	Integer patientId;
 
 	MessageProgramImpl program;
@@ -38,9 +37,6 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		patientId = 576;
-
-		patient = new Patient();
-		patient.setPatientId(patientId);
 
 		ctx = new ClassPathXmlApplicationContext(new String[] {
 				"programs/tetanus-info-program.xml",
@@ -79,7 +75,6 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		patient = null;
 		patientId = null;
 
 		program = null;
@@ -97,19 +92,21 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 
 	public void testState1() {
 		// Patient registered 0 minutes ago, message expected in 1 minute
-		Date registrationDate = setPatientRegistration(patient, 0);
+		Date registrationDate = getPatientRegistration(0);
 		Date messageDate = getMessageDate(registrationDate, 1);
 
 		String messageKey = ((ScheduleMessageCommand) state1.getCommand())
 				.getMessageKey();
 		String groupId = program.getName();
 
+		expect(registrarBean.getPatientRegistrationDate(patientId)).andReturn(
+				registrationDate).anyTimes();
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patient);
+		MessageProgramState state = program.determineState(patientId);
 
 		verify(registrarBean, messageScheduler);
 
@@ -119,19 +116,21 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 	public void testState2() {
 		// Patient registered 1 minute ago, message expected 2 minutes after
 		// registration
-		Date registrationDate = setPatientRegistration(patient, 1);
+		Date registrationDate = getPatientRegistration(1);
 		Date messageDate = getMessageDate(registrationDate, 2);
 
 		String messageKey = ((ScheduleMessageCommand) state2.getCommand())
 				.getMessageKey();
 		String groupId = program.getName();
 
+		expect(registrarBean.getPatientRegistrationDate(patientId)).andReturn(
+				registrationDate).anyTimes();
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patient);
+		MessageProgramState state = program.determineState(patientId);
 
 		verify(registrarBean, messageScheduler);
 
@@ -141,19 +140,21 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 	public void testState3() {
 		// Patient registered 4 minute ago, message expected 5 minutes after
 		// registration
-		Date registrationDate = setPatientRegistration(patient, 4);
+		Date registrationDate = getPatientRegistration(4);
 		Date messageDate = getMessageDate(registrationDate, 5);
 
 		String messageKey = ((ScheduleMessageCommand) state3.getCommand())
 				.getMessageKey();
 		String groupId = program.getName();
 
+		expect(registrarBean.getPatientRegistrationDate(patientId)).andReturn(
+				registrationDate).anyTimes();
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patient);
+		MessageProgramState state = program.determineState(patientId);
 
 		verify(registrarBean, messageScheduler);
 
@@ -163,19 +164,21 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 	public void testState4() {
 		// Patient registered 5 minute ago, message expected 6 minutes after
 		// registration
-		Date registrationDate = setPatientRegistration(patient, 5);
+		Date registrationDate = getPatientRegistration(5);
 		Date messageDate = getMessageDate(registrationDate, 6);
 
 		String messageKey = ((ScheduleMessageCommand) state4.getCommand())
 				.getMessageKey();
 		String groupId = program.getName();
 
+		expect(registrarBean.getPatientRegistrationDate(patientId)).andReturn(
+				registrationDate).anyTimes();
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patient);
+		MessageProgramState state = program.determineState(patientId);
 
 		verify(registrarBean, messageScheduler);
 
@@ -184,25 +187,26 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 
 	public void testState5() {
 		// Patient registered 7 minute ago, no messages expected
-		setPatientRegistration(patient, 7);
+		Date registrationDate = getPatientRegistration(7);
 
-		registrarBean.removeMessageProgramEnrollment(patient.getPatientId(),
-				program.getName());
+		expect(registrarBean.getPatientRegistrationDate(patientId)).andReturn(
+				registrationDate).anyTimes();
+		registrarBean.removeMessageProgramEnrollment(patientId, program
+				.getName());
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patient);
+		MessageProgramState state = program.determineState(patientId);
 
 		verify(registrarBean, messageScheduler);
 
 		assertEquals(state5.getName(), state.getName());
 	}
 
-	private Date setPatientRegistration(Patient patient, int minutesPrior) {
+	private Date getPatientRegistration(int minutesPrior) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.MINUTE, -minutesPrior);
 		calendar.add(Calendar.SECOND, -1);
-		patient.setDateCreated(calendar.getTime());
 		return calendar.getTime();
 	}
 

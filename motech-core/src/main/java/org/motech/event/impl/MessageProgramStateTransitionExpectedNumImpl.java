@@ -1,7 +1,6 @@
 package org.motech.event.impl;
 
 import org.motech.svc.RegistrarBean;
-import org.openmrs.Patient;
 
 public class MessageProgramStateTransitionExpectedNumImpl extends
 		MessageProgramStateTransitionImpl {
@@ -10,10 +9,10 @@ public class MessageProgramStateTransitionExpectedNumImpl extends
 	private int expectedNumber;
 
 	@Override
-	public boolean evaluate(Patient patient) {
+	public boolean evaluate(Integer personId) {
 		String conceptName = prevState.getProgram().getConceptName();
 		String conceptValue = prevState.getProgram().getConceptValue();
-		int obsNum = registrarBean.getNumberOfObs(patient, conceptName,
+		int obsNum = registrarBean.getNumberOfObs(personId, conceptName,
 				conceptValue);
 
 		if (prevState.equals(nextState)) {

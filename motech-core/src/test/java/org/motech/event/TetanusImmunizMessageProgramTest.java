@@ -17,7 +17,6 @@ import org.motech.event.impl.RemoveEnrollmentCommand;
 import org.motech.event.impl.ScheduleMessageCommand;
 import org.motech.messaging.MessageScheduler;
 import org.motech.svc.RegistrarBean;
-import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -25,7 +24,6 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 
 	ApplicationContext ctx;
 
-	Patient patient;
 	Integer patientId;
 
 	MessageProgramImpl program;
@@ -43,9 +41,6 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		patientId = 572;
-
-		patient = new Patient();
-		patient.setPatientId(patientId);
 
 		ctx = new ClassPathXmlApplicationContext(new String[] {
 				"programs/tetanus-immuniz-program.xml",
@@ -140,7 +135,6 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		patient = null;
 		patientId = null;
 
 		program = null;
@@ -163,7 +157,7 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		// No tetanus immunizations, patient registered 0 minutes ago, message
 		// expected in 3 minutes
 		Integer numberOfTetanusObs = 0;
-		Date registrationDate = setPatientRegistration(patient, 0);
+		Date registrationDate = getPatientRegistration(0);
 		Date messageDate = getMessageDate(registrationDate, 3);
 
 		String messageKey = ((ScheduleMessageCommand) expectedState
@@ -171,16 +165,18 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		String groupId = program.getName();
 
 		expect(
-				registrarBean.getNumberOfObs(patient, program.getConceptName(),
-						program.getConceptValue())).andReturn(
-				numberOfTetanusObs);
+				registrarBean.getNumberOfObs(patientId, program
+						.getConceptName(), program.getConceptValue()))
+				.andReturn(numberOfTetanusObs);
+		expect(registrarBean.getPatientRegistrationDate(patientId)).andReturn(
+				registrationDate).anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patient);
+		MessageProgramState state = program.determineState(patientId);
 
 		verify(registrarBean, messageScheduler);
 
@@ -192,7 +188,7 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		// No tetanus immunizations, patient registered 4 minutes ago, message
 		// expected 6 minutes after registration
 		Integer numberOfTetanusObs = 0;
-		Date registrationDate = setPatientRegistration(patient, 4);
+		Date registrationDate = getPatientRegistration(4);
 		Date messageDate = getMessageDate(registrationDate, 6);
 
 		String messageKey = ((ScheduleMessageCommand) expectedState
@@ -200,16 +196,18 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		String groupId = program.getName();
 
 		expect(
-				registrarBean.getNumberOfObs(patient, program.getConceptName(),
-						program.getConceptValue())).andReturn(
-				numberOfTetanusObs).anyTimes();
+				registrarBean.getNumberOfObs(patientId, program
+						.getConceptName(), program.getConceptValue()))
+				.andReturn(numberOfTetanusObs).anyTimes();
+		expect(registrarBean.getPatientRegistrationDate(patientId)).andReturn(
+				registrationDate).anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patient);
+		MessageProgramState state = program.determineState(patientId);
 
 		verify(registrarBean, messageScheduler);
 
@@ -221,7 +219,7 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		// No tetanus immunizations, patient registered 7 minutes ago, message
 		// expected 9 minutes after registration
 		Integer numberOfTetanusObs = 0;
-		Date registrationDate = setPatientRegistration(patient, 7);
+		Date registrationDate = getPatientRegistration(7);
 		Date messageDate = getMessageDate(registrationDate, 9);
 
 		String messageKey = ((ScheduleMessageCommand) expectedState
@@ -229,16 +227,18 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		String groupId = program.getName();
 
 		expect(
-				registrarBean.getNumberOfObs(patient, program.getConceptName(),
-						program.getConceptValue())).andReturn(
-				numberOfTetanusObs).anyTimes();
+				registrarBean.getNumberOfObs(patientId, program
+						.getConceptName(), program.getConceptValue()))
+				.andReturn(numberOfTetanusObs).anyTimes();
+		expect(registrarBean.getPatientRegistrationDate(patientId)).andReturn(
+				registrationDate).anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patient);
+		MessageProgramState state = program.determineState(patientId);
 
 		verify(registrarBean, messageScheduler);
 
@@ -250,7 +250,6 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		// 1 tetanus immunization, patient registered 0 minutes ago, message
 		// expected 1 minutes after last tetanus, which was 0 minutes ago
 		Integer numberOfTetanusObs = 1;
-		setPatientRegistration(patient, 1);
 		Date lastObsDate = getPreviousTetanusObsDate(0);
 		Date messageDate = getMessageDate(lastObsDate, 1);
 
@@ -259,20 +258,20 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		String groupId = program.getName();
 
 		expect(
-				registrarBean.getNumberOfObs(patient, program.getConceptName(),
-						program.getConceptValue())).andReturn(
-				numberOfTetanusObs).anyTimes();
+				registrarBean.getNumberOfObs(patientId, program
+						.getConceptName(), program.getConceptValue()))
+				.andReturn(numberOfTetanusObs).anyTimes();
 		expect(
-				registrarBean.getLastObsDate(patient, program.getConceptName(),
-						program.getConceptValue())).andReturn(lastObsDate)
-				.anyTimes();
+				registrarBean.getLastObsDate(patientId, program
+						.getConceptName(), program.getConceptValue()))
+				.andReturn(lastObsDate).anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patient);
+		MessageProgramState state = program.determineState(patientId);
 
 		verify(registrarBean, messageScheduler);
 
@@ -284,7 +283,6 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		// 1 tetanus immunization, patient registered 2 minutes ago, message
 		// expected 3 minutes after last tetanus, which was 2 minutes ago
 		Integer numberOfTetanusObs = 1;
-		setPatientRegistration(patient, 2);
 		Date lastObsDate = getPreviousTetanusObsDate(2);
 		Date messageDate = getMessageDate(lastObsDate, 3);
 
@@ -293,20 +291,20 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		String groupId = program.getName();
 
 		expect(
-				registrarBean.getNumberOfObs(patient, program.getConceptName(),
-						program.getConceptValue())).andReturn(
-				numberOfTetanusObs).anyTimes();
+				registrarBean.getNumberOfObs(patientId, program
+						.getConceptName(), program.getConceptValue()))
+				.andReturn(numberOfTetanusObs).anyTimes();
 		expect(
-				registrarBean.getLastObsDate(patient, program.getConceptName(),
-						program.getConceptValue())).andReturn(lastObsDate)
-				.anyTimes();
+				registrarBean.getLastObsDate(patientId, program
+						.getConceptName(), program.getConceptValue()))
+				.andReturn(lastObsDate).anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patient);
+		MessageProgramState state = program.determineState(patientId);
 
 		verify(registrarBean, messageScheduler);
 
@@ -318,7 +316,6 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		// 1 tetanus immunization, patient registered 4 minutes ago, message
 		// expected 6 minutes after last tetanus, which was 4 minutes ago
 		Integer numberOfTetanusObs = 1;
-		setPatientRegistration(patient, 4);
 		Date lastObsDate = getPreviousTetanusObsDate(4);
 		Date messageDate = getMessageDate(lastObsDate, 6);
 
@@ -327,20 +324,20 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		String groupId = program.getName();
 
 		expect(
-				registrarBean.getNumberOfObs(patient, program.getConceptName(),
-						program.getConceptValue())).andReturn(
-				numberOfTetanusObs).anyTimes();
+				registrarBean.getNumberOfObs(patientId, program
+						.getConceptName(), program.getConceptValue()))
+				.andReturn(numberOfTetanusObs).anyTimes();
 		expect(
-				registrarBean.getLastObsDate(patient, program.getConceptName(),
-						program.getConceptValue())).andReturn(lastObsDate)
-				.anyTimes();
+				registrarBean.getLastObsDate(patientId, program
+						.getConceptName(), program.getConceptValue()))
+				.andReturn(lastObsDate).anyTimes();
 
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patient);
+		MessageProgramState state = program.determineState(patientId);
 
 		verify(registrarBean, messageScheduler);
 
@@ -353,17 +350,16 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		Integer numberOfTetanusObs = 2;
 
 		expect(
-				registrarBean.getNumberOfObs(patient, program.getConceptName(),
-						program.getConceptValue())).andReturn(
-				numberOfTetanusObs).anyTimes();
-		registrarBean.removeAllUnsentMessages(patient.getPatientId(), program
+				registrarBean.getNumberOfObs(patientId, program
+						.getConceptName(), program.getConceptValue()))
+				.andReturn(numberOfTetanusObs).anyTimes();
+		registrarBean.removeAllUnsentMessages(patientId, program.getName());
+		registrarBean.removeMessageProgramEnrollment(patientId, program
 				.getName());
-		registrarBean.removeMessageProgramEnrollment(patient.getPatientId(),
-				program.getName());
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patient);
+		MessageProgramState state = program.determineState(patientId);
 
 		verify(registrarBean, messageScheduler);
 
@@ -375,31 +371,31 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		// No tetanus immunizations, patient registered 10 minutes ago, no
 		// messages expected
 		Integer numberOfTetanusObs = 0;
-		setPatientRegistration(patient, 10);
+		Date registrationDate = getPatientRegistration(10);
 
 		expect(
-				registrarBean.getNumberOfObs(patient, program.getConceptName(),
-						program.getConceptValue())).andReturn(
-				numberOfTetanusObs).anyTimes();
-		registrarBean.removeAllUnsentMessages(patient.getPatientId(), program
+				registrarBean.getNumberOfObs(patientId, program
+						.getConceptName(), program.getConceptValue()))
+				.andReturn(numberOfTetanusObs).anyTimes();
+		expect(registrarBean.getPatientRegistrationDate(patientId)).andReturn(
+				registrationDate).anyTimes();
+		registrarBean.removeAllUnsentMessages(patientId, program.getName());
+		registrarBean.removeMessageProgramEnrollment(patientId, program
 				.getName());
-		registrarBean.removeMessageProgramEnrollment(patient.getPatientId(),
-				program.getName());
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patient);
+		MessageProgramState state = program.determineState(patientId);
 
 		verify(registrarBean, messageScheduler);
 
 		assertEquals(expectedState.getName(), state.getName());
 	}
 
-	private Date setPatientRegistration(Patient patient, int minutesPrior) {
+	private Date getPatientRegistration(int minutesPrior) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.MINUTE, -minutesPrior);
 		calendar.add(Calendar.SECOND, -1);
-		patient.setDateCreated(calendar.getTime());
 		return calendar.getTime();
 	}
 

@@ -3,7 +3,6 @@ package org.motech.event.impl;
 import org.motech.event.Command;
 import org.motech.event.MessageProgramState;
 import org.motech.event.MessageProgramStateTransition;
-import org.openmrs.Patient;
 
 public class MessageProgramStateTransitionImpl extends BaseInterfaceImpl
 		implements MessageProgramStateTransition {
@@ -12,7 +11,7 @@ public class MessageProgramStateTransitionImpl extends BaseInterfaceImpl
 	protected MessageProgramState nextState;
 	protected Command command;
 
-	public boolean evaluate(Patient patient) {
+	public boolean evaluate(Integer personId) {
 		// Default Transition is always taken
 		return true;
 	}

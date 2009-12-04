@@ -10,7 +10,6 @@ import org.motech.event.Command;
 import org.motech.event.MessageProgram;
 import org.motech.event.MessageProgramState;
 import org.motech.event.MessageProgramStateTransition;
-import org.openmrs.Patient;
 
 public class MessageProgramImpl extends BaseInterfaceImpl implements
 		MessageProgram {
@@ -54,17 +53,18 @@ public class MessageProgramImpl extends BaseInterfaceImpl implements
 		this.conceptValue = conceptValue;
 	}
 
-	public MessageProgramState determineState(Patient patient) {
+	public MessageProgramState determineState(Integer personId) {
 		MessageProgramState state = startState;
-		MessageProgramStateTransition transition = state.getTransition(patient);
+		MessageProgramStateTransition transition = state
+				.getTransition(personId);
 		while (!transition.getNextState().equals(state)) {
 			state = transition.getNextState();
-			transition = state.getTransition(patient);
+			transition = state.getTransition(personId);
 		}
 
 		if (log.isDebugEnabled()) {
-			log.debug("Message Program determineState: patient id: "
-					+ patient.getPatientId() + ", state: " + state.getName());
+			log.debug("Message Program determineState: person id: " + personId
+					+ ", state: " + state.getName());
 		}
 
 		// Perform state action using date
@@ -80,24 +80,23 @@ public class MessageProgramImpl extends BaseInterfaceImpl implements
 		boolean performExecute = true;
 		for (Command commandInList : allCommands) {
 			if (commandInList instanceof ScheduleMessageCommand) {
-				Date messageDate = state.getDateOfAction(patient);
+				Date messageDate = state.getDateOfAction(personId);
 				if (messageDate == null) {
 					performExecute = false;
 				}
 				((ScheduleMessageCommand) commandInList)
 						.setMessageDate(messageDate);
 				((ScheduleMessageCommand) commandInList)
-						.setMessageRecipientId(patient.getPatientId());
+						.setMessageRecipientId(personId);
 				((ScheduleMessageCommand) commandInList).setMessageGroup(this
 						.getName());
 			} else if (commandInList instanceof RemoveMessagesCommand) {
 				((RemoveMessagesCommand) commandInList)
-						.setMessageRecipientId(patient.getPatientId());
+						.setMessageRecipientId(personId);
 				((RemoveMessagesCommand) commandInList).setMessageGroup(this
 						.getName());
 			} else if (commandInList instanceof RemoveEnrollmentCommand) {
-				((RemoveEnrollmentCommand) commandInList).setPersonId(patient
-						.getPatientId());
+				((RemoveEnrollmentCommand) commandInList).setPersonId(personId);
 				((RemoveEnrollmentCommand) commandInList).setProgramName(this
 						.getName());
 			}
@@ -109,12 +108,13 @@ public class MessageProgramImpl extends BaseInterfaceImpl implements
 		return state;
 	}
 
-	public MessageProgramState updateState(Patient patient) {
-		MessageProgramState state = determineState(patient);
+	public MessageProgramState updateState(Integer personId) {
+		MessageProgramState state = determineState(personId);
 		if (state.equals(endState)) {
 			return state;
 		}
-		MessageProgramStateTransition transition = state.getTransition(patient);
+		MessageProgramStateTransition transition = state
+				.getTransition(personId);
 		transition.getCommand().execute();
 		MessageProgramState newState = transition.getNextState();
 

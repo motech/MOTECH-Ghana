@@ -2,13 +2,11 @@ package org.motech.event;
 
 import java.util.Date;
 
-import org.openmrs.Patient;
-
 public interface MessageProgramState extends BaseInterface {
 
 	Command getCommand();
 
-	MessageProgramStateTransition getTransition(Patient patient);
+	MessageProgramStateTransition getTransition(Integer personId);
 
 	MessageProgram getProgram();
 
@@ -18,5 +16,5 @@ public interface MessageProgramState extends BaseInterface {
 
 	TimeReference getTimeReference();
 
-	Date getDateOfAction(Patient patient);
+	Date getDateOfAction(Integer personId);
 }

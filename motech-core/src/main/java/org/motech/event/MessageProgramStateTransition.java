@@ -1,7 +1,5 @@
 package org.motech.event;
 
-import org.openmrs.Patient;
-
 public interface MessageProgramStateTransition extends BaseInterface {
 
 	MessageProgramState getPrevState();
@@ -10,5 +8,5 @@ public interface MessageProgramStateTransition extends BaseInterface {
 
 	Command getCommand();
 
-	boolean evaluate(Patient patient);
+	boolean evaluate(Integer personId);
 }

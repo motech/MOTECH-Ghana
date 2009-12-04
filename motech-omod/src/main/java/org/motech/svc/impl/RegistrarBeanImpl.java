@@ -559,7 +559,19 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	/* Controller methods end */
 
 	/* PatientObsService methods start */
-	private List<Obs> getMatchingObs(Patient patient, Concept question,
+	public Date getPatientBirthDate(Integer patientId) {
+		PatientService patientService = contextService.getPatientService();
+		Patient patient = patientService.getPatient(patientId);
+		return patient.getBirthdate();
+	}
+
+	public Date getPatientRegistrationDate(Integer patientId) {
+		PatientService patientService = contextService.getPatientService();
+		Patient patient = patientService.getPatient(patientId);
+		return patient.getDateCreated();
+	}
+
+	private List<Obs> getMatchingObs(Person person, Concept question,
 			Concept answer) {
 
 		ObsService obsService = contextService.getObsService();
@@ -577,7 +589,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 
 		List<Person> whom = new ArrayList<Person>();
-		whom.add((Person) patient);
+		whom.add(person);
 
 		// patients, encounters, questions, answers, persontype, locations,
 		// sort, max returned, group id, from date, to date, include voided
@@ -587,39 +599,45 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return obsList;
 	}
 
-	public int getNumberOfObs(Patient patient, String conceptName,
+	public int getNumberOfObs(Integer personId, String conceptName,
 			String conceptValue) {
 
 		ConceptService conceptService = contextService.getConceptService();
-		return getNumberOfObs(patient, conceptService.getConcept(conceptName),
-				conceptService.getConcept(conceptValue));
+		PersonService personService = contextService.getPersonService();
+		return getNumberOfObs(personService.getPerson(personId), conceptService
+				.getConcept(conceptName), conceptService
+				.getConcept(conceptValue));
 	}
 
-	public Date getLastObsDate(Patient patient, String conceptName,
+	public Date getLastObsDate(Integer personId, String conceptName,
 			String conceptValue) {
 
 		ConceptService conceptService = contextService.getConceptService();
-		return getLastObsDate(patient, conceptService.getConcept(conceptName),
-				conceptService.getConcept(conceptValue));
+		PersonService personService = contextService.getPersonService();
+		return getLastObsDate(personService.getPerson(personId), conceptService
+				.getConcept(conceptName), conceptService
+				.getConcept(conceptValue));
 	}
 
-	public Date getLastObsValue(Patient patient, String conceptName) {
+	public Date getLastObsValue(Integer personId, String conceptName) {
 		ConceptService conceptService = contextService.getConceptService();
-		return getLastObsValue(patient, conceptService.getConcept(conceptName));
+		PersonService personService = contextService.getPersonService();
+		return getLastObsValue(personService.getPerson(personId),
+				conceptService.getConcept(conceptName));
 	}
 
-	public int getNumberOfObs(Patient patient, Concept concept, Concept value) {
+	public int getNumberOfObs(Person person, Concept concept, Concept value) {
 
-		List<Obs> obsList = getMatchingObs(patient, concept, value);
+		List<Obs> obsList = getMatchingObs(person, concept, value);
 		return obsList.size();
 	}
 
-	public Date getLastObsDate(Patient patient, Concept concept, Concept value) {
+	public Date getLastObsDate(Person person, Concept concept, Concept value) {
 
 		Date latestObsDate = null;
 
 		// List default sorted by Obs datetime
-		List<Obs> obsList = getMatchingObs(patient, concept, value);
+		List<Obs> obsList = getMatchingObs(person, concept, value);
 
 		if (obsList.size() > 0) {
 			latestObsDate = obsList.get(0).getObsDatetime();
@@ -627,10 +645,10 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return latestObsDate;
 	}
 
-	public Date getLastObsValue(Patient patient, Concept concept) {
+	public Date getLastObsValue(Person person, Concept concept) {
 		Date lastestObsValue = null;
 
-		List<Obs> obsList = getMatchingObs(patient, concept, null);
+		List<Obs> obsList = getMatchingObs(person, concept, null);
 		if (obsList.size() > 0) {
 			lastestObsValue = obsList.get(0).getValueDatetime();
 		}
@@ -1099,34 +1117,25 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	/* Activator methods end */
 
 	/* SaveObsAdvice method */
-	public void updateMessageProgramState(Obs obs) {
-		ConceptService conceptService = contextService.getConceptService();
-		PatientService patientService = contextService.getPatientService();
-
-		Integer obsPersonId = obs.getPerson().getPersonId();
-		Patient patient = patientService.getPatient(obsPersonId);
+	public void updateMessageProgramState(Integer personId, String conceptName) {
 
 		// Only determine message program state for enrolled programs
 		// concerned with an observed concept
 		// and matching the concept of this obs
 
 		List<String> patientPrograms = this
-				.getActiveMessageProgramEnrollments(obsPersonId);
+				.getActiveMessageProgramEnrollments(personId);
 
 		for (String programName : patientPrograms) {
 			MessageProgram program = this.getMessageProgram(programName);
 
-			Concept programConcept = null;
 			if (program.getConceptName() != null) {
-				programConcept = conceptService.getConcept(program
-						.getConceptName());
-
-				if (obs.getConcept().equals(programConcept)) {
+				if (program.getConceptName().equals(conceptName)) {
 					log
 							.debug("Save Obs - Obs matches Program concept, update Program: "
 									+ programName);
 
-					program.determineState(patient);
+					program.determineState(personId);
 				}
 			}
 		}
@@ -1151,7 +1160,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				log.debug("MessageProgram Update - Update State: program: "
 						+ programName + ", patient: " + patient.getPatientId());
 
-				program.determineState(patient);
+				program.determineState(patient.getPatientId());
 			}
 		}
 	}

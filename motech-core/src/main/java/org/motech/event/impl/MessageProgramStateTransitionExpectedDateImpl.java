@@ -2,24 +2,22 @@ package org.motech.event.impl;
 
 import java.util.Date;
 
-import org.openmrs.Patient;
-
 public class MessageProgramStateTransitionExpectedDateImpl extends
 		MessageProgramStateTransitionImpl {
 
 	@Override
-	public boolean evaluate(Patient patient) {
+	public boolean evaluate(Integer personId) {
 		Date currentDate = new Date();
 		Date actionDate;
 		if (nextState.equals(prevState)) {
-			actionDate = nextState.getDateOfAction(patient);
+			actionDate = nextState.getDateOfAction(personId);
 			if (actionDate == null) {
 				return false;
 			}
 			return currentDate.before(actionDate)
 					|| currentDate.equals(actionDate);
 		} else {
-			actionDate = prevState.getDateOfAction(patient);
+			actionDate = prevState.getDateOfAction(personId);
 			if (actionDate == null) {
 				return false;
 			}

@@ -11,7 +11,6 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import org.motech.svc.RegistrarBean;
-import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -19,7 +18,7 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 	ApplicationContext ctx;
 
-	Patient patient;
+	Integer patientId;
 	Date obs1;
 	Date obs2;
 	Date obs3;
@@ -39,9 +38,6 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
 		calendar.add(Calendar.MONTH, -1); // 1 month in past
-
-		patient = new Patient();
-		patient.setBirthdate(calendar.getTime()); // 1 month old
 
 		obs1 = calendar.getTime();
 
@@ -86,13 +82,13 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 	public void testDetermineStartState() {
 		expect(
-				registrarBean.getNumberOfObs(patient, polioProgram
+				registrarBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(0).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.determineState(patient);
+		currentPatientState = polioProgram.determineState(patientId);
 
 		verify(registrarBean);
 
@@ -101,13 +97,13 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 	public void testDetermineSecondState() {
 		expect(
-				registrarBean.getNumberOfObs(patient, polioProgram
+				registrarBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(1).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.determineState(patient);
+		currentPatientState = polioProgram.determineState(patientId);
 
 		verify(registrarBean);
 
@@ -116,13 +112,13 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 	public void testDetermineEndState() {
 		expect(
-				registrarBean.getNumberOfObs(patient, polioProgram
+				registrarBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(4).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.determineState(patient);
+		currentPatientState = polioProgram.determineState(patientId);
 
 		verify(registrarBean);
 
@@ -131,13 +127,13 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 	public void testMoveState() {
 		expect(
-				registrarBean.getNumberOfObs(patient, polioProgram
+				registrarBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(2).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.determineState(patient);
+		currentPatientState = polioProgram.determineState(patientId);
 
 		verify(registrarBean);
 
@@ -147,13 +143,13 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 		reset(registrarBean);
 
 		expect(
-				registrarBean.getNumberOfObs(patient, polioProgram
+				registrarBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(3).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.updateState(patient);
+		currentPatientState = polioProgram.updateState(patientId);
 
 		verify(registrarBean);
 
@@ -162,13 +158,13 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 	public void testNotMoveState() {
 		expect(
-				registrarBean.getNumberOfObs(patient, polioProgram
+				registrarBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(3).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.determineState(patient);
+		currentPatientState = polioProgram.determineState(patientId);
 
 		verify(registrarBean);
 
@@ -178,13 +174,13 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 		reset(registrarBean);
 
 		expect(
-				registrarBean.getNumberOfObs(patient, polioProgram
+				registrarBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(3).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.updateState(patient);
+		currentPatientState = polioProgram.updateState(patientId);
 
 		verify(registrarBean);
 
@@ -193,13 +189,13 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 	public void testNotMoveEndState() {
 		expect(
-				registrarBean.getNumberOfObs(patient, polioProgram
+				registrarBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(4).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.determineState(patient);
+		currentPatientState = polioProgram.determineState(patientId);
 
 		verify(registrarBean);
 
@@ -209,13 +205,13 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 		reset(registrarBean);
 
 		expect(
-				registrarBean.getNumberOfObs(patient, polioProgram
+				registrarBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(4).atLeastOnce();
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.updateState(patient);
+		currentPatientState = polioProgram.updateState(patientId);
 
 		verify(registrarBean);
 

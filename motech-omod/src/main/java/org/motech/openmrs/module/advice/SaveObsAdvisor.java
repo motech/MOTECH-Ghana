@@ -51,7 +51,11 @@ public class SaveObsAdvisor implements AfterReturningAdvice {
 		if (method.getName().equals("saveObs")) {
 			Obs obs = (Obs) returnValue;
 
-			contextService.getRegistrarBean().updateMessageProgramState(obs);
+			Integer personId = obs.getPersonId();
+			String conceptName = obs.getConcept().getName().getName();
+
+			contextService.getRegistrarBean().updateMessageProgramState(
+					personId, conceptName);
 		}
 	}
 

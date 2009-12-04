@@ -14,7 +14,6 @@ import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
 import org.openmrs.Encounter;
 import org.openmrs.Location;
-import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.User;
 import org.openmrs.util.OpenmrsConstants;
@@ -95,13 +94,17 @@ public interface RegistrarBean {
 
 	public List<Log> getAllLogs();
 
-	public int getNumberOfObs(Patient patient, String conceptName,
+	public Date getPatientBirthDate(Integer patientId);
+
+	public Date getPatientRegistrationDate(Integer patientId);
+
+	public int getNumberOfObs(Integer personId, String conceptName,
 			String conceptValue);
 
-	public Date getLastObsDate(Patient patient, String conceptName,
+	public Date getLastObsDate(Integer personId, String conceptName,
 			String conceptValue);
 
-	public Date getLastObsValue(Patient patient, String conceptName);
+	public Date getLastObsValue(Integer personId, String conceptName);
 
 	public void removeMessageProgramEnrollment(Integer personId,
 			String programName);
@@ -134,7 +137,7 @@ public interface RegistrarBean {
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PATIENTS,
 			OpenmrsConstants.PRIV_VIEW_CONCEPTS })
-	public void updateMessageProgramState(Obs obs);
+	public void updateMessageProgramState(Integer personId, String conceptName);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
 			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES,

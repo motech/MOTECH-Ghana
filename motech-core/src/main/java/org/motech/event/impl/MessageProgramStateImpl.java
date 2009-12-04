@@ -12,7 +12,6 @@ import org.motech.event.MessageProgramStateTransition;
 import org.motech.event.TimePeriod;
 import org.motech.event.TimeReference;
 import org.motech.svc.RegistrarBean;
-import org.openmrs.Patient;
 
 public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 		MessageProgramState {
@@ -29,9 +28,9 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 		transitions.add(transition);
 	}
 
-	public MessageProgramStateTransition getTransition(Patient patient) {
+	public MessageProgramStateTransition getTransition(Integer personId) {
 		for (MessageProgramStateTransition transition : transitions) {
-			if (transition.evaluate(patient)) {
+			if (transition.evaluate(personId)) {
 				return transition;
 			}
 		}
@@ -101,17 +100,17 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 		this.transitions = transitions;
 	}
 
-	public Date getDateOfAction(Patient patient) {
+	public Date getDateOfAction(Integer personId) {
 
 		if (timePeriod != null && timeReference != null) {
 
 			Calendar calendar = Calendar.getInstance();
 			switch (timeReference) {
 			case patient_age:
-				calendar.setTime(patient.getBirthdate());
+				calendar.setTime(registrarBean.getPatientBirthDate(personId));
 				break;
 			case last_obs:
-				Date obsDate = registrarBean.getLastObsDate(patient, program
+				Date obsDate = registrarBean.getLastObsDate(personId, program
 						.getConceptName(), program.getConceptValue());
 				if (obsDate == null) {
 					return null;
@@ -119,7 +118,7 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 				calendar.setTime(obsDate);
 				break;
 			case last_obs_value:
-				Date obsValueDate = registrarBean.getLastObsValue(patient,
+				Date obsValueDate = registrarBean.getLastObsValue(personId,
 						program.getConceptName());
 				if (obsValueDate == null) {
 					return null;
@@ -127,7 +126,8 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 				calendar.setTime(obsValueDate);
 				break;
 			case patient_registration:
-				calendar.setTime(patient.getDateCreated());
+				calendar.setTime(registrarBean
+						.getPatientRegistrationDate(personId));
 				break;
 			}
 
