@@ -129,6 +129,22 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
+	public void testGeneralVisit() {
+		String clinic = "Test Clinic";
+		Gender gender = Gender.MALE;
+		Integer age = 35, diagnosis = 5;
+		Date date = new Date();
+
+		registrarBean.recordGeneralVisit(clinic, gender, age, diagnosis, date);
+
+		replay(registrarBean);
+
+		regWs.recordGeneralVisit(clinic, gender, age, diagnosis, date);
+
+		verify(registrarBean);
+	}
+
+	@Test
 	public void testLog() {
 		LogType type = LogType.SUCCESS;
 		String msg = "logging over ws is slow";

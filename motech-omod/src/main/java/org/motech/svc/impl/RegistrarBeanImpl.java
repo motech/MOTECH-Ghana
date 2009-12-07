@@ -426,6 +426,14 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		obsService.saveObs(hemoglobinObs, null);
 	}
 
+	public void recordGeneralVisit(String clinicName, Gender patientGender,
+			Integer patientAge, Integer patientDiagnosis, Date encounterDate) {
+
+		log.debug("Date: " + encounterDate + ", Clinic: " + clinicName
+				+ ", Gender: " + patientGender + ", Age: " + patientAge
+				+ ", Diagnosis: " + patientDiagnosis);
+	}
+
 	public void log(LogType type, String message) {
 
 		log.debug("log WS: type: " + type + ", message: " + message);
