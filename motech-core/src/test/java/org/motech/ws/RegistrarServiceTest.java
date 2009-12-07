@@ -7,7 +7,6 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
 import java.util.Date;
@@ -163,13 +162,11 @@ public class RegistrarServiceTest {
 		String messageId = "12345678-1234-1234-1234-123456789012";
 		Boolean success = true;
 
+		registrarBean.setMessageStatus(messageId, success);
+
 		replay(registrarBean);
 
-		try {
-			regWs.setMessageStatus(messageId, success);
-			fail("Expected org.motech.messaging.MessageNotFoundException");
-		} catch (Exception e) {
-		}
+		regWs.setMessageStatus(messageId, success);
 
 		verify(registrarBean);
 	}
