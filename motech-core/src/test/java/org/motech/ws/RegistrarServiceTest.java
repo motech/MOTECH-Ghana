@@ -129,16 +129,19 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testGeneralVisit() {
-		String clinic = "Test Clinic";
+		String clinic = "Test Clinic", serial = "Test123";
 		Gender gender = Gender.MALE;
 		Integer age = 35, diagnosis = 5;
+		Boolean referral = false;
 		Date date = new Date();
 
-		registrarBean.recordGeneralVisit(clinic, gender, age, diagnosis, date);
+		registrarBean.recordGeneralVisit(clinic, serial, gender, age,
+				diagnosis, referral, date);
 
 		replay(registrarBean);
 
-		regWs.recordGeneralVisit(clinic, gender, age, diagnosis, date);
+		regWs.recordGeneralVisit(clinic, serial, gender, age, diagnosis,
+				referral, date);
 
 		verify(registrarBean);
 	}

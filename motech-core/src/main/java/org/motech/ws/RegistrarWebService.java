@@ -92,13 +92,16 @@ public class RegistrarWebService implements RegistrarService {
 	@WebMethod
 	public void recordGeneralVisit(
 			@WebParam(name = "clinicName") String clinicName,
+			@WebParam(name = "patientSerial") String patientSerial,
 			@WebParam(name = "patientGender") Gender patientGender,
 			@WebParam(name = "patientAge") Integer patientAge,
 			@WebParam(name = "patientDiagnosis") Integer patientDiagnosis,
+			@WebParam(name = "patientReferral") Boolean patientReferral,
 			@WebParam(name = "encounterDate") Date encounterDate) {
 
-		registrarBean.recordGeneralVisit(clinicName, patientGender, patientAge,
-				patientDiagnosis, encounterDate);
+		registrarBean.recordGeneralVisit(clinicName, patientSerial,
+				patientGender, patientAge, patientDiagnosis, patientReferral,
+				encounterDate);
 	}
 
 	@WebMethod
