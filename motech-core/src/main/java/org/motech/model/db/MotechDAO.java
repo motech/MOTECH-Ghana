@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.motech.model.Blackout;
+import org.motech.model.GeneralPatientEncounter;
 import org.motech.model.Log;
 import org.motech.model.Message;
 import org.motech.model.MessageAttribute;
@@ -76,4 +77,7 @@ public interface MotechDAO {
 
 	MessageProgramEnrollment getMessageProgramEnrollment(Integer personId,
 			String program);
+
+	GeneralPatientEncounter saveGeneralPatientEncounter(
+			GeneralPatientEncounter encounter);
 }

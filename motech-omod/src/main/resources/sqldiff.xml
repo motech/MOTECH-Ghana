@@ -131,6 +131,18 @@
 				CONSTRAINT `person_id_for_person` FOREIGN KEY (`person_id`) REFERENCES `person` (`person_id`),
 				CONSTRAINT `unique_person_in_program` UNIQUE (`person_id`,`program_name`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			CREATE TABLE IF NOT EXISTS `motechmodule_generalencounter` (
+				`motechmodule_generalencounter_id` bigint NOT NULL auto_increment,
+				`encounter_date` date NOT NULL,
+				`clinic_name` varchar(255) NOT NULL,
+				`patient_serial` varchar(255) NOT NULL,
+				`patient_gender` varchar(6) NOT NULL,
+				`patient_age` int NOT NULL,
+				`patient_diagnosis` int NOT NULL,	
+				`patient_referral` boolean NOT NULL,
+				PRIMARY KEY (`motechmodule_generalencounter_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		</sql>
 	</diff>
 	

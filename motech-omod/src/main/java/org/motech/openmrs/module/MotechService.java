@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.motech.model.Blackout;
+import org.motech.model.GeneralPatientEncounter;
 import org.motech.model.Log;
 import org.motech.model.Message;
 import org.motech.model.MessageAttribute;
@@ -123,4 +124,8 @@ public interface MotechService extends OpenmrsService {
 
 	@Transactional
 	void removeTroubledPhone(String phoneNumber);
+
+	@Transactional
+	GeneralPatientEncounter saveGeneralPatientEncounter(
+			GeneralPatientEncounter encounter);
 }

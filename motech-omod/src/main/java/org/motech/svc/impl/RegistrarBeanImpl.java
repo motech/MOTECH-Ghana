@@ -14,6 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.event.MessageProgram;
 import org.motech.messaging.MessageNotFoundException;
+import org.motech.model.GeneralPatientEncounter;
 import org.motech.model.Message;
 import org.motech.model.MessageAttribute;
 import org.motech.model.MessageDefinition;
@@ -434,6 +435,19 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				+ ", Serial: " + patientSerial + ", Gender: " + patientGender
 				+ ", Age: " + patientAge + ", Diagnosis: " + patientDiagnosis
 				+ ", Referral: " + patientReferral);
+
+		MotechService motechService = contextService.getMotechService();
+
+		GeneralPatientEncounter encounter = new GeneralPatientEncounter();
+		encounter.setClinicName(clinicName);
+		encounter.setPatientSerial(patientSerial);
+		encounter.setPatientGender(patientGender);
+		encounter.setPatientAge(patientAge);
+		encounter.setPatientDiagnosis(patientDiagnosis);
+		encounter.setPatientReferral(patientReferral);
+		encounter.setEncounterDate(encounterDate);
+
+		motechService.saveGeneralPatientEncounter(encounter);
 	}
 
 	public void log(LogType type, String message) {

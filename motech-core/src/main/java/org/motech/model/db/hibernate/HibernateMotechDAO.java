@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.motech.model.Blackout;
+import org.motech.model.GeneralPatientEncounter;
 import org.motech.model.Log;
 import org.motech.model.Message;
 import org.motech.model.MessageAttribute;
@@ -239,5 +240,12 @@ public class HibernateMotechDAO implements MotechDAO {
 				MessageProgramEnrollment.class).add(
 				Restrictions.eq("personId", personId)).add(
 				Restrictions.eq("program", program)).uniqueResult();
+	}
+
+	public GeneralPatientEncounter saveGeneralPatientEncounter(
+			GeneralPatientEncounter encounter) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(encounter);
+		return encounter;
 	}
 }

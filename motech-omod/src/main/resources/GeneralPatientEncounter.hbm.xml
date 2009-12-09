@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="${corePackage}.model">
+	<class name="GeneralPatientEncounter" table="motechmodule_generalencounter">
+		<id name="id" type="long" column="motechmodule_generalencounter_id">
+			<generator class="native" />
+		</id>
+		<property name="encounterDate" type="java.util.Date" column="encounter_date"
+			not-null="true" length="19" />
+		<property name="clinicName" type="string" column="clinic_name"
+			not-null="true" length="255" />
+		<property name="patientSerial" type="string" column="patient_serial"
+			not-null="true" length="255" />
+		<property name="patientGender"
+			type="${corePackage}.model.db.hibernate.GenderEnumType" column="patient_gender"
+			not-null="true" length="6" />
+		<property name="patientAge" type="int" column="patient_age"
+			not-null="true" />
+		<property name="patientDiagnosis" type="int" column="patient_diagnosis"
+			not-null="true" />
+		<property name="patientReferral" type="boolean" column="patient_referral"
+			not-null="true" />
+	</class>
+</hibernate-mapping>

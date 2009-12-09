@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.motech.model.Blackout;
+import org.motech.model.GeneralPatientEncounter;
 import org.motech.model.Log;
 import org.motech.model.Message;
 import org.motech.model.MessageAttribute;
@@ -183,5 +184,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		if (tp != null) {
 			motechDAO.removeTroubledPhone(tp.getId());
 		}
+	}
+
+	public GeneralPatientEncounter saveGeneralPatientEncounter(
+			GeneralPatientEncounter encounter) {
+		return motechDAO.saveGeneralPatientEncounter(encounter);
 	}
 }
