@@ -15,6 +15,8 @@ import org.motechproject.ws.Gender;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.server.RegistrarService;
+import org.motechproject.ws.server.ValidationErrors;
+import org.motechproject.ws.server.ValidationException;
 
 /**
  * This is the service enpoint implementation for the major motech server web
@@ -97,7 +99,15 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "patientAge") Integer patientAge,
 			@WebParam(name = "patientDiagnosis") Integer patientDiagnosis,
 			@WebParam(name = "patientReferral") Boolean patientReferral,
-			@WebParam(name = "encounterDate") Date encounterDate) {
+			@WebParam(name = "encounterDate") Date encounterDate)
+			throws ValidationException {
+
+		if (clinicName == null) {
+			ValidationErrors errors = new ValidationErrors();
+			errors.add(1, "clinicName");
+			throw new ValidationException("Errors in General Visit request",
+					errors);
+		}
 
 		registrarBean.recordGeneralVisit(clinicName, patientSerial,
 				patientGender, patientAge, patientDiagnosis, patientReferral,

@@ -7,9 +7,12 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.LogManager;
 
 import org.junit.After;
@@ -24,6 +27,8 @@ import org.motechproject.ws.Gender;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.server.RegistrarService;
+import org.motechproject.ws.server.ValidationError;
+import org.motechproject.ws.server.ValidationException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -128,7 +133,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testGeneralVisit() {
+	public void testGeneralVisit() throws ValidationException {
 		String clinic = "Test Clinic", serial = "Test123";
 		Gender gender = Gender.MALE;
 		Integer age = 35, diagnosis = 5;
@@ -144,6 +149,31 @@ public class RegistrarServiceTest {
 				referral, date);
 
 		verify(registrarBean);
+	}
+
+	@Test
+	public void testGeneralVisitMissingClinic() {
+		String clinic = null, serial = "Test123";
+		Gender gender = Gender.MALE;
+		Integer age = 35, diagnosis = 5;
+		Boolean referral = false;
+		Date date = new Date();
+
+		try {
+			regWs.recordGeneralVisit(clinic, serial, gender, age, diagnosis,
+					referral, date);
+			fail("Expected ValidationException");
+		} catch (ValidationException e) {
+			assertEquals("Errors in General Visit request", e.getMessage());
+			assertNotNull("Validation Exception FaultBean is Null", e
+					.getFaultInfo());
+			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			assertNotNull("Validation Errors is Null", errors);
+			assertEquals(1, errors.size());
+			ValidationError error = errors.get(0);
+			assertEquals(1, error.getCode());
+			assertEquals("clinicName", error.getField());
+		}
 	}
 
 	@Test
