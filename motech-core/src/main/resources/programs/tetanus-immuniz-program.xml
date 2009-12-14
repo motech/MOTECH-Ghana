@@ -16,7 +16,7 @@
 		<property name="name" value="Tetanus Wait State 1" />
 		<property name="timeValue" value="3" />
 		<property name="timePeriod" value="minute" />
-		<property name="timeReference" value="patient_registration" />
+		<property name="timeReference" value="patient_enrollment" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="tetanus.1.prompt" />
@@ -52,7 +52,7 @@
 		<property name="name" value="Tetanus Reminder State 1-1" />
 		<property name="timeValue" value="6" />
 		<property name="timePeriod" value="minute" />
-		<property name="timeReference" value="patient_registration" />
+		<property name="timeReference" value="patient_enrollment" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="tetanus.1.reminder.1" />
@@ -88,7 +88,7 @@
 		<property name="name" value="Tetanus Reminder State 1-2" />
 		<property name="timeValue" value="9" />
 		<property name="timePeriod" value="minute" />
-		<property name="timeReference" value="patient_registration" />
+		<property name="timeReference" value="patient_enrollment" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="tetanus.1.reminder.2" />

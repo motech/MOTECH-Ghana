@@ -594,10 +594,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return patient.getBirthdate();
 	}
 
-	public Date getPatientRegistrationDate(Integer patientId) {
-		PatientService patientService = contextService.getPatientService();
-		Patient patient = patientService.getPatient(patientId);
-		return patient.getDateCreated();
+	public Date getMessageProgramStartDate(Integer personId, String program) {
+		MotechService motechService = contextService.getMotechService();
+		MessageProgramEnrollment enrollment = motechService
+				.getMessageProgramEnrollment(personId, program);
+		return enrollment.getStartDate();
 	}
 
 	private List<Obs> getMatchingObs(Person person, Concept question,

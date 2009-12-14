@@ -91,16 +91,17 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 	}
 
 	public void testState1() {
-		// Patient registered 0 minutes ago, message expected in 1 minute
-		Date registrationDate = getPatientRegistration(0);
-		Date messageDate = getMessageDate(registrationDate, 1);
+		// Patient enrolled 0 minutes ago, message expected in 1 minute
+		Date enrollmentDate = getPatientEnrollment(0);
+		Date messageDate = getMessageDate(enrollmentDate, 1);
 
 		String messageKey = ((ScheduleMessageCommand) state1.getCommand())
 				.getMessageKey();
 		String groupId = program.getName();
 
-		expect(registrarBean.getPatientRegistrationDate(patientId)).andReturn(
-				registrationDate).anyTimes();
+		expect(
+				registrarBean.getMessageProgramStartDate(patientId, program
+						.getName())).andReturn(enrollmentDate).anyTimes();
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
@@ -114,17 +115,18 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 	}
 
 	public void testState2() {
-		// Patient registered 1 minute ago, message expected 2 minutes after
-		// registration
-		Date registrationDate = getPatientRegistration(1);
-		Date messageDate = getMessageDate(registrationDate, 2);
+		// Patient enrolled 1 minute ago, message expected 2 minutes after
+		// enrollment
+		Date enrollmentDate = getPatientEnrollment(1);
+		Date messageDate = getMessageDate(enrollmentDate, 2);
 
 		String messageKey = ((ScheduleMessageCommand) state2.getCommand())
 				.getMessageKey();
 		String groupId = program.getName();
 
-		expect(registrarBean.getPatientRegistrationDate(patientId)).andReturn(
-				registrationDate).anyTimes();
+		expect(
+				registrarBean.getMessageProgramStartDate(patientId, program
+						.getName())).andReturn(enrollmentDate).anyTimes();
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
@@ -138,17 +140,18 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 	}
 
 	public void testState3() {
-		// Patient registered 4 minute ago, message expected 5 minutes after
-		// registration
-		Date registrationDate = getPatientRegistration(4);
-		Date messageDate = getMessageDate(registrationDate, 5);
+		// Patient enrolled 4 minute ago, message expected 5 minutes after
+		// enrollment
+		Date enrollmentDate = getPatientEnrollment(4);
+		Date messageDate = getMessageDate(enrollmentDate, 5);
 
 		String messageKey = ((ScheduleMessageCommand) state3.getCommand())
 				.getMessageKey();
 		String groupId = program.getName();
 
-		expect(registrarBean.getPatientRegistrationDate(patientId)).andReturn(
-				registrationDate).anyTimes();
+		expect(
+				registrarBean.getMessageProgramStartDate(patientId, program
+						.getName())).andReturn(enrollmentDate).anyTimes();
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
@@ -162,17 +165,18 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 	}
 
 	public void testState4() {
-		// Patient registered 5 minute ago, message expected 6 minutes after
-		// registration
-		Date registrationDate = getPatientRegistration(5);
-		Date messageDate = getMessageDate(registrationDate, 6);
+		// Patient enrolled 5 minute ago, message expected 6 minutes after
+		// enrollment
+		Date enrollmentDate = getPatientEnrollment(5);
+		Date messageDate = getMessageDate(enrollmentDate, 6);
 
 		String messageKey = ((ScheduleMessageCommand) state4.getCommand())
 				.getMessageKey();
 		String groupId = program.getName();
 
-		expect(registrarBean.getPatientRegistrationDate(patientId)).andReturn(
-				registrationDate).anyTimes();
+		expect(
+				registrarBean.getMessageProgramStartDate(patientId, program
+						.getName())).andReturn(enrollmentDate).anyTimes();
 		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
 				messageDate);
 
@@ -186,11 +190,12 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 	}
 
 	public void testState5() {
-		// Patient registered 7 minute ago, no messages expected
-		Date registrationDate = getPatientRegistration(7);
+		// Patient enrolled 7 minute ago, no messages expected
+		Date enrollmentDate = getPatientEnrollment(7);
 
-		expect(registrarBean.getPatientRegistrationDate(patientId)).andReturn(
-				registrationDate).anyTimes();
+		expect(
+				registrarBean.getMessageProgramStartDate(patientId, program
+						.getName())).andReturn(enrollmentDate).anyTimes();
 		registrarBean.removeMessageProgramEnrollment(patientId, program
 				.getName());
 
@@ -203,16 +208,16 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 		assertEquals(state5.getName(), state.getName());
 	}
 
-	private Date getPatientRegistration(int minutesPrior) {
+	private Date getPatientEnrollment(int minutesPrior) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.MINUTE, -minutesPrior);
 		calendar.add(Calendar.SECOND, -1);
 		return calendar.getTime();
 	}
 
-	private Date getMessageDate(Date registrationDate, int minutesAfter) {
+	private Date getMessageDate(Date enrollmentDate, int minutesAfter) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(registrationDate);
+		calendar.setTime(enrollmentDate);
 		calendar.add(Calendar.MINUTE, minutesAfter);
 		return calendar.getTime();
 	}

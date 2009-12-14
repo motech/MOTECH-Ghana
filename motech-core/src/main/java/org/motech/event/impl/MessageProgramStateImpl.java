@@ -125,9 +125,9 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 				}
 				calendar.setTime(obsValueDate);
 				break;
-			case patient_registration:
-				calendar.setTime(registrarBean
-						.getPatientRegistrationDate(personId));
+			case patient_enrollment:
+				calendar.setTime(registrarBean.getMessageProgramStartDate(
+						personId, program.getName()));
 				break;
 			}
 

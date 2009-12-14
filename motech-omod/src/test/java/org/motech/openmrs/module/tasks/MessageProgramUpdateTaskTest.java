@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.motech.model.MessageDefinition;
+import org.motech.model.MessageProgramEnrollment;
 import org.motech.model.MessageStatus;
 import org.motech.model.ScheduledMessage;
 import org.motech.openmrs.module.MotechModuleActivator;
@@ -98,13 +99,14 @@ public class MessageProgramUpdateTaskTest extends
 
 			assertEquals(2, Context.getUserService().getAllUsers().size());
 
+			String[] programs = new String[] {
+					"Tetanus Immunization Message Program",
+					"Tetanus Information Message Program" };
 			regService.registerPatient("nursePhoneNumber", "serialId",
 					"patientname", "community", "location", new Date(),
 					Gender.FEMALE, 1, "patientphoneNumber",
 					ContactNumberType.PERSONAL, "language", MediaType.TEXT,
-					DeliveryTime.ANYTIME, new String[] {
-							"Tetanus Immunization Message Program",
-							"Tetanus Information Message Program" });
+					DeliveryTime.ANYTIME, programs);
 
 			assertEquals(3, Context.getPatientService().getAllPatients().size());
 
@@ -125,10 +127,17 @@ public class MessageProgramUpdateTaskTest extends
 
 			Patient patient = patients.get(0);
 
-			// Set patient registration date at 4 minutes in past
+			// Change patient enrollment date to 4 minutes in past
 			calendar.add(Calendar.MINUTE, -4);
-			patient.setDateCreated(calendar.getTime());
-			patient = Context.getPatientService().savePatient(patient);
+			MotechService motechService = Context
+					.getService(MotechService.class);
+			for (String program : programs) {
+				MessageProgramEnrollment enrollment = motechService
+						.getMessageProgramEnrollment(patient.getPatientId(),
+								program);
+				enrollment.setStartDate(calendar.getTime());
+				motechService.saveMessageProgramEnrollment(enrollment);
+			}
 
 			// Add all needed tetanus message definitions in sqldiff
 			Context.getService(MotechService.class).saveMessageDefinition(

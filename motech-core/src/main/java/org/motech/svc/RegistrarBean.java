@@ -100,7 +100,7 @@ public interface RegistrarBean {
 
 	public Date getPatientBirthDate(Integer patientId);
 
-	public Date getPatientRegistrationDate(Integer patientId);
+	public Date getMessageProgramStartDate(Integer personId, String program);
 
 	public int getNumberOfObs(Integer personId, String conceptName,
 			String conceptValue);
