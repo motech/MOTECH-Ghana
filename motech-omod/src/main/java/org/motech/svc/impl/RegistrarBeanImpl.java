@@ -1286,6 +1286,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				sendMessageSuccess = sendNurseMessage(messageId, personalInfo,
 						phoneNumber, languageCode, mediaType, notificationType,
 						messageStartDate, messageEndDate, patients);
+			} else {
+				log.error("Attempt to send to Person not patient or nurse: "
+						+ recipientId);
 			}
 			if (sendMessageSuccess) {
 				message.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
