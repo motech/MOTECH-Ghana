@@ -523,11 +523,16 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		List<Integer> matchingUsers = motechService
 				.getUserIdsByPersonAttribute(phoneAttributeType, phoneNumber);
 		if (matchingUsers.size() > 0) {
+			if (matchingUsers.size() > 1) {
+				log.warn("Multiple Nurses found for phone number: "
+						+ phoneNumber);
+			}
 			// If more than one user matches phone number, first user in list is
 			// returned
 			Integer userId = matchingUsers.get(0);
 			return userService.getUser(userId);
 		}
+		log.warn("No Nurse found for phone number: " + phoneNumber);
 		return null;
 	}
 
@@ -665,6 +670,10 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		if (obsList.size() > 0) {
 			latestObsDate = obsList.get(0).getObsDatetime();
+		} else if (log.isDebugEnabled()) {
+			log.debug("No matching Obs: person id: " + person.getPersonId()
+					+ ", concept: " + concept.getName().getName() + ", value: "
+					+ value.getName().getName());
 		}
 		return latestObsDate;
 	}
@@ -675,6 +684,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		List<Obs> obsList = getMatchingObs(person, concept, null);
 		if (obsList.size() > 0) {
 			lastestObsValue = obsList.get(0).getValueDatetime();
+		} else if (log.isDebugEnabled()) {
+			log.debug("No matching Obs: person id: " + person.getPersonId()
+					+ ", concept: " + concept.getName().getName());
 		}
 		return lastestObsValue;
 	}
@@ -1427,6 +1439,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		List<Patient> patients = patientService.getPatients(null, serialId,
 				idTypes, true);
 		if (patients.size() > 0) {
+			if (patients.size() > 1) {
+				log.warn("Multiple Patients found for serial: " + serialId);
+			}
 			return patients.get(0);
 		}
 		return null;
@@ -1440,6 +1455,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			Integer clinicId = Integer.valueOf(clinicAttr.getValue());
 			return locationService.getLocation(clinicId);
 		}
+		log.warn("No Clinic found for Nurse id: " + nurse.getUserId());
 		return null;
 	}
 
@@ -1450,6 +1466,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		if (phoneNumberAttr != null) {
 			return phoneNumberAttr.getValue();
 		}
+		log
+				.warn("No phone number found for Person id: "
+						+ person.getPersonId());
 		return null;
 	}
 
@@ -1459,6 +1478,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		if (languageAttr != null) {
 			return languageAttr.getValue();
 		}
+		log.debug("No language found for Person id: " + person.getPersonId());
 		return null;
 	}
 
@@ -1468,6 +1488,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		if (phoneTypeAttr != null && phoneTypeAttr.getValue() != null) {
 			return ContactNumberType.valueOf(phoneTypeAttr.getValue());
 		}
+		log.debug("No contact number type found for Person id: "
+				+ person.getPersonId());
 		return null;
 	}
 
@@ -1477,6 +1499,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		if (mediaTypeAttr != null && mediaTypeAttr.getValue() != null) {
 			return MediaType.valueOf(mediaTypeAttr.getValue());
 		}
+		log.debug("No media type found for Person id: " + person.getPersonId());
 		return null;
 	}
 
@@ -1487,6 +1510,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		if (deliveryTimeAttr != null && deliveryTimeAttr.getValue() != null) {
 			return DeliveryTime.valueOf(deliveryTimeAttr.getValue());
 		} else {
+			log.debug("No delivery time found for Person id: "
+					+ person.getPersonId() + ", defaulting to anytime");
 			return DeliveryTime.ANYTIME;
 		}
 	}
@@ -1507,6 +1532,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		if (troubledPhoneProperty != null) {
 			return Integer.parseInt(troubledPhoneProperty);
 		}
+		log.error("Troubled Phone Property not found");
 		return null;
 	}
 
