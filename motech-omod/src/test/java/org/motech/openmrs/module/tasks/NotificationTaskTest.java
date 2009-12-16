@@ -82,7 +82,7 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 					.getRegistrarBean();
 
 			regService.registerNurse("nursename", "nursePhoneNumber",
-					MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC);
+					MotechConstants.LOCATION_GHANA);
 
 			assertEquals(2, Context.getUserService().getAllUsers().size());
 			regService.registerPatient("nursePhoneNumber", "serialId",

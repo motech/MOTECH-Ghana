@@ -880,8 +880,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				"Patient Id for Ghana Clinics.", admin);
 
 		log.info("Verifying Default Location Exists");
-		createLocation(MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC,
-				"Default Ghana Clinic Location", admin);
+		createLocation(MotechConstants.LOCATION_GHANA,
+				"Republic of Ghana, Country, Root in hierarchy", admin);
 
 		log.info("Verifying Encounter Types Exist");
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT,
@@ -1627,9 +1627,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
 	}
 
-	public Location getDefaultGhanaClinicLocation() {
+	public Location getGhanaLocation() {
 		return contextService.getLocationService().getLocation(
-				MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC);
+				MotechConstants.LOCATION_GHANA);
 	}
 
 	public EncounterType getMaternalVisitEncounterType() {

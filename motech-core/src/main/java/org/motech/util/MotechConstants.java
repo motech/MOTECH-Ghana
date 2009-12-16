@@ -12,7 +12,7 @@ public final class MotechConstants {
 	public static final String PERSON_ATTRIBUTE_MEDIA_TYPE = "Media Type";
 	public static final String PERSON_ATTRIBUTE_DELIVERY_TIME = "Delivery Time";
 	public static final String PATIENT_IDENTIFIER_GHANA_CLINIC_ID = "Ghana Clinic Id";
-	public static final String LOCATION_DEFAULT_GHANA_CLINIC = "Default Ghana Clinic";
+	public static final String LOCATION_GHANA = "Ghana";
 	public static final String ENCOUNTER_TYPE_MATERNALVISIT = "MATERNALVISIT";
 	public static final String ENCOUNTER_TYPE_PREGNANCYVISIT = "PREGNANCYVISIT";
 	public static final String ENCOUNTER_TYPE_IMMUNIZVISIT = "IMMUNIZVISIT";

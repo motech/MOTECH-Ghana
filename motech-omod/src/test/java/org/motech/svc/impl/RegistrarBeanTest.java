@@ -131,7 +131,7 @@ public class RegistrarBeanTest extends TestCase {
 		motechService = createMock(MotechService.class);
 
 		defaultClinic = new Location(1);
-		defaultClinic.setName(MotechConstants.LOCATION_DEFAULT_GHANA_CLINIC);
+		defaultClinic.setName(MotechConstants.LOCATION_GHANA);
 
 		ghanaIdType = new PatientIdentifierType(1);
 		ghanaIdType.setName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
