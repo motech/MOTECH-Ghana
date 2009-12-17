@@ -75,8 +75,8 @@ public interface MotechDAO {
 
 	List<String> getActiveMessageProgramEnrollments(Integer personId);
 
-	MessageProgramEnrollment getMessageProgramEnrollment(Integer personId,
-			String program);
+	MessageProgramEnrollment getActiveMessageProgramEnrollment(
+			Integer personId, String program);
 
 	GeneralPatientEncounter saveGeneralPatientEncounter(
 			GeneralPatientEncounter encounter);

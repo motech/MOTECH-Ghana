@@ -427,7 +427,7 @@ public class RegistrarBeanTest extends TestCase {
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				new Patient(patientId));
 		expect(
-				motechService.getMessageProgramEnrollment(patientId,
+				motechService.getActiveMessageProgramEnrollment(patientId,
 						exampleProgram)).andReturn(null);
 		expect(
 				motechService

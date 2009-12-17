@@ -233,13 +233,14 @@ public class HibernateMotechDAO implements MotechDAO {
 				.setInteger("personId", personId).list();
 	}
 
-	public MessageProgramEnrollment getMessageProgramEnrollment(
+	public MessageProgramEnrollment getActiveMessageProgramEnrollment(
 			Integer personId, String program) {
 		Session session = sessionFactory.getCurrentSession();
 		return (MessageProgramEnrollment) session.createCriteria(
 				MessageProgramEnrollment.class).add(
 				Restrictions.eq("personId", personId)).add(
-				Restrictions.eq("program", program)).uniqueResult();
+				Restrictions.eq("program", program)).add(
+				Restrictions.isNull("endDate")).uniqueResult();
 	}
 
 	public GeneralPatientEncounter saveGeneralPatientEncounter(

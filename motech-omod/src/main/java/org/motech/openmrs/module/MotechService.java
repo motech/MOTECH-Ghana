@@ -100,8 +100,8 @@ public interface MotechService extends OpenmrsService {
 	List<String> getActiveMessageProgramEnrollments(Integer personId);
 
 	@Transactional(readOnly = true)
-	MessageProgramEnrollment getMessageProgramEnrollment(Integer personId,
-			String program);
+	MessageProgramEnrollment getActiveMessageProgramEnrollment(
+			Integer personId, String program);
 
 	@Transactional
 	MessageProgramEnrollment saveMessageProgramEnrollment(

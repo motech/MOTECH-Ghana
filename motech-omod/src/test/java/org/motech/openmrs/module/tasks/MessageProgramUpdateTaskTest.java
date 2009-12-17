@@ -133,8 +133,8 @@ public class MessageProgramUpdateTaskTest extends
 					.getService(MotechService.class);
 			for (String program : programs) {
 				MessageProgramEnrollment enrollment = motechService
-						.getMessageProgramEnrollment(patient.getPatientId(),
-								program);
+						.getActiveMessageProgramEnrollment(patient
+								.getPatientId(), program);
 				enrollment.setStartDate(calendar.getTime());
 				motechService.saveMessageProgramEnrollment(enrollment);
 			}

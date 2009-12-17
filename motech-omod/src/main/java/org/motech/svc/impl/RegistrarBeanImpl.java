@@ -597,7 +597,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public Date getMessageProgramStartDate(Integer personId, String program) {
 		MotechService motechService = contextService.getMotechService();
 		MessageProgramEnrollment enrollment = motechService
-				.getMessageProgramEnrollment(personId, program);
+				.getActiveMessageProgramEnrollment(personId, program);
 		return enrollment.getStartDate();
 	}
 
@@ -1349,7 +1349,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		MotechService motechService = contextService.getMotechService();
 
 		MessageProgramEnrollment enrollment = motechService
-				.getMessageProgramEnrollment(personId, program);
+				.getActiveMessageProgramEnrollment(personId, program);
 		if (enrollment == null) {
 			enrollment = new MessageProgramEnrollment();
 			enrollment.setPersonId(personId);
@@ -1363,7 +1363,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		MotechService motechService = contextService.getMotechService();
 
 		MessageProgramEnrollment enrollment = motechService
-				.getMessageProgramEnrollment(personId, program);
+				.getActiveMessageProgramEnrollment(personId, program);
 		if (enrollment != null) {
 			enrollment.setEndDate(new Date());
 			motechService.saveMessageProgramEnrollment(enrollment);
