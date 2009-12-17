@@ -860,6 +860,10 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				"A person's phone number.", String.class.getName(), admin);
 		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER,
 				"A person's NHIS number.", String.class.getName(), admin);
+		// TODO: Use AttributableDate? Create Attributable types for Enums?
+		createPersonAttributeType(
+				MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE,
+				"A person's NHIS expiration date.", Date.class.getName(), admin);
 		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE,
 				"A person's language preference.", String.class.getName(),
 				admin);
@@ -1605,6 +1609,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public PersonAttributeType getNHISNumberAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(
 				MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER);
+	}
+
+	public PersonAttributeType getNHISExpirationDateAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE);
 	}
 
 	public PersonAttributeType getPhoneTypeAttributeType() {
