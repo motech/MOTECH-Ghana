@@ -119,6 +119,7 @@ public class MotechModuleFormController {
 	@RequestMapping(value = "/module/motechmodule/quick", method = RequestMethod.POST)
 	public String quickTest(
 			@RequestParam("nurseName") String nurseName,
+			@RequestParam("nurseId") String nurseId,
 			@RequestParam("nursePhone") String nursePhone,
 			@RequestParam("clinicName") String clinicName,
 			@RequestParam("serialId") String serialId,
@@ -140,7 +141,7 @@ public class MotechModuleFormController {
 		log.debug("Quick Test");
 		registrarBean.registerClinic(clinicName, null);
 
-		registrarBean.registerNurse(nurseName, nursePhone, clinicName);
+		registrarBean.registerNurse(nurseName, nurseId, nursePhone, clinicName);
 
 		registrarBean.registerPatient(nursePhone, serialId, name, community,
 				location, dateFormat.parse(dateOfBirth), Gender.FEMALE, Integer
@@ -193,10 +194,11 @@ public class MotechModuleFormController {
 
 	@RequestMapping(value = "/module/motechmodule/nurse", method = RequestMethod.POST)
 	public String registerNurse(@RequestParam("name") String name,
+			@RequestParam("nurseId") String nurseId,
 			@RequestParam("nursePhone") String nursePhone,
 			@RequestParam("clinic") Integer clinicId) {
 		log.debug("Register Nurse");
-		registrarBean.registerNurse(name, nursePhone, clinicId);
+		registrarBean.registerNurse(name, nurseId, nursePhone, clinicId);
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 

@@ -110,21 +110,24 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
-	public void registerNurse(String name, String phoneNumber, String clinicName) {
+	public void registerNurse(String name, String nurseId, String phoneNumber,
+			String clinicName) {
 		LocationService locationService = contextService.getLocationService();
 		Location clinic = locationService.getLocation(clinicName);
 
-		registerNurse(name, phoneNumber, clinic);
+		registerNurse(name, nurseId, phoneNumber, clinic);
 	}
 
-	public void registerNurse(String name, String phoneNumber, Integer clinicId) {
+	public void registerNurse(String name, String nurseId, String phoneNumber,
+			Integer clinicId) {
 		LocationService locationService = contextService.getLocationService();
 		Location clinic = locationService.getLocation(clinicId);
 
-		registerNurse(name, phoneNumber, clinic);
+		registerNurse(name, nurseId, phoneNumber, clinic);
 	}
 
-	private void registerNurse(String name, String phoneNumber, Location clinic) {
+	private void registerNurse(String name, String nurseId, String phoneNumber,
+			Location clinic) {
 
 		UserService userService = contextService.getUserService();
 		PersonService personService = contextService.getPersonService();
@@ -140,6 +143,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		nurse.setGender(GenderTypeConverter.toOpenMRSString(Gender.FEMALE));
 
 		nurse.addName(personService.parsePersonName(name));
+
+		PersonAttributeType nurseIdAttrType = getNurseIdAttributeType();
+		nurse.addAttribute(new PersonAttribute(nurseIdAttrType, nurseId));
 
 		// Must be created previously through API or UI to lookup
 		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
@@ -855,6 +861,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		User admin = userService.getUser(1);
 
 		log.info("Verifying Person Attributes Exist");
+		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_CHPS_ID,
+				"A nurse's CHPS ID.", String.class.getName(), admin);
 		createPersonAttributeType(
 				MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER,
 				"A person's phone number.", String.class.getName(), admin);
@@ -1594,6 +1602,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return contextService.getPatientService()
 				.getPatientIdentifierTypeByName(
 						MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
+	}
+
+	public PersonAttributeType getNurseIdAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_CHPS_ID);
 	}
 
 	public PersonAttributeType getClinicAttributeType() {

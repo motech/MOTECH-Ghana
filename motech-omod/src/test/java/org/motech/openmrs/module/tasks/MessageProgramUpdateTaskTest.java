@@ -94,8 +94,8 @@ public class MessageProgramUpdateTaskTest extends
 			RegistrarBean regService = Context.getService(MotechService.class)
 					.getRegistrarBean();
 
-			regService.registerNurse("nursename", "nursePhoneNumber",
-					MotechConstants.LOCATION_GHANA);
+			regService.registerNurse("nursename", "nurseId",
+					"nursePhoneNumber", MotechConstants.LOCATION_GHANA);
 
 			assertEquals(2, Context.getUserService().getAllUsers().size());
 

@@ -33,9 +33,11 @@ public interface RegistrarBean {
 	public void registerClinic(String name, Integer parentId);
 
 	@RunAsAdminUser
-	public void registerNurse(String name, String phoneNumber, String clinicName);
+	public void registerNurse(String name, String nurseId, String phoneNumber,
+			String clinicName);
 
-	public void registerNurse(String name, String phoneNumber, Integer clinicId);
+	public void registerNurse(String name, String nurseId, String phoneNumber,
+			Integer clinicId);
 
 	@RunAsAdminUser
 	public void registerPatient(String nursePhoneNumber, String serialId,

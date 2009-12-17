@@ -76,6 +76,7 @@ public class RegistrarBeanTest extends TestCase {
 
 	Location defaultClinic;
 	PatientIdentifierType ghanaIdType;
+	PersonAttributeType nurseIdAttributeType;
 	PersonAttributeType phoneAttributeType;
 	PersonAttributeType clinicAttributeType;
 	PersonAttributeType nhisAttributeType;
@@ -162,6 +163,9 @@ public class RegistrarBeanTest extends TestCase {
 		deliveryTimeAttributeType = new PersonAttributeType(8);
 		deliveryTimeAttributeType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
+
+		nurseIdAttributeType = new PersonAttributeType(9);
+		nurseIdAttributeType.setName(MotechConstants.PERSON_ATTRIBUTE_CHPS_ID);
 
 		providerRole = new Role(OpenmrsConstants.PROVIDER_ROLE);
 
@@ -303,7 +307,7 @@ public class RegistrarBeanTest extends TestCase {
 
 	public void testRegisterNurse() {
 
-		String name = "Jenny", phone = "12078675309", clinic = "Mayo Clinic";
+		String name = "Jenny", id = "123abc", phone = "12078675309", clinic = "Mayo Clinic";
 
 		Location clinicLocation = new Location(1);
 		clinicLocation.setName(clinic);
@@ -317,6 +321,10 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(personService.parsePersonName(name)).andReturn(
 				new PersonName(name, null, null));
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_CHPS_ID))
+				.andReturn(nurseIdAttributeType);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
@@ -333,12 +341,13 @@ public class RegistrarBeanTest extends TestCase {
 
 		replay(contextService, personService, userService, locationService);
 
-		regBean.registerNurse(name, phone, clinic);
+		regBean.registerNurse(name, id, phone, clinic);
 
 		verify(contextService, personService, userService, locationService);
 
 		User nurse = nurseCap.getValue();
 		assertEquals(name, nurse.getGivenName());
+		assertEquals(id, nurse.getAttribute(nurseIdAttributeType).getValue());
 		assertEquals(phone, nurse.getAttribute(phoneAttributeType).getValue());
 		assertEquals(clinicLocation.getLocationId().toString(), nurse
 				.getAttribute(clinicAttributeType).getValue());

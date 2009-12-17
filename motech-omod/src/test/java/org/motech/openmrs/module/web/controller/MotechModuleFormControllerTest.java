@@ -51,7 +51,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 	}
 
 	public void testQuickTest() throws Exception {
-		String nurseName = "Nurse Name", nursePhone = "Nurse Phone", clinicName = "Clinic Name";
+		String nurseName = "Nurse Name", nursePhone = "Nurse Phone", nurseId = "Nurse Id", clinicName = "Clinic Name";
 		String serialId = "Serial Id", name = "Patient Name", community = "Community", location = "Location", dateOfBirth = "01/01/2009";
 		String nhis = "1", patientPhone = "Patient Phone", patientPhoneType = "PERSONAL", language = "Language", mediaType = "TEXT";
 		String deliveryTime = "ANYTIME";
@@ -70,7 +70,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 		Capture<Double> hemoglobinCapture = new Capture<Double>();
 
 		registrarBean.registerClinic(clinicName, null);
-		registrarBean.registerNurse(nurseName, nursePhone, clinicName);
+		registrarBean.registerNurse(nurseName, nurseId, nursePhone, clinicName);
 		registrarBean.registerPatient(eq(nursePhone), eq(serialId), eq(name),
 				eq(community), eq(location), capture(dateOfBirthCapture),
 				capture(genderCapture), capture(nhisCapture), eq(patientPhone),
@@ -89,10 +89,10 @@ public class MotechModuleFormControllerTest extends TestCase {
 
 		replay(registrarBean);
 
-		controller.quickTest(nurseName, nursePhone, clinicName, serialId, name,
-				community, location, nhis, patientPhone, patientPhoneType,
-				language, mediaType, deliveryTime, programs, dateOfBirth,
-				dueDate, parity, hemoglobin);
+		controller.quickTest(nurseName, nurseId, nursePhone, clinicName,
+				serialId, name, community, location, nhis, patientPhone,
+				patientPhoneType, language, mediaType, deliveryTime, programs,
+				dateOfBirth, dueDate, parity, hemoglobin);
 
 		verify(registrarBean);
 
@@ -139,14 +139,14 @@ public class MotechModuleFormControllerTest extends TestCase {
 	}
 
 	public void testRegiserNurse() throws Exception {
-		String name = "Nurse Name", nursePhone = "Nurse Phone";
+		String name = "Nurse Name", nurseId = "Nurse Id", nursePhone = "Nurse Phone";
 		Integer clinicId = 1;
 
-		registrarBean.registerNurse(name, nursePhone, clinicId);
+		registrarBean.registerNurse(name, nurseId, nursePhone, clinicId);
 
 		replay(registrarBean);
 
-		controller.registerNurse(name, nursePhone, clinicId);
+		controller.registerNurse(name, nurseId, nursePhone, clinicId);
 
 		verify(registrarBean);
 	}

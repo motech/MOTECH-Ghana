@@ -20,6 +20,10 @@
 		<td><input name="name" value="Nurse Name" /></td>
 	</tr>
 	<tr>
+		<td><label for="nurseId">Nurse Id:</label></td>
+		<td><input name="nurseId" value="123ABC" /></td>
+	</tr>
+	<tr>
 		<td><label for="nursePhone">Nurse Phone:</label></td>
 		<td><input name="nursePhone" value="5555555555" /></td>
 	</tr>
