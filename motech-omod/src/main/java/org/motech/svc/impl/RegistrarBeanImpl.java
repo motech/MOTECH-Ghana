@@ -427,25 +427,25 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		obsService.saveObs(hemoglobinObs, null);
 	}
 
-	public void recordGeneralVisit(String clinicName, String patientSerial,
-			Gender patientGender, Integer patientAge, Integer patientDiagnosis,
-			Boolean patientReferral, Date encounterDate) {
+	public void recordGeneralVisit(Integer clinicId, Date visitDate,
+			String patientSerial, Gender patientGender, Date patientBirthDate,
+			Integer patientDiagnosis, Boolean patientReferral) {
 
-		log.debug("Date: " + encounterDate + ", Clinic: " + clinicName
-				+ ", Serial: " + patientSerial + ", Gender: " + patientGender
-				+ ", Age: " + patientAge + ", Diagnosis: " + patientDiagnosis
-				+ ", Referral: " + patientReferral);
+		log.debug("Date: " + visitDate + ", Clinic: " + clinicId + ", Serial: "
+				+ patientSerial + ", Gender: " + patientGender
+				+ ", Birthdate: " + patientBirthDate + ", Diagnosis: "
+				+ patientDiagnosis + ", Referral: " + patientReferral);
 
 		MotechService motechService = contextService.getMotechService();
 
 		GeneralPatientEncounter encounter = new GeneralPatientEncounter();
-		encounter.setClinicName(clinicName);
+		encounter.setClinicId(clinicId);
 		encounter.setPatientSerial(patientSerial);
 		encounter.setPatientGender(patientGender);
-		encounter.setPatientAge(patientAge);
+		encounter.setPatientBirthDate(patientBirthDate);
 		encounter.setPatientDiagnosis(patientDiagnosis);
 		encounter.setPatientReferral(patientReferral);
-		encounter.setEncounterDate(encounterDate);
+		encounter.setEncounterDate(visitDate);
 
 		motechService.saveGeneralPatientEncounter(encounter);
 	}

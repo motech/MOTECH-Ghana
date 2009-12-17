@@ -7,15 +7,15 @@
 		</id>
 		<property name="encounterDate" type="java.util.Date" column="encounter_date"
 			not-null="true" length="19" />
-		<property name="clinicName" type="string" column="clinic_name"
-			not-null="true" length="255" />
+		<property name="clinicId" type="int" column="clinic_id"
+			not-null="true" />
 		<property name="patientSerial" type="string" column="patient_serial"
 			not-null="true" length="255" />
 		<property name="patientGender"
 			type="${corePackage}.model.db.hibernate.GenderEnumType" column="patient_gender"
 			not-null="true" length="6" />
-		<property name="patientAge" type="int" column="patient_age"
-			not-null="true" />
+		<property name="patientBirthDate" type="java.util.Date"
+			column="patient_birthdate" not-null="true" />
 		<property name="patientDiagnosis" type="int" column="patient_diagnosis"
 			not-null="true" />
 		<property name="patientReferral" type="boolean" column="patient_referral"

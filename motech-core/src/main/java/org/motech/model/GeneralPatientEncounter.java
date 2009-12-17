@@ -8,10 +8,10 @@ public class GeneralPatientEncounter {
 
 	private Long id;
 	private Date encounterDate;
-	private String clinicName;
+	private Integer clinicId;
 	private String patientSerial;
 	private Gender patientGender;
-	private Integer patientAge;
+	private Date patientBirthDate;
 	private Integer patientDiagnosis;
 	private Boolean patientReferral;
 
@@ -31,12 +31,12 @@ public class GeneralPatientEncounter {
 		this.encounterDate = encounterDate;
 	}
 
-	public String getClinicName() {
-		return clinicName;
+	public Integer getClinicId() {
+		return clinicId;
 	}
 
-	public void setClinicName(String clinicName) {
-		this.clinicName = clinicName;
+	public void setClinicId(Integer clinicId) {
+		this.clinicId = clinicId;
 	}
 
 	public String getPatientSerial() {
@@ -55,12 +55,12 @@ public class GeneralPatientEncounter {
 		this.patientGender = patientGender;
 	}
 
-	public Integer getPatientAge() {
-		return patientAge;
+	public Date getPatientBirthDate() {
+		return patientBirthDate;
 	}
 
-	public void setPatientAge(Integer patientAge) {
-		this.patientAge = patientAge;
+	public void setPatientBirthDate(Date patientBirthDate) {
+		this.patientBirthDate = patientBirthDate;
 	}
 
 	public Integer getPatientDiagnosis() {

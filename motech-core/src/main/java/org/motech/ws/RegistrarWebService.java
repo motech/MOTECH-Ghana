@@ -93,25 +93,25 @@ public class RegistrarWebService implements RegistrarService {
 
 	@WebMethod
 	public void recordGeneralVisit(
-			@WebParam(name = "clinicName") String clinicName,
+			@WebParam(name = "clinicId") Integer clinicId,
+			@WebParam(name = "visitDate") Date visitDate,
 			@WebParam(name = "patientSerial") String patientSerial,
 			@WebParam(name = "patientGender") Gender patientGender,
-			@WebParam(name = "patientAge") Integer patientAge,
+			@WebParam(name = "patientBirthDate") Date patientBirthDate,
 			@WebParam(name = "patientDiagnosis") Integer patientDiagnosis,
-			@WebParam(name = "patientReferral") Boolean patientReferral,
-			@WebParam(name = "encounterDate") Date encounterDate)
+			@WebParam(name = "patientReferral") Boolean patientReferral)
 			throws ValidationException {
 
-		if (clinicName == null) {
+		if (clinicId == null) {
 			ValidationErrors errors = new ValidationErrors();
-			errors.add(1, "clinicName");
+			errors.add(1, "clinicId");
 			throw new ValidationException("Errors in General Visit request",
 					errors);
 		}
 
-		registrarBean.recordGeneralVisit(clinicName, patientSerial,
-				patientGender, patientAge, patientDiagnosis, patientReferral,
-				encounterDate);
+		registrarBean.recordGeneralVisit(clinicId, visitDate, patientSerial,
+				patientGender, patientBirthDate, patientDiagnosis,
+				patientReferral);
 	}
 
 	@WebMethod

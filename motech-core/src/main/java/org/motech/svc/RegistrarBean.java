@@ -70,9 +70,9 @@ public interface RegistrarBean {
 	public void registerPregnancy(Integer nurseId, Date date,
 			Integer patientId, Date dueDate, Integer parity, Double hemoglobin);
 
-	public void recordGeneralVisit(String clinicName, String patientSerial,
-			Gender patientGender, Integer patientAge, Integer patientDiagnosis,
-			Boolean patientReferral, Date encounterDate);
+	public void recordGeneralVisit(Integer clinicId, Date visitDate,
+			String patientSerial, Gender patientGender, Date patientBirthDate,
+			Integer patientDiagnosis, Boolean patientReferral);
 
 	public void log(LogType type, String message);
 

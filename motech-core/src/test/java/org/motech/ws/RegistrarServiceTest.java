@@ -134,34 +134,34 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testGeneralVisit() throws ValidationException {
-		String clinic = "Test Clinic", serial = "Test123";
+		String serial = "Test123";
 		Gender gender = Gender.MALE;
-		Integer age = 35, diagnosis = 5;
+		Integer clinic = 1, diagnosis = 5;
 		Boolean referral = false;
 		Date date = new Date();
 
-		registrarBean.recordGeneralVisit(clinic, serial, gender, age,
-				diagnosis, referral, date);
+		registrarBean.recordGeneralVisit(clinic, date, serial, gender, date,
+				diagnosis, referral);
 
 		replay(registrarBean);
 
-		regWs.recordGeneralVisit(clinic, serial, gender, age, diagnosis,
-				referral, date);
+		regWs.recordGeneralVisit(clinic, date, serial, gender, date, diagnosis,
+				referral);
 
 		verify(registrarBean);
 	}
 
 	@Test
 	public void testGeneralVisitMissingClinic() {
-		String clinic = null, serial = "Test123";
+		String serial = "Test123";
 		Gender gender = Gender.MALE;
-		Integer age = 35, diagnosis = 5;
+		Integer clinic = null, diagnosis = 5;
 		Boolean referral = false;
 		Date date = new Date();
 
 		try {
-			regWs.recordGeneralVisit(clinic, serial, gender, age, diagnosis,
-					referral, date);
+			regWs.recordGeneralVisit(clinic, date, serial, gender, date,
+					diagnosis, referral);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in General Visit request", e.getMessage());
@@ -172,7 +172,7 @@ public class RegistrarServiceTest {
 			assertEquals(1, errors.size());
 			ValidationError error = errors.get(0);
 			assertEquals(1, error.getCode());
-			assertEquals("clinicName", error.getField());
+			assertEquals("clinicId", error.getField());
 		}
 	}
 
