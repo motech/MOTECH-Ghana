@@ -891,9 +891,18 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID,
 				"Patient Id for Ghana Clinics.", admin);
 
-		log.info("Verifying Default Location Exists");
-		createLocation(MotechConstants.LOCATION_GHANA,
-				"Republic of Ghana, Country, Root in hierarchy", admin);
+		log.info("Verifying Locations Exist");
+		Location ghana = createLocation(MotechConstants.LOCATION_GHANA,
+				"Republic of Ghana, Country, Root in hierarchy", null, admin);
+		Location upperEast = createLocation(
+				MotechConstants.LOCATION_UPPER_EAST,
+				"Upper East Region in Ghana", ghana, admin);
+		createLocation(MotechConstants.LOCATION_KASSENA_NANKANA,
+				"Kassena-Nankana District in Upper East Region, Ghana",
+				upperEast, admin);
+		createLocation(MotechConstants.LOCATION_KASSENA_NANKANA_WEST,
+				"Kassena-Nankana West District in Upper East Region, Ghana",
+				upperEast, admin);
 
 		log.info("Verifying Encounter Types Exist");
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT,
@@ -1021,7 +1030,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
-	private void createLocation(String name, String description, User creator) {
+	private Location createLocation(String name, String description,
+			Location parent, User creator) {
 		LocationService locationService = contextService.getLocationService();
 		Location location = locationService.getLocation(name);
 		if (location == null) {
@@ -1030,8 +1040,14 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			location.setName(name);
 			location.setDescription(description);
 			location.setCreator(creator);
-			locationService.saveLocation(location);
+			location = locationService.saveLocation(location);
+
+			if (parent != null) {
+				parent.addChildLocation(location);
+				locationService.saveLocation(parent);
+			}
 		}
+		return location;
 	}
 
 	private void createEncounterType(String name, String description,

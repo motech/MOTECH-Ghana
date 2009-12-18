@@ -15,6 +15,9 @@ public final class MotechConstants {
 	public static final String PERSON_ATTRIBUTE_CHPS_ID = "CHPS ID";
 	public static final String PATIENT_IDENTIFIER_GHANA_CLINIC_ID = "Ghana Clinic Id";
 	public static final String LOCATION_GHANA = "Ghana";
+	public static final String LOCATION_UPPER_EAST = "Upper East";
+	public static final String LOCATION_KASSENA_NANKANA = "Kassena-Nankana";
+	public static final String LOCATION_KASSENA_NANKANA_WEST = "Kassena-Nankana West";
 	public static final String ENCOUNTER_TYPE_MATERNALVISIT = "MATERNALVISIT";
 	public static final String ENCOUNTER_TYPE_PREGNANCYVISIT = "PREGNANCYVISIT";
 	public static final String ENCOUNTER_TYPE_IMMUNIZVISIT = "IMMUNIZVISIT";
