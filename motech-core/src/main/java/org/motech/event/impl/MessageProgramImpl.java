@@ -10,6 +10,7 @@ import org.motech.event.Command;
 import org.motech.event.MessageProgram;
 import org.motech.event.MessageProgramState;
 import org.motech.event.MessageProgramStateTransition;
+import org.motech.event.MessageProgramType;
 
 public class MessageProgramImpl extends BaseInterfaceImpl implements
 		MessageProgram {
@@ -20,6 +21,7 @@ public class MessageProgramImpl extends BaseInterfaceImpl implements
 	private MessageProgramState endState;
 	private String conceptName;
 	private String conceptValue;
+	private MessageProgramType programType;
 
 	public MessageProgramState getStartState() {
 		return startState;
@@ -51,6 +53,14 @@ public class MessageProgramImpl extends BaseInterfaceImpl implements
 
 	public void setConceptValue(String conceptValue) {
 		this.conceptValue = conceptValue;
+	}
+
+	public MessageProgramType getProgramType() {
+		return programType;
+	}
+
+	public void setProgramType(MessageProgramType programType) {
+		this.programType = programType;
 	}
 
 	public MessageProgramState determineState(Integer personId) {

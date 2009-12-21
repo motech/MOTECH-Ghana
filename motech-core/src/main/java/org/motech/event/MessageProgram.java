@@ -13,4 +13,6 @@ public interface MessageProgram extends BaseInterface {
 	String getConceptName();
 
 	String getConceptValue();
+
+	MessageProgramType getProgramType();
 }

@@ -9,6 +9,7 @@
 		<property name="conceptName" value="ESTIMATED DATE OF CONFINEMENT" />
 		<property name="startState" ref="weeklyInfoPregnancyState1" />
 		<property name="endState" ref="weeklyInfoPregnancyState41" />
+		<property name="programType" value="informational" />
 	</bean>
 
 	<bean id="weeklyInfoPregnancyState1" class="org.motech.event.impl.MessageProgramStateImpl">
