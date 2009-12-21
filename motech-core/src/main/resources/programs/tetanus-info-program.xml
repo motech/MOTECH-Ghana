@@ -8,7 +8,6 @@
 		<property name="name" value="Tetanus Information Message Program" />
 		<property name="startState" ref="tetanusInfoState1" />
 		<property name="endState" ref="tetanusInfoState5" />
-		<property name="programType" value="informational" />
 	</bean>
 
 	<bean id="tetanusInfoState1" class="org.motech.event.impl.MessageProgramStateImpl">

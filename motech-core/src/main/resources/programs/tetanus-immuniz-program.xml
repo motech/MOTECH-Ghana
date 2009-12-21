@@ -10,7 +10,6 @@
 		<property name="conceptValue" value="TETANUS BOOSTER" />
 		<property name="startState" ref="tetanusState1" />
 		<property name="endState" ref="tetanusState3" />
-		<property name="programType" value="reminder" />
 	</bean>
 
 	<bean id="tetanusState1" class="org.motech.event.impl.MessageProgramStateImpl">
