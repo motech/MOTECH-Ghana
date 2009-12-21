@@ -9,6 +9,9 @@
 			not-null="true" unique="true" length="255" />
 		<property name="publicId" type="long" column="public_id"
 			not-null="true" unique="true" />
+		<property name="messageType"
+			type="${corePackage}.model.db.hibernate.MessageTypeEnumType" column="message_type"
+			not-null="true" length="13" />
 		<bag name="messageAttributes" table="motechmodule_messagedefinition_attribute"
 			cascade="save-update">
 			<key column="definition_id" />

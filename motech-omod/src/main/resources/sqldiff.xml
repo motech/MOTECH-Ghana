@@ -55,6 +55,7 @@
 				`motechmodule_messagedefinition_id` bigint NOT NULL auto_increment,
 				`message_key` varchar(255) NOT NULL UNIQUE,
 				`public_id` bigint NOT NULL UNIQUE,
+				`message_type` varchar(13) NOT NULL,
 				PRIMARY KEY (`motechmodule_messagedefinition_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -96,20 +97,32 @@
 				REFERENCES `motechmodule_scheduledmessage` (`motechmodule_scheduledmessage_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			
-			INSERT INTO `motechmodule_messagedefinition` (`motechmodule_messagedefinition_id`,`message_key`,`public_id`)
-			VALUES (1,'tetanus.info.1',2),(2,'tetanus.info.2',3),(3,'tetanus.info.3',5),(4,'tetanus.info.4',6),
-			(5,'tetanus.1.prompt',4),(6,'tetanus.1.reminder.1',7),(7,'tetanus.1.reminder.2',8),(8,'tetanus.2.prompt',9),
-			(9,'tetanus.2.reminder.1',10),(10,'tetanus.2.reminder.2',11),
-			(11,'pregnancy.week.1',14),(12,'pregnancy.week.2',15),(13,'pregnancy.week.3',16),(14,'pregnancy.week.4',17),
-			(15,'pregnancy.week.5',18),(16,'pregnancy.week.6',19),(17,'pregnancy.week.7',20),(18,'pregnancy.week.8',21),
-			(19,'pregnancy.week.9',22),(20,'pregnancy.week.10',23),(21,'pregnancy.week.11',24),(22,'pregnancy.week.12',25),
-			(23,'pregnancy.week.13',26),(24,'pregnancy.week.14',27),(25,'pregnancy.week.15',28),(26,'pregnancy.week.16',29),
-			(27,'pregnancy.week.17',30),(28,'pregnancy.week.18',31),(29,'pregnancy.week.19',32),(30,'pregnancy.week.20',33),
-			(31,'pregnancy.week.21',34),(32,'pregnancy.week.22',35),(33,'pregnancy.week.23',36),(34,'pregnancy.week.24',37),
-			(35,'pregnancy.week.25',38),(36,'pregnancy.week.26',39),(37,'pregnancy.week.27',40),(38,'pregnancy.week.28',41),
-			(39,'pregnancy.week.29',42),(40,'pregnancy.week.30',43),(41,'pregnancy.week.31',44),(42,'pregnancy.week.32',45),
-			(43,'pregnancy.week.33',46),(44,'pregnancy.week.34',47),(45,'pregnancy.week.35',48),(46,'pregnancy.week.36',49),
-			(47,'pregnancy.week.37',50),(48,'pregnancy.week.38',51),(49,'pregnancy.week.39',52),(50,'pregnancy.week.40',53);
+			INSERT INTO `motechmodule_messagedefinition` (`motechmodule_messagedefinition_id`,`message_key`,`public_id`,`message_type`)
+			VALUES (1,'tetanus.info.1',2,'INFORMATIONAL'),(2,'tetanus.info.2',3,'INFORMATIONAL'),
+			(3,'tetanus.info.3',5,'INFORMATIONAL'),(4,'tetanus.info.4',6,'INFORMATIONAL'),
+			(5,'tetanus.1.prompt',4,'REMINDER'),(6,'tetanus.1.reminder.1',7,'REMINDER'),
+			(7,'tetanus.1.reminder.2',8,'REMINDER'),(8,'tetanus.2.prompt',9,'REMINDER'),
+			(9,'tetanus.2.reminder.1',10,'REMINDER'),(10,'tetanus.2.reminder.2',11,'REMINDER'),
+			(11,'pregnancy.week.1',14,'INFORMATIONAL'),(12,'pregnancy.week.2',15,'INFORMATIONAL'),
+			(13,'pregnancy.week.3',16,'INFORMATIONAL'),(14,'pregnancy.week.4',17,'INFORMATIONAL'),
+			(15,'pregnancy.week.5',18,'INFORMATIONAL'),(16,'pregnancy.week.6',19,'INFORMATIONAL'),
+			(17,'pregnancy.week.7',20,'INFORMATIONAL'),(18,'pregnancy.week.8',21,'INFORMATIONAL'),
+			(19,'pregnancy.week.9',22,'INFORMATIONAL'),(20,'pregnancy.week.10',23,'INFORMATIONAL'),
+			(21,'pregnancy.week.11',24,'INFORMATIONAL'),(22,'pregnancy.week.12',25,'INFORMATIONAL'),
+			(23,'pregnancy.week.13',26,'INFORMATIONAL'),(24,'pregnancy.week.14',27,'INFORMATIONAL'),
+			(25,'pregnancy.week.15',28,'INFORMATIONAL'),(26,'pregnancy.week.16',29,'INFORMATIONAL'),
+			(27,'pregnancy.week.17',30,'INFORMATIONAL'),(28,'pregnancy.week.18',31,'INFORMATIONAL'),
+			(29,'pregnancy.week.19',32,'INFORMATIONAL'),(30,'pregnancy.week.20',33,'INFORMATIONAL'),
+			(31,'pregnancy.week.21',34,'INFORMATIONAL'),(32,'pregnancy.week.22',35,'INFORMATIONAL'),
+			(33,'pregnancy.week.23',36,'INFORMATIONAL'),(34,'pregnancy.week.24',37,'INFORMATIONAL'),
+			(35,'pregnancy.week.25',38,'INFORMATIONAL'),(36,'pregnancy.week.26',39,'INFORMATIONAL'),
+			(37,'pregnancy.week.27',40,'INFORMATIONAL'),(38,'pregnancy.week.28',41,'INFORMATIONAL'),
+			(39,'pregnancy.week.29',42,'INFORMATIONAL'),(40,'pregnancy.week.30',43,'INFORMATIONAL'),
+			(41,'pregnancy.week.31',44,'INFORMATIONAL'),(42,'pregnancy.week.32',45,'INFORMATIONAL'),
+			(43,'pregnancy.week.33',46,'INFORMATIONAL'),(44,'pregnancy.week.34',47,'INFORMATIONAL'),
+			(45,'pregnancy.week.35',48,'INFORMATIONAL'),(46,'pregnancy.week.36',49,'INFORMATIONAL'),
+			(47,'pregnancy.week.37',50,'INFORMATIONAL'),(48,'pregnancy.week.38',51,'INFORMATIONAL'),
+			(49,'pregnancy.week.39',52,'INFORMATIONAL'),(50,'pregnancy.week.40',53,'INFORMATIONAL');
 
 			INSERT INTO `motechmodule_messageattribute` (`motechmodule_messageattribute_id`,`attribute_name`,`attribute_property`)
 			VALUES (1,'PatientFirstName','person.givenName'),(2,'DueDate','obs.concept.name=ESTIMATED DATE OF CONFINEMENT');

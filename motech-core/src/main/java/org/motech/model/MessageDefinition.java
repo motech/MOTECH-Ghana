@@ -9,14 +9,17 @@ public class MessageDefinition {
 	Long id;
 	String messageKey;
 	Long publicId;
+	MessageType messageType;
 	List<MessageAttribute> messageAttributes = new ArrayList<MessageAttribute>();
 
 	public MessageDefinition() {
 	}
 
-	public MessageDefinition(String messageKey, Long publicId) {
+	public MessageDefinition(String messageKey, Long publicId,
+			MessageType messageType) {
 		setMessageKey(messageKey);
 		setPublicId(publicId);
+		setMessageType(messageType);
 	}
 
 	public Message createMessage(ScheduledMessage schedMessage) {
@@ -57,6 +60,14 @@ public class MessageDefinition {
 
 	public void setMessageAttributes(List<MessageAttribute> messageAttributes) {
 		this.messageAttributes = messageAttributes;
+	}
+
+	public MessageType getMessageType() {
+		return messageType;
+	}
+
+	public void setMessageType(MessageType messageType) {
+		this.messageType = messageType;
 	}
 
 }

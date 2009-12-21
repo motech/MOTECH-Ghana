@@ -17,6 +17,7 @@ import org.motech.messaging.impl.MessageSchedulerImpl;
 import org.motech.model.Message;
 import org.motech.model.MessageDefinition;
 import org.motech.model.MessageStatus;
+import org.motech.model.MessageType;
 import org.motech.model.ScheduledMessage;
 import org.motech.openmrs.module.MotechModuleActivator;
 import org.motech.openmrs.module.MotechService;
@@ -111,9 +112,8 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 			Patient patient = patients.get(0);
 
 			String messageKey = "Test Definition";
-			MessageDefinition messageDefinition = new MessageDefinition();
-			messageDefinition.setMessageKey(messageKey);
-			messageDefinition.setPublicId(2L);
+			MessageDefinition messageDefinition = new MessageDefinition(
+					messageKey, 2L, MessageType.INFORMATIONAL);
 			messageDefinition = Context.getService(MotechService.class)
 					.saveMessageDefinition(messageDefinition);
 

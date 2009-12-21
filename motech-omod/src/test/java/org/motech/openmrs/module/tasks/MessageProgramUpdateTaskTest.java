@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.motech.model.MessageDefinition;
 import org.motech.model.MessageProgramEnrollment;
 import org.motech.model.MessageStatus;
+import org.motech.model.MessageType;
 import org.motech.model.ScheduledMessage;
 import org.motech.openmrs.module.MotechModuleActivator;
 import org.motech.openmrs.module.MotechService;
@@ -141,25 +142,35 @@ public class MessageProgramUpdateTaskTest extends
 
 			// Add all needed tetanus message definitions in sqldiff
 			Context.getService(MotechService.class).saveMessageDefinition(
-					new MessageDefinition("tetanus.info.1", 2L));
+					new MessageDefinition("tetanus.info.1", 2L,
+							MessageType.INFORMATIONAL));
 			Context.getService(MotechService.class).saveMessageDefinition(
-					new MessageDefinition("tetanus.info.2", 3L));
+					new MessageDefinition("tetanus.info.2", 3L,
+							MessageType.INFORMATIONAL));
 			Context.getService(MotechService.class).saveMessageDefinition(
-					new MessageDefinition("tetanus.info.3", 5L));
+					new MessageDefinition("tetanus.info.3", 5L,
+							MessageType.INFORMATIONAL));
 			Context.getService(MotechService.class).saveMessageDefinition(
-					new MessageDefinition("tetanus.info.4", 6L));
+					new MessageDefinition("tetanus.info.4", 6L,
+							MessageType.INFORMATIONAL));
 			Context.getService(MotechService.class).saveMessageDefinition(
-					new MessageDefinition("tetanus.1.prompt", 4L));
+					new MessageDefinition("tetanus.1.prompt", 4L,
+							MessageType.REMINDER));
 			Context.getService(MotechService.class).saveMessageDefinition(
-					new MessageDefinition("tetanus.1.reminder.1", 7L));
+					new MessageDefinition("tetanus.1.reminder.1", 7L,
+							MessageType.REMINDER));
 			Context.getService(MotechService.class).saveMessageDefinition(
-					new MessageDefinition("tetanus.1.reminder.2", 8L));
+					new MessageDefinition("tetanus.1.reminder.2", 8L,
+							MessageType.REMINDER));
 			Context.getService(MotechService.class).saveMessageDefinition(
-					new MessageDefinition("tetanus.2.prompt", 9L));
+					new MessageDefinition("tetanus.2.prompt", 9L,
+							MessageType.REMINDER));
 			Context.getService(MotechService.class).saveMessageDefinition(
-					new MessageDefinition("tetanus.2.reminder.1", 10L));
+					new MessageDefinition("tetanus.2.reminder.1", 10L,
+							MessageType.REMINDER));
 			Context.getService(MotechService.class).saveMessageDefinition(
-					new MessageDefinition("tetanus.2.reminder.2", 11L));
+					new MessageDefinition("tetanus.2.reminder.2", 11L,
+							MessageType.REMINDER));
 		} finally {
 			Context.closeSession();
 		}
