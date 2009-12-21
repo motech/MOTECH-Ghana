@@ -986,6 +986,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				"Hemoglobin level at 36 weeks of Pregnancy",
 				MotechConstants.CONCEPT_CLASS_TEST,
 				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(
+				MotechConstants.CONCEPT_DATE_OF_CONFINEMENT_CONFIRMED,
+				"Question: \"Is the pregnancy due date confirmed by the CHW?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
 
 		log.info("Verifying Concepts Exist as Answers");
 		// TODO: Add IPT to proper Concept as an Answer, not an immunization
@@ -1825,6 +1830,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public Concept getHemoglobinConcept() {
 		return contextService.getConceptService().getConcept(
 				MotechConstants.CONCEPT_HEMOGLOBIN);
+	}
+
+	public Concept getDueDateConfirmedConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_DATE_OF_CONFINEMENT_CONFIRMED);
 	}
 
 	public String getTroubledPhoneProperty() {

@@ -40,6 +40,7 @@ public final class MotechConstants {
 	public static final String CONCEPT_TEST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION = "TEST PREVENTING MATERNAL TO CHILD TRANSMISSION";
 	public static final String CONCEPT_POST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION = "POST PREVENTING MATERNAL TO CHILD TRANSMISSION";
 	public static final String CONCEPT_HEMOGLOBIN_AT_36_WEEKS = "HEMOGLOBIN AT 36 WEEKS";
+	public static final String CONCEPT_DATE_OF_CONFINEMENT_CONFIRMED = "DATE OF CONFINEMENT CONFIRMED";
 	public static final String TASK_PROPERTY_SEND_IMMEDIATE = "sendImmediate";
 	public static final String TASK_PROPERTY_TIME_OFFSET = "timeOffset";
 	public static final String TASK_DAILY_NOTIFICATION = "Daily Notification Task";
