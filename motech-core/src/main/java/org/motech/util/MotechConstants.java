@@ -13,6 +13,14 @@ public final class MotechConstants {
 	public static final String PERSON_ATTRIBUTE_MEDIA_TYPE = "Media Type";
 	public static final String PERSON_ATTRIBUTE_DELIVERY_TIME = "Delivery Time";
 	public static final String PERSON_ATTRIBUTE_CHPS_ID = "CHPS ID";
+	public static final String PERSON_ATTRIBUTE_GHS_ANC_REG_NUMBER = "GHS ANC Registration Number ";
+	public static final String PERSON_ATTRIBUTE_GHS_CWC_REG_NUMBER = "GHS CWC Registration Number";
+	public static final String PERSON_ATTRIBUTE_GHS_REGISTERED = "Registered with GHS";
+	public static final String PERSON_ATTRIBUTE_INSURED = "Insured";
+	public static final String PERSON_ATTRIBUTE_HIV_STATUS = "HIV Status";
+	public static final String PERSON_ATTRIBUTE_WHO_REGISTERED = "Who registered";
+	public static final String PERSON_ATTRIBUTE_RELIGION = "Religion";
+	public static final String PERSON_ATTRIBUTE_OCCUPATION = "Occupation";
 	public static final String PATIENT_IDENTIFIER_GHANA_CLINIC_ID = "Ghana Clinic Id";
 	public static final String LOCATION_GHANA = "Ghana";
 	public static final String LOCATION_UPPER_EAST = "Upper East";

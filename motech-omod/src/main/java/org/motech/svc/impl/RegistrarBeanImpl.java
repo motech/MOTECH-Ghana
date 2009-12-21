@@ -885,6 +885,32 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME,
 				"A person's preferred delivery time (ANYTIME, MORNING, AFTERNOON, or EVENING).",
 				String.class.getName(), admin);
+		createPersonAttributeType(
+				MotechConstants.PERSON_ATTRIBUTE_GHS_ANC_REG_NUMBER,
+				"A mother's GHS ANC Registration number.", String.class
+						.getName(), admin);
+		createPersonAttributeType(
+				MotechConstants.PERSON_ATTRIBUTE_GHS_CWC_REG_NUMBER,
+				"A child's GHS CWC Registration number.", String.class
+						.getName(), admin);
+		createPersonAttributeType(
+				MotechConstants.PERSON_ATTRIBUTE_GHS_REGISTERED,
+				"Is person registered with GHS? (TRUE OR FALSE)", String.class
+						.getName(), admin);
+		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_INSURED,
+				"Is person insured? (TRUE OR FALSE)", String.class.getName(),
+				admin);
+		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_HIV_STATUS,
+				"A person's HIV status (POSITIVE, NEGATIVE, or UNKNOWN).",
+				String.class.getName(), admin);
+		createPersonAttributeType(
+				MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED,
+				"Who registered person? (MOTHER, FATHER, FAMILY_MEMBER, CHPS_STAFF, or OTHER)",
+				String.class.getName(), admin);
+		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_RELIGION,
+				"A person's religion.", String.class.getName(), admin);
+		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_OCCUPATION,
+				"A person's occupation.", String.class.getName(), admin);
 
 		log.info("Verifying Patient Identifier Exist");
 		createPatientIdentifierType(
@@ -1663,6 +1689,46 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public PersonAttributeType getDeliveryTimeAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(
 				MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
+	}
+
+	public PersonAttributeType getANCRegistrationNumberAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_GHS_ANC_REG_NUMBER);
+	}
+
+	public PersonAttributeType getCWCRegistrationNumberAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_GHS_CWC_REG_NUMBER);
+	}
+
+	public PersonAttributeType getGHSRegisteredAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_GHS_REGISTERED);
+	}
+
+	public PersonAttributeType getInsuredAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_INSURED);
+	}
+
+	public PersonAttributeType getHIVStatusAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_HIV_STATUS);
+	}
+
+	public PersonAttributeType getWhoRegisteredAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED);
+	}
+
+	public PersonAttributeType getReligionAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_RELIGION);
+	}
+
+	public PersonAttributeType getOccupationAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_OCCUPATION);
 	}
 
 	public Location getGhanaLocation() {
