@@ -148,7 +148,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		nurse.addAttribute(new PersonAttribute(nurseIdAttrType, nurseId));
 
 		// Must be created previously through API or UI to lookup
-		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
+		PersonAttributeType phoneNumberAttrType = getPrimaryPhoneNumberAttributeType();
 		nurse
 				.addAttribute(new PersonAttribute(phoneNumberAttrType,
 						phoneNumber));
@@ -230,11 +230,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				.addAttribute(new PersonAttribute(nhisAttrType, nhis.toString()));
 
 		// Must be created previously through API or UI to lookup
-		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
+		PersonAttributeType phoneNumberAttrType = getPrimaryPhoneNumberAttributeType();
 		patient.addAttribute(new PersonAttribute(phoneNumberAttrType,
 				phoneNumber));
 
-		PersonAttributeType phoneTypeAttrType = getPhoneTypeAttributeType();
+		PersonAttributeType phoneTypeAttrType = getPrimaryPhoneTypeAttributeType();
 
 		patient.addAttribute(new PersonAttribute(phoneTypeAttrType,
 				contactNumberType.toString()));
@@ -490,7 +490,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		Integer recipientId = message.getSchedule().getRecipientId();
 		Person messageRecipient = personService.getPerson(recipientId);
-		String phoneNumber = getPersonPhoneNumber(messageRecipient);
+		String phoneNumber = getPrimaryPersonPhoneNumber(messageRecipient);
 		TroubledPhone troubledPhone = motechService
 				.getTroubledPhone(phoneNumber);
 
@@ -525,7 +525,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		MotechService motechService = contextService.getMotechService();
 		UserService userService = contextService.getUserService();
 
-		PersonAttributeType phoneAttributeType = getPhoneNumberAttributeType();
+		PersonAttributeType phoneAttributeType = getPrimaryPhoneNumberAttributeType();
 		List<Integer> matchingUsers = motechService
 				.getUserIdsByPersonAttribute(phoneAttributeType, phoneNumber);
 		if (matchingUsers.size() > 0) {
@@ -864,8 +864,13 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_CHPS_ID,
 				"A nurse's CHPS ID.", String.class.getName(), admin);
 		createPersonAttributeType(
-				MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER,
-				"A person's phone number.", String.class.getName(), admin);
+				MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER,
+				"A person's primary phone number.", String.class.getName(),
+				admin);
+		createPersonAttributeType(
+				MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER,
+				"A person's seconadary phone number.", String.class.getName(),
+				admin);
 		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER,
 				"A person's NHIS number.", String.class.getName(), admin);
 		// TODO: Use AttributableDate? Create Attributable types for Enums?
@@ -875,8 +880,13 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE,
 				"A person's language preference.", String.class.getName(),
 				admin);
-		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE,
-				"A person's cell phone type (PERSONAL or SHARED).",
+		createPersonAttributeType(
+				MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE,
+				"A person's primary phone type (PERSONAL, HOUSEHOLD, or PUBLIC).",
+				String.class.getName(), admin);
+		createPersonAttributeType(
+				MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE,
+				"A person's secondary phone type (PERSONAL, HOUSEHOLD, or PUBLIC).",
 				String.class.getName(), admin);
 		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE,
 				"A person's preferred phone media type (TEXT or VOICE).",
@@ -1297,7 +1307,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		Integer recipientId = message.getSchedule().getRecipientId();
 		Person person = personService.getPerson(recipientId);
 
-		String phoneNumber = getPersonPhoneNumber(person);
+		String phoneNumber = getPrimaryPersonPhoneNumber(person);
 
 		// Cancel message if phone number is considered troubled
 		if (isPhoneTroubled(phoneNumber)) {
@@ -1334,7 +1344,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 			boolean sendMessageSuccess = false;
 			if (patient != null) {
-				ContactNumberType contactNumberType = getPersonPhoneType(person);
+				ContactNumberType contactNumberType = getPrimaryPersonPhoneType(person);
 
 				sendMessageSuccess = sendPatientMessage(messageId,
 						personalInfo, phoneNumber, languageCode, mediaType,
@@ -1522,8 +1532,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return null;
 	}
 
-	public String getPersonPhoneNumber(Person person) {
-		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
+	public String getPrimaryPersonPhoneNumber(Person person) {
+		PersonAttributeType phoneNumberAttrType = getPrimaryPhoneNumberAttributeType();
 		PersonAttribute phoneNumberAttr = person
 				.getAttribute(phoneNumberAttrType);
 		if (phoneNumberAttr != null) {
@@ -1545,8 +1555,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return null;
 	}
 
-	public ContactNumberType getPersonPhoneType(Person person) {
-		PersonAttributeType phoneTypeAttrType = getPhoneTypeAttributeType();
+	public ContactNumberType getPrimaryPersonPhoneType(Person person) {
+		PersonAttributeType phoneTypeAttrType = getPrimaryPhoneTypeAttributeType();
 		PersonAttribute phoneTypeAttr = person.getAttribute(phoneTypeAttrType);
 		if (phoneTypeAttr != null && phoneTypeAttr.getValue() != null) {
 			return ContactNumberType.valueOf(phoneTypeAttr.getValue());
@@ -1661,9 +1671,14 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER);
 	}
 
-	public PersonAttributeType getPhoneNumberAttributeType() {
+	public PersonAttributeType getPrimaryPhoneNumberAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
+				MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER);
+	}
+
+	public PersonAttributeType getSecondaryPhoneNumberAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER);
 	}
 
 	public PersonAttributeType getNHISNumberAttributeType() {
@@ -1676,9 +1691,14 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE);
 	}
 
-	public PersonAttributeType getPhoneTypeAttributeType() {
+	public PersonAttributeType getPrimaryPhoneTypeAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
+				MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE);
+	}
+
+	public PersonAttributeType getSecondaryPhoneTypeAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE);
 	}
 
 	public PersonAttributeType getLanguageAttributeType() {

@@ -77,11 +77,13 @@ public class RegistrarBeanTest extends TestCase {
 	Location defaultClinic;
 	PatientIdentifierType ghanaIdType;
 	PersonAttributeType nurseIdAttributeType;
-	PersonAttributeType phoneAttributeType;
+	PersonAttributeType primaryPhoneAttributeType;
+	PersonAttributeType secondaryPhoneAttributeType;
 	PersonAttributeType clinicAttributeType;
 	PersonAttributeType nhisAttributeType;
 	PersonAttributeType languageAttributeType;
-	PersonAttributeType phoneTypeAttributeType;
+	PersonAttributeType primaryPhoneTypeAttributeType;
+	PersonAttributeType secondaryPhoneTypeAttributeType;
 	PersonAttributeType mediaTypeAttributeType;
 	PersonAttributeType deliveryTimeAttributeType;
 	Role providerRole;
@@ -137,9 +139,9 @@ public class RegistrarBeanTest extends TestCase {
 		ghanaIdType = new PatientIdentifierType(1);
 		ghanaIdType.setName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
 
-		phoneAttributeType = new PersonAttributeType(2);
-		phoneAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
+		primaryPhoneAttributeType = new PersonAttributeType(2);
+		primaryPhoneAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER);
 
 		clinicAttributeType = new PersonAttributeType(3);
 		clinicAttributeType
@@ -152,9 +154,9 @@ public class RegistrarBeanTest extends TestCase {
 		languageAttributeType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
 
-		phoneTypeAttributeType = new PersonAttributeType(6);
-		phoneTypeAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
+		primaryPhoneTypeAttributeType = new PersonAttributeType(6);
+		primaryPhoneTypeAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE);
 
 		mediaTypeAttributeType = new PersonAttributeType(7);
 		mediaTypeAttributeType
@@ -166,6 +168,14 @@ public class RegistrarBeanTest extends TestCase {
 
 		nurseIdAttributeType = new PersonAttributeType(9);
 		nurseIdAttributeType.setName(MotechConstants.PERSON_ATTRIBUTE_CHPS_ID);
+
+		secondaryPhoneAttributeType = new PersonAttributeType(10);
+		secondaryPhoneAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER);
+
+		secondaryPhoneTypeAttributeType = new PersonAttributeType(11);
+		secondaryPhoneTypeAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE);
 
 		providerRole = new Role(OpenmrsConstants.PROVIDER_ROLE);
 
@@ -327,8 +337,8 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(nurseIdAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
+				.andReturn(primaryPhoneAttributeType);
 		expect(userService.getRole(OpenmrsConstants.PROVIDER_ROLE)).andReturn(
 				providerRole);
 		expect(locationService.getLocation(clinic)).andReturn(clinicLocation);
@@ -348,7 +358,8 @@ public class RegistrarBeanTest extends TestCase {
 		User nurse = nurseCap.getValue();
 		assertEquals(name, nurse.getGivenName());
 		assertEquals(id, nurse.getAttribute(nurseIdAttributeType).getValue());
-		assertEquals(phone, nurse.getAttribute(phoneAttributeType).getValue());
+		assertEquals(phone, nurse.getAttribute(primaryPhoneAttributeType)
+				.getValue());
 		assertEquals(clinicLocation.getLocationId().toString(), nurse
 				.getAttribute(clinicAttributeType).getValue());
 	}
@@ -371,7 +382,8 @@ public class RegistrarBeanTest extends TestCase {
 		locationObj.setName(location);
 
 		User nurse = new User(1);
-		nurse.addAttribute(new PersonAttribute(phoneAttributeType, nPhone));
+		nurse.addAttribute(new PersonAttribute(primaryPhoneAttributeType,
+				nPhone));
 		nurse.addAttribute(new PersonAttribute(clinicAttributeType, locationObj
 				.getLocationId().toString()));
 
@@ -396,11 +408,11 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(ghanaIdType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
+				.andReturn(primaryPhoneAttributeType);
 		expect(
-				motechService.getUserIdsByPersonAttribute(phoneAttributeType,
-						nPhone)).andReturn(
+				motechService.getUserIdsByPersonAttribute(
+						primaryPhoneAttributeType, nPhone)).andReturn(
 				new ArrayList<Integer>(Arrays.asList(nurse.getUserId())));
 		expect(userService.getUser(nurse.getUserId())).andReturn(nurse);
 		expect(
@@ -415,12 +427,12 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(nhisAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
+				.andReturn(primaryPhoneAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE))
-				.andReturn(phoneTypeAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE))
+				.andReturn(primaryPhoneTypeAttributeType);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE))
@@ -459,7 +471,7 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(name, patient.getGivenName());
 		assertEquals(location, patient.getPersonAddress().getAddress1());
 		assertEquals(community, patient.getPersonAddress().getCityVillage());
-		assertEquals(pPhone, patient.getAttribute(phoneAttributeType)
+		assertEquals(pPhone, patient.getAttribute(primaryPhoneAttributeType)
 				.getValue());
 		assertEquals(dob, patient.getBirthdate());
 		assertEquals(GenderTypeConverter.toOpenMRSString(gender), patient
@@ -467,7 +479,7 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(nhis.toString(), patient.getAttribute(nhisAttributeType)
 				.getValue());
 		assertEquals(contactNumberType.toString(), patient.getAttribute(
-				phoneTypeAttributeType).getValue());
+				primaryPhoneTypeAttributeType).getValue());
 		assertEquals(language, patient.getAttribute(languageAttributeType)
 				.getValue());
 		assertEquals(mediaType.toString(), patient.getAttribute(
@@ -495,7 +507,8 @@ public class RegistrarBeanTest extends TestCase {
 		locationObj.setName("Test Location");
 
 		User nurse = new User(1);
-		nurse.addAttribute(new PersonAttribute(phoneAttributeType, nPhone));
+		nurse.addAttribute(new PersonAttribute(primaryPhoneAttributeType,
+				nPhone));
 		nurse.addAttribute(new PersonAttribute(clinicAttributeType, locationObj
 				.getLocationId().toString()));
 
@@ -540,11 +553,11 @@ public class RegistrarBeanTest extends TestCase {
 						capture(typeList), eq(true))).andReturn(patients);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
+				.andReturn(primaryPhoneAttributeType);
 		expect(
-				motechService.getUserIdsByPersonAttribute(phoneAttributeType,
-						nPhone)).andReturn(
+				motechService.getUserIdsByPersonAttribute(
+						primaryPhoneAttributeType, nPhone)).andReturn(
 				new ArrayList<Integer>(Arrays.asList(nurse.getUserId())));
 		expect(userService.getUser(nurse.getUserId())).andReturn(nurse);
 		expect(
@@ -641,8 +654,8 @@ public class RegistrarBeanTest extends TestCase {
 		Encounter e = encounterCap.getValue();
 		assertEquals(1, typeList.getValue().size());
 		assertTrue(typeList.getValue().contains(ghanaIdType));
-		assertEquals(nPhone, e.getProvider().getAttribute(phoneAttributeType)
-				.getValue());
+		assertEquals(nPhone, e.getProvider().getAttribute(
+				primaryPhoneAttributeType).getValue());
 		assertEquals(serialId, e.getPatient().getPatientIdentifier()
 				.getIdentifier());
 		assertEquals(date, e.getEncounterDatetime());
@@ -732,7 +745,8 @@ public class RegistrarBeanTest extends TestCase {
 		locationObj.setName("Test Location");
 
 		User nurse = new User(1);
-		nurse.addAttribute(new PersonAttribute(phoneAttributeType, nPhone));
+		nurse.addAttribute(new PersonAttribute(primaryPhoneAttributeType,
+				nPhone));
 		nurse.addAttribute(new PersonAttribute(clinicAttributeType, locationObj
 				.getLocationId().toString()));
 
@@ -770,11 +784,11 @@ public class RegistrarBeanTest extends TestCase {
 						capture(typeList), eq(true))).andReturn(patients);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
+				.andReturn(primaryPhoneAttributeType);
 		expect(
-				motechService.getUserIdsByPersonAttribute(phoneAttributeType,
-						nPhone)).andReturn(
+				motechService.getUserIdsByPersonAttribute(
+						primaryPhoneAttributeType, nPhone)).andReturn(
 				new ArrayList<Integer>(Arrays.asList(nurse.getUserId())));
 		expect(userService.getUser(nurse.getUserId())).andReturn(nurse);
 		expect(
@@ -817,8 +831,8 @@ public class RegistrarBeanTest extends TestCase {
 		Encounter e = encounterCap.getValue();
 		assertEquals(1, typeList.getValue().size());
 		assertTrue(typeList.getValue().contains(ghanaIdType));
-		assertEquals(nPhone, e.getProvider().getAttribute(phoneAttributeType)
-				.getValue());
+		assertEquals(nPhone, e.getProvider().getAttribute(
+				primaryPhoneAttributeType).getValue());
 		assertEquals(serialId, e.getPatient().getPatientIdentifier()
 				.getIdentifier());
 		assertEquals(date, e.getEncounterDatetime());
@@ -850,7 +864,8 @@ public class RegistrarBeanTest extends TestCase {
 		locationObj.setName("Test Location");
 
 		User nurse = new User(1);
-		nurse.addAttribute(new PersonAttribute(phoneAttributeType, nPhone));
+		nurse.addAttribute(new PersonAttribute(primaryPhoneAttributeType,
+				nPhone));
 		nurse.addAttribute(new PersonAttribute(clinicAttributeType, locationObj
 				.getLocationId().toString()));
 
@@ -890,11 +905,11 @@ public class RegistrarBeanTest extends TestCase {
 						capture(typeListCap), eq(true))).andReturn(patients);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
+				.andReturn(primaryPhoneAttributeType);
 		expect(
-				motechService.getUserIdsByPersonAttribute(phoneAttributeType,
-						nPhone)).andReturn(
+				motechService.getUserIdsByPersonAttribute(
+						primaryPhoneAttributeType, nPhone)).andReturn(
 				new ArrayList<Integer>(Arrays.asList(nurse.getUserId())));
 		expect(userService.getUser(nurse.getUserId())).andReturn(nurse);
 		expect(
@@ -942,8 +957,8 @@ public class RegistrarBeanTest extends TestCase {
 				userService);
 
 		Encounter e = encounterCap.getValue();
-		assertEquals(nPhone, e.getProvider().getAttribute(phoneAttributeType)
-				.getValue());
+		assertEquals(nPhone, e.getProvider().getAttribute(
+				primaryPhoneAttributeType).getValue());
 		assertEquals(serialId, e.getPatient().getPatientIdentifier()
 				.getIdentifier());
 		assertEquals(date, e.getEncounterDatetime());
@@ -1058,7 +1073,7 @@ public class RegistrarBeanTest extends TestCase {
 		Integer recipientId = 2;
 		String phoneNumber = "1234567890";
 		Person recipient = new Person();
-		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
+		recipient.addAttribute(new PersonAttribute(primaryPhoneAttributeType,
 				phoneNumber));
 		TroubledPhone troubledPhone = null;
 		Message message = new Message();
@@ -1075,8 +1090,8 @@ public class RegistrarBeanTest extends TestCase {
 		expect(personService.getPerson(recipientId)).andReturn(recipient);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
+				.andReturn(primaryPhoneAttributeType);
 		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
 				troubledPhone);
 		expect(motechService.saveMessage(capture(messageCap))).andReturn(
@@ -1100,7 +1115,7 @@ public class RegistrarBeanTest extends TestCase {
 		Integer recipientId = 2;
 		String phoneNumber = "1234567890";
 		Person recipient = new Person();
-		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
+		recipient.addAttribute(new PersonAttribute(primaryPhoneAttributeType,
 				phoneNumber));
 		TroubledPhone troubledPhone = new TroubledPhone();
 		Message message = new Message();
@@ -1117,8 +1132,8 @@ public class RegistrarBeanTest extends TestCase {
 		expect(personService.getPerson(recipientId)).andReturn(recipient);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
+				.andReturn(primaryPhoneAttributeType);
 		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
 				troubledPhone);
 		motechService.removeTroubledPhone(phoneNumber);
@@ -1143,7 +1158,7 @@ public class RegistrarBeanTest extends TestCase {
 		Integer recipientId = 2;
 		String phoneNumber = "1234567890";
 		Person recipient = new Person();
-		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
+		recipient.addAttribute(new PersonAttribute(primaryPhoneAttributeType,
 				phoneNumber));
 		TroubledPhone troubledPhone = null;
 		Message message = new Message();
@@ -1160,8 +1175,8 @@ public class RegistrarBeanTest extends TestCase {
 		expect(personService.getPerson(recipientId)).andReturn(recipient);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
+				.andReturn(primaryPhoneAttributeType);
 		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
 				troubledPhone);
 		motechService.addTroubledPhone(phoneNumber);
@@ -1186,7 +1201,7 @@ public class RegistrarBeanTest extends TestCase {
 		Integer recipientId = 2;
 		String phoneNumber = "1234567890";
 		Person recipient = new Person();
-		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
+		recipient.addAttribute(new PersonAttribute(primaryPhoneAttributeType,
 				phoneNumber));
 		Integer previousFailures = 1;
 		TroubledPhone troubledPhone = new TroubledPhone();
@@ -1206,8 +1221,8 @@ public class RegistrarBeanTest extends TestCase {
 		expect(personService.getPerson(recipientId)).andReturn(recipient);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
+				.andReturn(primaryPhoneAttributeType);
 		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
 				troubledPhone);
 		motechService.saveTroubledPhone(capture(troubledPhoneCap));

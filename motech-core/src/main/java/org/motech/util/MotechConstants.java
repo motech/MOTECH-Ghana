@@ -5,11 +5,13 @@ public final class MotechConstants {
 	/*
 	 * Values added and used by Motech
 	 */
-	public static final String PERSON_ATTRIBUTE_PHONE_NUMBER = "Phone Number";
+	public static final String PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER = "Primary Phone Number";
+	public static final String PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER = "Secondary Phone Number";
 	public static final String PERSON_ATTRIBUTE_NHIS_NUMBER = "NHIS Number";
 	public static final String PERSON_ATTRIBUTE_NHIS_EXP_DATE = "NHIS Expiration Date";
 	public static final String PERSON_ATTRIBUTE_LANGUAGE = "Language";
-	public static final String PERSON_ATTRIBUTE_PHONE_TYPE = "Phone Type";
+	public static final String PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE = "Primary Phone Type";
+	public static final String PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE = "Secondary Phone Type";
 	public static final String PERSON_ATTRIBUTE_MEDIA_TYPE = "Media Type";
 	public static final String PERSON_ATTRIBUTE_DELIVERY_TIME = "Delivery Time";
 	public static final String PERSON_ATTRIBUTE_CHPS_ID = "CHPS ID";
