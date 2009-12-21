@@ -171,8 +171,9 @@ public class MotechModuleFormController {
 				messageProgramsActualSet
 						.add("Tetanus Immunization Message Program");
 			}
-			if (messageProgramsInputSet.contains("dailyPregnancy")) {
-				messageProgramsActualSet.add("Daily Pregnancy Message Program");
+			if (messageProgramsInputSet.contains("weeklyPregnancy")) {
+				messageProgramsActualSet
+						.add("Weekly Pregnancy Message Program");
 			}
 			messageProgramsActual = messageProgramsActualSet
 					.toArray(new String[messageProgramsActualSet.size()]);

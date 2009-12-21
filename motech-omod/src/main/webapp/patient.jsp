@@ -102,7 +102,7 @@
 		<td><label for="messagePrograms">Message Program Enrollment:</label></td>
 		<td>
 			<select name="messagePrograms" multiple="multiple">
-				<option value="dailyPregnancy">Day-by-day Pregnancy</option>
+				<option value="weeklyPregnancy">Week-by-week Pregnancy</option>
 				<option value="minuteTetanus">Minute-by-minute Tetanus</option>
 			</select>
 		</td>

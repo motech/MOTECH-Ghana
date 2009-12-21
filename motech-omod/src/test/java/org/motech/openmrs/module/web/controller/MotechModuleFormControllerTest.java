@@ -156,7 +156,7 @@ public class MotechModuleFormControllerTest extends TestCase {
 		String serialId = "Serial Id", name = "Patient Name", community = "Community", location = "Location", dateOfBirth = "01/01/2009";
 		String nhis = "1", patientPhone = "Patient Phone", patientPhoneType = "PERSONAL", language = "Language", mediaType = "TEXT";
 		String deliveryTime = "ANYTIME";
-		String[] programs = { "minuteTetanus", "dailyPregnancy" };
+		String[] programs = { "minuteTetanus", "weeklyPregnancy" };
 		String gender = "FEMALE";
 
 		Capture<Date> dateOfBirthCapture = new Capture<Date>();

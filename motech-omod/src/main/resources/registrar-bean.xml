@@ -51,9 +51,15 @@
 				</entry>
 				<entry>
 					<key>
-						<value>Daily Pregnancy Message Program</value>
+						<value>Weekly Pregnancy Message Program</value>
 					</key>
-					<ref bean="dailyPregnancyProgram" />
+					<ref bean="weeklyPregnancyProgram" />
+				</entry>
+				<entry>
+					<key>
+						<value>Weekly Info Pregnancy Message Program</value>
+					</key>
+					<ref bean="weeklyInfoPregnancyProgram" />
 				</entry>
 			</map>
 		</property>

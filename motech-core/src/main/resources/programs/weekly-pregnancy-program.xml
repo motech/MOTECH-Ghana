@@ -4,1177 +4,1177 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="dailyPregnancyProgram" class="org.motech.event.impl.MessageProgramImpl">
-		<property name="name" value="Daily Pregnancy Message Program" />
+	<bean id="weeklyPregnancyProgram" class="org.motech.event.impl.MessageProgramImpl">
+		<property name="name" value="Weekly Pregnancy Message Program" />
 		<property name="conceptName" value="ESTIMATED DATE OF CONFINEMENT" />
-		<property name="startState" ref="dailyPregnancyState1" />
-		<property name="endState" ref="dailyPregnancyState41" />
+		<property name="startState" ref="weeklyPregnancyState1" />
+		<property name="endState" ref="weeklyPregnancyState41" />
 	</bean>
 
-	<bean id="dailyPregnancyState1" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 1" />
+	<bean id="weeklyPregnancyState1" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 1" />
 		<property name="timeValue" value="-39" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.1" />
+				<property name="messageKey" value="pregnancy.week.1" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState1" />
-					<property name="nextState" ref="dailyPregnancyState2" />
+					<property name="prevState" ref="weeklyPregnancyState1" />
+					<property name="nextState" ref="weeklyPregnancyState2" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState1" />
-					<property name="nextState" ref="dailyPregnancyState1" />
+					<property name="prevState" ref="weeklyPregnancyState1" />
+					<property name="nextState" ref="weeklyPregnancyState1" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState2" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 2" />
+	<bean id="weeklyPregnancyState2" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 2" />
 		<property name="timeValue" value="-38" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.2" />
+				<property name="messageKey" value="pregnancy.week.2" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState2" />
-					<property name="nextState" ref="dailyPregnancyState3" />
+					<property name="prevState" ref="weeklyPregnancyState2" />
+					<property name="nextState" ref="weeklyPregnancyState3" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState2" />
-					<property name="nextState" ref="dailyPregnancyState2" />
+					<property name="prevState" ref="weeklyPregnancyState2" />
+					<property name="nextState" ref="weeklyPregnancyState2" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState3" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 3" />
+	<bean id="weeklyPregnancyState3" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 3" />
 		<property name="timeValue" value="-37" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.3" />
+				<property name="messageKey" value="pregnancy.week.3" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState3" />
-					<property name="nextState" ref="dailyPregnancyState4" />
+					<property name="prevState" ref="weeklyPregnancyState3" />
+					<property name="nextState" ref="weeklyPregnancyState4" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState3" />
-					<property name="nextState" ref="dailyPregnancyState3" />
+					<property name="prevState" ref="weeklyPregnancyState3" />
+					<property name="nextState" ref="weeklyPregnancyState3" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState4" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 4" />
+	<bean id="weeklyPregnancyState4" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 4" />
 		<property name="timeValue" value="-36" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.4" />
+				<property name="messageKey" value="pregnancy.week.4" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState4" />
-					<property name="nextState" ref="dailyPregnancyState5" />
+					<property name="prevState" ref="weeklyPregnancyState4" />
+					<property name="nextState" ref="weeklyPregnancyState5" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState4" />
-					<property name="nextState" ref="dailyPregnancyState4" />
+					<property name="prevState" ref="weeklyPregnancyState4" />
+					<property name="nextState" ref="weeklyPregnancyState4" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState5" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 5" />
+	<bean id="weeklyPregnancyState5" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 5" />
 		<property name="timeValue" value="-35" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.5" />
+				<property name="messageKey" value="pregnancy.week.5" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState5" />
-					<property name="nextState" ref="dailyPregnancyState6" />
+					<property name="prevState" ref="weeklyPregnancyState5" />
+					<property name="nextState" ref="weeklyPregnancyState6" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState5" />
-					<property name="nextState" ref="dailyPregnancyState5" />
+					<property name="prevState" ref="weeklyPregnancyState5" />
+					<property name="nextState" ref="weeklyPregnancyState5" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState6" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 6" />
+	<bean id="weeklyPregnancyState6" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 6" />
 		<property name="timeValue" value="-34" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.6" />
+				<property name="messageKey" value="pregnancy.week.6" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState6" />
-					<property name="nextState" ref="dailyPregnancyState7" />
+					<property name="prevState" ref="weeklyPregnancyState6" />
+					<property name="nextState" ref="weeklyPregnancyState7" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState6" />
-					<property name="nextState" ref="dailyPregnancyState6" />
+					<property name="prevState" ref="weeklyPregnancyState6" />
+					<property name="nextState" ref="weeklyPregnancyState6" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState7" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 7" />
+	<bean id="weeklyPregnancyState7" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 7" />
 		<property name="timeValue" value="-33" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.7" />
+				<property name="messageKey" value="pregnancy.week.7" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState7" />
-					<property name="nextState" ref="dailyPregnancyState8" />
+					<property name="prevState" ref="weeklyPregnancyState7" />
+					<property name="nextState" ref="weeklyPregnancyState8" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState7" />
-					<property name="nextState" ref="dailyPregnancyState7" />
+					<property name="prevState" ref="weeklyPregnancyState7" />
+					<property name="nextState" ref="weeklyPregnancyState7" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState8" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 8" />
+	<bean id="weeklyPregnancyState8" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 8" />
 		<property name="timeValue" value="-32" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.8" />
+				<property name="messageKey" value="pregnancy.week.8" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState8" />
-					<property name="nextState" ref="dailyPregnancyState9" />
+					<property name="prevState" ref="weeklyPregnancyState8" />
+					<property name="nextState" ref="weeklyPregnancyState9" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState8" />
-					<property name="nextState" ref="dailyPregnancyState8" />
+					<property name="prevState" ref="weeklyPregnancyState8" />
+					<property name="nextState" ref="weeklyPregnancyState8" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState9" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 9" />
+	<bean id="weeklyPregnancyState9" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 9" />
 		<property name="timeValue" value="-31" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.9" />
+				<property name="messageKey" value="pregnancy.week.9" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState9" />
-					<property name="nextState" ref="dailyPregnancyState10" />
+					<property name="prevState" ref="weeklyPregnancyState9" />
+					<property name="nextState" ref="weeklyPregnancyState10" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState9" />
-					<property name="nextState" ref="dailyPregnancyState9" />
+					<property name="prevState" ref="weeklyPregnancyState9" />
+					<property name="nextState" ref="weeklyPregnancyState9" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState10" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 10" />
+	<bean id="weeklyPregnancyState10" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 10" />
 		<property name="timeValue" value="-30" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.10" />
+				<property name="messageKey" value="pregnancy.week.10" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState10" />
-					<property name="nextState" ref="dailyPregnancyState11" />
+					<property name="prevState" ref="weeklyPregnancyState10" />
+					<property name="nextState" ref="weeklyPregnancyState11" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState10" />
-					<property name="nextState" ref="dailyPregnancyState10" />
+					<property name="prevState" ref="weeklyPregnancyState10" />
+					<property name="nextState" ref="weeklyPregnancyState10" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState11" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 11" />
+	<bean id="weeklyPregnancyState11" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 11" />
 		<property name="timeValue" value="-29" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.11" />
+				<property name="messageKey" value="pregnancy.week.11" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState11" />
-					<property name="nextState" ref="dailyPregnancyState12" />
+					<property name="prevState" ref="weeklyPregnancyState11" />
+					<property name="nextState" ref="weeklyPregnancyState12" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState11" />
-					<property name="nextState" ref="dailyPregnancyState11" />
+					<property name="prevState" ref="weeklyPregnancyState11" />
+					<property name="nextState" ref="weeklyPregnancyState11" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState12" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 12" />
+	<bean id="weeklyPregnancyState12" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 12" />
 		<property name="timeValue" value="-28" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.12" />
+				<property name="messageKey" value="pregnancy.week.12" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState12" />
-					<property name="nextState" ref="dailyPregnancyState13" />
+					<property name="prevState" ref="weeklyPregnancyState12" />
+					<property name="nextState" ref="weeklyPregnancyState13" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState12" />
-					<property name="nextState" ref="dailyPregnancyState12" />
+					<property name="prevState" ref="weeklyPregnancyState12" />
+					<property name="nextState" ref="weeklyPregnancyState12" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState13" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 13" />
+	<bean id="weeklyPregnancyState13" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 13" />
 		<property name="timeValue" value="-27" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.13" />
+				<property name="messageKey" value="pregnancy.week.13" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState13" />
-					<property name="nextState" ref="dailyPregnancyState14" />
+					<property name="prevState" ref="weeklyPregnancyState13" />
+					<property name="nextState" ref="weeklyPregnancyState14" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState13" />
-					<property name="nextState" ref="dailyPregnancyState13" />
+					<property name="prevState" ref="weeklyPregnancyState13" />
+					<property name="nextState" ref="weeklyPregnancyState13" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState14" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 14" />
+	<bean id="weeklyPregnancyState14" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 14" />
 		<property name="timeValue" value="-26" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.14" />
+				<property name="messageKey" value="pregnancy.week.14" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState14" />
-					<property name="nextState" ref="dailyPregnancyState15" />
+					<property name="prevState" ref="weeklyPregnancyState14" />
+					<property name="nextState" ref="weeklyPregnancyState15" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState14" />
-					<property name="nextState" ref="dailyPregnancyState14" />
+					<property name="prevState" ref="weeklyPregnancyState14" />
+					<property name="nextState" ref="weeklyPregnancyState14" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState15" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 15" />
+	<bean id="weeklyPregnancyState15" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 15" />
 		<property name="timeValue" value="-25" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.15" />
+				<property name="messageKey" value="pregnancy.week.15" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState15" />
-					<property name="nextState" ref="dailyPregnancyState16" />
+					<property name="prevState" ref="weeklyPregnancyState15" />
+					<property name="nextState" ref="weeklyPregnancyState16" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState15" />
-					<property name="nextState" ref="dailyPregnancyState15" />
+					<property name="prevState" ref="weeklyPregnancyState15" />
+					<property name="nextState" ref="weeklyPregnancyState15" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState16" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 16" />
+	<bean id="weeklyPregnancyState16" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 16" />
 		<property name="timeValue" value="-24" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.16" />
+				<property name="messageKey" value="pregnancy.week.16" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState16" />
-					<property name="nextState" ref="dailyPregnancyState17" />
+					<property name="prevState" ref="weeklyPregnancyState16" />
+					<property name="nextState" ref="weeklyPregnancyState17" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState16" />
-					<property name="nextState" ref="dailyPregnancyState16" />
+					<property name="prevState" ref="weeklyPregnancyState16" />
+					<property name="nextState" ref="weeklyPregnancyState16" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState17" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 17" />
+	<bean id="weeklyPregnancyState17" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 17" />
 		<property name="timeValue" value="-23" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.17" />
+				<property name="messageKey" value="pregnancy.week.17" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState17" />
-					<property name="nextState" ref="dailyPregnancyState18" />
+					<property name="prevState" ref="weeklyPregnancyState17" />
+					<property name="nextState" ref="weeklyPregnancyState18" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState17" />
-					<property name="nextState" ref="dailyPregnancyState17" />
+					<property name="prevState" ref="weeklyPregnancyState17" />
+					<property name="nextState" ref="weeklyPregnancyState17" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState18" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 18" />
+	<bean id="weeklyPregnancyState18" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 18" />
 		<property name="timeValue" value="-22" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.18" />
+				<property name="messageKey" value="pregnancy.week.18" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState18" />
-					<property name="nextState" ref="dailyPregnancyState19" />
+					<property name="prevState" ref="weeklyPregnancyState18" />
+					<property name="nextState" ref="weeklyPregnancyState19" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState18" />
-					<property name="nextState" ref="dailyPregnancyState18" />
+					<property name="prevState" ref="weeklyPregnancyState18" />
+					<property name="nextState" ref="weeklyPregnancyState18" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState19" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 19" />
+	<bean id="weeklyPregnancyState19" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 19" />
 		<property name="timeValue" value="-21" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.19" />
+				<property name="messageKey" value="pregnancy.week.19" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState19" />
-					<property name="nextState" ref="dailyPregnancyState20" />
+					<property name="prevState" ref="weeklyPregnancyState19" />
+					<property name="nextState" ref="weeklyPregnancyState20" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState19" />
-					<property name="nextState" ref="dailyPregnancyState19" />
+					<property name="prevState" ref="weeklyPregnancyState19" />
+					<property name="nextState" ref="weeklyPregnancyState19" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState20" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 20" />
+	<bean id="weeklyPregnancyState20" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 20" />
 		<property name="timeValue" value="-20" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.20" />
+				<property name="messageKey" value="pregnancy.week.20" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState20" />
-					<property name="nextState" ref="dailyPregnancyState21" />
+					<property name="prevState" ref="weeklyPregnancyState20" />
+					<property name="nextState" ref="weeklyPregnancyState21" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState20" />
-					<property name="nextState" ref="dailyPregnancyState20" />
+					<property name="prevState" ref="weeklyPregnancyState20" />
+					<property name="nextState" ref="weeklyPregnancyState20" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState21" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 21" />
+	<bean id="weeklyPregnancyState21" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 21" />
 		<property name="timeValue" value="-19" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.21" />
+				<property name="messageKey" value="pregnancy.week.21" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState21" />
-					<property name="nextState" ref="dailyPregnancyState22" />
+					<property name="prevState" ref="weeklyPregnancyState21" />
+					<property name="nextState" ref="weeklyPregnancyState22" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState21" />
-					<property name="nextState" ref="dailyPregnancyState21" />
+					<property name="prevState" ref="weeklyPregnancyState21" />
+					<property name="nextState" ref="weeklyPregnancyState21" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState22" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 22" />
+	<bean id="weeklyPregnancyState22" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 22" />
 		<property name="timeValue" value="-18" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.22" />
+				<property name="messageKey" value="pregnancy.week.22" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState22" />
-					<property name="nextState" ref="dailyPregnancyState23" />
+					<property name="prevState" ref="weeklyPregnancyState22" />
+					<property name="nextState" ref="weeklyPregnancyState23" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState22" />
-					<property name="nextState" ref="dailyPregnancyState22" />
+					<property name="prevState" ref="weeklyPregnancyState22" />
+					<property name="nextState" ref="weeklyPregnancyState22" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState23" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 23" />
+	<bean id="weeklyPregnancyState23" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 23" />
 		<property name="timeValue" value="-17" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.23" />
+				<property name="messageKey" value="pregnancy.week.23" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState23" />
-					<property name="nextState" ref="dailyPregnancyState24" />
+					<property name="prevState" ref="weeklyPregnancyState23" />
+					<property name="nextState" ref="weeklyPregnancyState24" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState23" />
-					<property name="nextState" ref="dailyPregnancyState23" />
+					<property name="prevState" ref="weeklyPregnancyState23" />
+					<property name="nextState" ref="weeklyPregnancyState23" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState24" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 24" />
+	<bean id="weeklyPregnancyState24" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 24" />
 		<property name="timeValue" value="-16" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.24" />
+				<property name="messageKey" value="pregnancy.week.24" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState24" />
-					<property name="nextState" ref="dailyPregnancyState25" />
+					<property name="prevState" ref="weeklyPregnancyState24" />
+					<property name="nextState" ref="weeklyPregnancyState25" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState24" />
-					<property name="nextState" ref="dailyPregnancyState24" />
+					<property name="prevState" ref="weeklyPregnancyState24" />
+					<property name="nextState" ref="weeklyPregnancyState24" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState25" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 25" />
+	<bean id="weeklyPregnancyState25" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 25" />
 		<property name="timeValue" value="-15" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.25" />
+				<property name="messageKey" value="pregnancy.week.25" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState25" />
-					<property name="nextState" ref="dailyPregnancyState26" />
+					<property name="prevState" ref="weeklyPregnancyState25" />
+					<property name="nextState" ref="weeklyPregnancyState26" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState25" />
-					<property name="nextState" ref="dailyPregnancyState25" />
+					<property name="prevState" ref="weeklyPregnancyState25" />
+					<property name="nextState" ref="weeklyPregnancyState25" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState26" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 26" />
+	<bean id="weeklyPregnancyState26" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 26" />
 		<property name="timeValue" value="-14" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.26" />
+				<property name="messageKey" value="pregnancy.week.26" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState26" />
-					<property name="nextState" ref="dailyPregnancyState27" />
+					<property name="prevState" ref="weeklyPregnancyState26" />
+					<property name="nextState" ref="weeklyPregnancyState27" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState26" />
-					<property name="nextState" ref="dailyPregnancyState26" />
+					<property name="prevState" ref="weeklyPregnancyState26" />
+					<property name="nextState" ref="weeklyPregnancyState26" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState27" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 27" />
+	<bean id="weeklyPregnancyState27" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 27" />
 		<property name="timeValue" value="-13" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.27" />
+				<property name="messageKey" value="pregnancy.week.27" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState27" />
-					<property name="nextState" ref="dailyPregnancyState28" />
+					<property name="prevState" ref="weeklyPregnancyState27" />
+					<property name="nextState" ref="weeklyPregnancyState28" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState27" />
-					<property name="nextState" ref="dailyPregnancyState27" />
+					<property name="prevState" ref="weeklyPregnancyState27" />
+					<property name="nextState" ref="weeklyPregnancyState27" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState28" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 28" />
+	<bean id="weeklyPregnancyState28" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 28" />
 		<property name="timeValue" value="-12" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.28" />
+				<property name="messageKey" value="pregnancy.week.28" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState28" />
-					<property name="nextState" ref="dailyPregnancyState29" />
+					<property name="prevState" ref="weeklyPregnancyState28" />
+					<property name="nextState" ref="weeklyPregnancyState29" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState28" />
-					<property name="nextState" ref="dailyPregnancyState28" />
+					<property name="prevState" ref="weeklyPregnancyState28" />
+					<property name="nextState" ref="weeklyPregnancyState28" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState29" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 29" />
+	<bean id="weeklyPregnancyState29" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 29" />
 		<property name="timeValue" value="-11" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.29" />
+				<property name="messageKey" value="pregnancy.week.29" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState29" />
-					<property name="nextState" ref="dailyPregnancyState30" />
+					<property name="prevState" ref="weeklyPregnancyState29" />
+					<property name="nextState" ref="weeklyPregnancyState30" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState29" />
-					<property name="nextState" ref="dailyPregnancyState29" />
+					<property name="prevState" ref="weeklyPregnancyState29" />
+					<property name="nextState" ref="weeklyPregnancyState29" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState30" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 30" />
+	<bean id="weeklyPregnancyState30" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 30" />
 		<property name="timeValue" value="-10" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.30" />
+				<property name="messageKey" value="pregnancy.week.30" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState30" />
-					<property name="nextState" ref="dailyPregnancyState31" />
+					<property name="prevState" ref="weeklyPregnancyState30" />
+					<property name="nextState" ref="weeklyPregnancyState31" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState30" />
-					<property name="nextState" ref="dailyPregnancyState30" />
+					<property name="prevState" ref="weeklyPregnancyState30" />
+					<property name="nextState" ref="weeklyPregnancyState30" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState31" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 31" />
+	<bean id="weeklyPregnancyState31" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 31" />
 		<property name="timeValue" value="-9" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.31" />
+				<property name="messageKey" value="pregnancy.week.31" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState31" />
-					<property name="nextState" ref="dailyPregnancyState32" />
+					<property name="prevState" ref="weeklyPregnancyState31" />
+					<property name="nextState" ref="weeklyPregnancyState32" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState31" />
-					<property name="nextState" ref="dailyPregnancyState31" />
+					<property name="prevState" ref="weeklyPregnancyState31" />
+					<property name="nextState" ref="weeklyPregnancyState31" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState32" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 32" />
+	<bean id="weeklyPregnancyState32" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 32" />
 		<property name="timeValue" value="-8" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.32" />
+				<property name="messageKey" value="pregnancy.week.32" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState32" />
-					<property name="nextState" ref="dailyPregnancyState33" />
+					<property name="prevState" ref="weeklyPregnancyState32" />
+					<property name="nextState" ref="weeklyPregnancyState33" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState32" />
-					<property name="nextState" ref="dailyPregnancyState32" />
+					<property name="prevState" ref="weeklyPregnancyState32" />
+					<property name="nextState" ref="weeklyPregnancyState32" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState33" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 33" />
+	<bean id="weeklyPregnancyState33" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 33" />
 		<property name="timeValue" value="-7" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.33" />
+				<property name="messageKey" value="pregnancy.week.33" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState33" />
-					<property name="nextState" ref="dailyPregnancyState34" />
+					<property name="prevState" ref="weeklyPregnancyState33" />
+					<property name="nextState" ref="weeklyPregnancyState34" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState33" />
-					<property name="nextState" ref="dailyPregnancyState33" />
+					<property name="prevState" ref="weeklyPregnancyState33" />
+					<property name="nextState" ref="weeklyPregnancyState33" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState34" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 34" />
+	<bean id="weeklyPregnancyState34" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 34" />
 		<property name="timeValue" value="-6" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.34" />
+				<property name="messageKey" value="pregnancy.week.34" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState34" />
-					<property name="nextState" ref="dailyPregnancyState35" />
+					<property name="prevState" ref="weeklyPregnancyState34" />
+					<property name="nextState" ref="weeklyPregnancyState35" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState34" />
-					<property name="nextState" ref="dailyPregnancyState34" />
+					<property name="prevState" ref="weeklyPregnancyState34" />
+					<property name="nextState" ref="weeklyPregnancyState34" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState35" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 35" />
+	<bean id="weeklyPregnancyState35" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 35" />
 		<property name="timeValue" value="-5" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.35" />
+				<property name="messageKey" value="pregnancy.week.35" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState35" />
-					<property name="nextState" ref="dailyPregnancyState36" />
+					<property name="prevState" ref="weeklyPregnancyState35" />
+					<property name="nextState" ref="weeklyPregnancyState36" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState35" />
-					<property name="nextState" ref="dailyPregnancyState35" />
+					<property name="prevState" ref="weeklyPregnancyState35" />
+					<property name="nextState" ref="weeklyPregnancyState35" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState36" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 36" />
+	<bean id="weeklyPregnancyState36" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 36" />
 		<property name="timeValue" value="-4" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.36" />
+				<property name="messageKey" value="pregnancy.week.36" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState36" />
-					<property name="nextState" ref="dailyPregnancyState37" />
+					<property name="prevState" ref="weeklyPregnancyState36" />
+					<property name="nextState" ref="weeklyPregnancyState37" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState36" />
-					<property name="nextState" ref="dailyPregnancyState36" />
+					<property name="prevState" ref="weeklyPregnancyState36" />
+					<property name="nextState" ref="weeklyPregnancyState36" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState37" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 37" />
+	<bean id="weeklyPregnancyState37" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 37" />
 		<property name="timeValue" value="-3" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.37" />
+				<property name="messageKey" value="pregnancy.week.37" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState37" />
-					<property name="nextState" ref="dailyPregnancyState38" />
+					<property name="prevState" ref="weeklyPregnancyState37" />
+					<property name="nextState" ref="weeklyPregnancyState38" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState37" />
-					<property name="nextState" ref="dailyPregnancyState37" />
+					<property name="prevState" ref="weeklyPregnancyState37" />
+					<property name="nextState" ref="weeklyPregnancyState37" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState38" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 38" />
+	<bean id="weeklyPregnancyState38" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 38" />
 		<property name="timeValue" value="-2" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.38" />
+				<property name="messageKey" value="pregnancy.week.38" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState38" />
-					<property name="nextState" ref="dailyPregnancyState39" />
+					<property name="prevState" ref="weeklyPregnancyState38" />
+					<property name="nextState" ref="weeklyPregnancyState39" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState38" />
-					<property name="nextState" ref="dailyPregnancyState38" />
+					<property name="prevState" ref="weeklyPregnancyState38" />
+					<property name="nextState" ref="weeklyPregnancyState38" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState39" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 39" />
+	<bean id="weeklyPregnancyState39" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 39" />
 		<property name="timeValue" value="-1" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.39" />
+				<property name="messageKey" value="pregnancy.week.39" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState39" />
-					<property name="nextState" ref="dailyPregnancyState40" />
+					<property name="prevState" ref="weeklyPregnancyState39" />
+					<property name="nextState" ref="weeklyPregnancyState40" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState39" />
-					<property name="nextState" ref="dailyPregnancyState39" />
+					<property name="prevState" ref="weeklyPregnancyState39" />
+					<property name="nextState" ref="weeklyPregnancyState39" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState40" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="Pregnancy State Day 40" />
+	<bean id="weeklyPregnancyState40" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 40" />
 		<property name="timeValue" value="0" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
-				<property name="messageKey" value="pregnancy.day.40" />
+				<property name="messageKey" value="pregnancy.week.40" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState40" />
-					<property name="nextState" ref="dailyPregnancyState41" />
+					<property name="prevState" ref="weeklyPregnancyState40" />
+					<property name="nextState" ref="weeklyPregnancyState41" />
 				</bean>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState40" />
-					<property name="nextState" ref="dailyPregnancyState40" />
+					<property name="prevState" ref="weeklyPregnancyState40" />
+					<property name="nextState" ref="weeklyPregnancyState40" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="dailyPregnancyState41" class="org.motech.event.impl.MessageProgramStateImpl">
-		<property name="name" value="End Pregnancy State Day 41" />
+	<bean id="weeklyPregnancyState41" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="End Pregnancy State Week 41" />
 		<property name="timeValue" value="1" />
-		<property name="timePeriod" value="day" />
+		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_value" />
 		<property name="command">
 			<bean class="org.motech.event.impl.CompositeCommand">
@@ -1190,14 +1190,14 @@
 				</property>
 			</bean>
 		</property>
-		<property name="program" ref="dailyPregnancyProgram" />
+		<property name="program" ref="weeklyPregnancyProgram" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="dailyPregnancyState41" />
-					<property name="nextState" ref="dailyPregnancyState41" />
+					<property name="prevState" ref="weeklyPregnancyState41" />
+					<property name="nextState" ref="weeklyPregnancyState41" />
 				</bean>
 			</list>
 		</property>

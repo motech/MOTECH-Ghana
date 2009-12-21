@@ -100,16 +100,16 @@
 			VALUES (1,'tetanus.info.1',2),(2,'tetanus.info.2',3),(3,'tetanus.info.3',5),(4,'tetanus.info.4',6),
 			(5,'tetanus.1.prompt',4),(6,'tetanus.1.reminder.1',7),(7,'tetanus.1.reminder.2',8),(8,'tetanus.2.prompt',9),
 			(9,'tetanus.2.reminder.1',10),(10,'tetanus.2.reminder.2',11),
-			(11,'pregnancy.day.1',14),(12,'pregnancy.day.2',15),(13,'pregnancy.day.3',16),(14,'pregnancy.day.4',17),
-			(15,'pregnancy.day.5',18),(16,'pregnancy.day.6',19),(17,'pregnancy.day.7',20),(18,'pregnancy.day.8',21),
-			(19,'pregnancy.day.9',22),(20,'pregnancy.day.10',23),(21,'pregnancy.day.11',24),(22,'pregnancy.day.12',25),
-			(23,'pregnancy.day.13',26),(24,'pregnancy.day.14',27),(25,'pregnancy.day.15',28),(26,'pregnancy.day.16',29),
-			(27,'pregnancy.day.17',30),(28,'pregnancy.day.18',31),(29,'pregnancy.day.19',32),(30,'pregnancy.day.20',33),
-			(31,'pregnancy.day.21',34),(32,'pregnancy.day.22',35),(33,'pregnancy.day.23',36),(34,'pregnancy.day.24',37),
-			(35,'pregnancy.day.25',38),(36,'pregnancy.day.26',39),(37,'pregnancy.day.27',40),(38,'pregnancy.day.28',41),
-			(39,'pregnancy.day.29',42),(40,'pregnancy.day.30',43),(41,'pregnancy.day.31',44),(42,'pregnancy.day.32',45),
-			(43,'pregnancy.day.33',46),(44,'pregnancy.day.34',47),(45,'pregnancy.day.35',48),(46,'pregnancy.day.36',49),
-			(47,'pregnancy.day.37',50),(48,'pregnancy.day.38',51),(49,'pregnancy.day.39',52),(50,'pregnancy.day.40',53);
+			(11,'pregnancy.week.1',14),(12,'pregnancy.week.2',15),(13,'pregnancy.week.3',16),(14,'pregnancy.week.4',17),
+			(15,'pregnancy.week.5',18),(16,'pregnancy.week.6',19),(17,'pregnancy.week.7',20),(18,'pregnancy.week.8',21),
+			(19,'pregnancy.week.9',22),(20,'pregnancy.week.10',23),(21,'pregnancy.week.11',24),(22,'pregnancy.week.12',25),
+			(23,'pregnancy.week.13',26),(24,'pregnancy.week.14',27),(25,'pregnancy.week.15',28),(26,'pregnancy.week.16',29),
+			(27,'pregnancy.week.17',30),(28,'pregnancy.week.18',31),(29,'pregnancy.week.19',32),(30,'pregnancy.week.20',33),
+			(31,'pregnancy.week.21',34),(32,'pregnancy.week.22',35),(33,'pregnancy.week.23',36),(34,'pregnancy.week.24',37),
+			(35,'pregnancy.week.25',38),(36,'pregnancy.week.26',39),(37,'pregnancy.week.27',40),(38,'pregnancy.week.28',41),
+			(39,'pregnancy.week.29',42),(40,'pregnancy.week.30',43),(41,'pregnancy.week.31',44),(42,'pregnancy.week.32',45),
+			(43,'pregnancy.week.33',46),(44,'pregnancy.week.34',47),(45,'pregnancy.week.35',48),(46,'pregnancy.week.36',49),
+			(47,'pregnancy.week.37',50),(48,'pregnancy.week.38',51),(49,'pregnancy.week.39',52),(50,'pregnancy.week.40',53);
 
 			INSERT INTO `motechmodule_messageattribute` (`motechmodule_messageattribute_id`,`attribute_name`,`attribute_property`)
 			VALUES (1,'PatientFirstName','person.givenName'),(2,'DueDate','obs.concept.name=ESTIMATED DATE OF CONFINEMENT');
