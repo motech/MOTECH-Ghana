@@ -12,7 +12,8 @@ public final class MotechConstants {
 	public static final String PERSON_ATTRIBUTE_LANGUAGE = "Language";
 	public static final String PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE = "Primary Phone Type";
 	public static final String PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE = "Secondary Phone Type";
-	public static final String PERSON_ATTRIBUTE_MEDIA_TYPE = "Media Type";
+	public static final String PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL = "Media Type Informational";
+	public static final String PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER = "Media Type Reminder";
 	public static final String PERSON_ATTRIBUTE_DELIVERY_TIME = "Delivery Time";
 	public static final String PERSON_ATTRIBUTE_CHPS_ID = "CHPS ID";
 	public static final String PERSON_ATTRIBUTE_GHS_ANC_REG_NUMBER = "GHS ANC Registration Number ";

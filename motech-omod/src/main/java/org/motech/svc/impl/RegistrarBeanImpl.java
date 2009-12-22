@@ -20,6 +20,7 @@ import org.motech.model.MessageAttribute;
 import org.motech.model.MessageDefinition;
 import org.motech.model.MessageProgramEnrollment;
 import org.motech.model.MessageStatus;
+import org.motech.model.MessageType;
 import org.motech.model.ScheduledMessage;
 import org.motech.model.TroubledPhone;
 import org.motech.openmrs.module.ContextService;
@@ -242,9 +243,13 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		PersonAttributeType languageAttrType = getLanguageAttributeType();
 		patient.addAttribute(new PersonAttribute(languageAttrType, language));
 
-		PersonAttributeType mediaTypeAttrType = getMediaTypeAttributeType();
-		patient.addAttribute(new PersonAttribute(mediaTypeAttrType, mediaType
-				.toString()));
+		PersonAttributeType mediaTypeInfoAttrType = getMediaTypeInformationalAttributeType();
+		patient.addAttribute(new PersonAttribute(mediaTypeInfoAttrType,
+				mediaType.toString()));
+
+		PersonAttributeType mediaTypeReminderAttrType = getMediaTypeReminderAttributeType();
+		patient.addAttribute(new PersonAttribute(mediaTypeReminderAttrType,
+				mediaType.toString()));
 
 		PersonAttributeType deliveryAttrType = getDeliveryTimeAttributeType();
 		patient.addAttribute(new PersonAttribute(deliveryAttrType, deliveryTime
@@ -888,8 +893,13 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE,
 				"A person's secondary phone type (PERSONAL, HOUSEHOLD, or PUBLIC).",
 				String.class.getName(), admin);
-		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE,
-				"A person's preferred phone media type (TEXT or VOICE).",
+		createPersonAttributeType(
+				MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL,
+				"A person's preferred phone media type for info messages (TEXT or VOICE).",
+				String.class.getName(), admin);
+		createPersonAttributeType(
+				MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER,
+				"A person's preferred phone media type for reminder messages (TEXT or VOICE).",
 				String.class.getName(), admin);
 		createPersonAttributeType(
 				MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME,
@@ -1304,6 +1314,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		Long notificationType = message.getSchedule().getMessage()
 				.getPublicId();
+		MessageType messageType = message.getSchedule().getMessage()
+				.getMessageType();
 		Integer recipientId = message.getSchedule().getRecipientId();
 		Person person = personService.getPerson(recipientId);
 
@@ -1324,7 +1336,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 			String messageId = message.getPublicId();
 			String languageCode = getPersonLanguageCode(person);
-			MediaType mediaType = getPersonMediaType(person);
+			MediaType mediaType = getPersonMediaType(person, messageType);
 			NameValuePair[] personalInfo = this.getNameValueContent(message
 					.getSchedule().getMessage(), recipientId);
 
@@ -1566,13 +1578,26 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return null;
 	}
 
-	public MediaType getPersonMediaType(Person person) {
-		PersonAttributeType mediaAttrType = getMediaTypeAttributeType();
+	public MediaType getPersonMediaType(Person person, MessageType messageType) {
+		PersonAttributeType mediaAttrType = null;
+		switch (messageType) {
+		case INFORMATIONAL:
+			mediaAttrType = getMediaTypeInformationalAttributeType();
+			break;
+		case REMINDER:
+			mediaAttrType = getMediaTypeReminderAttributeType();
+			break;
+		default:
+			log.error("Unhandled message type for media type: " + messageType);
+			return null;
+		}
+
 		PersonAttribute mediaTypeAttr = person.getAttribute(mediaAttrType);
 		if (mediaTypeAttr != null && mediaTypeAttr.getValue() != null) {
 			return MediaType.valueOf(mediaTypeAttr.getValue());
 		}
-		log.debug("No media type found for Person id: " + person.getPersonId());
+		log.debug("No " + messageType + " media type found for Person id: "
+				+ person.getPersonId());
 		return null;
 	}
 
@@ -1706,9 +1731,14 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
 	}
 
-	public PersonAttributeType getMediaTypeAttributeType() {
+	public PersonAttributeType getMediaTypeInformationalAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+				MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL);
+	}
+
+	public PersonAttributeType getMediaTypeReminderAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER);
 	}
 
 	public PersonAttributeType getDeliveryTimeAttributeType() {

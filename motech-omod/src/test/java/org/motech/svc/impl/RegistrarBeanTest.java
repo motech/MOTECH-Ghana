@@ -84,7 +84,8 @@ public class RegistrarBeanTest extends TestCase {
 	PersonAttributeType languageAttributeType;
 	PersonAttributeType primaryPhoneTypeAttributeType;
 	PersonAttributeType secondaryPhoneTypeAttributeType;
-	PersonAttributeType mediaTypeAttributeType;
+	PersonAttributeType mediaTypeInformationalAttributeType;
+	PersonAttributeType mediaTypeReminderAttributeType;
 	PersonAttributeType deliveryTimeAttributeType;
 	Role providerRole;
 	EncounterType matVisitType;
@@ -158,9 +159,9 @@ public class RegistrarBeanTest extends TestCase {
 		primaryPhoneTypeAttributeType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE);
 
-		mediaTypeAttributeType = new PersonAttributeType(7);
-		mediaTypeAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+		mediaTypeInformationalAttributeType = new PersonAttributeType(7);
+		mediaTypeInformationalAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL);
 
 		deliveryTimeAttributeType = new PersonAttributeType(8);
 		deliveryTimeAttributeType
@@ -176,6 +177,10 @@ public class RegistrarBeanTest extends TestCase {
 		secondaryPhoneTypeAttributeType = new PersonAttributeType(11);
 		secondaryPhoneTypeAttributeType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE);
+
+		mediaTypeReminderAttributeType = new PersonAttributeType(12);
+		mediaTypeReminderAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER);
 
 		providerRole = new Role(OpenmrsConstants.PROVIDER_ROLE);
 
@@ -439,8 +444,12 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(languageAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE))
-				.andReturn(mediaTypeAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL))
+				.andReturn(mediaTypeInformationalAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER))
+				.andReturn(mediaTypeReminderAttributeType);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME))
@@ -483,7 +492,7 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(language, patient.getAttribute(languageAttributeType)
 				.getValue());
 		assertEquals(mediaType.toString(), patient.getAttribute(
-				mediaTypeAttributeType).getValue());
+				mediaTypeInformationalAttributeType).getValue());
 		assertEquals(deliveryTime.toString(), patient.getAttribute(
 				deliveryTimeAttributeType).getValue());
 		MessageProgramEnrollment enrollment = enrollmentCap.getValue();
