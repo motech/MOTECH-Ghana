@@ -81,7 +81,8 @@ public class RegistrarBeanTest extends TestCase {
 	PersonAttributeType secondaryPhoneAttributeType;
 	PersonAttributeType clinicAttributeType;
 	PersonAttributeType nhisAttributeType;
-	PersonAttributeType languageAttributeType;
+	PersonAttributeType languageTextAttributeType;
+	PersonAttributeType languageVoiceAttributeType;
 	PersonAttributeType primaryPhoneTypeAttributeType;
 	PersonAttributeType secondaryPhoneTypeAttributeType;
 	PersonAttributeType mediaTypeInformationalAttributeType;
@@ -151,9 +152,9 @@ public class RegistrarBeanTest extends TestCase {
 		nhisAttributeType = new PersonAttributeType(4);
 		nhisAttributeType.setName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER);
 
-		languageAttributeType = new PersonAttributeType(5);
-		languageAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
+		languageTextAttributeType = new PersonAttributeType(5);
+		languageTextAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT);
 
 		primaryPhoneTypeAttributeType = new PersonAttributeType(6);
 		primaryPhoneTypeAttributeType
@@ -181,6 +182,10 @@ public class RegistrarBeanTest extends TestCase {
 		mediaTypeReminderAttributeType = new PersonAttributeType(12);
 		mediaTypeReminderAttributeType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER);
+
+		languageVoiceAttributeType = new PersonAttributeType(13);
+		languageVoiceAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE);
 
 		providerRole = new Role(OpenmrsConstants.PROVIDER_ROLE);
 
@@ -440,8 +445,12 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(primaryPhoneTypeAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE))
-				.andReturn(languageAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT))
+				.andReturn(languageTextAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE))
+				.andReturn(languageVoiceAttributeType);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL))
@@ -489,7 +498,7 @@ public class RegistrarBeanTest extends TestCase {
 				.getValue());
 		assertEquals(contactNumberType.toString(), patient.getAttribute(
 				primaryPhoneTypeAttributeType).getValue());
-		assertEquals(language, patient.getAttribute(languageAttributeType)
+		assertEquals(language, patient.getAttribute(languageTextAttributeType)
 				.getValue());
 		assertEquals(mediaType.toString(), patient.getAttribute(
 				mediaTypeInformationalAttributeType).getValue());

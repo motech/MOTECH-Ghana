@@ -9,7 +9,8 @@ public final class MotechConstants {
 	public static final String PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER = "Secondary Phone Number";
 	public static final String PERSON_ATTRIBUTE_NHIS_NUMBER = "NHIS Number";
 	public static final String PERSON_ATTRIBUTE_NHIS_EXP_DATE = "NHIS Expiration Date";
-	public static final String PERSON_ATTRIBUTE_LANGUAGE = "Language";
+	public static final String PERSON_ATTRIBUTE_LANGUAGE_TEXT = "Language Text";
+	public static final String PERSON_ATTRIBUTE_LANGUAGE_VOICE = "Language Voice";
 	public static final String PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE = "Primary Phone Type";
 	public static final String PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE = "Secondary Phone Type";
 	public static final String PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL = "Media Type Informational";

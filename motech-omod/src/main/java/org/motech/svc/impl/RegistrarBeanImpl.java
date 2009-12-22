@@ -240,8 +240,14 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		patient.addAttribute(new PersonAttribute(phoneTypeAttrType,
 				contactNumberType.toString()));
 
-		PersonAttributeType languageAttrType = getLanguageAttributeType();
-		patient.addAttribute(new PersonAttribute(languageAttrType, language));
+		PersonAttributeType languageTextAttrType = getLanguageTextAttributeType();
+		patient
+				.addAttribute(new PersonAttribute(languageTextAttrType,
+						language));
+
+		PersonAttributeType languageVoiceAttrType = getLanguageVoiceAttributeType();
+		patient.addAttribute(new PersonAttribute(languageVoiceAttrType,
+				language));
 
 		PersonAttributeType mediaTypeInfoAttrType = getMediaTypeInformationalAttributeType();
 		patient.addAttribute(new PersonAttribute(mediaTypeInfoAttrType,
@@ -882,9 +888,14 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		createPersonAttributeType(
 				MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE,
 				"A person's NHIS expiration date.", Date.class.getName(), admin);
-		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE,
-				"A person's language preference.", String.class.getName(),
-				admin);
+		createPersonAttributeType(
+				MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT,
+				"A person's language preference for text messages.",
+				String.class.getName(), admin);
+		createPersonAttributeType(
+				MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE,
+				"A person's language preference for voice messages.",
+				String.class.getName(), admin);
 		createPersonAttributeType(
 				MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE,
 				"A person's primary phone type (PERSONAL, HOUSEHOLD, or PUBLIC).",
@@ -1335,8 +1346,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 					+ phoneNumber + ", Notification: " + notificationType);
 
 			String messageId = message.getPublicId();
-			String languageCode = getPersonLanguageCode(person);
 			MediaType mediaType = getPersonMediaType(person, messageType);
+			String languageCode = getPersonLanguageCode(person, mediaType);
 			NameValuePair[] personalInfo = this.getNameValueContent(message
 					.getSchedule().getMessage(), recipientId);
 
@@ -1557,8 +1568,20 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return null;
 	}
 
-	public String getPersonLanguageCode(Person person) {
-		PersonAttributeType languageAttrType = getLanguageAttributeType();
+	public String getPersonLanguageCode(Person person, MediaType mediaType) {
+		PersonAttributeType languageAttrType = null;
+		switch (mediaType) {
+		case TEXT:
+			languageAttrType = getLanguageTextAttributeType();
+			break;
+		case VOICE:
+			languageAttrType = getLanguageVoiceAttributeType();
+			break;
+		default:
+			log.error("Unhandled media type for language: " + mediaType);
+			return null;
+		}
+
 		PersonAttribute languageAttr = person.getAttribute(languageAttrType);
 		if (languageAttr != null) {
 			return languageAttr.getValue();
@@ -1726,9 +1749,14 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE);
 	}
 
-	public PersonAttributeType getLanguageAttributeType() {
+	public PersonAttributeType getLanguageTextAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
+				MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT);
+	}
+
+	public PersonAttributeType getLanguageVoiceAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE);
 	}
 
 	public PersonAttributeType getMediaTypeInformationalAttributeType() {
