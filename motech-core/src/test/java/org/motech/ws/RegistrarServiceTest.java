@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.motech.svc.RegistrarBean;
+import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.server.RegistrarService;
@@ -77,6 +78,24 @@ public class RegistrarServiceTest {
 
 		regWs.registerChild(nurseId, regDate, motherRegNum, childRegNum,
 				childDob, childGender, childFirstName, nhis, nhisExpires);
+
+		verify(registrarBean);
+	}
+
+	@Test
+	public void testEditPatient() {
+		String nurseId = "FGH267", patientRegNum = "ABC123", primaryPhone = "12075557894", secondaryPhone = "12075557895", nhis = "125";
+		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
+		Date nhisExpires = new Date();
+
+		registrarBean.editPatient(nurseId, patientRegNum, primaryPhone,
+				primaryPhoneType, secondaryPhone, secondaryPhoneType, nhis,
+				nhisExpires);
+		replay(registrarBean);
+
+		regWs.editPatient(nurseId, patientRegNum, primaryPhone,
+				primaryPhoneType, secondaryPhone, secondaryPhoneType, nhis,
+				nhisExpires);
 
 		verify(registrarBean);
 	}
