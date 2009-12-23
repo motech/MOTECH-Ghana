@@ -67,6 +67,13 @@ public class RegistrarWebService implements RegistrarService {
 	}
 
 	@WebMethod
+	public void stopPregnancyProgram(@WebParam(name = "chpsId") String chpsId,
+			@WebParam(name = "patientRegNum") String patientRegNum) {
+
+		registrarBean.stopPregnancyProgram(chpsId, patientRegNum);
+	}
+
+	@WebMethod
 	public void registerPatient(
 			@WebParam(name = "nursePhoneNumber") String nursePhoneNumber,
 			@WebParam(name = "serialId") String serialId,

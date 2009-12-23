@@ -696,6 +696,67 @@ public class RegistrarBeanTest extends TestCase {
 				nhisExpirationType).getValue());
 	}
 
+	public void testStopPregnancyProgram() {
+
+		String nurseId = "123ABC", patientRegNum = "456DEF";
+		String pregnancyProgram1 = "Weekly Pregnancy Message Program", pregnancyProgram2 = "Weekly Info Pregnancy Message Program";
+
+		Integer patientId = 2;
+		Patient patient = new Patient(patientId);
+		List<Patient> patients = new ArrayList<Patient>();
+		patients.add(patient);
+
+		Capture<List<PatientIdentifierType>> patientIdTypesCapture = new Capture<List<PatientIdentifierType>>();
+		Capture<MessageProgramEnrollment> enrollmentCapture1 = new Capture<MessageProgramEnrollment>();
+		Capture<MessageProgramEnrollment> enrollmentCapture2 = new Capture<MessageProgramEnrollment>();
+
+		expect(contextService.getPatientService()).andReturn(patientService)
+				.atLeastOnce();
+		expect(contextService.getMotechService()).andReturn(motechService)
+				.atLeastOnce();
+
+		expect(
+				patientService
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
+				.andReturn(ghanaIdType);
+		expect(
+				patientService.getPatients(eq((String) null),
+						eq(patientRegNum), capture(patientIdTypesCapture),
+						eq(true))).andReturn(patients);
+		expect(
+				motechService.getActiveMessageProgramEnrollment(patientId,
+						pregnancyProgram1)).andReturn(
+				new MessageProgramEnrollment());
+		expect(
+				motechService
+						.saveMessageProgramEnrollment(capture(enrollmentCapture1)))
+				.andReturn(new MessageProgramEnrollment());
+		expect(
+				motechService.getActiveMessageProgramEnrollment(patientId,
+						pregnancyProgram2)).andReturn(
+				new MessageProgramEnrollment());
+		expect(
+				motechService
+						.saveMessageProgramEnrollment(capture(enrollmentCapture2)))
+				.andReturn(new MessageProgramEnrollment());
+
+		replay(contextService, patientService, motechService);
+
+		regBean.stopPregnancyProgram(nurseId, patientRegNum);
+
+		verify(contextService, patientService, motechService);
+
+		assertTrue("Expected ghana patient id on getPatients",
+				patientIdTypesCapture.getValue().contains(ghanaIdType));
+
+		MessageProgramEnrollment enrollment1 = enrollmentCapture1.getValue();
+		assertNotNull("Enrollment end date must be set", enrollment1
+				.getEndDate());
+		MessageProgramEnrollment enrollment2 = enrollmentCapture2.getValue();
+		assertNotNull("Enrollment end date must be set", enrollment2
+				.getEndDate());
+	}
+
 	public void testRegisterMaternalVisit() {
 
 		String nPhone = "12078888888", serialId = "478df-389489";

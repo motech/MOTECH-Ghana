@@ -67,6 +67,9 @@ public interface RegistrarBean {
 			String nhis, Date nhisExpires);
 
 	@RunAsAdminUser
+	public void stopPregnancyProgram(String nurseId, String patientRegNum);
+
+	@RunAsAdminUser
 	public void recordMaternalVisit(String nursePhoneNumber, Date date,
 			String serialId, Boolean tetanus, Boolean ipt, Boolean itn,
 			Integer visitNumber, Boolean onARV, Boolean prePMTCT,

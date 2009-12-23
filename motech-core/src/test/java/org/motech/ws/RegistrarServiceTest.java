@@ -1,8 +1,6 @@
 package org.motech.ws;
 
-import static org.easymock.EasyMock.aryEq;
 import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
@@ -21,11 +19,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.motech.svc.RegistrarBean;
-import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.LogType;
-import org.motechproject.ws.MediaType;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationError;
 import org.motechproject.ws.server.ValidationException;
@@ -82,6 +77,19 @@ public class RegistrarServiceTest {
 
 		regWs.registerChild(nurseId, regDate, motherRegNum, childRegNum,
 				childDob, childGender, childFirstName, nhis, nhisExpires);
+
+		verify(registrarBean);
+	}
+
+	@Test
+	public void testStopPregnancyProgram() {
+		String nurseId = "FGH267", patientRegNum = "ABC123";
+
+		registrarBean.stopPregnancyProgram(nurseId, patientRegNum);
+
+		replay(registrarBean);
+
+		regWs.stopPregnancyProgram(nurseId, patientRegNum);
 
 		verify(registrarBean);
 	}

@@ -364,6 +364,26 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		patientService.savePatient(patient);
 	}
 
+	public void stopPregnancyProgram(String nurseId, String patientRegNum) {
+
+		String[] pregnancyPrograms = { "Weekly Pregnancy Message Program",
+				"Weekly Info Pregnancy Message Program" };
+
+		PatientService patientService = contextService.getPatientService();
+
+		PatientIdentifierType patientIdType = getGhanaPatientIdType();
+		List<PatientIdentifierType> patientIdTypes = new ArrayList<PatientIdentifierType>();
+		patientIdTypes.add(patientIdType);
+
+		Patient patient = patientService.getPatients(null, patientRegNum,
+				patientIdTypes, true).get(0);
+		Integer patientId = patient.getPatientId();
+
+		for (String programName : pregnancyPrograms) {
+			removeMessageProgramEnrollment(patientId, programName);
+		}
+	}
+
 	public void recordMaternalVisit(String nursePhoneNumber, Date date,
 			String serialId, Boolean tetanus, Boolean ipt, Boolean itn,
 			Integer visitNumber, Boolean onARV, Boolean prePMTCT,
