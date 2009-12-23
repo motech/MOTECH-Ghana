@@ -51,6 +51,22 @@ public class RegistrarWebService implements RegistrarService {
 	}
 
 	@WebMethod
+	public void editPatient(
+			@WebParam(name = "chpsId") String chpsId,
+			@WebParam(name = "patientRegNum") String patientRegNum,
+			@WebParam(name = "primaryPhone") String primaryPhone,
+			@WebParam(name = "primaryPhoneType") ContactNumberType primaryPhoneType,
+			@WebParam(name = "secondaryPhone") String secondaryPhone,
+			@WebParam(name = "secondaryPhoneType") ContactNumberType secondaryPhoneType,
+			@WebParam(name = "nhis") String nhis,
+			@WebParam(name = "nhisExpires") Date nhisExpires) {
+
+		registrarBean.editPatient(chpsId, patientRegNum, primaryPhone,
+				primaryPhoneType, secondaryPhone, secondaryPhoneType, nhis,
+				nhisExpires);
+	}
+
+	@WebMethod
 	public void registerPatient(
 			@WebParam(name = "nursePhoneNumber") String nursePhoneNumber,
 			@WebParam(name = "serialId") String serialId,

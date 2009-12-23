@@ -312,6 +312,58 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	public void editPatient(String nurseId, String patientRegNum,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			String nhis, Date nhisExpires) {
+
+		PatientService patientService = contextService.getPatientService();
+
+		PatientIdentifierType patientIdType = getGhanaPatientIdType();
+		List<PatientIdentifierType> patientIdTypes = new ArrayList<PatientIdentifierType>();
+		patientIdTypes.add(patientIdType);
+
+		Patient patient = patientService.getPatients(null, patientRegNum,
+				patientIdTypes, true).get(0);
+
+		if (primaryPhone != null) {
+			PersonAttributeType primaryPhoneAttrType = getPrimaryPhoneNumberAttributeType();
+			patient.addAttribute(new PersonAttribute(primaryPhoneAttrType,
+					primaryPhone));
+		}
+
+		if (primaryPhoneType != null) {
+			PersonAttributeType primaryPhoneTypeAttrType = getPrimaryPhoneTypeAttributeType();
+			patient.addAttribute(new PersonAttribute(primaryPhoneTypeAttrType,
+					primaryPhoneType.toString()));
+		}
+
+		if (secondaryPhone != null) {
+			PersonAttributeType secondaryPhoneAttrType = getSecondaryPhoneNumberAttributeType();
+			patient.addAttribute(new PersonAttribute(secondaryPhoneAttrType,
+					secondaryPhone));
+		}
+
+		if (secondaryPhoneType != null) {
+			PersonAttributeType secondaryPhoneTypeAttrType = getSecondaryPhoneTypeAttributeType();
+			patient.addAttribute(new PersonAttribute(
+					secondaryPhoneTypeAttrType, secondaryPhoneType.toString()));
+		}
+
+		if (nhis != null) {
+			PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
+			patient.addAttribute(new PersonAttribute(nhisAttrType, nhis));
+		}
+
+		if (nhisExpires != null) {
+			PersonAttributeType nhisExpDateAttrType = getNHISExpirationDateAttributeType();
+			patient.addAttribute(new PersonAttribute(nhisExpDateAttrType,
+					nhisExpires.toString()));
+		}
+
+		patientService.savePatient(patient);
+	}
+
 	public void recordMaternalVisit(String nursePhoneNumber, Date date,
 			String serialId, Boolean tetanus, Boolean ipt, Boolean itn,
 			Integer visitNumber, Boolean onARV, Boolean prePMTCT,

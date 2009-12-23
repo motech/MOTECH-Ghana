@@ -615,6 +615,87 @@ public class RegistrarBeanTest extends TestCase {
 				.getEndDate());
 	}
 
+	public void testEditPatient() {
+
+		Integer patientId = 1;
+		String nurseId = "123", regNum = "dbvhjdg4784", pPhone = "12075551212", sPhone = "120773733373", nhis = "28";
+		Date nhisExpires = new Date();
+		ContactNumberType pPhoneType = ContactNumberType.PERSONAL;
+		ContactNumberType sPhoneType = ContactNumberType.HOUSEHOLD;
+
+		Patient patient = new Patient(patientId);
+		List<Patient> patients = new ArrayList<Patient>();
+		patients.add(patient);
+
+		Capture<List<PatientIdentifierType>> patientIdTypesCapture = new Capture<List<PatientIdentifierType>>();
+		Capture<Patient> patientCap = new Capture<Patient>();
+
+		expect(contextService.getPatientService()).andReturn(patientService)
+				.atLeastOnce();
+		expect(contextService.getPersonService()).andReturn(personService)
+				.atLeastOnce();
+
+		expect(
+				patientService
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
+				.andReturn(ghanaIdType);
+		expect(
+				patientService.getPatients(eq((String) null), eq(regNum),
+						capture(patientIdTypesCapture), eq(true))).andReturn(
+				patients);
+
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
+				.andReturn(primaryPhoneAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE))
+				.andReturn(primaryPhoneTypeAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER))
+				.andReturn(secondaryPhoneAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE))
+				.andReturn(secondaryPhoneTypeAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER))
+				.andReturn(nhisAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE))
+				.andReturn(nhisExpirationType);
+		expect(patientService.savePatient(capture(patientCap))).andReturn(
+				new Patient(patientId));
+
+		replay(contextService, patientService, personService);
+
+		regBean.editPatient(nurseId, regNum, pPhone, pPhoneType, sPhone,
+				sPhoneType, nhis, nhisExpires);
+
+		verify(contextService, patientService, personService);
+
+		assertTrue("Expected ghana patient id on getPatients",
+				patientIdTypesCapture.getValue().contains(ghanaIdType));
+
+		Patient capturedPatient = patientCap.getValue();
+		assertEquals(pPhone, capturedPatient.getAttribute(
+				primaryPhoneAttributeType).getValue());
+		assertEquals(pPhoneType.toString(), capturedPatient.getAttribute(
+				primaryPhoneTypeAttributeType).getValue());
+		assertEquals(sPhone, capturedPatient.getAttribute(
+				secondaryPhoneAttributeType).getValue());
+		assertEquals(sPhoneType.toString(), capturedPatient.getAttribute(
+				secondaryPhoneTypeAttributeType).getValue());
+		assertEquals(nhis, capturedPatient.getAttribute(nhisAttributeType)
+				.getValue());
+		assertEquals(nhisExpires.toString(), capturedPatient.getAttribute(
+				nhisExpirationType).getValue());
+	}
+
 	public void testRegisterMaternalVisit() {
 
 		String nPhone = "12078888888", serialId = "478df-389489";

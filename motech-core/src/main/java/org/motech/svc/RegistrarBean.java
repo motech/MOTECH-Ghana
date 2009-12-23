@@ -61,6 +61,12 @@ public interface RegistrarBean {
 			String[] messagePrograms);
 
 	@RunAsAdminUser
+	public void editPatient(String nurseId, String patientRegNum,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			String nhis, Date nhisExpires);
+
+	@RunAsAdminUser
 	public void recordMaternalVisit(String nursePhoneNumber, Date date,
 			String serialId, Boolean tetanus, Boolean ipt, Boolean itn,
 			Integer visitNumber, Boolean onARV, Boolean prePMTCT,
