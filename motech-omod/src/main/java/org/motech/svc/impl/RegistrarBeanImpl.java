@@ -53,6 +53,7 @@ import org.openmrs.Person;
 import org.openmrs.PersonAddress;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
+import org.openmrs.PersonName;
 import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.ConceptService;
@@ -93,6 +94,49 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	public MessageProgram getMessageProgram(String programName) {
 		return messagePrograms.get(programName);
+	}
+
+	public void registerChild(String nurseId, Date regDate,
+			String motherRegNum, String childRegNum, Date childDob,
+			Gender childGender, String childFirstName, String nhis,
+			Date nhisExpires) {
+
+		PatientService patientService = contextService.getPatientService();
+		UserService userService = contextService.getUserService();
+		MotechService motechService = contextService.getMotechService();
+
+		List<Integer> nurseIds = motechService.getUserIdsByPersonAttribute(
+				getNurseIdAttributeType(), nurseId);
+
+		User nurseUser = userService.getUser(nurseIds.get(0));
+
+		PatientIdentifierType patientIdType = getGhanaPatientIdType();
+		List<PatientIdentifierType> patientIdTypes = new ArrayList<PatientIdentifierType>();
+		patientIdTypes.add(patientIdType);
+
+		Patient mother = patientService.getPatients(null, motherRegNum,
+				patientIdTypes, true).get(0);
+
+		Patient child = new Patient();
+		PatientIdentifier childIdObj = new PatientIdentifier();
+		childIdObj.setIdentifier(childRegNum);
+		childIdObj.setIdentifierType(patientIdType);
+		child.addIdentifier(childIdObj);
+
+		child.setDateCreated(regDate);
+		child.setCreator(nurseUser);
+		child.setBirthdate(childDob);
+		child.setGender(childGender.toString());
+		child.addName(new PersonName(childFirstName, null, mother
+				.getFamilyName()));
+		child.addAddress(mother.getPersonAddress());
+		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
+		child.addAttribute(new PersonAttribute(nhisAttrType, nhis));
+		PersonAttributeType nhisExprAttrType = getNHISExpirationDateAttributeType();
+		child.addAttribute(new PersonAttribute(nhisExprAttrType, nhisExpires
+				.toString()));
+
+		patientService.savePatient(child);
 	}
 
 	public void registerClinic(String name, Integer parentId) {

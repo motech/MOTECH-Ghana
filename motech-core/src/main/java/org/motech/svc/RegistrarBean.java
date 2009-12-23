@@ -30,6 +30,12 @@ import org.openmrs.util.OpenmrsConstants;
 public interface RegistrarBean {
 
 	@RunAsAdminUser
+	public void registerChild(String nurseId, Date regDate,
+			String motherRegNum, String childRegNum, Date childDob,
+			Gender childGender, String childFirstName, String nhis,
+			Date nhisExpires);
+
+	@RunAsAdminUser
 	public void registerClinic(String name, Integer parentId);
 
 	@RunAsAdminUser

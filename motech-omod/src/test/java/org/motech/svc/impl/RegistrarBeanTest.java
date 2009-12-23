@@ -46,6 +46,7 @@ import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.Person;
+import org.openmrs.PersonAddress;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.PersonName;
@@ -88,6 +89,7 @@ public class RegistrarBeanTest extends TestCase {
 	PersonAttributeType mediaTypeInformationalAttributeType;
 	PersonAttributeType mediaTypeReminderAttributeType;
 	PersonAttributeType deliveryTimeAttributeType;
+	PersonAttributeType nhisExpirationType;
 	Role providerRole;
 	EncounterType matVisitType;
 	ConceptName immunizationConceptNameObj;
@@ -179,11 +181,15 @@ public class RegistrarBeanTest extends TestCase {
 		secondaryPhoneTypeAttributeType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE);
 
-		mediaTypeReminderAttributeType = new PersonAttributeType(12);
+		nhisExpirationType = new PersonAttributeType(12);
+		nhisExpirationType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE);
+
+		mediaTypeReminderAttributeType = new PersonAttributeType(13);
 		mediaTypeReminderAttributeType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER);
 
-		languageVoiceAttributeType = new PersonAttributeType(13);
+		languageVoiceAttributeType = new PersonAttributeType(14);
 		languageVoiceAttributeType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE);
 
@@ -285,6 +291,102 @@ public class RegistrarBeanTest extends TestCase {
 		obsService = null;
 		conceptService = null;
 		motechService = null;
+	}
+
+	public void testRegisterChild() {
+		String nurseId = "NURSE1234";
+		Date regDate = new Date(3489), childDob = new Date(874984), nhisExpires = new Date(
+				3784784);
+		String motherId = "PATIENT1234";
+		String childId = "CHILD3783";
+		Gender childGender = Gender.MALE;
+		String childFirstName = "Harold";
+		String nhis = "NHISNUMBER";
+		Integer nurseInternalId = 1;
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(contextService.getPersonService()).andReturn(personService)
+				.atLeastOnce();
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_CHPS_ID))
+				.andReturn(nurseIdAttributeType);
+		List<Integer> nurseIdList = new ArrayList<Integer>();
+		nurseIdList.add(nurseInternalId);
+		expect(
+				motechService.getUserIdsByPersonAttribute(nurseIdAttributeType,
+						nurseId)).andReturn(nurseIdList);
+		expect(contextService.getUserService()).andReturn(userService);
+		User nurseUser = new User(nurseInternalId);
+		expect(userService.getUser(nurseInternalId)).andReturn(nurseUser);
+		expect(contextService.getPatientService()).andReturn(patientService)
+				.atLeastOnce();
+		expect(
+				patientService
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
+				.andReturn(ghanaIdType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER))
+				.andReturn(nhisAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE))
+				.andReturn(nhisExpirationType);
+
+		Capture<List<PatientIdentifierType>> patientIdTypesCapture = new Capture<List<PatientIdentifierType>>();
+
+		Patient mother = new Patient();
+
+		PatientIdentifier motherIdObj = new PatientIdentifier();
+		motherIdObj.setIdentifierType(ghanaIdType);
+		motherIdObj.setIdentifier(motherId);
+		mother.addIdentifier(motherIdObj);
+
+		PersonAddress testAddress = new PersonAddress();
+		testAddress.setRegion("AREGION");
+		testAddress.setCountyDistrict("ADISTRICT");
+		mother.addAddress(testAddress);
+
+		List<Patient> mothers = new ArrayList<Patient>();
+		mothers.add(mother);
+		expect(
+				patientService.getPatients(eq((String) null), eq(motherId),
+						capture(patientIdTypesCapture), eq(true))).andReturn(
+				mothers);
+
+		Capture<Patient> childCapture = new Capture<Patient>();
+		expect(patientService.savePatient(capture(childCapture))).andReturn(
+				new Patient());
+
+		replay(contextService, motechService, personService, patientService,
+				userService);
+
+		regBean.registerChild(nurseId, regDate, motherId, childId, childDob,
+				childGender, childFirstName, nhis, nhisExpires);
+
+		verify(contextService, motechService, personService, patientService,
+				userService);
+
+		assertTrue("expected search on ghana patient id", patientIdTypesCapture
+				.getValue().contains(ghanaIdType));
+		Patient child = childCapture.getValue();
+		assertEquals(childId, child.getPatientIdentifier(ghanaIdType)
+				.getIdentifier());
+		assertEquals(testAddress.getRegion(), child.getPersonAddress()
+				.getRegion());
+		assertEquals(testAddress.getCountyDistrict(), child.getPersonAddress()
+				.getCountyDistrict());
+		assertEquals(childDob, child.getBirthdate());
+		assertEquals(childFirstName, child.getGivenName());
+		assertEquals(childGender.toString(), child.getGender());
+		PersonAttribute nhisAttr = child.getAttribute(nhisAttributeType);
+		assertEquals(nhis, nhisAttr.getValue());
+		assertEquals(nhisExpires.toString(), child.getAttribute(
+				nhisExpirationType).getHydratedObject());
+		// FIXME: Properly use registration date when registering a child.
+		assertEquals(regDate, child.getDateCreated());
+		assertEquals(nurseUser, child.getCreator());
 	}
 
 	public void testRegisterClinic() {

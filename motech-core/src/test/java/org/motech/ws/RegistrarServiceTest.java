@@ -69,65 +69,19 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRegisterPatient() {
-		String nPhone = "12075551212", serialId = "387946894", name = "Francis", community = "somepeople", location = "somewhere", pPhone = "120755512525";
-		Date dob = new Date();
-		Gender gender = Gender.FEMALE;
-		Integer nhis = 3;
-		ContactNumberType phoneType = ContactNumberType.PERSONAL;
-		String language = "English";
-		MediaType mediaType = MediaType.TEXT;
-		DeliveryTime deliveryTime = DeliveryTime.ANYTIME;
-		String[] programs = new String[2];
-		programs[0] = "Example MessageProgram 1";
-		programs[1] = "Example MessageProgram 2";
+	public void testRegisterChild() {
+		Date regDate = new Date(), childDob = new Date(), nhisExpires = new Date();
+		String nurseId = "FGH267", motherRegNum = "ABC123", childRegNum = "DEF456", childFirstName = "Sarah", nhis = "14567";
+		Gender childGender = Gender.FEMALE;
 
-		registrarBean.registerPatient(eq(nPhone), eq(serialId), eq(name),
-				eq(community), eq(location), eq(dob), eq(gender), eq(nhis),
-				eq(pPhone), eq(phoneType), eq(language), eq(mediaType),
-				eq(deliveryTime), aryEq(programs));
+		registrarBean.registerChild(nurseId, regDate, motherRegNum,
+				childRegNum, childDob, childGender, childFirstName, nhis,
+				nhisExpires);
 
 		replay(registrarBean);
 
-		regWs.registerPatient(nPhone, serialId, name, community, location, dob,
-				gender, nhis, pPhone, phoneType, language, mediaType,
-				deliveryTime, programs);
-
-		verify(registrarBean);
-	}
-
-	@Test
-	public void testRegisterPregnancy() {
-		String nPhone = "12075551212", serialId = "387946894";
-		Date date = new Date(), dueDate = new Date();
-		Integer parity = 3;
-		Double hemo = 2.0;
-
-		registrarBean.registerPregnancy(nPhone, date, serialId, dueDate,
-				parity, hemo);
-
-		replay(registrarBean);
-
-		regWs.registerPregnancy(nPhone, date, serialId, dueDate, parity, hemo);
-
-		verify(registrarBean);
-	}
-
-	@Test
-	public void testRecordMaternalVisit() {
-		String nPhone = "12077778383", serialId = "ghj347956y";
-		Date date = new Date();
-		Boolean tetanus = true, ipt = false, itn = true, onARV = false, prePMTCT = true, testPMTCT = false, postPMTCT = true;
-		Integer visitNum = 3;
-		Double hemo = 378.34;
-
-		registrarBean.recordMaternalVisit(nPhone, date, serialId, tetanus, ipt,
-				itn, visitNum, onARV, prePMTCT, testPMTCT, postPMTCT, hemo);
-
-		replay(registrarBean);
-
-		regWs.recordMaternalVisit(nPhone, date, serialId, tetanus, ipt, itn,
-				visitNum, onARV, prePMTCT, testPMTCT, postPMTCT, hemo);
+		regWs.registerChild(nurseId, regDate, motherRegNum, childRegNum,
+				childDob, childGender, childFirstName, nhis, nhisExpires);
 
 		verify(registrarBean);
 	}
