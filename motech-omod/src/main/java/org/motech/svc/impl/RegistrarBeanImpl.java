@@ -23,6 +23,7 @@ import org.motech.model.MessageStatus;
 import org.motech.model.MessageType;
 import org.motech.model.ScheduledMessage;
 import org.motech.model.TroubledPhone;
+import org.motech.model.WhoRegistered;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.openmrs.module.tasks.MessageProgramUpdateTask;
@@ -122,6 +123,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		PersonAttributeType nhisExprAttrType = getNHISExpirationDateAttributeType();
 		child.addAttribute(new PersonAttribute(nhisExprAttrType, nhisExpires
 				.toString()));
+
+		PersonAttributeType whoRegisteredAttrType = this
+				.getWhoRegisteredAttributeType();
+		child.addAttribute(new PersonAttribute(whoRegisteredAttrType,
+				WhoRegistered.CHPS_STAFF.name()));
 
 		patientService.savePatient(child);
 	}

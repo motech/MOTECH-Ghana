@@ -26,6 +26,7 @@ import org.motech.model.MessageProgramEnrollment;
 import org.motech.model.MessageStatus;
 import org.motech.model.ScheduledMessage;
 import org.motech.model.TroubledPhone;
+import org.motech.model.WhoRegistered;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.svc.RegistrarBean;
@@ -90,6 +91,7 @@ public class RegistrarBeanTest extends TestCase {
 	PersonAttributeType mediaTypeReminderAttributeType;
 	PersonAttributeType deliveryTimeAttributeType;
 	PersonAttributeType nhisExpirationType;
+	PersonAttributeType whoRegisteredType;
 	Role providerRole;
 	EncounterType matVisitType;
 	ConceptName immunizationConceptNameObj;
@@ -192,6 +194,10 @@ public class RegistrarBeanTest extends TestCase {
 		languageVoiceAttributeType = new PersonAttributeType(14);
 		languageVoiceAttributeType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE);
+
+		whoRegisteredType = new PersonAttributeType(15);
+		whoRegisteredType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED);
 
 		providerRole = new Role(OpenmrsConstants.PROVIDER_ROLE);
 
@@ -323,6 +329,10 @@ public class RegistrarBeanTest extends TestCase {
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE))
 				.andReturn(nhisExpirationType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED))
+				.andReturn(whoRegisteredType);
 
 		Patient mother = new Patient();
 
@@ -361,6 +371,8 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(nhis, nhisAttr.getValue());
 		assertEquals(nhisExpires.toString(), child.getAttribute(
 				nhisExpirationType).getHydratedObject());
+		assertEquals(WhoRegistered.CHPS_STAFF, WhoRegistered.valueOf(child
+				.getAttribute(whoRegisteredType).getValue()));
 		// FIXME: Properly use registration date when registering a child.
 		assertEquals(regDate, child.getDateCreated());
 		assertEquals(nurseUser, child.getCreator());
