@@ -17,6 +17,8 @@ import org.motechproject.ws.MediaType;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationErrors;
 import org.motechproject.ws.server.ValidationException;
+import org.openmrs.Patient;
+import org.openmrs.User;
 
 /**
  * This is the service enpoint implementation for the major motech server web
@@ -44,9 +46,32 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "childGender") Gender childGender,
 			@WebParam(name = "childFirstName") String childFirstName,
 			@WebParam(name = "nhis") String nhis,
-			@WebParam(name = "nhisExpires") Date nhisExpires) {
+			@WebParam(name = "nhisExpires") Date nhisExpires)
+			throws ValidationException {
 
-		registrarBean.registerChild(chpsId, regDate, motherRegNum, childRegNum,
+		ValidationErrors errors = new ValidationErrors();
+
+		User nurse = registrarBean.getNurseByCHPSId(chpsId);
+		if (nurse == null) {
+			errors.add(1, "chpsId");
+		}
+
+		Patient mother = registrarBean.getPatientBySerial(motherRegNum);
+		if (mother == null) {
+			errors.add(1, "motherRegNum");
+		}
+
+		Patient child = registrarBean.getPatientBySerial(childRegNum);
+		if (child != null) {
+			errors.add(2, "childRegNum");
+		}
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException("Errors in Register Child request",
+					errors);
+		}
+
+		registrarBean.registerChild(nurse, regDate, mother, childRegNum,
 				childDob, childGender, childFirstName, nhis, nhisExpires);
 	}
 
@@ -59,18 +84,54 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "secondaryPhone") String secondaryPhone,
 			@WebParam(name = "secondaryPhoneType") ContactNumberType secondaryPhoneType,
 			@WebParam(name = "nhis") String nhis,
-			@WebParam(name = "nhisExpires") Date nhisExpires) {
+			@WebParam(name = "nhisExpires") Date nhisExpires)
+			throws ValidationException {
 
-		registrarBean.editPatient(chpsId, patientRegNum, primaryPhone,
+		ValidationErrors errors = new ValidationErrors();
+
+		User nurse = registrarBean.getNurseByCHPSId(chpsId);
+		if (nurse == null) {
+			errors.add(1, "chpsId");
+		}
+
+		Patient patient = registrarBean.getPatientBySerial(patientRegNum);
+		if (patient == null) {
+			errors.add(1, "patientRegNum");
+		}
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException("Errors in Edit Patient request",
+					errors);
+		}
+
+		registrarBean.editPatient(nurse, patient, primaryPhone,
 				primaryPhoneType, secondaryPhone, secondaryPhoneType, nhis,
 				nhisExpires);
 	}
 
 	@WebMethod
 	public void stopPregnancyProgram(@WebParam(name = "chpsId") String chpsId,
-			@WebParam(name = "patientRegNum") String patientRegNum) {
+			@WebParam(name = "patientRegNum") String patientRegNum)
+			throws ValidationException {
 
-		registrarBean.stopPregnancyProgram(chpsId, patientRegNum);
+		ValidationErrors errors = new ValidationErrors();
+
+		User nurse = registrarBean.getNurseByCHPSId(chpsId);
+		if (nurse == null) {
+			errors.add(1, "chpsId");
+		}
+
+		Patient patient = registrarBean.getPatientBySerial(patientRegNum);
+		if (patient == null) {
+			errors.add(1, "patientRegNum");
+		}
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in Stop Pregnancy Program request", errors);
+		}
+
+		registrarBean.stopPregnancyProgram(nurse, patient);
 	}
 
 	@WebMethod
@@ -142,7 +203,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		if (clinicId == null) {
 			ValidationErrors errors = new ValidationErrors();
-			errors.add(1, "clinicId");
+			errors.add(3, "clinicId");
 			throw new ValidationException("Errors in General Visit request",
 					errors);
 		}

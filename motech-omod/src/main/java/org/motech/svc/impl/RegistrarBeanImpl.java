@@ -96,26 +96,13 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return messagePrograms.get(programName);
 	}
 
-	public void registerChild(String nurseId, Date regDate,
-			String motherRegNum, String childRegNum, Date childDob,
-			Gender childGender, String childFirstName, String nhis,
-			Date nhisExpires) {
+	public void registerChild(User nurse, Date regDate, Patient mother,
+			String childRegNum, Date childDob, Gender childGender,
+			String childFirstName, String nhis, Date nhisExpires) {
 
 		PatientService patientService = contextService.getPatientService();
-		UserService userService = contextService.getUserService();
-		MotechService motechService = contextService.getMotechService();
-
-		List<Integer> nurseIds = motechService.getUserIdsByPersonAttribute(
-				getNurseIdAttributeType(), nurseId);
-
-		User nurseUser = userService.getUser(nurseIds.get(0));
 
 		PatientIdentifierType patientIdType = getGhanaPatientIdType();
-		List<PatientIdentifierType> patientIdTypes = new ArrayList<PatientIdentifierType>();
-		patientIdTypes.add(patientIdType);
-
-		Patient mother = patientService.getPatients(null, motherRegNum,
-				patientIdTypes, true).get(0);
 
 		Patient child = new Patient();
 		PatientIdentifier childIdObj = new PatientIdentifier();
@@ -124,7 +111,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		child.addIdentifier(childIdObj);
 
 		child.setDateCreated(regDate);
-		child.setCreator(nurseUser);
+		child.setCreator(nurse);
 		child.setBirthdate(childDob);
 		child.setGender(childGender.toString());
 		child.addName(new PersonName(childFirstName, null, mother
@@ -312,19 +299,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
-	public void editPatient(String nurseId, String patientRegNum,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			String nhis, Date nhisExpires) {
+	public void editPatient(User nurse, Patient patient, String primaryPhone,
+			ContactNumberType primaryPhoneType, String secondaryPhone,
+			ContactNumberType secondaryPhoneType, String nhis, Date nhisExpires) {
 
 		PatientService patientService = contextService.getPatientService();
-
-		PatientIdentifierType patientIdType = getGhanaPatientIdType();
-		List<PatientIdentifierType> patientIdTypes = new ArrayList<PatientIdentifierType>();
-		patientIdTypes.add(patientIdType);
-
-		Patient patient = patientService.getPatients(null, patientRegNum,
-				patientIdTypes, true).get(0);
 
 		if (primaryPhone != null) {
 			PersonAttributeType primaryPhoneAttrType = getPrimaryPhoneNumberAttributeType();
@@ -364,19 +343,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		patientService.savePatient(patient);
 	}
 
-	public void stopPregnancyProgram(String nurseId, String patientRegNum) {
+	public void stopPregnancyProgram(User nurse, Patient patient) {
 
 		String[] pregnancyPrograms = { "Weekly Pregnancy Message Program",
 				"Weekly Info Pregnancy Message Program" };
 
-		PatientService patientService = contextService.getPatientService();
-
-		PatientIdentifierType patientIdType = getGhanaPatientIdType();
-		List<PatientIdentifierType> patientIdTypes = new ArrayList<PatientIdentifierType>();
-		patientIdTypes.add(patientIdType);
-
-		Patient patient = patientService.getPatients(null, patientRegNum,
-				patientIdTypes, true).get(0);
 		Integer patientId = patient.getPatientId();
 
 		for (String programName : pregnancyPrograms) {
@@ -1656,6 +1627,26 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			}
 			return patients.get(0);
 		}
+		return null;
+	}
+
+	public User getNurseByCHPSId(String chpsId) {
+		MotechService motechService = contextService.getMotechService();
+		UserService userService = contextService.getUserService();
+
+		PersonAttributeType chpsAttributeType = getNurseIdAttributeType();
+		List<Integer> matchingUsers = motechService
+				.getUserIdsByPersonAttribute(chpsAttributeType, chpsId);
+		if (matchingUsers.size() > 0) {
+			if (matchingUsers.size() > 1) {
+				log.warn("Multiple Nurses found for CHPS ID: " + chpsId);
+			}
+			// If more than one user matches chps ID, first user in list is
+			// returned
+			Integer userId = matchingUsers.get(0);
+			return userService.getUser(userId);
+		}
+		log.warn("No Nurse found for CHPS ID: " + chpsId);
 		return null;
 	}
 

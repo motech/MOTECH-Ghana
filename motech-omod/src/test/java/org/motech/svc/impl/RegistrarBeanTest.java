@@ -294,7 +294,7 @@ public class RegistrarBeanTest extends TestCase {
 	}
 
 	public void testRegisterChild() {
-		String nurseId = "NURSE1234";
+
 		Date regDate = new Date(3489), childDob = new Date(874984), nhisExpires = new Date(
 				3784784);
 		String motherId = "PATIENT1234";
@@ -304,21 +304,11 @@ public class RegistrarBeanTest extends TestCase {
 		String nhis = "NHISNUMBER";
 		Integer nurseInternalId = 1;
 
-		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_CHPS_ID))
-				.andReturn(nurseIdAttributeType);
-		List<Integer> nurseIdList = new ArrayList<Integer>();
-		nurseIdList.add(nurseInternalId);
-		expect(
-				motechService.getUserIdsByPersonAttribute(nurseIdAttributeType,
-						nurseId)).andReturn(nurseIdList);
-		expect(contextService.getUserService()).andReturn(userService);
+
 		User nurseUser = new User(nurseInternalId);
-		expect(userService.getUser(nurseInternalId)).andReturn(nurseUser);
+
 		expect(contextService.getPatientService()).andReturn(patientService)
 				.atLeastOnce();
 		expect(
@@ -334,8 +324,6 @@ public class RegistrarBeanTest extends TestCase {
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE))
 				.andReturn(nhisExpirationType);
 
-		Capture<List<PatientIdentifierType>> patientIdTypesCapture = new Capture<List<PatientIdentifierType>>();
-
 		Patient mother = new Patient();
 
 		PatientIdentifier motherIdObj = new PatientIdentifier();
@@ -348,28 +336,17 @@ public class RegistrarBeanTest extends TestCase {
 		testAddress.setCountyDistrict("ADISTRICT");
 		mother.addAddress(testAddress);
 
-		List<Patient> mothers = new ArrayList<Patient>();
-		mothers.add(mother);
-		expect(
-				patientService.getPatients(eq((String) null), eq(motherId),
-						capture(patientIdTypesCapture), eq(true))).andReturn(
-				mothers);
-
 		Capture<Patient> childCapture = new Capture<Patient>();
 		expect(patientService.savePatient(capture(childCapture))).andReturn(
 				new Patient());
 
-		replay(contextService, motechService, personService, patientService,
-				userService);
+		replay(contextService, personService, patientService);
 
-		regBean.registerChild(nurseId, regDate, motherId, childId, childDob,
+		regBean.registerChild(nurseUser, regDate, mother, childId, childDob,
 				childGender, childFirstName, nhis, nhisExpires);
 
-		verify(contextService, motechService, personService, patientService,
-				userService);
+		verify(contextService, personService, patientService);
 
-		assertTrue("expected search on ghana patient id", patientIdTypesCapture
-				.getValue().contains(ghanaIdType));
 		Patient child = childCapture.getValue();
 		assertEquals(childId, child.getPatientIdentifier(ghanaIdType)
 				.getIdentifier());
@@ -618,31 +595,20 @@ public class RegistrarBeanTest extends TestCase {
 	public void testEditPatient() {
 
 		Integer patientId = 1;
-		String nurseId = "123", regNum = "dbvhjdg4784", pPhone = "12075551212", sPhone = "120773733373", nhis = "28";
+		String pPhone = "12075551212", sPhone = "120773733373", nhis = "28";
 		Date nhisExpires = new Date();
 		ContactNumberType pPhoneType = ContactNumberType.PERSONAL;
 		ContactNumberType sPhoneType = ContactNumberType.HOUSEHOLD;
 
+		User nurse = new User(2);
 		Patient patient = new Patient(patientId);
-		List<Patient> patients = new ArrayList<Patient>();
-		patients.add(patient);
 
-		Capture<List<PatientIdentifierType>> patientIdTypesCapture = new Capture<List<PatientIdentifierType>>();
 		Capture<Patient> patientCap = new Capture<Patient>();
 
 		expect(contextService.getPatientService()).andReturn(patientService)
 				.atLeastOnce();
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
-
-		expect(
-				patientService
-						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
-				.andReturn(ghanaIdType);
-		expect(
-				patientService.getPatients(eq((String) null), eq(regNum),
-						capture(patientIdTypesCapture), eq(true))).andReturn(
-				patients);
 
 		expect(
 				personService
@@ -673,13 +639,10 @@ public class RegistrarBeanTest extends TestCase {
 
 		replay(contextService, patientService, personService);
 
-		regBean.editPatient(nurseId, regNum, pPhone, pPhoneType, sPhone,
+		regBean.editPatient(nurse, patient, pPhone, pPhoneType, sPhone,
 				sPhoneType, nhis, nhisExpires);
 
 		verify(contextService, patientService, personService);
-
-		assertTrue("Expected ghana patient id on getPatients",
-				patientIdTypesCapture.getValue().contains(ghanaIdType));
 
 		Patient capturedPatient = patientCap.getValue();
 		assertEquals(pPhone, capturedPatient.getAttribute(
@@ -698,31 +661,18 @@ public class RegistrarBeanTest extends TestCase {
 
 	public void testStopPregnancyProgram() {
 
-		String nurseId = "123ABC", patientRegNum = "456DEF";
 		String pregnancyProgram1 = "Weekly Pregnancy Message Program", pregnancyProgram2 = "Weekly Info Pregnancy Message Program";
 
+		User nurse = new User(3);
 		Integer patientId = 2;
 		Patient patient = new Patient(patientId);
-		List<Patient> patients = new ArrayList<Patient>();
-		patients.add(patient);
 
-		Capture<List<PatientIdentifierType>> patientIdTypesCapture = new Capture<List<PatientIdentifierType>>();
 		Capture<MessageProgramEnrollment> enrollmentCapture1 = new Capture<MessageProgramEnrollment>();
 		Capture<MessageProgramEnrollment> enrollmentCapture2 = new Capture<MessageProgramEnrollment>();
 
-		expect(contextService.getPatientService()).andReturn(patientService)
-				.atLeastOnce();
 		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
 
-		expect(
-				patientService
-						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
-				.andReturn(ghanaIdType);
-		expect(
-				patientService.getPatients(eq((String) null),
-						eq(patientRegNum), capture(patientIdTypesCapture),
-						eq(true))).andReturn(patients);
 		expect(
 				motechService.getActiveMessageProgramEnrollment(patientId,
 						pregnancyProgram1)).andReturn(
@@ -740,14 +690,11 @@ public class RegistrarBeanTest extends TestCase {
 						.saveMessageProgramEnrollment(capture(enrollmentCapture2)))
 				.andReturn(new MessageProgramEnrollment());
 
-		replay(contextService, patientService, motechService);
+		replay(contextService, motechService);
 
-		regBean.stopPregnancyProgram(nurseId, patientRegNum);
+		regBean.stopPregnancyProgram(nurse, patient);
 
-		verify(contextService, patientService, motechService);
-
-		assertTrue("Expected ghana patient id on getPatients",
-				patientIdTypesCapture.getValue().contains(ghanaIdType));
+		verify(contextService, motechService);
 
 		MessageProgramEnrollment enrollment1 = enrollmentCapture1.getValue();
 		assertNotNull("Enrollment end date must be set", enrollment1

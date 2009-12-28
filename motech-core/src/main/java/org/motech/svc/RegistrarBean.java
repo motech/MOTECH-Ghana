@@ -29,11 +29,14 @@ import org.openmrs.util.OpenmrsConstants;
  */
 public interface RegistrarBean {
 
+	public Patient getPatientBySerial(String serialId);
+
+	public User getNurseByCHPSId(String chpsId);
+
 	@RunAsAdminUser
-	public void registerChild(String nurseId, Date regDate,
-			String motherRegNum, String childRegNum, Date childDob,
-			Gender childGender, String childFirstName, String nhis,
-			Date nhisExpires);
+	public void registerChild(User nurse, Date regDate, Patient mother,
+			String childRegNum, Date childDob, Gender childGender,
+			String childFirstName, String nhis, Date nhisExpires);
 
 	@RunAsAdminUser
 	public void registerClinic(String name, Integer parentId);
@@ -61,13 +64,12 @@ public interface RegistrarBean {
 			String[] messagePrograms);
 
 	@RunAsAdminUser
-	public void editPatient(String nurseId, String patientRegNum,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			String nhis, Date nhisExpires);
+	public void editPatient(User nurse, Patient patient, String primaryPhone,
+			ContactNumberType primaryPhoneType, String secondaryPhone,
+			ContactNumberType secondaryPhoneType, String nhis, Date nhisExpires);
 
 	@RunAsAdminUser
-	public void stopPregnancyProgram(String nurseId, String patientRegNum);
+	public void stopPregnancyProgram(User nurse, Patient patient);
 
 	@RunAsAdminUser
 	public void recordMaternalVisit(String nursePhoneNumber, Date date,
