@@ -113,7 +113,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		child.addIdentifier(childIdObj);
 
 		child.setBirthdate(childDob);
-		child.setGender(childGender.toString());
+		child.setGender(GenderTypeConverter.toOpenMRSString(childGender));
 		child.addName(new PersonName(childFirstName, null, mother
 				.getFamilyName()));
 
@@ -140,7 +140,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			childAddress.setCityVillage(motherAddress.getCityVillage());
 			child.addAddress(childAddress);
 		}
-		
+
 		patientService.savePatient(child);
 	}
 
