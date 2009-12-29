@@ -71,13 +71,17 @@ public interface RegistrarBean {
 			MediaType mediaType, DeliveryTime deliveryTime,
 			String[] messagePrograms);
 
-	@RunAsAdminUser
-	public void editPatient(User nurse, Patient patient, String primaryPhone,
+	@RunAsUser
+	public void editPatient(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Patient patient, String primaryPhone,
 			ContactNumberType primaryPhoneType, String secondaryPhone,
 			ContactNumberType secondaryPhoneType, String nhis, Date nhisExpires);
 
-	@RunAsAdminUser
-	public void stopPregnancyProgram(User nurse, Patient patient);
+	@RunAsUser
+	public void stopPregnancyProgram(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Patient patient);
 
 	@RunAsAdminUser
 	public void recordMaternalVisit(String nursePhoneNumber, Date date,
