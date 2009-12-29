@@ -370,7 +370,8 @@ public class RegistrarBeanTest extends TestCase {
 				.getAddress1());
 		assertEquals(childDob, child.getBirthdate());
 		assertEquals(childFirstName, child.getGivenName());
-		assertEquals(childGender.toString(), child.getGender());
+		assertEquals(childGender, GenderTypeConverter.valueOfOpenMRS(child
+				.getGender()));
 		PersonAttribute nhisAttr = child.getAttribute(nhisAttributeType);
 		assertEquals(nhis, nhisAttr.getValue());
 		assertEquals(nhisExpires.toString(), child.getAttribute(
