@@ -74,5 +74,6 @@ public final class MotechConstants {
 	public static final String CONCEPT_PREGNANCY_STATUS = "PREGNANCY STATUS";
 	public static final String CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT = "ESTIMATED DATE OF CONFINEMENT";
 	public static final String CONCEPT_GRAVIDA = "GRAVIDA";
+	public static final String CONCEPT_PARITY = "PARITY";
 	public static final String CONCEPT_HEMOGLOBIN = "HEMOGLOBIN";
 }

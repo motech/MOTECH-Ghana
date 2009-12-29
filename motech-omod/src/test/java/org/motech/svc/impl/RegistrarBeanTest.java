@@ -20,6 +20,7 @@ import junit.framework.TestCase;
 
 import org.easymock.Capture;
 import org.motech.messaging.MessageNotFoundException;
+import org.motech.model.HIVStatus;
 import org.motech.model.Log;
 import org.motech.model.Message;
 import org.motech.model.MessageProgramEnrollment;
@@ -92,6 +93,12 @@ public class RegistrarBeanTest extends TestCase {
 	PersonAttributeType deliveryTimeAttributeType;
 	PersonAttributeType nhisExpirationType;
 	PersonAttributeType whoRegisteredType;
+	PersonAttributeType ghsRegisteredAttributeType;
+	PersonAttributeType ghsANCRegNumberAttributeType;
+	PersonAttributeType insuredAttributeType;
+	PersonAttributeType hivStatusAttributeType;
+	PersonAttributeType religionAttributeType;
+	PersonAttributeType occupationAttributeType;
 	Role providerRole;
 	EncounterType matVisitType;
 	ConceptName immunizationConceptNameObj;
@@ -121,8 +128,12 @@ public class RegistrarBeanTest extends TestCase {
 	Concept pregStatusConcept;
 	ConceptName dateConfConceptNameObj;
 	Concept dateConfConcept;
+	ConceptName dateConfConfirmedConceptNameObj;
+	Concept dateConfConfirmedConcept;
 	ConceptName gravidaConceptNameObj;
 	Concept gravidaConcept;
+	ConceptName parityConceptNameObj;
+	Concept parityConcept;
 	ConceptName hemoConceptNameObj;
 	Concept hemoConcept;
 
@@ -198,6 +209,29 @@ public class RegistrarBeanTest extends TestCase {
 		whoRegisteredType = new PersonAttributeType(15);
 		whoRegisteredType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED);
+
+		ghsRegisteredAttributeType = new PersonAttributeType(16);
+		ghsRegisteredAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_GHS_REGISTERED);
+
+		ghsANCRegNumberAttributeType = new PersonAttributeType(17);
+		ghsANCRegNumberAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_GHS_ANC_REG_NUMBER);
+
+		insuredAttributeType = new PersonAttributeType(18);
+		insuredAttributeType.setName(MotechConstants.PERSON_ATTRIBUTE_INSURED);
+
+		hivStatusAttributeType = new PersonAttributeType(19);
+		hivStatusAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_HIV_STATUS);
+
+		religionAttributeType = new PersonAttributeType(20);
+		religionAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_RELIGION);
+
+		occupationAttributeType = new PersonAttributeType(21);
+		occupationAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_OCCUPATION);
 
 		providerRole = new Role(OpenmrsConstants.PROVIDER_ROLE);
 
@@ -277,6 +311,15 @@ public class RegistrarBeanTest extends TestCase {
 		hemoConceptNameObj = new ConceptName(
 				MotechConstants.CONCEPT_HEMOGLOBIN, Locale.getDefault());
 		hemoConcept = new Concept(21);
+
+		parityConceptNameObj = new ConceptName(MotechConstants.CONCEPT_PARITY,
+				Locale.getDefault());
+		parityConcept = new Concept(22);
+
+		dateConfConfirmedConceptNameObj = new ConceptName(
+				MotechConstants.CONCEPT_DATE_OF_CONFINEMENT_CONFIRMED, Locale
+						.getDefault());
+		dateConfConfirmedConcept = new Concept(23);
 
 		RegistrarBeanImpl regBeanImpl = new RegistrarBeanImpl();
 		regBeanImpl.setContextService(contextService);
@@ -465,6 +508,295 @@ public class RegistrarBeanTest extends TestCase {
 				.getValue());
 		assertEquals(clinicLocation.getLocationId().toString(), nurse
 				.getAttribute(clinicAttributeType).getValue());
+	}
+
+	public void testRegisterPregnantMother() {
+		String firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
+		String regNumberGHS = "123ABC", nhis = "456DEF";
+		String region = "Region", district = "District", community = "Community", address = "Address";
+		String religion = "Religion", occupation = "Occupation";
+		String primaryPhone = "12075555555", secondaryPhone = "12075555556";
+		String languageVoice = "LanguageVoice", languageText = "LanguageText";
+		Date date = new Date();
+		Boolean birthDateEst = true, registeredGHS = true, insured = true, dueDateConfirmed = true, registerPregProgram = true;
+		Integer clinic = 1, gravida = 0, parity = 1;
+		HIVStatus hivStatus = HIVStatus.UNKNOWN;
+		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
+		MediaType mediaTypeInfo = MediaType.TEXT, mediaTypeReminder = MediaType.VOICE;
+		WhoRegistered whoRegistered = WhoRegistered.CHPS_STAFF;
+
+		String pregnancyProgramName = "Weekly Pregnancy Message Program";
+
+		User nurse = new User(1);
+		Patient patient = new Patient(2);
+		Location ghanaLocation = new Location(1);
+
+		Capture<Patient> patientCap = new Capture<Patient>();
+		Capture<MessageProgramEnrollment> enrollmentCap = new Capture<MessageProgramEnrollment>();
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+		Capture<Obs> dueDateObsCap = new Capture<Obs>();
+		Capture<Obs> dueDateConfirmedObsCap = new Capture<Obs>();
+		Capture<Obs> gravidaObsCap = new Capture<Obs>();
+		Capture<Obs> parityObsCap = new Capture<Obs>();
+
+		expect(contextService.getPatientService()).andReturn(patientService)
+				.atLeastOnce();
+		expect(contextService.getPersonService()).andReturn(personService)
+				.atLeastOnce();
+		expect(contextService.getLocationService()).andReturn(locationService);
+		expect(contextService.getMotechService()).andReturn(motechService)
+				.atLeastOnce();
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService).atLeastOnce();
+		expect(contextService.getObsService()).andReturn(obsService);
+		expect(contextService.getConceptService()).andReturn(conceptService)
+				.atLeastOnce();
+
+		expect(contextService.getAuthenticatedUser()).andReturn(nurse);
+		expect(
+				patientService
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
+				.andReturn(ghanaIdType);
+		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
+				.andReturn(ghanaLocation);
+
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_GHS_REGISTERED))
+				.andReturn(ghsRegisteredAttributeType);
+
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_GHS_ANC_REG_NUMBER))
+				.andReturn(ghsANCRegNumberAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
+				.andReturn(insuredAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER))
+				.andReturn(nhisAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE))
+				.andReturn(nhisExpirationType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
+				.andReturn(clinicAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HIV_STATUS))
+				.andReturn(hivStatusAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
+				.andReturn(primaryPhoneAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE))
+				.andReturn(primaryPhoneTypeAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER))
+				.andReturn(secondaryPhoneAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE))
+				.andReturn(secondaryPhoneTypeAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL))
+				.andReturn(mediaTypeInformationalAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER))
+				.andReturn(mediaTypeReminderAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT))
+				.andReturn(languageTextAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE))
+				.andReturn(languageVoiceAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED))
+				.andReturn(whoRegisteredType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_RELIGION))
+				.andReturn(religionAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_OCCUPATION))
+				.andReturn(occupationAttributeType);
+
+		expect(patientService.savePatient(capture(patientCap))).andReturn(
+				patient);
+
+		expect(
+				motechService.getActiveMessageProgramEnrollment(patient
+						.getPatientId(), pregnancyProgramName)).andReturn(null);
+		expect(
+				motechService
+						.saveMessageProgramEnrollment(capture(enrollmentCap)))
+				.andReturn(new MessageProgramEnrollment());
+
+		expect(
+				encounterService
+						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT))
+				.andReturn(pregVisitType);
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT))
+				.andReturn(dateConfConcept);
+		expect(obsService.saveObs(capture(dueDateObsCap), (String) anyObject()))
+				.andReturn(new Obs());
+
+		expect(
+				conceptService
+						.getConcept(MotechConstants.CONCEPT_DATE_OF_CONFINEMENT_CONFIRMED))
+				.andReturn(dateConfConfirmedConcept);
+		expect(
+				obsService.saveObs(capture(dueDateConfirmedObsCap),
+						(String) anyObject())).andReturn(new Obs());
+
+		expect(conceptService.getConcept(MotechConstants.CONCEPT_GRAVIDA))
+				.andReturn(gravidaConcept);
+		expect(obsService.saveObs(capture(gravidaObsCap), (String) anyObject()))
+				.andReturn(new Obs());
+
+		expect(conceptService.getConcept(MotechConstants.CONCEPT_PARITY))
+				.andReturn(parityConcept);
+		expect(obsService.saveObs(capture(parityObsCap), (String) anyObject()))
+				.andReturn(new Obs());
+
+		replay(contextService, patientService, motechService, personService,
+				locationService, userService, encounterService, obsService,
+				conceptService);
+
+		regBean.registerPregnantMother(firstName, lastName, prefName, date,
+				birthDateEst, registeredGHS, regNumberGHS, insured, nhis, date,
+				region, district, community, address, clinic, date,
+				dueDateConfirmed, gravida, parity, hivStatus,
+				registerPregProgram, primaryPhone, primaryPhoneType,
+				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
+				mediaTypeReminder, languageVoice, languageText, whoRegistered,
+				religion, occupation);
+
+		verify(contextService, patientService, motechService, personService,
+				locationService, userService, encounterService, obsService,
+				conceptService);
+
+		Patient capturedPatient = patientCap.getValue();
+		assertEquals(regNumberGHS, capturedPatient.getPatientIdentifier(
+				ghanaIdType).getIdentifier());
+		assertEquals(firstName, capturedPatient.getGivenName());
+		assertEquals(lastName, capturedPatient.getFamilyName());
+		assertEquals(prefName, capturedPatient.getMiddleName());
+		assertEquals(date, capturedPatient.getBirthdate());
+		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
+		assertEquals(GenderTypeConverter.toOpenMRSString(Gender.FEMALE),
+				capturedPatient.getGender());
+		assertEquals(region, capturedPatient.getPersonAddress().getRegion());
+		assertEquals(district, capturedPatient.getPersonAddress()
+				.getCountyDistrict());
+		assertEquals(community, capturedPatient.getPersonAddress()
+				.getCityVillage());
+		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
+		assertEquals(clinic, Integer.valueOf(capturedPatient.getAttribute(
+				clinicAttributeType).getValue()));
+		assertEquals(registeredGHS, Boolean.valueOf(capturedPatient
+				.getAttribute(ghsRegisteredAttributeType).getValue()));
+		assertEquals(regNumberGHS, capturedPatient.getAttribute(
+				ghsANCRegNumberAttributeType).getValue());
+		assertEquals(insured, Boolean.valueOf(capturedPatient.getAttribute(
+				insuredAttributeType).getValue()));
+		assertEquals(nhis, capturedPatient.getAttribute(nhisAttributeType)
+				.getValue());
+		assertEquals(date.toString(), capturedPatient.getAttribute(
+				nhisExpirationType).getValue());
+		assertEquals(hivStatus, HIVStatus.valueOf(capturedPatient.getAttribute(
+				hivStatusAttributeType).getValue()));
+		assertEquals(primaryPhone, capturedPatient.getAttribute(
+				primaryPhoneAttributeType).getValue());
+		assertEquals(secondaryPhone, capturedPatient.getAttribute(
+				secondaryPhoneAttributeType).getValue());
+		assertEquals(primaryPhoneType, ContactNumberType
+				.valueOf(capturedPatient.getAttribute(
+						primaryPhoneTypeAttributeType).getValue()));
+		assertEquals(secondaryPhoneType, ContactNumberType
+				.valueOf(capturedPatient.getAttribute(
+						secondaryPhoneTypeAttributeType).getValue()));
+		assertEquals(mediaTypeInfo, MediaType.valueOf(capturedPatient
+				.getAttribute(mediaTypeInformationalAttributeType).getValue()));
+		assertEquals(mediaTypeReminder, MediaType.valueOf(capturedPatient
+				.getAttribute(mediaTypeReminderAttributeType).getValue()));
+		assertEquals(languageText, capturedPatient.getAttribute(
+				languageTextAttributeType).getValue());
+		assertEquals(languageVoice, capturedPatient.getAttribute(
+				languageVoiceAttributeType).getValue());
+		assertEquals(whoRegistered, WhoRegistered.valueOf(capturedPatient
+				.getAttribute(whoRegisteredType).getValue()));
+		assertEquals(religion, capturedPatient.getAttribute(
+				religionAttributeType).getValue());
+		assertEquals(occupation, capturedPatient.getAttribute(
+				occupationAttributeType).getValue());
+
+		MessageProgramEnrollment enrollment = enrollmentCap.getValue();
+		assertEquals(patient.getPatientId(), enrollment.getPersonId());
+		assertEquals(pregnancyProgramName, enrollment.getProgram());
+		assertNotNull("Enrollment start date should not be null", enrollment
+				.getStartDate());
+		assertNull("Enrollment end date should be null", enrollment
+				.getEndDate());
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(nurse, encounter.getProvider());
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(ghanaLocation, encounter.getLocation());
+
+		Obs dueDateObs = dueDateObsCap.getValue();
+		assertEquals(encounter.getEncounterDatetime(), dueDateObs
+				.getObsDatetime());
+		assertEquals(encounter.getPatient().getPatientId(), dueDateObs
+				.getPerson().getPersonId());
+		assertEquals(ghanaLocation, dueDateObs.getLocation());
+		assertEquals(dateConfConcept, dueDateObs.getConcept());
+		assertEquals(date, dueDateObs.getValueDatetime());
+
+		Obs dueDateConfirmedObs = dueDateConfirmedObsCap.getValue();
+		assertEquals(encounter.getEncounterDatetime(), dueDateConfirmedObs
+				.getObsDatetime());
+		assertEquals(encounter.getPatient().getPatientId(), dueDateConfirmedObs
+				.getPerson().getPersonId());
+		assertEquals(ghanaLocation, dueDateConfirmedObs.getLocation());
+		assertEquals(dateConfConfirmedConcept, dueDateConfirmedObs.getConcept());
+		assertEquals(Boolean.TRUE, dueDateConfirmedObs.getValueAsBoolean());
+
+		Obs gravidaObs = gravidaObsCap.getValue();
+		assertEquals(encounter.getEncounterDatetime(), gravidaObs
+				.getObsDatetime());
+		assertEquals(encounter.getPatient().getPatientId(), gravidaObs
+				.getPerson().getPersonId());
+		assertEquals(ghanaLocation, gravidaObs.getLocation());
+		assertEquals(gravidaConcept, gravidaObs.getConcept());
+		assertEquals(0.0, gravidaObs.getValueNumeric());
+
+		Obs parityObs = parityObsCap.getValue();
+		assertEquals(encounter.getEncounterDatetime(), parityObs
+				.getObsDatetime());
+		assertEquals(encounter.getPatient().getPatientId(), parityObs
+				.getPerson().getPersonId());
+		assertEquals(ghanaLocation, parityObs.getLocation());
+		assertEquals(parityConcept, parityObs.getConcept());
+		assertEquals(1.0, parityObs.getValueNumeric());
 	}
 
 	public void testRegisterPatient() {
@@ -1159,8 +1491,8 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(dateConfConcept);
 		expect(obsService.saveObs(capture(dueDateObsCap), (String) anyObject()))
 				.andReturn(new Obs());
-		expect(conceptService.getConcept(MotechConstants.CONCEPT_GRAVIDA))
-				.andReturn(gravidaConcept);
+		expect(conceptService.getConcept(MotechConstants.CONCEPT_PARITY))
+				.andReturn(parityConcept);
 		expect(obsService.saveObs(capture(parityObsCap), (String) anyObject()))
 				.andReturn(new Obs());
 		expect(conceptService.getConcept(MotechConstants.CONCEPT_HEMOGLOBIN))
@@ -1207,7 +1539,7 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(e.getPatient().getPatientId(), parityObs.getPerson()
 				.getPersonId());
 		assertEquals(e.getLocation(), parityObs.getLocation());
-		assertEquals(gravidaConcept, parityObs.getConcept());
+		assertEquals(parityConcept, parityObs.getConcept());
 		assertEquals(Double.valueOf(parity), parityObs.getValueNumeric());
 
 		Obs hemoglobinObs = hemoglobinObsCap.getValue();

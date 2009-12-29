@@ -53,10 +53,10 @@
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
-	<openmrs:hasPrivilege privilege="Run MoTeCH Test">
-		<li <c:if test='<%= request.getRequestURI().contains("quick") %>'>class="active"</c:if>>
-			<a href="${pageContext.request.contextPath}/module/motechmodule/quick.form">
-				<spring:message code="motechmodule.QuickTest.run"/>
+	<openmrs:hasPrivilege privilege="Register MoTeCH Patient">
+		<li <c:if test='<%= request.getRequestURI().contains("mother") %>'>class="active"</c:if>>
+			<a href="${pageContext.request.contextPath}/module/motechmodule/mother.form">
+				<spring:message code="motechmodule.Mother.register"/>
 			</a>
 		</li>
 	</openmrs:hasPrivilege>

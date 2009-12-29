@@ -7,8 +7,10 @@ import org.motech.annotation.RunAsAdminUser;
 import org.motech.annotation.RunAsUser;
 import org.motech.annotation.RunAsUserParam;
 import org.motech.annotation.RunWithPrivileges;
+import org.motech.model.HIVStatus;
 import org.motech.model.Log;
 import org.motech.model.ScheduledMessage;
+import org.motech.model.WhoRegistered;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
@@ -55,6 +57,19 @@ public interface RegistrarBean {
 
 	public void registerNurse(String name, String nurseId, String phoneNumber,
 			Integer clinicId);
+
+	public void registerPregnantMother(String firstName, String lastName,
+			String prefName, Date birthDate, Boolean birthDateEst,
+			Boolean registeredGHS, String regNumberGHS, Boolean insured,
+			String nhis, Date nhisExpDate, String region, String district,
+			String community, String address, Integer clinic, Date dueDate,
+			Boolean dueDateConfirmed, Integer gravida, Integer parity,
+			HIVStatus hivStatus, Boolean registerPregProgram,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
+			String languageVoice, String languageText,
+			WhoRegistered whoRegistered, String religion, String occupation);
 
 	@RunAsAdminUser
 	public void registerPatient(String nursePhoneNumber, String serialId,

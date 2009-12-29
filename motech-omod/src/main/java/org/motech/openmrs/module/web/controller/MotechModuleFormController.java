@@ -17,7 +17,6 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +24,9 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.model.Blackout;
+import org.motech.model.HIVStatus;
 import org.motech.model.TroubledPhone;
+import org.motech.model.WhoRegistered;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.openmrs.module.xml.LocationXStream;
@@ -62,6 +63,7 @@ public class MotechModuleFormController {
 	private ContextService contextService;
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+	private SimpleDateFormat intDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 	@Autowired
 	public void setContextService(ContextService contextService) {
@@ -72,9 +74,13 @@ public class MotechModuleFormController {
 		this.registrarBean = registrarBean;
 	}
 
-	@RequestMapping(value = "/module/motechmodule/quick", method = RequestMethod.GET)
-	public String viewQuickTestForm() {
-		return "/module/motechmodule/quick";
+	@RequestMapping(value = "/module/motechmodule/mother", method = RequestMethod.GET)
+	public String viewPregnantMotherForm(ModelMap model) {
+
+		List<Location> locations = registrarBean.getAllClinics();
+		model.addAttribute("locations", locations);
+
+		return "/module/motechmodule/mother";
 	}
 
 	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.GET)
@@ -116,46 +122,57 @@ public class MotechModuleFormController {
 		return "/module/motechmodule/maternalVisit";
 	}
 
-	@RequestMapping(value = "/module/motechmodule/quick", method = RequestMethod.POST)
-	public String quickTest(
-			@RequestParam("nurseName") String nurseName,
-			@RequestParam("nurseId") String nurseId,
-			@RequestParam("nursePhone") String nursePhone,
-			@RequestParam("clinicName") String clinicName,
-			@RequestParam("serialId") String serialId,
-			@RequestParam("name") String name,
-			@RequestParam("community") String community,
-			@RequestParam("location") String location,
+	@RequestMapping(value = "/module/motechmodule/mother", method = RequestMethod.POST)
+	public String registerPregnantMother(
+			@RequestParam("firstName") String firstName,
+			@RequestParam("lastName") String lastName,
+			@RequestParam("prefName") String prefName,
+			@RequestParam("birthDate") String birthDate,
+			@RequestParam("birthDateEst") String birthDateEst,
+			@RequestParam("registeredGHS") String registeredGHS,
+			@RequestParam("regNumberGHS") String regNumberGHS,
+			@RequestParam("insured") String insured,
 			@RequestParam("nhis") String nhis,
-			@RequestParam("patientPhone") String patientPhone,
-			@RequestParam("patientPhoneType") String patientPhoneType,
-			@RequestParam("language") String language,
-			@RequestParam("mediaType") String mediaType,
-			@RequestParam("deliveryTime") String deliveryTime,
-			@RequestParam(value = "messagePrograms", required = false) String[] messagePrograms,
-			@RequestParam("dateOfBirth") String dateOfBirth,
+			@RequestParam("nhisExpDate") String nhisExpDate,
+			@RequestParam("region") String region,
+			@RequestParam("district") String district,
+			@RequestParam("community") String community,
+			@RequestParam("address") String address,
+			@RequestParam("clinic") String clinic,
 			@RequestParam("dueDate") String dueDate,
+			@RequestParam("dueDateConfirmed") String dueDateConfirmed,
+			@RequestParam("gravida") String gravida,
 			@RequestParam("parity") String parity,
-			@RequestParam("hemoglobin") String hemoglobin)
+			@RequestParam("hivStatus") String hivStatus,
+			@RequestParam("registerPregProgram") String registerPregProgram,
+			@RequestParam("primaryPhone") String primaryPhone,
+			@RequestParam("primaryPhoneType") String primaryPhoneType,
+			@RequestParam("secondaryPhone") String secondaryPhone,
+			@RequestParam("secondaryPhoneType") String secondaryPhoneType,
+			@RequestParam("mediaTypeInfo") String mediaTypeInfo,
+			@RequestParam("mediaTypeReminder") String mediaTypeReminder,
+			@RequestParam("languageVoice") String languageVoice,
+			@RequestParam("languageText") String languageText,
+			@RequestParam("whoRegistered") String whoRegistered,
+			@RequestParam("religion") String religion,
+			@RequestParam("occupation") String occupation)
 			throws NumberFormatException, ParseException {
-		log.debug("Quick Test");
-		registrarBean.registerClinic(clinicName, null);
-
-		registrarBean.registerNurse(nurseName, nurseId, nursePhone, clinicName);
-
-		registrarBean.registerPatient(nursePhone, serialId, name, community,
-				location, dateFormat.parse(dateOfBirth), Gender.FEMALE, Integer
-						.valueOf(nhis), patientPhone, ContactNumberType
-						.valueOf(patientPhoneType), language, MediaType
-						.valueOf(mediaType),
-				DeliveryTime.valueOf(deliveryTime),
-				convertToActualMessagePrograms(messagePrograms));
-		registrarBean.registerPregnancy(nursePhone, new Date(), serialId,
-				dateFormat.parse(dueDate), Integer.valueOf(parity), Double
-						.valueOf(hemoglobin));
-
-		registrarBean.recordMaternalVisit(nursePhone, new Date(), serialId,
-				true, true, true, 1, true, true, true, true, 10.6);
+		log.debug("Register Pregnant Mother");
+		registrarBean.registerPregnantMother(firstName, lastName, prefName,
+				intDateFormat.parse(birthDate), Boolean.valueOf(birthDateEst),
+				Boolean.valueOf(registeredGHS), regNumberGHS, Boolean
+						.valueOf(insured), nhis, intDateFormat
+						.parse(nhisExpDate), region, district, community,
+				address, Integer.valueOf(clinic), intDateFormat.parse(dueDate),
+				Boolean.valueOf(dueDateConfirmed), Integer.valueOf(gravida),
+				Integer.valueOf(parity), HIVStatus.valueOf(hivStatus), Boolean
+						.valueOf(registerPregProgram), primaryPhone,
+				ContactNumberType.valueOf(primaryPhoneType), secondaryPhone,
+				ContactNumberType.valueOf(secondaryPhoneType), MediaType
+						.valueOf(mediaTypeInfo), MediaType
+						.valueOf(mediaTypeReminder), languageVoice,
+				languageText, WhoRegistered.valueOf(whoRegistered), religion,
+				occupation);
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 

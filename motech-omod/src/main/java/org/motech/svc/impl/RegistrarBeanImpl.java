@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import org.motech.event.MessageProgram;
 import org.motech.messaging.MessageNotFoundException;
 import org.motech.model.GeneralPatientEncounter;
+import org.motech.model.HIVStatus;
 import org.motech.model.Message;
 import org.motech.model.MessageAttribute;
 import org.motech.model.MessageDefinition;
@@ -214,6 +215,164 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				.getLocationId().toString()));
 
 		userService.saveUser(nurse, "password");
+	}
+
+	public void registerPregnantMother(String firstName, String lastName,
+			String prefName, Date birthDate, Boolean birthDateEst,
+			Boolean registeredGHS, String regNumberGHS, Boolean insured,
+			String nhis, Date nhisExpDate, String region, String district,
+			String community, String address, Integer clinic, Date dueDate,
+			Boolean dueDateConfirmed, Integer gravida, Integer parity,
+			HIVStatus hivStatus, Boolean registerPregProgram,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
+			String languageVoice, String languageText,
+			WhoRegistered whoRegistered, String religion, String occupation) {
+
+		PatientService patientService = contextService.getPatientService();
+		EncounterService encounterService = contextService
+				.getEncounterService();
+		ObsService obsService = contextService.getObsService();
+
+		User nurse = contextService.getAuthenticatedUser();
+
+		Patient mother = new Patient();
+
+		PatientIdentifierType ghanaSerialIdType = getGhanaPatientIdType();
+
+		Location ghanaLocation = getGhanaLocation();
+		mother.addIdentifier(new PatientIdentifier(regNumberGHS,
+				ghanaSerialIdType, ghanaLocation));
+
+		// Storing preferred name as middle name
+		mother.addName(new PersonName(firstName, prefName, lastName));
+		mother.setGender(GenderTypeConverter.toOpenMRSString(Gender.FEMALE));
+		mother.setBirthdate(birthDate);
+		mother.setBirthdateEstimated(birthDateEst);
+
+		PersonAddress motherAddress = new PersonAddress();
+		motherAddress.setAddress1(address);
+		motherAddress.setCityVillage(community);
+		motherAddress.setCountyDistrict(district);
+		motherAddress.setRegion(region);
+		mother.addAddress(motherAddress);
+
+		PersonAttributeType registeredGHSAttrType = getGHSRegisteredAttributeType();
+		mother.addAttribute(new PersonAttribute(registeredGHSAttrType,
+				registeredGHS.toString()));
+
+		PersonAttributeType ancRegNumAttrType = getANCRegistrationNumberAttributeType();
+		mother
+				.addAttribute(new PersonAttribute(ancRegNumAttrType,
+						regNumberGHS));
+
+		PersonAttributeType insuredAttrType = getInsuredAttributeType();
+		mother.addAttribute(new PersonAttribute(insuredAttrType, insured
+				.toString()));
+
+		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
+		mother.addAttribute(new PersonAttribute(nhisAttrType, nhis.toString()));
+
+		PersonAttributeType nhisExpDateAttrType = getNHISExpirationDateAttributeType();
+		mother.addAttribute(new PersonAttribute(nhisExpDateAttrType,
+				nhisExpDate.toString()));
+
+		PersonAttributeType clinicAttrType = getClinicAttributeType();
+		mother.addAttribute(new PersonAttribute(clinicAttrType, clinic
+				.toString()));
+
+		PersonAttributeType hivStatusAttrType = this
+				.getHIVStatusAttributeType();
+		mother.addAttribute(new PersonAttribute(hivStatusAttrType, hivStatus
+				.name()));
+
+		PersonAttributeType primaryPhoneAttrType = getPrimaryPhoneNumberAttributeType();
+		mother.addAttribute(new PersonAttribute(primaryPhoneAttrType,
+				primaryPhone));
+
+		PersonAttributeType primaryPhoneTypeAttrType = getPrimaryPhoneTypeAttributeType();
+		mother.addAttribute(new PersonAttribute(primaryPhoneTypeAttrType,
+				primaryPhoneType.name()));
+
+		PersonAttributeType secondaryPhoneAttrType = getSecondaryPhoneNumberAttributeType();
+		mother.addAttribute(new PersonAttribute(secondaryPhoneAttrType,
+				secondaryPhone));
+
+		PersonAttributeType secondaryPhoneTypeAttrType = getSecondaryPhoneTypeAttributeType();
+		mother.addAttribute(new PersonAttribute(secondaryPhoneTypeAttrType,
+				secondaryPhoneType.name()));
+
+		PersonAttributeType mediaTypeInfoAttrType = getMediaTypeInformationalAttributeType();
+		mother.addAttribute(new PersonAttribute(mediaTypeInfoAttrType,
+				mediaTypeInfo.name()));
+
+		PersonAttributeType mediaTypeReminderAttrType = getMediaTypeReminderAttributeType();
+		mother.addAttribute(new PersonAttribute(mediaTypeReminderAttrType,
+				mediaTypeReminder.name()));
+
+		PersonAttributeType languageTextAttrType = getLanguageTextAttributeType();
+		mother.addAttribute(new PersonAttribute(languageTextAttrType,
+				languageText));
+
+		PersonAttributeType languageVoiceAttrType = getLanguageVoiceAttributeType();
+		mother.addAttribute(new PersonAttribute(languageVoiceAttrType,
+				languageVoice));
+
+		PersonAttributeType whoRegisteredAttrType = this
+				.getWhoRegisteredAttributeType();
+		mother.addAttribute(new PersonAttribute(whoRegisteredAttrType,
+				whoRegistered.name()));
+
+		PersonAttributeType religionAttrType = this.getReligionAttributeType();
+		mother.addAttribute(new PersonAttribute(religionAttrType, religion));
+
+		PersonAttributeType occupationAttrType = this
+				.getOccupationAttributeType();
+		mother
+				.addAttribute(new PersonAttribute(occupationAttrType,
+						occupation));
+
+		mother = patientService.savePatient(mother);
+
+		if (registerPregProgram) {
+			addMessageProgramEnrollment(mother.getPatientId(),
+					"Weekly Pregnancy Message Program");
+		}
+
+		Encounter pregnancy = new Encounter();
+		// Date of encounter is current date
+		Date encounterDate = new Date();
+
+		pregnancy.setEncounterDatetime(encounterDate);
+		pregnancy.setPatient(mother);
+		// Nurse on encounter is current authenticated user
+		pregnancy.setProvider(nurse);
+
+		EncounterType pregEncounterType = getPregnancyVisitEncounterType();
+		pregnancy.setEncounterType(pregEncounterType);
+		// Location on encounter and observations is ghana
+		pregnancy.setLocation(ghanaLocation);
+		pregnancy = encounterService.saveEncounter(pregnancy);
+
+		Obs dueDateObs = createDateValueObs(encounterDate, getDueDateConcept(),
+				mother, ghanaLocation, dueDate, pregnancy, null);
+		obsService.saveObs(dueDateObs, null);
+
+		Obs dueDateConfirmedObs = createBooleanValueObs(encounterDate,
+				getDueDateConfirmedConcept(), mother, ghanaLocation,
+				dueDateConfirmed, pregnancy, null);
+		obsService.saveObs(dueDateConfirmedObs, null);
+
+		Obs gravidaObs = createNumericValueObs(encounterDate,
+				getGravidaConcept(), mother, ghanaLocation,
+				new Double(gravida), pregnancy, null);
+		obsService.saveObs(gravidaObs, null);
+
+		Obs parityObs = createNumericValueObs(encounterDate,
+				getParityConcept(), mother, ghanaLocation, new Double(parity),
+				pregnancy, null);
+		obsService.saveObs(parityObs, null);
 	}
 
 	public void registerPatient(String nursePhoneNumber, String serialId,
@@ -2026,6 +2185,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	}
 
 	public Concept getParityConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_PARITY);
+	}
+
+	public Concept getGravidaConcept() {
 		return contextService.getConceptService().getConcept(
 				MotechConstants.CONCEPT_GRAVIDA);
 	}

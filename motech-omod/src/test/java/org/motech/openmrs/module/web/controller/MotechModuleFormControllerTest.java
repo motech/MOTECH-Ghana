@@ -1,6 +1,5 @@
 package org.motech.openmrs.module.web.controller;
 
-import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.eq;
@@ -17,7 +16,9 @@ import junit.framework.TestCase;
 
 import org.easymock.Capture;
 import org.motech.model.Blackout;
+import org.motech.model.HIVStatus;
 import org.motech.model.TroubledPhone;
+import org.motech.model.WhoRegistered;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.svc.RegistrarBean;
@@ -50,64 +51,90 @@ public class MotechModuleFormControllerTest extends TestCase {
 		registrarBean = null;
 	}
 
-	public void testQuickTest() throws Exception {
-		String nurseName = "Nurse Name", nursePhone = "Nurse Phone", nurseId = "Nurse Id", clinicName = "Clinic Name";
-		String serialId = "Serial Id", name = "Patient Name", community = "Community", location = "Location", dateOfBirth = "01/01/2009";
-		String nhis = "1", patientPhone = "Patient Phone", patientPhoneType = "PERSONAL", language = "Language", mediaType = "TEXT";
-		String deliveryTime = "ANYTIME";
-		String[] programs = { "minuteTetanus" };
-		String dueDate = "01/01/2009", parity = "1", hemoglobin = "1.1";
+	public void testRegisterPregnantMother() throws Exception {
+		String firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
+		String region = "Region", district = "District", community = "Community", address = "Address";
+		String religion = "Religion", occupation = "Occupation";
+		String regNumberGHS = "123ABC", nhis = "1234DEF";
+		String primaryPhone = "12075555555", secondaryPhone = "12075555556";
+		String birthDateEst = "true", registeredGHS = "true", insured = "true", dueDateConfirmed = "true";
+		String registerPregProgram = "true";
+		String birthDate = "01/01/1980", nhisExpDate = "30/10/2010", dueDate = "03/03/2010";
+		String clinic = "1", gravida = "0", parity = "0";
+		String primaryPhoneType = "PERSONAL", secondaryPhoneType = "PUBLIC";
+		String mediaTypeInfo = "TEXT", mediaTypeReminder = "VOICE";
+		String languageVoice = "LanguageVoice", languageText = "LanguageText";
+		String hivStatus = "NEGATIVE", whoRegistered = "CHPS_STAFF";
 
-		Capture<Date> dateOfBirthCapture = new Capture<Date>();
-		Capture<Gender> genderCapture = new Capture<Gender>();
-		Capture<Integer> nhisCapture = new Capture<Integer>();
-		Capture<ContactNumberType> phoneTypeCapture = new Capture<ContactNumberType>();
-		Capture<MediaType> mediaTypeCapture = new Capture<MediaType>();
-		Capture<DeliveryTime> deliveryTimeCapture = new Capture<DeliveryTime>();
-		Capture<String[]> programCapture = new Capture<String[]>();
+		Capture<Date> birthDateCapture = new Capture<Date>();
+		Capture<Boolean> birthDateEstCapture = new Capture<Boolean>();
+		Capture<Boolean> registeredGHSCapture = new Capture<Boolean>();
+		Capture<Boolean> insuredCapture = new Capture<Boolean>();
+		Capture<Date> nhisExpDateCapture = new Capture<Date>();
+		Capture<Integer> clinicCapture = new Capture<Integer>();
 		Capture<Date> dueDateCapture = new Capture<Date>();
+		Capture<Boolean> dueDateConfirmedCapture = new Capture<Boolean>();
+		Capture<Integer> gravidaCapture = new Capture<Integer>();
 		Capture<Integer> parityCapture = new Capture<Integer>();
-		Capture<Double> hemoglobinCapture = new Capture<Double>();
+		Capture<HIVStatus> hivStatusCapture = new Capture<HIVStatus>();
+		Capture<Boolean> registerPregProgramCapture = new Capture<Boolean>();
+		Capture<ContactNumberType> primaryPhoneTypeCapture = new Capture<ContactNumberType>();
+		Capture<ContactNumberType> secondaryPhoneTypeCapture = new Capture<ContactNumberType>();
+		Capture<MediaType> mediaTypeInfoCapture = new Capture<MediaType>();
+		Capture<MediaType> mediaTypeReminderCapture = new Capture<MediaType>();
+		Capture<WhoRegistered> whoRegisteredCapture = new Capture<WhoRegistered>();
 
-		registrarBean.registerClinic(clinicName, null);
-		registrarBean.registerNurse(nurseName, nurseId, nursePhone, clinicName);
-		registrarBean.registerPatient(eq(nursePhone), eq(serialId), eq(name),
-				eq(community), eq(location), capture(dateOfBirthCapture),
-				capture(genderCapture), capture(nhisCapture), eq(patientPhone),
-				capture(phoneTypeCapture), eq(language),
-				capture(mediaTypeCapture), capture(deliveryTimeCapture),
-				capture(programCapture));
-		registrarBean.registerPregnancy(eq(nursePhone), (Date) anyObject(),
-				eq(serialId), capture(dueDateCapture), capture(parityCapture),
-				capture(hemoglobinCapture));
-		registrarBean.recordMaternalVisit(eq(nursePhone), (Date) anyObject(),
-				eq(serialId), (Boolean) anyObject(), (Boolean) anyObject(),
-				(Boolean) anyObject(), (Integer) anyObject(),
-				(Boolean) anyObject(), (Boolean) anyObject(),
-				(Boolean) anyObject(), (Boolean) anyObject(),
-				(Double) anyObject());
+		registrarBean.registerPregnantMother(eq(firstName), eq(lastName),
+				eq(prefName), capture(birthDateCapture),
+				capture(birthDateEstCapture), capture(registeredGHSCapture),
+				eq(regNumberGHS), capture(insuredCapture), eq(nhis),
+				capture(nhisExpDateCapture), eq(region), eq(district),
+				eq(community), eq(address), capture(clinicCapture),
+				capture(dueDateCapture), capture(dueDateConfirmedCapture),
+				capture(gravidaCapture), capture(parityCapture),
+				capture(hivStatusCapture), capture(registerPregProgramCapture),
+				eq(primaryPhone), capture(primaryPhoneTypeCapture),
+				eq(secondaryPhone), capture(secondaryPhoneTypeCapture),
+				capture(mediaTypeInfoCapture),
+				capture(mediaTypeReminderCapture), eq(languageVoice),
+				eq(languageText), capture(whoRegisteredCapture), eq(religion),
+				eq(occupation));
 
 		replay(registrarBean);
 
-		controller.quickTest(nurseName, nurseId, nursePhone, clinicName,
-				serialId, name, community, location, nhis, patientPhone,
-				patientPhoneType, language, mediaType, deliveryTime, programs,
-				dateOfBirth, dueDate, parity, hemoglobin);
+		controller.registerPregnantMother(firstName, lastName, prefName,
+				birthDate, birthDateEst, registeredGHS, regNumberGHS, insured,
+				nhis, nhisExpDate, region, district, community, address,
+				clinic, dueDate, dueDateConfirmed, gravida, parity, hivStatus,
+				registerPregProgram, primaryPhone, primaryPhoneType,
+				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
+				mediaTypeReminder, languageVoice, languageText, whoRegistered,
+				religion, occupation);
 
 		verify(registrarBean);
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-		assertEquals(dateOfBirth, dateFormat.format(dateOfBirthCapture
+		assertEquals(birthDate, dateFormat.format(birthDateCapture.getValue()));
+		assertEquals(Boolean.TRUE, birthDateEstCapture.getValue());
+		assertEquals(Boolean.TRUE, registeredGHSCapture.getValue());
+		assertEquals(Boolean.TRUE, insuredCapture.getValue());
+		assertEquals(nhisExpDate, dateFormat.format(nhisExpDateCapture
 				.getValue()));
-		assertEquals(Gender.FEMALE, genderCapture.getValue());
-		assertEquals(nhis, nhisCapture.getValue().toString());
-		assertEquals(patientPhoneType, phoneTypeCapture.getValue().toString());
-		assertEquals(mediaType, mediaTypeCapture.getValue().toString());
-		assertEquals(2, programCapture.getValue().length);
+		assertEquals(clinic, clinicCapture.getValue().toString());
 		assertEquals(dueDate, dateFormat.format(dueDateCapture.getValue()));
+		assertEquals(Boolean.TRUE, dueDateConfirmedCapture.getValue());
+		assertEquals(gravida, gravidaCapture.getValue().toString());
 		assertEquals(parity, parityCapture.getValue().toString());
-		assertEquals(hemoglobin, hemoglobinCapture.getValue().toString());
+		assertEquals(HIVStatus.NEGATIVE, hivStatusCapture.getValue());
+		assertEquals(Boolean.TRUE, registerPregProgramCapture.getValue());
+		assertEquals(ContactNumberType.PERSONAL, primaryPhoneTypeCapture
+				.getValue());
+		assertEquals(ContactNumberType.PUBLIC, secondaryPhoneTypeCapture
+				.getValue());
+		assertEquals(MediaType.TEXT, mediaTypeInfoCapture.getValue());
+		assertEquals(MediaType.VOICE, mediaTypeReminderCapture.getValue());
+		assertEquals(WhoRegistered.CHPS_STAFF, whoRegisteredCapture.getValue());
 	}
 
 	public void testRegisterClinicNoParent() throws Exception {

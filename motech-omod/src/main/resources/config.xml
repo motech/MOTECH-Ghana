@@ -66,11 +66,6 @@
 	</privilege>
 	
 	<privilege>
-		<name>Run MoTeCH Test</name>
-		<description>Allows MoTeCH quick test</description>
-	</privilege>
-	
-	<privilege>
 		<name>View MoTeCH Data</name>
 		<description>Allows viewing MoTeCH data summary</description>
 	</privilege>
