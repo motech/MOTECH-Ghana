@@ -108,7 +108,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		Location motherLocation = mother.getPatientIdentifier().getLocation();
 
 		Patient child = new Patient();
-		PatientIdentifier childIdObj = new PatientIdentifier(childRegNum, patientIdType, motherLocation);
+		PatientIdentifier childIdObj = new PatientIdentifier(childRegNum,
+				patientIdType, motherLocation);
 		child.addIdentifier(childIdObj);
 
 		child.setBirthdate(childDob);
@@ -116,23 +117,31 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		child.addName(new PersonName(childFirstName, null, mother
 				.getFamilyName()));
 
-		patientService.savePatient(child);
-
-		child.addAddress(mother.getPersonAddress());
 		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
 		PersonAttribute nhisAttr = new PersonAttribute(nhisAttrType, nhis);
-		nhisAttr.setCreator(child.getCreator());
-		nhisAttr.setDateCreated(new Date());
 		child.addAttribute(nhisAttr);
+
 		PersonAttributeType nhisExprAttrType = getNHISExpirationDateAttributeType();
 		PersonAttribute nhisExprAttr = new PersonAttribute(nhisExprAttrType,
 				nhisExpires.toString());
-		nhisExprAttr.setCreator(child.getCreator());
-		nhisExprAttr.setDateCreated(new Date());
 		child.addAttribute(nhisExprAttr);
+
 		PersonAttributeType whoRegisteredAttrType = getWhoRegisteredAttributeType();
 		child.addAttribute(new PersonAttribute(whoRegisteredAttrType,
 				WhoRegistered.CHPS_STAFF.name()));
+
+		PersonAddress motherAddress = mother.getPersonAddress();
+		if (motherAddress != null) {
+			PersonAddress childAddress = new PersonAddress();
+			// TODO: Consider factoring this out to a copy utility
+			childAddress.setRegion(motherAddress.getRegion());
+			childAddress.setCountyDistrict(motherAddress.getCountyDistrict());
+			childAddress.setAddress1(motherAddress.getAddress1());
+			childAddress.setCityVillage(motherAddress.getCityVillage());
+			child.addAddress(childAddress);
+		}
+		
+		patientService.savePatient(child);
 	}
 
 	public void registerClinic(String name, Integer parentId) {

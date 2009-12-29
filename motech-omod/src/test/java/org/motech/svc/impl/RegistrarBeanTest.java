@@ -364,6 +364,10 @@ public class RegistrarBeanTest extends TestCase {
 				.getRegion());
 		assertEquals(testAddress.getCountyDistrict(), child.getPersonAddress()
 				.getCountyDistrict());
+		assertEquals(testAddress.getCityVillage(), child.getPersonAddress()
+				.getCityVillage());
+		assertEquals(testAddress.getAddress1(), child.getPersonAddress()
+				.getAddress1());
 		assertEquals(childDob, child.getBirthdate());
 		assertEquals(childFirstName, child.getGivenName());
 		assertEquals(childGender.toString(), child.getGender());
