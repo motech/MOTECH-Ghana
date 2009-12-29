@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.motech.annotation.RunAsAdminUser;
+import org.motech.annotation.RunAsUser;
+import org.motech.annotation.RunAsUserParam;
 import org.motech.annotation.RunWithPrivileges;
 import org.motech.model.Log;
 import org.motech.model.ScheduledMessage;
@@ -29,14 +31,20 @@ import org.openmrs.util.OpenmrsConstants;
  */
 public interface RegistrarBean {
 
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PATIENTS,
+			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES })
 	public Patient getPatientBySerial(String serialId);
 
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_USERS,
+			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
 	public User getNurseByCHPSId(String chpsId);
 
-	@RunAsAdminUser
-	public void registerChild(User nurse, Date regDate, Patient mother,
-			String childRegNum, Date childDob, Gender childGender,
-			String childFirstName, String nhis, Date nhisExpires);
+	@RunAsUser
+	public void registerChild(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Date regDate, Patient mother, String childRegNum, Date childDob,
+			Gender childGender, String childFirstName, String nhis,
+			Date nhisExpires);
 
 	@RunAsAdminUser
 	public void registerClinic(String name, Integer parentId);

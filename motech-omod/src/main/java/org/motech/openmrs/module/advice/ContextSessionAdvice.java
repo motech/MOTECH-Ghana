@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.motech.annotation.RunAsAdminUser;
+import org.motech.annotation.RunAsUser;
 import org.motech.annotation.RunWithContextSession;
 import org.motech.annotation.RunWithPrivileges;
 import org.motech.openmrs.module.ContextService;
@@ -40,7 +41,8 @@ public class ContextSessionAdvice implements MethodInterceptor {
 		for (Annotation annotation : method.getAnnotations()) {
 			if (annotation instanceof RunWithContextSession
 					|| annotation instanceof RunWithPrivileges
-					|| annotation instanceof RunAsAdminUser) {
+					|| annotation instanceof RunAsAdminUser
+					|| annotation instanceof RunAsUser) {
 				return true;
 			}
 		}

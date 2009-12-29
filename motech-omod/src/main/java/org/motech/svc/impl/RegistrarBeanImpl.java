@@ -105,31 +105,34 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		PatientIdentifierType patientIdType = getGhanaPatientIdType();
 
+		Location motherLocation = mother.getPatientIdentifier().getLocation();
+
 		Patient child = new Patient();
-		PatientIdentifier childIdObj = new PatientIdentifier();
-		childIdObj.setIdentifier(childRegNum);
-		childIdObj.setIdentifierType(patientIdType);
+		PatientIdentifier childIdObj = new PatientIdentifier(childRegNum, patientIdType, motherLocation);
 		child.addIdentifier(childIdObj);
 
-		child.setDateCreated(regDate);
-		child.setCreator(nurse);
 		child.setBirthdate(childDob);
 		child.setGender(childGender.toString());
 		child.addName(new PersonName(childFirstName, null, mother
 				.getFamilyName()));
-		child.addAddress(mother.getPersonAddress());
-		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
-		child.addAttribute(new PersonAttribute(nhisAttrType, nhis));
-		PersonAttributeType nhisExprAttrType = getNHISExpirationDateAttributeType();
-		child.addAttribute(new PersonAttribute(nhisExprAttrType, nhisExpires
-				.toString()));
-
-		PersonAttributeType whoRegisteredAttrType = this
-				.getWhoRegisteredAttributeType();
-		child.addAttribute(new PersonAttribute(whoRegisteredAttrType,
-				WhoRegistered.CHPS_STAFF.name()));
 
 		patientService.savePatient(child);
+
+		child.addAddress(mother.getPersonAddress());
+		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
+		PersonAttribute nhisAttr = new PersonAttribute(nhisAttrType, nhis);
+		nhisAttr.setCreator(child.getCreator());
+		nhisAttr.setDateCreated(new Date());
+		child.addAttribute(nhisAttr);
+		PersonAttributeType nhisExprAttrType = getNHISExpirationDateAttributeType();
+		PersonAttribute nhisExprAttr = new PersonAttribute(nhisExprAttrType,
+				nhisExpires.toString());
+		nhisExprAttr.setCreator(child.getCreator());
+		nhisExprAttr.setDateCreated(new Date());
+		child.addAttribute(nhisExprAttr);
+		PersonAttributeType whoRegisteredAttrType = getWhoRegisteredAttributeType();
+		child.addAttribute(new PersonAttribute(whoRegisteredAttrType,
+				WhoRegistered.CHPS_STAFF.name()));
 	}
 
 	public void registerClinic(String name, Integer parentId) {

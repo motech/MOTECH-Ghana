@@ -15,10 +15,30 @@
 			<list>
 				<idref bean="contextSessionAdvice" />
 				<idref bean="authenticateAdvice" />
+				<idref bean="runAsUserAdvice" />
 				<idref bean="proxyPrivilegesAdvice" />
 			</list>
 		</property>
 	</bean>
+
+	<bean id="chpsIdUserResolver" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<value>${modulePackage}.UserResolver</value>
+		</property>
+		<property name="target">
+			<bean class="${modulePackage}.PersonAttributeUserResolverImpl">
+				<property name="attributeName" value="CHPS ID" />
+				<property name="contextService" ref="contextService" />
+			</bean>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<idref bean="proxyPrivilegesAdvice" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="verbatimUserResolver" class="${modulePackage}.VerbatimUserResolverImpl" />
 
 	<bean id="contextSessionAdvice" class="${modulePackage}.advice.ContextSessionAdvice">
 		<property name="contextService" ref="contextService" />
@@ -29,6 +49,10 @@
 	</bean>
 
 	<bean id="proxyPrivilegesAdvice" class="${modulePackage}.advice.ProxyPrivilegesAdvice">
+		<property name="contextService" ref="contextService" />
+	</bean>
+	
+	<bean id="runAsUserAdvice" class="${modulePackage}.advice.RunAsUserAdvice">
 		<property name="contextService" ref="contextService" />
 	</bean>
 
@@ -77,6 +101,6 @@
 		<property name="serviceName" value="MessageServiceImplService" />
 		<property name="portName" value="MessageServiceImplPort" />
 		<property name="lookupServiceOnStartup" value="false" />
-	</bean> -->
+	</bean>-->
 
 </beans>

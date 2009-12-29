@@ -373,9 +373,6 @@ public class RegistrarBeanTest extends TestCase {
 				nhisExpirationType).getHydratedObject());
 		assertEquals(WhoRegistered.CHPS_STAFF, WhoRegistered.valueOf(child
 				.getAttribute(whoRegisteredType).getValue()));
-		// FIXME: Properly use registration date when registering a child.
-		assertEquals(regDate, child.getDateCreated());
-		assertEquals(nurseUser, child.getCreator());
 	}
 
 	public void testRegisterClinic() {
