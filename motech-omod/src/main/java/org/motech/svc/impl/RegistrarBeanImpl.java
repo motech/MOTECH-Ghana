@@ -56,6 +56,8 @@ import org.openmrs.PersonAddress;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.PersonName;
+import org.openmrs.Relationship;
+import org.openmrs.RelationshipType;
 import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.ConceptService;
@@ -143,6 +145,141 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 
 		patientService.savePatient(child);
+	}
+
+	public void registerChild(String firstName, String lastName,
+			String prefName, Date birthDate, Boolean birthDateEst, Gender sex,
+			Integer motherId, Boolean registeredGHS, String regNumberGHS,
+			Boolean insured, String nhis, Date nhisExpDate, String region,
+			String district, String community, String address, Integer clinic,
+			Boolean registerPregProgram, String primaryPhone,
+			ContactNumberType primaryPhoneType, String secondaryPhone,
+			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
+			MediaType mediaTypeReminder, String languageVoice,
+			String languageText, WhoRegistered whoRegistered) {
+
+		PatientService patientService = contextService.getPatientService();
+		PersonService personService = contextService.getPersonService();
+
+		Patient child = createPatient(firstName, lastName, prefName, birthDate,
+				birthDateEst, sex, registeredGHS, regNumberGHS, insured, nhis,
+				nhisExpDate, region, district, community, address, clinic,
+				primaryPhone, primaryPhoneType, secondaryPhone,
+				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
+				languageVoice, languageText, whoRegistered);
+
+		PersonAttributeType cwcRegNumAttrType = getCWCRegistrationNumberAttributeType();
+		child
+				.addAttribute(new PersonAttribute(cwcRegNumAttrType,
+						regNumberGHS));
+
+		child = patientService.savePatient(child);
+
+		if (motherId != null) {
+			Patient mother = patientService.getPatient(motherId);
+
+			RelationshipType parentChildRelationshipType = personService
+					.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD);
+			Relationship motherRelationship = new Relationship(mother, child,
+					parentChildRelationshipType);
+			personService.saveRelationship(motherRelationship);
+		}
+
+		if (registerPregProgram) {
+			addMessageProgramEnrollment(child.getPatientId(),
+					"Weekly Info Pregnancy Message Program");
+		}
+	}
+
+	private Patient createPatient(String firstName, String lastName,
+			String prefName, Date birthDate, Boolean birthDateEst, Gender sex,
+			Boolean registeredGHS, String regNumberGHS, Boolean insured,
+			String nhis, Date nhisExpDate, String region, String district,
+			String community, String address, Integer clinic,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
+			String languageVoice, String languageText,
+			WhoRegistered whoRegistered) {
+
+		Patient patient = new Patient();
+
+		PatientIdentifierType ghanaSerialIdType = getGhanaPatientIdType();
+
+		Location ghanaLocation = getGhanaLocation();
+		patient.addIdentifier(new PatientIdentifier(regNumberGHS,
+				ghanaSerialIdType, ghanaLocation));
+
+		// Storing preferred name as middle name
+		patient.addName(new PersonName(firstName, prefName, lastName));
+		patient.setGender(GenderTypeConverter.toOpenMRSString(sex));
+		patient.setBirthdate(birthDate);
+		patient.setBirthdateEstimated(birthDateEst);
+
+		PersonAddress personAddress = new PersonAddress();
+		personAddress.setAddress1(address);
+		personAddress.setCityVillage(community);
+		personAddress.setCountyDistrict(district);
+		personAddress.setRegion(region);
+		patient.addAddress(personAddress);
+
+		PersonAttributeType registeredGHSAttrType = getGHSRegisteredAttributeType();
+		patient.addAttribute(new PersonAttribute(registeredGHSAttrType,
+				registeredGHS.toString()));
+
+		PersonAttributeType insuredAttrType = getInsuredAttributeType();
+		patient.addAttribute(new PersonAttribute(insuredAttrType, insured
+				.toString()));
+
+		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
+		patient
+				.addAttribute(new PersonAttribute(nhisAttrType, nhis.toString()));
+
+		PersonAttributeType nhisExpDateAttrType = getNHISExpirationDateAttributeType();
+		patient.addAttribute(new PersonAttribute(nhisExpDateAttrType,
+				nhisExpDate.toString()));
+
+		PersonAttributeType clinicAttrType = getClinicAttributeType();
+		patient.addAttribute(new PersonAttribute(clinicAttrType, clinic
+				.toString()));
+
+		PersonAttributeType primaryPhoneAttrType = getPrimaryPhoneNumberAttributeType();
+		patient.addAttribute(new PersonAttribute(primaryPhoneAttrType,
+				primaryPhone));
+
+		PersonAttributeType primaryPhoneTypeAttrType = getPrimaryPhoneTypeAttributeType();
+		patient.addAttribute(new PersonAttribute(primaryPhoneTypeAttrType,
+				primaryPhoneType.name()));
+
+		PersonAttributeType secondaryPhoneAttrType = getSecondaryPhoneNumberAttributeType();
+		patient.addAttribute(new PersonAttribute(secondaryPhoneAttrType,
+				secondaryPhone));
+
+		PersonAttributeType secondaryPhoneTypeAttrType = getSecondaryPhoneTypeAttributeType();
+		patient.addAttribute(new PersonAttribute(secondaryPhoneTypeAttrType,
+				secondaryPhoneType.name()));
+
+		PersonAttributeType mediaTypeInfoAttrType = getMediaTypeInformationalAttributeType();
+		patient.addAttribute(new PersonAttribute(mediaTypeInfoAttrType,
+				mediaTypeInfo.name()));
+
+		PersonAttributeType mediaTypeReminderAttrType = getMediaTypeReminderAttributeType();
+		patient.addAttribute(new PersonAttribute(mediaTypeReminderAttrType,
+				mediaTypeReminder.name()));
+
+		PersonAttributeType languageTextAttrType = getLanguageTextAttributeType();
+		patient.addAttribute(new PersonAttribute(languageTextAttrType,
+				languageText));
+
+		PersonAttributeType languageVoiceAttrType = getLanguageVoiceAttributeType();
+		patient.addAttribute(new PersonAttribute(languageVoiceAttrType,
+				languageVoice));
+
+		PersonAttributeType whoRegisteredAttrType = getWhoRegisteredAttributeType();
+		patient.addAttribute(new PersonAttribute(whoRegisteredAttrType,
+				whoRegistered.name()));
+
+		return patient;
 	}
 
 	public void registerClinic(String name, Integer parentId) {
@@ -237,92 +374,24 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		User nurse = contextService.getAuthenticatedUser();
 
-		Patient mother = new Patient();
-
-		PatientIdentifierType ghanaSerialIdType = getGhanaPatientIdType();
+		Patient mother = createPatient(firstName, lastName, prefName,
+				birthDate, birthDateEst, Gender.FEMALE, registeredGHS,
+				regNumberGHS, insured, nhis, nhisExpDate, region, district,
+				community, address, clinic, primaryPhone, primaryPhoneType,
+				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
+				mediaTypeReminder, languageVoice, languageText, whoRegistered);
 
 		Location ghanaLocation = getGhanaLocation();
-		mother.addIdentifier(new PatientIdentifier(regNumberGHS,
-				ghanaSerialIdType, ghanaLocation));
-
-		// Storing preferred name as middle name
-		mother.addName(new PersonName(firstName, prefName, lastName));
-		mother.setGender(GenderTypeConverter.toOpenMRSString(Gender.FEMALE));
-		mother.setBirthdate(birthDate);
-		mother.setBirthdateEstimated(birthDateEst);
-
-		PersonAddress motherAddress = new PersonAddress();
-		motherAddress.setAddress1(address);
-		motherAddress.setCityVillage(community);
-		motherAddress.setCountyDistrict(district);
-		motherAddress.setRegion(region);
-		mother.addAddress(motherAddress);
-
-		PersonAttributeType registeredGHSAttrType = getGHSRegisteredAttributeType();
-		mother.addAttribute(new PersonAttribute(registeredGHSAttrType,
-				registeredGHS.toString()));
 
 		PersonAttributeType ancRegNumAttrType = getANCRegistrationNumberAttributeType();
 		mother
 				.addAttribute(new PersonAttribute(ancRegNumAttrType,
 						regNumberGHS));
 
-		PersonAttributeType insuredAttrType = getInsuredAttributeType();
-		mother.addAttribute(new PersonAttribute(insuredAttrType, insured
-				.toString()));
-
-		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
-		mother.addAttribute(new PersonAttribute(nhisAttrType, nhis.toString()));
-
-		PersonAttributeType nhisExpDateAttrType = getNHISExpirationDateAttributeType();
-		mother.addAttribute(new PersonAttribute(nhisExpDateAttrType,
-				nhisExpDate.toString()));
-
-		PersonAttributeType clinicAttrType = getClinicAttributeType();
-		mother.addAttribute(new PersonAttribute(clinicAttrType, clinic
-				.toString()));
-
 		PersonAttributeType hivStatusAttrType = this
 				.getHIVStatusAttributeType();
 		mother.addAttribute(new PersonAttribute(hivStatusAttrType, hivStatus
 				.name()));
-
-		PersonAttributeType primaryPhoneAttrType = getPrimaryPhoneNumberAttributeType();
-		mother.addAttribute(new PersonAttribute(primaryPhoneAttrType,
-				primaryPhone));
-
-		PersonAttributeType primaryPhoneTypeAttrType = getPrimaryPhoneTypeAttributeType();
-		mother.addAttribute(new PersonAttribute(primaryPhoneTypeAttrType,
-				primaryPhoneType.name()));
-
-		PersonAttributeType secondaryPhoneAttrType = getSecondaryPhoneNumberAttributeType();
-		mother.addAttribute(new PersonAttribute(secondaryPhoneAttrType,
-				secondaryPhone));
-
-		PersonAttributeType secondaryPhoneTypeAttrType = getSecondaryPhoneTypeAttributeType();
-		mother.addAttribute(new PersonAttribute(secondaryPhoneTypeAttrType,
-				secondaryPhoneType.name()));
-
-		PersonAttributeType mediaTypeInfoAttrType = getMediaTypeInformationalAttributeType();
-		mother.addAttribute(new PersonAttribute(mediaTypeInfoAttrType,
-				mediaTypeInfo.name()));
-
-		PersonAttributeType mediaTypeReminderAttrType = getMediaTypeReminderAttributeType();
-		mother.addAttribute(new PersonAttribute(mediaTypeReminderAttrType,
-				mediaTypeReminder.name()));
-
-		PersonAttributeType languageTextAttrType = getLanguageTextAttributeType();
-		mother.addAttribute(new PersonAttribute(languageTextAttrType,
-				languageText));
-
-		PersonAttributeType languageVoiceAttrType = getLanguageVoiceAttributeType();
-		mother.addAttribute(new PersonAttribute(languageVoiceAttrType,
-				languageVoice));
-
-		PersonAttributeType whoRegisteredAttrType = this
-				.getWhoRegisteredAttributeType();
-		mother.addAttribute(new PersonAttribute(whoRegisteredAttrType,
-				whoRegistered.name()));
 
 		PersonAttributeType religionAttrType = this.getReligionAttributeType();
 		mother.addAttribute(new PersonAttribute(religionAttrType, religion));

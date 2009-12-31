@@ -16,10 +16,7 @@ package org.motech.openmrs.module.web.controller;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,7 +29,6 @@ import org.motech.openmrs.module.MotechService;
 import org.motech.openmrs.module.xml.LocationXStream;
 import org.motech.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
 import org.openmrs.Location;
@@ -102,10 +98,11 @@ public class MotechModuleFormController {
 		return "/module/motechmodule/nurse";
 	}
 
-	@RequestMapping(value = "/module/motechmodule/patient", method = RequestMethod.GET)
-	public String viewPatientForm(ModelMap model) {
-		model.addAttribute("nurses", registrarBean.getAllNurses());
-		return "/module/motechmodule/patient";
+	@RequestMapping(value = "/module/motechmodule/child", method = RequestMethod.GET)
+	public String viewChildForm(ModelMap model) {
+		model.addAttribute("patients", registrarBean.getAllPatients());
+		model.addAttribute("locations", registrarBean.getAllClinics());
+		return "/module/motechmodule/child";
 	}
 
 	@RequestMapping(value = "/module/motechmodule/pregnancy", method = RequestMethod.GET)
@@ -176,28 +173,6 @@ public class MotechModuleFormController {
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 
-	private String[] convertToActualMessagePrograms(String[] messagePrograms) {
-		String[] messageProgramsActual = new String[] {};
-		if (messagePrograms != null) {
-			Set<String> messageProgramsInputSet = new HashSet<String>(Arrays
-					.asList(messagePrograms));
-			Set<String> messageProgramsActualSet = new HashSet<String>();
-			if (messageProgramsInputSet.contains("minuteTetanus")) {
-				messageProgramsActualSet
-						.add("Tetanus Information Message Program");
-				messageProgramsActualSet
-						.add("Tetanus Immunization Message Program");
-			}
-			if (messageProgramsInputSet.contains("weeklyPregnancy")) {
-				messageProgramsActualSet
-						.add("Weekly Pregnancy Message Program");
-			}
-			messageProgramsActual = messageProgramsActualSet
-					.toArray(new String[messageProgramsActualSet.size()]);
-		}
-		return messageProgramsActual;
-	}
-
 	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.POST)
 	public String registerClinic(@RequestParam("name") String name,
 			@RequestParam("parent") String parent) {
@@ -220,32 +195,53 @@ public class MotechModuleFormController {
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 
-	@RequestMapping(value = "/module/motechmodule/patient", method = RequestMethod.POST)
-	public String registerPatient(
-			@RequestParam("nurse") Integer nurseId,
-			@RequestParam("serialId") String serialId,
-			@RequestParam("name") String name,
-			@RequestParam("community") String community,
-			@RequestParam("location") String location,
+	@RequestMapping(value = "/module/motechmodule/child", method = RequestMethod.POST)
+	public String registerChild(@RequestParam("firstName") String firstName,
+			@RequestParam("lastName") String lastName,
+			@RequestParam("prefName") String prefName,
+			@RequestParam("birthDate") String birthDate,
+			@RequestParam("birthDateEst") String birthDateEst,
+			@RequestParam("sex") String sex,
+			@RequestParam("mother") String mother,
+			@RequestParam("registeredGHS") String registeredGHS,
+			@RequestParam("regNumberGHS") String regNumberGHS,
+			@RequestParam("insured") String insured,
 			@RequestParam("nhis") String nhis,
-			@RequestParam("patientPhone") String patientPhone,
-			@RequestParam("patientPhoneType") String patientPhoneType,
-			@RequestParam("dateOfBirth") String dateOfBirth,
-			@RequestParam("gender") String gender,
-			@RequestParam("language") String language,
-			@RequestParam("mediaType") String mediaType,
-			@RequestParam("deliveryTime") String deliveryTime,
-			@RequestParam(value = "messagePrograms", required = false) String[] messagePrograms)
+			@RequestParam("nhisExpDate") String nhisExpDate,
+			@RequestParam("region") String region,
+			@RequestParam("district") String district,
+			@RequestParam("community") String community,
+			@RequestParam("address") String address,
+			@RequestParam("clinic") String clinic,
+			@RequestParam("registerPregProgram") String registerPregProgram,
+			@RequestParam("primaryPhone") String primaryPhone,
+			@RequestParam("primaryPhoneType") String primaryPhoneType,
+			@RequestParam("secondaryPhone") String secondaryPhone,
+			@RequestParam("secondaryPhoneType") String secondaryPhoneType,
+			@RequestParam("mediaTypeInfo") String mediaTypeInfo,
+			@RequestParam("mediaTypeReminder") String mediaTypeReminder,
+			@RequestParam("languageVoice") String languageVoice,
+			@RequestParam("languageText") String languageText,
+			@RequestParam("whoRegistered") String whoRegistered)
 			throws NumberFormatException, ParseException {
-		log.debug("Register Patient");
+		log.debug("Register Child");
 
-		registrarBean.registerPatient(nurseId, serialId, name, community,
-				location, dateFormat.parse(dateOfBirth),
-				Gender.valueOf(gender), Integer.valueOf(nhis), patientPhone,
-				ContactNumberType.valueOf(patientPhoneType), language,
-				MediaType.valueOf(mediaType), DeliveryTime
-						.valueOf(deliveryTime),
-				convertToActualMessagePrograms(messagePrograms));
+		Integer motherId = null;
+		if (!mother.equals("")) {
+			motherId = Integer.valueOf(mother);
+		}
+		registrarBean.registerChild(firstName, lastName, prefName,
+				intDateFormat.parse(birthDate), Boolean.valueOf(birthDateEst),
+				Gender.valueOf(sex), motherId, Boolean.valueOf(registeredGHS),
+				regNumberGHS, Boolean.valueOf(insured), nhis, intDateFormat
+						.parse(nhisExpDate), region, district, community,
+				address, Integer.valueOf(clinic), Boolean
+						.valueOf(registerPregProgram), primaryPhone,
+				ContactNumberType.valueOf(primaryPhoneType), secondaryPhone,
+				ContactNumberType.valueOf(secondaryPhoneType), MediaType
+						.valueOf(mediaTypeInfo), MediaType
+						.valueOf(mediaTypeReminder), languageVoice,
+				languageText, WhoRegistered.valueOf(whoRegistered));
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 

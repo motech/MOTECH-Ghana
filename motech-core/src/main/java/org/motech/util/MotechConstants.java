@@ -76,4 +76,5 @@ public final class MotechConstants {
 	public static final String CONCEPT_GRAVIDA = "GRAVIDA";
 	public static final String CONCEPT_PARITY = "PARITY";
 	public static final String CONCEPT_HEMOGLOBIN = "HEMOGLOBIN";
+	public static final String RELATIONSHIP_TYPE_PARENT_CHILD = "Parent/Child";
 }

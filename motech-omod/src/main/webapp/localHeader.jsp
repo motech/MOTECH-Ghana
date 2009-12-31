@@ -26,9 +26,9 @@
 		</li>
 	</openmrs:hasPrivilege>
 	<openmrs:hasPrivilege privilege="Register MoTeCH Patient">
-		<li <c:if test='<%= request.getRequestURI().contains("patient") %>'>class="active"</c:if>>
-			<a href="${pageContext.request.contextPath}/module/motechmodule/patient.form">
-				<spring:message code="motechmodule.Patient.register"/>
+		<li <c:if test='<%= request.getRequestURI().contains("child") %>'>class="active"</c:if>>
+			<a href="${pageContext.request.contextPath}/module/motechmodule/child.form">
+				<spring:message code="motechmodule.Child.register"/>
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
