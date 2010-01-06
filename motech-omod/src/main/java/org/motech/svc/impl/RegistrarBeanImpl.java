@@ -589,6 +589,101 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		patientService.savePatient(patient);
 	}
 
+	public void editPatient(Integer id, String firstName, String lastName,
+			String prefName, Date birthDate, Boolean birthDateEst, Gender sex,
+			Boolean registeredGHS, String regNumberGHS, Boolean insured,
+			String nhis, Date nhisExpDate, String region, String district,
+			String community, String address, Integer clinic,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
+			String languageVoice, String languageText,
+			WhoRegistered whoRegistered) {
+
+		PatientService patientService = contextService.getPatientService();
+
+		Patient patient = patientService.getPatient(id);
+		if (patient == null) {
+			log.error("No matching patient for id: " + id);
+			return;
+		}
+
+		patient.setBirthdate(birthDate);
+		patient.setBirthdateEstimated(birthDateEst);
+		patient.setGender(GenderTypeConverter.toOpenMRSString(sex));
+
+		PersonName patientName = patient.getPersonName();
+		if (patientName == null) {
+			patientName = new PersonName(firstName, prefName, lastName);
+			patient.addName(patientName);
+		} else {
+			patientName.setGivenName(firstName);
+			patientName.setFamilyName(lastName);
+			patientName.setMiddleName(prefName);
+		}
+
+		PersonAddress patientAddress = patient.getPersonAddress();
+		if (patientAddress == null) {
+			patientAddress = new PersonAddress();
+			patientAddress.setRegion(region);
+			patientAddress.setCountyDistrict(district);
+			patientAddress.setCityVillage(community);
+			patientAddress.setAddress1(address);
+			patient.addAddress(patientAddress);
+		} else {
+			patientAddress.setRegion(region);
+			patientAddress.setCountyDistrict(district);
+			patientAddress.setCityVillage(community);
+			patientAddress.setAddress1(address);
+		}
+
+		PatientIdentifier patientId = patient.getPatientIdentifier();
+		if (patientId == null) {
+			patientId = new PatientIdentifier();
+			patientId.setIdentifierType(getGhanaPatientIdType());
+			patientId.setLocation(getGhanaLocation());
+			patientId.setIdentifier(regNumberGHS);
+			patient.addIdentifier(patientId);
+		} else {
+			patientId.setIdentifier(regNumberGHS);
+		}
+
+		patient.addAttribute(new PersonAttribute(
+				getGHSRegisteredAttributeType(), registeredGHS.toString()));
+		patient.addAttribute(new PersonAttribute(getInsuredAttributeType(),
+				insured.toString()));
+		patient.addAttribute(new PersonAttribute(getNHISNumberAttributeType(),
+				nhis));
+		patient.addAttribute(new PersonAttribute(
+				getNHISExpirationDateAttributeType(), nhisExpDate.toString()));
+		patient.addAttribute(new PersonAttribute(getClinicAttributeType(),
+				clinic.toString()));
+		patient.addAttribute(new PersonAttribute(
+				getPrimaryPhoneNumberAttributeType(), primaryPhone));
+		patient.addAttribute(new PersonAttribute(
+				getPrimaryPhoneTypeAttributeType(), primaryPhoneType.name()));
+		patient.addAttribute(new PersonAttribute(
+				getSecondaryPhoneNumberAttributeType(), secondaryPhone));
+		patient
+				.addAttribute(new PersonAttribute(
+						getSecondaryPhoneTypeAttributeType(),
+						secondaryPhoneType.name()));
+		patient
+				.addAttribute(new PersonAttribute(
+						getMediaTypeInformationalAttributeType(), mediaTypeInfo
+								.name()));
+		patient.addAttribute(new PersonAttribute(
+				getMediaTypeReminderAttributeType(), mediaTypeReminder.name()));
+		patient.addAttribute(new PersonAttribute(
+				getLanguageVoiceAttributeType(), languageVoice));
+		patient.addAttribute(new PersonAttribute(
+				getLanguageTextAttributeType(), languageText));
+		patient.addAttribute(new PersonAttribute(
+				getWhoRegisteredAttributeType(), whoRegistered.name()));
+
+		patientService.savePatient(patient);
+	}
+
 	public void stopPregnancyProgram(User nurse, Patient patient) {
 
 		String[] pregnancyPrograms = { "Weekly Pregnancy Message Program",
@@ -2278,4 +2373,5 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.GLOBAL_PROPERTY_TROUBLED_PHONE);
 	}
 	/* Factored out methods end */
+
 }

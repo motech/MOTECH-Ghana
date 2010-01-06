@@ -1082,6 +1082,164 @@ public class RegistrarBeanTest extends TestCase {
 				nhisExpirationType).getValue());
 	}
 
+	public void testEditPatientAll() {
+		Integer patientId = 2, clinic = 1;
+		String firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
+		String regNumberGHS = "123ABC", nhis = "456DEF";
+		String region = "Region", district = "District", community = "Community", address = "Address";
+		String primaryPhone = "12075555555", secondaryPhone = "12075555556";
+		String languageVoice = "LanguageVoice", languageText = "LanguageText";
+		Date date = new Date();
+		Gender sex = Gender.FEMALE;
+		Boolean birthDateEst = true, registeredGHS = true, insured = true;
+		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
+		MediaType mediaTypeInfo = MediaType.TEXT, mediaTypeReminder = MediaType.VOICE;
+		WhoRegistered whoRegistered = WhoRegistered.CHPS_STAFF;
+
+		Patient patient = new Patient(patientId);
+		Location ghanaLocation = new Location(1);
+
+		Capture<Patient> patientCap = new Capture<Patient>();
+
+		expect(contextService.getPatientService()).andReturn(patientService)
+				.atLeastOnce();
+		expect(contextService.getPersonService()).andReturn(personService)
+				.atLeastOnce();
+		expect(contextService.getLocationService()).andReturn(locationService)
+				.atLeastOnce();
+
+		expect(patientService.getPatient(patientId)).andReturn(patient);
+
+		expect(
+				patientService
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
+				.andReturn(ghanaIdType);
+		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
+				.andReturn(ghanaLocation);
+
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_GHS_REGISTERED))
+				.andReturn(ghsRegisteredAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
+				.andReturn(insuredAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER))
+				.andReturn(nhisAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE))
+				.andReturn(nhisExpirationType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
+				.andReturn(clinicAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
+				.andReturn(primaryPhoneAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE))
+				.andReturn(primaryPhoneTypeAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER))
+				.andReturn(secondaryPhoneAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE))
+				.andReturn(secondaryPhoneTypeAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL))
+				.andReturn(mediaTypeInformationalAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER))
+				.andReturn(mediaTypeReminderAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE))
+				.andReturn(languageVoiceAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT))
+				.andReturn(languageTextAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED))
+				.andReturn(whoRegisteredType);
+
+		expect(patientService.savePatient(capture(patientCap))).andReturn(
+				patient);
+
+		replay(contextService, patientService, motechService, personService,
+				locationService, userService, encounterService, obsService,
+				conceptService);
+
+		regBean.editPatient(patientId, firstName, lastName, prefName, date,
+				birthDateEst, sex, registeredGHS, regNumberGHS, insured, nhis,
+				date, region, district, community, address, clinic,
+				primaryPhone, primaryPhoneType, secondaryPhone,
+				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
+				languageVoice, languageText, whoRegistered);
+
+		verify(contextService, patientService, motechService, personService,
+				locationService, userService, encounterService, obsService,
+				conceptService);
+
+		Patient capturedPatient = patientCap.getValue();
+		assertEquals(date, capturedPatient.getBirthdate());
+		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
+		assertEquals(sex, GenderTypeConverter.valueOfOpenMRS(capturedPatient
+				.getGender()));
+		assertEquals(firstName, capturedPatient.getGivenName());
+		assertEquals(lastName, capturedPatient.getFamilyName());
+		assertEquals(prefName, capturedPatient.getMiddleName());
+		assertEquals(region, capturedPatient.getPersonAddress().getRegion());
+		assertEquals(district, capturedPatient.getPersonAddress()
+				.getCountyDistrict());
+		assertEquals(community, capturedPatient.getPersonAddress()
+				.getCityVillage());
+		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
+		assertEquals(regNumberGHS, capturedPatient.getPatientIdentifier(
+				ghanaIdType).getIdentifier());
+		assertEquals(registeredGHS, Boolean.valueOf(capturedPatient
+				.getAttribute(ghsRegisteredAttributeType).getValue()));
+		assertEquals(insured, Boolean.valueOf(capturedPatient.getAttribute(
+				insuredAttributeType).getValue()));
+		assertEquals(nhis, capturedPatient.getAttribute(nhisAttributeType)
+				.getValue());
+		assertEquals(date.toString(), capturedPatient.getAttribute(
+				nhisExpirationType).getValue());
+		assertEquals(clinic, Integer.valueOf(capturedPatient.getAttribute(
+				clinicAttributeType).getValue()));
+		assertEquals(primaryPhone, capturedPatient.getAttribute(
+				primaryPhoneAttributeType).getValue());
+		assertEquals(secondaryPhone, capturedPatient.getAttribute(
+				secondaryPhoneAttributeType).getValue());
+		assertEquals(primaryPhoneType, ContactNumberType
+				.valueOf(capturedPatient.getAttribute(
+						primaryPhoneTypeAttributeType).getValue()));
+		assertEquals(secondaryPhoneType, ContactNumberType
+				.valueOf(capturedPatient.getAttribute(
+						secondaryPhoneTypeAttributeType).getValue()));
+		assertEquals(mediaTypeInfo, MediaType.valueOf(capturedPatient
+				.getAttribute(mediaTypeInformationalAttributeType).getValue()));
+		assertEquals(mediaTypeReminder, MediaType.valueOf(capturedPatient
+				.getAttribute(mediaTypeReminderAttributeType).getValue()));
+		assertEquals(languageText, capturedPatient.getAttribute(
+				languageTextAttributeType).getValue());
+		assertEquals(languageVoice, capturedPatient.getAttribute(
+				languageVoiceAttributeType).getValue());
+		assertEquals(whoRegistered, WhoRegistered.valueOf(capturedPatient
+				.getAttribute(whoRegisteredType).getValue()));
+	}
+
 	public void testStopPregnancyProgram() {
 
 		String pregnancyProgram1 = "Weekly Pregnancy Message Program", pregnancyProgram2 = "Weekly Info Pregnancy Message Program";

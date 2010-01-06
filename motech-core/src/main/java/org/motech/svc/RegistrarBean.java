@@ -97,6 +97,17 @@ public interface RegistrarBean {
 			MediaType mediaType, DeliveryTime deliveryTime,
 			String[] messagePrograms);
 
+	public void editPatient(Integer id, String firstName, String lastName,
+			String prefName, Date birthDate, Boolean birthDateEst, Gender sex,
+			Boolean registeredGHS, String regNumberGHS, Boolean insured,
+			String nhis, Date nhisExpDate, String region, String district,
+			String community, String address, Integer clinic,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
+			String languageVoice, String languageText,
+			WhoRegistered whoRegistered);
+
 	@RunAsUser
 	public void editPatient(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
