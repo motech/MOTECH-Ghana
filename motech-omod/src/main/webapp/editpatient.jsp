@@ -140,6 +140,7 @@
 		<td><label for="primaryPhoneType">Primary Phone Ownership:</label></td>
 		<td>
 			<form:select path="primaryPhoneType">
+				<form:option value="" label="" />
 				<form:option value="PERSONAL" label="Personal phone" />
 				<form:option value="HOUSEHOLD" label="Owned by household" />
 				<form:option value="PUBLIC" label="Public phone" />
@@ -156,6 +157,7 @@
 		<td><label for="secondaryPhoneType">Secondary Phone Ownership:</label></td>
 		<td>
 			<form:select path="secondaryPhoneType">
+				<form:option value="" label="" />
 				<form:option value="PERSONAL" label="Personal phone" />
 				<form:option value="HOUSEHOLD" label="Owned by household" />
 				<form:option value="PUBLIC" label="Public phone" />
@@ -167,6 +169,7 @@
 		<td><label for="mediaTypeInfo">Weekly Info Message Format:</label></td>
 		<td>
 			<form:select path="mediaTypeInfo">
+				<form:option value="" label="" />
 				<form:option value="TEXT" label="Text" />
 				<form:option value="VOICE" label="Voice" />
 			</form:select>
@@ -177,6 +180,7 @@
 		<td><label for="mediaTypeReminder">Notification/Reminder Format:</label></td>
 		<td>
 			<form:select path="mediaTypeReminder">
+				<form:option value="" label="" />
 				<form:option value="TEXT" label="Text" />
 				<form:option value="VOICE" label="Voice" />
 			</form:select>
@@ -187,6 +191,7 @@
 		<td><label for="languageVoice">Language for Voice Messages:</label></td>
 		<td>
 			<form:select path="languageVoice">
+				<form:option value="" label="" />
 				<form:option value="en" label="English" />
 				<form:option value="kas" label="Kassim" />
 				<form:option value="nan" label="Nankam" />
@@ -198,6 +203,7 @@
 		<td><label for="languageText">Language for Text Messages:</label></td>
 		<td>
 			<form:select path="languageText">
+				<form:option value="" label="" />
 				<form:option value="en" label="English" />
 				<form:option value="kas" label="Kassim" />
 				<form:option value="nan" label="Nankam" />
@@ -210,6 +216,7 @@
 		<td><label for="whoRegistered">Who Registered:</label></td>
 		<td>
 			<form:select path="whoRegistered">
+				<form:option value="" label="" />
 				<form:option value="MOTHER" label="Mother" />
 				<form:option value="FATHER" label="Father" />
 				<form:option value="FAMILY_MEMBER" label="Family member" />

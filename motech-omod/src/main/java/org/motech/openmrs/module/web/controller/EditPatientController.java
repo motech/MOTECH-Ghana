@@ -14,6 +14,7 @@ import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
@@ -50,11 +51,15 @@ public class EditPatientController {
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		String datePattern = "dd/MM/yyyy";
+		SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
 		dateFormat.setLenient(false);
 
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(
-				dateFormat, false));
+				dateFormat, true, datePattern.length()));
+		binder
+				.registerCustomEditor(String.class, new StringTrimmerEditor(
+						true));
 	}
 
 	@ModelAttribute("locations")

@@ -648,38 +648,68 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			patientId.setIdentifier(regNumberGHS);
 		}
 
-		patient.addAttribute(new PersonAttribute(
-				getGHSRegisteredAttributeType(), registeredGHS.toString()));
-		patient.addAttribute(new PersonAttribute(getInsuredAttributeType(),
-				insured.toString()));
-		patient.addAttribute(new PersonAttribute(getNHISNumberAttributeType(),
-				nhis));
-		patient.addAttribute(new PersonAttribute(
-				getNHISExpirationDateAttributeType(), nhisExpDate.toString()));
-		patient.addAttribute(new PersonAttribute(getClinicAttributeType(),
-				clinic.toString()));
-		patient.addAttribute(new PersonAttribute(
-				getPrimaryPhoneNumberAttributeType(), primaryPhone));
-		patient.addAttribute(new PersonAttribute(
-				getPrimaryPhoneTypeAttributeType(), primaryPhoneType.name()));
-		patient.addAttribute(new PersonAttribute(
-				getSecondaryPhoneNumberAttributeType(), secondaryPhone));
-		patient
-				.addAttribute(new PersonAttribute(
-						getSecondaryPhoneTypeAttributeType(),
-						secondaryPhoneType.name()));
-		patient
-				.addAttribute(new PersonAttribute(
-						getMediaTypeInformationalAttributeType(), mediaTypeInfo
-								.name()));
-		patient.addAttribute(new PersonAttribute(
-				getMediaTypeReminderAttributeType(), mediaTypeReminder.name()));
-		patient.addAttribute(new PersonAttribute(
-				getLanguageVoiceAttributeType(), languageVoice));
-		patient.addAttribute(new PersonAttribute(
-				getLanguageTextAttributeType(), languageText));
-		patient.addAttribute(new PersonAttribute(
-				getWhoRegisteredAttributeType(), whoRegistered.name()));
+		if (registeredGHS != null) {
+			patient.addAttribute(new PersonAttribute(
+					getGHSRegisteredAttributeType(), registeredGHS.toString()));
+		}
+		if (insured != null) {
+			patient.addAttribute(new PersonAttribute(getInsuredAttributeType(),
+					insured.toString()));
+		}
+		if (nhis != null) {
+			patient.addAttribute(new PersonAttribute(
+					getNHISNumberAttributeType(), nhis));
+		}
+		if (nhisExpDate != null) {
+			patient.addAttribute(new PersonAttribute(
+					getNHISExpirationDateAttributeType(), nhisExpDate
+							.toString()));
+		}
+		if (clinic != null) {
+			patient.addAttribute(new PersonAttribute(getClinicAttributeType(),
+					clinic.toString()));
+		}
+		if (primaryPhone != null) {
+			patient.addAttribute(new PersonAttribute(
+					getPrimaryPhoneNumberAttributeType(), primaryPhone));
+		}
+		if (primaryPhoneType != null) {
+			patient
+					.addAttribute(new PersonAttribute(
+							getPrimaryPhoneTypeAttributeType(),
+							primaryPhoneType.name()));
+		}
+		if (secondaryPhone != null) {
+			patient.addAttribute(new PersonAttribute(
+					getSecondaryPhoneNumberAttributeType(), secondaryPhone));
+		}
+		if (secondaryPhoneType != null) {
+			patient.addAttribute(new PersonAttribute(
+					getSecondaryPhoneTypeAttributeType(), secondaryPhoneType
+							.name()));
+		}
+		if (mediaTypeInfo != null) {
+			patient.addAttribute(new PersonAttribute(
+					getMediaTypeInformationalAttributeType(), mediaTypeInfo
+							.name()));
+		}
+		if (mediaTypeReminder != null) {
+			patient.addAttribute(new PersonAttribute(
+					getMediaTypeReminderAttributeType(), mediaTypeReminder
+							.name()));
+		}
+		if (languageVoice != null) {
+			patient.addAttribute(new PersonAttribute(
+					getLanguageVoiceAttributeType(), languageVoice));
+		}
+		if (languageText != null) {
+			patient.addAttribute(new PersonAttribute(
+					getLanguageTextAttributeType(), languageText));
+		}
+		if (whoRegistered != null) {
+			patient.addAttribute(new PersonAttribute(
+					getWhoRegisteredAttributeType(), whoRegistered.name()));
+		}
 
 		patientService.savePatient(patient);
 	}
