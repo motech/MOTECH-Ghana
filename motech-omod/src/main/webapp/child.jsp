@@ -220,14 +220,6 @@
 		</td>
 	</tr>
 	<tr>
-		<td><label for="religion">Religion:</label></td>
-		<td><input name="religion" value="Unspecified" /></td>
-	</tr>
-	<tr>
-		<td><label for="occupation">Occupation:</label></td>
-		<td><input name="occupation" value="Unspecified" /></td>
-	</tr>
-	<tr>
 		<td colspan="2"><input type="submit" /></td>
 	</tr>
 </table>
