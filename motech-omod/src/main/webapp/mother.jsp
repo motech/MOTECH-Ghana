@@ -71,7 +71,7 @@
 		<td><label for="region">Region:</label></td>
 		<td>
 			<select name="region">
-				<c:forEach items="${locations}" var="location">
+				<c:forEach items="${regions}" var="location">
 					<option value="${location.name}">${location.name}</option>
 				</c:forEach>
 			</select>
@@ -81,7 +81,7 @@
 		<td><label for="district">District:</label></td>
 		<td>
 			<select name="district">
-				<c:forEach items="${locations}" var="location">
+				<c:forEach items="${districts}" var="location">
 					<option value="${location.name}">${location.name}</option>
 				</c:forEach>
 			</select>
@@ -91,7 +91,7 @@
 		<td><label for="community">Community:</label></td>
 		<td>
 			<select name="community">
-				<c:forEach items="${locations}" var="location">
+				<c:forEach items="${communities}" var="location">
 					<option value="${location.name}">${location.name}</option>
 				</c:forEach>
 			</select>
@@ -105,7 +105,7 @@
 		<td><label for="clinic">Nearest Clinic:</label></td>
 		<td>
 			<select name="clinic">
-				<c:forEach items="${locations}" var="location">
+				<c:forEach items="${clinics}" var="location">
 					<option value="${location.locationId}">${location.name}</option>
 				</c:forEach>
 			</select>

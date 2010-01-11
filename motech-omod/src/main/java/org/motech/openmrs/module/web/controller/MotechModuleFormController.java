@@ -73,8 +73,14 @@ public class MotechModuleFormController {
 	@RequestMapping(value = "/module/motechmodule/mother", method = RequestMethod.GET)
 	public String viewPregnantMotherForm(ModelMap model) {
 
-		List<Location> locations = registrarBean.getAllClinics();
-		model.addAttribute("locations", locations);
+		model.addAttribute("regions", contextService.getMotechService()
+				.getAllRegions());
+		model.addAttribute("districts", contextService.getMotechService()
+				.getAllDistricts());
+		model.addAttribute("communities", contextService.getMotechService()
+				.getAllCommunities());
+		model.addAttribute("clinics", contextService.getMotechService()
+				.getAllClinics());
 
 		return "/module/motechmodule/mother";
 	}
@@ -101,7 +107,14 @@ public class MotechModuleFormController {
 	@RequestMapping(value = "/module/motechmodule/child", method = RequestMethod.GET)
 	public String viewChildForm(ModelMap model) {
 		model.addAttribute("patients", registrarBean.getAllPatients());
-		model.addAttribute("locations", registrarBean.getAllClinics());
+		model.addAttribute("regions", contextService.getMotechService()
+				.getAllRegions());
+		model.addAttribute("districts", contextService.getMotechService()
+				.getAllDistricts());
+		model.addAttribute("communities", contextService.getMotechService()
+				.getAllCommunities());
+		model.addAttribute("clinics", contextService.getMotechService()
+				.getAllClinics());
 		return "/module/motechmodule/child";
 	}
 

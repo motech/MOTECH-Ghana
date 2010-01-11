@@ -13,6 +13,7 @@ import org.motech.model.MessageProgramEnrollment;
 import org.motech.model.MessageStatus;
 import org.motech.model.ScheduledMessage;
 import org.motech.model.TroubledPhone;
+import org.openmrs.Location;
 
 /**
  * The interface definition for the motech server's data access requirements.
@@ -80,4 +81,23 @@ public interface MotechDAO {
 
 	GeneralPatientEncounter saveGeneralPatientEncounter(
 			GeneralPatientEncounter encounter);
+
+	List<Location> getAllCountries();
+
+	List<Location> getAllRegions();
+
+	List<Location> getRegions(String country);
+
+	List<Location> getAllDistricts();
+
+	List<Location> getDistricts(String country, String region);
+
+	List<Location> getAllCommunities();
+
+	List<Location> getCommunities(String country, String region, String district);
+
+	List<Location> getAllClinics();
+
+	List<Location> getClinics(String country, String region, String district,
+			String community);
 }

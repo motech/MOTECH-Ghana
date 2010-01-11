@@ -29,6 +29,7 @@ import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
 import org.motech.openmrs.module.MotechService;
 import org.motech.svc.RegistrarBean;
+import org.openmrs.Location;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.api.impl.BaseOpenmrsService;
 
@@ -189,5 +190,43 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	public GeneralPatientEncounter saveGeneralPatientEncounter(
 			GeneralPatientEncounter encounter) {
 		return motechDAO.saveGeneralPatientEncounter(encounter);
+	}
+
+	public List<Location> getAllCountries() {
+		return motechDAO.getAllCountries();
+	}
+
+	public List<Location> getAllRegions() {
+		return motechDAO.getAllRegions();
+	}
+
+	public List<Location> getRegions(String country) {
+		return motechDAO.getRegions(country);
+	}
+
+	public List<Location> getAllDistricts() {
+		return motechDAO.getAllDistricts();
+	}
+
+	public List<Location> getDistricts(String country, String region) {
+		return motechDAO.getDistricts(country, region);
+	}
+
+	public List<Location> getAllCommunities() {
+		return motechDAO.getAllCommunities();
+	}
+
+	public List<Location> getCommunities(String country, String region,
+			String district) {
+		return motechDAO.getCommunities(country, region, district);
+	}
+
+	public List<Location> getAllClinics() {
+		return motechDAO.getAllClinics();
+	}
+
+	public List<Location> getClinics(String country, String region,
+			String district, String community) {
+		return motechDAO.getClinics(country, region, district, community);
 	}
 }

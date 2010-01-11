@@ -17,6 +17,7 @@ import org.motech.model.MessageStatus;
 import org.motech.model.ScheduledMessage;
 import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
+import org.openmrs.Location;
 
 /**
  * An implementation of the motech data access object interface, implemented
@@ -248,5 +249,106 @@ public class HibernateMotechDAO implements MotechDAO {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(encounter);
 		return encounter;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Location> getAllCountries() {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Location>) session.createCriteria(Location.class).add(
+				Restrictions.isNotNull("country")).add(
+				Restrictions.isNull("region")).add(
+				Restrictions.isNull("countyDistrict")).add(
+				Restrictions.isNull("cityVillage")).add(
+				Restrictions.isNull("neighborhoodCell")).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Location> getAllRegions() {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Location>) session.createCriteria(Location.class).add(
+				Restrictions.isNotNull("country")).add(
+				Restrictions.isNotNull("region")).add(
+				Restrictions.isNull("countyDistrict")).add(
+				Restrictions.isNull("cityVillage")).add(
+				Restrictions.isNull("neighborhoodCell")).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Location> getRegions(String country) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Location>) session.createCriteria(Location.class).add(
+				Restrictions.eq("country", country)).add(
+				Restrictions.isNotNull("region")).add(
+				Restrictions.isNull("countyDistrict")).add(
+				Restrictions.isNull("cityVillage")).add(
+				Restrictions.isNull("neighborhoodCell")).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Location> getAllDistricts() {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Location>) session.createCriteria(Location.class).add(
+				Restrictions.isNotNull("country")).add(
+				Restrictions.isNotNull("region")).add(
+				Restrictions.isNotNull("countyDistrict")).add(
+				Restrictions.isNull("cityVillage")).add(
+				Restrictions.isNull("neighborhoodCell")).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Location> getDistricts(String country, String region) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Location>) session.createCriteria(Location.class).add(
+				Restrictions.eq("country", country)).add(
+				Restrictions.eq("region", region)).add(
+				Restrictions.isNotNull("countyDistrict")).add(
+				Restrictions.isNull("cityVillage")).add(
+				Restrictions.isNull("neighborhoodCell")).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Location> getAllCommunities() {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Location>) session.createCriteria(Location.class).add(
+				Restrictions.isNotNull("country")).add(
+				Restrictions.isNotNull("region")).add(
+				Restrictions.isNotNull("countyDistrict")).add(
+				Restrictions.isNotNull("cityVillage")).add(
+				Restrictions.isNull("neighborhoodCell")).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Location> getCommunities(String country, String region,
+			String district) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Location>) session.createCriteria(Location.class).add(
+				Restrictions.eq("country", country)).add(
+				Restrictions.eq("region", region)).add(
+				Restrictions.eq("countyDistrict", district)).add(
+				Restrictions.isNotNull("cityVillage")).add(
+				Restrictions.isNull("neighborhoodCell")).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Location> getAllClinics() {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Location>) session.createCriteria(Location.class).add(
+				Restrictions.isNotNull("country")).add(
+				Restrictions.isNotNull("region")).add(
+				Restrictions.isNotNull("countyDistrict")).add(
+				Restrictions.isNotNull("cityVillage")).add(
+				Restrictions.isNotNull("neighborhoodCell")).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Location> getClinics(String country, String region,
+			String district, String community) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Location>) session.createCriteria(Location.class).add(
+				Restrictions.eq("country", country)).add(
+				Restrictions.eq("region", region)).add(
+				Restrictions.eq("countyDistrict", district)).add(
+				Restrictions.eq("cityVillage", community)).add(
+				Restrictions.isNotNull("neighborhoodCell")).list();
 	}
 }

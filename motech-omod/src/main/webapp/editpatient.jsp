@@ -94,7 +94,7 @@
 		<td><label for="region">Region:</label></td>
 		<td>
 			<form:select path="region">
-				<form:options items="${locations}" itemValue="name" itemLabel="name" />
+				<form:options items="${regions}" itemValue="name" itemLabel="name" />
 			</form:select>
 		</td>
 		<td><form:errors path="region" cssClass="error" /></td>
@@ -103,7 +103,7 @@
 		<td><label for="district">District:</label></td>
 		<td>
 			<form:select path="district">
-				<form:options items="${locations}" itemValue="name" itemLabel="name" />
+				<form:options items="${districts}" itemValue="name" itemLabel="name" />
 			</form:select>
 		</td>
 		<td><form:errors path="district" cssClass="error" /></td>
@@ -112,7 +112,7 @@
 		<td><label for="community">Community:</label></td>
 		<td>
 			<form:select path="community">
-				<form:options items="${locations}" itemValue="name" itemLabel="name" />
+				<form:options items="${communities}" itemValue="name" itemLabel="name" />
 			</form:select>
 		</td>
 		<td><form:errors path="community" cssClass="error" /></td>
@@ -126,7 +126,7 @@
 		<td><label for="clinic">Nearest Clinic:</label></td>
 		<td>
 			<form:select path="clinic">
-				<form:options items="${locations}" itemValue="locationId" itemLabel="name" />
+				<form:options items="${clinics}" itemValue="locationId" itemLabel="name" />
 			</form:select>
 		</td>
 		<td><form:errors path="clinic" cssClass="error" /></td>

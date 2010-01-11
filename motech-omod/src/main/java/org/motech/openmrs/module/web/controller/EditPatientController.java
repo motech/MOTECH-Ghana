@@ -62,9 +62,24 @@ public class EditPatientController {
 						true));
 	}
 
-	@ModelAttribute("locations")
-	public List<Location> getLocations() {
-		return registrarBean.getAllClinics();
+	@ModelAttribute("regions")
+	public List<Location> getRegions() {
+		return contextService.getMotechService().getAllRegions();
+	}
+
+	@ModelAttribute("districts")
+	public List<Location> getDistricts() {
+		return contextService.getMotechService().getAllDistricts();
+	}
+
+	@ModelAttribute("communities")
+	public List<Location> getCommunities() {
+		return contextService.getMotechService().getAllCommunities();
+	}
+
+	@ModelAttribute("clinics")
+	public List<Location> getClinics() {
+		return contextService.getMotechService().getAllClinics();
 	}
 
 	@ModelAttribute("patient")

@@ -289,12 +289,15 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		Location clinic = new Location();
 		clinic.setName(name);
 		clinic.setDescription("A Ghana Clinic Location");
-		clinic = locationService.saveLocation(clinic);
+		locationService.saveLocation(clinic);
 
 		if (parentId != null) {
 			Location parent = locationService.getLocation(parentId);
 			parent.addChildLocation(clinic);
 			locationService.saveLocation(parent);
+
+			copyParentHierarchy(parent, clinic);
+			locationService.saveLocation(clinic);
 		}
 	}
 
@@ -1415,9 +1418,18 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		createLocation(MotechConstants.LOCATION_KASSENA_NANKANA,
 				"Kassena-Nankana District in Upper East Region, Ghana",
 				upperEast, admin);
-		createLocation(MotechConstants.LOCATION_KASSENA_NANKANA_WEST,
+		Location kassenaNankanaWest = createLocation(
+				MotechConstants.LOCATION_KASSENA_NANKANA_WEST,
 				"Kassena-Nankana West District in Upper East Region, Ghana",
 				upperEast, admin);
+		Location westTest = createLocation(
+				"West Test Community",
+				"Test Community in Kassena-Nankana West District, Upper East Region, Ghana",
+				kassenaNankanaWest, admin);
+		createLocation(
+				"West Test Clinic",
+				"Test Clinic in West Test Community, Kassena-Nankana West District, Upper East Region, Ghana",
+				westTest, admin);
 
 		log.info("Verifying Encounter Types Exist");
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT,
@@ -1557,17 +1569,61 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		if (location == null) {
 			log.info(name + " Location Does Not Exist - Creating");
 			location = new Location();
-			location.setName(name);
-			location.setDescription(description);
-			location.setCreator(creator);
-			location = locationService.saveLocation(location);
+		}
+		location.setName(name);
+		location.setDescription(description);
+		location.setCreator(creator);
 
-			if (parent != null) {
-				parent.addChildLocation(location);
-				locationService.saveLocation(parent);
-			}
+		copyParentHierarchy(parent, location);
+
+		locationService.saveLocation(location);
+
+		if (parent != null
+				&& (parent.getChildLocations() == null || !parent
+						.getChildLocations().contains(location))) {
+			parent.addChildLocation(location);
+			locationService.saveLocation(parent);
 		}
 		return location;
+	}
+
+	private void copyParentHierarchy(Location parent, Location child) {
+		child.setCountry(null);
+		child.setRegion(null);
+		child.setCountyDistrict(null);
+		child.setCityVillage(null);
+		child.setNeighborhoodCell(null);
+
+		if (parent == null) {
+			child.setCountry(child.getName());
+		} else {
+			String country = parent.getCountry();
+			String region = parent.getRegion();
+			String district = parent.getCountyDistrict();
+			String community = parent.getCityVillage();
+
+			if (country != null) {
+				child.setCountry(country);
+				if (region != null) {
+					child.setRegion(region);
+					if (district != null) {
+						child.setCountyDistrict(district);
+						if (community != null) {
+							child.setCityVillage(community);
+							child.setNeighborhoodCell(child.getName());
+						} else {
+							child.setCityVillage(child.getName());
+						}
+					} else {
+						child.setCountyDistrict(child.getName());
+					}
+				} else {
+					child.setRegion(child.getName());
+				}
+			} else {
+				child.setCountry(child.getName());
+			}
+		}
 	}
 
 	private void createEncounterType(String name, String description,

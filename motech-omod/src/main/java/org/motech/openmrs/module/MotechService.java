@@ -27,6 +27,7 @@ import org.motech.model.MessageStatus;
 import org.motech.model.ScheduledMessage;
 import org.motech.model.TroubledPhone;
 import org.motech.svc.RegistrarBean;
+import org.openmrs.Location;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
@@ -128,4 +129,32 @@ public interface MotechService extends OpenmrsService {
 	@Transactional
 	GeneralPatientEncounter saveGeneralPatientEncounter(
 			GeneralPatientEncounter encounter);
+
+	@Transactional(readOnly = true)
+	List<Location> getAllCountries();
+
+	@Transactional(readOnly = true)
+	List<Location> getAllRegions();
+
+	@Transactional(readOnly = true)
+	List<Location> getRegions(String country);
+
+	@Transactional(readOnly = true)
+	List<Location> getAllDistricts();
+
+	@Transactional(readOnly = true)
+	List<Location> getDistricts(String country, String region);
+
+	@Transactional(readOnly = true)
+	List<Location> getAllCommunities();
+
+	@Transactional(readOnly = true)
+	List<Location> getCommunities(String country, String region, String district);
+
+	@Transactional(readOnly = true)
+	List<Location> getAllClinics();
+
+	@Transactional(readOnly = true)
+	List<Location> getClinics(String country, String region, String district,
+			String community);
 }

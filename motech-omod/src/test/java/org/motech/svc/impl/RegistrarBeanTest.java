@@ -440,16 +440,28 @@ public class RegistrarBeanTest extends TestCase {
 		Integer clinicId = 3;
 		Integer parentId = 2;
 
+		String country = "Country";
+		String region = "Region";
+		String district = "District";
+		String community = "Community";
+
+		Location clinicparent = new Location(parentId);
+		clinicparent.setCountry(country);
+		clinicparent.setRegion(region);
+		clinicparent.setCountyDistrict(district);
+		clinicparent.setCityVillage(community);
+
 		expect(contextService.getLocationService()).andReturn(locationService);
 
-		Capture<Location> locationCap = new Capture<Location>();
+		Capture<Location> clinicCap = new Capture<Location>();
 		Capture<Location> parentCap = new Capture<Location>();
 
-		expect(locationService.saveLocation(capture(locationCap))).andReturn(
+		expect(locationService.saveLocation(capture(clinicCap))).andReturn(
 				new Location(clinicId));
-		expect(locationService.getLocation(parentId)).andReturn(
-				new Location(parentId));
+		expect(locationService.getLocation(parentId)).andReturn(clinicparent);
 		expect(locationService.saveLocation(capture(parentCap))).andReturn(
+				new Location());
+		expect(locationService.saveLocation(capture(clinicCap))).andReturn(
 				new Location());
 
 		replay(contextService, locationService);
@@ -458,16 +470,22 @@ public class RegistrarBeanTest extends TestCase {
 
 		verify(contextService, locationService);
 
-		Location location = locationCap.getValue();
-		assertEquals(clinicName, location.getName());
-		assertEquals(description, location.getDescription());
+		Location capturedClinic = clinicCap.getValue();
+		assertEquals(clinicName, capturedClinic.getName());
+		assertEquals(description, capturedClinic.getDescription());
 
-		Location parent = parentCap.getValue();
-		Set<Location> childLocations = parent.getChildLocations();
+		assertEquals(country, capturedClinic.getCountry());
+		assertEquals(region, capturedClinic.getRegion());
+		assertEquals(district, capturedClinic.getCountyDistrict());
+		assertEquals(community, capturedClinic.getCityVillage());
+		assertEquals(clinicName, capturedClinic.getNeighborhoodCell());
+
+		Location capturedParent = parentCap.getValue();
+		Set<Location> childLocations = capturedParent.getChildLocations();
 		assertEquals(1, childLocations.size());
 
 		Location childLocation = childLocations.iterator().next();
-		assertEquals(clinicId, childLocation.getLocationId());
+		assertEquals(clinicName, childLocation.getName());
 		assertEquals(parentId, childLocation.getParentLocation()
 				.getLocationId());
 	}

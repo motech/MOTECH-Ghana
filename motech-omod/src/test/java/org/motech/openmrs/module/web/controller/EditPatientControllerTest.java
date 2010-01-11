@@ -12,6 +12,7 @@ import junit.framework.TestCase;
 
 import org.motech.model.WhoRegistered;
 import org.motech.openmrs.module.ContextService;
+import org.motech.openmrs.module.MotechService;
 import org.motech.openmrs.module.web.model.WebPatient;
 import org.motech.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
@@ -29,6 +30,7 @@ public class EditPatientControllerTest extends TestCase {
 	RegistrarBean registrarBean;
 	EditPatientController controller;
 	ContextService contextService;
+	MotechService motechService;
 	Errors errors;
 	SessionStatus status;
 	PatientService patientService;
@@ -40,6 +42,7 @@ public class EditPatientControllerTest extends TestCase {
 		controller = new EditPatientController();
 		controller.setRegistrarBean(registrarBean);
 		controller.setContextService(contextService);
+		motechService = createMock(MotechService.class);
 
 		patientService = createMock(PatientService.class);
 		errors = createMock(Errors.class);
@@ -51,19 +54,58 @@ public class EditPatientControllerTest extends TestCase {
 		controller = null;
 		registrarBean = null;
 		patientService = null;
+		contextService = null;
+		motechService = null;
 		errors = null;
 		status = null;
 	}
 
-	public void testGetLocations() {
-		expect(registrarBean.getAllClinics()).andReturn(
+	public void testGetRegions() {
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(motechService.getAllRegions()).andReturn(
 				new ArrayList<Location>());
 
-		replay(registrarBean);
+		replay(contextService, motechService);
 
-		controller.getLocations();
+		controller.getRegions();
 
-		verify(registrarBean);
+		verify(contextService, motechService);
+	}
+
+	public void testGetDistricts() {
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(motechService.getAllDistricts()).andReturn(
+				new ArrayList<Location>());
+
+		replay(contextService, motechService);
+
+		controller.getDistricts();
+
+		verify(contextService, motechService);
+	}
+
+	public void testGetCommunities() {
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(motechService.getAllCommunities()).andReturn(
+				new ArrayList<Location>());
+
+		replay(contextService, motechService);
+
+		controller.getCommunities();
+
+		verify(contextService, motechService);
+	}
+
+	public void testGetClinics() {
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(motechService.getAllClinics()).andReturn(
+				new ArrayList<Location>());
+
+		replay(contextService, motechService);
+
+		controller.getClinics();
+
+		verify(contextService, motechService);
 	}
 
 	public void testGetWebPatientMissingId() {
