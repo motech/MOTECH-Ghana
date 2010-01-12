@@ -26,7 +26,7 @@
 			<value>${modulePackage}.UserResolver</value>
 		</property>
 		<property name="target">
-			<bean class="${modulePackage}.PersonAttributeUserResolverImpl">
+			<bean class="${modulePackage}.impl.PersonAttributeUserResolverImpl">
 				<property name="attributeName" value="CHPS ID" />
 				<property name="contextService" ref="contextService" />
 			</bean>
@@ -38,7 +38,7 @@
 		</property>
 	</bean>
 	
-	<bean id="verbatimUserResolver" class="${modulePackage}.VerbatimUserResolverImpl" />
+	<bean id="verbatimUserResolver" class="${modulePackage}.impl.VerbatimUserResolverImpl" />
 
 	<bean id="contextSessionAdvice" class="${modulePackage}.advice.ContextSessionAdvice">
 		<property name="contextService" ref="contextService" />

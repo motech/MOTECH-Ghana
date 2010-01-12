@@ -1,7 +1,10 @@
-package org.motech.openmrs.module;
+package org.motech.openmrs.module.impl;
 
 import java.util.List;
 
+import org.motech.openmrs.module.ContextService;
+import org.motech.openmrs.module.MotechService;
+import org.motech.openmrs.module.UserResolver;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.PersonService;
