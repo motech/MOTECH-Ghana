@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motech.model.HIVStatus;
 import org.motech.model.WhoRegistered;
 import org.motech.util.GenderTypeConverter;
 import org.motech.util.MotechConstants;
@@ -26,6 +27,7 @@ public class WebPatient {
 
 	private Integer id;
 	private String firstName;
+	private String middleName;
 	private String lastName;
 	private String prefName;
 	private Date birthDate;
@@ -41,6 +43,13 @@ public class WebPatient {
 	private String community;
 	private String address;
 	private Integer clinic;
+	private Date dueDate;
+	private Boolean dueDateConfirmed;
+	private Integer gravida;
+	private Integer parity;
+	private HIVStatus hivStatus;
+	private Boolean registerPregProgram;
+	private Boolean termsConsent;
 	private String primaryPhone;
 	private ContactNumberType primaryPhoneType;
 	private String secondaryPhone;
@@ -50,6 +59,8 @@ public class WebPatient {
 	private String languageVoice;
 	private String languageText;
 	private WhoRegistered whoRegistered;
+	private String religion;
+	private String occupation;
 
 	public WebPatient() {
 	}
@@ -115,6 +126,19 @@ public class WebPatient {
 			setClinic(Integer.valueOf(clinicAttr.getValue()));
 		}
 
+		// TODO: populate dueDate
+		// TODO: populate dueDateConfirmed
+		// TODO: populate gravida
+		// TODO: populate parity
+
+		PersonAttribute hivAttr = patient
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_HIV_STATUS);
+		if (hivAttr != null) {
+			setHivStatus(HIVStatus.valueOf(hivAttr.getValue()));
+		}
+
+		// TODO: populate registerPregProgram
+
 		PersonAttribute primaryPhoneAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER);
 		if (primaryPhoneAttr != null) {
@@ -172,6 +196,18 @@ public class WebPatient {
 			setWhoRegistered(WhoRegistered
 					.valueOf(whoRegisteredAttr.getValue()));
 		}
+
+		PersonAttribute religionAttr = patient
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_RELIGION);
+		if (religionAttr != null) {
+			setReligion(religionAttr.getValue());
+		}
+
+		PersonAttribute occupationAttr = patient
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_OCCUPATION);
+		if (occupationAttr != null) {
+			setOccupation(occupationAttr.getValue());
+		}
 	}
 
 	public Integer getId() {
@@ -188,6 +224,14 @@ public class WebPatient {
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
+	}
+	
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
 	}
 
 	public String getLastName() {
@@ -310,6 +354,62 @@ public class WebPatient {
 		this.clinic = clinic;
 	}
 
+	public Date getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public Boolean getDueDateConfirmed() {
+		return dueDateConfirmed;
+	}
+
+	public void setDueDateConfirmed(Boolean dueDateConfirmed) {
+		this.dueDateConfirmed = dueDateConfirmed;
+	}
+
+	public Integer getGravida() {
+		return gravida;
+	}
+
+	public void setGravida(Integer gravida) {
+		this.gravida = gravida;
+	}
+
+	public Integer getParity() {
+		return parity;
+	}
+
+	public void setParity(Integer parity) {
+		this.parity = parity;
+	}
+
+	public HIVStatus getHivStatus() {
+		return hivStatus;
+	}
+
+	public void setHivStatus(HIVStatus hivStatus) {
+		this.hivStatus = hivStatus;
+	}
+
+	public Boolean getRegisterPregProgram() {
+		return registerPregProgram;
+	}
+
+	public void setRegisterPregProgram(Boolean registerPregProgram) {
+		this.registerPregProgram = registerPregProgram;
+	}
+
+	public Boolean getTermsConsent() {
+		return termsConsent;
+	}
+
+	public void setTermsConsent(Boolean termsConsent) {
+		this.termsConsent = termsConsent;
+	}
+
 	public String getPrimaryPhone() {
 		return primaryPhone;
 	}
@@ -380,6 +480,22 @@ public class WebPatient {
 
 	public void setWhoRegistered(WhoRegistered whoRegistered) {
 		this.whoRegistered = whoRegistered;
+	}
+
+	public String getReligion() {
+		return religion;
+	}
+
+	public void setReligion(String religion) {
+		this.religion = religion;
+	}
+
+	public String getOccupation() {
+		return occupation;
+	}
+
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
 	}
 
 }

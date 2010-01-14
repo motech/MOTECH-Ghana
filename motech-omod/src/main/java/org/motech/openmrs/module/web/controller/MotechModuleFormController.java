@@ -70,21 +70,6 @@ public class MotechModuleFormController {
 		this.registrarBean = registrarBean;
 	}
 
-	@RequestMapping(value = "/module/motechmodule/mother", method = RequestMethod.GET)
-	public String viewPregnantMotherForm(ModelMap model) {
-
-		model.addAttribute("regions", contextService.getMotechService()
-				.getAllRegions());
-		model.addAttribute("districts", contextService.getMotechService()
-				.getAllDistricts());
-		model.addAttribute("communities", contextService.getMotechService()
-				.getAllCommunities());
-		model.addAttribute("clinics", contextService.getMotechService()
-				.getAllClinics());
-
-		return "/module/motechmodule/mother";
-	}
-
 	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.GET)
 	public String viewClinicForm(ModelMap model) {
 		List<Location> locations = registrarBean.getAllClinics();
@@ -130,60 +115,6 @@ public class MotechModuleFormController {
 		model.addAttribute("nurses", registrarBean.getAllNurses());
 		model.addAttribute("patients", registrarBean.getAllPatients());
 		return "/module/motechmodule/maternalVisit";
-	}
-
-	@RequestMapping(value = "/module/motechmodule/mother", method = RequestMethod.POST)
-	public String registerPregnantMother(
-			@RequestParam("firstName") String firstName,
-			@RequestParam("lastName") String lastName,
-			@RequestParam("prefName") String prefName,
-			@RequestParam("birthDate") String birthDate,
-			@RequestParam("birthDateEst") String birthDateEst,
-			@RequestParam("registeredGHS") String registeredGHS,
-			@RequestParam("regNumberGHS") String regNumberGHS,
-			@RequestParam("insured") String insured,
-			@RequestParam("nhis") String nhis,
-			@RequestParam("nhisExpDate") String nhisExpDate,
-			@RequestParam("region") String region,
-			@RequestParam("district") String district,
-			@RequestParam("community") String community,
-			@RequestParam("address") String address,
-			@RequestParam("clinic") String clinic,
-			@RequestParam("dueDate") String dueDate,
-			@RequestParam("dueDateConfirmed") String dueDateConfirmed,
-			@RequestParam("gravida") String gravida,
-			@RequestParam("parity") String parity,
-			@RequestParam("hivStatus") String hivStatus,
-			@RequestParam("registerPregProgram") String registerPregProgram,
-			@RequestParam("primaryPhone") String primaryPhone,
-			@RequestParam("primaryPhoneType") String primaryPhoneType,
-			@RequestParam("secondaryPhone") String secondaryPhone,
-			@RequestParam("secondaryPhoneType") String secondaryPhoneType,
-			@RequestParam("mediaTypeInfo") String mediaTypeInfo,
-			@RequestParam("mediaTypeReminder") String mediaTypeReminder,
-			@RequestParam("languageVoice") String languageVoice,
-			@RequestParam("languageText") String languageText,
-			@RequestParam("whoRegistered") String whoRegistered,
-			@RequestParam("religion") String religion,
-			@RequestParam("occupation") String occupation)
-			throws NumberFormatException, ParseException {
-		log.debug("Register Pregnant Mother");
-		registrarBean.registerPregnantMother(firstName, lastName, prefName,
-				intDateFormat.parse(birthDate), Boolean.valueOf(birthDateEst),
-				Boolean.valueOf(registeredGHS), regNumberGHS, Boolean
-						.valueOf(insured), nhis, intDateFormat
-						.parse(nhisExpDate), region, district, community,
-				address, Integer.valueOf(clinic), intDateFormat.parse(dueDate),
-				Boolean.valueOf(dueDateConfirmed), Integer.valueOf(gravida),
-				Integer.valueOf(parity), HIVStatus.valueOf(hivStatus), Boolean
-						.valueOf(registerPregProgram), primaryPhone,
-				ContactNumberType.valueOf(primaryPhoneType), secondaryPhone,
-				ContactNumberType.valueOf(secondaryPhoneType), MediaType
-						.valueOf(mediaTypeInfo), MediaType
-						.valueOf(mediaTypeReminder), languageVoice,
-				languageText, WhoRegistered.valueOf(whoRegistered), religion,
-				occupation);
-		return "redirect:/module/motechmodule/viewdata.form";
 	}
 
 	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.POST)

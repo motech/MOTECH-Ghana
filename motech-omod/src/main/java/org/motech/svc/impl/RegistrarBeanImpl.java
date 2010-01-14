@@ -223,61 +223,89 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		personAddress.setRegion(region);
 		patient.addAddress(personAddress);
 
-		PersonAttributeType registeredGHSAttrType = getGHSRegisteredAttributeType();
-		patient.addAttribute(new PersonAttribute(registeredGHSAttrType,
-				registeredGHS.toString()));
+		if (registeredGHS != null) {
+			PersonAttributeType registeredGHSAttrType = getGHSRegisteredAttributeType();
+			patient.addAttribute(new PersonAttribute(registeredGHSAttrType,
+					registeredGHS.toString()));
+		}
 
-		PersonAttributeType insuredAttrType = getInsuredAttributeType();
-		patient.addAttribute(new PersonAttribute(insuredAttrType, insured
-				.toString()));
+		if (insured != null) {
+			PersonAttributeType insuredAttrType = getInsuredAttributeType();
+			patient.addAttribute(new PersonAttribute(insuredAttrType, insured
+					.toString()));
+		}
 
-		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
-		patient
-				.addAttribute(new PersonAttribute(nhisAttrType, nhis.toString()));
+		if (nhis != null) {
+			PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
+			patient.addAttribute(new PersonAttribute(nhisAttrType, nhis
+					.toString()));
+		}
 
-		PersonAttributeType nhisExpDateAttrType = getNHISExpirationDateAttributeType();
-		patient.addAttribute(new PersonAttribute(nhisExpDateAttrType,
-				nhisExpDate.toString()));
+		if (nhisExpDate != null) {
+			PersonAttributeType nhisExpDateAttrType = getNHISExpirationDateAttributeType();
+			patient.addAttribute(new PersonAttribute(nhisExpDateAttrType,
+					nhisExpDate.toString()));
+		}
 
-		PersonAttributeType clinicAttrType = getClinicAttributeType();
-		patient.addAttribute(new PersonAttribute(clinicAttrType, clinic
-				.toString()));
+		if (clinic != null) {
+			PersonAttributeType clinicAttrType = getClinicAttributeType();
+			patient.addAttribute(new PersonAttribute(clinicAttrType, clinic
+					.toString()));
+		}
 
-		PersonAttributeType primaryPhoneAttrType = getPrimaryPhoneNumberAttributeType();
-		patient.addAttribute(new PersonAttribute(primaryPhoneAttrType,
-				primaryPhone));
+		if (primaryPhone != null) {
+			PersonAttributeType primaryPhoneAttrType = getPrimaryPhoneNumberAttributeType();
+			patient.addAttribute(new PersonAttribute(primaryPhoneAttrType,
+					primaryPhone));
+		}
 
-		PersonAttributeType primaryPhoneTypeAttrType = getPrimaryPhoneTypeAttributeType();
-		patient.addAttribute(new PersonAttribute(primaryPhoneTypeAttrType,
-				primaryPhoneType.name()));
+		if (primaryPhoneType != null) {
+			PersonAttributeType primaryPhoneTypeAttrType = getPrimaryPhoneTypeAttributeType();
+			patient.addAttribute(new PersonAttribute(primaryPhoneTypeAttrType,
+					primaryPhoneType.name()));
+		}
 
-		PersonAttributeType secondaryPhoneAttrType = getSecondaryPhoneNumberAttributeType();
-		patient.addAttribute(new PersonAttribute(secondaryPhoneAttrType,
-				secondaryPhone));
+		if (secondaryPhone != null) {
+			PersonAttributeType secondaryPhoneAttrType = getSecondaryPhoneNumberAttributeType();
+			patient.addAttribute(new PersonAttribute(secondaryPhoneAttrType,
+					secondaryPhone));
+		}
 
-		PersonAttributeType secondaryPhoneTypeAttrType = getSecondaryPhoneTypeAttributeType();
-		patient.addAttribute(new PersonAttribute(secondaryPhoneTypeAttrType,
-				secondaryPhoneType.name()));
+		if (secondaryPhoneType != null) {
+			PersonAttributeType secondaryPhoneTypeAttrType = getSecondaryPhoneTypeAttributeType();
+			patient.addAttribute(new PersonAttribute(
+					secondaryPhoneTypeAttrType, secondaryPhoneType.name()));
+		}
 
-		PersonAttributeType mediaTypeInfoAttrType = getMediaTypeInformationalAttributeType();
-		patient.addAttribute(new PersonAttribute(mediaTypeInfoAttrType,
-				mediaTypeInfo.name()));
+		if (mediaTypeInfo != null) {
+			PersonAttributeType mediaTypeInfoAttrType = getMediaTypeInformationalAttributeType();
+			patient.addAttribute(new PersonAttribute(mediaTypeInfoAttrType,
+					mediaTypeInfo.name()));
+		}
 
-		PersonAttributeType mediaTypeReminderAttrType = getMediaTypeReminderAttributeType();
-		patient.addAttribute(new PersonAttribute(mediaTypeReminderAttrType,
-				mediaTypeReminder.name()));
+		if (mediaTypeReminder != null) {
+			PersonAttributeType mediaTypeReminderAttrType = getMediaTypeReminderAttributeType();
+			patient.addAttribute(new PersonAttribute(mediaTypeReminderAttrType,
+					mediaTypeReminder.name()));
+		}
 
-		PersonAttributeType languageTextAttrType = getLanguageTextAttributeType();
-		patient.addAttribute(new PersonAttribute(languageTextAttrType,
-				languageText));
+		if (languageText != null) {
+			PersonAttributeType languageTextAttrType = getLanguageTextAttributeType();
+			patient.addAttribute(new PersonAttribute(languageTextAttrType,
+					languageText));
+		}
 
-		PersonAttributeType languageVoiceAttrType = getLanguageVoiceAttributeType();
-		patient.addAttribute(new PersonAttribute(languageVoiceAttrType,
-				languageVoice));
+		if (languageVoice != null) {
+			PersonAttributeType languageVoiceAttrType = getLanguageVoiceAttributeType();
+			patient.addAttribute(new PersonAttribute(languageVoiceAttrType,
+					languageVoice));
+		}
 
-		PersonAttributeType whoRegisteredAttrType = getWhoRegisteredAttributeType();
-		patient.addAttribute(new PersonAttribute(whoRegisteredAttrType,
-				whoRegistered.name()));
+		if (whoRegistered != null) {
+			PersonAttributeType whoRegisteredAttrType = getWhoRegisteredAttributeType();
+			patient.addAttribute(new PersonAttribute(whoRegisteredAttrType,
+					whoRegistered.name()));
+		}
 
 		return patient;
 	}
@@ -386,24 +414,33 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		Location ghanaLocation = getGhanaLocation();
 
-		PersonAttributeType ancRegNumAttrType = getANCRegistrationNumberAttributeType();
-		mother
-				.addAttribute(new PersonAttribute(ancRegNumAttrType,
-						regNumberGHS));
+		if (regNumberGHS != null) {
+			PersonAttributeType ancRegNumAttrType = getANCRegistrationNumberAttributeType();
+			mother.addAttribute(new PersonAttribute(ancRegNumAttrType,
+					regNumberGHS));
+		}
 
-		PersonAttributeType hivStatusAttrType = this
-				.getHIVStatusAttributeType();
-		mother.addAttribute(new PersonAttribute(hivStatusAttrType, hivStatus
-				.name()));
+		if (hivStatus != null) {
+			PersonAttributeType hivStatusAttrType = this
+					.getHIVStatusAttributeType();
+			mother.addAttribute(new PersonAttribute(hivStatusAttrType,
+					hivStatus.name()));
+		}
 
-		PersonAttributeType religionAttrType = this.getReligionAttributeType();
-		mother.addAttribute(new PersonAttribute(religionAttrType, religion));
+		if (religion != null) {
+			PersonAttributeType religionAttrType = this
+					.getReligionAttributeType();
+			mother
+					.addAttribute(new PersonAttribute(religionAttrType,
+							religion));
+		}
 
-		PersonAttributeType occupationAttrType = this
-				.getOccupationAttributeType();
-		mother
-				.addAttribute(new PersonAttribute(occupationAttrType,
-						occupation));
+		if (occupation != null) {
+			PersonAttributeType occupationAttrType = this
+					.getOccupationAttributeType();
+			mother.addAttribute(new PersonAttribute(occupationAttrType,
+					occupation));
+		}
 
 		mother = patientService.savePatient(mother);
 
