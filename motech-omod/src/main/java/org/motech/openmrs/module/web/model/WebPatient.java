@@ -1,29 +1,14 @@
 package org.motech.openmrs.module.web.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.motech.model.HIVStatus;
 import org.motech.model.WhoRegistered;
-import org.motech.util.GenderTypeConverter;
-import org.motech.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
-import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
-import org.openmrs.PersonAddress;
-import org.openmrs.PersonAttribute;
 
 public class WebPatient {
-
-	private static Log log = LogFactory.getLog(WebPatient.class);
-
-	private static SimpleDateFormat dateFormat = new SimpleDateFormat(
-			"EEE MMM d HH:mm:ss z yyyy");
 
 	private Integer id;
 	private String firstName;
@@ -65,151 +50,6 @@ public class WebPatient {
 	public WebPatient() {
 	}
 
-	public WebPatient(Patient patient) {
-		setId(patient.getPatientId());
-		setFirstName(patient.getGivenName());
-		setLastName(patient.getFamilyName());
-		setPrefName(patient.getMiddleName());
-		setBirthDate(patient.getBirthdate());
-		setBirthDateEst(patient.getBirthdateEstimated());
-		setSex(GenderTypeConverter.valueOfOpenMRS(patient.getGender()));
-
-		PersonAddress patientAddress = patient.getPersonAddress();
-		if (patientAddress != null) {
-			setRegion(patientAddress.getRegion());
-			setDistrict(patientAddress.getCountyDistrict());
-			setCommunity(patientAddress.getCityVillage());
-			setAddress(patientAddress.getAddress1());
-		}
-
-		PatientIdentifier patientId = patient
-				.getPatientIdentifier(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
-		if (patientId != null) {
-			setRegNumberGHS(patientId.getIdentifier());
-		}
-
-		PersonAttribute nhisExpDateAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE);
-		if (nhisExpDateAttr != null) {
-			Date nhisExpDate = null;
-			String nhisExpDateString = nhisExpDateAttr.getValue();
-			try {
-				nhisExpDate = dateFormat.parse(nhisExpDateString);
-			} catch (ParseException e) {
-				log.error("Cannot parse NHIS Expiration Date: "
-						+ nhisExpDateString, e);
-			}
-			setNhisExpDate(nhisExpDate);
-		}
-
-		PersonAttribute registeredGHSAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_GHS_REGISTERED);
-		if (registeredGHSAttr != null) {
-			setRegisteredGHS(Boolean.valueOf(registeredGHSAttr.getValue()));
-		}
-
-		PersonAttribute insuredAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_INSURED);
-		if (insuredAttr != null) {
-			setInsured(Boolean.valueOf(insuredAttr.getValue()));
-		}
-
-		PersonAttribute nhisAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER);
-		if (nhisAttr != null) {
-			setNhis(nhisAttr.getValue());
-		}
-
-		PersonAttribute clinicAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER);
-		if (clinicAttr != null) {
-			setClinic(Integer.valueOf(clinicAttr.getValue()));
-		}
-
-		// TODO: populate dueDate
-		// TODO: populate dueDateConfirmed
-		// TODO: populate gravida
-		// TODO: populate parity
-
-		PersonAttribute hivAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_HIV_STATUS);
-		if (hivAttr != null) {
-			setHivStatus(HIVStatus.valueOf(hivAttr.getValue()));
-		}
-
-		// TODO: populate registerPregProgram
-
-		PersonAttribute primaryPhoneAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER);
-		if (primaryPhoneAttr != null) {
-			setPrimaryPhone(primaryPhoneAttr.getValue());
-		}
-
-		PersonAttribute primaryPhoneTypeAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE);
-		if (primaryPhoneTypeAttr != null) {
-			setPrimaryPhoneType(ContactNumberType.valueOf(primaryPhoneTypeAttr
-					.getValue()));
-		}
-
-		PersonAttribute secondaryPhoneAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER);
-		if (secondaryPhoneAttr != null) {
-			setSecondaryPhone(secondaryPhoneAttr.getValue());
-		}
-
-		PersonAttribute secondaryPhoneTypeAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE);
-		if (secondaryPhoneTypeAttr != null) {
-			setSecondaryPhoneType(ContactNumberType
-					.valueOf(secondaryPhoneTypeAttr.getValue()));
-		}
-
-		PersonAttribute mediaTypeInfoAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL);
-		if (mediaTypeInfoAttr != null) {
-			setMediaTypeInfo(MediaType.valueOf(mediaTypeInfoAttr.getValue()));
-		}
-
-		PersonAttribute mediaTypeReminderAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER);
-		if (mediaTypeReminderAttr != null) {
-			setMediaTypeReminder(MediaType.valueOf(mediaTypeReminderAttr
-					.getValue()));
-		}
-
-		PersonAttribute languageVoiceAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE);
-		if (languageVoiceAttr != null) {
-			setLanguageVoice(languageVoiceAttr.getValue());
-		}
-
-		PersonAttribute languageTextAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT);
-		if (languageTextAttr != null) {
-			setLanguageText(languageTextAttr.getValue());
-		}
-
-		PersonAttribute whoRegisteredAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED);
-		if (whoRegisteredAttr != null) {
-			setWhoRegistered(WhoRegistered
-					.valueOf(whoRegisteredAttr.getValue()));
-		}
-
-		PersonAttribute religionAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_RELIGION);
-		if (religionAttr != null) {
-			setReligion(religionAttr.getValue());
-		}
-
-		PersonAttribute occupationAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_OCCUPATION);
-		if (occupationAttr != null) {
-			setOccupation(occupationAttr.getValue());
-		}
-	}
-
 	public Integer getId() {
 		return id;
 	}
@@ -225,7 +65,7 @@ public class WebPatient {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	
+
 	public String getMiddleName() {
 		return middleName;
 	}

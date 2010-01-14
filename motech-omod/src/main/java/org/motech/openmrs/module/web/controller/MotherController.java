@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.openmrs.module.ContextService;
+import org.motech.openmrs.module.web.model.WebModelConverter;
 import org.motech.openmrs.module.web.model.WebPatient;
 import org.motech.svc.RegistrarBean;
 import org.openmrs.Location;
@@ -35,6 +36,8 @@ public class MotherController {
 
 	private static Log log = LogFactory.getLog(MotherController.class);
 
+	private WebModelConverter webModelConverter;
+
 	@Autowired
 	@Qualifier("registrarBean")
 	private RegistrarBean registrarBean;
@@ -48,6 +51,11 @@ public class MotherController {
 
 	public void setRegistrarBean(RegistrarBean registrarBean) {
 		this.registrarBean = registrarBean;
+	}
+
+	@Autowired
+	public void setWebModelConverter(WebModelConverter webModelConverter) {
+		this.webModelConverter = webModelConverter;
 	}
 
 	@InitBinder
@@ -90,14 +98,15 @@ public class MotherController {
 
 	@ModelAttribute("mother")
 	public WebPatient getWebMother(@RequestParam(required = false) Integer id) {
+		WebPatient result = new WebPatient();
 		if (id != null) {
 			Patient patient = contextService.getPatientService().getPatient(id);
 
 			if (patient != null) {
-				return new WebPatient(patient);
+				webModelConverter.patientToWeb(patient, result);
 			}
 		}
-		return new WebPatient();
+		return result;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

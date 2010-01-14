@@ -1,9 +1,11 @@
 package org.motech.openmrs.module.web.controller;
 
+import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.easymock.EasyMock.eq;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +15,7 @@ import junit.framework.TestCase;
 import org.motech.model.WhoRegistered;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
+import org.motech.openmrs.module.web.model.WebModelConverter;
 import org.motech.openmrs.module.web.model.WebPatient;
 import org.motech.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
@@ -31,6 +34,7 @@ public class EditPatientControllerTest extends TestCase {
 	EditPatientController controller;
 	ContextService contextService;
 	MotechService motechService;
+	WebModelConverter webModelConverter;
 	Errors errors;
 	SessionStatus status;
 	PatientService patientService;
@@ -39,9 +43,11 @@ public class EditPatientControllerTest extends TestCase {
 	protected void setUp() {
 		registrarBean = createMock(RegistrarBean.class);
 		contextService = createMock(ContextService.class);
+		webModelConverter = createMock(WebModelConverter.class);
 		controller = new EditPatientController();
 		controller.setRegistrarBean(registrarBean);
 		controller.setContextService(contextService);
+		controller.setWebModelConverter(webModelConverter);
 		motechService = createMock(MotechService.class);
 
 		patientService = createMock(PatientService.class);
@@ -142,14 +148,15 @@ public class EditPatientControllerTest extends TestCase {
 
 		expect(contextService.getPatientService()).andReturn(patientService);
 		expect(patientService.getPatient(patientId)).andReturn(patient);
+		webModelConverter.patientToWeb(eq(patient), (WebPatient) anyObject());
 
-		replay(registrarBean, contextService, patientService);
+		replay(registrarBean, contextService, patientService, webModelConverter);
 
 		WebPatient webPatient = controller.getWebPatient(patientId);
 
-		verify(registrarBean, contextService, patientService);
+		verify(registrarBean, contextService, patientService, webModelConverter);
 
-		assertEquals(patientId, webPatient.getId());
+		assertNotNull(webPatient);
 	}
 
 	public void testEditPatient() {

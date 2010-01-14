@@ -70,5 +70,7 @@
 	<bean id="registrarWebService" class="${corePackage}.ws.RegistrarWebService">
 		<property name="registrarBean" ref="registrarBeanProxy" />
 	</bean>
+	
+	<bean id="webModelConverter" class="org.motech.openmrs.module.web.model.WebModelConverterImpl" />
 
 </beans>
