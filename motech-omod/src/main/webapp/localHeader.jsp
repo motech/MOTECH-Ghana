@@ -32,14 +32,7 @@
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
-	<openmrs:hasPrivilege privilege="Register MoTeCH Pregnancy">
-		<li <c:if test='<%= request.getRequestURI().contains("pregnancy") %>'>class="active"</c:if>>
-			<a href="${pageContext.request.contextPath}/module/motechmodule/pregnancy.form">
-				<spring:message code="motechmodule.Pregnancy.register"/>
-			</a>
-		</li>
-	</openmrs:hasPrivilege>
-		<openmrs:hasPrivilege privilege="Manage MoTeCH Troubled Phones">
+	<openmrs:hasPrivilege privilege="Manage MoTeCH Troubled Phones">
 		<li <c:if test='<%= request.getRequestURI().contains("troubledphone") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/module/motechmodule/troubledphone.form">
 				<spring:message code="motechmodule.TroubledPhone.manage"/>

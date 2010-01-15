@@ -86,35 +86,6 @@ public class MotechModuleFormControllerTest extends TestCase {
 		verify(registrarBean);
 	}
 
-	public void testRegisterPregnancy() throws Exception {
-		Integer nurseId = 1, patientId = 2;
-		String regDate = "01/01/2009";
-		String dueDate = "01/01/2009", parity = "1", hemoglobin = "1.1";
-
-		Capture<Date> regDateCapture = new Capture<Date>();
-		Capture<Date> dueDateCapture = new Capture<Date>();
-		Capture<Integer> parityCapture = new Capture<Integer>();
-		Capture<Double> hemoglobinCapture = new Capture<Double>();
-
-		registrarBean.registerPregnancy(eq(nurseId), capture(regDateCapture),
-				eq(patientId), capture(dueDateCapture), capture(parityCapture),
-				capture(hemoglobinCapture));
-
-		replay(registrarBean);
-
-		controller.registerPregnancy(nurseId, regDate, patientId, dueDate,
-				parity, hemoglobin);
-
-		verify(registrarBean);
-
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-
-		assertEquals(regDate, dateFormat.format(regDateCapture.getValue()));
-		assertEquals(dueDate, dateFormat.format(dueDateCapture.getValue()));
-		assertEquals(parity, parityCapture.getValue().toString());
-		assertEquals(hemoglobin, hemoglobinCapture.getValue().toString());
-	}
-
 	public void testRecordMaternalVisit() throws Exception {
 		Integer nurseId = 1, patientId = 2;
 		String visitDate = "01/01/2009", tetanus = "true", ipt = "true", itn = "true", visitNumber = "1";

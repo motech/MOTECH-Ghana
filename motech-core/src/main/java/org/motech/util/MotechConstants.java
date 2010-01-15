@@ -25,6 +25,7 @@ public final class MotechConstants {
 	public static final String PERSON_ATTRIBUTE_WHO_REGISTERED = "Who registered";
 	public static final String PERSON_ATTRIBUTE_RELIGION = "Religion";
 	public static final String PERSON_ATTRIBUTE_OCCUPATION = "Occupation";
+	public static final String PERSON_ATTRIBUTE_HOW_LEARNED = "How learned of service";
 	public static final String PATIENT_IDENTIFIER_GHANA_CLINIC_ID = "Ghana Clinic Id";
 	public static final String LOCATION_GHANA = "Ghana";
 	public static final String LOCATION_UPPER_EAST = "Upper East";
@@ -71,6 +72,7 @@ public final class MotechConstants {
 	public static final String CONCEPT_IMMUNIZATIONS_ORDERED = "IMMUNIZATIONS ORDERED";
 	public static final String CONCEPT_ANTIRETROVIRAL_USE_DURING_PREGNANCY = "ANTIRETROVIRAL USE DURING PREGNANCY";
 	public static final String CONCEPT_ON_ANTIRETROVIRAL_THERAPY = "ON ANTIRETROVIRAL THERAPY";
+	public static final String CONCEPT_PREGNANCY = "PREGNANCY";
 	public static final String CONCEPT_PREGNANCY_STATUS = "PREGNANCY STATUS";
 	public static final String CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT = "ESTIMATED DATE OF CONFINEMENT";
 	public static final String CONCEPT_GRAVIDA = "GRAVIDA";

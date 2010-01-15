@@ -47,6 +47,7 @@ public class WebPatient {
 	private WhoRegistered whoRegistered;
 	private String religion;
 	private String occupation;
+	private String howLearned;
 
 	public WebPatient() {
 	}
@@ -345,6 +346,14 @@ public class WebPatient {
 
 	public void setOccupation(String occupation) {
 		this.occupation = occupation;
+	}
+
+	public String getHowLearned() {
+		return howLearned;
+	}
+
+	public void setHowLearned(String howLearned) {
+		this.howLearned = howLearned;
 	}
 
 }

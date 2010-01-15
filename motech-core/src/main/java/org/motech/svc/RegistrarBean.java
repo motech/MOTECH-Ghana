@@ -18,6 +18,7 @@ import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
 import org.openmrs.Encounter;
 import org.openmrs.Location;
+import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.User;
@@ -133,12 +134,13 @@ public interface RegistrarBean {
 			Integer visitNumber, Boolean onARV, Boolean prePMTCT,
 			Boolean testPMTCT, Boolean postPMTCT, Double hemoglobinAt36Weeks);
 
-	@RunAsAdminUser
-	public void registerPregnancy(String nursePhoneNumber, Date date,
-			String serialId, Date dueDate, Integer parity, Double hemoglobin);
-
-	public void registerPregnancy(Integer nurseId, Date date,
-			Integer patientId, Date dueDate, Integer parity, Double hemoglobin);
+	public void registerPregnancy(Integer id, Date dueDate,
+			Boolean dueDateConfirmed, Boolean registerPregProgram,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
+			String languageVoice, String languageText,
+			WhoRegistered whoRegistered, String howLearned);
 
 	public void recordGeneralVisit(Integer clinicId, Date visitDate,
 			String patientSerial, Gender patientGender, Date patientBirthDate,
@@ -164,7 +166,7 @@ public interface RegistrarBean {
 			Date birthDate, String community, String phoneNumber,
 			String patientId, String nhisNumber);
 
-	public List<Encounter> getAllPregnancyVisits();
+	public List<Obs> getAllPregnancies();
 
 	public List<Encounter> getAllMaternalVisits();
 

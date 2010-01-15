@@ -178,19 +178,6 @@ public class RegistrarWebService implements RegistrarService {
 	}
 
 	@WebMethod
-	public void registerPregnancy(
-			@WebParam(name = "nursePhoneNumber") String nursePhoneNumber,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "serialId") String serialId,
-			@WebParam(name = "dueDate") Date dueDate,
-			@WebParam(name = "parity") Integer parity,
-			@WebParam(name = "hemoglobin") Double hemoglobin) {
-
-		registrarBean.registerPregnancy(nursePhoneNumber, date, serialId,
-				dueDate, parity, hemoglobin);
-	}
-
-	@WebMethod
 	public void recordGeneralVisit(
 			@WebParam(name = "clinicId") Integer clinicId,
 			@WebParam(name = "visitDate") Date visitDate,

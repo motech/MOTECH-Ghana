@@ -83,13 +83,6 @@ public class MotechModuleFormController {
 		return "/module/motechmodule/nurse";
 	}
 
-	@RequestMapping(value = "/module/motechmodule/pregnancy", method = RequestMethod.GET)
-	public String viewPregnancyForm(ModelMap model) {
-		model.addAttribute("nurses", registrarBean.getAllNurses());
-		model.addAttribute("patients", registrarBean.getAllPatients());
-		return "/module/motechmodule/pregnancy";
-	}
-
 	@RequestMapping(value = "/module/motechmodule/maternalVisit", method = RequestMethod.GET)
 	public String viewMaternalVisitForm(ModelMap model) {
 		model.addAttribute("nurses", registrarBean.getAllNurses());
@@ -116,22 +109,6 @@ public class MotechModuleFormController {
 			@RequestParam("clinic") Integer clinicId) {
 		log.debug("Register Nurse");
 		registrarBean.registerNurse(name, nurseId, nursePhone, clinicId);
-		return "redirect:/module/motechmodule/viewdata.form";
-	}
-
-	@RequestMapping(value = "/module/motechmodule/pregnancy", method = RequestMethod.POST)
-	public String registerPregnancy(@RequestParam("nurse") Integer nurseId,
-			@RequestParam("regDate") String regDate,
-			@RequestParam("patient") Integer patientId,
-			@RequestParam("dueDate") String dueDate,
-			@RequestParam("parity") String parity,
-			@RequestParam("hemoglobin") String hemoglobin)
-			throws NumberFormatException, ParseException {
-		log.debug("Register Pregnancy");
-		registrarBean.registerPregnancy(nurseId,
-				(!regDate.equals("") ? dateFormat.parse(regDate) : null),
-				patientId, dateFormat.parse(dueDate), Integer.valueOf(parity),
-				Double.valueOf(hemoglobin));
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 
@@ -167,8 +144,7 @@ public class MotechModuleFormController {
 		model.addAttribute("allPatients", registrarBean.getAllPatients());
 		model.addAttribute("allMaternalVisits", registrarBean
 				.getAllMaternalVisits());
-		model.addAttribute("allPregnancies", registrarBean
-				.getAllPregnancyVisits());
+		model.addAttribute("allPregnancies", registrarBean.getAllPregnancies());
 		model.addAttribute("allScheduledMessages", registrarBean
 				.getAllScheduledMessages());
 		model.addAttribute("allLogs", registrarBean.getAllLogs());

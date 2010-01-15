@@ -73,6 +73,8 @@
 				<th>NHIS Number</th>
 				<th>Primary Phone</th>
 				<th>Secondary Phone</th>
+				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -87,6 +89,16 @@
 					<td>${webPatient.nhis}</td>
 					<td>${webPatient.primaryPhone}</td>
 					<td>${webPatient.secondaryPhone}</td>
+					<td>
+						<c:if test="${not empty webPatient.regNumberGHS}">
+							<a href="editpatient.form?id=${webPatient.id}">Edit</a>
+						</c:if>
+					</td>
+					<td>
+						<c:if test="${not empty webPatient.regNumberGHS}">
+							<a href="pregnancy.form?id=${webPatient.id}">Add Pregnancy</a>
+						</c:if>
+					</td>
 				</tr>
 			</c:forEach>
 		</tbody>

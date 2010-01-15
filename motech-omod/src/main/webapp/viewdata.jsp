@@ -47,7 +47,7 @@
 		<c:when test="${not empty allPatients}">
 		<table><tr><th>Id</th><th>First Name</th><th>Last Name</th><th>Serial</th><th>Clinic</th><th></th><th></th></tr>
 		<c:forEach items="${allPatients}" var="patient">
-			<tr><td>${patient.patientId}</td><td>${patient.givenName}</td><td>${patient.familyName}</td><td>${patient.patientIdentifier.identifier}</td><td>${patient.patientIdentifier.location.name}</td><td><a href="editpatient.form?id=${patient.patientId}">Edit</a></td><td></td></tr>
+			<tr><td>${patient.patientId}</td><td>${patient.givenName}</td><td>${patient.familyName}</td><td>${patient.patientIdentifier.identifier}</td><td>${patient.patientIdentifier.location.name}</td><td><a href="editpatient.form?id=${patient.patientId}">Edit</a></td><td><a href="pregnancy.form?id=${patient.patientId}">Add Pregnancy</a></td></tr>
 		</c:forEach>
 		</table>
 		</c:when>
@@ -61,7 +61,7 @@
 		<c:when test="${not empty allPregnancies}">
 		<table><tr><th>Id</th><th>Registration Date</th><th>Patient Id</th></tr>
 		<c:forEach items="${allPregnancies}" var="pregnancy">
-			<tr><td>${pregnancy.encounterId}</td><td><openmrs:formatDate date="${pregnancy.encounterDatetime}"/></td><td>${pregnancy.patientId}</td></tr>
+			<tr><td>${pregnancy.obsId}</td><td><openmrs:formatDate date="${pregnancy.obsDatetime}"/></td><td>${pregnancy.personId}</td></tr>
 		</c:forEach>
 		</table>
 		</c:when>
