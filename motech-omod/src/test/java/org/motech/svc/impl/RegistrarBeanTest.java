@@ -540,7 +540,7 @@ public class RegistrarBeanTest extends TestCase {
 	}
 
 	public void testRegisterPregnantMother() {
-		String firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
+		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String regNumberGHS = "123ABC", nhis = "456DEF";
 		String region = "Region", district = "District", community = "Community", address = "Address";
 		String religion = "Religion", occupation = "Occupation";
@@ -714,10 +714,10 @@ public class RegistrarBeanTest extends TestCase {
 				locationService, userService, encounterService, obsService,
 				conceptService);
 
-		regBean.registerPregnantMother(firstName, lastName, prefName, date,
-				birthDateEst, registeredGHS, regNumberGHS, insured, nhis, date,
-				region, district, community, address, clinic, date,
-				dueDateConfirmed, gravida, parity, hivStatus,
+		regBean.registerPregnantMother(firstName, middleName, lastName,
+				prefName, date, birthDateEst, registeredGHS, regNumberGHS,
+				insured, nhis, date, region, district, community, address,
+				clinic, date, dueDateConfirmed, gravida, parity, hivStatus,
 				registerPregProgram, primaryPhone, primaryPhoneType,
 				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
 				mediaTypeReminder, languageVoice, languageText, whoRegistered,
@@ -732,7 +732,7 @@ public class RegistrarBeanTest extends TestCase {
 				ghanaIdType).getIdentifier());
 		assertEquals(firstName, capturedPatient.getGivenName());
 		assertEquals(lastName, capturedPatient.getFamilyName());
-		assertEquals(prefName, capturedPatient.getMiddleName());
+		assertEquals(middleName, capturedPatient.getMiddleName());
 		assertEquals(date, capturedPatient.getBirthdate());
 		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
 		assertEquals(GenderTypeConverter.toOpenMRSString(Gender.FEMALE),
@@ -834,7 +834,7 @@ public class RegistrarBeanTest extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	public void testRegisterChildWithProgram() {
-		String firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
+		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String regNumberGHS = "123ABC", nhis = "456DEF";
 		String region = "Region", district = "District", community = "Community", address = "Address";
 		String primaryPhone = "12075555555", secondaryPhone = "12075555556";
@@ -969,7 +969,7 @@ public class RegistrarBeanTest extends TestCase {
 				locationService, userService, encounterService, obsService,
 				conceptService);
 
-		regBean.registerChild(firstName, lastName, prefName, date,
+		regBean.registerChild(firstName, middleName, lastName, prefName, date,
 				birthDateEst, sex, motherRegNum, registeredGHS, regNumberGHS,
 				insured, nhis, date, region, district, community, address,
 				clinic, registerPregProgram, primaryPhone, primaryPhoneType,
@@ -985,7 +985,7 @@ public class RegistrarBeanTest extends TestCase {
 				ghanaIdType).getIdentifier());
 		assertEquals(firstName, capturedPatient.getGivenName());
 		assertEquals(lastName, capturedPatient.getFamilyName());
-		assertEquals(prefName, capturedPatient.getMiddleName());
+		assertEquals(middleName, capturedPatient.getMiddleName());
 		assertEquals(date, capturedPatient.getBirthdate());
 		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
 		assertEquals(GenderTypeConverter.toOpenMRSString(sex), capturedPatient

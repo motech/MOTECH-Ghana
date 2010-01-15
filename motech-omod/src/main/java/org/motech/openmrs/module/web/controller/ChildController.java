@@ -145,8 +145,6 @@ public class ChildController {
 			}
 		}
 
-		// TODO: Add GHS CWC Registration Number
-
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "insured",
 				"motechmodule.insured.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "region",
@@ -189,19 +187,19 @@ public class ChildController {
 		if (!errors.hasErrors()) {
 
 			registrarBean.registerChild(child.getFirstName(), child
-					.getLastName(), child.getPrefName(), child.getBirthDate(),
-					child.getBirthDateEst(), child.getSex(), child
-							.getMotherRegNumberGHS(), child.getRegisteredGHS(),
-					child.getRegNumberGHS(), child.getInsured(), child
-							.getNhis(), child.getNhisExpDate(), child
-							.getRegion(), child.getDistrict(), child
-							.getCommunity(), child.getAddress(), child
-							.getClinic(), child.getRegisterPregProgram(), child
-							.getPrimaryPhone(), child.getPrimaryPhoneType(),
-					child.getSecondaryPhone(), child.getSecondaryPhoneType(),
-					child.getMediaTypeInfo(), child.getMediaTypeReminder(),
-					child.getLanguageVoice(), child.getLanguageText(), child
-							.getWhoRegistered());
+					.getMiddleName(), child.getLastName(), child.getPrefName(),
+					child.getBirthDate(), child.getBirthDateEst(), child
+							.getSex(), child.getMotherRegNumberGHS(), child
+							.getRegisteredGHS(), child.getRegNumberGHS(), child
+							.getInsured(), child.getNhis(), child
+							.getNhisExpDate(), child.getRegion(), child
+							.getDistrict(), child.getCommunity(), child
+							.getAddress(), child.getClinic(), child
+							.getRegisterPregProgram(), child.getPrimaryPhone(),
+					child.getPrimaryPhoneType(), child.getSecondaryPhone(),
+					child.getSecondaryPhoneType(), child.getMediaTypeInfo(),
+					child.getMediaTypeReminder(), child.getLanguageVoice(),
+					child.getLanguageText(), child.getWhoRegistered());
 
 			model.addAttribute("successMsg",
 					"motechmodule.Child.register.success");

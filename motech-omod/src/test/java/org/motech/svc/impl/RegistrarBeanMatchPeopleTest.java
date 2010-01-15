@@ -79,6 +79,7 @@ public class RegistrarBeanMatchPeopleTest extends
 					.getRegistrarBean();
 
 			String firstName = "FirstName";
+			String middleName = "MiddleName";
 			String lastName = "LastName";
 			String community = "Community";
 			String primaryPhone = "PrimaryPhone";
@@ -87,10 +88,10 @@ public class RegistrarBeanMatchPeopleTest extends
 			String nhisNumber = "NHISNumber";
 			Date date = new Date();
 
-			regService.registerPregnantMother(firstName, lastName, "prefName",
-					date, false, true, regNumber, true, nhisNumber, date,
-					"region", "district", community, "address", 1, date, true,
-					0, 0, HIVStatus.NEGATIVE, false, primaryPhone,
+			regService.registerPregnantMother(firstName, middleName, lastName,
+					"prefName", date, false, true, regNumber, true, nhisNumber,
+					date, "region", "district", community, "address", 1, date,
+					true, 0, 0, HIVStatus.NEGATIVE, false, primaryPhone,
 					ContactNumberType.PERSONAL, secondaryPhone,
 					ContactNumberType.PERSONAL, MediaType.TEXT, MediaType.TEXT,
 					"languageVoice", "languageText", WhoRegistered.CHPS_STAFF,

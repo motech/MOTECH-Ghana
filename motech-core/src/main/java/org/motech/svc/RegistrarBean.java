@@ -49,17 +49,17 @@ public interface RegistrarBean {
 			Gender childGender, String childFirstName, String nhis,
 			Date nhisExpires);
 
-	public void registerChild(String firstName, String lastName,
-			String prefName, Date birthDate, Boolean birthDateEst, Gender sex,
-			String motherRegNumberGHS, Boolean registeredGHS,
-			String regNumberGHS, Boolean insured, String nhis,
-			Date nhisExpDate, String region, String district, String community,
-			String address, Integer clinic, Boolean registerPregProgram,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText,
-			WhoRegistered whoRegistered);
+	public void registerChild(String firstName, String middleName,
+			String lastName, String prefName, Date birthDate,
+			Boolean birthDateEst, Gender sex, String motherRegNumberGHS,
+			Boolean registeredGHS, String regNumberGHS, Boolean insured,
+			String nhis, Date nhisExpDate, String region, String district,
+			String community, String address, Integer clinic,
+			Boolean registerPregProgram, String primaryPhone,
+			ContactNumberType primaryPhoneType, String secondaryPhone,
+			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
+			MediaType mediaTypeReminder, String languageVoice,
+			String languageText, WhoRegistered whoRegistered);
 
 	@RunAsAdminUser
 	public void registerClinic(String name, Integer parentId);
@@ -71,13 +71,13 @@ public interface RegistrarBean {
 	public void registerNurse(String name, String nurseId, String phoneNumber,
 			Integer clinicId);
 
-	public void registerPregnantMother(String firstName, String lastName,
-			String prefName, Date birthDate, Boolean birthDateEst,
-			Boolean registeredGHS, String regNumberGHS, Boolean insured,
-			String nhis, Date nhisExpDate, String region, String district,
-			String community, String address, Integer clinic, Date dueDate,
-			Boolean dueDateConfirmed, Integer gravida, Integer parity,
-			HIVStatus hivStatus, Boolean registerPregProgram,
+	public void registerPregnantMother(String firstName, String middleName,
+			String lastName, String prefName, Date birthDate,
+			Boolean birthDateEst, Boolean registeredGHS, String regNumberGHS,
+			Boolean insured, String nhis, Date nhisExpDate, String region,
+			String district, String community, String address, Integer clinic,
+			Date dueDate, Boolean dueDateConfirmed, Integer gravida,
+			Integer parity, HIVStatus hivStatus, Boolean registerPregProgram,
 			String primaryPhone, ContactNumberType primaryPhoneType,
 			String secondaryPhone, ContactNumberType secondaryPhoneType,
 			MediaType mediaTypeInfo, MediaType mediaTypeReminder,

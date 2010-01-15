@@ -147,27 +147,27 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		patientService.savePatient(child);
 	}
 
-	public void registerChild(String firstName, String lastName,
-			String prefName, Date birthDate, Boolean birthDateEst, Gender sex,
-			String motherRegNumberGHS, Boolean registeredGHS,
-			String regNumberGHS, Boolean insured, String nhis,
-			Date nhisExpDate, String region, String district, String community,
-			String address, Integer clinic, Boolean registerPregProgram,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText,
-			WhoRegistered whoRegistered) {
+	public void registerChild(String firstName, String middleName,
+			String lastName, String prefName, Date birthDate,
+			Boolean birthDateEst, Gender sex, String motherRegNumberGHS,
+			Boolean registeredGHS, String regNumberGHS, Boolean insured,
+			String nhis, Date nhisExpDate, String region, String district,
+			String community, String address, Integer clinic,
+			Boolean registerPregProgram, String primaryPhone,
+			ContactNumberType primaryPhoneType, String secondaryPhone,
+			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
+			MediaType mediaTypeReminder, String languageVoice,
+			String languageText, WhoRegistered whoRegistered) {
 
 		PatientService patientService = contextService.getPatientService();
 		PersonService personService = contextService.getPersonService();
 
-		Patient child = createPatient(firstName, lastName, prefName, birthDate,
-				birthDateEst, sex, registeredGHS, regNumberGHS, insured, nhis,
-				nhisExpDate, region, district, community, address, clinic,
-				primaryPhone, primaryPhoneType, secondaryPhone,
-				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
-				languageVoice, languageText, whoRegistered);
+		Patient child = createPatient(firstName, middleName, lastName,
+				prefName, birthDate, birthDateEst, sex, registeredGHS,
+				regNumberGHS, insured, nhis, nhisExpDate, region, district,
+				community, address, clinic, primaryPhone, primaryPhoneType,
+				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
+				mediaTypeReminder, languageVoice, languageText, whoRegistered);
 
 		PersonAttributeType cwcRegNumAttrType = getCWCRegistrationNumberAttributeType();
 		child
@@ -177,7 +177,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		child = patientService.savePatient(child);
 
 		if (motherRegNumberGHS != null) {
-			
+
 			Patient mother = getPatientBySerial(motherRegNumberGHS);
 
 			RelationshipType parentChildRelationshipType = personService
@@ -193,16 +193,16 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
-	private Patient createPatient(String firstName, String lastName,
-			String prefName, Date birthDate, Boolean birthDateEst, Gender sex,
-			Boolean registeredGHS, String regNumberGHS, Boolean insured,
-			String nhis, Date nhisExpDate, String region, String district,
-			String community, String address, Integer clinic,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText,
-			WhoRegistered whoRegistered) {
+	private Patient createPatient(String firstName, String middleName,
+			String lastName, String prefName, Date birthDate,
+			Boolean birthDateEst, Gender sex, Boolean registeredGHS,
+			String regNumberGHS, Boolean insured, String nhis,
+			Date nhisExpDate, String region, String district, String community,
+			String address, Integer clinic, String primaryPhone,
+			ContactNumberType primaryPhoneType, String secondaryPhone,
+			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
+			MediaType mediaTypeReminder, String languageVoice,
+			String languageText, WhoRegistered whoRegistered) {
 
 		Patient patient = new Patient();
 
@@ -212,8 +212,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		patient.addIdentifier(new PatientIdentifier(regNumberGHS,
 				ghanaSerialIdType, ghanaLocation));
 
-		// Storing preferred name as middle name
-		patient.addName(new PersonName(firstName, prefName, lastName));
+		// TODO: Store preferred name
+		patient.addName(new PersonName(firstName, middleName, lastName));
 		patient.setGender(GenderTypeConverter.toOpenMRSString(sex));
 		patient.setBirthdate(birthDate);
 		patient.setBirthdateEstimated(birthDateEst);
@@ -387,13 +387,13 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		userService.saveUser(nurse, "password");
 	}
 
-	public void registerPregnantMother(String firstName, String lastName,
-			String prefName, Date birthDate, Boolean birthDateEst,
-			Boolean registeredGHS, String regNumberGHS, Boolean insured,
-			String nhis, Date nhisExpDate, String region, String district,
-			String community, String address, Integer clinic, Date dueDate,
-			Boolean dueDateConfirmed, Integer gravida, Integer parity,
-			HIVStatus hivStatus, Boolean registerPregProgram,
+	public void registerPregnantMother(String firstName, String middleName,
+			String lastName, String prefName, Date birthDate,
+			Boolean birthDateEst, Boolean registeredGHS, String regNumberGHS,
+			Boolean insured, String nhis, Date nhisExpDate, String region,
+			String district, String community, String address, Integer clinic,
+			Date dueDate, Boolean dueDateConfirmed, Integer gravida,
+			Integer parity, HIVStatus hivStatus, Boolean registerPregProgram,
 			String primaryPhone, ContactNumberType primaryPhoneType,
 			String secondaryPhone, ContactNumberType secondaryPhoneType,
 			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
@@ -407,12 +407,13 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		User nurse = contextService.getAuthenticatedUser();
 
-		Patient mother = createPatient(firstName, lastName, prefName,
-				birthDate, birthDateEst, Gender.FEMALE, registeredGHS,
-				regNumberGHS, insured, nhis, nhisExpDate, region, district,
-				community, address, clinic, primaryPhone, primaryPhoneType,
-				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
-				mediaTypeReminder, languageVoice, languageText, whoRegistered);
+		Patient mother = createPatient(firstName, middleName, lastName,
+				prefName, birthDate, birthDateEst, Gender.FEMALE,
+				registeredGHS, regNumberGHS, insured, nhis, nhisExpDate,
+				region, district, community, address, clinic, primaryPhone,
+				primaryPhoneType, secondaryPhone, secondaryPhoneType,
+				mediaTypeInfo, mediaTypeReminder, languageVoice, languageText,
+				whoRegistered);
 
 		Location ghanaLocation = getGhanaLocation();
 

@@ -27,6 +27,11 @@
 		<td><form:errors path="firstName" cssClass="error" /></td>
 	</tr>
 	<tr>
+		<td><label for="middleName">Middle Name:</label></td>
+		<td><form:input path="middleName" /></td>
+		<td><form:errors path="middleName" cssClass="error" /></td>
+	</tr>
+	<tr>
 		<td><label for="lastName">Last Name:</label></td>
 		<td><form:input path="lastName" onchange="findDuplicates()" /></td>
 		<td><form:errors path="lastName" cssClass="error" /></td>
@@ -80,7 +85,7 @@
 		<td><form:errors path="registeredGHS" cssClass="error" /></td>
 	</tr>
 	<tr>
-		<td><label for="regNumberGHS">GHS ANC Registration Number:</label></td>
+		<td><label for="regNumberGHS">GHS CWC Registration Number:</label></td>
 		<td><form:input path="regNumberGHS" onchange="findDuplicates()" /></td>
 		<td><form:errors path="regNumberGHS" cssClass="error" /></td>
 	</tr>

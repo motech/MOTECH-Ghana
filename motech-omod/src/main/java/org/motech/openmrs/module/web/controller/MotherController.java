@@ -187,11 +187,11 @@ public class MotherController {
 
 		if (!errors.hasErrors()) {
 			registrarBean.registerPregnantMother(mother.getFirstName(), mother
-					.getLastName(), mother.getPrefName(),
-					mother.getBirthDate(), mother.getBirthDateEst(), mother
-							.getRegisteredGHS(), mother.getRegNumberGHS(),
-					mother.getInsured(), mother.getNhis(), mother
-							.getNhisExpDate(), mother.getRegion(), mother
+					.getMiddleName(), mother.getLastName(), mother
+					.getPrefName(), mother.getBirthDate(), mother
+					.getBirthDateEst(), mother.getRegisteredGHS(), mother
+					.getRegNumberGHS(), mother.getInsured(), mother.getNhis(),
+					mother.getNhisExpDate(), mother.getRegion(), mother
 							.getDistrict(), mother.getCommunity(), mother
 							.getAddress(), mother.getClinic(), mother
 							.getDueDate(), mother.getDueDateConfirmed(), mother
