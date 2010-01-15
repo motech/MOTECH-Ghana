@@ -832,6 +832,7 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(1.0, parityObs.getValueNumeric());
 	}
 
+	@SuppressWarnings("unchecked")
 	public void testRegisterChildWithProgram() {
 		String firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
 		String regNumberGHS = "123ABC", nhis = "456DEF";

@@ -47,8 +47,11 @@ public class SaveObsAdvisor implements AfterReturningAdvice {
 	 */
 	public void afterReturning(Object returnValue, Method method,
 			Object[] args, Object target) throws Throwable {
-
+		
 		if (method.getName().equals("saveObs")) {
+			
+			log.debug("intercepting method invocation");
+			
 			Obs obs = (Obs) returnValue;
 
 			Integer personId = obs.getPersonId();

@@ -8,8 +8,6 @@ import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
 
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
-
 public class WebPatient {
 
 	private Integer id;

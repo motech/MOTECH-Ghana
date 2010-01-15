@@ -49,6 +49,8 @@ public class NotificationTask extends AbstractTask {
 	@Override
 	public void execute() {
 
+		log.debug("executing task");
+		
 		String timeOffsetString = this.taskDefinition
 				.getProperty(MotechConstants.TASK_PROPERTY_TIME_OFFSET);
 		Boolean sendImmediate = Boolean.valueOf(taskDefinition
