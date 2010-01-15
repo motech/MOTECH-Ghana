@@ -149,14 +149,15 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	public void registerChild(String firstName, String lastName,
 			String prefName, Date birthDate, Boolean birthDateEst, Gender sex,
-			Integer motherId, Boolean registeredGHS, String regNumberGHS,
-			Boolean insured, String nhis, Date nhisExpDate, String region,
-			String district, String community, String address, Integer clinic,
-			Boolean registerPregProgram, String primaryPhone,
-			ContactNumberType primaryPhoneType, String secondaryPhone,
-			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
-			MediaType mediaTypeReminder, String languageVoice,
-			String languageText, WhoRegistered whoRegistered) {
+			String motherRegNumberGHS, Boolean registeredGHS,
+			String regNumberGHS, Boolean insured, String nhis,
+			Date nhisExpDate, String region, String district, String community,
+			String address, Integer clinic, Boolean registerPregProgram,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
+			String languageVoice, String languageText,
+			WhoRegistered whoRegistered) {
 
 		PatientService patientService = contextService.getPatientService();
 		PersonService personService = contextService.getPersonService();
@@ -175,8 +176,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		child = patientService.savePatient(child);
 
-		if (motherId != null) {
-			Patient mother = patientService.getPatient(motherId);
+		if (motherRegNumberGHS != null) {
+			
+			Patient mother = getPatientBySerial(motherRegNumberGHS);
 
 			RelationshipType parentChildRelationshipType = personService
 					.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD);

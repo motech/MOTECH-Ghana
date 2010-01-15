@@ -8,6 +8,8 @@ import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
 
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
+
 public class WebPatient {
 
 	private Integer id;
@@ -20,6 +22,7 @@ public class WebPatient {
 	private Gender sex;
 	private Boolean registeredGHS;
 	private String regNumberGHS;
+	private String motherRegNumberGHS;
 	private Boolean insured;
 	private String nhis;
 	private Date nhisExpDate;
@@ -128,6 +131,14 @@ public class WebPatient {
 
 	public void setRegNumberGHS(String regNumberGHS) {
 		this.regNumberGHS = regNumberGHS;
+	}
+
+	public String getMotherRegNumberGHS() {
+		return motherRegNumberGHS;
+	}
+
+	public void setMotherRegNumberGHS(String motherRegNumberGHS) {
+		this.motherRegNumberGHS = motherRegNumberGHS;
 	}
 
 	public Boolean getInsured() {

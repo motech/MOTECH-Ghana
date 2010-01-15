@@ -840,7 +840,8 @@ public class RegistrarBeanTest extends TestCase {
 		String languageVoice = "LanguageVoice", languageText = "LanguageText";
 		Date date = new Date();
 		Boolean birthDateEst = true, registeredGHS = true, insured = true, registerPregProgram = true;
-		Integer motherId = 564, clinic = 1;
+		String motherRegNum = "1234";
+		Integer clinic = 1;
 		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
 		MediaType mediaTypeInfo = MediaType.TEXT, mediaTypeReminder = MediaType.VOICE;
 		WhoRegistered whoRegistered = WhoRegistered.CHPS_STAFF;
@@ -849,7 +850,7 @@ public class RegistrarBeanTest extends TestCase {
 		String pregnancyProgramName = "Weekly Info Pregnancy Message Program";
 
 		Patient child = new Patient(1);
-		Patient mother = new Patient(motherId);
+		Patient mother = new Patient(2);
 		Location ghanaLocation = new Location(1);
 
 		Capture<Patient> patientCap = new Capture<Patient>();
@@ -937,7 +938,17 @@ public class RegistrarBeanTest extends TestCase {
 		expect(patientService.savePatient(capture(patientCap)))
 				.andReturn(child);
 
-		expect(patientService.getPatient(motherId)).andReturn(mother);
+		expect(
+				patientService
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
+				.andReturn(ghanaIdType);
+		List<Patient> motherList = new ArrayList<Patient>();
+		motherList.add(mother);
+		expect(
+				patientService.getPatients((String) eq(null), eq(motherRegNum),
+						(List) anyObject(), eq(true))).andReturn(motherList);
+
+		// expect(patientService.getPatient(motherRegNum)).andReturn(mother);
 		expect(
 				personService
 						.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD))
@@ -958,7 +969,7 @@ public class RegistrarBeanTest extends TestCase {
 				conceptService);
 
 		regBean.registerChild(firstName, lastName, prefName, date,
-				birthDateEst, sex, motherId, registeredGHS, regNumberGHS,
+				birthDateEst, sex, motherRegNum, registeredGHS, regNumberGHS,
 				insured, nhis, date, region, district, community, address,
 				clinic, registerPregProgram, primaryPhone, primaryPhoneType,
 				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
@@ -1028,7 +1039,8 @@ public class RegistrarBeanTest extends TestCase {
 		Relationship relationship = relationshipCap.getValue();
 		assertEquals(parentChildRelationshipType, relationship
 				.getRelationshipType());
-		assertEquals(motherId, relationship.getPersonA().getPersonId());
+		assertEquals(Integer.valueOf(2), relationship.getPersonA()
+				.getPersonId());
 		assertEquals(child.getPatientId(), relationship.getPersonB()
 				.getPersonId());
 	}

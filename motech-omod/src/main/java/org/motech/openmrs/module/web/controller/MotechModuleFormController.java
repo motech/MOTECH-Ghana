@@ -21,16 +21,11 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.model.Blackout;
-import org.motech.model.HIVStatus;
 import org.motech.model.TroubledPhone;
-import org.motech.model.WhoRegistered;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.openmrs.module.xml.LocationXStream;
 import org.motech.svc.RegistrarBean;
-import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.Gender;
-import org.motechproject.ws.MediaType;
 import org.openmrs.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -59,7 +54,6 @@ public class MotechModuleFormController {
 	private ContextService contextService;
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-	private SimpleDateFormat intDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 	@Autowired
 	public void setContextService(ContextService contextService) {
@@ -87,20 +81,6 @@ public class MotechModuleFormController {
 	public String viewNurseForm(ModelMap model) {
 		model.addAttribute("clinics", registrarBean.getAllClinics());
 		return "/module/motechmodule/nurse";
-	}
-
-	@RequestMapping(value = "/module/motechmodule/child", method = RequestMethod.GET)
-	public String viewChildForm(ModelMap model) {
-		model.addAttribute("patients", registrarBean.getAllPatients());
-		model.addAttribute("regions", contextService.getMotechService()
-				.getAllRegions());
-		model.addAttribute("districts", contextService.getMotechService()
-				.getAllDistricts());
-		model.addAttribute("communities", contextService.getMotechService()
-				.getAllCommunities());
-		model.addAttribute("clinics", contextService.getMotechService()
-				.getAllClinics());
-		return "/module/motechmodule/child";
 	}
 
 	@RequestMapping(value = "/module/motechmodule/pregnancy", method = RequestMethod.GET)
@@ -136,56 +116,6 @@ public class MotechModuleFormController {
 			@RequestParam("clinic") Integer clinicId) {
 		log.debug("Register Nurse");
 		registrarBean.registerNurse(name, nurseId, nursePhone, clinicId);
-		return "redirect:/module/motechmodule/viewdata.form";
-	}
-
-	@RequestMapping(value = "/module/motechmodule/child", method = RequestMethod.POST)
-	public String registerChild(@RequestParam("firstName") String firstName,
-			@RequestParam("lastName") String lastName,
-			@RequestParam("prefName") String prefName,
-			@RequestParam("birthDate") String birthDate,
-			@RequestParam("birthDateEst") String birthDateEst,
-			@RequestParam("sex") String sex,
-			@RequestParam("mother") String mother,
-			@RequestParam("registeredGHS") String registeredGHS,
-			@RequestParam("regNumberGHS") String regNumberGHS,
-			@RequestParam("insured") String insured,
-			@RequestParam("nhis") String nhis,
-			@RequestParam("nhisExpDate") String nhisExpDate,
-			@RequestParam("region") String region,
-			@RequestParam("district") String district,
-			@RequestParam("community") String community,
-			@RequestParam("address") String address,
-			@RequestParam("clinic") String clinic,
-			@RequestParam("registerPregProgram") String registerPregProgram,
-			@RequestParam("primaryPhone") String primaryPhone,
-			@RequestParam("primaryPhoneType") String primaryPhoneType,
-			@RequestParam("secondaryPhone") String secondaryPhone,
-			@RequestParam("secondaryPhoneType") String secondaryPhoneType,
-			@RequestParam("mediaTypeInfo") String mediaTypeInfo,
-			@RequestParam("mediaTypeReminder") String mediaTypeReminder,
-			@RequestParam("languageVoice") String languageVoice,
-			@RequestParam("languageText") String languageText,
-			@RequestParam("whoRegistered") String whoRegistered)
-			throws NumberFormatException, ParseException {
-		log.debug("Register Child");
-
-		Integer motherId = null;
-		if (!mother.equals("")) {
-			motherId = Integer.valueOf(mother);
-		}
-		registrarBean.registerChild(firstName, lastName, prefName,
-				intDateFormat.parse(birthDate), Boolean.valueOf(birthDateEst),
-				Gender.valueOf(sex), motherId, Boolean.valueOf(registeredGHS),
-				regNumberGHS, Boolean.valueOf(insured), nhis, intDateFormat
-						.parse(nhisExpDate), region, district, community,
-				address, Integer.valueOf(clinic), Boolean
-						.valueOf(registerPregProgram), primaryPhone,
-				ContactNumberType.valueOf(primaryPhoneType), secondaryPhone,
-				ContactNumberType.valueOf(secondaryPhoneType), MediaType
-						.valueOf(mediaTypeInfo), MediaType
-						.valueOf(mediaTypeReminder), languageVoice,
-				languageText, WhoRegistered.valueOf(whoRegistered));
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 

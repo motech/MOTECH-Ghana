@@ -50,14 +50,15 @@ public interface RegistrarBean {
 
 	public void registerChild(String firstName, String lastName,
 			String prefName, Date birthDate, Boolean birthDateEst, Gender sex,
-			Integer motherId, Boolean registeredGHS, String regNumberGHS,
-			Boolean insured, String nhis, Date nhisExpDate, String region,
-			String district, String community, String address, Integer clinic,
-			Boolean registerPregProgram, String primaryPhone,
-			ContactNumberType primaryPhoneType, String secondaryPhone,
-			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
-			MediaType mediaTypeReminder, String languageVoice,
-			String languageText, WhoRegistered whoRegistered);
+			String motherRegNumberGHS, Boolean registeredGHS,
+			String regNumberGHS, Boolean insured, String nhis,
+			Date nhisExpDate, String region, String district, String community,
+			String address, Integer clinic, Boolean registerPregProgram,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
+			String languageVoice, String languageText,
+			WhoRegistered whoRegistered);
 
 	@RunAsAdminUser
 	public void registerClinic(String name, Integer parentId);
