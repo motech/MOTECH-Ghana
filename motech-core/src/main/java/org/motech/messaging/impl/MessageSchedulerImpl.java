@@ -33,6 +33,8 @@ public class MessageSchedulerImpl implements MessageScheduler {
 	public void scheduleMessage(String messageKey, String messageGroup,
 			Integer messageRecipientId, Date messageDate) {
 
+		log.debug("scheduling message");
+
 		registrarBean.scheduleMessage(messageKey, messageGroup,
 				messageRecipientId, messageDate, userPreferenceBased);
 	}
