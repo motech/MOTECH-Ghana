@@ -3,6 +3,10 @@
 <openmrs:require privilege="Register MoTeCH Patient" otherwise="/login.htm" redirect="/module/motechmodule/child.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
+<openmrs:htmlInclude file="/dwr/util.js" />
+<openmrs:htmlInclude file="/dwr/interface/DWRMotechService.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/duplicate_patient.js" />
+
 <meta name="heading" content="Child Registration" />
 <%@ include file="localHeader.jsp" %>
 <h2>Register Child</h2>
@@ -11,7 +15,7 @@
 	including optional enroll the patient in the pregnant 
 	parents information service.
 </div>
-<form:form method="post" modelAttribute="child">
+<form:form method="post" modelAttribute="child" onsubmit="return confirmRegistrationOnMatches()">
 <span style="color:green;">
 	<spring:message code="${successMsg}" text="" />
 </span>
@@ -19,12 +23,12 @@
 <table>
 	<tr>
 		<td><label for="firstName">First Name:</label></td>
-		<td><form:input path="firstName" /></td>
+		<td><form:input path="firstName" onchange="findDuplicates()" /></td>
 		<td><form:errors path="firstName" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td><label for="lastName">Last Name:</label></td>
-		<td><form:input path="lastName" /></td>
+		<td><form:input path="lastName" onchange="findDuplicates()" /></td>
 		<td><form:errors path="lastName" cssClass="error" /></td>
 	</tr>
 	<tr>
@@ -34,7 +38,7 @@
 	</tr>
 	<tr>
 		<td><label for="birthDate">Date of Birth (DD/MM/YYYY):</label></td>
-		<td><form:input path="birthDate" /></td>
+		<td><form:input path="birthDate" onchange="findDuplicates()" /></td>
 		<td><form:errors path="birthDate" cssClass="error" /></td>
 	</tr>
 	<tr>
@@ -77,7 +81,7 @@
 	</tr>
 	<tr>
 		<td><label for="regNumberGHS">GHS ANC Registration Number:</label></td>
-		<td><form:input path="regNumberGHS" /></td>
+		<td><form:input path="regNumberGHS" onchange="findDuplicates()" /></td>
 		<td><form:errors path="regNumberGHS" cssClass="error" /></td>
 	</tr>
 	<tr>
@@ -93,7 +97,7 @@
 	</tr>
 	<tr>
 		<td><label for="nhis">NHIS Number:</label></td>
-		<td><form:input path="nhis" /></td>
+		<td><form:input path="nhis" onchange="findDuplicates()" /></td>
 		<td><form:errors path="nhis" cssClass="error" /></td>
 	</tr>
 	<tr>
@@ -124,7 +128,7 @@
 		<tr>
 		<td><label for="community">Community:</label></td>
 		<td>
-			<form:select path="community">
+			<form:select path="community" onchange="findDuplicates()">
 				<form:option value="" label="Select Value" />
 				<form:options items="${communities}" itemValue="name" itemLabel="name" />
 			</form:select>
@@ -164,7 +168,7 @@
 	</tr>
 	<tr>
 		<td><label for="primaryPhone">Primary Phone Number:</label></td>
-		<td><form:input path="primaryPhone" /></td>
+		<td><form:input path="primaryPhone" onchange="findDuplicates()" /></td>
 		<td><form:errors path="primaryPhone" cssClass="error" /></td>
 	</tr>
 	<tr>
@@ -262,5 +266,24 @@
 	</tr>
 </table>
 </form:form>
+<div id="matchingPeopleSection" style="color:red;display:none;">
+	<h3>Conflicting People</h3>
+	<table id="matchingPeople">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Birth Date</th>
+				<th>Community</th>
+				<th>Reg Number</th>
+				<th>NHIS Number</th>
+				<th>Primary Phone</th>
+				<th>Secondary Phone</th>
+			</tr>
+		</thead>
+		<tbody id="matchingPeopleBody" />
+	</table>
+</div>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>

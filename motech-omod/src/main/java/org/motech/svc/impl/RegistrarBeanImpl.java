@@ -1074,6 +1074,31 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				.getPatients(null, null, ghanaPatientIdType, false);
 	}
 
+	public List<Person> getMatchingPeople(String firstName, String lastName,
+			Date birthDate, String community, String phoneNumber,
+			String patientId, String nhisNumber) {
+
+		MotechService motechService = contextService.getMotechService();
+		PersonService personService = contextService.getPersonService();
+
+		Integer primaryPhoneNumberAttrTypeId = getPrimaryPhoneNumberAttributeType()
+				.getPersonAttributeTypeId();
+		Integer secondaryPhoneNumberAttrTypeId = getSecondaryPhoneNumberAttributeType()
+				.getPersonAttributeTypeId();
+		Integer nhisAttrTypeId = getNHISNumberAttributeType()
+				.getPersonAttributeTypeId();
+
+		List<Integer> personIds = motechService.getMatchingPeople(firstName,
+				lastName, birthDate, community, phoneNumber,
+				primaryPhoneNumberAttrTypeId, secondaryPhoneNumberAttrTypeId,
+				patientId, nhisNumber, nhisAttrTypeId);
+		List<Person> matchingPeople = new ArrayList<Person>();
+		for (Integer personId : personIds) {
+			matchingPeople.add(personService.getPerson(personId));
+		}
+		return matchingPeople;
+	}
+
 	public List<Encounter> getAllPregnancyVisits() {
 		EncounterService encounterService = contextService
 				.getEncounterService();

@@ -229,4 +229,15 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 			String district, String community) {
 		return motechDAO.getClinics(country, region, district, community);
 	}
+
+	public List<Integer> getMatchingPeople(String firstName, String lastName,
+			Date birthDate, String community, String phoneNumber,
+			Integer primaryPhoneNumberAttrTypeId,
+			Integer secondaryPhoneNumberAttrTypeId, String patientId,
+			String nhisNumber, Integer nhisAttrTypeId) {
+		return motechDAO.getMatchingPeople(firstName, lastName, birthDate,
+				community, phoneNumber, primaryPhoneNumberAttrTypeId,
+				secondaryPhoneNumberAttrTypeId, patientId, nhisNumber,
+				nhisAttrTypeId);
+	}
 }

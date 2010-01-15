@@ -91,6 +91,18 @@
 		<description>Number of sending failures when phone is considered troubled</description>
 	</globalProperty>
 	
+	<dwr>
+		<allow>
+			<create creator="new" javascript="DWRMotechService">
+				<param name="class" value="${modulePackage}.web.dwr.DWRMotechService" />
+				<include method="findMatchingPeople"/>
+			</create>
+			<convert converter="bean" match="${modulePackage}.web.model.WebPatient">
+				<param name="include" value="id, firstName, lastName, birthDate, community, regNumberGHS, nhis, primaryPhone, secondaryPhone" />
+			</convert>
+		</allow>
+	</dwr>
+	
 	<!-- Internationalization -->
 	<!-- All message codes should start with ${project.artifactId}.* -->
 	<messages>

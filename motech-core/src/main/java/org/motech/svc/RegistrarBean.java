@@ -19,6 +19,7 @@ import org.motechproject.ws.MediaType;
 import org.openmrs.Encounter;
 import org.openmrs.Location;
 import org.openmrs.Patient;
+import org.openmrs.Person;
 import org.openmrs.User;
 import org.openmrs.util.OpenmrsConstants;
 
@@ -158,6 +159,10 @@ public interface RegistrarBean {
 	public List<User> getAllNurses();
 
 	public List<Patient> getAllPatients();
+
+	public List<Person> getMatchingPeople(String firstName, String lastName,
+			Date birthDate, String community, String phoneNumber,
+			String patientId, String nhisNumber);
 
 	public List<Encounter> getAllPregnancyVisits();
 

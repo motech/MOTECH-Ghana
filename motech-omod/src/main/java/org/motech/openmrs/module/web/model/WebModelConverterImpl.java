@@ -84,79 +84,6 @@ public class WebModelConverterImpl implements WebModelConverter {
 		if (hivAttr != null) {
 			webPatient.setHivStatus(HIVStatus.valueOf(hivAttr.getValue()));
 		}
-
-		// TODO: populate registerPregProgram
-
-		PersonAttribute primaryPhoneAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER);
-		if (primaryPhoneAttr != null) {
-			webPatient.setPrimaryPhone(primaryPhoneAttr.getValue());
-		}
-
-		PersonAttribute primaryPhoneTypeAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE);
-		if (primaryPhoneTypeAttr != null) {
-			webPatient.setPrimaryPhoneType(ContactNumberType
-					.valueOf(primaryPhoneTypeAttr.getValue()));
-		}
-
-		PersonAttribute secondaryPhoneAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER);
-		if (secondaryPhoneAttr != null) {
-			webPatient.setSecondaryPhone(secondaryPhoneAttr.getValue());
-		}
-
-		PersonAttribute secondaryPhoneTypeAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE);
-		if (secondaryPhoneTypeAttr != null) {
-			webPatient.setSecondaryPhoneType(ContactNumberType
-					.valueOf(secondaryPhoneTypeAttr.getValue()));
-		}
-
-		PersonAttribute mediaTypeInfoAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL);
-		if (mediaTypeInfoAttr != null) {
-			webPatient.setMediaTypeInfo(MediaType.valueOf(mediaTypeInfoAttr
-					.getValue()));
-		}
-
-		PersonAttribute mediaTypeReminderAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER);
-		if (mediaTypeReminderAttr != null) {
-			webPatient.setMediaTypeReminder(MediaType
-					.valueOf(mediaTypeReminderAttr.getValue()));
-		}
-
-		PersonAttribute languageVoiceAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE);
-		if (languageVoiceAttr != null) {
-			webPatient.setLanguageVoice(languageVoiceAttr.getValue());
-		}
-
-		PersonAttribute languageTextAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT);
-		if (languageTextAttr != null) {
-			webPatient.setLanguageText(languageTextAttr.getValue());
-		}
-
-		PersonAttribute whoRegisteredAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED);
-		if (whoRegisteredAttr != null) {
-			webPatient.setWhoRegistered(WhoRegistered.valueOf(whoRegisteredAttr
-					.getValue()));
-		}
-
-		PersonAttribute religionAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_RELIGION);
-		if (religionAttr != null) {
-			webPatient.setReligion(religionAttr.getValue());
-		}
-
-		PersonAttribute occupationAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_OCCUPATION);
-		if (occupationAttr != null) {
-			webPatient.setOccupation(occupationAttr.getValue());
-		}
 	}
 
 	public void personToWeb(Person person, WebPatient webPatient) {
@@ -176,6 +103,79 @@ public class WebModelConverterImpl implements WebModelConverter {
 			webPatient.setDistrict(patientAddress.getCountyDistrict());
 			webPatient.setCommunity(patientAddress.getCityVillage());
 			webPatient.setAddress(patientAddress.getAddress1());
+		}
+
+		// TODO: populate registerPregProgram
+
+		PersonAttribute primaryPhoneAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER);
+		if (primaryPhoneAttr != null) {
+			webPatient.setPrimaryPhone(primaryPhoneAttr.getValue());
+		}
+
+		PersonAttribute primaryPhoneTypeAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE);
+		if (primaryPhoneTypeAttr != null) {
+			webPatient.setPrimaryPhoneType(ContactNumberType
+					.valueOf(primaryPhoneTypeAttr.getValue()));
+		}
+
+		PersonAttribute secondaryPhoneAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER);
+		if (secondaryPhoneAttr != null) {
+			webPatient.setSecondaryPhone(secondaryPhoneAttr.getValue());
+		}
+
+		PersonAttribute secondaryPhoneTypeAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE);
+		if (secondaryPhoneTypeAttr != null) {
+			webPatient.setSecondaryPhoneType(ContactNumberType
+					.valueOf(secondaryPhoneTypeAttr.getValue()));
+		}
+
+		PersonAttribute mediaTypeInfoAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL);
+		if (mediaTypeInfoAttr != null) {
+			webPatient.setMediaTypeInfo(MediaType.valueOf(mediaTypeInfoAttr
+					.getValue()));
+		}
+
+		PersonAttribute mediaTypeReminderAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER);
+		if (mediaTypeReminderAttr != null) {
+			webPatient.setMediaTypeReminder(MediaType
+					.valueOf(mediaTypeReminderAttr.getValue()));
+		}
+
+		PersonAttribute languageVoiceAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE);
+		if (languageVoiceAttr != null) {
+			webPatient.setLanguageVoice(languageVoiceAttr.getValue());
+		}
+
+		PersonAttribute languageTextAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT);
+		if (languageTextAttr != null) {
+			webPatient.setLanguageText(languageTextAttr.getValue());
+		}
+
+		PersonAttribute whoRegisteredAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED);
+		if (whoRegisteredAttr != null) {
+			webPatient.setWhoRegistered(WhoRegistered.valueOf(whoRegisteredAttr
+					.getValue()));
+		}
+
+		PersonAttribute religionAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_RELIGION);
+		if (religionAttr != null) {
+			webPatient.setReligion(religionAttr.getValue());
+		}
+
+		PersonAttribute occupationAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_OCCUPATION);
+		if (occupationAttr != null) {
+			webPatient.setOccupation(occupationAttr.getValue());
 		}
 	}
 

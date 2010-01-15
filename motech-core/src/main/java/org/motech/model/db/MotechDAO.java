@@ -100,4 +100,10 @@ public interface MotechDAO {
 
 	List<Location> getClinics(String country, String region, String district,
 			String community);
+
+	List<Integer> getMatchingPeople(String firstName, String lastName,
+			Date birthDate, String community, String phoneNumber,
+			Integer primaryPhoneNumberAttrTypeId,
+			Integer secondaryPhoneNumberAttrTypeId, String patientId,
+			String nhisNumber, Integer nhisAttrTypeId);
 }
