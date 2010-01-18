@@ -881,7 +881,7 @@ public class RegistrarBeanTest extends TestCase {
 		WhoRegistered whoRegistered = WhoRegistered.CHPS_STAFF;
 		Gender sex = Gender.FEMALE;
 
-		String pregnancyProgramName = "Weekly Info Pregnancy Message Program";
+		String pregnancyProgramName = "Weekly Info Child Message Program";
 
 		Patient child = new Patient(1);
 		Patient mother = new Patient(2);

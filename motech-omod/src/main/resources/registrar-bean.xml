@@ -85,6 +85,12 @@
 					</key>
 					<ref bean="weeklyInfoPregnancyProgram" />
 				</entry>
+				<entry>
+					<key>
+						<value>Weekly Info Child Message Program</value>
+					</key>
+					<ref bean="weeklyInfoChildProgram" />
+				</entry>
 			</map>
 		</property>
 	</bean>

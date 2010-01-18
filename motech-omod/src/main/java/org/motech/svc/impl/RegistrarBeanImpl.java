@@ -168,7 +168,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		if (registerPregProgram) {
 			addMessageProgramEnrollment(child.getPatientId(),
-					"Weekly Info Pregnancy Message Program");
+					"Weekly Info Child Message Program");
 		}
 	}
 

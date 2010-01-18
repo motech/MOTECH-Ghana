@@ -122,7 +122,9 @@
 			(43,'pregnancy.week.33',46,'INFORMATIONAL'),(44,'pregnancy.week.34',47,'INFORMATIONAL'),
 			(45,'pregnancy.week.35',48,'INFORMATIONAL'),(46,'pregnancy.week.36',49,'INFORMATIONAL'),
 			(47,'pregnancy.week.37',50,'INFORMATIONAL'),(48,'pregnancy.week.38',51,'INFORMATIONAL'),
-			(49,'pregnancy.week.39',52,'INFORMATIONAL'),(50,'pregnancy.week.40',53,'INFORMATIONAL');
+			(49,'pregnancy.week.39',52,'INFORMATIONAL'),(50,'pregnancy.week.40',53,'INFORMATIONAL'),
+			(51,'child.week.1',54,'INFORMATIONAL'),(52,'child.week.2',55,'INFORMATIONAL'),
+			(53,'child.week.3',56,'INFORMATIONAL'),(54,'child.week.4',57,'INFORMATIONAL');
 
 			INSERT INTO `motechmodule_messageattribute` (`motechmodule_messageattribute_id`,`attribute_name`,`attribute_property`)
 			VALUES (1,'PatientFirstName','person.givenName'),(2,'DueDate','obs.concept.name=ESTIMATED DATE OF CONFINEMENT');
@@ -132,7 +134,8 @@
 			(19,1),(19,2),(20,1),(20,2),(21,1),(21,2),(22,1),(22,2),(23,1),(23,2),(24,1),(24,2),(25,1),(25,2),(26,1),(26,2),
 			(27,1),(27,2),(28,1),(28,2),(29,1),(29,2),(30,1),(30,2),(31,1),(31,2),(32,1),(32,2),(33,1),(33,2),(34,1),(34,2),
 			(35,1),(35,2),(36,1),(36,2),(37,1),(37,2),(38,1),(38,2),(39,1),(39,2),(40,1),(40,2),(41,1),(41,2),(42,1),(42,2),
-			(43,1),(43,2),(44,1),(44,2),(45,1),(45,2),(46,1),(46,2),(47,1),(47,2),(48,1),(48,2),(49,1),(49,2),(50,1),(50,2);
+			(43,1),(43,2),(44,1),(44,2),(45,1),(45,2),(46,1),(46,2),(47,1),(47,2),(48,1),(48,2),(49,1),(49,2),(50,1),(50,2),
+			(51,1),(52,1),(53,1),(54,1);
 			
 			CREATE TABLE IF NOT EXISTS `motechmodule_enrollment` (
 				`motechmodule_enrollment_id` bigint NOT NULL auto_increment,

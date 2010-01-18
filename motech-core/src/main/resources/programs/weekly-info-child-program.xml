@@ -1,0 +1,161 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="weeklyInfoChildProgram" class="org.motech.event.impl.MessageProgramImpl">
+		<property name="name" value="Weekly Info Child Message Program" />
+		<property name="startState" ref="weeklyInfoChildState1" />
+		<property name="endState" ref="weeklyInfoChildState5" />
+	</bean>
+
+	<bean id="weeklyInfoChildState1" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Child Info State Week 1" />
+		<property name="timeValue" value="1" />
+		<property name="timePeriod" value="week" />
+		<property name="timeReference" value="patient_age" />
+		<property name="command">
+			<bean class="org.motech.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="child.week.1" />
+				<property name="messageScheduler" ref="userPrefmessageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="weeklyInfoChildProgram" />
+		<property name="registrarBean" ref="registrarBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="weeklyInfoChildState1" />
+					<property name="nextState" ref="weeklyInfoChildState2" />
+				</bean>
+				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="weeklyInfoChildState1" />
+					<property name="nextState" ref="weeklyInfoChildState1" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="weeklyInfoChildState2" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Child Info State Week 2" />
+		<property name="timeValue" value="2" />
+		<property name="timePeriod" value="week" />
+		<property name="timeReference" value="patient_age" />
+		<property name="command">
+			<bean class="org.motech.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="child.week.2" />
+				<property name="messageScheduler" ref="userPrefmessageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="weeklyInfoChildProgram" />
+		<property name="registrarBean" ref="registrarBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="weeklyInfoChildState2" />
+					<property name="nextState" ref="weeklyInfoChildState3" />
+				</bean>
+				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="weeklyInfoChildState2" />
+					<property name="nextState" ref="weeklyInfoChildState2" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="weeklyInfoChildState3" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Child Info State Week 3" />
+		<property name="timeValue" value="3" />
+		<property name="timePeriod" value="week" />
+		<property name="timeReference" value="patient_age" />
+		<property name="command">
+			<bean class="org.motech.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="child.week.3" />
+				<property name="messageScheduler" ref="userPrefmessageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="weeklyInfoChildProgram" />
+		<property name="registrarBean" ref="registrarBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="weeklyInfoChildState3" />
+					<property name="nextState" ref="weeklyInfoChildState4" />
+				</bean>
+				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="weeklyInfoChildState3" />
+					<property name="nextState" ref="weeklyInfoChildState3" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="weeklyInfoChildState4" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Child Info State Week 4" />
+		<property name="timeValue" value="4" />
+		<property name="timePeriod" value="week" />
+		<property name="timeReference" value="patient_age" />
+		<property name="command">
+			<bean class="org.motech.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="child.week.4" />
+				<property name="messageScheduler" ref="userPrefmessageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="weeklyInfoChildProgram" />
+		<property name="registrarBean" ref="registrarBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="weeklyInfoChildState4" />
+					<property name="nextState" ref="weeklyInfoChildState5" />
+				</bean>
+				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="weeklyInfoChildState4" />
+					<property name="nextState" ref="weeklyInfoChildState4" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="weeklyInfoChildState5" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="End Child Info State Week 5" />
+		<property name="timeValue" value="5" />
+		<property name="timePeriod" value="week" />
+		<property name="timeReference" value="patient_age" />
+		<property name="command">
+			<bean class="org.motech.event.impl.CompositeCommand">
+				<property name="commands">
+					<list>
+						<bean class="org.motech.event.impl.RemoveMessagesCommand">
+							<property name="registrarBean" ref="registrarBean" />
+						</bean>
+						<bean class="org.motech.event.impl.RemoveEnrollmentCommand">
+							<property name="registrarBean" ref="registrarBean" />
+						</bean>
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="program" ref="weeklyInfoChildProgram" />
+		<property name="registrarBean" ref="registrarBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="weeklyInfoChildState5" />
+					<property name="nextState" ref="weeklyInfoChildState5" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>
