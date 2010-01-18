@@ -26,6 +26,7 @@ public final class MotechConstants {
 	public static final String PERSON_ATTRIBUTE_RELIGION = "Religion";
 	public static final String PERSON_ATTRIBUTE_OCCUPATION = "Occupation";
 	public static final String PERSON_ATTRIBUTE_HOW_LEARNED = "How learned of service";
+	public static final String PERSON_ATTRIBUTE_WHY_INTERESTED = "Why interested in service";
 	public static final String PATIENT_IDENTIFIER_GHANA_CLINIC_ID = "Ghana Clinic Id";
 	public static final String LOCATION_GHANA = "Ghana";
 	public static final String LOCATION_UPPER_EAST = "Upper East";
@@ -46,6 +47,7 @@ public final class MotechConstants {
 	public static final String CONCEPT_POST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION = "POST PREVENTING MATERNAL TO CHILD TRANSMISSION";
 	public static final String CONCEPT_HEMOGLOBIN_AT_36_WEEKS = "HEMOGLOBIN AT 36 WEEKS";
 	public static final String CONCEPT_DATE_OF_CONFINEMENT_CONFIRMED = "DATE OF CONFINEMENT CONFIRMED";
+	public static final String CONCEPT_ENROLLMENT_REFERENCE_DATE = "MESSAGE PROGRAM ENROLLMENT REFERENCE DATE";
 	public static final String TASK_PROPERTY_SEND_IMMEDIATE = "sendImmediate";
 	public static final String TASK_PROPERTY_TIME_OFFSET = "timeOffset";
 	public static final String TASK_DAILY_NOTIFICATION = "Daily Notification Task";
@@ -67,6 +69,7 @@ public final class MotechConstants {
 	public static final String CONCEPT_DATATYPE_N_A = "N/A";
 	public static final String CONCEPT_DATATYPE_BOOLEAN = "Boolean";
 	public static final String CONCEPT_DATATYPE_TEXT = "Text";
+	public static final String CONCEPT_DATATYPE_DATETIME = "Datetime";
 	public static final String CONCEPT_TETANUS_BOOSTER = "TETANUS BOOSTER";
 	public static final String CONCEPT_YELLOW_FEVER_VACCINATION = "YELLOW FEVER VACCINATION";
 	public static final String CONCEPT_IMMUNIZATIONS_ORDERED = "IMMUNIZATIONS ORDERED";

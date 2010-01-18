@@ -25,6 +25,7 @@ import org.motech.model.MessageType;
 import org.motech.model.ScheduledMessage;
 import org.motech.model.TroubledPhone;
 import org.motech.model.WhoRegistered;
+import org.motech.model.WhyInterested;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.openmrs.module.tasks.MessageProgramUpdateTask;
@@ -106,43 +107,25 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		PatientService patientService = contextService.getPatientService();
 
-		PatientIdentifierType patientIdType = getGhanaPatientIdType();
-
-		Location motherLocation = mother.getPatientIdentifier().getLocation();
-
-		Patient child = new Patient();
-		PatientIdentifier childIdObj = new PatientIdentifier(childRegNum,
-				patientIdType, motherLocation);
-		child.addIdentifier(childIdObj);
-
-		child.setBirthdate(childDob);
-		child.setGender(GenderTypeConverter.toOpenMRSString(childGender));
-		child.addName(new PersonName(childFirstName, null, mother
-				.getFamilyName()));
-
-		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
-		PersonAttribute nhisAttr = new PersonAttribute(nhisAttrType, nhis);
-		child.addAttribute(nhisAttr);
-
-		PersonAttributeType nhisExprAttrType = getNHISExpirationDateAttributeType();
-		PersonAttribute nhisExprAttr = new PersonAttribute(nhisExprAttrType,
-				nhisExpires.toString());
-		child.addAttribute(nhisExprAttr);
-
-		PersonAttributeType whoRegisteredAttrType = getWhoRegisteredAttributeType();
-		child.addAttribute(new PersonAttribute(whoRegisteredAttrType,
-				WhoRegistered.CHPS_STAFF.name()));
-
 		PersonAddress motherAddress = mother.getPersonAddress();
+
+		String region = null;
+		String district = null;
+		String community = null;
+		String address = null;
+
 		if (motherAddress != null) {
-			PersonAddress childAddress = new PersonAddress();
-			// TODO: Consider factoring this out to a copy utility
-			childAddress.setRegion(motherAddress.getRegion());
-			childAddress.setCountyDistrict(motherAddress.getCountyDistrict());
-			childAddress.setAddress1(motherAddress.getAddress1());
-			childAddress.setCityVillage(motherAddress.getCityVillage());
-			child.addAddress(childAddress);
+			region = motherAddress.getRegion();
+			district = motherAddress.getCountyDistrict();
+			community = motherAddress.getCityVillage();
+			address = motherAddress.getAddress1();
 		}
+
+		Patient child = createPatient(childRegNum, childFirstName, null, mother
+				.getFamilyName(), null, childDob, false, childGender, null,
+				childRegNum, null, null, nhis, nhisExpires, null, region,
+				district, community, address, null, null, null, null, null,
+				null, null, null, null, null, null, WhoRegistered.CHPS_STAFF);
 
 		patientService.savePatient(child);
 	}
@@ -162,17 +145,13 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		PatientService patientService = contextService.getPatientService();
 		PersonService personService = contextService.getPersonService();
 
-		Patient child = createPatient(firstName, middleName, lastName,
-				prefName, birthDate, birthDateEst, sex, registeredGHS,
-				regNumberGHS, insured, nhis, nhisExpDate, region, district,
-				community, address, clinic, primaryPhone, primaryPhoneType,
-				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
-				mediaTypeReminder, languageVoice, languageText, whoRegistered);
-
-		PersonAttributeType cwcRegNumAttrType = getCWCRegistrationNumberAttributeType();
-		child
-				.addAttribute(new PersonAttribute(cwcRegNumAttrType,
-						regNumberGHS));
+		Patient child = createPatient(regNumberGHS, firstName, middleName,
+				lastName, prefName, birthDate, birthDateEst, sex,
+				registeredGHS, regNumberGHS, null, insured, nhis, nhisExpDate,
+				null, region, district, community, address, clinic,
+				primaryPhone, primaryPhoneType, secondaryPhone,
+				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
+				languageVoice, languageText, null, null, whoRegistered);
 
 		child = patientService.savePatient(child);
 
@@ -193,121 +172,32 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
-	private Patient createPatient(String firstName, String middleName,
-			String lastName, String prefName, Date birthDate,
-			Boolean birthDateEst, Gender sex, Boolean registeredGHS,
-			String regNumberGHS, Boolean insured, String nhis,
-			Date nhisExpDate, String region, String district, String community,
-			String address, Integer clinic, String primaryPhone,
-			ContactNumberType primaryPhoneType, String secondaryPhone,
-			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
-			MediaType mediaTypeReminder, String languageVoice,
-			String languageText, WhoRegistered whoRegistered) {
+	private Patient createPatient(String patientId, String firstName,
+			String middleName, String lastName, String prefName,
+			Date birthDate, Boolean birthDateEst, Gender sex,
+			Boolean registeredGHS, String regNumberCWC, String regNumberANC,
+			Boolean insured, String nhis, Date nhisExpDate,
+			HIVStatus hivStatus, String region, String district,
+			String community, String address, Integer clinic,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
+			String languageVoice, String languageText, String religion,
+			String occupation, WhoRegistered whoRegistered) {
 
-		Patient patient = new Patient();
+		Person person = createPerson(firstName, middleName, lastName, prefName,
+				birthDate, birthDateEst, sex, region, district, community,
+				address, clinic, primaryPhone, primaryPhoneType,
+				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
+				mediaTypeReminder, languageVoice, languageText, religion,
+				occupation, null, null, whoRegistered, registeredGHS,
+				regNumberCWC, regNumberANC, hivStatus, insured, nhis,
+				nhisExpDate);
 
-		PatientIdentifierType ghanaSerialIdType = getGhanaPatientIdType();
+		Patient patient = new Patient(person);
 
-		Location ghanaLocation = getGhanaLocation();
-		patient.addIdentifier(new PatientIdentifier(regNumberGHS,
-				ghanaSerialIdType, ghanaLocation));
-
-		// TODO: Store preferred name
-		patient.addName(new PersonName(firstName, middleName, lastName));
-		patient.setGender(GenderTypeConverter.toOpenMRSString(sex));
-		patient.setBirthdate(birthDate);
-		patient.setBirthdateEstimated(birthDateEst);
-
-		PersonAddress personAddress = new PersonAddress();
-		personAddress.setAddress1(address);
-		personAddress.setCityVillage(community);
-		personAddress.setCountyDistrict(district);
-		personAddress.setRegion(region);
-		patient.addAddress(personAddress);
-
-		if (registeredGHS != null) {
-			PersonAttributeType registeredGHSAttrType = getGHSRegisteredAttributeType();
-			patient.addAttribute(new PersonAttribute(registeredGHSAttrType,
-					registeredGHS.toString()));
-		}
-
-		if (insured != null) {
-			PersonAttributeType insuredAttrType = getInsuredAttributeType();
-			patient.addAttribute(new PersonAttribute(insuredAttrType, insured
-					.toString()));
-		}
-
-		if (nhis != null) {
-			PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
-			patient.addAttribute(new PersonAttribute(nhisAttrType, nhis
-					.toString()));
-		}
-
-		if (nhisExpDate != null) {
-			PersonAttributeType nhisExpDateAttrType = getNHISExpirationDateAttributeType();
-			patient.addAttribute(new PersonAttribute(nhisExpDateAttrType,
-					nhisExpDate.toString()));
-		}
-
-		if (clinic != null) {
-			PersonAttributeType clinicAttrType = getClinicAttributeType();
-			patient.addAttribute(new PersonAttribute(clinicAttrType, clinic
-					.toString()));
-		}
-
-		if (primaryPhone != null) {
-			PersonAttributeType primaryPhoneAttrType = getPrimaryPhoneNumberAttributeType();
-			patient.addAttribute(new PersonAttribute(primaryPhoneAttrType,
-					primaryPhone));
-		}
-
-		if (primaryPhoneType != null) {
-			PersonAttributeType primaryPhoneTypeAttrType = getPrimaryPhoneTypeAttributeType();
-			patient.addAttribute(new PersonAttribute(primaryPhoneTypeAttrType,
-					primaryPhoneType.name()));
-		}
-
-		if (secondaryPhone != null) {
-			PersonAttributeType secondaryPhoneAttrType = getSecondaryPhoneNumberAttributeType();
-			patient.addAttribute(new PersonAttribute(secondaryPhoneAttrType,
-					secondaryPhone));
-		}
-
-		if (secondaryPhoneType != null) {
-			PersonAttributeType secondaryPhoneTypeAttrType = getSecondaryPhoneTypeAttributeType();
-			patient.addAttribute(new PersonAttribute(
-					secondaryPhoneTypeAttrType, secondaryPhoneType.name()));
-		}
-
-		if (mediaTypeInfo != null) {
-			PersonAttributeType mediaTypeInfoAttrType = getMediaTypeInformationalAttributeType();
-			patient.addAttribute(new PersonAttribute(mediaTypeInfoAttrType,
-					mediaTypeInfo.name()));
-		}
-
-		if (mediaTypeReminder != null) {
-			PersonAttributeType mediaTypeReminderAttrType = getMediaTypeReminderAttributeType();
-			patient.addAttribute(new PersonAttribute(mediaTypeReminderAttrType,
-					mediaTypeReminder.name()));
-		}
-
-		if (languageText != null) {
-			PersonAttributeType languageTextAttrType = getLanguageTextAttributeType();
-			patient.addAttribute(new PersonAttribute(languageTextAttrType,
-					languageText));
-		}
-
-		if (languageVoice != null) {
-			PersonAttributeType languageVoiceAttrType = getLanguageVoiceAttributeType();
-			patient.addAttribute(new PersonAttribute(languageVoiceAttrType,
-					languageVoice));
-		}
-
-		if (whoRegistered != null) {
-			PersonAttributeType whoRegisteredAttrType = getWhoRegisteredAttributeType();
-			patient.addAttribute(new PersonAttribute(whoRegisteredAttrType,
-					whoRegistered.name()));
-		}
+		patient.addIdentifier(new PatientIdentifier(patientId,
+				getGhanaPatientIdType(), getGhanaLocation()));
 
 		return patient;
 	}
@@ -402,41 +292,14 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		PatientService patientService = contextService.getPatientService();
 
-		Patient mother = createPatient(firstName, middleName, lastName,
-				prefName, birthDate, birthDateEst, Gender.FEMALE,
-				registeredGHS, regNumberGHS, insured, nhis, nhisExpDate,
-				region, district, community, address, clinic, primaryPhone,
-				primaryPhoneType, secondaryPhone, secondaryPhoneType,
-				mediaTypeInfo, mediaTypeReminder, languageVoice, languageText,
+		Patient mother = createPatient(regNumberGHS, firstName, middleName,
+				lastName, prefName, birthDate, birthDateEst, Gender.FEMALE,
+				registeredGHS, null, regNumberGHS, insured, nhis, nhisExpDate,
+				hivStatus, region, district, community, address, clinic,
+				primaryPhone, primaryPhoneType, secondaryPhone,
+				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
+				languageVoice, languageText, religion, occupation,
 				whoRegistered);
-
-		if (regNumberGHS != null) {
-			PersonAttributeType ancRegNumAttrType = getANCRegistrationNumberAttributeType();
-			mother.addAttribute(new PersonAttribute(ancRegNumAttrType,
-					regNumberGHS));
-		}
-
-		if (hivStatus != null) {
-			PersonAttributeType hivStatusAttrType = this
-					.getHIVStatusAttributeType();
-			mother.addAttribute(new PersonAttribute(hivStatusAttrType,
-					hivStatus.name()));
-		}
-
-		if (religion != null) {
-			PersonAttributeType religionAttrType = this
-					.getReligionAttributeType();
-			mother
-					.addAttribute(new PersonAttribute(religionAttrType,
-							religion));
-		}
-
-		if (occupation != null) {
-			PersonAttributeType occupationAttrType = this
-					.getOccupationAttributeType();
-			mother.addAttribute(new PersonAttribute(occupationAttrType,
-					occupation));
-		}
 
 		mother = patientService.savePatient(mother);
 
@@ -445,6 +308,222 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		if (registerPregProgram) {
 			addMessageProgramEnrollment(mother.getPatientId(),
 					"Weekly Pregnancy Message Program");
+		}
+	}
+
+	public void registerPerson(String firstName, String middleName,
+			String lastName, String prefName, Date birthDate,
+			Boolean birthDateEst, Gender sex, String region, String district,
+			String community, String address, Integer clinic,
+			Boolean registerPregProgram, Integer messagesStartWeek,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
+			String languageVoice, String languageText, String howLearned,
+			String religion, String occupation, WhyInterested whyInterested) {
+
+		PersonService personService = contextService.getPersonService();
+
+		Person person = createPerson(firstName, middleName, lastName, prefName,
+				birthDate, birthDateEst, sex, region, district, community,
+				address, clinic, primaryPhone, primaryPhoneType,
+				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
+				mediaTypeReminder, languageVoice, languageText, religion,
+				occupation, howLearned, whyInterested, null, null, null, null,
+				null, null, null, null);
+
+		person = personService.savePerson(person);
+
+		if (messagesStartWeek != null) {
+			ObsService obsService = contextService.getObsService();
+
+			Location ghanaLocation = getGhanaLocation();
+			Date currentDate = new Date();
+
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.DATE, messagesStartWeek * -7);
+			Date referenceDate = calendar.getTime();
+
+			Obs refDateObs = createDateValueObs(currentDate,
+					getEnrollmentReferenceDateConcept(), person, ghanaLocation,
+					referenceDate, null, null);
+
+			obsService.saveObs(refDateObs, null);
+		}
+
+		// TODO: pregnancy info program use ref date (messages start
+		// date)
+		if (registerPregProgram) {
+			addMessageProgramEnrollment(person.getPersonId(),
+					"Weekly Info Pregnancy Message Program");
+		}
+	}
+
+	private Person createPerson(String firstName, String middleName,
+			String lastName, String prefName, Date birthDate,
+			Boolean birthDateEst, Gender sex, String region, String district,
+			String community, String address, Integer clinic,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
+			String languageVoice, String languageText, String religion,
+			String occupation, String howLearned, WhyInterested whyInterested,
+			WhoRegistered whoRegistered, Boolean registeredGHS,
+			String regNumberCWC, String regNumberANC, HIVStatus hivStatus,
+			Boolean insured, String nhis, Date nhisExpDate) {
+
+		Person person = new Person();
+
+		person.addName(new PersonName(firstName, middleName, lastName));
+
+		if (prefName != null) {
+			PersonName preferredPersonName = new PersonName(prefName,
+					middleName, lastName);
+			preferredPersonName.setPreferred(true);
+			person.addName(preferredPersonName);
+		}
+
+		person.setGender(GenderTypeConverter.toOpenMRSString(sex));
+		person.setBirthdate(birthDate);
+		person.setBirthdateEstimated(birthDateEst);
+
+		PersonAddress personAddress = new PersonAddress();
+		personAddress.setAddress1(address);
+		personAddress.setCityVillage(community);
+		personAddress.setCountyDistrict(district);
+		personAddress.setRegion(region);
+		personAddress.setCountry(MotechConstants.LOCATION_GHANA);
+		person.addAddress(personAddress);
+
+		setPersonAttributes(person, clinic, primaryPhone, primaryPhoneType,
+				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
+				mediaTypeReminder, languageVoice, languageText, religion,
+				occupation, howLearned, whyInterested, whoRegistered,
+				registeredGHS, regNumberCWC, regNumberANC, hivStatus, insured,
+				nhis, nhisExpDate);
+
+		return person;
+	}
+
+	private void setPersonAttributes(Person person, Integer clinic,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
+			String languageVoice, String languageText, String religion,
+			String occupation, String howLearned, WhyInterested whyInterested,
+			WhoRegistered whoRegistered, Boolean registeredGHS,
+			String regNumberCWC, String regNumberANC, HIVStatus hivStatus,
+			Boolean insured, String nhis, Date nhisExpDate) {
+
+		if (clinic != null) {
+			person.addAttribute(new PersonAttribute(getClinicAttributeType(),
+					clinic.toString()));
+		}
+
+		if (primaryPhone != null) {
+			person.addAttribute(new PersonAttribute(
+					getPrimaryPhoneNumberAttributeType(), primaryPhone));
+		}
+
+		if (primaryPhoneType != null) {
+			person
+					.addAttribute(new PersonAttribute(
+							getPrimaryPhoneTypeAttributeType(),
+							primaryPhoneType.name()));
+		}
+
+		if (secondaryPhone != null) {
+			person.addAttribute(new PersonAttribute(
+					getSecondaryPhoneNumberAttributeType(), secondaryPhone));
+		}
+
+		if (secondaryPhoneType != null) {
+			person.addAttribute(new PersonAttribute(
+					getSecondaryPhoneTypeAttributeType(), secondaryPhoneType
+							.name()));
+		}
+
+		if (mediaTypeInfo != null) {
+			person.addAttribute(new PersonAttribute(
+					getMediaTypeInformationalAttributeType(), mediaTypeInfo
+							.name()));
+		}
+
+		if (mediaTypeReminder != null) {
+			person.addAttribute(new PersonAttribute(
+					getMediaTypeReminderAttributeType(), mediaTypeReminder
+							.name()));
+		}
+
+		if (languageText != null) {
+			person.addAttribute(new PersonAttribute(
+					getLanguageTextAttributeType(), languageText));
+		}
+
+		if (languageVoice != null) {
+			person.addAttribute(new PersonAttribute(
+					getLanguageVoiceAttributeType(), languageVoice));
+		}
+
+		if (religion != null) {
+			person.addAttribute(new PersonAttribute(getReligionAttributeType(),
+					religion));
+		}
+
+		if (occupation != null) {
+			person.addAttribute(new PersonAttribute(
+					getOccupationAttributeType(), occupation));
+		}
+
+		if (howLearned != null) {
+			person.addAttribute(new PersonAttribute(
+					getHowLearnedAttributeType(), howLearned));
+		}
+
+		if (whyInterested != null) {
+			person.addAttribute(new PersonAttribute(
+					getWhyInterestedAttributeType(), whyInterested.name()));
+		}
+
+		if (whoRegistered != null) {
+			person.addAttribute(new PersonAttribute(
+					getWhoRegisteredAttributeType(), whoRegistered.name()));
+		}
+
+		if (registeredGHS != null) {
+			person.addAttribute(new PersonAttribute(
+					getGHSRegisteredAttributeType(), registeredGHS.toString()));
+		}
+
+		if (regNumberCWC != null) {
+			person.addAttribute(new PersonAttribute(
+					getCWCRegistrationNumberAttributeType(), regNumberCWC));
+		}
+
+		if (regNumberANC != null) {
+			person.addAttribute(new PersonAttribute(
+					getANCRegistrationNumberAttributeType(), regNumberANC));
+		}
+
+		if (hivStatus != null) {
+			person.addAttribute(new PersonAttribute(
+					getHIVStatusAttributeType(), hivStatus.name()));
+		}
+
+		if (insured != null) {
+			person.addAttribute(new PersonAttribute(getInsuredAttributeType(),
+					insured.toString()));
+		}
+
+		if (nhis != null) {
+			person.addAttribute(new PersonAttribute(
+					getNHISNumberAttributeType(), nhis));
+		}
+
+		if (nhisExpDate != null) {
+			person.addAttribute(new PersonAttribute(
+					getNHISExpirationDateAttributeType(), nhisExpDate
+							.toString()));
 		}
 	}
 
@@ -555,40 +634,10 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		PatientService patientService = contextService.getPatientService();
 
-		if (primaryPhone != null) {
-			PersonAttributeType primaryPhoneAttrType = getPrimaryPhoneNumberAttributeType();
-			patient.addAttribute(new PersonAttribute(primaryPhoneAttrType,
-					primaryPhone));
-		}
-
-		if (primaryPhoneType != null) {
-			PersonAttributeType primaryPhoneTypeAttrType = getPrimaryPhoneTypeAttributeType();
-			patient.addAttribute(new PersonAttribute(primaryPhoneTypeAttrType,
-					primaryPhoneType.toString()));
-		}
-
-		if (secondaryPhone != null) {
-			PersonAttributeType secondaryPhoneAttrType = getSecondaryPhoneNumberAttributeType();
-			patient.addAttribute(new PersonAttribute(secondaryPhoneAttrType,
-					secondaryPhone));
-		}
-
-		if (secondaryPhoneType != null) {
-			PersonAttributeType secondaryPhoneTypeAttrType = getSecondaryPhoneTypeAttributeType();
-			patient.addAttribute(new PersonAttribute(
-					secondaryPhoneTypeAttrType, secondaryPhoneType.toString()));
-		}
-
-		if (nhis != null) {
-			PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
-			patient.addAttribute(new PersonAttribute(nhisAttrType, nhis));
-		}
-
-		if (nhisExpires != null) {
-			PersonAttributeType nhisExpDateAttrType = getNHISExpirationDateAttributeType();
-			patient.addAttribute(new PersonAttribute(nhisExpDateAttrType,
-					nhisExpires.toString()));
-		}
+		setPersonAttributes(patient, null, primaryPhone, primaryPhoneType,
+				secondaryPhone, secondaryPhoneType, null, null, null, null,
+				null, null, null, null, null, null, null, null, null, null,
+				nhis, nhisExpires);
 
 		patientService.savePatient(patient);
 	}
@@ -618,6 +667,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		PersonName patientName = patient.getPersonName();
 		if (patientName == null) {
+			// TODO: Store middle name and pref Name properly
 			patientName = new PersonName(firstName, prefName, lastName);
 			patient.addName(patientName);
 		} else {
@@ -652,86 +702,13 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			patientId.setIdentifier(regNumberGHS);
 		}
 
-		if (registeredGHS != null) {
-			patient.addAttribute(new PersonAttribute(
-					getGHSRegisteredAttributeType(), registeredGHS.toString()));
-		}
-		if (insured != null) {
-			patient.addAttribute(new PersonAttribute(getInsuredAttributeType(),
-					insured.toString()));
-		}
-		if (nhis != null) {
-			patient.addAttribute(new PersonAttribute(
-					getNHISNumberAttributeType(), nhis));
-		}
-		if (nhisExpDate != null) {
-			patient.addAttribute(new PersonAttribute(
-					getNHISExpirationDateAttributeType(), nhisExpDate
-							.toString()));
-		}
-		if (clinic != null) {
-			patient.addAttribute(new PersonAttribute(getClinicAttributeType(),
-					clinic.toString()));
-		}
-
-		editPatient(patient, primaryPhone, primaryPhoneType, secondaryPhone,
-				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
-				languageVoice, languageText, whoRegistered, null);
+		setPersonAttributes(patient, clinic, primaryPhone, primaryPhoneType,
+				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
+				mediaTypeReminder, languageVoice, languageText, null, null,
+				null, null, whoRegistered, registeredGHS, null, null, null,
+				insured, nhis, nhisExpDate);
 
 		patientService.savePatient(patient);
-	}
-
-	private void editPatient(Patient patient, String primaryPhone,
-			ContactNumberType primaryPhoneType, String secondaryPhone,
-			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
-			MediaType mediaTypeReminder, String languageVoice,
-			String languageText, WhoRegistered whoRegistered, String howLearned) {
-
-		if (primaryPhone != null) {
-			patient.addAttribute(new PersonAttribute(
-					getPrimaryPhoneNumberAttributeType(), primaryPhone));
-		}
-		if (primaryPhoneType != null) {
-			patient
-					.addAttribute(new PersonAttribute(
-							getPrimaryPhoneTypeAttributeType(),
-							primaryPhoneType.name()));
-		}
-		if (secondaryPhone != null) {
-			patient.addAttribute(new PersonAttribute(
-					getSecondaryPhoneNumberAttributeType(), secondaryPhone));
-		}
-		if (secondaryPhoneType != null) {
-			patient.addAttribute(new PersonAttribute(
-					getSecondaryPhoneTypeAttributeType(), secondaryPhoneType
-							.name()));
-		}
-		if (mediaTypeInfo != null) {
-			patient.addAttribute(new PersonAttribute(
-					getMediaTypeInformationalAttributeType(), mediaTypeInfo
-							.name()));
-		}
-		if (mediaTypeReminder != null) {
-			patient.addAttribute(new PersonAttribute(
-					getMediaTypeReminderAttributeType(), mediaTypeReminder
-							.name()));
-		}
-		if (languageVoice != null) {
-			patient.addAttribute(new PersonAttribute(
-					getLanguageVoiceAttributeType(), languageVoice));
-		}
-		if (languageText != null) {
-			patient.addAttribute(new PersonAttribute(
-					getLanguageTextAttributeType(), languageText));
-		}
-		if (whoRegistered != null) {
-			patient.addAttribute(new PersonAttribute(
-					getWhoRegisteredAttributeType(), whoRegistered.name()));
-		}
-		if (howLearned != null) {
-			patient.addAttribute(new PersonAttribute(
-					getHowLearnedAttributeType(), howLearned));
-		}
 	}
 
 	public void stopPregnancyProgram(User nurse, Patient patient) {
@@ -875,9 +852,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			return;
 		}
 
-		editPatient(patient, primaryPhone, primaryPhoneType, secondaryPhone,
-				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
-				languageVoice, languageText, whoRegistered, howLearned);
+		setPersonAttributes(patient, null, primaryPhone, primaryPhoneType,
+				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
+				mediaTypeReminder, languageVoice, languageText, null, null,
+				howLearned, null, whoRegistered, null, null, null, null, null,
+				null, null);
 
 		patientService.savePatient(patient);
 
@@ -1461,6 +1440,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED,
 				"How person found out about services.", String.class.getName(),
 				admin);
+		createPersonAttributeType(
+				MotechConstants.PERSON_ATTRIBUTE_WHY_INTERESTED,
+				"Why person is interested in services "
+						+ "(IN_HOUSEHOLD_PREGNANCY, OUT_HOUSEHOLD_PREGNANCY, or IN_HOUSEHOLD_BIRTH).",
+				String.class.getName(), admin);
 
 		log.info("Verifying Patient Identifier Exist");
 		createPatientIdentifierType(
@@ -1550,6 +1534,10 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				"Question: \"Is the pregnancy due date confirmed by the CHW?\"",
 				MotechConstants.CONCEPT_CLASS_QUESTION,
 				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(MotechConstants.CONCEPT_ENROLLMENT_REFERENCE_DATE,
+				"Reference Date for Message Program Enrollment",
+				MotechConstants.CONCEPT_CLASS_MISC,
+				MotechConstants.CONCEPT_DATATYPE_DATETIME, admin);
 
 		log.info("Verifying Concepts Exist as Answers");
 		// TODO: Add IPT to proper Concept as an Answer, not an immunization
@@ -2411,6 +2399,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED);
 	}
 
+	public PersonAttributeType getWhyInterestedAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_WHY_INTERESTED);
+	}
+
 	public Location getGhanaLocation() {
 		return contextService.getLocationService().getLocation(
 				MotechConstants.LOCATION_GHANA);
@@ -2520,6 +2513,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public Concept getDueDateConfirmedConcept() {
 		return contextService.getConceptService().getConcept(
 				MotechConstants.CONCEPT_DATE_OF_CONFINEMENT_CONFIRMED);
+	}
+
+	public Concept getEnrollmentReferenceDateConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_ENROLLMENT_REFERENCE_DATE);
 	}
 
 	public String getTroubledPhoneProperty() {

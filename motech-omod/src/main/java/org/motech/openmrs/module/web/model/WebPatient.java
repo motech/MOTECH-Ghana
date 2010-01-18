@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.motech.model.HIVStatus;
 import org.motech.model.WhoRegistered;
+import org.motech.model.WhyInterested;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
@@ -48,6 +49,8 @@ public class WebPatient {
 	private String religion;
 	private String occupation;
 	private String howLearned;
+	private WhyInterested whyInterested;
+	private Integer messagesStartWeek;
 
 	public WebPatient() {
 	}
@@ -354,6 +357,22 @@ public class WebPatient {
 
 	public void setHowLearned(String howLearned) {
 		this.howLearned = howLearned;
+	}
+
+	public WhyInterested getWhyInterested() {
+		return whyInterested;
+	}
+
+	public void setWhyInterested(WhyInterested whyInterested) {
+		this.whyInterested = whyInterested;
+	}
+
+	public Integer getMessagesStartWeek() {
+		return messagesStartWeek;
+	}
+
+	public void setMessagesStartWeek(Integer messagesStartWeek) {
+		this.messagesStartWeek = messagesStartWeek;
 	}
 
 }

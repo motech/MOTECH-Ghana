@@ -19,6 +19,22 @@ function findDuplicates() {
 	}
 }
 
+function findDuplicatesForPerson() {
+	var firstName = dwr.util.getValue('firstName');
+	var lastName = dwr.util.getValue('lastName');
+	var birthDate = dwr.util.getValue('birthDate');
+	var community = dwr.util.getValue('community');
+	var primaryPhone = dwr.util.getValue('primaryPhone');
+	
+	if((firstName != '' && lastName != '') && 
+			((birthDate != '' && birthDateRegex.test(birthDate)) || 
+			community != '' || primaryPhone != '')) {
+		DWRMotechService.findMatchingPeople(firstName, lastName, 
+			birthDate, community, primaryPhone, null, null, 
+			displayMatchesFunctionForPerson);
+	}
+}
+
 var tableColumnFunctions = [
 	function(webPatient) { return webPatient.id; },
 	function(webPatient) { return webPatient.firstName; },
@@ -31,11 +47,32 @@ var tableColumnFunctions = [
 	function(webPatient) { return webPatient.secondaryPhone; }
 ];
 
+var tableColumnFunctionsForPerson = [
+	function(webPatient) { return webPatient.id; },
+	function(webPatient) { return webPatient.firstName; },
+	function(webPatient) { return webPatient.lastName; },
+	function(webPatient) { return formatDate(webPatient.birthDate); },
+	function(webPatient) { return webPatient.community; },
+	function(webPatient) { return webPatient.primaryPhone; },
+	function(webPatient) { return webPatient.secondaryPhone; }
+];
+
 function displayMatchesFunction(webPatientList) {
 	numberOfMatches = webPatientList.length;
 	if( numberOfMatches > 0 ) {
 		dwr.util.removeAllRows('matchingPeopleBody');
 		dwr.util.addRows('matchingPeopleBody', webPatientList, tableColumnFunctions);
+		dwr.util.byId('matchingPeopleSection').style.display = 'block';
+	} else {
+		dwr.util.byId('matchingPeopleSection').style.display = 'none';
+	}
+}
+
+function displayMatchesFunctionForPerson(webPatientList) {
+	numberOfMatches = webPatientList.length;
+	if( numberOfMatches > 0 ) {
+		dwr.util.removeAllRows('matchingPeopleBody');
+		dwr.util.addRows('matchingPeopleBody', webPatientList, tableColumnFunctionsForPerson);
 		dwr.util.byId('matchingPeopleSection').style.display = 'block';
 	} else {
 		dwr.util.byId('matchingPeopleSection').style.display = 'none';

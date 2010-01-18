@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.model.HIVStatus;
 import org.motech.model.WhoRegistered;
+import org.motech.model.WhyInterested;
 import org.motech.util.GenderTypeConverter;
 import org.motech.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
@@ -17,6 +18,7 @@ import org.openmrs.PatientIdentifier;
 import org.openmrs.Person;
 import org.openmrs.PersonAddress;
 import org.openmrs.PersonAttribute;
+import org.openmrs.PersonName;
 
 public class WebModelConverterImpl implements WebModelConverter {
 
@@ -89,9 +91,14 @@ public class WebModelConverterImpl implements WebModelConverter {
 	public void personToWeb(Person person, WebPatient webPatient) {
 
 		webPatient.setId(person.getPersonId());
-		webPatient.setFirstName(person.getGivenName());
+		for (PersonName name : person.getNames()) {
+			if (!name.isPreferred() && name.getGivenName() != null) {
+				webPatient.setFirstName(name.getGivenName());
+				break;
+			}
+		}
 		webPatient.setLastName(person.getFamilyName());
-		webPatient.setPrefName(person.getMiddleName());
+		webPatient.setPrefName(person.getGivenName());
 		webPatient.setBirthDate(person.getBirthdate());
 		webPatient.setBirthDateEst(person.getBirthdateEstimated());
 		webPatient.setSex(GenderTypeConverter
@@ -176,6 +183,19 @@ public class WebModelConverterImpl implements WebModelConverter {
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_OCCUPATION);
 		if (occupationAttr != null) {
 			webPatient.setOccupation(occupationAttr.getValue());
+		}
+
+		PersonAttribute whyInterestedAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_WHY_INTERESTED);
+		if (whyInterestedAttr != null) {
+			webPatient.setWhyInterested(WhyInterested.valueOf(whyInterestedAttr
+					.getValue()));
+		}
+
+		PersonAttribute howLearnedAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED);
+		if (howLearnedAttr != null) {
+			webPatient.setHowLearned(howLearnedAttr.getValue());
 		}
 	}
 

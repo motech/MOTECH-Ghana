@@ -53,6 +53,13 @@
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
+	<openmrs:hasPrivilege privilege="Register MoTeCH Patient">
+		<li <c:if test='<%= request.getRequestURI().contains("person") %>'>class="active"</c:if>>
+			<a href="${pageContext.request.contextPath}/module/motechmodule/person.form">
+				<spring:message code="motechmodule.Person.register"/>
+			</a>
+		</li>
+	</openmrs:hasPrivilege>
 	<openmrs:hasPrivilege privilege="View MoTeCH Data">
 		<li <c:if test='<%= request.getRequestURI().contains("viewdata") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/module/motechmodule/viewdata.form">

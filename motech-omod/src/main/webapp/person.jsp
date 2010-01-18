@@ -1,29 +1,40 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
-<openmrs:require privilege="Register MoTeCH Patient" otherwise="/login.htm" redirect="/module/motechmodule/child.form" />
+<openmrs:require privilege="Register MoTeCH Patient" otherwise="/login.htm" redirect="/module/motechmodule/person.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
 <openmrs:htmlInclude file="/dwr/util.js" />
 <openmrs:htmlInclude file="/dwr/interface/DWRMotechService.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/find_duplicates.js" />
 
-<meta name="heading" content="Child Registration" />
+<meta name="heading" content="Register Person" />
 <%@ include file="localHeader.jsp" %>
-<h2>Register Child</h2>
+<h2>Register Person</h2>
 <div class="instructions">
-	This form allows you to create a new child patient record,
-	including optional enroll the patient in the pregnant 
-	parents information service.
+	This form allows you to create a new non-patient record, 
+	including optional enrollment in the pregnant parents information service.
 </div>
-<form:form method="post" modelAttribute="child" onsubmit="return confirmRegistrationOnMatches()">
+<form:form method="post" modelAttribute="person" onsubmit="return confirmRegistrationOnMatches()">
 <span style="color:green;">
 	<spring:message code="${successMsg}" text="" />
 </span>
 <form:errors cssClass="error" />
 <table>
 	<tr>
+		<td><label for="whyInterested">Why Interested in Service:</label></td>
+		<td>
+			<form:select path="whyInterested">
+				<form:option value="" label="Select Value" />
+				<form:option value="IN_HOUSEHOLD_PREGNANCY" label="Family member in household currently pregnant" />
+				<form:option value="OUT_HOUSEHOLD_PREGNANCY" label="Family member outside of household currently pregnant" />
+				<form:option value="IN_HOUSEHOLD_BIRTH" label="Family member in household recently had new baby" />
+			</form:select>
+		</td>
+		<td><form:errors path="whyInterested" cssClass="error" /></td>
+	</tr>
+	<tr>
 		<td><label for="firstName">First Name:</label></td>
-		<td><form:input path="firstName" onchange="findDuplicates()" /></td>
+		<td><form:input path="firstName" onchange="findDuplicatesForPerson()" /></td>
 		<td><form:errors path="firstName" cssClass="error" /></td>
 	</tr>
 	<tr>
@@ -33,7 +44,7 @@
 	</tr>
 	<tr>
 		<td><label for="lastName">Last Name:</label></td>
-		<td><form:input path="lastName" onchange="findDuplicates()" /></td>
+		<td><form:input path="lastName" onchange="findDuplicatesForPerson()" /></td>
 		<td><form:errors path="lastName" cssClass="error" /></td>
 	</tr>
 	<tr>
@@ -43,7 +54,7 @@
 	</tr>
 	<tr>
 		<td><label for="birthDate">Date of Birth (DD/MM/YYYY):</label></td>
-		<td><form:input path="birthDate" onchange="findDuplicates()" /></td>
+		<td><form:input path="birthDate" onchange="findDuplicatesForPerson()" /></td>
 		<td><form:errors path="birthDate" cssClass="error" /></td>
 	</tr>
 	<tr>
@@ -69,48 +80,6 @@
 		<td><form:errors path="sex" cssClass="error" /></td>
 	</tr>
 	<tr>
-		<td><label for="motherRegNumberGHS">Mother's GHS ANC Registration Number:</label></td>
-		<td><form:input path="motherRegNumberGHS" /></td>
-		<td><form:errors path="motherRegNumberGHS" cssClass="error" /></td>
-	</tr>
-	<tr>
-		<td><label for="registeredGHS">Registered with GHS:</label></td>
-		<td>
-			<form:select path="registeredGHS">
-				<form:option value="" label="Select Value" />
-				<form:option value="true" label="Yes" />
-				<form:option value="false" label="No" />
-			</form:select>
-		</td>
-		<td><form:errors path="registeredGHS" cssClass="error" /></td>
-	</tr>
-	<tr>
-		<td><label for="regNumberGHS">GHS CWC Registration Number:</label></td>
-		<td><form:input path="regNumberGHS" onchange="findDuplicates()" /></td>
-		<td><form:errors path="regNumberGHS" cssClass="error" /></td>
-	</tr>
-	<tr>
-		<td><label for="insured">Insured:</label></td>
-		<td>
-			<form:select path="insured">
-				<form:option value="" label="Select Value" />
-				<form:option value="true" label="Yes" />
-				<form:option value="false" label="No" />
-			</form:select>
-		</td>
-		<td><form:errors path="insured" cssClass="error" /></td>
-	</tr>
-	<tr>
-		<td><label for="nhis">NHIS Number:</label></td>
-		<td><form:input path="nhis" onchange="findDuplicates()" /></td>
-		<td><form:errors path="nhis" cssClass="error" /></td>
-	</tr>
-	<tr>
-		<td><label for="nhisExpDate">NHIS Expiration Date (DD/MM/YYYY):</label></td>
-		<td><form:input path="nhisExpDate" /></td>
-		<td><form:errors path="nhisExpDate" cssClass="error" /></td>
-	</tr>
-	<tr>
 		<td><label for="region">Region:</label></td>
 		<td>
 			<form:select path="region">
@@ -120,7 +89,7 @@
 		</td>
 		<td><form:errors path="region" cssClass="error" /></td>
 	</tr>
-	<tr>
+		<tr>
 		<td><label for="district">District:</label></td>
 		<td>
 			<form:select path="district">
@@ -133,7 +102,7 @@
 		<tr>
 		<td><label for="community">Community:</label></td>
 		<td>
-			<form:select path="community" onchange="findDuplicates()">
+			<form:select path="community" onchange="findDuplicatesForPerson()">
 				<form:option value="" label="Select Value" />
 				<form:options items="${communities}" itemValue="name" itemLabel="name" />
 			</form:select>
@@ -172,8 +141,23 @@
 		<td><form:errors path="termsConsent" cssClass="error" /></td>
 	</tr>
 	<tr>
+		<td><label for="messagesStartWeek">Week to begin messages:</label></td>
+		<td>
+			<form:select path="messagesStartWeek">
+				<form:option value="" label="Select Value" />
+				<c:forEach var="i" begin="4" end="40">
+					<form:option value="${i}" label="Pregnancy week ${i}" />
+				</c:forEach>
+				<c:forEach var="i" begin="1" end="4">
+					<form:option value="${i + 40}" label="Newborn week ${i}" />
+				</c:forEach>
+			</form:select>
+		</td>
+		<td><form:errors path="messagesStartWeek" cssClass="error" /></td>
+	</tr>
+	<tr>
 		<td><label for="primaryPhone">Primary Phone Number:</label></td>
-		<td><form:input path="primaryPhone" onchange="findDuplicates()" /></td>
+		<td><form:input path="primaryPhone" onchange="findDuplicatesForPerson()" /></td>
 		<td><form:errors path="primaryPhone" cssClass="error" /></td>
 	</tr>
 	<tr>
@@ -251,20 +235,20 @@
 		</td>
 		<td><form:errors path="languageText" cssClass="error" /></td>
 	</tr>
-	
 	<tr>
-		<td><label for="whoRegistered">Who Registered:</label></td>
-		<td>
-			<form:select path="whoRegistered">
-				<form:option value="" label="Select Value" />
-				<form:option value="MOTHER" label="Mother" />
-				<form:option value="FATHER" label="Father" />
-				<form:option value="FAMILY_MEMBER" label="Family member" />
-				<form:option value="CHPS_STAFF" label="CHPS staff" />
-				<form:option value="OTHER" label="Other" />
-			</form:select>
-		</td>
-		<td><form:errors path="whoRegistered" cssClass="error" /></td>
+		<td><form:label path="howLearned">How Learned of Service:</form:label></td>
+		<td><form:input path="howLearned" /></td>
+		<td><form:errors path="howLearned" cssClass="error" /></td>
+	</tr>
+	<tr>
+		<td><label for="religion">Religion:</label></td>
+		<td><form:input path="religion" /></td>
+		<td><form:errors path="religion" cssClass="error" /></td>
+	</tr>
+	<tr>
+		<td><label for="occupation">Occupation:</label></td>
+		<td><form:input path="occupation" /></td>
+		<td><form:errors path="occupation" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td colspan="2"><input type="submit" /></td>
@@ -281,8 +265,6 @@
 				<th>Last Name</th>
 				<th>Birth Date</th>
 				<th>Community</th>
-				<th>Reg Number</th>
-				<th>NHIS Number</th>
 				<th>Primary Phone</th>
 				<th>Secondary Phone</th>
 			</tr>

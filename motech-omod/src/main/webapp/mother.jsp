@@ -5,7 +5,7 @@
 
 <openmrs:htmlInclude file="/dwr/util.js" />
 <openmrs:htmlInclude file="/dwr/interface/DWRMotechService.js"/>
-<openmrs:htmlInclude file="/moduleResources/motechmodule/duplicate_patient.js" />
+<openmrs:htmlInclude file="/moduleResources/motechmodule/find_duplicates.js" />
 
 <meta name="heading" content="Register Pregnant Mother" />
 <%@ include file="localHeader.jsp" %>

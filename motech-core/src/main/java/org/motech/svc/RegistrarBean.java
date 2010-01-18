@@ -11,6 +11,7 @@ import org.motech.model.HIVStatus;
 import org.motech.model.Log;
 import org.motech.model.ScheduledMessage;
 import org.motech.model.WhoRegistered;
+import org.motech.model.WhyInterested;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
@@ -84,6 +85,17 @@ public interface RegistrarBean {
 			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
 			String languageVoice, String languageText,
 			WhoRegistered whoRegistered, String religion, String occupation);
+
+	public void registerPerson(String firstName, String middleName,
+			String lastName, String prefName, Date birthDate,
+			Boolean birthDateEst, Gender sex, String region, String district,
+			String community, String address, Integer clinic,
+			Boolean registerPregProgram, Integer messagesStartWeek,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
+			String languageVoice, String languageText, String howLearned,
+			String religion, String occupation, WhyInterested whyInterested);
 
 	@RunAsAdminUser
 	public void registerPatient(String nursePhoneNumber, String serialId,
