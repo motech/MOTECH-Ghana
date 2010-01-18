@@ -22,6 +22,20 @@
 <form:errors cssClass="error" />
 <table>
 	<tr>
+		<td><label for="whoRegistered">Who Registered:</label></td>
+		<td>
+			<form:select path="whoRegistered">
+				<form:option value="" label="Select Value" />
+				<form:option value="MOTHER" label="Mother" />
+				<form:option value="FATHER" label="Father" />
+				<form:option value="FAMILY_MEMBER" label="Family member" />
+				<form:option value="CHPS_STAFF" label="CHPS staff" />
+				<form:option value="OTHER" label="Other" />
+			</form:select>
+		</td>
+		<td><form:errors path="whoRegistered" cssClass="error" /></td>
+	</tr>
+	<tr>
 		<td><label for="firstName">First Name:</label></td>
 		<td><form:input path="firstName" onchange="findDuplicates()" /></td>
 		<td><form:errors path="firstName" cssClass="error" /></td>
@@ -156,7 +170,7 @@
 		<td><form:errors path="clinic" cssClass="error" /></td>
 	</tr>
 	<tr>
-		<td><label for="registerPregProgram">Register in Pregnant Parents Info Service:</label></td>
+		<td><label for="registerPregProgram">Register in Healthy Children Info Service:</label></td>
 		<td>
 			<form:select path="registerPregProgram">
 				<form:option value="" label="Select Value" />
@@ -250,21 +264,6 @@
 			</form:select>
 		</td>
 		<td><form:errors path="languageText" cssClass="error" /></td>
-	</tr>
-	
-	<tr>
-		<td><label for="whoRegistered">Who Registered:</label></td>
-		<td>
-			<form:select path="whoRegistered">
-				<form:option value="" label="Select Value" />
-				<form:option value="MOTHER" label="Mother" />
-				<form:option value="FATHER" label="Father" />
-				<form:option value="FAMILY_MEMBER" label="Family member" />
-				<form:option value="CHPS_STAFF" label="CHPS staff" />
-				<form:option value="OTHER" label="Other" />
-			</form:select>
-		</td>
-		<td><form:errors path="whoRegistered" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td colspan="2"><input type="submit" /></td>

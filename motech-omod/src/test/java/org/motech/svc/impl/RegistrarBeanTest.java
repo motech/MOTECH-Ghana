@@ -1358,12 +1358,13 @@ public class RegistrarBeanTest extends TestCase {
 		String region = "Region", district = "District", community = "Community", address = "Address";
 		String primaryPhone = "12075555555", secondaryPhone = "12075555556";
 		String languageVoice = "LanguageVoice", languageText = "LanguageText";
+		String religion = "Religion", occupation = "Occupation";
 		Date date = new Date();
 		Gender sex = Gender.FEMALE;
 		Boolean birthDateEst = true, registeredGHS = true, insured = true;
 		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
 		MediaType mediaTypeInfo = MediaType.TEXT, mediaTypeReminder = MediaType.VOICE;
-		WhoRegistered whoRegistered = WhoRegistered.CHPS_STAFF;
+		HIVStatus hivStatus = HIVStatus.NEGATIVE;
 
 		Patient patient = new Patient(patientId);
 		Location ghanaLocation = new Location(1);
@@ -1440,8 +1441,16 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(languageTextAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED))
-				.andReturn(whoRegisteredType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_RELIGION))
+				.andReturn(religionAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_OCCUPATION))
+				.andReturn(occupationAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HIV_STATUS))
+				.andReturn(hivStatusAttributeType);
 
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				patient);
@@ -1455,7 +1464,7 @@ public class RegistrarBeanTest extends TestCase {
 				date, region, district, community, address, clinic,
 				primaryPhone, primaryPhoneType, secondaryPhone,
 				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
-				languageVoice, languageText, whoRegistered);
+				languageVoice, languageText, religion, occupation, hivStatus);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
@@ -1505,8 +1514,12 @@ public class RegistrarBeanTest extends TestCase {
 				languageTextAttributeType).getValue());
 		assertEquals(languageVoice, capturedPatient.getAttribute(
 				languageVoiceAttributeType).getValue());
-		assertEquals(whoRegistered, WhoRegistered.valueOf(capturedPatient
-				.getAttribute(whoRegisteredType).getValue()));
+		assertEquals(religion, capturedPatient.getAttribute(
+				religionAttributeType).getValue());
+		assertEquals(occupation, capturedPatient.getAttribute(
+				occupationAttributeType).getValue());
+		assertEquals(hivStatus, HIVStatus.valueOf(capturedPatient.getAttribute(
+				hivStatusAttributeType).getValue()));
 	}
 
 	public void testStopPregnancyProgram() {

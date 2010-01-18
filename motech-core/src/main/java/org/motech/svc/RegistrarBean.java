@@ -120,8 +120,8 @@ public interface RegistrarBean {
 			String primaryPhone, ContactNumberType primaryPhoneType,
 			String secondaryPhone, ContactNumberType secondaryPhoneType,
 			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText,
-			WhoRegistered whoRegistered);
+			String languageVoice, String languageText, String religion,
+			String occupation, HIVStatus hivStatus);
 
 	@RunAsUser
 	public void editPatient(

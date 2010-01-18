@@ -211,20 +211,27 @@
 		</td>
 		<td><form:errors path="languageText" cssClass="error" /></td>
 	</tr>
-	
 	<tr>
-		<td><label for="whoRegistered">Who Registered:</label></td>
+		<td><label for="religion">Religion:</label></td>
+		<td><form:input path="religion" /></td>
+		<td><form:errors path="religion" cssClass="error" /></td>
+	</tr>
+	<tr>
+		<td><label for="occupation">Occupation:</label></td>
+		<td><form:input path="occupation" /></td>
+		<td><form:errors path="occupation" cssClass="error" /></td>
+	</tr>
+	<tr>
+		<td><label for="hivStatus">HIV Status:</label></td>
 		<td>
-			<form:select path="whoRegistered">
-				<form:option value="" label="" />
-				<form:option value="MOTHER" label="Mother" />
-				<form:option value="FATHER" label="Father" />
-				<form:option value="FAMILY_MEMBER" label="Family member" />
-				<form:option value="CHPS_STAFF" label="CHPS staff" />
-				<form:option value="OTHER" label="Other" />
+			<form:select path="hivStatus">
+				<form:option value="" label="Select Value" />
+				<form:option value="POSITIVE" label="Positive" />
+				<form:option value="NEGATIVE" label="Negative" />
+				<form:option value="UNKNOWN" label="Unknown" />
 			</form:select>
 		</td>
-		<td><form:errors path="whoRegistered" cssClass="error" /></td>
+		<td><form:errors path="hivStatus" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td colspan="2">

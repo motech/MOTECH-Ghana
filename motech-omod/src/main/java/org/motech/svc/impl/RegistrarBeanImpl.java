@@ -650,8 +650,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			String primaryPhone, ContactNumberType primaryPhoneType,
 			String secondaryPhone, ContactNumberType secondaryPhoneType,
 			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText,
-			WhoRegistered whoRegistered) {
+			String languageVoice, String languageText, String religion,
+			String occupation, HIVStatus hivStatus) {
 
 		PatientService patientService = contextService.getPatientService();
 
@@ -704,9 +704,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		setPersonAttributes(patient, clinic, primaryPhone, primaryPhoneType,
 				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
-				mediaTypeReminder, languageVoice, languageText, null, null,
-				null, null, whoRegistered, registeredGHS, null, null, null,
-				insured, nhis, nhisExpDate);
+				mediaTypeReminder, languageVoice, languageText, religion,
+				occupation, null, null, null, registeredGHS, null, null,
+				hivStatus, insured, nhis, nhisExpDate);
 
 		patientService.savePatient(patient);
 	}

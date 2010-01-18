@@ -2,17 +2,17 @@ package org.motech.openmrs.module.web.controller;
 
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.easymock.EasyMock.eq;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 import junit.framework.TestCase;
 
-import org.motech.model.WhoRegistered;
+import org.motech.model.HIVStatus;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.openmrs.module.web.model.WebModelConverter;
@@ -165,13 +165,14 @@ public class EditPatientControllerTest extends TestCase {
 		String region = "Region", district = "District", community = "Community", address = "Address";
 		String regNumberGHS = "123ABC", nhis = "1234DEF";
 		String primaryPhone = "12075555555", secondaryPhone = "12075555556";
+		String religion = "Religion", occupation = "Occupation";
 		Boolean birthDateEst = true, registeredGHS = true, insured = true;
 		Date date = new Date();
 		Gender sex = Gender.FEMALE;
 		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
 		MediaType mediaTypeInfo = MediaType.TEXT, mediaTypeReminder = MediaType.VOICE;
 		String languageVoice = "LanguageVoice", languageText = "LanguageText";
-		WhoRegistered whoRegistered = WhoRegistered.CHPS_STAFF;
+		HIVStatus hivStatus = HIVStatus.UNKNOWN;
 
 		WebPatient patient = new WebPatient();
 		patient.setId(patientId);
@@ -199,7 +200,9 @@ public class EditPatientControllerTest extends TestCase {
 		patient.setMediaTypeReminder(mediaTypeReminder);
 		patient.setLanguageVoice(languageVoice);
 		patient.setLanguageText(languageText);
-		patient.setWhoRegistered(whoRegistered);
+		patient.setReligion(religion);
+		patient.setOccupation(occupation);
+		patient.setHivStatus(hivStatus);
 
 		ModelMap model = new ModelMap();
 
@@ -210,7 +213,7 @@ public class EditPatientControllerTest extends TestCase {
 				nhis, date, region, district, community, address, clinic,
 				primaryPhone, primaryPhoneType, secondaryPhone,
 				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
-				languageVoice, languageText, whoRegistered);
+				languageVoice, languageText, religion, occupation, hivStatus);
 
 		status.setComplete();
 
