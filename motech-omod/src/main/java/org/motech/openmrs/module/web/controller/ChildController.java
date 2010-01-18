@@ -138,7 +138,7 @@ public class ChildController {
 				&& registrarBean.getPatientBySerial(child
 						.getMotherRegNumberGHS()) == null) {
 			errors.rejectValue("motherRegNumberGHS",
-					"motechmodule.registeredGHS.required");
+					"motechmodule.regNumberGHS.notexist");
 		}
 
 		if (!Boolean.TRUE.equals(child.getRegisteredGHS())) {
