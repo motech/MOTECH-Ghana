@@ -1,6 +1,7 @@
 package org.motech.openmrs.module.web.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -123,6 +124,15 @@ public class ChildController {
 				"motechmodule.birthDateEst.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "sex",
 				"motechmodule.sex.required");
+
+		if (child.getBirthDate() != null) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.YEAR, -5);
+			if (child.getBirthDate().before(calendar.getTime())) {
+				errors.rejectValue("birthDate",
+						"motechmodule.birthDate.notunderfive");
+			}
+		}
 
 		if (child.getMotherRegNumberGHS() != null
 				&& registrarBean.getPatientBySerial(child
