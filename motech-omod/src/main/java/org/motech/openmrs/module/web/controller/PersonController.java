@@ -162,8 +162,6 @@ public class PersonController {
 					"motechmodule.languageVoice.required");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "languageText",
 					"motechmodule.languageText.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "whoRegistered",
-					"motechmodule.whoRegistered.required");
 		}
 
 		if (!errors.hasErrors()) {
