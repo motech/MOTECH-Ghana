@@ -195,7 +195,7 @@ public class MotherController {
 							.getDistrict(), mother.getCommunity(), mother
 							.getAddress(), mother.getClinic(), mother
 							.getDueDate(), mother.getDueDateConfirmed(), mother
-							.getGravida(), mother.getGravida(), mother
+							.getGravida(), mother.getParity(), mother
 							.getHivStatus(), mother.getRegisterPregProgram(),
 					mother.getPrimaryPhone(), mother.getPrimaryPhoneType(),
 					mother.getSecondaryPhone(), mother.getSecondaryPhoneType(),
