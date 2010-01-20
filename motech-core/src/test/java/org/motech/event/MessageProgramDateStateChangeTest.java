@@ -9,6 +9,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
+import org.motech.model.MessageProgramEnrollment;
 import org.motech.svc.RegistrarBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -18,6 +19,7 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 	ApplicationContext ctx;
 
 	Integer patientId;
+	MessageProgramEnrollment enrollment;
 	Date week1;
 	Date week2;
 	Date week3;
@@ -47,6 +49,9 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 
 		patientId = 1;
 
+		enrollment = new MessageProgramEnrollment();
+		enrollment.setPersonId(patientId);
+
 		ctx = new ClassPathXmlApplicationContext(new String[] {
 				"test-common-program-beans.xml",
 				"pregnancy-program-test-context.xml" });
@@ -65,6 +70,7 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
+		enrollment = null;
 		ctx = null;
 		pregnancyProgram = null;
 		pregnancyState1 = null;
@@ -83,7 +89,7 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyProgram.determineState(patientId);
+		currentPatientState = pregnancyProgram.determineState(enrollment);
 
 		verify(registrarBean);
 
@@ -98,7 +104,7 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyProgram.determineState(patientId);
+		currentPatientState = pregnancyProgram.determineState(enrollment);
 
 		verify(registrarBean);
 
@@ -113,7 +119,7 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyProgram.determineState(patientId);
+		currentPatientState = pregnancyProgram.determineState(enrollment);
 
 		verify(registrarBean);
 
@@ -128,7 +134,7 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = pregnancyProgram.determineState(patientId);
+		currentPatientState = pregnancyProgram.determineState(enrollment);
 
 		verify(registrarBean);
 

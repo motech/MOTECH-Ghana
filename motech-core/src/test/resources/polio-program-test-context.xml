@@ -14,7 +14,7 @@
 		<property name="name" value="Wait State 1" />
 		<property name="timeValue" value="0" />
 		<property name="timePeriod" value="week" />
-		<property name="timeReference" value="patient_age" />
+		<property name="timeReference" value="patient_birthdate" />
 		<property name="command" ref="nopCommand" />
 		<property name="program" ref="polioProgram" />
 		<property name="registrarBean" ref="registrarBean" />
@@ -42,7 +42,7 @@
 		<property name="name" value="Wait State 2" />
 		<property name="timeValue" value="6" />
 		<property name="timePeriod" value="week" />
-		<property name="timeReference" value="last_obs" />
+		<property name="timeReference" value="last_obs_date" />
 		<property name="command" ref="nopCommand" />
 		<property name="program" ref="polioProgram" />
 		<property name="registrarBean" ref="registrarBean" />
@@ -70,7 +70,7 @@
 		<property name="name" value="Wait State 3" />
 		<property name="timeValue" value="4" />
 		<property name="timePeriod" value="week" />
-		<property name="timeReference" value="last_obs" />
+		<property name="timeReference" value="last_obs_date" />
 		<property name="command" ref="nopCommand" />
 		<property name="program" ref="polioProgram" />
 		<property name="registrarBean" ref="registrarBean" />
@@ -98,7 +98,7 @@
 		<property name="name" value="Wait State 4" />
 		<property name="timeValue" value="4" />
 		<property name="timePeriod" value="week" />
-		<property name="timeReference" value="last_obs" />
+		<property name="timeReference" value="last_obs_date" />
 		<property name="command" ref="nopCommand" />
 		<property name="program" ref="polioProgram" />
 		<property name="registrarBean" ref="registrarBean" />

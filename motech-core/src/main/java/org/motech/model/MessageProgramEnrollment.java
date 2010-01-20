@@ -7,6 +7,7 @@ public class MessageProgramEnrollment {
 	Long id;
 	Integer personId;
 	String program;
+	Integer obsId;
 	Date startDate;
 	Date endDate;
 
@@ -32,6 +33,14 @@ public class MessageProgramEnrollment {
 
 	public void setProgram(String program) {
 		this.program = program;
+	}
+
+	public Integer getObsId() {
+		return obsId;
+	}
+
+	public void setObsId(Integer obsId) {
+		this.obsId = obsId;
 	}
 
 	public Date getStartDate() {

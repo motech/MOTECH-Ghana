@@ -4,7 +4,7 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="nopCommand" class="org.motech.event.impl.NopCommand" />
+	<bean id="nopCommand" class="org.motech.event.MessagesCommand" />
 	<bean id="registrarBean" class="org.easymock.EasyMock" factory-method="createMock">
 		<constructor-arg index="0" value="org.motech.svc.RegistrarBean" />
 	</bean>

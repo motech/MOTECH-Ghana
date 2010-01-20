@@ -1,5 +1,6 @@
 package org.motech.event.impl;
 
+import org.motech.model.MessageProgramEnrollment;
 import org.motech.svc.RegistrarBean;
 
 public class MessageProgramStateTransitionExpectedNumImpl extends
@@ -9,11 +10,11 @@ public class MessageProgramStateTransitionExpectedNumImpl extends
 	private int expectedNumber;
 
 	@Override
-	public boolean evaluate(Integer personId) {
+	public boolean evaluate(MessageProgramEnrollment enrollment) {
 		String conceptName = prevState.getProgram().getConceptName();
 		String conceptValue = prevState.getProgram().getConceptValue();
-		int obsNum = registrarBean.getNumberOfObs(personId, conceptName,
-				conceptValue);
+		int obsNum = registrarBean.getNumberOfObs(enrollment.getPersonId(),
+				conceptName, conceptValue);
 
 		if (prevState.equals(nextState)) {
 			return obsNum == expectedNumber;

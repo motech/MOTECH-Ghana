@@ -20,7 +20,19 @@
 		<description>
 			Creating log, blackout, troubledphone, and messaging tables.
 		</description>
-		<sql>		
+		<sql>	
+			CREATE TABLE IF NOT EXISTS `motechmodule_enrollment` (
+				`motechmodule_enrollment_id` bigint NOT NULL auto_increment,
+				`person_id` int NOT NULL,
+				`program_name` varchar(200) NOT NULL,
+				`obs_id` int,
+				`start_date` datetime,
+				`end_date` datetime,
+				PRIMARY KEY (`motechmodule_enrollment_id`),
+				CONSTRAINT `person_id_for_person` FOREIGN KEY (`person_id`) REFERENCES `person` (`person_id`),
+				CONSTRAINT `obs_id_for_obs` FOREIGN KEY (`obs_id`) REFERENCES `obs` (`obs_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+				
 			CREATE TABLE IF NOT EXISTS `motechmodule_log` (
 				`motechmodule_log_id` int(11) NOT NULL auto_increment,
 				`log_type` varchar(7) NOT NULL,
@@ -73,17 +85,13 @@
 				`scheduled_for` datetime NOT NULL,
 				`definition_id` bigint NOT NULL,
 				`recipient_id` int NOT NULL,
+				`enrollment_id` bigint NOT NULL,
 				PRIMARY KEY (`motechmodule_scheduledmessage_id`),
 				CONSTRAINT `person_id_for_recipient` FOREIGN KEY (`recipient_id`) REFERENCES `person` (`person_id`),
 				CONSTRAINT `definition_of_scheduledmessage` FOREIGN KEY (`definition_id`)
-				REFERENCES `motechmodule_messagedefinition` (`motechmodule_messagedefinition_id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-			CREATE TABLE IF NOT EXISTS `motechmodule_scheduledmessage_group` (
-				`schedule_id` bigint NOT NULL,
-				`group_id` varchar(100) NOT NULL,
-				CONSTRAINT `scheduledmessage_with_groups` FOREIGN KEY (`schedule_id`)
-				REFERENCES `motechmodule_scheduledmessage` (`motechmodule_scheduledmessage_id`)
+				REFERENCES `motechmodule_messagedefinition` (`motechmodule_messagedefinition_id`),
+				CONSTRAINT `enrollment_of_scheduledmessage` FOREIGN KEY (`enrollment_id`)
+				REFERENCES `motechmodule_enrollment` (`motechmodule_enrollment_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			
 			CREATE TABLE IF NOT EXISTS `motechmodule_message` (
@@ -136,17 +144,6 @@
 			(35,1),(35,2),(36,1),(36,2),(37,1),(37,2),(38,1),(38,2),(39,1),(39,2),(40,1),(40,2),(41,1),(41,2),(42,1),(42,2),
 			(43,1),(43,2),(44,1),(44,2),(45,1),(45,2),(46,1),(46,2),(47,1),(47,2),(48,1),(48,2),(49,1),(49,2),(50,1),(50,2),
 			(51,1),(52,1),(53,1),(54,1);
-			
-			CREATE TABLE IF NOT EXISTS `motechmodule_enrollment` (
-				`motechmodule_enrollment_id` bigint NOT NULL auto_increment,
-				`person_id` int NOT NULL,
-				`program_name` varchar(200) NOT NULL,
-				`start_date` datetime,
-				`end_date` datetime,
-				PRIMARY KEY (`motechmodule_enrollment_id`),
-				CONSTRAINT `person_id_for_person` FOREIGN KEY (`person_id`) REFERENCES `person` (`person_id`),
-				CONSTRAINT `unique_person_in_program` UNIQUE (`person_id`,`program_name`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			
 			CREATE TABLE IF NOT EXISTS `motechmodule_generalencounter` (
 				`motechmodule_generalencounter_id` bigint NOT NULL auto_increment,

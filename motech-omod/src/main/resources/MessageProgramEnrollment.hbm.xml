@@ -5,12 +5,11 @@
 		<id name="id" type="long" column="motechmodule_enrollment_id">
 			<generator class="native" />
 		</id>
-		<properties name="uniquePersonInProgram" unique="true">
-			<property name="personId" type="int" column="person_id"
-				not-null="true" />
-			<property name="program" type="string" column="program_name"
-				not-null="true" length="200" />
-		</properties>
+		<property name="personId" type="int" column="person_id"
+			not-null="true" />
+		<property name="program" type="string" column="program_name"
+			not-null="true" length="200" />
+		<property name="obsId" type="int" column="obs_id" />
 		<property name="startDate" type="java.util.Date" column="start_date"
 			length="19" />
 		<property name="endDate" type="java.util.Date" column="end_date"

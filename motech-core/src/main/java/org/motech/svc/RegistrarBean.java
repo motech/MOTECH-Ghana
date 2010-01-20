@@ -9,6 +9,7 @@ import org.motech.annotation.RunAsUserParam;
 import org.motech.annotation.RunWithPrivileges;
 import org.motech.model.HIVStatus;
 import org.motech.model.Log;
+import org.motech.model.MessageProgramEnrollment;
 import org.motech.model.ScheduledMessage;
 import org.motech.model.WhoRegistered;
 import org.motech.model.WhyInterested;
@@ -164,8 +165,6 @@ public interface RegistrarBean {
 			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
 	public void setMessageStatus(String messageId, Boolean success);
 
-	public List<String> getActiveMessageProgramEnrollments(Integer personId);
-
 	public User getUserByPhoneNumber(String phoneNumber);
 
 	public List<Location> getAllClinics();
@@ -188,8 +187,6 @@ public interface RegistrarBean {
 
 	public Date getPatientBirthDate(Integer patientId);
 
-	public Date getMessageProgramStartDate(Integer personId, String program);
-
 	public int getNumberOfObs(Integer personId, String conceptName,
 			String conceptValue);
 
@@ -198,14 +195,16 @@ public interface RegistrarBean {
 
 	public Date getLastObsValue(Integer personId, String conceptName);
 
-	public void removeMessageProgramEnrollment(Integer personId,
-			String programName);
+	public Date getObsValue(Integer obsId);
 
-	public void scheduleMessage(String messageKey, String messageGroup,
-			Integer messageRecipientId, Date messageDate,
+	public void removeMessageProgramEnrollment(
+			MessageProgramEnrollment enrollment);
+
+	public void scheduleMessage(String messageKey,
+			MessageProgramEnrollment enrollment, Date messageDate,
 			boolean userPreferenceBased);
 
-	public void removeAllUnsentMessages(Integer recipientId, String messageGroup);
+	public void removeAllUnsentMessages(MessageProgramEnrollment enrollment);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_USERS,
 			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,

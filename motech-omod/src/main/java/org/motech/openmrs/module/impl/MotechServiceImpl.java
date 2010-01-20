@@ -64,13 +64,24 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return motechDAO.saveMessageProgramEnrollment(enrollment);
 	}
 
-	public List<String> getActiveMessageProgramEnrollments(Integer personId) {
+	public List<MessageProgramEnrollment> getAllActiveMessageProgramEnrollments() {
+		return motechDAO.getAllActiveMessageProgramEnrollments();
+	}
+
+	public List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
+			Integer personId) {
 		return motechDAO.getActiveMessageProgramEnrollments(personId);
 	}
 
-	public MessageProgramEnrollment getActiveMessageProgramEnrollment(
+	public List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
 			Integer personId, String program) {
-		return motechDAO.getActiveMessageProgramEnrollment(personId, program);
+		return motechDAO.getActiveMessageProgramEnrollments(personId, program);
+	}
+
+	public List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
+			Integer personId, String program, Integer obsId) {
+		return motechDAO.getActiveMessageProgramEnrollments(personId, program,
+				obsId);
 	}
 
 	public List<Log> getAllLogs() {
@@ -100,14 +111,22 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	}
 
 	public List<ScheduledMessage> getScheduledMessages(Integer recipientId,
-			Long messageDefinitionId, Date messageDate) {
-		return motechDAO.getScheduledMessages(recipientId, messageDefinitionId,
-				messageDate);
+			MessageDefinition definition, MessageProgramEnrollment enrollment,
+			Date messageDate) {
+		return motechDAO.getScheduledMessages(recipientId, definition,
+				enrollment, messageDate);
+	}
+
+	public List<Message> getMessages(MessageProgramEnrollment enrollment,
+			MessageStatus status) {
+		return motechDAO.getMessages(enrollment, status);
 	}
 
 	public List<Message> getMessages(Integer recipientId,
-			String scheduleGroupId, MessageStatus status) {
-		return motechDAO.getMessages(recipientId, scheduleGroupId, status);
+			MessageProgramEnrollment enrollment, MessageDefinition definition,
+			Date messageDate, MessageStatus status) {
+		return motechDAO.getMessages(recipientId, enrollment, definition,
+				messageDate, status);
 	}
 
 	public Message getMessage(String publicId) {

@@ -1,5 +1,5 @@
 package org.motech.event;
 
 public enum TimeReference {
-	patient_age, last_obs, last_obs_value, patient_enrollment
+	patient_birthdate, last_obs_date, last_obs_datevalue, enrollment_startdate, enrollment_obs_datevalue
 }

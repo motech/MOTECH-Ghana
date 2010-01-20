@@ -2,9 +2,7 @@ package org.motech.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ScheduledMessage {
 
@@ -12,8 +10,8 @@ public class ScheduledMessage {
 	Date scheduledFor;
 	MessageDefinition message;
 	Integer recipientId;
+	MessageProgramEnrollment enrollment;
 	List<Message> messageAttempts = new ArrayList<Message>();
-	Set<String> groupIds = new HashSet<String>();
 
 	public Long getId() {
 		return id;
@@ -47,20 +45,20 @@ public class ScheduledMessage {
 		this.recipientId = recipientId;
 	}
 
+	public MessageProgramEnrollment getEnrollment() {
+		return enrollment;
+	}
+
+	public void setEnrollment(MessageProgramEnrollment enrollment) {
+		this.enrollment = enrollment;
+	}
+
 	public List<Message> getMessageAttempts() {
 		return messageAttempts;
 	}
 
 	public void setMessageAttempts(List<Message> messageAttempts) {
 		this.messageAttempts = messageAttempts;
-	}
-
-	public Set<String> getGroupIds() {
-		return groupIds;
-	}
-
-	public void setGroupIds(Set<String> groupIds) {
-		this.groupIds = groupIds;
 	}
 
 }

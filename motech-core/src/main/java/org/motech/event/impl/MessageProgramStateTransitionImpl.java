@@ -1,17 +1,18 @@
 package org.motech.event.impl;
 
-import org.motech.event.Command;
 import org.motech.event.MessageProgramState;
 import org.motech.event.MessageProgramStateTransition;
+import org.motech.event.MessagesCommand;
+import org.motech.model.MessageProgramEnrollment;
 
 public class MessageProgramStateTransitionImpl extends BaseInterfaceImpl
 		implements MessageProgramStateTransition {
 
 	protected MessageProgramState prevState;
 	protected MessageProgramState nextState;
-	protected Command command;
+	protected MessagesCommand command;
 
-	public boolean evaluate(Integer personId) {
+	public boolean evaluate(MessageProgramEnrollment enrollment) {
 		// Default Transition is always taken
 		return true;
 	}
@@ -32,11 +33,11 @@ public class MessageProgramStateTransitionImpl extends BaseInterfaceImpl
 		this.nextState = nextState;
 	}
 
-	public Command getCommand() {
+	public MessagesCommand getCommand() {
 		return command;
 	}
 
-	public void setCommand(Command command) {
+	public void setCommand(MessagesCommand command) {
 		this.command = command;
 	}
 

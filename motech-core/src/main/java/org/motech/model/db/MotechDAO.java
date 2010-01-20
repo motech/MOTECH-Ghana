@@ -39,15 +39,20 @@ public interface MotechDAO {
 
 	List<ScheduledMessage> getScheduledMessages(Date startDate, Date endDate);
 
-	List<ScheduledMessage> getScheduledMessages(Integer recipientId,
-			Long messageDefinitionId, Date messageDate);
+	public List<ScheduledMessage> getScheduledMessages(Integer recipientId,
+			MessageDefinition definition, MessageProgramEnrollment enrollment,
+			Date messageDate);
 
 	List<Message> getMessages();
 
 	List<Message> getMessages(Date startDate, Date endDate, MessageStatus status);
 
-	List<Message> getMessages(Integer recipientId, String scheduleGroupId,
+	List<Message> getMessages(MessageProgramEnrollment enrollment,
 			MessageStatus status);
+
+	List<Message> getMessages(Integer recipientId,
+			MessageProgramEnrollment enrollment, MessageDefinition definition,
+			Date messageDate, MessageStatus status);
 
 	Message getMessage(String publicId);
 
@@ -74,10 +79,16 @@ public interface MotechDAO {
 	MessageProgramEnrollment saveMessageProgramEnrollment(
 			MessageProgramEnrollment enrollment);
 
-	List<String> getActiveMessageProgramEnrollments(Integer personId);
+	List<MessageProgramEnrollment> getAllActiveMessageProgramEnrollments();
 
-	MessageProgramEnrollment getActiveMessageProgramEnrollment(
+	List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
+			Integer personId);
+
+	List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
 			Integer personId, String program);
+
+	List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
+			Integer personId, String program, Integer obsId);
 
 	GeneralPatientEncounter saveGeneralPatientEncounter(
 			GeneralPatientEncounter encounter);

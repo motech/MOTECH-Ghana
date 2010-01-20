@@ -168,7 +168,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		if (registerPregProgram) {
 			addMessageProgramEnrollment(child.getPatientId(),
-					"Weekly Info Child Message Program");
+					"Weekly Info Child Message Program", null);
 		}
 	}
 
@@ -303,11 +303,12 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		mother = patientService.savePatient(mother);
 
-		registerPregnancy(mother, dueDate, dueDateConfirmed, gravida, parity);
+		Integer dueDateObsId = registerPregnancy(mother, dueDate,
+				dueDateConfirmed, gravida, parity);
 
 		if (registerPregProgram) {
 			addMessageProgramEnrollment(mother.getPatientId(),
-					"Weekly Pregnancy Message Program");
+					"Weekly Pregnancy Message Program", dueDateObsId);
 		}
 	}
 
@@ -334,6 +335,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		person = personService.savePerson(person);
 
+		Integer refDateObsId = null;
+
 		if (messagesStartWeek != null) {
 			ObsService obsService = contextService.getObsService();
 
@@ -341,7 +344,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			Date currentDate = new Date();
 
 			Calendar calendar = Calendar.getInstance();
-			calendar.add(Calendar.DATE, messagesStartWeek * -7);
+			// Convert weeks to days, plus one day
+			calendar.add(Calendar.DATE, (messagesStartWeek * -7) + 1);
 			Date referenceDate = calendar.getTime();
 
 			Obs refDateObs = createDateValueObs(currentDate,
@@ -349,13 +353,13 @@ public class RegistrarBeanImpl implements RegistrarBean {
 					referenceDate, null, null);
 
 			obsService.saveObs(refDateObs, null);
+
+			refDateObsId = refDateObs.getObsId();
 		}
 
-		// TODO: pregnancy info program use ref date (messages start
-		// date)
 		if (registerPregProgram) {
 			addMessageProgramEnrollment(person.getPersonId(),
-					"Weekly Info Pregnancy Message Program");
+					"Weekly Info Pregnancy Message Program", refDateObsId);
 		}
 	}
 
@@ -624,7 +628,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		patient = patientService.savePatient(patient);
 
 		for (String programName : messagePrograms) {
-			addMessageProgramEnrollment(patient.getPatientId(), programName);
+			addMessageProgramEnrollment(patient.getPatientId(), programName,
+					null);
 		}
 	}
 
@@ -719,7 +724,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		Integer patientId = patient.getPatientId();
 
 		for (String programName : pregnancyPrograms) {
-			removeMessageProgramEnrollment(patientId, programName);
+			removeMessageProgramEnrollment(patientId, programName, null);
 		}
 	}
 
@@ -860,15 +865,16 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		patientService.savePatient(patient);
 
-		registerPregnancy(patient, dueDate, dueDateConfirmed, null, null);
+		Integer dueDateObsId = registerPregnancy(patient, dueDate,
+				dueDateConfirmed, null, null);
 
 		if (registerPregProgram) {
 			addMessageProgramEnrollment(patient.getPatientId(),
-					"Weekly Pregnancy Message Program");
+					"Weekly Pregnancy Message Program", dueDateObsId);
 		}
 	}
 
-	private void registerPregnancy(Patient patient, Date dueDate,
+	private Integer registerPregnancy(Patient patient, Date dueDate,
 			Boolean dueDateConfirmed, Integer gravida, Integer parity) {
 
 		ObsService obsService = contextService.getObsService();
@@ -884,10 +890,10 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				Boolean.TRUE, null, null);
 		pregnancyObs.addGroupMember(pregnancyStatusObs);
 
+		Obs dueDateObs = null;
 		if (dueDate != null) {
-			Obs dueDateObs = createDateValueObs(currentDate,
-					getDueDateConcept(), patient, ghanaLocation, dueDate, null,
-					null);
+			dueDateObs = createDateValueObs(currentDate, getDueDateConcept(),
+					patient, ghanaLocation, dueDate, null, null);
 			pregnancyObs.addGroupMember(dueDateObs);
 		}
 
@@ -913,6 +919,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 
 		obsService.saveObs(pregnancyObs, null);
+
+		if (dueDateObs != null) {
+			return dueDateObs.getObsId();
+		}
+		return null;
 	}
 
 	public void recordGeneralVisit(Integer clinicId, Date visitDate,
@@ -994,13 +1005,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			}
 		}
 		motechService.saveMessage(message);
-	}
-
-	/* MotechService methods start */
-	public List<String> getActiveMessageProgramEnrollments(Integer personId) {
-		MotechService motechService = contextService.getMotechService();
-
-		return motechService.getActiveMessageProgramEnrollments(personId);
 	}
 
 	public User getUserByPhoneNumber(String phoneNumber) {
@@ -1106,13 +1110,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return patient.getBirthdate();
 	}
 
-	public Date getMessageProgramStartDate(Integer personId, String program) {
-		MotechService motechService = contextService.getMotechService();
-		MessageProgramEnrollment enrollment = motechService
-				.getActiveMessageProgramEnrollment(personId, program);
-		return enrollment.getStartDate();
-	}
-
 	private List<Obs> getMatchingObs(Person person, Concept question,
 			Concept answer) {
 
@@ -1204,6 +1201,19 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return lastestObsValue;
 	}
 
+	public Date getObsValue(Integer obsId) {
+		ObsService obsService = contextService.getObsService();
+
+		Date result = null;
+		if (obsId != null) {
+			Obs obs = obsService.getObs(obsId);
+			if (obs != null) {
+				result = obs.getValueDatetime();
+			}
+		}
+		return result;
+	}
+
 	/* PatientObsService methods end */
 
 	/* MessageDefinition methods start */
@@ -1241,12 +1251,15 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	/* MessageDefinition methods end */
 
 	/* MessageSchedulerImpl methods start */
-	public void scheduleMessage(String messageKey, String messageGroup,
-			Integer messageRecipientId, Date messageDate,
+	public void scheduleMessage(String messageKey,
+			MessageProgramEnrollment enrollment, Date messageDate,
 			boolean userPreferenceBased) {
 		// Return existing message definition
 		MessageDefinition messageDefinition = this
 				.getMessageDefinition(messageKey);
+
+		// TODO: Assumes recipient is person in enrollment
+		Integer messageRecipientId = enrollment.getPersonId();
 
 		Date scheduledMessageDate;
 		if (!userPreferenceBased) {
@@ -1256,65 +1269,57 @@ public class RegistrarBeanImpl implements RegistrarBean {
 					messageRecipientId, messageDate);
 		}
 
-		// Cancel any unsent messages for the same group, unless matching the
-		// message to schedule
-		this.removeUnsentMessages(messageRecipientId, messageGroup,
+		// Cancel any unsent messages for the same enrollment and not matching
+		// the message to schedule
+		this.removeUnsentMessages(messageRecipientId, enrollment,
 				messageDefinition, scheduledMessageDate);
 
-		// Create new scheduled message (with pending attempt) for group
+		// Create new scheduled message (with pending attempt) for enrollment
 		// if none matching already exist
 		this.createScheduledMessage(messageRecipientId, messageDefinition,
-				messageGroup, scheduledMessageDate);
+				enrollment, scheduledMessageDate);
 	}
 
 	private MessageDefinition getMessageDefinition(String messageKey) {
 		MotechService motechService = contextService.getMotechService();
 		MessageDefinition messageDefinition = motechService
 				.getMessageDefinition(messageKey);
+		if (messageDefinition == null) {
+			log.error("Invalid message key for message definition: "
+					+ messageKey);
+		}
 		return messageDefinition;
 	}
 
 	protected void removeUnsentMessages(Integer recipientId,
-			String messageGroup, MessageDefinition messageDefinition,
-			Date messageDate) {
+			MessageProgramEnrollment enrollment,
+			MessageDefinition messageDefinition, Date messageDate) {
 		MotechService motechService = contextService.getMotechService();
+		// Get Messages matching the recipient, enrollment, and status, but
+		// not matching the message definition and message date
 		List<Message> unsentMessages = motechService.getMessages(recipientId,
-				messageGroup, MessageStatus.SHOULD_ATTEMPT);
-		log.debug("Unsent messages found: " + unsentMessages.size());
+				enrollment, messageDefinition, messageDate,
+				MessageStatus.SHOULD_ATTEMPT);
+		log.debug("Unsent messages found during scheduling: "
+				+ unsentMessages.size());
 
 		for (Message unsentMessage : unsentMessages) {
-			ScheduledMessage messageSchedule = unsentMessage.getSchedule();
+			unsentMessage.setAttemptStatus(MessageStatus.CANCELLED);
+			motechService.saveMessage(unsentMessage);
 
-			if (log.isDebugEnabled()) {
-				log.debug("Found message definition id: "
-						+ messageSchedule.getMessage().getId()
-						+ ", schedule date: "
-						+ messageSchedule.getScheduledFor()
-						+ ", New message definintion id: "
-						+ messageDefinition.getId() + ", new schedule date: "
-						+ messageDate);
-			}
-
-			if (!messageDefinition.getId().equals(
-					messageSchedule.getMessage().getId())
-					|| !messageDate.equals(messageSchedule.getScheduledFor())) {
-
-				unsentMessage.setAttemptStatus(MessageStatus.CANCELLED);
-				motechService.saveMessage(unsentMessage);
-
-				log.debug("Message cancelled: Id: " + unsentMessage.getId());
-			}
+			log.debug("Message cancelled to schedule new: Id: "
+					+ unsentMessage.getId());
 		}
 	}
 
-	public void removeAllUnsentMessages(Integer recipientId, String messageGroup) {
+	public void removeAllUnsentMessages(MessageProgramEnrollment enrollment) {
 		MotechService motechService = contextService.getMotechService();
-		List<Message> unsentMessages = motechService.getMessages(recipientId,
-				messageGroup, MessageStatus.SHOULD_ATTEMPT);
-		log.debug("Unsent messages found: " + unsentMessages.size());
+		List<Message> unsentMessages = motechService.getMessages(enrollment,
+				MessageStatus.SHOULD_ATTEMPT);
+		log.debug("Unsent messages found to cancel: " + unsentMessages.size()
+				+ ", for enrollment: " + enrollment.getId());
 
 		for (Message unsentMessage : unsentMessages) {
-
 			unsentMessage.setAttemptStatus(MessageStatus.CANCELLED);
 			motechService.saveMessage(unsentMessage);
 
@@ -1332,23 +1337,28 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	}
 
 	private void createScheduledMessage(Integer recipientId,
-			MessageDefinition messageDefinition, String messageGroup,
-			Date messageDate) {
+			MessageDefinition messageDefinition,
+			MessageProgramEnrollment enrollment, Date messageDate) {
+
 		MotechService motechService = contextService.getMotechService();
 
 		List<ScheduledMessage> scheduledMessages = motechService
-				.getScheduledMessages(recipientId, messageDefinition.getId(),
-						messageDate);
+				.getScheduledMessages(recipientId, messageDefinition,
+						enrollment, messageDate);
+
 		if (scheduledMessages.size() == 0) {
-			log.info(recipientId + ", " + messageDefinition.getId() + ", "
-					+ messageDate
-					+ " - ScheduledMessage Does Not Exist - Creating");
+			if (log.isDebugEnabled()) {
+				log.debug("Creating ScheduledMessage: recipient: "
+						+ recipientId + ", enrollment: " + enrollment.getId()
+						+ ", message key: " + messageDefinition.getMessageKey()
+						+ ", date: " + messageDate);
+			}
 
 			ScheduledMessage scheduledMessage = new ScheduledMessage();
 			scheduledMessage.setScheduledFor(messageDate);
 			scheduledMessage.setRecipientId(recipientId);
 			scheduledMessage.setMessage(messageDefinition);
-			scheduledMessage.getGroupIds().add(messageGroup);
+			scheduledMessage.setEnrollment(enrollment);
 
 			Message message = messageDefinition.createMessage(scheduledMessage);
 			message.setAttemptDate(messageDate);
@@ -1806,23 +1816,26 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	/* SaveObsAdvice method */
 	public void updateMessageProgramState(Integer personId, String conceptName) {
 
-		// Only determine message program state for enrolled programs
-		// concerned with an observed concept
-		// and matching the concept of this obs
+		// Only determine message program state for active enrolled programs
+		// concerned with an observed concept and matching the concept of this
+		// obs
 
-		List<String> patientPrograms = this
+		MotechService motechService = contextService.getMotechService();
+
+		List<MessageProgramEnrollment> patientActiveEnrollments = motechService
 				.getActiveMessageProgramEnrollments(personId);
 
-		for (String programName : patientPrograms) {
-			MessageProgram program = this.getMessageProgram(programName);
+		for (MessageProgramEnrollment enrollment : patientActiveEnrollments) {
+			MessageProgram program = this.getMessageProgram(enrollment
+					.getProgram());
 
 			if (program.getConceptName() != null) {
 				if (program.getConceptName().equals(conceptName)) {
 					log
 							.debug("Save Obs - Obs matches Program concept, update Program: "
-									+ programName);
+									+ enrollment.getProgram());
 
-					program.determineState(personId);
+					program.determineState(enrollment);
 				}
 			}
 		}
@@ -1831,24 +1844,19 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	/* MessageProgramUpdateTask method */
 	public void updateAllMessageProgramsState() {
 
-		// Get all Patients with the Ghana Clinic Id Type
-		List<Patient> patients = getAllPatients();
+		MotechService motechService = contextService.getMotechService();
 
-		// Update Message Program state for enrolled Programs of all
-		// matching
-		// patients
-		for (Patient patient : patients) {
-			List<String> patientPrograms = this
-					.getActiveMessageProgramEnrollments(patient.getPatientId());
+		List<MessageProgramEnrollment> activeEnrollments = motechService
+				.getAllActiveMessageProgramEnrollments();
 
-			for (String programName : patientPrograms) {
-				MessageProgram program = this.getMessageProgram(programName);
+		for (MessageProgramEnrollment enrollment : activeEnrollments) {
+			MessageProgram program = this.getMessageProgram(enrollment
+					.getProgram());
 
-				log.debug("MessageProgram Update - Update State: program: "
-						+ programName + ", patient: " + patient.getPatientId());
+			log.debug("MessageProgram Update - Update State: enrollment: "
+					+ enrollment.getId());
 
-				program.determineState(patient.getPatientId());
-			}
+			program.determineState(enrollment);
 		}
 	}
 
@@ -1997,28 +2005,53 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	/* NotificationTask methods end */
 
 	/* Factored out methods start */
-	public void addMessageProgramEnrollment(Integer personId, String program) {
+	public void addMessageProgramEnrollment(Integer personId, String program,
+			Integer obsId) {
 		MotechService motechService = contextService.getMotechService();
 
-		MessageProgramEnrollment enrollment = motechService
-				.getActiveMessageProgramEnrollment(personId, program);
-		if (enrollment == null) {
-			enrollment = new MessageProgramEnrollment();
+		List<MessageProgramEnrollment> enrollments = null;
+		if (obsId == null) {
+			enrollments = motechService.getActiveMessageProgramEnrollments(
+					personId, program);
+		} else {
+			enrollments = motechService.getActiveMessageProgramEnrollments(
+					personId, program, obsId);
+		}
+		if (enrollments.size() == 0) {
+			MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
 			enrollment.setPersonId(personId);
 			enrollment.setProgram(program);
 			enrollment.setStartDate(new Date());
+			enrollment.setObsId(obsId);
 			motechService.saveMessageProgramEnrollment(enrollment);
 		}
 	}
 
-	public void removeMessageProgramEnrollment(Integer personId, String program) {
-		MotechService motechService = contextService.getMotechService();
+	public void removeMessageProgramEnrollment(
+			MessageProgramEnrollment enrollment) {
 
-		MessageProgramEnrollment enrollment = motechService
-				.getActiveMessageProgramEnrollment(personId, program);
-		if (enrollment != null) {
+		MotechService motechService = contextService.getMotechService();
+		removeAllUnsentMessages(enrollment);
+		if (enrollment.getEndDate() == null) {
 			enrollment.setEndDate(new Date());
 			motechService.saveMessageProgramEnrollment(enrollment);
+		}
+	}
+
+	public void removeMessageProgramEnrollment(Integer personId,
+			String program, Integer obsId) {
+		MotechService motechService = contextService.getMotechService();
+
+		List<MessageProgramEnrollment> enrollments = null;
+		if (obsId == null) {
+			enrollments = motechService.getActiveMessageProgramEnrollments(
+					personId, program);
+		} else {
+			enrollments = motechService.getActiveMessageProgramEnrollments(
+					personId, program, obsId);
+		}
+		for (MessageProgramEnrollment enrollment : enrollments) {
+			removeMessageProgramEnrollment(enrollment);
 		}
 	}
 

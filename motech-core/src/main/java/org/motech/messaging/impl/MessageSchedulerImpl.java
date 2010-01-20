@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.messaging.MessageScheduler;
+import org.motech.model.MessageProgramEnrollment;
 import org.motech.svc.RegistrarBean;
 
 public class MessageSchedulerImpl implements MessageScheduler {
@@ -30,13 +31,13 @@ public class MessageSchedulerImpl implements MessageScheduler {
 		this.userPreferenceBased = userPreferenceBased;
 	}
 
-	public void scheduleMessage(String messageKey, String messageGroup,
-			Integer messageRecipientId, Date messageDate) {
+	public void scheduleMessage(String messageKey,
+			MessageProgramEnrollment enrollment, Date messageDate) {
 
 		log.debug("scheduling message");
 
-		registrarBean.scheduleMessage(messageKey, messageGroup,
-				messageRecipientId, messageDate, userPreferenceBased);
+		registrarBean.scheduleMessage(messageKey, enrollment, messageDate,
+				userPreferenceBased);
 	}
 
 }

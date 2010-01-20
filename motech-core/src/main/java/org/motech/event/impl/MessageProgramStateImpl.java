@@ -5,12 +5,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.motech.event.Command;
 import org.motech.event.MessageProgram;
 import org.motech.event.MessageProgramState;
 import org.motech.event.MessageProgramStateTransition;
+import org.motech.event.MessagesCommand;
 import org.motech.event.TimePeriod;
 import org.motech.event.TimeReference;
+import org.motech.model.MessageProgramEnrollment;
 import org.motech.svc.RegistrarBean;
 
 public class MessageProgramStateImpl extends BaseInterfaceImpl implements
@@ -18,7 +19,7 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 
 	private RegistrarBean registrarBean;
 	private List<MessageProgramStateTransition> transitions = new ArrayList<MessageProgramStateTransition>();
-	private Command command;
+	private MessagesCommand command;
 	private MessageProgram program;
 	private int timeValue;
 	private TimePeriod timePeriod;
@@ -28,9 +29,10 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 		transitions.add(transition);
 	}
 
-	public MessageProgramStateTransition getTransition(Integer personId) {
+	public MessageProgramStateTransition getTransition(
+			MessageProgramEnrollment enrollment) {
 		for (MessageProgramStateTransition transition : transitions) {
-			if (transition.evaluate(personId)) {
+			if (transition.evaluate(enrollment)) {
 				return transition;
 			}
 		}
@@ -45,11 +47,11 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 		this.registrarBean = registrarBean;
 	}
 
-	public Command getCommand() {
+	public MessagesCommand getCommand() {
 		return command;
 	}
 
-	public void setCommand(Command command) {
+	public void setCommand(MessagesCommand command) {
 		this.command = command;
 	}
 
@@ -100,36 +102,40 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 		this.transitions = transitions;
 	}
 
-	public Date getDateOfAction(Integer personId) {
+	public Date getDateOfAction(MessageProgramEnrollment enrollment) {
 
 		if (timePeriod != null && timeReference != null) {
 
 			Calendar calendar = Calendar.getInstance();
+			Date timeReferenceDate = null;
+
 			switch (timeReference) {
-			case patient_age:
-				calendar.setTime(registrarBean.getPatientBirthDate(personId));
+			case patient_birthdate:
+				timeReferenceDate = registrarBean
+						.getPatientBirthDate(enrollment.getPersonId());
 				break;
-			case last_obs:
-				Date obsDate = registrarBean.getLastObsDate(personId, program
-						.getConceptName(), program.getConceptValue());
-				if (obsDate == null) {
-					return null;
-				}
-				calendar.setTime(obsDate);
+			case last_obs_date:
+				timeReferenceDate = registrarBean.getLastObsDate(enrollment
+						.getPersonId(), program.getConceptName(), program
+						.getConceptValue());
 				break;
-			case last_obs_value:
-				Date obsValueDate = registrarBean.getLastObsValue(personId,
-						program.getConceptName());
-				if (obsValueDate == null) {
-					return null;
-				}
-				calendar.setTime(obsValueDate);
+			case last_obs_datevalue:
+				timeReferenceDate = registrarBean.getLastObsValue(enrollment
+						.getPersonId(), program.getConceptName());
 				break;
-			case patient_enrollment:
-				calendar.setTime(registrarBean.getMessageProgramStartDate(
-						personId, program.getName()));
+			case enrollment_startdate:
+				timeReferenceDate = enrollment.getStartDate();
+				break;
+			case enrollment_obs_datevalue:
+				timeReferenceDate = registrarBean.getObsValue(enrollment
+						.getObsId());
 				break;
 			}
+
+			if (timeReferenceDate == null) {
+				return null;
+			}
+			calendar.setTime(timeReferenceDate);
 
 			switch (timePeriod) {
 			case minute:

@@ -2,11 +2,14 @@ package org.motech.event;
 
 import java.util.Date;
 
+import org.motech.model.MessageProgramEnrollment;
+
 public interface MessageProgramState extends BaseInterface {
 
-	Command getCommand();
+	MessagesCommand getCommand();
 
-	MessageProgramStateTransition getTransition(Integer personId);
+	MessageProgramStateTransition getTransition(
+			MessageProgramEnrollment enrollment);
 
 	MessageProgram getProgram();
 
@@ -16,5 +19,5 @@ public interface MessageProgramState extends BaseInterface {
 
 	TimeReference getTimeReference();
 
-	Date getDateOfAction(Integer personId);
+	Date getDateOfAction(MessageProgramEnrollment enrollment);
 }

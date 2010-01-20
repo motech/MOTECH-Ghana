@@ -4,7 +4,7 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="nopCommand" class="${corePackage}.event.impl.NopCommand" />
+	<bean id="nopCommand" class="${corePackage}.event.MessagesCommand" />
 	<bean id="messageScheduler" class="${corePackage}.messaging.impl.MessageSchedulerImpl">
 		<property name="registrarBean">
 			<bean parent="registrarBean" />

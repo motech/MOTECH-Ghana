@@ -14,7 +14,7 @@
 		<property name="name" value="Child Info State Week 1" />
 		<property name="timeValue" value="1" />
 		<property name="timePeriod" value="week" />
-		<property name="timeReference" value="patient_age" />
+		<property name="timeReference" value="patient_birthdate" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="child.week.1" />
@@ -43,7 +43,7 @@
 		<property name="name" value="Child Info State Week 2" />
 		<property name="timeValue" value="2" />
 		<property name="timePeriod" value="week" />
-		<property name="timeReference" value="patient_age" />
+		<property name="timeReference" value="patient_birthdate" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="child.week.2" />
@@ -72,7 +72,7 @@
 		<property name="name" value="Child Info State Week 3" />
 		<property name="timeValue" value="3" />
 		<property name="timePeriod" value="week" />
-		<property name="timeReference" value="patient_age" />
+		<property name="timeReference" value="patient_birthdate" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="child.week.3" />
@@ -101,7 +101,7 @@
 		<property name="name" value="Child Info State Week 4" />
 		<property name="timeValue" value="4" />
 		<property name="timePeriod" value="week" />
-		<property name="timeReference" value="patient_age" />
+		<property name="timeReference" value="patient_birthdate" />
 		<property name="command">
 			<bean class="org.motech.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="child.week.4" />
@@ -130,19 +130,10 @@
 		<property name="name" value="End Child Info State Week 5" />
 		<property name="timeValue" value="5" />
 		<property name="timePeriod" value="week" />
-		<property name="timeReference" value="patient_age" />
+		<property name="timeReference" value="patient_birthdate" />
 		<property name="command">
-			<bean class="org.motech.event.impl.CompositeCommand">
-				<property name="commands">
-					<list>
-						<bean class="org.motech.event.impl.RemoveMessagesCommand">
-							<property name="registrarBean" ref="registrarBean" />
-						</bean>
-						<bean class="org.motech.event.impl.RemoveEnrollmentCommand">
-							<property name="registrarBean" ref="registrarBean" />
-						</bean>
-					</list>
-				</property>
+			<bean class="org.motech.event.impl.RemoveEnrollmentCommand">
+				<property name="registrarBean" ref="registrarBean" />
 			</bean>
 		</property>
 		<property name="program" ref="weeklyInfoChildProgram" />

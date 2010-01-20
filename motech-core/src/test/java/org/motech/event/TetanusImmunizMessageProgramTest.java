@@ -9,13 +9,13 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
-import org.motech.event.impl.CompositeCommand;
 import org.motech.event.impl.MessageProgramImpl;
 import org.motech.event.impl.MessageProgramStateImpl;
 import org.motech.event.impl.MessageProgramStateTransitionExpectedNumImpl;
 import org.motech.event.impl.RemoveEnrollmentCommand;
 import org.motech.event.impl.ScheduleMessageCommand;
 import org.motech.messaging.MessageScheduler;
+import org.motech.model.MessageProgramEnrollment;
 import org.motech.svc.RegistrarBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -121,16 +121,8 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 				.setMessageScheduler(messageScheduler);
 		((ScheduleMessageCommand) state6.getCommand())
 				.setMessageScheduler(messageScheduler);
-		for (Command command : ((CompositeCommand) state7.getCommand())
-				.getCommands()) {
-			if (command instanceof ScheduleMessageCommand) {
-				((ScheduleMessageCommand) command)
-						.setMessageScheduler(messageScheduler);
-			} else if (command instanceof RemoveEnrollmentCommand) {
-				((RemoveEnrollmentCommand) command)
-						.setRegistrarBean(registrarBean);
-			}
-		}
+		((RemoveEnrollmentCommand) state7.getCommand())
+				.setRegistrarBean(registrarBean);
 	}
 
 	@Override
@@ -162,22 +154,20 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) expectedState
 				.getCommand()).getMessageKey();
-		String groupId = program.getName();
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setStartDate(enrollmentDate);
+		enrollment.setPersonId(patientId);
 
 		expect(
 				registrarBean.getNumberOfObs(patientId, program
 						.getConceptName(), program.getConceptValue()))
 				.andReturn(numberOfTetanusObs);
-		expect(
-				registrarBean.getMessageProgramStartDate(patientId, program
-						.getName())).andReturn(enrollmentDate).anyTimes();
 
-		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, enrollment, messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patientId);
+		MessageProgramState state = program.determineState(enrollment);
 
 		verify(registrarBean, messageScheduler);
 
@@ -194,22 +184,20 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) expectedState
 				.getCommand()).getMessageKey();
-		String groupId = program.getName();
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setStartDate(enrollmentDate);
+		enrollment.setPersonId(patientId);
 
 		expect(
 				registrarBean.getNumberOfObs(patientId, program
 						.getConceptName(), program.getConceptValue()))
 				.andReturn(numberOfTetanusObs).anyTimes();
-		expect(
-				registrarBean.getMessageProgramStartDate(patientId, program
-						.getName())).andReturn(enrollmentDate).anyTimes();
 
-		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, enrollment, messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patientId);
+		MessageProgramState state = program.determineState(enrollment);
 
 		verify(registrarBean, messageScheduler);
 
@@ -226,22 +214,20 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) expectedState
 				.getCommand()).getMessageKey();
-		String groupId = program.getName();
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setStartDate(enrollmentDate);
+		enrollment.setPersonId(patientId);
 
 		expect(
 				registrarBean.getNumberOfObs(patientId, program
 						.getConceptName(), program.getConceptValue()))
 				.andReturn(numberOfTetanusObs).anyTimes();
-		expect(
-				registrarBean.getMessageProgramStartDate(patientId, program
-						.getName())).andReturn(enrollmentDate).anyTimes();
 
-		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, enrollment, messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patientId);
+		MessageProgramState state = program.determineState(enrollment);
 
 		verify(registrarBean, messageScheduler);
 
@@ -258,7 +244,8 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) expectedState
 				.getCommand()).getMessageKey();
-		String groupId = program.getName();
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setPersonId(patientId);
 
 		expect(
 				registrarBean.getNumberOfObs(patientId, program
@@ -269,12 +256,11 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 						.getConceptName(), program.getConceptValue()))
 				.andReturn(lastObsDate).anyTimes();
 
-		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, enrollment, messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patientId);
+		MessageProgramState state = program.determineState(enrollment);
 
 		verify(registrarBean, messageScheduler);
 
@@ -291,7 +277,8 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) expectedState
 				.getCommand()).getMessageKey();
-		String groupId = program.getName();
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setPersonId(patientId);
 
 		expect(
 				registrarBean.getNumberOfObs(patientId, program
@@ -302,12 +289,11 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 						.getConceptName(), program.getConceptValue()))
 				.andReturn(lastObsDate).anyTimes();
 
-		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, enrollment, messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patientId);
+		MessageProgramState state = program.determineState(enrollment);
 
 		verify(registrarBean, messageScheduler);
 
@@ -324,7 +310,8 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) expectedState
 				.getCommand()).getMessageKey();
-		String groupId = program.getName();
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setPersonId(patientId);
 
 		expect(
 				registrarBean.getNumberOfObs(patientId, program
@@ -335,12 +322,11 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 						.getConceptName(), program.getConceptValue()))
 				.andReturn(lastObsDate).anyTimes();
 
-		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, enrollment, messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patientId);
+		MessageProgramState state = program.determineState(enrollment);
 
 		verify(registrarBean, messageScheduler);
 
@@ -352,17 +338,18 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		// 2 tetanus immunizations, no messages expected
 		Integer numberOfTetanusObs = 2;
 
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setPersonId(patientId);
+
 		expect(
 				registrarBean.getNumberOfObs(patientId, program
 						.getConceptName(), program.getConceptValue()))
 				.andReturn(numberOfTetanusObs).anyTimes();
-		registrarBean.removeAllUnsentMessages(patientId, program.getName());
-		registrarBean.removeMessageProgramEnrollment(patientId, program
-				.getName());
+		registrarBean.removeMessageProgramEnrollment(enrollment);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patientId);
+		MessageProgramState state = program.determineState(enrollment);
 
 		verify(registrarBean, messageScheduler);
 
@@ -376,20 +363,19 @@ public class TetanusImmunizMessageProgramTest extends TestCase {
 		Integer numberOfTetanusObs = 0;
 		Date enrollmentDate = getPatientEnrollment(10);
 
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setStartDate(enrollmentDate);
+		enrollment.setPersonId(patientId);
+
 		expect(
 				registrarBean.getNumberOfObs(patientId, program
 						.getConceptName(), program.getConceptValue()))
 				.andReturn(numberOfTetanusObs).anyTimes();
-		expect(
-				registrarBean.getMessageProgramStartDate(patientId, program
-						.getName())).andReturn(enrollmentDate).anyTimes();
-		registrarBean.removeAllUnsentMessages(patientId, program.getName());
-		registrarBean.removeMessageProgramEnrollment(patientId, program
-				.getName());
+		registrarBean.removeMessageProgramEnrollment(enrollment);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patientId);
+		MessageProgramState state = program.determineState(enrollment);
 
 		verify(registrarBean, messageScheduler);
 

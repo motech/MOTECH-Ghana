@@ -8,6 +8,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
+import org.motech.model.MessageProgramEnrollment;
 import org.motech.svc.RegistrarBean;
 
 public class MessageSchedulerImplTest extends TestCase {
@@ -34,19 +35,17 @@ public class MessageSchedulerImplTest extends TestCase {
 	public void testScheduleUserPref() {
 		boolean userPreferencedBased = true;
 		String messageKey = "Message Key";
-		String messageGroup = "Message Group";
-		Integer messageRecipientId = 1;
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
 		Date messageDate = new Date();
 
 		messageScheduler.setUserPreferenceBased(userPreferencedBased);
 
-		registrarBean.scheduleMessage(messageKey, messageGroup,
-				messageRecipientId, messageDate, userPreferencedBased);
+		registrarBean.scheduleMessage(messageKey, enrollment, messageDate,
+				userPreferencedBased);
 
 		replay(registrarBean);
 
-		messageScheduler.scheduleMessage(messageKey, messageGroup,
-				messageRecipientId, messageDate);
+		messageScheduler.scheduleMessage(messageKey, enrollment, messageDate);
 
 		verify(registrarBean);
 	}
@@ -54,19 +53,17 @@ public class MessageSchedulerImplTest extends TestCase {
 	public void testScheduleNoUserPref() {
 		boolean userPreferencedBased = false;
 		String messageKey = "Message Key";
-		String messageGroup = "Message Group";
-		Integer messageRecipientId = 1;
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
 		Date messageDate = new Date();
 
 		messageScheduler.setUserPreferenceBased(userPreferencedBased);
 
-		registrarBean.scheduleMessage(messageKey, messageGroup,
-				messageRecipientId, messageDate, userPreferencedBased);
+		registrarBean.scheduleMessage(messageKey, enrollment, messageDate,
+				userPreferencedBased);
 
 		replay(registrarBean);
 
-		messageScheduler.scheduleMessage(messageKey, messageGroup,
-				messageRecipientId, messageDate);
+		messageScheduler.scheduleMessage(messageKey, enrollment, messageDate);
 
 		verify(registrarBean);
 	}

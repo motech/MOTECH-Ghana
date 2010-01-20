@@ -1,12 +1,14 @@
 package org.motech.event;
 
+import org.motech.model.MessageProgramEnrollment;
+
 public interface MessageProgramStateTransition extends BaseInterface {
 
 	MessageProgramState getPrevState();
 
 	MessageProgramState getNextState();
 
-	Command getCommand();
+	MessagesCommand getCommand();
 
-	boolean evaluate(Integer personId);
+	boolean evaluate(MessageProgramEnrollment enrollment);
 }

@@ -1,6 +1,5 @@
 package org.motech.event;
 
-import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
@@ -14,6 +13,7 @@ import org.motech.event.impl.MessageProgramStateImpl;
 import org.motech.event.impl.RemoveEnrollmentCommand;
 import org.motech.event.impl.ScheduleMessageCommand;
 import org.motech.messaging.MessageScheduler;
+import org.motech.model.MessageProgramEnrollment;
 import org.motech.svc.RegistrarBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -97,17 +97,15 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) state1.getCommand())
 				.getMessageKey();
-		String groupId = program.getName();
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setStartDate(enrollmentDate);
+		enrollment.setPersonId(patientId);
 
-		expect(
-				registrarBean.getMessageProgramStartDate(patientId, program
-						.getName())).andReturn(enrollmentDate).anyTimes();
-		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, enrollment, messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patientId);
+		MessageProgramState state = program.determineState(enrollment);
 
 		verify(registrarBean, messageScheduler);
 
@@ -122,17 +120,15 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) state2.getCommand())
 				.getMessageKey();
-		String groupId = program.getName();
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setStartDate(enrollmentDate);
+		enrollment.setPersonId(patientId);
 
-		expect(
-				registrarBean.getMessageProgramStartDate(patientId, program
-						.getName())).andReturn(enrollmentDate).anyTimes();
-		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, enrollment, messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patientId);
+		MessageProgramState state = program.determineState(enrollment);
 
 		verify(registrarBean, messageScheduler);
 
@@ -147,17 +143,15 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) state3.getCommand())
 				.getMessageKey();
-		String groupId = program.getName();
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setStartDate(enrollmentDate);
+		enrollment.setPersonId(patientId);
 
-		expect(
-				registrarBean.getMessageProgramStartDate(patientId, program
-						.getName())).andReturn(enrollmentDate).anyTimes();
-		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, enrollment, messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patientId);
+		MessageProgramState state = program.determineState(enrollment);
 
 		verify(registrarBean, messageScheduler);
 
@@ -172,17 +166,15 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 
 		String messageKey = ((ScheduleMessageCommand) state4.getCommand())
 				.getMessageKey();
-		String groupId = program.getName();
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setStartDate(enrollmentDate);
+		enrollment.setPersonId(patientId);
 
-		expect(
-				registrarBean.getMessageProgramStartDate(patientId, program
-						.getName())).andReturn(enrollmentDate).anyTimes();
-		messageScheduler.scheduleMessage(messageKey, groupId, patientId,
-				messageDate);
+		messageScheduler.scheduleMessage(messageKey, enrollment, messageDate);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patientId);
+		MessageProgramState state = program.determineState(enrollment);
 
 		verify(registrarBean, messageScheduler);
 
@@ -193,15 +185,15 @@ public class TetanusInfoMessageProgramTest extends TestCase {
 		// Patient enrolled 7 minute ago, no messages expected
 		Date enrollmentDate = getPatientEnrollment(7);
 
-		expect(
-				registrarBean.getMessageProgramStartDate(patientId, program
-						.getName())).andReturn(enrollmentDate).anyTimes();
-		registrarBean.removeMessageProgramEnrollment(patientId, program
-				.getName());
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setStartDate(enrollmentDate);
+		enrollment.setPersonId(patientId);
+
+		registrarBean.removeMessageProgramEnrollment(enrollment);
 
 		replay(registrarBean, messageScheduler);
 
-		MessageProgramState state = program.determineState(patientId);
+		MessageProgramState state = program.determineState(enrollment);
 
 		verify(registrarBean, messageScheduler);
 

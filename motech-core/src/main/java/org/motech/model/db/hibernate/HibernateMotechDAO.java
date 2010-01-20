@@ -108,12 +108,14 @@ public class HibernateMotechDAO implements MotechDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<ScheduledMessage> getScheduledMessages(Integer recipientId,
-			Long messageDefinitionId, Date messageDate) {
+			MessageDefinition definition, MessageProgramEnrollment enrollment,
+			Date messageDate) {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<ScheduledMessage>) session.createCriteria(
 				ScheduledMessage.class).add(
 				Restrictions.eq("recipientId", recipientId)).add(
-				Restrictions.eq("message.id", messageDefinitionId)).add(
+				Restrictions.eq("message", definition)).add(
+				Restrictions.eq("enrollment", enrollment)).add(
 				Restrictions.eq("scheduledFor", messageDate)).list();
 	}
 
@@ -133,18 +135,26 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Message> getMessages(Integer recipientId,
-			String scheduleGroupId, MessageStatus status) {
+	public List<Message> getMessages(MessageProgramEnrollment enrollment,
+			MessageStatus status) {
 		Session session = sessionFactory.getCurrentSession();
-		return (List<Message>) session
-				.createQuery(
-						"select m from "
-								+ Message.class.getName()
-								+ " m inner join m.schedule s "
-								+ "where m.attemptStatus = :status and "
-								+ "s.recipientId = :recipientId and :groupId in elements(s.groupIds)")
-				.setParameter("status", status).setInteger("recipientId",
-						recipientId).setString("groupId", scheduleGroupId)
+		return (List<Message>) session.createCriteria(Message.class).add(
+				Restrictions.eq("attemptStatus", status)).createCriteria(
+				"schedule").add(Restrictions.eq("enrollment", enrollment))
+				.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Message> getMessages(Integer recipientId,
+			MessageProgramEnrollment enrollment, MessageDefinition definition,
+			Date messageDate, MessageStatus status) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Message>) session.createCriteria(Message.class).add(
+				Restrictions.eq("attemptStatus", status)).createCriteria(
+				"schedule").add(Restrictions.eq("recipientId", recipientId))
+				.add(Restrictions.eq("enrollment", enrollment)).add(
+						Restrictions.or(Restrictions.ne("message", definition),
+								Restrictions.ne("scheduledFor", messageDate)))
 				.list();
 	}
 
@@ -225,24 +235,46 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> getActiveMessageProgramEnrollments(Integer personId) {
+	public List<MessageProgramEnrollment> getAllActiveMessageProgramEnrollments() {
 		Session session = sessionFactory.getCurrentSession();
-		return (List<String>) session.createQuery(
-				"select program from "
-						+ MessageProgramEnrollment.class.getName()
-						+ " as e where e.personId = :personId and "
-						+ "e.startDate is not null and e.endDate is null")
-				.setInteger("personId", personId).list();
+		return (List<MessageProgramEnrollment>) session.createCriteria(
+				MessageProgramEnrollment.class).add(
+				Restrictions.isNotNull("startDate")).add(
+				Restrictions.isNull("endDate")).list();
 	}
 
-	public MessageProgramEnrollment getActiveMessageProgramEnrollment(
+	@SuppressWarnings("unchecked")
+	public List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
+			Integer personId) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<MessageProgramEnrollment>) session.createCriteria(
+				MessageProgramEnrollment.class).add(
+				Restrictions.eq("personId", personId)).add(
+				Restrictions.isNotNull("startDate")).add(
+				Restrictions.isNull("endDate")).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
 			Integer personId, String program) {
 		Session session = sessionFactory.getCurrentSession();
-		return (MessageProgramEnrollment) session.createCriteria(
+		return (List<MessageProgramEnrollment>) session.createCriteria(
 				MessageProgramEnrollment.class).add(
 				Restrictions.eq("personId", personId)).add(
 				Restrictions.eq("program", program)).add(
-				Restrictions.isNull("endDate")).uniqueResult();
+				Restrictions.isNull("endDate")).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
+			Integer personId, String program, Integer obsId) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<MessageProgramEnrollment>) session.createCriteria(
+				MessageProgramEnrollment.class).add(
+				Restrictions.eq("personId", personId)).add(
+				Restrictions.eq("program", program)).add(
+				Restrictions.eq("obsId", obsId)).add(
+				Restrictions.isNull("endDate")).list();
 	}
 
 	public GeneralPatientEncounter saveGeneralPatientEncounter(
