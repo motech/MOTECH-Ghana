@@ -9,6 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -44,6 +46,8 @@ public class MessageProgramUpdateTaskTest extends
 		BaseModuleContextSensitiveTest {
 
 	static MotechModuleActivator activator;
+
+	Log log = LogFactory.getLog(MessageProgramUpdateTaskTest.class);
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
@@ -201,7 +205,7 @@ public class MessageProgramUpdateTaskTest extends
 			assertEquals(2, scheduledMessages.size());
 
 			for (ScheduledMessage scheduledMessage : scheduledMessages) {
-				System.out.println(scheduledMessage.getScheduledFor());
+				log.debug(scheduledMessage.getScheduledFor());
 			}
 
 			// Make sure new message is scheduled and previous message is
