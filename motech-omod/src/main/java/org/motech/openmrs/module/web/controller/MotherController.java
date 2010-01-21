@@ -156,6 +156,12 @@ public class MotherController {
 				"motechmodule.gravida.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "parity",
 				"motechmodule.parity.required");
+		if (errors.getFieldErrorCount("parity") == 0
+				&& errors.getFieldErrorCount("gravida") == 0) {
+			if (mother.getParity() > mother.getGravida()) {
+				errors.rejectValue("parity", "motechmodule.parity.range");
+			}
+		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "hivStatus",
 				"motechmodule.hivStatus.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors,
