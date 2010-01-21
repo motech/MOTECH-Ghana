@@ -1,6 +1,8 @@
 package org.motech.ws;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -64,6 +66,13 @@ public class RegistrarWebService implements RegistrarService {
 		Patient child = registrarBean.getPatientBySerial(childRegNum);
 		if (child != null) {
 			errors.add(2, "childRegNum");
+		}
+
+		Calendar dobCal = new GregorianCalendar();
+		int origYear = dobCal.get(Calendar.YEAR);
+		dobCal.set(Calendar.YEAR, origYear - 5);
+		if (childDob.before(dobCal.getTime())) {
+			errors.add(2, "childDob");
 		}
 
 		if (errors.getErrors().size() > 0) {

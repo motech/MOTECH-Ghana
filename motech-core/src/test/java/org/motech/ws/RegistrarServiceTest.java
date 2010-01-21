@@ -10,7 +10,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.LogManager;
 
@@ -95,7 +97,10 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testRegisterChildAllErrors() {
-		Date regDate = new Date(), childDob = new Date(), nhisExpires = new Date();
+		Date regDate = new Date(), nhisExpires = new Date();
+		Calendar dobCal = new GregorianCalendar();
+		dobCal.set(Calendar.YEAR, dobCal.get(Calendar.YEAR) - 6);
+		Date childDob = dobCal.getTime();
 		String nurseId = "FGH267", motherRegNum = "ABC123", childRegNum = "DEF456", childFirstName = "Sarah", nhis = "14567";
 		Gender childGender = Gender.FEMALE;
 
@@ -120,7 +125,7 @@ public class RegistrarServiceTest {
 					.getFaultInfo());
 			List<ValidationError> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
-			assertEquals(3, errors.size());
+			assertEquals(4, errors.size());
 			ValidationError nurseError = errors.get(0);
 			assertEquals(1, nurseError.getCode());
 			assertEquals("chpsId", nurseError.getField());
@@ -130,6 +135,9 @@ public class RegistrarServiceTest {
 			ValidationError childError = errors.get(2);
 			assertEquals(2, childError.getCode());
 			assertEquals("childRegNum", childError.getField());
+			ValidationError dobError = errors.get(3);
+			assertEquals(2, dobError.getCode());
+			assertEquals("childDob", dobError.getField());
 		}
 
 		verify(registrarBean);
