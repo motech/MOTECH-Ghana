@@ -531,108 +531,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
-	public void registerPatient(String nursePhoneNumber, String serialId,
-			String name, String community, String location, Date dateOfBirth,
-			Gender gender, Integer nhis, String phoneNumber,
-			ContactNumberType contactNumberType, String language,
-			MediaType mediaType, DeliveryTime deliveryTime,
-			String[] messagePrograms) {
-
-		User nurse = this.getUserByPhoneNumber(nursePhoneNumber);
-		registerPatient(nurse, serialId, name, community, location,
-				dateOfBirth, gender, nhis, phoneNumber, contactNumberType,
-				language, mediaType, deliveryTime, messagePrograms);
-	}
-
-	public void registerPatient(Integer nurseId, String serialId, String name,
-			String community, String location, Date dateOfBirth, Gender gender,
-			Integer nhis, String phoneNumber,
-			ContactNumberType contactNumberType, String language,
-			MediaType mediaType, DeliveryTime deliveryTime,
-			String[] messagePrograms) {
-
-		UserService userService = contextService.getUserService();
-		User nurse = userService.getUser(nurseId);
-		registerPatient(nurse, serialId, name, community, location,
-				dateOfBirth, gender, nhis, phoneNumber, contactNumberType,
-				language, mediaType, deliveryTime, messagePrograms);
-	}
-
-	private void registerPatient(User nurse, String serialId, String name,
-			String community, String location, Date dateOfBirth, Gender gender,
-			Integer nhis, String phoneNumber,
-			ContactNumberType contactNumberType, String language,
-			MediaType mediaType, DeliveryTime deliveryTime,
-			String[] messagePrograms) {
-
-		PatientService patientService = contextService.getPatientService();
-		PersonService personService = contextService.getPersonService();
-
-		Patient patient = new Patient();
-
-		// Must be created previously through API or UI to lookup
-		PatientIdentifierType serialIdType = getGhanaPatientIdType();
-
-		Location clinicLocation = getNurseClinicLocation(nurse);
-		patient.addIdentifier(new PatientIdentifier(serialId, serialIdType,
-				clinicLocation));
-
-		patient.addName(personService.parsePersonName(name));
-
-		PersonAddress address = new PersonAddress();
-		address.setAddress1(location);
-		address.setCityVillage(community);
-		patient.addAddress(address);
-
-		patient.setBirthdate(dateOfBirth);
-
-		// Should be "M" or "F"
-		patient.setGender(GenderTypeConverter.toOpenMRSString(gender));
-
-		// Must be created previously through API or UI to lookup
-		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
-		patient
-				.addAttribute(new PersonAttribute(nhisAttrType, nhis.toString()));
-
-		// Must be created previously through API or UI to lookup
-		PersonAttributeType phoneNumberAttrType = getPrimaryPhoneNumberAttributeType();
-		patient.addAttribute(new PersonAttribute(phoneNumberAttrType,
-				phoneNumber));
-
-		PersonAttributeType phoneTypeAttrType = getPrimaryPhoneTypeAttributeType();
-
-		patient.addAttribute(new PersonAttribute(phoneTypeAttrType,
-				contactNumberType.toString()));
-
-		PersonAttributeType languageTextAttrType = getLanguageTextAttributeType();
-		patient
-				.addAttribute(new PersonAttribute(languageTextAttrType,
-						language));
-
-		PersonAttributeType languageVoiceAttrType = getLanguageVoiceAttributeType();
-		patient.addAttribute(new PersonAttribute(languageVoiceAttrType,
-				language));
-
-		PersonAttributeType mediaTypeInfoAttrType = getMediaTypeInformationalAttributeType();
-		patient.addAttribute(new PersonAttribute(mediaTypeInfoAttrType,
-				mediaType.toString()));
-
-		PersonAttributeType mediaTypeReminderAttrType = getMediaTypeReminderAttributeType();
-		patient.addAttribute(new PersonAttribute(mediaTypeReminderAttrType,
-				mediaType.toString()));
-
-		PersonAttributeType deliveryAttrType = getDeliveryTimeAttributeType();
-		patient.addAttribute(new PersonAttribute(deliveryAttrType, deliveryTime
-				.toString()));
-
-		patient = patientService.savePatient(patient);
-
-		for (String programName : messagePrograms) {
-			addMessageProgramEnrollment(patient.getPatientId(), programName,
-					null);
-		}
-	}
-
 	public void editPatient(User nurse, Patient patient, String primaryPhone,
 			ContactNumberType primaryPhoneType, String secondaryPhone,
 			ContactNumberType secondaryPhoneType, String nhis, Date nhisExpires) {
@@ -726,119 +624,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		for (String programName : pregnancyPrograms) {
 			removeMessageProgramEnrollment(patientId, programName, null);
 		}
-	}
-
-	public void recordMaternalVisit(String nursePhoneNumber, Date date,
-			String serialId, Boolean tetanus, Boolean ipt, Boolean itn,
-			Integer visitNumber, Boolean onARV, Boolean prePMTCT,
-			Boolean testPMTCT, Boolean postPMTCT, Double hemoglobinAt36Weeks) {
-
-		User nurse = this.getUserByPhoneNumber(nursePhoneNumber);
-		Patient patient = getPatientBySerial(serialId);
-		recordMaternalVisit(nurse, date, patient, tetanus, ipt, itn,
-				visitNumber, onARV, prePMTCT, testPMTCT, postPMTCT,
-				hemoglobinAt36Weeks);
-	}
-
-	public void recordMaternalVisit(Integer nurseId, Date date,
-			Integer patientId, Boolean tetanus, Boolean ipt, Boolean itn,
-			Integer visitNumber, Boolean onARV, Boolean prePMTCT,
-			Boolean testPMTCT, Boolean postPMTCT, Double hemoglobinAt36Weeks) {
-
-		UserService userService = contextService.getUserService();
-		PatientService patientService = contextService.getPatientService();
-
-		User nurse = userService.getUser(nurseId);
-		Patient patient = patientService.getPatient(patientId);
-		recordMaternalVisit(nurse, date, patient, tetanus, ipt, itn,
-				visitNumber, onARV, prePMTCT, testPMTCT, postPMTCT,
-				hemoglobinAt36Weeks);
-	}
-
-	private void recordMaternalVisit(User nurse, Date date, Patient patient,
-			Boolean tetanus, Boolean ipt, Boolean itn, Integer visitNumber,
-			Boolean onARV, Boolean prePMTCT, Boolean testPMTCT,
-			Boolean postPMTCT, Double hemoglobinAt36Weeks) {
-
-		EncounterService encounterService = contextService
-				.getEncounterService();
-		ObsService obsService = contextService.getObsService();
-
-		Date visitDate = date;
-		if (visitDate == null) {
-			visitDate = new Date();
-		}
-
-		Encounter encounter = new Encounter();
-		encounter.setEncounterDatetime(visitDate);
-		encounter.setPatient(patient);
-		encounter.setProvider(nurse);
-
-		Location clinicLocation = getNurseClinicLocation(nurse);
-
-		// Encounter types must be created previously
-		EncounterType encounterType = getMaternalVisitEncounterType();
-		encounter.setEncounterType(encounterType);
-		encounter.setLocation(clinicLocation);
-		encounter = encounterService.saveEncounter(encounter);
-
-		if (tetanus) {
-			Obs tetanusObs = createConceptValueObs(visitDate,
-					getImmunizationsOrderedConcept(), patient, clinicLocation,
-					getTetanusConcept(), encounter, null);
-			obsService.saveObs(tetanusObs, null);
-		}
-
-		// TODO: Add IPT to proper Concept as an Answer, not an immunization
-		if (ipt) {
-			Obs iptObs = createConceptValueObs(visitDate,
-					getImmunizationsOrderedConcept(), patient, clinicLocation,
-					getIPTConcept(), encounter, null);
-			obsService.saveObs(iptObs, null);
-		}
-
-		if (itn) {
-			Obs itnObs = createBooleanValueObs(visitDate, getITNConcept(),
-					patient, clinicLocation, itn, encounter, null);
-			obsService.saveObs(itnObs, null);
-		}
-
-		Obs visitNumberObs = createNumericValueObs(visitDate,
-				getPregnancyVisitNumberConcept(), patient, clinicLocation,
-				new Double(visitNumber), encounter, null);
-		obsService.saveObs(visitNumberObs, null);
-
-		if (onARV) {
-			Obs arvObs = createConceptValueObs(visitDate, getARVConcept(),
-					patient, clinicLocation, getOnARVConcept(), encounter, null);
-			obsService.saveObs(arvObs, null);
-		}
-
-		if (prePMTCT) {
-			Obs prePmtctObs = createBooleanValueObs(visitDate,
-					getPrePMTCTConcept(), patient, clinicLocation, prePMTCT,
-					encounter, null);
-			obsService.saveObs(prePmtctObs, null);
-		}
-
-		if (testPMTCT) {
-			Obs testPmtctObs = createBooleanValueObs(visitDate,
-					getTestPMTCTConcept(), patient, clinicLocation, testPMTCT,
-					encounter, null);
-			obsService.saveObs(testPmtctObs, null);
-		}
-
-		if (postPMTCT) {
-			Obs postPmtctObs = createBooleanValueObs(visitDate,
-					getPostPMTCTConcept(), patient, clinicLocation, postPMTCT,
-					encounter, null);
-			obsService.saveObs(postPmtctObs, null);
-		}
-
-		Obs hemoglobinObs = createNumericValueObs(visitDate,
-				getHemoglobin36WeeksConcept(), patient, clinicLocation,
-				hemoglobinAt36Weeks, encounter, null);
-		obsService.saveObs(hemoglobinObs, null);
 	}
 
 	public void registerPregnancy(Integer id, Date dueDate,
@@ -1031,7 +816,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	/* MotechService methods end */
 
 	/* Controller methods start */
-	public List<Location> getAllClinics() {
+	public List<Location> getAllLocations() {
 		LocationService locationService = contextService.getLocationService();
 		return locationService.getAllLocations();
 	}
@@ -1080,15 +865,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		pregnancyConcept.add(getPregnancyConcept());
 		return obsService.getObservations(null, null, pregnancyConcept, null,
 				null, null, null, null, null, null, null, false);
-	}
-
-	public List<Encounter> getAllMaternalVisits() {
-		EncounterService encounterService = contextService
-				.getEncounterService();
-		List<EncounterType> maternalVisitType = new ArrayList<EncounterType>();
-		maternalVisitType.add(getMaternalVisitEncounterType());
-		return encounterService.getEncounters(null, null, null, null, null,
-				maternalVisitType, null, false);
 	}
 
 	public List<ScheduledMessage> getAllScheduledMessages() {

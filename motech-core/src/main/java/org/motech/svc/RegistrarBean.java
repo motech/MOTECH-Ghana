@@ -14,11 +14,9 @@ import org.motech.model.ScheduledMessage;
 import org.motech.model.WhoRegistered;
 import org.motech.model.WhyInterested;
 import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
-import org.openmrs.Encounter;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
@@ -98,21 +96,6 @@ public interface RegistrarBean {
 			String languageVoice, String languageText, String howLearned,
 			String religion, String occupation, WhyInterested whyInterested);
 
-	@RunAsAdminUser
-	public void registerPatient(String nursePhoneNumber, String serialId,
-			String name, String community, String location, Date dateOfBirth,
-			Gender gender, Integer nhis, String phoneNumber,
-			ContactNumberType contactNumberType, String language,
-			MediaType mediaType, DeliveryTime deliveryTime,
-			String[] messagePrograms);
-
-	public void registerPatient(Integer nurseId, String serialId, String name,
-			String community, String location, Date dateOfBirth, Gender gender,
-			Integer nhis, String phoneNumber,
-			ContactNumberType contactNumberType, String language,
-			MediaType mediaType, DeliveryTime deliveryTime,
-			String[] messagePrograms);
-
 	public void editPatient(Integer id, String firstName, String lastName,
 			String prefName, Date birthDate, Boolean birthDateEst, Gender sex,
 			Boolean registeredGHS, String regNumberGHS, Boolean insured,
@@ -136,17 +119,6 @@ public interface RegistrarBean {
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Patient patient);
 
-	@RunAsAdminUser
-	public void recordMaternalVisit(String nursePhoneNumber, Date date,
-			String serialId, Boolean tetanus, Boolean ipt, Boolean itn,
-			Integer visitNumber, Boolean onARV, Boolean prePMTCT,
-			Boolean testPMTCT, Boolean postPMTCT, Double hemoglobinAt36Weeks);
-
-	public void recordMaternalVisit(Integer nurseId, Date date,
-			Integer patientId, Boolean tetanus, Boolean ipt, Boolean itn,
-			Integer visitNumber, Boolean onARV, Boolean prePMTCT,
-			Boolean testPMTCT, Boolean postPMTCT, Double hemoglobinAt36Weeks);
-
 	public void registerPregnancy(Integer id, Date dueDate,
 			Boolean dueDateConfirmed, Boolean registerPregProgram,
 			String primaryPhone, ContactNumberType primaryPhoneType,
@@ -167,7 +139,7 @@ public interface RegistrarBean {
 
 	public User getUserByPhoneNumber(String phoneNumber);
 
-	public List<Location> getAllClinics();
+	public List<Location> getAllLocations();
 
 	public List<User> getAllNurses();
 
@@ -178,8 +150,6 @@ public interface RegistrarBean {
 			String patientId, String nhisNumber);
 
 	public List<Obs> getAllPregnancies();
-
-	public List<Encounter> getAllMaternalVisits();
 
 	public List<ScheduledMessage> getAllScheduledMessages();
 

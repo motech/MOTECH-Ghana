@@ -14,8 +14,6 @@
 package org.motech.openmrs.module.web.controller;
 
 import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -53,8 +51,6 @@ public class MotechModuleFormController {
 
 	private ContextService contextService;
 
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-
 	@Autowired
 	public void setContextService(ContextService contextService) {
 		this.contextService = contextService;
@@ -66,7 +62,7 @@ public class MotechModuleFormController {
 
 	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.GET)
 	public String viewClinicForm(ModelMap model) {
-		List<Location> locations = registrarBean.getAllClinics();
+		List<Location> locations = registrarBean.getAllLocations();
 
 		LocationXStream xstream = new LocationXStream();
 		String locationsXml = xstream.toLocationHierarchyXML(locations);
@@ -79,15 +75,8 @@ public class MotechModuleFormController {
 
 	@RequestMapping(value = "/module/motechmodule/nurse", method = RequestMethod.GET)
 	public String viewNurseForm(ModelMap model) {
-		model.addAttribute("clinics", registrarBean.getAllClinics());
+		model.addAttribute("clinics", registrarBean.getAllLocations());
 		return "/module/motechmodule/nurse";
-	}
-
-	@RequestMapping(value = "/module/motechmodule/maternalVisit", method = RequestMethod.GET)
-	public String viewMaternalVisitForm(ModelMap model) {
-		model.addAttribute("nurses", registrarBean.getAllNurses());
-		model.addAttribute("patients", registrarBean.getAllPatients());
-		return "/module/motechmodule/maternalVisit";
 	}
 
 	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.POST)
@@ -112,38 +101,12 @@ public class MotechModuleFormController {
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 
-	@RequestMapping(value = "/module/motechmodule/maternalVisit", method = RequestMethod.POST)
-	public String recordMaternalVisit(@RequestParam("nurse") Integer nurseId,
-			@RequestParam("visitDate") String visitDate,
-			@RequestParam("patient") Integer patientId,
-			@RequestParam("tetanus") String tetanus,
-			@RequestParam("ipt") String ipt, @RequestParam("itn") String itn,
-			@RequestParam("visitNumber") String visitNumber,
-			@RequestParam("onARV") String onARV,
-			@RequestParam("prePMTCT") String prePMTCT,
-			@RequestParam("testPMTCT") String testPMTCT,
-			@RequestParam("postPMTCT") String postPMTCT,
-			@RequestParam("hemoglobin") String hemoglobin)
-			throws NumberFormatException, ParseException {
-		log.debug("Register Maternal Visit");
-		registrarBean.recordMaternalVisit(nurseId,
-				(!visitDate.equals("") ? dateFormat.parse(visitDate) : null),
-				patientId, Boolean.valueOf(tetanus), Boolean.valueOf(ipt),
-				Boolean.valueOf(itn), Integer.valueOf(visitNumber), Boolean
-						.valueOf(onARV), Boolean.valueOf(prePMTCT), Boolean
-						.valueOf(testPMTCT), Boolean.valueOf(postPMTCT), Double
-						.valueOf(hemoglobin));
-		return "redirect:/module/motechmodule/viewdata.form";
-	}
-
 	@RequestMapping("/module/motechmodule/viewdata")
 	public String viewData(ModelMap model) {
 
-		model.addAttribute("allClinics", registrarBean.getAllClinics());
+		model.addAttribute("allLocations", registrarBean.getAllLocations());
 		model.addAttribute("allNurses", registrarBean.getAllNurses());
 		model.addAttribute("allPatients", registrarBean.getAllPatients());
-		model.addAttribute("allMaternalVisits", registrarBean
-				.getAllMaternalVisits());
 		model.addAttribute("allPregnancies", registrarBean.getAllPregnancies());
 		model.addAttribute("allScheduledMessages", registrarBean
 				.getAllScheduledMessages());

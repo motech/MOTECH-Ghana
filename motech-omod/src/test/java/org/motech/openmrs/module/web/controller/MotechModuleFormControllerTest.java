@@ -2,15 +2,12 @@ package org.motech.openmrs.module.web.controller;
 
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
 import java.sql.Time;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import junit.framework.TestCase;
 
@@ -84,52 +81,6 @@ public class MotechModuleFormControllerTest extends TestCase {
 		controller.registerNurse(name, nurseId, nursePhone, clinicId);
 
 		verify(registrarBean);
-	}
-
-	public void testRecordMaternalVisit() throws Exception {
-		Integer nurseId = 1, patientId = 2;
-		String visitDate = "01/01/2009", tetanus = "true", ipt = "true", itn = "true", visitNumber = "1";
-		String onARV = "true", prePMTCT = "true", testPMTCT = "true", postPMTCT = "true", hemoglobin = "1.1";
-
-		Capture<Date> visitDateCapture = new Capture<Date>();
-		Capture<Boolean> tetanusCapture = new Capture<Boolean>();
-		Capture<Boolean> iptCapture = new Capture<Boolean>();
-		Capture<Boolean> itnCapture = new Capture<Boolean>();
-		Capture<Integer> visitNumberCapture = new Capture<Integer>();
-		Capture<Boolean> onARVCapture = new Capture<Boolean>();
-		Capture<Boolean> prePMTCTCapture = new Capture<Boolean>();
-		Capture<Boolean> testPMTCTCapture = new Capture<Boolean>();
-		Capture<Boolean> postPMTCTCapture = new Capture<Boolean>();
-		Capture<Double> hemoglobin36Capture = new Capture<Double>();
-
-		registrarBean.recordMaternalVisit(eq(nurseId),
-				capture(visitDateCapture), eq(patientId),
-				capture(tetanusCapture), capture(iptCapture),
-				capture(itnCapture), capture(visitNumberCapture),
-				capture(onARVCapture), capture(prePMTCTCapture),
-				capture(testPMTCTCapture), capture(postPMTCTCapture),
-				capture(hemoglobin36Capture));
-
-		replay(registrarBean);
-
-		controller.recordMaternalVisit(nurseId, visitDate, patientId, tetanus,
-				ipt, itn, visitNumber, onARV, prePMTCT, testPMTCT, postPMTCT,
-				hemoglobin);
-
-		verify(registrarBean);
-
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-
-		assertEquals(visitDate, dateFormat.format(visitDateCapture.getValue()));
-		assertEquals(tetanus, tetanusCapture.getValue().toString());
-		assertEquals(ipt, iptCapture.getValue().toString());
-		assertEquals(itn, itnCapture.getValue().toString());
-		assertEquals(visitNumber, visitNumberCapture.getValue().toString());
-		assertEquals(onARV, onARVCapture.getValue().toString());
-		assertEquals(prePMTCT, prePMTCTCapture.getValue().toString());
-		assertEquals(testPMTCT, testPMTCTCapture.getValue().toString());
-		assertEquals(postPMTCT, postPMTCTCapture.getValue().toString());
-		assertEquals(hemoglobin, hemoglobin36Capture.getValue().toString());
 	}
 
 	public void testViewBlackoutForm() throws ParseException {

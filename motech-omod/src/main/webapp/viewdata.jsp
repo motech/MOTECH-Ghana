@@ -14,12 +14,12 @@
 <c:set var="noResultMsg" value="No results found." />
 
 <div>
-	<h3>Clinics</h3>
+	<h3>Locations</h3>
 	<c:choose>
-		<c:when test="${not empty allClinics}">
+		<c:when test="${not empty allLocations}">
 		<table><tr><th>Id</th><th>Name</th></tr>
-		<c:forEach items="${allClinics}" var="clinic">
-			<tr><td>${clinic.locationId}</td><td>${clinic.name}</td></tr>
+		<c:forEach items="${allLocations}" var="location">
+			<tr><td>${location.locationId}</td><td>${location.name}</td></tr>
 		</c:forEach>
 		</table>
 		</c:when>
@@ -62,20 +62,6 @@
 		<table><tr><th>Id</th><th>Registration Date</th><th>Patient Id</th></tr>
 		<c:forEach items="${allPregnancies}" var="pregnancy">
 			<tr><td>${pregnancy.obsId}</td><td><openmrs:formatDate date="${pregnancy.obsDatetime}"/></td><td>${pregnancy.personId}</td></tr>
-		</c:forEach>
-		</table>
-		</c:when>
-		<c:otherwise>${noResultMsg}</c:otherwise>
-	</c:choose>
-</div>
-
-<div>
-	<h3>Maternal Visits</h3>
-	<c:choose>
-		<c:when test="${not empty allMaternalVisits}">
-		<table><tr><th>Id</th><th>Date</th><th>Patient Id</th></tr>
-		<c:forEach items="${allMaternalVisits}" var="matVisit">
-			<tr><td>${matVisit.encounterId}</td><td><openmrs:formatDate date="${matVisit.encounterDatetime}"/></td><td>${matVisit.patientId}</td></tr>
 		</c:forEach>
 		</table>
 		</c:when>

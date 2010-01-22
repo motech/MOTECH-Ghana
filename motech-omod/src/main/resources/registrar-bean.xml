@@ -63,18 +63,6 @@
 			<map>
 				<entry>
 					<key>
-						<value>Tetanus Information Message Program</value>
-					</key>
-					<ref bean="tetanusInfo" />
-				</entry>
-				<entry>
-					<key>
-						<value>Tetanus Immunization Message Program</value>
-					</key>
-					<ref bean="tetanusImmunization" />
-				</entry>
-				<entry>
-					<key>
 						<value>Weekly Pregnancy Message Program</value>
 					</key>
 					<ref bean="weeklyPregnancyProgram" />
