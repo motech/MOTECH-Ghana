@@ -27,7 +27,9 @@ import org.motech.model.MessageStatus;
 import org.motech.model.ScheduledMessage;
 import org.motech.model.TroubledPhone;
 import org.motech.svc.RegistrarBean;
+import org.openmrs.Concept;
 import org.openmrs.Location;
+import org.openmrs.Obs;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
@@ -178,4 +180,7 @@ public interface MotechService extends OpenmrsService {
 			Integer primaryPhoneNumberAttrTypeId,
 			Integer secondaryPhoneNumberAttrTypeId, String patientId,
 			String nhisNumber, Integer nhisAttrTypeId);
+
+	List<Obs> getActivePregnancies(Integer patientId, Concept pregnancyConcept,
+			Concept pregnancyStatusConcept);
 }

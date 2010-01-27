@@ -29,7 +29,9 @@ import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
 import org.motech.openmrs.module.MotechService;
 import org.motech.svc.RegistrarBean;
+import org.openmrs.Concept;
 import org.openmrs.Location;
+import org.openmrs.Obs;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.api.impl.BaseOpenmrsService;
 
@@ -258,5 +260,11 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 				community, phoneNumber, primaryPhoneNumberAttrTypeId,
 				secondaryPhoneNumberAttrTypeId, patientId, nhisNumber,
 				nhisAttrTypeId);
+	}
+
+	public List<Obs> getActivePregnancies(Integer patientId,
+			Concept pregnancyConcept, Concept pregnancyStatusConcept) {
+		return motechDAO.getActivePregnancies(patientId, pregnancyConcept,
+				pregnancyStatusConcept);
 	}
 }

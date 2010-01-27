@@ -151,6 +151,8 @@ public interface RegistrarBean {
 
 	public List<Obs> getAllPregnancies();
 
+	public Obs getActivePregnancy(Integer patientId);
+
 	public List<ScheduledMessage> getAllScheduledMessages();
 
 	public List<Log> getAllLogs();

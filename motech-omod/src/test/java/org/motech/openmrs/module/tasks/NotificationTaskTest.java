@@ -28,6 +28,7 @@ import org.motech.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
+import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.api.context.Context;
@@ -120,6 +121,12 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 					.getPatients("motherfirstName motherlastName",
 							"motherRegNumberGHS", patientIdTypeList, true);
 			assertEquals(1, motherMatchingPatients.size());
+
+			// Verify Mother's Pregnancy exists
+			Patient mother = motherMatchingPatients.get(0);
+			Obs pregnancyObs = regService.getActivePregnancy(mother
+					.getPatientId());
+			assertNotNull("Pregnancy Obs does not exist", pregnancyObs);
 
 			List<Patient> childMatchingPatients = Context.getPatientService()
 					.getPatients("childfirstName childlastName",

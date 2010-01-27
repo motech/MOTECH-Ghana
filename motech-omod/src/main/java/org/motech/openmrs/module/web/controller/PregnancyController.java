@@ -9,6 +9,7 @@ import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.web.model.WebModelConverter;
 import org.motech.openmrs.module.web.model.WebPatient;
 import org.motech.svc.RegistrarBean;
+import org.motechproject.ws.Gender;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -92,6 +93,13 @@ public class PregnancyController {
 			Errors errors, ModelMap model, SessionStatus status) {
 
 		log.debug("Register New Pregnancy on Existing Patient");
+
+		if (!Gender.FEMALE.equals(pregnancy.getSex())) {
+			errors.reject("motechmodule.sex.female.required");
+		}
+		if (registrarBean.getActivePregnancy(pregnancy.getId()) != null) {
+			errors.reject("motechmodule.Pregnancy.active");
+		}
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "dueDate",
 				"motechmodule.dueDate.required");

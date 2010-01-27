@@ -13,6 +13,9 @@
 	about communication and service delivery during a pregnancy episode.
 </div>
 <form:form method="post" modelAttribute="pregnancy">
+<div style="padding-top:5px; padding-bottom:5px;">
+	<form:errors cssClass="error" />
+</div>
 <table>
 	<tr>
 		<td><form:label path="whoRegistered">Who Registered:</form:label></td>

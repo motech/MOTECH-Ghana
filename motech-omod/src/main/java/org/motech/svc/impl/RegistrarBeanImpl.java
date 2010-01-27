@@ -867,6 +867,20 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				null, null, null, null, null, null, null, false);
 	}
 
+	public Obs getActivePregnancy(Integer patientId) {
+		MotechService motechService = contextService.getMotechService();
+
+		List<Obs> pregnancies = motechService.getActivePregnancies(patientId,
+				getPregnancyConcept(), getPregnancyStatusConcept());
+		if (pregnancies.isEmpty()) {
+			return null;
+		} else if (pregnancies.size() > 1) {
+			log.warn("More than 1 active pregnancy found for patient: "
+					+ patientId);
+		}
+		return pregnancies.get(0);
+	}
+
 	public List<ScheduledMessage> getAllScheduledMessages() {
 		MotechService motechService = contextService.getMotechService();
 		return motechService.getAllScheduledMessages();

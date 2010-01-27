@@ -13,7 +13,9 @@ import org.motech.model.MessageProgramEnrollment;
 import org.motech.model.MessageStatus;
 import org.motech.model.ScheduledMessage;
 import org.motech.model.TroubledPhone;
+import org.openmrs.Concept;
 import org.openmrs.Location;
+import org.openmrs.Obs;
 
 /**
  * The interface definition for the motech server's data access requirements.
@@ -117,4 +119,7 @@ public interface MotechDAO {
 			Integer primaryPhoneNumberAttrTypeId,
 			Integer secondaryPhoneNumberAttrTypeId, String patientId,
 			String nhisNumber, Integer nhisAttrTypeId);
+
+	List<Obs> getActivePregnancies(Integer patientId, Concept pregnancyConcept,
+			Concept pregnancyStatusConcept);
 }

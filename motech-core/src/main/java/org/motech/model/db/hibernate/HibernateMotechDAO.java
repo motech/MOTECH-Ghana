@@ -18,7 +18,9 @@ import org.motech.model.MessageStatus;
 import org.motech.model.ScheduledMessage;
 import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
+import org.openmrs.Concept;
 import org.openmrs.Location;
+import org.openmrs.Obs;
 
 /**
  * An implementation of the motech data access object interface, implemented
@@ -426,4 +428,27 @@ public class HibernateMotechDAO implements MotechDAO {
 						secondaryPhoneNumberAttrTypeId).setString(
 						"phoneNumber", phoneNumber).list();
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<Obs> getActivePregnancies(Integer patientId,
+			Concept pregnancyConcept, Concept pregnancyStatusConcept) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Obs>) session.createQuery(
+				"select p from " + Obs.class.getName()
+						+ " p where p.person.personId = :patientId and "
+						+ "p.concept = :pregnancyConcept and "
+						+ "exists (select s from " + Obs.class.getName()
+						+ " s where s.obsGroup = p and "
+						+ "s.concept = :pregnancyStatusConcept and "
+						+ "s.valueNumeric = :trueDouble) and "
+						+ "not exists (select e from " + Obs.class.getName()
+						+ " e where e.obsGroup = p and "
+						+ "e.concept = :pregnancyStatusConcept and "
+						+ "e.valueNumeric = :falseDouble)").setInteger(
+				"patientId", patientId).setEntity("pregnancyConcept",
+				pregnancyConcept).setEntity("pregnancyStatusConcept",
+				pregnancyStatusConcept).setDouble("trueDouble", 1.0).setDouble(
+				"falseDouble", 0.0).list();
+	}
+
 }
