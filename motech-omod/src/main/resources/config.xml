@@ -28,6 +28,11 @@
 		<class>${modulePackage}.extension.html.GutterLink</class>
 	</extension>
 	
+	<extension>
+		<point>org.openmrs.gutter.tools</point>
+		<class>${modulePackage}.extension.html.DemoGutterLink</class>
+	</extension>
+	
 	<!-- AOP -->
 	<advice>
 		<point>org.openmrs.api.ObsService</point>
@@ -42,6 +47,11 @@
 	
 	<privilege>
 		<name>Use MoTeCH</name>
+		<description>Enables a user to view the motech menu in the gutter</description>
+	</privilege>
+
+	<privilege>
+		<name>Use MoTeCH Demo</name>
 		<description>Enables a user to view the motech menu in the gutter</description>
 	</privilege>
 

@@ -132,7 +132,17 @@
 			(47,'pregnancy.week.37',50,'INFORMATIONAL'),(48,'pregnancy.week.38',51,'INFORMATIONAL'),
 			(49,'pregnancy.week.39',52,'INFORMATIONAL'),(50,'pregnancy.week.40',53,'INFORMATIONAL'),
 			(51,'child.week.1',54,'INFORMATIONAL'),(52,'child.week.2',55,'INFORMATIONAL'),
-			(53,'child.week.3',56,'INFORMATIONAL'),(54,'child.week.4',57,'INFORMATIONAL');
+			(53,'child.week.3',56,'INFORMATIONAL'),(54,'child.week.4',57,'INFORMATIONAL'),
+			(55,'demo.minute.1',58,'INFORMATIONAL'),(56,'demo.minute.2',59,'INFORMATIONAL'),
+			(57,'demo.minute.3',60,'INFORMATIONAL'),(58,'demo.minute.4',61,'INFORMATIONAL'),
+			(59,'demo.minute.5',62,'INFORMATIONAL'),(60,'demo.minute.6',63,'INFORMATIONAL'),
+			(61,'demo.minute.7',64,'INFORMATIONAL'),(62,'demo.minute.8',65,'INFORMATIONAL'),
+			(63,'demo.minute.9',66,'INFORMATIONAL'),(64,'demo.minute.10',67,'INFORMATIONAL'),
+			(65,'demo.minute.11',68,'INFORMATIONAL'),(66,'demo.minute.12',69,'INFORMATIONAL'),
+			(67,'demo.minute.13',70,'INFORMATIONAL'),(68,'demo.minute.14',71,'INFORMATIONAL'),
+			(69,'demo.minute.15',72,'INFORMATIONAL'),(70,'demo.minute.16',73,'INFORMATIONAL'),
+			(71,'demo.minute.17',74,'INFORMATIONAL'),(72,'demo.minute.18',75,'INFORMATIONAL'),
+			(73,'demo.minute.19',76,'INFORMATIONAL'),(74,'demo.minute.20',77,'INFORMATIONAL');
 
 			INSERT INTO `motechmodule_messageattribute` (`motechmodule_messageattribute_id`,`attribute_name`,`attribute_property`)
 			VALUES (1,'PatientFirstName','person.givenName'),(2,'DueDate','obs.concept.name=ESTIMATED DATE OF CONFINEMENT');

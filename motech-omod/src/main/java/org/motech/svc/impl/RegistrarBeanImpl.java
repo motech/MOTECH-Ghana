@@ -312,6 +312,36 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	public void demoRegisterPatient(String firstName, String middleName,
+			String lastName, String prefName, Date birthDate,
+			Boolean birthDateEst, Gender sex, Boolean registeredGHS,
+			String regNumberGHS, Boolean insured, String nhis,
+			Date nhisExpDate, String region, String district, String community,
+			String address, Integer clinic, Boolean registerPregProgram,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
+			String languageVoice, String languageText,
+			WhoRegistered whoRegistered, String religion, String occupation) {
+
+		PatientService patientService = contextService.getPatientService();
+
+		Patient patient = createPatient(regNumberGHS, firstName, middleName,
+				lastName, prefName, birthDate, birthDateEst, sex,
+				registeredGHS, null, null, insured, nhis, nhisExpDate, null,
+				region, district, community, address, clinic, primaryPhone,
+				primaryPhoneType, secondaryPhone, secondaryPhoneType,
+				mediaTypeInfo, mediaTypeReminder, languageVoice, languageText,
+				religion, occupation, whoRegistered);
+
+		patient = patientService.savePatient(patient);
+
+		if (registerPregProgram) {
+			addMessageProgramEnrollment(patient.getPatientId(),
+					"Demo Minute Message Program", null);
+		}
+	}
+
 	public void registerPerson(String firstName, String middleName,
 			String lastName, String prefName, Date birthDate,
 			Boolean birthDateEst, Gender sex, String region, String district,

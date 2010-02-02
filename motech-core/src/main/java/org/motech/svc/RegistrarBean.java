@@ -85,6 +85,18 @@ public interface RegistrarBean {
 			String languageVoice, String languageText,
 			WhoRegistered whoRegistered, String religion, String occupation);
 
+	public void demoRegisterPatient(String firstName, String middleName,
+			String lastName, String prefName, Date birthDate,
+			Boolean birthDateEst, Gender sex, Boolean registeredGHS,
+			String regNumberGHS, Boolean insured, String nhis,
+			Date nhisExpDate, String region, String district, String community,
+			String address, Integer clinic, Boolean registerPregProgram,
+			String primaryPhone, ContactNumberType primaryPhoneType,
+			String secondaryPhone, ContactNumberType secondaryPhoneType,
+			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
+			String languageVoice, String languageText,
+			WhoRegistered whoRegistered, String religion, String occupation);
+
 	public void registerPerson(String firstName, String middleName,
 			String lastName, String prefName, Date birthDate,
 			Boolean birthDateEst, Gender sex, String region, String district,

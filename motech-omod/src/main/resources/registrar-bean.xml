@@ -79,6 +79,12 @@
 					</key>
 					<ref bean="weeklyInfoChildProgram" />
 				</entry>
+				<entry>
+					<key>
+						<value>Demo Minute Message Program</value>
+					</key>
+					<ref bean="demoMinuteProgram" />
+				</entry>
 			</map>
 		</property>
 	</bean>
