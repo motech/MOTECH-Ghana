@@ -1,6 +1,8 @@
 package org.motech.ws;
 
+import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
@@ -16,11 +18,13 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.LogManager;
 
+import org.easymock.Capture;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.motech.svc.BirthOutcomeChild;
 import org.motech.svc.RegistrarBean;
 import org.motechproject.ws.BirthOutcome;
 import org.motechproject.ws.ContactNumberType;
@@ -80,8 +84,11 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 		HIVStatus hivStatus = HIVStatus.NA;
 
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(
-				new Patient());
+		Patient patient = new Patient(1);
+
+		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		registrarBean.recordMotherANCVisit(facilityId, date, patient,
+				visitNumber, ttDose, iptDose, itnUse, hivStatus);
 
 		replay(registrarBean);
 
@@ -130,8 +137,11 @@ public class RegistrarServiceTest {
 		Integer abortionType = 1, complication = 1;
 		Date date = new Date();
 
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(
-				new Patient());
+		Patient patient = new Patient(1);
+
+		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		registrarBean.recordPregnancyTermination(facilityId, date, patient,
+				abortionType, complication);
 
 		replay(registrarBean);
 
@@ -174,7 +184,8 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testRecordPregnancyDelivery() throws ValidationException {
-		String facilityId = "FacilityId", patientId = "123Test", childId = "246Test", childName = "ChildFirstName";
+		String facilityId = "FacilityId", patientId = "123Test";
+		String child1Id = "246Test", child2Id = "468Test", child1Name = "Child1First", child2Name = "Child2First";
 		Integer method = 1, outcome = 2, location = 1, cause = 1;
 		Boolean maternalDeath = false, child1opv = true, child1bcg = false, child2opv = false, child2bcg = true;
 		Date date = new Date();
@@ -184,18 +195,44 @@ public class RegistrarServiceTest {
 		Gender child1Sex = Gender.FEMALE;
 		Gender child2Sex = Gender.MALE;
 
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(
-				new Patient());
+		Patient patient = new Patient(1);
+
+		Capture<BirthOutcomeChild[]> outcomesCapture = new Capture<BirthOutcomeChild[]>();
+
+		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		registrarBean.recordPregnancyDelivery(eq(facilityId), eq(date),
+				eq(patient), eq(method), eq(outcome), eq(location),
+				eq(deliveredBy), eq(maternalDeath), eq(cause),
+				capture(outcomesCapture));
 
 		replay(registrarBean);
 
 		regWs.recordPregnancyDelivery(facilityId, date, patientId, method,
 				outcome, location, deliveredBy, maternalDeath, cause,
-				child1birthOutcome, childId, child1Sex, childName, child1opv,
-				child1bcg, child2birthOutcome, childId, child2Sex, childName,
+				child1birthOutcome, child1Id, child1Sex, child1Name, child1opv,
+				child1bcg, child2birthOutcome, child2Id, child2Sex, child2Name,
 				child2opv, child2bcg);
 
 		verify(registrarBean);
+
+		BirthOutcomeChild[] outcomes = outcomesCapture.getValue();
+		assertEquals(2, outcomes.length);
+
+		BirthOutcomeChild child1 = outcomes[0];
+		assertEquals(child1birthOutcome, child1.getOutcome());
+		assertEquals(child1Id, child1.getPatientId());
+		assertEquals(child1Name, child1.getFirstName());
+		assertEquals(child1Sex, child1.getSex());
+		assertEquals(child1bcg, child1.getBcg());
+		assertEquals(child1opv, child1.getOpv());
+
+		BirthOutcomeChild child2 = outcomes[1];
+		assertEquals(child2birthOutcome, child2.getOutcome());
+		assertEquals(child2Id, child2.getPatientId());
+		assertEquals(child2Name, child2.getFirstName());
+		assertEquals(child2Sex, child2.getSex());
+		assertEquals(child2bcg, child2.getBcg());
+		assertEquals(child2opv, child2.getOpv());
 	}
 
 	@Test
@@ -245,8 +282,11 @@ public class RegistrarServiceTest {
 		Boolean vitaminA = true;
 		Date date = new Date();
 
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(
-				new Patient());
+		Patient patient = new Patient(1);
+
+		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		registrarBean.recordMotherPPCVisit(facilityId, date, patient,
+				visitNumber, vitaminA, ttDose);
 
 		replay(registrarBean);
 
@@ -294,8 +334,10 @@ public class RegistrarServiceTest {
 		Integer cause = 1;
 		Date date = new Date();
 
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(
-				new Patient());
+		Patient patient = new Patient(1);
+
+		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		registrarBean.recordDeath(facilityId, date, patient, cause);
 
 		replay(registrarBean);
 
@@ -339,8 +381,11 @@ public class RegistrarServiceTest {
 		Boolean bcg = true, yellowFever = true, csm = true, ipti = true, vitaminA = true;
 		Date date = new Date();
 
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(
-				new Patient());
+		Patient patient = new Patient(1);
+
+		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		registrarBean.recordChildPNCVisit(facilityId, date, patient, bcg,
+				opvDose, pentaDose, yellowFever, csm, ipti, vitaminA);
 
 		replay(registrarBean);
 
@@ -397,8 +442,10 @@ public class RegistrarServiceTest {
 				.andReturn(mother);
 		expect(registrarBean.getPatientBySerial(childRegNum)).andReturn(child);
 
-		registrarBean.registerChild(nurse, regDate, mother, childRegNum,
-				childDob, childGender, childFirstName, nhis, nhisExpires);
+		expect(
+				registrarBean.registerChild(nurse, regDate, mother,
+						childRegNum, childDob, childGender, childFirstName,
+						nhis, nhisExpires)).andReturn(new Patient());
 
 		replay(registrarBean);
 
@@ -625,8 +672,11 @@ public class RegistrarServiceTest {
 		Boolean newCase = true, referral = false;
 		Date date = new Date();
 
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(
-				new Patient());
+		Patient patient = new Patient(1);
+
+		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		registrarBean.recordChildVisit(facilityId, date, patient, serial,
+				newCase, diagnosis, secondDiagnosis, referral);
 
 		replay(registrarBean);
 
@@ -674,8 +724,11 @@ public class RegistrarServiceTest {
 		Boolean newCase = true, referral = false;
 		Date date = new Date();
 
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(
-				new Patient());
+		Patient patient = new Patient(1);
+
+		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		registrarBean.recordMotherVisit(facilityId, date, patient, serial,
+				newCase, diagnosis, secondDiagnosis, referral);
 
 		replay(registrarBean);
 

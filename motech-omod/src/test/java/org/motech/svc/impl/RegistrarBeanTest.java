@@ -103,7 +103,11 @@ public class RegistrarBeanTest extends TestCase {
 	PersonAttributeType howLearnedAttributeType;
 	PersonAttributeType whyInterestedAttributeType;
 	Role providerRole;
-	EncounterType matVisitType;
+	EncounterType ancVisitType;
+	EncounterType pncVisitType;
+	EncounterType ppcVisitType;
+	EncounterType pregnancyVisitType;
+	EncounterType generalVisitType;
 	ConceptName immunizationConceptNameObj;
 	Concept immunizationConcept;
 	ConceptName tetanusConceptNameObj;
@@ -114,19 +118,6 @@ public class RegistrarBeanTest extends TestCase {
 	Concept itnConcept;
 	ConceptName visitNumConceptNameObj;
 	Concept visitNumConcept;
-	ConceptName arvConceptNameObj;
-	Concept arvConcept;
-	ConceptName onArvConceptNameObj;
-	Concept onArvConcept;
-	ConceptName prePMTCTConceptNameObj;
-	Concept prePMTCTConcept;
-	ConceptName testPMTCTConceptNameObj;
-	Concept testPMTCTConcept;
-	ConceptName postPMTCTConceptNameObj;
-	Concept postPMTCTConcept;
-	ConceptName hemo36ConceptNameObj;
-	Concept hemo36Concept;
-	EncounterType pregVisitType;
 	ConceptName pregConceptNameObj;
 	Concept pregConcept;
 	ConceptName pregStatusConceptNameObj;
@@ -139,10 +130,46 @@ public class RegistrarBeanTest extends TestCase {
 	Concept gravidaConcept;
 	ConceptName parityConceptNameObj;
 	Concept parityConcept;
-	ConceptName hemoConceptNameObj;
-	Concept hemoConcept;
 	ConceptName refDateNameObj;
 	Concept refDateConcept;
+	ConceptName hivStatusNameObj;
+	Concept hivStatusConcept;
+	ConceptName abortiontypeNameObj;
+	Concept abortiontypeConcept;
+	ConceptName complicationNameObj;
+	Concept complicationConcept;
+	ConceptName iptiNameObj;
+	Concept iptiConcept;
+	ConceptName opvDoseNameObj;
+	Concept opvDoseConcept;
+	ConceptName pentaDoseNameObj;
+	Concept pentaDoseConcept;
+	ConceptName csmNameObj;
+	Concept csmConcept;
+	ConceptName deathCauseNameObj;
+	Concept deathCauseConcept;
+	ConceptName maternalDeathCauseNameObj;
+	Concept maternalDeathCauseConcept;
+	ConceptName serialNumberNameObj;
+	Concept serialNumberConcept;
+	ConceptName newCaseNameObj;
+	Concept newCaseConcept;
+	ConceptName referralNameObj;
+	Concept referralConcept;
+	ConceptName diagnosisNameObj;
+	Concept diagnosisConcept;
+	ConceptName secondDiagnosisNameObj;
+	Concept secondDiagnosisConcept;
+	ConceptName deliveyMethodNameObj;
+	Concept deliveyMethodConcept;
+	ConceptName deliveryLocationNameObj;
+	Concept deliveryLocationConcept;
+	ConceptName deliveredByNameObj;
+	Concept deliveredByConcept;
+	ConceptName deliveryOutcomeNameObj;
+	Concept deliveryOutcomeConcept;
+	ConceptName birthOutcomeNameObj;
+	Concept birthOutcomeConcept;
 	RelationshipType parentChildRelationshipType;
 
 	@Override
@@ -255,8 +282,21 @@ public class RegistrarBeanTest extends TestCase {
 
 		providerRole = new Role(OpenmrsConstants.PROVIDER_ROLE);
 
-		matVisitType = new EncounterType(5);
-		matVisitType.setName(MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT);
+		ancVisitType = new EncounterType(1);
+		ancVisitType.setName(MotechConstants.ENCOUNTER_TYPE_ANCVISIT);
+
+		pncVisitType = new EncounterType(2);
+		pncVisitType.setName(MotechConstants.ENCOUNTER_TYPE_PNCVISIT);
+
+		ppcVisitType = new EncounterType(3);
+		ppcVisitType.setName(MotechConstants.ENCOUNTER_TYPE_PPCVISIT);
+
+		pregnancyVisitType = new EncounterType(4);
+		pregnancyVisitType
+				.setName(MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT);
+
+		generalVisitType = new EncounterType(5);
+		generalVisitType.setName(MotechConstants.ENCOUNTER_TYPE_GENERALVISIT);
 
 		immunizationConceptNameObj = new ConceptName(
 				MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED, Locale
@@ -264,11 +304,12 @@ public class RegistrarBeanTest extends TestCase {
 		immunizationConcept = new Concept(6);
 
 		tetanusConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_TETANUS_BOOSTER, Locale.getDefault());
+				MotechConstants.CONCEPT_TETANUS_TOXOID_DOSE, Locale
+						.getDefault());
 		tetanusConcept = new Concept(7);
 
 		iptConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT,
+				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_DOSE,
 				Locale.getDefault());
 		iptConcept = new Concept(8);
 
@@ -278,42 +319,8 @@ public class RegistrarBeanTest extends TestCase {
 		itnConcept = new Concept(9);
 
 		visitNumConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_PREGNANCY_VISIT_NUMBER, Locale
-						.getDefault());
+				MotechConstants.CONCEPT_VISIT_NUMBER, Locale.getDefault());
 		visitNumConcept = new Concept(10);
-
-		arvConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_ANTIRETROVIRAL_USE_DURING_PREGNANCY,
-				Locale.getDefault());
-		arvConcept = new Concept(11);
-
-		onArvConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_ON_ANTIRETROVIRAL_THERAPY, Locale
-						.getDefault());
-		onArvConcept = new Concept(12);
-
-		prePMTCTConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_PRE_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
-				Locale.getDefault());
-		prePMTCTConcept = new Concept(13);
-
-		testPMTCTConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_TEST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
-				Locale.getDefault());
-		testPMTCTConcept = new Concept(14);
-
-		postPMTCTConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_POST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
-				Locale.getDefault());
-		postPMTCTConcept = new Concept(15);
-
-		hemo36ConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_HEMOGLOBIN_AT_36_WEEKS, Locale
-						.getDefault());
-		hemo36Concept = new Concept(16);
-
-		pregVisitType = new EncounterType(17);
-		pregVisitType.setName(MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT);
 
 		pregStatusConceptNameObj = new ConceptName(
 				MotechConstants.CONCEPT_PREGNANCY_STATUS, Locale.getDefault());
@@ -327,10 +334,6 @@ public class RegistrarBeanTest extends TestCase {
 		gravidaConceptNameObj = new ConceptName(
 				MotechConstants.CONCEPT_GRAVIDA, Locale.getDefault());
 		gravidaConcept = new Concept(20);
-
-		hemoConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_HEMOGLOBIN, Locale.getDefault());
-		hemoConcept = new Concept(21);
 
 		parityConceptNameObj = new ConceptName(MotechConstants.CONCEPT_PARITY,
 				Locale.getDefault());
@@ -349,6 +352,88 @@ public class RegistrarBeanTest extends TestCase {
 				MotechConstants.CONCEPT_ENROLLMENT_REFERENCE_DATE, Locale
 						.getDefault());
 		refDateConcept = new Concept(25);
+
+		hivStatusNameObj = new ConceptName(MotechConstants.CONCEPT_HIV_STATUS,
+				Locale.getDefault());
+		hivStatusConcept = new Concept(26);
+
+		abortiontypeNameObj = new ConceptName(
+				MotechConstants.CONCEPT_ABORTIONTYPE, Locale.getDefault());
+		abortiontypeConcept = new Concept(27);
+
+		complicationNameObj = new ConceptName(
+				MotechConstants.CONCEPT_COMPLICATION, Locale.getDefault());
+		complicationConcept = new Concept(28);
+
+		iptiNameObj = new ConceptName(
+				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_INFANTS,
+				Locale.getDefault());
+		iptiConcept = new Concept(29);
+
+		opvDoseNameObj = new ConceptName(
+				MotechConstants.CONCEPT_ORAL_POLIO_VACCINATION_DOSE, Locale
+						.getDefault());
+		opvDoseConcept = new Concept(30);
+
+		pentaDoseNameObj = new ConceptName(
+				MotechConstants.CONCEPT_PENTA_VACCINATION_DOSE, Locale
+						.getDefault());
+		pentaDoseConcept = new Concept(31);
+
+		csmNameObj = new ConceptName(
+				MotechConstants.CONCEPT_CEREBRO_SPINAL_MENINGITIS_VACCINATION,
+				Locale.getDefault());
+		csmConcept = new Concept(32);
+
+		deathCauseNameObj = new ConceptName(
+				MotechConstants.CONCEPT_CAUSE_OF_DEATH, Locale.getDefault());
+		deathCauseConcept = new Concept(33);
+
+		maternalDeathCauseNameObj = new ConceptName(
+				MotechConstants.CONCEPT_MATERNAL_CAUSE_OF_DEATH, Locale
+						.getDefault());
+		maternalDeathCauseConcept = new Concept(34);
+
+		serialNumberNameObj = new ConceptName(
+				MotechConstants.CONCEPT_SERIAL_NUMBER, Locale.getDefault());
+		serialNumberConcept = new Concept(35);
+
+		newCaseNameObj = new ConceptName(MotechConstants.CONCEPT_NEW_CASE,
+				Locale.getDefault());
+		newCaseConcept = new Concept(36);
+
+		referralNameObj = new ConceptName(MotechConstants.CONCEPT_REFERRAL,
+				Locale.getDefault());
+		referralConcept = new Concept(37);
+
+		diagnosisNameObj = new ConceptName(
+				MotechConstants.CONCEPT_PRIMARY_DIAGNOSIS, Locale.getDefault());
+		diagnosisConcept = new Concept(38);
+
+		secondDiagnosisNameObj = new ConceptName(
+				MotechConstants.CONCEPT_SECONDARY_DIAGNOSIS, Locale
+						.getDefault());
+		secondDiagnosisConcept = new Concept(39);
+
+		deliveyMethodNameObj = new ConceptName(
+				MotechConstants.CONCEPT_DELIVERY_METHOD, Locale.getDefault());
+		deliveyMethodConcept = new Concept(40);
+
+		deliveryLocationNameObj = new ConceptName(
+				MotechConstants.CONCEPT_DELIVERY_LOCATION, Locale.getDefault());
+		deliveryLocationConcept = new Concept(41);
+
+		deliveredByNameObj = new ConceptName(
+				MotechConstants.CONCEPT_DELIVERED_BY, Locale.getDefault());
+		deliveredByConcept = new Concept(42);
+
+		deliveryOutcomeNameObj = new ConceptName(
+				MotechConstants.CONCEPT_DELIVERY_OUTCOME, Locale.getDefault());
+		deliveryOutcomeConcept = new Concept(43);
+
+		birthOutcomeNameObj = new ConceptName(
+				MotechConstants.CONCEPT_BIRTH_OUTCOME, Locale.getDefault());
+		birthOutcomeConcept = new Concept(44);
 
 		parentChildRelationshipType = new RelationshipType(1);
 		parentChildRelationshipType.setaIsToB("Parent");

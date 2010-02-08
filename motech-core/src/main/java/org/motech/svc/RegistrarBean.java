@@ -14,6 +14,7 @@ import org.motech.model.ScheduledMessage;
 import org.motech.model.WhoRegistered;
 import org.motech.model.WhyInterested;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DeliveredBy;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
@@ -44,7 +45,7 @@ public interface RegistrarBean {
 	public User getNurseByCHPSId(String chpsId);
 
 	@RunAsUser
-	public void registerChild(
+	public Patient registerChild(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Date regDate, Patient mother, String childRegNum, Date childDob,
 			Gender childGender, String childFirstName, String nhis,
@@ -139,9 +140,49 @@ public interface RegistrarBean {
 			String languageVoice, String languageText,
 			WhoRegistered whoRegistered, String howLearned);
 
+	@RunAsAdminUser
+	public void recordMotherANCVisit(String facilityId, Date date,
+			Patient patient, Integer visitNumber, Integer ttDose,
+			Integer iptDose, Boolean itnUse,
+			org.motechproject.ws.HIVStatus hivStatus);
+
+	@RunAsAdminUser
+	public void recordPregnancyTermination(String facilityId, Date date,
+			Patient patient, Integer abortionType, Integer complication);
+
+	@RunAsAdminUser
+	public void recordPregnancyDelivery(String facilityId, Date date,
+			Patient patient, Integer method, Integer outcome, Integer location,
+			DeliveredBy deliveredBy, Boolean maternalDeath, Integer cause,
+			BirthOutcomeChild[] outcomes);
+
+	@RunAsAdminUser
+	public void recordMotherPPCVisit(String facilityId, Date date,
+			Patient patient, Integer visitNumber, Boolean vitaminA,
+			Integer ttDose);
+
+	@RunAsAdminUser
+	public void recordDeath(String facilityId, Date date, Patient patient,
+			Integer cause);
+
+	@RunAsAdminUser
+	public void recordChildPNCVisit(String facilityId, Date date,
+			Patient patient, Boolean bcg, Integer opvDose, Integer pentaDose,
+			Boolean yellowFever, Boolean csm, Boolean ipti, Boolean vitaminA);
+
 	public void recordGeneralVisit(Integer clinicId, Date visitDate,
 			String patientSerial, Gender patientGender, Date patientBirthDate,
 			Integer patientDiagnosis, Boolean patientReferral);
+
+	@RunAsAdminUser
+	public void recordChildVisit(String facilityId, Date date, Patient patient,
+			String serialNumber, Boolean newCase, Integer diagnosis,
+			Integer secondDiagnosis, Boolean referral);
+
+	@RunAsAdminUser
+	public void recordMotherVisit(String facilityId, Date date,
+			Patient patient, String serialNumber, Boolean newCase,
+			Integer diagnosis, Integer secondDiagnosis, Boolean referral);
 
 	public void log(LogType type, String message);
 

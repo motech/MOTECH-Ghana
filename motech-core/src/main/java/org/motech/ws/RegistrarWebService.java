@@ -10,6 +10,7 @@ import javax.jws.WebService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motech.svc.BirthOutcomeChild;
 import org.motech.svc.RegistrarBean;
 import org.motechproject.ws.BirthOutcome;
 import org.motechproject.ws.ContactNumberType;
@@ -62,7 +63,8 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Mother ANC Visit request", errors);
 		}
 
-		// TODO: Add RegistrarBean action
+		registrarBean.recordMotherANCVisit(facilityId, date, patient,
+				visitNumber, ttDose, iptDose, itnUse, hivStatus);
 	}
 
 	@WebMethod
@@ -86,7 +88,8 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Pregnancy Termination request", errors);
 		}
 
-		// TODO: Add RegistrarBean action
+		registrarBean.recordPregnancyTermination(facilityId, date, patient,
+				abortionType, complication);
 	}
 
 	@WebMethod
@@ -126,7 +129,17 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Pregnancy Delivery request", errors);
 		}
 
-		// TODO: Add RegistrarBean action
+		BirthOutcomeChild child1 = new BirthOutcomeChild(child1Outcome,
+				child1PatientId, child1Sex, child1FirstName, child1OPV,
+				child1BCG);
+		BirthOutcomeChild child2 = new BirthOutcomeChild(child2Outcome,
+				child2PatientId, child2Sex, child2FirstName, child2OPV,
+				child2BCG);
+		BirthOutcomeChild[] outcomes = new BirthOutcomeChild[] { child1, child2 };
+
+		registrarBean.recordPregnancyDelivery(facilityId, date, patient,
+				method, outcome, location, deliveredBy, maternalDeath, cause,
+				outcomes);
 	}
 
 	@WebMethod
@@ -151,7 +164,8 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Mother PPC Visit request", errors);
 		}
 
-		// TODO: Add RegistrarBean action
+		registrarBean.recordMotherPPCVisit(facilityId, date, patient,
+				visitNumber, vitaminA, ttDose);
 	}
 
 	@WebMethod
@@ -172,7 +186,7 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		// TODO: Add RegistrarBean action
+		registrarBean.recordDeath(facilityId, date, patient, cause);
 	}
 
 	@WebMethod
@@ -201,7 +215,8 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Child PNC Visit request", errors);
 		}
 
-		// TODO: Add RegistrarBean action
+		registrarBean.recordChildPNCVisit(facilityId, date, patient, bcg,
+				opvDose, pentaDose, yellowFever, csm, ipti, vitaminA);
 	}
 
 	@WebMethod
@@ -357,7 +372,8 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Child Visit request", errors);
 		}
 
-		// TODO: Add RegistrarBean action
+		registrarBean.recordChildVisit(facilityId, date, patient, serialNumber,
+				newCase, diagnosis, secondDiagnosis, referral);
 	}
 
 	@WebMethod
@@ -384,7 +400,8 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Mother Visit request", errors);
 		}
 
-		// TODO: Add RegistrarBean action
+		registrarBean.recordMotherVisit(facilityId, date, patient,
+				serialNumber, newCase, diagnosis, secondDiagnosis, referral);
 	}
 
 	@WebMethod

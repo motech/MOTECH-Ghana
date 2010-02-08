@@ -30,10 +30,13 @@ import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.openmrs.module.tasks.MessageProgramUpdateTask;
 import org.motech.openmrs.module.tasks.NotificationTask;
+import org.motech.svc.BirthOutcomeChild;
 import org.motech.svc.RegistrarBean;
 import org.motech.util.GenderTypeConverter;
 import org.motech.util.MotechConstants;
+import org.motechproject.ws.BirthOutcome;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DeliveredBy;
 import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.LogType;
@@ -101,7 +104,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return messagePrograms.get(programName);
 	}
 
-	public void registerChild(User nurse, Date regDate, Patient mother,
+	public Patient registerChild(User nurse, Date regDate, Patient mother,
 			String childRegNum, Date childDob, Gender childGender,
 			String childFirstName, String nhis, Date nhisExpires) {
 
@@ -127,7 +130,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				district, community, address, null, null, null, null, null,
 				null, null, null, null, null, null, WhoRegistered.CHPS_STAFF);
 
-		patientService.savePatient(child);
+		return patientService.savePatient(child);
 	}
 
 	public void registerChild(String firstName, String middleName,
@@ -721,15 +724,15 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		if (gravida != null) {
 			Obs gravidaObs = createNumericValueObs(currentDate,
-					getGravidaConcept(), patient, ghanaLocation, new Double(
-							gravida), null, null);
+					getGravidaConcept(), patient, ghanaLocation, gravida, null,
+					null);
 			pregnancyObs.addGroupMember(gravidaObs);
 		}
 
 		if (parity != null) {
 			Obs parityObs = createNumericValueObs(currentDate,
-					getParityConcept(), patient, ghanaLocation, new Double(
-							parity), null, null);
+					getParityConcept(), patient, ghanaLocation, parity, null,
+					null);
 			pregnancyObs.addGroupMember(parityObs);
 		}
 
@@ -739,6 +742,319 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			return dueDateObs.getObsId();
 		}
 		return null;
+	}
+
+	public void recordMotherANCVisit(String facilityId, Date date,
+			Patient patient, Integer visitNumber, Integer ttDose,
+			Integer iptDose, Boolean itnUse,
+			org.motechproject.ws.HIVStatus hivStatus) {
+
+		EncounterService encounterService = contextService
+				.getEncounterService();
+		ObsService obsService = contextService.getObsService();
+
+		Location location = getGhanaLocation();
+
+		Encounter encounter = new Encounter();
+		encounter.setEncounterType(getANCVisitEncounterType());
+		encounter.setEncounterDatetime(date);
+		encounter.setPatient(patient);
+		encounter.setLocation(location);
+		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter = encounterService.saveEncounter(encounter);
+
+		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
+
+		if (visitNumber != null) {
+			Obs visitNumberObs = createNumericValueObs(date,
+					getVisitNumberConcept(), patient, location, visitNumber,
+					encounter, null);
+			visitNumberObs.setObsGroup(pregnancyObs);
+			obsService.saveObs(visitNumberObs, null);
+		}
+		if (ttDose != null) {
+			Obs ttDoseObs = createNumericValueObs(date,
+					getTetanusDoseConcept(), patient, location, ttDose,
+					encounter, null);
+			ttDoseObs.setObsGroup(pregnancyObs);
+			obsService.saveObs(ttDoseObs, null);
+		}
+		if (iptDose != null) {
+			Obs iptDoseObs = createNumericValueObs(date, getIPTDoseConcept(),
+					patient, location, iptDose, encounter, null);
+			iptDoseObs.setObsGroup(pregnancyObs);
+			obsService.saveObs(iptDoseObs, null);
+		}
+		if (itnUse != null) {
+			Obs itnUseObs = createBooleanValueObs(date, getITNConcept(),
+					patient, location, itnUse, encounter, null);
+			itnUseObs.setObsGroup(pregnancyObs);
+			obsService.saveObs(itnUseObs, null);
+		}
+		if (hivStatus != null) {
+			Obs hivStatusObs = createTextValueObs(date, getHIVStatusConcept(),
+					patient, location, hivStatus.name(), encounter, null);
+			hivStatusObs.setObsGroup(pregnancyObs);
+			obsService.saveObs(hivStatusObs, null);
+		}
+	}
+
+	public void recordPregnancyTermination(String facilityId, Date date,
+			Patient patient, Integer abortionType, Integer complication) {
+
+		EncounterService encounterService = contextService
+				.getEncounterService();
+		ObsService obsService = contextService.getObsService();
+
+		Location location = getGhanaLocation();
+
+		Encounter encounter = new Encounter();
+		encounter.setEncounterType(getPregnancyVisitEncounterType());
+		encounter.setEncounterDatetime(date);
+		encounter.setPatient(patient);
+		encounter.setLocation(location);
+		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter = encounterService.saveEncounter(encounter);
+
+		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
+
+		if (abortionType != null) {
+			Obs abortionTypeObs = createNumericValueObs(date,
+					getAbortionTypeConcept(), patient, location, abortionType,
+					encounter, null);
+			abortionTypeObs.setObsGroup(pregnancyObs);
+			obsService.saveObs(abortionTypeObs, null);
+		}
+		if (complication != null) {
+			Obs complicationObs = createNumericValueObs(date,
+					getComplicationConcept(), patient, location, complication,
+					encounter, null);
+			complicationObs.setObsGroup(pregnancyObs);
+			obsService.saveObs(complicationObs, null);
+		}
+		Obs pregnancyStatusObs = createBooleanValueObs(date,
+				getPregnancyStatusConcept(), patient, location, Boolean.FALSE,
+				encounter, null);
+		pregnancyStatusObs.setObsGroup(pregnancyObs);
+		obsService.saveObs(pregnancyStatusObs, null);
+	}
+
+	public void recordPregnancyDelivery(String facilityId, Date date,
+			Patient patient, Integer method, Integer outcome, Integer location,
+			DeliveredBy deliveredBy, Boolean maternalDeath, Integer cause,
+			BirthOutcomeChild[] outcomes) {
+
+		EncounterService encounterService = contextService
+				.getEncounterService();
+		ObsService obsService = contextService.getObsService();
+
+		Location encounterLocation = getGhanaLocation();
+
+		Encounter encounter = new Encounter();
+		encounter.setEncounterType(getPregnancyVisitEncounterType());
+		encounter.setEncounterDatetime(date);
+		encounter.setPatient(patient);
+		encounter.setLocation(encounterLocation);
+		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter = encounterService.saveEncounter(encounter);
+
+		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
+
+		if (method != null) {
+			Obs methodObs = createNumericValueObs(date,
+					getDeliveryMethodConcept(), patient, encounterLocation,
+					method, encounter, null);
+			obsService.saveObs(methodObs, null);
+		}
+		if (outcome != null) {
+			Obs outcomeObs = createNumericValueObs(date,
+					getDeliveryOutcomeConcept(), patient, encounterLocation,
+					outcome, encounter, null);
+			obsService.saveObs(outcomeObs, null);
+		}
+		if (location != null) {
+			Obs locationObs = createNumericValueObs(date,
+					getDeliveryLocationConcept(), patient, encounterLocation,
+					location, encounter, null);
+			obsService.saveObs(locationObs, null);
+		}
+		if (deliveredBy != null) {
+			Obs deliveredByObs = createTextValueObs(date,
+					getDeliveredByConcept(), patient, encounterLocation,
+					deliveredBy.name(), encounter, null);
+			obsService.saveObs(deliveredByObs, null);
+		}
+
+		Obs pregnancyStatusObs = createBooleanValueObs(date,
+				getPregnancyStatusConcept(), patient, encounterLocation,
+				Boolean.FALSE, encounter, null);
+		pregnancyStatusObs.setObsGroup(pregnancyObs);
+		obsService.saveObs(pregnancyStatusObs, null);
+
+		for (BirthOutcomeChild childOutcome : outcomes) {
+			if (childOutcome.getOutcome() != null) {
+				Obs childOutcomeObs = createTextValueObs(date,
+						getBirthOutcomeConcept(), patient, encounterLocation,
+						childOutcome.getOutcome().name(), encounter, null);
+				obsService.saveObs(childOutcomeObs, null);
+			}
+
+			if (BirthOutcome.A == childOutcome.getOutcome()) {
+				Patient child = registerChild(null, null, patient, childOutcome
+						.getPatientId(), date, childOutcome.getSex(),
+						childOutcome.getFirstName(), null, null);
+
+				if (childOutcome.getBcg() || childOutcome.getOpv()) {
+					Integer opvDose = null;
+					if (childOutcome.getOpv()) {
+						opvDose = 0;
+					}
+					recordChildPNCVisit(facilityId, date, child, childOutcome
+							.getBcg(), opvDose, null, null, null, null, null);
+				}
+			}
+		}
+
+		if (maternalDeath != null && maternalDeath) {
+			if (cause != null) {
+				Obs maternalDeathCauseObs = createNumericValueObs(date,
+						getMaternalDeathCauseConcept(), patient,
+						encounterLocation, cause, encounter, null);
+				obsService.saveObs(maternalDeathCauseObs, null);
+			}
+
+			processPatientDeath(patient, date);
+		}
+	}
+
+	public void recordMotherPPCVisit(String facilityId, Date date,
+			Patient patient, Integer visitNumber, Boolean vitaminA,
+			Integer ttDose) {
+
+		EncounterService encounterService = contextService
+				.getEncounterService();
+		ObsService obsService = contextService.getObsService();
+
+		Location location = getGhanaLocation();
+
+		Encounter encounter = new Encounter();
+		encounter.setEncounterType(getPPCVisitEncounterType());
+		encounter.setEncounterDatetime(date);
+		encounter.setPatient(patient);
+		encounter.setLocation(location);
+		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter = encounterService.saveEncounter(encounter);
+
+		if (visitNumber != null) {
+			Obs visitNumberObs = createNumericValueObs(date,
+					getVisitNumberConcept(), patient, location, visitNumber,
+					encounter, null);
+			obsService.saveObs(visitNumberObs, null);
+		}
+		if (vitaminA != null && vitaminA) {
+			Obs vitaminAObs = createConceptValueObs(date,
+					getImmunizationsOrderedConcept(), patient, location,
+					getVitaminAConcept(), encounter, null);
+			obsService.saveObs(vitaminAObs, null);
+		}
+		if (ttDose != null) {
+			Obs ttDoseObs = createNumericValueObs(date,
+					getTetanusDoseConcept(), patient, location, ttDose,
+					encounter, null);
+			obsService.saveObs(ttDoseObs, null);
+		}
+	}
+
+	public void recordDeath(String facilityId, Date date, Patient patient,
+			Integer cause) {
+
+		ObsService obsService = contextService.getObsService();
+
+		Location location = getGhanaLocation();
+
+		if (cause != null) {
+			Obs deathCauseObs = createNumericValueObs(date,
+					getDeathCauseConcept(), patient, location, cause, null,
+					null);
+			obsService.saveObs(deathCauseObs, null);
+		}
+
+		processPatientDeath(patient, date);
+	}
+
+	private void processPatientDeath(Patient patient, Date date) {
+		PatientService patientService = contextService.getPatientService();
+		PersonService personService = contextService.getPersonService();
+
+		// Stop all messages and remove all message program enrollments
+		removeAllMessageProgramEnrollments(patient.getPatientId());
+
+		patient.setDead(true);
+		patient.setDeathDate(date);
+		patient = patientService.savePatient(patient);
+
+		personService.voidPerson(patient, "Deceased");
+	}
+
+	public void recordChildPNCVisit(String facilityId, Date date,
+			Patient patient, Boolean bcg, Integer opvDose, Integer pentaDose,
+			Boolean yellowFever, Boolean csm, Boolean ipti, Boolean vitaminA) {
+
+		EncounterService encounterService = contextService
+				.getEncounterService();
+		ObsService obsService = contextService.getObsService();
+
+		Location location = getGhanaLocation();
+
+		Encounter encounter = new Encounter();
+		encounter.setEncounterType(getPNCVisitEncounterType());
+		encounter.setEncounterDatetime(date);
+		encounter.setPatient(patient);
+		encounter.setLocation(location);
+		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter = encounterService.saveEncounter(encounter);
+
+		if (bcg != null && bcg) {
+			Obs bcgObs = createConceptValueObs(date,
+					getImmunizationsOrderedConcept(), patient, location,
+					getBCGConcept(), encounter, null);
+			obsService.saveObs(bcgObs, null);
+		}
+		if (opvDose != null) {
+			Obs opvDoseObs = createNumericValueObs(date, getOPVDoseConcept(),
+					patient, location, opvDose, encounter, null);
+			obsService.saveObs(opvDoseObs, null);
+		}
+		if (pentaDose != null) {
+			Obs pentaDoseObs = createNumericValueObs(date,
+					getPentaDoseConcept(), patient, location, pentaDose,
+					encounter, null);
+			obsService.saveObs(pentaDoseObs, null);
+		}
+		if (yellowFever != null && yellowFever) {
+			Obs yellowFeverObs = createConceptValueObs(date,
+					getImmunizationsOrderedConcept(), patient, location,
+					getYellowFeverConcept(), encounter, null);
+			obsService.saveObs(yellowFeverObs, null);
+		}
+		if (csm != null && csm) {
+			Obs csmObs = createConceptValueObs(date,
+					getImmunizationsOrderedConcept(), patient, location,
+					getCSMConcept(), encounter, null);
+			obsService.saveObs(csmObs, null);
+		}
+		if (ipti != null && ipti) {
+			Obs iptiObs = createConceptValueObs(date,
+					getImmunizationsOrderedConcept(), patient, location,
+					getIPTiConcept(), encounter, null);
+			obsService.saveObs(iptiObs, null);
+		}
+		if (vitaminA != null && vitaminA) {
+			Obs vitaminAObs = createConceptValueObs(date,
+					getImmunizationsOrderedConcept(), patient, location,
+					getVitaminAConcept(), encounter, null);
+			obsService.saveObs(vitaminAObs, null);
+		}
 	}
 
 	public void recordGeneralVisit(Integer clinicId, Date visitDate,
@@ -762,6 +1078,70 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		encounter.setEncounterDate(visitDate);
 
 		motechService.saveGeneralPatientEncounter(encounter);
+	}
+
+	public void recordChildVisit(String facilityId, Date date, Patient patient,
+			String serialNumber, Boolean newCase, Integer diagnosis,
+			Integer secondDiagnosis, Boolean referral) {
+
+		recordMotherChildGeneralVisit(facilityId, date, patient, serialNumber,
+				newCase, diagnosis, secondDiagnosis, referral);
+	}
+
+	public void recordMotherVisit(String facilityId, Date date,
+			Patient patient, String serialNumber, Boolean newCase,
+			Integer diagnosis, Integer secondDiagnosis, Boolean referral) {
+
+		recordMotherChildGeneralVisit(facilityId, date, patient, serialNumber,
+				newCase, diagnosis, secondDiagnosis, referral);
+	}
+
+	private void recordMotherChildGeneralVisit(String facilityId, Date date,
+			Patient patient, String serialNumber, Boolean newCase,
+			Integer diagnosis, Integer secondDiagnosis, Boolean referral) {
+
+		EncounterService encounterService = contextService
+				.getEncounterService();
+		ObsService obsService = contextService.getObsService();
+
+		Location location = getGhanaLocation();
+
+		Encounter encounter = new Encounter();
+		encounter.setEncounterType(getGeneralVisitEncounterType());
+		encounter.setEncounterDatetime(date);
+		encounter.setPatient(patient);
+		encounter.setLocation(location);
+		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter = encounterService.saveEncounter(encounter);
+
+		if (serialNumber != null) {
+			Obs serialNumberObs = createTextValueObs(date,
+					getSerialNumberConcept(), patient, location, serialNumber,
+					encounter, null);
+			obsService.saveObs(serialNumberObs, null);
+		}
+		if (newCase != null) {
+			Obs newCaseObs = createBooleanValueObs(date, getNewCaseConcept(),
+					patient, location, newCase, encounter, null);
+			obsService.saveObs(newCaseObs, null);
+		}
+		if (diagnosis != null) {
+			Obs diagnosisObs = createNumericValueObs(date,
+					getPrimaryDiagnosisConcept(), patient, location, diagnosis,
+					encounter, null);
+			obsService.saveObs(diagnosisObs, null);
+		}
+		if (secondDiagnosis != null) {
+			Obs secondDiagnosisObs = createNumericValueObs(date,
+					getSecondaryDiagnosisConcept(), patient, location,
+					secondDiagnosis, encounter, null);
+			obsService.saveObs(secondDiagnosisObs, null);
+		}
+		if (referral != null) {
+			Obs referralObs = createBooleanValueObs(date, getReferralConcept(),
+					patient, location, referral, encounter, null);
+			obsService.saveObs(referralObs, null);
+		}
 	}
 
 	public void log(LogType type, String message) {
@@ -1304,33 +1684,60 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				westTest, admin);
 
 		log.info("Verifying Encounter Types Exist");
-		createEncounterType(MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT,
-				"Ghana Maternal Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_ANCVISIT,
+				"Ghana Antenatal Care (ANC) Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PPCVISIT,
+				"Ghana Postpartum Care (PPC) Visit", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT,
 				"Ghana Pregnancy Registration or Delivery Visit", admin);
-		createEncounterType(MotechConstants.ENCOUNTER_TYPE_IMMUNIZVISIT,
-				"Ghana Immunization Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PNCVISIT,
+				"Ghana Postnatal Care (PNC) Visit", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_GENERALVISIT,
 				"Ghana General Visit", admin);
 
 		log.info("Verifying Concepts Exist");
-		createConcept(MotechConstants.CONCEPT_PREGNANCY_VISIT_NUMBER,
-				"Visit Number for Pregnancy",
+		createConcept(MotechConstants.CONCEPT_VISIT_NUMBER, "Visit Number",
 				MotechConstants.CONCEPT_CLASS_MISC,
 				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(MotechConstants.CONCEPT_TETANUS_TOXOID_DOSE,
+				"Dose Number for Tetanus Toxoid Vaccination",
+				MotechConstants.CONCEPT_CLASS_DRUG,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
 		createConcept(
-				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT,
-				"Treatment for Malaria", MotechConstants.CONCEPT_CLASS_DRUG,
+				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_DOSE,
+				"Dose Number for Malaria Treatment",
+				MotechConstants.CONCEPT_CLASS_DRUG,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(MotechConstants.CONCEPT_HIV_STATUS,
+				"Question: \"What is the patient's text coded HIV status?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
+		createConcept(MotechConstants.CONCEPT_ABORTIONTYPE,
+				"Numeric coded pregnancy termination reason",
+				MotechConstants.CONCEPT_CLASS_FINDING,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(MotechConstants.CONCEPT_COMPLICATION,
+				"Numeric coded pregnancy termination complication",
+				MotechConstants.CONCEPT_CLASS_FINDING,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(
+				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_INFANTS,
+				"Malaria Treatment for infants.",
+				MotechConstants.CONCEPT_CLASS_DRUG,
 				MotechConstants.CONCEPT_DATATYPE_N_A, admin);
 		createConcept(
 				MotechConstants.CONCEPT_INSECTICIDE_TREATED_NET_USAGE,
 				"Question on encounter form: \"Does the patient use insecticide-treated nets?\"",
 				MotechConstants.CONCEPT_CLASS_QUESTION,
 				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
-		createConcept(MotechConstants.CONCEPT_PENTA_VACCINATION,
-				"Vaccination booster for infants.",
+		createConcept(MotechConstants.CONCEPT_ORAL_POLIO_VACCINATION_DOSE,
+				"Dose Number for child Oral Polio vaccination.",
 				MotechConstants.CONCEPT_CLASS_DRUG,
-				MotechConstants.CONCEPT_DATATYPE_N_A, admin);
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(MotechConstants.CONCEPT_PENTA_VACCINATION_DOSE,
+				"Dose Number for child Penta vaccination.",
+				MotechConstants.CONCEPT_CLASS_DRUG,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
 		createConcept(
 				MotechConstants.CONCEPT_CEREBRO_SPINAL_MENINGITIS_VACCINATION,
 				"Vaccination against Cerebro-Spinal Meningitis.",
@@ -1341,25 +1748,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.CONCEPT_CLASS_DRUG,
 				MotechConstants.CONCEPT_DATATYPE_N_A, admin);
 		createConcept(
-				MotechConstants.CONCEPT_PRE_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
-				"Question on encounter form: \"Did the patient receive Pre Counseling for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
-				MotechConstants.CONCEPT_CLASS_QUESTION,
-				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
-		createConcept(
-				MotechConstants.CONCEPT_TEST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
-				"Question on encounter form: \"Did the patient receive Testing for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
-				MotechConstants.CONCEPT_CLASS_QUESTION,
-				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
-		createConcept(
-				MotechConstants.CONCEPT_POST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION,
-				"Question on encounter form: \"Did the patient receive Post Counseling for Preventing Mother-to-Child Transmission (PMTCT) of HIV\"",
-				MotechConstants.CONCEPT_CLASS_QUESTION,
-				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
-		createConcept(MotechConstants.CONCEPT_HEMOGLOBIN_AT_36_WEEKS,
-				"Hemoglobin level at 36 weeks of Pregnancy",
-				MotechConstants.CONCEPT_CLASS_TEST,
-				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
-		createConcept(
 				MotechConstants.CONCEPT_DATE_OF_CONFINEMENT_CONFIRMED,
 				"Question: \"Is the pregnancy due date confirmed by the CHW?\"",
 				MotechConstants.CONCEPT_CLASS_QUESTION,
@@ -1368,16 +1756,63 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				"Reference Date for Message Program Enrollment",
 				MotechConstants.CONCEPT_CLASS_MISC,
 				MotechConstants.CONCEPT_DATATYPE_DATETIME, admin);
+		createConcept(MotechConstants.CONCEPT_CAUSE_OF_DEATH,
+				"Numeric coded cause of patient death",
+				MotechConstants.CONCEPT_CLASS_DIAGNOSIS,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(MotechConstants.CONCEPT_MATERNAL_CAUSE_OF_DEATH,
+				"Numeric coded maternal cause of patient death",
+				MotechConstants.CONCEPT_CLASS_DIAGNOSIS,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(MotechConstants.CONCEPT_SERIAL_NUMBER,
+				"Patient register serial number",
+				MotechConstants.CONCEPT_CLASS_MISC,
+				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
+		createConcept(MotechConstants.CONCEPT_NEW_CASE,
+				"Question: \"Is this a new case?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(MotechConstants.CONCEPT_REFERRAL,
+				"Question: \"Was patient referred?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(MotechConstants.CONCEPT_PRIMARY_DIAGNOSIS,
+				"Numeric coded primary diagnosis",
+				MotechConstants.CONCEPT_CLASS_DIAGNOSIS,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(MotechConstants.CONCEPT_SECONDARY_DIAGNOSIS,
+				"Numeric coded secondary diagnosis",
+				MotechConstants.CONCEPT_CLASS_DIAGNOSIS,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(MotechConstants.CONCEPT_DELIVERY_METHOD,
+				"Numeric coded method of delivery",
+				MotechConstants.CONCEPT_CLASS_FINDING,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(MotechConstants.CONCEPT_DELIVERY_LOCATION,
+				"Numeric coded place of delivery",
+				MotechConstants.CONCEPT_CLASS_MISC,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(MotechConstants.CONCEPT_DELIVERED_BY,
+				"Numeric coded who performed delivery",
+				MotechConstants.CONCEPT_CLASS_MISC,
+				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
+		createConcept(MotechConstants.CONCEPT_DELIVERY_OUTCOME,
+				"Numeric coded outcome of delivery",
+				MotechConstants.CONCEPT_CLASS_FINDING,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(MotechConstants.CONCEPT_BIRTH_OUTCOME,
+				"Text coded birth outcome",
+				MotechConstants.CONCEPT_CLASS_FINDING,
+				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
 
 		log.info("Verifying Concepts Exist as Answers");
 		// TODO: Add IPT to proper Concept as an Answer, not an immunization
 		addConceptAnswers(
 				MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED,
 				new String[] {
-						MotechConstants.CONCEPT_TETANUS_BOOSTER,
 						MotechConstants.CONCEPT_YELLOW_FEVER_VACCINATION,
-						MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT,
-						MotechConstants.CONCEPT_PENTA_VACCINATION,
+						MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_INFANTS,
+						MotechConstants.CONCEPT_VITAMIN_A,
 						MotechConstants.CONCEPT_CEREBRO_SPINAL_MENINGITIS_VACCINATION },
 				admin);
 
@@ -1875,26 +2310,37 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	private void removeAllMessageProgramEnrollments(Integer personId) {
+		MotechService motechService = contextService.getMotechService();
+
+		List<MessageProgramEnrollment> enrollments = motechService
+				.getActiveMessageProgramEnrollments(personId);
+
+		for (MessageProgramEnrollment enrollment : enrollments) {
+			removeMessageProgramEnrollment(enrollment);
+		}
+	}
+
 	public Obs createNumericValueObs(Date date, Concept concept, Person person,
-			Location location, Double value, Encounter encounter, User creator) {
+			Location location, Integer value, Encounter encounter, User creator) {
 
 		Obs obs = createObs(date, concept, person, location, encounter, creator);
-		obs.setValueNumeric(value);
+		obs.setValueNumeric(new Double(value));
 		return obs;
 	}
 
 	public Obs createBooleanValueObs(Date date, Concept concept, Person person,
 			Location location, Boolean value, Encounter encounter, User creator) {
 
-		Double doubleValue = null;
+		Integer intValue = null;
 		// Boolean currently stored as Numeric 1 or 0
 		if (value) {
-			doubleValue = new Double(1);
+			intValue = 1;
 		} else {
-			doubleValue = new Double(0);
+			intValue = 0;
 		}
-		return createNumericValueObs(date, concept, person, location,
-				doubleValue, encounter, creator);
+		return createNumericValueObs(date, concept, person, location, intValue,
+				encounter, creator);
 	}
 
 	public Obs createDateValueObs(Date date, Concept concept, Person person,
@@ -2262,9 +2708,14 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.LOCATION_GHANA);
 	}
 
-	public EncounterType getMaternalVisitEncounterType() {
+	public EncounterType getANCVisitEncounterType() {
 		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_MATERNALVISIT);
+				MotechConstants.ENCOUNTER_TYPE_ANCVISIT);
+	}
+
+	public EncounterType getPPCVisitEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_PPCVISIT);
 	}
 
 	public EncounterType getPregnancyVisitEncounterType() {
@@ -2272,19 +2723,51 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT);
 	}
 
+	public EncounterType getPNCVisitEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_PNCVISIT);
+	}
+
+	public EncounterType getGeneralVisitEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_GENERALVISIT);
+	}
+
 	public Concept getImmunizationsOrderedConcept() {
 		return contextService.getConceptService().getConcept(
 				MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED);
 	}
 
-	public Concept getTetanusConcept() {
+	public Concept getTetanusDoseConcept() {
 		return contextService.getConceptService().getConcept(
-				MotechConstants.CONCEPT_TETANUS_BOOSTER);
+				MotechConstants.CONCEPT_TETANUS_TOXOID_DOSE);
 	}
 
-	public Concept getIPTConcept() {
+	public Concept getIPTDoseConcept() {
+		return contextService
+				.getConceptService()
+				.getConcept(
+						MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_DOSE);
+	}
+
+	public Concept getHIVStatusConcept() {
 		return contextService.getConceptService().getConcept(
-				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT);
+				MotechConstants.CONCEPT_HIV_STATUS);
+	}
+
+	public Concept getAbortionTypeConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_ABORTIONTYPE);
+	}
+
+	public Concept getComplicationConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_COMPLICATION);
+	}
+
+	public Concept getVitaminAConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_VITAMIN_A);
 	}
 
 	public Concept getITNConcept() {
@@ -2292,45 +2775,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.CONCEPT_INSECTICIDE_TREATED_NET_USAGE);
 	}
 
-	public Concept getPregnancyVisitNumberConcept() {
+	public Concept getVisitNumberConcept() {
 		return contextService.getConceptService().getConcept(
-				MotechConstants.CONCEPT_PREGNANCY_VISIT_NUMBER);
-	}
-
-	public Concept getARVConcept() {
-		return contextService.getConceptService().getConcept(
-				MotechConstants.CONCEPT_ANTIRETROVIRAL_USE_DURING_PREGNANCY);
-	}
-
-	public Concept getOnARVConcept() {
-		return contextService.getConceptService().getConcept(
-				MotechConstants.CONCEPT_ON_ANTIRETROVIRAL_THERAPY);
-	}
-
-	public Concept getPrePMTCTConcept() {
-		return contextService
-				.getConceptService()
-				.getConcept(
-						MotechConstants.CONCEPT_PRE_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION);
-	}
-
-	public Concept getTestPMTCTConcept() {
-		return contextService
-				.getConceptService()
-				.getConcept(
-						MotechConstants.CONCEPT_TEST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION);
-	}
-
-	public Concept getPostPMTCTConcept() {
-		return contextService
-				.getConceptService()
-				.getConcept(
-						MotechConstants.CONCEPT_POST_PREVENTING_MATERNAL_TO_CHILD_TRANSMISSION);
-	}
-
-	public Concept getHemoglobin36WeeksConcept() {
-		return contextService.getConceptService().getConcept(
-				MotechConstants.CONCEPT_HEMOGLOBIN_AT_36_WEEKS);
+				MotechConstants.CONCEPT_VISIT_NUMBER);
 	}
 
 	public Concept getPregnancyConcept() {
@@ -2358,11 +2805,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.CONCEPT_GRAVIDA);
 	}
 
-	public Concept getHemoglobinConcept() {
-		return contextService.getConceptService().getConcept(
-				MotechConstants.CONCEPT_HEMOGLOBIN);
-	}
-
 	public Concept getDueDateConfirmedConcept() {
 		return contextService.getConceptService().getConcept(
 				MotechConstants.CONCEPT_DATE_OF_CONFINEMENT_CONFIRMED);
@@ -2371,6 +2813,98 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public Concept getEnrollmentReferenceDateConcept() {
 		return contextService.getConceptService().getConcept(
 				MotechConstants.CONCEPT_ENROLLMENT_REFERENCE_DATE);
+	}
+
+	public Concept getDeathCauseConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_CAUSE_OF_DEATH);
+	}
+
+	public Concept getMaternalDeathCauseConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_MATERNAL_CAUSE_OF_DEATH);
+	}
+
+	public Concept getBCGConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_BCG_VACCINATION);
+	}
+
+	public Concept getOPVDoseConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_ORAL_POLIO_VACCINATION_DOSE);
+	}
+
+	public Concept getPentaDoseConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_PENTA_VACCINATION_DOSE);
+	}
+
+	public Concept getYellowFeverConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_YELLOW_FEVER_VACCINATION);
+	}
+
+	public Concept getCSMConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_CEREBRO_SPINAL_MENINGITIS_VACCINATION);
+	}
+
+	public Concept getIPTiConcept() {
+		return contextService
+				.getConceptService()
+				.getConcept(
+						MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_INFANTS);
+	}
+
+	public Concept getSerialNumberConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_SERIAL_NUMBER);
+	}
+
+	public Concept getNewCaseConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_NEW_CASE);
+	}
+
+	public Concept getReferralConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_REFERRAL);
+	}
+
+	public Concept getPrimaryDiagnosisConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_PRIMARY_DIAGNOSIS);
+	}
+
+	public Concept getSecondaryDiagnosisConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_SECONDARY_DIAGNOSIS);
+	}
+
+	public Concept getDeliveryMethodConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_DELIVERY_METHOD);
+	}
+
+	public Concept getDeliveryLocationConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_DELIVERY_LOCATION);
+	}
+
+	public Concept getDeliveredByConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_DELIVERED_BY);
+	}
+
+	public Concept getDeliveryOutcomeConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_DELIVERY_OUTCOME);
+	}
+
+	public Concept getBirthOutcomeConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_BIRTH_OUTCOME);
 	}
 
 	public String getTroubledPhoneProperty() {
