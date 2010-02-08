@@ -7,13 +7,16 @@ import org.motechproject.ws.Gender;
 public class GeneralPatientEncounter {
 
 	private Long id;
-	private Date encounterDate;
-	private Integer clinicId;
-	private String patientSerial;
-	private Gender patientGender;
-	private Date patientBirthDate;
-	private Integer patientDiagnosis;
-	private Boolean patientReferral;
+	private Date date;
+	private String facilityId;
+	private String serialNumber;
+	private Gender sex;
+	private Date birthDate;
+	private Boolean insured;
+	private Boolean newCase;
+	private Integer diagnosis;
+	private Integer secondaryDiagnosis;
+	private Boolean referral;
 
 	public Long getId() {
 		return id;
@@ -23,60 +26,84 @@ public class GeneralPatientEncounter {
 		this.id = id;
 	}
 
-	public Date getEncounterDate() {
-		return encounterDate;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setEncounterDate(Date encounterDate) {
-		this.encounterDate = encounterDate;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
-	public Integer getClinicId() {
-		return clinicId;
+	public String getFacilityId() {
+		return facilityId;
 	}
 
-	public void setClinicId(Integer clinicId) {
-		this.clinicId = clinicId;
+	public void setFacilityId(String facilityId) {
+		this.facilityId = facilityId;
 	}
 
-	public String getPatientSerial() {
-		return patientSerial;
+	public String getSerialNumber() {
+		return serialNumber;
 	}
 
-	public void setPatientSerial(String patientSerial) {
-		this.patientSerial = patientSerial;
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
 	}
 
-	public Gender getPatientGender() {
-		return patientGender;
+	public Gender getSex() {
+		return sex;
 	}
 
-	public void setPatientGender(Gender patientGender) {
-		this.patientGender = patientGender;
+	public void setSex(Gender sex) {
+		this.sex = sex;
 	}
 
-	public Date getPatientBirthDate() {
-		return patientBirthDate;
+	public Date getBirthDate() {
+		return birthDate;
 	}
 
-	public void setPatientBirthDate(Date patientBirthDate) {
-		this.patientBirthDate = patientBirthDate;
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
 	}
 
-	public Integer getPatientDiagnosis() {
-		return patientDiagnosis;
+	public Boolean getInsured() {
+		return insured;
 	}
 
-	public void setPatientDiagnosis(Integer patientDiagnosis) {
-		this.patientDiagnosis = patientDiagnosis;
+	public void setInsured(Boolean insured) {
+		this.insured = insured;
 	}
 
-	public Boolean getPatientReferral() {
-		return patientReferral;
+	public Boolean getNewCase() {
+		return newCase;
 	}
 
-	public void setPatientReferral(Boolean patientReferral) {
-		this.patientReferral = patientReferral;
+	public void setNewCase(Boolean newCase) {
+		this.newCase = newCase;
+	}
+
+	public Integer getDiagnosis() {
+		return diagnosis;
+	}
+
+	public void setDiagnosis(Integer diagnosis) {
+		this.diagnosis = diagnosis;
+	}
+
+	public Integer getSecondaryDiagnosis() {
+		return secondaryDiagnosis;
+	}
+
+	public void setSecondaryDiagnosis(Integer secondaryDiagnosis) {
+		this.secondaryDiagnosis = secondaryDiagnosis;
+	}
+
+	public Boolean getReferral() {
+		return referral;
+	}
+
+	public void setReferral(Boolean referral) {
+		this.referral = referral;
 	}
 
 }

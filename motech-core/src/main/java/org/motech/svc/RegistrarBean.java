@@ -170,9 +170,10 @@ public interface RegistrarBean {
 			Patient patient, Boolean bcg, Integer opvDose, Integer pentaDose,
 			Boolean yellowFever, Boolean csm, Boolean ipti, Boolean vitaminA);
 
-	public void recordGeneralVisit(Integer clinicId, Date visitDate,
-			String patientSerial, Gender patientGender, Date patientBirthDate,
-			Integer patientDiagnosis, Boolean patientReferral);
+	public void recordGeneralVisit(String facilityId, Date date,
+			String serialNumber, Gender sex, Date birthDate, Boolean insured,
+			Boolean newCase, Integer diagnosis, Integer secondaryDiagnosis,
+			Boolean referral);
 
 	@RunAsAdminUser
 	public void recordChildVisit(String facilityId, Date date, Patient patient,

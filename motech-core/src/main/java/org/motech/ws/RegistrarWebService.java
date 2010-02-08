@@ -331,6 +331,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "sex") Gender sex,
 			@WebParam(name = "birthDate") Date birthDate,
 			@WebParam(name = "insured") Boolean insured,
+			@WebParam(name = "newCase") Boolean newCase,
 			@WebParam(name = "diagnosis") Integer diagnosis,
 			@WebParam(name = "secondDiagnosis") Integer secondDiagnosis,
 			@WebParam(name = "referral") Boolean referral)
@@ -338,14 +339,14 @@ public class RegistrarWebService implements RegistrarService {
 
 		if (facilityId == null) {
 			ValidationErrors errors = new ValidationErrors();
-			errors.add(3, "clinicId");
+			errors.add(3, "facilityId");
 			throw new ValidationException("Errors in General Visit request",
 					errors);
 		}
 
-		// TODO: Update to use new parameters and facility type
-		registrarBean.recordGeneralVisit(Integer.valueOf(facilityId), date,
-				serialNumber, sex, birthDate, diagnosis, referral);
+		registrarBean.recordGeneralVisit(facilityId, date, serialNumber, sex,
+				birthDate, insured, newCase, diagnosis, secondDiagnosis,
+				referral);
 	}
 
 	@WebMethod

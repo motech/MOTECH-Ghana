@@ -157,13 +157,16 @@
 			
 			CREATE TABLE IF NOT EXISTS `motechmodule_generalencounter` (
 				`motechmodule_generalencounter_id` bigint NOT NULL auto_increment,
-				`encounter_date` date NOT NULL,
-				`clinic_id` int NOT NULL,
-				`patient_serial` varchar(255) NOT NULL,
-				`patient_gender` varchar(6) NOT NULL,
-				`patient_birthdate` date NOT NULL,
-				`patient_diagnosis` int NOT NULL,	
-				`patient_referral` boolean NOT NULL,
+				`date` date NOT NULL,
+				`facility_id` varchar(255) NOT NULL,
+				`serial_number` varchar(255) NOT NULL,
+				`sex` varchar(6) NOT NULL,
+				`birthdate` date NOT NULL,
+				`insured` boolean NOT NULL,
+				`newcase` boolean NOT NULL,
+				`diagnosis` int NOT NULL,	
+				`secondary_diagnosis` int,
+				`referral` boolean NOT NULL,
 				PRIMARY KEY (`motechmodule_generalencounter_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		</sql>

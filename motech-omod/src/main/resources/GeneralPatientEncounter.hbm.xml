@@ -5,20 +5,26 @@
 		<id name="id" type="long" column="motechmodule_generalencounter_id">
 			<generator class="native" />
 		</id>
-		<property name="encounterDate" type="java.util.Date" column="encounter_date"
+		<property name="date" type="java.util.Date" column="date"
 			not-null="true" length="19" />
-		<property name="clinicId" type="int" column="clinic_id"
-			not-null="true" />
-		<property name="patientSerial" type="string" column="patient_serial"
+		<property name="facilityId" type="string" column="facility_id"
 			not-null="true" length="255" />
-		<property name="patientGender"
-			type="${corePackage}.model.db.hibernate.GenderEnumType" column="patient_gender"
+		<property name="serialNumber" type="string" column="serial_number"
+			not-null="true" length="255" />
+		<property name="sex"
+			type="${corePackage}.model.db.hibernate.GenderEnumType" column="sex"
 			not-null="true" length="6" />
-		<property name="patientBirthDate" type="java.util.Date"
-			column="patient_birthdate" not-null="true" />
-		<property name="patientDiagnosis" type="int" column="patient_diagnosis"
+		<property name="birthDate" type="java.util.Date" column="birthdate"
 			not-null="true" />
-		<property name="patientReferral" type="boolean" column="patient_referral"
+		<property name="insured" type="boolean" column="insured"
+			not-null="true" />
+		<property name="newCase" type="boolean" column="newcase"
+			not-null="true" />
+		<property name="diagnosis" type="int" column="diagnosis"
+			not-null="true" />
+		<property name="secondaryDiagnosis" type="int"
+			column="secondary_diagnosis" />
+		<property name="referral" type="boolean" column="referral"
 			not-null="true" />
 	</class>
 </hibernate-mapping>

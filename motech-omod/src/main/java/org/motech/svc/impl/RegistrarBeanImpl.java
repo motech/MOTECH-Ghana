@@ -1057,25 +1057,30 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
-	public void recordGeneralVisit(Integer clinicId, Date visitDate,
-			String patientSerial, Gender patientGender, Date patientBirthDate,
-			Integer patientDiagnosis, Boolean patientReferral) {
+	public void recordGeneralVisit(String facilityId, Date date,
+			String serialNumber, Gender sex, Date birthDate, Boolean insured,
+			Boolean newCase, Integer diagnosis, Integer secondaryDiagnosis,
+			Boolean referral) {
 
-		log.debug("Date: " + visitDate + ", Clinic: " + clinicId + ", Serial: "
-				+ patientSerial + ", Gender: " + patientGender
-				+ ", Birthdate: " + patientBirthDate + ", Diagnosis: "
-				+ patientDiagnosis + ", Referral: " + patientReferral);
+		log.debug("Date: " + date + ", Facility: " + facilityId + ", Serial: "
+				+ serialNumber + ", Sex: " + sex + ", Birthdate: " + birthDate
+				+ ", Insured: " + insured + ", New Case: " + newCase
+				+ ", Diagnosis: " + diagnosis + ", Sec Diagnosis: "
+				+ secondaryDiagnosis + ", Referral: " + referral);
 
 		MotechService motechService = contextService.getMotechService();
 
 		GeneralPatientEncounter encounter = new GeneralPatientEncounter();
-		encounter.setClinicId(clinicId);
-		encounter.setPatientSerial(patientSerial);
-		encounter.setPatientGender(patientGender);
-		encounter.setPatientBirthDate(patientBirthDate);
-		encounter.setPatientDiagnosis(patientDiagnosis);
-		encounter.setPatientReferral(patientReferral);
-		encounter.setEncounterDate(visitDate);
+		encounter.setFacilityId(facilityId);
+		encounter.setDate(date);
+		encounter.setSerialNumber(serialNumber);
+		encounter.setSex(sex);
+		encounter.setBirthDate(birthDate);
+		encounter.setInsured(insured);
+		encounter.setNewCase(newCase);
+		encounter.setDiagnosis(diagnosis);
+		encounter.setSecondaryDiagnosis(secondaryDiagnosis);
+		encounter.setReferral(referral);
 
 		motechService.saveGeneralPatientEncounter(encounter);
 	}

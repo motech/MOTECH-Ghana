@@ -623,34 +623,34 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testGeneralVisit() throws ValidationException {
-		String clinic = "1", serial = "Test123";
+		String facilityId = "Facility1", serial = "Test123";
 		Gender gender = Gender.MALE;
-		Integer diagnosis = 5, secondDiagnosis = 6, clinicId = 1;
-		Boolean insured = true, referral = false;
+		Integer diagnosis = 5, secondDiagnosis = 6;
+		Boolean insured = true, newCase = true, referral = false;
 		Date date = new Date();
 
-		registrarBean.recordGeneralVisit(clinicId, date, serial, gender, date,
-				diagnosis, referral);
+		registrarBean.recordGeneralVisit(facilityId, date, serial, gender,
+				date, insured, newCase, diagnosis, secondDiagnosis, referral);
 
 		replay(registrarBean);
 
-		regWs.recordGeneralVisit(clinic, date, serial, gender, date, insured,
-				diagnosis, secondDiagnosis, referral);
+		regWs.recordGeneralVisit(facilityId, date, serial, gender, date,
+				insured, newCase, diagnosis, secondDiagnosis, referral);
 
 		verify(registrarBean);
 	}
 
 	@Test
 	public void testGeneralVisitMissingClinic() {
-		String clinic = null, serial = "Test123";
+		String facilityId = null, serial = "Test123";
 		Gender gender = Gender.MALE;
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean insured = true, referral = false;
+		Boolean insured = true, newCase = true, referral = false;
 		Date date = new Date();
 
 		try {
-			regWs.recordGeneralVisit(clinic, date, serial, gender, date,
-					insured, diagnosis, secondDiagnosis, referral);
+			regWs.recordGeneralVisit(facilityId, date, serial, gender, date,
+					insured, newCase, diagnosis, secondDiagnosis, referral);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in General Visit request", e.getMessage());
@@ -661,7 +661,7 @@ public class RegistrarServiceTest {
 			assertEquals(1, errors.size());
 			ValidationError error = errors.get(0);
 			assertEquals(3, error.getCode());
-			assertEquals("clinicId", error.getField());
+			assertEquals("facilityId", error.getField());
 		}
 	}
 
