@@ -87,6 +87,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			String mother2Id = "MotherRegNumber2";
 			String child1Id = "ChildRegNumber1";
 			String child2Id = "ChildRegNumber2";
+			String child3Id = "ChildRegNumber3";
 			String facilityId = "FacilityId";
 			Date date = new Date();
 
@@ -140,9 +141,11 @@ public class RegistrarBeanRecordVisitsTest extends
 					.size());
 
 			// Pregnancy Delivery for Mother 1, Adding Child 2
-			BirthOutcomeChild[] outcomes = new BirthOutcomeChild[] { new BirthOutcomeChild(
-					BirthOutcome.A, child2Id, Gender.MALE, "Child2FirstName",
-					true, true) };
+			BirthOutcomeChild[] outcomes = new BirthOutcomeChild[] {
+					new BirthOutcomeChild(BirthOutcome.A, child2Id,
+							Gender.MALE, "Child2FirstName", true, true),
+					new BirthOutcomeChild(BirthOutcome.FSB, child3Id,
+							Gender.MALE, "Child3FirstName", true, true) };
 			regService.recordPregnancyDelivery(facilityId, date, mother1, 1, 1,
 					1, DeliveredBy.CHO, false, 1, outcomes);
 
@@ -153,14 +156,19 @@ public class RegistrarBeanRecordVisitsTest extends
 					.getPatientId());
 			assertNull("Pregnancy is still active after delivery",
 					mother1Pregnancy);
-			assertEquals("Deceased mother 1 not voided", 6, Context
-					.getPatientService().getAllPatients().size());
+			assertEquals("Child 2 and Child 3 not added", 7, Context
+					.getPatientService().getAllPatients(true).size());
+			assertEquals("Child 3 not voided", 6, Context.getPatientService()
+					.getAllPatients().size());
 
 			Patient child2 = regService.getPatientBySerial(child2Id);
 			assertNotNull("Child 2 not registered", child2);
 			assertEquals("PNC visit at birth not added for Child 2", 1, Context
 					.getEncounterService().getEncountersByPatient(child2)
 					.size());
+
+			Patient child3 = regService.getPatientBySerial(child3Id);
+			assertNull("Child 3 not voided", child3);
 
 			// Pregnancy Termination for Mother 2
 			regService.recordPregnancyTermination(facilityId, date, mother2, 1,

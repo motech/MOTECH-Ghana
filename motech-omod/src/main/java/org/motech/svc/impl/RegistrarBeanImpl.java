@@ -899,19 +899,21 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				obsService.saveObs(childOutcomeObs, null);
 			}
 
-			if (BirthOutcome.A == childOutcome.getOutcome()) {
-				Patient child = registerChild(null, null, patient, childOutcome
-						.getPatientId(), date, childOutcome.getSex(),
-						childOutcome.getFirstName(), null, null);
+			Patient child = registerChild(null, null, patient, childOutcome
+					.getPatientId(), date, childOutcome.getSex(), childOutcome
+					.getFirstName(), null, null);
 
-				if (childOutcome.getBcg() || childOutcome.getOpv()) {
-					Integer opvDose = null;
-					if (childOutcome.getOpv()) {
-						opvDose = 0;
-					}
-					recordChildPNCVisit(facilityId, date, child, childOutcome
-							.getBcg(), opvDose, null, null, null, null, null);
+			if (childOutcome.getBcg() || childOutcome.getOpv()) {
+				Integer opvDose = null;
+				if (childOutcome.getOpv()) {
+					opvDose = 0;
 				}
+				recordChildPNCVisit(facilityId, date, child, childOutcome
+						.getBcg(), opvDose, null, null, null, null, null);
+			}
+
+			if (BirthOutcome.A != childOutcome.getOutcome()) {
+				processPatientDeath(child, date);
 			}
 		}
 
