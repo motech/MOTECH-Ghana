@@ -1,7 +1,6 @@
 package org.motech.event.impl;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -9,21 +8,21 @@ import org.motech.event.MessageProgram;
 import org.motech.event.MessageProgramState;
 import org.motech.event.MessageProgramStateTransition;
 import org.motech.event.MessagesCommand;
-import org.motech.event.TimePeriod;
-import org.motech.event.TimeReference;
 import org.motech.model.MessageProgramEnrollment;
-import org.motech.svc.RegistrarBean;
+import org.motech.time.TimeBean;
+import org.motech.time.TimePeriod;
+import org.motech.time.TimeReference;
 
 public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 		MessageProgramState {
 
-	private RegistrarBean registrarBean;
 	private List<MessageProgramStateTransition> transitions = new ArrayList<MessageProgramStateTransition>();
 	private MessagesCommand command;
 	private MessageProgram program;
-	private int timeValue;
+	private Integer timeValue;
 	private TimePeriod timePeriod;
 	private TimeReference timeReference;
+	private TimeBean timeBean;
 
 	public void addTransition(MessageProgramStateTransition transition) {
 		transitions.add(transition);
@@ -37,14 +36,6 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 			}
 		}
 		return null;
-	}
-
-	public RegistrarBean getRegistrarBean() {
-		return registrarBean;
-	}
-
-	public void setRegistrarBean(RegistrarBean registrarBean) {
-		this.registrarBean = registrarBean;
 	}
 
 	public MessagesCommand getCommand() {
@@ -63,11 +54,11 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 		this.program = program;
 	}
 
-	public int getTimeValue() {
+	public Integer getTimeValue() {
 		return timeValue;
 	}
 
-	public void setTimeValue(int timeValue) {
+	public void setTimeValue(Integer timeValue) {
 		this.timeValue = timeValue;
 	}
 
@@ -87,6 +78,14 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 		this.timeReference = timeReference;
 	}
 
+	public TimeBean getTimeBean() {
+		return timeBean;
+	}
+
+	public void setTimeBean(TimeBean timeBean) {
+		this.timeBean = timeBean;
+	}
+
 	public void setTime(int timeValue, TimePeriod timePeriod,
 			TimeReference timeReference) {
 		setTimeValue(timeValue);
@@ -103,62 +102,9 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 	}
 
 	public Date getDateOfAction(MessageProgramEnrollment enrollment) {
-
-		if (timePeriod != null && timeReference != null) {
-
-			Calendar calendar = Calendar.getInstance();
-			Date timeReferenceDate = null;
-
-			switch (timeReference) {
-			case patient_birthdate:
-				timeReferenceDate = registrarBean
-						.getPatientBirthDate(enrollment.getPersonId());
-				break;
-			case last_obs_date:
-				timeReferenceDate = registrarBean.getLastObsDate(enrollment
-						.getPersonId(), program.getConceptName(), program
-						.getConceptValue());
-				break;
-			case last_obs_datevalue:
-				timeReferenceDate = registrarBean.getLastObsValue(enrollment
-						.getPersonId(), program.getConceptName());
-				break;
-			case enrollment_startdate:
-				timeReferenceDate = enrollment.getStartDate();
-				break;
-			case enrollment_obs_datevalue:
-				timeReferenceDate = registrarBean.getObsValue(enrollment
-						.getObsId());
-				break;
-			}
-
-			if (timeReferenceDate == null) {
-				return null;
-			}
-			calendar.setTime(timeReferenceDate);
-
-			switch (timePeriod) {
-			case minute:
-				calendar.add(Calendar.MINUTE, timeValue);
-				break;
-			case day:
-				calendar.add(Calendar.DATE, timeValue);
-				break;
-			case week:
-				// Add weeks as days
-				calendar.add(Calendar.DATE, timeValue * 7);
-				break;
-			case month:
-				calendar.add(Calendar.MONTH, timeValue);
-				break;
-			case year:
-				calendar.add(Calendar.YEAR, timeValue);
-				break;
-			}
-
-			return calendar.getTime();
-		}
-		return null;
+		return timeBean.determineTime(timePeriod, timeReference, timeValue,
+				null, enrollment, program.getConceptName(), program
+						.getConceptValue(), null);
 	}
 
 }

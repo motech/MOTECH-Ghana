@@ -11,5 +11,8 @@
 	<bean id="messageScheduler" class="org.easymock.EasyMock" factory-method="createMock">
 		<constructor-arg index="0" value="org.motech.messaging.MessageScheduler" />
 	</bean>
+	<bean id="timeBean" class="org.motech.time.TimeBean">
+		<property name="registrarBean" ref="registrarBean" />
+	</bean>
 	
 </beans>

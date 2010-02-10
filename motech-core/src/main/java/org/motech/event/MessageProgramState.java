@@ -3,6 +3,8 @@ package org.motech.event;
 import java.util.Date;
 
 import org.motech.model.MessageProgramEnrollment;
+import org.motech.time.TimePeriod;
+import org.motech.time.TimeReference;
 
 public interface MessageProgramState extends BaseInterface {
 
@@ -13,7 +15,7 @@ public interface MessageProgramState extends BaseInterface {
 
 	MessageProgram getProgram();
 
-	int getTimeValue();
+	Integer getTimeValue();
 
 	TimePeriod getTimePeriod();
 

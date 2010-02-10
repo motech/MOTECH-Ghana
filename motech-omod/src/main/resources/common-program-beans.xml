@@ -16,5 +16,10 @@
 			<bean parent="registrarBean" />
 		</property>
 	</bean>
+	<bean id="timeBean" class="${corePackage}.time.TimeBean">
+		<property name="registrarBean">
+			<bean parent="registrarBean" />
+		</property>
+	</bean>
 
 </beans>

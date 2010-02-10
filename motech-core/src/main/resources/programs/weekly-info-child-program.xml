@@ -22,7 +22,7 @@
 			</bean>
 		</property>
 		<property name="program" ref="weeklyInfoChildProgram" />
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
@@ -51,7 +51,7 @@
 			</bean>
 		</property>
 		<property name="program" ref="weeklyInfoChildProgram" />
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
@@ -80,7 +80,7 @@
 			</bean>
 		</property>
 		<property name="program" ref="weeklyInfoChildProgram" />
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
@@ -109,7 +109,7 @@
 			</bean>
 		</property>
 		<property name="program" ref="weeklyInfoChildProgram" />
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedDateImpl">
@@ -137,7 +137,7 @@
 			</bean>
 		</property>
 		<property name="program" ref="weeklyInfoChildProgram" />
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">

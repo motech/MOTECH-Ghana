@@ -6,6 +6,8 @@
 
 	<bean id="polioProgram" class="org.motech.event.impl.MessageProgramImpl">
 		<property name="name" value="Polio" />
+		<property name="conceptName" value="IMMUNIZATIONS ORDERED" />
+		<property name="conceptValue" value="ORAL POLIO VACCINATION" />
 		<property name="startState" ref="polioState1" />
 		<property name="endState" ref="polioState5" />
 	</bean>
@@ -17,7 +19,7 @@
 		<property name="timeReference" value="patient_birthdate" />
 		<property name="command" ref="nopCommand" />
 		<property name="program" ref="polioProgram" />
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedNumImpl">
@@ -45,7 +47,7 @@
 		<property name="timeReference" value="last_obs_date" />
 		<property name="command" ref="nopCommand" />
 		<property name="program" ref="polioProgram" />
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedNumImpl">
@@ -73,7 +75,7 @@
 		<property name="timeReference" value="last_obs_date" />
 		<property name="command" ref="nopCommand" />
 		<property name="program" ref="polioProgram" />
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedNumImpl">
@@ -101,7 +103,7 @@
 		<property name="timeReference" value="last_obs_date" />
 		<property name="command" ref="nopCommand" />
 		<property name="program" ref="polioProgram" />
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionExpectedNumImpl">
@@ -126,7 +128,7 @@
 		<property name="name" value="End State 5" />
 		<property name="command" ref="nopCommand" />
 		<property name="program" ref="polioProgram" />
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
 				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
