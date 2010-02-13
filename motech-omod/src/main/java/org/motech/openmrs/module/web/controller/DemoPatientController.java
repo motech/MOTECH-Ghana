@@ -202,7 +202,7 @@ public class DemoPatientController {
 
 			status.setComplete();
 
-			return "redirect:/module/motechmodule/viewdata.form";
+			return "redirect:/module/motechmodule/demo-success.htm";
 		}
 
 		return "/module/motechmodule/demo-patient";
