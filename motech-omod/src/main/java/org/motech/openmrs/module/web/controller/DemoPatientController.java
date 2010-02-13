@@ -1,15 +1,21 @@
 package org.motech.openmrs.module.web.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motech.model.WhoRegistered;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.web.model.WebModelConverter;
 import org.motech.openmrs.module.web.model.WebPatient;
 import org.motech.svc.RegistrarBean;
+import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.Gender;
+import org.motechproject.ws.MediaType;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,6 +111,29 @@ public class DemoPatientController {
 			if (patient != null) {
 				webModelConverter.patientToWeb(patient, result);
 			}
+		} else {
+			// Pre-populate so demo entry isn't a long process
+			result.setWhoRegistered(WhoRegistered.CHPS_STAFF);
+			result.setFirstName("Jane");
+			result.setLastName("Doe");
+			result.setSex(Gender.FEMALE);
+			Calendar dobCal = new GregorianCalendar();
+			dobCal.set(1984, 0, 4);
+			result.setBirthDate(dobCal.getTime());
+			result.setBirthDateEst(Boolean.FALSE);
+			result.setRegisteredGHS(Boolean.TRUE);
+			result.setInsured(Boolean.FALSE);
+			result.setRegion(getRegions().get(0).getName());
+			result.setDistrict(getDistricts().get(0).getName());
+			result.setCommunity(getCommunities().get(0).getName());
+			result.setClinic(getClinics().get(0).getLocationId());
+			result.setAddress("Somewhere important");
+			result.setRegisterPregProgram(Boolean.TRUE);
+			result.setPrimaryPhoneType(ContactNumberType.PERSONAL);
+			result.setMediaTypeInfo(MediaType.TEXT);
+			result.setMediaTypeReminder(MediaType.TEXT);
+			result.setLanguageText("en");
+			result.setLanguageVoice("en");
 		}
 		return result;
 	}
