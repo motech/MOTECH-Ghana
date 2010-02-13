@@ -8,7 +8,7 @@
 <openmrs:htmlInclude file="/moduleResources/motechmodule/find_duplicates.js" />
 
 <meta name="heading" content="Register Patient" />
-<%@ include file="localHeader.jsp" %>
+<%@ include file="demoLocalHeader.jsp" %>
 <h2>Register Patient</h2>
 <div class="instructions">
 	This form allows you to create a new patient record and 
