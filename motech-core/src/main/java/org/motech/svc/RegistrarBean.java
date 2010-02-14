@@ -216,6 +216,9 @@ public interface RegistrarBean {
 	public int getNumberOfObs(Integer personId, String conceptName,
 			String conceptValue);
 
+	public Date getLastObsCreationDate(Integer personId, String conceptName,
+			String conceptValue);
+
 	public Date getLastObsDate(Integer personId, String conceptName,
 			String conceptValue);
 

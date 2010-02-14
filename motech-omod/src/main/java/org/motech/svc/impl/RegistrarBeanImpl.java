@@ -1361,6 +1361,16 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				.getConcept(conceptValue));
 	}
 
+	public Date getLastObsCreationDate(Integer personId, String conceptName,
+			String conceptValue) {
+
+		ConceptService conceptService = contextService.getConceptService();
+		PersonService personService = contextService.getPersonService();
+		return getLastObsCreationDate(personService.getPerson(personId),
+				conceptService.getConcept(conceptName), conceptService
+						.getConcept(conceptValue));
+	}
+
 	public Date getLastObsDate(Integer personId, String conceptName,
 			String conceptValue) {
 
@@ -1382,6 +1392,24 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		List<Obs> obsList = getMatchingObs(person, concept, value);
 		return obsList.size();
+	}
+
+	public Date getLastObsCreationDate(Person person, Concept concept,
+			Concept value) {
+
+		Date latestObsDate = null;
+
+		// List default sorted by Obs datetime
+		List<Obs> obsList = getMatchingObs(person, concept, value);
+
+		if (obsList.size() > 0) {
+			latestObsDate = obsList.get(obsList.size() - 1).getDateCreated();
+		} else if (log.isDebugEnabled()) {
+			log.debug("No matching Obs: person id: " + person.getPersonId()
+					+ ", concept: " + concept.getName().getName() + ", value: "
+					+ value.getName().getName());
+		}
+		return latestObsDate;
 	}
 
 	public Date getLastObsDate(Person person, Concept concept, Concept value) {

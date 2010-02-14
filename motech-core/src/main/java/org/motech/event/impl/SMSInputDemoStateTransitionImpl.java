@@ -26,16 +26,18 @@ public class SMSInputDemoStateTransitionImpl extends
 		if (!terminatingTransition) {
 			boolean trueBasedOnDate = super.evaluate(enrollment);
 
-			Date terminatingObsDate = registrarBean.getLastObsValue(enrollment
-					.getPersonId(), prevState.getProgram().getConceptName());
+			Date terminatingObsDate = registrarBean.getLastObsCreationDate(
+					enrollment.getPersonId(), prevState.getProgram()
+							.getConceptName(), null);
 
 			boolean terminatingObservationExists = terminatingObsDate != null
 					&& enrollment.getStartDate().before(terminatingObsDate);
 
 			return trueBasedOnDate && !terminatingObservationExists;
 		} else {
-			Date terminatingObsDate = registrarBean.getLastObsValue(enrollment
-					.getPersonId(), prevState.getProgram().getConceptName());
+			Date terminatingObsDate = registrarBean.getLastObsCreationDate(
+					enrollment.getPersonId(), prevState.getProgram()
+							.getConceptName(), null);
 			return terminatingObsDate != null
 					&& enrollment.getStartDate().before(terminatingObsDate);
 		}
