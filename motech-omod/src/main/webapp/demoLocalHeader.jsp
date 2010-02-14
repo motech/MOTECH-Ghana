@@ -10,6 +10,11 @@
 				<spring:message code="motechmodule.Demo.Patient.register"/>
 			</a>
 		</li>
+		<li <c:if test='<%= request.getRequestURI().contains("demo-enrollpatient") %>'>class="active"</c:if>>
+			<a href="${pageContext.request.contextPath}/module/motechmodule/demo-enrollpatient.form">
+				<spring:message code="motechmodule.Demo.Patient.enroll"/>
+			</a>
+		</li>
 	</openmrs:hasPrivilege>
 
 </ul>

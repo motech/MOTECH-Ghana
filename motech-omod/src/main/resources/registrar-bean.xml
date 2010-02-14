@@ -85,6 +85,12 @@
 					</key>
 					<ref bean="demoMinuteProgram" />
 				</entry>
+				<entry>
+					<key>
+						<value>Input Demo Message Program</value>
+					</key>
+					<ref bean="inputDemoProgram" />
+				</entry>
 			</map>
 		</property>
 	</bean>

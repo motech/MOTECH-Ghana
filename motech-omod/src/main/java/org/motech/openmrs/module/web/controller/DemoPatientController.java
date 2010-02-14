@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motech.model.WhoRegistered;
@@ -140,7 +142,8 @@ public class DemoPatientController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String submitForm(@ModelAttribute("patient") WebPatient patient,
-			Errors errors, ModelMap model, SessionStatus status) {
+			Errors errors, ModelMap model, SessionStatus status,
+			HttpSession session) {
 
 		log.debug("Register Demo Patient");
 
@@ -230,6 +233,9 @@ public class DemoPatientController {
 					"motechmodule.Demo.Patient.register.success");
 
 			status.setComplete();
+			
+			// Save the registration number for next step of demo
+			session.setAttribute("demoLastGHSRN", patient.getRegNumberGHS());
 
 			return "redirect:/module/motechmodule/demo-success.htm";
 		}

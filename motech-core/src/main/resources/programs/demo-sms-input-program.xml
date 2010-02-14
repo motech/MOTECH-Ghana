@@ -1,0 +1,210 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean name="protoInputTransition" 
+		class="org.motech.event.impl.SMSInputDemoStateTransitionImpl" 
+		abstract="true">
+		<property name="command" ref="nopCommand" />
+		<property name="terminating" value="false" />
+		<property name="registrarBean" ref="registrarBean" />
+	</bean>
+	
+	<bean id="inputDemoProgram" class="org.motech.event.impl.MessageProgramImpl">
+		<property name="name" value="Input Demo Message Program" />
+		<property name="startState" ref="inputDemoState1" />
+		<property name="conceptName" value="TETANUS TOXOID DOSE" />
+		<property name="endState" ref="inputDemoState6" />
+	</bean>
+
+	<bean id="inputDemoState1" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Input Demo - Message 1" />
+		<property name="timeValue" value="1" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motech.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="demo.minute.1" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="inputDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean parent="protoInputTransition">
+					<property name="prevState" ref="inputDemoState1" />
+					<property name="nextState" ref="inputDemoState2" />
+				</bean>
+				<bean parent="protoInputTransition">
+					<property name="prevState" ref="inputDemoState1" />
+					<property name="nextState" ref="inputDemoState6" />
+					<property name="terminating" value="true" />
+				</bean>
+				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="inputDemoState1" />
+					<property name="nextState" ref="inputDemoState1" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="inputDemoState2" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Input Demo - Message 2" />
+		<property name="timeValue" value="3" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motech.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="demo.minute.1" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="inputDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean parent="protoInputTransition">
+					<property name="prevState" ref="inputDemoState2" />
+					<property name="nextState" ref="inputDemoState3" />
+				</bean>
+				<bean parent="protoInputTransition">
+					<property name="prevState" ref="inputDemoState2" />
+					<property name="nextState" ref="inputDemoState6" />
+					<property name="terminating" value="true" />
+				</bean>
+				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="inputDemoState2" />
+					<property name="nextState" ref="inputDemoState2" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="inputDemoState3" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Input Demo - Message 3" />
+		<property name="timeValue" value="5" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motech.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="demo.minute.1" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="inputDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean parent="protoInputTransition">
+					<property name="prevState" ref="inputDemoState3" />
+					<property name="nextState" ref="inputDemoState4" />
+				</bean>
+				<bean parent="protoInputTransition">
+					<property name="prevState" ref="inputDemoState3" />
+					<property name="nextState" ref="inputDemoState6" />
+					<property name="terminating" value="true" />
+				</bean>
+				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="inputDemoState3" />
+					<property name="nextState" ref="inputDemoState3" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="inputDemoState4" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Input Demo - Message 4" />
+		<property name="timeValue" value="7" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motech.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="demo.minute.1" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="inputDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean parent="protoInputTransition">
+					<property name="prevState" ref="inputDemoState4" />
+					<property name="nextState" ref="inputDemoState5" />
+				</bean>
+				<bean parent="protoInputTransition">
+					<property name="prevState" ref="inputDemoState4" />
+					<property name="nextState" ref="inputDemoState6" />
+					<property name="terminating" value="true" />
+				</bean>
+				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="inputDemoState4" />
+					<property name="nextState" ref="inputDemoState4" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="inputDemoState5" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Input Demo - Message 5" />
+		<property name="timeValue" value="9" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motech.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="demo.minute.1" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="inputDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean parent="protoInputTransition">
+					<property name="prevState" ref="inputDemoState5" />
+					<property name="nextState" ref="inputDemoState6" />
+				</bean>
+				<bean parent="protoInputTransition">
+					<property name="prevState" ref="inputDemoState5" />
+					<property name="nextState" ref="inputDemoState6" />
+					<property name="terminating" value="true" />
+				</bean>
+				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="inputDemoState5" />
+					<property name="nextState" ref="inputDemoState5" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="inputDemoState6" class="org.motech.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Input Demo Status - Stopped" />
+		<property name="timeValue" value="0" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motech.event.impl.RemoveEnrollmentCommand">
+				<property name="registrarBean" ref="registrarBean" />
+			</bean>
+		</property>
+		<property name="program" ref="inputDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motech.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="inputDemoState6" />
+					<property name="nextState" ref="inputDemoState6" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>

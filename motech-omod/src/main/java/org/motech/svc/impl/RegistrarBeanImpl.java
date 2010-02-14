@@ -345,6 +345,12 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	public void demoEnrollPatient(String regNumGHS) {
+		Patient patient = getPatientBySerial(regNumGHS);
+		addMessageProgramEnrollment(patient.getPersonId(),
+				"Input Demo Message Program", null);
+	}
+
 	public void registerPerson(String firstName, String middleName,
 			String lastName, String prefName, Date birthDate,
 			Boolean birthDateEst, Gender sex, String region, String district,

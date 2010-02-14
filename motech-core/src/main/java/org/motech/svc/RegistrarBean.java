@@ -272,4 +272,6 @@ public interface RegistrarBean {
 			OpenmrsConstants.PRIV_ADD_OBS, OpenmrsConstants.PRIV_VIEW_USERS,
 			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
 	public void updateAllMessageProgramsState();
+
+	public void demoEnrollPatient(String regNumberGHS);
 }
