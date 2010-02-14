@@ -1407,7 +1407,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		} else if (log.isDebugEnabled()) {
 			log.debug("No matching Obs: person id: " + person.getPersonId()
 					+ ", concept: " + concept.getName().getName() + ", value: "
-					+ value.getName().getName());
+					+ (value != null ? value.getName().getName() : "null"));
 		}
 		return latestObsDate;
 	}
@@ -1424,7 +1424,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		} else if (log.isDebugEnabled()) {
 			log.debug("No matching Obs: person id: " + person.getPersonId()
 					+ ", concept: " + concept.getName().getName() + ", value: "
-					+ value.getName().getName());
+					+ (value != null ? value.getName().getName() : "null"));
 		}
 		return latestObsDate;
 	}
