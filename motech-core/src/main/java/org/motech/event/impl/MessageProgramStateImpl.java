@@ -104,7 +104,7 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 	public Date getDateOfAction(MessageProgramEnrollment enrollment) {
 		return timeBean.determineTime(timePeriod, timeReference, timeValue,
 				null, enrollment, program.getConceptName(), program
-						.getConceptValue(), null);
+						.getConceptValue(), null, null);
 	}
 
 }

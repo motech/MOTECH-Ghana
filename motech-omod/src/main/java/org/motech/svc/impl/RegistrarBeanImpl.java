@@ -23,6 +23,8 @@ import org.motech.model.MessageProgramEnrollment;
 import org.motech.model.MessageStatus;
 import org.motech.model.MessageType;
 import org.motech.model.ScheduledMessage;
+import org.motech.model.Service;
+import org.motech.model.ServiceStatus;
 import org.motech.model.TroubledPhone;
 import org.motech.model.WhoRegistered;
 import org.motech.model.WhyInterested;
@@ -1324,7 +1326,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	}
 
 	private List<Obs> getMatchingObs(Person person, Concept question,
-			Concept answer) {
+			Concept answer, Integer obsGroupId, Date from, Date to) {
 
 		ObsService obsService = contextService.getObsService();
 
@@ -1346,7 +1348,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		// patients, encounters, questions, answers, persontype, locations,
 		// sort, max returned, group id, from date, to date, include voided
 		List<Obs> obsList = obsService.getObservations(whom, null, questions,
-				answers, null, null, null, null, null, null, null, false);
+				answers, null, null, null, null, obsGroupId, from, to, false);
 
 		return obsList;
 	}
@@ -1381,6 +1383,72 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				.getConcept(conceptValue));
 	}
 
+	public Date getLastDoseObsDate(Integer personId, String conceptName,
+			Integer doseNumber) {
+		ConceptService conceptService = contextService.getConceptService();
+		PersonService personService = contextService.getPersonService();
+		ObsService obsService = contextService.getObsService();
+		List<Obs> matchingObs = obsService.getObservationsByPersonAndConcept(
+				personService.getPerson(personId), conceptService
+						.getConcept(conceptName));
+		for (Obs obs : matchingObs) {
+			Double value = obs.getValueNumeric();
+			if (value != null && doseNumber.intValue() == value.intValue()) {
+				return obs.getObsDatetime();
+			}
+		}
+		return null;
+	}
+
+	public Date getLastDoseObsDateInActivePregnancy(Integer patientId,
+			String conceptName, Integer doseNumber) {
+		PersonService personService = contextService.getPersonService();
+		ConceptService conceptService = contextService.getConceptService();
+		Obs pregnancy = getActivePregnancy(patientId);
+		if (pregnancy != null) {
+			Integer pregnancyObsId = pregnancy.getObsId();
+			List<Obs> matchingObs = getMatchingObs(personService
+					.getPerson(patientId), conceptService
+					.getConcept(conceptName), null, pregnancyObsId, null, null);
+			for (Obs obs : matchingObs) {
+				Double value = obs.getValueNumeric();
+				if (value != null && doseNumber.intValue() == value.intValue()) {
+					return obs.getObsDatetime();
+				}
+			}
+		}
+		return null;
+	}
+
+	public Date getActivePregnancyDueDate(Integer patientId) {
+		PersonService personService = contextService.getPersonService();
+		Obs pregnancy = getActivePregnancy(patientId);
+		if (pregnancy != null) {
+			Integer pregnancyObsId = pregnancy.getObsId();
+			List<Obs> dueDateObsList = getMatchingObs(personService
+					.getPerson(patientId), getDueDateConcept(), null,
+					pregnancyObsId, null, null);
+			if (dueDateObsList.size() > 0) {
+				return dueDateObsList.get(0).getValueDatetime();
+			}
+		}
+		return null;
+	}
+
+	public Date getLastPregnancyEndDate(Integer patientId) {
+		PersonService personService = contextService.getPersonService();
+		List<Obs> pregnancyStatusObsList = getMatchingObs(personService
+				.getPerson(patientId), getPregnancyStatusConcept(), null, null,
+				null, null);
+		for (Obs pregnancyStatusObs : pregnancyStatusObsList) {
+			Boolean status = pregnancyStatusObs.getValueAsBoolean();
+			if (Boolean.FALSE.equals(status)) {
+				return pregnancyStatusObs.getObsDatetime();
+			}
+		}
+		return null;
+	}
+
 	public Date getLastObsValue(Integer personId, String conceptName) {
 		ConceptService conceptService = contextService.getConceptService();
 		PersonService personService = contextService.getPersonService();
@@ -1390,7 +1458,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	public int getNumberOfObs(Person person, Concept concept, Concept value) {
 
-		List<Obs> obsList = getMatchingObs(person, concept, value);
+		List<Obs> obsList = getMatchingObs(person, concept, value, null, null,
+				null);
 		return obsList.size();
 	}
 
@@ -1400,7 +1469,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		Date latestObsDate = null;
 
 		// List default sorted by Obs datetime
-		List<Obs> obsList = getMatchingObs(person, concept, value);
+		List<Obs> obsList = getMatchingObs(person, concept, value, null, null,
+				null);
 
 		if (obsList.size() > 0) {
 			latestObsDate = obsList.get(obsList.size() - 1).getDateCreated();
@@ -1417,7 +1487,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		Date latestObsDate = null;
 
 		// List default sorted by Obs datetime
-		List<Obs> obsList = getMatchingObs(person, concept, value);
+		List<Obs> obsList = getMatchingObs(person, concept, value, null, null,
+				null);
 
 		if (obsList.size() > 0) {
 			latestObsDate = obsList.get(0).getObsDatetime();
@@ -1432,7 +1503,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public Date getLastObsValue(Person person, Concept concept) {
 		Date lastestObsValue = null;
 
-		List<Obs> obsList = getMatchingObs(person, concept, null);
+		List<Obs> obsList = getMatchingObs(person, concept, null, null, null,
+				null);
 		if (obsList.size() > 0) {
 			lastestObsValue = obsList.get(0).getValueDatetime();
 		} else if (log.isDebugEnabled()) {
@@ -1455,7 +1527,78 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return result;
 	}
 
+	public Integer getObsId(Integer personId, String conceptName,
+			String conceptValue, Date earliest, Date latest) {
+		PersonService personService = contextService.getPersonService();
+		ConceptService conceptService = contextService.getConceptService();
+
+		List<Obs> observations = getMatchingObs(personService
+				.getPerson(personId), conceptService.getConcept(conceptName),
+				conceptService.getConcept(conceptValue), null, earliest, latest);
+		if (observations.size() > 0) {
+			observations.get(0).getObsId();
+		}
+		return null;
+	}
+
+	public Integer getObsId(Integer personId, String conceptName,
+			Integer doseNumber, Date earliest, Date latest) {
+		PersonService personService = contextService.getPersonService();
+		ConceptService conceptService = contextService.getConceptService();
+
+		List<Obs> observations = getMatchingObs(personService
+				.getPerson(personId), conceptService.getConcept(conceptName),
+				null, null, earliest, latest);
+		for (Obs obs : observations) {
+			Double value = obs.getValueNumeric();
+			if (value != null && value.intValue() >= doseNumber.intValue()) {
+				return obs.getObsId();
+			}
+		}
+		return null;
+	}
+
+	public Integer getEncounterId(Integer patientId, String encounterType,
+			Date earliest, Date latest) {
+		PatientService patientService = contextService.getPatientService();
+		EncounterService encounterService = contextService
+				.getEncounterService();
+
+		List<EncounterType> encounterTypes = new ArrayList<EncounterType>();
+		encounterTypes.add(encounterService.getEncounterType(encounterType));
+
+		List<Encounter> encounters = encounterService.getEncounters(
+				patientService.getPatient(patientId), null, earliest, latest,
+				null, encounterTypes, null, false);
+		if (encounters.size() > 0) {
+			return encounters.get(0).getEncounterId();
+		}
+		return null;
+	}
+
 	/* PatientObsService methods end */
+
+	public void saveService(Service service) {
+		MotechService motechService = contextService.getMotechService();
+		motechService.saveService(service);
+	}
+
+	public List<Service> getIncompleteServices(Integer patientId,
+			String sequence) {
+		MotechService motechService = contextService.getMotechService();
+		return motechService.getServices(patientId, sequence,
+				ServiceStatus.INCOMPLETE);
+	}
+
+	public Map<String, Service> getIncompleteServicesMap(Integer patientId,
+			String sequence) {
+		List<Service> services = getIncompleteServices(patientId, sequence);
+		Map<String, Service> servicesMap = new HashMap<String, Service>();
+		for (Service service : services) {
+			servicesMap.put(service.getService(), service);
+		}
+		return servicesMap;
+	}
 
 	/* MessageDefinition methods start */
 	public NameValuePair[] getNameValueContent(

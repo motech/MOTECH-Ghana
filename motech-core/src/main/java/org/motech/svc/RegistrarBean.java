@@ -2,6 +2,7 @@ package org.motech.svc;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.motech.annotation.RunAsAdminUser;
 import org.motech.annotation.RunAsUser;
@@ -11,6 +12,7 @@ import org.motech.model.HIVStatus;
 import org.motech.model.Log;
 import org.motech.model.MessageProgramEnrollment;
 import org.motech.model.ScheduledMessage;
+import org.motech.model.Service;
 import org.motech.model.WhoRegistered;
 import org.motech.model.WhyInterested;
 import org.motechproject.ws.ContactNumberType;
@@ -222,9 +224,36 @@ public interface RegistrarBean {
 	public Date getLastObsDate(Integer personId, String conceptName,
 			String conceptValue);
 
+	public Date getLastDoseObsDate(Integer personId, String conceptName,
+			Integer doseNumber);
+
+	public Date getLastDoseObsDateInActivePregnancy(Integer patientId,
+			String conceptName, Integer doseNumber);
+
+	public Date getActivePregnancyDueDate(Integer patientId);
+
+	public Date getLastPregnancyEndDate(Integer patientId);
+
 	public Date getLastObsValue(Integer personId, String conceptName);
 
 	public Date getObsValue(Integer obsId);
+
+	public Integer getObsId(Integer personId, String conceptName,
+			String conceptValue, Date earliest, Date latest);
+
+	public Integer getObsId(Integer personId, String conceptName,
+			Integer doseNumber, Date earliest, Date latest);
+
+	public Integer getEncounterId(Integer patientId, String encounterType,
+			Date earliest, Date latest);
+
+	public void saveService(Service service);
+
+	public List<Service> getIncompleteServices(Integer patientId,
+			String sequence);
+
+	public Map<String, Service> getIncompleteServicesMap(Integer patientId,
+			String sequence);
 
 	public void removeMessageProgramEnrollment(
 			MessageProgramEnrollment enrollment);

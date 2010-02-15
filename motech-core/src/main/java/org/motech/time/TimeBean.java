@@ -21,7 +21,8 @@ public class TimeBean {
 	public Date determineTime(TimePeriod timePeriod,
 			TimeReference timeReference, Integer timeValue, Integer personId,
 			MessageProgramEnrollment enrollment, String conceptName,
-			String valueConceptName, String encounterTypeName) {
+			String valueConceptName, Integer currentDoseNumber,
+			String encounterTypeName) {
 
 		if (timePeriod != null && timeReference != null && timeValue != null) {
 
@@ -46,10 +47,37 @@ public class TimeBean {
 							conceptName, valueConceptName);
 				}
 				break;
+			case last_dose_obs_date:
+				if (personId != null && conceptName != null
+						&& currentDoseNumber != null) {
+					timeReferenceDate = registrarBean.getLastDoseObsDate(
+							personId, conceptName, currentDoseNumber - 1);
+				}
+				break;
+			case last_dose_obs_date_current_pregnancy:
+				if (personId != null && conceptName != null
+						&& currentDoseNumber != null) {
+					timeReferenceDate = registrarBean
+							.getLastDoseObsDateInActivePregnancy(personId,
+									conceptName, currentDoseNumber - 1);
+				}
+				break;
 			case last_obs_datevalue:
 				if (personId != null && conceptName != null) {
 					timeReferenceDate = registrarBean.getLastObsValue(personId,
 							conceptName);
+				}
+				break;
+			case current_pregnancy_duedate:
+				if (personId != null) {
+					timeReferenceDate = registrarBean
+							.getActivePregnancyDueDate(personId);
+				}
+				break;
+			case last_pregnancy_end_date:
+				if (personId != null) {
+					timeReferenceDate = registrarBean
+							.getLastPregnancyEndDate(personId);
 				}
 				break;
 			case enrollment_startdate:
@@ -73,6 +101,9 @@ public class TimeBean {
 			switch (timePeriod) {
 			case minute:
 				calendar.add(Calendar.MINUTE, timeValue);
+				break;
+			case hour:
+				calendar.add(Calendar.HOUR, timeValue);
 				break;
 			case day:
 				calendar.add(Calendar.DATE, timeValue);

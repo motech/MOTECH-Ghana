@@ -1,0 +1,63 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="pregnancyTetanusService" class="org.motech.service.impl.ServiceDeliverySequenceObsImpl">
+		<property name="name" value="TT" />
+		<property name="serviceConceptName" value="TETANUS TOXOID DOSE" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="registrarBean" ref="registrarBean" />
+		<property name="services">
+			<list>
+				<bean class="org.motech.service.impl.ServiceDeliveryDoseImpl">
+					<property name="name" value="TT1" />
+					<property name="doseNumber" value="1" />		
+				</bean>
+				<bean class="org.motech.service.impl.ServiceDeliveryDoseImpl">
+					<property name="name" value="TT2" />
+					<property name="doseNumber" value="2" />
+					<property name="startTimeValue" value="4" />
+					<property name="startTimePeriod" value="week" />
+					<property name="startTimeReference" value="last_dose_obs_date" />
+					<property name="endTimeValue" value="5" />
+					<property name="endTimePeriod" value="week" />
+					<property name="endTimeReference" value="last_dose_obs_date" />					
+				</bean>
+				<bean class="org.motech.service.impl.ServiceDeliveryDoseImpl">
+					<property name="name" value="TT3" />
+					<property name="doseNumber" value="3" />
+					<property name="startTimeValue" value="180" />
+					<property name="startTimePeriod" value="day" />
+					<property name="startTimeReference" value="last_dose_obs_date" />
+					<property name="endTimeValue" value="190" />
+					<property name="endTimePeriod" value="day" />
+					<property name="endTimeReference" value="last_dose_obs_date" />					
+				</bean>
+				<bean class="org.motech.service.impl.ServiceDeliveryDoseImpl">
+					<property name="name" value="TT4" />
+					<property name="doseNumber" value="4" />
+					<property name="startTimeValue" value="365" />
+					<property name="startTimePeriod" value="day" />
+					<property name="startTimeReference" value="last_dose_obs_date" />
+					<property name="endTimeValue" value="370" />
+					<property name="endTimePeriod" value="day" />
+					<property name="endTimeReference" value="last_dose_obs_date" />					
+				</bean>
+				<bean class="org.motech.service.impl.ServiceDeliveryDoseImpl">
+					<property name="name" value="TT5" />
+					<property name="doseNumber" value="5" />
+					<property name="startTimeValue" value="365" />
+					<property name="startTimePeriod" value="day" />
+					<property name="startTimeReference" value="last_dose_obs_date" />
+					<property name="endTimeValue" value="370" />
+					<property name="endTimePeriod" value="day" />
+					<property name="endTimeReference" value="last_dose_obs_date" />					
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+
+</beans>	

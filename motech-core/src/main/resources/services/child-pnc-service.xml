@@ -1,0 +1,48 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="childPNCService" class="org.motech.service.impl.ServiceDeliverySequenceEncImpl">
+		<property name="name" value="PNC" />
+		<property name="encounterTypeName" value="PNCVISIT" />
+		<property name="earliestTimeValue" value="0" />
+		<property name="earliestTimePeriod" value="hour" />
+		<property name="earliestTimeReference" value="patient_birthdate" />	
+		<property name="timeBean" ref="timeBean" />
+		<property name="registrarBean" ref="registrarBean" />	
+		<property name="services">
+			<list>
+				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
+					<property name="name" value="PNC1" />
+					<property name="startTimeValue" value="48" />
+					<property name="startTimePeriod" value="hour" />
+					<property name="startTimeReference" value="patient_birthdate" />
+					<property name="endTimeValue" value="60" />
+					<property name="endTimePeriod" value="hour" />
+					<property name="endTimeReference" value="patient_birthdate" />					
+				</bean>
+				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
+					<property name="name" value="PNC2" />
+					<property name="startTimeValue" value="7" />
+					<property name="startTimePeriod" value="day" />
+					<property name="startTimeReference" value="patient_birthdate" />
+					<property name="endTimeValue" value="8" />
+					<property name="endTimePeriod" value="day" />
+					<property name="endTimeReference" value="patient_birthdate" />					
+				</bean>
+				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
+					<property name="name" value="PNC3" />
+					<property name="startTimeValue" value="14" />
+					<property name="startTimePeriod" value="day" />
+					<property name="startTimeReference" value="patient_birthdate" />
+					<property name="endTimeValue" value="15" />
+					<property name="endTimePeriod" value="day" />
+					<property name="endTimeReference" value="patient_birthdate" />					
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>	

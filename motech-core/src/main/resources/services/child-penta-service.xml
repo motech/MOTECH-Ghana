@@ -1,0 +1,57 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="childPentaService" class="org.motech.service.impl.ServiceDeliverySequenceObsImpl">
+		<property name="name" value="PENTA" />
+		<property name="serviceConceptName" value="PENTA VACCINATION DOSE" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="registrarBean" ref="registrarBean" />
+		<property name="requirements">
+			<list>
+				<bean class="org.motech.service.impl.AgeRequirement">
+					<property name="maxTimeValue" value="5" />
+					<property name="maxTimePeriod" value="year" />
+					<property name="timeBean" ref="timeBean" />
+				</bean>
+			</list>
+		</property>
+		<property name="services">
+			<list>
+				<bean class="org.motech.service.impl.ServiceDeliveryDoseImpl">
+					<property name="name" value="PENTA1" />
+					<property name="doseNumber" value="1" />
+					<property name="startTimeValue" value="6" />
+					<property name="startTimePeriod" value="week" />
+					<property name="startTimeReference" value="patient_birthdate" />
+					<property name="endTimeValue" value="7" />
+					<property name="endTimePeriod" value="week" />
+					<property name="endTimeReference" value="patient_birthdate" />					
+				</bean>
+				<bean class="org.motech.service.impl.ServiceDeliveryDoseImpl">
+					<property name="name" value="PENTA2" />
+					<property name="doseNumber" value="2" />
+					<property name="startTimeValue" value="4" />
+					<property name="startTimePeriod" value="week" />
+					<property name="startTimeReference" value="last_dose_obs_date" />
+					<property name="endTimeValue" value="5" />
+					<property name="endTimePeriod" value="week" />
+					<property name="endTimeReference" value="last_dose_obs_date" />					
+				</bean>
+				<bean class="org.motech.service.impl.ServiceDeliveryDoseImpl">
+					<property name="name" value="PENTA3" />
+					<property name="doseNumber" value="3" />
+					<property name="startTimeValue" value="4" />
+					<property name="startTimePeriod" value="week" />
+					<property name="startTimeReference" value="last_dose_obs_date" />
+					<property name="endTimeValue" value="5" />
+					<property name="endTimePeriod" value="week" />
+					<property name="endTimeReference" value="last_dose_obs_date" />					
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>	
