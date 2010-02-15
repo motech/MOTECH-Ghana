@@ -16,6 +16,8 @@ import org.motech.model.MessageDefinition;
 import org.motech.model.MessageProgramEnrollment;
 import org.motech.model.MessageStatus;
 import org.motech.model.ScheduledMessage;
+import org.motech.model.Service;
+import org.motech.model.ServiceStatus;
 import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
 import org.openmrs.Concept;
@@ -449,6 +451,33 @@ public class HibernateMotechDAO implements MotechDAO {
 				pregnancyConcept).setEntity("pregnancyStatusConcept",
 				pregnancyStatusConcept).setDouble("trueDouble", 1.0).setDouble(
 				"falseDouble", 0.0).list();
+	}
+
+	public Service saveService(Service service) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(service);
+		return service;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Service> getServices(Integer patientId, String sequence,
+			ServiceStatus status) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Service>) session.createCriteria(Service.class).add(
+				Restrictions.eq("patientId", patientId)).add(
+				Restrictions.eq("sequence", sequence)).add(
+				Restrictions.eq("status", status)).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Service> getServices(Integer patientId, String service,
+			String sequence, ServiceStatus status) {
+		Session session = sessionFactory.getCurrentSession();
+		return (List<Service>) session.createCriteria(Service.class).add(
+				Restrictions.eq("patientId", patientId)).add(
+				Restrictions.eq("service", service)).add(
+				Restrictions.eq("sequence", sequence)).add(
+				Restrictions.eq("status", status)).list();
 	}
 
 }

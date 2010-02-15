@@ -12,6 +12,8 @@ import org.motech.model.MessageDefinition;
 import org.motech.model.MessageProgramEnrollment;
 import org.motech.model.MessageStatus;
 import org.motech.model.ScheduledMessage;
+import org.motech.model.Service;
+import org.motech.model.ServiceStatus;
 import org.motech.model.TroubledPhone;
 import org.openmrs.Concept;
 import org.openmrs.Location;
@@ -122,4 +124,12 @@ public interface MotechDAO {
 
 	List<Obs> getActivePregnancies(Integer patientId, Concept pregnancyConcept,
 			Concept pregnancyStatusConcept);
+
+	Service saveService(Service service);
+
+	List<Service> getServices(Integer patientId, String sequence,
+			ServiceStatus status);
+
+	List<Service> getServices(Integer patientId, String service,
+			String sequence, ServiceStatus status);
 }

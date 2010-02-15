@@ -25,6 +25,8 @@ import org.motech.model.MessageDefinition;
 import org.motech.model.MessageProgramEnrollment;
 import org.motech.model.MessageStatus;
 import org.motech.model.ScheduledMessage;
+import org.motech.model.Service;
+import org.motech.model.ServiceStatus;
 import org.motech.model.TroubledPhone;
 import org.motech.svc.RegistrarBean;
 import org.openmrs.Concept;
@@ -183,4 +185,15 @@ public interface MotechService extends OpenmrsService {
 
 	List<Obs> getActivePregnancies(Integer patientId, Concept pregnancyConcept,
 			Concept pregnancyStatusConcept);
+
+	@Transactional
+	Service saveService(Service service);
+
+	@Transactional(readOnly = true)
+	List<Service> getServices(Integer patientId, String sequence,
+			ServiceStatus status);
+
+	@Transactional(readOnly = true)
+	List<Service> getServices(Integer patientId, String service,
+			String sequence, ServiceStatus status);
 }

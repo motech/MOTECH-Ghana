@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="${corePackage}.model">
+	<class name="Service" table="motechmodule_service">
+		<id name="id" column="motechmodule_service_id">
+			<generator class="native" />
+		</id>
+		<property name="patientId" type="int" column="patient_id"
+			not-null="true" />
+		<property name="service" type="string" column="service"
+			not-null="true" length="200" />
+		<property name="sequence" type="string" column="sequence"
+			not-null="true" length="200" />
+		<property name="earliest" type="java.util.Date" column="earliest" />
+		<property name="preferredStart" type="java.util.Date" column="preferred_start"
+			not-null="true" />
+		<property name="preferredEnd" type="java.util.Date" column="preferred_end"
+			not-null="true" />
+		<property name="latest" type="java.util.Date" column="latest" />
+		<property name="status"
+			type="${corePackage}.model.db.hibernate.ServiceStatusEnumType"
+			column="status" not-null="true" length="10" />
+		<property name="deliveryId" type="int" column="delivery_id" />
+	</class>
+</hibernate-mapping>

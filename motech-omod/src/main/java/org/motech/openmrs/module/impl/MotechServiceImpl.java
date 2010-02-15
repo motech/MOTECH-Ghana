@@ -25,6 +25,8 @@ import org.motech.model.MessageDefinition;
 import org.motech.model.MessageProgramEnrollment;
 import org.motech.model.MessageStatus;
 import org.motech.model.ScheduledMessage;
+import org.motech.model.Service;
+import org.motech.model.ServiceStatus;
 import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
 import org.motech.openmrs.module.MotechService;
@@ -266,5 +268,19 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 			Concept pregnancyConcept, Concept pregnancyStatusConcept) {
 		return motechDAO.getActivePregnancies(patientId, pregnancyConcept,
 				pregnancyStatusConcept);
+	}
+
+	public Service saveService(Service service) {
+		return motechDAO.saveService(service);
+	}
+
+	public List<Service> getServices(Integer patientId, String sequence,
+			ServiceStatus status) {
+		return motechDAO.getServices(patientId, sequence, status);
+	}
+
+	public List<Service> getServices(Integer patientId, String service,
+			String sequence, ServiceStatus status) {
+		return motechDAO.getServices(patientId, service, sequence, status);
 	}
 }
