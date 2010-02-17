@@ -49,9 +49,8 @@ public interface RegistrarBean {
 	@RunAsUser
 	public Patient registerChild(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date regDate, Patient mother, String childRegNum, Date childDob,
-			Gender childGender, String childFirstName, String nhis,
-			Date nhisExpires);
+			Patient mother, String childId, Date birthDate, Gender sex,
+			String firstName, String nhis, Date nhisExpires);
 
 	public void registerChild(String firstName, String middleName,
 			String lastName, String prefName, Date birthDate,
@@ -143,48 +142,58 @@ public interface RegistrarBean {
 			WhoRegistered whoRegistered, String howLearned);
 
 	@RunAsAdminUser
-	public void recordMotherANCVisit(String facilityId, Date date,
-			Patient patient, Integer visitNumber, Integer ttDose,
+	public void recordMotherANCVisit(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Date date, Patient patient, Integer visitNumber, Integer ttDose,
 			Integer iptDose, Boolean itnUse,
 			org.motechproject.ws.HIVStatus hivStatus);
 
 	@RunAsAdminUser
-	public void recordPregnancyTermination(String facilityId, Date date,
-			Patient patient, Integer abortionType, Integer complication);
+	public void recordPregnancyTermination(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Date date, Patient patient, Integer abortionType,
+			Integer complication);
 
 	@RunAsAdminUser
-	public void recordPregnancyDelivery(String facilityId, Date date,
-			Patient patient, Integer method, Integer outcome, Integer location,
-			DeliveredBy deliveredBy, Boolean maternalDeath, Integer cause,
-			BirthOutcomeChild[] outcomes);
+	public void recordPregnancyDelivery(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Date date, Patient patient, Integer method, Integer outcome,
+			Integer location, DeliveredBy deliveredBy, Boolean maternalDeath,
+			Integer cause, BirthOutcomeChild[] outcomes);
 
 	@RunAsAdminUser
-	public void recordMotherPPCVisit(String facilityId, Date date,
-			Patient patient, Integer visitNumber, Boolean vitaminA,
+	public void recordMotherPPCVisit(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Date date, Patient patient, Integer visitNumber, Boolean vitaminA,
 			Integer ttDose);
 
 	@RunAsAdminUser
-	public void recordDeath(String facilityId, Date date, Patient patient,
-			Integer cause);
+	public void recordDeath(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Date date, Patient patient, Integer cause);
 
 	@RunAsAdminUser
-	public void recordChildPNCVisit(String facilityId, Date date,
-			Patient patient, Boolean bcg, Integer opvDose, Integer pentaDose,
-			Boolean yellowFever, Boolean csm, Boolean ipti, Boolean vitaminA);
+	public void recordChildPNCVisit(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Date date, Patient patient, Boolean bcg, Integer opvDose,
+			Integer pentaDose, Boolean yellowFever, Boolean csm,
+			Boolean measles, Boolean ipti, Boolean vitaminA);
 
-	public void recordGeneralVisit(String facilityId, Date date,
+	public void recordGeneralVisit(String chpsId, Date date,
 			String serialNumber, Gender sex, Date birthDate, Boolean insured,
 			Boolean newCase, Integer diagnosis, Integer secondaryDiagnosis,
 			Boolean referral);
 
 	@RunAsAdminUser
-	public void recordChildVisit(String facilityId, Date date, Patient patient,
-			String serialNumber, Boolean newCase, Integer diagnosis,
-			Integer secondDiagnosis, Boolean referral);
+	public void recordChildVisit(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Date date, Patient patient, String serialNumber, Boolean newCase,
+			Integer diagnosis, Integer secondDiagnosis, Boolean referral);
 
 	@RunAsAdminUser
-	public void recordMotherVisit(String facilityId, Date date,
-			Patient patient, String serialNumber, Boolean newCase,
+	public void recordMotherVisit(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Date date, Patient patient, String serialNumber, Boolean newCase,
 			Integer diagnosis, Integer secondDiagnosis, Boolean referral);
 
 	public void log(LogType type, String message);

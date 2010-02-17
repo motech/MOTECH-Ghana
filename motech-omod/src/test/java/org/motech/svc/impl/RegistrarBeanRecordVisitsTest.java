@@ -24,6 +24,7 @@ import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.SkipBaseSetup;
@@ -88,8 +89,13 @@ public class RegistrarBeanRecordVisitsTest extends
 			String child1Id = "ChildRegNumber1";
 			String child2Id = "ChildRegNumber2";
 			String child3Id = "ChildRegNumber3";
-			String facilityId = "FacilityId";
+			String nurseId = "NurseId";
 			Date date = new Date();
+
+			regService.registerNurse("Nurse", nurseId, "nursePhone",
+					"West Test Clinic");
+			User nurse = regService.getNurseByCHPSId(nurseId);
+			assertNotNull("Nurse not registered", nurse);
 
 			regService.registerPregnantMother("Mother1FirstName",
 					"Mother1MiddleName", "Mother1LastName", "Mother1PrefName",
@@ -133,7 +139,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					.getPatientService().getAllPatients().size());
 
 			// ANC Visit for Mother 1
-			regService.recordMotherANCVisit(facilityId, date, mother1, 1, 1, 1,
+			regService.recordMotherANCVisit(nurse, date, mother1, 1, 1, 1,
 					true, org.motechproject.ws.HIVStatus.N);
 
 			assertEquals("ANC visit not added for Mother 1", 1, Context
@@ -146,8 +152,8 @@ public class RegistrarBeanRecordVisitsTest extends
 							Gender.MALE, "Child2FirstName", true, true),
 					new BirthOutcomeChild(BirthOutcome.FSB, child3Id,
 							Gender.MALE, "Child3FirstName", true, true) };
-			regService.recordPregnancyDelivery(facilityId, date, mother1, 1, 1,
-					1, DeliveredBy.CHO, false, 1, outcomes);
+			regService.recordPregnancyDelivery(nurse, date, mother1, 1, 1, 1,
+					DeliveredBy.CHO, false, 1, outcomes);
 
 			assertEquals("Pregnancy delivery not added for Mother 1", 2,
 					Context.getEncounterService().getEncountersByPatient(
@@ -171,8 +177,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			assertNull("Child 3 not voided", child3);
 
 			// Pregnancy Termination for Mother 2
-			regService.recordPregnancyTermination(facilityId, date, mother2, 1,
-					1);
+			regService.recordPregnancyTermination(nurse, date, mother2, 1, 1);
 
 			assertEquals("Pregnancy termination not added for Mother 2", 1,
 					Context.getEncounterService().getEncountersByPatient(
@@ -183,15 +188,14 @@ public class RegistrarBeanRecordVisitsTest extends
 					mother2Pregnancy);
 
 			// PPC Visit for Mother 2
-			regService.recordMotherPPCVisit(facilityId, date, mother2, 1, true,
-					2);
+			regService.recordMotherPPCVisit(nurse, date, mother2, 1, true, 2);
 
 			assertEquals("PPC visit not added for Mother 2", 2, Context
 					.getEncounterService().getEncountersByPatient(mother2)
 					.size());
 
 			// General Visit for Mother 2
-			regService.recordMotherVisit(facilityId, date, mother2,
+			regService.recordMotherVisit(nurse, date, mother2,
 					"Mother2GeneralId", true, 1, 2, false);
 
 			assertEquals("General visit not added for Mother 2", 3, Context
@@ -199,23 +203,23 @@ public class RegistrarBeanRecordVisitsTest extends
 					.size());
 
 			// PNC Visit for Child 2
-			regService.recordChildPNCVisit(facilityId, date, child2, true, 1,
-					1, true, true, true, true);
+			regService.recordChildPNCVisit(nurse, date, child2, true, 1, 1,
+					true, true, true, true, true);
 
 			assertEquals("PNC visit not added for Child 2", 2, Context
 					.getEncounterService().getEncountersByPatient(child2)
 					.size());
 
 			// General Visit for Child 1
-			regService.recordChildVisit(facilityId, date, child1,
-					"Child1GeneralId", true, 4, 5, false);
+			regService.recordChildVisit(nurse, date, child1, "Child1GeneralId",
+					true, 4, 5, false);
 
 			assertEquals("General visit not added for Child 1", 1, Context
 					.getEncounterService().getEncountersByPatient(child1)
 					.size());
 
 			// Record Death of Child 1
-			regService.recordDeath(facilityId, date, child1, 1);
+			regService.recordDeath(nurse, date, child1, 1);
 
 			assertEquals("Deceased child 1 not voided", 5, Context
 					.getPatientService().getAllPatients().size());

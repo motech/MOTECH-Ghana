@@ -40,8 +40,7 @@ public class RegistrarWebService implements RegistrarService {
 	RegistrarBean registrarBean;
 
 	@WebMethod
-	public void recordMotherANCVisit(
-			@WebParam(name = "facilityId") String facilityId,
+	public void recordMotherANCVisit(@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "patientId") String patientId,
 			@WebParam(name = "visitNumber") Integer visitNumber,
@@ -53,23 +52,21 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		Patient patient = registrarBean.getPatientBySerial(patientId);
-		if (patient == null) {
-			errors.add(1, "patientId");
-		}
+		User nurse = validateChpsId(chpsId, errors, "chpsId");
+		Patient patient = validatePatientId(patientId, errors, "patientId");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Record Mother ANC Visit request", errors);
 		}
 
-		registrarBean.recordMotherANCVisit(facilityId, date, patient,
-				visitNumber, ttDose, iptDose, itnUse, hivStatus);
+		registrarBean.recordMotherANCVisit(nurse, date, patient, visitNumber,
+				ttDose, iptDose, itnUse, hivStatus);
 	}
 
 	@WebMethod
 	public void recordPregnancyTermination(
-			@WebParam(name = "facilityId") String facilityId,
+			@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "patientId") String patientId,
 			@WebParam(name = "abortionType") Integer abortionType,
@@ -78,23 +75,21 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		Patient patient = registrarBean.getPatientBySerial(patientId);
-		if (patient == null) {
-			errors.add(1, "patientId");
-		}
+		User nurse = validateChpsId(chpsId, errors, "chpsId");
+		Patient patient = validatePatientId(patientId, errors, "patientId");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Record Pregnancy Termination request", errors);
 		}
 
-		registrarBean.recordPregnancyTermination(facilityId, date, patient,
+		registrarBean.recordPregnancyTermination(nurse, date, patient,
 				abortionType, complication);
 	}
 
 	@WebMethod
 	public void recordPregnancyDelivery(
-			@WebParam(name = "facilityId") String facilityId,
+			@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "patientId") String patientId,
 			@WebParam(name = "method") Integer method,
@@ -119,10 +114,8 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		Patient patient = registrarBean.getPatientBySerial(patientId);
-		if (patient == null) {
-			errors.add(1, "patientId");
-		}
+		User nurse = validateChpsId(chpsId, errors, "chpsId");
+		Patient patient = validatePatientId(patientId, errors, "patientId");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -137,14 +130,12 @@ public class RegistrarWebService implements RegistrarService {
 				child2BCG);
 		BirthOutcomeChild[] outcomes = new BirthOutcomeChild[] { child1, child2 };
 
-		registrarBean.recordPregnancyDelivery(facilityId, date, patient,
-				method, outcome, location, deliveredBy, maternalDeath, cause,
-				outcomes);
+		registrarBean.recordPregnancyDelivery(nurse, date, patient, method,
+				outcome, location, deliveredBy, maternalDeath, cause, outcomes);
 	}
 
 	@WebMethod
-	public void recordMotherPPCVisit(
-			@WebParam(name = "facilityId") String facilityId,
+	public void recordMotherPPCVisit(@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "patientId") String patientId,
 			@WebParam(name = "visitNumber") Integer visitNumber,
@@ -154,44 +145,39 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		Patient patient = registrarBean.getPatientBySerial(patientId);
-		if (patient == null) {
-			errors.add(1, "patientId");
-		}
+		User nurse = validateChpsId(chpsId, errors, "chpsId");
+		Patient patient = validatePatientId(patientId, errors, "patientId");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Record Mother PPC Visit request", errors);
 		}
 
-		registrarBean.recordMotherPPCVisit(facilityId, date, patient,
-				visitNumber, vitaminA, ttDose);
+		registrarBean.recordMotherPPCVisit(nurse, date, patient, visitNumber,
+				vitaminA, ttDose);
 	}
 
 	@WebMethod
-	public void recordDeath(@WebParam(name = "facilityId") String facilityId,
+	public void recordDeath(@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "patientId") String patientId,
 			@WebParam(name = "cause") Integer cause) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		Patient patient = registrarBean.getPatientBySerial(patientId);
-		if (patient == null) {
-			errors.add(1, "patientId");
-		}
+		User nurse = validateChpsId(chpsId, errors, "chpsId");
+		Patient patient = validatePatientId(patientId, errors, "patientId");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException("Errors in Record Death request",
 					errors);
 		}
 
-		registrarBean.recordDeath(facilityId, date, patient, cause);
+		registrarBean.recordDeath(nurse, date, patient, cause);
 	}
 
 	@WebMethod
-	public void recordChildPNCVisit(
-			@WebParam(name = "facilityId") String facilityId,
+	public void recordChildPNCVisit(@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "patientId") String patientId,
 			@WebParam(name = "bcg") Boolean bcg,
@@ -199,60 +185,51 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "pentaDose") Integer pentaDose,
 			@WebParam(name = "yellowFever") Boolean yellowFever,
 			@WebParam(name = "csm") Boolean csm,
+			@WebParam(name = "measles") Boolean measles,
 			@WebParam(name = "ipti") Boolean ipti,
 			@WebParam(name = "vitaminA") Boolean vitaminA)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		Patient patient = registrarBean.getPatientBySerial(patientId);
-		if (patient == null) {
-			errors.add(1, "patientId");
-		}
+		User nurse = validateChpsId(chpsId, errors, "chpsId");
+		Patient patient = validatePatientId(patientId, errors, "patientId");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Record Child PNC Visit request", errors);
 		}
 
-		registrarBean.recordChildPNCVisit(facilityId, date, patient, bcg,
-				opvDose, pentaDose, yellowFever, csm, ipti, vitaminA);
+		registrarBean.recordChildPNCVisit(nurse, date, patient, bcg, opvDose,
+				pentaDose, yellowFever, csm, measles, ipti, vitaminA);
 	}
 
 	@WebMethod
 	public void registerChild(@WebParam(name = "chpsId") String chpsId,
-			@WebParam(name = "regDate") Date regDate,
-			@WebParam(name = "motherRegNum") String motherRegNum,
-			@WebParam(name = "childRegNum") String childRegNum,
-			@WebParam(name = "childDob") Date childDob,
-			@WebParam(name = "childGender") Gender childGender,
-			@WebParam(name = "childFirstName") String childFirstName,
+			@WebParam(name = "motherId") String motherId,
+			@WebParam(name = "childId") String childId,
+			@WebParam(name = "birthDate") Date birthDate,
+			@WebParam(name = "sex") Gender sex,
+			@WebParam(name = "firstName") String firstName,
 			@WebParam(name = "nhis") String nhis,
 			@WebParam(name = "nhisExpires") Date nhisExpires)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = registrarBean.getNurseByCHPSId(chpsId);
-		if (nurse == null) {
-			errors.add(1, "chpsId");
-		}
+		User nurse = validateChpsId(chpsId, errors, "chpsId");
+		Patient mother = validatePatientId(motherId, errors, "motherId");
 
-		Patient mother = registrarBean.getPatientBySerial(motherRegNum);
-		if (mother == null) {
-			errors.add(1, "motherRegNum");
-		}
-
-		Patient child = registrarBean.getPatientBySerial(childRegNum);
+		Patient child = registrarBean.getPatientBySerial(childId);
 		if (child != null) {
-			errors.add(2, "childRegNum");
+			errors.add(2, "childId");
 		}
 
 		Calendar dobCal = new GregorianCalendar();
 		int origYear = dobCal.get(Calendar.YEAR);
 		dobCal.set(Calendar.YEAR, origYear - 5);
-		if (childDob.before(dobCal.getTime())) {
-			errors.add(2, "childDob");
+		if (birthDate.before(dobCal.getTime())) {
+			errors.add(2, "birthDate");
 		}
 
 		if (errors.getErrors().size() > 0) {
@@ -260,14 +237,14 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		registrarBean.registerChild(nurse, regDate, mother, childRegNum,
-				childDob, childGender, childFirstName, nhis, nhisExpires);
+		registrarBean.registerChild(nurse, mother, childId, birthDate, sex,
+				firstName, nhis, nhisExpires);
 	}
 
 	@WebMethod
 	public void editPatient(
 			@WebParam(name = "chpsId") String chpsId,
-			@WebParam(name = "patientRegNum") String patientRegNum,
+			@WebParam(name = "patientId") String patientId,
 			@WebParam(name = "primaryPhone") String primaryPhone,
 			@WebParam(name = "primaryPhoneType") ContactNumberType primaryPhoneType,
 			@WebParam(name = "secondaryPhone") String secondaryPhone,
@@ -278,15 +255,8 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = registrarBean.getNurseByCHPSId(chpsId);
-		if (nurse == null) {
-			errors.add(1, "chpsId");
-		}
-
-		Patient patient = registrarBean.getPatientBySerial(patientRegNum);
-		if (patient == null) {
-			errors.add(1, "patientRegNum");
-		}
+		User nurse = validateChpsId(chpsId, errors, "chpsId");
+		Patient patient = validatePatientId(patientId, errors, "patientId");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException("Errors in Edit Patient request",
@@ -300,20 +270,13 @@ public class RegistrarWebService implements RegistrarService {
 
 	@WebMethod
 	public void stopPregnancyProgram(@WebParam(name = "chpsId") String chpsId,
-			@WebParam(name = "patientRegNum") String patientRegNum)
+			@WebParam(name = "patientId") String patientId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = registrarBean.getNurseByCHPSId(chpsId);
-		if (nurse == null) {
-			errors.add(1, "chpsId");
-		}
-
-		Patient patient = registrarBean.getPatientBySerial(patientRegNum);
-		if (patient == null) {
-			errors.add(1, "patientRegNum");
-		}
+		User nurse = validateChpsId(chpsId, errors, "chpsId");
+		Patient patient = validatePatientId(patientId, errors, "patientId");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -324,8 +287,7 @@ public class RegistrarWebService implements RegistrarService {
 	}
 
 	@WebMethod
-	public void recordGeneralVisit(
-			@WebParam(name = "facilityId") String facilityId,
+	public void recordGeneralVisit(@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "serialNumber") String serialNumber,
 			@WebParam(name = "sex") Gender sex,
@@ -337,21 +299,22 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "referral") Boolean referral)
 			throws ValidationException {
 
-		if (facilityId == null) {
-			ValidationErrors errors = new ValidationErrors();
-			errors.add(3, "facilityId");
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(chpsId, errors, "chpsId");
+
+		if (errors.getErrors().size() > 0) {
 			throw new ValidationException("Errors in General Visit request",
 					errors);
 		}
 
-		registrarBean.recordGeneralVisit(facilityId, date, serialNumber, sex,
+		registrarBean.recordGeneralVisit(chpsId, date, serialNumber, sex,
 				birthDate, insured, newCase, diagnosis, secondDiagnosis,
 				referral);
 	}
 
 	@WebMethod
-	public void recordChildVisit(
-			@WebParam(name = "facilityId") String facilityId,
+	public void recordChildVisit(@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "serialNumber") String serialNumber,
 			@WebParam(name = "patientId") String patientId,
@@ -363,23 +326,20 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		Patient patient = registrarBean.getPatientBySerial(patientId);
-		if (patient == null) {
-			errors.add(1, "patientId");
-		}
+		User nurse = validateChpsId(chpsId, errors, "chpsId");
+		Patient patient = validatePatientId(patientId, errors, "patientId");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Record Child Visit request", errors);
 		}
 
-		registrarBean.recordChildVisit(facilityId, date, patient, serialNumber,
+		registrarBean.recordChildVisit(nurse, date, patient, serialNumber,
 				newCase, diagnosis, secondDiagnosis, referral);
 	}
 
 	@WebMethod
-	public void recordMotherVisit(
-			@WebParam(name = "facilityId") String facilityId,
+	public void recordMotherVisit(@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "serialNumber") String serialNumber,
 			@WebParam(name = "patientId") String patientId,
@@ -391,18 +351,16 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		Patient patient = registrarBean.getPatientBySerial(patientId);
-		if (patient == null) {
-			errors.add(1, "patientId");
-		}
+		User nurse = validateChpsId(chpsId, errors, "chpsId");
+		Patient patient = validatePatientId(patientId, errors, "patientId");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Record Mother Visit request", errors);
 		}
 
-		registrarBean.recordMotherVisit(facilityId, date, patient,
-				serialNumber, newCase, diagnosis, secondDiagnosis, referral);
+		registrarBean.recordMotherVisit(nurse, date, patient, serialNumber,
+				newCase, diagnosis, secondDiagnosis, referral);
 	}
 
 	@WebMethod
@@ -423,6 +381,24 @@ public class RegistrarWebService implements RegistrarService {
 	@WebMethod(exclude = true)
 	public void setRegistrarBean(RegistrarBean registrarBean) {
 		this.registrarBean = registrarBean;
+	}
+
+	private User validateChpsId(String chpsId, ValidationErrors errors,
+			String fieldName) {
+		User nurse = registrarBean.getNurseByCHPSId(chpsId);
+		if (nurse == null) {
+			errors.add(1, fieldName);
+		}
+		return nurse;
+	}
+
+	private Patient validatePatientId(String patientId,
+			ValidationErrors errors, String fieldName) {
+		Patient patient = registrarBean.getPatientBySerial(patientId);
+		if (patient == null) {
+			errors.add(1, fieldName);
+		}
+		return patient;
 	}
 
 }

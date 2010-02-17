@@ -462,8 +462,7 @@ public class RegistrarBeanTest extends TestCase {
 
 	public void testRegisterChild() {
 
-		Date regDate = new Date(3489), childDob = new Date(874984), nhisExpires = new Date(
-				3784784);
+		Date childDob = new Date(874984), nhisExpires = new Date(3784784);
 		String motherId = "PATIENT1234";
 		String childId = "CHILD3783";
 		Gender childGender = Gender.MALE;
@@ -523,7 +522,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		replay(contextService, personService, patientService, locationService);
 
-		regBean.registerChild(nurseUser, regDate, mother, childId, childDob,
+		regBean.registerChild(nurseUser, mother, childId, childDob,
 				childGender, childFirstName, nhis, nhisExpires);
 
 		verify(contextService, personService, patientService, locationService);

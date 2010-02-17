@@ -106,9 +106,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return messagePrograms.get(programName);
 	}
 
-	public Patient registerChild(User nurse, Date regDate, Patient mother,
-			String childRegNum, Date childDob, Gender childGender,
-			String childFirstName, String nhis, Date nhisExpires) {
+	public Patient registerChild(User nurse, Patient mother, String childId,
+			Date birthDate, Gender sex, String firstName, String nhis,
+			Date nhisExpires) {
 
 		PatientService patientService = contextService.getPatientService();
 
@@ -126,11 +126,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			address = motherAddress.getAddress1();
 		}
 
-		Patient child = createPatient(childRegNum, childFirstName, null, mother
-				.getFamilyName(), null, childDob, false, childGender, null,
-				childRegNum, null, null, nhis, nhisExpires, null, region,
-				district, community, address, null, null, null, null, null,
-				null, null, null, null, null, null, WhoRegistered.CHPS_STAFF);
+		Patient child = createPatient(childId, firstName, null, mother
+				.getFamilyName(), null, birthDate, false, sex, null, childId,
+				null, null, nhis, nhisExpires, null, region, district,
+				community, address, null, null, null, null, null, null, null,
+				null, null, null, null, WhoRegistered.CHPS_STAFF);
 
 		return patientService.savePatient(child);
 	}
@@ -752,10 +752,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return null;
 	}
 
-	public void recordMotherANCVisit(String facilityId, Date date,
-			Patient patient, Integer visitNumber, Integer ttDose,
-			Integer iptDose, Boolean itnUse,
-			org.motechproject.ws.HIVStatus hivStatus) {
+	public void recordMotherANCVisit(User nurse, Date date, Patient patient,
+			Integer visitNumber, Integer ttDose, Integer iptDose,
+			Boolean itnUse, org.motechproject.ws.HIVStatus hivStatus) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -807,7 +806,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
-	public void recordPregnancyTermination(String facilityId, Date date,
+	public void recordPregnancyTermination(User nurse, Date date,
 			Patient patient, Integer abortionType, Integer complication) {
 
 		EncounterService encounterService = contextService
@@ -847,8 +846,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		obsService.saveObs(pregnancyStatusObs, null);
 	}
 
-	public void recordPregnancyDelivery(String facilityId, Date date,
-			Patient patient, Integer method, Integer outcome, Integer location,
+	public void recordPregnancyDelivery(User nurse, Date date, Patient patient,
+			Integer method, Integer outcome, Integer location,
 			DeliveredBy deliveredBy, Boolean maternalDeath, Integer cause,
 			BirthOutcomeChild[] outcomes) {
 
@@ -907,7 +906,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				obsService.saveObs(childOutcomeObs, null);
 			}
 
-			Patient child = registerChild(null, null, patient, childOutcome
+			Patient child = registerChild(null, patient, childOutcome
 					.getPatientId(), date, childOutcome.getSex(), childOutcome
 					.getFirstName(), null, null);
 
@@ -916,8 +915,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				if (childOutcome.getOpv()) {
 					opvDose = 0;
 				}
-				recordChildPNCVisit(facilityId, date, child, childOutcome
-						.getBcg(), opvDose, null, null, null, null, null);
+				recordChildPNCVisit(nurse, date, child, childOutcome.getBcg(),
+						opvDose, null, null, null, null, null, null);
 			}
 
 			if (BirthOutcome.A != childOutcome.getOutcome()) {
@@ -937,9 +936,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
-	public void recordMotherPPCVisit(String facilityId, Date date,
-			Patient patient, Integer visitNumber, Boolean vitaminA,
-			Integer ttDose) {
+	public void recordMotherPPCVisit(User nurse, Date date, Patient patient,
+			Integer visitNumber, Boolean vitaminA, Integer ttDose) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -975,7 +973,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
-	public void recordDeath(String facilityId, Date date, Patient patient,
+	public void recordDeath(User nurse, Date date, Patient patient,
 			Integer cause) {
 
 		ObsService obsService = contextService.getObsService();
@@ -1006,9 +1004,10 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		personService.voidPerson(patient, "Deceased");
 	}
 
-	public void recordChildPNCVisit(String facilityId, Date date,
-			Patient patient, Boolean bcg, Integer opvDose, Integer pentaDose,
-			Boolean yellowFever, Boolean csm, Boolean ipti, Boolean vitaminA) {
+	public void recordChildPNCVisit(User nurse, Date date, Patient patient,
+			Boolean bcg, Integer opvDose, Integer pentaDose,
+			Boolean yellowFever, Boolean csm, Boolean measles, Boolean ipti,
+			Boolean vitaminA) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -1053,6 +1052,12 @@ public class RegistrarBeanImpl implements RegistrarBean {
 					getCSMConcept(), encounter, null);
 			obsService.saveObs(csmObs, null);
 		}
+		if (measles != null && measles) {
+			Obs measlesObs = createConceptValueObs(date,
+					getImmunizationsOrderedConcept(), patient, location,
+					getMeaslesConcept(), encounter, null);
+			obsService.saveObs(measlesObs, null);
+		}
 		if (ipti != null && ipti) {
 			Obs iptiObs = createConceptValueObs(date,
 					getImmunizationsOrderedConcept(), patient, location,
@@ -1067,12 +1072,12 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
-	public void recordGeneralVisit(String facilityId, Date date,
+	public void recordGeneralVisit(String chpsId, Date date,
 			String serialNumber, Gender sex, Date birthDate, Boolean insured,
 			Boolean newCase, Integer diagnosis, Integer secondaryDiagnosis,
 			Boolean referral) {
 
-		log.debug("Date: " + date + ", Facility: " + facilityId + ", Serial: "
+		log.debug("Date: " + date + ", CHPS Id: " + chpsId + ", Serial: "
 				+ serialNumber + ", Sex: " + sex + ", Birthdate: " + birthDate
 				+ ", Insured: " + insured + ", New Case: " + newCase
 				+ ", Diagnosis: " + diagnosis + ", Sec Diagnosis: "
@@ -1081,7 +1086,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		MotechService motechService = contextService.getMotechService();
 
 		GeneralPatientEncounter encounter = new GeneralPatientEncounter();
-		encounter.setFacilityId(facilityId);
+		encounter.setFacilityId(chpsId);
 		encounter.setDate(date);
 		encounter.setSerialNumber(serialNumber);
 		encounter.setSex(sex);
@@ -1095,23 +1100,23 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		motechService.saveGeneralPatientEncounter(encounter);
 	}
 
-	public void recordChildVisit(String facilityId, Date date, Patient patient,
+	public void recordChildVisit(User nurse, Date date, Patient patient,
 			String serialNumber, Boolean newCase, Integer diagnosis,
 			Integer secondDiagnosis, Boolean referral) {
 
-		recordMotherChildGeneralVisit(facilityId, date, patient, serialNumber,
+		recordMotherChildGeneralVisit(nurse, date, patient, serialNumber,
 				newCase, diagnosis, secondDiagnosis, referral);
 	}
 
-	public void recordMotherVisit(String facilityId, Date date,
-			Patient patient, String serialNumber, Boolean newCase,
-			Integer diagnosis, Integer secondDiagnosis, Boolean referral) {
+	public void recordMotherVisit(User nurse, Date date, Patient patient,
+			String serialNumber, Boolean newCase, Integer diagnosis,
+			Integer secondDiagnosis, Boolean referral) {
 
-		recordMotherChildGeneralVisit(facilityId, date, patient, serialNumber,
+		recordMotherChildGeneralVisit(nurse, date, patient, serialNumber,
 				newCase, diagnosis, secondDiagnosis, referral);
 	}
 
-	private void recordMotherChildGeneralVisit(String facilityId, Date date,
+	private void recordMotherChildGeneralVisit(User nurse, Date date,
 			Patient patient, String serialNumber, Boolean newCase,
 			Integer diagnosis, Integer secondDiagnosis, Boolean referral) {
 
@@ -3032,6 +3037,11 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public Concept getCSMConcept() {
 		return contextService.getConceptService().getConcept(
 				MotechConstants.CONCEPT_CEREBRO_SPINAL_MENINGITIS_VACCINATION);
+	}
+
+	public Concept getMeaslesConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_MEASLES_VACCINATION);
 	}
 
 	public Concept getIPTiConcept() {
