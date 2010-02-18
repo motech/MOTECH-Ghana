@@ -27,15 +27,16 @@ import org.junit.Test;
 import org.motech.svc.BirthOutcomeChild;
 import org.motech.svc.RegistrarBean;
 import org.motechproject.ws.BirthOutcome;
+import org.motechproject.ws.Care;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveredBy;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.HIVStatus;
 import org.motechproject.ws.LogType;
+import org.motechproject.ws.Patient;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationError;
 import org.motechproject.ws.server.ValidationException;
-import org.openmrs.Patient;
 import org.openmrs.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -85,7 +86,7 @@ public class RegistrarServiceTest {
 		HIVStatus hivStatus = HIVStatus.NA;
 
 		User nurse = new User(1);
-		Patient patient = new Patient(2);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
 		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
@@ -130,7 +131,7 @@ public class RegistrarServiceTest {
 			assertEquals(1, errors.size());
 			ValidationError error = errors.get(0);
 			assertEquals(1, error.getCode());
-			assertEquals("patientId", error.getField());
+			assertEquals("MotechID", error.getField());
 		}
 
 		verify(registrarBean);
@@ -143,7 +144,7 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 
 		User nurse = new User(1);
-		Patient patient = new Patient(2);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
 		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
@@ -186,7 +187,7 @@ public class RegistrarServiceTest {
 			assertEquals(1, errors.size());
 			ValidationError error = errors.get(0);
 			assertEquals(1, error.getCode());
-			assertEquals("patientId", error.getField());
+			assertEquals("MotechID", error.getField());
 		}
 
 		verify(registrarBean);
@@ -206,7 +207,7 @@ public class RegistrarServiceTest {
 		Gender child2Sex = Gender.MALE;
 
 		User nurse = new User(1);
-		Patient patient = new Patient(2);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		Capture<BirthOutcomeChild[]> outcomesCapture = new Capture<BirthOutcomeChild[]>();
 
@@ -283,7 +284,7 @@ public class RegistrarServiceTest {
 			assertEquals(1, errors.size());
 			ValidationError error = errors.get(0);
 			assertEquals(1, error.getCode());
-			assertEquals("patientId", error.getField());
+			assertEquals("MotechID", error.getField());
 		}
 
 		verify(registrarBean);
@@ -297,7 +298,7 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 
 		User nurse = new User(1);
-		Patient patient = new Patient(2);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
 		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
@@ -341,7 +342,7 @@ public class RegistrarServiceTest {
 			assertEquals(1, errors.size());
 			ValidationError error = errors.get(0);
 			assertEquals(1, error.getCode());
-			assertEquals("patientId", error.getField());
+			assertEquals("MotechID", error.getField());
 		}
 
 		verify(registrarBean);
@@ -354,7 +355,7 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 
 		User nurse = new User(1);
-		Patient patient = new Patient(2);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
 		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
@@ -392,7 +393,7 @@ public class RegistrarServiceTest {
 			assertEquals(1, errors.size());
 			ValidationError error = errors.get(0);
 			assertEquals(1, error.getCode());
-			assertEquals("patientId", error.getField());
+			assertEquals("MotechID", error.getField());
 		}
 
 		verify(registrarBean);
@@ -406,7 +407,7 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 
 		User nurse = new User(1);
-		Patient patient = new Patient(2);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
 		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
@@ -450,7 +451,7 @@ public class RegistrarServiceTest {
 			assertEquals(1, errors.size());
 			ValidationError error = errors.get(0);
 			assertEquals(1, error.getCode());
-			assertEquals("patientId", error.getField());
+			assertEquals("MotechID", error.getField());
 		}
 
 		verify(registrarBean);
@@ -463,8 +464,8 @@ public class RegistrarServiceTest {
 		Gender childGender = Gender.FEMALE;
 
 		User nurse = new User(1);
-		Patient mother = new Patient(2);
-		Patient child = null;
+		org.openmrs.Patient mother = new org.openmrs.Patient(2);
+		org.openmrs.Patient child = null;
 
 		expect(registrarBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
 		expect(registrarBean.getPatientBySerial(motherRegNum))
@@ -474,7 +475,7 @@ public class RegistrarServiceTest {
 		expect(
 				registrarBean.registerChild(nurse, mother, childRegNum,
 						childDob, childGender, childFirstName, nhis,
-						nhisExpires)).andReturn(new Patient());
+						nhisExpires)).andReturn(new org.openmrs.Patient());
 
 		replay(registrarBean);
 
@@ -494,8 +495,8 @@ public class RegistrarServiceTest {
 		Gender childGender = Gender.FEMALE;
 
 		User nurse = null;
-		Patient mother = null;
-		Patient child = new Patient(3);
+		org.openmrs.Patient mother = null;
+		org.openmrs.Patient child = new org.openmrs.Patient(3);
 
 		expect(registrarBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
 		expect(registrarBean.getPatientBySerial(motherRegNum))
@@ -517,16 +518,16 @@ public class RegistrarServiceTest {
 			assertEquals(4, errors.size());
 			ValidationError nurseError = errors.get(0);
 			assertEquals(1, nurseError.getCode());
-			assertEquals("chpsId", nurseError.getField());
+			assertEquals("CHPSID", nurseError.getField());
 			ValidationError motherError = errors.get(1);
 			assertEquals(1, motherError.getCode());
-			assertEquals("motherId", motherError.getField());
+			assertEquals("MotherMotechID", motherError.getField());
 			ValidationError childError = errors.get(2);
 			assertEquals(2, childError.getCode());
-			assertEquals("childId", childError.getField());
+			assertEquals("ChildMotechID", childError.getField());
 			ValidationError dobError = errors.get(3);
 			assertEquals(2, dobError.getCode());
-			assertEquals("birthDate", dobError.getField());
+			assertEquals("DoB", dobError.getField());
 		}
 
 		verify(registrarBean);
@@ -539,7 +540,7 @@ public class RegistrarServiceTest {
 		Date nhisExpires = new Date();
 
 		User nurse = new User(1);
-		Patient patient = new Patient(2);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
 		expect(registrarBean.getPatientBySerial(patientRegNum)).andReturn(
@@ -564,7 +565,7 @@ public class RegistrarServiceTest {
 		Date nhisExpires = new Date();
 
 		User nurse = null;
-		Patient patient = null;
+		org.openmrs.Patient patient = null;
 
 		expect(registrarBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
 		expect(registrarBean.getPatientBySerial(patientRegNum)).andReturn(
@@ -586,10 +587,10 @@ public class RegistrarServiceTest {
 			assertEquals(2, errors.size());
 			ValidationError nurseError = errors.get(0);
 			assertEquals(1, nurseError.getCode());
-			assertEquals("chpsId", nurseError.getField());
+			assertEquals("CHPSID", nurseError.getField());
 			ValidationError patientError = errors.get(1);
 			assertEquals(1, patientError.getCode());
-			assertEquals("patientId", patientError.getField());
+			assertEquals("MotechID", patientError.getField());
 		}
 
 		verify(registrarBean);
@@ -600,7 +601,7 @@ public class RegistrarServiceTest {
 		String nurseId = "FGH267", patientRegNum = "ABC123";
 
 		User nurse = new User(1);
-		Patient patient = new Patient(2);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
 		expect(registrarBean.getPatientBySerial(patientRegNum)).andReturn(
@@ -620,7 +621,7 @@ public class RegistrarServiceTest {
 		String nurseId = "FGH267", patientRegNum = "ABC123";
 
 		User nurse = null;
-		Patient patient = null;
+		org.openmrs.Patient patient = null;
 
 		expect(registrarBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
 		expect(registrarBean.getPatientBySerial(patientRegNum)).andReturn(
@@ -641,10 +642,10 @@ public class RegistrarServiceTest {
 			assertEquals(2, errors.size());
 			ValidationError nurseError = errors.get(0);
 			assertEquals(1, nurseError.getCode());
-			assertEquals("chpsId", nurseError.getField());
+			assertEquals("CHPSID", nurseError.getField());
 			ValidationError patientError = errors.get(1);
 			assertEquals(1, patientError.getCode());
-			assertEquals("patientId", patientError.getField());
+			assertEquals("MotechID", patientError.getField());
 		}
 
 		verify(registrarBean);
@@ -674,7 +675,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testGeneralVisitMissingClinic() {
+	public void testGeneralVisitInvalidNurseId() {
 		String chpsId = null, serial = "Test123";
 		Gender gender = Gender.MALE;
 		Integer diagnosis = 5, secondDiagnosis = 6;
@@ -694,7 +695,7 @@ public class RegistrarServiceTest {
 			assertEquals(1, errors.size());
 			ValidationError error = errors.get(0);
 			assertEquals(1, error.getCode());
-			assertEquals("chpsId", error.getField());
+			assertEquals("CHPSID", error.getField());
 		}
 	}
 
@@ -706,7 +707,7 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 
 		User nurse = new User(1);
-		Patient patient = new Patient(2);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
 		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
@@ -749,7 +750,7 @@ public class RegistrarServiceTest {
 			assertEquals(1, errors.size());
 			ValidationError error = errors.get(0);
 			assertEquals(1, error.getCode());
-			assertEquals("patientId", error.getField());
+			assertEquals("MotechID", error.getField());
 		}
 
 		verify(registrarBean);
@@ -763,7 +764,7 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 
 		User nurse = new User(1);
-		Patient patient = new Patient(2);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
 		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
@@ -807,10 +808,165 @@ public class RegistrarServiceTest {
 			assertEquals(1, errors.size());
 			ValidationError error = errors.get(0);
 			assertEquals(1, error.getCode());
-			assertEquals("patientId", error.getField());
+			assertEquals("MotechID", error.getField());
 		}
 
 		verify(registrarBean);
+	}
+
+	@Test
+	public void testQueryANCDefaulters() {
+		String facilityId = "FacilityId", chpsId = "CHPSId";
+
+		replay(registrarBean);
+
+		Care[] cares = regWs.queryANCDefaulters(facilityId, chpsId);
+
+		verify(registrarBean);
+
+		assertNotNull("Care result array is null", cares);
+		assertEquals(0, cares.length);
+	}
+
+	@Test
+	public void testQueryTTDefaulters() {
+		String facilityId = "FacilityId", chpsId = "CHPSId";
+
+		replay(registrarBean);
+
+		Care[] cares = regWs.queryTTDefaulters(facilityId, chpsId);
+
+		verify(registrarBean);
+
+		assertNotNull("Care result array is null", cares);
+		assertEquals(0, cares.length);
+	}
+
+	@Test
+	public void testQueryPPCDefaulters() {
+		String facilityId = "FacilityId", chpsId = "CHPSId";
+
+		replay(registrarBean);
+
+		Care[] cares = regWs.queryPPCDefaulters(facilityId, chpsId);
+
+		verify(registrarBean);
+
+		assertNotNull("Care result array is null", cares);
+		assertEquals(0, cares.length);
+	}
+
+	@Test
+	public void testQueryPNCDefaulters() {
+		String facilityId = "FacilityId", chpsId = "CHPSId";
+
+		replay(registrarBean);
+
+		Care[] cares = regWs.queryPNCDefaulters(facilityId, chpsId);
+
+		verify(registrarBean);
+
+		assertNotNull("Care result array is null", cares);
+		assertEquals(0, cares.length);
+	}
+
+	@Test
+	public void testQueryCWCDefaulters() {
+		String facilityId = "FacilityId", chpsId = "CHPSId";
+
+		replay(registrarBean);
+
+		Care[] cares = regWs.queryCWCDefaulters(facilityId, chpsId);
+
+		verify(registrarBean);
+
+		assertNotNull("Care result array is null", cares);
+		assertEquals(0, cares.length);
+	}
+
+	@Test
+	public void testQueryUpcomingDeliveries() {
+		String facilityId = "FacilityId", chpsId = "CHPSId";
+
+		replay(registrarBean);
+
+		Patient[] patients = regWs.queryUpcomingDeliveries(facilityId, chpsId);
+
+		verify(registrarBean);
+
+		assertNotNull("Patient result array is null", patients);
+		assertEquals(0, patients.length);
+	}
+
+	@Test
+	public void testQueryRecentDeliveries() {
+		String facilityId = "FacilityId", chpsId = "CHPSId";
+
+		replay(registrarBean);
+
+		Patient[] patients = regWs.queryRecentDeliveries(facilityId, chpsId);
+
+		verify(registrarBean);
+
+		assertNotNull("Patient result array is null", patients);
+		assertEquals(0, patients.length);
+	}
+
+	@Test
+	public void queryQueryOverdueDeliveries() {
+		String facilityId = "FacilityId", chpsId = "CHPSId";
+
+		replay(registrarBean);
+
+		Patient[] patients = regWs.queryOverdueDeliveries(facilityId, chpsId);
+
+		verify(registrarBean);
+
+		assertNotNull("Patient result array is null", patients);
+		assertEquals(0, patients.length);
+	}
+
+	@Test
+	public void testQueryUpcomingCare() {
+		String facilityId = "FacilityId", chpsId = "CHPSId", motechId = "MotechId";
+
+		replay(registrarBean);
+
+		Patient patient = regWs.queryUpcomingCare(facilityId, chpsId, motechId);
+
+		verify(registrarBean);
+
+		assertNotNull("Patient result is null", patient);
+	}
+
+	@Test
+	public void testQueryMotechId() {
+		String chpsId = "CHPSId", firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
+		String nhis = "NHIS", phone = "Phone";
+		Date birthDate = new Date();
+
+		replay(registrarBean);
+
+		Patient[] patients = regWs.queryMotechId(chpsId, firstName, lastName,
+				prefName, birthDate, nhis, phone);
+
+		verify(registrarBean);
+
+		assertNotNull("Patient result array is null", patients);
+		assertEquals(0, patients.length);
+	}
+
+	@Test
+	public void testQueryPatient() {
+		String chpsId = "CHPSId", motechId = "MotechId";
+
+		replay(registrarBean);
+
+		Patient patient = regWs.queryPatient(chpsId, motechId);
+
+		verify(registrarBean);
+
+		assertNotNull("Patient result is null", patient);
 	}
 
 	@Test

@@ -13,15 +13,16 @@ import org.apache.commons.logging.LogFactory;
 import org.motech.svc.BirthOutcomeChild;
 import org.motech.svc.RegistrarBean;
 import org.motechproject.ws.BirthOutcome;
+import org.motechproject.ws.Care;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveredBy;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.HIVStatus;
 import org.motechproject.ws.LogType;
+import org.motechproject.ws.Patient;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationErrors;
 import org.motechproject.ws.server.ValidationException;
-import org.openmrs.Patient;
 import org.openmrs.User;
 
 /**
@@ -42,7 +43,7 @@ public class RegistrarWebService implements RegistrarService {
 	@WebMethod
 	public void recordMotherANCVisit(@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
-			@WebParam(name = "patientId") String patientId,
+			@WebParam(name = "motechId") String motechId,
 			@WebParam(name = "visitNumber") Integer visitNumber,
 			@WebParam(name = "ttDose") Integer ttDose,
 			@WebParam(name = "iptDose") Integer iptDose,
@@ -52,8 +53,9 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "chpsId");
-		Patient patient = validatePatientId(patientId, errors, "patientId");
+		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -68,15 +70,16 @@ public class RegistrarWebService implements RegistrarService {
 	public void recordPregnancyTermination(
 			@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
-			@WebParam(name = "patientId") String patientId,
+			@WebParam(name = "motechId") String motechId,
 			@WebParam(name = "abortionType") Integer abortionType,
 			@WebParam(name = "complication") Integer complication)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "chpsId");
-		Patient patient = validatePatientId(patientId, errors, "patientId");
+		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -91,7 +94,7 @@ public class RegistrarWebService implements RegistrarService {
 	public void recordPregnancyDelivery(
 			@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
-			@WebParam(name = "patientId") String patientId,
+			@WebParam(name = "motechId") String motechId,
 			@WebParam(name = "method") Integer method,
 			@WebParam(name = "outcome") Integer outcome,
 			@WebParam(name = "location") Integer location,
@@ -99,13 +102,13 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "maternalDeath") Boolean maternalDeath,
 			@WebParam(name = "cause") Integer cause,
 			@WebParam(name = "child1Outcome") BirthOutcome child1Outcome,
-			@WebParam(name = "child1PatientId") String child1PatientId,
+			@WebParam(name = "child1MotechId") String child1MotechId,
 			@WebParam(name = "child1Sex") Gender child1Sex,
 			@WebParam(name = "child1FirstName") String child1FirstName,
 			@WebParam(name = "child1OPV") Boolean child1OPV,
 			@WebParam(name = "child1BCG") Boolean child1BCG,
 			@WebParam(name = "child2Outcome") BirthOutcome child2Outcome,
-			@WebParam(name = "child2PatientId") String child2PatientId,
+			@WebParam(name = "child2MotechId") String child2MotechId,
 			@WebParam(name = "child2Sex") Gender child2Sex,
 			@WebParam(name = "child2FirstName") String child2FirstName,
 			@WebParam(name = "child2OPV") Boolean child2OPV,
@@ -114,8 +117,9 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "chpsId");
-		Patient patient = validatePatientId(patientId, errors, "patientId");
+		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -123,10 +127,10 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		BirthOutcomeChild child1 = new BirthOutcomeChild(child1Outcome,
-				child1PatientId, child1Sex, child1FirstName, child1OPV,
+				child1MotechId, child1Sex, child1FirstName, child1OPV,
 				child1BCG);
 		BirthOutcomeChild child2 = new BirthOutcomeChild(child2Outcome,
-				child2PatientId, child2Sex, child2FirstName, child2OPV,
+				child2MotechId, child2Sex, child2FirstName, child2OPV,
 				child2BCG);
 		BirthOutcomeChild[] outcomes = new BirthOutcomeChild[] { child1, child2 };
 
@@ -137,7 +141,7 @@ public class RegistrarWebService implements RegistrarService {
 	@WebMethod
 	public void recordMotherPPCVisit(@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
-			@WebParam(name = "patientId") String patientId,
+			@WebParam(name = "motechId") String motechId,
 			@WebParam(name = "visitNumber") Integer visitNumber,
 			@WebParam(name = "vitaminA") Boolean vitaminA,
 			@WebParam(name = "ttDose") Integer ttDose)
@@ -145,8 +149,9 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "chpsId");
-		Patient patient = validatePatientId(patientId, errors, "patientId");
+		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -160,13 +165,14 @@ public class RegistrarWebService implements RegistrarService {
 	@WebMethod
 	public void recordDeath(@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
-			@WebParam(name = "patientId") String patientId,
+			@WebParam(name = "motechId") String motechId,
 			@WebParam(name = "cause") Integer cause) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "chpsId");
-		Patient patient = validatePatientId(patientId, errors, "patientId");
+		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException("Errors in Record Death request",
@@ -179,7 +185,7 @@ public class RegistrarWebService implements RegistrarService {
 	@WebMethod
 	public void recordChildPNCVisit(@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
-			@WebParam(name = "patientId") String patientId,
+			@WebParam(name = "motechId") String motechId,
 			@WebParam(name = "bcg") Boolean bcg,
 			@WebParam(name = "opvDose") Integer opvDose,
 			@WebParam(name = "pentaDose") Integer pentaDose,
@@ -192,8 +198,9 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "chpsId");
-		Patient patient = validatePatientId(patientId, errors, "patientId");
+		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -206,8 +213,8 @@ public class RegistrarWebService implements RegistrarService {
 
 	@WebMethod
 	public void registerChild(@WebParam(name = "chpsId") String chpsId,
-			@WebParam(name = "motherId") String motherId,
-			@WebParam(name = "childId") String childId,
+			@WebParam(name = "motherMotechId") String motherMotechId,
+			@WebParam(name = "childMotechId") String childMotechId,
 			@WebParam(name = "birthDate") Date birthDate,
 			@WebParam(name = "sex") Gender sex,
 			@WebParam(name = "firstName") String firstName,
@@ -217,19 +224,21 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "chpsId");
-		Patient mother = validatePatientId(motherId, errors, "motherId");
+		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		org.openmrs.Patient mother = validateMotechId(motherMotechId, errors,
+				"MotherMotechID");
 
-		Patient child = registrarBean.getPatientBySerial(childId);
+		org.openmrs.Patient child = registrarBean
+				.getPatientBySerial(childMotechId);
 		if (child != null) {
-			errors.add(2, "childId");
+			errors.add(2, "ChildMotechID");
 		}
 
 		Calendar dobCal = new GregorianCalendar();
 		int origYear = dobCal.get(Calendar.YEAR);
 		dobCal.set(Calendar.YEAR, origYear - 5);
 		if (birthDate.before(dobCal.getTime())) {
-			errors.add(2, "birthDate");
+			errors.add(2, "DoB");
 		}
 
 		if (errors.getErrors().size() > 0) {
@@ -237,14 +246,14 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		registrarBean.registerChild(nurse, mother, childId, birthDate, sex,
-				firstName, nhis, nhisExpires);
+		registrarBean.registerChild(nurse, mother, childMotechId, birthDate,
+				sex, firstName, nhis, nhisExpires);
 	}
 
 	@WebMethod
 	public void editPatient(
 			@WebParam(name = "chpsId") String chpsId,
-			@WebParam(name = "patientId") String patientId,
+			@WebParam(name = "motechId") String motechId,
 			@WebParam(name = "primaryPhone") String primaryPhone,
 			@WebParam(name = "primaryPhoneType") ContactNumberType primaryPhoneType,
 			@WebParam(name = "secondaryPhone") String secondaryPhone,
@@ -255,8 +264,9 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "chpsId");
-		Patient patient = validatePatientId(patientId, errors, "patientId");
+		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException("Errors in Edit Patient request",
@@ -270,13 +280,14 @@ public class RegistrarWebService implements RegistrarService {
 
 	@WebMethod
 	public void stopPregnancyProgram(@WebParam(name = "chpsId") String chpsId,
-			@WebParam(name = "patientId") String patientId)
+			@WebParam(name = "motechId") String motechId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "chpsId");
-		Patient patient = validatePatientId(patientId, errors, "patientId");
+		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -301,7 +312,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(chpsId, errors, "chpsId");
+		validateChpsId(chpsId, errors, "CHPSID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException("Errors in General Visit request",
@@ -317,7 +328,7 @@ public class RegistrarWebService implements RegistrarService {
 	public void recordChildVisit(@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "serialNumber") String serialNumber,
-			@WebParam(name = "patientId") String patientId,
+			@WebParam(name = "motechId") String motechId,
 			@WebParam(name = "newCase") Boolean newCase,
 			@WebParam(name = "diagnosis") Integer diagnosis,
 			@WebParam(name = "secondDiagnosis") Integer secondDiagnosis,
@@ -326,8 +337,9 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "chpsId");
-		Patient patient = validatePatientId(patientId, errors, "patientId");
+		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -342,7 +354,7 @@ public class RegistrarWebService implements RegistrarService {
 	public void recordMotherVisit(@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "serialNumber") String serialNumber,
-			@WebParam(name = "patientId") String patientId,
+			@WebParam(name = "motechId") String motechId,
 			@WebParam(name = "newCase") Boolean newCase,
 			@WebParam(name = "diagnosis") Integer diagnosis,
 			@WebParam(name = "secondDiagnosis") Integer secondDiagnosis,
@@ -351,8 +363,9 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "chpsId");
-		Patient patient = validatePatientId(patientId, errors, "patientId");
+		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -361,6 +374,112 @@ public class RegistrarWebService implements RegistrarService {
 
 		registrarBean.recordMotherVisit(nurse, date, patient, serialNumber,
 				newCase, diagnosis, secondDiagnosis, referral);
+	}
+
+	@WebMethod
+	public Care[] queryANCDefaulters(
+			@WebParam(name = "facilityId") String facilityId,
+			@WebParam(name = "chpsId") String chpsId) {
+
+		// TODO: Perform query, return Care objects with patients for ANC1-4,
+		// TT1-5, IPT1-3
+		return new Care[0];
+	}
+
+	@WebMethod
+	public Care[] queryTTDefaulters(
+			@WebParam(name = "facilityId") String facilityId,
+			@WebParam(name = "chpsId") String chpsId) {
+
+		// TODO: Perform query, return Care objects with patients for TT1-5
+		return new Care[0];
+	}
+
+	@WebMethod
+	public Care[] queryPPCDefaulters(
+			@WebParam(name = "facilityId") String facilityId,
+			@WebParam(name = "chpsId") String chpsId) {
+
+		// TODO: Perform query, return Care objects with patients for PPC1-3
+		return new Care[0];
+	}
+
+	@WebMethod
+	public Care[] queryPNCDefaulters(
+			@WebParam(name = "facilityId") String facilityId,
+			@WebParam(name = "chpsId") String chpsId) {
+
+		// TODO: Perform query, return Care objects with patients for PNC1-3
+		return new Care[0];
+	}
+
+	@WebMethod
+	public Care[] queryCWCDefaulters(
+			@WebParam(name = "facilityId") String facilityId,
+			@WebParam(name = "chpsId") String chpsId) {
+
+		// TODO: Perform query, return Care objects with patients for OPV0-3,
+		// BCG, Penta1-3, YellowFever, Measles, VitaminA, IPTi
+		return new Care[0];
+	}
+
+	@WebMethod
+	public Patient[] queryUpcomingDeliveries(
+			@WebParam(name = "facilityId") String facilityId,
+			@WebParam(name = "chpsId") String chpsId) {
+
+		// TODO: Perform query, return Patient objects with est due date
+		return new Patient[0];
+	}
+
+	@WebMethod
+	public Patient[] queryRecentDeliveries(
+			@WebParam(name = "facilityId") String facilityId,
+			@WebParam(name = "chpsId") String chpsId) {
+
+		// TODO: Perform query, return Patient objects with delivery date
+		return new Patient[0];
+	}
+
+	@WebMethod
+	public Patient[] queryOverdueDeliveries(
+			@WebParam(name = "facilityId") String facilityId,
+			@WebParam(name = "chpsId") String chpsId) {
+
+		// TODO: Perform query, return Patient objects with est due date
+		return new Patient[0];
+	}
+
+	@WebMethod
+	public Patient queryUpcomingCare(
+			@WebParam(name = "facilityId") String facilityId,
+			@WebParam(name = "chpsId") String chpsId,
+			@WebParam(name = "motechId") String motechId) {
+
+		// TODO: Perform query, return Patient object with Care objects for ANC,
+		// TT, IPT, PPC, PNC, OPV, BCG, Penta, YellowFever, Measles, IPTi, VitaA
+		return new Patient();
+	}
+
+	@WebMethod
+	public Patient[] queryMotechId(@WebParam(name = "chpsId") String chpsId,
+			@WebParam(name = "firstName") String firstName,
+			@WebParam(name = "lastName") String lastName,
+			@WebParam(name = "preferredName") String preferredName,
+			@WebParam(name = "birthDate") Date birthDate,
+			@WebParam(name = "nhis") String nhis,
+			@WebParam(name = "phoneNumber") String phoneNumber) {
+
+		// TODO: Perform query, return Patient objects
+		return new Patient[0];
+	}
+
+	@WebMethod
+	public Patient queryPatient(@WebParam(name = "chpsId") String chpsId,
+			@WebParam(name = "motechId") String motechId) {
+
+		// TODO: Perform query, return Patient object
+		return new Patient();
 	}
 
 	@WebMethod
@@ -392,9 +511,10 @@ public class RegistrarWebService implements RegistrarService {
 		return nurse;
 	}
 
-	private Patient validatePatientId(String patientId,
+	private org.openmrs.Patient validateMotechId(String motechId,
 			ValidationErrors errors, String fieldName) {
-		Patient patient = registrarBean.getPatientBySerial(patientId);
+		org.openmrs.Patient patient = registrarBean
+				.getPatientBySerial(motechId);
 		if (patient == null) {
 			errors.add(1, fieldName);
 		}
