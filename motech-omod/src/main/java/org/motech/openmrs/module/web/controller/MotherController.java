@@ -1,6 +1,7 @@
 package org.motech.openmrs.module.web.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -150,6 +151,14 @@ public class MotherController {
 				"motechmodule.clinic.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "dueDate",
 				"motechmodule.dueDate.required");
+		if (mother.getDueDate() != null) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.MONTH, 9);
+			if (mother.getDueDate().after(calendar.getTime())) {
+				errors.rejectValue("dueDate",
+						"motechmodule.dueDate.overninemonths");
+			}
+		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "dueDateConfirmed",
 				"motechmodule.dueDateConfirmed.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "gravida",
