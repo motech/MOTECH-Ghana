@@ -910,11 +910,12 @@ public class RegistrarBeanImpl implements RegistrarBean {
 					.getPatientId(), date, childOutcome.getSex(), childOutcome
 					.getFirstName(), null, null);
 
-			if (childOutcome.getBcg() || childOutcome.getOpv()) {
-				Integer opvDose = null;
-				if (childOutcome.getOpv()) {
-					opvDose = 0;
-				}
+			Integer opvDose = null;
+			if (Boolean.TRUE.equals(childOutcome.getOpv())) {
+				opvDose = 0;
+			}
+
+			if (Boolean.TRUE.equals(childOutcome.getBcg()) || opvDose != null) {
 				recordChildPNCVisit(nurse, date, child, childOutcome.getBcg(),
 						opvDose, null, null, null, null, null, null);
 			}
@@ -924,7 +925,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			}
 		}
 
-		if (maternalDeath != null && maternalDeath) {
+		if (Boolean.TRUE.equals(maternalDeath)) {
 			if (cause != null) {
 				Obs maternalDeathCauseObs = createNumericValueObs(date,
 						getMaternalDeathCauseConcept(), patient,
@@ -959,7 +960,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 					encounter, null);
 			obsService.saveObs(visitNumberObs, null);
 		}
-		if (vitaminA != null && vitaminA) {
+		if (Boolean.TRUE.equals(vitaminA)) {
 			Obs vitaminAObs = createConceptValueObs(date,
 					getImmunizationsOrderedConcept(), patient, location,
 					getVitaminAConcept(), encounter, null);
@@ -1023,7 +1024,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		encounter.setProvider(contextService.getAuthenticatedUser());
 		encounter = encounterService.saveEncounter(encounter);
 
-		if (bcg != null && bcg) {
+		if (Boolean.TRUE.equals(bcg)) {
 			Obs bcgObs = createConceptValueObs(date,
 					getImmunizationsOrderedConcept(), patient, location,
 					getBCGConcept(), encounter, null);
@@ -1040,31 +1041,31 @@ public class RegistrarBeanImpl implements RegistrarBean {
 					encounter, null);
 			obsService.saveObs(pentaDoseObs, null);
 		}
-		if (yellowFever != null && yellowFever) {
+		if (Boolean.TRUE.equals(yellowFever)) {
 			Obs yellowFeverObs = createConceptValueObs(date,
 					getImmunizationsOrderedConcept(), patient, location,
 					getYellowFeverConcept(), encounter, null);
 			obsService.saveObs(yellowFeverObs, null);
 		}
-		if (csm != null && csm) {
+		if (Boolean.TRUE.equals(csm)) {
 			Obs csmObs = createConceptValueObs(date,
 					getImmunizationsOrderedConcept(), patient, location,
 					getCSMConcept(), encounter, null);
 			obsService.saveObs(csmObs, null);
 		}
-		if (measles != null && measles) {
+		if (Boolean.TRUE.equals(measles)) {
 			Obs measlesObs = createConceptValueObs(date,
 					getImmunizationsOrderedConcept(), patient, location,
 					getMeaslesConcept(), encounter, null);
 			obsService.saveObs(measlesObs, null);
 		}
-		if (ipti != null && ipti) {
+		if (Boolean.TRUE.equals(ipti)) {
 			Obs iptiObs = createConceptValueObs(date,
 					getImmunizationsOrderedConcept(), patient, location,
 					getIPTiConcept(), encounter, null);
 			obsService.saveObs(iptiObs, null);
 		}
-		if (vitaminA != null && vitaminA) {
+		if (Boolean.TRUE.equals(vitaminA)) {
 			Obs vitaminAObs = createConceptValueObs(date,
 					getImmunizationsOrderedConcept(), patient, location,
 					getVitaminAConcept(), encounter, null);
