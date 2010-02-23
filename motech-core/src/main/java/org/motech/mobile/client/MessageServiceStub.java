@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motechproject.ws.Care;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.MessageStatus;
@@ -111,6 +112,130 @@ public class MessageServiceStub implements MessageService {
 				+ "</endDate>\n"
 				+ "</sendPatientMessage>\n"
 				+ "--------------------------------------");
+		return MessageStatus.DELIVERED;
+	}
+
+	private String patientToXML(Patient patient) {
+		StringBuffer patientXmlString = new StringBuffer();
+		patientXmlString.append("<patient>");
+		patientXmlString.append("<motechId>");
+		patientXmlString.append(patient.getMotechId());
+		patientXmlString.append("</motechId>");
+		patientXmlString.append("<preferredName>");
+		patientXmlString.append(patient.getPreferredName());
+		patientXmlString.append("</preferredName>");
+		patientXmlString.append("<firstName>");
+		patientXmlString.append(patient.getFirstName());
+		patientXmlString.append("</firstName>");
+		patientXmlString.append("<lastName>");
+		patientXmlString.append(patient.getLastName());
+		patientXmlString.append("</lastName>");
+		patientXmlString.append("<birthDate>");
+		patientXmlString.append(patient.getBirthDate());
+		patientXmlString.append("</birthDate>");
+		patientXmlString.append("<age>");
+		patientXmlString.append(patient.getAge());
+		patientXmlString.append("</age>");
+		patientXmlString.append("<sex>");
+		patientXmlString.append(patient.getSex());
+		patientXmlString.append("</sex>");
+		patientXmlString.append("<community>");
+		patientXmlString.append(patient.getCommunity());
+		patientXmlString.append("</community>");
+		patientXmlString.append("<phoneNumber>");
+		patientXmlString.append(patient.getPhoneNumber());
+		patientXmlString.append("</phoneNumber>");
+		patientXmlString.append("<estimateDueDate>");
+		patientXmlString.append(patient.getEstimateDueDate());
+		patientXmlString.append("</estimateDueDate>");
+		patientXmlString.append("<deliveryDate>");
+		patientXmlString.append(patient.getDeliveryDate());
+		patientXmlString.append("</deliveryDate>");
+		patientXmlString.append("</patient>");
+		return patientXmlString.toString();
+	}
+
+	public MessageStatus sendDefaulterMessage(String messageId,
+			String workerNumber, Care[] cares, MediaType mediaType,
+			Date startDate, Date endDate) {
+
+		StringBuilder careInfoString = new StringBuilder();
+		for (Care care : cares) {
+			careInfoString.append("<name>" + care.getName() + "</name>");
+			careInfoString.append("<date>" + care.getDate() + "</date>\n");
+			for (Patient patient : care.getPatients()) {
+				careInfoString.append(patientToXML(patient));
+				careInfoString.append('\n');
+			}
+		}
+
+		log.info("Motech Mobile Web Service Message\n"
+				+ "---------------------------\n" + "<sendDefaulterMessage>\n"
+				+ "<messageId>" + messageId + "</messageId>\n" + "<careInfo>"
+				+ careInfoString.toString() + "</careInfo>\n"
+				+ "<workerNumber>" + workerNumber + "</workerNumber>\n"
+				+ "<mediaType>" + mediaType + "</mediaType>\n" + "<startDate>"
+				+ startDate + "</startDate>\n" + "<endDate>" + endDate
+				+ "</endDate>\n" + "</sendDefaulterMessage>\n"
+				+ "--------------------------------------");
+
+		return MessageStatus.DELIVERED;
+	}
+
+	public MessageStatus sendDeliveriesMessage(String messageId,
+			String workerNumber, Patient[] patients, String deliveryStatus,
+			MediaType mediaType, Date startDate, Date endDate) {
+
+		StringBuilder patientInfoString = new StringBuilder();
+		for (Patient patient : patients) {
+			patientInfoString.append(patientToXML(patient));
+			patientInfoString.append("\n");
+		}
+
+		log.info("Motech Mobile Web Service Message\n"
+				+ "---------------------------\n" + "<sendDeliveriesMessage>\n"
+				+ "<messageId>"
+				+ messageId
+				+ "</messageId>\n"
+				+ "<patientInfo>"
+				+ patientInfoString.toString()
+				+ "</patientInfo>\n"
+				+ "<workerNumber>"
+				+ workerNumber
+				+ "</workerNumber>\n"
+				+ "<deliveryStatus>"
+				+ deliveryStatus
+				+ "</deliveryStatus>\n"
+				+ "<mediaType>"
+				+ mediaType
+				+ "</mediaType>\n"
+				+ "<startDate>"
+				+ startDate
+				+ "</startDate>\n"
+				+ "<endDate>"
+				+ endDate
+				+ "</endDate>\n"
+				+ "</sendDeliveriesMessage>\n"
+				+ "--------------------------------------");
+
+		return MessageStatus.DELIVERED;
+	}
+
+	public MessageStatus sendUpcomingCaresMessage(String messageId,
+			String workerNumber, Patient patient, MediaType mediaType,
+			Date startDate, Date endDate) {
+
+		log.info("Motech Mobile Web Service Message\n"
+				+ "---------------------------\n"
+				+ "<sendUpcomingCaresMessage>\n" + "<messageId>" + messageId
+				+ "</messageId>\n" + "<patientInfo>" + patientToXML(patient)
+				+ "</patientInfo>\n" + "<workerNumber>" + workerNumber
+				+ "</workerNumber>\n" + "<mediaType>" + mediaType
+				+ "</mediaType>\n" + "<startDate>" + startDate
+				+ "</startDate>\n" + "<endDate>" + endDate + "</endDate>\n"
+				+ "</sendUpcomingCaresMessage>\n"
+				+ "--------------------------------------");
+
 		return MessageStatus.DELIVERED;
 	}
 
