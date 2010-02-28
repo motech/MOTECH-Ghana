@@ -221,6 +221,6 @@ public class MotechModuleFormControllerTest extends TestCase {
 		verify(contextService, motechService);
 
 		assertNull(model.get("troubledPhone"));
-		assertEquals("/module/motechmodule/troubledphone", path);
+		assertEquals("redirect:/module/motechmodule/troubledphone.form", path);
 	}
 }

@@ -168,9 +168,10 @@ public class MotechModuleFormController {
 			TroubledPhone troubledPhone = motechService
 					.getTroubledPhone(phoneNumber);
 
-			if (remove == Boolean.TRUE)
+			if (remove == Boolean.TRUE) {
 				motechService.removeTroubledPhone(phoneNumber);
-			else if (troubledPhone != null)
+				return "redirect:/module/motechmodule/troubledphone.form";
+			} else if (troubledPhone != null)
 				model.addAttribute(troubledPhone);
 		}
 

@@ -29,10 +29,14 @@
 		<th>Added At</th>
 		<th></th>
 	</tr>
+	<c:url value="" var="delUrl">
+		<c:param name="phoneNumber" value="${troubledPhone.phoneNumber}" />
+		<c:param name="remove" value="true" />
+	</c:url>
 	<tr>
 		<td>${troubledPhone.phoneNumber}</td>
 		<td>${troubledPhone.creationTime}</td>
-		<td><a href="?phoneNumber=${troubledPhone.phoneNumber}&remove=true">Remove</a></td>
+		<td><a href="${delUrl}">Remove</a></td>
 	</tr>
 </table>
 </c:if>
