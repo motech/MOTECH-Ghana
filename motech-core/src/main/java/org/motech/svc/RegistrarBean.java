@@ -110,7 +110,7 @@ public interface RegistrarBean {
 			String languageVoice, String languageText, String howLearned,
 			String religion, String occupation, WhyInterested whyInterested);
 
-	public void editPatient(Integer id, String firstName, String lastName,
+	public void editPatient(Integer id, String firstName, String middleName, String lastName,
 			String prefName, Date birthDate, Boolean birthDateEst, Gender sex,
 			Boolean registeredGHS, String regNumberGHS, Boolean insured,
 			String nhis, Date nhisExpDate, String region, String district,
