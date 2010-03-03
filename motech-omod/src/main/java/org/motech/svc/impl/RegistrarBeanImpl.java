@@ -586,16 +586,17 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		patientService.savePatient(patient);
 	}
 
-	public void editPatient(Integer id, String firstName, String lastName,
-			String prefName, Date birthDate, Boolean birthDateEst, Gender sex,
-			Boolean registeredGHS, String regNumberGHS, Boolean insured,
-			String nhis, Date nhisExpDate, String region, String district,
-			String community, String address, Integer clinic,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText, String religion,
-			String occupation, HIVStatus hivStatus) {
+	public void editPatient(Integer id, String firstName, String middleName,
+			String lastName, String prefName, Date birthDate,
+			Boolean birthDateEst, Gender sex, Boolean registeredGHS,
+			String regNumberGHS, Boolean insured, String nhis,
+			Date nhisExpDate, String region, String district, String community,
+			String address, Integer clinic, String primaryPhone,
+			ContactNumberType primaryPhoneType, String secondaryPhone,
+			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
+			MediaType mediaTypeReminder, String languageVoice,
+			String languageText, String religion, String occupation,
+			HIVStatus hivStatus) {
 
 		PatientService patientService = contextService.getPatientService();
 
@@ -609,15 +610,31 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		patient.setBirthdateEstimated(birthDateEst);
 		patient.setGender(GenderTypeConverter.toOpenMRSString(sex));
 
-		PersonName patientName = patient.getPersonName();
-		if (patientName == null) {
-			// TODO: Store middle name and pref Name properly
-			patientName = new PersonName(firstName, prefName, lastName);
-			patient.addName(patientName);
+		Set<PersonName> patientNames = patient.getNames();
+		if (patientNames.isEmpty()) {
+			patient.addName(new PersonName(firstName, middleName, lastName));
+			if (prefName != null) {
+				PersonName preferredPersonName = new PersonName(prefName,
+						middleName, lastName);
+				preferredPersonName.setPreferred(true);
+				patient.addName(preferredPersonName);
+			}
 		} else {
-			patientName.setGivenName(firstName);
-			patientName.setFamilyName(lastName);
-			patientName.setMiddleName(prefName);
+			for (PersonName name : patient.getNames()) {
+				if (name.isPreferred()) {
+					if (prefName != null) {
+						name.setGivenName(prefName);
+						name.setFamilyName(lastName);
+						name.setMiddleName(middleName);
+					} else {
+						patient.removeName(name);
+					}
+				} else {
+					name.setGivenName(firstName);
+					name.setMiddleName(middleName);
+					name.setFamilyName(lastName);
+				}
+			}
 		}
 
 		PersonAddress patientAddress = patient.getPersonAddress();

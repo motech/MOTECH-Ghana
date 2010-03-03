@@ -161,7 +161,7 @@ public class EditPatientControllerTest extends TestCase {
 
 	public void testEditPatient() {
 		Integer patientId = 1, clinic = 2;
-		String firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
+		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String region = "Region", district = "District", community = "Community", address = "Address";
 		String regNumberGHS = "123ABC", nhis = "1234DEF";
 		String primaryPhone = "12075555555", secondaryPhone = "12075555556";
@@ -177,6 +177,7 @@ public class EditPatientControllerTest extends TestCase {
 		WebPatient patient = new WebPatient();
 		patient.setId(patientId);
 		patient.setFirstName(firstName);
+		patient.setMiddleName(middleName);
 		patient.setLastName(lastName);
 		patient.setPrefName(prefName);
 		patient.setBirthDate(date);
@@ -208,10 +209,10 @@ public class EditPatientControllerTest extends TestCase {
 
 		expect(errors.hasErrors()).andReturn(false);
 
-		registrarBean.editPatient(patientId, firstName, lastName, prefName,
-				date, birthDateEst, sex, registeredGHS, regNumberGHS, insured,
-				nhis, date, region, district, community, address, clinic,
-				primaryPhone, primaryPhoneType, secondaryPhone,
+		registrarBean.editPatient(patientId, firstName, middleName, lastName,
+				prefName, date, birthDateEst, sex, registeredGHS, regNumberGHS,
+				insured, nhis, date, region, district, community, address,
+				clinic, primaryPhone, primaryPhoneType, secondaryPhone,
 				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
 				languageVoice, languageText, religion, occupation, hivStatus);
 

@@ -21,6 +21,11 @@
 		<td><form:errors path="firstName" cssClass="error" /></td>
 	</tr>
 	<tr>
+		<td><label for="middleName">Middle Name:</label></td>
+		<td><form:input path="middleName" /></td>
+		<td><form:errors path="middleName" cssClass="error" /></td>
+	</tr>
+	<tr>
 		<td><label for="lastName">Last Name:</label></td>
 		<td><form:input path="lastName" /></td>
 		<td><form:errors path="lastName" cssClass="error" /></td>

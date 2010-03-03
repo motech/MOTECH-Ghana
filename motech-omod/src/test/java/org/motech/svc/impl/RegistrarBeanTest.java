@@ -1437,7 +1437,7 @@ public class RegistrarBeanTest extends TestCase {
 
 	public void testEditPatientAll() {
 		Integer patientId = 2, clinic = 1;
-		String firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
+		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String regNumberGHS = "123ABC", nhis = "456DEF";
 		String region = "Region", district = "District", community = "Community", address = "Address";
 		String primaryPhone = "12075555555", secondaryPhone = "12075555556";
@@ -1543,10 +1543,10 @@ public class RegistrarBeanTest extends TestCase {
 				locationService, userService, encounterService, obsService,
 				conceptService);
 
-		regBean.editPatient(patientId, firstName, lastName, prefName, date,
-				birthDateEst, sex, registeredGHS, regNumberGHS, insured, nhis,
-				date, region, district, community, address, clinic,
-				primaryPhone, primaryPhoneType, secondaryPhone,
+		regBean.editPatient(patientId, firstName, middleName, lastName,
+				prefName, date, birthDateEst, sex, registeredGHS, regNumberGHS,
+				insured, nhis, date, region, district, community, address,
+				clinic, primaryPhone, primaryPhoneType, secondaryPhone,
 				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
 				languageVoice, languageText, religion, occupation, hivStatus);
 
@@ -1559,9 +1559,17 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
 		assertEquals(sex, GenderTypeConverter.valueOfOpenMRS(capturedPatient
 				.getGender()));
-		assertEquals(firstName, capturedPatient.getGivenName());
+		assertEquals(prefName, capturedPatient.getGivenName());
 		assertEquals(lastName, capturedPatient.getFamilyName());
-		assertEquals(prefName, capturedPatient.getMiddleName());
+		assertEquals(middleName, capturedPatient.getMiddleName());
+		assertEquals(2, capturedPatient.getNames().size());
+		for (PersonName name : capturedPatient.getNames()) {
+			if (!name.isPreferred()) {
+				assertEquals(firstName, name.getGivenName());
+				assertEquals(lastName, name.getFamilyName());
+				assertEquals(middleName, name.getMiddleName());
+			}
+		}
 		assertEquals(region, capturedPatient.getPersonAddress().getRegion());
 		assertEquals(district, capturedPatient.getPersonAddress()
 				.getCountyDistrict());

@@ -116,18 +116,17 @@ public class EditPatientController {
 
 		if (!errors.hasErrors()) {
 			registrarBean.editPatient(webPatient.getId(), webPatient
-					.getFirstName(), webPatient.getLastName(), webPatient
-					.getPrefName(), webPatient.getBirthDate(), webPatient
-					.getBirthDateEst(), webPatient.getSex(), webPatient
-					.getRegisteredGHS(), webPatient.getRegNumberGHS(),
-					webPatient.getInsured(), webPatient.getNhis(), webPatient
-							.getNhisExpDate(), webPatient.getRegion(),
-					webPatient.getDistrict(), webPatient.getCommunity(),
-					webPatient.getAddress(), webPatient.getClinic(), webPatient
-							.getPrimaryPhone(), webPatient
-							.getPrimaryPhoneType(), webPatient
-							.getSecondaryPhone(), webPatient
-							.getSecondaryPhoneType(), webPatient
+					.getFirstName(), webPatient.getMiddleName(), webPatient
+					.getLastName(), webPatient.getPrefName(), webPatient
+					.getBirthDate(), webPatient.getBirthDateEst(), webPatient
+					.getSex(), webPatient.getRegisteredGHS(), webPatient
+					.getRegNumberGHS(), webPatient.getInsured(), webPatient
+					.getNhis(), webPatient.getNhisExpDate(), webPatient
+					.getRegion(), webPatient.getDistrict(), webPatient
+					.getCommunity(), webPatient.getAddress(), webPatient
+					.getClinic(), webPatient.getPrimaryPhone(), webPatient
+					.getPrimaryPhoneType(), webPatient.getSecondaryPhone(),
+					webPatient.getSecondaryPhoneType(), webPatient
 							.getMediaTypeInfo(), webPatient
 							.getMediaTypeReminder(), webPatient
 							.getLanguageVoice(), webPatient.getLanguageText(),
