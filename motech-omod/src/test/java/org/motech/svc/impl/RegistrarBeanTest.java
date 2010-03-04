@@ -39,6 +39,7 @@ import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
+import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
@@ -106,7 +107,9 @@ public class RegistrarBeanTest extends TestCase {
 	EncounterType ancVisitType;
 	EncounterType pncVisitType;
 	EncounterType ppcVisitType;
-	EncounterType pregnancyVisitType;
+	EncounterType pregnancyRegVisitType;
+	EncounterType pregnancyTermVisitType;
+	EncounterType pregnancyDelVisitType;
 	EncounterType generalVisitType;
 	ConceptName immunizationConceptNameObj;
 	Concept immunizationConcept;
@@ -291,12 +294,20 @@ public class RegistrarBeanTest extends TestCase {
 		ppcVisitType = new EncounterType(3);
 		ppcVisitType.setName(MotechConstants.ENCOUNTER_TYPE_PPCVISIT);
 
-		pregnancyVisitType = new EncounterType(4);
-		pregnancyVisitType
-				.setName(MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT);
+		pregnancyRegVisitType = new EncounterType(4);
+		pregnancyRegVisitType
+				.setName(MotechConstants.ENCOUNTER_TYPE_PREGREGVISIT);
 
 		generalVisitType = new EncounterType(5);
 		generalVisitType.setName(MotechConstants.ENCOUNTER_TYPE_GENERALVISIT);
+
+		pregnancyTermVisitType = new EncounterType(6);
+		pregnancyTermVisitType
+				.setName(MotechConstants.ENCOUNTER_TYPE_PREGTERMVISIT);
+
+		pregnancyDelVisitType = new EncounterType(7);
+		pregnancyDelVisitType
+				.setName(MotechConstants.ENCOUNTER_TYPE_PREGDELVISIT);
 
 		immunizationConceptNameObj = new ConceptName(
 				MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED, Locale
@@ -677,6 +688,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		Capture<Patient> patientCap = new Capture<Patient>();
 		Capture<MessageProgramEnrollment> enrollmentCap = new Capture<MessageProgramEnrollment>();
+		Capture<Encounter> pregnancyEncounterCap = new Capture<Encounter>();
 		Capture<Obs> pregnancyObsCap = new Capture<Obs>();
 
 		expect(contextService.getPatientService()).andReturn(patientService)
@@ -687,6 +699,8 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService).atLeastOnce();
 		expect(contextService.getObsService()).andReturn(obsService);
 		expect(contextService.getConceptService()).andReturn(conceptService)
 				.atLeastOnce();
@@ -786,6 +800,13 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation);
+		expect(
+				encounterService
+						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGREGVISIT))
+				.andReturn(pregnancyRegVisitType);
+		expect(contextService.getAuthenticatedUser()).andReturn(new User());
+		expect(encounterService.saveEncounter(capture(pregnancyEncounterCap)))
+				.andReturn(new Encounter());
 		expect(conceptService.getConcept(MotechConstants.CONCEPT_PREGNANCY))
 				.andReturn(pregConcept);
 		expect(
@@ -900,6 +921,13 @@ public class RegistrarBeanTest extends TestCase {
 				.getStartDate());
 		assertNull("Enrollment end date should be null", enrollment
 				.getEndDate());
+
+		Encounter pregnancyEncounter = pregnancyEncounterCap.getValue();
+		assertNotNull(pregnancyEncounter.getEncounterDatetime());
+		assertEquals(ghanaLocation, pregnancyEncounter.getLocation());
+		assertEquals(patient, pregnancyEncounter.getPatient());
+		assertEquals(pregnancyRegVisitType, pregnancyEncounter
+				.getEncounterType());
 
 		Obs pregnancyObs = pregnancyObsCap.getValue();
 		assertNotNull(pregnancyObs.getObsDatetime());
@@ -1687,6 +1715,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		Capture<Patient> patientCap = new Capture<Patient>();
 		Capture<MessageProgramEnrollment> enrollmentCap = new Capture<MessageProgramEnrollment>();
+		Capture<Encounter> pregnancyEncounterCap = new Capture<Encounter>();
 		Capture<Obs> pregnancyObsCap = new Capture<Obs>();
 
 		expect(contextService.getPatientService()).andReturn(patientService)
@@ -1697,6 +1726,8 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getLocationService()).andReturn(locationService)
 				.atLeastOnce();
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService).atLeastOnce();
 		expect(contextService.getObsService()).andReturn(obsService);
 		expect(contextService.getConceptService()).andReturn(conceptService)
 				.atLeastOnce();
@@ -1747,6 +1778,13 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation);
+		expect(
+				encounterService
+						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGREGVISIT))
+				.andReturn(pregnancyRegVisitType);
+		expect(contextService.getAuthenticatedUser()).andReturn(new User());
+		expect(encounterService.saveEncounter(capture(pregnancyEncounterCap)))
+				.andReturn(new Encounter());
 		expect(conceptService.getConcept(MotechConstants.CONCEPT_PREGNANCY))
 				.andReturn(pregConcept);
 		expect(
@@ -1819,6 +1857,13 @@ public class RegistrarBeanTest extends TestCase {
 				.getStartDate());
 		assertNull("Enrollment end date should be null", enrollment
 				.getEndDate());
+
+		Encounter pregnancyEncounter = pregnancyEncounterCap.getValue();
+		assertNotNull(pregnancyEncounter.getEncounterDatetime());
+		assertEquals(ghanaLocation, pregnancyEncounter.getLocation());
+		assertEquals(patient, pregnancyEncounter.getPatient());
+		assertEquals(pregnancyRegVisitType, pregnancyEncounter
+				.getEncounterType());
 
 		Obs pregnancyObs = pregnancyObsCap.getValue();
 		assertNotNull(pregnancyObs.getObsDatetime());

@@ -720,44 +720,55 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	private Integer registerPregnancy(Patient patient, Date dueDate,
 			Boolean dueDateConfirmed, Integer gravida, Integer parity) {
 
+		EncounterService encounterService = contextService
+				.getEncounterService();
 		ObsService obsService = contextService.getObsService();
 
 		Date currentDate = new Date();
 		Location ghanaLocation = getGhanaLocation();
 
+		Encounter encounter = new Encounter();
+		encounter
+				.setEncounterType(getPregnancyRegistrationVisitEncounterType());
+		encounter.setEncounterDatetime(currentDate);
+		encounter.setPatient(patient);
+		encounter.setLocation(ghanaLocation);
+		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter = encounterService.saveEncounter(encounter);
+
 		Obs pregnancyObs = createObs(currentDate, getPregnancyConcept(),
-				patient, ghanaLocation, null, null);
+				patient, ghanaLocation, encounter, null);
 
 		Obs pregnancyStatusObs = createBooleanValueObs(currentDate,
 				getPregnancyStatusConcept(), patient, ghanaLocation,
-				Boolean.TRUE, null, null);
+				Boolean.TRUE, encounter, null);
 		pregnancyObs.addGroupMember(pregnancyStatusObs);
 
 		Obs dueDateObs = null;
 		if (dueDate != null) {
 			dueDateObs = createDateValueObs(currentDate, getDueDateConcept(),
-					patient, ghanaLocation, dueDate, null, null);
+					patient, ghanaLocation, dueDate, encounter, null);
 			pregnancyObs.addGroupMember(dueDateObs);
 		}
 
 		if (dueDateConfirmed != null) {
 			Obs dueDateConfirmedObs = createBooleanValueObs(currentDate,
 					getDueDateConfirmedConcept(), patient, ghanaLocation,
-					dueDateConfirmed, null, null);
+					dueDateConfirmed, encounter, null);
 			pregnancyObs.addGroupMember(dueDateConfirmedObs);
 		}
 
 		if (gravida != null) {
 			Obs gravidaObs = createNumericValueObs(currentDate,
-					getGravidaConcept(), patient, ghanaLocation, gravida, null,
-					null);
+					getGravidaConcept(), patient, ghanaLocation, gravida,
+					encounter, null);
 			pregnancyObs.addGroupMember(gravidaObs);
 		}
 
 		if (parity != null) {
 			Obs parityObs = createNumericValueObs(currentDate,
-					getParityConcept(), patient, ghanaLocation, parity, null,
-					null);
+					getParityConcept(), patient, ghanaLocation, parity,
+					encounter, null);
 			pregnancyObs.addGroupMember(parityObs);
 		}
 
@@ -833,7 +844,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		Location location = getGhanaLocation();
 
 		Encounter encounter = new Encounter();
-		encounter.setEncounterType(getPregnancyVisitEncounterType());
+		encounter.setEncounterType(getPregnancyTerminationVisitEncounterType());
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(location);
@@ -875,7 +886,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		Location encounterLocation = getGhanaLocation();
 
 		Encounter encounter = new Encounter();
-		encounter.setEncounterType(getPregnancyVisitEncounterType());
+		encounter.setEncounterType(getPregnancyDeliveryVisitEncounterType());
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(encounterLocation);
@@ -1895,8 +1906,12 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				"Ghana Antenatal Care (ANC) Visit", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PPCVISIT,
 				"Ghana Postpartum Care (PPC) Visit", admin);
-		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT,
-				"Ghana Pregnancy Registration or Delivery Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGREGVISIT,
+				"Ghana Pregnancy Registration Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGTERMVISIT,
+				"Ghana Pregnancy Termination Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGDELVISIT,
+				"Ghana Pregnancy Delivery Visit", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PNCVISIT,
 				"Ghana Postnatal Care (PNC) Visit", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_GENERALVISIT,
@@ -2925,9 +2940,19 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				MotechConstants.ENCOUNTER_TYPE_PPCVISIT);
 	}
 
-	public EncounterType getPregnancyVisitEncounterType() {
+	public EncounterType getPregnancyRegistrationVisitEncounterType() {
 		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_PREGNANCYVISIT);
+				MotechConstants.ENCOUNTER_TYPE_PREGREGVISIT);
+	}
+
+	public EncounterType getPregnancyTerminationVisitEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_PREGTERMVISIT);
+	}
+
+	public EncounterType getPregnancyDeliveryVisitEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_PREGDELVISIT);
 	}
 
 	public EncounterType getPNCVisitEncounterType() {

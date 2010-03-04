@@ -142,7 +142,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			regService.recordMotherANCVisit(nurse, date, mother1, 1, 1, 1,
 					true, org.motechproject.ws.HIVStatus.N);
 
-			assertEquals("ANC visit not added for Mother 1", 1, Context
+			assertEquals("ANC visit not added for Mother 1", 2, Context
 					.getEncounterService().getEncountersByPatient(mother1)
 					.size());
 
@@ -155,7 +155,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			regService.recordPregnancyDelivery(nurse, date, mother1, 1, 1, 1,
 					DeliveredBy.CHO, false, 1, outcomes);
 
-			assertEquals("Pregnancy delivery not added for Mother 1", 2,
+			assertEquals("Pregnancy delivery not added for Mother 1", 3,
 					Context.getEncounterService().getEncountersByPatient(
 							mother1).size());
 			Obs mother1Pregnancy = regService.getActivePregnancy(mother1
@@ -179,7 +179,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			// Pregnancy Termination for Mother 2
 			regService.recordPregnancyTermination(nurse, date, mother2, 1, 1);
 
-			assertEquals("Pregnancy termination not added for Mother 2", 1,
+			assertEquals("Pregnancy termination not added for Mother 2", 2,
 					Context.getEncounterService().getEncountersByPatient(
 							mother2).size());
 			Obs mother2Pregnancy = regService.getActivePregnancy(mother2
@@ -190,7 +190,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			// PPC Visit for Mother 2
 			regService.recordMotherPPCVisit(nurse, date, mother2, 1, true, 2);
 
-			assertEquals("PPC visit not added for Mother 2", 2, Context
+			assertEquals("PPC visit not added for Mother 2", 3, Context
 					.getEncounterService().getEncountersByPatient(mother2)
 					.size());
 
@@ -198,7 +198,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			regService.recordMotherVisit(nurse, date, mother2,
 					"Mother2GeneralId", true, 1, 2, false);
 
-			assertEquals("General visit not added for Mother 2", 3, Context
+			assertEquals("General visit not added for Mother 2", 4, Context
 					.getEncounterService().getEncountersByPatient(mother2)
 					.size());
 

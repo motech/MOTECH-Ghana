@@ -34,7 +34,9 @@ public final class MotechConstants {
 	public static final String LOCATION_KASSENA_NANKANA_WEST = "Kassena-Nankana West";
 	public static final String ENCOUNTER_TYPE_ANCVISIT = "ANCVISIT";
 	public static final String ENCOUNTER_TYPE_PPCVISIT = "PPCVISIT";
-	public static final String ENCOUNTER_TYPE_PREGNANCYVISIT = "PREGNANCYVISIT";
+	public static final String ENCOUNTER_TYPE_PREGREGVISIT = "PREGNREGVISIT";
+	public static final String ENCOUNTER_TYPE_PREGTERMVISIT = "PREGTERMVISIT";
+	public static final String ENCOUNTER_TYPE_PREGDELVISIT = "PREGDELVISIT";
 	public static final String ENCOUNTER_TYPE_PNCVISIT = "PNCVISIT";
 	public static final String ENCOUNTER_TYPE_GENERALVISIT = "GENERALVISIT";
 	public static final String CONCEPT_VISIT_NUMBER = "VISIT NUMBER";
