@@ -183,6 +183,35 @@
 				`delivery_id` int,	
 				PRIMARY KEY (`motechmodule_service_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			CREATE TABLE IF NOT EXISTS `motechmodule_expected_obs` (
+				`motechmodule_expected_obs_id` bigint NOT NULL auto_increment,
+				`person_id` int NOT NULL,
+				`concept_id` int NOT NULL,
+				`value_coded` int,
+				`value_numeric` double,
+				`min_datetime` datetime,
+				`due_datetime` datetime NOT NULL,
+				`late_datetime` datetime NOT NULL,
+				`max_datetime` datetime,
+				PRIMARY KEY (`motechmodule_expected_obs_id`),
+				CONSTRAINT `person_of_obs` FOREIGN KEY (`person_id`) REFERENCES `person` (`person_id`),
+				CONSTRAINT `concept_of_obs` FOREIGN KEY (`concept_id`) REFERENCES `concept` (`concept_id`),
+				CONSTRAINT `value_concept_of_obs` FOREIGN KEY (`value_coded`) REFERENCES `concept` (`concept_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			CREATE TABLE IF NOT EXISTS `motechmodule_expected_encounter` (
+				`motechmodule_expected_encounter_id` bigint NOT NULL auto_increment,
+				`patient_id` int NOT NULL,
+				`encounter_type` int NOT NULL,
+				`min_datetime` datetime,
+				`due_datetime` datetime NOT NULL,
+				`late_datetime` datetime NOT NULL,
+				`max_datetime` datetime,
+				PRIMARY KEY (`motechmodule_expected_encounter_id`),
+				CONSTRAINT `patient_of_encounter` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`),
+				CONSTRAINT `type_of_encounter` FOREIGN KEY (`encounter_type`) REFERENCES `encounter_type` (`encounter_type_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		</sql>
 	</diff>
 	

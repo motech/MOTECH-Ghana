@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="${corePackage}.model">
+	<class name="ExpectedEncounter" table="motechmodule_expected_encounter">
+		<id name="id" type="long" column="motechmodule_expected_encounter_id">
+			<generator class="native" />
+		</id>
+
+		<many-to-one name="patient" class="org.openmrs.Patient"
+			not-null="true" column="patient_id" />
+		<many-to-one name="encounterType" class="org.openmrs.EncounterType"
+			not-null="true" column="encounter_type" />
+
+		<property name="minEncounterDatetime" type="java.util.Date"
+			column="min_datetime" length="19" />
+		<property name="dueEncounterDatetime" type="java.util.Date"
+			column="due_datetime" not-null="true" length="19" />
+		<property name="lateEncounterDatetime" type="java.util.Date"
+			column="late_datetime" not-null="true" length="19" />
+		<property name="maxEncounterDatetime" type="java.util.Date"
+			column="max_datetime" length="19" />
+	</class>
+</hibernate-mapping>

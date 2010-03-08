@@ -4,10 +4,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.motech.model.Blackout;
+import org.motech.model.ExpectedEncounter;
+import org.motech.model.ExpectedObs;
 import org.motech.model.GeneralPatientEncounter;
 import org.motech.model.Log;
 import org.motech.model.Message;
@@ -21,8 +24,11 @@ import org.motech.model.ServiceStatus;
 import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
 import org.openmrs.Concept;
+import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
+import org.openmrs.Patient;
+import org.openmrs.Person;
 
 /**
  * An implementation of the motech data access object interface, implemented
@@ -478,6 +484,72 @@ public class HibernateMotechDAO implements MotechDAO {
 				Restrictions.eq("service", service)).add(
 				Restrictions.eq("sequence", sequence)).add(
 				Restrictions.eq("status", status)).list();
+	}
+
+	public ExpectedObs saveExpectedObs(ExpectedObs expectedObs) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(expectedObs);
+		return expectedObs;
+	}
+
+	public void removeExpectedObs(ExpectedObs expectedObs) {
+		Session session = sessionFactory.getCurrentSession();
+		session.delete(expectedObs);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<ExpectedObs> getExpectedObs(Person person, Concept concept,
+			Concept valueCoded, Double valueNumeric, Date obsDatetime) {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(ExpectedObs.class);
+		if (person != null) {
+			criteria.add(Restrictions.eq("person", person));
+		}
+		if (concept != null) {
+			criteria.add(Restrictions.eq("concept", concept));
+		}
+		if (obsDatetime != null) {
+			criteria.add(Restrictions.or(Restrictions.isNull("minObsDatetime"),
+					Restrictions.le("minObsDatetime", obsDatetime)));
+		}
+		if (valueCoded != null) {
+			criteria.add(Restrictions.eq("valueCoded", valueCoded));
+		}
+		if (valueNumeric != null) {
+			criteria.add(Restrictions.eq("valueNumeric", valueNumeric));
+		}
+		return criteria.list();
+	}
+
+	public ExpectedEncounter saveExpectedEncounter(
+			ExpectedEncounter expectedEncounter) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(expectedEncounter);
+		return expectedEncounter;
+	}
+
+	public void removeExpectedEncounter(ExpectedEncounter expectedEncounter) {
+		Session session = sessionFactory.getCurrentSession();
+		session.delete(expectedEncounter);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<ExpectedEncounter> getExpectedEncounter(Patient patient,
+			EncounterType encounterType, Date encounterDatetime) {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(ExpectedEncounter.class);
+		if (patient != null) {
+			criteria.add(Restrictions.eq("patient", patient));
+		}
+		if (encounterType != null) {
+			criteria.add(Restrictions.eq("encounterType", encounterType));
+		}
+		if (encounterDatetime != null) {
+			criteria.add(Restrictions.or(Restrictions
+					.isNull("minEncounterDatetime"), Restrictions.le(
+					"minEncounterDatetime", encounterDatetime)));
+		}
+		return criteria.list();
 	}
 
 }

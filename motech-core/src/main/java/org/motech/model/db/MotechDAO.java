@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.motech.model.Blackout;
+import org.motech.model.ExpectedEncounter;
+import org.motech.model.ExpectedObs;
 import org.motech.model.GeneralPatientEncounter;
 import org.motech.model.Log;
 import org.motech.model.Message;
@@ -16,8 +18,11 @@ import org.motech.model.Service;
 import org.motech.model.ServiceStatus;
 import org.motech.model.TroubledPhone;
 import org.openmrs.Concept;
+import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
+import org.openmrs.Patient;
+import org.openmrs.Person;
 
 /**
  * The interface definition for the motech server's data access requirements.
@@ -132,4 +137,18 @@ public interface MotechDAO {
 
 	List<Service> getServices(Integer patientId, String service,
 			String sequence, ServiceStatus status);
+
+	ExpectedObs saveExpectedObs(ExpectedObs expectedObs);
+
+	void removeExpectedObs(ExpectedObs expectedObs);
+
+	List<ExpectedObs> getExpectedObs(Person person, Concept concept,
+			Concept valueCoded, Double valueNumeric, Date obsDatetime);
+
+	ExpectedEncounter saveExpectedEncounter(ExpectedEncounter expectedEncounter);
+
+	void removeExpectedEncounter(ExpectedEncounter expectedEncounter);
+
+	List<ExpectedEncounter> getExpectedEncounter(Patient patient,
+			EncounterType encounterType, Date encounterDatetime);
 }
