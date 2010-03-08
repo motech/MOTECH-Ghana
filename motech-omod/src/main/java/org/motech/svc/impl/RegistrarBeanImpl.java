@@ -164,11 +164,13 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 			Patient mother = getPatientBySerial(motherRegNumberGHS);
 
-			RelationshipType parentChildRelationshipType = personService
-					.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD);
-			Relationship motherRelationship = new Relationship(mother, child,
-					parentChildRelationshipType);
-			personService.saveRelationship(motherRelationship);
+			if (mother != null) {
+				RelationshipType parentChildRelationshipType = personService
+						.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD);
+				Relationship motherRelationship = new Relationship(mother,
+						child, parentChildRelationshipType);
+				personService.saveRelationship(motherRelationship);
+			}
 		}
 
 		if (registerPregProgram) {
