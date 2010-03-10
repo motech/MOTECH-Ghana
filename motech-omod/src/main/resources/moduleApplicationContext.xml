@@ -67,8 +67,13 @@
 	<wss:binding url="/ws/RegistrarService" service="#registrarservice" /> <!-- MUST start with /ws/ -->
 	<ws:service id="registrarservice" bean="#registrarWebService" />
 
+	<bean id="webserviceModelConverter" class="${corePackage}.ws.WebServiceModelConverterImpl">
+		<property name="registrarBean" ref="registrarBeanProxy" />
+	</bean>
+
 	<bean id="registrarWebService" class="${corePackage}.ws.RegistrarWebService">
 		<property name="registrarBean" ref="registrarBeanProxy" />
+		<property name="modelConverter" ref="webserviceModelConverter" />
 	</bean>
 	
 	<bean id="webModelConverter" class="org.motech.openmrs.module.web.model.WebModelConverterImpl" />

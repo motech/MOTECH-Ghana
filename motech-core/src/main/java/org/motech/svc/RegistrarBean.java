@@ -240,6 +240,8 @@ public interface RegistrarBean {
 	public Date getLastDoseObsDateInActivePregnancy(Integer patientId,
 			String conceptName, Integer doseNumber);
 
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_CONCEPTS,
+			OpenmrsConstants.PRIV_VIEW_OBS, OpenmrsConstants.PRIV_VIEW_PERSONS })
 	public Date getActivePregnancyDueDate(Integer patientId);
 
 	public Date getLastPregnancyEndDate(Integer patientId);

@@ -39,6 +39,7 @@ public class RegistrarWebService implements RegistrarService {
 	Log log = LogFactory.getLog(RegistrarWebService.class);
 
 	RegistrarBean registrarBean;
+	WebServiceModelConverter modelConverter;
 
 	@WebMethod
 	public void recordMotherANCVisit(@WebParam(name = "chpsId") String chpsId,
@@ -478,8 +479,9 @@ public class RegistrarWebService implements RegistrarService {
 	public Patient queryPatient(@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "motechId") String motechId) {
 
-		// TODO: Perform query, return Patient object
-		return new Patient();
+		org.openmrs.Patient patient = registrarBean
+				.getPatientByMotechId(motechId);
+		return modelConverter.patientToWebService(patient, false);
 	}
 
 	@WebMethod
@@ -500,6 +502,11 @@ public class RegistrarWebService implements RegistrarService {
 	@WebMethod(exclude = true)
 	public void setRegistrarBean(RegistrarBean registrarBean) {
 		this.registrarBean = registrarBean;
+	}
+
+	@WebMethod(exclude = true)
+	public void setModelConverter(WebServiceModelConverter modelConverter) {
+		this.modelConverter = modelConverter;
 	}
 
 	private User validateChpsId(String chpsId, ValidationErrors errors,
