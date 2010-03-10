@@ -229,7 +229,7 @@ public class RegistrarWebService implements RegistrarService {
 				"MotherMotechID");
 
 		org.openmrs.Patient child = registrarBean
-				.getPatientBySerial(childMotechId);
+				.getPatientByMotechId(childMotechId);
 		if (child != null) {
 			errors.add(2, "ChildMotechID");
 		}
@@ -514,7 +514,7 @@ public class RegistrarWebService implements RegistrarService {
 	private org.openmrs.Patient validateMotechId(String motechId,
 			ValidationErrors errors, String fieldName) {
 		org.openmrs.Patient patient = registrarBean
-				.getPatientBySerial(motechId);
+				.getPatientByMotechId(motechId);
 		if (patient == null) {
 			errors.add(1, fieldName);
 		}

@@ -21,7 +21,7 @@ public class WebPatient {
 	private Gender sex;
 	private Boolean registeredGHS;
 	private String regNumberGHS;
-	private String motherRegNumberGHS;
+	private String motherMotechId;
 	private Boolean insured;
 	private String nhis;
 	private Date nhisExpDate;
@@ -135,12 +135,12 @@ public class WebPatient {
 		this.regNumberGHS = regNumberGHS;
 	}
 
-	public String getMotherRegNumberGHS() {
-		return motherRegNumberGHS;
+	public String getMotherMotechId() {
+		return motherMotechId;
 	}
 
-	public void setMotherRegNumberGHS(String motherRegNumberGHS) {
-		this.motherRegNumberGHS = motherRegNumberGHS;
+	public void setMotherMotechId(String motherMotechId) {
+		this.motherMotechId = motherMotechId;
 	}
 
 	public Boolean getInsured() {

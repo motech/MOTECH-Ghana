@@ -192,7 +192,7 @@ public class RegistrarBeanTest extends TestCase {
 		ghanaLocation.setName(MotechConstants.LOCATION_GHANA);
 
 		ghanaIdType = new PatientIdentifierType(1);
-		ghanaIdType.setName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
+		ghanaIdType.setName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
 
 		primaryPhoneAttributeType = new PersonAttributeType(2);
 		primaryPhoneAttributeType
@@ -512,7 +512,7 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(ghanaLocation);
 		expect(
 				patientService
-						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
 				.andReturn(ghanaIdType);
 
 		Patient mother = new Patient();
@@ -707,7 +707,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				patientService
-						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
 				.andReturn(ghanaIdType);
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation);
@@ -1011,7 +1011,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				patientService
-						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
 				.andReturn(ghanaIdType);
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation);
@@ -1084,7 +1084,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				patientService
-						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
 				.andReturn(ghanaIdType);
 		List<Patient> motherList = new ArrayList<Patient>();
 		motherList.add(mother);
@@ -1494,7 +1494,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				patientService
-						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID))
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
 				.andReturn(ghanaIdType);
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation);

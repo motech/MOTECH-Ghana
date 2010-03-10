@@ -137,7 +137,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	public void registerChild(String firstName, String middleName,
 			String lastName, String prefName, Date birthDate,
-			Boolean birthDateEst, Gender sex, String motherRegNumberGHS,
+			Boolean birthDateEst, Gender sex, String motherMotechId,
 			Boolean registeredGHS, String regNumberGHS, Boolean insured,
 			String nhis, Date nhisExpDate, String region, String district,
 			String community, String address, Integer clinic,
@@ -160,9 +160,9 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		child = patientService.savePatient(child);
 
-		if (motherRegNumberGHS != null) {
+		if (motherMotechId != null) {
 
-			Patient mother = getPatientBySerial(motherRegNumberGHS);
+			Patient mother = getPatientByMotechId(motherMotechId);
 
 			if (mother != null) {
 				RelationshipType parentChildRelationshipType = personService
@@ -179,7 +179,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
-	private Patient createPatient(String patientId, String firstName,
+	private Patient createPatient(String motechId, String firstName,
 			String middleName, String lastName, String prefName,
 			Date birthDate, Boolean birthDateEst, Gender sex,
 			Boolean registeredGHS, String regNumberCWC, String regNumberANC,
@@ -203,8 +203,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		Patient patient = new Patient(person);
 
-		patient.addIdentifier(new PatientIdentifier(patientId,
-				getGhanaPatientIdType(), getGhanaLocation()));
+		patient.addIdentifier(new PatientIdentifier(motechId,
+				getMotechPatientIdType(), getGhanaLocation()));
 
 		return patient;
 	}
@@ -350,7 +350,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	}
 
 	public void demoEnrollPatient(String regNumGHS) {
-		Patient patient = getPatientBySerial(regNumGHS);
+		Patient patient = getPatientByMotechId(regNumGHS);
 		addMessageProgramEnrollment(patient.getPersonId(),
 				"Input Demo Message Program", null);
 	}
@@ -657,7 +657,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		PatientIdentifier patientId = patient.getPatientIdentifier();
 		if (patientId == null) {
 			patientId = new PatientIdentifier();
-			patientId.setIdentifierType(getGhanaPatientIdType());
+			patientId.setIdentifierType(getMotechPatientIdType());
 			patientId.setLocation(getGhanaLocation());
 			patientId.setIdentifier(regNumberGHS);
 			patient.addIdentifier(patientId);
@@ -1289,10 +1289,10 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	public List<Patient> getAllPatients() {
 		PatientService patientService = contextService.getPatientService();
-		List<PatientIdentifierType> ghanaPatientIdType = new ArrayList<PatientIdentifierType>();
-		ghanaPatientIdType.add(getGhanaPatientIdType());
-		return patientService
-				.getPatients(null, null, ghanaPatientIdType, false);
+		List<PatientIdentifierType> motechPatientIdType = new ArrayList<PatientIdentifierType>();
+		motechPatientIdType.add(getMotechPatientIdType());
+		return patientService.getPatients(null, null, motechPatientIdType,
+				false);
 	}
 
 	public List<Person> getMatchingPeople(String firstName, String lastName,
@@ -1878,8 +1878,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 		log.info("Verifying Patient Identifier Exist");
 		createPatientIdentifierType(
-				MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID,
-				"Patient Id for Ghana Clinics.", admin);
+				MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID,
+				"Patient Id for MoTeCH system.", admin);
 
 		log.info("Verifying Locations Exist");
 		Location ghana = createLocation(MotechConstants.LOCATION_GHANA,
@@ -2608,18 +2608,18 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return obs;
 	}
 
-	public Patient getPatientBySerial(String serialId) {
+	public Patient getPatientByMotechId(String motechId) {
 		PatientService patientService = contextService.getPatientService();
-		PatientIdentifierType serialIdType = getGhanaPatientIdType();
+		PatientIdentifierType motechIdType = getMotechPatientIdType();
 		List<PatientIdentifierType> idTypes = new ArrayList<PatientIdentifierType>();
-		idTypes.add(serialIdType);
+		idTypes.add(motechIdType);
 
 		// Parameters are Name, Id, Id type, match exactly boolean
-		List<Patient> patients = patientService.getPatients(null, serialId,
+		List<Patient> patients = patientService.getPatients(null, motechId,
 				idTypes, true);
 		if (patients.size() > 0) {
 			if (patients.size() > 1) {
-				log.warn("Multiple Patients found for serial: " + serialId);
+				log.warn("Multiple Patients found for Motech ID: " + motechId);
 			}
 			return patients.get(0);
 		}
@@ -2806,10 +2806,10 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return calendar.getTime();
 	}
 
-	public PatientIdentifierType getGhanaPatientIdType() {
+	public PatientIdentifierType getMotechPatientIdType() {
 		return contextService.getPatientService()
 				.getPatientIdentifierTypeByName(
-						MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
+						MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
 	}
 
 	public PersonAttributeType getNurseIdAttributeType() {

@@ -111,11 +111,9 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 			assertEquals(4, Context.getPatientService().getAllPatients().size());
 
 			ArrayList<PatientIdentifierType> patientIdTypeList = new ArrayList<PatientIdentifierType>();
-			patientIdTypeList
-					.add(Context
-							.getPatientService()
-							.getPatientIdentifierTypeByName(
-									MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID));
+			patientIdTypeList.add(Context.getPatientService()
+					.getPatientIdentifierTypeByName(
+							MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID));
 
 			List<Patient> motherMatchingPatients = Context.getPatientService()
 					.getPatients("motherfirstName motherlastName",

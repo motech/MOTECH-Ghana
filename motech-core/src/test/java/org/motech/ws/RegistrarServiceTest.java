@@ -89,7 +89,7 @@ public class RegistrarServiceTest {
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(patient);
 		registrarBean.recordMotherANCVisit(nurse, date, patient, visitNumber,
 				ttDose, iptDose, itnUse, hivStatus);
 
@@ -113,7 +113,7 @@ public class RegistrarServiceTest {
 		User nurse = new User(1);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(null);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(null);
 
 		replay(registrarBean);
 
@@ -147,7 +147,7 @@ public class RegistrarServiceTest {
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(patient);
 		registrarBean.recordPregnancyTermination(nurse, date, patient,
 				abortionType, complication);
 
@@ -169,7 +169,7 @@ public class RegistrarServiceTest {
 		User nurse = new User(1);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(null);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(null);
 
 		replay(registrarBean);
 
@@ -212,7 +212,7 @@ public class RegistrarServiceTest {
 		Capture<BirthOutcomeChild[]> outcomesCapture = new Capture<BirthOutcomeChild[]>();
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(patient);
 		registrarBean.recordPregnancyDelivery(eq(nurse), eq(date), eq(patient),
 				eq(method), eq(outcome), eq(location), eq(deliveredBy),
 				eq(maternalDeath), eq(cause), capture(outcomesCapture));
@@ -263,7 +263,7 @@ public class RegistrarServiceTest {
 		User nurse = new User(1);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(null);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(null);
 
 		replay(registrarBean);
 
@@ -301,7 +301,7 @@ public class RegistrarServiceTest {
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(patient);
 		registrarBean.recordMotherPPCVisit(nurse, date, patient, visitNumber,
 				vitaminA, ttDose);
 
@@ -324,7 +324,7 @@ public class RegistrarServiceTest {
 		User nurse = new User(1);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(null);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(null);
 
 		replay(registrarBean);
 
@@ -358,7 +358,7 @@ public class RegistrarServiceTest {
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(patient);
 		registrarBean.recordDeath(nurse, date, patient, cause);
 
 		replay(registrarBean);
@@ -377,7 +377,7 @@ public class RegistrarServiceTest {
 		User nurse = new User(1);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(null);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(null);
 
 		replay(registrarBean);
 
@@ -410,7 +410,7 @@ public class RegistrarServiceTest {
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(patient);
 		registrarBean.recordChildPNCVisit(nurse, date, patient, bcg, opvDose,
 				pentaDose, yellowFever, csm, measles, ipti, vitaminA);
 
@@ -433,7 +433,7 @@ public class RegistrarServiceTest {
 		User nurse = new User(1);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(null);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(null);
 
 		replay(registrarBean);
 
@@ -468,9 +468,9 @@ public class RegistrarServiceTest {
 		org.openmrs.Patient child = null;
 
 		expect(registrarBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(motherRegNum))
+		expect(registrarBean.getPatientByMotechId(motherRegNum))
 				.andReturn(mother);
-		expect(registrarBean.getPatientBySerial(childRegNum)).andReturn(child);
+		expect(registrarBean.getPatientByMotechId(childRegNum)).andReturn(child);
 
 		expect(
 				registrarBean.registerChild(nurse, mother, childRegNum,
@@ -499,9 +499,9 @@ public class RegistrarServiceTest {
 		org.openmrs.Patient child = new org.openmrs.Patient(3);
 
 		expect(registrarBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(motherRegNum))
+		expect(registrarBean.getPatientByMotechId(motherRegNum))
 				.andReturn(mother);
-		expect(registrarBean.getPatientBySerial(childRegNum)).andReturn(child);
+		expect(registrarBean.getPatientByMotechId(childRegNum)).andReturn(child);
 
 		replay(registrarBean);
 
@@ -543,7 +543,7 @@ public class RegistrarServiceTest {
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientRegNum)).andReturn(
+		expect(registrarBean.getPatientByMotechId(patientRegNum)).andReturn(
 				patient);
 
 		registrarBean.editPatient(nurse, patient, primaryPhone,
@@ -568,7 +568,7 @@ public class RegistrarServiceTest {
 		org.openmrs.Patient patient = null;
 
 		expect(registrarBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientRegNum)).andReturn(
+		expect(registrarBean.getPatientByMotechId(patientRegNum)).andReturn(
 				patient);
 
 		replay(registrarBean);
@@ -604,7 +604,7 @@ public class RegistrarServiceTest {
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientRegNum)).andReturn(
+		expect(registrarBean.getPatientByMotechId(patientRegNum)).andReturn(
 				patient);
 
 		registrarBean.stopPregnancyProgram(nurse, patient);
@@ -624,7 +624,7 @@ public class RegistrarServiceTest {
 		org.openmrs.Patient patient = null;
 
 		expect(registrarBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientRegNum)).andReturn(
+		expect(registrarBean.getPatientByMotechId(patientRegNum)).andReturn(
 				patient);
 
 		replay(registrarBean);
@@ -710,7 +710,7 @@ public class RegistrarServiceTest {
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(patient);
 		registrarBean.recordChildVisit(nurse, date, patient, serial, newCase,
 				diagnosis, secondDiagnosis, referral);
 
@@ -733,7 +733,7 @@ public class RegistrarServiceTest {
 		User nurse = new User(1);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(null);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(null);
 
 		replay(registrarBean);
 
@@ -767,7 +767,7 @@ public class RegistrarServiceTest {
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(patient);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(patient);
 		registrarBean.recordMotherVisit(nurse, date, patient, serial, newCase,
 				diagnosis, secondDiagnosis, referral);
 
@@ -790,7 +790,7 @@ public class RegistrarServiceTest {
 		User nurse = new User(1);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(registrarBean.getPatientBySerial(patientId)).andReturn(null);
+		expect(registrarBean.getPatientByMotechId(patientId)).andReturn(null);
 
 		replay(registrarBean);
 

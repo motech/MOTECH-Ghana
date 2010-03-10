@@ -32,7 +32,7 @@ public class WebModelConverterImpl implements WebModelConverter {
 		personToWeb(patient, webPatient);
 
 		PatientIdentifier patientId = patient
-				.getPatientIdentifier(MotechConstants.PATIENT_IDENTIFIER_GHANA_CLINIC_ID);
+				.getPatientIdentifier(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
 		if (patientId != null) {
 			webPatient.setRegNumberGHS(patientId.getIdentifier());
 		}

@@ -134,11 +134,11 @@ public class ChildController {
 			}
 		}
 
-		if (child.getMotherRegNumberGHS() != null
-				&& registrarBean.getPatientBySerial(child
-						.getMotherRegNumberGHS()) == null) {
-			errors.rejectValue("motherRegNumberGHS",
-					"motechmodule.regNumberGHS.notexist");
+		if (child.getMotherMotechId() != null
+				&& registrarBean
+						.getPatientByMotechId(child.getMotherMotechId()) == null) {
+			errors.rejectValue("motherMotechId",
+					"motechmodule.motechId.notexist");
 		}
 
 		if (!Boolean.TRUE.equals(child.getRegisteredGHS())) {
@@ -148,8 +148,8 @@ public class ChildController {
 			ValidationUtils.rejectIfEmpty(errors, "regNumberGHS",
 					"motechmodule.regNumberGHS.required");
 			if (child.getRegNumberGHS() != null
-					&& registrarBean
-							.getPatientBySerial(child.getRegNumberGHS()) != null) {
+					&& registrarBean.getPatientByMotechId(child
+							.getRegNumberGHS()) != null) {
 				errors.rejectValue("regNumberGHS",
 						"motechmodule.regNumberGHS.nonunique");
 			}
@@ -199,7 +199,7 @@ public class ChildController {
 			registrarBean.registerChild(child.getFirstName(), child
 					.getMiddleName(), child.getLastName(), child.getPrefName(),
 					child.getBirthDate(), child.getBirthDateEst(), child
-							.getSex(), child.getMotherRegNumberGHS(), child
+							.getSex(), child.getMotherMotechId(), child
 							.getRegisteredGHS(), child.getRegNumberGHS(), child
 							.getInsured(), child.getNhis(), child
 							.getNhisExpDate(), child.getRegion(), child

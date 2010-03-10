@@ -83,9 +83,9 @@
 		<td><form:errors path="sex" cssClass="error" /></td>
 	</tr>
 	<tr>
-		<td><label for="motherRegNumberGHS">Mother's GHS ANC Registration Number:</label></td>
-		<td><form:input path="motherRegNumberGHS" /></td>
-		<td><form:errors path="motherRegNumberGHS" cssClass="error" /></td>
+		<td><label for="motherMotechId">Mother's MoTeCH ID:</label></td>
+		<td><form:input path="motherMotechId" /></td>
+		<td><form:errors path="motherMotechId" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td><label for="registeredGHS">Registered with GHS:</label></td>

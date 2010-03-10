@@ -165,7 +165,7 @@ public class DemoPatientController {
 			ValidationUtils.rejectIfEmpty(errors, "regNumberGHS",
 					"motechmodule.regNumberGHS.required");
 			if (patient.getRegNumberGHS() != null
-					&& registrarBean.getPatientBySerial(patient
+					&& registrarBean.getPatientByMotechId(patient
 							.getRegNumberGHS()) != null) {
 				errors.rejectValue("regNumberGHS",
 						"motechmodule.regNumberGHS.nonunique");
@@ -233,7 +233,7 @@ public class DemoPatientController {
 					"motechmodule.Demo.Patient.register.success");
 
 			status.setComplete();
-			
+
 			// Save the registration number for next step of demo
 			session.setAttribute("demoLastGHSRN", patient.getRegNumberGHS());
 

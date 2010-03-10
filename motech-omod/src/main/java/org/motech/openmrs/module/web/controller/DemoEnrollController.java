@@ -86,9 +86,9 @@ public class DemoEnrollController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String submitForm(@ModelAttribute("enrollpatient") WebPatient patient,
-			Errors errors, ModelMap model, SessionStatus status,
-			HttpSession session) {
+	public String submitForm(
+			@ModelAttribute("enrollpatient") WebPatient patient, Errors errors,
+			ModelMap model, SessionStatus status, HttpSession session) {
 
 		log.debug("Register Demo Patient");
 
@@ -96,7 +96,8 @@ public class DemoEnrollController {
 				"motechmodule.regNumberGHS.required");
 
 		if (patient.getRegNumberGHS() != null
-				&& registrarBean.getPatientBySerial(patient.getRegNumberGHS()) == null) {
+				&& registrarBean
+						.getPatientByMotechId(patient.getRegNumberGHS()) == null) {
 			errors.rejectValue("regNumberGHS",
 					"motechmodule.regNumberGHS.notexist");
 		}

@@ -40,7 +40,7 @@ public interface RegistrarBean {
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PATIENTS,
 			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES })
-	public Patient getPatientBySerial(String serialId);
+	public Patient getPatientByMotechId(String motechId);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_USERS,
 			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
@@ -54,7 +54,7 @@ public interface RegistrarBean {
 
 	public void registerChild(String firstName, String middleName,
 			String lastName, String prefName, Date birthDate,
-			Boolean birthDateEst, Gender sex, String motherRegNumberGHS,
+			Boolean birthDateEst, Gender sex, String motherMotechId,
 			Boolean registeredGHS, String regNumberGHS, Boolean insured,
 			String nhis, Date nhisExpDate, String region, String district,
 			String community, String address, Integer clinic,
@@ -110,16 +110,17 @@ public interface RegistrarBean {
 			String languageVoice, String languageText, String howLearned,
 			String religion, String occupation, WhyInterested whyInterested);
 
-	public void editPatient(Integer id, String firstName, String middleName, String lastName,
-			String prefName, Date birthDate, Boolean birthDateEst, Gender sex,
-			Boolean registeredGHS, String regNumberGHS, Boolean insured,
-			String nhis, Date nhisExpDate, String region, String district,
-			String community, String address, Integer clinic,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText, String religion,
-			String occupation, HIVStatus hivStatus);
+	public void editPatient(Integer id, String firstName, String middleName,
+			String lastName, String prefName, Date birthDate,
+			Boolean birthDateEst, Gender sex, Boolean registeredGHS,
+			String regNumberGHS, Boolean insured, String nhis,
+			Date nhisExpDate, String region, String district, String community,
+			String address, Integer clinic, String primaryPhone,
+			ContactNumberType primaryPhoneType, String secondaryPhone,
+			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
+			MediaType mediaTypeReminder, String languageVoice,
+			String languageText, String religion, String occupation,
+			HIVStatus hivStatus);
 
 	@RunAsUser
 	public void editPatient(

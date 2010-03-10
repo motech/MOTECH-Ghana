@@ -131,7 +131,7 @@ public class MotherController {
 			ValidationUtils.rejectIfEmpty(errors, "regNumberGHS",
 					"motechmodule.regNumberGHS.required");
 			if (mother.getRegNumberGHS() != null
-					&& registrarBean.getPatientBySerial(mother
+					&& registrarBean.getPatientByMotechId(mother
 							.getRegNumberGHS()) != null) {
 				errors.rejectValue("regNumberGHS",
 						"motechmodule.regNumberGHS.nonunique");

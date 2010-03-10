@@ -45,7 +45,7 @@
 	<h3>Patients</h3>
 	<c:choose>
 		<c:when test="${not empty allPatients}">
-		<table><tr><th>Id</th><th>First Name</th><th>Last Name</th><th>Serial</th><th>Clinic</th><th></th><th></th></tr>
+		<table><tr><th>Id</th><th>First Name</th><th>Last Name</th><th>Motech Id</th><th>Clinic</th><th></th><th></th></tr>
 		<c:forEach items="${allPatients}" var="patient">
 			<tr><td>${patient.patientId}</td><td>${patient.givenName}</td><td>${patient.familyName}</td><td>${patient.patientIdentifier.identifier}</td><td>${patient.patientIdentifier.location.name}</td><td><a href="editpatient.form?id=${patient.patientId}">Edit</a></td><td><a href="pregnancy.form?id=${patient.patientId}">Add Pregnancy</a></td></tr>
 		</c:forEach>
