@@ -239,4 +239,15 @@ public class MessageServiceStub implements MessageService {
 		return MessageStatus.DELIVERED;
 	}
 
+	public MessageStatus sendMessage(String content, String recipient) {
+
+		log.info("Motech Mobile Web Service Message\n"
+				+ "---------------------------\n" + "<sendMessage>\n"
+				+ "<content>" + content + "</content>\n" + "<recipient>"
+				+ recipient + "</recipient>\n" + "</sendMessage>\n"
+				+ "--------------------------------------");
+
+		return MessageStatus.DELIVERED;
+	}
+
 }

@@ -829,7 +829,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryANCDefaulters() {
+	public void testQueryANCDefaulters() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
 		replay(registrarBean, modelConverter);
@@ -843,7 +843,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryTTDefaulters() {
+	public void testQueryTTDefaulters() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
 		replay(registrarBean, modelConverter);
@@ -857,7 +857,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryPPCDefaulters() {
+	public void testQueryPPCDefaulters() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
 		replay(registrarBean, modelConverter);
@@ -871,7 +871,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryPNCDefaulters() {
+	public void testQueryPNCDefaulters() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
 		replay(registrarBean, modelConverter);
@@ -885,7 +885,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryCWCDefaulters() {
+	public void testQueryCWCDefaulters() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
 		replay(registrarBean, modelConverter);
@@ -899,7 +899,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryUpcomingDeliveries() {
+	public void testQueryUpcomingDeliveries() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
 		replay(registrarBean, modelConverter);
@@ -913,7 +913,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryRecentDeliveries() {
+	public void testQueryRecentDeliveries() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
 		replay(registrarBean, modelConverter);
@@ -927,7 +927,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryOverdueDeliveries() {
+	public void testQueryOverdueDeliveries() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
 		replay(registrarBean, modelConverter);
@@ -941,7 +941,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryUpcomingCare() {
+	public void testQueryUpcomingCare() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId", motechId = "MotechId";
 
 		replay(registrarBean, modelConverter);
@@ -954,7 +954,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryMotechId() {
+	public void testQueryMotechId() throws ValidationException {
 		String chpsId = "CHPSId", firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
 		String nhis = "NHIS", phone = "Phone";
 		Date birthDate = new Date();
@@ -971,7 +971,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryPatient() {
+	public void testQueryPatient() throws ValidationException {
 		String chpsId = "CHPSId", motechId = "MotechId";
 
 		org.openmrs.Patient patient = new org.openmrs.Patient(1);
