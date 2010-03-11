@@ -832,6 +832,8 @@ public class RegistrarServiceTest {
 	public void testQueryANCDefaulters() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
+		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+
 		replay(registrarBean, modelConverter);
 
 		Care[] cares = regWs.queryANCDefaulters(facilityId, chpsId);
@@ -845,6 +847,8 @@ public class RegistrarServiceTest {
 	@Test
 	public void testQueryTTDefaulters() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
+
+		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
 
 		replay(registrarBean, modelConverter);
 
@@ -860,6 +864,8 @@ public class RegistrarServiceTest {
 	public void testQueryPPCDefaulters() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
+		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+
 		replay(registrarBean, modelConverter);
 
 		Care[] cares = regWs.queryPPCDefaulters(facilityId, chpsId);
@@ -873,6 +879,8 @@ public class RegistrarServiceTest {
 	@Test
 	public void testQueryPNCDefaulters() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
+
+		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
 
 		replay(registrarBean, modelConverter);
 
@@ -888,6 +896,8 @@ public class RegistrarServiceTest {
 	public void testQueryCWCDefaulters() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
+		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+
 		replay(registrarBean, modelConverter);
 
 		Care[] cares = regWs.queryCWCDefaulters(facilityId, chpsId);
@@ -901,6 +911,8 @@ public class RegistrarServiceTest {
 	@Test
 	public void testQueryUpcomingDeliveries() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
+
+		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
 
 		replay(registrarBean, modelConverter);
 
@@ -916,6 +928,8 @@ public class RegistrarServiceTest {
 	public void testQueryRecentDeliveries() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
+		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+
 		replay(registrarBean, modelConverter);
 
 		Patient[] patients = regWs.queryRecentDeliveries(facilityId, chpsId);
@@ -929,6 +943,8 @@ public class RegistrarServiceTest {
 	@Test
 	public void testQueryOverdueDeliveries() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
+
+		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
 
 		replay(registrarBean, modelConverter);
 
@@ -944,6 +960,8 @@ public class RegistrarServiceTest {
 	public void testQueryUpcomingCare() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId", motechId = "MotechId";
 
+		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+
 		replay(registrarBean, modelConverter);
 
 		Patient patient = regWs.queryUpcomingCare(facilityId, chpsId, motechId);
@@ -958,6 +976,8 @@ public class RegistrarServiceTest {
 		String chpsId = "CHPSId", firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
 		String nhis = "NHIS", phone = "Phone";
 		Date birthDate = new Date();
+
+		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
 
 		replay(registrarBean, modelConverter);
 
@@ -976,6 +996,7 @@ public class RegistrarServiceTest {
 
 		org.openmrs.Patient patient = new org.openmrs.Patient(1);
 
+		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
 		expect(registrarBean.getPatientByMotechId(motechId)).andReturn(patient);
 		expect(modelConverter.patientToWebService(eq(patient), eq(false)))
 				.andReturn(new Patient());

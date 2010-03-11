@@ -383,6 +383,15 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "chpsId") String chpsId)
 			throws ValidationException {
 
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(chpsId, errors, "CHPSID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in ANC Defaulters Query request", errors);
+		}
+
 		// TODO: Perform query, return Care objects with patients for ANC1-4,
 		// TT1-5, IPT1-3
 		return new Care[0];
@@ -394,6 +403,15 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "chpsId") String chpsId)
 			throws ValidationException {
 
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(chpsId, errors, "CHPSID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in TT Defaulters Query request", errors);
+		}
+
 		// TODO: Perform query, return Care objects with patients for TT1-5
 		return new Care[0];
 	}
@@ -403,6 +421,15 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "facilityId") String facilityId,
 			@WebParam(name = "chpsId") String chpsId)
 			throws ValidationException {
+
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(chpsId, errors, "CHPSID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in PPC Defaulters Query request", errors);
+		}
 
 		// TODO: Perform query, return Care objects with patients for PPC1-3
 		return new Care[0];
@@ -414,6 +441,15 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "chpsId") String chpsId)
 			throws ValidationException {
 
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(chpsId, errors, "CHPSID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in PNC Defaulters Query request", errors);
+		}
+
 		// TODO: Perform query, return Care objects with patients for PNC1-3
 		return new Care[0];
 	}
@@ -423,6 +459,15 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "facilityId") String facilityId,
 			@WebParam(name = "chpsId") String chpsId)
 			throws ValidationException {
+
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(chpsId, errors, "CHPSID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in CWC Defaulters Query request", errors);
+		}
 
 		// TODO: Perform query, return Care objects with patients for OPV0-3,
 		// BCG, Penta1-3, YellowFever, Measles, VitaminA, IPTi
@@ -435,6 +480,15 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "chpsId") String chpsId)
 			throws ValidationException {
 
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(chpsId, errors, "CHPSID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in Upcoming Deliveries Query request", errors);
+		}
+
 		// TODO: Perform query, return Patient objects with est due date
 		return new Patient[0];
 	}
@@ -444,6 +498,15 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "facilityId") String facilityId,
 			@WebParam(name = "chpsId") String chpsId)
 			throws ValidationException {
+
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(chpsId, errors, "CHPSID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in Recent Deliveries Query request", errors);
+		}
 
 		// TODO: Perform query, return Patient objects with delivery date
 		return new Patient[0];
@@ -455,6 +518,15 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "chpsId") String chpsId)
 			throws ValidationException {
 
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(chpsId, errors, "CHPSID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in Overdue Deliveries Query request", errors);
+		}
+
 		// TODO: Perform query, return Patient objects with est due date
 		return new Patient[0];
 	}
@@ -465,6 +537,15 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "motechId") String motechId)
 			throws ValidationException {
+
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(chpsId, errors, "CHPSID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in Upcoming Care Query request", errors);
+		}
 
 		// TODO: Perform query, return Patient object with Care objects for ANC,
 		// TT, IPT, PPC, PNC, OPV, BCG, Penta, YellowFever, Measles, IPTi, VitaA
@@ -481,6 +562,15 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "phoneNumber") String phoneNumber)
 			throws ValidationException {
 
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(chpsId, errors, "CHPSID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException("Errors in MotechID Query request",
+					errors);
+		}
+
 		// TODO: Perform query, return Patient objects
 		return new Patient[0];
 	}
@@ -489,6 +579,15 @@ public class RegistrarWebService implements RegistrarService {
 	public Patient queryPatient(@WebParam(name = "chpsId") String chpsId,
 			@WebParam(name = "motechId") String motechId)
 			throws ValidationException {
+
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(chpsId, errors, "CHPSID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException("Errors in Patient Query request",
+					errors);
+		}
 
 		org.openmrs.Patient patient = registrarBean
 				.getPatientByMotechId(motechId);
