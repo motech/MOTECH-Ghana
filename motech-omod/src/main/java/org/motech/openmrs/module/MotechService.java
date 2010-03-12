@@ -221,4 +221,11 @@ public interface MotechService extends OpenmrsService {
 	@Transactional(readOnly = true)
 	List<ExpectedEncounter> getExpectedEncounter(Patient patient,
 			EncounterType encounterType, Date encounterDatetime);
+
+	@Transactional(readOnly = true)
+	List<Patient> getPatients(String firstName, String lastName,
+			String preferredName, Date birthDate, String community,
+			String phoneNumber, PersonAttributeType primaryPhoneNumberAttrType,
+			PersonAttributeType secondaryPhoneNumberAttrType,
+			String nhisNumber, PersonAttributeType nhisAttrType);
 }

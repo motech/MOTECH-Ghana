@@ -3,6 +3,7 @@ package org.motech.ws;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -571,8 +572,10 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		// TODO: Perform query, return Patient objects
-		return new Patient[0];
+		List<org.openmrs.Patient> patients = registrarBean.getPatients(
+				firstName, lastName, preferredName, birthDate, null,
+				phoneNumber, nhis);
+		return modelConverter.patientToWebService(patients, true);
 	}
 
 	@WebMethod

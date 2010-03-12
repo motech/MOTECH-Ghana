@@ -317,4 +317,14 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return motechDAO.getExpectedEncounter(patient, encounterType,
 				encounterDatetime);
 	}
+
+	public List<Patient> getPatients(String firstName, String lastName,
+			String preferredName, Date birthDate, String community,
+			String phoneNumber, PersonAttributeType primaryPhoneNumberAttrType,
+			PersonAttributeType secondaryPhoneNumberAttrType,
+			String nhisNumber, PersonAttributeType nhisAttrType) {
+		return motechDAO.getPatients(firstName, lastName, preferredName,
+				birthDate, community, phoneNumber, primaryPhoneNumberAttrType,
+				secondaryPhoneNumberAttrType, nhisNumber, nhisAttrType);
+	}
 }

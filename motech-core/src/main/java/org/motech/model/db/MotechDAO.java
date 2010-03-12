@@ -23,6 +23,7 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
+import org.openmrs.PersonAttributeType;
 
 /**
  * The interface definition for the motech server's data access requirements.
@@ -151,4 +152,10 @@ public interface MotechDAO {
 
 	List<ExpectedEncounter> getExpectedEncounter(Patient patient,
 			EncounterType encounterType, Date encounterDatetime);
+
+	List<Patient> getPatients(String firstName, String lastName,
+			String preferredName, Date birthDate, String community,
+			String phoneNumber, PersonAttributeType primaryPhoneNumberAttrType,
+			PersonAttributeType secondaryPhoneNumberAttrType,
+			String nhisNumber, PersonAttributeType nhisAttrType);
 }

@@ -12,6 +12,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -977,17 +978,25 @@ public class RegistrarServiceTest {
 		String nhis = "NHIS", phone = "Phone";
 		Date birthDate = new Date();
 
+		List<org.openmrs.Patient> patients = new ArrayList<org.openmrs.Patient>();
+		patients.add(new org.openmrs.Patient(1));
+
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(
+				registrarBean.getPatients(firstName, lastName, prefName,
+						birthDate, null, phone, nhis)).andReturn(patients);
+		expect(modelConverter.patientToWebService(patients, true)).andReturn(
+				new Patient[1]);
 
 		replay(registrarBean, modelConverter);
 
-		Patient[] patients = regWs.queryMotechId(chpsId, firstName, lastName,
+		Patient[] wsPatients = regWs.queryMotechId(chpsId, firstName, lastName,
 				prefName, birthDate, nhis, phone);
 
 		verify(registrarBean, modelConverter);
 
-		assertNotNull("Patient result array is null", patients);
-		assertEquals(0, patients.length);
+		assertNotNull("Patient result array is null", wsPatients);
+		assertEquals(1, wsPatients.length);
 	}
 
 	@Test

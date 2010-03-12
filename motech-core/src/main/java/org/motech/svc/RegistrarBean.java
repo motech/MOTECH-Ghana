@@ -211,6 +211,11 @@ public interface RegistrarBean {
 
 	public List<Patient> getAllPatients();
 
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
+	public List<Patient> getPatients(String firstName, String lastName,
+			String preferredName, Date birthDate, String community,
+			String phoneNumber, String nhisNumber);
+
 	public List<Person> getMatchingPeople(String firstName, String lastName,
 			Date birthDate, String community, String phoneNumber,
 			String patientId, String nhisNumber);

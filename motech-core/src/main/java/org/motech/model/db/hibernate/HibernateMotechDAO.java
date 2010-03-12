@@ -7,6 +7,9 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.motech.model.Blackout;
 import org.motech.model.ExpectedEncounter;
@@ -29,6 +32,7 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
+import org.openmrs.PersonAttributeType;
 
 /**
  * An implementation of the motech data access object interface, implemented
@@ -552,4 +556,58 @@ public class HibernateMotechDAO implements MotechDAO {
 		return criteria.list();
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Patient> getPatients(String firstName, String lastName,
+			String preferredName, Date birthDate, String community,
+			String phoneNumber, PersonAttributeType primaryPhoneNumberAttrType,
+			PersonAttributeType secondaryPhoneNumberAttrType,
+			String nhisNumber, PersonAttributeType nhisAttrType) {
+
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				Patient.class);
+
+		criteria.createAlias("names", "name");
+		criteria.createAlias("addresses", "addr");
+		criteria.createAlias("attributes", "att");
+
+		criteria.add(Restrictions.eq("voided", false));
+		criteria.add(Restrictions.eq("name.voided", false));
+		criteria.add(Restrictions.eq("addr.voided", false));
+		criteria.add(Restrictions.eq("att.voided", false));
+
+		Criterion nhisCriterion = Restrictions.and(Restrictions.eq(
+				"att.attributeType", nhisAttrType), Restrictions.eq(
+				"att.value", nhisNumber));
+		Criterion nameCriterion = Restrictions.or(Restrictions.and(Restrictions
+				.eq("name.givenName", firstName), Restrictions.eq(
+				"name.familyName", lastName)), Restrictions.and(Restrictions
+				.eq("name.givenName", preferredName), Restrictions.eq(
+				"name.familyName", lastName)));
+		Criterion phoneCriterion = Restrictions.or(Restrictions.and(
+				Restrictions
+						.eq("att.attributeType", primaryPhoneNumberAttrType),
+				Restrictions.eq("att.value", phoneNumber)), Restrictions.and(
+				Restrictions.eq("att.attributeType",
+						secondaryPhoneNumberAttrType), Restrictions.eq(
+						"att.value", phoneNumber)));
+		Disjunction otherCriterion = Restrictions.disjunction();
+		otherCriterion.add(Restrictions.eq("birthdate", birthDate));
+		otherCriterion.add(Restrictions.eq("addr.cityVillage", community));
+		otherCriterion.add(phoneCriterion);
+
+		// Get Patients by NHIS or
+		// (((FirstName and LastName) or (PreferredName and LastName)) and
+		// (BirthDate or Community or (PrimaryPhone or SecondaryPhone))))
+		criteria.add(Restrictions.or(nhisCriterion, Restrictions.and(
+				nameCriterion, otherCriterion)));
+
+		criteria.addOrder(Order.asc("name.givenName"));
+		criteria.addOrder(Order.asc("name.familyName"));
+		criteria.addOrder(Order.asc("birthdate"));
+		criteria.addOrder(Order.asc("addr.cityVillage"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+		return criteria.list();
+	}
 }

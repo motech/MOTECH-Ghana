@@ -1,5 +1,8 @@
 package org.motech.ws;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.motech.svc.RegistrarBean;
 import org.motech.util.GenderTypeConverter;
 import org.motech.util.MotechConstants;
@@ -64,5 +67,17 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 		}
 
 		return wsPatient;
+	}
+
+	public Patient[] patientToWebService(List<org.openmrs.Patient> patients,
+			boolean minimal) {
+
+		List<Patient> wsPatients = new ArrayList<Patient>();
+
+		for (org.openmrs.Patient patient : patients) {
+			wsPatients.add(patientToWebService(patient, minimal));
+		}
+
+		return wsPatients.toArray(new Patient[wsPatients.size()]);
 	}
 }
