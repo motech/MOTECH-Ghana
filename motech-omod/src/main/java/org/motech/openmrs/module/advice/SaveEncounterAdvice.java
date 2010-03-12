@@ -23,6 +23,7 @@ import org.motech.model.ExpectedEncounter;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.openmrs.module.impl.ContextServiceImpl;
+import org.motech.openmrs.module.sdsched.ScheduleMaintService;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Patient;
@@ -74,6 +75,11 @@ public class SaveEncounterAdvice implements AfterReturningAdvice {
 				}
 				motechService.removeExpectedEncounter(expectedEncounter);
 			}
+
+			ScheduleMaintService schedService = contextService
+					.getScheduleMaintService();
+			schedService.addAffectedPatient(patient.getPatientIdentifier());
+			schedService.requestSynch();
 		}
 	}
 

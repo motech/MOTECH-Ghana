@@ -1,5 +1,6 @@
 package org.motech.openmrs.module;
 
+import org.motech.openmrs.module.sdsched.ScheduleMaintService;
 import org.motech.svc.RegistrarBean;
 import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
@@ -62,4 +63,6 @@ public interface ContextService {
 	public MotechService getMotechService();
 
 	public RegistrarBean getRegistrarBean();
+	
+	public ScheduleMaintService getScheduleMaintService();
 }
