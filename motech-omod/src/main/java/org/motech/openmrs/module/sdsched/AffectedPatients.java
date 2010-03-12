@@ -3,8 +3,6 @@ package org.motech.openmrs.module.sdsched;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.openmrs.PatientIdentifier;
-
 /**
  * An object intended to be bound as a transaction synchronization resource.
  * This is where we do the bookkeeping on what patients need to be recomputed at
@@ -16,13 +14,13 @@ import org.openmrs.PatientIdentifier;
  */
 public class AffectedPatients {
 
-	final Set<PatientIdentifier> affectedIds;
+	final Set<Integer> affectedIds;
 
 	public AffectedPatients() {
-		affectedIds = new HashSet<PatientIdentifier>();
+		affectedIds = new HashSet<Integer>();
 	}
 
-	public Set<PatientIdentifier> getAffectedIds() {
+	public Set<Integer> getAffectedIds() {
 		return affectedIds;
 	}
 }

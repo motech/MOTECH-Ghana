@@ -78,7 +78,7 @@ public class SaveEncounterAdvice implements AfterReturningAdvice {
 
 			ScheduleMaintService schedService = contextService
 					.getScheduleMaintService();
-			schedService.addAffectedPatient(patient.getPatientIdentifier());
+			schedService.addAffectedPatient(patient.getId());
 			schedService.requestSynch();
 		}
 	}

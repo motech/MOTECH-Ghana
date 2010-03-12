@@ -1,7 +1,5 @@
 package org.motech.openmrs.module.sdsched;
 
-import org.openmrs.PatientIdentifier;
-
 import junit.framework.TestCase;
 
 /**
@@ -13,15 +11,18 @@ import junit.framework.TestCase;
 public class AffectedPatientsTest extends TestCase {
 
 	private AffectedPatients obj;
+	private Integer samplePatientId;
 
 	@Override
 	protected void setUp() throws Exception {
 		obj = new AffectedPatients();
+		samplePatientId = new Integer(3);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		obj = null;
+		samplePatientId = null;
 	}
 
 	public void testCreate() {
@@ -34,17 +35,15 @@ public class AffectedPatientsTest extends TestCase {
 	}
 
 	public void testAddPatientId() {
-		PatientIdentifier patientId = new PatientIdentifier();
-		obj.getAffectedIds().add(patientId);
-		assertTrue(obj.getAffectedIds().contains(patientId));
+		obj.getAffectedIds().add(samplePatientId);
+		assertTrue(obj.getAffectedIds().contains(samplePatientId));
 	}
 
 	public void testRemovePatientId() {
-		PatientIdentifier patientId = new PatientIdentifier();
-		obj.affectedIds.add(patientId);
-		assertTrue(obj.affectedIds.contains(patientId));
-		obj.getAffectedIds().remove(patientId);
-		assertFalse(obj.affectedIds.contains(patientId));
+		obj.affectedIds.add(samplePatientId);
+		assertTrue(obj.affectedIds.contains(samplePatientId));
+		obj.getAffectedIds().remove(samplePatientId);
+		assertFalse(obj.affectedIds.contains(samplePatientId));
 	}
 
 }

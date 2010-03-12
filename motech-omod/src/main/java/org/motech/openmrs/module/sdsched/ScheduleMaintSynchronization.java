@@ -4,7 +4,6 @@ import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.PatientIdentifier;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 
@@ -47,10 +46,10 @@ public class ScheduleMaintSynchronization extends
 							+ " affected patients, updating schedules");
 
 				// Update each patient's schedule in turn (stubbed for now)
-				Iterator<PatientIdentifier> patientIter = patients
-						.getAffectedIds().iterator();
+				Iterator<Integer> patientIter = patients.getAffectedIds()
+						.iterator();
 				while (patientIter.hasNext()) {
-					PatientIdentifier patientId = patientIter.next();
+					Integer patientId = patientIter.next();
 					if (log.isDebugEnabled())
 						log.debug("updating schedule for patientId: "
 								+ patientId);

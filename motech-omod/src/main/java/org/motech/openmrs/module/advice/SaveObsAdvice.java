@@ -26,7 +26,6 @@ import org.motech.openmrs.module.impl.ContextServiceImpl;
 import org.motech.openmrs.module.sdsched.ScheduleMaintService;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
-import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.springframework.aop.AfterReturningAdvice;
 
@@ -87,10 +86,9 @@ public class SaveObsAdvice implements AfterReturningAdvice {
 					personId, conceptName);
 
 			if (person.isPatient()) {
-				Patient patient = (Patient) person;
 				ScheduleMaintService schedService = contextService
 						.getScheduleMaintService();
-				schedService.addAffectedPatient(patient.getPatientIdentifier());
+				schedService.addAffectedPatient(person.getId());
 				schedService.requestSynch();
 			}
 		}

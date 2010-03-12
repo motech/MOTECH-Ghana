@@ -1,6 +1,5 @@
 package org.motech.openmrs.module.sdsched;
 
-import org.openmrs.PatientIdentifier;
 
 /**
  * Interface defining a service for performing operations required for
@@ -18,7 +17,7 @@ public interface ScheduleMaintService {
 	 * @param patientId
 	 *            patient id to add
 	 */
-	void addAffectedPatient(PatientIdentifier patientId);
+	void addAffectedPatient(Integer patientId);
 
 	/**
 	 * Removes the specified patient identifier from the set of affected patient
@@ -27,7 +26,7 @@ public interface ScheduleMaintService {
 	 * @param patientId
 	 *            the patient id to remove.
 	 */
-	void removeAffectedPatient(PatientIdentifier patientId);
+	void removeAffectedPatient(Integer patientId);
 
 	/**
 	 * Clears the affected patient set for the transaction.
@@ -57,5 +56,5 @@ public interface ScheduleMaintService {
 	 * 
 	 * @param patientId
 	 */
-	void updateSchedule(PatientIdentifier patientId);
+	void updateSchedule(Integer patientId);
 }

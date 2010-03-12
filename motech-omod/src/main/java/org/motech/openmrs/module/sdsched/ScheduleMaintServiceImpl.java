@@ -1,7 +1,5 @@
 package org.motech.openmrs.module.sdsched;
 
-import org.openmrs.PatientIdentifier;
-
 /**
  * Implementation of {@link ScheduleMaintService}.
  * 
@@ -44,11 +42,11 @@ public class ScheduleMaintServiceImpl implements ScheduleMaintService {
 		return patients;
 	}
 
-	public void addAffectedPatient(PatientIdentifier patientId) {
+	public void addAffectedPatient(Integer patientId) {
 		getAffectedPatients(true).getAffectedIds().add(patientId);
 	}
 
-	public void removeAffectedPatient(PatientIdentifier patientId) {
+	public void removeAffectedPatient(Integer patientId) {
 		AffectedPatients patients = getAffectedPatients();
 		if (patients != null)
 			patients.getAffectedIds().remove(patientId);
@@ -67,7 +65,7 @@ public class ScheduleMaintServiceImpl implements ScheduleMaintService {
 		}
 	}
 
-	public void updateSchedule(PatientIdentifier patientId) {
+	public void updateSchedule(Integer patientId) {
 		scheduleAdjuster.adjustSchedule(patientId);
 	}
 }

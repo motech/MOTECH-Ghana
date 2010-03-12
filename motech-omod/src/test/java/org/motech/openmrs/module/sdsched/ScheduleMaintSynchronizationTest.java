@@ -1,9 +1,12 @@
 package org.motech.openmrs.module.sdsched;
 
-import org.openmrs.PatientIdentifier;
-
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import junit.framework.TestCase;
-import static org.easymock.EasyMock.*;
 
 /**
  * Tests the {@link ScheduleMaintSynchronization} class.
@@ -58,10 +61,10 @@ public class ScheduleMaintSynchronizationTest extends TestCase {
 	public void testBeforeCommitSingle() {
 
 		AffectedPatients patients = new AffectedPatients();
-		patients.getAffectedIds().add(new PatientIdentifier());
+		patients.getAffectedIds().add(1);
 
 		expect(mockMaintService.getAffectedPatients(false)).andReturn(patients);
-		mockMaintService.updateSchedule((PatientIdentifier) anyObject());
+		mockMaintService.updateSchedule((Integer) anyObject());
 		expectLastCall().times(patients.getAffectedIds().size());
 
 		replay(mockMaintService);
@@ -76,12 +79,12 @@ public class ScheduleMaintSynchronizationTest extends TestCase {
 	public void testBeforeCommitMultiple() {
 
 		AffectedPatients patients = new AffectedPatients();
-		patients.getAffectedIds().add(new PatientIdentifier());
-		patients.getAffectedIds().add(new PatientIdentifier());
-		patients.getAffectedIds().add(new PatientIdentifier());
+		patients.getAffectedIds().add(1);
+		patients.getAffectedIds().add(2);
+		patients.getAffectedIds().add(3);
 
 		expect(mockMaintService.getAffectedPatients(false)).andReturn(patients);
-		mockMaintService.updateSchedule((PatientIdentifier) anyObject());
+		mockMaintService.updateSchedule((Integer) anyObject());
 		expectLastCall().times(patients.getAffectedIds().size());
 
 		replay(mockMaintService);

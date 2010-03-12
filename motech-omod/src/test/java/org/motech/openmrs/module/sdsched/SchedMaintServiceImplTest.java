@@ -9,7 +9,6 @@ import static org.easymock.EasyMock.verify;
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
-import org.openmrs.PatientIdentifier;
 import org.springframework.transaction.support.TransactionSynchronization;
 
 /**
@@ -96,9 +95,9 @@ public class SchedMaintServiceImplTest extends TestCase {
 		AffectedPatients result = null;
 
 		AffectedPatients boundPatients = new AffectedPatients();
-		boundPatients.getAffectedIds().add(new PatientIdentifier());
-		boundPatients.getAffectedIds().add(new PatientIdentifier());
-		boundPatients.getAffectedIds().add(new PatientIdentifier());
+		boundPatients.getAffectedIds().add(1);
+		boundPatients.getAffectedIds().add(2);
+		boundPatients.getAffectedIds().add(3);
 
 		expect(mockSyncMan.getResource(ScheduleMaintServiceImpl.RESOURCE_NAME))
 				.andReturn(boundPatients);
@@ -115,7 +114,7 @@ public class SchedMaintServiceImplTest extends TestCase {
 
 	public void testAddAffectedPatient() {
 
-		PatientIdentifier patientId = new PatientIdentifier();
+		Integer patientId = new Integer(1);
 		AffectedPatients boundPatients = new AffectedPatients();
 
 		expect(mockSyncMan.getResource(ScheduleMaintServiceImpl.RESOURCE_NAME))
@@ -132,7 +131,7 @@ public class SchedMaintServiceImplTest extends TestCase {
 
 	public void testRemoveAffectedPatient() {
 
-		PatientIdentifier patientId = new PatientIdentifier();
+		Integer patientId = new Integer(1);
 		AffectedPatients boundPatients = new AffectedPatients();
 		boundPatients.getAffectedIds().add(patientId);
 
@@ -197,8 +196,8 @@ public class SchedMaintServiceImplTest extends TestCase {
 
 	public void testUpdateSchedule() {
 
-		PatientIdentifier patientId = new PatientIdentifier();
-		Capture<PatientIdentifier> patientIdCap = new Capture<PatientIdentifier>();
+		Integer patientId = new Integer(1);
+		Capture<Integer> patientIdCap = new Capture<Integer>();
 		mockAdjuster.adjustSchedule(capture(patientIdCap));
 
 		replay(mockAdjuster);
