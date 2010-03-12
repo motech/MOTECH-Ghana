@@ -32,6 +32,7 @@ import org.motech.model.ServiceStatus;
 import org.motech.model.TroubledPhone;
 import org.motech.model.db.MotechDAO;
 import org.motech.openmrs.module.MotechService;
+import org.motech.openmrs.module.sdsched.ScheduleMaintService;
 import org.motech.svc.RegistrarBean;
 import org.openmrs.Concept;
 import org.openmrs.EncounterType;
@@ -51,6 +52,8 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	private MotechDAO motechDAO;
 
 	private RegistrarBean registrarBean;
+	
+	private ScheduleMaintService scheduleService;
 
 	public MotechDAO getMotechDAO() {
 		return motechDAO;
@@ -66,6 +69,14 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public void setRegistrarBean(RegistrarBean registrarBean) {
 		this.registrarBean = registrarBean;
+	}
+	
+	public void setScheduleMaintService(ScheduleMaintService scheduleService) {
+		this.scheduleService = scheduleService;
+	}
+	
+	public ScheduleMaintService getScheduleMaintService() {
+		return scheduleService;
 	}
 
 	public MessageProgramEnrollment saveMessageProgramEnrollment(

@@ -30,6 +30,12 @@
 	<bean id="txSyncManWrapper" class="org.motech.openmrs.module.sdsched.TxSyncManWrapperImpl" />
 
 	<bean id="dummyScheduleAdjuster" class="org.motech.openmrs.module.sdsched.DummyScheduleAdjuster" />
+	
+	<bean id="scheduleMaintService"
+		class="org.motech.openmrs.module.sdsched.ScheduleMaintServiceImpl">
+		<property name="syncManWrapper" ref="txSyncManWrapper" />
+		<property name="scheduleAdjuster" ref="dummyScheduleAdjuster" />
+	</bean>
 
 	<!-- Service -->
 	<bean parent="serviceContext">
@@ -51,6 +57,7 @@
 								</bean>
 							</property>
 							<property name="registrarBean" ref="registrarBeanProxy" />
+							<property name="scheduleMaintService" ref="scheduleMaintService" />
 						</bean>
 					</property>
 					<property name="preInterceptors">
@@ -62,12 +69,6 @@
 						<bean
 							class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
 					</property>
-				</bean>
-				<value>${modulePackage}.sdched.ScheduleMaintService</value>
-				<bean id="scheduleMaintService"
-					class="org.motech.openmrs.module.sdsched.ScheduleMaintServiceImpl">
-					<property name="syncManWrapper" ref="txSyncManWrapper" />
-					<property name="scheduleAdjuster" ref="dummyScheduleAdjuster" />
 				</bean>
 			</list>
 		</property>

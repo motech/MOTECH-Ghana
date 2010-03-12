@@ -30,6 +30,7 @@ import org.motech.model.ScheduledMessage;
 import org.motech.model.Service;
 import org.motech.model.ServiceStatus;
 import org.motech.model.TroubledPhone;
+import org.motech.openmrs.module.sdsched.ScheduleMaintService;
 import org.motech.svc.RegistrarBean;
 import org.openmrs.Concept;
 import org.openmrs.EncounterType;
@@ -49,6 +50,8 @@ public interface MotechService extends OpenmrsService {
 
 	RegistrarBean getRegistrarBean();
 
+	ScheduleMaintService getScheduleMaintService();
+	
 	@Transactional
 	ScheduledMessage saveScheduledMessage(ScheduledMessage scheduledMessage);
 

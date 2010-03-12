@@ -114,6 +114,6 @@ public class ContextServiceImpl implements ContextService {
 	}
 
 	public ScheduleMaintService getScheduleMaintService() {
-		return Context.getService(ScheduleMaintService.class);
+		return this.getMotechService().getScheduleMaintService();
 	}
 }
