@@ -162,6 +162,10 @@ public class SchedMaintServiceImplTest extends TestCase {
 	public void testRequestSynch() {
 
 		Capture<TransactionSynchronization> syncCap = new Capture<TransactionSynchronization>();
+		expect(
+				mockSyncMan
+						.containsSynchronization(ScheduleMaintSynchronization.class))
+				.andReturn(false);
 		mockSyncMan.registerSynchronization(capture(syncCap));
 
 		replay(mockSyncMan);
@@ -175,6 +179,20 @@ public class SchedMaintServiceImplTest extends TestCase {
 		assertTrue(txSync instanceof ScheduleMaintSynchronization);
 		ScheduleMaintSynchronization maintSync = (ScheduleMaintSynchronization) txSync;
 		assertEquals(obj, maintSync.schedService);
+	}
+
+	public void testRequestSynchAlreadyExists() {
+
+		expect(
+				mockSyncMan
+						.containsSynchronization(ScheduleMaintSynchronization.class))
+				.andReturn(true);
+
+		replay(mockSyncMan);
+
+		obj.requestSynch();
+
+		verify(mockSyncMan);
 	}
 
 	public void testUpdateSchedule() {

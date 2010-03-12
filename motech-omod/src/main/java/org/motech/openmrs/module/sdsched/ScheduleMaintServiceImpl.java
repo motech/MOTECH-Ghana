@@ -59,9 +59,12 @@ public class ScheduleMaintServiceImpl implements ScheduleMaintService {
 	}
 
 	public void requestSynch() {
-		ScheduleMaintSynchronization schedSync = new ScheduleMaintSynchronization();
-		schedSync.setSchedService(this);
-		syncManWrapper.registerSynchronization(schedSync);
+		if (!syncManWrapper
+				.containsSynchronization(ScheduleMaintSynchronization.class)) {
+			ScheduleMaintSynchronization schedSync = new ScheduleMaintSynchronization();
+			schedSync.setSchedService(this);
+			syncManWrapper.registerSynchronization(schedSync);
+		}
 	}
 
 	public void updateSchedule(PatientIdentifier patientId) {

@@ -18,6 +18,9 @@ public interface TxSyncManWrapper {
 
 	void unbindResource(String resourceName);
 
+	boolean containsSynchronization(
+			Class<? extends TransactionSynchronization> sync);
+
 	void registerSynchronization(TransactionSynchronization sync);
 
 }

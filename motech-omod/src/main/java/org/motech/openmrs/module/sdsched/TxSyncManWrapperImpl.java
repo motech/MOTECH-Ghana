@@ -1,5 +1,7 @@
 package org.motech.openmrs.module.sdsched;
 
+import java.util.List;
+
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
@@ -17,6 +19,20 @@ public class TxSyncManWrapperImpl implements TxSyncManWrapper {
 
 	public Object getResource(String resourceName) {
 		return TransactionSynchronizationManager.getResource(resourceName);
+	}
+
+	@SuppressWarnings("unchecked")
+	public boolean containsSynchronization(
+			Class<? extends TransactionSynchronization> syncClass) {
+
+		List<TransactionSynchronization> syncs = (List<TransactionSynchronization>) TransactionSynchronizationManager
+				.getSynchronizations();
+
+		for (TransactionSynchronization sync : syncs)
+			if (syncClass.isAssignableFrom(sync.getClass()))
+				return true;
+
+		return false;
 	}
 
 	public void registerSynchronization(TransactionSynchronization sync) {
