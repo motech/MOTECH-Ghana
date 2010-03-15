@@ -1343,6 +1343,22 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				null, null, null, null, null, null, null, false);
 	}
 
+	public List<Encounter> getRecentDeliveries() {
+		EncounterService encounterService = contextService
+				.getEncounterService();
+
+		List<EncounterType> deliveryEncounterType = new ArrayList<EncounterType>();
+		deliveryEncounterType.add(getPregnancyDeliveryVisitEncounterType());
+
+		Calendar calendar = Calendar.getInstance();
+		Date currentDate = calendar.getTime();
+		calendar.add(Calendar.DATE, 2 * -7);
+		Date twoWeeksPriorDate = calendar.getTime();
+
+		return encounterService.getEncounters(null, null, twoWeeksPriorDate,
+				currentDate, null, deliveryEncounterType, null, false);
+	}
+
 	public Obs getActivePregnancy(Integer patientId) {
 		MotechService motechService = contextService.getMotechService();
 

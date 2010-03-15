@@ -38,6 +38,7 @@ import org.motechproject.ws.Patient;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationError;
 import org.motechproject.ws.server.ValidationException;
+import org.openmrs.Encounter;
 import org.openmrs.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -929,7 +930,13 @@ public class RegistrarServiceTest {
 	public void testQueryRecentDeliveries() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
+		List<Encounter> deliveries = new ArrayList<Encounter>();
+		deliveries.add(new Encounter());
+
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(registrarBean.getRecentDeliveries()).andReturn(deliveries);
+		expect(modelConverter.deliveriesToWebServicePatients(deliveries))
+				.andReturn(new Patient[1]);
 
 		replay(registrarBean, modelConverter);
 
@@ -938,7 +945,7 @@ public class RegistrarServiceTest {
 		verify(registrarBean, modelConverter);
 
 		assertNotNull("Patient result array is null", patients);
-		assertEquals(0, patients.length);
+		assertEquals(1, patients.length);
 	}
 
 	@Test

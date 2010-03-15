@@ -20,6 +20,7 @@ import org.motechproject.ws.DeliveredBy;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
+import org.openmrs.Encounter;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
@@ -221,6 +222,10 @@ public interface RegistrarBean {
 			String patientId, String nhisNumber);
 
 	public List<Obs> getAllPregnancies();
+
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES,
+			OpenmrsConstants.PRIV_VIEW_ENCOUNTERS })
+	public List<Encounter> getRecentDeliveries();
 
 	public Obs getActivePregnancy(Integer patientId);
 

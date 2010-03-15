@@ -24,6 +24,7 @@ import org.motechproject.ws.Patient;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationErrors;
 import org.motechproject.ws.server.ValidationException;
+import org.openmrs.Encounter;
 import org.openmrs.User;
 
 /**
@@ -509,8 +510,8 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Recent Deliveries Query request", errors);
 		}
 
-		// TODO: Perform query, return Patient objects with delivery date
-		return new Patient[0];
+		List<Encounter> deliveries = registrarBean.getRecentDeliveries();
+		return modelConverter.deliveriesToWebServicePatients(deliveries);
 	}
 
 	@WebMethod

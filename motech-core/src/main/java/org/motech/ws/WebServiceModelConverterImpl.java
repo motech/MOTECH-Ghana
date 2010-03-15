@@ -7,6 +7,7 @@ import org.motech.svc.RegistrarBean;
 import org.motech.util.GenderTypeConverter;
 import org.motech.util.MotechConstants;
 import org.motechproject.ws.Patient;
+import org.openmrs.Encounter;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PersonAddress;
 import org.openmrs.PersonAttribute;
@@ -76,6 +77,20 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 
 		for (org.openmrs.Patient patient : patients) {
 			wsPatients.add(patientToWebService(patient, minimal));
+		}
+
+		return wsPatients.toArray(new Patient[wsPatients.size()]);
+	}
+
+	public Patient[] deliveriesToWebServicePatients(List<Encounter> deliveries) {
+
+		List<Patient> wsPatients = new ArrayList<Patient>();
+
+		for (Encounter deliveryEncounter : deliveries) {
+			org.openmrs.Patient patient = deliveryEncounter.getPatient();
+			Patient wsPatient = patientToWebService(patient, true);
+			wsPatient.setDeliveryDate(deliveryEncounter.getEncounterDatetime());
+			wsPatients.add(wsPatient);
 		}
 
 		return wsPatients.toArray(new Patient[wsPatients.size()]);
