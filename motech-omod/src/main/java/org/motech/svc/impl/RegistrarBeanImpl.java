@@ -1359,6 +1359,38 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				currentDate, null, deliveryEncounterType, null, false);
 	}
 
+	public List<Obs> getUpcomingPregnanciesDueDate() {
+		Calendar calendar = Calendar.getInstance();
+		Date currentDate = calendar.getTime();
+		calendar.add(Calendar.DATE, 2 * 7);
+		Date twoWeeksLaterDate = calendar.getTime();
+
+		return getActivePregnanciesDueDateObs(currentDate, twoWeeksLaterDate);
+	}
+
+	public List<Obs> getOverduePregnanciesDueDate() {
+		Date currentDate = new Date();
+		return getActivePregnanciesDueDateObs(null, currentDate);
+	}
+
+	private List<Obs> getActivePregnanciesDueDateObs(Date fromDueDate,
+			Date toDueDate) {
+		MotechService motechService = contextService.getMotechService();
+
+		Concept pregnancyDueDateConcept = getDueDateConcept();
+		Concept pregnancyConcept = getPregnancyConcept();
+		Concept pregnancyStatusConcept = getPregnancyStatusConcept();
+
+		return motechService.getActivePregnanciesDueDateObs(fromDueDate,
+				toDueDate, pregnancyDueDateConcept, pregnancyConcept,
+				pregnancyStatusConcept);
+	}
+
+	public Patient getPatientById(Integer patientId) {
+		PatientService patientService = contextService.getPatientService();
+		return patientService.getPatient(patientId);
+	}
+
 	public Obs getActivePregnancy(Integer patientId) {
 		MotechService motechService = contextService.getMotechService();
 

@@ -51,7 +51,7 @@ public interface MotechService extends OpenmrsService {
 	RegistrarBean getRegistrarBean();
 
 	ScheduleMaintService getScheduleMaintService();
-	
+
 	@Transactional
 	ScheduledMessage saveScheduledMessage(ScheduledMessage scheduledMessage);
 
@@ -191,7 +191,13 @@ public interface MotechService extends OpenmrsService {
 			Integer secondaryPhoneNumberAttrTypeId, String patientId,
 			String nhisNumber, Integer nhisAttrTypeId);
 
+	@Transactional(readOnly = true)
 	List<Obs> getActivePregnancies(Integer patientId, Concept pregnancyConcept,
+			Concept pregnancyStatusConcept);
+
+	@Transactional(readOnly = true)
+	List<Obs> getActivePregnanciesDueDateObs(Date fromDueDate, Date toDueDate,
+			Concept pregnancyDueDateConcept, Concept pregnancyConcept,
 			Concept pregnancyStatusConcept);
 
 	@Transactional

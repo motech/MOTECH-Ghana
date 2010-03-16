@@ -8,9 +8,12 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.motech.model.Blackout;
 import org.motech.model.ExpectedEncounter;
 import org.motech.model.ExpectedObs;
@@ -461,6 +464,53 @@ public class HibernateMotechDAO implements MotechDAO {
 				pregnancyConcept).setEntity("pregnancyStatusConcept",
 				pregnancyStatusConcept).setDouble("trueDouble", 1.0).setDouble(
 				"falseDouble", 0.0).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Obs> getActivePregnanciesDueDateObs(Date fromDueDate,
+			Date toDueDate, Concept pregnancyDueDateConcept,
+			Concept pregnancyConcept, Concept pregnancyStatusConcept) {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(Obs.class, "o");
+
+		criteria.add(Restrictions.eq("o.voided", false));
+		criteria.add(Restrictions.eq("o.concept", pregnancyDueDateConcept));
+
+		if (fromDueDate != null) {
+			criteria.add(Restrictions.ge("o.valueDatetime", fromDueDate));
+		}
+		if (toDueDate != null) {
+			criteria.add(Restrictions.le("o.valueDatetime", toDueDate));
+		}
+
+		criteria.createAlias("o.person", "p");
+		criteria.add(Restrictions.eq("p.personVoided", false));
+
+		criteria.createAlias("o.obsGroup", "g");
+		criteria.add(Restrictions.eq("g.concept", pregnancyConcept));
+		criteria.add(Restrictions.eq("g.voided", false));
+
+		DetachedCriteria pregnancyActiveCriteria = DetachedCriteria.forClass(
+				Obs.class, "s").setProjection(Projections.id()).add(
+				Restrictions.eq("s.voided", false)).add(
+				Restrictions.eq("s.concept", pregnancyStatusConcept)).add(
+				Restrictions.eq("s.valueNumeric", 1.0)).add(
+				Restrictions.eqProperty("s.obsGroup.obsId", "g.obsId"));
+
+		criteria.add(Subqueries.exists(pregnancyActiveCriteria));
+
+		DetachedCriteria pregnancyInactiveCriteria = DetachedCriteria.forClass(
+				Obs.class, "e").setProjection(Projections.id()).add(
+				Restrictions.eq("e.voided", false)).add(
+				Restrictions.eq("e.concept", pregnancyStatusConcept)).add(
+				Restrictions.eq("e.valueNumeric", 0.0)).add(
+				Restrictions.eqProperty("e.obsGroup.obsId", "g.obsId"));
+
+		criteria.add(Subqueries.notExists(pregnancyInactiveCriteria));
+
+		criteria.addOrder(Order.asc("o.valueDatetime"));
+
+		return criteria.list();
 	}
 
 	public Service saveService(Service service) {

@@ -25,6 +25,7 @@ import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationErrors;
 import org.motechproject.ws.server.ValidationException;
 import org.openmrs.Encounter;
+import org.openmrs.Obs;
 import org.openmrs.User;
 
 /**
@@ -491,8 +492,8 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Upcoming Deliveries Query request", errors);
 		}
 
-		// TODO: Perform query, return Patient objects with est due date
-		return new Patient[0];
+		List<Obs> dueDates = registrarBean.getUpcomingPregnanciesDueDate();
+		return modelConverter.dueDatesToWebServicePatients(dueDates);
 	}
 
 	@WebMethod
@@ -529,8 +530,8 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Overdue Deliveries Query request", errors);
 		}
 
-		// TODO: Perform query, return Patient objects with est due date
-		return new Patient[0];
+		List<Obs> dueDates = registrarBean.getOverduePregnanciesDueDate();
+		return modelConverter.dueDatesToWebServicePatients(dueDates);
 	}
 
 	@WebMethod

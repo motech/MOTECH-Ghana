@@ -52,7 +52,7 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	private MotechDAO motechDAO;
 
 	private RegistrarBean registrarBean;
-	
+
 	private ScheduleMaintService scheduleService;
 
 	public MotechDAO getMotechDAO() {
@@ -70,11 +70,11 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	public void setRegistrarBean(RegistrarBean registrarBean) {
 		this.registrarBean = registrarBean;
 	}
-	
+
 	public void setScheduleMaintService(ScheduleMaintService scheduleService) {
 		this.scheduleService = scheduleService;
 	}
-	
+
 	public ScheduleMaintService getScheduleMaintService() {
 		return scheduleService;
 	}
@@ -283,6 +283,14 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	public List<Obs> getActivePregnancies(Integer patientId,
 			Concept pregnancyConcept, Concept pregnancyStatusConcept) {
 		return motechDAO.getActivePregnancies(patientId, pregnancyConcept,
+				pregnancyStatusConcept);
+	}
+
+	public List<Obs> getActivePregnanciesDueDateObs(Date fromDueDate,
+			Date toDueDate, Concept pregnancyDueDateConcept,
+			Concept pregnancyConcept, Concept pregnancyStatusConcept) {
+		return motechDAO.getActivePregnanciesDueDateObs(fromDueDate, toDueDate,
+				pregnancyDueDateConcept, pregnancyConcept,
 				pregnancyStatusConcept);
 	}
 

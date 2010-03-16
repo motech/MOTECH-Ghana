@@ -131,6 +131,10 @@ public interface MotechDAO {
 	List<Obs> getActivePregnancies(Integer patientId, Concept pregnancyConcept,
 			Concept pregnancyStatusConcept);
 
+	List<Obs> getActivePregnanciesDueDateObs(Date fromDueDate, Date toDueDate,
+			Concept pregnancyDueDateConcept, Concept pregnancyConcept,
+			Concept pregnancyStatusConcept);
+
 	Service saveService(Service service);
 
 	List<Service> getServices(Integer patientId, String sequence,

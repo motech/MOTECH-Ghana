@@ -39,6 +39,7 @@ import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationError;
 import org.motechproject.ws.server.ValidationException;
 import org.openmrs.Encounter;
+import org.openmrs.Obs;
 import org.openmrs.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -914,7 +915,14 @@ public class RegistrarServiceTest {
 	public void testQueryUpcomingDeliveries() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
+		List<Obs> pregnancies = new ArrayList<Obs>();
+		pregnancies.add(new Obs());
+
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(registrarBean.getUpcomingPregnanciesDueDate()).andReturn(
+				pregnancies);
+		expect(modelConverter.dueDatesToWebServicePatients(pregnancies))
+				.andReturn(new Patient[1]);
 
 		replay(registrarBean, modelConverter);
 
@@ -923,7 +931,7 @@ public class RegistrarServiceTest {
 		verify(registrarBean, modelConverter);
 
 		assertNotNull("Patient result array is null", patients);
-		assertEquals(0, patients.length);
+		assertEquals(1, patients.length);
 	}
 
 	@Test
@@ -952,7 +960,14 @@ public class RegistrarServiceTest {
 	public void testQueryOverdueDeliveries() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
+		List<Obs> pregnancies = new ArrayList<Obs>();
+		pregnancies.add(new Obs());
+
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(registrarBean.getOverduePregnanciesDueDate()).andReturn(
+				pregnancies);
+		expect(modelConverter.dueDatesToWebServicePatients(pregnancies))
+				.andReturn(new Patient[1]);
 
 		replay(registrarBean, modelConverter);
 
@@ -961,7 +976,7 @@ public class RegistrarServiceTest {
 		verify(registrarBean, modelConverter);
 
 		assertNotNull("Patient result array is null", patients);
-		assertEquals(0, patients.length);
+		assertEquals(1, patients.length);
 	}
 
 	@Test

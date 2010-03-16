@@ -227,6 +227,15 @@ public interface RegistrarBean {
 			OpenmrsConstants.PRIV_VIEW_ENCOUNTERS })
 	public List<Encounter> getRecentDeliveries();
 
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_CONCEPTS })
+	public List<Obs> getUpcomingPregnanciesDueDate();
+
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_CONCEPTS })
+	public List<Obs> getOverduePregnanciesDueDate();
+
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PATIENTS })
+	public Patient getPatientById(Integer patientId);
+
 	public Obs getActivePregnancy(Integer patientId);
 
 	public List<ScheduledMessage> getAllScheduledMessages();
