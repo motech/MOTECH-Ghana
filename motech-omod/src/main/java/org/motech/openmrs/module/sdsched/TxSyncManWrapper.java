@@ -12,6 +12,8 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  */
 public interface TxSyncManWrapper {
 
+	boolean isSynchronizationActive();
+
 	Object getResource(String resourceName);
 
 	void bindResource(String resourceName, Object object);

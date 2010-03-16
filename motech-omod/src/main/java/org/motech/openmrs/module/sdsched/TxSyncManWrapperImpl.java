@@ -21,16 +21,22 @@ public class TxSyncManWrapperImpl implements TxSyncManWrapper {
 		return TransactionSynchronizationManager.getResource(resourceName);
 	}
 
+	public boolean isSynchronizationActive() {
+		return TransactionSynchronizationManager.isSynchronizationActive();
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean containsSynchronization(
 			Class<? extends TransactionSynchronization> syncClass) {
 
-		List<TransactionSynchronization> syncs = (List<TransactionSynchronization>) TransactionSynchronizationManager
-				.getSynchronizations();
+		if (isSynchronizationActive()) {
+			List<TransactionSynchronization> syncs = (List<TransactionSynchronization>) TransactionSynchronizationManager
+					.getSynchronizations();
 
-		for (TransactionSynchronization sync : syncs)
-			if (syncClass.isAssignableFrom(sync.getClass()))
-				return true;
+			for (TransactionSynchronization sync : syncs)
+				if (syncClass.isAssignableFrom(sync.getClass()))
+					return true;
+		}
 
 		return false;
 	}
