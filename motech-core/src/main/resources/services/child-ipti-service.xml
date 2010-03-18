@@ -32,21 +32,27 @@
 				</bean>
 				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
 					<property name="name" value="IPTI2" />
-					<property name="startTimeValue" value="14" />
+					<property name="earliestTimeValue" value="14" />
+					<property name="earliestTimePeriod" value="week" />
+					<property name="earliestTimeReference" value="patient_birthdate" />
+					<property name="startTimeValue" value="4" />
 					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="patient_birthdate" />
-					<property name="endTimeValue" value="15" />
+					<property name="startTimeReference" value="last_obs_date" />
+					<property name="endTimeValue" value="5" />
 					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="patient_birthdate" />					
+					<property name="endTimeReference" value="last_obs_date" />					
 				</bean>
 				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
 					<property name="name" value="IPTI3" />
-					<property name="startTimeValue" value="9" />
-					<property name="startTimePeriod" value="month" />
-					<property name="startTimeReference" value="patient_birthdate" />
-					<property name="endTimeValue" value="10" />
-					<property name="endTimePeriod" value="month" />
-					<property name="endTimeReference" value="patient_birthdate" />					
+					<property name="earliestTimeValue" value="9" />
+					<property name="earliestTimePeriod" value="month" />
+					<property name="earliestTimeReference" value="patient_birthdate" />
+					<property name="startTimeValue" value="4" />
+					<property name="startTimePeriod" value="week" />
+					<property name="startTimeReference" value="last_obs_date" />
+					<property name="endTimeValue" value="5" />
+					<property name="endTimePeriod" value="week" />
+					<property name="endTimeReference" value="last_obs_date" />					
 				</bean>
 			</list>
 		</property>

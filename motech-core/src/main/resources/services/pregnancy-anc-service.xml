@@ -16,50 +16,6 @@
 				</bean>
 			</list>
 		</property>
-		<property name="services">
-			<list>
-				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
-					<property name="name" value="ANC1" />
-					<!-- 16 weeks in pregnancy -->
-					<property name="startTimeValue" value="-24" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="current_pregnancy_duedate" />
-					<property name="endTimeValue" value="-24" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="current_pregnancy_duedate" />					
-				</bean>
-				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
-					<property name="name" value="ANC2" />
-					<!-- 24 to 28 weeks in pregnancy -->
-					<property name="startTimeValue" value="-16" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="current_pregnancy_duedate" />
-					<property name="endTimeValue" value="-12" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="current_pregnancy_duedate" />					
-				</bean>
-				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
-					<property name="name" value="ANC3" />
-					<!-- 29 to 32 weeks in pregnancy -->
-					<property name="startTimeValue" value="-11" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="current_pregnancy_duedate" />
-					<property name="endTimeValue" value="-8" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="current_pregnancy_duedate" />					
-				</bean>
-				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
-					<property name="name" value="ANC4" />
-					<!-- 36 weeks in pregnancy -->
-					<property name="startTimeValue" value="-4" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="current_pregnancy_duedate" />
-					<property name="endTimeValue" value="-4" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="current_pregnancy_duedate" />					
-				</bean>
-			</list>
-		</property>
 	</bean>
 
 </beans>	

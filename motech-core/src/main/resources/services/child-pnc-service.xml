@@ -19,7 +19,7 @@
 					<property name="startTimeValue" value="48" />
 					<property name="startTimePeriod" value="hour" />
 					<property name="startTimeReference" value="patient_birthdate" />
-					<property name="endTimeValue" value="60" />
+					<property name="endTimeValue" value="72" />
 					<property name="endTimePeriod" value="hour" />
 					<property name="endTimeReference" value="patient_birthdate" />					
 				</bean>
