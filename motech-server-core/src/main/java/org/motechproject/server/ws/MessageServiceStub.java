@@ -1,4 +1,4 @@
-package org.motechproject.server.mobile.client;
+package org.motechproject.server.ws;
 
 import java.util.Date;
 

@@ -95,7 +95,7 @@
 		</property>
 	</bean>
 	
-	<bean id="mobileClient" class="org.motechproject.server.mobile.client.MessageServiceStub" />
+	<bean id="mobileClient" class="org.motechproject.server.ws.MessageServiceStub" />
 
 	<!-- Uncomment to enable using motech-mobile web service and comment out mobileClient bean in registrar-bean.xml
 	<bean id="mobileClient" 
