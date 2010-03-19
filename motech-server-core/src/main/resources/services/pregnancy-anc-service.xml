@@ -4,14 +4,14 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="pregnancyANCService" class="org.motech.service.impl.ServiceDeliverySequenceEncImpl">
+	<bean id="pregnancyANCService" class="org.motechproject.server.service.impl.ServiceDeliverySequenceEncImpl">
 		<property name="name" value="ANC" />
 		<property name="encounterTypeName" value="ANCVISIT" />
 		<property name="timeBean" ref="timeBean" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="requirements">
 			<list>
-				<bean class="org.motech.service.impl.ActivePregnancyRequirement">
+				<bean class="org.motechproject.server.service.impl.ActivePregnancyRequirement">
 					<property name="registrarBean" ref="registrarBean" />
 				</bean>
 			</list>

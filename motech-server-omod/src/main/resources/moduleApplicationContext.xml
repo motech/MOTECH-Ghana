@@ -25,14 +25,14 @@
 		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
 
 	<!-- Controllers -->
-	<context:component-scan base-package="${modulePackage}.web.controller" />
+	<context:component-scan base-package="org.motechproject.server.openmrs.module.web.controller" />
 
-	<bean id="txSyncManWrapper" class="org.motech.openmrs.module.sdsched.TxSyncManWrapperImpl" />
+	<bean id="txSyncManWrapper" class="org.motechproject.server.openmrs.module.sdsched.TxSyncManWrapperImpl" />
 
-	<bean id="dummyScheduleAdjuster" class="org.motech.openmrs.module.sdsched.DummyScheduleAdjuster" />
+	<bean id="dummyScheduleAdjuster" class="org.motechproject.server.openmrs.module.sdsched.DummyScheduleAdjuster" />
 	
 	<bean id="scheduleMaintService"
-		class="org.motech.openmrs.module.sdsched.ScheduleMaintServiceImpl">
+		class="org.motechproject.server.openmrs.module.sdsched.ScheduleMaintServiceImpl">
 		<property name="syncManWrapper" ref="txSyncManWrapper" />
 		<property name="scheduleAdjuster" ref="dummyScheduleAdjuster" />
 	</bean>
@@ -41,16 +41,16 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${modulePackage}.MotechService</value>
+				<value>org.motechproject.server.openmrs.module.MotechService</value>
 				<bean
 					class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager" />
 					</property>
 					<property name="target">
-						<bean class="${modulePackage}.impl.MotechServiceImpl">
+						<bean class="org.motechproject.server.openmrs.module.impl.MotechServiceImpl">
 							<property name="motechDAO">
-								<bean class="${corePackage}.model.db.hibernate.HibernateMotechDAO">
+								<bean class="org.motechproject.server.model.db.hibernate.HibernateMotechDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory" />
 									</property>
@@ -78,15 +78,15 @@
 	<wss:binding url="/ws/RegistrarService" service="#registrarservice" /> <!-- MUST start with /ws/ -->
 	<ws:service id="registrarservice" bean="#registrarWebService" />
 
-	<bean id="webserviceModelConverter" class="${corePackage}.ws.WebServiceModelConverterImpl">
+	<bean id="webserviceModelConverter" class="org.motechproject.server.ws.WebServiceModelConverterImpl">
 		<property name="registrarBean" ref="registrarBeanProxy" />
 	</bean>
 
-	<bean id="registrarWebService" class="${corePackage}.ws.RegistrarWebService">
+	<bean id="registrarWebService" class="org.motechproject.server.ws.RegistrarWebService">
 		<property name="registrarBean" ref="registrarBeanProxy" />
 		<property name="modelConverter" ref="webserviceModelConverter" />
 	</bean>
 	
-	<bean id="webModelConverter" class="org.motech.openmrs.module.web.model.WebModelConverterImpl" />
+	<bean id="webModelConverter" class="org.motechproject.server.openmrs.module.web.model.WebModelConverterImpl" />
 
 </beans>

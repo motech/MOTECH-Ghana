@@ -1,0 +1,128 @@
+package org.motechproject.server.time;
+
+import java.util.Calendar;
+import java.util.Date;
+
+import org.motechproject.server.model.MessageProgramEnrollment;
+import org.motechproject.server.svc.RegistrarBean;
+
+public class TimeBean {
+
+	private RegistrarBean registrarBean;
+
+	public RegistrarBean getRegistrarBean() {
+		return registrarBean;
+	}
+
+	public void setRegistrarBean(RegistrarBean registrarBean) {
+		this.registrarBean = registrarBean;
+	}
+
+	public Date determineTime(TimePeriod timePeriod,
+			TimeReference timeReference, Integer timeValue, Integer personId,
+			MessageProgramEnrollment enrollment, String conceptName,
+			String valueConceptName, Integer currentDoseNumber,
+			String encounterTypeName) {
+
+		if (timePeriod != null && timeReference != null && timeValue != null) {
+
+			Calendar calendar = Calendar.getInstance();
+			Date timeReferenceDate = null;
+
+			if (personId == null && enrollment != null) {
+				personId = enrollment.getPersonId();
+			}
+
+			switch (timeReference) {
+			case patient_birthdate:
+				if (personId != null) {
+					timeReferenceDate = registrarBean
+							.getPatientBirthDate(personId);
+				}
+				break;
+			case last_obs_date:
+				if (personId != null && conceptName != null
+						&& valueConceptName != null) {
+					timeReferenceDate = registrarBean.getLastObsDate(personId,
+							conceptName, valueConceptName);
+				}
+				break;
+			case last_dose_obs_date:
+				if (personId != null && conceptName != null
+						&& currentDoseNumber != null) {
+					timeReferenceDate = registrarBean.getLastDoseObsDate(
+							personId, conceptName, currentDoseNumber - 1);
+				}
+				break;
+			case last_dose_obs_date_current_pregnancy:
+				if (personId != null && conceptName != null
+						&& currentDoseNumber != null) {
+					timeReferenceDate = registrarBean
+							.getLastDoseObsDateInActivePregnancy(personId,
+									conceptName, currentDoseNumber - 1);
+				}
+				break;
+			case last_obs_datevalue:
+				if (personId != null && conceptName != null) {
+					timeReferenceDate = registrarBean.getLastObsValue(personId,
+							conceptName);
+				}
+				break;
+			case current_pregnancy_duedate:
+				if (personId != null) {
+					timeReferenceDate = registrarBean
+							.getActivePregnancyDueDate(personId);
+				}
+				break;
+			case last_pregnancy_end_date:
+				if (personId != null) {
+					timeReferenceDate = registrarBean
+							.getLastPregnancyEndDate(personId);
+				}
+				break;
+			case enrollment_startdate:
+				if (enrollment != null) {
+					timeReferenceDate = enrollment.getStartDate();
+				}
+				break;
+			case enrollment_obs_datevalue:
+				if (enrollment != null) {
+					timeReferenceDate = registrarBean.getObsValue(enrollment
+							.getObsId());
+				}
+				break;
+			}
+
+			if (timeReferenceDate == null) {
+				return null;
+			}
+			calendar.setTime(timeReferenceDate);
+
+			switch (timePeriod) {
+			case minute:
+				calendar.add(Calendar.MINUTE, timeValue);
+				break;
+			case hour:
+				calendar.add(Calendar.HOUR, timeValue);
+				break;
+			case day:
+				calendar.add(Calendar.DATE, timeValue);
+				break;
+			case week:
+				// Add weeks as days
+				calendar.add(Calendar.DATE, timeValue * 7);
+				break;
+			case month:
+				calendar.add(Calendar.MONTH, timeValue);
+				break;
+			case year:
+				calendar.add(Calendar.YEAR, timeValue);
+				break;
+			}
+
+			return calendar.getTime();
+		}
+		return null;
+	}
+
+}

@@ -4,14 +4,14 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="childOPVService" class="org.motech.service.impl.ServiceDeliverySequenceObsImpl">
+	<bean id="childOPVService" class="org.motechproject.server.service.impl.ServiceDeliverySequenceObsImpl">
 		<property name="name" value="OPV" />
 		<property name="serviceConceptName" value="ORAL POLIO VACCINATION DOSE" />
 		<property name="timeBean" ref="timeBean" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="requirements">
 			<list>
-				<bean class="org.motech.service.impl.AgeRequirement">
+				<bean class="org.motechproject.server.service.impl.AgeRequirement">
 					<property name="maxTimeValue" value="5" />
 					<property name="maxTimePeriod" value="year" />
 					<property name="timeBean" ref="timeBean" />
@@ -20,7 +20,7 @@
 		</property>
 		<property name="services">
 			<list>
-				<bean class="org.motech.service.impl.ServiceDeliveryDoseImpl">
+				<bean class="org.motechproject.server.service.impl.ServiceDeliveryDoseImpl">
 					<property name="name" value="OPV0" />
 					<property name="doseNumber" value="0" />
 					<property name="startTimeValue" value="0" />
@@ -33,7 +33,7 @@
 					<property name="latestTimePeriod" value="week" />
 					<property name="latestTimeReference" value="patient_birthdate" />					
 				</bean>
-				<bean class="org.motech.service.impl.ServiceDeliveryDoseImpl">
+				<bean class="org.motechproject.server.service.impl.ServiceDeliveryDoseImpl">
 					<property name="name" value="OPV1" />
 					<property name="doseNumber" value="1" />
 					<property name="startTimeValue" value="6" />
@@ -43,7 +43,7 @@
 					<property name="endTimePeriod" value="week" />
 					<property name="endTimeReference" value="patient_birthdate" />					
 				</bean>
-				<bean class="org.motech.service.impl.ServiceDeliveryDoseImpl">
+				<bean class="org.motechproject.server.service.impl.ServiceDeliveryDoseImpl">
 					<property name="name" value="OPV2" />
 					<property name="doseNumber" value="2" />
 					<property name="startTimeValue" value="4" />
@@ -53,7 +53,7 @@
 					<property name="endTimePeriod" value="week" />
 					<property name="endTimeReference" value="last_dose_obs_date" />					
 				</bean>
-				<bean class="org.motech.service.impl.ServiceDeliveryDoseImpl">
+				<bean class="org.motechproject.server.service.impl.ServiceDeliveryDoseImpl">
 					<property name="name" value="OPV3" />
 					<property name="doseNumber" value="3" />
 					<property name="startTimeValue" value="4" />

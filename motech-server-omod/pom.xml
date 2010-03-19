@@ -215,8 +215,8 @@
 					<configuration>
 						<instrumentation>
 							<excludes>
-								<exclude>com/dreamoval/**/*.class</exclude>
-								<exclude>org/motech/**/*Stub.class</exclude>
+								<exclude>org/motechproject/mobile/**/*.class</exclude>
+								<exclude>org/motechproject/**/*Stub.class</exclude>
 							</excludes>
 						</instrumentation>
 					</configuration>
@@ -235,7 +235,7 @@
 
 	<properties>
 		<moduleName>motechmodule</moduleName>
-		<corePackage>org.motech</corePackage>
+		<corePackage>org.motechproject.server</corePackage>
 		<modulePackage>${corePackage}.openmrs.module</modulePackage>
 	</properties>
 

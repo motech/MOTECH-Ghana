@@ -4,7 +4,7 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="childBCGService" class="org.motech.service.impl.ServiceDeliverySequenceObsImpl">
+	<bean id="childBCGService" class="org.motechproject.server.service.impl.ServiceDeliverySequenceObsImpl">
 		<property name="name" value="BCG" />
 		<property name="serviceConceptName" value="IMMUNIZATIONS ORDERED" />
 		<property name="serviceValueConceptName" value="BACILLE CAMILE-GUERIN VACCINATION" />
@@ -12,7 +12,7 @@
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="requirements">
 			<list>
-				<bean class="org.motech.service.impl.AgeRequirement">
+				<bean class="org.motechproject.server.service.impl.AgeRequirement">
 					<property name="maxTimeValue" value="1" />
 					<property name="maxTimePeriod" value="year" />
 					<property name="timeBean" ref="timeBean" />
@@ -21,7 +21,7 @@
 		</property>
 		<property name="services">
 			<list>
-				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
+				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
 					<property name="name" value="BCG1" />
 					<property name="startTimeValue" value="0" />
 					<property name="startTimePeriod" value="day" />

@@ -11,11 +11,7 @@
 		</layout>
 	</appender>
 	
-	<logger name="org.openmrs.module.motechmodule">
-		<level value="DEBUG" />
-	</logger>
-	
-	<logger name="org.motech">
+	<logger name="org.motechproject.server">
 		<level value="DEBUG" />
 	</logger>
 	

@@ -4,7 +4,7 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="childPNCService" class="org.motech.service.impl.ServiceDeliverySequenceEncImpl">
+	<bean id="childPNCService" class="org.motechproject.server.service.impl.ServiceDeliverySequenceEncImpl">
 		<property name="name" value="PNC" />
 		<property name="encounterTypeName" value="PNCVISIT" />
 		<property name="earliestTimeValue" value="0" />
@@ -14,7 +14,7 @@
 		<property name="registrarBean" ref="registrarBean" />	
 		<property name="services">
 			<list>
-				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
+				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
 					<property name="name" value="PNC1" />
 					<property name="startTimeValue" value="48" />
 					<property name="startTimePeriod" value="hour" />
@@ -23,7 +23,7 @@
 					<property name="endTimePeriod" value="hour" />
 					<property name="endTimeReference" value="patient_birthdate" />					
 				</bean>
-				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
+				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
 					<property name="name" value="PNC2" />
 					<property name="startTimeValue" value="7" />
 					<property name="startTimePeriod" value="day" />
@@ -32,7 +32,7 @@
 					<property name="endTimePeriod" value="day" />
 					<property name="endTimeReference" value="patient_birthdate" />					
 				</bean>
-				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
+				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
 					<property name="name" value="PNC3" />
 					<property name="startTimeValue" value="14" />
 					<property name="startTimePeriod" value="day" />

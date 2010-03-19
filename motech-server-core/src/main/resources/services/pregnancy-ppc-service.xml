@@ -4,7 +4,7 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="pregnancyPPCService" class="org.motech.service.impl.ServiceDeliverySequenceEncImpl">
+	<bean id="pregnancyPPCService" class="org.motechproject.server.service.impl.ServiceDeliverySequenceEncImpl">
 		<property name="name" value="PPC" />
 		<property name="encounterTypeName" value="PPCVISIT" />
 		<property name="earliestTimeValue" value="0" />
@@ -14,7 +14,7 @@
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="services">
 			<list>
-				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
+				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
 					<property name="name" value="PPC1" />
 					<property name="startTimeValue" value="48" />
 					<property name="startTimePeriod" value="hour" />
@@ -23,7 +23,7 @@
 					<property name="endTimePeriod" value="hour" />
 					<property name="endTimeReference" value="last_pregnancy_end_date" />					
 				</bean>
-				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
+				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
 					<property name="name" value="PPC2" />
 					<property name="startTimeValue" value="7" />
 					<property name="startTimePeriod" value="day" />
@@ -32,7 +32,7 @@
 					<property name="endTimePeriod" value="day" />
 					<property name="endTimeReference" value="last_pregnancy_end_date" />					
 				</bean>
-				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
+				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
 					<property name="name" value="PPC3" />
 					<property name="startTimeValue" value="14" />
 					<property name="startTimePeriod" value="day" />

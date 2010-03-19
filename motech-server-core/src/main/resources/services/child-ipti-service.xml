@@ -4,7 +4,7 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="childIPTiService" class="org.motech.service.impl.ServiceDeliverySequenceObsImpl">
+	<bean id="childIPTiService" class="org.motechproject.server.service.impl.ServiceDeliverySequenceObsImpl">
 		<property name="name" value="IPTI" />
 		<property name="serviceConceptName" value="IMMUNIZATIONS ORDERED" />
 		<property name="serviceValueConceptName" value="INTERMITTENT PREVENTATIVE TREATMENT INFANTS" />
@@ -12,7 +12,7 @@
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="requirements">
 			<list>
-				<bean class="org.motech.service.impl.AgeRequirement">
+				<bean class="org.motechproject.server.service.impl.AgeRequirement">
 					<property name="maxTimeValue" value="5" />
 					<property name="maxTimePeriod" value="year" />
 					<property name="timeBean" ref="timeBean" />
@@ -21,7 +21,7 @@
 		</property>
 		<property name="services">
 			<list>
-				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
+				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
 					<property name="name" value="IPTI1" />
 					<property name="startTimeValue" value="10" />
 					<property name="startTimePeriod" value="week" />
@@ -30,7 +30,7 @@
 					<property name="endTimePeriod" value="week" />
 					<property name="endTimeReference" value="patient_birthdate" />					
 				</bean>
-				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
+				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
 					<property name="name" value="IPTI2" />
 					<property name="earliestTimeValue" value="14" />
 					<property name="earliestTimePeriod" value="week" />
@@ -42,7 +42,7 @@
 					<property name="endTimePeriod" value="week" />
 					<property name="endTimeReference" value="last_obs_date" />					
 				</bean>
-				<bean class="org.motech.service.impl.ServiceDeliveryImpl">
+				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
 					<property name="name" value="IPTI3" />
 					<property name="earliestTimeValue" value="9" />
 					<property name="earliestTimePeriod" value="month" />

@@ -8,7 +8,7 @@
 		<property name="baseAddress" value="http://localhost:8880/openmrs/ws/" />
 	</bean>
 
-	<bean id="registrarService" class="org.motech.ws.RegistrarWebService" />
+	<bean id="registrarService" class="org.motechproject.server.ws.RegistrarWebService" />
 
 	<bean id="registrarClient"
 		class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">

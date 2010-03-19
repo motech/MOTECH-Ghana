@@ -4,11 +4,11 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="contextService" class="${modulePackage}.impl.ContextServiceImpl" />
+	<bean id="contextService" class="org.motechproject.server.openmrs.module.impl.ContextServiceImpl" />
 
 	<bean id="registrarBeanProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="proxyInterfaces">
-			<value>${corePackage}.svc.RegistrarBean</value>
+			<value>org.motechproject.server.svc.RegistrarBean</value>
 		</property>
 		<property name="target" ref="registrarBean" />
 		<property name="interceptorNames">
@@ -23,10 +23,10 @@
 
 	<bean id="chpsIdUserResolver" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="proxyInterfaces">
-			<value>${modulePackage}.UserResolver</value>
+			<value>org.motechproject.server.openmrs.module.UserResolver</value>
 		</property>
 		<property name="target">
-			<bean class="${modulePackage}.impl.PersonAttributeUserResolverImpl">
+			<bean class="org.motechproject.server.openmrs.module.impl.PersonAttributeUserResolverImpl">
 				<property name="attributeName" value="CHPS ID" />
 				<property name="contextService" ref="contextService" />
 			</bean>
@@ -38,25 +38,25 @@
 		</property>
 	</bean>
 	
-	<bean id="verbatimUserResolver" class="${modulePackage}.impl.VerbatimUserResolverImpl" />
+	<bean id="verbatimUserResolver" class="org.motechproject.server.openmrs.module.impl.VerbatimUserResolverImpl" />
 
-	<bean id="contextSessionAdvice" class="${modulePackage}.advice.ContextSessionAdvice">
+	<bean id="contextSessionAdvice" class="org.motechproject.server.openmrs.module.advice.ContextSessionAdvice">
 		<property name="contextService" ref="contextService" />
 	</bean>
 
-	<bean id="authenticateAdvice" class="${modulePackage}.advice.AuthenticateAdvice">
+	<bean id="authenticateAdvice" class="org.motechproject.server.openmrs.module.advice.AuthenticateAdvice">
 		<property name="contextService" ref="contextService" />
 	</bean>
 
-	<bean id="proxyPrivilegesAdvice" class="${modulePackage}.advice.ProxyPrivilegesAdvice">
+	<bean id="proxyPrivilegesAdvice" class="org.motechproject.server.openmrs.module.advice.ProxyPrivilegesAdvice">
 		<property name="contextService" ref="contextService" />
 	</bean>
 	
-	<bean id="runAsUserAdvice" class="${modulePackage}.advice.RunAsUserAdvice">
+	<bean id="runAsUserAdvice" class="org.motechproject.server.openmrs.module.advice.RunAsUserAdvice">
 		<property name="contextService" ref="contextService" />
 	</bean>
 
-	<bean id="registrarBean" class="${corePackage}.svc.impl.RegistrarBeanImpl">
+	<bean id="registrarBean" class="org.motechproject.server.svc.impl.RegistrarBeanImpl">
 		<property name="contextService" ref="contextService" />
 		<property name="mobileService" ref="mobileClient" />
 		<property name="messagePrograms">
@@ -95,7 +95,7 @@
 		</property>
 	</bean>
 	
-	<bean id="mobileClient" class="${corePackage}.mobile.client.MessageServiceStub" />
+	<bean id="mobileClient" class="org.motechproject.server.mobile.client.MessageServiceStub" />
 
 	<!-- Uncomment to enable using motech-mobile web service and comment out mobileClient bean in registrar-bean.xml
 	<bean id="mobileClient" 
