@@ -236,7 +236,7 @@
 	<properties>
 		<moduleName>motechmodule</moduleName>
 		<corePackage>org.motechproject.server</corePackage>
-		<modulePackage>${corePackage}.openmrs.module</modulePackage>
+		<modulePackage>${corePackage}.omod</modulePackage>
 	</properties>
 
 </project>

@@ -4,7 +4,7 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="contextService" class="org.motechproject.server.openmrs.module.impl.ContextServiceImpl" />
+	<bean id="contextService" class="org.motechproject.server.omod.impl.ContextServiceImpl" />
 
 	<bean id="registrarBeanProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="proxyInterfaces">
@@ -23,10 +23,10 @@
 
 	<bean id="chpsIdUserResolver" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="proxyInterfaces">
-			<value>org.motechproject.server.openmrs.module.UserResolver</value>
+			<value>org.motechproject.server.omod.UserResolver</value>
 		</property>
 		<property name="target">
-			<bean class="org.motechproject.server.openmrs.module.impl.PersonAttributeUserResolverImpl">
+			<bean class="org.motechproject.server.omod.impl.PersonAttributeUserResolverImpl">
 				<property name="attributeName" value="CHPS ID" />
 				<property name="contextService" ref="contextService" />
 			</bean>
@@ -38,21 +38,21 @@
 		</property>
 	</bean>
 	
-	<bean id="verbatimUserResolver" class="org.motechproject.server.openmrs.module.impl.VerbatimUserResolverImpl" />
+	<bean id="verbatimUserResolver" class="org.motechproject.server.omod.impl.VerbatimUserResolverImpl" />
 
-	<bean id="contextSessionAdvice" class="org.motechproject.server.openmrs.module.advice.ContextSessionAdvice">
+	<bean id="contextSessionAdvice" class="org.motechproject.server.omod.advice.ContextSessionAdvice">
 		<property name="contextService" ref="contextService" />
 	</bean>
 
-	<bean id="authenticateAdvice" class="org.motechproject.server.openmrs.module.advice.AuthenticateAdvice">
+	<bean id="authenticateAdvice" class="org.motechproject.server.omod.advice.AuthenticateAdvice">
 		<property name="contextService" ref="contextService" />
 	</bean>
 
-	<bean id="proxyPrivilegesAdvice" class="org.motechproject.server.openmrs.module.advice.ProxyPrivilegesAdvice">
+	<bean id="proxyPrivilegesAdvice" class="org.motechproject.server.omod.advice.ProxyPrivilegesAdvice">
 		<property name="contextService" ref="contextService" />
 	</bean>
 	
-	<bean id="runAsUserAdvice" class="org.motechproject.server.openmrs.module.advice.RunAsUserAdvice">
+	<bean id="runAsUserAdvice" class="org.motechproject.server.omod.advice.RunAsUserAdvice">
 		<property name="contextService" ref="contextService" />
 	</bean>
 
