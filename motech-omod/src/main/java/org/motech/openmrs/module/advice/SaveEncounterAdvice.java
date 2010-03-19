@@ -23,10 +23,12 @@ import org.motech.model.ExpectedEncounter;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.openmrs.module.impl.ContextServiceImpl;
+import org.motech.openmrs.module.sdsched.ScheduleMaintService;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Patient;
 import org.springframework.aop.AfterReturningAdvice;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  * An OpenMRS AOP interceptor that enables us to perform various tasks upon an
@@ -73,6 +75,17 @@ public class SaveEncounterAdvice implements AfterReturningAdvice {
 					log.debug("Removing: " + expectedEncounter.toString());
 				}
 				motechService.removeExpectedEncounter(expectedEncounter);
+			}
+
+			ScheduleMaintService schedService = contextService
+					.getScheduleMaintService();
+
+			if (TransactionSynchronizationManager.isSynchronizationActive()) {
+				schedService.addAffectedPatient(patient.getId());
+				schedService.requestSynch();
+			} else {
+				// FIXME: Remove this when advice can exec in tx
+				schedService.updateSchedule(patient.getId());
 			}
 		}
 	}

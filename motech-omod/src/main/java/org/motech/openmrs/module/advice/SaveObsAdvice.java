@@ -23,10 +23,12 @@ import org.motech.model.ExpectedObs;
 import org.motech.openmrs.module.ContextService;
 import org.motech.openmrs.module.MotechService;
 import org.motech.openmrs.module.impl.ContextServiceImpl;
+import org.motech.openmrs.module.sdsched.ScheduleMaintService;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Person;
 import org.springframework.aop.AfterReturningAdvice;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  * An OpenMRS AOP interceptor that enables us to perform various tasks upon an
@@ -83,6 +85,20 @@ public class SaveObsAdvice implements AfterReturningAdvice {
 
 			contextService.getRegistrarBean().updateMessageProgramState(
 					personId, conceptName);
+
+			ScheduleMaintService schedService = contextService
+					.getScheduleMaintService();
+
+			if (person.isPatient()) {
+				if (TransactionSynchronizationManager
+						.isActualTransactionActive()) {
+					schedService.addAffectedPatient(person.getId());
+					schedService.requestSynch();
+				} else {
+					// FIXME: Remove this when advice can exec in tx
+					schedService.updateSchedule(person.getId());
+				}
+			}
 		}
 	}
 
