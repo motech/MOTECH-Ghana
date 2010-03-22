@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.motechproject.server.annotation.RunAsAdminUser;
-import org.motechproject.server.annotation.RunAsUser;
 import org.motechproject.server.annotation.RunAsUserParam;
 import org.motechproject.server.annotation.RunWithPrivileges;
 import org.motechproject.server.model.HIVStatus;
@@ -47,7 +46,7 @@ public interface RegistrarBean {
 			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
 	public User getNurseByCHPSId(String chpsId);
 
-	@RunAsUser
+	@RunAsAdminUser
 	public Patient registerChild(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Patient mother, String childId, Date birthDate, Gender sex,
@@ -123,14 +122,14 @@ public interface RegistrarBean {
 			String languageText, String religion, String occupation,
 			HIVStatus hivStatus);
 
-	@RunAsUser
+	@RunAsAdminUser
 	public void editPatient(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Patient patient, String primaryPhone,
 			ContactNumberType primaryPhoneType, String secondaryPhone,
 			ContactNumberType secondaryPhoneType, String nhis, Date nhisExpires);
 
-	@RunAsUser
+	@RunAsAdminUser
 	public void stopPregnancyProgram(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Patient patient);
