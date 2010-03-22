@@ -1,5 +1,6 @@
 package org.motechproject.server.ws;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -130,13 +131,17 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Pregnancy Delivery request", errors);
 		}
 
-		BirthOutcomeChild child1 = new BirthOutcomeChild(child1Outcome,
-				child1MotechId, child1Sex, child1FirstName, child1OPV,
-				child1BCG);
-		BirthOutcomeChild child2 = new BirthOutcomeChild(child2Outcome,
-				child2MotechId, child2Sex, child2FirstName, child2OPV,
-				child2BCG);
-		BirthOutcomeChild[] outcomes = new BirthOutcomeChild[] { child1, child2 };
+		List<BirthOutcomeChild> outcomes = new ArrayList<BirthOutcomeChild>();
+		if (child1Outcome != null && child1MotechId != null
+				&& child1Sex != null) {
+			outcomes.add(new BirthOutcomeChild(child1Outcome, child1MotechId,
+					child1Sex, child1FirstName, child1OPV, child1BCG));
+		}
+		if (child2Outcome != null && child2MotechId != null
+				&& child2Sex != null) {
+			outcomes.add(new BirthOutcomeChild(child2Outcome, child2MotechId,
+					child2Sex, child2FirstName, child2OPV, child2BCG));
+		}
 
 		registrarBean.recordPregnancyDelivery(nurse, date, patient, method,
 				outcome, location, deliveredBy, maternalDeath, cause, outcomes);

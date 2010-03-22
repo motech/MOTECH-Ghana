@@ -160,7 +160,7 @@ public interface RegistrarBean {
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Date date, Patient patient, Integer method, Integer outcome,
 			Integer location, DeliveredBy deliveredBy, Boolean maternalDeath,
-			Integer cause, BirthOutcomeChild[] outcomes);
+			Integer cause, List<BirthOutcomeChild> outcomes);
 
 	@RunAsAdminUser
 	public void recordMotherPPCVisit(

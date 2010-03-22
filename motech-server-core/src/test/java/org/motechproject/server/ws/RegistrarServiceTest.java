@@ -218,7 +218,7 @@ public class RegistrarServiceTest {
 		User nurse = new User(1);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		Capture<BirthOutcomeChild[]> outcomesCapture = new Capture<BirthOutcomeChild[]>();
+		Capture<List<BirthOutcomeChild>> outcomesCapture = new Capture<List<BirthOutcomeChild>>();
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
 		expect(registrarBean.getPatientByMotechId(patientId))
@@ -237,10 +237,10 @@ public class RegistrarServiceTest {
 
 		verify(registrarBean);
 
-		BirthOutcomeChild[] outcomes = outcomesCapture.getValue();
-		assertEquals(2, outcomes.length);
+		List<BirthOutcomeChild> outcomes = outcomesCapture.getValue();
+		assertEquals(2, outcomes.size());
 
-		BirthOutcomeChild child1 = outcomes[0];
+		BirthOutcomeChild child1 = outcomes.get(0);
 		assertEquals(child1birthOutcome, child1.getOutcome());
 		assertEquals(child1Id, child1.getPatientId());
 		assertEquals(child1Name, child1.getFirstName());
@@ -248,13 +248,58 @@ public class RegistrarServiceTest {
 		assertEquals(child1bcg, child1.getBcg());
 		assertEquals(child1opv, child1.getOpv());
 
-		BirthOutcomeChild child2 = outcomes[1];
+		BirthOutcomeChild child2 = outcomes.get(1);
 		assertEquals(child2birthOutcome, child2.getOutcome());
 		assertEquals(child2Id, child2.getPatientId());
 		assertEquals(child2Name, child2.getFirstName());
 		assertEquals(child2Sex, child2.getSex());
 		assertEquals(child2bcg, child2.getBcg());
 		assertEquals(child2opv, child2.getOpv());
+	}
+
+	@Test
+	public void testRecordPregnancyDeliveryOneChild()
+			throws ValidationException {
+		String chpsId = "CHPSId", patientId = "123Test";
+		String child1Id = "246Test", child1Name = "Child1First";
+		Integer method = 1, outcome = 2, location = 1, cause = 1;
+		Boolean maternalDeath = false, child1opv = true, child1bcg = false;
+		Date date = new Date();
+		DeliveredBy deliveredBy = DeliveredBy.CHO;
+		BirthOutcome child1birthOutcome = BirthOutcome.A;
+		Gender child1Sex = Gender.FEMALE;
+
+		User nurse = new User(1);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
+
+		Capture<List<BirthOutcomeChild>> outcomesCapture = new Capture<List<BirthOutcomeChild>>();
+
+		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
+		expect(registrarBean.getPatientByMotechId(patientId))
+				.andReturn(patient);
+		registrarBean.recordPregnancyDelivery(eq(nurse), eq(date), eq(patient),
+				eq(method), eq(outcome), eq(location), eq(deliveredBy),
+				eq(maternalDeath), eq(cause), capture(outcomesCapture));
+
+		replay(registrarBean);
+
+		regWs.recordPregnancyDelivery(chpsId, date, patientId, method, outcome,
+				location, deliveredBy, maternalDeath, cause,
+				child1birthOutcome, child1Id, child1Sex, child1Name, child1opv,
+				child1bcg, null, null, null, null, null, null);
+
+		verify(registrarBean);
+
+		List<BirthOutcomeChild> outcomes = outcomesCapture.getValue();
+		assertEquals(1, outcomes.size());
+
+		BirthOutcomeChild child1 = outcomes.get(0);
+		assertEquals(child1birthOutcome, child1.getOutcome());
+		assertEquals(child1Id, child1.getPatientId());
+		assertEquals(child1Name, child1.getFirstName());
+		assertEquals(child1Sex, child1.getSex());
+		assertEquals(child1bcg, child1.getBcg());
+		assertEquals(child1opv, child1.getOpv());
 	}
 
 	@Test

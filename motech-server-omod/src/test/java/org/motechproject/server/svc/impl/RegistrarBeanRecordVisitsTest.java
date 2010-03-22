@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -147,11 +149,11 @@ public class RegistrarBeanRecordVisitsTest extends
 					.size());
 
 			// Pregnancy Delivery for Mother 1, Adding Child 2
-			BirthOutcomeChild[] outcomes = new BirthOutcomeChild[] {
-					new BirthOutcomeChild(BirthOutcome.A, child2Id,
-							Gender.MALE, "Child2FirstName", true, true),
-					new BirthOutcomeChild(BirthOutcome.FSB, child3Id,
-							Gender.MALE, "Child3FirstName", true, true) };
+			List<BirthOutcomeChild> outcomes = new ArrayList<BirthOutcomeChild>();
+			outcomes.add(new BirthOutcomeChild(BirthOutcome.A, child2Id,
+					Gender.MALE, "Child2FirstName", true, true));
+			outcomes.add(new BirthOutcomeChild(BirthOutcome.FSB, child3Id,
+					Gender.MALE, "Child3FirstName", true, true));
 			regService.recordPregnancyDelivery(nurse, date, mother1, 1, 1, 1,
 					DeliveredBy.CHO, false, 1, outcomes);
 

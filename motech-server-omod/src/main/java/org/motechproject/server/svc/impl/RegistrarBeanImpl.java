@@ -879,7 +879,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public void recordPregnancyDelivery(User nurse, Date date, Patient patient,
 			Integer method, Integer outcome, Integer location,
 			DeliveredBy deliveredBy, Boolean maternalDeath, Integer cause,
-			BirthOutcomeChild[] outcomes) {
+			List<BirthOutcomeChild> outcomes) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
