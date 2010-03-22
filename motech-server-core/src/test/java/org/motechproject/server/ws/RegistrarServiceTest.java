@@ -1028,15 +1028,21 @@ public class RegistrarServiceTest {
 	public void testQueryUpcomingCare() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId", motechId = "MotechId";
 
+		org.openmrs.Patient patient = new org.openmrs.Patient(1);
+
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(registrarBean.getPatientByMotechId(motechId)).andReturn(patient);
+		expect(modelConverter.patientToWebService(eq(patient), eq(true)))
+				.andReturn(new Patient());
 
 		replay(registrarBean, modelConverter);
 
-		Patient patient = regWs.queryUpcomingCare(facilityId, chpsId, motechId);
+		Patient wsPatient = regWs.queryUpcomingCare(facilityId, chpsId,
+				motechId);
 
 		verify(registrarBean, modelConverter);
 
-		assertNotNull("Patient result is null", patient);
+		assertNotNull("Patient result is null", wsPatient);
 	}
 
 	@Test

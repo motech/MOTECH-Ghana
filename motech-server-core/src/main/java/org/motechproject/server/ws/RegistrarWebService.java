@@ -550,6 +550,9 @@ public class RegistrarWebService implements RegistrarService {
 
 		validateChpsId(chpsId, errors, "CHPSID");
 
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
+
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Upcoming Care Query request", errors);
@@ -557,7 +560,8 @@ public class RegistrarWebService implements RegistrarService {
 
 		// TODO: Perform query, return Patient object with Care objects for ANC,
 		// TT, IPT, PPC, PNC, OPV, BCG, Penta, YellowFever, Measles, IPTi, VitaA
-		return new Patient();
+		Patient wsPatient = modelConverter.patientToWebService(patient, true);
+		return wsPatient;
 	}
 
 	@WebMethod
