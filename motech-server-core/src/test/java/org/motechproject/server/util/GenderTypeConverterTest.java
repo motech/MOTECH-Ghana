@@ -11,6 +11,7 @@ public class GenderTypeConverterTest extends TestCase {
 				.toOpenMRSString(Gender.MALE));
 		assertEquals(MotechConstants.GENDER_FEMALE_OPENMRS, GenderTypeConverter
 				.toOpenMRSString(Gender.FEMALE));
+		assertEquals(null, GenderTypeConverter.toOpenMRSString(null));
 	}
 
 	public void testValueOfOpenMRS() {
@@ -18,6 +19,7 @@ public class GenderTypeConverterTest extends TestCase {
 				.valueOfOpenMRS(MotechConstants.GENDER_MALE_OPENMRS));
 		assertEquals(Gender.FEMALE, GenderTypeConverter
 				.valueOfOpenMRS(MotechConstants.GENDER_FEMALE_OPENMRS));
+		assertEquals(null, GenderTypeConverter.valueOfOpenMRS(null));
 	}
 
 }
