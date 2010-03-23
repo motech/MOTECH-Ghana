@@ -205,15 +205,17 @@ public class RegistrarServiceTest {
 	@Test
 	public void testRecordPregnancyDelivery() throws ValidationException {
 		String chpsId = "CHPSId", patientId = "123Test";
-		String child1Id = "246Test", child2Id = "468Test", child1Name = "Child1First", child2Name = "Child2First";
+		String child1Id = "246Test", child2Id = "468Test", child3Id = "579Test", child1Name = "Child1First", child2Name = "Child2First", child3Name = "Child3First";
 		Integer method = 1, outcome = 2, location = 1, cause = 1;
-		Boolean maternalDeath = false, child1opv = true, child1bcg = false, child2opv = false, child2bcg = true;
+		Boolean maternalDeath = false, child1opv = true, child1bcg = false, child2opv = false, child2bcg = true, child3opv = false, child3bcg = true;
 		Date date = new Date();
 		DeliveredBy deliveredBy = DeliveredBy.CHO;
 		BirthOutcome child1birthOutcome = BirthOutcome.A;
 		BirthOutcome child2birthOutcome = BirthOutcome.FSB;
+		BirthOutcome child3birthOutcome = BirthOutcome.MSB;
 		Gender child1Sex = Gender.FEMALE;
 		Gender child2Sex = Gender.MALE;
+		Gender child3Sex = Gender.MALE;
 
 		User nurse = new User(1);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
@@ -233,12 +235,13 @@ public class RegistrarServiceTest {
 				location, deliveredBy, maternalDeath, cause,
 				child1birthOutcome, child1Id, child1Sex, child1Name, child1opv,
 				child1bcg, child2birthOutcome, child2Id, child2Sex, child2Name,
-				child2opv, child2bcg);
+				child2opv, child2bcg, child3birthOutcome, child3Id, child3Sex,
+				child3Name, child3opv, child3bcg);
 
 		verify(registrarBean);
 
 		List<BirthOutcomeChild> outcomes = outcomesCapture.getValue();
-		assertEquals(2, outcomes.size());
+		assertEquals(3, outcomes.size());
 
 		BirthOutcomeChild child1 = outcomes.get(0);
 		assertEquals(child1birthOutcome, child1.getOutcome());
@@ -255,6 +258,15 @@ public class RegistrarServiceTest {
 		assertEquals(child2Sex, child2.getSex());
 		assertEquals(child2bcg, child2.getBcg());
 		assertEquals(child2opv, child2.getOpv());
+
+		BirthOutcomeChild child3 = outcomes.get(2);
+		assertEquals(child3birthOutcome, child3.getOutcome());
+		assertEquals(child3Id, child3.getPatientId());
+		assertEquals(child3Name, child3.getFirstName());
+		assertEquals(child3Sex, child3.getSex());
+		assertEquals(child3bcg, child3.getBcg());
+		assertEquals(child3opv, child3.getOpv());
+
 	}
 
 	@Test
@@ -286,7 +298,8 @@ public class RegistrarServiceTest {
 		regWs.recordPregnancyDelivery(chpsId, date, patientId, method, outcome,
 				location, deliveredBy, maternalDeath, cause,
 				child1birthOutcome, child1Id, child1Sex, child1Name, child1opv,
-				child1bcg, null, null, null, null, null, null);
+				child1bcg, null, null, null, null, null, null, null, null,
+				null, null, null, null);
 
 		verify(registrarBean);
 
@@ -305,15 +318,18 @@ public class RegistrarServiceTest {
 	@Test
 	public void testRecordPregnancyDeliveryInvalidPatientId()
 			throws ValidationException {
-		String chpsId = "CHPSId", patientId = "123Test", childId = "246Test", childName = "ChildFirstName";
+		String chpsId = "CHPSId", patientId = "123Test";
+		String child1Id = "246Test", child2Id = "468Test", child3Id = "579Test", child1Name = "Child1First", child2Name = "Child2First", child3Name = "Child3First";
 		Integer method = 1, outcome = 2, location = 1, cause = 1;
-		Boolean maternalDeath = false, child1opv = true, child1bcg = false, child2opv = false, child2bcg = true;
+		Boolean maternalDeath = false, child1opv = true, child1bcg = false, child2opv = false, child2bcg = true, child3opv = false, child3bcg = true;
 		Date date = new Date();
 		DeliveredBy deliveredBy = DeliveredBy.CHO;
 		BirthOutcome child1birthOutcome = BirthOutcome.A;
 		BirthOutcome child2birthOutcome = BirthOutcome.FSB;
+		BirthOutcome child3birthOutcome = BirthOutcome.MSB;
 		Gender child1Sex = Gender.FEMALE;
 		Gender child2Sex = Gender.MALE;
+		Gender child3Sex = Gender.MALE;
 
 		User nurse = new User(1);
 
@@ -325,9 +341,11 @@ public class RegistrarServiceTest {
 		try {
 			regWs.recordPregnancyDelivery(chpsId, date, patientId, method,
 					outcome, location, deliveredBy, maternalDeath, cause,
-					child1birthOutcome, childId, child1Sex, childName,
-					child1opv, child1bcg, child2birthOutcome, childId,
-					child2Sex, childName, child2opv, child2bcg);
+					child1birthOutcome, child1Id, child1Sex, child1Name,
+					child1opv, child1bcg, child2birthOutcome, child2Id,
+					child2Sex, child2Name, child2opv, child2bcg,
+					child3birthOutcome, child3Id, child3Sex, child3Name,
+					child3opv, child3bcg);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Pregnancy Delivery request", e

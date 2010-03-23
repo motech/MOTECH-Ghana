@@ -117,7 +117,13 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "child2Sex") Gender child2Sex,
 			@WebParam(name = "child2FirstName") String child2FirstName,
 			@WebParam(name = "child2OPV") Boolean child2OPV,
-			@WebParam(name = "child2BCG") Boolean child2BCG)
+			@WebParam(name = "child2BCG") Boolean child2BCG,
+			@WebParam(name = "child3Outcome") BirthOutcome child3Outcome,
+			@WebParam(name = "child3MotechId") String child3MotechId,
+			@WebParam(name = "child3Sex") Gender child3Sex,
+			@WebParam(name = "child3FirstName") String child3FirstName,
+			@WebParam(name = "child3OPV") Boolean child3OPV,
+			@WebParam(name = "child3BCG") Boolean child3BCG)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -141,6 +147,11 @@ public class RegistrarWebService implements RegistrarService {
 				&& child2Sex != null) {
 			outcomes.add(new BirthOutcomeChild(child2Outcome, child2MotechId,
 					child2Sex, child2FirstName, child2OPV, child2BCG));
+		}
+		if (child3Outcome != null && child3MotechId != null
+				&& child3Sex != null) {
+			outcomes.add(new BirthOutcomeChild(child3Outcome, child3MotechId,
+					child3Sex, child3FirstName, child3OPV, child3BCG));
 		}
 
 		registrarBean.recordPregnancyDelivery(nurse, date, patient, method,
