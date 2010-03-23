@@ -23,8 +23,6 @@ import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.model.MessageType;
 import org.motechproject.server.model.ScheduledMessage;
-import org.motechproject.server.model.Service;
-import org.motechproject.server.model.ServiceStatus;
 import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.model.WhoRegistered;
 import org.motechproject.server.model.WhyInterested;
@@ -1676,28 +1674,6 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	}
 
 	/* PatientObsService methods end */
-
-	public void saveService(Service service) {
-		MotechService motechService = contextService.getMotechService();
-		motechService.saveService(service);
-	}
-
-	public List<Service> getIncompleteServices(Integer patientId,
-			String sequence) {
-		MotechService motechService = contextService.getMotechService();
-		return motechService.getServices(patientId, sequence,
-				ServiceStatus.INCOMPLETE);
-	}
-
-	public Map<String, Service> getIncompleteServicesMap(Integer patientId,
-			String sequence) {
-		List<Service> services = getIncompleteServices(patientId, sequence);
-		Map<String, Service> servicesMap = new HashMap<String, Service>();
-		for (Service service : services) {
-			servicesMap.put(service.getService(), service);
-		}
-		return servicesMap;
-	}
 
 	/* MessageDefinition methods start */
 	public NameValuePair[] getNameValueContent(

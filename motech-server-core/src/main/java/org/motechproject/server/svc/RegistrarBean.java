@@ -2,7 +2,6 @@ package org.motechproject.server.svc;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.motechproject.server.annotation.RunAsAdminUser;
 import org.motechproject.server.annotation.RunAsUserParam;
@@ -11,7 +10,6 @@ import org.motechproject.server.model.HIVStatus;
 import org.motechproject.server.model.Log;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.ScheduledMessage;
-import org.motechproject.server.model.Service;
 import org.motechproject.server.model.WhoRegistered;
 import org.motechproject.server.model.WhyInterested;
 import org.motechproject.ws.ContactNumberType;
@@ -276,14 +274,6 @@ public interface RegistrarBean {
 
 	public Integer getEncounterId(Integer patientId, String encounterType,
 			Date earliest, Date latest);
-
-	public void saveService(Service service);
-
-	public List<Service> getIncompleteServices(Integer patientId,
-			String sequence);
-
-	public Map<String, Service> getIncompleteServicesMap(Integer patientId,
-			String sequence);
 
 	public void removeMessageProgramEnrollment(
 			MessageProgramEnrollment enrollment);

@@ -27,8 +27,6 @@ import org.motechproject.server.model.MessageDefinition;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.model.ScheduledMessage;
-import org.motechproject.server.model.Service;
-import org.motechproject.server.model.ServiceStatus;
 import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.model.db.MotechDAO;
 import org.motechproject.server.omod.MotechService;
@@ -292,20 +290,6 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return motechDAO.getActivePregnanciesDueDateObs(fromDueDate, toDueDate,
 				pregnancyDueDateConcept, pregnancyConcept,
 				pregnancyStatusConcept);
-	}
-
-	public Service saveService(Service service) {
-		return motechDAO.saveService(service);
-	}
-
-	public List<Service> getServices(Integer patientId, String sequence,
-			ServiceStatus status) {
-		return motechDAO.getServices(patientId, sequence, status);
-	}
-
-	public List<Service> getServices(Integer patientId, String service,
-			String sequence, ServiceStatus status) {
-		return motechDAO.getServices(patientId, service, sequence, status);
 	}
 
 	public ExpectedObs saveExpectedObs(ExpectedObs expectedObs) {

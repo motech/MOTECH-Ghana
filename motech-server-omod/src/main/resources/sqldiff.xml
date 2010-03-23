@@ -169,20 +169,6 @@
 				`referral` boolean NOT NULL,
 				PRIMARY KEY (`motechmodule_generalencounter_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-			CREATE TABLE IF NOT EXISTS `motechmodule_service` (
-				`motechmodule_service_id` bigint NOT NULL auto_increment,
-				`patient_id` int NOT NULL,
-				`service` varchar(200) NOT NULL,
-				`sequence` varchar(200) NOT NULL,
-				`earliest` date,
-				`preferred_start` date NOT NULL,
-				`preferred_end` date NOT NULL,
-				`latest` date,
-				`status` varchar(10) NOT NULL,
-				`delivery_id` int,	
-				PRIMARY KEY (`motechmodule_service_id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			
 			CREATE TABLE IF NOT EXISTS `motechmodule_expected_obs` (
 				`motechmodule_expected_obs_id` bigint NOT NULL auto_increment,

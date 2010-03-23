@@ -25,8 +25,6 @@ import org.motechproject.server.model.MessageDefinition;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.model.ScheduledMessage;
-import org.motechproject.server.model.Service;
-import org.motechproject.server.model.ServiceStatus;
 import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.model.db.MotechDAO;
 import org.openmrs.Concept;
@@ -511,33 +509,6 @@ public class HibernateMotechDAO implements MotechDAO {
 		criteria.addOrder(Order.asc("o.valueDatetime"));
 
 		return criteria.list();
-	}
-
-	public Service saveService(Service service) {
-		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(service);
-		return service;
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Service> getServices(Integer patientId, String sequence,
-			ServiceStatus status) {
-		Session session = sessionFactory.getCurrentSession();
-		return (List<Service>) session.createCriteria(Service.class).add(
-				Restrictions.eq("patientId", patientId)).add(
-				Restrictions.eq("sequence", sequence)).add(
-				Restrictions.eq("status", status)).list();
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Service> getServices(Integer patientId, String service,
-			String sequence, ServiceStatus status) {
-		Session session = sessionFactory.getCurrentSession();
-		return (List<Service>) session.createCriteria(Service.class).add(
-				Restrictions.eq("patientId", patientId)).add(
-				Restrictions.eq("service", service)).add(
-				Restrictions.eq("sequence", sequence)).add(
-				Restrictions.eq("status", status)).list();
 	}
 
 	public ExpectedObs saveExpectedObs(ExpectedObs expectedObs) {

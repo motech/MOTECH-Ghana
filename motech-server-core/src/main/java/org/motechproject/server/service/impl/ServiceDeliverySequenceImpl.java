@@ -3,10 +3,7 @@ package org.motechproject.server.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
-import org.motechproject.server.model.Service;
-import org.motechproject.server.model.ServiceStatus;
 import org.motechproject.server.service.Requirement;
 import org.motechproject.server.service.ServiceDelivery;
 import org.motechproject.server.service.ServiceDeliverySequence;
@@ -34,55 +31,6 @@ public class ServiceDeliverySequenceImpl implements ServiceDeliverySequence {
 	protected RegistrarBean registrarBean;
 
 	public void updateServiceDeliveries(Integer patientId, Date date) {
-		if (!meetsRequirements(patientId, date)) {
-			List<Service> services = registrarBean.getIncompleteServices(
-					patientId, name);
-			for (Service service : services) {
-				service.setStatus(ServiceStatus.MISSED);
-				registrarBean.saveService(service);
-			}
-		} else {
-			Map<String, Service> serviceMap = registrarBean
-					.getIncompleteServicesMap(patientId, name);
-
-			for (ServiceDelivery serviceDelivery : services) {
-				Integer deliveryId = getDeliveryId(serviceDelivery, patientId);
-
-				if (serviceMap.containsKey(serviceDelivery.getName())) {
-					Service service = serviceMap.get(serviceDelivery.getName());
-					if (deliveryId != null) {
-						service.setDeliveryId(deliveryId);
-						service.setStatus(ServiceStatus.COMPLETE);
-					} else {
-						Date latest = getLatestDate(serviceDelivery, patientId);
-						if (date.after(latest)) {
-							service.setStatus(ServiceStatus.MISSED);
-						}
-					}
-					registrarBean.saveService(service);
-
-				} else if (deliveryId == null) {
-					Date earliest = getEarliestDate(serviceDelivery, patientId);
-					Date start = getPreferredStartDate(serviceDelivery,
-							patientId);
-					Date end = getPreferredEndDate(serviceDelivery, patientId);
-					Date latest = getLatestDate(serviceDelivery, patientId);
-
-					if (start != null && end != null && !date.after(latest)) {
-						Service service = new Service();
-						service.setPatientId(patientId);
-						service.setService(serviceDelivery.getName());
-						service.setSequence(name);
-						service.setStatus(ServiceStatus.INCOMPLETE);
-						service.setEarliest(earliest);
-						service.setPreferredStart(start);
-						service.setPreferredEnd(end);
-						service.setLatest(latest);
-						registrarBean.saveService(service);
-					}
-				}
-			}
-		}
 	}
 
 	public boolean meetsRequirements(Integer patientId, Date date) {
