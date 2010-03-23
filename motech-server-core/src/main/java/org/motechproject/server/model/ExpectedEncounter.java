@@ -2,6 +2,7 @@ package org.motechproject.server.model;
 
 import java.util.Date;
 
+import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Patient;
 
@@ -14,6 +15,10 @@ public class ExpectedEncounter {
 	private Date dueEncounterDatetime;
 	private Date lateEncounterDatetime;
 	private Date maxEncounterDatetime;
+	private Encounter encounter;
+	private String name;
+	private String group;
+	private Boolean voided = Boolean.FALSE;
 
 	public Long getId() {
 		return id;
@@ -71,6 +76,38 @@ public class ExpectedEncounter {
 		this.maxEncounterDatetime = maxEncounterDatetime;
 	}
 
+	public Encounter getEncounter() {
+		return encounter;
+	}
+
+	public void setEncounter(Encounter encounter) {
+		this.encounter = encounter;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
+	public Boolean getVoided() {
+		return voided;
+	}
+
+	public void setVoided(Boolean voided) {
+		this.voided = voided;
+	}
+
 	@Override
 	public String toString() {
 		return "Expected Encounter: [" + "id: " + id + ", type: "
@@ -79,7 +116,10 @@ public class ExpectedEncounter {
 				+ (patient != null ? patient.getPatientId() : "null")
 				+ ", min: " + minEncounterDatetime + ", due: "
 				+ dueEncounterDatetime + ", late: " + lateEncounterDatetime
-				+ ", max: " + maxEncounterDatetime + "]";
+				+ ", max: " + maxEncounterDatetime + ", encounter: "
+				+ (encounter != null ? encounter.getEncounterId() : "null")
+				+ ", name: " + name + ", group: " + group + ", void: " + voided
+				+ "]";
 	}
 
 }

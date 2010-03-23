@@ -3,12 +3,13 @@ package org.motechproject.server.model;
 import java.util.Date;
 
 import org.openmrs.Concept;
-import org.openmrs.Person;
+import org.openmrs.Obs;
+import org.openmrs.Patient;
 
 public class ExpectedObs {
 
 	private Long id;
-	private Person person;
+	private Patient patient;
 	private Concept concept;
 	private Concept valueCoded;
 	private Double valueNumeric;
@@ -16,6 +17,10 @@ public class ExpectedObs {
 	private Date dueObsDatetime;
 	private Date lateObsDatetime;
 	private Date maxObsDatetime;
+	private Obs obs;
+	private String name;
+	private String group;
+	private Boolean voided = Boolean.FALSE;
 
 	public Long getId() {
 		return id;
@@ -25,12 +30,12 @@ public class ExpectedObs {
 		this.id = id;
 	}
 
-	public Person getPerson() {
-		return person;
+	public Patient getPatient() {
+		return patient;
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 
 	public Concept getConcept() {
@@ -89,16 +94,49 @@ public class ExpectedObs {
 		this.maxObsDatetime = maxObsDatetime;
 	}
 
+	public Obs getObs() {
+		return obs;
+	}
+
+	public void setObs(Obs obs) {
+		this.obs = obs;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
+	public Boolean getVoided() {
+		return voided;
+	}
+
+	public void setVoided(Boolean voided) {
+		this.voided = voided;
+	}
+
 	@Override
 	public String toString() {
 		return "Expected Obs: [" + "id: " + id + ", concept: "
 				+ (concept != null ? concept.getName() : "null") + ", person: "
-				+ (person != null ? person.getPersonId() : "null")
+				+ (patient != null ? patient.getPatientId() : "null")
 				+ ", valueConcept: "
 				+ (valueCoded != null ? valueCoded.getName() : "null")
 				+ ", valueNumeric: " + valueNumeric + ", min: "
 				+ minObsDatetime + ", due: " + dueObsDatetime + ", late: "
-				+ lateObsDatetime + ", max: " + maxObsDatetime + "]";
+				+ lateObsDatetime + ", max: " + maxObsDatetime + ", obs: "
+				+ (obs != null ? obs.getObsId() : "null") + ", name: " + name
+				+ ", group: " + group + ", void: " + voided + "]";
 	}
-
 }

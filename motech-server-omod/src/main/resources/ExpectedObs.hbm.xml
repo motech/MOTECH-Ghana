@@ -6,8 +6,8 @@
 			<generator class="native" />
 		</id>
 
-		<many-to-one name="person" class="org.openmrs.Person"
-			not-null="true" column="person_id" />
+		<many-to-one name="patient" class="org.openmrs.Patient"
+			not-null="true" column="patient_id" />
 		<many-to-one name="concept" class="org.openmrs.Concept"
 			not-null="true" column="concept_id" />
 		<many-to-one name="valueCoded" class="org.openmrs.Concept"
@@ -23,5 +23,14 @@
 			column="late_datetime" not-null="true" length="19" />
 		<property name="maxObsDatetime" type="java.util.Date" column="max_datetime"
 			length="19" />
+
+		<many-to-one name="obs" class="org.openmrs.Obs" column="obs_id" />
+
+		<property name="name" type="string" column="name" not-null="true"
+			length="50" />
+		<property name="group" type="string" column="group" not-null="true"
+			length="50" />
+		<property name="voided" type="boolean" column="voided"
+			not-null="true" />
 	</class>
 </hibernate-mapping>

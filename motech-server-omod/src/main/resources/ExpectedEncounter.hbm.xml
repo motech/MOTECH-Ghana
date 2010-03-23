@@ -19,5 +19,15 @@
 			column="late_datetime" not-null="true" length="19" />
 		<property name="maxEncounterDatetime" type="java.util.Date"
 			column="max_datetime" length="19" />
+
+		<many-to-one name="encounter" class="org.openmrs.Encounter"
+			column="encounter_id" />
+
+		<property name="name" type="string" column="name" not-null="true"
+			length="50" />
+		<property name="group" type="string" column="group" not-null="true"
+			length="50" />
+		<property name="voided" type="boolean" column="voided"
+			not-null="true" />
 	</class>
 </hibernate-mapping>
