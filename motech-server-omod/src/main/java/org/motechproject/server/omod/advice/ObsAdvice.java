@@ -14,17 +14,12 @@
 package org.motechproject.server.omod.advice;
 
 import java.lang.reflect.Method;
-import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.impl.ContextServiceImpl;
 import org.motechproject.server.omod.sdsched.ScheduleMaintService;
-import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Person;
 import org.springframework.aop.AfterReturningAdvice;
@@ -35,13 +30,13 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * observation being saved, whether that operation knows about it or not.
  * Currently, this is how we are handling calling the event engine.
  */
-public class SaveObsAdvice implements AfterReturningAdvice {
+public class ObsAdvice implements AfterReturningAdvice {
 
-	private static Log log = LogFactory.getLog(SaveObsAdvice.class);
+	private static Log log = LogFactory.getLog(ObsAdvice.class);
 
 	private ContextService contextService;
 
-	public SaveObsAdvice() {
+	public ObsAdvice() {
 		contextService = new ContextServiceImpl();
 	}
 
@@ -56,35 +51,14 @@ public class SaveObsAdvice implements AfterReturningAdvice {
 	public void afterReturning(Object returnValue, Method method,
 			Object[] args, Object target) throws Throwable {
 
-		if (method.getName().equals("saveObs")) {
+		String methodName = method.getName();
+
+		if (methodName.equals("saveObs") || methodName.equals("voidObs")) {
 
 			log.debug("intercepting method invocation");
 
 			Obs obs = (Obs) returnValue;
-
 			Person person = obs.getPerson();
-			Concept concept = obs.getConcept();
-			Concept valueConcept = obs.getValueCoded();
-			Double valueNumeric = obs.getValueNumeric();
-			Date obsDatetime = obs.getObsDatetime();
-
-			Integer personId = person.getPersonId();
-			String conceptName = concept.getName().getName();
-
-			MotechService motechService = contextService.getMotechService();
-			List<ExpectedObs> expectedObservations = motechService
-					.getExpectedObs(person, concept, valueConcept,
-							valueNumeric, obsDatetime);
-
-			for (ExpectedObs expectedObs : expectedObservations) {
-				if (log.isDebugEnabled()) {
-					log.debug("Removing: " + expectedObs.toString());
-				}
-				motechService.removeExpectedObs(expectedObs);
-			}
-
-			contextService.getRegistrarBean().updateMessageProgramState(
-					personId, conceptName);
 
 			ScheduleMaintService schedService = contextService
 					.getScheduleMaintService();

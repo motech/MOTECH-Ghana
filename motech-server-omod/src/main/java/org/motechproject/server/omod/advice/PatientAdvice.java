@@ -14,33 +14,27 @@
 package org.motechproject.server.omod.advice;
 
 import java.lang.reflect.Method;
-import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.impl.ContextServiceImpl;
 import org.motechproject.server.omod.sdsched.ScheduleMaintService;
-import org.openmrs.Encounter;
-import org.openmrs.EncounterType;
 import org.openmrs.Patient;
 import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
- * An OpenMRS AOP interceptor that enables us to perform various tasks upon an
- * encounter being saved, whether that operation knows about it or not.
+ * An OpenMRS AOP interceptor that enables us to perform various tasks upon a
+ * patient being saved, whether that operation knows about it or not.
  */
-public class SaveEncounterAdvice implements AfterReturningAdvice {
+public class PatientAdvice implements AfterReturningAdvice {
 
-	private static Log log = LogFactory.getLog(SaveObsAdvice.class);
+	private static Log log = LogFactory.getLog(ObsAdvice.class);
 
 	private ContextService contextService;
 
-	public SaveEncounterAdvice() {
+	public PatientAdvice() {
 		contextService = new ContextServiceImpl();
 	}
 
@@ -55,27 +49,14 @@ public class SaveEncounterAdvice implements AfterReturningAdvice {
 	public void afterReturning(Object returnValue, Method method,
 			Object[] args, Object target) throws Throwable {
 
-		if (method.getName().equals("saveEncounter")) {
+		String methodName = method.getName();
+
+		if (methodName.equals("savePatient")
+				|| methodName.equals("voidPatient")) {
 
 			log.debug("intercepting method invocation");
 
-			Encounter encounter = (Encounter) returnValue;
-
-			Patient patient = encounter.getPatient();
-			EncounterType encounterType = encounter.getEncounterType();
-			Date encounterDatetime = encounter.getEncounterDatetime();
-
-			MotechService motechService = contextService.getMotechService();
-			List<ExpectedEncounter> expectedEncounters = motechService
-					.getExpectedEncounter(patient, encounterType,
-							encounterDatetime);
-
-			for (ExpectedEncounter expectedEncounter : expectedEncounters) {
-				if (log.isDebugEnabled()) {
-					log.debug("Removing: " + expectedEncounter.toString());
-				}
-				motechService.removeExpectedEncounter(expectedEncounter);
-			}
+			Patient patient = (Patient) returnValue;
 
 			ScheduleMaintService schedService = contextService
 					.getScheduleMaintService();

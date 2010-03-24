@@ -36,11 +36,15 @@
 	<!-- AOP -->
 	<advice>
 		<point>org.openmrs.api.ObsService</point>
-		<class>${modulePackage}.advice.SaveObsAdvice</class>
+		<class>${modulePackage}.advice.ObsAdvice</class>
 	</advice>
 	<advice>
 		<point>org.openmrs.api.EncounterService</point>
-		<class>${modulePackage}.advice.SaveEncounterAdvice</class>
+		<class>${modulePackage}.advice.EncounterAdvice</class>
+	</advice>
+	<advice>
+		<point>org.openmrs.api.PatientService</point>
+		<class>${modulePackage}.advice.PatientAdvice</class>
 	</advice>
 	
 	<!-- Privileges used in module -->
