@@ -23,10 +23,10 @@
 		<many-to-one name="encounter" class="org.openmrs.Encounter"
 			column="encounter_id" />
 
-		<property name="name" type="string" column="name" not-null="true"
-			length="50" />
-		<property name="group" type="string" column="group" not-null="true"
-			length="50" />
+		<property name="name" type="string" column="care_name"
+			not-null="true" length="50" />
+		<property name="group" type="string" column="group_name"
+			not-null="true" length="50" />
 		<property name="voided" type="boolean" column="voided"
 			not-null="true" />
 	</class>
