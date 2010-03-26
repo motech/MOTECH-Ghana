@@ -55,7 +55,7 @@
 	<bean id="scheduleMaintService"
 		class="org.motechproject.server.omod.sdsched.ScheduleMaintServiceImpl">
 		<property name="syncManWrapper" ref="txSyncManWrapper" />
-		<property name="scheduleAdjuster" ref="careScheduleAdjuster" />
+		<property name="scheduleAdjuster" ref="dummyScheduleAdjuster" />
 	</bean>
 
 	<!-- Service -->
