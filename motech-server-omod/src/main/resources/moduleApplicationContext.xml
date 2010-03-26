@@ -19,6 +19,7 @@
 
 	<import resource="classpath*:common-program-beans.xml" />
 	<import resource="classpath*:programs/*.xml" />
+	<import resource="classpath*:services/*.xml" />
 	<import resource="classpath*:registrar-bean.xml" />
 	
 	<bean
@@ -31,10 +32,30 @@
 
 	<bean id="dummyScheduleAdjuster" class="org.motechproject.server.omod.sdsched.DummyScheduleAdjuster" />
 	
+	<bean id="careScheduleAdjuster" class="org.motechproject.server.omod.sdsched.ExpectedCareScheduleAdjuster">
+		<property name="registrarBean" ref="registrarBeanProxy" />
+		<property name="schedules">
+			<list>
+				<ref bean="childBCGSchedule" />
+				<ref bean="childPNCSchedule" />
+				<ref bean="childIPTiSchedule" />
+				<ref bean="childOPVSchedule" />
+				<ref bean="childPentaSchedule" />
+				<ref bean="childVitaASchedule" />
+				<ref bean="childMeaslesSchedule" />
+				<ref bean="childYellowFeverSchedule" />
+				<ref bean="pregnancyTetanusSchedule" />
+				<ref bean="pregnancyIPTSchedule" />
+				<ref bean="pregnancyPPCSchedule" />
+				<ref bean="pregnancyANCSchedule" />
+			</list>
+		</property>
+	</bean>
+	
 	<bean id="scheduleMaintService"
 		class="org.motechproject.server.omod.sdsched.ScheduleMaintServiceImpl">
 		<property name="syncManWrapper" ref="txSyncManWrapper" />
-		<property name="scheduleAdjuster" ref="dummyScheduleAdjuster" />
+		<property name="scheduleAdjuster" ref="careScheduleAdjuster" />
 	</bean>
 
 	<!-- Service -->
