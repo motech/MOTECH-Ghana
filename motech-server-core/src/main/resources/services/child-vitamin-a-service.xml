@@ -4,103 +4,68 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="childVitaminAService" class="org.motechproject.server.service.impl.ServiceDeliverySequenceObsImpl">
-		<property name="name" value="VITAMINA" />
-		<property name="serviceConceptName" value="IMMUNIZATIONS ORDERED" />
-		<property name="serviceValueConceptName" value="VITAMIN A" />
-		<property name="timeBean" ref="timeBean" />
+	<bean id="childVitaASchedule" class="org.motechproject.server.service.impl.ExpectedObsSchedule">
+		<property name="name" value="VitaA" />
+		<property name="conceptName" value="IMMUNIZATIONS ORDERED" />
+		<property name="valueConceptName" value="VITAMIN A" />
+		<property name="lateValue" value="2" />
+		<property name="latePeriod" value="week" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="requirements">
 			<list>
+				<bean class="org.motechproject.server.service.impl.AliveRequirement" />
 				<bean class="org.motechproject.server.service.impl.AgeRequirement">
-					<property name="maxTimeValue" value="5" />
-					<property name="maxTimePeriod" value="year" />
-					<property name="timeBean" ref="timeBean" />
+					<property name="maxValue" value="5" />
+					<property name="maxPeriod" value="year" />
 				</bean>
 			</list>
 		</property>
-		<property name="services">
+		<property name="events">
 			<list>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
-					<property name="name" value="VITAMINA1" />
-					<property name="startTimeValue" value="22" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="patient_birthdate" />
-					<property name="endTimeValue" value="26" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="patient_birthdate" />					
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
+					<property name="name" value="VitaA1" />
+					<property name="dueValue" value="6" />
+					<property name="duePeriod" value="month" />
 				</bean>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
-					<property name="name" value="VITAMINA2" />
-					<property name="startTimeValue" value="46" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="patient_birthdate" />
-					<property name="endTimeValue" value="50" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="patient_birthdate" />					
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
+					<property name="name" value="VitaA2" />
+					<property name="dueValue" value="12" />
+					<property name="duePeriod" value="month" />
 				</bean>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
-					<property name="name" value="VITAMINA3" />
-					<property name="startTimeValue" value="70" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="patient_birthdate" />
-					<property name="endTimeValue" value="74" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="patient_birthdate" />					
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
+					<property name="name" value="VitaA3" />
+					<property name="dueValue" value="18" />
+					<property name="duePeriod" value="month" />
 				</bean>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
-					<property name="name" value="VITAMINA4" />
-					<property name="startTimeValue" value="94" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="patient_birthdate" />
-					<property name="endTimeValue" value="98" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="patient_birthdate" />					
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
+					<property name="name" value="VitaA4" />
+					<property name="dueValue" value="24" />
+					<property name="duePeriod" value="month" />
 				</bean>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
-					<property name="name" value="VITAMINA5" />
-					<property name="startTimeValue" value="118" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="patient_birthdate" />
-					<property name="endTimeValue" value="122" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="patient_birthdate" />					
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
+					<property name="name" value="VitaA5" />
+					<property name="dueValue" value="30" />
+					<property name="duePeriod" value="month" />
 				</bean>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
-					<property name="name" value="VITAMINA6" />
-					<property name="startTimeValue" value="142" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="patient_birthdate" />
-					<property name="endTimeValue" value="146" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="patient_birthdate" />					
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
+					<property name="name" value="VitaA6" />
+					<property name="dueValue" value="36" />
+					<property name="duePeriod" value="month" />
 				</bean>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
-					<property name="name" value="VITAMINA7" />
-					<property name="startTimeValue" value="166" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="patient_birthdate" />
-					<property name="endTimeValue" value="170" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="patient_birthdate" />					
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
+					<property name="name" value="VitaA7" />
+					<property name="dueValue" value="42" />
+					<property name="duePeriod" value="month" />
 				</bean>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
-					<property name="name" value="VITAMINA8" />
-					<property name="startTimeValue" value="190" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="patient_birthdate" />
-					<property name="endTimeValue" value="194" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="patient_birthdate" />					
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
+					<property name="name" value="VitaA8" />
+					<property name="dueValue" value="48" />
+					<property name="duePeriod" value="month" />
 				</bean>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
-					<property name="name" value="VITAMINA9" />
-					<property name="startTimeValue" value="214" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="patient_birthdate" />
-					<property name="endTimeValue" value="218" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="patient_birthdate" />					
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
+					<property name="name" value="VitaA9" />
+					<property name="dueValue" value="54" />
+					<property name="duePeriod" value="month" />
 				</bean>
 			</list>
 		</property>

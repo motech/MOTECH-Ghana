@@ -4,55 +4,44 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="childIPTiService" class="org.motechproject.server.service.impl.ServiceDeliverySequenceObsImpl">
+	<bean id="childIPTiSchedule" class="org.motechproject.server.service.impl.ExpectedObsSchedule">
 		<property name="name" value="IPTI" />
-		<property name="serviceConceptName" value="IMMUNIZATIONS ORDERED" />
-		<property name="serviceValueConceptName" value="INTERMITTENT PREVENTATIVE TREATMENT INFANTS" />
-		<property name="timeBean" ref="timeBean" />
+		<property name="conceptName" value="IMMUNIZATIONS ORDERED" />
+		<property name="valueConceptName" value="INTERMITTENT PREVENTATIVE TREATMENT INFANTS" />
+		<property name="lateValue" value="1" />
+		<property name="latePeriod" value="week" />		
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="requirements">
 			<list>
+				<bean class="org.motechproject.server.service.impl.AliveRequirement" />
 				<bean class="org.motechproject.server.service.impl.AgeRequirement">
-					<property name="maxTimeValue" value="5" />
-					<property name="maxTimePeriod" value="year" />
-					<property name="timeBean" ref="timeBean" />
+					<property name="maxValue" value="5" />
+					<property name="maxPeriod" value="year" />
 				</bean>
 			</list>
 		</property>
-		<property name="services">
+		<property name="events">
 			<list>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="IPTI1" />
-					<property name="startTimeValue" value="10" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="patient_birthdate" />
-					<property name="endTimeValue" value="11" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="patient_birthdate" />					
+					<property name="dueValue" value="10" />
+					<property name="duePeriod" value="week" />				
 				</bean>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="IPTI2" />
-					<property name="earliestTimeValue" value="14" />
-					<property name="earliestTimePeriod" value="week" />
-					<property name="earliestTimeReference" value="patient_birthdate" />
-					<property name="startTimeValue" value="4" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="last_obs_date" />
-					<property name="endTimeValue" value="5" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="last_obs_date" />					
+					<property name="minValue" value="14" />
+					<property name="minPeriod" value="week" />
+					<property name="dueValue" value="4" />
+					<property name="duePeriod" value="week" />
+					<property name="dueReferencePrevious" value="true" />			
 				</bean>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="IPTI3" />
-					<property name="earliestTimeValue" value="9" />
-					<property name="earliestTimePeriod" value="month" />
-					<property name="earliestTimeReference" value="patient_birthdate" />
-					<property name="startTimeValue" value="4" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="last_obs_date" />
-					<property name="endTimeValue" value="5" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="last_obs_date" />					
+					<property name="minValue" value="9" />
+					<property name="minPeriod" value="month" />
+					<property name="dueValue" value="4" />
+					<property name="duePeriod" value="week" />
+					<property name="dueReferencePrevious" value="true" />			
 				</bean>
 			</list>
 		</property>

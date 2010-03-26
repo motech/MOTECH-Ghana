@@ -28,11 +28,9 @@ import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.model.db.MotechDAO;
 import org.openmrs.Concept;
-import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
-import org.openmrs.Person;
 import org.openmrs.PersonAttributeType;
 
 /**
@@ -517,32 +515,18 @@ public class HibernateMotechDAO implements MotechDAO {
 		return expectedObs;
 	}
 
-	public void removeExpectedObs(ExpectedObs expectedObs) {
-		Session session = sessionFactory.getCurrentSession();
-		session.delete(expectedObs);
-	}
-
 	@SuppressWarnings("unchecked")
-	public List<ExpectedObs> getExpectedObs(Person person, Concept concept,
-			Concept valueCoded, Double valueNumeric, Date obsDatetime) {
+	public List<ExpectedObs> getExpectedObs(Patient patient, String group) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(ExpectedObs.class);
-		if (person != null) {
-			criteria.add(Restrictions.eq("person", person));
+		if (patient != null) {
+			criteria.add(Restrictions.eq("patient", patient));
 		}
-		if (concept != null) {
-			criteria.add(Restrictions.eq("concept", concept));
+		if (group != null) {
+			criteria.add(Restrictions.eq("group", group));
 		}
-		if (obsDatetime != null) {
-			criteria.add(Restrictions.or(Restrictions.isNull("minObsDatetime"),
-					Restrictions.le("minObsDatetime", obsDatetime)));
-		}
-		if (valueCoded != null) {
-			criteria.add(Restrictions.eq("valueCoded", valueCoded));
-		}
-		if (valueNumeric != null) {
-			criteria.add(Restrictions.eq("valueNumeric", valueNumeric));
-		}
+		criteria.add(Restrictions.eq("voided", false));
+		criteria.addOrder(Order.asc("dueObsDatetime"));
 		return criteria.list();
 	}
 
@@ -553,27 +537,19 @@ public class HibernateMotechDAO implements MotechDAO {
 		return expectedEncounter;
 	}
 
-	public void removeExpectedEncounter(ExpectedEncounter expectedEncounter) {
-		Session session = sessionFactory.getCurrentSession();
-		session.delete(expectedEncounter);
-	}
-
 	@SuppressWarnings("unchecked")
 	public List<ExpectedEncounter> getExpectedEncounter(Patient patient,
-			EncounterType encounterType, Date encounterDatetime) {
+			String group) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(ExpectedEncounter.class);
 		if (patient != null) {
 			criteria.add(Restrictions.eq("patient", patient));
 		}
-		if (encounterType != null) {
-			criteria.add(Restrictions.eq("encounterType", encounterType));
+		if (group != null) {
+			criteria.add(Restrictions.eq("group", group));
 		}
-		if (encounterDatetime != null) {
-			criteria.add(Restrictions.or(Restrictions
-					.isNull("minEncounterDatetime"), Restrictions.le(
-					"minEncounterDatetime", encounterDatetime)));
-		}
+		criteria.add(Restrictions.eq("voided", false));
+		criteria.addOrder(Order.asc("dueEncounterDatetime"));
 		return criteria.list();
 	}
 

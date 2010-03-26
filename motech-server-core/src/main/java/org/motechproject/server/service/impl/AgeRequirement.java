@@ -1,81 +1,98 @@
 package org.motechproject.server.service.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.motechproject.server.service.Requirement;
-import org.motechproject.server.time.TimeBean;
 import org.motechproject.server.time.TimePeriod;
-import org.motechproject.server.time.TimeReference;
+import org.openmrs.Patient;
 
 public class AgeRequirement implements Requirement {
 
-	private Integer minTimeValue;
-	private TimePeriod minTimePeriod;
+	private Integer minValue;
+	private TimePeriod minPeriod;
 
-	private Integer maxTimeValue;
-	private TimePeriod maxTimePeriod;
+	private Integer maxValue;
+	private TimePeriod maxPeriod;
 
-	private TimeBean timeBean;
+	public boolean meetsRequirement(Patient patient, Date date) {
 
-	public boolean meetsRequirement(Integer patientId, Date date) {
-
-		if (minTimeValue != null && minTimePeriod != null) {
-			Date minDate = timeBean.determineTime(minTimePeriod,
-					TimeReference.patient_birthdate, minTimeValue, patientId,
-					null, null, null, null, null);
-			if (!date.after(minDate)) {
+		if (minValue != null && minPeriod != null) {
+			Date minAgeDate = calculateDate(patient.getBirthdate(), minValue,
+					minPeriod);
+			if (!date.after(minAgeDate)) {
 				return false;
 			}
 		}
-		if (maxTimeValue != null && maxTimePeriod != null) {
-			Date maxDate = timeBean.determineTime(maxTimePeriod,
-					TimeReference.patient_birthdate, maxTimeValue, patientId,
-					null, null, null, null, null);
-			if (!date.before(maxDate)) {
+		if (maxValue != null && maxPeriod != null) {
+			Date maxAgeDate = calculateDate(patient.getBirthdate(), maxValue,
+					maxPeriod);
+			if (!date.before(maxAgeDate)) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	public Integer getMinTimeValue() {
-		return minTimeValue;
+	private Date calculateDate(Date birthDate, Integer value, TimePeriod period) {
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(birthDate);
+
+		switch (period) {
+		case minute:
+			calendar.add(Calendar.MINUTE, value);
+			break;
+		case hour:
+			calendar.add(Calendar.HOUR, value);
+			break;
+		case day:
+			calendar.add(Calendar.DATE, value);
+			break;
+		case week:
+			// Add weeks as days
+			calendar.add(Calendar.DATE, value * 7);
+			break;
+		case month:
+			calendar.add(Calendar.MONTH, value);
+			break;
+		case year:
+			calendar.add(Calendar.YEAR, value);
+			break;
+		}
+		return calendar.getTime();
 	}
 
-	public void setMinTimeValue(Integer minTimeValue) {
-		this.minTimeValue = minTimeValue;
+	public Integer getMinValue() {
+		return minValue;
 	}
 
-	public TimePeriod getMinTimePeriod() {
-		return minTimePeriod;
+	public void setMinValue(Integer minValue) {
+		this.minValue = minValue;
 	}
 
-	public void setMinTimePeriod(TimePeriod minTimePeriod) {
-		this.minTimePeriod = minTimePeriod;
+	public TimePeriod getMinPeriod() {
+		return minPeriod;
 	}
 
-	public Integer getMaxTimeValue() {
-		return maxTimeValue;
+	public void setMinPeriod(TimePeriod minPeriod) {
+		this.minPeriod = minPeriod;
 	}
 
-	public void setMaxTimeValue(Integer maxTimeValue) {
-		this.maxTimeValue = maxTimeValue;
+	public Integer getMaxValue() {
+		return maxValue;
 	}
 
-	public TimePeriod getMaxTimePeriod() {
-		return maxTimePeriod;
+	public void setMaxValue(Integer maxValue) {
+		this.maxValue = maxValue;
 	}
 
-	public void setMaxTimePeriod(TimePeriod maxTimePeriod) {
-		this.maxTimePeriod = maxTimePeriod;
+	public TimePeriod getMaxPeriod() {
+		return maxPeriod;
 	}
 
-	public TimeBean getTimeBean() {
-		return timeBean;
-	}
-
-	public void setTimeBean(TimeBean timeBean) {
-		this.timeBean = timeBean;
+	public void setMaxPeriod(TimePeriod maxPeriod) {
+		this.maxPeriod = maxPeriod;
 	}
 
 }

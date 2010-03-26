@@ -4,56 +4,67 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="pregnancyTetanusService" class="org.motechproject.server.service.impl.ServiceDeliverySequenceObsImpl">
+	<bean id="pregnancyTetanusSchedule" class="org.motechproject.server.service.impl.ExpectedObsSchedule">
 		<property name="name" value="TT" />
-		<property name="serviceConceptName" value="TETANUS TOXOID DOSE" />
-		<property name="timeBean" ref="timeBean" />
+		<property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="registrarBean" ref="registrarBean" />
-		<property name="services">
+		<property name="requirements">
 			<list>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryDoseImpl">
+				<bean class="org.motechproject.server.service.impl.AliveRequirement" />
+				<bean class="org.motechproject.server.service.impl.AgeRequirement">
+					<property name="minValue" value="12" />
+					<property name="minPeriod" value="year" />
+				</bean>
+				<bean class="org.motechproject.server.service.impl.GenderRequirement">
+					<property name="gender" value="FEMALE" />
+				</bean>
+			</list>
+		</property>
+		<property name="events">
+			<list>
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="TT1" />
-					<property name="doseNumber" value="1" />		
+					<property name="number" value="1" />
+					<property name="dueValue" value="12" />
+					<property name="duePeriod" value="year" />					
+					<property name="lateValue" value="0" />
+					<property name="latePeriod" value="week" />	
 				</bean>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryDoseImpl">
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="TT2" />
-					<property name="doseNumber" value="2" />
-					<property name="startTimeValue" value="4" />
-					<property name="startTimePeriod" value="week" />
-					<property name="startTimeReference" value="last_dose_obs_date" />
-					<property name="endTimeValue" value="5" />
-					<property name="endTimePeriod" value="week" />
-					<property name="endTimeReference" value="last_dose_obs_date" />					
+					<property name="number" value="2" />
+					<property name="dueValue" value="4" />
+					<property name="duePeriod" value="week" />
+					<property name="dueReferencePrevious" value="true" />	
+					<property name="lateValue" value="1" />
+					<property name="latePeriod" value="week" />			
 				</bean>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryDoseImpl">
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="TT3" />
-					<property name="doseNumber" value="3" />
-					<property name="startTimeValue" value="180" />
-					<property name="startTimePeriod" value="day" />
-					<property name="startTimeReference" value="last_dose_obs_date" />
-					<property name="endTimeValue" value="190" />
-					<property name="endTimePeriod" value="day" />
-					<property name="endTimeReference" value="last_dose_obs_date" />					
+					<property name="number" value="3" />
+					<property name="dueValue" value="6" />
+					<property name="duePeriod" value="month" />
+					<property name="dueReferencePrevious" value="true" />	
+					<property name="lateValue" value="10" />
+					<property name="latePeriod" value="day" />				
 				</bean>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryDoseImpl">
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="TT4" />
-					<property name="doseNumber" value="4" />
-					<property name="startTimeValue" value="365" />
-					<property name="startTimePeriod" value="day" />
-					<property name="startTimeReference" value="last_dose_obs_date" />
-					<property name="endTimeValue" value="370" />
-					<property name="endTimePeriod" value="day" />
-					<property name="endTimeReference" value="last_dose_obs_date" />					
+					<property name="number" value="4" />
+					<property name="dueValue" value="1" />
+					<property name="duePeriod" value="year" />
+					<property name="dueReferencePrevious" value="true" />	
+					<property name="lateValue" value="10" />
+					<property name="latePeriod" value="day" />			
 				</bean>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryDoseImpl">
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="TT5" />
-					<property name="doseNumber" value="5" />
-					<property name="startTimeValue" value="365" />
-					<property name="startTimePeriod" value="day" />
-					<property name="startTimeReference" value="last_dose_obs_date" />
-					<property name="endTimeValue" value="370" />
-					<property name="endTimePeriod" value="day" />
-					<property name="endTimeReference" value="last_dose_obs_date" />					
+					<property name="number" value="5" />
+					<property name="dueValue" value="1" />
+					<property name="duePeriod" value="year" />
+					<property name="dueReferencePrevious" value="true" />	
+					<property name="lateValue" value="5" />
+					<property name="latePeriod" value="day" />		
 				</bean>
 			</list>
 		</property>

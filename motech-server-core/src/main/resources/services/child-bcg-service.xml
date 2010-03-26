@@ -4,34 +4,33 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="childBCGService" class="org.motechproject.server.service.impl.ServiceDeliverySequenceObsImpl">
+	<bean id="childBCGSchedule"
+		class="org.motechproject.server.service.impl.ExpectedObsSchedule">
 		<property name="name" value="BCG" />
-		<property name="serviceConceptName" value="IMMUNIZATIONS ORDERED" />
-		<property name="serviceValueConceptName" value="BACILLE CAMILE-GUERIN VACCINATION" />
-		<property name="timeBean" ref="timeBean" />
+		<property name="conceptName" value="IMMUNIZATIONS ORDERED" />
+		<property name="valueConceptName" value="BACILLE CAMILE-GUERIN VACCINATION" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="requirements">
 			<list>
+				<bean class="org.motechproject.server.service.impl.AliveRequirement" />
 				<bean class="org.motechproject.server.service.impl.AgeRequirement">
-					<property name="maxTimeValue" value="1" />
-					<property name="maxTimePeriod" value="year" />
-					<property name="timeBean" ref="timeBean" />
+					<property name="maxValue" value="1" />
+					<property name="maxPeriod" value="year" />
 				</bean>
 			</list>
 		</property>
-		<property name="services">
+		<property name="events">
 			<list>
-				<bean class="org.motechproject.server.service.impl.ServiceDeliveryImpl">
-					<property name="name" value="BCG1" />
-					<property name="startTimeValue" value="0" />
-					<property name="startTimePeriod" value="day" />
-					<property name="startTimeReference" value="patient_birthdate" />
-					<property name="endTimeValue" value="2" />
-					<property name="endTimePeriod" value="day" />
-					<property name="endTimeReference" value="patient_birthdate" />
-					<property name="latestTimeValue" value="1" />
-					<property name="latestTimePeriod" value="year" />
-					<property name="latestTimeReference" value="patient_birthdate" />
+				<bean class="org.motechproject.server.service.ExpectedCareEvent">
+					<property name="name" value="BCG" />
+					<property name="minValue" value="0" />
+					<property name="minPeriod" value="day" />
+					<property name="dueValue" value="0" />
+					<property name="duePeriod" value="day" />
+					<property name="lateValue" value="2" />
+					<property name="latePeriod" value="day" />
+					<property name="maxValue" value="1" />
+					<property name="maxPeriod" value="year" />
 				</bean>
 			</list>
 		</property>

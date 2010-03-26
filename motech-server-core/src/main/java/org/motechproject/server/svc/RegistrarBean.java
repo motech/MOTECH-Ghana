@@ -6,6 +6,8 @@ import java.util.List;
 import org.motechproject.server.annotation.RunAsAdminUser;
 import org.motechproject.server.annotation.RunAsUserParam;
 import org.motechproject.server.annotation.RunWithPrivileges;
+import org.motechproject.server.model.ExpectedEncounter;
+import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.HIVStatus;
 import org.motechproject.server.model.Log;
 import org.motechproject.server.model.MessageProgramEnrollment;
@@ -224,6 +226,10 @@ public interface RegistrarBean {
 			OpenmrsConstants.PRIV_VIEW_ENCOUNTERS })
 	public List<Encounter> getRecentDeliveries();
 
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES,
+			OpenmrsConstants.PRIV_VIEW_ENCOUNTERS })
+	public Date getCurrentDeliveryDate(Patient patient);
+
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_CONCEPTS })
 	public List<Obs> getUpcomingPregnanciesDueDate();
 
@@ -240,6 +246,30 @@ public interface RegistrarBean {
 	public List<Log> getAllLogs();
 
 	public Date getPatientBirthDate(Integer patientId);
+
+	public List<Obs> getObs(Patient patient, String conceptName,
+			String valueConceptName, Date minDate);
+
+	public List<ExpectedObs> getExpectedObs(Patient patient, String group);
+
+	public ExpectedObs createExpectedObs(Patient patient, String conceptName,
+			String valueConceptName, Integer value, Date minDate, Date dueDate,
+			Date lateDate, Date maxDate, String name, String group);
+
+	public ExpectedObs saveExpectedObs(ExpectedObs expectedObs);
+
+	public List<Encounter> getEncounters(Patient patient,
+			String encounterTypeName, Date minDate);
+
+	public List<ExpectedEncounter> getExpectedEncounters(Patient patient,
+			String group);
+
+	public ExpectedEncounter createExpectedEncounter(Patient patient,
+			String encounterTypeName, Date minDate, Date dueDate,
+			Date lateDate, Date maxDate, String name, String group);
+
+	public ExpectedEncounter saveExpectedEncounter(
+			ExpectedEncounter expectedEncounter);
 
 	public int getNumberOfObs(Integer personId, String conceptName,
 			String conceptValue);

@@ -31,11 +31,9 @@ import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.omod.sdsched.ScheduleMaintService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Concept;
-import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
-import org.openmrs.Person;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
@@ -201,22 +199,14 @@ public interface MotechService extends OpenmrsService {
 	@Transactional
 	ExpectedObs saveExpectedObs(ExpectedObs expectedObs);
 
-	@Transactional
-	void removeExpectedObs(ExpectedObs expectedObs);
-
 	@Transactional(readOnly = true)
-	List<ExpectedObs> getExpectedObs(Person person, Concept concept,
-			Concept valueCoded, Double valueNumeric, Date obsDatetime);
+	List<ExpectedObs> getExpectedObs(Patient patient, String group);
 
 	@Transactional
 	ExpectedEncounter saveExpectedEncounter(ExpectedEncounter expectedEncounter);
 
-	@Transactional
-	void removeExpectedEncounter(ExpectedEncounter expectedEncounter);
-
 	@Transactional(readOnly = true)
-	List<ExpectedEncounter> getExpectedEncounter(Patient patient,
-			EncounterType encounterType, Date encounterDatetime);
+	List<ExpectedEncounter> getExpectedEncounter(Patient patient, String group);
 
 	@Transactional(readOnly = true)
 	List<Patient> getPatients(String firstName, String lastName,

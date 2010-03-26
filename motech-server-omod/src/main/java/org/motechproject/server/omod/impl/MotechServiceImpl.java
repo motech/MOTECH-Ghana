@@ -33,11 +33,9 @@ import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.sdsched.ScheduleMaintService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Concept;
-import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
-import org.openmrs.Person;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.api.impl.BaseOpenmrsService;
 
@@ -296,14 +294,8 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return motechDAO.saveExpectedObs(expectedObs);
 	}
 
-	public void removeExpectedObs(ExpectedObs expectedObs) {
-		motechDAO.removeExpectedObs(expectedObs);
-	}
-
-	public List<ExpectedObs> getExpectedObs(Person person, Concept concept,
-			Concept valueCoded, Double valueNumeric, Date obsDatetime) {
-		return motechDAO.getExpectedObs(person, concept, valueCoded,
-				valueNumeric, obsDatetime);
+	public List<ExpectedObs> getExpectedObs(Patient patient, String group) {
+		return motechDAO.getExpectedObs(patient, group);
 	}
 
 	public ExpectedEncounter saveExpectedEncounter(
@@ -311,14 +303,9 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return motechDAO.saveExpectedEncounter(expectedEncounter);
 	}
 
-	public void removeExpectedEncounter(ExpectedEncounter expectedEncounter) {
-		motechDAO.removeExpectedEncounter(expectedEncounter);
-	}
-
 	public List<ExpectedEncounter> getExpectedEncounter(Patient patient,
-			EncounterType encounterType, Date encounterDatetime) {
-		return motechDAO.getExpectedEncounter(patient, encounterType,
-				encounterDatetime);
+			String group) {
+		return motechDAO.getExpectedEncounter(patient, group);
 	}
 
 	public List<Patient> getPatients(String firstName, String lastName,

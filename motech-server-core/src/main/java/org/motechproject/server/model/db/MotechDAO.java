@@ -16,11 +16,9 @@ import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.model.TroubledPhone;
 import org.openmrs.Concept;
-import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
-import org.openmrs.Person;
 import org.openmrs.PersonAttributeType;
 
 /**
@@ -135,17 +133,11 @@ public interface MotechDAO {
 
 	ExpectedObs saveExpectedObs(ExpectedObs expectedObs);
 
-	void removeExpectedObs(ExpectedObs expectedObs);
-
-	List<ExpectedObs> getExpectedObs(Person person, Concept concept,
-			Concept valueCoded, Double valueNumeric, Date obsDatetime);
+	List<ExpectedObs> getExpectedObs(Patient patient, String group);
 
 	ExpectedEncounter saveExpectedEncounter(ExpectedEncounter expectedEncounter);
 
-	void removeExpectedEncounter(ExpectedEncounter expectedEncounter);
-
-	List<ExpectedEncounter> getExpectedEncounter(Patient patient,
-			EncounterType encounterType, Date encounterDatetime);
+	List<ExpectedEncounter> getExpectedEncounter(Patient patient, String group);
 
 	List<Patient> getPatients(String firstName, String lastName,
 			String preferredName, Date birthDate, String community,

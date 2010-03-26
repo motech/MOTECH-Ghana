@@ -14,6 +14,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.event.MessageProgram;
 import org.motechproject.server.messaging.MessageNotFoundException;
+import org.motechproject.server.model.ExpectedEncounter;
+import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.GeneralPatientEncounter;
 import org.motechproject.server.model.HIVStatus;
 import org.motechproject.server.model.Message;
@@ -1357,6 +1359,23 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				currentDate, null, deliveryEncounterType, null, false);
 	}
 
+	public Date getCurrentDeliveryDate(Patient patient) {
+		EncounterService encounterService = contextService
+				.getEncounterService();
+
+		List<EncounterType> deliveryEncounterType = new ArrayList<EncounterType>();
+		deliveryEncounterType.add(getPregnancyDeliveryVisitEncounterType());
+
+		List<Encounter> deliveries = encounterService.getEncounters(patient,
+				null, null, null, null, deliveryEncounterType, null, false);
+
+		if (!deliveries.isEmpty()) {
+			// List is ascending by date, get last match to get most recent
+			return deliveries.get(deliveries.size() - 1).getEncounterDatetime();
+		}
+		return null;
+	}
+
 	public List<Obs> getUpcomingPregnanciesDueDate() {
 		Calendar calendar = Calendar.getInstance();
 		Date currentDate = calendar.getTime();
@@ -1414,6 +1433,122 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	}
 
 	/* Controller methods end */
+
+	public List<Obs> getObs(Patient patient, String conceptName,
+			String valueConceptName, Date minDate) {
+		ObsService obsService = contextService.getObsService();
+		ConceptService conceptService = contextService.getConceptService();
+
+		Concept concept = conceptService.getConcept(conceptName);
+		Concept value = conceptService.getConcept(valueConceptName);
+
+		List<Concept> questions = new ArrayList<Concept>();
+		questions.add(concept);
+
+		List<Concept> answers = null;
+		if (value != null) {
+			answers = new ArrayList<Concept>();
+			answers.add(value);
+		}
+
+		List<Person> whom = new ArrayList<Person>();
+		whom.add(patient);
+
+		return obsService.getObservations(whom, null, questions, answers, null,
+				null, null, null, null, minDate, null, false);
+	}
+
+	public List<ExpectedObs> getExpectedObs(Patient patient, String group) {
+		MotechService motechService = contextService.getMotechService();
+		return motechService.getExpectedObs(patient, group);
+	}
+
+	public ExpectedObs createExpectedObs(Patient patient, String conceptName,
+			String valueConceptName, Integer value, Date minDate, Date dueDate,
+			Date lateDate, Date maxDate, String name, String group) {
+		ConceptService conceptService = contextService.getConceptService();
+
+		Concept concept = conceptService.getConcept(conceptName);
+		Concept valueConcept = conceptService.getConcept(valueConceptName);
+
+		ExpectedObs expectedObs = new ExpectedObs();
+		expectedObs.setPatient(patient);
+		expectedObs.setConcept(concept);
+		expectedObs.setValueCoded(valueConcept);
+		if (value != null) {
+			expectedObs.setValueNumeric(new Double(value));
+		}
+		expectedObs.setMinObsDatetime(minDate);
+		expectedObs.setDueObsDatetime(dueDate);
+		expectedObs.setLateObsDatetime(lateDate);
+		expectedObs.setMaxObsDatetime(maxDate);
+		expectedObs.setName(name);
+		expectedObs.setGroup(group);
+
+		return saveExpectedObs(expectedObs);
+	}
+
+	public ExpectedObs saveExpectedObs(ExpectedObs expectedObs) {
+		if (log.isDebugEnabled()) {
+			log.debug("Saving schedule update: " + expectedObs.toString());
+		}
+		MotechService motechService = contextService.getMotechService();
+		return motechService.saveExpectedObs(expectedObs);
+	}
+
+	public List<Encounter> getEncounters(Patient patient,
+			String encounterTypeName, Date minDate) {
+		EncounterService encounterService = contextService
+				.getEncounterService();
+
+		EncounterType encounterType = encounterService
+				.getEncounterType(encounterTypeName);
+
+		List<EncounterType> encounterTypes = new ArrayList<EncounterType>();
+		encounterTypes.add(encounterType);
+
+		return encounterService.getEncounters(patient, null, minDate, null,
+				null, encounterTypes, null, false);
+	}
+
+	public List<ExpectedEncounter> getExpectedEncounters(Patient patient,
+			String group) {
+		MotechService motechService = contextService.getMotechService();
+		return motechService.getExpectedEncounter(patient, group);
+	}
+
+	public ExpectedEncounter createExpectedEncounter(Patient patient,
+			String encounterTypeName, Date minDate, Date dueDate,
+			Date lateDate, Date maxDate, String name, String group) {
+		EncounterService encounterService = contextService
+				.getEncounterService();
+
+		EncounterType encounterType = encounterService
+				.getEncounterType(encounterTypeName);
+
+		ExpectedEncounter expectedEncounter = new ExpectedEncounter();
+		expectedEncounter.setPatient(patient);
+		expectedEncounter.setEncounterType(encounterType);
+		expectedEncounter.setMinEncounterDatetime(minDate);
+		expectedEncounter.setDueEncounterDatetime(dueDate);
+		expectedEncounter.setLateEncounterDatetime(lateDate);
+		expectedEncounter.setMaxEncounterDatetime(maxDate);
+		expectedEncounter.setName(name);
+		expectedEncounter.setGroup(group);
+
+		return saveExpectedEncounter(expectedEncounter);
+	}
+
+	public ExpectedEncounter saveExpectedEncounter(
+			ExpectedEncounter expectedEncounter) {
+		if (log.isDebugEnabled()) {
+			log
+					.debug("Saving schedule update: "
+							+ expectedEncounter.toString());
+		}
+		MotechService motechService = contextService.getMotechService();
+		return motechService.saveExpectedEncounter(expectedEncounter);
+	}
 
 	/* PatientObsService methods start */
 	public Date getPatientBirthDate(Integer patientId) {
