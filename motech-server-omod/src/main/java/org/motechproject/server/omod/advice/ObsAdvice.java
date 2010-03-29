@@ -63,15 +63,12 @@ public class ObsAdvice implements AfterReturningAdvice {
 			ScheduleMaintService schedService = contextService
 					.getScheduleMaintService();
 
-			if (person.isPatient()) {
-				if (TransactionSynchronizationManager
-						.isActualTransactionActive()) {
-					schedService.addAffectedPatient(person.getId());
-					schedService.requestSynch();
-				} else {
-					// FIXME: Remove this when advice can exec in tx
-					schedService.updateSchedule(person.getId());
-				}
+			if (TransactionSynchronizationManager.isActualTransactionActive()) {
+				schedService.addAffectedPatient(person.getId());
+				schedService.requestSynch();
+			} else {
+				// FIXME: Remove this when advice can exec in tx
+				schedService.updateSchedule(person.getId());
 			}
 		}
 	}
