@@ -1492,8 +1492,16 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		if (log.isDebugEnabled()) {
 			log.debug("Saving schedule update: " + expectedObs.toString());
 		}
-		MotechService motechService = contextService.getMotechService();
-		return motechService.saveExpectedObs(expectedObs);
+		if (expectedObs.getDueObsDatetime() != null
+				&& expectedObs.getLateObsDatetime() != null) {
+
+			MotechService motechService = contextService.getMotechService();
+			return motechService.saveExpectedObs(expectedObs);
+		} else {
+			log
+					.error("Attempt to store ExpectedObs with null due or late date");
+			return null;
+		}
 	}
 
 	public List<Encounter> getEncounters(Patient patient,
@@ -1546,8 +1554,16 @@ public class RegistrarBeanImpl implements RegistrarBean {
 					.debug("Saving schedule update: "
 							+ expectedEncounter.toString());
 		}
-		MotechService motechService = contextService.getMotechService();
-		return motechService.saveExpectedEncounter(expectedEncounter);
+		if (expectedEncounter.getDueEncounterDatetime() != null
+				&& expectedEncounter.getLateEncounterDatetime() != null) {
+
+			MotechService motechService = contextService.getMotechService();
+			return motechService.saveExpectedEncounter(expectedEncounter);
+		} else {
+			log
+					.error("Attempt to store ExpectedEncounter with null due or late date");
+			return null;
+		}
 	}
 
 	/* PatientObsService methods start */

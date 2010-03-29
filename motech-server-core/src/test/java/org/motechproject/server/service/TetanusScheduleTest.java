@@ -176,6 +176,55 @@ public class TetanusScheduleTest extends TestCase {
 		assertTrue("Late date is not after due date", lateDate.after(dueDate));
 	}
 
+	public void testExpectedDoseUpdated() {
+		Date date = new Date();
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.YEAR, -30); // age is 30 years
+
+		Patient patient = new Patient();
+		patient.setGender("F");
+		patient.setBirthdate(calendar.getTime());
+
+		Capture<ExpectedObs> expectedObsCapture = new Capture<ExpectedObs>();
+
+		List<Obs> obsList = new ArrayList<Obs>();
+		Obs obs3 = new Obs();
+		obs3.setObsDatetime(date);
+		obs3.setValueNumeric(new Double(1));
+		obsList.add(obs3);
+
+		List<ExpectedObs> expectedObsList = new ArrayList<ExpectedObs>();
+		ExpectedObs expectedObs = new ExpectedObs();
+		expectedObs.setName(tt2Event.getName());
+		expectedObsList.add(expectedObs);
+
+		expect(
+				registrarBean.getObs(patient, ttSchedule.getConceptName(),
+						ttSchedule.getValueConceptName(), patient
+								.getBirthdate())).andReturn(obsList);
+		expect(registrarBean.getExpectedObs(patient, ttSchedule.getName()))
+				.andReturn(expectedObsList);
+		expect(registrarBean.saveExpectedObs(capture(expectedObsCapture)))
+				.andReturn(new ExpectedObs());
+
+		replay(registrarBean);
+
+		ttSchedule.updateSchedule(patient, date);
+
+		verify(registrarBean);
+
+		ExpectedObs tt2ExpectedObs = expectedObsCapture.getValue();
+		assertEquals(tt2Event.getName(), tt2ExpectedObs.getName());
+		assertEquals(Boolean.FALSE, tt2ExpectedObs.getVoided());
+		assertNull("ExpectedObs has associated Obs", tt2ExpectedObs.getObs());
+		assertNotNull("Due date is null", tt2ExpectedObs.getDueObsDatetime());
+		assertNotNull("Late date is null", tt2ExpectedObs.getLateObsDatetime());
+		assertTrue("Late date not after due date", tt2ExpectedObs
+				.getLateObsDatetime().after(tt2ExpectedObs.getDueObsDatetime()));
+	}
+
 	public void testNoActionDose() {
 		Date date = new Date();
 

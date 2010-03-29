@@ -24,6 +24,9 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 		Date referenceDate = getReferenceDate(patient);
 		if (!validReferenceDate(referenceDate, date)) {
 			// Handle missing reference date as failed requirement
+			log.debug("Failed to meet reference date requisite: "
+					+ referenceDate + ", removing events for schedule");
+
 			removeExpectedCare(patient);
 			return;
 		}
@@ -66,6 +69,10 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 			obsPredicate.setMaxDate(maxDate);
 			obsPredicate.setValue(event.getNumber());
 			Obs eventObs = getEventObs(obsList, obsPredicate);
+			// Store satisfying Obs date for possible reference in next event
+			if (eventObs != null) {
+				previousEventObsDate = eventObs.getObsDatetime();
+			}
 
 			// Find ExpectedObs previously created for event
 			expectedObsPredicate.setName(event.getName());
@@ -82,7 +89,6 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 			if (expectedObs != null) {
 				if (eventObs != null) {
 					// Remove existing satisfied ExpectedObs
-					previousEventObsDate = eventObs.getObsDatetime();
 					expectedObs.setObs(eventObs);
 					expectedObs.setVoided(true);
 					registrarBean.saveExpectedObs(expectedObs);

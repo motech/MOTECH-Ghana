@@ -23,6 +23,9 @@ public class ExpectedEncounterSchedule extends ExpectedCareScheduleImpl {
 		Date referenceDate = getReferenceDate(patient);
 		if (!validReferenceDate(referenceDate, date)) {
 			// Handle missing reference date as failed requirement
+			log.debug("Failed to meet reference date requisite: "
+					+ referenceDate + ", removing events for schedule");
+
 			removeExpectedCare(patient);
 			return;
 		}

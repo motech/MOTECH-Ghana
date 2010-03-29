@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.service.ExpectedCareEvent;
 import org.motechproject.server.service.ExpectedCareSchedule;
 import org.motechproject.server.service.Requirement;
@@ -13,6 +15,8 @@ import org.motechproject.server.time.TimePeriod;
 import org.openmrs.Patient;
 
 public class ExpectedCareScheduleImpl implements ExpectedCareSchedule {
+
+	private static Log log = LogFactory.getLog(ExpectedCareScheduleImpl.class);
 
 	protected String name;
 
@@ -25,9 +29,15 @@ public class ExpectedCareScheduleImpl implements ExpectedCareSchedule {
 	protected RegistrarBean registrarBean;
 
 	public void updateSchedule(Patient patient, Date date) {
+		log.debug("Evaluating schedule: " + name + ", patient: "
+				+ patient.getPatientId());
+
 		if (meetsRequirements(patient, date)) {
 			performScheduleUpdate(patient, date);
 		} else {
+			log
+					.debug("Failed to meet requisites, removing events for schedule");
+
 			removeExpectedCare(patient);
 		}
 	}
