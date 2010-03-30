@@ -77,6 +77,7 @@ import org.openmrs.scheduler.SchedulerException;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.util.OpenmrsConstants;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * An implementation of the RegistrarBean interface, implemented using a mix of
@@ -106,6 +107,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return messagePrograms.get(programName);
 	}
 
+	@Transactional
 	public Patient registerChild(User nurse, Patient mother, String childId,
 			Date birthDate, Gender sex, String firstName, String nhis,
 			Date nhisExpires) {
@@ -135,6 +137,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return patientService.savePatient(child);
 	}
 
+	@Transactional
 	public void registerChild(String firstName, String middleName,
 			String lastName, String prefName, Date birthDate,
 			Boolean birthDateEst, Gender sex, String motherMotechId,
@@ -179,6 +182,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	@Transactional
 	private Patient createPatient(String motechId, String firstName,
 			String middleName, String lastName, String prefName,
 			Date birthDate, Boolean birthDateEst, Gender sex,
@@ -209,6 +213,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return patient;
 	}
 
+	@Transactional
 	public void registerClinic(String name, Integer parentId) {
 
 		LocationService locationService = contextService.getLocationService();
@@ -228,6 +233,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	@Transactional
 	public void registerNurse(String name, String nurseId, String phoneNumber,
 			String clinicName) {
 		LocationService locationService = contextService.getLocationService();
@@ -236,6 +242,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		registerNurse(name, nurseId, phoneNumber, clinic);
 	}
 
+	@Transactional
 	public void registerNurse(String name, String nurseId, String phoneNumber,
 			Integer clinicId) {
 		LocationService locationService = contextService.getLocationService();
@@ -284,6 +291,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		userService.saveUser(nurse, "password");
 	}
 
+	@Transactional
 	public void registerPregnantMother(String firstName, String middleName,
 			String lastName, String prefName, Date birthDate,
 			Boolean birthDateEst, Boolean registeredGHS, String regNumberGHS,
@@ -319,6 +327,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	@Transactional
 	public void demoRegisterPatient(String firstName, String middleName,
 			String lastName, String prefName, Date birthDate,
 			Boolean birthDateEst, Gender sex, Boolean registeredGHS,
@@ -349,12 +358,14 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	@Transactional
 	public void demoEnrollPatient(String regNumGHS) {
 		Patient patient = getPatientByMotechId(regNumGHS);
 		addMessageProgramEnrollment(patient.getPersonId(),
 				"Input Demo Message Program", null);
 	}
 
+	@Transactional
 	public void registerPerson(String firstName, String middleName,
 			String lastName, String prefName, Date birthDate,
 			Boolean birthDateEst, Gender sex, String region, String district,
@@ -574,6 +585,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	@Transactional
 	public void editPatient(User nurse, Patient patient, String primaryPhone,
 			ContactNumberType primaryPhoneType, String secondaryPhone,
 			ContactNumberType secondaryPhoneType, String nhis, Date nhisExpires) {
@@ -588,6 +600,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		patientService.savePatient(patient);
 	}
 
+	@Transactional
 	public void editPatient(Integer id, String firstName, String middleName,
 			String lastName, String prefName, Date birthDate,
 			Boolean birthDateEst, Gender sex, Boolean registeredGHS,
@@ -674,6 +687,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		patientService.savePatient(patient);
 	}
 
+	@Transactional
 	public void stopPregnancyProgram(User nurse, Patient patient) {
 
 		String[] pregnancyPrograms = { "Weekly Pregnancy Message Program",
@@ -686,6 +700,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	@Transactional
 	public void registerPregnancy(Integer id, Date dueDate,
 			Boolean dueDateConfirmed, Boolean registerPregProgram,
 			String primaryPhone, ContactNumberType primaryPhoneType,
@@ -782,6 +797,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		return null;
 	}
 
+	@Transactional
 	public void recordMotherANCVisit(User nurse, Date date, Patient patient,
 			Integer visitNumber, Integer ttDose, Integer iptDose,
 			Boolean itnUse, org.motechproject.ws.HIVStatus hivStatus) {
@@ -836,6 +852,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	@Transactional
 	public void recordPregnancyTermination(User nurse, Date date,
 			Patient patient, Integer abortionType, Integer complication) {
 
@@ -876,6 +893,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		obsService.saveObs(pregnancyStatusObs, null);
 	}
 
+	@Transactional
 	public void recordPregnancyDelivery(User nurse, Date date, Patient patient,
 			Integer method, Integer outcome, Integer location,
 			DeliveredBy deliveredBy, Boolean maternalDeath, Integer cause,
@@ -967,6 +985,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	@Transactional
 	public void recordMotherPPCVisit(User nurse, Date date, Patient patient,
 			Integer visitNumber, Boolean vitaminA, Integer ttDose) {
 
@@ -1004,6 +1023,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	@Transactional
 	public void recordDeath(User nurse, Date date, Patient patient,
 			Integer cause) {
 
@@ -1035,6 +1055,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		personService.voidPerson(patient, "Deceased");
 	}
 
+	@Transactional
 	public void recordChildPNCVisit(User nurse, Date date, Patient patient,
 			Boolean bcg, Integer opvDose, Integer pentaDose,
 			Boolean yellowFever, Boolean csm, Boolean measles, Boolean ipti,
@@ -1103,6 +1124,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	@Transactional
 	public void recordGeneralVisit(String chpsId, Date date,
 			String serialNumber, Gender sex, Date birthDate, Boolean insured,
 			Boolean newCase, Integer diagnosis, Integer secondaryDiagnosis,
@@ -1131,6 +1153,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		motechService.saveGeneralPatientEncounter(encounter);
 	}
 
+	@Transactional
 	public void recordChildVisit(User nurse, Date date, Patient patient,
 			String serialNumber, Boolean newCase, Integer diagnosis,
 			Integer secondDiagnosis, Boolean referral) {
@@ -1139,6 +1162,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				newCase, diagnosis, secondDiagnosis, referral);
 	}
 
+	@Transactional
 	public void recordMotherVisit(User nurse, Date date, Patient patient,
 			String serialNumber, Boolean newCase, Integer diagnosis,
 			Integer secondDiagnosis, Boolean referral) {
@@ -1195,6 +1219,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 	}
 
+	@Transactional
 	public void log(LogType type, String message) {
 
 		log.debug("log WS: type: " + type + ", message: " + message);
@@ -1214,6 +1239,7 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		motechService.saveLog(log);
 	}
 
+	@Transactional
 	public void setMessageStatus(String messageId, Boolean success) {
 
 		log.debug("setMessageStatus WS: messageId: " + messageId
