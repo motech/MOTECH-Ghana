@@ -1,6 +1,7 @@
 package org.motechproject.server.ws;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -10,8 +11,11 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motechproject.server.model.ExpectedEncounter;
+import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.BirthOutcome;
@@ -411,9 +415,19 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in ANC Defaulters Query request", errors);
 		}
 
-		// TODO: Perform query, return Care objects with patients for ANC1-4,
-		// TT1-5, IPT1-3
-		return new Care[0];
+		List<ExpectedEncounter> defaultedEncounters = registrarBean
+				.getDefaultedExpectedEncounters(new String[] { "ANC" });
+		Care[] encounterCares = modelConverter
+				.defaultedEncountersToWebServiceCares(defaultedEncounters);
+
+		List<ExpectedObs> defaultedObs = registrarBean
+				.getDefaultedExpectedObs(new String[] { "TT", "IPT" });
+		Care[] obsCares = modelConverter
+				.defaultedObsToWebServiceCares(defaultedObs);
+
+		Care[] upcomingCares = (Care[]) ArrayUtils.addAll(encounterCares,
+				obsCares);
+		return upcomingCares;
 	}
 
 	@WebMethod
@@ -431,8 +445,9 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in TT Defaulters Query request", errors);
 		}
 
-		// TODO: Perform query, return Care objects with patients for TT1-5
-		return new Care[0];
+		List<ExpectedObs> defaultedObs = registrarBean
+				.getDefaultedExpectedObs(new String[] { "TT" });
+		return modelConverter.defaultedObsToWebServiceCares(defaultedObs);
 	}
 
 	@WebMethod
@@ -450,8 +465,10 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in PPC Defaulters Query request", errors);
 		}
 
-		// TODO: Perform query, return Care objects with patients for PPC1-3
-		return new Care[0];
+		List<ExpectedEncounter> defaultedEncounters = registrarBean
+				.getDefaultedExpectedEncounters(new String[] { "PPC" });
+		return modelConverter
+				.defaultedEncountersToWebServiceCares(defaultedEncounters);
 	}
 
 	@WebMethod
@@ -469,8 +486,10 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in PNC Defaulters Query request", errors);
 		}
 
-		// TODO: Perform query, return Care objects with patients for PNC1-3
-		return new Care[0];
+		List<ExpectedEncounter> defaultedEncounters = registrarBean
+				.getDefaultedExpectedEncounters(new String[] { "PNC" });
+		return modelConverter
+				.defaultedEncountersToWebServiceCares(defaultedEncounters);
 	}
 
 	@WebMethod
@@ -488,9 +507,10 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in CWC Defaulters Query request", errors);
 		}
 
-		// TODO: Perform query, return Care objects with patients for OPV0-3,
-		// BCG, Penta1-3, YellowFever, Measles, VitaminA, IPTi
-		return new Care[0];
+		List<ExpectedObs> defaultedObs = registrarBean
+				.getDefaultedExpectedObs(new String[] { "OPV", "BCG", "Penta",
+						"YellowFever", "Measles", "VitaA", "IPTI" });
+		return modelConverter.defaultedObsToWebServiceCares(defaultedObs);
 	}
 
 	@WebMethod
@@ -569,9 +589,24 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Upcoming Care Query request", errors);
 		}
 
-		// TODO: Perform query, return Patient object with Care objects for ANC,
-		// TT, IPT, PPC, PNC, OPV, BCG, Penta, YellowFever, Measles, IPTi, VitaA
 		Patient wsPatient = modelConverter.patientToWebService(patient, true);
+
+		List<ExpectedEncounter> upcomingEncounters = registrarBean
+				.getUpcomingExpectedEncounters(patient);
+		Care[] expectedEncounterCares = modelConverter
+				.upcomingEncountersToWebServiceCares(upcomingEncounters);
+
+		List<ExpectedObs> upcomingObs = registrarBean
+				.getUpcomingExpectedObs(patient);
+		Care[] expectedObsCares = modelConverter
+				.upcomingObsToWebServiceCares(upcomingObs);
+
+		Care[] upcomingCares = (Care[]) ArrayUtils.addAll(
+				expectedEncounterCares, expectedObsCares);
+
+		Arrays.sort(upcomingCares, new CareDateComparator());
+		wsPatient.setCares(upcomingCares);
+
 		return wsPatient;
 	}
 

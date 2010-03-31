@@ -294,8 +294,11 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return motechDAO.saveExpectedObs(expectedObs);
 	}
 
-	public List<ExpectedObs> getExpectedObs(Patient patient, String group) {
-		return motechDAO.getExpectedObs(patient, group);
+	public List<ExpectedObs> getExpectedObs(Patient patient, String[] groups,
+			Date minDueDate, Date maxDueDate, Date maxLateDate,
+			Date minMaxDate, boolean nameOrdering) {
+		return motechDAO.getExpectedObs(patient, groups, minDueDate,
+				maxDueDate, maxLateDate, minMaxDate, nameOrdering);
 	}
 
 	public ExpectedEncounter saveExpectedEncounter(
@@ -304,8 +307,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	}
 
 	public List<ExpectedEncounter> getExpectedEncounter(Patient patient,
-			String group) {
-		return motechDAO.getExpectedEncounter(patient, group);
+			String[] groups, Date minDueDate, Date maxDueDate,
+			Date maxLateDate, Date minMaxDate, boolean nameOrdering) {
+		return motechDAO.getExpectedEncounter(patient, groups, minDueDate,
+				maxDueDate, maxLateDate, minMaxDate, nameOrdering);
 	}
 
 	public List<Patient> getPatients(String firstName, String lastName,

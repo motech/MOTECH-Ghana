@@ -1369,6 +1369,41 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				null, null, null, null, null, null, null, false);
 	}
 
+	public List<ExpectedEncounter> getUpcomingExpectedEncounters(Patient patient) {
+		MotechService motechService = contextService.getMotechService();
+		Calendar calendar = Calendar.getInstance();
+		Date currentDate = calendar.getTime();
+		calendar.add(Calendar.DATE, 7);
+		Date oneWeekLaterDate = calendar.getTime();
+		return motechService.getExpectedEncounter(patient, null, currentDate,
+				oneWeekLaterDate, null, currentDate, false);
+	}
+
+	public List<ExpectedObs> getUpcomingExpectedObs(Patient patient) {
+		MotechService motechService = contextService.getMotechService();
+		Calendar calendar = Calendar.getInstance();
+		Date currentDate = calendar.getTime();
+		calendar.add(Calendar.DATE, 7);
+		Date oneWeekLaterDate = calendar.getTime();
+		return motechService.getExpectedObs(patient, null, currentDate,
+				oneWeekLaterDate, null, currentDate, false);
+	}
+
+	public List<ExpectedEncounter> getDefaultedExpectedEncounters(
+			String[] groups) {
+		MotechService motechService = contextService.getMotechService();
+		Date currentDate = new Date();
+		return motechService.getExpectedEncounter(null, groups, null, null,
+				currentDate, currentDate, true);
+	}
+
+	public List<ExpectedObs> getDefaultedExpectedObs(String[] groups) {
+		MotechService motechService = contextService.getMotechService();
+		Date currentDate = new Date();
+		return motechService.getExpectedObs(null, groups, null, null,
+				currentDate, currentDate, true);
+	}
+
 	public List<Encounter> getRecentDeliveries() {
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -1486,7 +1521,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 
 	public List<ExpectedObs> getExpectedObs(Patient patient, String group) {
 		MotechService motechService = contextService.getMotechService();
-		return motechService.getExpectedObs(patient, group);
+		return motechService.getExpectedObs(patient, new String[] { group },
+				null, null, null, null, false);
 	}
 
 	public ExpectedObs createExpectedObs(Patient patient, String conceptName,
@@ -1548,7 +1584,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 	public List<ExpectedEncounter> getExpectedEncounters(Patient patient,
 			String group) {
 		MotechService motechService = contextService.getMotechService();
-		return motechService.getExpectedEncounter(patient, group);
+		return motechService.getExpectedEncounter(patient,
+				new String[] { group }, null, null, null, null, false);
 	}
 
 	public ExpectedEncounter createExpectedEncounter(Patient patient,

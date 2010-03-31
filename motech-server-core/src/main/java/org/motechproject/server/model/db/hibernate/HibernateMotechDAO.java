@@ -516,16 +516,35 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ExpectedObs> getExpectedObs(Patient patient, String group) {
+	public List<ExpectedObs> getExpectedObs(Patient patient, String[] groups,
+			Date minDueDate, Date maxDueDate, Date maxLateDate,
+			Date minMaxDate, boolean nameOrdering) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(ExpectedObs.class);
 		if (patient != null) {
 			criteria.add(Restrictions.eq("patient", patient));
 		}
-		if (group != null) {
-			criteria.add(Restrictions.eq("group", group));
+		if (groups != null && groups.length != 0) {
+			criteria.add(Restrictions.in("group", groups));
+		}
+		if (minDueDate != null) {
+			criteria.add(Restrictions.ge("dueObsDatetime", minDueDate));
+		}
+		if (maxDueDate != null) {
+			criteria.add(Restrictions.le("dueObsDatetime", maxDueDate));
+		}
+		if (maxLateDate != null) {
+			criteria.add(Restrictions.le("lateObsDatetime", maxLateDate));
+		}
+		if (minMaxDate != null) {
+			criteria.add(Restrictions.or(Restrictions.isNull("maxObsDatetime"),
+					Restrictions.gt("maxObsDatetime", minMaxDate)));
 		}
 		criteria.add(Restrictions.eq("voided", false));
+		if (nameOrdering) {
+			criteria.addOrder(Order.asc("group"));
+			criteria.addOrder(Order.asc("name"));
+		}
 		criteria.addOrder(Order.asc("dueObsDatetime"));
 		return criteria.list();
 	}
@@ -539,16 +558,35 @@ public class HibernateMotechDAO implements MotechDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<ExpectedEncounter> getExpectedEncounter(Patient patient,
-			String group) {
+			String[] groups, Date minDueDate, Date maxDueDate,
+			Date maxLateDate, Date minMaxDate, boolean nameOrdering) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(ExpectedEncounter.class);
 		if (patient != null) {
 			criteria.add(Restrictions.eq("patient", patient));
 		}
-		if (group != null) {
-			criteria.add(Restrictions.eq("group", group));
+		if (groups != null && groups.length != 0) {
+			criteria.add(Restrictions.in("group", groups));
+		}
+		if (minDueDate != null) {
+			criteria.add(Restrictions.ge("dueEncounterDatetime", minDueDate));
+		}
+		if (maxDueDate != null) {
+			criteria.add(Restrictions.le("dueEncounterDatetime", maxDueDate));
+		}
+		if (maxLateDate != null) {
+			criteria.add(Restrictions.le("lateEncounterDatetime", maxLateDate));
+		}
+		if (minMaxDate != null) {
+			criteria.add(Restrictions.or(Restrictions
+					.isNull("maxEncounterDatetime"), Restrictions.gt(
+					"maxEncounterDatetime", minMaxDate)));
 		}
 		criteria.add(Restrictions.eq("voided", false));
+		if (nameOrdering) {
+			criteria.addOrder(Order.asc("group"));
+			criteria.addOrder(Order.asc("name"));
+		}
 		criteria.addOrder(Order.asc("dueEncounterDatetime"));
 		return criteria.list();
 	}

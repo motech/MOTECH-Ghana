@@ -222,6 +222,15 @@ public interface RegistrarBean {
 
 	public List<Obs> getAllPregnancies();
 
+	public List<ExpectedEncounter> getUpcomingExpectedEncounters(Patient patient);
+
+	public List<ExpectedObs> getUpcomingExpectedObs(Patient patient);
+
+	public List<ExpectedEncounter> getDefaultedExpectedEncounters(
+			String[] groups);
+
+	public List<ExpectedObs> getDefaultedExpectedObs(String[] groups);
+
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES,
 			OpenmrsConstants.PRIV_VIEW_ENCOUNTERS })
 	public List<Encounter> getRecentDeliveries();

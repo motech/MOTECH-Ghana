@@ -25,6 +25,8 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.motechproject.server.model.ExpectedEncounter;
+import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.BirthOutcome;
@@ -898,7 +900,32 @@ public class RegistrarServiceTest {
 	public void testQueryANCDefaulters() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
+		Capture<String[]> encounterGroups = new Capture<String[]>();
+		Capture<String[]> obsGroups = new Capture<String[]>();
+
+		List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
+		List<ExpectedObs> expectedObs = new ArrayList<ExpectedObs>();
+
+		Care encounterCare = new Care();
+		encounterCare.setName("EncounterCare");
+		Care[] encounterCares = { encounterCare };
+		Care obsCare = new Care();
+		obsCare.setName("ObsCare");
+		Care[] obsCares = { obsCare };
+
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(
+				registrarBean
+						.getDefaultedExpectedEncounters(capture(encounterGroups)))
+				.andReturn(expectedEncounters);
+		expect(
+				modelConverter
+						.defaultedEncountersToWebServiceCares(expectedEncounters))
+				.andReturn(encounterCares);
+		expect(registrarBean.getDefaultedExpectedObs(capture(obsGroups)))
+				.andReturn(expectedObs);
+		expect(modelConverter.defaultedObsToWebServiceCares(expectedObs))
+				.andReturn(obsCares);
 
 		replay(registrarBean, modelConverter);
 
@@ -906,15 +933,36 @@ public class RegistrarServiceTest {
 
 		verify(registrarBean, modelConverter);
 
+		assertEquals(1, encounterGroups.getValue().length);
+		assertEquals("ANC", encounterGroups.getValue()[0]);
+
+		assertEquals(2, obsGroups.getValue().length);
+		assertEquals("TT", obsGroups.getValue()[0]);
+		assertEquals("IPT", obsGroups.getValue()[1]);
+
 		assertNotNull("Care result array is null", cares);
-		assertEquals(0, cares.length);
+		assertEquals(2, cares.length);
+		assertEquals(encounterCare.getName(), cares[0].getName());
+		assertEquals(obsCare.getName(), cares[1].getName());
 	}
 
 	@Test
 	public void testQueryTTDefaulters() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
+		Capture<String[]> obsGroups = new Capture<String[]>();
+
+		List<ExpectedObs> expectedObs = new ArrayList<ExpectedObs>();
+
+		Care obsCare = new Care();
+		obsCare.setName("ObsCare");
+		Care[] obsCares = { obsCare };
+
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(registrarBean.getDefaultedExpectedObs(capture(obsGroups)))
+				.andReturn(expectedObs);
+		expect(modelConverter.defaultedObsToWebServiceCares(expectedObs))
+				.andReturn(obsCares);
 
 		replay(registrarBean, modelConverter);
 
@@ -922,15 +970,35 @@ public class RegistrarServiceTest {
 
 		verify(registrarBean, modelConverter);
 
+		assertEquals(1, obsGroups.getValue().length);
+		assertEquals("TT", obsGroups.getValue()[0]);
+
 		assertNotNull("Care result array is null", cares);
-		assertEquals(0, cares.length);
+		assertEquals(1, cares.length);
+		assertEquals(obsCare.getName(), cares[0].getName());
 	}
 
 	@Test
 	public void testQueryPPCDefaulters() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
+		Capture<String[]> encounterGroups = new Capture<String[]>();
+
+		List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
+
+		Care encounterCare = new Care();
+		encounterCare.setName("EncounterCare");
+		Care[] encounterCares = { encounterCare };
+
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(
+				registrarBean
+						.getDefaultedExpectedEncounters(capture(encounterGroups)))
+				.andReturn(expectedEncounters);
+		expect(
+				modelConverter
+						.defaultedEncountersToWebServiceCares(expectedEncounters))
+				.andReturn(encounterCares);
 
 		replay(registrarBean, modelConverter);
 
@@ -938,15 +1006,35 @@ public class RegistrarServiceTest {
 
 		verify(registrarBean, modelConverter);
 
+		assertEquals(1, encounterGroups.getValue().length);
+		assertEquals("PPC", encounterGroups.getValue()[0]);
+
 		assertNotNull("Care result array is null", cares);
-		assertEquals(0, cares.length);
+		assertEquals(1, cares.length);
+		assertEquals(encounterCare.getName(), cares[0].getName());
 	}
 
 	@Test
 	public void testQueryPNCDefaulters() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
+		Capture<String[]> encounterGroups = new Capture<String[]>();
+
+		List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
+
+		Care encounterCare = new Care();
+		encounterCare.setName("EncounterCare");
+		Care[] encounterCares = { encounterCare };
+
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(
+				registrarBean
+						.getDefaultedExpectedEncounters(capture(encounterGroups)))
+				.andReturn(expectedEncounters);
+		expect(
+				modelConverter
+						.defaultedEncountersToWebServiceCares(expectedEncounters))
+				.andReturn(encounterCares);
 
 		replay(registrarBean, modelConverter);
 
@@ -954,15 +1042,31 @@ public class RegistrarServiceTest {
 
 		verify(registrarBean, modelConverter);
 
+		assertEquals(1, encounterGroups.getValue().length);
+		assertEquals("PNC", encounterGroups.getValue()[0]);
+
 		assertNotNull("Care result array is null", cares);
-		assertEquals(0, cares.length);
+		assertEquals(1, cares.length);
+		assertEquals(encounterCare.getName(), cares[0].getName());
 	}
 
 	@Test
 	public void testQueryCWCDefaulters() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId";
 
+		Capture<String[]> obsGroups = new Capture<String[]>();
+
+		List<ExpectedObs> expectedObs = new ArrayList<ExpectedObs>();
+
+		Care obsCare = new Care();
+		obsCare.setName("ObsCare");
+		Care[] obsCares = { obsCare };
+
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(registrarBean.getDefaultedExpectedObs(capture(obsGroups)))
+				.andReturn(expectedObs);
+		expect(modelConverter.defaultedObsToWebServiceCares(expectedObs))
+				.andReturn(obsCares);
 
 		replay(registrarBean, modelConverter);
 
@@ -970,8 +1074,18 @@ public class RegistrarServiceTest {
 
 		verify(registrarBean, modelConverter);
 
+		assertEquals(7, obsGroups.getValue().length);
+		assertEquals("OPV", obsGroups.getValue()[0]);
+		assertEquals("BCG", obsGroups.getValue()[1]);
+		assertEquals("Penta", obsGroups.getValue()[2]);
+		assertEquals("YellowFever", obsGroups.getValue()[3]);
+		assertEquals("Measles", obsGroups.getValue()[4]);
+		assertEquals("VitaA", obsGroups.getValue()[5]);
+		assertEquals("IPTI", obsGroups.getValue()[6]);
+
 		assertNotNull("Care result array is null", cares);
-		assertEquals(0, cares.length);
+		assertEquals(1, cares.length);
+		assertEquals(obsCare.getName(), cares[0].getName());
 	}
 
 	@Test
@@ -1046,12 +1160,48 @@ public class RegistrarServiceTest {
 	public void testQueryUpcomingCare() throws ValidationException {
 		String facilityId = "FacilityId", chpsId = "CHPSId", motechId = "MotechId";
 
+		List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
+		List<ExpectedObs> expectedObs = new ArrayList<ExpectedObs>();
+
+		Calendar calendar = Calendar.getInstance();
+
+		Care encounterCare1 = new Care();
+		encounterCare1.setName("EncounterCare1");
+		calendar.set(2010, Calendar.APRIL, 4);
+		encounterCare1.setDate(calendar.getTime());
+		Care encounterCare2 = new Care();
+		encounterCare2.setName("EncounterCare2");
+		calendar.set(2010, Calendar.DECEMBER, 12);
+		encounterCare2.setDate(calendar.getTime());
+		Care[] encounterCares = { encounterCare1, encounterCare2 };
+
+		Care obsCare1 = new Care();
+		obsCare1.setName("ObsCare1");
+		calendar.set(2010, Calendar.OCTOBER, 10);
+		obsCare1.setDate(calendar.getTime());
+		Care obsCare2 = new Care();
+		obsCare2.setName("ObsCare2");
+		calendar.set(2010, Calendar.JANUARY, 1);
+		obsCare2.setDate(calendar.getTime());
+		Care[] obsCares = { obsCare1, obsCare2 };
+
 		org.openmrs.Patient patient = new org.openmrs.Patient(1);
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
 		expect(registrarBean.getPatientByMotechId(motechId)).andReturn(patient);
 		expect(modelConverter.patientToWebService(eq(patient), eq(true)))
 				.andReturn(new Patient());
+
+		expect(registrarBean.getUpcomingExpectedEncounters(patient)).andReturn(
+				expectedEncounters);
+		expect(
+				modelConverter
+						.upcomingEncountersToWebServiceCares(expectedEncounters))
+				.andReturn(encounterCares);
+		expect(registrarBean.getUpcomingExpectedObs(patient)).andReturn(
+				expectedObs);
+		expect(modelConverter.upcomingObsToWebServiceCares(expectedObs))
+				.andReturn(obsCares);
 
 		replay(registrarBean, modelConverter);
 
@@ -1061,6 +1211,17 @@ public class RegistrarServiceTest {
 		verify(registrarBean, modelConverter);
 
 		assertNotNull("Patient result is null", wsPatient);
+		Care[] cares = wsPatient.getCares();
+		assertNotNull("Patient cares is null", cares);
+		assertEquals(4, cares.length);
+		assertEquals(obsCare2.getName(), cares[0].getName());
+		assertEquals(obsCare2.getDate(), cares[0].getDate());
+		assertEquals(encounterCare1.getName(), cares[1].getName());
+		assertEquals(encounterCare1.getDate(), cares[1].getDate());
+		assertEquals(obsCare1.getName(), cares[2].getName());
+		assertEquals(obsCare1.getDate(), cares[2].getDate());
+		assertEquals(encounterCare2.getName(), cares[3].getName());
+		assertEquals(encounterCare2.getDate(), cares[3].getDate());
 	}
 
 	@Test

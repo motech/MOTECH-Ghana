@@ -200,13 +200,17 @@ public interface MotechService extends OpenmrsService {
 	ExpectedObs saveExpectedObs(ExpectedObs expectedObs);
 
 	@Transactional(readOnly = true)
-	List<ExpectedObs> getExpectedObs(Patient patient, String group);
+	List<ExpectedObs> getExpectedObs(Patient patient, String[] groups,
+			Date minDueDate, Date maxDueDate, Date maxLateDate,
+			Date minMaxDate, boolean nameOrdering);
 
 	@Transactional
 	ExpectedEncounter saveExpectedEncounter(ExpectedEncounter expectedEncounter);
 
 	@Transactional(readOnly = true)
-	List<ExpectedEncounter> getExpectedEncounter(Patient patient, String group);
+	List<ExpectedEncounter> getExpectedEncounter(Patient patient,
+			String[] groups, Date minDueDate, Date maxDueDate,
+			Date maxLateDate, Date minMaxDate, boolean nameOrdering);
 
 	@Transactional(readOnly = true)
 	List<Patient> getPatients(String firstName, String lastName,
