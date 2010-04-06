@@ -70,6 +70,12 @@ public final class MotechConstants {
 	public static final String TASK_DAILY_NOTIFICATION = "Daily Notification Task";
 	public static final String TASK_IMMEDIATE_NOTIFICATION = "Immediate Notification Task";
 	public static final String TASK_MESSAGEPROGRAM_UPDATE = "MessageProgram Update Task";
+	public static final String TASK_DAILY_NURSE_CARE_MESSAGING = "Daily Nurse Care Messaging Task";
+	public static final String TASK_WEEKLY_NURSE_CARE_MESSAGING = "Weekly Nurse Care Messaging Task";
+	public static final String TASK_PROPERTY_DELIVERY_TIME_OFFSET = "deliveryTimeOffset";
+	public static final String TASK_PROPERTY_SEND_UPCOMING = "sendUpcoming";
+	public static final String TASK_PROPERTY_CARE_GROUPS = "careGroups";
+	public static final String TASK_PROPERTY_CARE_GROUPS_DELIMITER = ",";
 	public static final String GLOBAL_PROPERTY_TROUBLED_PHONE = "motechmodule.troubled_phone_failures";
 
 	/*

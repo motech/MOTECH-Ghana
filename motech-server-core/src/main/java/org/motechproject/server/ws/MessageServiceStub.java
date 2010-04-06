@@ -115,7 +115,7 @@ public class MessageServiceStub implements MessageService {
 		return MessageStatus.DELIVERED;
 	}
 
-	private String patientToXML(Patient patient) {
+	private String patientToXML(Patient patient, boolean includeCares) {
 		StringBuffer patientXmlString = new StringBuffer();
 		patientXmlString.append("<patient>");
 		patientXmlString.append("<motechId>");
@@ -151,32 +151,42 @@ public class MessageServiceStub implements MessageService {
 		patientXmlString.append("<deliveryDate>");
 		patientXmlString.append(patient.getDeliveryDate());
 		patientXmlString.append("</deliveryDate>");
+		if (includeCares) {
+			patientXmlString.append("<cares>");
+			patientXmlString.append(caresToXML(patient.getCares(), false));
+			patientXmlString.append("</cares>");
+		}
 		patientXmlString.append("</patient>");
 		return patientXmlString.toString();
+	}
+
+	private String caresToXML(Care[] cares, boolean includePatients) {
+		StringBuilder careInfoString = new StringBuilder();
+		for (Care care : cares) {
+			careInfoString.append("<name>" + care.getName() + "</name>");
+			careInfoString.append("<date>" + care.getDate() + "</date>\n");
+			if (includePatients) {
+				for (Patient patient : care.getPatients()) {
+					careInfoString.append(patientToXML(patient, false));
+					careInfoString.append('\n');
+				}
+			}
+		}
+		return careInfoString.toString();
 	}
 
 	public MessageStatus sendDefaulterMessage(String messageId,
 			String workerNumber, Care[] cares, MediaType mediaType,
 			Date startDate, Date endDate) {
 
-		StringBuilder careInfoString = new StringBuilder();
-		for (Care care : cares) {
-			careInfoString.append("<name>" + care.getName() + "</name>");
-			careInfoString.append("<date>" + care.getDate() + "</date>\n");
-			for (Patient patient : care.getPatients()) {
-				careInfoString.append(patientToXML(patient));
-				careInfoString.append('\n');
-			}
-		}
-
 		log.info("Motech Mobile Web Service Message\n"
 				+ "---------------------------\n" + "<sendDefaulterMessage>\n"
 				+ "<messageId>" + messageId + "</messageId>\n" + "<careInfo>"
-				+ careInfoString.toString() + "</careInfo>\n"
-				+ "<workerNumber>" + workerNumber + "</workerNumber>\n"
-				+ "<mediaType>" + mediaType + "</mediaType>\n" + "<startDate>"
-				+ startDate + "</startDate>\n" + "<endDate>" + endDate
-				+ "</endDate>\n" + "</sendDefaulterMessage>\n"
+				+ caresToXML(cares, true) + "</careInfo>\n" + "<workerNumber>"
+				+ workerNumber + "</workerNumber>\n" + "<mediaType>"
+				+ mediaType + "</mediaType>\n" + "<startDate>" + startDate
+				+ "</startDate>\n" + "<endDate>" + endDate + "</endDate>\n"
+				+ "</sendDefaulterMessage>\n"
 				+ "--------------------------------------");
 
 		return MessageStatus.DELIVERED;
@@ -188,7 +198,7 @@ public class MessageServiceStub implements MessageService {
 
 		StringBuilder patientInfoString = new StringBuilder();
 		for (Patient patient : patients) {
-			patientInfoString.append(patientToXML(patient));
+			patientInfoString.append(patientToXML(patient, false));
 			patientInfoString.append("\n");
 		}
 
@@ -228,12 +238,12 @@ public class MessageServiceStub implements MessageService {
 		log.info("Motech Mobile Web Service Message\n"
 				+ "---------------------------\n"
 				+ "<sendUpcomingCaresMessage>\n" + "<messageId>" + messageId
-				+ "</messageId>\n" + "<patientInfo>" + patientToXML(patient)
-				+ "</patientInfo>\n" + "<workerNumber>" + workerNumber
-				+ "</workerNumber>\n" + "<mediaType>" + mediaType
-				+ "</mediaType>\n" + "<startDate>" + startDate
-				+ "</startDate>\n" + "<endDate>" + endDate + "</endDate>\n"
-				+ "</sendUpcomingCaresMessage>\n"
+				+ "</messageId>\n" + "<patientInfo>"
+				+ patientToXML(patient, true) + "</patientInfo>\n"
+				+ "<workerNumber>" + workerNumber + "</workerNumber>\n"
+				+ "<mediaType>" + mediaType + "</mediaType>\n" + "<startDate>"
+				+ startDate + "</startDate>\n" + "<endDate>" + endDate
+				+ "</endDate>\n" + "</sendUpcomingCaresMessage>\n"
 				+ "--------------------------------------");
 
 		return MessageStatus.DELIVERED;

@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.event.MessageProgram;
@@ -32,11 +33,14 @@ import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.tasks.MessageProgramUpdateTask;
 import org.motechproject.server.omod.tasks.NotificationTask;
+import org.motechproject.server.omod.tasks.NurseCareMessagingTask;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
+import org.motechproject.server.ws.WebServiceModelConverterImpl;
 import org.motechproject.ws.BirthOutcome;
+import org.motechproject.ws.Care;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DeliveredBy;
 import org.motechproject.ws.DeliveryTime;
@@ -1404,6 +1408,34 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				currentDate, currentDate, true);
 	}
 
+	public List<ExpectedEncounter> getUpcomingExpectedEncounters(
+			String[] groups, Date fromDate, Date toDate) {
+		MotechService motechService = contextService.getMotechService();
+		return motechService.getExpectedEncounter(null, groups, fromDate,
+				toDate, null, fromDate, false);
+	}
+
+	public List<ExpectedObs> getUpcomingExpectedObs(String[] groups,
+			Date fromDate, Date toDate) {
+		MotechService motechService = contextService.getMotechService();
+		return motechService.getExpectedObs(null, groups, fromDate, toDate,
+				null, fromDate, false);
+	}
+
+	public List<ExpectedEncounter> getDefaultedExpectedEncounters(
+			String[] groups, Date forDate) {
+		MotechService motechService = contextService.getMotechService();
+		return motechService.getExpectedEncounter(null, groups, null, null,
+				forDate, forDate, true);
+	}
+
+	public List<ExpectedObs> getDefaultedExpectedObs(String[] groups,
+			Date forDate) {
+		MotechService motechService = contextService.getMotechService();
+		return motechService.getExpectedObs(null, groups, null, null, forDate,
+				forDate, true);
+	}
+
 	public List<Encounter> getRecentDeliveries() {
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -2317,6 +2349,37 @@ public class RegistrarBeanImpl implements RegistrarBean {
 				"Task to update message program state for patients",
 				new Date(), new Long(30), Boolean.FALSE,
 				MessageProgramUpdateTask.class.getName(), admin, null);
+
+		Map<String, String> dailyNurseProps = new HashMap<String, String>();
+		dailyNurseProps.put(MotechConstants.TASK_PROPERTY_SEND_UPCOMING,
+				Boolean.TRUE.toString());
+		String[] dailyGroups = { "PPC", "PNC" };
+		String dailyGroupsProperty = StringUtils.join(dailyGroups,
+				MotechConstants.TASK_PROPERTY_CARE_GROUPS_DELIMITER);
+		dailyNurseProps.put(MotechConstants.TASK_PROPERTY_CARE_GROUPS,
+				dailyGroupsProperty);
+		dailyNurseProps.put(MotechConstants.TASK_PROPERTY_DELIVERY_TIME_OFFSET,
+				new Long(86400).toString());
+		createTask(MotechConstants.TASK_DAILY_NURSE_CARE_MESSAGING,
+				"Task to send out nurse SMS care messages for next day",
+				calendar.getTime(), new Long(86400), Boolean.FALSE,
+				NurseCareMessagingTask.class.getName(), admin, dailyNurseProps);
+
+		calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		Map<String, String> weeklyNurseProps = new HashMap<String, String>();
+		String[] weeklyGroups = { "ANC", "TT", "IPT", "BCG", "OPV", "Penta",
+				"YellowFever", "Measles", "IPTI", "VitaA" };
+		String weeklyGroupsProperty = StringUtils.join(weeklyGroups,
+				MotechConstants.TASK_PROPERTY_CARE_GROUPS_DELIMITER);
+		weeklyNurseProps.put(MotechConstants.TASK_PROPERTY_CARE_GROUPS,
+				weeklyGroupsProperty);
+		weeklyNurseProps.put(
+				MotechConstants.TASK_PROPERTY_DELIVERY_TIME_OFFSET, new Long(
+						86400).toString());
+		createTask(MotechConstants.TASK_WEEKLY_NURSE_CARE_MESSAGING,
+				"Task to send out nurse SMS care messages for week", calendar
+						.getTime(), new Long(604800), Boolean.FALSE,
+				NurseCareMessagingTask.class.getName(), admin, weeklyNurseProps);
 	}
 
 	private void createPersonAttributeType(String name, String description,
@@ -2541,6 +2604,8 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		removeTask(MotechConstants.TASK_IMMEDIATE_NOTIFICATION);
 		removeTask(MotechConstants.TASK_DAILY_NOTIFICATION);
 		removeTask(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE);
+		removeTask(MotechConstants.TASK_DAILY_NURSE_CARE_MESSAGING);
+		removeTask(MotechConstants.TASK_WEEKLY_NURSE_CARE_MESSAGING);
 	}
 
 	/* Activator methods end */
@@ -2589,6 +2654,69 @@ public class RegistrarBeanImpl implements RegistrarBean {
 					+ enrollment.getId());
 
 			program.determineState(enrollment);
+		}
+	}
+
+	public void sendNurseCareMessages(Date startDate, Date endDate,
+			Date deliveryDate, String[] careGroups, boolean sendUpcoming) {
+
+		UserService userService = contextService.getUserService();
+		List<User> users = userService.getAllUsers();
+
+		for (User user : users) {
+			String phoneNumber = getPrimaryPersonPhoneNumber(user);
+			if (phoneNumber == null) {
+				// Skip nurses without a phone number
+				continue;
+			}
+			MediaType mediaType = getPersonMediaType(user, MessageType.REMINDER);
+			// Schedule delivery time range between earliest and latest
+			Date messageStartDate = determineMessageStartDate(
+					DeliveryTime.MORNING, deliveryDate);
+			Date messageEndDate = determineMessageEndDate(DeliveryTime.EVENING,
+					deliveryDate);
+			// No corresponding message stored for nurse care messages
+			String messageId = null;
+
+			WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
+
+			// Send Defaulted Care Message
+			List<ExpectedEncounter> defaultedEncounters = getDefaultedExpectedEncounters(
+					careGroups, startDate);
+			List<ExpectedObs> defaultedObs = getDefaultedExpectedObs(
+					careGroups, startDate);
+			if (!defaultedEncounters.isEmpty() || !defaultedObs.isEmpty()) {
+				Care[] defaultedCares = modelConverter
+						.defaultedToWebServiceCares(defaultedEncounters,
+								defaultedObs);
+				sendNurseDefaultedCareMessage(messageId, phoneNumber,
+						mediaType, messageStartDate, messageEndDate,
+						defaultedCares);
+			}
+
+			if (sendUpcoming) {
+				// Send Upcoming Care Messages
+				List<ExpectedEncounter> upcomingEncounters = getUpcomingExpectedEncounters(
+						careGroups, startDate, endDate);
+				for (ExpectedEncounter upcomingEncounter : upcomingEncounters) {
+					org.motechproject.ws.Patient patient = modelConverter
+							.upcomingEncounterToWebServicePatient(upcomingEncounter);
+
+					sendNurseUpcomingCareMessage(messageId, phoneNumber,
+							mediaType, messageStartDate, messageEndDate,
+							patient);
+				}
+				List<ExpectedObs> upcomingObs = getUpcomingExpectedObs(
+						careGroups, startDate, endDate);
+				for (ExpectedObs upcomingObservation : upcomingObs) {
+					org.motechproject.ws.Patient patient = modelConverter
+							.upcomingObsToWebServicePatient(upcomingObservation);
+
+					sendNurseUpcomingCareMessage(messageId, phoneNumber,
+							mediaType, messageStartDate, messageEndDate,
+							patient);
+				}
+			}
 		}
 	}
 
@@ -2730,6 +2858,38 @@ public class RegistrarBeanImpl implements RegistrarBean {
 			return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
 		} catch (Exception e) {
 			log.error("Mobile WS nurse message failure", e);
+			return false;
+		}
+	}
+
+	public boolean sendNurseDefaultedCareMessage(String messageId,
+			String phoneNumber, MediaType mediaType, Date messageStartDate,
+			Date messageEndDate, Care[] cares) {
+
+		try {
+			org.motechproject.ws.MessageStatus messageStatus = mobileService
+					.sendDefaulterMessage(messageId, phoneNumber, cares,
+							mediaType, messageStartDate, messageEndDate);
+
+			return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
+		} catch (Exception e) {
+			log.error("Mobile WS nurse defaulted care message failure", e);
+			return false;
+		}
+	}
+
+	public boolean sendNurseUpcomingCareMessage(String messageId,
+			String phoneNumber, MediaType mediaType, Date messageStartDate,
+			Date messageEndDate, org.motechproject.ws.Patient patient) {
+
+		try {
+			org.motechproject.ws.MessageStatus messageStatus = mobileService
+					.sendUpcomingCaresMessage(messageId, phoneNumber, patient,
+							mediaType, messageStartDate, messageEndDate);
+
+			return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
+		} catch (Exception e) {
+			log.error("Mobile WS nurse upcoming care message failure", e);
 			return false;
 		}
 	}

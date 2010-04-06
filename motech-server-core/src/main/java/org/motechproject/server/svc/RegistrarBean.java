@@ -231,6 +231,18 @@ public interface RegistrarBean {
 
 	public List<ExpectedObs> getDefaultedExpectedObs(String[] groups);
 
+	public List<ExpectedEncounter> getUpcomingExpectedEncounters(
+			String[] groups, Date fromDate, Date toDate);
+
+	public List<ExpectedObs> getUpcomingExpectedObs(String[] groups,
+			Date fromDate, Date toDate);
+
+	public List<ExpectedEncounter> getDefaultedExpectedEncounters(
+			String[] groups, Date forDate);
+
+	public List<ExpectedObs> getDefaultedExpectedObs(String[] groups,
+			Date forDate);
+
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES,
 			OpenmrsConstants.PRIV_VIEW_ENCOUNTERS })
 	public List<Encounter> getRecentDeliveries();
@@ -354,6 +366,11 @@ public interface RegistrarBean {
 			OpenmrsConstants.PRIV_VIEW_PERSONS,
 			OpenmrsConstants.PRIV_VIEW_CONCEPTS, OpenmrsConstants.PRIV_VIEW_OBS })
 	public void sendMessages(Date startDate, Date endDate, boolean sendImmediate);
+
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
+			OpenmrsConstants.PRIV_VIEW_USERS })
+	public void sendNurseCareMessages(Date startDate, Date endDate,
+			Date deliveryDate, String[] careGroups, boolean sendUpcoming);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES,
 			OpenmrsConstants.PRIV_VIEW_PATIENTS,

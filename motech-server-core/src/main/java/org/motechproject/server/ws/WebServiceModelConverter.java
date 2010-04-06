@@ -37,4 +37,9 @@ public interface WebServiceModelConverter {
 	Care[] defaultedToWebServiceCares(
 			List<ExpectedEncounter> defaultedEncounters,
 			List<ExpectedObs> defaultedObs);
+
+	Patient upcomingObsToWebServicePatient(ExpectedObs upcomingObs);
+
+	Patient upcomingEncounterToWebServicePatient(
+			ExpectedEncounter upcomingEncounter);
 }

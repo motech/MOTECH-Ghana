@@ -271,4 +271,31 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 
 		return cares.toArray(new Care[cares.size()]);
 	}
+
+	public Patient upcomingObsToWebServicePatient(ExpectedObs upcomingObs) {
+
+		org.openmrs.Patient patient = upcomingObs.getPatient();
+		Patient wsPatient = patientToWebService(patient, true);
+
+		Care care = new Care();
+		care.setName(upcomingObs.getName());
+		care.setDate(upcomingObs.getDueObsDatetime());
+		wsPatient.setCares(new Care[] { care });
+
+		return wsPatient;
+	}
+
+	public Patient upcomingEncounterToWebServicePatient(
+			ExpectedEncounter upcomingEncounter) {
+
+		org.openmrs.Patient patient = upcomingEncounter.getPatient();
+		Patient wsPatient = patientToWebService(patient, true);
+
+		Care care = new Care();
+		care.setName(upcomingEncounter.getName());
+		care.setDate(upcomingEncounter.getDueEncounterDatetime());
+		wsPatient.setCares(new Care[] { care });
+
+		return wsPatient;
+	}
 }
