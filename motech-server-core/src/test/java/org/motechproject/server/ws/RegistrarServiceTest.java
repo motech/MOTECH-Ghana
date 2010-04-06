@@ -908,24 +908,20 @@ public class RegistrarServiceTest {
 
 		Care encounterCare = new Care();
 		encounterCare.setName("EncounterCare");
-		Care[] encounterCares = { encounterCare };
 		Care obsCare = new Care();
 		obsCare.setName("ObsCare");
-		Care[] obsCares = { obsCare };
+		Care[] defaultedCares = { encounterCare, obsCare };
 
 		expect(registrarBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
 		expect(
 				registrarBean
 						.getDefaultedExpectedEncounters(capture(encounterGroups)))
 				.andReturn(expectedEncounters);
-		expect(
-				modelConverter
-						.defaultedEncountersToWebServiceCares(expectedEncounters))
-				.andReturn(encounterCares);
 		expect(registrarBean.getDefaultedExpectedObs(capture(obsGroups)))
 				.andReturn(expectedObs);
-		expect(modelConverter.defaultedObsToWebServiceCares(expectedObs))
-				.andReturn(obsCares);
+		expect(
+				modelConverter.defaultedToWebServiceCares(expectedEncounters,
+						expectedObs)).andReturn(defaultedCares);
 
 		replay(registrarBean, modelConverter);
 
@@ -1173,8 +1169,6 @@ public class RegistrarServiceTest {
 		encounterCare2.setName("EncounterCare2");
 		calendar.set(2010, Calendar.DECEMBER, 12);
 		encounterCare2.setDate(calendar.getTime());
-		Care[] encounterCares = { encounterCare1, encounterCare2 };
-
 		Care obsCare1 = new Care();
 		obsCare1.setName("ObsCare1");
 		calendar.set(2010, Calendar.OCTOBER, 10);
@@ -1183,7 +1177,8 @@ public class RegistrarServiceTest {
 		obsCare2.setName("ObsCare2");
 		calendar.set(2010, Calendar.JANUARY, 1);
 		obsCare2.setDate(calendar.getTime());
-		Care[] obsCares = { obsCare1, obsCare2 };
+		Care[] upcomingCares = { obsCare2, encounterCare1, obsCare1,
+				encounterCare2 };
 
 		org.openmrs.Patient patient = new org.openmrs.Patient(1);
 
@@ -1194,14 +1189,11 @@ public class RegistrarServiceTest {
 
 		expect(registrarBean.getUpcomingExpectedEncounters(patient)).andReturn(
 				expectedEncounters);
-		expect(
-				modelConverter
-						.upcomingEncountersToWebServiceCares(expectedEncounters))
-				.andReturn(encounterCares);
 		expect(registrarBean.getUpcomingExpectedObs(patient)).andReturn(
 				expectedObs);
-		expect(modelConverter.upcomingObsToWebServiceCares(expectedObs))
-				.andReturn(obsCares);
+		expect(
+				modelConverter.upcomingToWebServiceCares(expectedEncounters,
+						expectedObs, true)).andReturn(upcomingCares);
 
 		replay(registrarBean, modelConverter);
 

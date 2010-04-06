@@ -1,6 +1,7 @@
 package org.motechproject.server.ws;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -152,6 +153,32 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 		return cares.toArray(new Care[cares.size()]);
 	}
 
+	public Care[] upcomingToWebServiceCares(
+			List<ExpectedEncounter> upcomingEncounters,
+			List<ExpectedObs> upcomingObs, boolean dateSorted) {
+
+		List<Care> cares = new ArrayList<Care>();
+
+		for (ExpectedEncounter expectedEncounter : upcomingEncounters) {
+			Care care = new Care();
+			care.setName(expectedEncounter.getName());
+			care.setDate(expectedEncounter.getDueEncounterDatetime());
+			cares.add(care);
+		}
+		for (ExpectedObs expectedObs : upcomingObs) {
+			Care care = new Care();
+			care.setName(expectedObs.getName());
+			care.setDate(expectedObs.getDueObsDatetime());
+			cares.add(care);
+		}
+
+		if (dateSorted) {
+			Collections.sort(cares, new CareDateComparator());
+		}
+
+		return cares.toArray(new Care[cares.size()]);
+	}
+
 	public Care[] defaultedObsToWebServiceCares(List<ExpectedObs> defaultedObs) {
 
 		List<Care> cares = new ArrayList<Care>();
@@ -207,4 +234,41 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 		return cares.toArray(new Care[cares.size()]);
 	}
 
+	public Care[] defaultedToWebServiceCares(
+			List<ExpectedEncounter> defaultedEncounters,
+			List<ExpectedObs> defaultedObs) {
+
+		List<Care> cares = new ArrayList<Care>();
+
+		LinkedHashMap<String, List<org.openmrs.Patient>> carePatientMap = new LinkedHashMap<String, List<org.openmrs.Patient>>();
+
+		for (ExpectedEncounter expectedEncounter : defaultedEncounters) {
+			List<org.openmrs.Patient> patients = carePatientMap
+					.get(expectedEncounter.getName());
+			if (patients == null) {
+				patients = new ArrayList<org.openmrs.Patient>();
+			}
+			patients.add(expectedEncounter.getPatient());
+			carePatientMap.put(expectedEncounter.getName(), patients);
+		}
+		for (ExpectedObs expectedObs : defaultedObs) {
+			List<org.openmrs.Patient> patients = carePatientMap.get(expectedObs
+					.getName());
+			if (patients == null) {
+				patients = new ArrayList<org.openmrs.Patient>();
+			}
+			patients.add(expectedObs.getPatient());
+			carePatientMap.put(expectedObs.getName(), patients);
+		}
+		for (Map.Entry<String, List<org.openmrs.Patient>> entry : carePatientMap
+				.entrySet()) {
+			Care care = new Care();
+			care.setName(entry.getKey());
+			Patient[] patients = patientToWebService(entry.getValue(), true);
+			care.setPatients(patients);
+			cares.add(care);
+		}
+
+		return cares.toArray(new Care[cares.size()]);
+	}
 }

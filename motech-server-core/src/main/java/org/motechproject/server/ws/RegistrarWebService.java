@@ -1,7 +1,6 @@
 package org.motechproject.server.ws;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -11,7 +10,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.ExpectedEncounter;
@@ -417,16 +415,12 @@ public class RegistrarWebService implements RegistrarService {
 
 		List<ExpectedEncounter> defaultedEncounters = registrarBean
 				.getDefaultedExpectedEncounters(new String[] { "ANC" });
-		Care[] encounterCares = modelConverter
-				.defaultedEncountersToWebServiceCares(defaultedEncounters);
-
 		List<ExpectedObs> defaultedObs = registrarBean
 				.getDefaultedExpectedObs(new String[] { "TT", "IPT" });
-		Care[] obsCares = modelConverter
-				.defaultedObsToWebServiceCares(defaultedObs);
 
-		Care[] upcomingCares = (Care[]) ArrayUtils.addAll(encounterCares,
-				obsCares);
+		Care[] upcomingCares = modelConverter.defaultedToWebServiceCares(
+				defaultedEncounters, defaultedObs);
+
 		return upcomingCares;
 	}
 
@@ -593,20 +587,13 @@ public class RegistrarWebService implements RegistrarService {
 
 		List<ExpectedEncounter> upcomingEncounters = registrarBean
 				.getUpcomingExpectedEncounters(patient);
-		Care[] expectedEncounterCares = modelConverter
-				.upcomingEncountersToWebServiceCares(upcomingEncounters);
-
 		List<ExpectedObs> upcomingObs = registrarBean
 				.getUpcomingExpectedObs(patient);
-		Care[] expectedObsCares = modelConverter
-				.upcomingObsToWebServiceCares(upcomingObs);
 
-		Care[] upcomingCares = (Care[]) ArrayUtils.addAll(
-				expectedEncounterCares, expectedObsCares);
+		Care[] upcomingCares = modelConverter.upcomingToWebServiceCares(
+				upcomingEncounters, upcomingObs, true);
 
-		Arrays.sort(upcomingCares, new CareDateComparator());
 		wsPatient.setCares(upcomingCares);
-
 		return wsPatient;
 	}
 
