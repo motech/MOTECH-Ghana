@@ -83,6 +83,7 @@
 								</bean>
 							</property>
 							<property name="registrarBean" ref="registrarBeanProxy" />
+							<property name="openmrsBean" ref="registrarBeanProxy" />
 							<property name="scheduleMaintService" ref="scheduleMaintService" />
 						</bean>
 					</property>
@@ -110,6 +111,7 @@
 
 	<bean id="registrarWebService" class="org.motechproject.server.ws.RegistrarWebService">
 		<property name="registrarBean" ref="registrarBeanProxy" />
+		<property name="openmrsBean" ref="registrarBeanProxy" />
 		<property name="modelConverter" ref="webserviceModelConverter" />
 	</bean>
 	

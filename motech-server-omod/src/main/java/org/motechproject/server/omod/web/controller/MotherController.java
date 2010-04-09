@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Location;
 import org.openmrs.Patient;
@@ -43,6 +44,10 @@ public class MotherController {
 	@Qualifier("registrarBean")
 	private RegistrarBean registrarBean;
 
+	@Autowired
+	@Qualifier("openmrsBean")
+	private OpenmrsBean openmrsBean;
+
 	private ContextService contextService;
 
 	@Autowired
@@ -52,6 +57,10 @@ public class MotherController {
 
 	public void setRegistrarBean(RegistrarBean registrarBean) {
 		this.registrarBean = registrarBean;
+	}
+
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
 	}
 
 	@Autowired
@@ -131,7 +140,7 @@ public class MotherController {
 			ValidationUtils.rejectIfEmpty(errors, "regNumberGHS",
 					"motechmodule.regNumberGHS.required");
 			if (mother.getRegNumberGHS() != null
-					&& registrarBean.getPatientByMotechId(mother
+					&& openmrsBean.getPatientByMotechId(mother
 							.getRegNumberGHS()) != null) {
 				errors.rejectValue("regNumberGHS",
 						"motechmodule.regNumberGHS.nonunique");

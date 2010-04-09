@@ -29,6 +29,7 @@ import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.omod.sdsched.ScheduleMaintService;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Concept;
 import org.openmrs.Location;
@@ -45,6 +46,8 @@ import org.springframework.transaction.annotation.Transactional;
 public interface MotechService extends OpenmrsService {
 
 	RegistrarBean getRegistrarBean();
+	
+	OpenmrsBean getOpenmrsBean();
 
 	ScheduleMaintService getScheduleMaintService();
 

@@ -35,6 +35,7 @@ import org.motechproject.server.omod.tasks.MessageProgramUpdateTask;
 import org.motechproject.server.omod.tasks.NotificationTask;
 import org.motechproject.server.omod.tasks.NurseCareMessagingTask;
 import org.motechproject.server.svc.BirthOutcomeChild;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
@@ -87,7 +88,7 @@ import org.springframework.transaction.annotation.Transactional;
  * An implementation of the RegistrarBean interface, implemented using a mix of
  * OpenMRS and module defined services.
  */
-public class RegistrarBeanImpl implements RegistrarBean {
+public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	private static Log log = LogFactory.getLog(RegistrarBeanImpl.class);
 

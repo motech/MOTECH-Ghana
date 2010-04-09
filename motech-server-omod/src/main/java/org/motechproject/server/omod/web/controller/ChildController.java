@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Location;
 import org.openmrs.Patient;
@@ -43,11 +44,19 @@ public class ChildController {
 	@Qualifier("registrarBean")
 	private RegistrarBean registrarBean;
 
+	@Autowired
+	@Qualifier("openmrsBean")
+	private OpenmrsBean openmrsBean;
+
 	private ContextService contextService;
 
 	@Autowired
 	public void setContextService(ContextService contextService) {
 		this.contextService = contextService;
+	}
+	
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
 	}
 
 	public void setRegistrarBean(RegistrarBean registrarBean) {
@@ -135,8 +144,7 @@ public class ChildController {
 		}
 
 		if (child.getMotherMotechId() != null
-				&& registrarBean
-						.getPatientByMotechId(child.getMotherMotechId()) == null) {
+				&& openmrsBean.getPatientByMotechId(child.getMotherMotechId()) == null) {
 			errors.rejectValue("motherMotechId",
 					"motechmodule.motechId.notexist");
 		}
@@ -148,8 +156,8 @@ public class ChildController {
 			ValidationUtils.rejectIfEmpty(errors, "regNumberGHS",
 					"motechmodule.regNumberGHS.required");
 			if (child.getRegNumberGHS() != null
-					&& registrarBean.getPatientByMotechId(child
-							.getRegNumberGHS()) != null) {
+					&& openmrsBean
+							.getPatientByMotechId(child.getRegNumberGHS()) != null) {
 				errors.rejectValue("regNumberGHS",
 						"motechmodule.regNumberGHS.nonunique");
 			}

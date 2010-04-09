@@ -15,6 +15,7 @@ import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.Gender;
@@ -76,8 +77,10 @@ public class RegistrarBeanExpectedCareTest extends
 			Context.openSession();
 			Context.authenticate("admin", "test");
 
-			RegistrarBean regService = Context.getService(MotechService.class)
-					.getRegistrarBean();
+			MotechService motechService = Context
+					.getService(MotechService.class);
+			RegistrarBean regService = motechService.getRegistrarBean();
+			OpenmrsBean openmrsService = motechService.getOpenmrsBean();
 
 			Patient mother = new Patient();
 			PersonAddress address = new PersonAddress();
@@ -87,7 +90,7 @@ public class RegistrarBeanExpectedCareTest extends
 			String childId = "ChildId";
 			regService.registerChild(null, mother, childId, date,
 					Gender.FEMALE, "FirstName", "nhis", date);
-			Patient patient = regService.getPatientByMotechId(childId);
+			Patient patient = openmrsService.getPatientByMotechId(childId);
 
 			Calendar calendar = Calendar.getInstance();
 			calendar.add(Calendar.MONTH, -2);

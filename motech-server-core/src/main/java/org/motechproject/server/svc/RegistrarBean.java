@@ -38,14 +38,6 @@ import org.openmrs.util.OpenmrsConstants;
  */
 public interface RegistrarBean {
 
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PATIENTS,
-			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES })
-	public Patient getPatientByMotechId(String motechId);
-
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_USERS,
-			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
-	public User getNurseByCHPSId(String chpsId);
-
 	@RunAsAdminUser
 	public Patient registerChild(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,

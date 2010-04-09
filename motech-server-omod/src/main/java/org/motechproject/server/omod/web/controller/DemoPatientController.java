@@ -14,6 +14,7 @@ import org.motechproject.server.model.WhoRegistered;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Gender;
@@ -50,6 +51,10 @@ public class DemoPatientController {
 	@Qualifier("registrarBean")
 	private RegistrarBean registrarBean;
 
+	@Autowired
+	@Qualifier("openmrsBean")
+	private OpenmrsBean openmrsBean;
+
 	private ContextService contextService;
 
 	@Autowired
@@ -61,7 +66,6 @@ public class DemoPatientController {
 		this.registrarBean = registrarBean;
 	}
 
-	@Autowired
 	public void setWebModelConverter(WebModelConverter webModelConverter) {
 		this.webModelConverter = webModelConverter;
 	}
@@ -165,7 +169,7 @@ public class DemoPatientController {
 			ValidationUtils.rejectIfEmpty(errors, "regNumberGHS",
 					"motechmodule.regNumberGHS.required");
 			if (patient.getRegNumberGHS() != null
-					&& registrarBean.getPatientByMotechId(patient
+					&& openmrsBean.getPatientByMotechId(patient
 							.getRegNumberGHS()) != null) {
 				errors.rejectValue("regNumberGHS",
 						"motechmodule.regNumberGHS.nonunique");

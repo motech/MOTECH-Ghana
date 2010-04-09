@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +39,19 @@ public class DemoEnrollController {
 	@Qualifier("registrarBean")
 	private RegistrarBean registrarBean;
 
+	@Autowired
+	@Qualifier("openmrsBean")
+	private OpenmrsBean openmrsBean;
+
 	private ContextService contextService;
 
 	@Autowired
 	public void setContextService(ContextService contextService) {
 		this.contextService = contextService;
+	}
+
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
 	}
 
 	public void setRegistrarBean(RegistrarBean registrarBean) {
@@ -96,8 +105,7 @@ public class DemoEnrollController {
 				"motechmodule.regNumberGHS.required");
 
 		if (patient.getRegNumberGHS() != null
-				&& registrarBean
-						.getPatientByMotechId(patient.getRegNumberGHS()) == null) {
+				&& openmrsBean.getPatientByMotechId(patient.getRegNumberGHS()) == null) {
 			errors.rejectValue("regNumberGHS",
 					"motechmodule.regNumberGHS.notexist");
 		}

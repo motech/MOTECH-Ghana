@@ -8,7 +8,10 @@
 
 	<bean id="registrarBeanProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="proxyInterfaces">
-			<value>org.motechproject.server.svc.RegistrarBean</value>
+			<list>
+				<value>org.motechproject.server.svc.RegistrarBean</value>
+				<value>org.motechproject.server.svc.OpenmrsBean</value>
+			</list>
 		</property>
 		<property name="target" ref="registrarBean" />
 		<property name="interceptorNames">
@@ -56,7 +59,7 @@
 		<property name="contextService" ref="contextService" />
 	</bean>
 
-	<bean id="registrarBean" class="org.motechproject.server.svc.impl.RegistrarBeanImpl">
+	<bean id="registrarBean" name="openmrsBean" class="org.motechproject.server.svc.impl.RegistrarBeanImpl">
 		<property name="contextService" ref="contextService" />
 		<property name="mobileService" ref="mobileClient" />
 		<property name="messagePrograms">

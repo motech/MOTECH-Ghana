@@ -18,6 +18,7 @@ import org.motechproject.server.model.WhoRegistered;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.BirthOutcomeChild;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.BirthOutcome;
 import org.motechproject.ws.ContactNumberType;
@@ -83,8 +84,10 @@ public class RegistrarBeanRecordVisitsTest extends
 			Context.openSession();
 			Context.authenticate("admin", "test");
 
-			RegistrarBean regService = Context.getService(MotechService.class)
-					.getRegistrarBean();
+			MotechService motechService = Context
+					.getService(MotechService.class);
+			RegistrarBean regService = motechService.getRegistrarBean();
+			OpenmrsBean openmrsService = motechService.getOpenmrsBean();
 
 			String mother1Id = "MotherRegNumber1";
 			String mother2Id = "MotherRegNumber2";
@@ -96,7 +99,7 @@ public class RegistrarBeanRecordVisitsTest extends
 
 			regService.registerNurse("Nurse", nurseId, "nursePhone",
 					"West Test Clinic");
-			User nurse = regService.getNurseByCHPSId(nurseId);
+			User nurse = openmrsService.getNurseByCHPSId(nurseId);
 			assertNotNull("Nurse not registered", nurse);
 
 			regService.registerPregnantMother("Mother1FirstName",
@@ -109,7 +112,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					"languageVoice", "languageText", WhoRegistered.CHPS_STAFF,
 					"religion", "occupation");
 
-			Patient mother1 = regService.getPatientByMotechId(mother1Id);
+			Patient mother1 = openmrsService.getPatientByMotechId(mother1Id);
 			assertNotNull("Mother 1 not registered", mother1);
 
 			regService.registerPregnantMother("Mother2FirstName",
@@ -122,7 +125,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					"languageVoice", "languageText", WhoRegistered.CHPS_STAFF,
 					"religion", "occupation");
 
-			Patient mother2 = regService.getPatientByMotechId(mother2Id);
+			Patient mother2 = openmrsService.getPatientByMotechId(mother2Id);
 			assertNotNull("Mother 2 not registered", mother2);
 
 			regService.registerChild("Child1FirstName", "Child1MiddleName",
@@ -134,7 +137,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					ContactNumberType.PERSONAL, MediaType.TEXT, MediaType.TEXT,
 					"languageVoice", "languageText", WhoRegistered.CHPS_STAFF);
 
-			Patient child1 = regService.getPatientByMotechId(child1Id);
+			Patient child1 = openmrsService.getPatientByMotechId(child1Id);
 			assertNotNull("Child 1 not registered", child1);
 
 			assertEquals("3 new patients not registered", 5, Context
@@ -169,13 +172,13 @@ public class RegistrarBeanRecordVisitsTest extends
 			assertEquals("Child 3 not voided", 6, Context.getPatientService()
 					.getAllPatients().size());
 
-			Patient child2 = regService.getPatientByMotechId(child2Id);
+			Patient child2 = openmrsService.getPatientByMotechId(child2Id);
 			assertNotNull("Child 2 not registered", child2);
 			assertEquals("PNC visit at birth not added for Child 2", 1, Context
 					.getEncounterService().getEncountersByPatient(child2)
 					.size());
 
-			Patient child3 = regService.getPatientByMotechId(child3Id);
+			Patient child3 = openmrsService.getPatientByMotechId(child3Id);
 			assertNull("Child 3 not voided", child3);
 
 			// Pregnancy Termination for Mother 2

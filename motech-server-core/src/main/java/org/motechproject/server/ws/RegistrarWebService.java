@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.svc.BirthOutcomeChild;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.BirthOutcome;
 import org.motechproject.ws.Care;
@@ -45,6 +46,7 @@ public class RegistrarWebService implements RegistrarService {
 	Log log = LogFactory.getLog(RegistrarWebService.class);
 
 	RegistrarBean registrarBean;
+	OpenmrsBean openmrsBean;
 	WebServiceModelConverter modelConverter;
 
 	@WebMethod
@@ -250,7 +252,7 @@ public class RegistrarWebService implements RegistrarService {
 		org.openmrs.Patient mother = validateMotechId(motherMotechId, errors,
 				"MotherMotechID");
 
-		org.openmrs.Patient child = registrarBean
+		org.openmrs.Patient child = openmrsBean
 				.getPatientByMotechId(childMotechId);
 		if (child != null) {
 			errors.add(2, "ChildMotechID");
@@ -636,7 +638,7 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		org.openmrs.Patient patient = registrarBean
+		org.openmrs.Patient patient = openmrsBean
 				.getPatientByMotechId(motechId);
 		return modelConverter.patientToWebService(patient, false);
 	}
@@ -662,13 +664,18 @@ public class RegistrarWebService implements RegistrarService {
 	}
 
 	@WebMethod(exclude = true)
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
+	}
+
+	@WebMethod(exclude = true)
 	public void setModelConverter(WebServiceModelConverter modelConverter) {
 		this.modelConverter = modelConverter;
 	}
 
 	private User validateChpsId(String chpsId, ValidationErrors errors,
 			String fieldName) {
-		User nurse = registrarBean.getNurseByCHPSId(chpsId);
+		User nurse = openmrsBean.getNurseByCHPSId(chpsId);
 		if (nurse == null) {
 			errors.add(1, fieldName);
 		}
@@ -677,7 +684,7 @@ public class RegistrarWebService implements RegistrarService {
 
 	private org.openmrs.Patient validateMotechId(String motechId,
 			ValidationErrors errors, String fieldName) {
-		org.openmrs.Patient patient = registrarBean
+		org.openmrs.Patient patient = openmrsBean
 				.getPatientByMotechId(motechId);
 		if (patient == null) {
 			errors.add(1, fieldName);
