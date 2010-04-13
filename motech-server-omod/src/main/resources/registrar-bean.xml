@@ -1,8 +1,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans.xsd">
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 	<bean id="contextService" class="org.motechproject.server.omod.impl.ContextServiceImpl" />
 
@@ -62,41 +65,48 @@
 	<bean id="registrarBean" name="openmrsBean" class="org.motechproject.server.svc.impl.RegistrarBeanImpl">
 		<property name="contextService" ref="contextService" />
 		<property name="mobileService" ref="mobileClient" />
-		<property name="messagePrograms">
-			<map>
-				<entry>
-					<key>
-						<value>Weekly Pregnancy Message Program</value>
-					</key>
-					<ref bean="weeklyPregnancyProgram" />
-				</entry>
-				<entry>
-					<key>
-						<value>Weekly Info Pregnancy Message Program</value>
-					</key>
-					<ref bean="weeklyInfoPregnancyProgram" />
-				</entry>
-				<entry>
-					<key>
-						<value>Weekly Info Child Message Program</value>
-					</key>
-					<ref bean="weeklyInfoChildProgram" />
-				</entry>
-				<entry>
-					<key>
-						<value>Demo Minute Message Program</value>
-					</key>
-					<ref bean="demoMinuteProgram" />
-				</entry>
-				<entry>
-					<key>
-						<value>Input Demo Message Program</value>
-					</key>
-					<ref bean="inputDemoProgram" />
-				</entry>
-			</map>
-		</property>
+		<property name="messagePrograms" ref="messageProgramMap" />
 	</bean>
+	
+	<!-- To avoid circular reference, expectedCareProgram injects registrarBean -->
+	<util:map id="messageProgramMap">
+		<entry>
+			<key>
+				<value>Weekly Pregnancy Message Program</value>
+			</key>
+			<ref bean="weeklyPregnancyProgram" />
+		</entry>
+		<entry>
+			<key>
+				<value>Weekly Info Pregnancy Message Program</value>
+			</key>
+			<ref bean="weeklyInfoPregnancyProgram" />
+		</entry>
+		<entry>
+			<key>
+				<value>Weekly Info Child Message Program</value>
+			</key>
+			<ref bean="weeklyInfoChildProgram" />
+		</entry>
+		<entry>
+			<key>
+				<value>Demo Minute Message Program</value>
+			</key>
+			<ref bean="demoMinuteProgram" />
+		</entry>
+		<entry>
+			<key>
+				<value>Input Demo Message Program</value>
+			</key>
+			<ref bean="inputDemoProgram" />
+		</entry>
+		<entry>
+			<key>
+				<value>Expected Care Message Program</value>
+			</key>
+			<ref bean="expectedCareProgram" />
+		</entry>
+	</util:map>
 	
 	<bean id="mobileClient" class="org.motechproject.server.ws.MessageServiceStub" />
 

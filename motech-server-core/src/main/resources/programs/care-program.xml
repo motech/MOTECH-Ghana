@@ -1,0 +1,113 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="expectedCareProgram"
+		class="org.motechproject.server.event.impl.ExpectedCareMessageProgram">
+		<property name="name" value="Expected Care Message Program" />
+		<property name="registrarBean" ref="registrarBean" />
+		<property name="careMessageDetails">
+			<list>
+				<bean
+					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
+					<property name="name" value="TT" />
+					<property name="upcomingMessageKey" value="tt.upcoming" />
+					<property name="overdueMessageKey" value="tt.overdue" />
+					<property name="timeValue" value="1" />
+					<property name="timePeriod" value="week" />
+				</bean>
+				<bean
+					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
+					<property name="name" value="IPT" />
+					<property name="upcomingMessageKey" value="ipt.upcoming" />
+					<property name="overdueMessageKey" value="ipt.overdue" />
+					<property name="timeValue" value="1" />
+					<property name="timePeriod" value="week" />
+				</bean>
+				<bean
+					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
+					<property name="name" value="ANC" />
+					<property name="upcomingMessageKey" value="anc.upcoming" />
+					<property name="overdueMessageKey" value="anc.overdue" />
+					<property name="timeValue" value="1" />
+					<property name="timePeriod" value="week" />
+				</bean>
+				<bean
+					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
+					<property name="name" value="PPC" />
+					<property name="upcomingMessageKey" value="ppc.upcoming" />
+					<property name="overdueMessageKey" value="ppc.overdue" />
+					<property name="timeValue" value="1" />
+					<property name="timePeriod" value="day" />
+				</bean>
+				<bean
+					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
+					<property name="name" value="PNC" />
+					<property name="upcomingMessageKey" value="pnc.upcoming" />
+					<property name="overdueMessageKey" value="pnc.overdue" />
+					<property name="timeValue" value="1" />
+					<property name="timePeriod" value="day" />
+				</bean>
+				<bean
+					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
+					<property name="name" value="BCG" />
+					<property name="upcomingMessageKey" value="bcg.upcoming" />
+					<property name="overdueMessageKey" value="bcg.overdue" />
+					<property name="timeValue" value="1" />
+					<property name="timePeriod" value="week" />
+				</bean>
+				<bean
+					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
+					<property name="name" value="OPV" />
+					<property name="upcomingMessageKey" value="opv.upcoming" />
+					<property name="overdueMessageKey" value="opv.overdue" />
+					<property name="timeValue" value="1" />
+					<property name="timePeriod" value="week" />
+				</bean>
+				<bean
+					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
+					<property name="name" value="Penta" />
+					<property name="upcomingMessageKey" value="penta.upcoming" />
+					<property name="overdueMessageKey" value="penta.overdue" />
+					<property name="timeValue" value="1" />
+					<property name="timePeriod" value="week" />
+				</bean>
+				<bean
+					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
+					<property name="name" value="IPTI" />
+					<property name="upcomingMessageKey" value="ipti.upcoming" />
+					<property name="overdueMessageKey" value="ipti.overdue" />
+					<property name="timeValue" value="1" />
+					<property name="timePeriod" value="week" />
+				</bean>
+				<bean
+					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
+					<property name="name" value="YellowFever" />
+					<property name="upcomingMessageKey" value="yellowfever.upcoming" />
+					<property name="overdueMessageKey" value="yellowfever.overdue" />
+					<property name="timeValue" value="1" />
+					<property name="timePeriod" value="week" />
+				</bean>
+				<bean
+					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
+					<property name="name" value="Measles" />
+					<property name="upcomingMessageKey" value="measles.upcoming" />
+					<property name="overdueMessageKey" value="measles.overdue" />
+					<property name="timeValue" value="1" />
+					<property name="timePeriod" value="week" />
+				</bean>
+				<bean
+					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
+					<property name="name" value="VitaA" />
+					<property name="upcomingMessageKey" value="vitamina.upcoming" />
+					<property name="overdueMessageKey" value="vitamina.overdue" />
+					<property name="timeValue" value="1" />
+					<property name="timePeriod" value="week" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>

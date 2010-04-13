@@ -184,6 +184,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		if (registerPregProgram) {
 			addMessageProgramEnrollment(child.getPatientId(),
 					"Weekly Info Child Message Program", null);
+			addMessageProgramEnrollment(child.getPatientId(),
+					"Expected Care Message Program", null);
 		}
 	}
 
@@ -329,6 +331,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		if (registerPregProgram) {
 			addMessageProgramEnrollment(mother.getPatientId(),
 					"Weekly Pregnancy Message Program", dueDateObsId);
+			addMessageProgramEnrollment(mother.getPatientId(),
+					"Expected Care Message Program", null);
 		}
 	}
 
@@ -1437,6 +1441,20 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				forDate, true);
 	}
 
+	public List<ExpectedEncounter> getExpectedEncounters(Patient patient) {
+		MotechService motechService = contextService.getMotechService();
+		Date currentDate = new Date();
+		return motechService.getExpectedEncounter(patient, null, null, null,
+				null, currentDate, true);
+	}
+
+	public List<ExpectedObs> getExpectedObs(Patient patient) {
+		MotechService motechService = contextService.getMotechService();
+		Date currentDate = new Date();
+		return motechService.getExpectedObs(patient, null, null, null, null,
+				currentDate, true);
+	}
+
 	public List<Encounter> getRecentDeliveries() {
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -1519,6 +1537,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public List<ScheduledMessage> getAllScheduledMessages() {
 		MotechService motechService = contextService.getMotechService();
 		return motechService.getAllScheduledMessages();
+	}
+
+	public List<ScheduledMessage> getScheduledMessages(
+			MessageProgramEnrollment enrollment) {
+		MotechService motechService = contextService.getMotechService();
+		return motechService.getScheduledMessages(null, null, enrollment, null);
 	}
 
 	public List<org.motechproject.server.model.Log> getAllLogs() {
@@ -1986,6 +2010,30 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				enrollment, scheduledMessageDate);
 	}
 
+	public ScheduledMessage scheduleCareMessage(String messageKey,
+			MessageProgramEnrollment enrollment, Date messageDate,
+			boolean userPreferenceBased, String care) {
+		// Return existing message definition
+		MessageDefinition messageDefinition = this
+				.getMessageDefinition(messageKey);
+
+		// TODO: Assumes recipient is person in enrollment
+		Integer messageRecipientId = enrollment.getPersonId();
+
+		Date scheduledMessageDate;
+		if (!userPreferenceBased) {
+			scheduledMessageDate = messageDate;
+		} else {
+			scheduledMessageDate = this.determineUserPreferredMessageDate(
+					messageRecipientId, messageDate);
+		}
+
+		// Create new scheduled message (with pending attempt) for enrollment
+		// Does not check if one already exists
+		return this.createCareScheduledMessage(messageRecipientId,
+				messageDefinition, enrollment, scheduledMessageDate, care);
+	}
+
 	private MessageDefinition getMessageDefinition(String messageKey) {
 		MotechService motechService = contextService.getMotechService();
 		MessageDefinition messageDefinition = motechService
@@ -2016,6 +2064,37 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			log.debug("Message cancelled to schedule new: Id: "
 					+ unsentMessage.getId());
 		}
+	}
+
+	public void removeUnsentMessages(List<ScheduledMessage> scheduledMessages) {
+		MotechService motechService = contextService.getMotechService();
+
+		for (ScheduledMessage scheduledMessage : scheduledMessages) {
+			for (Message unsentMessage : scheduledMessage.getMessageAttempts()) {
+				if (MessageStatus.SHOULD_ATTEMPT == unsentMessage
+						.getAttemptStatus()) {
+
+					unsentMessage.setAttemptStatus(MessageStatus.CANCELLED);
+					motechService.saveMessage(unsentMessage);
+
+					log
+							.debug("Message cancelled: Id: "
+									+ unsentMessage.getId());
+				}
+			}
+		}
+	}
+
+	public void addMessageAttempt(ScheduledMessage scheduledMessage,
+			Date attemptDate) {
+		MotechService motechService = contextService.getMotechService();
+		MessageDefinition messageDefinition = scheduledMessage.getMessage();
+
+		Message message = messageDefinition.createMessage(scheduledMessage);
+		message.setAttemptDate(attemptDate);
+		scheduledMessage.getMessageAttempts().add(message);
+
+		motechService.saveScheduledMessage(scheduledMessage);
 	}
 
 	public void removeAllUnsentMessages(MessageProgramEnrollment enrollment) {
@@ -2072,6 +2151,35 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 			motechService.saveScheduledMessage(scheduledMessage);
 		}
+	}
+
+	private ScheduledMessage createCareScheduledMessage(Integer recipientId,
+			MessageDefinition messageDefinition,
+			MessageProgramEnrollment enrollment, Date messageDate, String care) {
+
+		MotechService motechService = contextService.getMotechService();
+
+		if (log.isDebugEnabled()) {
+			log.debug("Creating ScheduledMessage: recipient: " + recipientId
+					+ ", enrollment: " + enrollment.getId() + ", message key: "
+					+ messageDefinition.getMessageKey() + ", date: "
+					+ messageDate);
+		}
+
+		ScheduledMessage scheduledMessage = new ScheduledMessage();
+		scheduledMessage.setScheduledFor(messageDate);
+		scheduledMessage.setRecipientId(recipientId);
+		scheduledMessage.setMessage(messageDefinition);
+		scheduledMessage.setEnrollment(enrollment);
+		// Set care field on scheduled message (not set on informational
+		// messages)
+		scheduledMessage.setCare(care);
+
+		Message message = messageDefinition.createMessage(scheduledMessage);
+		message.setAttemptDate(messageDate);
+		scheduledMessage.getMessageAttempts().add(message);
+
+		return motechService.saveScheduledMessage(scheduledMessage);
 	}
 
 	/* MessageSchedulerImpl methods end */
@@ -3174,6 +3282,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return null;
 	}
 
+	public Integer getMaxPatientCareReminders() {
+		String careRemindersProperty = getPatientCareRemindersProperty();
+		if (careRemindersProperty != null) {
+			return Integer.parseInt(careRemindersProperty);
+		}
+		log.error("Patient Care Reminders Property not found");
+		return null;
+	}
+
 	public Date determineMessageStartDate(DeliveryTime deliveryTime,
 			Date messageDate) {
 		Calendar calendar = Calendar.getInstance();
@@ -3563,6 +3680,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public String getTroubledPhoneProperty() {
 		return contextService.getAdministrationService().getGlobalProperty(
 				MotechConstants.GLOBAL_PROPERTY_TROUBLED_PHONE);
+	}
+
+	public String getPatientCareRemindersProperty() {
+		return contextService.getAdministrationService().getGlobalProperty(
+				MotechConstants.GLOBAL_PROPERTY_CARE_REMINDERS);
 	}
 	/* Factored out methods end */
 

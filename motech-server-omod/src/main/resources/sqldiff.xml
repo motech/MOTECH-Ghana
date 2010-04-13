@@ -86,6 +86,7 @@
 				`definition_id` bigint NOT NULL,
 				`recipient_id` int NOT NULL,
 				`enrollment_id` bigint NOT NULL,
+				`care_name` varchar(50),
 				PRIMARY KEY (`motechmodule_scheduledmessage_id`),
 				CONSTRAINT `person_id_for_recipient` FOREIGN KEY (`recipient_id`) REFERENCES `person` (`person_id`),
 				CONSTRAINT `definition_of_scheduledmessage` FOREIGN KEY (`definition_id`)
@@ -142,7 +143,19 @@
 			(67,'demo.minute.13',70,'INFORMATIONAL'),(68,'demo.minute.14',71,'INFORMATIONAL'),
 			(69,'demo.minute.15',72,'INFORMATIONAL'),(70,'demo.minute.16',73,'INFORMATIONAL'),
 			(71,'demo.minute.17',74,'INFORMATIONAL'),(72,'demo.minute.18',75,'INFORMATIONAL'),
-			(73,'demo.minute.19',76,'INFORMATIONAL'),(74,'demo.minute.20',77,'INFORMATIONAL');
+			(73,'demo.minute.19',76,'INFORMATIONAL'),(74,'demo.minute.20',77,'INFORMATIONAL'),
+			(75,'tt.upcoming',78,'REMINDER'),(76,'tt.overdue',79,'REMINDER'),
+			(77,'ipt.upcoming',80,'REMINDER'),(78,'ipt.overdue',81,'REMINDER'),
+			(79,'anc.upcoming',82,'REMINDER'),(80,'anc.overdue',83,'REMINDER'),
+			(81,'ppc.upcoming',84,'REMINDER'),(82,'ppc.overdue',85,'REMINDER'),
+			(83,'pnc.upcoming',86,'REMINDER'),(84,'pnc.overdue',87,'REMINDER'),
+			(85,'bcg.upcoming',88,'REMINDER'),(86,'bcg.overdue',89,'REMINDER'),
+			(87,'opv.upcoming',90,'REMINDER'),(88,'opv.overdue',91,'REMINDER'),
+			(89,'penta.upcoming',92,'REMINDER'),(90,'penta.overdue',93,'REMINDER'),
+			(91,'ipti.upcoming',94,'REMINDER'),(92,'ipti.overdue',95,'REMINDER'),
+			(93,'yellowfever.upcoming',96,'REMINDER'),(94,'yellowfever.overdue',97,'REMINDER'),
+			(95,'measles.upcoming',98,'REMINDER'),(96,'measles.overdue',99,'REMINDER'),
+			(97,'vitamina.upcoming',100,'REMINDER'),(98,'vitamina.overdue',101,'REMINDER');
 
 			INSERT INTO `motechmodule_messageattribute` (`motechmodule_messageattribute_id`,`attribute_name`,`attribute_property`)
 			VALUES (1,'PatientFirstName','person.givenName'),(2,'DueDate','obs.concept.name=ESTIMATED DATE OF CONFINEMENT');

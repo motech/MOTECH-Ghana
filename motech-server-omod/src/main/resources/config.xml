@@ -108,6 +108,12 @@
 		<defaultValue>4</defaultValue>
 		<description>Number of sending failures when phone is considered troubled</description>
 	</globalProperty>
+
+	<globalProperty>
+		<property>motechmodule.patient_care_reminders</property>
+		<defaultValue>3</defaultValue>
+		<description>Maximum number of reminders for a specific care to send to a patient</description>
+	</globalProperty>
 	
 	<dwr>
 		<allow>

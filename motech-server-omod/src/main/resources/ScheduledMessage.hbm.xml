@@ -19,5 +19,7 @@
 			<key column="schedule_id" />
 			<one-to-many class="${corePackage}.model.Message" />
 		</bag>
+		<property name="care" type="string" column="care_name"
+			length="50" />
 	</class>
 </hibernate-mapping>

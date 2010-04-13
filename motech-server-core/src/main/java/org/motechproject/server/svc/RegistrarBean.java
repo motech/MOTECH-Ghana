@@ -235,6 +235,10 @@ public interface RegistrarBean {
 	public List<ExpectedObs> getDefaultedExpectedObs(String[] groups,
 			Date forDate);
 
+	public List<ExpectedEncounter> getExpectedEncounters(Patient patient);
+
+	public List<ExpectedObs> getExpectedObs(Patient patient);
+
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES,
 			OpenmrsConstants.PRIV_VIEW_ENCOUNTERS })
 	public List<Encounter> getRecentDeliveries();
@@ -255,6 +259,9 @@ public interface RegistrarBean {
 	public Obs getActivePregnancy(Integer patientId);
 
 	public List<ScheduledMessage> getAllScheduledMessages();
+
+	public List<ScheduledMessage> getScheduledMessages(
+			MessageProgramEnrollment enrollment);
 
 	public List<Log> getAllLogs();
 
@@ -325,7 +332,18 @@ public interface RegistrarBean {
 			MessageProgramEnrollment enrollment, Date messageDate,
 			boolean userPreferenceBased);
 
+	public ScheduledMessage scheduleCareMessage(String messageKey,
+			MessageProgramEnrollment enrollment, Date messageDate,
+			boolean userPreferenceBased, String care);
+
 	public void removeAllUnsentMessages(MessageProgramEnrollment enrollment);
+
+	public void removeUnsentMessages(List<ScheduledMessage> scheduledMessages);
+
+	public void addMessageAttempt(ScheduledMessage scheduledMessage,
+			Date attemptDate);
+
+	public Integer getMaxPatientCareReminders();
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_USERS,
 			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,

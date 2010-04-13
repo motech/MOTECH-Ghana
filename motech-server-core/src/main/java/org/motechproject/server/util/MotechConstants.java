@@ -77,6 +77,7 @@ public final class MotechConstants {
 	public static final String TASK_PROPERTY_CARE_GROUPS = "careGroups";
 	public static final String TASK_PROPERTY_CARE_GROUPS_DELIMITER = ",";
 	public static final String GLOBAL_PROPERTY_TROUBLED_PHONE = "motechmodule.troubled_phone_failures";
+	public static final String GLOBAL_PROPERTY_CARE_REMINDERS = "motechmodule.patient_care_reminders";
 
 	/*
 	 * Values already existing in OpenMRS, used by Motech

@@ -12,6 +12,7 @@ public class ScheduledMessage {
 	Integer recipientId;
 	MessageProgramEnrollment enrollment;
 	List<Message> messageAttempts = new ArrayList<Message>();
+	String care;
 
 	public Long getId() {
 		return id;
@@ -61,4 +62,11 @@ public class ScheduledMessage {
 		this.messageAttempts = messageAttempts;
 	}
 
+	public String getCare() {
+		return care;
+	}
+
+	public void setCare(String care) {
+		this.care = care;
+	}
 }

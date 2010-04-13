@@ -682,12 +682,14 @@ public class RegistrarBeanTest extends TestCase {
 		WhoRegistered whoRegistered = WhoRegistered.CHPS_STAFF;
 
 		String pregnancyProgramName = "Weekly Pregnancy Message Program";
+		String careProgramName = "Expected Care Message Program";
 
 		Patient patient = new Patient(2);
 		Location ghanaLocation = new Location(1);
 
 		Capture<Patient> patientCap = new Capture<Patient>();
-		Capture<MessageProgramEnrollment> enrollmentCap = new Capture<MessageProgramEnrollment>();
+		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
+		Capture<MessageProgramEnrollment> enrollment2Cap = new Capture<MessageProgramEnrollment>();
 		Capture<Encounter> pregnancyEncounterCap = new Capture<Encounter>();
 		Capture<Obs> pregnancyObsCap = new Capture<Obs>();
 
@@ -795,7 +797,15 @@ public class RegistrarBeanTest extends TestCase {
 				new ArrayList<MessageProgramEnrollment>());
 		expect(
 				motechService
-						.saveMessageProgramEnrollment(capture(enrollmentCap)))
+						.saveMessageProgramEnrollment(capture(enrollment1Cap)))
+				.andReturn(new MessageProgramEnrollment());
+		expect(
+				motechService.getActiveMessageProgramEnrollments(patient
+						.getPatientId(), careProgramName)).andReturn(
+				new ArrayList<MessageProgramEnrollment>());
+		expect(
+				motechService
+						.saveMessageProgramEnrollment(capture(enrollment2Cap)))
 				.andReturn(new MessageProgramEnrollment());
 
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
@@ -914,12 +924,20 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(occupation, capturedPatient.getAttribute(
 				occupationAttributeType).getValue());
 
-		MessageProgramEnrollment enrollment = enrollmentCap.getValue();
-		assertEquals(patient.getPatientId(), enrollment.getPersonId());
-		assertEquals(pregnancyProgramName, enrollment.getProgram());
-		assertNotNull("Enrollment start date should not be null", enrollment
+		MessageProgramEnrollment enrollment1 = enrollment1Cap.getValue();
+		assertEquals(patient.getPatientId(), enrollment1.getPersonId());
+		assertEquals(pregnancyProgramName, enrollment1.getProgram());
+		assertNotNull("Enrollment start date should not be null", enrollment1
 				.getStartDate());
-		assertNull("Enrollment end date should be null", enrollment
+		assertNull("Enrollment end date should be null", enrollment1
+				.getEndDate());
+
+		MessageProgramEnrollment enrollment2 = enrollment2Cap.getValue();
+		assertEquals(patient.getPatientId(), enrollment2.getPersonId());
+		assertEquals(careProgramName, enrollment2.getProgram());
+		assertNotNull("Enrollment start date should not be null", enrollment2
+				.getStartDate());
+		assertNull("Enrollment end date should be null", enrollment2
 				.getEndDate());
 
 		Encounter pregnancyEncounter = pregnancyEncounterCap.getValue();
@@ -992,13 +1010,15 @@ public class RegistrarBeanTest extends TestCase {
 		Gender sex = Gender.FEMALE;
 
 		String pregnancyProgramName = "Weekly Info Child Message Program";
+		String careProgramName = "Expected Care Message Program";
 
 		Patient child = new Patient(1);
 		Patient mother = new Patient(2);
 		Location ghanaLocation = new Location(1);
 
 		Capture<Patient> patientCap = new Capture<Patient>();
-		Capture<MessageProgramEnrollment> enrollmentCap = new Capture<MessageProgramEnrollment>();
+		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
+		Capture<MessageProgramEnrollment> enrollment2Cap = new Capture<MessageProgramEnrollment>();
 		Capture<Relationship> relationshipCap = new Capture<Relationship>();
 
 		expect(contextService.getPatientService()).andReturn(patientService)
@@ -1106,7 +1126,15 @@ public class RegistrarBeanTest extends TestCase {
 				new ArrayList<MessageProgramEnrollment>());
 		expect(
 				motechService
-						.saveMessageProgramEnrollment(capture(enrollmentCap)))
+						.saveMessageProgramEnrollment(capture(enrollment1Cap)))
+				.andReturn(new MessageProgramEnrollment());
+		expect(
+				motechService.getActiveMessageProgramEnrollments(child
+						.getPatientId(), careProgramName)).andReturn(
+				new ArrayList<MessageProgramEnrollment>());
+		expect(
+				motechService
+						.saveMessageProgramEnrollment(capture(enrollment2Cap)))
 				.andReturn(new MessageProgramEnrollment());
 
 		replay(contextService, patientService, motechService, personService,
@@ -1186,12 +1214,20 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(whoRegistered, WhoRegistered.valueOf(capturedPatient
 				.getAttribute(whoRegisteredType).getValue()));
 
-		MessageProgramEnrollment enrollment = enrollmentCap.getValue();
-		assertEquals(child.getPatientId(), enrollment.getPersonId());
-		assertEquals(pregnancyProgramName, enrollment.getProgram());
-		assertNotNull("Enrollment start date should not be null", enrollment
+		MessageProgramEnrollment enrollment1 = enrollment1Cap.getValue();
+		assertEquals(child.getPatientId(), enrollment1.getPersonId());
+		assertEquals(pregnancyProgramName, enrollment1.getProgram());
+		assertNotNull("Enrollment start date should not be null", enrollment1
 				.getStartDate());
-		assertNull("Enrollment end date should be null", enrollment
+		assertNull("Enrollment end date should be null", enrollment1
+				.getEndDate());
+
+		MessageProgramEnrollment enrollment2 = enrollment2Cap.getValue();
+		assertEquals(child.getPatientId(), enrollment2.getPersonId());
+		assertEquals(careProgramName, enrollment2.getProgram());
+		assertNotNull("Enrollment start date should not be null", enrollment2
+				.getStartDate());
+		assertNull("Enrollment end date should be null", enrollment2
 				.getEndDate());
 
 		Relationship relationship = relationshipCap.getValue();
