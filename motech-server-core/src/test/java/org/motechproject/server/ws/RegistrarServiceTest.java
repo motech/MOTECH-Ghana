@@ -1256,6 +1256,34 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
+	public void testQueryPatientInvalidPatientId() throws ValidationException {
+		String chpsId = "CHPSId", motechId = "MotechId";
+
+		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(openmrsBean.getPatientByMotechId(motechId)).andReturn(null);
+
+		replay(registrarBean, modelConverter, openmrsBean);
+
+		try {
+			regWs.queryPatient(chpsId, motechId);
+
+			fail("Expected ValidationException");
+		} catch (ValidationException e) {
+			assertEquals("Errors in Patient Query request", e.getMessage());
+			assertNotNull("Validation Exception FaultBean is Null", e
+					.getFaultInfo());
+			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			assertNotNull("Validation Errors is Null", errors);
+			assertEquals(1, errors.size());
+			ValidationError error = errors.get(0);
+			assertEquals(1, error.getCode());
+			assertEquals("MotechID", error.getField());
+		}
+
+		verify(registrarBean, modelConverter, openmrsBean);
+	}
+
+	@Test
 	public void testLog() {
 		LogType type = LogType.SUCCESS;
 		String msg = "logging over ws is slow";

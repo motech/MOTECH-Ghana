@@ -633,13 +633,14 @@ public class RegistrarWebService implements RegistrarService {
 
 		validateChpsId(chpsId, errors, "CHPSID");
 
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
+
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException("Errors in Patient Query request",
 					errors);
 		}
 
-		org.openmrs.Patient patient = openmrsBean
-				.getPatientByMotechId(motechId);
 		return modelConverter.patientToWebService(patient, false);
 	}
 
