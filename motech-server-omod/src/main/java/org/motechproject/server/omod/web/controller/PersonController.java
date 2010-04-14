@@ -11,7 +11,7 @@ import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Location;
-import org.openmrs.Person;
+import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -100,10 +100,10 @@ public class PersonController {
 	public WebPatient getWebPerson(@RequestParam(required = false) Integer id) {
 		WebPatient result = new WebPatient();
 		if (id != null) {
-			Person person = contextService.getPersonService().getPerson(id);
+			Patient patient = contextService.getPatientService().getPatient(id);
 
-			if (person != null) {
-				webModelConverter.personToWeb(person, result);
+			if (patient != null) {
+				webModelConverter.patientToWeb(patient, result);
 			}
 		}
 		return result;

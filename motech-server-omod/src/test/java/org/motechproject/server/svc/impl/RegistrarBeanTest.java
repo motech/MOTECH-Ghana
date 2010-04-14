@@ -1256,14 +1256,16 @@ public class RegistrarBeanTest extends TestCase {
 
 		String pregnancyProgramName = "Weekly Info Pregnancy Message Program";
 
-		Person person = new Person(2);
+		Patient patient = new Patient(2);
 		Location ghanaLocation = new Location(1);
 
-		Capture<Person> personCap = new Capture<Person>();
+		Capture<Patient> patientCap = new Capture<Patient>();
 		Capture<MessageProgramEnrollment> enrollmentCap = new Capture<MessageProgramEnrollment>();
 		Capture<Obs> refDateObsCap = new Capture<Obs>();
 
 		expect(contextService.getPersonService()).andReturn(personService)
+				.atLeastOnce();
+		expect(contextService.getPatientService()).andReturn(patientService)
 				.atLeastOnce();
 		expect(contextService.getLocationService()).andReturn(locationService)
 				.atLeastOnce();
@@ -1273,6 +1275,10 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getConceptService()).andReturn(conceptService)
 				.atLeastOnce();
 
+		expect(
+				patientService
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
+				.andReturn(ghanaIdType);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
@@ -1326,10 +1332,11 @@ public class RegistrarBeanTest extends TestCase {
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_WHY_INTERESTED))
 				.andReturn(whyInterestedAttributeType);
 
-		expect(personService.savePerson(capture(personCap))).andReturn(person);
+		expect(patientService.savePatient(capture(patientCap))).andReturn(
+				patient);
 
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
-				.andReturn(ghanaLocation);
+				.andReturn(ghanaLocation).atLeastOnce();
 		expect(
 				conceptService
 						.getConcept(MotechConstants.CONCEPT_ENROLLMENT_REFERENCE_DATE))
@@ -1338,8 +1345,8 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(new Obs());
 
 		expect(
-				motechService.getActiveMessageProgramEnrollments(person
-						.getPersonId(), pregnancyProgramName)).andReturn(
+				motechService.getActiveMessageProgramEnrollments(patient
+						.getPatientId(), pregnancyProgramName)).andReturn(
 				new ArrayList<MessageProgramEnrollment>());
 		expect(
 				motechService
@@ -1361,11 +1368,11 @@ public class RegistrarBeanTest extends TestCase {
 				locationService, userService, encounterService, obsService,
 				conceptService);
 
-		Person capturedPerson = personCap.getValue();
-		assertEquals(prefName, capturedPerson.getGivenName());
-		assertEquals(lastName, capturedPerson.getFamilyName());
-		assertEquals(middleName, capturedPerson.getMiddleName());
-		Iterator<PersonName> names = capturedPerson.getNames().iterator();
+		Patient capturedPatient = patientCap.getValue();
+		assertEquals(prefName, capturedPatient.getGivenName());
+		assertEquals(lastName, capturedPatient.getFamilyName());
+		assertEquals(middleName, capturedPatient.getMiddleName());
+		Iterator<PersonName> names = capturedPatient.getNames().iterator();
 		while (names.hasNext()) {
 			PersonName personName = names.next();
 			if (personName.isPreferred()) {
@@ -1378,46 +1385,47 @@ public class RegistrarBeanTest extends TestCase {
 				assertEquals(middleName, personName.getMiddleName());
 			}
 		}
-		assertEquals(date, capturedPerson.getBirthdate());
-		assertEquals(birthDateEst, capturedPerson.getBirthdateEstimated());
+		assertEquals(date, capturedPatient.getBirthdate());
+		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
 		assertEquals(GenderTypeConverter.toOpenMRSString(Gender.FEMALE),
-				capturedPerson.getGender());
-		assertEquals(region, capturedPerson.getPersonAddress().getRegion());
-		assertEquals(district, capturedPerson.getPersonAddress()
+				capturedPatient.getGender());
+		assertEquals(region, capturedPatient.getPersonAddress().getRegion());
+		assertEquals(district, capturedPatient.getPersonAddress()
 				.getCountyDistrict());
-		assertEquals(community, capturedPerson.getPersonAddress()
+		assertEquals(community, capturedPatient.getPersonAddress()
 				.getCityVillage());
-		assertEquals(address, capturedPerson.getPersonAddress().getAddress1());
-		assertEquals(clinic, Integer.valueOf(capturedPerson.getAttribute(
+		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
+		assertEquals(clinic, Integer.valueOf(capturedPatient.getAttribute(
 				clinicAttributeType).getValue()));
-		assertEquals(primaryPhone, capturedPerson.getAttribute(
+		assertEquals(primaryPhone, capturedPatient.getAttribute(
 				primaryPhoneAttributeType).getValue());
-		assertEquals(secondaryPhone, capturedPerson.getAttribute(
+		assertEquals(secondaryPhone, capturedPatient.getAttribute(
 				secondaryPhoneAttributeType).getValue());
-		assertEquals(primaryPhoneType, ContactNumberType.valueOf(capturedPerson
-				.getAttribute(primaryPhoneTypeAttributeType).getValue()));
+		assertEquals(primaryPhoneType, ContactNumberType
+				.valueOf(capturedPatient.getAttribute(
+						primaryPhoneTypeAttributeType).getValue()));
 		assertEquals(secondaryPhoneType, ContactNumberType
-				.valueOf(capturedPerson.getAttribute(
+				.valueOf(capturedPatient.getAttribute(
 						secondaryPhoneTypeAttributeType).getValue()));
-		assertEquals(mediaTypeInfo, MediaType.valueOf(capturedPerson
+		assertEquals(mediaTypeInfo, MediaType.valueOf(capturedPatient
 				.getAttribute(mediaTypeInformationalAttributeType).getValue()));
-		assertEquals(mediaTypeReminder, MediaType.valueOf(capturedPerson
+		assertEquals(mediaTypeReminder, MediaType.valueOf(capturedPatient
 				.getAttribute(mediaTypeReminderAttributeType).getValue()));
-		assertEquals(languageText, capturedPerson.getAttribute(
+		assertEquals(languageText, capturedPatient.getAttribute(
 				languageTextAttributeType).getValue());
-		assertEquals(languageVoice, capturedPerson.getAttribute(
+		assertEquals(languageVoice, capturedPatient.getAttribute(
 				languageVoiceAttributeType).getValue());
-		assertEquals(religion, capturedPerson.getAttribute(
+		assertEquals(religion, capturedPatient.getAttribute(
 				religionAttributeType).getValue());
-		assertEquals(occupation, capturedPerson.getAttribute(
+		assertEquals(occupation, capturedPatient.getAttribute(
 				occupationAttributeType).getValue());
-		assertEquals(howLearned, capturedPerson.getAttribute(
+		assertEquals(howLearned, capturedPatient.getAttribute(
 				howLearnedAttributeType).getValue());
-		assertEquals(whyInterested, WhyInterested.valueOf(capturedPerson
+		assertEquals(whyInterested, WhyInterested.valueOf(capturedPatient
 				.getAttribute(whyInterestedAttributeType).getValue()));
 
 		MessageProgramEnrollment enrollment = enrollmentCap.getValue();
-		assertEquals(person.getPersonId(), enrollment.getPersonId());
+		assertEquals(patient.getPatientId(), enrollment.getPersonId());
 		assertEquals(pregnancyProgramName, enrollment.getProgram());
 		assertNotNull("Enrollment start date should not be null", enrollment
 				.getStartDate());
@@ -1425,7 +1433,7 @@ public class RegistrarBeanTest extends TestCase {
 				.getEndDate());
 
 		Obs refDateObs = refDateObsCap.getValue();
-		assertEquals(person.getPersonId(), refDateObs.getPersonId());
+		assertEquals(patient.getPatientId(), refDateObs.getPersonId());
 		assertEquals(ghanaLocation, refDateObs.getLocation());
 		assertEquals(refDateConcept, refDateObs.getConcept());
 		assertNotNull("Enrollment reference date value is null", refDateObs

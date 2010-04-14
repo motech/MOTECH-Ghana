@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -137,7 +138,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				.getFamilyName(), null, birthDate, false, sex, null, childId,
 				null, null, nhis, nhisExpires, null, region, district,
 				community, address, null, null, null, null, null, null, null,
-				null, null, null, null, WhoRegistered.CHPS_STAFF);
+				null, null, null, null, WhoRegistered.CHPS_STAFF, null, null);
 
 		return patientService.savePatient(child);
 	}
@@ -164,7 +165,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				null, region, district, community, address, clinic,
 				primaryPhone, primaryPhoneType, secondaryPhone,
 				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
-				languageVoice, languageText, null, null, whoRegistered);
+				languageVoice, languageText, null, null, whoRegistered, null,
+				null);
 
 		child = patientService.savePatient(child);
 
@@ -187,37 +189,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			addMessageProgramEnrollment(child.getPatientId(),
 					"Expected Care Message Program", null);
 		}
-	}
-
-	@Transactional
-	private Patient createPatient(String motechId, String firstName,
-			String middleName, String lastName, String prefName,
-			Date birthDate, Boolean birthDateEst, Gender sex,
-			Boolean registeredGHS, String regNumberCWC, String regNumberANC,
-			Boolean insured, String nhis, Date nhisExpDate,
-			HIVStatus hivStatus, String region, String district,
-			String community, String address, Integer clinic,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText, String religion,
-			String occupation, WhoRegistered whoRegistered) {
-
-		Person person = createPerson(firstName, middleName, lastName, prefName,
-				birthDate, birthDateEst, sex, region, district, community,
-				address, clinic, primaryPhone, primaryPhoneType,
-				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
-				mediaTypeReminder, languageVoice, languageText, religion,
-				occupation, null, null, whoRegistered, registeredGHS,
-				regNumberCWC, regNumberANC, hivStatus, insured, nhis,
-				nhisExpDate);
-
-		Patient patient = new Patient(person);
-
-		patient.addIdentifier(new PatientIdentifier(motechId,
-				getMotechPatientIdType(), getGhanaLocation()));
-
-		return patient;
 	}
 
 	@Transactional
@@ -321,7 +292,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				primaryPhone, primaryPhoneType, secondaryPhone,
 				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
 				languageVoice, languageText, religion, occupation,
-				whoRegistered);
+				whoRegistered, null, null);
 
 		mother = patientService.savePatient(mother);
 
@@ -357,7 +328,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				region, district, community, address, clinic, primaryPhone,
 				primaryPhoneType, secondaryPhone, secondaryPhoneType,
 				mediaTypeInfo, mediaTypeReminder, languageVoice, languageText,
-				religion, occupation, whoRegistered);
+				religion, occupation, whoRegistered, null, null);
 
 		patient = patientService.savePatient(patient);
 
@@ -386,17 +357,19 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			String languageVoice, String languageText, String howLearned,
 			String religion, String occupation, WhyInterested whyInterested) {
 
-		PersonService personService = contextService.getPersonService();
+		PatientService patientService = contextService.getPatientService();
 
-		Person person = createPerson(firstName, middleName, lastName, prefName,
-				birthDate, birthDateEst, sex, region, district, community,
+		String tempMotechID = UUID.randomUUID().toString();
+
+		Patient patient = createPatient(tempMotechID, firstName, middleName,
+				lastName, prefName, birthDate, birthDateEst, sex, null, null,
+				null, null, null, null, null, region, district, community,
 				address, clinic, primaryPhone, primaryPhoneType,
 				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
 				mediaTypeReminder, languageVoice, languageText, religion,
-				occupation, howLearned, whyInterested, null, null, null, null,
-				null, null, null, null);
+				occupation, null, howLearned, whyInterested);
 
-		person = personService.savePerson(person);
+		patient = patientService.savePatient(patient);
 
 		Integer refDateObsId = null;
 
@@ -412,8 +385,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Date referenceDate = calendar.getTime();
 
 			Obs refDateObs = createDateValueObs(currentDate,
-					getEnrollmentReferenceDateConcept(), person, ghanaLocation,
-					referenceDate, null, null);
+					getEnrollmentReferenceDateConcept(), patient,
+					ghanaLocation, referenceDate, null, null);
 
 			obsService.saveObs(refDateObs, null);
 
@@ -421,38 +394,43 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 
 		if (registerPregProgram) {
-			addMessageProgramEnrollment(person.getPersonId(),
+			addMessageProgramEnrollment(patient.getPatientId(),
 					"Weekly Info Pregnancy Message Program", refDateObsId);
 		}
 	}
 
-	private Person createPerson(String firstName, String middleName,
-			String lastName, String prefName, Date birthDate,
-			Boolean birthDateEst, Gender sex, String region, String district,
+	@Transactional
+	private Patient createPatient(String motechId, String firstName,
+			String middleName, String lastName, String prefName,
+			Date birthDate, Boolean birthDateEst, Gender sex,
+			Boolean registeredGHS, String regNumberCWC, String regNumberANC,
+			Boolean insured, String nhis, Date nhisExpDate,
+			HIVStatus hivStatus, String region, String district,
 			String community, String address, Integer clinic,
 			String primaryPhone, ContactNumberType primaryPhoneType,
 			String secondaryPhone, ContactNumberType secondaryPhoneType,
 			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
 			String languageVoice, String languageText, String religion,
-			String occupation, String howLearned, WhyInterested whyInterested,
-			WhoRegistered whoRegistered, Boolean registeredGHS,
-			String regNumberCWC, String regNumberANC, HIVStatus hivStatus,
-			Boolean insured, String nhis, Date nhisExpDate) {
+			String occupation, WhoRegistered whoRegistered, String howLearned,
+			WhyInterested whyInterested) {
 
-		Person person = new Person();
+		Patient patient = new Patient();
 
-		person.addName(new PersonName(firstName, middleName, lastName));
+		patient.addIdentifier(new PatientIdentifier(motechId,
+				getMotechPatientIdType(), getGhanaLocation()));
+
+		patient.addName(new PersonName(firstName, middleName, lastName));
 
 		if (prefName != null) {
 			PersonName preferredPersonName = new PersonName(prefName,
 					middleName, lastName);
 			preferredPersonName.setPreferred(true);
-			person.addName(preferredPersonName);
+			patient.addName(preferredPersonName);
 		}
 
-		person.setGender(GenderTypeConverter.toOpenMRSString(sex));
-		person.setBirthdate(birthDate);
-		person.setBirthdateEstimated(birthDateEst);
+		patient.setGender(GenderTypeConverter.toOpenMRSString(sex));
+		patient.setBirthdate(birthDate);
+		patient.setBirthdateEstimated(birthDateEst);
 
 		PersonAddress personAddress = new PersonAddress();
 		personAddress.setAddress1(address);
@@ -460,19 +438,19 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		personAddress.setCountyDistrict(district);
 		personAddress.setRegion(region);
 		personAddress.setCountry(MotechConstants.LOCATION_GHANA);
-		person.addAddress(personAddress);
+		patient.addAddress(personAddress);
 
-		setPersonAttributes(person, clinic, primaryPhone, primaryPhoneType,
+		setPatientAttributes(patient, clinic, primaryPhone, primaryPhoneType,
 				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
 				mediaTypeReminder, languageVoice, languageText, religion,
 				occupation, howLearned, whyInterested, whoRegistered,
 				registeredGHS, regNumberCWC, regNumberANC, hivStatus, insured,
 				nhis, nhisExpDate);
 
-		return person;
+		return patient;
 	}
 
-	private void setPersonAttributes(Person person, Integer clinic,
+	private void setPatientAttributes(Patient patient, Integer clinic,
 			String primaryPhone, ContactNumberType primaryPhoneType,
 			String secondaryPhone, ContactNumberType secondaryPhoneType,
 			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
@@ -483,112 +461,112 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Boolean insured, String nhis, Date nhisExpDate) {
 
 		if (clinic != null) {
-			person.addAttribute(new PersonAttribute(getClinicAttributeType(),
+			patient.addAttribute(new PersonAttribute(getClinicAttributeType(),
 					clinic.toString()));
 		}
 
 		if (primaryPhone != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getPrimaryPhoneNumberAttributeType(), primaryPhone));
 		}
 
 		if (primaryPhoneType != null) {
-			person
+			patient
 					.addAttribute(new PersonAttribute(
 							getPrimaryPhoneTypeAttributeType(),
 							primaryPhoneType.name()));
 		}
 
 		if (secondaryPhone != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getSecondaryPhoneNumberAttributeType(), secondaryPhone));
 		}
 
 		if (secondaryPhoneType != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getSecondaryPhoneTypeAttributeType(), secondaryPhoneType
 							.name()));
 		}
 
 		if (mediaTypeInfo != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getMediaTypeInformationalAttributeType(), mediaTypeInfo
 							.name()));
 		}
 
 		if (mediaTypeReminder != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getMediaTypeReminderAttributeType(), mediaTypeReminder
 							.name()));
 		}
 
 		if (languageText != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getLanguageTextAttributeType(), languageText));
 		}
 
 		if (languageVoice != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getLanguageVoiceAttributeType(), languageVoice));
 		}
 
 		if (religion != null) {
-			person.addAttribute(new PersonAttribute(getReligionAttributeType(),
-					religion));
+			patient.addAttribute(new PersonAttribute(
+					getReligionAttributeType(), religion));
 		}
 
 		if (occupation != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getOccupationAttributeType(), occupation));
 		}
 
 		if (howLearned != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getHowLearnedAttributeType(), howLearned));
 		}
 
 		if (whyInterested != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getWhyInterestedAttributeType(), whyInterested.name()));
 		}
 
 		if (whoRegistered != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getWhoRegisteredAttributeType(), whoRegistered.name()));
 		}
 
 		if (registeredGHS != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getGHSRegisteredAttributeType(), registeredGHS.toString()));
 		}
 
 		if (regNumberCWC != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getCWCRegistrationNumberAttributeType(), regNumberCWC));
 		}
 
 		if (regNumberANC != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getANCRegistrationNumberAttributeType(), regNumberANC));
 		}
 
 		if (hivStatus != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getHIVStatusAttributeType(), hivStatus.name()));
 		}
 
 		if (insured != null) {
-			person.addAttribute(new PersonAttribute(getInsuredAttributeType(),
+			patient.addAttribute(new PersonAttribute(getInsuredAttributeType(),
 					insured.toString()));
 		}
 
 		if (nhis != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getNHISNumberAttributeType(), nhis));
 		}
 
 		if (nhisExpDate != null) {
-			person.addAttribute(new PersonAttribute(
+			patient.addAttribute(new PersonAttribute(
 					getNHISExpirationDateAttributeType(), nhisExpDate
 							.toString()));
 		}
@@ -601,7 +579,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		PatientService patientService = contextService.getPatientService();
 
-		setPersonAttributes(patient, null, primaryPhone, primaryPhoneType,
+		setPatientAttributes(patient, null, primaryPhone, primaryPhoneType,
 				secondaryPhone, secondaryPhoneType, null, null, null, null,
 				null, null, null, null, null, null, null, null, null, null,
 				nhis, nhisExpires);
@@ -687,7 +665,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			patientId.setIdentifier(regNumberGHS);
 		}
 
-		setPersonAttributes(patient, clinic, primaryPhone, primaryPhoneType,
+		setPatientAttributes(patient, clinic, primaryPhone, primaryPhoneType,
 				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
 				mediaTypeReminder, languageVoice, languageText, religion,
 				occupation, null, null, null, registeredGHS, null, null,
@@ -726,7 +704,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			return;
 		}
 
-		setPersonAttributes(patient, null, primaryPhone, primaryPhoneType,
+		setPatientAttributes(patient, null, primaryPhone, primaryPhoneType,
 				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
 				mediaTypeReminder, languageVoice, languageText, null, null,
 				howLearned, null, whoRegistered, null, null, null, null, null,
