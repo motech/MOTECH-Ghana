@@ -620,7 +620,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		List<org.openmrs.Patient> patients = registrarBean.getPatients(
 				firstName, lastName, preferredName, birthDate, null,
-				phoneNumber, nhis);
+				phoneNumber, nhis, null);
 		return modelConverter.patientToWebService(patients, true);
 	}
 

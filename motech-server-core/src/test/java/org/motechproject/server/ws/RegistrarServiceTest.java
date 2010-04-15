@@ -1222,7 +1222,8 @@ public class RegistrarServiceTest {
 		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
 		expect(
 				registrarBean.getPatients(firstName, lastName, prefName,
-						birthDate, null, phone, nhis)).andReturn(patients);
+						birthDate, null, phone, nhis, null))
+				.andReturn(patients);
 		expect(modelConverter.patientToWebService(patients, true)).andReturn(
 				new Patient[1]);
 

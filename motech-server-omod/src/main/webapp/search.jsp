@@ -7,10 +7,15 @@
 <%@ include file="localHeader.jsp" %>
 <h2>Search</h2>
 <div class="instructions">
-	This form allows you search for people in the database.
+	This form allows you search for patients in the database.
 </div>
 <form:form method="post" modelAttribute="patient">
 <table>
+	<tr>
+		<td><form:label path="motechId">MoTeCH ID:</form:label></td>
+		<td><form:input path="motechId" /></td>
+		<td><form:errors path="motechId" cssClass="error" /></td>
+	</tr>
 	<tr>
 		<td><form:label path="firstName">First Name:</form:label></td>
 		<td><form:input path="firstName" /></td>
@@ -22,14 +27,14 @@
 		<td><form:errors path="lastName" cssClass="error" /></td>
 	</tr>
 	<tr>
+		<td><form:label path="prefName">Preferred Name:</form:label></td>
+		<td><form:input path="prefName" /></td>
+		<td><form:errors path="prefName" cssClass="error" /></td>
+	</tr>
+	<tr>
 		<td><form:label path="birthDate">Date of Birth (DD/MM/YYYY):</form:label></td>
 		<td><form:input path="birthDate" /></td>
 		<td><form:errors path="birthDate" cssClass="error" /></td>
-	</tr>
-	<tr>
-		<td><form:label path="regNumberGHS">GHS Registration Number:</form:label></td>
-		<td><form:input path="regNumberGHS" /></td>
-		<td><form:errors path="regNumberGHS" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td><form:label path="nhis">NHIS Number:</form:label></td>
@@ -64,12 +69,12 @@
 	<table>
 		<thead>
 			<tr>
-				<th>Id</th>
+				<th>MoTeCH ID</th>
 				<th>First Name</th>
 				<th>Last Name</th>
+				<th>Preferred Name</th>
 				<th>Birth Date</th>
 				<th>Community</th>
-				<th>Reg Number</th>
 				<th>NHIS Number</th>
 				<th>Primary Phone</th>
 				<th>Secondary Phone</th>
@@ -78,21 +83,19 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${matchingPeople}" var="webPatient">
+			<c:forEach items="${matchingPatients}" var="webPatient">
 				<tr>
-					<td>${webPatient.id}</td>
+					<td>${webPatient.motechId}</td>
 					<td>${webPatient.firstName}</td>
 					<td>${webPatient.lastName}</td>
+					<td>${webPatient.prefName}</td>
 					<td><openmrs:formatDate date="${webPatient.birthDate}" format="dd/MM/yyyy" /></td>
 					<td>${webPatient.community}</td>
-					<td>${webPatient.regNumberGHS}</td>
 					<td>${webPatient.nhis}</td>
 					<td>${webPatient.primaryPhone}</td>
 					<td>${webPatient.secondaryPhone}</td>
 					<td>
-						<c:if test="${not empty webPatient.regNumberGHS}">
-							<a href="editpatient.form?id=${webPatient.id}">Edit</a>
-						</c:if>
+						<a href="editpatient.form?id=${webPatient.id}">Edit</a>
 					</td>
 					<td>
 						<c:if test="${not empty webPatient.regNumberGHS}">

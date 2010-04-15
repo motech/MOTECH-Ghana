@@ -119,10 +119,10 @@
 		<allow>
 			<create creator="new" javascript="DWRMotechService">
 				<param name="class" value="${modulePackage}.web.dwr.DWRMotechService" />
-				<include method="findMatchingPeople"/>
+				<include method="findMatchingPatients"/>
 			</create>
 			<convert converter="bean" match="${modulePackage}.web.model.WebPatient">
-				<param name="include" value="id, firstName, lastName, birthDate, community, regNumberGHS, nhis, primaryPhone, secondaryPhone" />
+				<param name="include" value="id, motechId, firstName, lastName, prefName, birthDate, community, regNumberGHS, nhis, primaryPhone, secondaryPhone" />
 			</convert>
 		</allow>
 	</dwr>

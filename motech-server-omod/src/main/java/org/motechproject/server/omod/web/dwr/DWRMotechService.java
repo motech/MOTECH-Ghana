@@ -14,8 +14,6 @@ import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebModelConverterImpl;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.openmrs.Patient;
-import org.openmrs.Person;
-import org.openmrs.api.PatientService;
 
 public class DWRMotechService {
 
@@ -37,14 +35,15 @@ public class DWRMotechService {
 		this.webModelConverter = webModelConverter;
 	}
 
-	public List<WebPatient> findMatchingPeople(String firstName,
-			String lastName, String birthDate, String community,
-			String phoneNumber, String patientId, String nhisNumber) {
+	public List<WebPatient> findMatchingPatients(String firstName,
+			String lastName, String prefName, String birthDate,
+			String community, String phoneNumber, String nhisNumber,
+			String motechId) {
 
 		if (log.isDebugEnabled()) {
-			log.debug("Get Matching People: " + firstName + ", " + lastName
-					+ ", " + birthDate + ", " + community + ", " + phoneNumber
-					+ ", " + patientId + ", " + nhisNumber);
+			log.debug("Get Matching Patients: " + firstName + ", " + lastName
+					+ ", " + prefName + ", " + birthDate + ", " + community
+					+ ", " + phoneNumber + ", " + nhisNumber + ", " + motechId);
 		}
 
 		List<WebPatient> resultList = new ArrayList<WebPatient>();
@@ -59,20 +58,13 @@ public class DWRMotechService {
 		} catch (ParseException e) {
 		}
 
-		List<Person> matchingPeople = contextService.getRegistrarBean()
-				.getMatchingPeople(firstName, lastName, parsedBirthDate,
-						community, phoneNumber, patientId, nhisNumber);
+		List<Patient> matchingPatients = contextService.getRegistrarBean()
+				.getPatients(firstName, lastName, prefName, parsedBirthDate,
+						community, phoneNumber, nhisNumber, motechId);
 
-		PatientService patientService = contextService.getPatientService();
-
-		for (Person person : matchingPeople) {
+		for (Patient patient : matchingPatients) {
 			WebPatient webPatient = new WebPatient();
-			Patient patient = patientService.getPatient(person.getPersonId());
-			if (patient != null) {
-				webModelConverter.patientToWeb(patient, webPatient);
-			} else {
-				webModelConverter.personToWeb(person, webPatient);
-			}
+			webModelConverter.patientToWeb(patient, webPatient);
 			resultList.add(webPatient);
 		}
 		return resultList;

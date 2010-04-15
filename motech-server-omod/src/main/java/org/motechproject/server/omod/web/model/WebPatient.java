@@ -12,6 +12,7 @@ import org.motechproject.ws.MediaType;
 public class WebPatient {
 
 	private Integer id;
+	private String motechId;
 	private String firstName;
 	private String middleName;
 	private String lastName;
@@ -61,6 +62,14 @@ public class WebPatient {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getMotechId() {
+		return motechId;
+	}
+
+	public void setMotechId(String motechId) {
+		this.motechId = motechId;
 	}
 
 	public String getFirstName() {

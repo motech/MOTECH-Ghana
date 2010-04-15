@@ -35,6 +35,7 @@ import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface MotechService extends OpenmrsService {
 
 	RegistrarBean getRegistrarBean();
-	
+
 	OpenmrsBean getOpenmrsBean();
 
 	ScheduleMaintService getScheduleMaintService();
@@ -184,13 +185,6 @@ public interface MotechService extends OpenmrsService {
 			String community);
 
 	@Transactional(readOnly = true)
-	List<Integer> getMatchingPeople(String firstName, String lastName,
-			Date birthDate, String community, String phoneNumber,
-			Integer primaryPhoneNumberAttrTypeId,
-			Integer secondaryPhoneNumberAttrTypeId, String patientId,
-			String nhisNumber, Integer nhisAttrTypeId);
-
-	@Transactional(readOnly = true)
 	List<Obs> getActivePregnancies(Integer patientId, Concept pregnancyConcept,
 			Concept pregnancyStatusConcept);
 
@@ -220,5 +214,6 @@ public interface MotechService extends OpenmrsService {
 			String preferredName, Date birthDate, String community,
 			String phoneNumber, PersonAttributeType primaryPhoneNumberAttrType,
 			PersonAttributeType secondaryPhoneNumberAttrType,
-			String nhisNumber, PersonAttributeType nhisAttrType);
+			String nhisNumber, PersonAttributeType nhisAttrType,
+			String patientId, PatientIdentifierType patientIdType);
 }

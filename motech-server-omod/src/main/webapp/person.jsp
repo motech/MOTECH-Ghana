@@ -255,12 +255,12 @@
 	</tr>
 </table>
 </form:form>
-<div id="matchingPeopleSection" style="color:red;display:none;">
-	<h3>Conflicting People</h3>
-	<table id="matchingPeople">
+<div id="matchingPatientsSection" style="color:red;display:none;">
+	<h3>Conflicting Patients</h3>
+	<table id="matchingPatients">
 		<thead>
 			<tr>
-				<th>Id</th>
+				<th>MoTeCH ID</th>
 				<th>First Name</th>
 				<th>Last Name</th>
 				<th>Birth Date</th>
@@ -269,7 +269,7 @@
 				<th>Secondary Phone</th>
 			</tr>
 		</thead>
-		<tbody id="matchingPeopleBody" />
+		<tbody id="matchingPatientsBody" />
 	</table>
 </div>
 

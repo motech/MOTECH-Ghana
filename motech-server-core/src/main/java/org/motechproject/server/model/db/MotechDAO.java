@@ -19,6 +19,7 @@ import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonAttributeType;
 
 /**
@@ -118,12 +119,6 @@ public interface MotechDAO {
 	List<Location> getClinics(String country, String region, String district,
 			String community);
 
-	List<Integer> getMatchingPeople(String firstName, String lastName,
-			Date birthDate, String community, String phoneNumber,
-			Integer primaryPhoneNumberAttrTypeId,
-			Integer secondaryPhoneNumberAttrTypeId, String patientId,
-			String nhisNumber, Integer nhisAttrTypeId);
-
 	List<Obs> getActivePregnancies(Integer patientId, Concept pregnancyConcept,
 			Concept pregnancyStatusConcept);
 
@@ -147,5 +142,6 @@ public interface MotechDAO {
 			String preferredName, Date birthDate, String community,
 			String phoneNumber, PersonAttributeType primaryPhoneNumberAttrType,
 			PersonAttributeType secondaryPhoneNumberAttrType,
-			String nhisNumber, PersonAttributeType nhisAttrType);
+			String nhisNumber, PersonAttributeType nhisAttrType,
+			String patientId, PatientIdentifierType patientIdType);
 }

@@ -2,41 +2,46 @@ var birthDateRegex = /\d{2}\/\d{2}\/\d{4}/;
 var numberOfMatches = 0;
 
 function findDuplicates() {
+	var motechId = dwr.util.getValue('motechId');
 	var firstName = dwr.util.getValue('firstName');
 	var lastName = dwr.util.getValue('lastName');
+	var prefName = dwr.util.getValue('prefName');
 	var birthDate = dwr.util.getValue('birthDate');
 	var community = dwr.util.getValue('community');
 	var primaryPhone = dwr.util.getValue('primaryPhone');
-	var patientRegNum = dwr.util.getValue('regNumberGHS');
 	var nhisNumber = dwr.util.getValue('nhis');
 	
-	if( nhisNumber != '' || ((firstName != '' && lastName != '') && 
+	if( motechId != '' || nhisNumber != '' || 
+			(((firstName != '' && lastName != '') || (prefName != '' && lastName != '')) && 
 			((birthDate != '' && birthDateRegex.test(birthDate)) || 
-			community != '' || primaryPhone != '' || patientRegNum != ''))) {
-		DWRMotechService.findMatchingPeople(firstName, lastName, 
-			birthDate, community, primaryPhone, patientRegNum, nhisNumber, 
+			community != '' || primaryPhone != ''))) {
+		DWRMotechService.findMatchingPatients(firstName, lastName, prefName,
+			birthDate, community, primaryPhone, nhisNumber, motechId,
 			displayMatchesFunction);
 	}
 }
 
 function findDuplicatesForPerson() {
+	var motechId = dwr.util.getValue('motechId');
 	var firstName = dwr.util.getValue('firstName');
 	var lastName = dwr.util.getValue('lastName');
+	var prefName = dwr.util.getValue('prefName');
 	var birthDate = dwr.util.getValue('birthDate');
 	var community = dwr.util.getValue('community');
 	var primaryPhone = dwr.util.getValue('primaryPhone');
 	
-	if((firstName != '' && lastName != '') && 
+	if(motechId != '' || 
+			(((firstName != '' && lastName != '') || (prefName != '' && lastName != '')) && 
 			((birthDate != '' && birthDateRegex.test(birthDate)) || 
-			community != '' || primaryPhone != '')) {
-		DWRMotechService.findMatchingPeople(firstName, lastName, 
-			birthDate, community, primaryPhone, null, null, 
+			community != '' || primaryPhone != ''))) {
+		DWRMotechService.findMatchingPatients(firstName, lastName, prefName,
+			birthDate, community, primaryPhone, null, motechId, 
 			displayMatchesFunctionForPerson);
 	}
 }
 
 var tableColumnFunctions = [
-	function(webPatient) { return webPatient.id; },
+	function(webPatient) { return webPatient.motechId; },
 	function(webPatient) { return webPatient.firstName; },
 	function(webPatient) { return webPatient.lastName; },
 	function(webPatient) { return formatDate(webPatient.birthDate); },
@@ -48,7 +53,7 @@ var tableColumnFunctions = [
 ];
 
 var tableColumnFunctionsForPerson = [
-	function(webPatient) { return webPatient.id; },
+	function(webPatient) { return webPatient.motechId; },
 	function(webPatient) { return webPatient.firstName; },
 	function(webPatient) { return webPatient.lastName; },
 	function(webPatient) { return formatDate(webPatient.birthDate); },
@@ -60,22 +65,22 @@ var tableColumnFunctionsForPerson = [
 function displayMatchesFunction(webPatientList) {
 	numberOfMatches = webPatientList.length;
 	if( numberOfMatches > 0 ) {
-		dwr.util.removeAllRows('matchingPeopleBody');
-		dwr.util.addRows('matchingPeopleBody', webPatientList, tableColumnFunctions);
-		dwr.util.byId('matchingPeopleSection').style.display = 'block';
+		dwr.util.removeAllRows('matchingPatientsBody');
+		dwr.util.addRows('matchingPatientsBody', webPatientList, tableColumnFunctions);
+		dwr.util.byId('matchingPatientsSection').style.display = 'block';
 	} else {
-		dwr.util.byId('matchingPeopleSection').style.display = 'none';
+		dwr.util.byId('matchingPatientsSection').style.display = 'none';
 	}
 }
 
 function displayMatchesFunctionForPerson(webPatientList) {
 	numberOfMatches = webPatientList.length;
 	if( numberOfMatches > 0 ) {
-		dwr.util.removeAllRows('matchingPeopleBody');
-		dwr.util.addRows('matchingPeopleBody', webPatientList, tableColumnFunctionsForPerson);
-		dwr.util.byId('matchingPeopleSection').style.display = 'block';
+		dwr.util.removeAllRows('matchingPatientsBody');
+		dwr.util.addRows('matchingPatientsBody', webPatientList, tableColumnFunctionsForPerson);
+		dwr.util.byId('matchingPatientsSection').style.display = 'block';
 	} else {
-		dwr.util.byId('matchingPeopleSection').style.display = 'none';
+		dwr.util.byId('matchingPatientsSection').style.display = 'none';
 	}
 }
 
@@ -89,5 +94,5 @@ function formatDate(date) {
 
 function confirmRegistrationOnMatches() {
 	return (numberOfMatches == 0) || 
-		confirm('Continue registration despite conflicts with existing people?');
+		confirm('Continue registration despite conflicts with existing patients?');
 }

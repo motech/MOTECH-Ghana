@@ -37,6 +37,7 @@ import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.api.impl.BaseOpenmrsService;
 
@@ -49,7 +50,7 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	private MotechDAO motechDAO;
 
 	private RegistrarBean registrarBean;
-	
+
 	private OpenmrsBean openmrsBean;
 
 	private ScheduleMaintService scheduleService;
@@ -284,17 +285,6 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return motechDAO.getClinics(country, region, district, community);
 	}
 
-	public List<Integer> getMatchingPeople(String firstName, String lastName,
-			Date birthDate, String community, String phoneNumber,
-			Integer primaryPhoneNumberAttrTypeId,
-			Integer secondaryPhoneNumberAttrTypeId, String patientId,
-			String nhisNumber, Integer nhisAttrTypeId) {
-		return motechDAO.getMatchingPeople(firstName, lastName, birthDate,
-				community, phoneNumber, primaryPhoneNumberAttrTypeId,
-				secondaryPhoneNumberAttrTypeId, patientId, nhisNumber,
-				nhisAttrTypeId);
-	}
-
 	public List<Obs> getActivePregnancies(Integer patientId,
 			Concept pregnancyConcept, Concept pregnancyStatusConcept) {
 		return motechDAO.getActivePregnancies(patientId, pregnancyConcept,
@@ -336,9 +326,11 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 			String preferredName, Date birthDate, String community,
 			String phoneNumber, PersonAttributeType primaryPhoneNumberAttrType,
 			PersonAttributeType secondaryPhoneNumberAttrType,
-			String nhisNumber, PersonAttributeType nhisAttrType) {
+			String nhisNumber, PersonAttributeType nhisAttrType,
+			String patientId, PatientIdentifierType patientIdType) {
 		return motechDAO.getPatients(firstName, lastName, preferredName,
 				birthDate, community, phoneNumber, primaryPhoneNumberAttrType,
-				secondaryPhoneNumberAttrType, nhisNumber, nhisAttrType);
+				secondaryPhoneNumberAttrType, nhisNumber, nhisAttrType,
+				patientId, patientIdType);
 	}
 }

@@ -1310,42 +1310,19 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	public List<Patient> getPatients(String firstName, String lastName,
 			String preferredName, Date birthDate, String community,
-			String phoneNumber, String nhisNumber) {
+			String phoneNumber, String nhisNumber, String motechId) {
 
 		MotechService motechService = contextService.getMotechService();
 
 		PersonAttributeType primaryPhoneNumberAttrType = getPrimaryPhoneNumberAttributeType();
 		PersonAttributeType secondaryPhoneNumberAttrType = getSecondaryPhoneNumberAttributeType();
 		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
+		PatientIdentifierType motechIdType = getMotechPatientIdType();
 
 		return motechService.getPatients(firstName, lastName, preferredName,
 				birthDate, community, phoneNumber, primaryPhoneNumberAttrType,
-				secondaryPhoneNumberAttrType, nhisNumber, nhisAttrType);
-	}
-
-	public List<Person> getMatchingPeople(String firstName, String lastName,
-			Date birthDate, String community, String phoneNumber,
-			String patientId, String nhisNumber) {
-
-		MotechService motechService = contextService.getMotechService();
-		PersonService personService = contextService.getPersonService();
-
-		Integer primaryPhoneNumberAttrTypeId = getPrimaryPhoneNumberAttributeType()
-				.getPersonAttributeTypeId();
-		Integer secondaryPhoneNumberAttrTypeId = getSecondaryPhoneNumberAttributeType()
-				.getPersonAttributeTypeId();
-		Integer nhisAttrTypeId = getNHISNumberAttributeType()
-				.getPersonAttributeTypeId();
-
-		List<Integer> personIds = motechService.getMatchingPeople(firstName,
-				lastName, birthDate, community, phoneNumber,
-				primaryPhoneNumberAttrTypeId, secondaryPhoneNumberAttrTypeId,
-				patientId, nhisNumber, nhisAttrTypeId);
-		List<Person> matchingPeople = new ArrayList<Person>();
-		for (Integer personId : personIds) {
-			matchingPeople.add(personService.getPerson(personId));
-		}
-		return matchingPeople;
+				secondaryPhoneNumberAttrType, nhisNumber, nhisAttrType,
+				motechId, motechIdType);
 	}
 
 	public List<Obs> getAllPregnancies() {

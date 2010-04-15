@@ -13,8 +13,6 @@ import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Location;
 import org.openmrs.Patient;
-import org.openmrs.Person;
-import org.openmrs.api.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -32,7 +30,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
 @RequestMapping(value = "/module/motechmodule/search")
-public class SearchPeopleController {
+public class SearchPatientsController {
 
 	protected final Log log = LogFactory.getLog(EditPatientController.class);
 
@@ -80,8 +78,8 @@ public class SearchPeopleController {
 		return new WebPatient();
 	}
 
-	@ModelAttribute("matchingPeople")
-	public List<WebPatient> getMatchingPeople(ModelMap model) {
+	@ModelAttribute("matchingPatients")
+	public List<WebPatient> getMatchingPatients(ModelMap model) {
 		return new ArrayList<WebPatient>();
 	}
 
@@ -95,35 +93,29 @@ public class SearchPeopleController {
 			Errors errors, ModelMap model, SessionStatus status) {
 
 		if (log.isDebugEnabled()) {
-			log.debug("Search Matching People: " + webPatient.getFirstName()
+			log.debug("Search Matching Patients: " + webPatient.getFirstName()
 					+ ", " + webPatient.getLastName() + ", "
+					+ webPatient.getPrefName() + ", "
 					+ webPatient.getBirthDate() + ", "
-					+ webPatient.getRegNumberGHS() + ", "
-					+ webPatient.getNhis() + ", " + webPatient.getCommunity()
-					+ ", " + webPatient.getPrimaryPhone());
+					+ webPatient.getCommunity() + ", "
+					+ webPatient.getPrimaryPhone() + ", "
+					+ webPatient.getNhis() + ", " + webPatient.getMotechId());
 		}
 
 		if (!errors.hasErrors()) {
-			List<WebPatient> matchingWebPeopleList = new ArrayList<WebPatient>();
-			List<Person> matchingPeopleList = registrarBean.getMatchingPeople(
+			List<WebPatient> matchingWebPatientsList = new ArrayList<WebPatient>();
+			List<Patient> matchingPatientsList = registrarBean.getPatients(
 					webPatient.getFirstName(), webPatient.getLastName(),
-					webPatient.getBirthDate(), webPatient.getCommunity(),
-					webPatient.getPrimaryPhone(), webPatient.getRegNumberGHS(),
-					webPatient.getNhis());
+					webPatient.getPrefName(), webPatient.getBirthDate(),
+					webPatient.getCommunity(), webPatient.getPrimaryPhone(),
+					webPatient.getNhis(), webPatient.getMotechId());
 
-			PatientService patientService = contextService.getPatientService();
-			for (Person person : matchingPeopleList) {
-				WebPatient newWebPerson = new WebPatient();
-				Patient patient = patientService.getPatient(person
-						.getPersonId());
-				if (patient != null) {
-					webModelConverter.patientToWeb(patient, newWebPerson);
-				} else {
-					webModelConverter.personToWeb(person, newWebPerson);
-				}
-				matchingWebPeopleList.add(newWebPerson);
+			for (Patient patient : matchingPatientsList) {
+				WebPatient newWebPatient = new WebPatient();
+				webModelConverter.patientToWeb(patient, newWebPatient);
+				matchingWebPatientsList.add(newWebPatient);
 			}
-			model.addAttribute("matchingPeople", matchingWebPeopleList);
+			model.addAttribute("matchingPatients", matchingWebPatientsList);
 		}
 	}
 

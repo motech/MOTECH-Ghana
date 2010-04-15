@@ -32,7 +32,7 @@ import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
-import org.openmrs.Person;
+import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.SkipBaseSetup;
@@ -88,7 +88,7 @@ public class MessageProgramUpdateTaskTest extends
 	public void testMessageProgramUpdate() throws InterruptedException {
 
 		MessageProgramUpdateTask task = new MessageProgramUpdateTask();
-		Integer personId = null;
+		Integer patientId = null;
 
 		try {
 			Context.openSession();
@@ -107,16 +107,16 @@ public class MessageProgramUpdateTaskTest extends
 					"languageText", "howLearned", "religion", "occupation",
 					WhyInterested.OUT_HOUSEHOLD_PREGNANCY);
 
-			List<Person> matchingPeople = regService.getMatchingPeople(
-					"firstName", "lastName", date, "community", "primaryPhone",
-					null, null);
-			assertEquals(1, matchingPeople.size());
-			Person person = matchingPeople.get(0);
-			personId = person.getPersonId();
+			List<Patient> matchingPatients = regService.getPatients(
+					"firstName", "lastName", "prefName", date, "community",
+					"primaryPhone", null, null);
+			assertEquals(1, matchingPatients.size());
+			Patient patient = matchingPatients.get(0);
+			patientId = patient.getPatientId();
 
 			List<MessageProgramEnrollment> enrollments = Context.getService(
 					MotechService.class).getActiveMessageProgramEnrollments(
-					personId);
+					patientId);
 			assertEquals(1, enrollments.size());
 			MessageProgramEnrollment enrollment = enrollments.get(0);
 			assertNotNull("Obs is not set on enrollment", enrollment.getObsId());
@@ -157,11 +157,11 @@ public class MessageProgramUpdateTaskTest extends
 			Concept refDate = Context.getConceptService().getConcept(
 					MotechConstants.CONCEPT_ENROLLMENT_REFERENCE_DATE);
 
-			Person person = Context.getPersonService().getPerson(personId);
-			assertNotNull("Person does not exist with id", person);
+			Patient patient = Context.getPatientService().getPatient(patientId);
+			assertNotNull("Patient does not exist with id", patient);
 
 			List<Obs> matchingObs = Context.getObsService()
-					.getObservationsByPersonAndConcept(person, refDate);
+					.getObservationsByPersonAndConcept(patient, refDate);
 			assertEquals(1, matchingObs.size());
 
 			// Change reference date to 2 weeks previous
@@ -182,7 +182,7 @@ public class MessageProgramUpdateTaskTest extends
 			// Change obs referenced by enrollment to new obs
 			List<MessageProgramEnrollment> enrollments = Context.getService(
 					MotechService.class).getActiveMessageProgramEnrollments(
-					person.getPersonId());
+					patient.getPatientId());
 			assertEquals(1, enrollments.size());
 			MessageProgramEnrollment enrollment = enrollments.get(0);
 
