@@ -105,8 +105,8 @@ public class RegistrarBeanTest extends TestCase {
 	PersonAttributeType whyInterestedAttributeType;
 	Role providerRole;
 	EncounterType ancVisitType;
-	EncounterType pncVisitType;
-	EncounterType ppcVisitType;
+	EncounterType pncChildVisitType;
+	EncounterType pncMotherVisitType;
 	EncounterType pregnancyRegVisitType;
 	EncounterType pregnancyTermVisitType;
 	EncounterType pregnancyDelVisitType;
@@ -137,10 +137,10 @@ public class RegistrarBeanTest extends TestCase {
 	Concept refDateConcept;
 	ConceptName hivStatusNameObj;
 	Concept hivStatusConcept;
-	ConceptName abortiontypeNameObj;
-	Concept abortiontypeConcept;
-	ConceptName complicationNameObj;
-	Concept complicationConcept;
+	ConceptName terminationTypeNameObj;
+	Concept terminationTypeConcept;
+	ConceptName terminationComplicationNameObj;
+	Concept terminationComplicationConcept;
 	ConceptName iptiNameObj;
 	Concept iptiConcept;
 	ConceptName opvDoseNameObj;
@@ -288,11 +288,12 @@ public class RegistrarBeanTest extends TestCase {
 		ancVisitType = new EncounterType(1);
 		ancVisitType.setName(MotechConstants.ENCOUNTER_TYPE_ANCVISIT);
 
-		pncVisitType = new EncounterType(2);
-		pncVisitType.setName(MotechConstants.ENCOUNTER_TYPE_PNCVISIT);
+		pncChildVisitType = new EncounterType(2);
+		pncChildVisitType.setName(MotechConstants.ENCOUNTER_TYPE_PNCCHILDVISIT);
 
-		ppcVisitType = new EncounterType(3);
-		ppcVisitType.setName(MotechConstants.ENCOUNTER_TYPE_PPCVISIT);
+		pncMotherVisitType = new EncounterType(3);
+		pncMotherVisitType
+				.setName(MotechConstants.ENCOUNTER_TYPE_PNCMOTHERVISIT);
 
 		pregnancyRegVisitType = new EncounterType(4);
 		pregnancyRegVisitType
@@ -368,13 +369,14 @@ public class RegistrarBeanTest extends TestCase {
 				Locale.getDefault());
 		hivStatusConcept = new Concept(26);
 
-		abortiontypeNameObj = new ConceptName(
-				MotechConstants.CONCEPT_ABORTIONTYPE, Locale.getDefault());
-		abortiontypeConcept = new Concept(27);
+		terminationTypeNameObj = new ConceptName(
+				MotechConstants.CONCEPT_TERMINATION_TYPE, Locale.getDefault());
+		terminationTypeConcept = new Concept(27);
 
-		complicationNameObj = new ConceptName(
-				MotechConstants.CONCEPT_COMPLICATION, Locale.getDefault());
-		complicationConcept = new Concept(28);
+		terminationComplicationNameObj = new ConceptName(
+				MotechConstants.CONCEPT_TERMINATION_COMPLICATION, Locale
+						.getDefault());
+		terminationComplicationConcept = new Concept(28);
 
 		iptiNameObj = new ConceptName(
 				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_INFANTS,

@@ -861,15 +861,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		if (abortionType != null) {
 			Obs abortionTypeObs = createNumericValueObs(date,
-					getAbortionTypeConcept(), patient, location, abortionType,
-					encounter, null);
+					getTerminationTypeConcept(), patient, location,
+					abortionType, encounter, null);
 			abortionTypeObs.setObsGroup(pregnancyObs);
 			obsService.saveObs(abortionTypeObs, null);
 		}
 		if (complication != null) {
 			Obs complicationObs = createNumericValueObs(date,
-					getComplicationConcept(), patient, location, complication,
-					encounter, null);
+					getTerminationComplicationConcept(), patient, location,
+					complication, encounter, null);
 			complicationObs.setObsGroup(pregnancyObs);
 			obsService.saveObs(complicationObs, null);
 		}
@@ -983,7 +983,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Location location = getGhanaLocation();
 
 		Encounter encounter = new Encounter();
-		encounter.setEncounterType(getPPCVisitEncounterType());
+		encounter.setEncounterType(getMotherPNCVisitEncounterType());
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(location);
@@ -1055,7 +1055,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Location location = getGhanaLocation();
 
 		Encounter encounter = new Encounter();
-		encounter.setEncounterType(getPNCVisitEncounterType());
+		encounter.setEncounterType(getChildPNCVisitEncounterType());
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(location);
@@ -2255,18 +2255,22 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		log.info("Verifying Encounter Types Exist");
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_ANCVISIT,
 				"Ghana Antenatal Care (ANC) Visit", admin);
-		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PPCVISIT,
-				"Ghana Postpartum Care (PPC) Visit", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGREGVISIT,
 				"Ghana Pregnancy Registration Visit", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGTERMVISIT,
 				"Ghana Pregnancy Termination Visit", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGDELVISIT,
 				"Ghana Pregnancy Delivery Visit", admin);
-		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PNCVISIT,
-				"Ghana Postnatal Care (PNC) Visit", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_GENERALVISIT,
 				"Ghana General Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_TTVISIT,
+				"Ghana Tetanus outside Pregnancy Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_CWCVISIT,
+				"Ghana Child Immunization Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PNCMOTHERVISIT,
+				"Ghana Mother Postnatal Care (PNC) Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PNCCHILDVISIT,
+				"Ghana Child Postnatal Care (PNC) Visit", admin);
 
 		log.info("Verifying Concepts Exist");
 		createConcept(MotechConstants.CONCEPT_VISIT_NUMBER, "Visit Number",
@@ -2285,11 +2289,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Question: \"What is the patient's text coded HIV status?\"",
 				MotechConstants.CONCEPT_CLASS_QUESTION,
 				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
-		createConcept(MotechConstants.CONCEPT_ABORTIONTYPE,
+		createConcept(MotechConstants.CONCEPT_TERMINATION_TYPE,
 				"Numeric coded pregnancy termination reason",
 				MotechConstants.CONCEPT_CLASS_FINDING,
 				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
-		createConcept(MotechConstants.CONCEPT_COMPLICATION,
+		createConcept(MotechConstants.CONCEPT_TERMINATION_COMPLICATION,
 				"Numeric coded pregnancy termination complication",
 				MotechConstants.CONCEPT_CLASS_FINDING,
 				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
@@ -2377,6 +2381,139 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Text coded birth outcome",
 				MotechConstants.CONCEPT_CLASS_FINDING,
 				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
+		createConcept(MotechConstants.CONCEPT_MALARIA_RAPID_TEST,
+				"Rapid diagnostic test for malaria",
+				MotechConstants.CONCEPT_CLASS_TEST,
+				MotechConstants.CONCEPT_DATATYPE_CODED, admin);
+		createConcept(
+				MotechConstants.CONCEPT_VDRL_TREATMENT,
+				"Question on encounter form: \"Was the patient given treatment for syphilis?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(MotechConstants.CONCEPT_URINE_PROTEIN_TEST,
+				"Test for protein in urine",
+				MotechConstants.CONCEPT_CLASS_TEST,
+				MotechConstants.CONCEPT_DATATYPE_CODED, admin);
+		createConcept(MotechConstants.CONCEPT_URINE_GLUCOSE_TEST,
+				"Test for glucose in urine",
+				MotechConstants.CONCEPT_CLASS_TEST,
+				MotechConstants.CONCEPT_DATATYPE_CODED, admin);
+		createConcept(MotechConstants.CONCEPT_FETAL_HEART_RATE,
+				"Fetal heart rate (in bpm)",
+				MotechConstants.CONCEPT_CLASS_TEST,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(MotechConstants.CONCEPT_FUNDAL_HEIGHT,
+				"Measurement of uterus (in cm)",
+				MotechConstants.CONCEPT_CLASS_TEST,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(MotechConstants.CONCEPT_VVF_REPAIR,
+				"Numeric coded value for Vesico Vaginal Fistula (VVF) repair",
+				MotechConstants.CONCEPT_CLASS_FINDING,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(
+				MotechConstants.CONCEPT_DEWORMER,
+				"Question on encounter form: \"Was dewormer given to patient?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(MotechConstants.CONCEPT_PMTCT,
+				"Preventing Mother-to-Child Transmission (PMTCT) of HIV",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(
+				MotechConstants.CONCEPT_PMTCT_TREATMENT,
+				"Question on encounter form: \"Was PMTCT HIV treatment given to patient?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(
+				MotechConstants.CONCEPT_ACT_TREATMENT,
+				"Question on encounter form: \"Was Artemisinin-based Combination Therapy (ACT) for Malaria given to patient?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(
+				MotechConstants.CONCEPT_HIV_PRE_TEST_COUNSELING,
+				"Question on encounter form: \"Was counseling done before HIV test?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(
+				MotechConstants.CONCEPT_HIV_POST_TEST_COUNSELING,
+				"Question on encounter form: \"Was counseling done after HIV test?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(MotechConstants.CONCEPT_DELIVERY_COMPLICATION,
+				"Numeric coded value for delivery or post-partum complication",
+				MotechConstants.CONCEPT_CLASS_FINDING,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(
+				MotechConstants.CONCEPT_POST_ABORTION_FP_COUNSELING,
+				"Question on encounter form: \"Was family planning counseling done after abortion?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(
+				MotechConstants.CONCEPT_POST_ABORTION_FP_ACCEPTED,
+				"Question on encounter form: \"Did the patient accept family planning after abortion?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(
+				MotechConstants.CONCEPT_IPT_REACTION,
+				"Intermittent Preventive Treatment (IPT) with Sulphadoxine-Pyrimethamine (SP)",
+				MotechConstants.CONCEPT_CLASS_TEST,
+				MotechConstants.CONCEPT_DATATYPE_CODED, admin);
+		createConcept(MotechConstants.CONCEPT_LOCHIA_COLOUR,
+				"Numeric coded colour of post-partum vaginal discharge",
+				MotechConstants.CONCEPT_CLASS_FINDING,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(MotechConstants.CONCEPT_LOCHIA_EXCESS_AMOUNT,
+				"Is amount of post-partum vaginal discharge in excess?",
+				MotechConstants.CONCEPT_CLASS_FINDING,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(MotechConstants.CONCEPT_MIDDLE_UPPER_ARM_CIRCUMFERENCE,
+				"Circumference of Middle Upper Arm (MUAC) in cm",
+				MotechConstants.CONCEPT_CLASS_FINDING,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(
+				MotechConstants.CONCEPT_MATERNAL_DEATH,
+				"Question on encounter form: \"Death of patient during delivery or abortion procedure?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(MotechConstants.CONCEPT_TERMINATION_PROCEDURE,
+				"Numeric coded procedure used to terminate pregnancy",
+				MotechConstants.CONCEPT_CLASS_PROCEDURE,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(
+				MotechConstants.CONCEPT_CORD_CONDITION,
+				"Question on encounter form: \"Is the condition of the umbilical cord normal?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(
+				MotechConstants.CONCEPT_CONDITION_OF_BABY,
+				"Question on encounter form: \"Is the condition of the baby good?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(
+				MotechConstants.CONCEPT_NEXT_ANC_DATE,
+				"Question on encounter form: \"What is the date of the next antenatal care visit for the patient?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_DATETIME, admin);
+		createConcept(
+				MotechConstants.CONCEPT_MALE_INVOLVEMENT,
+				"Question on encounter form: \"Was the male household member involved in patient's care?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(MotechConstants.CONCEPT_COMMUNITY,
+				"Community details on the location of care",
+				MotechConstants.CONCEPT_CLASS_MISC,
+				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
+		createConcept(MotechConstants.CONCEPT_HOUSE,
+				"House details on the location of care",
+				MotechConstants.CONCEPT_CLASS_MISC,
+				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
+		createConcept(MotechConstants.CONCEPT_LOCATION,
+				"Numeric coded location of care",
+				MotechConstants.CONCEPT_CLASS_MISC,
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
+		createConcept(MotechConstants.CONCEPT_COMMENTS, "Comments",
+				MotechConstants.CONCEPT_CLASS_MISC,
+				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
 
 		log.info("Verifying Concepts Exist as Answers");
 		// TODO: Add IPT to proper Concept as an Answer, not an immunization
@@ -2388,6 +2525,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 						MotechConstants.CONCEPT_VITAMIN_A,
 						MotechConstants.CONCEPT_CEREBRO_SPINAL_MENINGITIS_VACCINATION },
 				admin);
+		addConceptAnswers(MotechConstants.CONCEPT_MALARIA_RAPID_TEST,
+				new String[] { MotechConstants.CONCEPT_POSITIVE,
+						MotechConstants.CONCEPT_NEGATIVE }, admin);
+		addConceptAnswers(MotechConstants.CONCEPT_URINE_PROTEIN_TEST,
+				new String[] { MotechConstants.CONCEPT_POSITIVE,
+						MotechConstants.CONCEPT_NEGATIVE }, admin);
+		addConceptAnswers(MotechConstants.CONCEPT_URINE_GLUCOSE_TEST,
+				new String[] { MotechConstants.CONCEPT_POSITIVE,
+						MotechConstants.CONCEPT_NEGATIVE }, admin);
+		addConceptAnswers(MotechConstants.CONCEPT_IPT_REACTION, new String[] {
+				MotechConstants.CONCEPT_REACTIVE,
+				MotechConstants.CONCEPT_NON_REACTIVE }, admin);
 
 		log.info("Verifying Task Exists and is Scheduled");
 		// TODO: Task should start automatically on startup, Boolean.TRUE
@@ -3423,11 +3572,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.ENCOUNTER_TYPE_ANCVISIT);
 	}
 
-	public EncounterType getPPCVisitEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_PPCVISIT);
-	}
-
 	public EncounterType getPregnancyRegistrationVisitEncounterType() {
 		return contextService.getEncounterService().getEncounterType(
 				MotechConstants.ENCOUNTER_TYPE_PREGREGVISIT);
@@ -3443,14 +3587,29 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.ENCOUNTER_TYPE_PREGDELVISIT);
 	}
 
-	public EncounterType getPNCVisitEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_PNCVISIT);
-	}
-
 	public EncounterType getGeneralVisitEncounterType() {
 		return contextService.getEncounterService().getEncounterType(
 				MotechConstants.ENCOUNTER_TYPE_GENERALVISIT);
+	}
+
+	public EncounterType getTTVisitEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_TTVISIT);
+	}
+
+	public EncounterType getCWCVisitEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_CWCVISIT);
+	}
+
+	public EncounterType getMotherPNCVisitEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_PNCMOTHERVISIT);
+	}
+
+	public EncounterType getChildPNCVisitEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_PNCCHILDVISIT);
 	}
 
 	public Concept getImmunizationsOrderedConcept() {
@@ -3475,14 +3634,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.CONCEPT_HIV_STATUS);
 	}
 
-	public Concept getAbortionTypeConcept() {
+	public Concept getTerminationTypeConcept() {
 		return contextService.getConceptService().getConcept(
-				MotechConstants.CONCEPT_ABORTIONTYPE);
+				MotechConstants.CONCEPT_TERMINATION_TYPE);
 	}
 
-	public Concept getComplicationConcept() {
+	public Concept getTerminationComplicationConcept() {
 		return contextService.getConceptService().getConcept(
-				MotechConstants.CONCEPT_COMPLICATION);
+				MotechConstants.CONCEPT_TERMINATION_COMPLICATION);
 	}
 
 	public Concept getVitaminAConcept() {
@@ -3630,6 +3789,211 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public Concept getBirthOutcomeConcept() {
 		return contextService.getConceptService().getConcept(
 				MotechConstants.CONCEPT_BIRTH_OUTCOME);
+	}
+
+	public Concept getMalariaRDTConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_MALARIA_RAPID_TEST);
+	}
+
+	public Concept getVDRLTreatmentConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_VDRL_TREATMENT);
+	}
+
+	public Concept getUrineProteinTestConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_URINE_PROTEIN_TEST);
+	}
+
+	public Concept getUrineGlucoseTestConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_URINE_GLUCOSE_TEST);
+	}
+
+	public Concept getFetalHeartRateConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_FETAL_HEART_RATE);
+	}
+
+	public Concept getFundalHeightConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_FUNDAL_HEIGHT);
+	}
+
+	public Concept getVVFRepairConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_VVF_REPAIR);
+	}
+
+	public Concept getDewormerConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_DEWORMER);
+	}
+
+	public Concept getPMTCTConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_PMTCT);
+	}
+
+	public Concept getPMTCTTreatmentConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_PMTCT_TREATMENT);
+	}
+
+	public Concept getACTTreatmentConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_ACT_TREATMENT);
+	}
+
+	public Concept getPreHIVTestCounselingConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_HIV_PRE_TEST_COUNSELING);
+	}
+
+	public Concept getPostHIVTestCounselingConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_HIV_POST_TEST_COUNSELING);
+	}
+
+	public Concept getDeliveryComplicationConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_DELIVERY_COMPLICATION);
+	}
+
+	public Concept getPostAbortionFPCounselingConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_POST_ABORTION_FP_COUNSELING);
+	}
+
+	public Concept getPostAbortionFPAcceptedConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_POST_ABORTION_FP_ACCEPTED);
+	}
+
+	public Concept getIPTReactionConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_IPT_REACTION);
+	}
+
+	public Concept getLochiaColourConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_LOCHIA_COLOUR);
+	}
+
+	public Concept getLochiaExcessConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_LOCHIA_EXCESS_AMOUNT);
+	}
+
+	public Concept getMUACConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_MIDDLE_UPPER_ARM_CIRCUMFERENCE);
+	}
+
+	public Concept getMaternalDeathConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_MATERNAL_DEATH);
+	}
+
+	public Concept getTerminationProcedureConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_TERMINATION_PROCEDURE);
+	}
+
+	public Concept getCordConditionConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_CORD_CONDITION);
+	}
+
+	public Concept getConditionBabyConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_CONDITION_OF_BABY);
+	}
+
+	public Concept getNextANCDateConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_NEXT_ANC_DATE);
+	}
+
+	public Concept getMaleInvolvementConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_MALE_INVOLVEMENT);
+	}
+
+	public Concept getCommunityConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_COMMUNITY);
+	}
+
+	public Concept getHouseConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_HOUSE);
+	}
+
+	public Concept getCommentsConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_COMMENTS);
+	}
+
+	public Concept getVDRLConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_VDRL);
+	}
+
+	public Concept getRespiratoryRateConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_RESPIRATORY_RATE);
+	}
+
+	public Concept getDiastolicBloodPressureConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_DIASTOLIC_BLOOD_PRESSURE);
+	}
+
+	public Concept getSystolicBloodPressureConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_SYSTOLIC_BLOOD_PRESSURE);
+	}
+
+	public Concept getHemoglobinConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_HEMOGLOBIN);
+	}
+
+	public Concept getWeightConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_WEIGHT);
+	}
+
+	public Concept getHeightConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_HEIGHT);
+	}
+
+	public Concept getTemperatureConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_TEMPERATURE);
+	}
+
+	public Concept getReactiveConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_REACTIVE);
+	}
+
+	public Concept getNonReactiveConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_NON_REACTIVE);
+	}
+
+	public Concept getPositiveConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_POSITIVE);
+	}
+
+	public Concept getNegativeConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_NEGATIVE);
 	}
 
 	public String getTroubledPhoneProperty() {
