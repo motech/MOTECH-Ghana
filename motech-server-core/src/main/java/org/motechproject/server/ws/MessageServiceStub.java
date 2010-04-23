@@ -72,7 +72,7 @@ public class MessageServiceStub implements MessageService {
 			NameValuePair[] personalInfo, String patientNumber,
 			ContactNumberType patientNumberType, String langCode,
 			MediaType mediaType, Long notificationType, Date startDate,
-			Date endDate) {
+			Date endDate, String recipientId) {
 
 		StringBuilder personalInfoString = new StringBuilder();
 		for (NameValuePair pair : personalInfo) {
@@ -110,6 +110,9 @@ public class MessageServiceStub implements MessageService {
 				+ "<endDate>"
 				+ endDate
 				+ "</endDate>\n"
+				+ "<recipientId>"
+				+ recipientId
+				+ "</recipientId>\n"
 				+ "</sendPatientMessage>\n"
 				+ "--------------------------------------");
 		return MessageStatus.DELIVERED;

@@ -3126,11 +3126,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			boolean sendMessageSuccess = false;
 			if (patient != null) {
 				ContactNumberType contactNumberType = getPrimaryPersonPhoneType(person);
+				String motechId = patient.getPatientIdentifier(
+						MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID)
+						.getIdentifier();
 
 				sendMessageSuccess = sendPatientMessage(messageId,
-						personalInfo, phoneNumber, languageCode, mediaType,
-						notificationType, messageStartDate, messageEndDate,
-						contactNumberType);
+						personalInfo, motechId, phoneNumber, languageCode,
+						mediaType, notificationType, messageStartDate,
+						messageEndDate, contactNumberType);
 			} else if (nurse != null) {
 				org.motechproject.ws.Patient[] patients = new org.motechproject.ws.Patient[0];
 
@@ -3155,7 +3158,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	public boolean sendPatientMessage(String messageId,
-			NameValuePair[] personalInfo, String phoneNumber,
+			NameValuePair[] personalInfo, String motechId, String phoneNumber,
 			String languageCode, MediaType mediaType, Long notificationType,
 			Date messageStartDate, Date messageEndDate,
 			ContactNumberType contactType) {
@@ -3164,7 +3167,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			org.motechproject.ws.MessageStatus messageStatus = mobileService
 					.sendPatientMessage(messageId, personalInfo, phoneNumber,
 							contactType, languageCode, mediaType,
-							notificationType, messageStartDate, messageEndDate);
+							notificationType, messageStartDate, messageEndDate,
+							motechId);
 
 			return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
 		} catch (Exception e) {
