@@ -166,10 +166,7 @@ public class DemoPatientController {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "sex",
 				"motechmodule.sex.required");
 
-		if (!Boolean.TRUE.equals(patient.getRegisteredGHS())) {
-			errors.rejectValue("registeredGHS",
-					"motechmodule.registeredGHS.required");
-		} else {
+		if (Boolean.TRUE.equals(patient.getRegisteredGHS())) {
 			ValidationUtils.rejectIfEmpty(errors, "regNumberGHS",
 					"motechmodule.regNumberGHS.required");
 		}

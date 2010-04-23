@@ -137,10 +137,7 @@ public class MotherController {
 				"motechmodule.birthDate.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birthDateEst",
 				"motechmodule.birthDateEst.required");
-		if (!Boolean.TRUE.equals(mother.getRegisteredGHS())) {
-			errors.rejectValue("registeredGHS",
-					"motechmodule.registeredGHS.required");
-		} else {
+		if (Boolean.TRUE.equals(mother.getRegisteredGHS())) {
 			ValidationUtils.rejectIfEmpty(errors, "regNumberGHS",
 					"motechmodule.regNumberGHS.required");
 		}

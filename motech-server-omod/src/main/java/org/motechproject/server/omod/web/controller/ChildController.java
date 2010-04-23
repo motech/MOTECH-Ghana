@@ -153,10 +153,7 @@ public class ChildController {
 					"motechmodule.motechId.notexist");
 		}
 
-		if (!Boolean.TRUE.equals(child.getRegisteredGHS())) {
-			errors.rejectValue("registeredGHS",
-					"motechmodule.registeredGHS.required");
-		} else {
+		if (Boolean.TRUE.equals(child.getRegisteredGHS())) {
 			ValidationUtils.rejectIfEmpty(errors, "regNumberGHS",
 					"motechmodule.regNumberGHS.required");
 		}
