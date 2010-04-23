@@ -11,6 +11,7 @@ import org.openmrs.api.ObsService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
+import org.openmrs.module.idgen.service.IdentifierSourceService;
 import org.openmrs.scheduler.SchedulerService;
 
 /**
@@ -65,4 +66,6 @@ public interface ContextService {
 	public RegistrarBean getRegistrarBean();
 
 	public ScheduleMaintService getScheduleMaintService();
+
+	public IdentifierSourceService getIdentifierSourceService();
 }

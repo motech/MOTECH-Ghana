@@ -151,6 +151,10 @@ public class DemoPatientController {
 
 		log.debug("Register Demo Patient");
 
+		if (patient.getMotechId() != null
+				&& openmrsBean.getPatientByMotechId(patient.getMotechId()) != null) {
+			errors.rejectValue("motechId", "motechmodule.motechId.nonunique");
+		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName",
 				"motechmodule.firstName.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName",
@@ -168,12 +172,6 @@ public class DemoPatientController {
 		} else {
 			ValidationUtils.rejectIfEmpty(errors, "regNumberGHS",
 					"motechmodule.regNumberGHS.required");
-			if (patient.getRegNumberGHS() != null
-					&& openmrsBean.getPatientByMotechId(patient
-							.getRegNumberGHS()) != null) {
-				errors.rejectValue("regNumberGHS",
-						"motechmodule.regNumberGHS.nonunique");
-			}
 		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "insured",
 				"motechmodule.insured.required");
@@ -216,13 +214,14 @@ public class DemoPatientController {
 		}
 
 		if (!errors.hasErrors()) {
-			registrarBean.demoRegisterPatient(patient.getFirstName(), patient
-					.getMiddleName(), patient.getLastName(), patient
-					.getPrefName(), patient.getBirthDate(), patient
-					.getBirthDateEst(), patient.getSex(), patient
-					.getRegisteredGHS(), patient.getRegNumberGHS(), patient
-					.getInsured(), patient.getNhis(), patient.getNhisExpDate(),
-					patient.getRegion(), patient.getDistrict(), patient
+			registrarBean.demoRegisterPatient(patient.getMotechId(), patient
+					.getFirstName(), patient.getMiddleName(), patient
+					.getLastName(), patient.getPrefName(), patient
+					.getBirthDate(), patient.getBirthDateEst(), patient
+					.getSex(), patient.getRegisteredGHS(), patient
+					.getRegNumberGHS(), patient.getInsured(),
+					patient.getNhis(), patient.getNhisExpDate(), patient
+							.getRegion(), patient.getDistrict(), patient
 							.getCommunity(), patient.getAddress(), patient
 							.getClinic(), patient.getRegisterPregProgram(),
 					patient.getPrimaryPhone(), patient.getPrimaryPhoneType(),

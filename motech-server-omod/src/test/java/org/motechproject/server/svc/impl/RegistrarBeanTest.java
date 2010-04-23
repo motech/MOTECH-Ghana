@@ -62,6 +62,9 @@ import org.openmrs.api.ObsService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
+import org.openmrs.module.idgen.IdentifierSource;
+import org.openmrs.module.idgen.LogEntry;
+import org.openmrs.module.idgen.service.IdentifierSourceService;
 import org.openmrs.util.OpenmrsConstants;
 
 public class RegistrarBeanTest extends TestCase {
@@ -77,9 +80,10 @@ public class RegistrarBeanTest extends TestCase {
 	ObsService obsService;
 	ConceptService conceptService;
 	MotechService motechService;
+	IdentifierSourceService idService;
 
 	Location ghanaLocation;
-	PatientIdentifierType ghanaIdType;
+	PatientIdentifierType motechIdType;
 	PersonAttributeType nurseIdAttributeType;
 	PersonAttributeType primaryPhoneAttributeType;
 	PersonAttributeType secondaryPhoneAttributeType;
@@ -187,12 +191,13 @@ public class RegistrarBeanTest extends TestCase {
 		obsService = createMock(ObsService.class);
 		conceptService = createMock(ConceptService.class);
 		motechService = createMock(MotechService.class);
+		idService = createMock(IdentifierSourceService.class);
 
 		ghanaLocation = new Location(1);
 		ghanaLocation.setName(MotechConstants.LOCATION_GHANA);
 
-		ghanaIdType = new PatientIdentifierType(1);
-		ghanaIdType.setName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
+		motechIdType = new PatientIdentifierType(1);
+		motechIdType.setName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
 
 		primaryPhoneAttributeType = new PersonAttributeType(2);
 		primaryPhoneAttributeType
@@ -471,6 +476,7 @@ public class RegistrarBeanTest extends TestCase {
 		obsService = null;
 		conceptService = null;
 		motechService = null;
+		idService = null;
 	}
 
 	public void testRegisterChild() {
@@ -487,6 +493,8 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getLocationService()).andReturn(locationService)
 				.atLeastOnce();
+		expect(contextService.getIdentifierSourceService())
+				.andReturn(idService).atLeastOnce();
 
 		User nurseUser = new User(nurseInternalId);
 
@@ -512,15 +520,21 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation);
+
+		expect(idService.getAllIdentifierSources(false)).andReturn(
+				new ArrayList<IdentifierSource>());
+		expect(contextService.getAuthenticatedUser()).andReturn(new User());
+		expect(idService.saveLogEntry((LogEntry) anyObject())).andReturn(
+				new LogEntry());
 		expect(
 				patientService
 						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
-				.andReturn(ghanaIdType);
+				.andReturn(motechIdType).atLeastOnce();
 
 		Patient mother = new Patient();
 
 		PatientIdentifier motherIdObj = new PatientIdentifier();
-		motherIdObj.setIdentifierType(ghanaIdType);
+		motherIdObj.setIdentifierType(motechIdType);
 		motherIdObj.setIdentifier(motherId);
 		mother.addIdentifier(motherIdObj);
 
@@ -533,15 +547,17 @@ public class RegistrarBeanTest extends TestCase {
 		expect(patientService.savePatient(capture(childCapture))).andReturn(
 				new Patient());
 
-		replay(contextService, personService, patientService, locationService);
+		replay(contextService, personService, patientService, locationService,
+				idService);
 
 		regBean.registerChild(nurseUser, mother, childId, childDob,
 				childGender, childFirstName, nhis, nhisExpires);
 
-		verify(contextService, personService, patientService, locationService);
+		verify(contextService, personService, patientService, locationService,
+				idService);
 
 		Patient child = childCapture.getValue();
-		assertEquals(childId, child.getPatientIdentifier(ghanaIdType)
+		assertEquals(childId, child.getPatientIdentifier(motechIdType)
 				.getIdentifier());
 		assertEquals(testAddress.getRegion(), child.getPersonAddress()
 				.getRegion());
@@ -669,6 +685,7 @@ public class RegistrarBeanTest extends TestCase {
 	}
 
 	public void testRegisterPregnantMother() {
+		String motechId = "0123456";
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String regNumberGHS = "123ABC", nhis = "456DEF";
 		String region = "Region", district = "District", community = "Community", address = "Address";
@@ -708,11 +725,18 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getObsService()).andReturn(obsService);
 		expect(contextService.getConceptService()).andReturn(conceptService)
 				.atLeastOnce();
+		expect(contextService.getIdentifierSourceService())
+				.andReturn(idService).atLeastOnce();
 
+		expect(idService.getAllIdentifierSources(false)).andReturn(
+				new ArrayList<IdentifierSource>());
+		expect(contextService.getAuthenticatedUser()).andReturn(new User());
+		expect(idService.saveLogEntry((LogEntry) anyObject())).andReturn(
+				new LogEntry());
 		expect(
 				patientService
 						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
-				.andReturn(ghanaIdType);
+				.andReturn(motechIdType).atLeastOnce();
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation);
 
@@ -843,24 +867,24 @@ public class RegistrarBeanTest extends TestCase {
 
 		replay(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
-				conceptService);
+				conceptService, idService);
 
-		regBean.registerPregnantMother(firstName, middleName, lastName,
-				prefName, date, birthDateEst, registeredGHS, regNumberGHS,
-				insured, nhis, date, region, district, community, address,
-				clinic, date, dueDateConfirmed, gravida, parity, hivStatus,
-				registerPregProgram, primaryPhone, primaryPhoneType,
+		regBean.registerPregnantMother(motechId, firstName, middleName,
+				lastName, prefName, date, birthDateEst, registeredGHS,
+				regNumberGHS, insured, nhis, date, region, district, community,
+				address, clinic, date, dueDateConfirmed, gravida, parity,
+				hivStatus, registerPregProgram, primaryPhone, primaryPhoneType,
 				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
 				mediaTypeReminder, languageVoice, languageText, whoRegistered,
 				religion, occupation);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
-				conceptService);
+				conceptService, idService);
 
 		Patient capturedPatient = patientCap.getValue();
-		assertEquals(regNumberGHS, capturedPatient.getPatientIdentifier(
-				ghanaIdType).getIdentifier());
+		assertEquals(motechId, capturedPatient.getPatientIdentifier(
+				motechIdType).getIdentifier());
 		assertEquals(prefName, capturedPatient.getGivenName());
 		assertEquals(lastName, capturedPatient.getFamilyName());
 		assertEquals(middleName, capturedPatient.getMiddleName());
@@ -997,6 +1021,7 @@ public class RegistrarBeanTest extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	public void testRegisterChildWithProgram() {
+		String motechId = "0123456";
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String regNumberGHS = "123ABC", nhis = "456DEF";
 		String region = "Region", district = "District", community = "Community", address = "Address";
@@ -1030,11 +1055,18 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getLocationService()).andReturn(locationService);
 		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
+		expect(contextService.getIdentifierSourceService())
+				.andReturn(idService).atLeastOnce();
 
+		expect(idService.getAllIdentifierSources(false)).andReturn(
+				new ArrayList<IdentifierSource>());
+		expect(contextService.getAuthenticatedUser()).andReturn(new User());
+		expect(idService.saveLogEntry((LogEntry) anyObject())).andReturn(
+				new LogEntry());
 		expect(
 				patientService
 						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
-				.andReturn(ghanaIdType);
+				.andReturn(motechIdType).atLeastOnce();
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation);
 
@@ -1104,10 +1136,6 @@ public class RegistrarBeanTest extends TestCase {
 		expect(patientService.savePatient(capture(patientCap)))
 				.andReturn(child);
 
-		expect(
-				patientService
-						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
-				.andReturn(ghanaIdType);
 		List<Patient> motherList = new ArrayList<Patient>();
 		motherList.add(mother);
 		expect(
@@ -1141,22 +1169,23 @@ public class RegistrarBeanTest extends TestCase {
 
 		replay(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
-				conceptService);
+				conceptService, idService);
 
-		regBean.registerChild(firstName, middleName, lastName, prefName, date,
-				birthDateEst, sex, motherRegNum, registeredGHS, regNumberGHS,
-				insured, nhis, date, region, district, community, address,
-				clinic, registerPregProgram, primaryPhone, primaryPhoneType,
-				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
-				mediaTypeReminder, languageVoice, languageText, whoRegistered);
+		regBean.registerChild(motechId, firstName, middleName, lastName,
+				prefName, date, birthDateEst, sex, motherRegNum, registeredGHS,
+				regNumberGHS, insured, nhis, date, region, district, community,
+				address, clinic, registerPregProgram, primaryPhone,
+				primaryPhoneType, secondaryPhone, secondaryPhoneType,
+				mediaTypeInfo, mediaTypeReminder, languageVoice, languageText,
+				whoRegistered);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
-				conceptService);
+				conceptService, idService);
 
 		Patient capturedPatient = patientCap.getValue();
-		assertEquals(regNumberGHS, capturedPatient.getPatientIdentifier(
-				ghanaIdType).getIdentifier());
+		assertEquals(motechId, capturedPatient.getPatientIdentifier(
+				motechIdType).getIdentifier());
 		assertEquals(prefName, capturedPatient.getGivenName());
 		assertEquals(lastName, capturedPatient.getFamilyName());
 		assertEquals(middleName, capturedPatient.getMiddleName());
@@ -1242,6 +1271,7 @@ public class RegistrarBeanTest extends TestCase {
 	}
 
 	public void testRegisterPerson() {
+		String motechId = "0123456";
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String region = "Region", district = "District", community = "Community", address = "Address";
 		String religion = "Religion", occupation = "Occupation";
@@ -1276,11 +1306,18 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getObsService()).andReturn(obsService);
 		expect(contextService.getConceptService()).andReturn(conceptService)
 				.atLeastOnce();
+		expect(contextService.getIdentifierSourceService())
+				.andReturn(idService).atLeastOnce();
 
+		expect(idService.getAllIdentifierSources(false)).andReturn(
+				new ArrayList<IdentifierSource>());
+		expect(contextService.getAuthenticatedUser()).andReturn(new User());
+		expect(idService.saveLogEntry((LogEntry) anyObject())).andReturn(
+				new LogEntry());
 		expect(
 				patientService
 						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
-				.andReturn(ghanaIdType);
+				.andReturn(motechIdType).atLeastOnce();
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
@@ -1357,20 +1394,23 @@ public class RegistrarBeanTest extends TestCase {
 
 		replay(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
-				conceptService);
+				conceptService, idService);
 
-		regBean.registerPerson(firstName, middleName, lastName, prefName, date,
-				birthDateEst, sex, region, district, community, address,
-				clinic, registerPregProgram, messagesStartWeek, primaryPhone,
-				primaryPhoneType, secondaryPhone, secondaryPhoneType,
-				mediaTypeInfo, mediaTypeReminder, languageVoice, languageText,
-				howLearned, religion, occupation, whyInterested);
+		regBean.registerPerson(motechId, firstName, middleName, lastName,
+				prefName, date, birthDateEst, sex, region, district, community,
+				address, clinic, registerPregProgram, messagesStartWeek,
+				primaryPhone, primaryPhoneType, secondaryPhone,
+				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
+				languageVoice, languageText, howLearned, religion, occupation,
+				whyInterested);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
-				conceptService);
+				conceptService, idService);
 
 		Patient capturedPatient = patientCap.getValue();
+		assertEquals(motechId, capturedPatient.getPatientIdentifier(
+				motechIdType).getIdentifier());
 		assertEquals(prefName, capturedPatient.getGivenName());
 		assertEquals(lastName, capturedPatient.getFamilyName());
 		assertEquals(middleName, capturedPatient.getMiddleName());
@@ -1541,7 +1581,7 @@ public class RegistrarBeanTest extends TestCase {
 		expect(
 				patientService
 						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
-				.andReturn(ghanaIdType);
+				.andReturn(motechIdType);
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation);
 
@@ -1651,7 +1691,7 @@ public class RegistrarBeanTest extends TestCase {
 				.getCityVillage());
 		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
 		assertEquals(regNumberGHS, capturedPatient.getPatientIdentifier(
-				ghanaIdType).getIdentifier());
+				motechIdType).getIdentifier());
 		assertEquals(registeredGHS, Boolean.valueOf(capturedPatient
 				.getAttribute(ghsRegisteredAttributeType).getValue()));
 		assertEquals(insured, Boolean.valueOf(capturedPatient.getAttribute(

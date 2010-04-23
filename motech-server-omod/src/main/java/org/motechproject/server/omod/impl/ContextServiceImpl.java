@@ -14,6 +14,7 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.idgen.service.IdentifierSourceService;
 import org.openmrs.scheduler.SchedulerService;
 
 /**
@@ -115,5 +116,9 @@ public class ContextServiceImpl implements ContextService {
 
 	public ScheduleMaintService getScheduleMaintService() {
 		return this.getMotechService().getScheduleMaintService();
+	}
+
+	public IdentifierSourceService getIdentifierSourceService() {
+		return Context.getService(IdentifierSourceService.class);
 	}
 }

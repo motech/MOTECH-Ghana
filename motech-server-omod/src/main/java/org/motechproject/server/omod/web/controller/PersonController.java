@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Location;
 import org.openmrs.Patient;
@@ -41,6 +42,10 @@ public class PersonController {
 	@Autowired
 	@Qualifier("registrarBean")
 	private RegistrarBean registrarBean;
+
+	@Autowired
+	@Qualifier("openmrsBean")
+	private OpenmrsBean openmrsBean;
 
 	private ContextService contextService;
 
@@ -115,6 +120,10 @@ public class PersonController {
 
 		log.debug("Register Person");
 
+		if (person.getMotechId() != null
+				&& openmrsBean.getPatientByMotechId(person.getMotechId()) != null) {
+			errors.rejectValue("motechId", "motechmodule.motechId.nonunique");
+		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "whyInterested",
 				"motechmodule.whyinterested.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName",
@@ -165,10 +174,11 @@ public class PersonController {
 		}
 
 		if (!errors.hasErrors()) {
-			registrarBean.registerPerson(person.getFirstName(), person
-					.getMiddleName(), person.getLastName(), person
-					.getPrefName(), person.getBirthDate(), person
-					.getBirthDateEst(), person.getSex(), person.getRegion(),
+			registrarBean.registerPerson(person.getMotechId(), person
+					.getFirstName(), person.getMiddleName(), person
+					.getLastName(), person.getPrefName(),
+					person.getBirthDate(), person.getBirthDateEst(), person
+							.getSex(), person.getRegion(),
 					person.getDistrict(), person.getCommunity(), person
 							.getAddress(), person.getClinic(), person
 							.getRegisterPregProgram(), person

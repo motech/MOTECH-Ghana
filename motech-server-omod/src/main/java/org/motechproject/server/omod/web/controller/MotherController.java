@@ -125,6 +125,10 @@ public class MotherController {
 
 		log.debug("Register Pregnant Mother");
 
+		if (mother.getMotechId() != null
+				&& openmrsBean.getPatientByMotechId(mother.getMotechId()) != null) {
+			errors.rejectValue("motechId", "motechmodule.motechId.nonunique");
+		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName",
 				"motechmodule.firstName.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName",
@@ -139,12 +143,6 @@ public class MotherController {
 		} else {
 			ValidationUtils.rejectIfEmpty(errors, "regNumberGHS",
 					"motechmodule.regNumberGHS.required");
-			if (mother.getRegNumberGHS() != null
-					&& openmrsBean.getPatientByMotechId(mother
-							.getRegNumberGHS()) != null) {
-				errors.rejectValue("regNumberGHS",
-						"motechmodule.regNumberGHS.nonunique");
-			}
 		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "insured",
 				"motechmodule.insured.required");
@@ -210,12 +208,13 @@ public class MotherController {
 		}
 
 		if (!errors.hasErrors()) {
-			registrarBean.registerPregnantMother(mother.getFirstName(), mother
-					.getMiddleName(), mother.getLastName(), mother
-					.getPrefName(), mother.getBirthDate(), mother
-					.getBirthDateEst(), mother.getRegisteredGHS(), mother
-					.getRegNumberGHS(), mother.getInsured(), mother.getNhis(),
-					mother.getNhisExpDate(), mother.getRegion(), mother
+			registrarBean.registerPregnantMother(mother.getMotechId(), mother
+					.getFirstName(), mother.getMiddleName(), mother
+					.getLastName(), mother.getPrefName(),
+					mother.getBirthDate(), mother.getBirthDateEst(), mother
+							.getRegisteredGHS(), mother.getRegNumberGHS(),
+					mother.getInsured(), mother.getNhis(), mother
+							.getNhisExpDate(), mother.getRegion(), mother
 							.getDistrict(), mother.getCommunity(), mother
 							.getAddress(), mother.getClinic(), mother
 							.getDueDate(), mother.getDueDateConfirmed(), mother

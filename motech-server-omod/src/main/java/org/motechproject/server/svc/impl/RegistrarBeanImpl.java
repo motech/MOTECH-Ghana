@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -31,6 +30,7 @@ import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.model.WhoRegistered;
 import org.motechproject.server.model.WhyInterested;
 import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.omod.MotechIdVerhoeffValidator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.tasks.MessageProgramUpdateTask;
 import org.motechproject.server.omod.tasks.NotificationTask;
@@ -79,6 +79,10 @@ import org.openmrs.api.ObsService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
+import org.openmrs.module.idgen.IdentifierSource;
+import org.openmrs.module.idgen.LogEntry;
+import org.openmrs.module.idgen.SequentialIdentifierGenerator;
+import org.openmrs.module.idgen.service.IdentifierSourceService;
 import org.openmrs.scheduler.SchedulerException;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.TaskDefinition;
@@ -144,12 +148,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void registerChild(String firstName, String middleName,
-			String lastName, String prefName, Date birthDate,
-			Boolean birthDateEst, Gender sex, String motherMotechId,
-			Boolean registeredGHS, String regNumberGHS, Boolean insured,
-			String nhis, Date nhisExpDate, String region, String district,
-			String community, String address, Integer clinic,
+	public void registerChild(String motechId, String firstName,
+			String middleName, String lastName, String prefName,
+			Date birthDate, Boolean birthDateEst, Gender sex,
+			String motherMotechId, Boolean registeredGHS, String regNumberGHS,
+			Boolean insured, String nhis, Date nhisExpDate, String region,
+			String district, String community, String address, Integer clinic,
 			Boolean registerPregProgram, String primaryPhone,
 			ContactNumberType primaryPhoneType, String secondaryPhone,
 			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
@@ -159,7 +163,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		PatientService patientService = contextService.getPatientService();
 		PersonService personService = contextService.getPersonService();
 
-		Patient child = createPatient(regNumberGHS, firstName, middleName,
+		Patient child = createPatient(motechId, firstName, middleName,
 				lastName, prefName, birthDate, birthDateEst, sex,
 				registeredGHS, regNumberGHS, null, insured, nhis, nhisExpDate,
 				null, region, district, community, address, clinic,
@@ -270,13 +274,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void registerPregnantMother(String firstName, String middleName,
-			String lastName, String prefName, Date birthDate,
-			Boolean birthDateEst, Boolean registeredGHS, String regNumberGHS,
-			Boolean insured, String nhis, Date nhisExpDate, String region,
-			String district, String community, String address, Integer clinic,
-			Date dueDate, Boolean dueDateConfirmed, Integer gravida,
-			Integer parity, HIVStatus hivStatus, Boolean registerPregProgram,
+	public void registerPregnantMother(String motechId, String firstName,
+			String middleName, String lastName, String prefName,
+			Date birthDate, Boolean birthDateEst, Boolean registeredGHS,
+			String regNumberGHS, Boolean insured, String nhis,
+			Date nhisExpDate, String region, String district, String community,
+			String address, Integer clinic, Date dueDate,
+			Boolean dueDateConfirmed, Integer gravida, Integer parity,
+			HIVStatus hivStatus, Boolean registerPregProgram,
 			String primaryPhone, ContactNumberType primaryPhoneType,
 			String secondaryPhone, ContactNumberType secondaryPhoneType,
 			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
@@ -285,7 +290,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		PatientService patientService = contextService.getPatientService();
 
-		Patient mother = createPatient(regNumberGHS, firstName, middleName,
+		Patient mother = createPatient(motechId, firstName, middleName,
 				lastName, prefName, birthDate, birthDateEst, Gender.FEMALE,
 				registeredGHS, null, regNumberGHS, insured, nhis, nhisExpDate,
 				hivStatus, region, district, community, address, clinic,
@@ -308,21 +313,22 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void demoRegisterPatient(String firstName, String middleName,
-			String lastName, String prefName, Date birthDate,
-			Boolean birthDateEst, Gender sex, Boolean registeredGHS,
-			String regNumberGHS, Boolean insured, String nhis,
-			Date nhisExpDate, String region, String district, String community,
-			String address, Integer clinic, Boolean registerPregProgram,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText,
-			WhoRegistered whoRegistered, String religion, String occupation) {
+	public void demoRegisterPatient(String motechId, String firstName,
+			String middleName, String lastName, String prefName,
+			Date birthDate, Boolean birthDateEst, Gender sex,
+			Boolean registeredGHS, String regNumberGHS, Boolean insured,
+			String nhis, Date nhisExpDate, String region, String district,
+			String community, String address, Integer clinic,
+			Boolean registerPregProgram, String primaryPhone,
+			ContactNumberType primaryPhoneType, String secondaryPhone,
+			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
+			MediaType mediaTypeReminder, String languageVoice,
+			String languageText, WhoRegistered whoRegistered, String religion,
+			String occupation) {
 
 		PatientService patientService = contextService.getPatientService();
 
-		Patient patient = createPatient(regNumberGHS, firstName, middleName,
+		Patient patient = createPatient(motechId, firstName, middleName,
 				lastName, prefName, birthDate, birthDateEst, sex,
 				registeredGHS, null, null, insured, nhis, nhisExpDate, null,
 				region, district, community, address, clinic, primaryPhone,
@@ -346,10 +352,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void registerPerson(String firstName, String middleName,
-			String lastName, String prefName, Date birthDate,
-			Boolean birthDateEst, Gender sex, String region, String district,
-			String community, String address, Integer clinic,
+	public void registerPerson(String motechId, String firstName,
+			String middleName, String lastName, String prefName,
+			Date birthDate, Boolean birthDateEst, Gender sex, String region,
+			String district, String community, String address, Integer clinic,
 			Boolean registerPregProgram, Integer messagesStartWeek,
 			String primaryPhone, ContactNumberType primaryPhoneType,
 			String secondaryPhone, ContactNumberType secondaryPhoneType,
@@ -359,9 +365,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		PatientService patientService = contextService.getPatientService();
 
-		String tempMotechID = UUID.randomUUID().toString();
-
-		Patient patient = createPatient(tempMotechID, firstName, middleName,
+		Patient patient = createPatient(motechId, firstName, middleName,
 				lastName, prefName, birthDate, birthDateEst, sex, null, null,
 				null, null, null, null, null, region, district, community,
 				address, clinic, primaryPhone, primaryPhoneType,
@@ -415,6 +419,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			WhyInterested whyInterested) {
 
 		Patient patient = new Patient();
+
+		if (motechId == null) {
+			motechId = generateMotechId();
+		} else {
+			excludeIdForGenerator(motechId);
+		}
 
 		patient.addIdentifier(new PatientIdentifier(motechId,
 				getMotechPatientIdType(), getGhanaLocation()));
@@ -2226,9 +2236,17 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				String.class.getName(), admin);
 
 		log.info("Verifying Patient Identifier Exist");
-		createPatientIdentifierType(
+		PatientIdentifierType motechIDType = createPatientIdentifierType(
 				MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID,
-				"Patient Id for MoTeCH system.", admin);
+				"Patient Id for MoTeCH system.",
+				MotechIdVerhoeffValidator.class.getName(), admin);
+
+		log.info("Verifying Patient Identifier Generator Exists");
+		createSequentialPatientIdentifierGenerator(
+				MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID, motechIDType,
+				MotechIdVerhoeffValidator.ALLOWED_CHARS,
+				MotechConstants.IDGEN_SEQ_ID_GEN_FIRST_MOTECH_ID_BASE,
+				MotechIdVerhoeffValidator.VERHOEFF_ID_LENGTH);
 
 		log.info("Verifying Locations Exist");
 		Location ghana = createLocation(MotechConstants.LOCATION_GHANA,
@@ -2611,19 +2629,118 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 	}
 
-	private void createPatientIdentifierType(String name, String description,
-			User creator) {
+	private String generateMotechId() {
+		String motechId = null;
+		PatientIdentifierType motechIdType = getMotechPatientIdType();
+		try {
+			IdentifierSourceService idSourceService = contextService
+					.getIdentifierSourceService();
+
+			SequentialIdentifierGenerator idGenerator = getSeqIdGenerator(
+					MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID, motechIdType);
+			motechId = idSourceService.generateIdentifier(idGenerator,
+					MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID_GEN_COMMENT);
+
+		} catch (Exception e) {
+			log.error("Error generating Motech Id using Idgen module", e);
+		}
+		return motechId;
+	}
+
+	private void excludeIdForGenerator(String motechId) {
+		PatientIdentifierType motechIdType = getMotechPatientIdType();
+		try {
+			IdentifierSourceService idSourceService = contextService
+					.getIdentifierSourceService();
+
+			SequentialIdentifierGenerator idGenerator = getSeqIdGenerator(
+					MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID, motechIdType);
+
+			// Persisted only if match for source and id doesn't already exist
+			LogEntry newLog = new LogEntry();
+			newLog.setSource(idGenerator);
+			newLog.setIdentifier(motechId);
+			newLog.setDateGenerated(new Date());
+			newLog.setGeneratedBy(contextService.getAuthenticatedUser());
+			newLog
+					.setComment(MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID_MANUAL_COMMENT);
+			idSourceService.saveLogEntry(newLog);
+
+		} catch (Exception e) {
+			log.error("Error verifying Motech Id in Log of Idgen module", e);
+		}
+	}
+
+	private SequentialIdentifierGenerator getSeqIdGenerator(String name,
+			PatientIdentifierType identifierType) {
+
+		SequentialIdentifierGenerator idGenerator = null;
+		try {
+			IdentifierSourceService idSourceService = contextService
+					.getIdentifierSourceService();
+
+			List<IdentifierSource> idSources = idSourceService
+					.getAllIdentifierSources(false);
+
+			for (IdentifierSource idSource : idSources) {
+				if (idSource instanceof SequentialIdentifierGenerator
+						&& idSource.getName().equals(name)
+						&& idSource.getIdentifierType().equals(identifierType)) {
+					idGenerator = (SequentialIdentifierGenerator) idSource;
+					break;
+				}
+			}
+		} catch (Exception e) {
+			log.error("Error retrieving Patient Id generator in Idgen module",
+					e);
+		}
+		return idGenerator;
+	}
+
+	private void createSequentialPatientIdentifierGenerator(String name,
+			PatientIdentifierType identifierType, String baseCharacterSet,
+			String firstIdentifierBase, Integer length) {
+		try {
+			IdentifierSourceService idSourceService = contextService
+					.getIdentifierSourceService();
+
+			SequentialIdentifierGenerator idGenerator = getSeqIdGenerator(name,
+					identifierType);
+
+			if (idGenerator == null) {
+				idGenerator = new SequentialIdentifierGenerator();
+				log
+						.info(name
+								+ " Sequential Patient Id Generator Does Not Exist - Creating");
+			}
+
+			idGenerator.setName(name);
+			idGenerator.setIdentifierType(identifierType);
+			idGenerator.setBaseCharacterSet(baseCharacterSet);
+			idGenerator.setFirstIdentifierBase(firstIdentifierBase);
+			idGenerator.setLength(length);
+
+			idSourceService.saveIdentifierSource(idGenerator);
+
+		} catch (Exception e) {
+			log.error("Error creating Patient Id generator in Idgen module", e);
+		}
+	}
+
+	private PatientIdentifierType createPatientIdentifierType(String name,
+			String description, String validator, User creator) {
 		PatientService patientService = contextService.getPatientService();
 		PatientIdentifierType idType = patientService
 				.getPatientIdentifierTypeByName(name);
 		if (idType == null) {
 			log.info(name + " PatientIdentifierType Does Not Exist - Creating");
 			idType = new PatientIdentifierType();
-			idType.setName(name);
-			idType.setDescription(description);
-			idType.setCreator(creator);
-			patientService.savePatientIdentifierType(idType);
 		}
+		idType.setName(name);
+		idType.setDescription(description);
+		idType.setCreator(creator);
+		idType.setValidator(validator);
+		return patientService.savePatientIdentifierType(idType);
 	}
 
 	private Location createLocation(String name, String description,

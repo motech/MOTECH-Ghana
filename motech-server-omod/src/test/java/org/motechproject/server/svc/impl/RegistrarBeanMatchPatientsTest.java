@@ -79,7 +79,7 @@ public class RegistrarBeanMatchPatientsTest extends
 			RegistrarBean regService = Context.getService(MotechService.class)
 					.getRegistrarBean();
 
-			String motechId = "GHSRegNumber";
+			String motechId = "1234620";
 			String firstName = "FirstName";
 			String middleName = "MiddleName";
 			String lastName = "LastName";
@@ -90,11 +90,11 @@ public class RegistrarBeanMatchPatientsTest extends
 			String nhisNumber = "NHISNumber";
 			Date date = new Date();
 
-			regService.registerPregnantMother(firstName, middleName, lastName,
-					prefName, date, false, true, motechId, true, nhisNumber,
-					date, "region", "district", community, "address", 1, date,
-					true, 0, 0, HIVStatus.NEGATIVE, false, primaryPhone,
-					ContactNumberType.PERSONAL, secondaryPhone,
+			regService.registerPregnantMother(motechId, firstName, middleName,
+					lastName, prefName, date, false, true, "GHSNum", true,
+					nhisNumber, date, "region", "district", community,
+					"address", 1, date, true, 0, 0, HIVStatus.NEGATIVE, false,
+					primaryPhone, ContactNumberType.PERSONAL, secondaryPhone,
 					ContactNumberType.PERSONAL, MediaType.TEXT, MediaType.TEXT,
 					"languageVoice", "languageText", WhoRegistered.CHPS_STAFF,
 					"religion", "occupation");

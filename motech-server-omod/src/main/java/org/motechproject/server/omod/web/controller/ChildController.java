@@ -54,7 +54,7 @@ public class ChildController {
 	public void setContextService(ContextService contextService) {
 		this.contextService = contextService;
 	}
-	
+
 	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
 		this.openmrsBean = openmrsBean;
 	}
@@ -125,6 +125,10 @@ public class ChildController {
 
 		log.debug("Register Child");
 
+		if (child.getMotechId() != null
+				&& openmrsBean.getPatientByMotechId(child.getMotechId()) != null) {
+			errors.rejectValue("motechId", "motechmodule.motechId.nonunique");
+		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName",
 				"motechmodule.lastName.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birthDate",
@@ -155,12 +159,6 @@ public class ChildController {
 		} else {
 			ValidationUtils.rejectIfEmpty(errors, "regNumberGHS",
 					"motechmodule.regNumberGHS.required");
-			if (child.getRegNumberGHS() != null
-					&& openmrsBean
-							.getPatientByMotechId(child.getRegNumberGHS()) != null) {
-				errors.rejectValue("regNumberGHS",
-						"motechmodule.regNumberGHS.nonunique");
-			}
 		}
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "insured",
@@ -204,9 +202,10 @@ public class ChildController {
 
 		if (!errors.hasErrors()) {
 
-			registrarBean.registerChild(child.getFirstName(), child
-					.getMiddleName(), child.getLastName(), child.getPrefName(),
-					child.getBirthDate(), child.getBirthDateEst(), child
+			registrarBean.registerChild(child.getMotechId(), child
+					.getFirstName(), child.getMiddleName(),
+					child.getLastName(), child.getPrefName(), child
+							.getBirthDate(), child.getBirthDateEst(), child
 							.getSex(), child.getMotherMotechId(), child
 							.getRegisteredGHS(), child.getRegNumberGHS(), child
 							.getInsured(), child.getNhis(), child

@@ -98,9 +98,10 @@ public class MessageProgramUpdateTaskTest extends
 					.getRegistrarBean();
 
 			Date date = new Date();
-			regService.registerPerson("firstName", "middleName", "lastName",
-					"prefName", date, false, Gender.FEMALE, "region",
-					"district", "community", "address", 1, true, 4,
+			String motechId = "1234665";
+			regService.registerPerson(motechId, "firstName", "middleName",
+					"lastName", "prefName", date, false, Gender.FEMALE,
+					"region", "district", "community", "address", 1, true, 4,
 					"primaryPhone", ContactNumberType.PERSONAL,
 					"secondaryPhone", ContactNumberType.HOUSEHOLD,
 					MediaType.TEXT, MediaType.TEXT, "languageVoice",
@@ -109,7 +110,7 @@ public class MessageProgramUpdateTaskTest extends
 
 			List<Patient> matchingPatients = regService.getPatients(
 					"firstName", "lastName", "prefName", date, "community",
-					"primaryPhone", null, null);
+					"primaryPhone", null, motechId);
 			assertEquals(1, matchingPatients.size());
 			Patient patient = matchingPatients.get(0);
 			patientId = patient.getPatientId();

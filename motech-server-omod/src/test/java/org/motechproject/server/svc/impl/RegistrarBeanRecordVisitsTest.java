@@ -89,11 +89,11 @@ public class RegistrarBeanRecordVisitsTest extends
 			RegistrarBean regService = motechService.getRegistrarBean();
 			OpenmrsBean openmrsService = motechService.getOpenmrsBean();
 
-			String mother1Id = "MotherRegNumber1";
-			String mother2Id = "MotherRegNumber2";
-			String child1Id = "ChildRegNumber1";
-			String child2Id = "ChildRegNumber2";
-			String child3Id = "ChildRegNumber3";
+			String mother1Id = "1234575";
+			String mother2Id = "1234581";
+			String child1Id = "1234599";
+			String child2Id = "1234608";
+			String child3Id = "1234612";
 			String nurseId = "NurseId";
 			Date date = new Date();
 
@@ -102,40 +102,43 @@ public class RegistrarBeanRecordVisitsTest extends
 			User nurse = openmrsService.getNurseByCHPSId(nurseId);
 			assertNotNull("Nurse not registered", nurse);
 
-			regService.registerPregnantMother("Mother1FirstName",
+			regService.registerPregnantMother(mother1Id, "Mother1FirstName",
 					"Mother1MiddleName", "Mother1LastName", "Mother1PrefName",
-					date, false, true, mother1Id, true, "nhisNumber1", date,
-					"region", "district", "community", "address", 1, date,
-					true, 0, 0, HIVStatus.NEGATIVE, false, "primaryPhone",
-					ContactNumberType.PERSONAL, "secondaryPhone",
-					ContactNumberType.PERSONAL, MediaType.TEXT, MediaType.TEXT,
-					"languageVoice", "languageText", WhoRegistered.CHPS_STAFF,
-					"religion", "occupation");
+					date, false, true, "Mother1GHSNum", true, "nhisNumber1",
+					date, "region", "district", "community", "address", 1,
+					date, true, 0, 0, HIVStatus.NEGATIVE, false,
+					"primaryPhone", ContactNumberType.PERSONAL,
+					"secondaryPhone", ContactNumberType.PERSONAL,
+					MediaType.TEXT, MediaType.TEXT, "languageVoice",
+					"languageText", WhoRegistered.CHPS_STAFF, "religion",
+					"occupation");
 
 			Patient mother1 = openmrsService.getPatientByMotechId(mother1Id);
 			assertNotNull("Mother 1 not registered", mother1);
 
-			regService.registerPregnantMother("Mother2FirstName",
+			regService.registerPregnantMother(mother2Id, "Mother2FirstName",
 					"Mother2MiddleName", "Mother2LastName", "Mother2PrefName",
-					date, false, true, mother2Id, true, "nhisNumber2", date,
-					"region", "district", "community", "address", 1, date,
-					true, 0, 0, HIVStatus.NEGATIVE, false, "primaryPhone",
-					ContactNumberType.PERSONAL, "secondaryPhone",
-					ContactNumberType.PERSONAL, MediaType.TEXT, MediaType.TEXT,
-					"languageVoice", "languageText", WhoRegistered.CHPS_STAFF,
-					"religion", "occupation");
+					date, false, true, "Mother2GHSNum", true, "nhisNumber2",
+					date, "region", "district", "community", "address", 1,
+					date, true, 0, 0, HIVStatus.NEGATIVE, false,
+					"primaryPhone", ContactNumberType.PERSONAL,
+					"secondaryPhone", ContactNumberType.PERSONAL,
+					MediaType.TEXT, MediaType.TEXT, "languageVoice",
+					"languageText", WhoRegistered.CHPS_STAFF, "religion",
+					"occupation");
 
 			Patient mother2 = openmrsService.getPatientByMotechId(mother2Id);
 			assertNotNull("Mother 2 not registered", mother2);
 
-			regService.registerChild("Child1FirstName", "Child1MiddleName",
-					"Child1LastName", "Child1PrefName", date, false,
-					Gender.FEMALE, mother1Id, true, child1Id, true,
-					"nhisNumber3", date, "region", "district", "community",
-					"address", 1, false, "primaryPhone",
-					ContactNumberType.PERSONAL, "secondaryPhone",
-					ContactNumberType.PERSONAL, MediaType.TEXT, MediaType.TEXT,
-					"languageVoice", "languageText", WhoRegistered.CHPS_STAFF);
+			regService.registerChild(child1Id, "Child1FirstName",
+					"Child1MiddleName", "Child1LastName", "Child1PrefName",
+					date, false, Gender.FEMALE, mother1Id, true,
+					"Child1GHSNum", true, "nhisNumber3", date, "region",
+					"district", "community", "address", 1, false,
+					"primaryPhone", ContactNumberType.PERSONAL,
+					"secondaryPhone", ContactNumberType.PERSONAL,
+					MediaType.TEXT, MediaType.TEXT, "languageVoice",
+					"languageText", WhoRegistered.CHPS_STAFF);
 
 			Patient child1 = openmrsService.getPatientByMotechId(child1Id);
 			assertNotNull("Child 1 not registered", child1);

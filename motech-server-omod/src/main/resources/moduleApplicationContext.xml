@@ -101,6 +101,19 @@
 		</property>
 	</bean>
 
+	<bean parent="patientServiceTarget">
+		<property name="identifierValidators">
+			<map>
+				<entry>
+					<key>
+						<value>org.motechproject.server.omod.MotechIdVerhoeffValidator</value>
+					</key>
+					<bean class="org.motechproject.server.omod.MotechIdVerhoeffValidator"/>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
 	<!-- Web Services Section -->
 	<wss:binding url="/ws/RegistrarService" service="#registrarservice" /> <!-- MUST start with /ws/ -->
 	<ws:service id="registrarservice" bean="#registrarWebService" />

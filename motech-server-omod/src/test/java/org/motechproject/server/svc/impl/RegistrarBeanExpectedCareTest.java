@@ -87,7 +87,7 @@ public class RegistrarBeanExpectedCareTest extends
 			mother.addAddress(address);
 
 			Date date = new Date();
-			String childId = "ChildId";
+			String childId = "1234631";
 			regService.registerChild(null, mother, childId, date,
 					Gender.FEMALE, "FirstName", "nhis", date);
 			Patient patient = openmrsService.getPatientByMotechId(childId);

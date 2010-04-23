@@ -35,6 +35,11 @@
 		<td><form:errors path="whoRegistered" cssClass="error" /></td>
 	</tr>
 	<tr>
+		<td><label for="motechId">MoTeCH ID:</label></td>
+		<td><form:input path="motechId" /></td>
+		<td><form:errors path="motechId" cssClass="error" /></td>
+	</tr>
+	<tr>
 		<td><label for="firstName">First Name:</label></td>
 		<td><form:input path="firstName" onchange="findDuplicates()" /></td>
 		<td><form:errors path="firstName" cssClass="error" /></td>
