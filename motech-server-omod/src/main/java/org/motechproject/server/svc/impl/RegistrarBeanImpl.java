@@ -470,116 +470,116 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			String regNumberCWC, String regNumberANC, HIVStatus hivStatus,
 			Boolean insured, String nhis, Date nhisExpDate) {
 
+		List<PersonAttribute> attrs = new ArrayList<PersonAttribute>();
+
 		if (clinic != null) {
-			patient.addAttribute(new PersonAttribute(getClinicAttributeType(),
-					clinic.toString()));
+			attrs.add(new PersonAttribute(getClinicAttributeType(), clinic
+					.toString()));
 		}
 
 		if (primaryPhone != null) {
-			patient.addAttribute(new PersonAttribute(
-					getPrimaryPhoneNumberAttributeType(), primaryPhone));
+			attrs.add(new PersonAttribute(getPrimaryPhoneNumberAttributeType(),
+					primaryPhone));
 		}
 
 		if (primaryPhoneType != null) {
-			patient
-					.addAttribute(new PersonAttribute(
-							getPrimaryPhoneTypeAttributeType(),
-							primaryPhoneType.name()));
+			attrs.add(new PersonAttribute(getPrimaryPhoneTypeAttributeType(),
+					primaryPhoneType.name()));
 		}
 
 		if (secondaryPhone != null) {
-			patient.addAttribute(new PersonAttribute(
+			attrs.add(new PersonAttribute(
 					getSecondaryPhoneNumberAttributeType(), secondaryPhone));
 		}
 
 		if (secondaryPhoneType != null) {
-			patient.addAttribute(new PersonAttribute(
-					getSecondaryPhoneTypeAttributeType(), secondaryPhoneType
-							.name()));
+			attrs.add(new PersonAttribute(getSecondaryPhoneTypeAttributeType(),
+					secondaryPhoneType.name()));
 		}
 
 		if (mediaTypeInfo != null) {
-			patient.addAttribute(new PersonAttribute(
+			attrs.add(new PersonAttribute(
 					getMediaTypeInformationalAttributeType(), mediaTypeInfo
 							.name()));
 		}
 
 		if (mediaTypeReminder != null) {
-			patient.addAttribute(new PersonAttribute(
-					getMediaTypeReminderAttributeType(), mediaTypeReminder
-							.name()));
+			attrs.add(new PersonAttribute(getMediaTypeReminderAttributeType(),
+					mediaTypeReminder.name()));
 		}
 
 		if (languageText != null) {
-			patient.addAttribute(new PersonAttribute(
-					getLanguageTextAttributeType(), languageText));
+			attrs.add(new PersonAttribute(getLanguageTextAttributeType(),
+					languageText));
 		}
 
 		if (languageVoice != null) {
-			patient.addAttribute(new PersonAttribute(
-					getLanguageVoiceAttributeType(), languageVoice));
+			attrs.add(new PersonAttribute(getLanguageVoiceAttributeType(),
+					languageVoice));
 		}
 
 		if (religion != null) {
-			patient.addAttribute(new PersonAttribute(
-					getReligionAttributeType(), religion));
+			attrs
+					.add(new PersonAttribute(getReligionAttributeType(),
+							religion));
 		}
 
 		if (occupation != null) {
-			patient.addAttribute(new PersonAttribute(
-					getOccupationAttributeType(), occupation));
+			attrs.add(new PersonAttribute(getOccupationAttributeType(),
+					occupation));
 		}
 
 		if (howLearned != null) {
-			patient.addAttribute(new PersonAttribute(
-					getHowLearnedAttributeType(), howLearned));
+			attrs.add(new PersonAttribute(getHowLearnedAttributeType(),
+					howLearned));
 		}
 
 		if (whyInterested != null) {
-			patient.addAttribute(new PersonAttribute(
-					getWhyInterestedAttributeType(), whyInterested.name()));
+			attrs.add(new PersonAttribute(getWhyInterestedAttributeType(),
+					whyInterested.name()));
 		}
 
 		if (whoRegistered != null) {
-			patient.addAttribute(new PersonAttribute(
-					getWhoRegisteredAttributeType(), whoRegistered.name()));
+			attrs.add(new PersonAttribute(getWhoRegisteredAttributeType(),
+					whoRegistered.name()));
 		}
 
 		if (registeredGHS != null) {
-			patient.addAttribute(new PersonAttribute(
-					getGHSRegisteredAttributeType(), registeredGHS.toString()));
+			attrs.add(new PersonAttribute(getGHSRegisteredAttributeType(),
+					registeredGHS.toString()));
 		}
 
 		if (regNumberCWC != null) {
-			patient.addAttribute(new PersonAttribute(
+			attrs.add(new PersonAttribute(
 					getCWCRegistrationNumberAttributeType(), regNumberCWC));
 		}
 
 		if (regNumberANC != null) {
-			patient.addAttribute(new PersonAttribute(
+			attrs.add(new PersonAttribute(
 					getANCRegistrationNumberAttributeType(), regNumberANC));
 		}
 
 		if (hivStatus != null) {
-			patient.addAttribute(new PersonAttribute(
-					getHIVStatusAttributeType(), hivStatus.name()));
+			attrs.add(new PersonAttribute(getHIVStatusAttributeType(),
+					hivStatus.name()));
 		}
 
 		if (insured != null) {
-			patient.addAttribute(new PersonAttribute(getInsuredAttributeType(),
-					insured.toString()));
+			attrs.add(new PersonAttribute(getInsuredAttributeType(), insured
+					.toString()));
 		}
 
 		if (nhis != null) {
-			patient.addAttribute(new PersonAttribute(
-					getNHISNumberAttributeType(), nhis));
+			attrs.add(new PersonAttribute(getNHISNumberAttributeType(), nhis));
 		}
 
 		if (nhisExpDate != null) {
-			patient.addAttribute(new PersonAttribute(
-					getNHISExpirationDateAttributeType(), nhisExpDate
-							.toString()));
+			attrs.add(new PersonAttribute(getNHISExpirationDateAttributeType(),
+					nhisExpDate.toString()));
 		}
+
+		for (PersonAttribute attr : attrs)
+			patient.addAttribute(attr);
 	}
 
 	@Transactional
