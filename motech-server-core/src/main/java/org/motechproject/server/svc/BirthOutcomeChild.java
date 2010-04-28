@@ -6,16 +6,16 @@ import org.motechproject.ws.Gender;
 public class BirthOutcomeChild {
 
 	BirthOutcome outcome;
-	String patientId;
+	Integer motechId;
 	Gender sex;
 	String firstName;
 	Boolean opv;
 	Boolean bcg;
 
-	public BirthOutcomeChild(BirthOutcome outcome, String patientId,
+	public BirthOutcomeChild(BirthOutcome outcome, Integer motechId,
 			Gender sex, String firstName, Boolean opv, Boolean bcg) {
 		setOutcome(outcome);
-		setPatientId(patientId);
+		setMotechId(motechId);
 		setSex(sex);
 		setFirstName(firstName);
 		setOpv(opv);
@@ -33,12 +33,12 @@ public class BirthOutcomeChild {
 		this.outcome = outcome;
 	}
 
-	public String getPatientId() {
-		return patientId;
+	public Integer getMotechId() {
+		return motechId;
 	}
 
-	public void setPatientId(String patientId) {
-		this.patientId = patientId;
+	public void setMotechId(Integer motechId) {
+		this.motechId = motechId;
 	}
 
 	public Gender getSex() {

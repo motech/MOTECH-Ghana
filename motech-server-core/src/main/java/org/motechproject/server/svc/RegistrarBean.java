@@ -15,8 +15,8 @@ import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.model.WhoRegistered;
 import org.motechproject.server.model.WhyInterested;
 import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DeliveredBy;
 import org.motechproject.ws.Gender;
+import org.motechproject.ws.HIVResult;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
 import org.openmrs.Encounter;
@@ -139,8 +139,7 @@ public interface RegistrarBean {
 	public void recordMotherANCVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Date date, Patient patient, Integer visitNumber, Integer ttDose,
-			Integer iptDose, Boolean itnUse,
-			org.motechproject.ws.HIVStatus hivStatus);
+			Integer iptDose, Boolean itnUse, HIVResult hivResult);
 
 	@RunAsAdminUser
 	public void recordPregnancyTermination(
@@ -152,7 +151,7 @@ public interface RegistrarBean {
 	public void recordPregnancyDelivery(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Date date, Patient patient, Integer method, Integer outcome,
-			Integer location, DeliveredBy deliveredBy, Boolean maternalDeath,
+			Integer location, Integer deliveredBy, Boolean maternalDeath,
 			Integer cause, List<BirthOutcomeChild> outcomes);
 
 	@RunAsAdminUser

@@ -3,7 +3,6 @@ package org.motechproject.server.ws;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -20,11 +19,16 @@ import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.BirthOutcome;
 import org.motechproject.ws.Care;
 import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DeliveredBy;
+import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
-import org.motechproject.ws.HIVStatus;
+import org.motechproject.ws.HIVResult;
+import org.motechproject.ws.HowLearned;
+import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.LogType;
+import org.motechproject.ws.MediaType;
 import org.motechproject.ws.Patient;
+import org.motechproject.ws.RegistrantType;
+import org.motechproject.ws.RegistrationMode;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationErrors;
 import org.motechproject.ws.server.ValidationException;
@@ -50,19 +54,45 @@ public class RegistrarWebService implements RegistrarService {
 	WebServiceModelConverter modelConverter;
 
 	@WebMethod
-	public void recordMotherANCVisit(@WebParam(name = "chpsId") String chpsId,
+	public void recordMotherANCVisit(
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
 			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") String motechId,
+			@WebParam(name = "motechId") Integer motechId,
 			@WebParam(name = "visitNumber") Integer visitNumber,
+			@WebParam(name = "location") Integer location,
+			@WebParam(name = "house") String house,
+			@WebParam(name = "community") String community,
+			@WebParam(name = "estDeliveryDate") Date estDeliveryDate,
+			@WebParam(name = "bpSystolic") Integer bpSystolic,
+			@WebParam(name = "bpDiastolic") Integer bpDiastolic,
+			@WebParam(name = "weight") Double weight,
 			@WebParam(name = "ttDose") Integer ttDose,
 			@WebParam(name = "iptDose") Integer iptDose,
+			@WebParam(name = "iptReactive") Boolean iptReactive,
 			@WebParam(name = "itnUse") Boolean itnUse,
-			@WebParam(name = "hivStatus") HIVStatus hivStatus)
+			@WebParam(name = "fht") Integer fht,
+			@WebParam(name = "fhr") Integer fhr,
+			@WebParam(name = "urineTestProteinPositive") Boolean urineTestProteinPositive,
+			@WebParam(name = "urineTestGlucosePositive") Boolean urineTestGlucosePositive,
+			@WebParam(name = "hemoglobin") Double hemoglobin,
+			@WebParam(name = "vdrlReactive") Boolean vdrlReactive,
+			@WebParam(name = "vdrlTreatment") Boolean vdrlTreatment,
+			@WebParam(name = "dewormer") Boolean dewormer,
+			@WebParam(name = "maleInvolved") Boolean maleInvolved,
+			@WebParam(name = "pmtct") Boolean pmtct,
+			@WebParam(name = "preTestCounseled") Boolean preTestCounseled,
+			@WebParam(name = "hivTestResult") HIVResult hivTestResult,
+			@WebParam(name = "postTestCounseled") Boolean postTestCounseled,
+			@WebParam(name = "pmtctTreatment") Boolean pmtctTreatment,
+			@WebParam(name = "referral") Boolean referral,
+			@WebParam(name = "nextANCDate") Date nextANCDate,
+			@WebParam(name = "comments") String comments)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		User nurse = validateChpsId(staffId, errors, "StaffID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -71,22 +101,30 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Mother ANC Visit request", errors);
 		}
 
+		// TODO: Update to include new values
 		registrarBean.recordMotherANCVisit(nurse, date, patient, visitNumber,
-				ttDose, iptDose, itnUse, hivStatus);
+				ttDose, iptDose, itnUse, hivTestResult);
 	}
 
 	@WebMethod
 	public void recordPregnancyTermination(
-			@WebParam(name = "chpsId") String chpsId,
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
 			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") String motechId,
-			@WebParam(name = "abortionType") Integer abortionType,
-			@WebParam(name = "complication") Integer complication)
+			@WebParam(name = "motechId") Integer motechId,
+			@WebParam(name = "terminationType") Integer terminationType,
+			@WebParam(name = "procedure") Integer procedure,
+			@WebParam(name = "complications") Integer[] complications,
+			@WebParam(name = "maternalDeath") Boolean maternalDeath,
+			@WebParam(name = "referral") Boolean referral,
+			@WebParam(name = "postAbortionFPCounseled") Boolean postAbortionFPCounseled,
+			@WebParam(name = "postAbortionFPAccepted") Boolean postAbortionFPAccepted,
+			@WebParam(name = "comments") String comments)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		User nurse = validateChpsId(staffId, errors, "StaffID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -95,44 +133,55 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Pregnancy Termination request", errors);
 		}
 
+		// TODO: Update to include new values
 		registrarBean.recordPregnancyTermination(nurse, date, patient,
-				abortionType, complication);
+				terminationType, null);
 	}
 
 	@WebMethod
 	public void recordPregnancyDelivery(
-			@WebParam(name = "chpsId") String chpsId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") String motechId,
-			@WebParam(name = "method") Integer method,
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
+			@WebParam(name = "datetime") Date datetime,
+			@WebParam(name = "motechId") Integer motechId,
+			@WebParam(name = "mode") Integer mode,
 			@WebParam(name = "outcome") Integer outcome,
-			@WebParam(name = "location") Integer location,
-			@WebParam(name = "deliveredBy") DeliveredBy deliveredBy,
+			@WebParam(name = "deliveryLocation") Integer deliveryLocation,
+			@WebParam(name = "deliveredBy") Integer deliveredBy,
+			@WebParam(name = "maleInvolved") Boolean maleInvolved,
+			@WebParam(name = "complications") Integer[] complications,
+			@WebParam(name = "vvf") Integer vvf,
 			@WebParam(name = "maternalDeath") Boolean maternalDeath,
-			@WebParam(name = "cause") Integer cause,
+			@WebParam(name = "comments") String comments,
 			@WebParam(name = "child1Outcome") BirthOutcome child1Outcome,
-			@WebParam(name = "child1MotechId") String child1MotechId,
+			@WebParam(name = "child1RegistrationType") RegistrationMode child1RegistrationType,
+			@WebParam(name = "child1MotechId") Integer child1MotechId,
 			@WebParam(name = "child1Sex") Gender child1Sex,
 			@WebParam(name = "child1FirstName") String child1FirstName,
+			@WebParam(name = "child1Weight") Double child1Weight,
 			@WebParam(name = "child1OPV") Boolean child1OPV,
 			@WebParam(name = "child1BCG") Boolean child1BCG,
 			@WebParam(name = "child2Outcome") BirthOutcome child2Outcome,
-			@WebParam(name = "child2MotechId") String child2MotechId,
+			@WebParam(name = "child2RegistrationType") RegistrationMode child2RegistrationType,
+			@WebParam(name = "child2MotechId") Integer child2MotechId,
 			@WebParam(name = "child2Sex") Gender child2Sex,
 			@WebParam(name = "child2FirstName") String child2FirstName,
+			@WebParam(name = "child2Weight") Double child2Weight,
 			@WebParam(name = "child2OPV") Boolean child2OPV,
 			@WebParam(name = "child2BCG") Boolean child2BCG,
 			@WebParam(name = "child3Outcome") BirthOutcome child3Outcome,
-			@WebParam(name = "child3MotechId") String child3MotechId,
+			@WebParam(name = "child3RegistrationType") RegistrationMode child3RegistrationType,
+			@WebParam(name = "child3MotechId") Integer child3MotechId,
 			@WebParam(name = "child3Sex") Gender child3Sex,
 			@WebParam(name = "child3FirstName") String child3FirstName,
+			@WebParam(name = "child3Weight") Double child3Weight,
 			@WebParam(name = "child3OPV") Boolean child3OPV,
 			@WebParam(name = "child3BCG") Boolean child3BCG)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		User nurse = validateChpsId(staffId, errors, "StaffID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -142,59 +191,72 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		List<BirthOutcomeChild> outcomes = new ArrayList<BirthOutcomeChild>();
-		if (child1Outcome != null && child1MotechId != null
-				&& child1Sex != null) {
+		if (child1Outcome != null && child1Sex != null) {
 			outcomes.add(new BirthOutcomeChild(child1Outcome, child1MotechId,
 					child1Sex, child1FirstName, child1OPV, child1BCG));
 		}
-		if (child2Outcome != null && child2MotechId != null
-				&& child2Sex != null) {
+		if (child2Outcome != null && child2Sex != null) {
 			outcomes.add(new BirthOutcomeChild(child2Outcome, child2MotechId,
 					child2Sex, child2FirstName, child2OPV, child2BCG));
 		}
-		if (child3Outcome != null && child3MotechId != null
-				&& child3Sex != null) {
+		if (child3Outcome != null && child3Sex != null) {
 			outcomes.add(new BirthOutcomeChild(child3Outcome, child3MotechId,
 					child3Sex, child3FirstName, child3OPV, child3BCG));
 		}
 
-		registrarBean.recordPregnancyDelivery(nurse, date, patient, method,
-				outcome, location, deliveredBy, maternalDeath, cause, outcomes);
+		// TODO: Update to include new values
+		registrarBean.recordPregnancyDelivery(nurse, datetime, patient, mode,
+				outcome, deliveryLocation, deliveredBy, maternalDeath, null,
+				outcomes);
 	}
 
 	@WebMethod
-	public void recordMotherPPCVisit(@WebParam(name = "chpsId") String chpsId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") String motechId,
+	public void recordMotherPNCVisit(
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
+			@WebParam(name = "datetime") Date datetime,
+			@WebParam(name = "motechId") Integer motechId,
 			@WebParam(name = "visitNumber") Integer visitNumber,
+			@WebParam(name = "location") Integer location,
+			@WebParam(name = "house") String house,
+			@WebParam(name = "community") String community,
+			@WebParam(name = "referral") Boolean referral,
+			@WebParam(name = "maleInvolved") Boolean maleInvolved,
 			@WebParam(name = "vitaminA") Boolean vitaminA,
-			@WebParam(name = "ttDose") Integer ttDose)
+			@WebParam(name = "ttDose") Integer ttDose,
+			@WebParam(name = "lochiaColour") Integer lochiaColour,
+			@WebParam(name = "lochiaAmountExcess") Boolean lochiaAmountExcess,
+			@WebParam(name = "temperature") Integer temperature,
+			@WebParam(name = "fht") Integer fht,
+			@WebParam(name = "comments") String comments)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		User nurse = validateChpsId(staffId, errors, "StaffID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
-					"Errors in Record Mother PPC Visit request", errors);
+					"Errors in Record Mother PNC Visit request", errors);
 		}
 
-		registrarBean.recordMotherPPCVisit(nurse, date, patient, visitNumber,
-				vitaminA, ttDose);
+		// TODO: Update to include new values and rename to Mother PNC
+		registrarBean.recordMotherPPCVisit(nurse, datetime, patient,
+				visitNumber, vitaminA, ttDose);
 	}
 
 	@WebMethod
-	public void recordDeath(@WebParam(name = "chpsId") String chpsId,
+	public void recordDeath(@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
 			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") String motechId,
+			@WebParam(name = "motechId") Integer motechId,
 			@WebParam(name = "cause") Integer cause) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		User nurse = validateChpsId(staffId, errors, "StaffID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -207,88 +269,296 @@ public class RegistrarWebService implements RegistrarService {
 	}
 
 	@WebMethod
-	public void recordChildPNCVisit(@WebParam(name = "chpsId") String chpsId,
+	public void recordTTVisit(@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
 			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") String motechId,
-			@WebParam(name = "bcg") Boolean bcg,
-			@WebParam(name = "opvDose") Integer opvDose,
-			@WebParam(name = "pentaDose") Integer pentaDose,
-			@WebParam(name = "yellowFever") Boolean yellowFever,
-			@WebParam(name = "csm") Boolean csm,
-			@WebParam(name = "measles") Boolean measles,
-			@WebParam(name = "ipti") Boolean ipti,
-			@WebParam(name = "vitaminA") Boolean vitaminA)
+			@WebParam(name = "motechId") Integer motechId,
+			@WebParam(name = "ttDose") Integer ttDose)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "CHPSID");
-		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+		validateChpsId(staffId, errors, "StaffID");
+		validateMotechId(motechId, errors, "MotechID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException("Errors in Record TT Visit request",
+					errors);
+		}
+
+		// TODO: Update to add call to store TT encounter
+	}
+
+	@WebMethod
+	public void recordChildPNCVisit(
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
+			@WebParam(name = "datetime") Date datetime,
+			@WebParam(name = "motechId") Integer motechId,
+			@WebParam(name = "visitNumber") Integer visitNumber,
+			@WebParam(name = "location") Integer location,
+			@WebParam(name = "house") String house,
+			@WebParam(name = "community") String community,
+			@WebParam(name = "referral") Boolean referral,
+			@WebParam(name = "maleInvolved") Boolean maleInvolved,
+			@WebParam(name = "weight") Double weight,
+			@WebParam(name = "temperature") Integer temperature,
+			@WebParam(name = "bcg") Boolean bcg,
+			@WebParam(name = "opv0") Boolean opv0,
+			@WebParam(name = "respiration") Integer respiration,
+			@WebParam(name = "cordConditionNormal") Boolean cordConditionNormal,
+			@WebParam(name = "babyConditionGood") Boolean babyConditionGood,
+			@WebParam(name = "comments") String comments)
+			throws ValidationException {
+
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(staffId, errors, "StaffID");
+		validateMotechId(motechId, errors, "MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Record Child PNC Visit request", errors);
 		}
 
+		// TODO: Update to add call to store Child PNC encounter
+	}
+
+	@WebMethod
+	public void recordChildCWCVisit(
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
+			@WebParam(name = "date") Date date,
+			@WebParam(name = "motechId") Integer motechId,
+			@WebParam(name = "cwcLocation") Integer cwcLocation,
+			@WebParam(name = "house") String house,
+			@WebParam(name = "community") String community,
+			@WebParam(name = "bcg") Boolean bcg,
+			@WebParam(name = "opvDose") Integer opvDose,
+			@WebParam(name = "pentaDose") Integer pentaDose,
+			@WebParam(name = "measles") Boolean measles,
+			@WebParam(name = "yellowFever") Boolean yellowFever,
+			@WebParam(name = "csm") Boolean csm,
+			@WebParam(name = "ipti") Boolean ipti,
+			@WebParam(name = "vitaminA") Boolean vitaminA,
+			@WebParam(name = "dewormer") Boolean dewormer,
+			@WebParam(name = "weight") Double weight,
+			@WebParam(name = "muac") Integer muac,
+			@WebParam(name = "height") Integer height,
+			@WebParam(name = "maleInvolved") Boolean maleInvolved,
+			@WebParam(name = "comments") String comments)
+			throws ValidationException {
+
+		ValidationErrors errors = new ValidationErrors();
+
+		User nurse = validateChpsId(staffId, errors, "StaffID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in Record Child CWC Visit request", errors);
+		}
+
+		// TODO: Update to include new values and rename to CWC
 		registrarBean.recordChildPNCVisit(nurse, date, patient, bcg, opvDose,
 				pentaDose, yellowFever, csm, measles, ipti, vitaminA);
 	}
 
 	@WebMethod
-	public void registerChild(@WebParam(name = "chpsId") String chpsId,
-			@WebParam(name = "motherMotechId") String motherMotechId,
-			@WebParam(name = "childMotechId") String childMotechId,
-			@WebParam(name = "birthDate") Date birthDate,
-			@WebParam(name = "sex") Gender sex,
+	public void registerPatient(
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
+			@WebParam(name = "date") Date date,
+			@WebParam(name = "registrationMode") RegistrationMode registrationMode,
+			@WebParam(name = "motechId") Integer motechId,
+			@WebParam(name = "registrantType") RegistrantType registrantType,
 			@WebParam(name = "firstName") String firstName,
+			@WebParam(name = "middleName") String middleName,
+			@WebParam(name = "lastName") String lastName,
+			@WebParam(name = "preferredName") String preferredName,
+			@WebParam(name = "dateOfBirth") Date dateOfBirth,
+			@WebParam(name = "estimatedBirthDate") Boolean estimatedBirthDate,
+			@WebParam(name = "sex") Gender sex,
+			@WebParam(name = "insured") Boolean insured,
 			@WebParam(name = "nhis") String nhis,
-			@WebParam(name = "nhisExpires") Date nhisExpires)
+			@WebParam(name = "nhisExpires") Date nhisExpires,
+			@WebParam(name = "motherMotechId") Integer motherMotechId,
+			@WebParam(name = "region") String region,
+			@WebParam(name = "district") String district,
+			@WebParam(name = "subDistrict") String subDistrict,
+			@WebParam(name = "community") String community,
+			@WebParam(name = "address") String address,
+			@WebParam(name = "phoneNumber") Integer phoneNumber,
+			@WebParam(name = "expDeliveryDate") Date expDeliveryDate,
+			@WebParam(name = "deliveryDateConfirmed") Boolean deliveryDateConfirmed,
+			@WebParam(name = "gravida") Integer gravida,
+			@WebParam(name = "parity") Integer parity,
+			@WebParam(name = "enroll") Boolean enroll,
+			@WebParam(name = "consent") Boolean consent,
+			@WebParam(name = "ownership") ContactNumberType ownership,
+			@WebParam(name = "format") MediaType format,
+			@WebParam(name = "language") String language,
+			@WebParam(name = "dayOfWeek") DayOfWeek dayOfWeek,
+			@WebParam(name = "timeOfDay") Date timeOfDay,
+			@WebParam(name = "reason") InterestReason reason,
+			@WebParam(name = "howLearned") HowLearned howLearned,
+			@WebParam(name = "messagesStartWeek") Integer messagesStartWeek)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "CHPSID");
-		org.openmrs.Patient mother = validateMotechId(motherMotechId, errors,
-				"MotherMotechID");
+		validateChpsId(staffId, errors, "StaffID");
 
-		org.openmrs.Patient child = openmrsBean
-				.getPatientByMotechId(childMotechId);
-		if (child != null) {
-			errors.add(2, "ChildMotechID");
+		if (motechId == null
+				&& registrationMode == RegistrationMode.USE_PREPRINTED_ID) {
+			errors.add(3, "MotechID");
+		} else if (motechId != null
+				&& registrationMode == RegistrationMode.USE_PREPRINTED_ID) {
+			org.openmrs.Patient child = openmrsBean
+					.getPatientByMotechId(motechId.toString());
+			if (child != null) {
+				errors.add(2, "MotechID");
+			}
 		}
 
-		Calendar dobCal = new GregorianCalendar();
-		int origYear = dobCal.get(Calendar.YEAR);
-		dobCal.set(Calendar.YEAR, origYear - 5);
-		if (birthDate.before(dobCal.getTime())) {
-			errors.add(2, "DoB");
+		if (motherMotechId != null
+				&& registrantType == RegistrantType.CHILD_UNDER_FIVE) {
+			validateMotechId(motherMotechId, errors, "MotherMotechID");
+		}
+
+		if (registrantType == RegistrantType.CHILD_UNDER_FIVE) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.YEAR, -5);
+			if (dateOfBirth.before(calendar.getTime())) {
+				errors.add(2, "DoB");
+			}
 		}
 
 		if (errors.getErrors().size() > 0) {
-			throw new ValidationException("Errors in Register Child request",
+			throw new ValidationException("Errors in Register Patient request",
 					errors);
 		}
 
-		registrarBean.registerChild(nurse, mother, childMotechId, birthDate,
-				sex, firstName, nhis, nhisExpires);
+		// TODO: Update to add call to register patient
+	}
+
+	@WebMethod
+	public void registerPregnancy(@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
+			@WebParam(name = "date") Date date,
+			@WebParam(name = "motechId") Integer motechId,
+			@WebParam(name = "estDeliveryDate") Date estDeliveryDate,
+			@WebParam(name = "enroll") Boolean enroll,
+			@WebParam(name = "consent") Boolean consent,
+			@WebParam(name = "ownership") ContactNumberType ownership,
+			@WebParam(name = "phoneNumber") Integer phoneNumber,
+			@WebParam(name = "format") MediaType format,
+			@WebParam(name = "language") String language,
+			@WebParam(name = "dayOfWeek") DayOfWeek dayOfWeek,
+			@WebParam(name = "timeOfDay") Date timeOfDay,
+			@WebParam(name = "reason") InterestReason reason,
+			@WebParam(name = "howLearned") HowLearned howLearned,
+			@WebParam(name = "messagesStartWeek") Integer messagesStartWeek)
+			throws ValidationException {
+
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(staffId, errors, "StaffID");
+		validateMotechId(motechId, errors, "MotechID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in Register Pregnancy request", errors);
+		}
+
+		// TODO: Update to add call to store Pregnancy registration encounter
+	}
+
+	@WebMethod
+	public void registerANCMother(@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
+			@WebParam(name = "date") Date date,
+			@WebParam(name = "motechId") Integer motechId,
+			@WebParam(name = "ancRegNumber") String ancRegNumber,
+			@WebParam(name = "estDeliveryDate") Date estDeliveryDate,
+			@WebParam(name = "height") Integer height,
+			@WebParam(name = "gravida") Integer gravida,
+			@WebParam(name = "parity") Integer parity,
+			@WebParam(name = "enroll") Boolean enroll,
+			@WebParam(name = "consent") Boolean consent,
+			@WebParam(name = "ownership") ContactNumberType ownership,
+			@WebParam(name = "phoneNumber") Integer phoneNumber,
+			@WebParam(name = "format") MediaType format,
+			@WebParam(name = "language") String language,
+			@WebParam(name = "dayOfWeek") DayOfWeek dayOfWeek,
+			@WebParam(name = "timeOfDay") Date timeOfDay,
+			@WebParam(name = "reason") InterestReason reason,
+			@WebParam(name = "howLearned") HowLearned howLearned,
+			@WebParam(name = "messagesStartWeek") Integer messagesStartWeek)
+			throws ValidationException {
+
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(staffId, errors, "StaffID");
+		validateMotechId(motechId, errors, "MotechID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in Register ANC Mother request", errors);
+		}
+
+		// TODO: Update to add call to store ANC registration encounter
+	}
+
+	@WebMethod
+	public void registerCWCChild(@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
+			@WebParam(name = "date") Date date,
+			@WebParam(name = "motechId") Integer motechId,
+			@WebParam(name = "cwcRegNumber") String cwcRegNumber,
+			@WebParam(name = "enroll") Boolean enroll,
+			@WebParam(name = "consent") Boolean consent,
+			@WebParam(name = "ownership") ContactNumberType ownership,
+			@WebParam(name = "phoneNumber") Integer phoneNumber,
+			@WebParam(name = "format") MediaType format,
+			@WebParam(name = "language") String language,
+			@WebParam(name = "dayOfWeek") DayOfWeek dayOfWeek,
+			@WebParam(name = "timeOfDay") Date timeOfDay,
+			@WebParam(name = "reason") InterestReason reason,
+			@WebParam(name = "howLearned") HowLearned howLearned,
+			@WebParam(name = "messagesStartWeek") Integer messagesStartWeek)
+			throws ValidationException {
+
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(staffId, errors, "StaffID");
+		validateMotechId(motechId, errors, "MotechID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in Register CWC Child request", errors);
+		}
+
+		// TODO: Update to add call to store CWC registration encounter
 	}
 
 	@WebMethod
 	public void editPatient(
-			@WebParam(name = "chpsId") String chpsId,
-			@WebParam(name = "motechId") String motechId,
-			@WebParam(name = "primaryPhone") String primaryPhone,
-			@WebParam(name = "primaryPhoneType") ContactNumberType primaryPhoneType,
-			@WebParam(name = "secondaryPhone") String secondaryPhone,
-			@WebParam(name = "secondaryPhoneType") ContactNumberType secondaryPhoneType,
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
+			@WebParam(name = "date") Date date,
+			@WebParam(name = "motechId") Integer motechId,
+			@WebParam(name = "phoneNumber") String phoneNumber,
+			@WebParam(name = "phoneOwnership") ContactNumberType phoneOwnership,
 			@WebParam(name = "nhis") String nhis,
-			@WebParam(name = "nhisExpires") Date nhisExpires)
+			@WebParam(name = "nhisExpires") Date nhisExpires,
+			@WebParam(name = "stopEnrollment") Boolean stopEnrollment)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		User nurse = validateChpsId(staffId, errors, "StaffID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -297,71 +567,63 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		registrarBean.editPatient(nurse, patient, primaryPhone,
-				primaryPhoneType, secondaryPhone, secondaryPhoneType, nhis,
-				nhisExpires);
+		// TODO: Update to include new values and handle removed values
+		registrarBean.editPatient(nurse, patient, phoneNumber, phoneOwnership,
+				null, null, nhis, nhisExpires);
 	}
 
 	@WebMethod
-	public void stopPregnancyProgram(@WebParam(name = "chpsId") String chpsId,
-			@WebParam(name = "motechId") String motechId)
-			throws ValidationException {
-
-		ValidationErrors errors = new ValidationErrors();
-
-		User nurse = validateChpsId(chpsId, errors, "CHPSID");
-		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
-
-		if (errors.getErrors().size() > 0) {
-			throw new ValidationException(
-					"Errors in Stop Pregnancy Program request", errors);
-		}
-
-		registrarBean.stopPregnancyProgram(nurse, patient);
-	}
-
-	@WebMethod
-	public void recordGeneralVisit(@WebParam(name = "chpsId") String chpsId,
+	public void recordGeneralVisit(@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "serialNumber") String serialNumber,
 			@WebParam(name = "sex") Gender sex,
-			@WebParam(name = "birthDate") Date birthDate,
+			@WebParam(name = "dateOfBirth") Date dateOfBirth,
 			@WebParam(name = "insured") Boolean insured,
-			@WebParam(name = "newCase") Boolean newCase,
 			@WebParam(name = "diagnosis") Integer diagnosis,
 			@WebParam(name = "secondDiagnosis") Integer secondDiagnosis,
-			@WebParam(name = "referral") Boolean referral)
+			@WebParam(name = "rdtGiven") Boolean rdtGiven,
+			@WebParam(name = "rdtPositive") Boolean rdtPositive,
+			@WebParam(name = "actTreated") Boolean actTreated,
+			@WebParam(name = "newCase") Boolean newCase,
+			@WebParam(name = "referral") Boolean referral,
+			@WebParam(name = "comments") String comments)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(chpsId, errors, "CHPSID");
+		validateChpsId(staffId, errors, "StaffID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException("Errors in General Visit request",
 					errors);
 		}
 
-		registrarBean.recordGeneralVisit(chpsId, date, serialNumber, sex,
-				birthDate, insured, newCase, diagnosis, secondDiagnosis,
-				referral);
+		// TODO: Update to include new values
+		registrarBean.recordGeneralVisit(staffId.toString(), date,
+				serialNumber, sex, dateOfBirth, insured, newCase, diagnosis,
+				secondDiagnosis, referral);
 	}
 
 	@WebMethod
-	public void recordChildVisit(@WebParam(name = "chpsId") String chpsId,
+	public void recordChildVisit(@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "serialNumber") String serialNumber,
-			@WebParam(name = "motechId") String motechId,
-			@WebParam(name = "newCase") Boolean newCase,
+			@WebParam(name = "motechId") Integer motechId,
 			@WebParam(name = "diagnosis") Integer diagnosis,
 			@WebParam(name = "secondDiagnosis") Integer secondDiagnosis,
-			@WebParam(name = "referral") Boolean referral)
+			@WebParam(name = "rdtGiven") Boolean rdtGiven,
+			@WebParam(name = "rdtPositive") Boolean rdtPositive,
+			@WebParam(name = "actTreated") Boolean actTreated,
+			@WebParam(name = "newCase") Boolean newCase,
+			@WebParam(name = "referral") Boolean referral,
+			@WebParam(name = "comments") String comments)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		User nurse = validateChpsId(staffId, errors, "StaffID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -370,24 +632,30 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Child Visit request", errors);
 		}
 
+		// TODO: Update to include new values
 		registrarBean.recordChildVisit(nurse, date, patient, serialNumber,
 				newCase, diagnosis, secondDiagnosis, referral);
 	}
 
 	@WebMethod
-	public void recordMotherVisit(@WebParam(name = "chpsId") String chpsId,
+	public void recordMotherVisit(@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "serialNumber") String serialNumber,
-			@WebParam(name = "motechId") String motechId,
-			@WebParam(name = "newCase") Boolean newCase,
+			@WebParam(name = "motechId") Integer motechId,
 			@WebParam(name = "diagnosis") Integer diagnosis,
 			@WebParam(name = "secondDiagnosis") Integer secondDiagnosis,
-			@WebParam(name = "referral") Boolean referral)
+			@WebParam(name = "rdtGiven") Boolean rdtGiven,
+			@WebParam(name = "rdtPositive") Boolean rdtPositive,
+			@WebParam(name = "actTreated") Boolean actTreated,
+			@WebParam(name = "newCase") Boolean newCase,
+			@WebParam(name = "referral") Boolean referral,
+			@WebParam(name = "comments") String comments)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(chpsId, errors, "CHPSID");
+		User nurse = validateChpsId(staffId, errors, "StaffID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -396,19 +664,20 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Mother Visit request", errors);
 		}
 
+		// TODO: Update to include new values
 		registrarBean.recordMotherVisit(nurse, date, patient, serialNumber,
 				newCase, diagnosis, secondDiagnosis, referral);
 	}
 
 	@WebMethod
 	public Care[] queryANCDefaulters(
-			@WebParam(name = "facilityId") String facilityId,
-			@WebParam(name = "chpsId") String chpsId)
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(chpsId, errors, "CHPSID");
+		validateChpsId(staffId, errors, "StaffID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -428,13 +697,13 @@ public class RegistrarWebService implements RegistrarService {
 
 	@WebMethod
 	public Care[] queryTTDefaulters(
-			@WebParam(name = "facilityId") String facilityId,
-			@WebParam(name = "chpsId") String chpsId)
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(chpsId, errors, "CHPSID");
+		validateChpsId(staffId, errors, "StaffID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -447,18 +716,18 @@ public class RegistrarWebService implements RegistrarService {
 	}
 
 	@WebMethod
-	public Care[] queryPPCDefaulters(
-			@WebParam(name = "facilityId") String facilityId,
-			@WebParam(name = "chpsId") String chpsId)
+	public Care[] queryMotherPNCDefaulters(
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(chpsId, errors, "CHPSID");
+		validateChpsId(staffId, errors, "StaffID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
-					"Errors in PPC Defaulters Query request", errors);
+					"Errors in Mother PNC Defaulters Query request", errors);
 		}
 
 		List<ExpectedEncounter> defaultedEncounters = registrarBean
@@ -468,18 +737,18 @@ public class RegistrarWebService implements RegistrarService {
 	}
 
 	@WebMethod
-	public Care[] queryPNCDefaulters(
-			@WebParam(name = "facilityId") String facilityId,
-			@WebParam(name = "chpsId") String chpsId)
+	public Care[] queryChildPNCDefaulters(
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(chpsId, errors, "CHPSID");
+		validateChpsId(staffId, errors, "StaffID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
-					"Errors in PNC Defaulters Query request", errors);
+					"Errors in Child PNC Defaulters Query request", errors);
 		}
 
 		List<ExpectedEncounter> defaultedEncounters = registrarBean
@@ -490,13 +759,13 @@ public class RegistrarWebService implements RegistrarService {
 
 	@WebMethod
 	public Care[] queryCWCDefaulters(
-			@WebParam(name = "facilityId") String facilityId,
-			@WebParam(name = "chpsId") String chpsId)
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(chpsId, errors, "CHPSID");
+		validateChpsId(staffId, errors, "StaffID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -511,13 +780,13 @@ public class RegistrarWebService implements RegistrarService {
 
 	@WebMethod
 	public Patient[] queryUpcomingDeliveries(
-			@WebParam(name = "facilityId") String facilityId,
-			@WebParam(name = "chpsId") String chpsId)
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(chpsId, errors, "CHPSID");
+		validateChpsId(staffId, errors, "StaffID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -530,13 +799,13 @@ public class RegistrarWebService implements RegistrarService {
 
 	@WebMethod
 	public Patient[] queryRecentDeliveries(
-			@WebParam(name = "facilityId") String facilityId,
-			@WebParam(name = "chpsId") String chpsId)
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(chpsId, errors, "CHPSID");
+		validateChpsId(staffId, errors, "StaffID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -549,13 +818,13 @@ public class RegistrarWebService implements RegistrarService {
 
 	@WebMethod
 	public Patient[] queryOverdueDeliveries(
-			@WebParam(name = "facilityId") String facilityId,
-			@WebParam(name = "chpsId") String chpsId)
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(chpsId, errors, "CHPSID");
+		validateChpsId(staffId, errors, "StaffID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -568,14 +837,14 @@ public class RegistrarWebService implements RegistrarService {
 
 	@WebMethod
 	public Patient queryUpcomingCare(
-			@WebParam(name = "facilityId") String facilityId,
-			@WebParam(name = "chpsId") String chpsId,
-			@WebParam(name = "motechId") String motechId)
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
+			@WebParam(name = "motechId") Integer motechId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(chpsId, errors, "CHPSID");
+		validateChpsId(staffId, errors, "StaffID");
 
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -600,7 +869,8 @@ public class RegistrarWebService implements RegistrarService {
 	}
 
 	@WebMethod
-	public Patient[] queryMotechId(@WebParam(name = "chpsId") String chpsId,
+	public Patient[] queryMotechId(@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
 			@WebParam(name = "firstName") String firstName,
 			@WebParam(name = "lastName") String lastName,
 			@WebParam(name = "preferredName") String preferredName,
@@ -611,7 +881,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(chpsId, errors, "CHPSID");
+		validateChpsId(staffId, errors, "StaffID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException("Errors in MotechID Query request",
@@ -625,13 +895,14 @@ public class RegistrarWebService implements RegistrarService {
 	}
 
 	@WebMethod
-	public Patient queryPatient(@WebParam(name = "chpsId") String chpsId,
-			@WebParam(name = "motechId") String motechId)
+	public Patient queryPatient(@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
+			@WebParam(name = "motechId") Integer motechId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(chpsId, errors, "CHPSID");
+		validateChpsId(staffId, errors, "StaffID");
 
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -674,19 +945,27 @@ public class RegistrarWebService implements RegistrarService {
 		this.modelConverter = modelConverter;
 	}
 
-	private User validateChpsId(String chpsId, ValidationErrors errors,
+	private User validateChpsId(Integer staffId, ValidationErrors errors,
 			String fieldName) {
-		User nurse = openmrsBean.getNurseByCHPSId(chpsId);
+		if (staffId == null) {
+			errors.add(3, fieldName);
+			return null;
+		}
+		User nurse = openmrsBean.getNurseByCHPSId(staffId.toString());
 		if (nurse == null) {
 			errors.add(1, fieldName);
 		}
 		return nurse;
 	}
 
-	private org.openmrs.Patient validateMotechId(String motechId,
+	private org.openmrs.Patient validateMotechId(Integer motechId,
 			ValidationErrors errors, String fieldName) {
-		org.openmrs.Patient patient = openmrsBean
-				.getPatientByMotechId(motechId);
+		if (motechId == null) {
+			errors.add(3, fieldName);
+			return null;
+		}
+		org.openmrs.Patient patient = openmrsBean.getPatientByMotechId(motechId
+				.toString());
 		if (patient == null) {
 			errors.add(1, fieldName);
 		}

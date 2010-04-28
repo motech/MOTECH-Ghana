@@ -15,7 +15,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.LogManager;
 
@@ -33,11 +32,16 @@ import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.BirthOutcome;
 import org.motechproject.ws.Care;
 import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DeliveredBy;
+import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
-import org.motechproject.ws.HIVStatus;
+import org.motechproject.ws.HIVResult;
+import org.motechproject.ws.HowLearned;
+import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.LogType;
+import org.motechproject.ws.MediaType;
 import org.motechproject.ws.Patient;
+import org.motechproject.ws.RegistrantType;
+import org.motechproject.ws.RegistrationMode;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationError;
 import org.motechproject.ws.server.ValidationException;
@@ -93,24 +97,35 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testRecordMotherANCVisit() throws ValidationException {
-		String chpsId = "CHPSId", patientId = "123Test";
-		Integer visitNumber = 1, ttDose = 1, iptDose = 1;
-		Boolean itnUse = true;
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer visitNumber = 1, location = 1, bpSystolic = 130, bpDiastolic = 80;
+		Double weight = 63.3, hemoglobin = 11.1;
+		String house = "House", community = "Community", comments = "Comments";
+		Integer ttDose = 1, iptDose = 1, fht = 130, fhr = 130;
+		Boolean iptReactive = false, itnUse = true, urineProtein = false, urineGlucose = false;
+		Boolean vdrlReactive = false, vdrlTreatment = false, dewormer = false, maleInvolved = true;
+		Boolean pmtct = false, preTest = false, postTest = false, pmtctTreatment = false, referral = false;
 		Date date = new Date();
-		HIVStatus hivStatus = HIVStatus.NA;
+		HIVResult hivResult = HIVResult.NO_TEST;
 
 		User nurse = new User(1);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(patient);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
 		registrarBean.recordMotherANCVisit(nurse, date, patient, visitNumber,
-				ttDose, iptDose, itnUse, hivStatus);
+				ttDose, iptDose, itnUse, hivResult);
 
 		replay(registrarBean, openmrsBean);
 
-		regWs.recordMotherANCVisit(chpsId, date, patientId, visitNumber,
-				ttDose, iptDose, itnUse, hivStatus);
+		regWs.recordMotherANCVisit(staffId, facilityId, date, motechId,
+				visitNumber, location, house, community, date, bpSystolic,
+				bpDiastolic, weight, ttDose, iptDose, iptReactive, itnUse, fht,
+				fhr, urineProtein, urineGlucose, hemoglobin, vdrlReactive,
+				vdrlTreatment, dewormer, maleInvolved, pmtct, preTest,
+				hivResult, postTest, pmtctTreatment, referral, date, comments);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -118,22 +133,34 @@ public class RegistrarServiceTest {
 	@Test
 	public void testRecordMotherANCVisitInvalidPatientId()
 			throws ValidationException {
-		String chpsId = "CHPSId", patientId = "123Test";
-		Integer visitNumber = 1, ttDose = 1, iptDose = 1;
-		Boolean itnUse = true;
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer visitNumber = 1, location = 1, bpSystolic = 130, bpDiastolic = 80;
+		Double weight = 63.3, hemoglobin = 11.1;
+		String house = "House", community = "Community", comments = "Comments";
+		Integer ttDose = 1, iptDose = 1, fht = 130, fhr = 130;
+		Boolean iptReactive = false, itnUse = true, urineProtein = false, urineGlucose = false;
+		Boolean vdrlReactive = false, vdrlTreatment = false, dewormer = false, maleInvolved = true;
+		Boolean pmtct = false, preTest = false, postTest = false, pmtctTreatment = false, referral = false;
 		Date date = new Date();
-		HIVStatus hivStatus = HIVStatus.NA;
+		HIVResult hivResult = HIVResult.NO_TEST;
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(null);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(null);
 
 		replay(registrarBean, openmrsBean);
 
 		try {
-			regWs.recordMotherANCVisit(chpsId, date, patientId, visitNumber,
-					ttDose, iptDose, itnUse, hivStatus);
+			regWs.recordMotherANCVisit(staffId, facilityId, date, motechId,
+					visitNumber, location, house, community, date, bpSystolic,
+					bpDiastolic, weight, ttDose, iptDose, iptReactive, itnUse,
+					fht, fhr, urineProtein, urineGlucose, hemoglobin,
+					vdrlReactive, vdrlTreatment, dewormer, maleInvolved, pmtct,
+					preTest, hivResult, postTest, pmtctTreatment, referral,
+					date, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Mother ANC Visit request", e
@@ -153,22 +180,28 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testRecordPregnancyTermination() throws ValidationException {
-		String chpsId = "CHPSId", patientId = "123Test";
-		Integer abortionType = 1, complication = 1;
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer terminationType = 1, procedure = 2;
+		Integer[] complications = new Integer[] { 1, 3, 5, 7 };
+		Boolean maternalDeath = false, referral = false, postCounsel = true, postAccept = true;
+		String comments = "Comments";
 		Date date = new Date();
 
 		User nurse = new User(1);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(patient);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
 		registrarBean.recordPregnancyTermination(nurse, date, patient,
-				abortionType, complication);
+				terminationType, null);
 
 		replay(registrarBean, openmrsBean);
 
-		regWs.recordPregnancyTermination(chpsId, date, patientId, abortionType,
-				complication);
+		regWs.recordPregnancyTermination(staffId, facilityId, date, motechId,
+				terminationType, procedure, complications, maternalDeath,
+				referral, postCounsel, postAccept, comments);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -176,20 +209,26 @@ public class RegistrarServiceTest {
 	@Test
 	public void testRecordPregnancyTerminationInvalidPatientId()
 			throws ValidationException {
-		String chpsId = "CHPSId", patientId = "123Test";
-		Integer abortionType = 1, complication = 1;
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer terminationType = 1, procedure = 2;
+		Integer[] complications = new Integer[] { 1, 3, 5, 7 };
+		Boolean maternalDeath = false, referral = false, postCounsel = true, postAccept = true;
+		String comments = "Comments";
 		Date date = new Date();
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(null);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(null);
 
 		replay(registrarBean, openmrsBean);
 
 		try {
-			regWs.recordPregnancyTermination(chpsId, date, patientId,
-					abortionType, complication);
+			regWs.recordPregnancyTermination(staffId, facilityId, date,
+					motechId, terminationType, procedure, complications,
+					maternalDeath, referral, postCounsel, postAccept, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Pregnancy Termination request", e
@@ -209,38 +248,51 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testRecordPregnancyDelivery() throws ValidationException {
-		String chpsId = "CHPSId", patientId = "123Test";
-		String child1Id = "246Test", child2Id = "468Test", child3Id = "579Test", child1Name = "Child1First", child2Name = "Child2First", child3Name = "Child3First";
-		Integer method = 1, outcome = 2, location = 1, cause = 1;
-		Boolean maternalDeath = false, child1opv = true, child1bcg = false, child2opv = false, child2bcg = true, child3opv = false, child3bcg = true;
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer child1Id = 246, child2Id = 468, child3Id = 579, deliveredBy = 1;
+		Integer[] complications = new Integer[] { 1, 3, 5, 7 };
+		String child1Name = "Child1First", child2Name = "Child2First", child3Name = "Child3First", comments = "Comments";
+		Integer method = 1, outcome = 2, location = 1, vvf = 2;
+		Double child1Weight = 4.2, child2Weight = 4.4, child3Weight = 3.7;
+		Boolean maternalDeath = false, maleInvolved = true;
+		Boolean child1opv = true, child1bcg = false, child2opv = false, child2bcg = true, child3opv = false, child3bcg = true;
 		Date date = new Date();
-		DeliveredBy deliveredBy = DeliveredBy.CHO;
 		BirthOutcome child1birthOutcome = BirthOutcome.A;
 		BirthOutcome child2birthOutcome = BirthOutcome.FSB;
 		BirthOutcome child3birthOutcome = BirthOutcome.MSB;
 		Gender child1Sex = Gender.FEMALE;
 		Gender child2Sex = Gender.MALE;
 		Gender child3Sex = Gender.MALE;
+		RegistrationMode child1RegType = RegistrationMode.USE_PREPRINTED_ID;
+		RegistrationMode child2RegType = RegistrationMode.USE_PREPRINTED_ID;
+		RegistrationMode child3RegType = RegistrationMode.AUTO_GENERATE_ID;
 
 		User nurse = new User(1);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		Capture<List<BirthOutcomeChild>> outcomesCapture = new Capture<List<BirthOutcomeChild>>();
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(patient);
-		registrarBean.recordPregnancyDelivery(eq(nurse), eq(date), eq(patient),
-				eq(method), eq(outcome), eq(location), eq(deliveredBy),
-				eq(maternalDeath), eq(cause), capture(outcomesCapture));
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
+		registrarBean
+				.recordPregnancyDelivery(eq(nurse), eq(date), eq(patient),
+						eq(method), eq(outcome), eq(location), eq(deliveredBy),
+						eq(maternalDeath), eq((Integer) null),
+						capture(outcomesCapture));
 
 		replay(registrarBean, openmrsBean);
 
-		regWs.recordPregnancyDelivery(chpsId, date, patientId, method, outcome,
-				location, deliveredBy, maternalDeath, cause,
-				child1birthOutcome, child1Id, child1Sex, child1Name, child1opv,
-				child1bcg, child2birthOutcome, child2Id, child2Sex, child2Name,
-				child2opv, child2bcg, child3birthOutcome, child3Id, child3Sex,
-				child3Name, child3opv, child3bcg);
+		regWs.recordPregnancyDelivery(staffId, facilityId, date, motechId,
+				method, outcome, location, deliveredBy, maleInvolved,
+				complications, vvf, maternalDeath, comments,
+				child1birthOutcome, child1RegType, child1Id, child1Sex,
+				child1Name, child1Weight, child1opv, child1bcg,
+				child2birthOutcome, child2RegType, child2Id, child2Sex,
+				child2Name, child2Weight, child2opv, child2bcg,
+				child3birthOutcome, child3RegType, child3Id, child3Sex,
+				child3Name, child3Weight, child3opv, child3bcg);
 
 		verify(registrarBean, openmrsBean);
 
@@ -249,7 +301,7 @@ public class RegistrarServiceTest {
 
 		BirthOutcomeChild child1 = outcomes.get(0);
 		assertEquals(child1birthOutcome, child1.getOutcome());
-		assertEquals(child1Id, child1.getPatientId());
+		assertEquals(child1Id, child1.getMotechId());
 		assertEquals(child1Name, child1.getFirstName());
 		assertEquals(child1Sex, child1.getSex());
 		assertEquals(child1bcg, child1.getBcg());
@@ -257,7 +309,7 @@ public class RegistrarServiceTest {
 
 		BirthOutcomeChild child2 = outcomes.get(1);
 		assertEquals(child2birthOutcome, child2.getOutcome());
-		assertEquals(child2Id, child2.getPatientId());
+		assertEquals(child2Id, child2.getMotechId());
 		assertEquals(child2Name, child2.getFirstName());
 		assertEquals(child2Sex, child2.getSex());
 		assertEquals(child2bcg, child2.getBcg());
@@ -265,7 +317,7 @@ public class RegistrarServiceTest {
 
 		BirthOutcomeChild child3 = outcomes.get(2);
 		assertEquals(child3birthOutcome, child3.getOutcome());
-		assertEquals(child3Id, child3.getPatientId());
+		assertEquals(child3Id, child3.getMotechId());
 		assertEquals(child3Name, child3.getFirstName());
 		assertEquals(child3Sex, child3.getSex());
 		assertEquals(child3bcg, child3.getBcg());
@@ -276,32 +328,42 @@ public class RegistrarServiceTest {
 	@Test
 	public void testRecordPregnancyDeliveryOneChild()
 			throws ValidationException {
-		String chpsId = "CHPSId", patientId = "123Test";
-		String child1Id = "246Test", child1Name = "Child1First";
-		Integer method = 1, outcome = 2, location = 1, cause = 1;
-		Boolean maternalDeath = false, child1opv = true, child1bcg = false;
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer child1Id = 246, deliveredBy = 1;
+		Integer[] complications = new Integer[] { 1, 3, 5, 7 };
+		String child1Name = "Child1First", comments = "Comments";
+		Integer method = 1, outcome = 2, location = 1, vvf = 2;
+		Double child1Weight = 4.2;
+		Boolean maternalDeath = false, maleInvolved = true;
+		Boolean child1opv = true, child1bcg = false;
 		Date date = new Date();
-		DeliveredBy deliveredBy = DeliveredBy.CHO;
 		BirthOutcome child1birthOutcome = BirthOutcome.A;
 		Gender child1Sex = Gender.FEMALE;
+		RegistrationMode child1RegType = RegistrationMode.USE_PREPRINTED_ID;
 
 		User nurse = new User(1);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		Capture<List<BirthOutcomeChild>> outcomesCapture = new Capture<List<BirthOutcomeChild>>();
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(patient);
-		registrarBean.recordPregnancyDelivery(eq(nurse), eq(date), eq(patient),
-				eq(method), eq(outcome), eq(location), eq(deliveredBy),
-				eq(maternalDeath), eq(cause), capture(outcomesCapture));
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
+		registrarBean
+				.recordPregnancyDelivery(eq(nurse), eq(date), eq(patient),
+						eq(method), eq(outcome), eq(location), eq(deliveredBy),
+						eq(maternalDeath), eq((Integer) null),
+						capture(outcomesCapture));
 
 		replay(registrarBean, openmrsBean);
 
-		regWs.recordPregnancyDelivery(chpsId, date, patientId, method, outcome,
-				location, deliveredBy, maternalDeath, cause,
-				child1birthOutcome, child1Id, child1Sex, child1Name, child1opv,
-				child1bcg, null, null, null, null, null, null, null, null,
+		regWs.recordPregnancyDelivery(staffId, facilityId, date, motechId,
+				method, outcome, location, deliveredBy, maleInvolved,
+				complications, vvf, maternalDeath, comments,
+				child1birthOutcome, child1RegType, child1Id, child1Sex,
+				child1Name, child1Weight, child1opv, child1bcg, null, null,
+				null, null, null, null, null, null, null, null, null, null,
 				null, null, null, null);
 
 		verify(registrarBean, openmrsBean);
@@ -311,7 +373,7 @@ public class RegistrarServiceTest {
 
 		BirthOutcomeChild child1 = outcomes.get(0);
 		assertEquals(child1birthOutcome, child1.getOutcome());
-		assertEquals(child1Id, child1.getPatientId());
+		assertEquals(child1Id, child1.getMotechId());
 		assertEquals(child1Name, child1.getFirstName());
 		assertEquals(child1Sex, child1.getSex());
 		assertEquals(child1bcg, child1.getBcg());
@@ -321,34 +383,44 @@ public class RegistrarServiceTest {
 	@Test
 	public void testRecordPregnancyDeliveryInvalidPatientId()
 			throws ValidationException {
-		String chpsId = "CHPSId", patientId = "123Test";
-		String child1Id = "246Test", child2Id = "468Test", child3Id = "579Test", child1Name = "Child1First", child2Name = "Child2First", child3Name = "Child3First";
-		Integer method = 1, outcome = 2, location = 1, cause = 1;
-		Boolean maternalDeath = false, child1opv = true, child1bcg = false, child2opv = false, child2bcg = true, child3opv = false, child3bcg = true;
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer child1Id = 246, child2Id = 468, child3Id = 579, deliveredBy = 1;
+		Integer[] complications = new Integer[] { 1, 3, 5, 7 };
+		String child1Name = "Child1First", child2Name = "Child2First", child3Name = "Child3First", comments = "Comments";
+		Integer method = 1, outcome = 2, location = 1, vvf = 2;
+		Double child1Weight = 4.2, child2Weight = 4.4, child3Weight = 3.7;
+		Boolean maternalDeath = false, maleInvolved = true;
+		Boolean child1opv = true, child1bcg = false, child2opv = false, child2bcg = true, child3opv = false, child3bcg = true;
 		Date date = new Date();
-		DeliveredBy deliveredBy = DeliveredBy.CHO;
 		BirthOutcome child1birthOutcome = BirthOutcome.A;
 		BirthOutcome child2birthOutcome = BirthOutcome.FSB;
 		BirthOutcome child3birthOutcome = BirthOutcome.MSB;
 		Gender child1Sex = Gender.FEMALE;
 		Gender child2Sex = Gender.MALE;
 		Gender child3Sex = Gender.MALE;
+		RegistrationMode child1RegType = RegistrationMode.USE_PREPRINTED_ID;
+		RegistrationMode child2RegType = RegistrationMode.USE_PREPRINTED_ID;
+		RegistrationMode child3RegType = RegistrationMode.AUTO_GENERATE_ID;
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(null);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(null);
 
 		replay(registrarBean, openmrsBean);
 
 		try {
-			regWs.recordPregnancyDelivery(chpsId, date, patientId, method,
-					outcome, location, deliveredBy, maternalDeath, cause,
-					child1birthOutcome, child1Id, child1Sex, child1Name,
-					child1opv, child1bcg, child2birthOutcome, child2Id,
-					child2Sex, child2Name, child2opv, child2bcg,
-					child3birthOutcome, child3Id, child3Sex, child3Name,
-					child3opv, child3bcg);
+			regWs.recordPregnancyDelivery(staffId, facilityId, date, motechId,
+					method, outcome, location, deliveredBy, maleInvolved,
+					complications, vvf, maternalDeath, comments,
+					child1birthOutcome, child1RegType, child1Id, child1Sex,
+					child1Name, child1Weight, child1opv, child1bcg,
+					child2birthOutcome, child2RegType, child2Id, child2Sex,
+					child2Name, child2Weight, child2opv, child2bcg,
+					child3birthOutcome, child3RegType, child3Id, child3Sex,
+					child3Name, child3Weight, child3opv, child3bcg);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Pregnancy Delivery request", e
@@ -367,49 +439,63 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordMotherPPCVisit() throws ValidationException {
-		String chpsId = "CHPSId", patientId = "123Test";
-		Integer visitNumber = 1, ttDose = 1;
-		Boolean vitaminA = true;
+	public void testRecordMotherPNCVisit() throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer visitNumber = 1, location = 1, temperature = 25, ttDose = 1;
+		Integer lochiaColour = 1, fht = 140;
+		String house = "House", community = "Community", comments = "Comments";
+		Boolean referral = false, maleInvolved = true;
+		Boolean vitaminA = true, lochiaExcess = false;
 		Date date = new Date();
 
 		User nurse = new User(1);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(patient);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
 		registrarBean.recordMotherPPCVisit(nurse, date, patient, visitNumber,
 				vitaminA, ttDose);
 
 		replay(registrarBean, openmrsBean);
 
-		regWs.recordMotherPPCVisit(chpsId, date, patientId, visitNumber,
-				vitaminA, ttDose);
+		regWs.recordMotherPNCVisit(staffId, facilityId, date, motechId,
+				visitNumber, location, house, community, referral,
+				maleInvolved, vitaminA, ttDose, lochiaColour, lochiaExcess,
+				temperature, fht, comments);
 
 		verify(registrarBean, openmrsBean);
 	}
 
 	@Test
-	public void testRecordMotherPPCVisitInvalidPatientId()
+	public void testRecordMotherPNCVisitInvalidPatientId()
 			throws ValidationException {
-		String chpsId = "CHPSId", patientId = "123Test";
-		Integer visitNumber = 1, ttDose = 1;
-		Boolean vitaminA = true;
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer visitNumber = 1, location = 1, temperature = 25, ttDose = 1;
+		Integer lochiaColour = 1, fht = 140;
+		String house = "House", community = "Community", comments = "Comments";
+		Boolean referral = false, maleInvolved = true;
+		Boolean vitaminA = true, lochiaExcess = false;
 		Date date = new Date();
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(null);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(null);
 
 		replay(registrarBean, openmrsBean);
 
 		try {
-			regWs.recordMotherPPCVisit(chpsId, date, patientId, visitNumber,
-					vitaminA, ttDose);
+			regWs.recordMotherPNCVisit(staffId, facilityId, date, motechId,
+					visitNumber, location, house, community, referral,
+					maleInvolved, vitaminA, ttDose, lochiaColour, lochiaExcess,
+					temperature, fht, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
-			assertEquals("Errors in Record Mother PPC Visit request", e
+			assertEquals("Errors in Record Mother PNC Visit request", e
 					.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
@@ -426,39 +512,43 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testRecordDeath() throws ValidationException {
-		String chpsId = "CHPSId", patientId = "123Test";
+		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer cause = 1;
 		Date date = new Date();
 
 		User nurse = new User(1);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(patient);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
 		registrarBean.recordDeath(nurse, date, patient, cause);
 
 		replay(registrarBean, openmrsBean);
 
-		regWs.recordDeath(chpsId, date, patientId, cause);
+		regWs.recordDeath(staffId, facilityId, date, motechId, cause);
 
 		verify(registrarBean, openmrsBean);
 	}
 
 	@Test
 	public void testRecordDeathInvalidPatientId() throws ValidationException {
-		String chpsId = "CHPSId", patientId = "123Test";
+		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer cause = 1;
 		Date date = new Date();
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(null);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(null);
 
 		replay(registrarBean, openmrsBean);
 
 		try {
-			regWs.recordDeath(chpsId, date, patientId, cause);
+			regWs.recordDeath(staffId, facilityId, date, motechId, cause);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Death request", e.getMessage());
@@ -476,24 +566,83 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordChildPNCVisit() throws ValidationException {
-		String chpsId = "CHPSId", patientId = "123Test";
-		Integer opvDose = 1, pentaDose = 1;
-		Boolean bcg = true, yellowFever = true, csm = true, measles = true, ipti = true, vitaminA = true;
+	public void testRecordTTVisit() throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer ttDose = 1;
 		Date date = new Date();
 
 		User nurse = new User(1);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(patient);
-		registrarBean.recordChildPNCVisit(nurse, date, patient, bcg, opvDose,
-				pentaDose, yellowFever, csm, measles, ipti, vitaminA);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
 
 		replay(registrarBean, openmrsBean);
 
-		regWs.recordChildPNCVisit(chpsId, date, patientId, bcg, opvDose,
-				pentaDose, yellowFever, csm, measles, ipti, vitaminA);
+		regWs.recordTTVisit(staffId, facilityId, date, motechId, ttDose);
+
+		verify(registrarBean, openmrsBean);
+	}
+
+	@Test
+	public void testRecordTTVisitInvalidPatientId() throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer ttDose = 1;
+		Date date = new Date();
+
+		User nurse = new User(1);
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(null);
+
+		replay(registrarBean, openmrsBean);
+
+		try {
+			regWs.recordTTVisit(staffId, facilityId, date, motechId, ttDose);
+			fail("Expected ValidationException");
+		} catch (ValidationException e) {
+			assertEquals("Errors in Record TT Visit request", e.getMessage());
+			assertNotNull("Validation Exception FaultBean is Null", e
+					.getFaultInfo());
+			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			assertNotNull("Validation Errors is Null", errors);
+			assertEquals(1, errors.size());
+			ValidationError error = errors.get(0);
+			assertEquals(1, error.getCode());
+			assertEquals("MotechID", error.getField());
+		}
+
+		verify(registrarBean, openmrsBean);
+	}
+
+	@Test
+	public void testRecordChildPNCVisit() throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer visitNumber = 1, location = 1, temperature = 25, respiration = 60;
+		String house = "House", community = "Community", comments = "Comments";
+		Boolean referral = false, maleInvolved = true;
+		Boolean bcg = true, opv0 = true, cordCondition = true, babyCondition = true;
+		Double weight = 26.1;
+		Date date = new Date();
+
+		User nurse = new User(1);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
+
+		replay(registrarBean, openmrsBean);
+
+		regWs.recordChildPNCVisit(staffId, facilityId, date, motechId,
+				visitNumber, location, house, community, referral,
+				maleInvolved, weight, temperature, bcg, opv0, respiration,
+				cordCondition, babyCondition, comments);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -501,21 +650,28 @@ public class RegistrarServiceTest {
 	@Test
 	public void testRecordChildPNCVisitInvalidPatientId()
 			throws ValidationException {
-		String chpsId = "CHPSId", patientId = "123Test";
-		Integer opvDose = 1, pentaDose = 1;
-		Boolean bcg = true, yellowFever = true, csm = true, measles = true, ipti = true, vitaminA = true;
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer visitNumber = 1, location = 1, temperature = 25, respiration = 60;
+		String house = "House", community = "Community", comments = "Comments";
+		Boolean referral = false, maleInvolved = true;
+		Boolean bcg = true, opv0 = true, cordCondition = true, babyCondition = true;
+		Double weight = 26.1;
 		Date date = new Date();
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(null);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(null);
 
 		replay(registrarBean, openmrsBean);
 
 		try {
-			regWs.recordChildPNCVisit(chpsId, date, patientId, bcg, opvDose,
-					pentaDose, yellowFever, csm, measles, ipti, vitaminA);
+			regWs.recordChildPNCVisit(staffId, facilityId, date, motechId,
+					visitNumber, location, house, community, referral,
+					maleInvolved, weight, temperature, bcg, opv0, respiration,
+					cordCondition, babyCondition, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Child PNC Visit request", e
@@ -534,59 +690,166 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRegisterChild() throws ValidationException {
-		Date childDob = new Date(), nhisExpires = new Date();
-		String nurseId = "FGH267", motherRegNum = "ABC123", childRegNum = "DEF456", childFirstName = "Sarah", nhis = "14567";
-		Gender childGender = Gender.FEMALE;
+	public void testRecordChildCWCVisit() throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		String house = "House", community = "Community", comments = "Comments";
+		Integer location = 1, opvDose = 1, pentaDose = 1;
+		Boolean bcg = true, yellowFever = true, csm = true, measles = true, ipti = true, vitaminA = true;
+		Boolean dewormer = false, maleInvolved = true;
+		Integer muac = 5, height = 37;
+		Double weight = 25.2;
+		Date date = new Date();
 
 		User nurse = new User(1);
-		org.openmrs.Patient mother = new org.openmrs.Patient(2);
-		org.openmrs.Patient child = null;
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(motherRegNum))
-				.andReturn(mother);
-		expect(openmrsBean.getPatientByMotechId(childRegNum)).andReturn(child);
-
-		expect(
-				registrarBean.registerChild(nurse, mother, childRegNum,
-						childDob, childGender, childFirstName, nhis,
-						nhisExpires)).andReturn(new org.openmrs.Patient());
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
+		registrarBean.recordChildPNCVisit(nurse, date, patient, bcg, opvDose,
+				pentaDose, yellowFever, csm, measles, ipti, vitaminA);
 
 		replay(registrarBean, openmrsBean);
 
-		regWs.registerChild(nurseId, motherRegNum, childRegNum, childDob,
-				childGender, childFirstName, nhis, nhisExpires);
+		regWs.recordChildCWCVisit(staffId, facilityId, date, motechId,
+				location, house, community, bcg, opvDose, pentaDose, measles,
+				yellowFever, csm, ipti, vitaminA, dewormer, weight, muac,
+				height, maleInvolved, comments);
 
 		verify(registrarBean, openmrsBean);
 	}
 
 	@Test
-	public void testRegisterChildAllErrors() {
-		Date nhisExpires = new Date();
-		Calendar dobCal = new GregorianCalendar();
-		dobCal.set(Calendar.YEAR, dobCal.get(Calendar.YEAR) - 6);
-		Date childDob = dobCal.getTime();
-		String nurseId = "FGH267", motherRegNum = "ABC123", childRegNum = "DEF456", childFirstName = "Sarah", nhis = "14567";
-		Gender childGender = Gender.FEMALE;
+	public void testRecordChildCWCVisitInvalidPatientId()
+			throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		String house = "House", community = "Community", comments = "Comments";
+		Integer location = 1, opvDose = 1, pentaDose = 1;
+		Boolean bcg = true, yellowFever = true, csm = true, measles = true, ipti = true, vitaminA = true;
+		Boolean dewormer = false, maleInvolved = true;
+		Integer muac = 5, height = 37;
+		Double weight = 25.2;
+		Date date = new Date();
 
-		User nurse = null;
-		org.openmrs.Patient mother = null;
-		org.openmrs.Patient child = new org.openmrs.Patient(3);
+		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(motherRegNum))
-				.andReturn(mother);
-		expect(openmrsBean.getPatientByMotechId(childRegNum)).andReturn(child);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(null);
 
 		replay(registrarBean, openmrsBean);
 
 		try {
-			regWs.registerChild(nurseId, motherRegNum, childRegNum, childDob,
-					childGender, childFirstName, nhis, nhisExpires);
+			regWs.recordChildCWCVisit(staffId, facilityId, date, motechId,
+					location, house, community, bcg, opvDose, pentaDose,
+					measles, yellowFever, csm, ipti, vitaminA, dewormer,
+					weight, muac, height, maleInvolved, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
-			assertEquals("Errors in Register Child request", e.getMessage());
+			assertEquals("Errors in Record Child CWC Visit request", e
+					.getMessage());
+			assertNotNull("Validation Exception FaultBean is Null", e
+					.getFaultInfo());
+			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			assertNotNull("Validation Errors is Null", errors);
+			assertEquals(1, errors.size());
+			ValidationError error = errors.get(0);
+			assertEquals(1, error.getCode());
+			assertEquals("MotechID", error.getField());
+		}
+
+		verify(registrarBean, openmrsBean);
+	}
+
+	@Test
+	public void testRegisterPatient() throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3, motherMotechId = 4;
+		String firstName = "First", middleName = "Middle", lastName = "Last", prefName = "Pref";
+		String nhis = "NHIS", address = "Address", language = "Language";
+		String region = "Region", district = "District", subdistrict = "SubDistrict", community = "Community";
+		Gender gender = Gender.FEMALE;
+		Boolean estBirthDate = false, insured = true, delivDateConf = true, enroll = true, consent = true;
+		Integer gravida = 0, parity = 0, messageWeek = 5, phone = 15555555;
+		Date date = new Date();
+		RegistrationMode mode = RegistrationMode.USE_PREPRINTED_ID;
+		RegistrantType type = RegistrantType.CHILD_UNDER_FIVE;
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		MediaType format = MediaType.VOICE;
+		DayOfWeek day = DayOfWeek.MONDAY;
+		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
+		HowLearned how = HowLearned.GHS_NURSE;
+
+		User nurse = new User(1);
+		org.openmrs.Patient patient = null;
+		org.openmrs.Patient mother = new org.openmrs.Patient(3);
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
+		expect(openmrsBean.getPatientByMotechId(motherMotechId.toString()))
+				.andReturn(mother);
+
+		replay(registrarBean, openmrsBean);
+
+		regWs.registerPatient(staffId, facilityId, date, mode, motechId, type,
+				firstName, middleName, lastName, prefName, date, estBirthDate,
+				gender, insured, nhis, date, motherMotechId, region, district,
+				subdistrict, community, address, phone, date, delivDateConf,
+				gravida, parity, enroll, consent, phoneType, format, language,
+				day, date, reason, how, messageWeek);
+
+		verify(registrarBean, openmrsBean);
+	}
+
+	@Test
+	public void testRegisterPatientAllErrors() {
+		Integer staffId = 1, facilityId = 2, motechId = 3, motherMotechId = 4;
+		String firstName = "First", middleName = "Middle", lastName = "Last", prefName = "Pref";
+		String nhis = "NHIS", address = "Address", language = "Language";
+		String region = "Region", district = "District", subdistrict = "SubDistrict", community = "Community";
+		Gender gender = Gender.FEMALE;
+		Boolean estBirthDate = false, insured = true, delivDateConf = true, enroll = true, consent = true;
+		Integer gravida = 0, parity = 0, messageWeek = 5, phone = 15555555;
+		Date date = new Date();
+		RegistrationMode mode = RegistrationMode.USE_PREPRINTED_ID;
+		RegistrantType type = RegistrantType.CHILD_UNDER_FIVE;
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		MediaType format = MediaType.VOICE;
+		DayOfWeek day = DayOfWeek.MONDAY;
+		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
+		HowLearned how = HowLearned.GHS_NURSE;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.YEAR, -6);
+		Date childBirthDate = calendar.getTime();
+
+		User nurse = null;
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
+		org.openmrs.Patient mother = null;
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
+		expect(openmrsBean.getPatientByMotechId(motherMotechId.toString()))
+				.andReturn(mother);
+
+		replay(registrarBean, openmrsBean);
+
+		try {
+			regWs.registerPatient(staffId, facilityId, date, mode, motechId,
+					type, firstName, middleName, lastName, prefName,
+					childBirthDate, estBirthDate, gender, insured, nhis, date,
+					motherMotechId, region, district, subdistrict, community,
+					address, phone, date, delivDateConf, gravida, parity,
+					enroll, consent, phoneType, format, language, day, date,
+					reason, how, messageWeek);
+			fail("Expected ValidationException");
+		} catch (ValidationException e) {
+			assertEquals("Errors in Register Patient request", e.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
 			List<ValidationError> errors = e.getFaultInfo().getErrors();
@@ -594,13 +857,13 @@ public class RegistrarServiceTest {
 			assertEquals(4, errors.size());
 			ValidationError nurseError = errors.get(0);
 			assertEquals(1, nurseError.getCode());
-			assertEquals("CHPSID", nurseError.getField());
-			ValidationError motherError = errors.get(1);
+			assertEquals("StaffID", nurseError.getField());
+			ValidationError patientError = errors.get(1);
+			assertEquals(2, patientError.getCode());
+			assertEquals("MotechID", patientError.getField());
+			ValidationError motherError = errors.get(2);
 			assertEquals(1, motherError.getCode());
 			assertEquals("MotherMotechID", motherError.getField());
-			ValidationError childError = errors.get(2);
-			assertEquals(2, childError.getCode());
-			assertEquals("ChildMotechID", childError.getField());
 			ValidationError dobError = errors.get(3);
 			assertEquals(2, dobError.getCode());
 			assertEquals("DoB", dobError.getField());
@@ -610,49 +873,283 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testEditPatient() throws ValidationException {
-		String nurseId = "FGH267", patientRegNum = "ABC123", primaryPhone = "12075557894", secondaryPhone = "12075557895", nhis = "125";
-		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
-		Date nhisExpires = new Date();
+	public void testRegisterPregnancy() throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		String language = "Language";
+		Boolean enroll = true, consent = true;
+		Integer messageWeek = 5, phone = 15555555;
+		Date date = new Date();
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		MediaType format = MediaType.VOICE;
+		DayOfWeek day = DayOfWeek.MONDAY;
+		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
+		HowLearned how = HowLearned.GHS_NURSE;
 
 		User nurse = new User(1);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientRegNum)).andReturn(
-				patient);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
 
-		registrarBean.editPatient(nurse, patient, primaryPhone,
-				primaryPhoneType, secondaryPhone, secondaryPhoneType, nhis,
-				nhisExpires);
 		replay(registrarBean, openmrsBean);
 
-		regWs.editPatient(nurseId, patientRegNum, primaryPhone,
-				primaryPhoneType, secondaryPhone, secondaryPhoneType, nhis,
-				nhisExpires);
+		regWs.registerPregnancy(staffId, facilityId, date, motechId, date,
+				enroll, consent, phoneType, phone, format, language, day, date,
+				reason, how, messageWeek);
+
+		verify(registrarBean, openmrsBean);
+	}
+
+	@Test
+	public void testRegisterPregnancyInvalidIds() throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		String language = "Language";
+		Boolean enroll = true, consent = true;
+		Integer messageWeek = 5, phone = 15555555;
+		Date date = new Date();
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		MediaType format = MediaType.VOICE;
+		DayOfWeek day = DayOfWeek.MONDAY;
+		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
+		HowLearned how = HowLearned.GHS_NURSE;
+
+		User nurse = null;
+		org.openmrs.Patient patient = null;
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
+
+		replay(registrarBean, openmrsBean);
+
+		try {
+			regWs.registerPregnancy(staffId, facilityId, date, motechId, date,
+					enroll, consent, phoneType, phone, format, language, day,
+					date, reason, how, messageWeek);
+			fail("Expected ValidationException");
+		} catch (ValidationException e) {
+			assertEquals("Errors in Register Pregnancy request", e.getMessage());
+			assertNotNull("Validation Exception FaultBean is Null", e
+					.getFaultInfo());
+			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			assertNotNull("Validation Errors is Null", errors);
+			assertEquals(2, errors.size());
+			ValidationError nurseError = errors.get(0);
+			assertEquals(1, nurseError.getCode());
+			assertEquals("StaffID", nurseError.getField());
+			ValidationError patientError = errors.get(1);
+			assertEquals(1, patientError.getCode());
+			assertEquals("MotechID", patientError.getField());
+		}
+
+		verify(registrarBean, openmrsBean);
+	}
+
+	@Test
+	public void testRegisterANCMother() throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		String language = "Language", regNumber = "RegNumber";
+		Boolean enroll = true, consent = true;
+		Integer gravida = 0, parity = 0, messageWeek = 5, phone = 15555555, height = 45;
+		Date date = new Date();
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		MediaType format = MediaType.VOICE;
+		DayOfWeek day = DayOfWeek.MONDAY;
+		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
+		HowLearned how = HowLearned.GHS_NURSE;
+
+		User nurse = new User(1);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
+
+		replay(registrarBean, openmrsBean);
+
+		regWs.registerANCMother(staffId, facilityId, date, motechId, regNumber,
+				date, height, gravida, parity, enroll, consent, phoneType,
+				phone, format, language, day, date, reason, how, messageWeek);
+
+		verify(registrarBean, openmrsBean);
+	}
+
+	@Test
+	public void testRegisterANCMotherInvalidIds() throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		String language = "Language", regNumber = "RegNumber";
+		Boolean enroll = true, consent = true;
+		Integer gravida = 0, parity = 0, messageWeek = 5, phone = 15555555, height = 45;
+		Date date = new Date();
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		MediaType format = MediaType.VOICE;
+		DayOfWeek day = DayOfWeek.MONDAY;
+		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
+		HowLearned how = HowLearned.GHS_NURSE;
+
+		User nurse = null;
+		org.openmrs.Patient patient = null;
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
+
+		replay(registrarBean, openmrsBean);
+
+		try {
+
+			regWs.registerANCMother(staffId, facilityId, date, motechId,
+					regNumber, date, height, gravida, parity, enroll, consent,
+					phoneType, phone, format, language, day, date, reason, how,
+					messageWeek);
+			fail("Expected ValidationException");
+		} catch (ValidationException e) {
+			assertEquals("Errors in Register ANC Mother request", e
+					.getMessage());
+			assertNotNull("Validation Exception FaultBean is Null", e
+					.getFaultInfo());
+			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			assertNotNull("Validation Errors is Null", errors);
+			assertEquals(2, errors.size());
+			ValidationError nurseError = errors.get(0);
+			assertEquals(1, nurseError.getCode());
+			assertEquals("StaffID", nurseError.getField());
+			ValidationError patientError = errors.get(1);
+			assertEquals(1, patientError.getCode());
+			assertEquals("MotechID", patientError.getField());
+		}
+
+		verify(registrarBean, openmrsBean);
+	}
+
+	@Test
+	public void testRegisterCWCChild() throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		String language = "Language", regNumber = "RegNumber";
+		Boolean enroll = true, consent = true;
+		Integer messageWeek = 5, phone = 15555555;
+		Date date = new Date();
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		MediaType format = MediaType.VOICE;
+		DayOfWeek day = DayOfWeek.MONDAY;
+		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
+		HowLearned how = HowLearned.GHS_NURSE;
+
+		User nurse = new User(1);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
+
+		replay(registrarBean, openmrsBean);
+
+		regWs.registerCWCChild(staffId, facilityId, date, motechId, regNumber,
+				enroll, consent, phoneType, phone, format, language, day, date,
+				reason, how, messageWeek);
+
+		verify(registrarBean, openmrsBean);
+	}
+
+	@Test
+	public void testRegisterCWCChildInvalidIds() throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		String language = "Language", regNumber = "RegNumber";
+		Boolean enroll = true, consent = true;
+		Integer messageWeek = 5, phone = 15555555;
+		Date date = new Date();
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		MediaType format = MediaType.VOICE;
+		DayOfWeek day = DayOfWeek.MONDAY;
+		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
+		HowLearned how = HowLearned.GHS_NURSE;
+
+		User nurse = null;
+		org.openmrs.Patient patient = null;
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
+
+		replay(registrarBean, openmrsBean);
+
+		try {
+			regWs.registerCWCChild(staffId, facilityId, date, motechId,
+					regNumber, enroll, consent, phoneType, phone, format,
+					language, day, date, reason, how, messageWeek);
+			fail("Expected ValidationException");
+		} catch (ValidationException e) {
+			assertEquals("Errors in Register CWC Child request", e.getMessage());
+			assertNotNull("Validation Exception FaultBean is Null", e
+					.getFaultInfo());
+			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			assertNotNull("Validation Errors is Null", errors);
+			assertEquals(2, errors.size());
+			ValidationError nurseError = errors.get(0);
+			assertEquals(1, nurseError.getCode());
+			assertEquals("StaffID", nurseError.getField());
+			ValidationError patientError = errors.get(1);
+			assertEquals(1, patientError.getCode());
+			assertEquals("MotechID", patientError.getField());
+		}
+
+		verify(registrarBean, openmrsBean);
+	}
+
+	@Test
+	public void testEditPatient() throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		String phoneNumber = "12075557894", nhis = "125";
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		Boolean stopEnrollment = false;
+		Date date = new Date();
+
+		User nurse = new User(1);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
+
+		registrarBean.editPatient(nurse, patient, phoneNumber, phoneType, null,
+				null, nhis, date);
+		replay(registrarBean, openmrsBean);
+
+		regWs.editPatient(staffId, facilityId, date, motechId, phoneNumber,
+				phoneType, nhis, date, stopEnrollment);
 
 		verify(registrarBean, openmrsBean);
 	}
 
 	@Test
 	public void testEditPatientAllErrors() {
-		String nurseId = "FGH267", patientRegNum = "ABC123", primaryPhone = "12075557894", secondaryPhone = "12075557895", nhis = "125";
-		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
-		Date nhisExpires = new Date();
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		String phoneNumber = "12075557894", nhis = "125";
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		Boolean stopEnrollment = false;
+		Date date = new Date();
 
 		User nurse = null;
 		org.openmrs.Patient patient = null;
 
-		expect(openmrsBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientRegNum)).andReturn(
-				patient);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
 
 		replay(registrarBean, openmrsBean);
 
 		try {
-			regWs.editPatient(nurseId, patientRegNum, primaryPhone,
-					primaryPhoneType, secondaryPhone, secondaryPhoneType, nhis,
-					nhisExpires);
+			regWs.editPatient(staffId, facilityId, date, motechId, phoneNumber,
+					phoneType, nhis, date, stopEnrollment);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Edit Patient request", e.getMessage());
@@ -663,62 +1160,7 @@ public class RegistrarServiceTest {
 			assertEquals(2, errors.size());
 			ValidationError nurseError = errors.get(0);
 			assertEquals(1, nurseError.getCode());
-			assertEquals("CHPSID", nurseError.getField());
-			ValidationError patientError = errors.get(1);
-			assertEquals(1, patientError.getCode());
-			assertEquals("MotechID", patientError.getField());
-		}
-
-		verify(registrarBean, openmrsBean);
-	}
-
-	@Test
-	public void testStopPregnancyProgram() throws ValidationException {
-		String nurseId = "FGH267", patientRegNum = "ABC123";
-
-		User nurse = new User(1);
-		org.openmrs.Patient patient = new org.openmrs.Patient(2);
-
-		expect(openmrsBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientRegNum)).andReturn(
-				patient);
-
-		registrarBean.stopPregnancyProgram(nurse, patient);
-
-		replay(registrarBean, openmrsBean);
-
-		regWs.stopPregnancyProgram(nurseId, patientRegNum);
-
-		verify(registrarBean, openmrsBean);
-	}
-
-	@Test
-	public void testStopPregnancyProgramAllErrors() {
-		String nurseId = "FGH267", patientRegNum = "ABC123";
-
-		User nurse = null;
-		org.openmrs.Patient patient = null;
-
-		expect(openmrsBean.getNurseByCHPSId(nurseId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientRegNum)).andReturn(
-				patient);
-
-		replay(registrarBean, openmrsBean);
-
-		try {
-			regWs.stopPregnancyProgram(nurseId, patientRegNum);
-			fail("Expected ValidationException");
-		} catch (ValidationException e) {
-			assertEquals("Errors in Stop Pregnancy Program request", e
-					.getMessage());
-			assertNotNull("Validation Exception FaultBean is Null", e
-					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
-			assertNotNull("Validation Errors is Null", errors);
-			assertEquals(2, errors.size());
-			ValidationError nurseError = errors.get(0);
-			assertEquals(1, nurseError.getCode());
-			assertEquals("CHPSID", nurseError.getField());
+			assertEquals("StaffID", nurseError.getField());
 			ValidationError patientError = errors.get(1);
 			assertEquals(1, patientError.getCode());
 			assertEquals("MotechID", patientError.getField());
@@ -729,38 +1171,44 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testGeneralVisit() throws ValidationException {
-		String chpsId = "Facility1", serial = "Test123";
-		Gender gender = Gender.MALE;
+		Integer staffId = 1, facilityId = 2;
+		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean insured = true, newCase = true, referral = false;
+		Boolean insured = true, newCase = true, referral = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
+		Gender gender = Gender.MALE;
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
 
-		registrarBean.recordGeneralVisit(chpsId, date, serial, gender, date,
-				insured, newCase, diagnosis, secondDiagnosis, referral);
+		registrarBean.recordGeneralVisit(staffId.toString(), date, serial,
+				gender, date, insured, newCase, diagnosis, secondDiagnosis,
+				referral);
 
 		replay(registrarBean, openmrsBean);
 
-		regWs.recordGeneralVisit(chpsId, date, serial, gender, date, insured,
-				newCase, diagnosis, secondDiagnosis, referral);
+		regWs.recordGeneralVisit(staffId, facilityId, date, serial, gender,
+				date, insured, diagnosis, secondDiagnosis, rdtGiven,
+				rdtPositive, actTreated, newCase, referral, comments);
 
 		verify(registrarBean, openmrsBean);
 	}
 
 	@Test
 	public void testGeneralVisitInvalidNurseId() {
-		String chpsId = null, serial = "Test123";
-		Gender gender = Gender.MALE;
+		Integer staffId = 1, facilityId = 2;
+		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean insured = true, newCase = true, referral = false;
+		Boolean insured = true, newCase = true, referral = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
+		Gender gender = Gender.MALE;
 
 		try {
-			regWs.recordGeneralVisit(chpsId, date, serial, gender, date,
-					insured, newCase, diagnosis, secondDiagnosis, referral);
+			regWs.recordGeneralVisit(staffId, facilityId, date, serial, gender,
+					date, insured, diagnosis, secondDiagnosis, rdtGiven,
+					rdtPositive, actTreated, newCase, referral, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in General Visit request", e.getMessage());
@@ -771,29 +1219,33 @@ public class RegistrarServiceTest {
 			assertEquals(1, errors.size());
 			ValidationError error = errors.get(0);
 			assertEquals(1, error.getCode());
-			assertEquals("CHPSID", error.getField());
+			assertEquals("StaffID", error.getField());
 		}
 	}
 
 	@Test
 	public void testRecordChildVisit() throws ValidationException {
-		String chpsId = "CHPSId", serial = "Test123", patientId = "123Test";
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean newCase = true, referral = false;
+		Boolean newCase = true, referral = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
 
 		User nurse = new User(1);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(patient);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
 		registrarBean.recordChildVisit(nurse, date, patient, serial, newCase,
 				diagnosis, secondDiagnosis, referral);
 
 		replay(registrarBean, openmrsBean);
 
-		regWs.recordChildVisit(chpsId, date, serial, patientId, newCase,
-				diagnosis, secondDiagnosis, referral);
+		regWs.recordChildVisit(staffId, facilityId, date, serial, motechId,
+				diagnosis, secondDiagnosis, rdtGiven, rdtPositive, actTreated,
+				newCase, referral, comments);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -801,21 +1253,25 @@ public class RegistrarServiceTest {
 	@Test
 	public void testRecordChildVisitInvalidPatientId()
 			throws ValidationException {
-		String chpsId = "CHPSId", serial = "Test123", patientId = "123Test";
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean newCase = true, referral = false;
+		Boolean newCase = true, referral = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(null);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(null);
 
 		replay(registrarBean, openmrsBean);
 
 		try {
-			regWs.recordChildVisit(chpsId, date, serial, patientId, newCase,
-					diagnosis, secondDiagnosis, referral);
+			regWs.recordChildVisit(staffId, facilityId, date, serial, motechId,
+					diagnosis, secondDiagnosis, rdtGiven, rdtPositive,
+					actTreated, newCase, referral, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Child Visit request", e.getMessage());
@@ -834,23 +1290,27 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testRecordMotherVisit() throws ValidationException {
-		String chpsId = "CHPSId", serial = "Test123", patientId = "123Test";
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean newCase = true, referral = false;
+		Boolean newCase = true, referral = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
 
 		User nurse = new User(1);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(patient);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
 		registrarBean.recordMotherVisit(nurse, date, patient, serial, newCase,
 				diagnosis, secondDiagnosis, referral);
 
 		replay(registrarBean, openmrsBean);
 
-		regWs.recordMotherVisit(chpsId, date, serial, patientId, newCase,
-				diagnosis, secondDiagnosis, referral);
+		regWs.recordMotherVisit(staffId, facilityId, date, serial, motechId,
+				diagnosis, secondDiagnosis, rdtGiven, rdtPositive, actTreated,
+				newCase, referral, comments);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -858,21 +1318,25 @@ public class RegistrarServiceTest {
 	@Test
 	public void testRecordMotherVisitInvalidPatientId()
 			throws ValidationException {
-		String chpsId = "CHPSId", serial = "Test123", patientId = "123Test";
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean newCase = true, referral = false;
+		Boolean newCase = true, referral = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(nurse);
-		expect(openmrsBean.getPatientByMotechId(patientId)).andReturn(null);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(null);
 
 		replay(registrarBean, openmrsBean);
 
 		try {
-			regWs.recordMotherVisit(chpsId, date, serial, patientId, newCase,
-					diagnosis, secondDiagnosis, referral);
+			regWs.recordMotherVisit(staffId, facilityId, date, serial,
+					motechId, diagnosis, secondDiagnosis, rdtGiven,
+					rdtPositive, actTreated, newCase, referral, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Mother Visit request", e
@@ -892,7 +1356,7 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testQueryANCDefaulters() throws ValidationException {
-		String facilityId = "FacilityId", chpsId = "CHPSId";
+		Integer staffId = 1, facilityId = 2;
 
 		Capture<String[]> encounterGroups = new Capture<String[]>();
 		Capture<String[]> obsGroups = new Capture<String[]>();
@@ -906,7 +1370,8 @@ public class RegistrarServiceTest {
 		obsCare.setName("ObsCare");
 		Care[] defaultedCares = { encounterCare, obsCare };
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				new User(1));
 		expect(
 				registrarBean
 						.getDefaultedExpectedEncounters(capture(encounterGroups)))
@@ -919,7 +1384,7 @@ public class RegistrarServiceTest {
 
 		replay(registrarBean, modelConverter, openmrsBean);
 
-		Care[] cares = regWs.queryANCDefaulters(facilityId, chpsId);
+		Care[] cares = regWs.queryANCDefaulters(staffId, facilityId);
 
 		verify(registrarBean, modelConverter, openmrsBean);
 
@@ -938,7 +1403,7 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testQueryTTDefaulters() throws ValidationException {
-		String facilityId = "FacilityId", chpsId = "CHPSId";
+		Integer staffId = 1, facilityId = 2;
 
 		Capture<String[]> obsGroups = new Capture<String[]>();
 
@@ -948,7 +1413,8 @@ public class RegistrarServiceTest {
 		obsCare.setName("ObsCare");
 		Care[] obsCares = { obsCare };
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				new User(1));
 		expect(registrarBean.getDefaultedExpectedObs(capture(obsGroups)))
 				.andReturn(expectedObs);
 		expect(modelConverter.defaultedObsToWebServiceCares(expectedObs))
@@ -956,7 +1422,7 @@ public class RegistrarServiceTest {
 
 		replay(registrarBean, modelConverter, openmrsBean);
 
-		Care[] cares = regWs.queryTTDefaulters(facilityId, chpsId);
+		Care[] cares = regWs.queryTTDefaulters(staffId, facilityId);
 
 		verify(registrarBean, modelConverter, openmrsBean);
 
@@ -969,8 +1435,8 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryPPCDefaulters() throws ValidationException {
-		String facilityId = "FacilityId", chpsId = "CHPSId";
+	public void testQueryMotherPNCDefaulters() throws ValidationException {
+		Integer staffId = 1, facilityId = 2;
 
 		Capture<String[]> encounterGroups = new Capture<String[]>();
 
@@ -980,7 +1446,8 @@ public class RegistrarServiceTest {
 		encounterCare.setName("EncounterCare");
 		Care[] encounterCares = { encounterCare };
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				new User(1));
 		expect(
 				registrarBean
 						.getDefaultedExpectedEncounters(capture(encounterGroups)))
@@ -992,7 +1459,7 @@ public class RegistrarServiceTest {
 
 		replay(registrarBean, modelConverter, openmrsBean);
 
-		Care[] cares = regWs.queryPPCDefaulters(facilityId, chpsId);
+		Care[] cares = regWs.queryMotherPNCDefaulters(staffId, facilityId);
 
 		verify(registrarBean, modelConverter, openmrsBean);
 
@@ -1005,8 +1472,8 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryPNCDefaulters() throws ValidationException {
-		String facilityId = "FacilityId", chpsId = "CHPSId";
+	public void testQueryChildPNCDefaulters() throws ValidationException {
+		Integer staffId = 1, facilityId = 2;
 
 		Capture<String[]> encounterGroups = new Capture<String[]>();
 
@@ -1016,7 +1483,8 @@ public class RegistrarServiceTest {
 		encounterCare.setName("EncounterCare");
 		Care[] encounterCares = { encounterCare };
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				new User(1));
 		expect(
 				registrarBean
 						.getDefaultedExpectedEncounters(capture(encounterGroups)))
@@ -1028,7 +1496,7 @@ public class RegistrarServiceTest {
 
 		replay(registrarBean, modelConverter, openmrsBean);
 
-		Care[] cares = regWs.queryPNCDefaulters(facilityId, chpsId);
+		Care[] cares = regWs.queryChildPNCDefaulters(staffId, facilityId);
 
 		verify(registrarBean, modelConverter, openmrsBean);
 
@@ -1042,7 +1510,7 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testQueryCWCDefaulters() throws ValidationException {
-		String facilityId = "FacilityId", chpsId = "CHPSId";
+		Integer staffId = 1, facilityId = 2;
 
 		Capture<String[]> obsGroups = new Capture<String[]>();
 
@@ -1052,7 +1520,8 @@ public class RegistrarServiceTest {
 		obsCare.setName("ObsCare");
 		Care[] obsCares = { obsCare };
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				new User(1));
 		expect(registrarBean.getDefaultedExpectedObs(capture(obsGroups)))
 				.andReturn(expectedObs);
 		expect(modelConverter.defaultedObsToWebServiceCares(expectedObs))
@@ -1060,7 +1529,7 @@ public class RegistrarServiceTest {
 
 		replay(registrarBean, modelConverter, openmrsBean);
 
-		Care[] cares = regWs.queryCWCDefaulters(facilityId, chpsId);
+		Care[] cares = regWs.queryCWCDefaulters(staffId, facilityId);
 
 		verify(registrarBean, modelConverter, openmrsBean);
 
@@ -1080,20 +1549,25 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testQueryUpcomingDeliveries() throws ValidationException {
-		String facilityId = "FacilityId", chpsId = "CHPSId";
+		Integer staffId = 1, facilityId = 2;
 
 		List<Obs> pregnancies = new ArrayList<Obs>();
 		pregnancies.add(new Obs());
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		Patient patient = new Patient();
+		patient.setMotechId("MotechId");
+		Patient[] result = { patient };
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				new User(1));
 		expect(registrarBean.getUpcomingPregnanciesDueDate()).andReturn(
 				pregnancies);
 		expect(modelConverter.dueDatesToWebServicePatients(pregnancies))
-				.andReturn(new Patient[1]);
+				.andReturn(result);
 
 		replay(registrarBean, modelConverter, openmrsBean);
 
-		Patient[] patients = regWs.queryUpcomingDeliveries(facilityId, chpsId);
+		Patient[] patients = regWs.queryUpcomingDeliveries(staffId, facilityId);
 
 		verify(registrarBean, modelConverter, openmrsBean);
 
@@ -1103,19 +1577,24 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testQueryRecentDeliveries() throws ValidationException {
-		String facilityId = "FacilityId", chpsId = "CHPSId";
+		Integer staffId = 1, facilityId = 2;
 
 		List<Encounter> deliveries = new ArrayList<Encounter>();
 		deliveries.add(new Encounter());
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		Patient patient = new Patient();
+		patient.setMotechId("MotechId");
+		Patient[] result = { patient };
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				new User(1));
 		expect(registrarBean.getRecentDeliveries()).andReturn(deliveries);
 		expect(modelConverter.deliveriesToWebServicePatients(deliveries))
-				.andReturn(new Patient[1]);
+				.andReturn(result);
 
 		replay(registrarBean, modelConverter, openmrsBean);
 
-		Patient[] patients = regWs.queryRecentDeliveries(facilityId, chpsId);
+		Patient[] patients = regWs.queryRecentDeliveries(staffId, facilityId);
 
 		verify(registrarBean, modelConverter, openmrsBean);
 
@@ -1125,20 +1604,25 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testQueryOverdueDeliveries() throws ValidationException {
-		String facilityId = "FacilityId", chpsId = "CHPSId";
+		Integer staffId = 1, facilityId = 2;
 
 		List<Obs> pregnancies = new ArrayList<Obs>();
 		pregnancies.add(new Obs());
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		Patient patient = new Patient();
+		patient.setMotechId("MotechId");
+		Patient[] result = { patient };
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				new User(1));
 		expect(registrarBean.getOverduePregnanciesDueDate()).andReturn(
 				pregnancies);
 		expect(modelConverter.dueDatesToWebServicePatients(pregnancies))
-				.andReturn(new Patient[1]);
+				.andReturn(result);
 
 		replay(registrarBean, modelConverter, openmrsBean);
 
-		Patient[] patients = regWs.queryOverdueDeliveries(facilityId, chpsId);
+		Patient[] patients = regWs.queryOverdueDeliveries(staffId, facilityId);
 
 		verify(registrarBean, modelConverter, openmrsBean);
 
@@ -1148,7 +1632,7 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testQueryUpcomingCare() throws ValidationException {
-		String facilityId = "FacilityId", chpsId = "CHPSId", motechId = "MotechId";
+		Integer staffId = 1, facilityId = 2, motechId = 3;
 
 		List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
 		List<ExpectedObs> expectedObs = new ArrayList<ExpectedObs>();
@@ -1176,8 +1660,10 @@ public class RegistrarServiceTest {
 
 		org.openmrs.Patient patient = new org.openmrs.Patient(1);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
-		expect(openmrsBean.getPatientByMotechId(motechId)).andReturn(patient);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				new User(1));
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
 		expect(modelConverter.patientToWebService(eq(patient), eq(true)))
 				.andReturn(new Patient());
 
@@ -1191,7 +1677,7 @@ public class RegistrarServiceTest {
 
 		replay(registrarBean, modelConverter, openmrsBean);
 
-		Patient wsPatient = regWs.queryUpcomingCare(facilityId, chpsId,
+		Patient wsPatient = regWs.queryUpcomingCare(staffId, facilityId,
 				motechId);
 
 		verify(registrarBean, modelConverter, openmrsBean);
@@ -1212,25 +1698,31 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testQueryMotechId() throws ValidationException {
-		String chpsId = "CHPSId", firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
+		Integer staffId = 1, facilityId = 2;
+		String firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
 		String nhis = "NHIS", phone = "Phone";
 		Date birthDate = new Date();
 
 		List<org.openmrs.Patient> patients = new ArrayList<org.openmrs.Patient>();
 		patients.add(new org.openmrs.Patient(1));
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
+		Patient patient = new Patient();
+		patient.setMotechId("MotechId");
+		Patient[] result = { patient };
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				new User(1));
 		expect(
 				registrarBean.getPatients(firstName, lastName, prefName,
 						birthDate, null, phone, nhis, null))
 				.andReturn(patients);
 		expect(modelConverter.patientToWebService(patients, true)).andReturn(
-				new Patient[1]);
+				result);
 
 		replay(registrarBean, modelConverter, openmrsBean);
 
-		Patient[] wsPatients = regWs.queryMotechId(chpsId, firstName, lastName,
-				prefName, birthDate, nhis, phone);
+		Patient[] wsPatients = regWs.queryMotechId(staffId, facilityId,
+				firstName, lastName, prefName, birthDate, nhis, phone);
 
 		verify(registrarBean, modelConverter, openmrsBean);
 
@@ -1240,33 +1732,37 @@ public class RegistrarServiceTest {
 
 	@Test
 	public void testQueryPatient() throws ValidationException {
-		String chpsId = "CHPSId", motechId = "MotechId";
+		Integer staffId = 1, facilityId = 2, motechId = 3;
 
 		org.openmrs.Patient patient = new org.openmrs.Patient(1);
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
-		expect(openmrsBean.getPatientByMotechId(motechId)).andReturn(patient);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				new User(1));
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
 		expect(modelConverter.patientToWebService(eq(patient), eq(false)))
 				.andReturn(new Patient());
 
 		replay(registrarBean, modelConverter, openmrsBean);
 
-		regWs.queryPatient(chpsId, motechId);
+		regWs.queryPatient(staffId, facilityId, motechId);
 
 		verify(registrarBean, modelConverter, openmrsBean);
 	}
 
 	@Test
 	public void testQueryPatientInvalidPatientId() throws ValidationException {
-		String chpsId = "CHPSId", motechId = "MotechId";
+		Integer staffId = 1, facilityId = 2, motechId = 3;
 
-		expect(openmrsBean.getNurseByCHPSId(chpsId)).andReturn(new User(1));
-		expect(openmrsBean.getPatientByMotechId(motechId)).andReturn(null);
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				new User(1));
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(null);
 
 		replay(registrarBean, modelConverter, openmrsBean);
 
 		try {
-			regWs.queryPatient(chpsId, motechId);
+			regWs.queryPatient(staffId, facilityId, motechId);
 
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {

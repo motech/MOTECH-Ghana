@@ -44,9 +44,8 @@ import org.motechproject.server.ws.WebServiceModelConverterImpl;
 import org.motechproject.ws.BirthOutcome;
 import org.motechproject.ws.Care;
 import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DeliveredBy;
-import org.motechproject.ws.DeliveryTime;
 import org.motechproject.ws.Gender;
+import org.motechproject.ws.HIVResult;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.NameValuePair;
@@ -797,7 +796,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	@Transactional
 	public void recordMotherANCVisit(User nurse, Date date, Patient patient,
 			Integer visitNumber, Integer ttDose, Integer iptDose,
-			Boolean itnUse, org.motechproject.ws.HIVStatus hivStatus) {
+			Boolean itnUse, HIVResult hivResult) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -841,9 +840,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			itnUseObs.setObsGroup(pregnancyObs);
 			obsService.saveObs(itnUseObs, null);
 		}
-		if (hivStatus != null) {
+		if (hivResult != null) {
 			Obs hivStatusObs = createTextValueObs(date, getHIVStatusConcept(),
-					patient, location, hivStatus.name(), encounter, null);
+					patient, location, hivResult.name(), encounter, null);
 			hivStatusObs.setObsGroup(pregnancyObs);
 			obsService.saveObs(hivStatusObs, null);
 		}
@@ -893,7 +892,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	@Transactional
 	public void recordPregnancyDelivery(User nurse, Date date, Patient patient,
 			Integer method, Integer outcome, Integer location,
-			DeliveredBy deliveredBy, Boolean maternalDeath, Integer cause,
+			Integer deliveredBy, Boolean maternalDeath, Integer cause,
 			List<BirthOutcomeChild> outcomes) {
 
 		EncounterService encounterService = contextService
@@ -931,9 +930,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			obsService.saveObs(locationObs, null);
 		}
 		if (deliveredBy != null) {
-			Obs deliveredByObs = createTextValueObs(date,
+			Obs deliveredByObs = createNumericValueObs(date,
 					getDeliveredByConcept(), patient, encounterLocation,
-					deliveredBy.name(), encounter, null);
+					deliveredBy, encounter, null);
 			obsService.saveObs(deliveredByObs, null);
 		}
 
@@ -952,8 +951,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			}
 
 			Patient child = registerChild(null, patient, childOutcome
-					.getPatientId(), date, childOutcome.getSex(), childOutcome
-					.getFirstName(), null, null);
+					.getMotechId().toString(), date, childOutcome.getSex(),
+					childOutcome.getFirstName(), null, null);
 
 			Integer opvDose = null;
 			if (Boolean.TRUE.equals(childOutcome.getOpv())) {
@@ -2079,11 +2078,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	private Date determineUserPreferredMessageDate(Integer recipientId,
 			Date messageDate) {
-		Person recipient = contextService.getPersonService().getPerson(
-				recipientId);
-		DeliveryTime deliveryTime = getPersonDeliveryTime(recipient);
-
-		return determineMessageStartDate(deliveryTime, messageDate);
+		return determineMessageStartDate(messageDate);
 	}
 
 	private void createScheduledMessage(Integer recipientId,
@@ -2390,7 +2385,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		createConcept(MotechConstants.CONCEPT_DELIVERED_BY,
 				"Numeric coded who performed delivery",
 				MotechConstants.CONCEPT_CLASS_MISC,
-				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
 		createConcept(MotechConstants.CONCEPT_DELIVERY_OUTCOME,
 				"Numeric coded outcome of delivery",
 				MotechConstants.CONCEPT_CLASS_FINDING,
@@ -3001,10 +2996,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			}
 			MediaType mediaType = getPersonMediaType(user, MessageType.REMINDER);
 			// Schedule delivery time range between earliest and latest
-			Date messageStartDate = determineMessageStartDate(
-					DeliveryTime.MORNING, deliveryDate);
-			Date messageEndDate = determineMessageEndDate(DeliveryTime.EVENING,
-					deliveryDate);
+			Date messageStartDate = determineMessageStartDate(deliveryDate);
+			Date messageEndDate = determineMessageEndDate(deliveryDate);
 			// No corresponding message stored for nurse care messages
 			String messageId = null;
 
@@ -3114,10 +3107,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 			if (!sendImmediate) {
 				messageStartDate = message.getAttemptDate();
-
-				DeliveryTime deliveryTime = getPersonDeliveryTime(person);
-				messageEndDate = determineMessageEndDate(deliveryTime,
-						messageStartDate);
+				messageEndDate = determineMessageEndDate(messageStartDate);
 			}
 
 			Patient patient = patientService.getPatient(recipientId);
@@ -3474,19 +3464,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return null;
 	}
 
-	public DeliveryTime getPersonDeliveryTime(Person person) {
-		PersonAttributeType deliveryTimeType = getDeliveryTimeAttributeType();
-		PersonAttribute deliveryTimeAttr = person
-				.getAttribute(deliveryTimeType);
-		if (deliveryTimeAttr != null && deliveryTimeAttr.getValue() != null) {
-			return DeliveryTime.valueOf(deliveryTimeAttr.getValue());
-		} else {
-			log.debug("No delivery time found for Person id: "
-					+ person.getPersonId() + ", defaulting to anytime");
-			return DeliveryTime.ANYTIME;
-		}
-	}
-
 	public boolean isPhoneTroubled(String phoneNumber) {
 		TroubledPhone troubledPhone = contextService.getMotechService()
 				.getTroubledPhone(phoneNumber);
@@ -3516,47 +3493,21 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return null;
 	}
 
-	public Date determineMessageStartDate(DeliveryTime deliveryTime,
-			Date messageDate) {
+	public Date determineMessageStartDate(Date messageDate) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(messageDate);
-		switch (deliveryTime) {
-		case MORNING:
-			calendar.set(Calendar.HOUR_OF_DAY, 9);
-			break;
-		case AFTERNOON:
-			calendar.set(Calendar.HOUR_OF_DAY, 13);
-			break;
-		case EVENING:
-			calendar.set(Calendar.HOUR_OF_DAY, 18);
-			break;
-		default:
-			calendar.set(Calendar.HOUR_OF_DAY, 9);
-			break;
-		}
+		// TODO: Use day of week and time of day preferences
+		calendar.set(Calendar.HOUR_OF_DAY, 9);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		return calendar.getTime();
 	}
 
-	public Date determineMessageEndDate(DeliveryTime deliveryTime,
-			Date startDate) {
+	public Date determineMessageEndDate(Date startDate) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(startDate);
-		switch (deliveryTime) {
-		case MORNING:
-			calendar.set(Calendar.HOUR_OF_DAY, 12);
-			break;
-		case AFTERNOON:
-			calendar.set(Calendar.HOUR_OF_DAY, 17);
-			break;
-		case EVENING:
-			calendar.set(Calendar.HOUR_OF_DAY, 21);
-			break;
-		default:
-			calendar.set(Calendar.HOUR_OF_DAY, 21);
-			break;
-		}
+		// TODO: Use day of week and time of day preferences
+		calendar.set(Calendar.HOUR_OF_DAY, 21);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		return calendar.getTime();
