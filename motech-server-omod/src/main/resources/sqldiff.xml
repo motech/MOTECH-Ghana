@@ -221,6 +221,22 @@
 				CONSTRAINT `type_of_encounter` FOREIGN KEY (`encounter_type`) REFERENCES `encounter_type` (`encounter_type_id`),
 				CONSTRAINT `actual_encounter` FOREIGN KEY (`encounter_id`) REFERENCES `encounter` (`encounter_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			CREATE TABLE IF NOT EXISTS `motechmodule_facility` (
+				`id` bigint NOT NULL auto_increment,
+				`facility_id` bigint NOT NULL UNIQUE,
+				`location_id` int(11) NOT NULL UNIQUE,
+				`phone_number` varchar(50),
+				PRIMARY KEY (`id`),
+				CONSTRAINT `location_of_facility` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			CREATE TABLE IF NOT EXISTS `motechmodule_facility_community` (
+				`facility_id` bigint NOT NULL,
+				`location_id` int(11) NOT NULL UNIQUE,
+				CONSTRAINT `fac_com_rel_facility` FOREIGN KEY (`facility_id`) REFERENCES `motechmodule_facility` (`id`),
+				CONSTRAINT `fac_com_rel_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		</sql>
 	</diff>
 	

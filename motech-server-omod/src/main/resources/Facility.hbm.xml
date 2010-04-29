@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="${corePackage}.model">
+	<class name="Facility" table="motechmodule_facility">
+		<id name="id" type="long" column="id">
+			<generator class="native" />
+		</id>
+		<property name="facilityId" type="string" column="facility_id"
+			not-null="true" unique="true" length="36" />
+		<many-to-one name="location" class="org.openmrs.Location"
+			column="location_id" not-null="true" />
+		<property name="phoneNumber" type="string" column="phone_number"
+			length="50" />
+		<set name="communities" table="motechmodule_facility_community">
+			<key column="facility_id" />
+			<many-to-many column="location_id" class="org.openmrs.Location"
+				unique="true" />
+		</set>
+	</class>
+</hibernate-mapping>

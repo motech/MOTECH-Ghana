@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
@@ -16,6 +17,7 @@ import org.hibernate.criterion.Subqueries;
 import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.GeneralPatientEncounter;
 import org.motechproject.server.model.Log;
 import org.motechproject.server.model.Message;
@@ -621,5 +623,34 @@ public class HibernateMotechDAO implements MotechDAO {
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
 		return criteria.list();
+	}
+
+	public Facility getFacilityByFacilityId(Integer facilityId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				Facility.class);
+		criteria.add(Restrictions.eq("facilityId", facilityId));
+		return (Facility) criteria.uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Facility> getFacilityByLocation(Location location) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				Facility.class);
+		criteria.add(Restrictions.eq("location", location));
+		return (List<Facility>) criteria.list();
+	}
+
+	public Facility getFacilityByCommunity(Location community) {
+		Query query = sessionFactory.getCurrentSession().createQuery(
+				"select f from Facility f "
+						+ "join fetch f.communities c with c = :community")
+				.setParameter("community", community);
+		return (Facility) query.uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Facility> getAllFacilities() {
+		return (List<Facility>) sessionFactory.getCurrentSession()
+				.createCriteria(Facility.class).list();
 	}
 }

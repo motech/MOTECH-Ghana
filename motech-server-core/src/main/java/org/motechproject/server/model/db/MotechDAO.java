@@ -6,6 +6,7 @@ import java.util.List;
 import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.GeneralPatientEncounter;
 import org.motechproject.server.model.Log;
 import org.motechproject.server.model.Message;
@@ -144,4 +145,12 @@ public interface MotechDAO {
 			PersonAttributeType secondaryPhoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
 			String patientId, PatientIdentifierType patientIdType);
+
+	Facility getFacilityByFacilityId(Integer facilityId);
+
+	List<Facility> getFacilityByLocation(Location location);
+
+	Facility getFacilityByCommunity(Location community);
+
+	List<Facility> getAllFacilities();
 }
