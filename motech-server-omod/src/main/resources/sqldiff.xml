@@ -179,7 +179,7 @@
 				`newcase` boolean NOT NULL,
 				`diagnosis` int NOT NULL,	
 				`secondary_diagnosis` int,
-				`referral` boolean NOT NULL,
+				`referred` boolean NOT NULL,
 				PRIMARY KEY (`motechmodule_generalencounter_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			

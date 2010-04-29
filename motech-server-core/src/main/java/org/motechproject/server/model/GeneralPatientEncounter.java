@@ -16,7 +16,7 @@ public class GeneralPatientEncounter {
 	private Boolean newCase;
 	private Integer diagnosis;
 	private Integer secondaryDiagnosis;
-	private Boolean referral;
+	private Boolean referred;
 
 	public Long getId() {
 		return id;
@@ -98,12 +98,12 @@ public class GeneralPatientEncounter {
 		this.secondaryDiagnosis = secondaryDiagnosis;
 	}
 
-	public Boolean getReferral() {
-		return referral;
+	public Boolean getReferred() {
+		return referred;
 	}
 
-	public void setReferral(Boolean referral) {
-		this.referral = referral;
+	public void setReferred(Boolean referred) {
+		this.referred = referred;
 	}
 
 }

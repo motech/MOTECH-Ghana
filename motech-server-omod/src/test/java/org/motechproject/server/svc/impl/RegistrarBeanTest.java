@@ -161,8 +161,8 @@ public class RegistrarBeanTest extends TestCase {
 	Concept serialNumberConcept;
 	ConceptName newCaseNameObj;
 	Concept newCaseConcept;
-	ConceptName referralNameObj;
-	Concept referralConcept;
+	ConceptName referredNameObj;
+	Concept referredConcept;
 	ConceptName diagnosisNameObj;
 	Concept diagnosisConcept;
 	ConceptName secondDiagnosisNameObj;
@@ -420,9 +420,9 @@ public class RegistrarBeanTest extends TestCase {
 				Locale.getDefault());
 		newCaseConcept = new Concept(36);
 
-		referralNameObj = new ConceptName(MotechConstants.CONCEPT_REFERRAL,
+		referredNameObj = new ConceptName(MotechConstants.CONCEPT_REFERRED,
 				Locale.getDefault());
-		referralConcept = new Concept(37);
+		referredConcept = new Concept(37);
 
 		diagnosisNameObj = new ConceptName(
 				MotechConstants.CONCEPT_PRIMARY_DIAGNOSIS, Locale.getDefault());

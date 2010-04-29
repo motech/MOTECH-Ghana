@@ -175,19 +175,19 @@ public interface RegistrarBean {
 	public void recordGeneralVisit(String chpsId, Date date,
 			String serialNumber, Gender sex, Date birthDate, Boolean insured,
 			Boolean newCase, Integer diagnosis, Integer secondaryDiagnosis,
-			Boolean referral);
+			Boolean referred);
 
 	@RunAsAdminUser
 	public void recordChildVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Date date, Patient patient, String serialNumber, Boolean newCase,
-			Integer diagnosis, Integer secondDiagnosis, Boolean referral);
+			Integer diagnosis, Integer secondDiagnosis, Boolean referred);
 
 	@RunAsAdminUser
 	public void recordMotherVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Date date, Patient patient, String serialNumber, Boolean newCase,
-			Integer diagnosis, Integer secondDiagnosis, Boolean referral);
+			Integer diagnosis, Integer secondDiagnosis, Boolean referred);
 
 	public void log(LogType type, String message);
 

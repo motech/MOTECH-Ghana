@@ -64,7 +64,7 @@ public final class MotechConstants {
 	public static final String CONCEPT_CAUSE_OF_DEATH = "CAUSE OF DEATH";
 	public static final String CONCEPT_SERIAL_NUMBER = "SERIAL NUMBER";
 	public static final String CONCEPT_NEW_CASE = "NEW CASE";
-	public static final String CONCEPT_REFERRAL = "REFERRAL";
+	public static final String CONCEPT_REFERRED = "REFERRED";
 	public static final String CONCEPT_PRIMARY_DIAGNOSIS = "PRIMARY DIAGNOSIS ";
 	public static final String CONCEPT_SECONDARY_DIAGNOSIS = "SECONDARY DIAGNOSIS";
 	public static final String CONCEPT_MALARIA_RAPID_TEST = "MALARIA RAPID TEST";

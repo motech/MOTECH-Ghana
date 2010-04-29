@@ -85,7 +85,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "hivTestResult") HIVResult hivTestResult,
 			@WebParam(name = "postTestCounseled") Boolean postTestCounseled,
 			@WebParam(name = "pmtctTreatment") Boolean pmtctTreatment,
-			@WebParam(name = "referral") Boolean referral,
+			@WebParam(name = "referred") Boolean referred,
 			@WebParam(name = "nextANCDate") Date nextANCDate,
 			@WebParam(name = "comments") String comments)
 			throws ValidationException {
@@ -116,7 +116,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "procedure") Integer procedure,
 			@WebParam(name = "complications") Integer[] complications,
 			@WebParam(name = "maternalDeath") Boolean maternalDeath,
-			@WebParam(name = "referral") Boolean referral,
+			@WebParam(name = "referred") Boolean referred,
 			@WebParam(name = "postAbortionFPCounseled") Boolean postAbortionFPCounseled,
 			@WebParam(name = "postAbortionFPAccepted") Boolean postAbortionFPAccepted,
 			@WebParam(name = "comments") String comments)
@@ -220,7 +220,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "location") Integer location,
 			@WebParam(name = "house") String house,
 			@WebParam(name = "community") String community,
-			@WebParam(name = "referral") Boolean referral,
+			@WebParam(name = "referred") Boolean referred,
 			@WebParam(name = "maleInvolved") Boolean maleInvolved,
 			@WebParam(name = "vitaminA") Boolean vitaminA,
 			@WebParam(name = "ttDose") Integer ttDose,
@@ -299,7 +299,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "location") Integer location,
 			@WebParam(name = "house") String house,
 			@WebParam(name = "community") String community,
-			@WebParam(name = "referral") Boolean referral,
+			@WebParam(name = "referred") Boolean referred,
 			@WebParam(name = "maleInvolved") Boolean maleInvolved,
 			@WebParam(name = "weight") Double weight,
 			@WebParam(name = "temperature") Integer temperature,
@@ -586,7 +586,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "rdtPositive") Boolean rdtPositive,
 			@WebParam(name = "actTreated") Boolean actTreated,
 			@WebParam(name = "newCase") Boolean newCase,
-			@WebParam(name = "referral") Boolean referral,
+			@WebParam(name = "referred") Boolean referred,
 			@WebParam(name = "comments") String comments)
 			throws ValidationException {
 
@@ -602,7 +602,7 @@ public class RegistrarWebService implements RegistrarService {
 		// TODO: Update to include new values
 		registrarBean.recordGeneralVisit(staffId.toString(), date,
 				serialNumber, sex, dateOfBirth, insured, newCase, diagnosis,
-				secondDiagnosis, referral);
+				secondDiagnosis, referred);
 	}
 
 	@WebMethod
@@ -617,7 +617,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "rdtPositive") Boolean rdtPositive,
 			@WebParam(name = "actTreated") Boolean actTreated,
 			@WebParam(name = "newCase") Boolean newCase,
-			@WebParam(name = "referral") Boolean referral,
+			@WebParam(name = "referred") Boolean referred,
 			@WebParam(name = "comments") String comments)
 			throws ValidationException {
 
@@ -634,7 +634,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		// TODO: Update to include new values
 		registrarBean.recordChildVisit(nurse, date, patient, serialNumber,
-				newCase, diagnosis, secondDiagnosis, referral);
+				newCase, diagnosis, secondDiagnosis, referred);
 	}
 
 	@WebMethod
@@ -649,7 +649,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "rdtPositive") Boolean rdtPositive,
 			@WebParam(name = "actTreated") Boolean actTreated,
 			@WebParam(name = "newCase") Boolean newCase,
-			@WebParam(name = "referral") Boolean referral,
+			@WebParam(name = "referred") Boolean referred,
 			@WebParam(name = "comments") String comments)
 			throws ValidationException {
 
@@ -666,7 +666,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		// TODO: Update to include new values
 		registrarBean.recordMotherVisit(nurse, date, patient, serialNumber,
-				newCase, diagnosis, secondDiagnosis, referral);
+				newCase, diagnosis, secondDiagnosis, referred);
 	}
 
 	@WebMethod

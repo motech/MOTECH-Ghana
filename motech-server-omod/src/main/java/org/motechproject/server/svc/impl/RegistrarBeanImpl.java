@@ -1124,13 +1124,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public void recordGeneralVisit(String chpsId, Date date,
 			String serialNumber, Gender sex, Date birthDate, Boolean insured,
 			Boolean newCase, Integer diagnosis, Integer secondaryDiagnosis,
-			Boolean referral) {
+			Boolean referred) {
 
 		log.debug("Date: " + date + ", CHPS Id: " + chpsId + ", Serial: "
 				+ serialNumber + ", Sex: " + sex + ", Birthdate: " + birthDate
 				+ ", Insured: " + insured + ", New Case: " + newCase
 				+ ", Diagnosis: " + diagnosis + ", Sec Diagnosis: "
-				+ secondaryDiagnosis + ", Referral: " + referral);
+				+ secondaryDiagnosis + ", Referred: " + referred);
 
 		MotechService motechService = contextService.getMotechService();
 
@@ -1144,7 +1144,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setNewCase(newCase);
 		encounter.setDiagnosis(diagnosis);
 		encounter.setSecondaryDiagnosis(secondaryDiagnosis);
-		encounter.setReferral(referral);
+		encounter.setReferred(referred);
 
 		motechService.saveGeneralPatientEncounter(encounter);
 	}
@@ -1152,24 +1152,24 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	@Transactional
 	public void recordChildVisit(User nurse, Date date, Patient patient,
 			String serialNumber, Boolean newCase, Integer diagnosis,
-			Integer secondDiagnosis, Boolean referral) {
+			Integer secondDiagnosis, Boolean referred) {
 
 		recordMotherChildGeneralVisit(nurse, date, patient, serialNumber,
-				newCase, diagnosis, secondDiagnosis, referral);
+				newCase, diagnosis, secondDiagnosis, referred);
 	}
 
 	@Transactional
 	public void recordMotherVisit(User nurse, Date date, Patient patient,
 			String serialNumber, Boolean newCase, Integer diagnosis,
-			Integer secondDiagnosis, Boolean referral) {
+			Integer secondDiagnosis, Boolean referred) {
 
 		recordMotherChildGeneralVisit(nurse, date, patient, serialNumber,
-				newCase, diagnosis, secondDiagnosis, referral);
+				newCase, diagnosis, secondDiagnosis, referred);
 	}
 
 	private void recordMotherChildGeneralVisit(User nurse, Date date,
 			Patient patient, String serialNumber, Boolean newCase,
-			Integer diagnosis, Integer secondDiagnosis, Boolean referral) {
+			Integer diagnosis, Integer secondDiagnosis, Boolean referred) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -1208,10 +1208,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					secondDiagnosis, encounter, null);
 			obsService.saveObs(secondDiagnosisObs, null);
 		}
-		if (referral != null) {
-			Obs referralObs = createBooleanValueObs(date, getReferralConcept(),
-					patient, location, referral, encounter, null);
-			obsService.saveObs(referralObs, null);
+		if (referred != null) {
+			Obs referredObs = createBooleanValueObs(date, getReferredConcept(),
+					patient, location, referred, encounter, null);
+			obsService.saveObs(referredObs, null);
 		}
 	}
 
@@ -2362,7 +2362,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Question: \"Is this a new case?\"",
 				MotechConstants.CONCEPT_CLASS_QUESTION,
 				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
-		createConcept(MotechConstants.CONCEPT_REFERRAL,
+		createConcept(MotechConstants.CONCEPT_REFERRED,
 				"Question: \"Was patient referred?\"",
 				MotechConstants.CONCEPT_CLASS_QUESTION,
 				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
@@ -3823,9 +3823,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.CONCEPT_NEW_CASE);
 	}
 
-	public Concept getReferralConcept() {
+	public Concept getReferredConcept() {
 		return contextService.getConceptService().getConcept(
-				MotechConstants.CONCEPT_REFERRAL);
+				MotechConstants.CONCEPT_REFERRED);
 	}
 
 	public Concept getPrimaryDiagnosisConcept() {

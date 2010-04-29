@@ -24,7 +24,7 @@
 			not-null="true" />
 		<property name="secondaryDiagnosis" type="int"
 			column="secondary_diagnosis" />
-		<property name="referral" type="boolean" column="referral"
+		<property name="referred" type="boolean" column="referred"
 			not-null="true" />
 	</class>
 </hibernate-mapping>
