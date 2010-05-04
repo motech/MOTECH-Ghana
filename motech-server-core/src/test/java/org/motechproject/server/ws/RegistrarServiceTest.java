@@ -7,6 +7,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
@@ -428,6 +429,61 @@ public class RegistrarServiceTest {
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Pregnancy Delivery request", e
+					.getMessage());
+			assertNotNull("Validation Exception FaultBean is Null", e
+					.getFaultInfo());
+			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			assertNotNull("Validation Errors is Null", errors);
+			assertEquals(1, errors.size());
+			ValidationError error = errors.get(0);
+			assertEquals(1, error.getCode());
+			assertEquals("MotechID", error.getField());
+		}
+
+		verify(registrarBean, openmrsBean);
+	}
+
+	@Test
+	public void testRecordDeliveryNotification() throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Date date = new Date();
+
+		User nurse = new User(1);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
+
+		replay(registrarBean, openmrsBean);
+
+		regWs.recordDeliveryNotification(staffId, facilityId, date, motechId);
+
+		verify(registrarBean, openmrsBean);
+	}
+
+	@Test
+	public void testRecordRecordDeliveryNotificationInvalidPatientId()
+			throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Date date = new Date();
+
+		User nurse = new User(1);
+
+		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+				nurse);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(null);
+
+		replay(registrarBean, openmrsBean);
+
+		try {
+			regWs.recordDeliveryNotification(staffId, facilityId, date,
+					motechId);
+			fail("Expected ValidationException");
+		} catch (ValidationException e) {
+			assertEquals("Errors in Record Delivery Notification request", e
 					.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
@@ -1771,6 +1827,57 @@ public class RegistrarServiceTest {
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Patient Query request", e.getMessage());
+			assertNotNull("Validation Exception FaultBean is Null", e
+					.getFaultInfo());
+			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			assertNotNull("Validation Errors is Null", errors);
+			assertEquals(1, errors.size());
+			ValidationError error = errors.get(0);
+			assertEquals(1, error.getCode());
+			assertEquals("MotechID", error.getField());
+		}
+
+		verify(registrarBean, modelConverter, openmrsBean);
+	}
+
+	@Test
+	public void testGetPatientEnrollments() throws ValidationException {
+		Integer motechId = 3;
+
+		org.openmrs.Patient patient = new org.openmrs.Patient(1);
+		String[] enrollments = { "Enrollment1", "Enrollment2" };
+
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
+		expect(registrarBean.getActiveMessageProgramEnrollmentNames(patient))
+				.andReturn(enrollments);
+
+		replay(registrarBean, modelConverter, openmrsBean);
+
+		String[] result = regWs.getPatientEnrollments(motechId);
+
+		verify(registrarBean, modelConverter, openmrsBean);
+
+		assertArrayEquals(enrollments, result);
+	}
+
+	@Test
+	public void testGetPatientEnrollmentsInvalidPatientId()
+			throws ValidationException {
+		Integer motechId = 3;
+
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(null);
+
+		replay(registrarBean, modelConverter, openmrsBean);
+
+		try {
+			regWs.getPatientEnrollments(motechId);
+
+			fail("Expected ValidationException");
+		} catch (ValidationException e) {
+			assertEquals("Errors in Get Patient Enrollments request", e
+					.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
 			List<ValidationError> errors = e.getFaultInfo().getErrors();

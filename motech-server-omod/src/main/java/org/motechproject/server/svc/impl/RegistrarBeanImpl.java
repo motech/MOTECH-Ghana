@@ -3437,6 +3437,20 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	/* NotificationTask methods end */
 
 	/* Factored out methods start */
+	public String[] getActiveMessageProgramEnrollmentNames(Patient patient) {
+		MotechService motechService = contextService.getMotechService();
+
+		List<MessageProgramEnrollment> enrollments = motechService
+				.getActiveMessageProgramEnrollments(patient.getPatientId(),
+						null, null);
+
+		List<String> enrollmentNames = new ArrayList<String>();
+		for (MessageProgramEnrollment enrollment : enrollments) {
+			enrollmentNames.add(enrollment.getProgram());
+		}
+		return enrollmentNames.toArray(new String[enrollmentNames.size()]);
+	}
+
 	public void addMessageProgramEnrollment(Integer personId, String program,
 			Integer obsId) {
 		MotechService motechService = contextService.getMotechService();

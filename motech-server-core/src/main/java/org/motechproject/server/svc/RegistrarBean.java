@@ -335,6 +335,8 @@ public interface RegistrarBean {
 	public void removeMessageProgramEnrollment(
 			MessageProgramEnrollment enrollment);
 
+	public String[] getActiveMessageProgramEnrollmentNames(Patient patient);
+
 	public void scheduleMessage(String messageKey,
 			MessageProgramEnrollment enrollment, Date messageDate,
 			boolean userPreferenceBased);

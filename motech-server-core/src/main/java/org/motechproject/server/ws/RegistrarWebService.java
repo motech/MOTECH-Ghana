@@ -216,6 +216,27 @@ public class RegistrarWebService implements RegistrarService {
 	}
 
 	@WebMethod
+	public void recordDeliveryNotification(
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
+			@WebParam(name = "datetime") Date datetime,
+			@WebParam(name = "motechId") Integer motechId)
+			throws ValidationException {
+
+		ValidationErrors errors = new ValidationErrors();
+
+		validateChpsId(staffId, errors, "StaffID");
+		validateMotechId(motechId, errors, "MotechID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in Record Delivery Notification request", errors);
+		}
+
+		// TODO: Update to add call to store delivery notification encounter
+	}
+
+	@WebMethod
 	public void recordMotherPNCVisit(
 			@WebParam(name = "staffId") Integer staffId,
 			@WebParam(name = "facilityId") Integer facilityId,
@@ -918,6 +939,24 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		return modelConverter.patientToWebService(patient, false);
+	}
+
+	@WebMethod
+	public String[] getPatientEnrollments(
+			@WebParam(name = "motechId") Integer motechId)
+			throws ValidationException {
+
+		ValidationErrors errors = new ValidationErrors();
+
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in Get Patient Enrollments request", errors);
+		}
+
+		return registrarBean.getActiveMessageProgramEnrollmentNames(patient);
 	}
 
 	@WebMethod
