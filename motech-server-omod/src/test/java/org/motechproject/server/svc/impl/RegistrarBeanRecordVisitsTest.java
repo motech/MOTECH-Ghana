@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -147,13 +148,24 @@ public class RegistrarBeanRecordVisitsTest extends
 			assertEquals("3 new patients not registered", 5, Context
 					.getPatientService().getAllPatients().size());
 
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.MONTH, 6);
+			Date newDueDate = calendar.getTime();
+
 			// ANC Visit for Mother 1
-			regService.recordMotherANCVisit(nurse, date, mother1, 1, 1, 1,
-					true, HIVResult.NEGATIVE);
+			regService.recordMotherANCVisit(nurse, 1, date, mother1, 1, 1,
+					"House", "Community", newDueDate, 1, 1, 1.0, 1, 1, false,
+					true, 1, 1, false, false, 1.0, false, false, false, true,
+					false, false, HIVResult.NO_TEST, false, false, false, date,
+					"Comments");
 
 			assertEquals("ANC visit not added for Mother 1", 2, Context
 					.getEncounterService().getEncountersByPatient(mother1)
 					.size());
+			Date currentDueDate = regService.getActivePregnancyDueDate(mother1
+					.getPatientId());
+			assertEquals("EDD not updated in ANC visit", newDueDate,
+					currentDueDate);
 
 			// Pregnancy Delivery for Mother 1, Adding Child 2
 			List<BirthOutcomeChild> outcomes = new ArrayList<BirthOutcomeChild>();

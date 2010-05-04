@@ -116,17 +116,6 @@ public interface MotechService extends OpenmrsService {
 			PersonAttributeType personAttributeType, String value);
 
 	@Transactional(readOnly = true)
-	List<MessageProgramEnrollment> getAllActiveMessageProgramEnrollments();
-
-	@Transactional(readOnly = true)
-	List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
-			Integer personId);
-
-	@Transactional(readOnly = true)
-	List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
-			Integer personId, String program);
-
-	@Transactional(readOnly = true)
 	List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
 			Integer personId, String program, Integer obsId);
 

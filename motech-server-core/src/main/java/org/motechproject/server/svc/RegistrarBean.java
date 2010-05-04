@@ -138,8 +138,18 @@ public interface RegistrarBean {
 	@RunAsAdminUser
 	public void recordMotherANCVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, Integer visitNumber, Integer ttDose,
-			Integer iptDose, Boolean itnUse, HIVResult hivResult);
+			Integer facilityId, Date date, Patient patient,
+			Integer visitNumber, Integer ancLocation, String house,
+			String community, Date estDeliveryDate, Integer bpSystolic,
+			Integer bpDiastolic, Double weight, Integer ttDose,
+			Integer iptDose, Boolean iptReactive, Boolean itnUse, Integer fht,
+			Integer fhr, Boolean urineTestProteinPositive,
+			Boolean urineTestGlucosePositive, Double hemoglobin,
+			Boolean vdrlReactive, Boolean vdrlTreatment, Boolean dewormer,
+			Boolean maleInvolved, Boolean pmtct, Boolean preTestCounseled,
+			HIVResult hivTestResult, Boolean postTestCounseled,
+			Boolean pmtctTreatment, Boolean referred, Date nextANCDate,
+			String comments);
 
 	@RunAsAdminUser
 	public void recordPregnancyTermination(

@@ -87,14 +87,6 @@ public interface MotechDAO {
 	MessageProgramEnrollment saveMessageProgramEnrollment(
 			MessageProgramEnrollment enrollment);
 
-	List<MessageProgramEnrollment> getAllActiveMessageProgramEnrollments();
-
-	List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
-			Integer personId);
-
-	List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
-			Integer personId, String program);
-
 	List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
 			Integer personId, String program, Integer obsId);
 

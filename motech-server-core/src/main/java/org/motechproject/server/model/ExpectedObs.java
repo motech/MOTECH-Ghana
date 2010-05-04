@@ -129,10 +129,11 @@ public class ExpectedObs {
 	@Override
 	public String toString() {
 		return "Expected Obs: [" + "id: " + id + ", concept: "
-				+ (concept != null ? concept.getName() : "null") + ", person: "
+				+ (concept != null ? concept.getConceptId() : "null")
+				+ ", person: "
 				+ (patient != null ? patient.getPatientId() : "null")
 				+ ", valueConcept: "
-				+ (valueCoded != null ? valueCoded.getName() : "null")
+				+ (valueCoded != null ? valueCoded.getConceptId() : "null")
 				+ ", valueNumeric: " + valueNumeric + ", min: "
 				+ minObsDatetime + ", due: " + dueObsDatetime + ", late: "
 				+ lateObsDatetime + ", max: " + maxObsDatetime + ", obs: "

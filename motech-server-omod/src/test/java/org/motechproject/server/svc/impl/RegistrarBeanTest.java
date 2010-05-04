@@ -139,8 +139,8 @@ public class RegistrarBeanTest extends TestCase {
 	Concept parityConcept;
 	ConceptName refDateNameObj;
 	Concept refDateConcept;
-	ConceptName hivStatusNameObj;
-	Concept hivStatusConcept;
+	ConceptName hivTestNameObj;
+	Concept hivTestConcept;
 	ConceptName terminationTypeNameObj;
 	Concept terminationTypeConcept;
 	ConceptName terminationComplicationNameObj;
@@ -370,9 +370,9 @@ public class RegistrarBeanTest extends TestCase {
 						.getDefault());
 		refDateConcept = new Concept(25);
 
-		hivStatusNameObj = new ConceptName(MotechConstants.CONCEPT_HIV_STATUS,
-				Locale.getDefault());
-		hivStatusConcept = new Concept(26);
+		hivTestNameObj = new ConceptName(
+				MotechConstants.CONCEPT_HIV_TEST_RESULT, Locale.getDefault());
+		hivTestConcept = new Concept(26);
 
 		terminationTypeNameObj = new ConceptName(
 				MotechConstants.CONCEPT_TERMINATION_TYPE, Locale.getDefault());
@@ -819,15 +819,15 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				motechService.getActiveMessageProgramEnrollments(patient
-						.getPatientId(), pregnancyProgramName)).andReturn(
-				new ArrayList<MessageProgramEnrollment>());
+						.getPatientId(), pregnancyProgramName, null))
+				.andReturn(new ArrayList<MessageProgramEnrollment>());
 		expect(
 				motechService
 						.saveMessageProgramEnrollment(capture(enrollment1Cap)))
 				.andReturn(new MessageProgramEnrollment());
 		expect(
 				motechService.getActiveMessageProgramEnrollments(patient
-						.getPatientId(), careProgramName)).andReturn(
+						.getPatientId(), careProgramName, null)).andReturn(
 				new ArrayList<MessageProgramEnrollment>());
 		expect(
 				motechService
@@ -1152,15 +1152,15 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				motechService.getActiveMessageProgramEnrollments(child
-						.getPatientId(), pregnancyProgramName)).andReturn(
-				new ArrayList<MessageProgramEnrollment>());
+						.getPatientId(), pregnancyProgramName, null))
+				.andReturn(new ArrayList<MessageProgramEnrollment>());
 		expect(
 				motechService
 						.saveMessageProgramEnrollment(capture(enrollment1Cap)))
 				.andReturn(new MessageProgramEnrollment());
 		expect(
 				motechService.getActiveMessageProgramEnrollments(child
-						.getPatientId(), careProgramName)).andReturn(
+						.getPatientId(), careProgramName, null)).andReturn(
 				new ArrayList<MessageProgramEnrollment>());
 		expect(
 				motechService
@@ -1385,8 +1385,8 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				motechService.getActiveMessageProgramEnrollments(patient
-						.getPatientId(), pregnancyProgramName)).andReturn(
-				new ArrayList<MessageProgramEnrollment>());
+						.getPatientId(), pregnancyProgramName, null))
+				.andReturn(new ArrayList<MessageProgramEnrollment>());
 		expect(
 				motechService
 						.saveMessageProgramEnrollment(capture(enrollmentCap)))
@@ -1752,11 +1752,11 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				motechService.getActiveMessageProgramEnrollments(patientId,
-						pregnancyProgram1)).andReturn(
+						pregnancyProgram1, null)).andReturn(
 				new ArrayList<MessageProgramEnrollment>());
 		expect(
 				motechService.getActiveMessageProgramEnrollments(patientId,
-						pregnancyProgram2)).andReturn(enrollments);
+						pregnancyProgram2, null)).andReturn(enrollments);
 		expect(
 				motechService.getMessages(enrollment,
 						MessageStatus.SHOULD_ATTEMPT)).andReturn(messages);
@@ -1891,8 +1891,8 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				motechService.getActiveMessageProgramEnrollments(patient
-						.getPatientId(), pregnancyProgramName)).andReturn(
-				new ArrayList<MessageProgramEnrollment>());
+						.getPatientId(), pregnancyProgramName, null))
+				.andReturn(new ArrayList<MessageProgramEnrollment>());
 		expect(
 				motechService
 						.saveMessageProgramEnrollment(capture(enrollmentCap)))

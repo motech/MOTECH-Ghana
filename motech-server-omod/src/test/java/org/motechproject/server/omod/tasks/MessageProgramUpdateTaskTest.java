@@ -117,7 +117,7 @@ public class MessageProgramUpdateTaskTest extends
 
 			List<MessageProgramEnrollment> enrollments = Context.getService(
 					MotechService.class).getActiveMessageProgramEnrollments(
-					patientId);
+					patientId, null, null);
 			assertEquals(1, enrollments.size());
 			MessageProgramEnrollment enrollment = enrollments.get(0);
 			assertNotNull("Obs is not set on enrollment", enrollment.getObsId());
@@ -183,7 +183,7 @@ public class MessageProgramUpdateTaskTest extends
 			// Change obs referenced by enrollment to new obs
 			List<MessageProgramEnrollment> enrollments = Context.getService(
 					MotechService.class).getActiveMessageProgramEnrollments(
-					patient.getPatientId());
+					patient.getPatientId(), null, null);
 			assertEquals(1, enrollments.size());
 			MessageProgramEnrollment enrollment = enrollments.get(0);
 

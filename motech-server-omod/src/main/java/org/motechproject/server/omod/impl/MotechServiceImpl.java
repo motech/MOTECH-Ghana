@@ -100,20 +100,6 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return motechDAO.saveMessageProgramEnrollment(enrollment);
 	}
 
-	public List<MessageProgramEnrollment> getAllActiveMessageProgramEnrollments() {
-		return motechDAO.getAllActiveMessageProgramEnrollments();
-	}
-
-	public List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
-			Integer personId) {
-		return motechDAO.getActiveMessageProgramEnrollments(personId);
-	}
-
-	public List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
-			Integer personId, String program) {
-		return motechDAO.getActiveMessageProgramEnrollments(personId, program);
-	}
-
 	public List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
 			Integer personId, String program, Integer obsId) {
 		return motechDAO.getActiveMessageProgramEnrollments(personId, program,

@@ -52,7 +52,7 @@ public final class MotechConstants {
 	public static final String CONCEPT_ENROLLMENT_REFERENCE_DATE = "MESSAGE PROGRAM ENROLLMENT REFERENCE DATE";
 	public static final String CONCEPT_TETANUS_TOXOID_DOSE = "TETANUS TOXOID DOSE";
 	public static final String CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_DOSE = "INTERMITTENT PREVENTATIVE TREATMENT DOSE";
-	public static final String CONCEPT_HIV_STATUS = "HIV STATUS";
+	public static final String CONCEPT_HIV_TEST_RESULT = "HIV TEST RESULT";
 	public static final String CONCEPT_TERMINATION_TYPE = "TERMINATION TYPE";
 	public static final String CONCEPT_TERMINATION_COMPLICATION = "TERMINATION COMPLICATION";
 	public static final String CONCEPT_MATERNAL_CAUSE_OF_DEATH = "MATERNAL CAUSE OF DEATH";
@@ -95,7 +95,8 @@ public final class MotechConstants {
 	public static final String CONCEPT_MALE_INVOLVEMENT = "MALE INVOLVEMENT";
 	public static final String CONCEPT_COMMUNITY = "COMMUNITY";
 	public static final String CONCEPT_HOUSE = "HOUSE";
-	public static final String CONCEPT_LOCATION = "LOCATION";
+	public static final String CONCEPT_ANC_PNC_LOCATION = "ANC PNC LOCATION";
+	public static final String CONCEPT_CWC_LOCATION = "CWC LOCATION";
 	public static final String CONCEPT_COMMENTS = "COMMENTS";
 	public static final String TASK_PROPERTY_SEND_IMMEDIATE = "sendImmediate";
 	public static final String TASK_PROPERTY_TIME_OFFSET = "timeOffset";

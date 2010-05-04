@@ -101,9 +101,14 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Mother ANC Visit request", errors);
 		}
 
-		// TODO: Update to include new values
-		registrarBean.recordMotherANCVisit(nurse, date, patient, visitNumber,
-				ttDose, iptDose, itnUse, hivTestResult);
+		registrarBean.recordMotherANCVisit(nurse, facilityId, date, patient,
+				visitNumber, location, house, community, estDeliveryDate,
+				bpSystolic, bpDiastolic, weight, ttDose, iptDose, iptReactive,
+				itnUse, fht, fhr, urineTestProteinPositive,
+				urineTestGlucosePositive, hemoglobin, vdrlReactive,
+				vdrlTreatment, dewormer, maleInvolved, pmtct, preTestCounseled,
+				hivTestResult, postTestCounseled, pmtctTreatment, referred,
+				nextANCDate, comments);
 	}
 
 	@WebMethod

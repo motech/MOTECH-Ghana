@@ -259,46 +259,23 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<MessageProgramEnrollment> getAllActiveMessageProgramEnrollments() {
-		Session session = sessionFactory.getCurrentSession();
-		return (List<MessageProgramEnrollment>) session.createCriteria(
-				MessageProgramEnrollment.class).add(
-				Restrictions.isNotNull("startDate")).add(
-				Restrictions.isNull("endDate")).list();
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
-			Integer personId) {
-		Session session = sessionFactory.getCurrentSession();
-		return (List<MessageProgramEnrollment>) session.createCriteria(
-				MessageProgramEnrollment.class).add(
-				Restrictions.eq("personId", personId)).add(
-				Restrictions.isNotNull("startDate")).add(
-				Restrictions.isNull("endDate")).list();
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
-			Integer personId, String program) {
-		Session session = sessionFactory.getCurrentSession();
-		return (List<MessageProgramEnrollment>) session.createCriteria(
-				MessageProgramEnrollment.class).add(
-				Restrictions.eq("personId", personId)).add(
-				Restrictions.eq("program", program)).add(
-				Restrictions.isNull("endDate")).list();
-	}
-
-	@SuppressWarnings("unchecked")
 	public List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
 			Integer personId, String program, Integer obsId) {
 		Session session = sessionFactory.getCurrentSession();
-		return (List<MessageProgramEnrollment>) session.createCriteria(
-				MessageProgramEnrollment.class).add(
-				Restrictions.eq("personId", personId)).add(
-				Restrictions.eq("program", program)).add(
-				Restrictions.eq("obsId", obsId)).add(
-				Restrictions.isNull("endDate")).list();
+		Criteria criteria = session
+				.createCriteria(MessageProgramEnrollment.class);
+		criteria.add(Restrictions.isNotNull("startDate"));
+		criteria.add(Restrictions.isNull("endDate"));
+		if (personId != null) {
+			criteria.add(Restrictions.eq("personId", personId));
+		}
+		if (program != null) {
+			criteria.add(Restrictions.eq("program", program));
+		}
+		if (obsId != null) {
+			criteria.add(Restrictions.eq("obsId", obsId));
+		}
+		return (List<MessageProgramEnrollment>) criteria.list();
 	}
 
 	public GeneralPatientEncounter saveGeneralPatientEncounter(

@@ -115,8 +115,12 @@ public class RegistrarServiceTest {
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordMotherANCVisit(nurse, date, patient, visitNumber,
-				ttDose, iptDose, itnUse, hivResult);
+		registrarBean.recordMotherANCVisit(nurse, facilityId, date, patient,
+				visitNumber, location, house, community, date, bpSystolic,
+				bpDiastolic, weight, ttDose, iptDose, iptReactive, itnUse, fht,
+				fhr, urineProtein, urineGlucose, hemoglobin, vdrlReactive,
+				vdrlTreatment, dewormer, maleInvolved, pmtct, preTest,
+				hivResult, postTest, pmtctTreatment, referred, date, comments);
 
 		replay(registrarBean, openmrsBean);
 
