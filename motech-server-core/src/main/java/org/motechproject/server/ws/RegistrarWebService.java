@@ -434,23 +434,24 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
+		User nurse = validateChpsId(staffId, errors, "StaffID");
 
 		if (motechId == null
 				&& registrationMode == RegistrationMode.USE_PREPRINTED_ID) {
 			errors.add(3, "MotechID");
 		} else if (motechId != null
 				&& registrationMode == RegistrationMode.USE_PREPRINTED_ID) {
-			org.openmrs.Patient child = openmrsBean
+			org.openmrs.Patient patient = openmrsBean
 					.getPatientByMotechId(motechId.toString());
-			if (child != null) {
+			if (patient != null) {
 				errors.add(2, "MotechID");
 			}
 		}
 
+		org.openmrs.Patient mother = null;
 		if (motherMotechId != null
 				&& registrantType == RegistrantType.CHILD_UNDER_FIVE) {
-			validateMotechId(motherMotechId, errors, "MotherMotechID");
+			mother = validateMotechId(motherMotechId, errors, "MotherMotechID");
 		}
 
 		if (registrantType == RegistrantType.CHILD_UNDER_FIVE) {
@@ -459,6 +460,17 @@ public class RegistrarWebService implements RegistrarService {
 			if (dateOfBirth.before(calendar.getTime())) {
 				errors.add(2, "DoB");
 			}
+		} else if (registrantType == RegistrantType.PREGNANT_MOTHER) {
+			if (sex != Gender.FEMALE)
+				errors.add(2, "Sex");
+			if (expDeliveryDate == null)
+				errors.add(3, "DeliveryDate");
+			if (deliveryDateConfirmed == null)
+				errors.add(3, "DeliveryDateConfirmed");
+			if (gravida == null)
+				errors.add(3, "Gravida");
+			if (parity == null)
+				errors.add(3, "Parity");
 		}
 
 		if (errors.getErrors().size() > 0) {
@@ -466,7 +478,14 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		// TODO: Update to add call to register patient
+		registrarBean.registerPatient(nurse, facilityId, date,
+				registrationMode, motechId, registrantType, firstName,
+				middleName, lastName, preferredName, dateOfBirth,
+				estimatedBirthDate, sex, insured, nhis, nhisExpires, mother,
+				region, district, subDistrict, community, address, phoneNumber,
+				expDeliveryDate, deliveryDateConfirmed, gravida, parity,
+				enroll, consent, ownership, format, language, dayOfWeek,
+				timeOfDay, reason, howLearned, messagesStartWeek);
 	}
 
 	@WebMethod

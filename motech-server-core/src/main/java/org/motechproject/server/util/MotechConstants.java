@@ -5,28 +5,19 @@ public final class MotechConstants {
 	/*
 	 * Values added and used by Motech
 	 */
-	public static final String PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER = "Primary Phone Number";
-	public static final String PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER = "Secondary Phone Number";
+	public static final String PERSON_ATTRIBUTE_PHONE_NUMBER = "Phone Number";
 	public static final String PERSON_ATTRIBUTE_NHIS_NUMBER = "NHIS Number";
 	public static final String PERSON_ATTRIBUTE_NHIS_EXP_DATE = "NHIS Expiration Date";
-	public static final String PERSON_ATTRIBUTE_LANGUAGE_TEXT = "Language Text";
-	public static final String PERSON_ATTRIBUTE_LANGUAGE_VOICE = "Language Voice";
-	public static final String PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE = "Primary Phone Type";
-	public static final String PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE = "Secondary Phone Type";
-	public static final String PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL = "Media Type Informational";
-	public static final String PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER = "Media Type Reminder";
+	public static final String PERSON_ATTRIBUTE_LANGUAGE = "Language";
+	public static final String PERSON_ATTRIBUTE_PHONE_TYPE = "Phone Type";
+	public static final String PERSON_ATTRIBUTE_MEDIA_TYPE = "Media Type";
+	public static final String PERSON_ATTRIBUTE_DELIVERY_DAY = "Delivery Day";
 	public static final String PERSON_ATTRIBUTE_DELIVERY_TIME = "Delivery Time";
 	public static final String PERSON_ATTRIBUTE_CHPS_ID = "CHPS ID";
-	public static final String PERSON_ATTRIBUTE_GHS_ANC_REG_NUMBER = "GHS ANC Registration Number ";
-	public static final String PERSON_ATTRIBUTE_GHS_CWC_REG_NUMBER = "GHS CWC Registration Number";
-	public static final String PERSON_ATTRIBUTE_GHS_REGISTERED = "Registered with GHS";
 	public static final String PERSON_ATTRIBUTE_INSURED = "Insured";
-	public static final String PERSON_ATTRIBUTE_HIV_STATUS = "HIV Status";
-	public static final String PERSON_ATTRIBUTE_WHO_REGISTERED = "Who registered";
-	public static final String PERSON_ATTRIBUTE_RELIGION = "Religion";
-	public static final String PERSON_ATTRIBUTE_OCCUPATION = "Occupation";
 	public static final String PERSON_ATTRIBUTE_HOW_LEARNED = "How learned of service";
 	public static final String PERSON_ATTRIBUTE_WHY_INTERESTED = "Why interested in service";
+	public static final String PERSON_ATTRIBUTE_COMMUNITY = "Community";
 	public static final String PATIENT_IDENTIFIER_MOTECH_ID = "MoTeCH Id";
 	public static final String LOCATION_GHANA = "Ghana";
 	public static final String LOCATION_UPPER_EAST = "Upper East";
@@ -115,13 +106,14 @@ public final class MotechConstants {
 	public static final String IDGEN_SEQ_ID_GEN_FIRST_MOTECH_ID_BASE = "123456";
 	public static final String IDGEN_SEQ_ID_GEN_MOTECH_ID_GEN_COMMENT = "AUTO GENERATED";
 	public static final String IDGEN_SEQ_ID_GEN_MOTECH_ID_MANUAL_COMMENT = "MANUAL ENTRY";
+	public static final String TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME = "HH:mm";
 
 	/*
 	 * Values already existing in OpenMRS, used by Motech
 	 */
 	public static final String GENDER_MALE_OPENMRS = "M";
 	public static final String GENDER_FEMALE_OPENMRS = "F";
-	public static final String PERSON_ATTRIBUTE_HEALTH_CENTER = "Health Center";
+	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	public static final String CONCEPT_CLASS_DRUG = "Drug";
 	public static final String CONCEPT_CLASS_MISC = "Misc";
 	public static final String CONCEPT_CLASS_QUESTION = "Question";

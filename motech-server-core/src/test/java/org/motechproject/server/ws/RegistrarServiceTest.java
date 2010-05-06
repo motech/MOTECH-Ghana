@@ -851,6 +851,12 @@ public class RegistrarServiceTest {
 				.andReturn(patient);
 		expect(openmrsBean.getPatientByMotechId(motherMotechId.toString()))
 				.andReturn(mother);
+		registrarBean.registerPatient(nurse, facilityId, date, mode, motechId,
+				type, firstName, middleName, lastName, prefName, date,
+				estBirthDate, gender, insured, nhis, date, mother, region,
+				district, subdistrict, community, address, phone, date,
+				delivDateConf, gravida, parity, enroll, consent, phoneType,
+				format, language, day, date, reason, how, messageWeek);
 
 		replay(registrarBean, openmrsBean);
 

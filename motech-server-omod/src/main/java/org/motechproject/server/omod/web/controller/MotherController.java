@@ -12,6 +12,7 @@ import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.ws.RegistrantType;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -205,24 +206,22 @@ public class MotherController {
 		}
 
 		if (!errors.hasErrors()) {
-			registrarBean.registerPregnantMother(mother.getMotechId(), mother
+			registrarBean.registerPatient(null, Integer.parseInt(mother
+					.getMotechId()), RegistrantType.OTHER, mother
 					.getFirstName(), mother.getMiddleName(), mother
 					.getLastName(), mother.getPrefName(),
 					mother.getBirthDate(), mother.getBirthDateEst(), mother
-							.getRegisteredGHS(), mother.getRegNumberGHS(),
-					mother.getInsured(), mother.getNhis(), mother
-							.getNhisExpDate(), mother.getRegion(), mother
-							.getDistrict(), mother.getCommunity(), mother
-							.getAddress(), mother.getClinic(), mother
-							.getDueDate(), mother.getDueDateConfirmed(), mother
-							.getGravida(), mother.getParity(), mother
-							.getHivStatus(), mother.getRegisterPregProgram(),
-					mother.getPrimaryPhone(), mother.getPrimaryPhoneType(),
-					mother.getSecondaryPhone(), mother.getSecondaryPhoneType(),
-					mother.getMediaTypeInfo(), mother.getMediaTypeReminder(),
-					mother.getLanguageVoice(), mother.getLanguageText(), mother
-							.getWhoRegistered(), mother.getReligion(), mother
-							.getOccupation());
+							.getSex(), mother.getInsured(), mother.getNhis(),
+					mother.getNhisExpDate(), null, mother.getRegion(), mother
+							.getDistrict(), null, mother.getCommunity(), mother
+							.getAddress(), Integer.parseInt(mother
+							.getPrimaryPhone()), mother.getDueDate(), mother
+							.getDueDateConfirmed(), mother.getGravida(), mother
+							.getParity(), mother.getRegisterPregProgram(),
+					mother.getRegisterPregProgram(), mother
+							.getPrimaryPhoneType(), mother.getMediaTypeInfo(),
+					mother.getLanguageText(), null, null, null, null, mother
+							.getMessagesStartWeek());
 
 			model.addAttribute("successMsg",
 					"motechmodule.Mother.register.success");

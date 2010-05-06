@@ -540,8 +540,7 @@ public class HibernateMotechDAO implements MotechDAO {
 	@SuppressWarnings("unchecked")
 	public List<Patient> getPatients(String firstName, String lastName,
 			String preferredName, Date birthDate, String community,
-			String phoneNumber, PersonAttributeType primaryPhoneNumberAttrType,
-			PersonAttributeType secondaryPhoneNumberAttrType,
+			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
 			String patientId, PatientIdentifierType patientIdType) {
 
@@ -570,13 +569,9 @@ public class HibernateMotechDAO implements MotechDAO {
 				"name.familyName", lastName)), Restrictions.and(Restrictions
 				.eq("name.givenName", preferredName), Restrictions.eq(
 				"name.familyName", lastName)));
-		Criterion phoneCriterion = Restrictions.or(Restrictions.and(
-				Restrictions
-						.eq("att.attributeType", primaryPhoneNumberAttrType),
-				Restrictions.eq("att.value", phoneNumber)), Restrictions.and(
-				Restrictions.eq("att.attributeType",
-						secondaryPhoneNumberAttrType), Restrictions.eq(
-						"att.value", phoneNumber)));
+		Criterion phoneCriterion = Restrictions.and(Restrictions.eq(
+				"att.attributeType", phoneNumberAttrType), Restrictions.eq(
+				"att.value", phoneNumber));
 		Disjunction otherCriterion = Restrictions.disjunction();
 		otherCriterion.add(Restrictions.eq("birthdate", birthDate));
 		otherCriterion.add(Restrictions.eq("addr.cityVillage", community));
@@ -584,7 +579,7 @@ public class HibernateMotechDAO implements MotechDAO {
 
 		// Get Patients by PatientId or NHIS or
 		// (((FirstName and LastName) or (PreferredName and LastName)) and
-		// (BirthDate or Community or (PrimaryPhone or SecondaryPhone))))
+		// (BirthDate or Community or PhoneNumber))))
 		Disjunction finalCriterion = Restrictions.disjunction();
 		finalCriterion.add(patientIdCriterion);
 		finalCriterion.add(nhisCriterion);

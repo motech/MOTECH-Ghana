@@ -12,6 +12,7 @@ import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.ws.RegistrantType;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,10 +148,14 @@ public class ChildController {
 			}
 		}
 
-		if (child.getMotherMotechId() != null
-				&& openmrsBean.getPatientByMotechId(child.getMotherMotechId()) == null) {
-			errors.rejectValue("motherMotechId",
-					"motechmodule.motechId.notexist");
+		Patient mother = null;
+		if (child.getMotherMotechId() != null) {
+			mother = openmrsBean
+					.getPatientByMotechId(child.getMotherMotechId());
+			if (mother == null) {
+				errors.rejectValue("motherMotechId",
+						"motechmodule.motechId.notexist");
+			}
 		}
 
 		if (Boolean.TRUE.equals(child.getRegisteredGHS())) {
@@ -198,22 +203,22 @@ public class ChildController {
 		}
 
 		if (!errors.hasErrors()) {
-
-			registrarBean.registerChild(child.getMotechId(), child
-					.getFirstName(), child.getMiddleName(),
-					child.getLastName(), child.getPrefName(), child
+			registrarBean.registerPatient(null, Integer.parseInt(child
+					.getMotechId()), RegistrantType.OTHER,
+					child.getFirstName(), child.getMiddleName(), child
+							.getLastName(), child.getPrefName(), child
 							.getBirthDate(), child.getBirthDateEst(), child
-							.getSex(), child.getMotherMotechId(), child
-							.getRegisteredGHS(), child.getRegNumberGHS(), child
-							.getInsured(), child.getNhis(), child
-							.getNhisExpDate(), child.getRegion(), child
-							.getDistrict(), child.getCommunity(), child
-							.getAddress(), child.getClinic(), child
-							.getRegisterPregProgram(), child.getPrimaryPhone(),
-					child.getPrimaryPhoneType(), child.getSecondaryPhone(),
-					child.getSecondaryPhoneType(), child.getMediaTypeInfo(),
-					child.getMediaTypeReminder(), child.getLanguageVoice(),
-					child.getLanguageText(), child.getWhoRegistered());
+							.getSex(), child.getInsured(), child.getNhis(),
+					child.getNhisExpDate(), mother, child.getRegion(), child
+							.getDistrict(), null, child.getCommunity(), child
+							.getAddress(), Integer.parseInt(child
+							.getPrimaryPhone()), child.getDueDate(), child
+							.getDueDateConfirmed(), child.getGravida(), child
+							.getParity(), child.getRegisterPregProgram(), child
+							.getRegisterPregProgram(), child
+							.getPrimaryPhoneType(), child.getMediaTypeInfo(),
+					child.getLanguageText(), null, null, null, null, child
+							.getMessagesStartWeek());
 
 			model.addAttribute("successMsg",
 					"motechmodule.Child.register.success");

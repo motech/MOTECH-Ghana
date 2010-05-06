@@ -133,8 +133,7 @@ public interface MotechDAO {
 
 	List<Patient> getPatients(String firstName, String lastName,
 			String preferredName, Date birthDate, String community,
-			String phoneNumber, PersonAttributeType primaryPhoneNumberAttrType,
-			PersonAttributeType secondaryPhoneNumberAttrType,
+			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
 			String patientId, PatientIdentifierType patientIdType);
 

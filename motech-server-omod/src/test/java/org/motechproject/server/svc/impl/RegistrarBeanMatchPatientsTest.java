@@ -10,13 +10,17 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.motechproject.server.model.HIVStatus;
-import org.motechproject.server.model.WhoRegistered;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DayOfWeek;
+import org.motechproject.ws.Gender;
+import org.motechproject.ws.HowLearned;
+import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.MediaType;
+import org.motechproject.ws.RegistrantType;
+import org.motechproject.ws.RegistrationMode;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.PersonName;
@@ -79,32 +83,31 @@ public class RegistrarBeanMatchPatientsTest extends
 			RegistrarBean regService = Context.getService(MotechService.class)
 					.getRegistrarBean();
 
-			String motechId = "1234620";
+			Integer motechId = 1234620;
 			String firstName = "FirstName";
 			String middleName = "MiddleName";
 			String lastName = "LastName";
 			String prefName = "PrefName";
 			String community = "Community";
-			String primaryPhone = "PrimaryPhone";
-			String secondaryPhone = "SecondaryPhone";
+			Integer phoneNumber = 1111111111;
 			String nhisNumber = "NHISNumber";
 			Date date = new Date();
 
-			regService.registerPregnantMother(motechId, firstName, middleName,
-					lastName, prefName, date, false, true, "GHSNum", true,
-					nhisNumber, date, "region", "district", community,
-					"address", 1, date, true, 0, 0, HIVStatus.NEGATIVE, false,
-					primaryPhone, ContactNumberType.PERSONAL, secondaryPhone,
-					ContactNumberType.PERSONAL, MediaType.TEXT, MediaType.TEXT,
-					"languageVoice", "languageText", WhoRegistered.CHPS_STAFF,
-					"religion", "occupation");
+			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+					motechId, RegistrantType.PREGNANT_MOTHER, firstName,
+					middleName, lastName, prefName, date, false, Gender.FEMALE,
+					true, nhisNumber, date, null, null, null, null, community,
+					"Address", phoneNumber, date, true, 0, 0, true, true,
+					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
+					DayOfWeek.MONDAY, date, InterestReason.CURRENTLY_PREGNANT,
+					HowLearned.FRIEND, null);
 
 			assertEquals(3, Context.getPatientService().getAllPatients().size());
 
 			// Match on all
 			List<Patient> matches = regService.getPatients(firstName, lastName,
-					prefName, date, community, primaryPhone, nhisNumber,
-					motechId);
+					prefName, date, community, phoneNumber.toString(),
+					nhisNumber, motechId.toString());
 			assertEquals(1, matches.size());
 
 			// Match on NHIS number
@@ -122,19 +125,14 @@ public class RegistrarBeanMatchPatientsTest extends
 					community, null, null, null);
 			assertEquals(1, matches.size());
 
-			// Match on first name, last name, and primaryPhone
+			// Match on first name, last name, and phone
 			matches = regService.getPatients(firstName, lastName, null, null,
-					null, primaryPhone, null, null);
-			assertEquals(1, matches.size());
-
-			// Match on first name, last name, and secondaryPhone
-			matches = regService.getPatients(firstName, lastName, null, null,
-					null, secondaryPhone, null, null);
+					null, phoneNumber.toString(), null, null);
 			assertEquals(1, matches.size());
 
 			// Match on first name, last name, and MotechID
 			matches = regService.getPatients(firstName, lastName, null, null,
-					null, null, null, motechId);
+					null, null, null, motechId.toString());
 			assertEquals(1, matches.size());
 
 			// No match on different NHIS number
@@ -157,11 +155,6 @@ public class RegistrarBeanMatchPatientsTest extends
 					null, "DifferentPhoneNumber", null, null);
 			assertEquals(0, matches.size());
 
-			// No match on first name, last name, and different regNumber
-			matches = regService.getPatients(firstName, lastName, null, null,
-					null, null, "DifferentPatientRegNumber", null);
-			assertEquals(0, matches.size());
-
 			// No matches on empty
 			matches = regService.getPatients(null, null, null, null, null,
 					null, null, null);
@@ -175,7 +168,8 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// No match for Person on firstName, lastName, birthDate
 			matches = regService.getPatients(firstName, lastName, prefName,
-					date, community, primaryPhone, nhisNumber, motechId);
+					date, community, phoneNumber.toString(), nhisNumber,
+					motechId.toString());
 			assertEquals(1, matches.size());
 
 		} finally {

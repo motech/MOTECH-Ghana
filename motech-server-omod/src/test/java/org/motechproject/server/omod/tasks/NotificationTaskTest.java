@@ -13,21 +13,24 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.motechproject.server.messaging.impl.MessageSchedulerImpl;
-import org.motechproject.server.model.HIVStatus;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageDefinition;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.model.MessageType;
 import org.motechproject.server.model.ScheduledMessage;
-import org.motechproject.server.model.WhoRegistered;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
+import org.motechproject.ws.HowLearned;
+import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.MediaType;
+import org.motechproject.ws.RegistrantType;
+import org.motechproject.ws.RegistrationMode;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
@@ -86,28 +89,28 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 			// Register Mother and Child
 			Date date = new Date();
-			String motherMotechId = "1234649";
-			regService.registerPregnantMother(motherMotechId,
+			Integer motherMotechId = 1234649;
+			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+					motherMotechId, RegistrantType.PREGNANT_MOTHER,
 					"motherfirstName", "mothermiddleName", "motherlastName",
-					"motherprefName", date, false, true, "motherRegNumberGHS",
-					true, "motherNHIS", date, "region", "district",
-					"community", "address", 1, date, true, 0, 0,
-					HIVStatus.NEGATIVE, true, "primaryPhone",
-					ContactNumberType.PERSONAL, "secondaryPhone",
-					ContactNumberType.HOUSEHOLD, MediaType.TEXT,
-					MediaType.TEXT, "languageVoice", "languageText",
-					WhoRegistered.CHPS_STAFF, "religion", "occupation");
+					"motherprefName", date, false, Gender.FEMALE, true,
+					"mothernhis", date, null, null, null, null, null,
+					"Address", 1111111111, date, true, 0, 0, true, true,
+					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
+					DayOfWeek.MONDAY, date, InterestReason.CURRENTLY_PREGNANT,
+					HowLearned.FRIEND, null);
 
-			String childMotechId = "1234654";
-			regService.registerChild(childMotechId, "childfirstName",
-					"childmiddleName", "childlastName", "childprefName", date,
-					false, Gender.FEMALE, "motherRegNumberGHS", true,
-					"childRegNumberGHS", true, "childNHIS", date, "region",
-					"district", "community", "address", 1, true,
-					"primaryPhone", ContactNumberType.PERSONAL,
-					"secondaryPhone", ContactNumberType.HOUSEHOLD,
-					MediaType.TEXT, MediaType.TEXT, "languageVoice",
-					"languageText", WhoRegistered.MOTHER);
+			Integer childMotechId = 1234654;
+			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+					childMotechId, RegistrantType.CHILD_UNDER_FIVE,
+					"childfirstName", "childmiddleName", "childlastName",
+					"childprefName", date, false, Gender.FEMALE, true,
+					"childnhis", date, null, null, null, null, null, "Address",
+					1111111111, null, null, null, null, false, false,
+					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
+					DayOfWeek.MONDAY, date,
+					InterestReason.FAMILY_FRIEND_PREGNANT, HowLearned.FRIEND,
+					null);
 
 			// Check Mother and Child registered successfully
 			assertEquals(4, Context.getPatientService().getAllPatients().size());
@@ -119,7 +122,7 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 			List<Patient> motherMatchingPatients = Context.getPatientService()
 					.getPatients("motherfirstName motherlastName",
-							motherMotechId, patientIdTypeList, true);
+							motherMotechId.toString(), patientIdTypeList, true);
 			assertEquals(1, motherMatchingPatients.size());
 
 			// Verify Mother's Pregnancy exists
@@ -129,8 +132,8 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 			assertNotNull("Pregnancy Obs does not exist", pregnancyObs);
 
 			List<Patient> childMatchingPatients = Context.getPatientService()
-					.getPatients("childfirstName childlastName", childMotechId,
-							patientIdTypeList, true);
+					.getPatients("childfirstName childlastName",
+							childMotechId.toString(), patientIdTypeList, true);
 			assertEquals(1, childMatchingPatients.size());
 			Patient child = childMatchingPatients.get(0);
 

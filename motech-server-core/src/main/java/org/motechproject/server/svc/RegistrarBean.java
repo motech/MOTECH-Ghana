@@ -13,12 +13,16 @@ import org.motechproject.server.model.Log;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.model.WhoRegistered;
-import org.motechproject.server.model.WhyInterested;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.HIVResult;
+import org.motechproject.ws.HowLearned;
+import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
+import org.motechproject.ws.RegistrantType;
+import org.motechproject.ws.RegistrationMode;
 import org.openmrs.Encounter;
 import org.openmrs.Location;
 import org.openmrs.Obs;
@@ -38,24 +42,6 @@ import org.openmrs.util.OpenmrsConstants;
 public interface RegistrarBean {
 
 	@RunAsAdminUser
-	public Patient registerChild(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Patient mother, String childId, Date birthDate, Gender sex,
-			String firstName, String nhis, Date nhisExpires);
-
-	public void registerChild(String motechId, String firstName,
-			String middleName, String lastName, String prefName,
-			Date birthDate, Boolean birthDateEst, Gender sex,
-			String motherMotechId, Boolean registeredGHS, String regNumberGHS,
-			Boolean insured, String nhis, Date nhisExpDate, String region,
-			String district, String community, String address, Integer clinic,
-			Boolean registerPregProgram, String primaryPhone,
-			ContactNumberType primaryPhoneType, String secondaryPhone,
-			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
-			MediaType mediaTypeReminder, String languageVoice,
-			String languageText, WhoRegistered whoRegistered);
-
-	@RunAsAdminUser
 	public void registerClinic(String name, Integer parentId);
 
 	@RunAsAdminUser
@@ -65,19 +51,34 @@ public interface RegistrarBean {
 	public void registerNurse(String name, String nurseId, String phoneNumber,
 			Integer clinicId);
 
-	public void registerPregnantMother(String motechId, String firstName,
-			String middleName, String lastName, String prefName,
-			Date birthDate, Boolean birthDateEst, Boolean registeredGHS,
-			String regNumberGHS, Boolean insured, String nhis,
-			Date nhisExpDate, String region, String district, String community,
-			String address, Integer clinic, Date dueDate,
-			Boolean dueDateConfirmed, Integer gravida, Integer parity,
-			HIVStatus hivStatus, Boolean registerPregProgram,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText,
-			WhoRegistered whoRegistered, String religion, String occupation);
+	@RunAsAdminUser
+	public void registerPatient(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Integer facilityId, Date date, RegistrationMode registrationMode,
+			Integer motechId, RegistrantType registrantType, String firstName,
+			String middleName, String lastName, String preferredName,
+			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
+			Boolean insured, String nhis, Date nhisExpires, Patient mother,
+			String region, String district, String subDistrict,
+			String community, String address, Integer phoneNumber,
+			Date expDeliveryDate, Boolean deliveryDateConfirmed,
+			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, MediaType format, String language,
+			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
+			HowLearned howLearned, Integer messagesStartWeek);
+
+	public Patient registerPatient(RegistrationMode registrationMode,
+			Integer motechId, RegistrantType registrantType, String firstName,
+			String middleName, String lastName, String preferredName,
+			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
+			Boolean insured, String nhis, Date nhisExpires, Patient mother,
+			String region, String district, String subDistrict,
+			String community, String address, Integer phoneNumber,
+			Date expDeliveryDate, Boolean deliveryDateConfirmed,
+			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, MediaType format, String language,
+			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
+			HowLearned howLearned, Integer messagesStartWeek);
 
 	public void demoRegisterPatient(String motechId, String firstName,
 			String middleName, String lastName, String prefName,
@@ -91,17 +92,6 @@ public interface RegistrarBean {
 			MediaType mediaTypeReminder, String languageVoice,
 			String languageText, WhoRegistered whoRegistered, String religion,
 			String occupation);
-
-	public void registerPerson(String motechId, String firstName,
-			String middleName, String lastName, String prefName,
-			Date birthDate, Boolean birthDateEst, Gender sex, String region,
-			String district, String community, String address, Integer clinic,
-			Boolean registerPregProgram, Integer messagesStartWeek,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText, String howLearned,
-			String religion, String occupation, WhyInterested whyInterested);
 
 	public void editPatient(Integer id, String firstName, String middleName,
 			String lastName, String prefName, Date birthDate,

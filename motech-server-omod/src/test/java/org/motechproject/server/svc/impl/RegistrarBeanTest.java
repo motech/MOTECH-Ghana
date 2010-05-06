@@ -3,12 +3,14 @@ package org.motechproject.server.svc.impl;
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -27,16 +29,20 @@ import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.model.WhoRegistered;
-import org.motechproject.server.model.WhyInterested;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
+import org.motechproject.ws.HowLearned;
+import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
+import org.motechproject.ws.RegistrantType;
+import org.motechproject.ws.RegistrationMode;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
@@ -44,10 +50,8 @@ import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.Person;
-import org.openmrs.PersonAddress;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.PersonName;
@@ -85,26 +89,16 @@ public class RegistrarBeanTest extends TestCase {
 	Location ghanaLocation;
 	PatientIdentifierType motechIdType;
 	PersonAttributeType nurseIdAttributeType;
-	PersonAttributeType primaryPhoneAttributeType;
-	PersonAttributeType secondaryPhoneAttributeType;
-	PersonAttributeType clinicAttributeType;
+	PersonAttributeType phoneAttributeType;
+	PersonAttributeType communityAttributeType;
 	PersonAttributeType nhisAttributeType;
-	PersonAttributeType languageTextAttributeType;
-	PersonAttributeType languageVoiceAttributeType;
-	PersonAttributeType primaryPhoneTypeAttributeType;
-	PersonAttributeType secondaryPhoneTypeAttributeType;
-	PersonAttributeType mediaTypeInformationalAttributeType;
-	PersonAttributeType mediaTypeReminderAttributeType;
+	PersonAttributeType languageAttributeType;
+	PersonAttributeType phoneTypeAttributeType;
+	PersonAttributeType mediaTypeAttributeType;
 	PersonAttributeType deliveryTimeAttributeType;
+	PersonAttributeType deliveryDayAttributeType;
 	PersonAttributeType nhisExpirationType;
-	PersonAttributeType whoRegisteredType;
-	PersonAttributeType ghsRegisteredAttributeType;
-	PersonAttributeType ghsANCRegNumberAttributeType;
-	PersonAttributeType ghsCWCRegNumberAttributeType;
 	PersonAttributeType insuredAttributeType;
-	PersonAttributeType hivStatusAttributeType;
-	PersonAttributeType religionAttributeType;
-	PersonAttributeType occupationAttributeType;
 	PersonAttributeType howLearnedAttributeType;
 	PersonAttributeType whyInterestedAttributeType;
 	Role providerRole;
@@ -199,28 +193,28 @@ public class RegistrarBeanTest extends TestCase {
 		motechIdType = new PatientIdentifierType(1);
 		motechIdType.setName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
 
-		primaryPhoneAttributeType = new PersonAttributeType(2);
-		primaryPhoneAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER);
+		phoneAttributeType = new PersonAttributeType(2);
+		phoneAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
 
-		clinicAttributeType = new PersonAttributeType(3);
-		clinicAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER);
+		communityAttributeType = new PersonAttributeType(3);
+		communityAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_COMMUNITY);
 
 		nhisAttributeType = new PersonAttributeType(4);
 		nhisAttributeType.setName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER);
 
-		languageTextAttributeType = new PersonAttributeType(5);
-		languageTextAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT);
+		languageAttributeType = new PersonAttributeType(5);
+		languageAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
 
-		primaryPhoneTypeAttributeType = new PersonAttributeType(6);
-		primaryPhoneTypeAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE);
+		phoneTypeAttributeType = new PersonAttributeType(6);
+		phoneTypeAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
 
-		mediaTypeInformationalAttributeType = new PersonAttributeType(7);
-		mediaTypeInformationalAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL);
+		mediaTypeAttributeType = new PersonAttributeType(7);
+		mediaTypeAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
 
 		deliveryTimeAttributeType = new PersonAttributeType(8);
 		deliveryTimeAttributeType
@@ -229,56 +223,12 @@ public class RegistrarBeanTest extends TestCase {
 		nurseIdAttributeType = new PersonAttributeType(9);
 		nurseIdAttributeType.setName(MotechConstants.PERSON_ATTRIBUTE_CHPS_ID);
 
-		secondaryPhoneAttributeType = new PersonAttributeType(10);
-		secondaryPhoneAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER);
-
-		secondaryPhoneTypeAttributeType = new PersonAttributeType(11);
-		secondaryPhoneTypeAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE);
-
 		nhisExpirationType = new PersonAttributeType(12);
 		nhisExpirationType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE);
 
-		mediaTypeReminderAttributeType = new PersonAttributeType(13);
-		mediaTypeReminderAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER);
-
-		languageVoiceAttributeType = new PersonAttributeType(14);
-		languageVoiceAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE);
-
-		whoRegisteredType = new PersonAttributeType(15);
-		whoRegisteredType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED);
-
-		ghsRegisteredAttributeType = new PersonAttributeType(16);
-		ghsRegisteredAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_GHS_REGISTERED);
-
-		ghsANCRegNumberAttributeType = new PersonAttributeType(17);
-		ghsANCRegNumberAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_GHS_ANC_REG_NUMBER);
-
 		insuredAttributeType = new PersonAttributeType(18);
 		insuredAttributeType.setName(MotechConstants.PERSON_ATTRIBUTE_INSURED);
-
-		hivStatusAttributeType = new PersonAttributeType(19);
-		hivStatusAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_HIV_STATUS);
-
-		religionAttributeType = new PersonAttributeType(20);
-		religionAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_RELIGION);
-
-		occupationAttributeType = new PersonAttributeType(21);
-		occupationAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_OCCUPATION);
-
-		ghsCWCRegNumberAttributeType = new PersonAttributeType(22);
-		ghsCWCRegNumberAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_GHS_CWC_REG_NUMBER);
 
 		howLearnedAttributeType = new PersonAttributeType(23);
 		howLearnedAttributeType
@@ -287,6 +237,10 @@ public class RegistrarBeanTest extends TestCase {
 		whyInterestedAttributeType = new PersonAttributeType(24);
 		whyInterestedAttributeType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_WHY_INTERESTED);
+
+		deliveryDayAttributeType = new PersonAttributeType(25);
+		deliveryDayAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY);
 
 		providerRole = new Role(OpenmrsConstants.PROVIDER_ROLE);
 
@@ -479,106 +433,6 @@ public class RegistrarBeanTest extends TestCase {
 		idService = null;
 	}
 
-	public void testRegisterChild() {
-
-		Date childDob = new Date(874984), nhisExpires = new Date(3784784);
-		String motherId = "PATIENT1234";
-		String childId = "CHILD3783";
-		Gender childGender = Gender.MALE;
-		String childFirstName = "Harold";
-		String nhis = "NHISNUMBER";
-		Integer nurseInternalId = 1;
-
-		expect(contextService.getPersonService()).andReturn(personService)
-				.atLeastOnce();
-		expect(contextService.getLocationService()).andReturn(locationService)
-				.atLeastOnce();
-		expect(contextService.getIdentifierSourceService())
-				.andReturn(idService).atLeastOnce();
-
-		User nurseUser = new User(nurseInternalId);
-
-		expect(contextService.getPatientService()).andReturn(patientService)
-				.atLeastOnce();
-
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_GHS_CWC_REG_NUMBER))
-				.andReturn(ghsCWCRegNumberAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER))
-				.andReturn(nhisAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE))
-				.andReturn(nhisExpirationType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED))
-				.andReturn(whoRegisteredType);
-
-		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
-				.andReturn(ghanaLocation);
-
-		expect(idService.getAllIdentifierSources(false)).andReturn(
-				new ArrayList<IdentifierSource>());
-		expect(contextService.getAuthenticatedUser()).andReturn(new User());
-		expect(idService.saveLogEntry((LogEntry) anyObject())).andReturn(
-				new LogEntry());
-		expect(
-				patientService
-						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
-				.andReturn(motechIdType).atLeastOnce();
-
-		Patient mother = new Patient();
-
-		PatientIdentifier motherIdObj = new PatientIdentifier();
-		motherIdObj.setIdentifierType(motechIdType);
-		motherIdObj.setIdentifier(motherId);
-		mother.addIdentifier(motherIdObj);
-
-		PersonAddress testAddress = new PersonAddress();
-		testAddress.setRegion("AREGION");
-		testAddress.setCountyDistrict("ADISTRICT");
-		mother.addAddress(testAddress);
-
-		Capture<Patient> childCapture = new Capture<Patient>();
-		expect(patientService.savePatient(capture(childCapture))).andReturn(
-				new Patient());
-
-		replay(contextService, personService, patientService, locationService,
-				idService);
-
-		regBean.registerChild(nurseUser, mother, childId, childDob,
-				childGender, childFirstName, nhis, nhisExpires);
-
-		verify(contextService, personService, patientService, locationService,
-				idService);
-
-		Patient child = childCapture.getValue();
-		assertEquals(childId, child.getPatientIdentifier(motechIdType)
-				.getIdentifier());
-		assertEquals(testAddress.getRegion(), child.getPersonAddress()
-				.getRegion());
-		assertEquals(testAddress.getCountyDistrict(), child.getPersonAddress()
-				.getCountyDistrict());
-		assertEquals(testAddress.getCityVillage(), child.getPersonAddress()
-				.getCityVillage());
-		assertEquals(testAddress.getAddress1(), child.getPersonAddress()
-				.getAddress1());
-		assertEquals(childDob, child.getBirthdate());
-		assertEquals(childFirstName, child.getGivenName());
-		assertEquals(childGender, GenderTypeConverter.valueOfOpenMRS(child
-				.getGender()));
-		PersonAttribute nhisAttr = child.getAttribute(nhisAttributeType);
-		assertEquals(nhis, nhisAttr.getValue());
-		assertEquals(nhisExpires.toString(), child.getAttribute(
-				nhisExpirationType).getHydratedObject());
-		assertEquals(WhoRegistered.CHPS_STAFF, WhoRegistered.valueOf(child
-				.getAttribute(whoRegisteredType).getValue()));
-	}
-
 	public void testRegisterClinic() {
 		String clinicName = "A-Test-Clinic-Name";
 		String description = "A Ghana Clinic Location";
@@ -657,15 +511,12 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(nurseIdAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
-				.andReturn(primaryPhoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
+				.andReturn(phoneAttributeType);
 		expect(userService.getRole(OpenmrsConstants.PROVIDER_ROLE)).andReturn(
 				providerRole);
 		expect(locationService.getLocation(clinic)).andReturn(clinicLocation);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
-				.andReturn(clinicAttributeType);
+
 		expect(userService.saveUser(capture(nurseCap), (String) anyObject()))
 				.andReturn(new User());
 
@@ -678,27 +529,25 @@ public class RegistrarBeanTest extends TestCase {
 		User nurse = nurseCap.getValue();
 		assertEquals(name, nurse.getGivenName());
 		assertEquals(id, nurse.getAttribute(nurseIdAttributeType).getValue());
-		assertEquals(phone, nurse.getAttribute(primaryPhoneAttributeType)
-				.getValue());
-		assertEquals(clinicLocation.getLocationId().toString(), nurse
-				.getAttribute(clinicAttributeType).getValue());
+		assertEquals(phone, nurse.getAttribute(phoneAttributeType).getValue());
 	}
 
-	public void testRegisterPregnantMother() {
-		String motechId = "0123456";
+	public void testRegisterPregnantMother() throws ParseException {
+		Integer motechId = 123456;
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
-		String regNumberGHS = "123ABC", nhis = "456DEF";
-		String region = "Region", district = "District", community = "Community", address = "Address";
-		String religion = "Religion", occupation = "Occupation";
-		String primaryPhone = "12075555555", secondaryPhone = "12075555556";
-		String languageVoice = "LanguageVoice", languageText = "LanguageText";
+		String nhis = "456DEF";
+		String region = "Region", district = "District", subdistrict = "Subdistrict", community = "Community", address = "Address";
+		Integer phoneNumber = 2075555555;
+		String language = "Language";
 		Date date = new Date();
-		Boolean birthDateEst = true, registeredGHS = true, insured = true, dueDateConfirmed = true, registerPregProgram = true;
-		Integer clinic = 1, gravida = 0, parity = 1;
-		HIVStatus hivStatus = HIVStatus.UNKNOWN;
-		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
-		MediaType mediaTypeInfo = MediaType.TEXT, mediaTypeReminder = MediaType.VOICE;
-		WhoRegistered whoRegistered = WhoRegistered.CHPS_STAFF;
+		Boolean birthDateEst = true, insured = true, dueDateConfirmed = true, enroll = true, consent = true;
+		Integer gravida = 0, parity = 1;
+		Gender gender = Gender.FEMALE;
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		MediaType mediaType = MediaType.TEXT;
+		DayOfWeek dayOfWeek = DayOfWeek.MONDAY;
+		InterestReason reason = InterestReason.CURRENTLY_PREGNANT;
+		HowLearned howLearned = HowLearned.FRIEND;
 
 		String pregnancyProgramName = "Weekly Pregnancy Message Program";
 		String careProgramName = "Expected Care Message Program";
@@ -742,10 +591,6 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_GHS_REGISTERED))
-				.andReturn(ghsRegisteredAttributeType);
-		expect(
-				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
 				.andReturn(insuredAttributeType);
 		expect(
@@ -758,61 +603,36 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(nhisExpirationType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
-				.andReturn(clinicAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
+				.andReturn(phoneAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
-				.andReturn(primaryPhoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE))
+				.andReturn(phoneTypeAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE))
-				.andReturn(primaryPhoneTypeAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE))
+				.andReturn(mediaTypeAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER))
-				.andReturn(secondaryPhoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE))
+				.andReturn(languageAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE))
-				.andReturn(secondaryPhoneTypeAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY))
+				.andReturn(deliveryDayAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL))
-				.andReturn(mediaTypeInformationalAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME))
+				.andReturn(deliveryTimeAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER))
-				.andReturn(mediaTypeReminderAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED))
+				.andReturn(howLearnedAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT))
-				.andReturn(languageTextAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE))
-				.andReturn(languageVoiceAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED))
-				.andReturn(whoRegisteredType);
-
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_GHS_ANC_REG_NUMBER))
-				.andReturn(ghsANCRegNumberAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HIV_STATUS))
-				.andReturn(hivStatusAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_RELIGION))
-				.andReturn(religionAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_OCCUPATION))
-				.andReturn(occupationAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_WHY_INTERESTED))
+				.andReturn(whyInterestedAttributeType);
 
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				patient);
@@ -869,21 +689,20 @@ public class RegistrarBeanTest extends TestCase {
 				locationService, userService, encounterService, obsService,
 				conceptService, idService);
 
-		regBean.registerPregnantMother(motechId, firstName, middleName,
-				lastName, prefName, date, birthDateEst, registeredGHS,
-				regNumberGHS, insured, nhis, date, region, district, community,
-				address, clinic, date, dueDateConfirmed, gravida, parity,
-				hivStatus, registerPregProgram, primaryPhone, primaryPhoneType,
-				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
-				mediaTypeReminder, languageVoice, languageText, whoRegistered,
-				religion, occupation);
+		regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
+				RegistrantType.PREGNANT_MOTHER, firstName, middleName,
+				lastName, prefName, date, birthDateEst, gender, insured, nhis,
+				date, null, region, district, subdistrict, community, address,
+				phoneNumber, date, dueDateConfirmed, gravida, parity, enroll,
+				consent, phoneType, mediaType, language, dayOfWeek, date,
+				reason, howLearned, null);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
 				conceptService, idService);
 
 		Patient capturedPatient = patientCap.getValue();
-		assertEquals(motechId, capturedPatient.getPatientIdentifier(
+		assertEquals(motechId.toString(), capturedPatient.getPatientIdentifier(
 				motechIdType).getIdentifier());
 		assertEquals(prefName, capturedPatient.getGivenName());
 		assertEquals(lastName, capturedPatient.getFamilyName());
@@ -905,50 +724,50 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
 		assertEquals(GenderTypeConverter.toOpenMRSString(Gender.FEMALE),
 				capturedPatient.getGender());
-		assertEquals(region, capturedPatient.getPersonAddress().getRegion());
-		assertEquals(district, capturedPatient.getPersonAddress()
-				.getCountyDistrict());
 		assertEquals(community, capturedPatient.getPersonAddress()
 				.getCityVillage());
 		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
-		assertEquals(clinic, Integer.valueOf(capturedPatient.getAttribute(
-				clinicAttributeType).getValue()));
-		assertEquals(registeredGHS, Boolean.valueOf(capturedPatient
-				.getAttribute(ghsRegisteredAttributeType).getValue()));
-		assertEquals(regNumberGHS, capturedPatient.getAttribute(
-				ghsANCRegNumberAttributeType).getValue());
 		assertEquals(insured, Boolean.valueOf(capturedPatient.getAttribute(
 				insuredAttributeType).getValue()));
 		assertEquals(nhis, capturedPatient.getAttribute(nhisAttributeType)
 				.getValue());
-		assertEquals(date.toString(), capturedPatient.getAttribute(
-				nhisExpirationType).getValue());
-		assertEquals(hivStatus, HIVStatus.valueOf(capturedPatient.getAttribute(
-				hivStatusAttributeType).getValue()));
-		assertEquals(primaryPhone, capturedPatient.getAttribute(
-				primaryPhoneAttributeType).getValue());
-		assertEquals(secondaryPhone, capturedPatient.getAttribute(
-				secondaryPhoneAttributeType).getValue());
-		assertEquals(primaryPhoneType, ContactNumberType
-				.valueOf(capturedPatient.getAttribute(
-						primaryPhoneTypeAttributeType).getValue()));
-		assertEquals(secondaryPhoneType, ContactNumberType
-				.valueOf(capturedPatient.getAttribute(
-						secondaryPhoneTypeAttributeType).getValue()));
-		assertEquals(mediaTypeInfo, MediaType.valueOf(capturedPatient
-				.getAttribute(mediaTypeInformationalAttributeType).getValue()));
-		assertEquals(mediaTypeReminder, MediaType.valueOf(capturedPatient
-				.getAttribute(mediaTypeReminderAttributeType).getValue()));
-		assertEquals(languageText, capturedPatient.getAttribute(
-				languageTextAttributeType).getValue());
-		assertEquals(languageVoice, capturedPatient.getAttribute(
-				languageVoiceAttributeType).getValue());
-		assertEquals(whoRegistered, WhoRegistered.valueOf(capturedPatient
-				.getAttribute(whoRegisteredType).getValue()));
-		assertEquals(religion, capturedPatient.getAttribute(
-				religionAttributeType).getValue());
-		assertEquals(occupation, capturedPatient.getAttribute(
-				occupationAttributeType).getValue());
+		Date nhisExpDate = (new SimpleDateFormat(MotechConstants.DATE_FORMAT))
+				.parse(capturedPatient.getAttribute(nhisExpirationType)
+						.getValue());
+		Calendar nhisExpCal = Calendar.getInstance();
+		nhisExpCal.setTime(date);
+		int year = nhisExpCal.get(Calendar.YEAR);
+		int month = nhisExpCal.get(Calendar.MONTH);
+		int day = nhisExpCal.get(Calendar.DAY_OF_MONTH);
+		nhisExpCal.setTime(nhisExpDate);
+		assertEquals(year, nhisExpCal.get(Calendar.YEAR));
+		assertEquals(month, nhisExpCal.get(Calendar.MONTH));
+		assertEquals(day, nhisExpCal.get(Calendar.DAY_OF_MONTH));
+		assertEquals(phoneNumber.toString(), capturedPatient.getAttribute(
+				phoneAttributeType).getValue());
+		assertEquals(phoneType, ContactNumberType.valueOf(capturedPatient
+				.getAttribute(phoneTypeAttributeType).getValue()));
+		assertEquals(mediaType, MediaType.valueOf(capturedPatient.getAttribute(
+				mediaTypeAttributeType).getValue()));
+		assertEquals(language, capturedPatient.getAttribute(
+				languageAttributeType).getValue());
+		assertEquals(howLearned, HowLearned.valueOf(capturedPatient
+				.getAttribute(howLearnedAttributeType).getValue()));
+		assertEquals(reason, InterestReason.valueOf(capturedPatient
+				.getAttribute(whyInterestedAttributeType).getValue()));
+		assertEquals(dayOfWeek, DayOfWeek.valueOf(capturedPatient.getAttribute(
+				deliveryDayAttributeType).getValue()));
+		Calendar timeOfDayCal = Calendar.getInstance();
+		timeOfDayCal.setTime(date);
+		int hour = timeOfDayCal.get(Calendar.HOUR_OF_DAY);
+		int min = timeOfDayCal.get(Calendar.MINUTE);
+		Date timeOfDayDate = (new SimpleDateFormat(
+				MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME))
+				.parse(capturedPatient.getAttribute(deliveryTimeAttributeType)
+						.getValue());
+		timeOfDayCal.setTime(timeOfDayDate);
+		assertEquals(hour, timeOfDayCal.get(Calendar.HOUR_OF_DAY));
+		assertEquals(min, timeOfDayCal.get(Calendar.MINUTE));
 
 		MessageProgramEnrollment enrollment1 = enrollment1Cap.getValue();
 		assertEquals(patient.getPatientId(), enrollment1.getPersonId());
@@ -1019,22 +838,22 @@ public class RegistrarBeanTest extends TestCase {
 		assertTrue("Parity Obs missing", containsParityObs);
 	}
 
-	@SuppressWarnings("unchecked")
-	public void testRegisterChildWithProgram() {
-		String motechId = "0123456";
+	public void testRegisterChild() throws ParseException {
+		Integer motechId = 123456;
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
-		String regNumberGHS = "123ABC", nhis = "456DEF";
-		String region = "Region", district = "District", community = "Community", address = "Address";
-		String primaryPhone = "12075555555", secondaryPhone = "12075555556";
-		String languageVoice = "LanguageVoice", languageText = "LanguageText";
+		String nhis = "456DEF";
+		String region = "Region", district = "District", subdistrict = "Subdistrict", community = "Community", address = "Address";
+		Integer phoneNumber = 2075555555;
+		String language = "Language";
 		Date date = new Date();
-		Boolean birthDateEst = true, registeredGHS = true, insured = true, registerPregProgram = true;
-		String motherRegNum = "1234";
-		Integer clinic = 1;
-		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
-		MediaType mediaTypeInfo = MediaType.TEXT, mediaTypeReminder = MediaType.VOICE;
-		WhoRegistered whoRegistered = WhoRegistered.CHPS_STAFF;
-		Gender sex = Gender.FEMALE;
+		Boolean birthDateEst = true, insured = true, dueDateConfirmed = true, enroll = true, consent = true;
+		Integer gravida = 0, parity = 1;
+		Gender gender = Gender.FEMALE;
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		MediaType mediaType = MediaType.TEXT;
+		DayOfWeek dayOfWeek = DayOfWeek.MONDAY;
+		InterestReason reason = InterestReason.FAMILY_FRIEND_PREGNANT;
+		HowLearned howLearned = HowLearned.FRIEND;
 
 		String pregnancyProgramName = "Weekly Info Child Message Program";
 		String careProgramName = "Expected Care Message Program";
@@ -1072,11 +891,6 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_GHS_REGISTERED))
-				.andReturn(ghsRegisteredAttributeType);
-
-		expect(
-				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
 				.andReturn(insuredAttributeType);
 		expect(
@@ -1089,60 +903,40 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(nhisExpirationType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
-				.andReturn(clinicAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
+				.andReturn(phoneAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
-				.andReturn(primaryPhoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE))
+				.andReturn(phoneTypeAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE))
-				.andReturn(primaryPhoneTypeAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE))
+				.andReturn(mediaTypeAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER))
-				.andReturn(secondaryPhoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE))
+				.andReturn(languageAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE))
-				.andReturn(secondaryPhoneTypeAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY))
+				.andReturn(deliveryDayAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL))
-				.andReturn(mediaTypeInformationalAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME))
+				.andReturn(deliveryTimeAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER))
-				.andReturn(mediaTypeReminderAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED))
+				.andReturn(howLearnedAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT))
-				.andReturn(languageTextAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE))
-				.andReturn(languageVoiceAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED))
-				.andReturn(whoRegisteredType);
-
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_GHS_CWC_REG_NUMBER))
-				.andReturn(ghsCWCRegNumberAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_WHY_INTERESTED))
+				.andReturn(whyInterestedAttributeType);
 
 		expect(patientService.savePatient(capture(patientCap)))
 				.andReturn(child);
 
-		List<Patient> motherList = new ArrayList<Patient>();
-		motherList.add(mother);
-		expect(
-				patientService.getPatients((String) eq(null), eq(motherRegNum),
-						(List) anyObject(), eq(true))).andReturn(motherList);
-
-		// expect(patientService.getPatient(motherRegNum)).andReturn(mother);
 		expect(
 				personService
 						.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD))
@@ -1171,20 +965,20 @@ public class RegistrarBeanTest extends TestCase {
 				locationService, userService, encounterService, obsService,
 				conceptService, idService);
 
-		regBean.registerChild(motechId, firstName, middleName, lastName,
-				prefName, date, birthDateEst, sex, motherRegNum, registeredGHS,
-				regNumberGHS, insured, nhis, date, region, district, community,
-				address, clinic, registerPregProgram, primaryPhone,
-				primaryPhoneType, secondaryPhone, secondaryPhoneType,
-				mediaTypeInfo, mediaTypeReminder, languageVoice, languageText,
-				whoRegistered);
+		regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
+				RegistrantType.CHILD_UNDER_FIVE, firstName, middleName,
+				lastName, prefName, date, birthDateEst, gender, insured, nhis,
+				date, mother, region, district, subdistrict, community,
+				address, phoneNumber, date, dueDateConfirmed, gravida, parity,
+				enroll, consent, phoneType, mediaType, language, dayOfWeek,
+				date, reason, howLearned, null);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
 				conceptService, idService);
 
 		Patient capturedPatient = patientCap.getValue();
-		assertEquals(motechId, capturedPatient.getPatientIdentifier(
+		assertEquals(motechId.toString(), capturedPatient.getPatientIdentifier(
 				motechIdType).getIdentifier());
 		assertEquals(prefName, capturedPatient.getGivenName());
 		assertEquals(lastName, capturedPatient.getFamilyName());
@@ -1204,46 +998,52 @@ public class RegistrarBeanTest extends TestCase {
 		}
 		assertEquals(date, capturedPatient.getBirthdate());
 		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
-		assertEquals(GenderTypeConverter.toOpenMRSString(sex), capturedPatient
-				.getGender());
-		assertEquals(region, capturedPatient.getPersonAddress().getRegion());
-		assertEquals(district, capturedPatient.getPersonAddress()
-				.getCountyDistrict());
+		assertEquals(GenderTypeConverter.toOpenMRSString(gender),
+				capturedPatient.getGender());
 		assertEquals(community, capturedPatient.getPersonAddress()
 				.getCityVillage());
 		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
-		assertEquals(clinic, Integer.valueOf(capturedPatient.getAttribute(
-				clinicAttributeType).getValue()));
-		assertEquals(registeredGHS, Boolean.valueOf(capturedPatient
-				.getAttribute(ghsRegisteredAttributeType).getValue()));
-		assertEquals(regNumberGHS, capturedPatient.getAttribute(
-				ghsCWCRegNumberAttributeType).getValue());
 		assertEquals(insured, Boolean.valueOf(capturedPatient.getAttribute(
 				insuredAttributeType).getValue()));
 		assertEquals(nhis, capturedPatient.getAttribute(nhisAttributeType)
 				.getValue());
-		assertEquals(date.toString(), capturedPatient.getAttribute(
-				nhisExpirationType).getValue());
-		assertEquals(primaryPhone, capturedPatient.getAttribute(
-				primaryPhoneAttributeType).getValue());
-		assertEquals(secondaryPhone, capturedPatient.getAttribute(
-				secondaryPhoneAttributeType).getValue());
-		assertEquals(primaryPhoneType, ContactNumberType
-				.valueOf(capturedPatient.getAttribute(
-						primaryPhoneTypeAttributeType).getValue()));
-		assertEquals(secondaryPhoneType, ContactNumberType
-				.valueOf(capturedPatient.getAttribute(
-						secondaryPhoneTypeAttributeType).getValue()));
-		assertEquals(mediaTypeInfo, MediaType.valueOf(capturedPatient
-				.getAttribute(mediaTypeInformationalAttributeType).getValue()));
-		assertEquals(mediaTypeReminder, MediaType.valueOf(capturedPatient
-				.getAttribute(mediaTypeReminderAttributeType).getValue()));
-		assertEquals(languageText, capturedPatient.getAttribute(
-				languageTextAttributeType).getValue());
-		assertEquals(languageVoice, capturedPatient.getAttribute(
-				languageVoiceAttributeType).getValue());
-		assertEquals(whoRegistered, WhoRegistered.valueOf(capturedPatient
-				.getAttribute(whoRegisteredType).getValue()));
+		Date nhisExpDate = (new SimpleDateFormat(MotechConstants.DATE_FORMAT))
+				.parse(capturedPatient.getAttribute(nhisExpirationType)
+						.getValue());
+		Calendar nhisExpCal = Calendar.getInstance();
+		nhisExpCal.setTime(date);
+		int year = nhisExpCal.get(Calendar.YEAR);
+		int month = nhisExpCal.get(Calendar.MONTH);
+		int day = nhisExpCal.get(Calendar.DAY_OF_MONTH);
+		nhisExpCal.setTime(nhisExpDate);
+		assertEquals(year, nhisExpCal.get(Calendar.YEAR));
+		assertEquals(month, nhisExpCal.get(Calendar.MONTH));
+		assertEquals(day, nhisExpCal.get(Calendar.DAY_OF_MONTH));
+		assertEquals(phoneNumber.toString(), capturedPatient.getAttribute(
+				phoneAttributeType).getValue());
+		assertEquals(phoneType, ContactNumberType.valueOf(capturedPatient
+				.getAttribute(phoneTypeAttributeType).getValue()));
+		assertEquals(mediaType, MediaType.valueOf(capturedPatient.getAttribute(
+				mediaTypeAttributeType).getValue()));
+		assertEquals(language, capturedPatient.getAttribute(
+				languageAttributeType).getValue());
+		assertEquals(howLearned, HowLearned.valueOf(capturedPatient
+				.getAttribute(howLearnedAttributeType).getValue()));
+		assertEquals(reason, InterestReason.valueOf(capturedPatient
+				.getAttribute(whyInterestedAttributeType).getValue()));
+		assertEquals(dayOfWeek, DayOfWeek.valueOf(capturedPatient.getAttribute(
+				deliveryDayAttributeType).getValue()));
+		Calendar timeOfDayCal = Calendar.getInstance();
+		timeOfDayCal.setTime(date);
+		int hour = timeOfDayCal.get(Calendar.HOUR_OF_DAY);
+		int min = timeOfDayCal.get(Calendar.MINUTE);
+		Date timeOfDayDate = (new SimpleDateFormat(
+				MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME))
+				.parse(capturedPatient.getAttribute(deliveryTimeAttributeType)
+						.getValue());
+		timeOfDayCal.setTime(timeOfDayDate);
+		assertEquals(hour, timeOfDayCal.get(Calendar.HOUR_OF_DAY));
+		assertEquals(min, timeOfDayCal.get(Calendar.MINUTE));
 
 		MessageProgramEnrollment enrollment1 = enrollment1Cap.getValue();
 		assertEquals(child.getPatientId(), enrollment1.getPersonId());
@@ -1270,29 +1070,33 @@ public class RegistrarBeanTest extends TestCase {
 				.getPersonId());
 	}
 
-	public void testRegisterPerson() {
-		String motechId = "0123456";
+	public void testRegisterPerson() throws ParseException {
+		Integer motechId = 123456;
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
-		String region = "Region", district = "District", community = "Community", address = "Address";
-		String religion = "Religion", occupation = "Occupation";
-		String primaryPhone = "12075555555", secondaryPhone = "12075555556";
-		String languageVoice = "LanguageVoice", languageText = "LanguageText";
-		String howLearned = "HowLearned";
+		String nhis = "456DEF";
+		String region = "Region", district = "District", subdistrict = "Subdistrict", community = "Community", address = "Address";
+		Integer phoneNumber = 2075555555;
+		String language = "Language";
 		Date date = new Date();
-		Boolean birthDateEst = true, registerPregProgram = true;
-		Integer clinic = 1, messagesStartWeek = 23;
-		Gender sex = Gender.FEMALE;
-		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
-		MediaType mediaTypeInfo = MediaType.TEXT, mediaTypeReminder = MediaType.VOICE;
-		WhyInterested whyInterested = WhyInterested.IN_HOUSEHOLD_PREGNANCY;
+		Boolean birthDateEst = true, insured = true, dueDateConfirmed = true, enroll = true, consent = true;
+		Integer gravida = 0, parity = 1;
+		Gender gender = Gender.FEMALE;
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		MediaType mediaType = MediaType.TEXT;
+		DayOfWeek dayOfWeek = DayOfWeek.MONDAY;
+		InterestReason reason = InterestReason.FAMILY_FRIEND_PREGNANT;
+		HowLearned howLearned = HowLearned.FRIEND;
+		Integer messagesStartWeek = 5;
 
 		String pregnancyProgramName = "Weekly Info Pregnancy Message Program";
+		String careProgramName = "Expected Care Message Program";
 
 		Patient patient = new Patient(2);
 		Location ghanaLocation = new Location(1);
 
 		Capture<Patient> patientCap = new Capture<Patient>();
-		Capture<MessageProgramEnrollment> enrollmentCap = new Capture<MessageProgramEnrollment>();
+		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
+		Capture<MessageProgramEnrollment> enrollment2Cap = new Capture<MessageProgramEnrollment>();
 		Capture<Obs> refDateObsCap = new Capture<Obs>();
 
 		expect(contextService.getPersonService()).andReturn(personService)
@@ -1320,48 +1124,40 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(motechIdType).atLeastOnce();
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
-				.andReturn(clinicAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
+				.andReturn(insuredAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
-				.andReturn(primaryPhoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER))
+				.andReturn(nhisAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE))
-				.andReturn(primaryPhoneTypeAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE))
+				.andReturn(nhisExpirationType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER))
-				.andReturn(secondaryPhoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
+				.andReturn(phoneAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE))
-				.andReturn(secondaryPhoneTypeAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE))
+				.andReturn(phoneTypeAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL))
-				.andReturn(mediaTypeInformationalAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE))
+				.andReturn(mediaTypeAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER))
-				.andReturn(mediaTypeReminderAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE))
+				.andReturn(languageAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT))
-				.andReturn(languageTextAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY))
+				.andReturn(deliveryDayAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE))
-				.andReturn(languageVoiceAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_RELIGION))
-				.andReturn(religionAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_OCCUPATION))
-				.andReturn(occupationAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME))
+				.andReturn(deliveryTimeAttributeType);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED))
@@ -1389,27 +1185,35 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(new ArrayList<MessageProgramEnrollment>());
 		expect(
 				motechService
-						.saveMessageProgramEnrollment(capture(enrollmentCap)))
+						.saveMessageProgramEnrollment(capture(enrollment1Cap)))
+				.andReturn(new MessageProgramEnrollment());
+		expect(
+				motechService.getActiveMessageProgramEnrollments(patient
+						.getPatientId(), careProgramName, null)).andReturn(
+				new ArrayList<MessageProgramEnrollment>());
+		expect(
+				motechService
+						.saveMessageProgramEnrollment(capture(enrollment2Cap)))
 				.andReturn(new MessageProgramEnrollment());
 
 		replay(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
 				conceptService, idService);
 
-		regBean.registerPerson(motechId, firstName, middleName, lastName,
-				prefName, date, birthDateEst, sex, region, district, community,
-				address, clinic, registerPregProgram, messagesStartWeek,
-				primaryPhone, primaryPhoneType, secondaryPhone,
-				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
-				languageVoice, languageText, howLearned, religion, occupation,
-				whyInterested);
+		regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
+				RegistrantType.OTHER, firstName, middleName, lastName,
+				prefName, date, birthDateEst, gender, insured, nhis, date,
+				null, region, district, subdistrict, community, address,
+				phoneNumber, date, dueDateConfirmed, gravida, parity, enroll,
+				consent, phoneType, mediaType, language, dayOfWeek, date,
+				reason, howLearned, messagesStartWeek);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
 				conceptService, idService);
 
 		Patient capturedPatient = patientCap.getValue();
-		assertEquals(motechId, capturedPatient.getPatientIdentifier(
+		assertEquals(motechId.toString(), capturedPatient.getPatientIdentifier(
 				motechIdType).getIdentifier());
 		assertEquals(prefName, capturedPatient.getGivenName());
 		assertEquals(lastName, capturedPatient.getFamilyName());
@@ -1431,47 +1235,49 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
 		assertEquals(GenderTypeConverter.toOpenMRSString(Gender.FEMALE),
 				capturedPatient.getGender());
-		assertEquals(region, capturedPatient.getPersonAddress().getRegion());
-		assertEquals(district, capturedPatient.getPersonAddress()
-				.getCountyDistrict());
 		assertEquals(community, capturedPatient.getPersonAddress()
 				.getCityVillage());
 		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
-		assertEquals(clinic, Integer.valueOf(capturedPatient.getAttribute(
-				clinicAttributeType).getValue()));
-		assertEquals(primaryPhone, capturedPatient.getAttribute(
-				primaryPhoneAttributeType).getValue());
-		assertEquals(secondaryPhone, capturedPatient.getAttribute(
-				secondaryPhoneAttributeType).getValue());
-		assertEquals(primaryPhoneType, ContactNumberType
-				.valueOf(capturedPatient.getAttribute(
-						primaryPhoneTypeAttributeType).getValue()));
-		assertEquals(secondaryPhoneType, ContactNumberType
-				.valueOf(capturedPatient.getAttribute(
-						secondaryPhoneTypeAttributeType).getValue()));
-		assertEquals(mediaTypeInfo, MediaType.valueOf(capturedPatient
-				.getAttribute(mediaTypeInformationalAttributeType).getValue()));
-		assertEquals(mediaTypeReminder, MediaType.valueOf(capturedPatient
-				.getAttribute(mediaTypeReminderAttributeType).getValue()));
-		assertEquals(languageText, capturedPatient.getAttribute(
-				languageTextAttributeType).getValue());
-		assertEquals(languageVoice, capturedPatient.getAttribute(
-				languageVoiceAttributeType).getValue());
-		assertEquals(religion, capturedPatient.getAttribute(
-				religionAttributeType).getValue());
-		assertEquals(occupation, capturedPatient.getAttribute(
-				occupationAttributeType).getValue());
-		assertEquals(howLearned, capturedPatient.getAttribute(
-				howLearnedAttributeType).getValue());
-		assertEquals(whyInterested, WhyInterested.valueOf(capturedPatient
+		assertEquals(phoneNumber.toString(), capturedPatient.getAttribute(
+				phoneAttributeType).getValue());
+		assertEquals(phoneType, ContactNumberType.valueOf(capturedPatient
+				.getAttribute(phoneTypeAttributeType).getValue()));
+		assertEquals(mediaType, MediaType.valueOf(capturedPatient.getAttribute(
+				mediaTypeAttributeType).getValue()));
+		assertEquals(language, capturedPatient.getAttribute(
+				languageAttributeType).getValue());
+		assertEquals(howLearned, HowLearned.valueOf(capturedPatient
+				.getAttribute(howLearnedAttributeType).getValue()));
+		assertEquals(reason, InterestReason.valueOf(capturedPatient
 				.getAttribute(whyInterestedAttributeType).getValue()));
+		assertEquals(dayOfWeek, DayOfWeek.valueOf(capturedPatient.getAttribute(
+				deliveryDayAttributeType).getValue()));
+		Calendar timeOfDayCal = Calendar.getInstance();
+		timeOfDayCal.setTime(date);
+		int hour = timeOfDayCal.get(Calendar.HOUR_OF_DAY);
+		int min = timeOfDayCal.get(Calendar.MINUTE);
+		Date timeOfDayDate = (new SimpleDateFormat(
+				MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME))
+				.parse(capturedPatient.getAttribute(deliveryTimeAttributeType)
+						.getValue());
+		timeOfDayCal.setTime(timeOfDayDate);
+		assertEquals(hour, timeOfDayCal.get(Calendar.HOUR_OF_DAY));
+		assertEquals(min, timeOfDayCal.get(Calendar.MINUTE));
 
-		MessageProgramEnrollment enrollment = enrollmentCap.getValue();
-		assertEquals(patient.getPatientId(), enrollment.getPersonId());
-		assertEquals(pregnancyProgramName, enrollment.getProgram());
-		assertNotNull("Enrollment start date should not be null", enrollment
+		MessageProgramEnrollment enrollment1 = enrollment1Cap.getValue();
+		assertEquals(patient.getPatientId(), enrollment1.getPersonId());
+		assertEquals(pregnancyProgramName, enrollment1.getProgram());
+		assertNotNull("Enrollment start date should not be null", enrollment1
 				.getStartDate());
-		assertNull("Enrollment end date should be null", enrollment
+		assertNull("Enrollment end date should be null", enrollment1
+				.getEndDate());
+
+		MessageProgramEnrollment enrollment2 = enrollment2Cap.getValue();
+		assertEquals(patient.getPatientId(), enrollment2.getPersonId());
+		assertEquals(careProgramName, enrollment2.getProgram());
+		assertNotNull("Enrollment start date should not be null", enrollment2
+				.getStartDate());
+		assertNull("Enrollment end date should be null", enrollment2
 				.getEndDate());
 
 		Obs refDateObs = refDateObsCap.getValue();
@@ -1482,10 +1288,10 @@ public class RegistrarBeanTest extends TestCase {
 				.getValueDatetime());
 	}
 
-	public void testEditPatient() {
+	public void testEditPatient() throws ParseException {
 
 		Integer patientId = 1;
-		String pPhone = "12075551212", sPhone = "120773733373", nhis = "28";
+		String pPhone = "2075551212", sPhone = "20773733373", nhis = "28";
 		Date nhisExpires = new Date();
 		ContactNumberType pPhoneType = ContactNumberType.PERSONAL;
 		ContactNumberType sPhoneType = ContactNumberType.HOUSEHOLD;
@@ -1502,20 +1308,12 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
-				.andReturn(primaryPhoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
+				.andReturn(phoneAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE))
-				.andReturn(primaryPhoneTypeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER))
-				.andReturn(secondaryPhoneAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE))
-				.andReturn(secondaryPhoneTypeAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE))
+				.andReturn(phoneTypeAttributeType);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER))
@@ -1535,26 +1333,32 @@ public class RegistrarBeanTest extends TestCase {
 		verify(contextService, patientService, personService);
 
 		Patient capturedPatient = patientCap.getValue();
-		assertEquals(pPhone, capturedPatient.getAttribute(
-				primaryPhoneAttributeType).getValue());
+		assertEquals(pPhone, capturedPatient.getAttribute(phoneAttributeType)
+				.getValue());
 		assertEquals(pPhoneType.toString(), capturedPatient.getAttribute(
-				primaryPhoneTypeAttributeType).getValue());
-		assertEquals(sPhone, capturedPatient.getAttribute(
-				secondaryPhoneAttributeType).getValue());
-		assertEquals(sPhoneType.toString(), capturedPatient.getAttribute(
-				secondaryPhoneTypeAttributeType).getValue());
+				phoneTypeAttributeType).getValue());
 		assertEquals(nhis, capturedPatient.getAttribute(nhisAttributeType)
 				.getValue());
-		assertEquals(nhisExpires.toString(), capturedPatient.getAttribute(
-				nhisExpirationType).getValue());
+		Date nhisExpDate = (new SimpleDateFormat(MotechConstants.DATE_FORMAT))
+				.parse(capturedPatient.getAttribute(nhisExpirationType)
+						.getValue());
+		Calendar nhisExpCal = Calendar.getInstance();
+		nhisExpCal.setTime(nhisExpires);
+		int year = nhisExpCal.get(Calendar.YEAR);
+		int month = nhisExpCal.get(Calendar.MONTH);
+		int day = nhisExpCal.get(Calendar.DAY_OF_MONTH);
+		nhisExpCal.setTime(nhisExpDate);
+		assertEquals(year, nhisExpCal.get(Calendar.YEAR));
+		assertEquals(month, nhisExpCal.get(Calendar.MONTH));
+		assertEquals(day, nhisExpCal.get(Calendar.DAY_OF_MONTH));
 	}
 
-	public void testEditPatientAll() {
+	public void testEditPatientAll() throws ParseException {
 		Integer patientId = 2, clinic = 1;
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String regNumberGHS = "123ABC", nhis = "456DEF";
 		String region = "Region", district = "District", community = "Community", address = "Address";
-		String primaryPhone = "12075555555", secondaryPhone = "12075555556";
+		String primaryPhone = "2075555555", secondaryPhone = "2075555556";
 		String languageVoice = "LanguageVoice", languageText = "LanguageText";
 		String religion = "Religion", occupation = "Occupation";
 		Date date = new Date();
@@ -1587,10 +1391,6 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_GHS_REGISTERED))
-				.andReturn(ghsRegisteredAttributeType);
-		expect(
-				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
 				.andReturn(insuredAttributeType);
 		expect(
@@ -1603,52 +1403,20 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(nhisExpirationType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER))
-				.andReturn(clinicAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
+				.andReturn(phoneAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
-				.andReturn(primaryPhoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE))
+				.andReturn(phoneTypeAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE))
-				.andReturn(primaryPhoneTypeAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE))
+				.andReturn(mediaTypeAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER))
-				.andReturn(secondaryPhoneAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE))
-				.andReturn(secondaryPhoneTypeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL))
-				.andReturn(mediaTypeInformationalAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER))
-				.andReturn(mediaTypeReminderAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE))
-				.andReturn(languageVoiceAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT))
-				.andReturn(languageTextAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_RELIGION))
-				.andReturn(religionAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_OCCUPATION))
-				.andReturn(occupationAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HIV_STATUS))
-				.andReturn(hivStatusAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE))
+				.andReturn(languageAttributeType);
 
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				patient);
@@ -1692,40 +1460,31 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
 		assertEquals(regNumberGHS, capturedPatient.getPatientIdentifier(
 				motechIdType).getIdentifier());
-		assertEquals(registeredGHS, Boolean.valueOf(capturedPatient
-				.getAttribute(ghsRegisteredAttributeType).getValue()));
 		assertEquals(insured, Boolean.valueOf(capturedPatient.getAttribute(
 				insuredAttributeType).getValue()));
 		assertEquals(nhis, capturedPatient.getAttribute(nhisAttributeType)
 				.getValue());
-		assertEquals(date.toString(), capturedPatient.getAttribute(
-				nhisExpirationType).getValue());
-		assertEquals(clinic, Integer.valueOf(capturedPatient.getAttribute(
-				clinicAttributeType).getValue()));
+		Date nhisExpDate = (new SimpleDateFormat(MotechConstants.DATE_FORMAT))
+				.parse(capturedPatient.getAttribute(nhisExpirationType)
+						.getValue());
+		Calendar nhisExpCal = Calendar.getInstance();
+		nhisExpCal.setTime(date);
+		int year = nhisExpCal.get(Calendar.YEAR);
+		int month = nhisExpCal.get(Calendar.MONTH);
+		int day = nhisExpCal.get(Calendar.DAY_OF_MONTH);
+		nhisExpCal.setTime(nhisExpDate);
+		assertEquals(year, nhisExpCal.get(Calendar.YEAR));
+		assertEquals(month, nhisExpCal.get(Calendar.MONTH));
+		assertEquals(day, nhisExpCal.get(Calendar.DAY_OF_MONTH));
 		assertEquals(primaryPhone, capturedPatient.getAttribute(
-				primaryPhoneAttributeType).getValue());
-		assertEquals(secondaryPhone, capturedPatient.getAttribute(
-				secondaryPhoneAttributeType).getValue());
+				phoneAttributeType).getValue());
 		assertEquals(primaryPhoneType, ContactNumberType
-				.valueOf(capturedPatient.getAttribute(
-						primaryPhoneTypeAttributeType).getValue()));
-		assertEquals(secondaryPhoneType, ContactNumberType
-				.valueOf(capturedPatient.getAttribute(
-						secondaryPhoneTypeAttributeType).getValue()));
+				.valueOf(capturedPatient.getAttribute(phoneTypeAttributeType)
+						.getValue()));
 		assertEquals(mediaTypeInfo, MediaType.valueOf(capturedPatient
-				.getAttribute(mediaTypeInformationalAttributeType).getValue()));
-		assertEquals(mediaTypeReminder, MediaType.valueOf(capturedPatient
-				.getAttribute(mediaTypeReminderAttributeType).getValue()));
+				.getAttribute(mediaTypeAttributeType).getValue()));
 		assertEquals(languageText, capturedPatient.getAttribute(
-				languageTextAttributeType).getValue());
-		assertEquals(languageVoice, capturedPatient.getAttribute(
-				languageVoiceAttributeType).getValue());
-		assertEquals(religion, capturedPatient.getAttribute(
-				religionAttributeType).getValue());
-		assertEquals(occupation, capturedPatient.getAttribute(
-				occupationAttributeType).getValue());
-		assertEquals(hivStatus, HIVStatus.valueOf(capturedPatient.getAttribute(
-				hivStatusAttributeType).getValue()));
+				languageAttributeType).getValue());
 	}
 
 	public void testStopPregnancyProgram() {
@@ -1787,7 +1546,7 @@ public class RegistrarBeanTest extends TestCase {
 		Integer patientId = 2;
 		Date date = new Date();
 		Boolean dueDateConfirmed = true, registerPregProgram = true;
-		String primaryPhone = "12075555555", secondaryPhone = "12075555556";
+		String primaryPhone = "2075555555", secondaryPhone = "2075555556";
 		String languageVoice = "LanguageVoice", languageText = "LanguageText";
 		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
 		MediaType mediaTypeInfo = MediaType.TEXT, mediaTypeReminder = MediaType.VOICE;
@@ -1821,44 +1580,20 @@ public class RegistrarBeanTest extends TestCase {
 		expect(patientService.getPatient(patientId)).andReturn(patient);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
-				.andReturn(primaryPhoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
+				.andReturn(phoneAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE))
-				.andReturn(primaryPhoneTypeAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE))
+				.andReturn(phoneTypeAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER))
-				.andReturn(secondaryPhoneAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE))
+				.andReturn(mediaTypeAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE))
-				.andReturn(secondaryPhoneTypeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL))
-				.andReturn(mediaTypeInformationalAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER))
-				.andReturn(mediaTypeReminderAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT))
-				.andReturn(languageTextAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE))
-				.andReturn(languageVoiceAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED))
-				.andReturn(whoRegisteredType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED))
-				.andReturn(howLearnedAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE))
+				.andReturn(languageAttributeType);
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				new Patient());
 
@@ -1914,27 +1649,14 @@ public class RegistrarBeanTest extends TestCase {
 
 		Patient capturedPatient = patientCap.getValue();
 		assertEquals(primaryPhone, capturedPatient.getAttribute(
-				primaryPhoneAttributeType).getValue());
-		assertEquals(secondaryPhone, capturedPatient.getAttribute(
-				secondaryPhoneAttributeType).getValue());
+				phoneAttributeType).getValue());
 		assertEquals(primaryPhoneType, ContactNumberType
-				.valueOf(capturedPatient.getAttribute(
-						primaryPhoneTypeAttributeType).getValue()));
-		assertEquals(secondaryPhoneType, ContactNumberType
-				.valueOf(capturedPatient.getAttribute(
-						secondaryPhoneTypeAttributeType).getValue()));
+				.valueOf(capturedPatient.getAttribute(phoneTypeAttributeType)
+						.getValue()));
 		assertEquals(mediaTypeInfo, MediaType.valueOf(capturedPatient
-				.getAttribute(mediaTypeInformationalAttributeType).getValue()));
-		assertEquals(mediaTypeReminder, MediaType.valueOf(capturedPatient
-				.getAttribute(mediaTypeReminderAttributeType).getValue()));
+				.getAttribute(mediaTypeAttributeType).getValue()));
 		assertEquals(languageText, capturedPatient.getAttribute(
-				languageTextAttributeType).getValue());
-		assertEquals(languageVoice, capturedPatient.getAttribute(
-				languageVoiceAttributeType).getValue());
-		assertEquals(whoRegistered, WhoRegistered.valueOf(capturedPatient
-				.getAttribute(whoRegisteredType).getValue()));
-		assertEquals(howLearned, capturedPatient.getAttribute(
-				howLearnedAttributeType).getValue());
+				languageAttributeType).getValue());
 
 		MessageProgramEnrollment enrollment = enrollmentCap.getValue();
 		assertEquals(patient.getPatientId(), enrollment.getPersonId());
@@ -2062,7 +1784,7 @@ public class RegistrarBeanTest extends TestCase {
 		Integer recipientId = 2;
 		String phoneNumber = "1234567890";
 		Person recipient = new Person();
-		recipient.addAttribute(new PersonAttribute(primaryPhoneAttributeType,
+		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
 				phoneNumber));
 		TroubledPhone troubledPhone = null;
 		Message message = new Message();
@@ -2077,10 +1799,6 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(motechService.getMessage(messageId)).andReturn(message);
 		expect(personService.getPerson(recipientId)).andReturn(recipient);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
-				.andReturn(primaryPhoneAttributeType);
 		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
 				troubledPhone);
 		expect(motechService.saveMessage(capture(messageCap))).andReturn(
@@ -2104,7 +1822,7 @@ public class RegistrarBeanTest extends TestCase {
 		Integer recipientId = 2;
 		String phoneNumber = "1234567890";
 		Person recipient = new Person();
-		recipient.addAttribute(new PersonAttribute(primaryPhoneAttributeType,
+		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
 				phoneNumber));
 		TroubledPhone troubledPhone = new TroubledPhone();
 		Message message = new Message();
@@ -2119,10 +1837,6 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(motechService.getMessage(messageId)).andReturn(message);
 		expect(personService.getPerson(recipientId)).andReturn(recipient);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
-				.andReturn(primaryPhoneAttributeType);
 		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
 				troubledPhone);
 		motechService.removeTroubledPhone(phoneNumber);
@@ -2147,7 +1861,7 @@ public class RegistrarBeanTest extends TestCase {
 		Integer recipientId = 2;
 		String phoneNumber = "1234567890";
 		Person recipient = new Person();
-		recipient.addAttribute(new PersonAttribute(primaryPhoneAttributeType,
+		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
 				phoneNumber));
 		TroubledPhone troubledPhone = null;
 		Message message = new Message();
@@ -2162,10 +1876,6 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(motechService.getMessage(messageId)).andReturn(message);
 		expect(personService.getPerson(recipientId)).andReturn(recipient);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
-				.andReturn(primaryPhoneAttributeType);
 		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
 				troubledPhone);
 		motechService.addTroubledPhone(phoneNumber);
@@ -2190,7 +1900,7 @@ public class RegistrarBeanTest extends TestCase {
 		Integer recipientId = 2;
 		String phoneNumber = "1234567890";
 		Person recipient = new Person();
-		recipient.addAttribute(new PersonAttribute(primaryPhoneAttributeType,
+		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
 				phoneNumber));
 		Integer previousFailures = 1;
 		TroubledPhone troubledPhone = new TroubledPhone();
@@ -2208,10 +1918,6 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(motechService.getMessage(messageId)).andReturn(message);
 		expect(personService.getPerson(recipientId)).andReturn(recipient);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER))
-				.andReturn(primaryPhoneAttributeType);
 		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
 				troubledPhone);
 		motechService.saveTroubledPhone(capture(troubledPhoneCap));

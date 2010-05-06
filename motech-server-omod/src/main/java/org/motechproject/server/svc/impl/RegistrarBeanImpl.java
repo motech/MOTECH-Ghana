@@ -1,5 +1,6 @@
 package org.motechproject.server.svc.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,11 +25,9 @@ import org.motechproject.server.model.MessageAttribute;
 import org.motechproject.server.model.MessageDefinition;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.MessageStatus;
-import org.motechproject.server.model.MessageType;
 import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.model.WhoRegistered;
-import org.motechproject.server.model.WhyInterested;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechIdVerhoeffValidator;
 import org.motechproject.server.omod.MotechService;
@@ -44,11 +43,16 @@ import org.motechproject.server.ws.WebServiceModelConverterImpl;
 import org.motechproject.ws.BirthOutcome;
 import org.motechproject.ws.Care;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.HIVResult;
+import org.motechproject.ws.HowLearned;
+import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.NameValuePair;
+import org.motechproject.ws.RegistrantType;
+import org.motechproject.ws.RegistrationMode;
 import org.motechproject.ws.mobile.MessageService;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
@@ -85,6 +89,7 @@ import org.openmrs.module.idgen.service.IdentifierSourceService;
 import org.openmrs.scheduler.SchedulerException;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.TaskDefinition;
+import org.openmrs.util.AttributableDate;
 import org.openmrs.util.OpenmrsConstants;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -114,84 +119,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	public MessageProgram getMessageProgram(String programName) {
 		return messagePrograms.get(programName);
-	}
-
-	@Transactional
-	public Patient registerChild(User nurse, Patient mother, String childId,
-			Date birthDate, Gender sex, String firstName, String nhis,
-			Date nhisExpires) {
-
-		PatientService patientService = contextService.getPatientService();
-
-		PersonAddress motherAddress = mother.getPersonAddress();
-
-		String region = null;
-		String district = null;
-		String community = null;
-		String address = null;
-
-		if (motherAddress != null) {
-			region = motherAddress.getRegion();
-			district = motherAddress.getCountyDistrict();
-			community = motherAddress.getCityVillage();
-			address = motherAddress.getAddress1();
-		}
-
-		Patient child = createPatient(childId, firstName, null, mother
-				.getFamilyName(), null, birthDate, false, sex, null, childId,
-				null, null, nhis, nhisExpires, null, region, district,
-				community, address, null, null, null, null, null, null, null,
-				null, null, null, null, WhoRegistered.CHPS_STAFF, null, null);
-
-		return patientService.savePatient(child);
-	}
-
-	@Transactional
-	public void registerChild(String motechId, String firstName,
-			String middleName, String lastName, String prefName,
-			Date birthDate, Boolean birthDateEst, Gender sex,
-			String motherMotechId, Boolean registeredGHS, String regNumberGHS,
-			Boolean insured, String nhis, Date nhisExpDate, String region,
-			String district, String community, String address, Integer clinic,
-			Boolean registerPregProgram, String primaryPhone,
-			ContactNumberType primaryPhoneType, String secondaryPhone,
-			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
-			MediaType mediaTypeReminder, String languageVoice,
-			String languageText, WhoRegistered whoRegistered) {
-
-		PatientService patientService = contextService.getPatientService();
-		PersonService personService = contextService.getPersonService();
-
-		Patient child = createPatient(motechId, firstName, middleName,
-				lastName, prefName, birthDate, birthDateEst, sex,
-				registeredGHS, regNumberGHS, null, insured, nhis, nhisExpDate,
-				null, region, district, community, address, clinic,
-				primaryPhone, primaryPhoneType, secondaryPhone,
-				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
-				languageVoice, languageText, null, null, whoRegistered, null,
-				null);
-
-		child = patientService.savePatient(child);
-
-		if (motherMotechId != null) {
-
-			Patient mother = getPatientByMotechId(motherMotechId);
-
-			if (mother != null) {
-				RelationshipType parentChildRelationshipType = personService
-						.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD);
-				Relationship motherRelationship = new Relationship(mother,
-						child, parentChildRelationshipType);
-				personService.saveRelationship(motherRelationship);
-			}
-		}
-
-		if (registerPregProgram) {
-			addMessageProgramEnrollment(child.getPatientId(),
-					"Weekly Info Child Message Program", null);
-			addMessageProgramEnrollment(child.getPatientId(),
-					"Expected Care Message Program", null);
-		}
 	}
 
 	@Transactional
@@ -254,7 +181,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		nurse.addAttribute(new PersonAttribute(nurseIdAttrType, nurseId));
 
 		// Must be created previously through API or UI to lookup
-		PersonAttributeType phoneNumberAttrType = getPrimaryPhoneNumberAttributeType();
+		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
 		nurse
 				.addAttribute(new PersonAttribute(phoneNumberAttrType,
 						phoneNumber));
@@ -263,52 +190,119 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Role role = userService.getRole(OpenmrsConstants.PROVIDER_ROLE);
 		nurse.addRole(role);
 
-		// TODO: Clinic not used, no connection currently between Nurse and
-		// Clinic
-		PersonAttributeType clinicType = getClinicAttributeType();
-		nurse.addAttribute(new PersonAttribute(clinicType, clinic
-				.getLocationId().toString()));
-
 		userService.saveUser(nurse, "password");
 	}
 
 	@Transactional
-	public void registerPregnantMother(String motechId, String firstName,
-			String middleName, String lastName, String prefName,
-			Date birthDate, Boolean birthDateEst, Boolean registeredGHS,
-			String regNumberGHS, Boolean insured, String nhis,
-			Date nhisExpDate, String region, String district, String community,
-			String address, Integer clinic, Date dueDate,
-			Boolean dueDateConfirmed, Integer gravida, Integer parity,
-			HIVStatus hivStatus, Boolean registerPregProgram,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText,
-			WhoRegistered whoRegistered, String religion, String occupation) {
+	public void registerPatient(User nurse, Integer facilityId, Date date,
+			RegistrationMode registrationMode, Integer motechId,
+			RegistrantType registrantType, String firstName, String middleName,
+			String lastName, String preferredName, Date dateOfBirth,
+			Boolean estimatedBirthDate, Gender sex, Boolean insured,
+			String nhis, Date nhisExpires, Patient mother, String region,
+			String district, String subDistrict, String community,
+			String address, Integer phoneNumber, Date expDeliveryDate,
+			Boolean deliveryDateConfirmed, Integer gravida, Integer parity,
+			Boolean enroll, Boolean consent, ContactNumberType ownership,
+			MediaType format, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, InterestReason reason, HowLearned howLearned,
+			Integer messagesStartWeek) {
+
+		registerPatient(registrationMode, motechId, registrantType, firstName,
+				middleName, lastName, preferredName, dateOfBirth,
+				estimatedBirthDate, sex, insured, nhis, nhisExpires, mother,
+				region, district, subDistrict, community, address, phoneNumber,
+				expDeliveryDate, deliveryDateConfirmed, gravida, parity,
+				enroll, consent, ownership, format, language, dayOfWeek,
+				timeOfDay, reason, howLearned, messagesStartWeek);
+	}
+
+	@Transactional
+	public Patient registerPatient(RegistrationMode registrationMode,
+			Integer motechId, RegistrantType registrantType, String firstName,
+			String middleName, String lastName, String preferredName,
+			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
+			Boolean insured, String nhis, Date nhisExpires, Patient mother,
+			String region, String district, String subDistrict,
+			String community, String address, Integer phoneNumber,
+			Date expDeliveryDate, Boolean deliveryDateConfirmed,
+			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, MediaType format, String language,
+			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
+			HowLearned howLearned, Integer messagesStartWeek) {
 
 		PatientService patientService = contextService.getPatientService();
+		PersonService personService = contextService.getPersonService();
 
-		Patient mother = createPatient(motechId, firstName, middleName,
-				lastName, prefName, birthDate, birthDateEst, Gender.FEMALE,
-				registeredGHS, null, regNumberGHS, insured, nhis, nhisExpDate,
-				hivStatus, region, district, community, address, clinic,
-				primaryPhone, primaryPhoneType, secondaryPhone,
-				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
-				languageVoice, languageText, religion, occupation,
-				whoRegistered, null, null);
+		// TODO: Handle storing community and hierarchy
+		Patient patient = createPatient(motechId, firstName, middleName,
+				lastName, preferredName, dateOfBirth, estimatedBirthDate, sex,
+				insured, nhis, nhisExpires, community, null, address,
+				phoneNumber, ownership, format, language, dayOfWeek, timeOfDay,
+				howLearned, reason);
 
-		mother = patientService.savePatient(mother);
+		patient = patientService.savePatient(patient);
 
-		Integer dueDateObsId = registerPregnancy(mother, dueDate,
-				dueDateConfirmed, gravida, parity);
+		if (mother != null) {
+			RelationshipType parentChildRelationshipType = personService
+					.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD);
+			Relationship motherRelationship = new Relationship(mother, patient,
+					parentChildRelationshipType);
+			personService.saveRelationship(motherRelationship);
+		}
 
-		if (registerPregProgram) {
-			addMessageProgramEnrollment(mother.getPatientId(),
-					"Weekly Pregnancy Message Program", dueDateObsId);
-			addMessageProgramEnrollment(mother.getPatientId(),
+		boolean enrollPatient = Boolean.TRUE.equals(enroll)
+				&& Boolean.TRUE.equals(consent);
+
+		Integer referenceDateObsId = null;
+		String infoMessageProgramName = null;
+
+		if (registrantType == RegistrantType.PREGNANT_MOTHER) {
+			infoMessageProgramName = "Weekly Pregnancy Message Program";
+
+			referenceDateObsId = registerPregnancy(patient, expDeliveryDate,
+					deliveryDateConfirmed, gravida, parity);
+
+		} else if (registrantType == RegistrantType.CHILD_UNDER_FIVE) {
+			infoMessageProgramName = "Weekly Info Child Message Program";
+
+			// TODO: If mother specified, Remove mother's pregnancy message
+			// enrollment
+
+		} else if (registrantType == RegistrantType.OTHER) {
+			infoMessageProgramName = "Weekly Info Pregnancy Message Program";
+
+			if (messagesStartWeek != null && enrollPatient) {
+				ObsService obsService = contextService.getObsService();
+
+				Location ghanaLocation = getGhanaLocation();
+				Date currentDate = new Date();
+
+				Calendar calendar = Calendar.getInstance();
+				// Convert weeks to days, plus one day
+				calendar.add(Calendar.DATE, (messagesStartWeek * -7) + 1);
+				Date referenceDate = calendar.getTime();
+
+				Obs refDateObs = createDateValueObs(currentDate,
+						getEnrollmentReferenceDateConcept(), patient,
+						ghanaLocation, referenceDate, null, null);
+
+				refDateObs = obsService.saveObs(refDateObs, null);
+				referenceDateObsId = refDateObs.getObsId();
+			}
+		}
+
+		if (enrollPatient && infoMessageProgramName != null) {
+
+			addMessageProgramEnrollment(patient.getPatientId(),
+					infoMessageProgramName, referenceDateObsId);
+
+			// TODO: Base care enrollment on community
+			addMessageProgramEnrollment(patient.getPatientId(),
 					"Expected Care Message Program", null);
 		}
+
+		return patient;
 	}
 
 	@Transactional
@@ -327,13 +321,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		PatientService patientService = contextService.getPatientService();
 
-		Patient patient = createPatient(motechId, firstName, middleName,
-				lastName, prefName, birthDate, birthDateEst, sex,
-				registeredGHS, null, null, insured, nhis, nhisExpDate, null,
-				region, district, community, address, clinic, primaryPhone,
-				primaryPhoneType, secondaryPhone, secondaryPhoneType,
-				mediaTypeInfo, mediaTypeReminder, languageVoice, languageText,
-				religion, occupation, whoRegistered, null, null);
+		// TODO: Update demo patient registration
+		Patient patient = createPatient(Integer.parseInt(motechId), firstName,
+				middleName, lastName, prefName, birthDate, birthDateEst, sex,
+				insured, nhis, nhisExpDate, community, null, address, Integer
+						.parseInt(primaryPhone), primaryPhoneType,
+				mediaTypeInfo, languageText, null, null, null, null);
 
 		patient = patientService.savePatient(patient);
 
@@ -351,81 +344,26 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void registerPerson(String motechId, String firstName,
+	private Patient createPatient(Integer motechId, String firstName,
 			String middleName, String lastName, String prefName,
-			Date birthDate, Boolean birthDateEst, Gender sex, String region,
-			String district, String community, String address, Integer clinic,
-			Boolean registerPregProgram, Integer messagesStartWeek,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText, String howLearned,
-			String religion, String occupation, WhyInterested whyInterested) {
-
-		PatientService patientService = contextService.getPatientService();
-
-		Patient patient = createPatient(motechId, firstName, middleName,
-				lastName, prefName, birthDate, birthDateEst, sex, null, null,
-				null, null, null, null, null, region, district, community,
-				address, clinic, primaryPhone, primaryPhoneType,
-				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
-				mediaTypeReminder, languageVoice, languageText, religion,
-				occupation, null, howLearned, whyInterested);
-
-		patient = patientService.savePatient(patient);
-
-		Integer refDateObsId = null;
-
-		if (messagesStartWeek != null) {
-			ObsService obsService = contextService.getObsService();
-
-			Location ghanaLocation = getGhanaLocation();
-			Date currentDate = new Date();
-
-			Calendar calendar = Calendar.getInstance();
-			// Convert weeks to days, plus one day
-			calendar.add(Calendar.DATE, (messagesStartWeek * -7) + 1);
-			Date referenceDate = calendar.getTime();
-
-			Obs refDateObs = createDateValueObs(currentDate,
-					getEnrollmentReferenceDateConcept(), patient,
-					ghanaLocation, referenceDate, null, null);
-
-			obsService.saveObs(refDateObs, null);
-
-			refDateObsId = refDateObs.getObsId();
-		}
-
-		if (registerPregProgram) {
-			addMessageProgramEnrollment(patient.getPatientId(),
-					"Weekly Info Pregnancy Message Program", refDateObsId);
-		}
-	}
-
-	@Transactional
-	private Patient createPatient(String motechId, String firstName,
-			String middleName, String lastName, String prefName,
-			Date birthDate, Boolean birthDateEst, Gender sex,
-			Boolean registeredGHS, String regNumberCWC, String regNumberANC,
-			Boolean insured, String nhis, Date nhisExpDate,
-			HIVStatus hivStatus, String region, String district,
-			String community, String address, Integer clinic,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText, String religion,
-			String occupation, WhoRegistered whoRegistered, String howLearned,
-			WhyInterested whyInterested) {
+			Date birthDate, Boolean birthDateEst, Gender sex, Boolean insured,
+			String nhis, Date nhisExpDate, String communityName,
+			Integer communityId, String address, Integer phoneNumber,
+			ContactNumberType phoneType, MediaType mediaType, String language,
+			DayOfWeek dayOfWeek, Date timeOfDay, HowLearned howLearned,
+			InterestReason whyInterested) {
 
 		Patient patient = new Patient();
 
+		String motechIdString = null;
 		if (motechId == null) {
-			motechId = generateMotechId();
+			motechIdString = generateMotechId();
 		} else {
-			excludeIdForGenerator(motechId);
+			motechIdString = motechId.toString();
+			excludeIdForGenerator(motechIdString);
 		}
 
-		patient.addIdentifier(new PatientIdentifier(motechId,
+		patient.addIdentifier(new PatientIdentifier(motechIdString,
 				getMotechPatientIdType(), getGhanaLocation()));
 
 		patient.addName(new PersonName(firstName, middleName, lastName));
@@ -441,126 +379,76 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		patient.setBirthdate(birthDate);
 		patient.setBirthdateEstimated(birthDateEst);
 
-		PersonAddress personAddress = new PersonAddress();
-		personAddress.setAddress1(address);
-		personAddress.setCityVillage(community);
-		personAddress.setCountyDistrict(district);
-		personAddress.setRegion(region);
-		personAddress.setCountry(MotechConstants.LOCATION_GHANA);
-		patient.addAddress(personAddress);
+		if (address != null) {
+			PersonAddress personAddress = new PersonAddress();
+			personAddress.setAddress1(address);
+			// TODO: Remove storing community as String value
+			personAddress.setCityVillage(communityName);
+			patient.addAddress(personAddress);
+		}
 
-		setPatientAttributes(patient, clinic, primaryPhone, primaryPhoneType,
-				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
-				mediaTypeReminder, languageVoice, languageText, religion,
-				occupation, howLearned, whyInterested, whoRegistered,
-				registeredGHS, regNumberCWC, regNumberANC, hivStatus, insured,
-				nhis, nhisExpDate);
+		setPatientAttributes(patient, communityId, phoneNumber, phoneType,
+				mediaType, language, dayOfWeek, timeOfDay, howLearned,
+				whyInterested, insured, nhis, nhisExpDate);
 
 		return patient;
 	}
 
-	private void setPatientAttributes(Patient patient, Integer clinic,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText, String religion,
-			String occupation, String howLearned, WhyInterested whyInterested,
-			WhoRegistered whoRegistered, Boolean registeredGHS,
-			String regNumberCWC, String regNumberANC, HIVStatus hivStatus,
-			Boolean insured, String nhis, Date nhisExpDate) {
+	private void setPatientAttributes(Patient patient, Integer community,
+			Integer phoneNumber, ContactNumberType phoneType,
+			MediaType mediaType, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, HowLearned howLearned,
+			InterestReason whyInterested, Boolean insured, String nhis,
+			Date nhisExpDate) {
 
 		List<PersonAttribute> attrs = new ArrayList<PersonAttribute>();
 
-		if (clinic != null) {
-			attrs.add(new PersonAttribute(getClinicAttributeType(), clinic
-					.toString()));
+		if (community != null) {
+			attrs.add(new PersonAttribute(getCommunityAttributeType(),
+					community.toString()));
 		}
 
-		if (primaryPhone != null) {
-			attrs.add(new PersonAttribute(getPrimaryPhoneNumberAttributeType(),
-					primaryPhone));
+		if (phoneNumber != null) {
+			attrs.add(new PersonAttribute(getPhoneNumberAttributeType(),
+					phoneNumber.toString()));
 		}
 
-		if (primaryPhoneType != null) {
-			attrs.add(new PersonAttribute(getPrimaryPhoneTypeAttributeType(),
-					primaryPhoneType.name()));
+		if (phoneType != null) {
+			attrs.add(new PersonAttribute(getPhoneTypeAttributeType(),
+					phoneType.name()));
 		}
 
-		if (secondaryPhone != null) {
-			attrs.add(new PersonAttribute(
-					getSecondaryPhoneNumberAttributeType(), secondaryPhone));
+		if (mediaType != null) {
+			attrs.add(new PersonAttribute(getMediaTypeAttributeType(),
+					mediaType.name()));
 		}
 
-		if (secondaryPhoneType != null) {
-			attrs.add(new PersonAttribute(getSecondaryPhoneTypeAttributeType(),
-					secondaryPhoneType.name()));
-		}
-
-		if (mediaTypeInfo != null) {
-			attrs.add(new PersonAttribute(
-					getMediaTypeInformationalAttributeType(), mediaTypeInfo
-							.name()));
-		}
-
-		if (mediaTypeReminder != null) {
-			attrs.add(new PersonAttribute(getMediaTypeReminderAttributeType(),
-					mediaTypeReminder.name()));
-		}
-
-		if (languageText != null) {
-			attrs.add(new PersonAttribute(getLanguageTextAttributeType(),
-					languageText));
-		}
-
-		if (languageVoice != null) {
-			attrs.add(new PersonAttribute(getLanguageVoiceAttributeType(),
-					languageVoice));
-		}
-
-		if (religion != null) {
+		if (language != null) {
 			attrs
-					.add(new PersonAttribute(getReligionAttributeType(),
-							religion));
+					.add(new PersonAttribute(getLanguageAttributeType(),
+							language));
 		}
 
-		if (occupation != null) {
-			attrs.add(new PersonAttribute(getOccupationAttributeType(),
-					occupation));
+		if (dayOfWeek != null) {
+			attrs.add(new PersonAttribute(getDeliveryDayAttributeType(),
+					dayOfWeek.name()));
+		}
+
+		if (timeOfDay != null) {
+			SimpleDateFormat formatter = new SimpleDateFormat(
+					MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME);
+			attrs.add(new PersonAttribute(getDeliveryTimeAttributeType(),
+					formatter.format(timeOfDay)));
 		}
 
 		if (howLearned != null) {
 			attrs.add(new PersonAttribute(getHowLearnedAttributeType(),
-					howLearned));
+					howLearned.name()));
 		}
 
 		if (whyInterested != null) {
 			attrs.add(new PersonAttribute(getWhyInterestedAttributeType(),
 					whyInterested.name()));
-		}
-
-		if (whoRegistered != null) {
-			attrs.add(new PersonAttribute(getWhoRegisteredAttributeType(),
-					whoRegistered.name()));
-		}
-
-		if (registeredGHS != null) {
-			attrs.add(new PersonAttribute(getGHSRegisteredAttributeType(),
-					registeredGHS.toString()));
-		}
-
-		if (regNumberCWC != null) {
-			attrs.add(new PersonAttribute(
-					getCWCRegistrationNumberAttributeType(), regNumberCWC));
-		}
-
-		if (regNumberANC != null) {
-			attrs.add(new PersonAttribute(
-					getANCRegistrationNumberAttributeType(), regNumberANC));
-		}
-
-		if (hivStatus != null) {
-			attrs.add(new PersonAttribute(getHIVStatusAttributeType(),
-					hivStatus.name()));
 		}
 
 		if (insured != null) {
@@ -573,8 +461,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 
 		if (nhisExpDate != null) {
+			SimpleDateFormat formatter = new SimpleDateFormat(
+					MotechConstants.DATE_FORMAT);
 			attrs.add(new PersonAttribute(getNHISExpirationDateAttributeType(),
-					nhisExpDate.toString()));
+					formatter.format(nhisExpDate)));
 		}
 
 		for (PersonAttribute attr : attrs)
@@ -588,9 +478,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		PatientService patientService = contextService.getPatientService();
 
-		setPatientAttributes(patient, null, primaryPhone, primaryPhoneType,
-				secondaryPhone, secondaryPhoneType, null, null, null, null,
-				null, null, null, null, null, null, null, null, null, null,
+		setPatientAttributes(patient, null, Integer.parseInt(primaryPhone),
+				primaryPhoneType, null, null, null, null, null, null, null,
 				nhis, nhisExpires);
 
 		patientService.savePatient(patient);
@@ -674,11 +563,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			patientId.setIdentifier(regNumberGHS);
 		}
 
-		setPatientAttributes(patient, clinic, primaryPhone, primaryPhoneType,
-				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
-				mediaTypeReminder, languageVoice, languageText, religion,
-				occupation, null, null, null, registeredGHS, null, null,
-				hivStatus, insured, nhis, nhisExpDate);
+		// TODO: Update to handle removed attributes and changed types
+		setPatientAttributes(patient, null, Integer.parseInt(primaryPhone),
+				primaryPhoneType, mediaTypeInfo, languageText, null, null,
+				null, null, insured, nhis, nhisExpDate);
 
 		patientService.savePatient(patient);
 	}
@@ -713,11 +601,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			return;
 		}
 
-		setPatientAttributes(patient, null, primaryPhone, primaryPhoneType,
-				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
-				mediaTypeReminder, languageVoice, languageText, null, null,
-				howLearned, null, whoRegistered, null, null, null, null, null,
-				null, null);
+		// TODO: Update to handle removed attributes and changed types
+		setPatientAttributes(patient, null, Integer.parseInt(primaryPhone),
+				primaryPhoneType, mediaTypeInfo, languageText, null, null,
+				null, null, null, null, null);
 
 		patientService.savePatient(patient);
 
@@ -1126,9 +1013,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				obsService.saveObs(childOutcomeObs, null);
 			}
 
-			Patient child = registerChild(null, patient, childOutcome
-					.getMotechId().toString(), date, childOutcome.getSex(),
-					childOutcome.getFirstName(), null, null);
+			// TODO: Update to include registration mode in birth outcome
+			Patient child = registerPatient(null, childOutcome.getMotechId(),
+					RegistrantType.CHILD_UNDER_FIVE, childOutcome
+							.getFirstName(), null, null, null, date, false,
+					childOutcome.getSex(), null, null, null, patient, null,
+					null, null, null, null, null, null, null, null, null, null,
+					null, null, null, null, null, null, null, null, null);
 
 			Integer opvDose = null;
 			if (Boolean.TRUE.equals(childOutcome.getOpv())) {
@@ -1427,7 +1318,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		Integer recipientId = message.getSchedule().getRecipientId();
 		Person messageRecipient = personService.getPerson(recipientId);
-		String phoneNumber = getPrimaryPersonPhoneNumber(messageRecipient);
+		String phoneNumber = getPersonPhoneNumber(messageRecipient);
 		TroubledPhone troubledPhone = motechService
 				.getTroubledPhone(phoneNumber);
 
@@ -1455,7 +1346,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		MotechService motechService = contextService.getMotechService();
 		UserService userService = contextService.getUserService();
 
-		PersonAttributeType phoneAttributeType = getPrimaryPhoneNumberAttributeType();
+		PersonAttributeType phoneAttributeType = getPhoneNumberAttributeType();
 		List<Integer> matchingUsers = motechService
 				.getUserIdsByPersonAttribute(phoneAttributeType, phoneNumber);
 		if (matchingUsers.size() > 0) {
@@ -1499,15 +1390,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		MotechService motechService = contextService.getMotechService();
 
-		PersonAttributeType primaryPhoneNumberAttrType = getPrimaryPhoneNumberAttributeType();
-		PersonAttributeType secondaryPhoneNumberAttrType = getSecondaryPhoneNumberAttributeType();
+		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
 		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
 		PatientIdentifierType motechIdType = getMotechPatientIdType();
 
 		return motechService.getPatients(firstName, lastName, preferredName,
-				birthDate, community, phoneNumber, primaryPhoneNumberAttrType,
-				secondaryPhoneNumberAttrType, nhisNumber, nhisAttrType,
-				motechId, motechIdType);
+				birthDate, community, phoneNumber, phoneNumberAttrType,
+				nhisNumber, nhisAttrType, motechId, motechIdType);
 	}
 
 	public List<Obs> getAllPregnancies() {
@@ -2365,73 +2254,35 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_CHPS_ID,
 				"A nurse's CHPS ID.", String.class.getName(), admin);
 		createPersonAttributeType(
-				MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER,
-				"A person's primary phone number.", String.class.getName(),
-				admin);
-		createPersonAttributeType(
-				MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER,
-				"A person's seconadary phone number.", String.class.getName(),
-				admin);
+				MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER,
+				"A person's phone number.", String.class.getName(), admin);
 		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER,
 				"A person's NHIS number.", String.class.getName(), admin);
-		// TODO: Use AttributableDate? Create Attributable types for Enums?
 		createPersonAttributeType(
 				MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE,
-				"A person's NHIS expiration date.", Date.class.getName(), admin);
+				"A person's NHIS expiration date.", AttributableDate.class
+						.getName(), admin);
+		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE,
+				"A person's language preference for messages.", String.class
+						.getName(), admin);
 		createPersonAttributeType(
-				MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT,
-				"A person's language preference for text messages.",
+				MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE,
+				"A person's phone ownership type (PERSONAL, HOUSEHOLD, or PUBLIC).",
 				String.class.getName(), admin);
+		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE,
+				"A person's media type preference for messages.", String.class
+						.getName(), admin);
 		createPersonAttributeType(
-				MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE,
-				"A person's language preference for voice messages.",
-				String.class.getName(), admin);
-		createPersonAttributeType(
-				MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE,
-				"A person's primary phone type (PERSONAL, HOUSEHOLD, or PUBLIC).",
-				String.class.getName(), admin);
-		createPersonAttributeType(
-				MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE,
-				"A person's secondary phone type (PERSONAL, HOUSEHOLD, or PUBLIC).",
-				String.class.getName(), admin);
-		createPersonAttributeType(
-				MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL,
-				"A person's preferred phone media type for info messages (TEXT or VOICE).",
-				String.class.getName(), admin);
-		createPersonAttributeType(
-				MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER,
-				"A person's preferred phone media type for reminder messages (TEXT or VOICE).",
+				MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY,
+				"A person's preferred delivery day (SUNDAY to SATURDAY).",
 				String.class.getName(), admin);
 		createPersonAttributeType(
 				MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME,
-				"A person's preferred delivery time (ANYTIME, MORNING, AFTERNOON, or EVENING).",
-				String.class.getName(), admin);
-		createPersonAttributeType(
-				MotechConstants.PERSON_ATTRIBUTE_GHS_ANC_REG_NUMBER,
-				"A mother's GHS ANC Registration number.", String.class
-						.getName(), admin);
-		createPersonAttributeType(
-				MotechConstants.PERSON_ATTRIBUTE_GHS_CWC_REG_NUMBER,
-				"A child's GHS CWC Registration number.", String.class
-						.getName(), admin);
-		createPersonAttributeType(
-				MotechConstants.PERSON_ATTRIBUTE_GHS_REGISTERED,
-				"Is person registered with GHS? (TRUE OR FALSE)", String.class
+				"A person's preferred delivery time (HH:mm).", String.class
 						.getName(), admin);
 		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_INSURED,
 				"Is person insured? (TRUE OR FALSE)", String.class.getName(),
 				admin);
-		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_HIV_STATUS,
-				"A person's HIV status (POSITIVE, NEGATIVE, or UNKNOWN).",
-				String.class.getName(), admin);
-		createPersonAttributeType(
-				MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED,
-				"Who registered person? (MOTHER, FATHER, FAMILY_MEMBER, CHPS_STAFF, or OTHER)",
-				String.class.getName(), admin);
-		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_RELIGION,
-				"A person's religion.", String.class.getName(), admin);
-		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_OCCUPATION,
-				"A person's occupation.", String.class.getName(), admin);
 		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED,
 				"How person found out about services.", String.class.getName(),
 				admin);
@@ -2440,6 +2291,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Why person is interested in services "
 						+ "(IN_HOUSEHOLD_PREGNANCY, OUT_HOUSEHOLD_PREGNANCY, or IN_HOUSEHOLD_BIRTH).",
 				String.class.getName(), admin);
+		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_COMMUNITY,
+				"A person's community (as Location id).", Location.class
+						.getName(), admin);
 
 		log.info("Verifying Patient Identifier Exist");
 		PatientIdentifierType motechIDType = createPatientIdentifierType(
@@ -2832,12 +2686,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		if (attrType == null) {
 			log.info(name + " PersonAttributeType Does Not Exist - Creating");
 			attrType = new PersonAttributeType();
-			attrType.setName(name);
-			attrType.setDescription(description);
-			attrType.setFormat(format);
-			attrType.setCreator(creator);
-			personService.savePersonAttributeType(attrType);
 		}
+		attrType.setName(name);
+		attrType.setDescription(description);
+		attrType.setFormat(format);
+		attrType.setCreator(creator);
+		personService.savePersonAttributeType(attrType);
 	}
 
 	private String generateMotechId() {
@@ -3205,12 +3059,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		List<User> users = userService.getAllUsers();
 
 		for (User user : users) {
-			String phoneNumber = getPrimaryPersonPhoneNumber(user);
+			String phoneNumber = getPersonPhoneNumber(user);
 			if (phoneNumber == null) {
 				// Skip nurses without a phone number
 				continue;
 			}
-			MediaType mediaType = getPersonMediaType(user, MessageType.REMINDER);
+			// All nurse messages sent as SMS
+			MediaType mediaType = MediaType.TEXT;
 			// Schedule delivery time range between earliest and latest
 			Date messageStartDate = determineMessageStartDate(deliveryDate);
 			Date messageEndDate = determineMessageEndDate(deliveryDate);
@@ -3292,12 +3147,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		Long notificationType = message.getSchedule().getMessage()
 				.getPublicId();
-		MessageType messageType = message.getSchedule().getMessage()
-				.getMessageType();
 		Integer recipientId = message.getSchedule().getRecipientId();
 		Person person = personService.getPerson(recipientId);
 
-		String phoneNumber = getPrimaryPersonPhoneNumber(person);
+		String phoneNumber = getPersonPhoneNumber(person);
 
 		// Cancel message if phone number is considered troubled
 		if (isPhoneTroubled(phoneNumber)) {
@@ -3313,8 +3166,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					+ phoneNumber + ", Notification: " + notificationType);
 
 			String messageId = message.getPublicId();
-			MediaType mediaType = getPersonMediaType(person, messageType);
-			String languageCode = getPersonLanguageCode(person, mediaType);
+			MediaType mediaType = getPersonMediaType(person);
+			String languageCode = getPersonLanguageCode(person);
 			NameValuePair[] personalInfo = this.getNameValueContent(message
 					.getSchedule().getMessage(), recipientId);
 
@@ -3331,7 +3184,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 			boolean sendMessageSuccess = false;
 			if (patient != null) {
-				ContactNumberType contactNumberType = getPrimaryPersonPhoneType(person);
+				ContactNumberType contactNumberType = getPersonPhoneType(person);
 				String motechId = patient.getPatientIdentifier(
 						MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID)
 						.getIdentifier();
@@ -3609,22 +3462,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return null;
 	}
 
-	public Location getNurseClinicLocation(User nurse) {
-		LocationService locationService = contextService.getLocationService();
-		PersonAttributeType clinicAttrType = getClinicAttributeType();
-		PersonAttribute clinicAttr = nurse.getAttribute(clinicAttrType);
-		if (clinicAttr != null && clinicAttr.getValue() != null) {
-			Integer clinicId = Integer.valueOf(clinicAttr.getValue());
-			return locationService.getLocation(clinicId);
-		}
-		log.warn("No Clinic found for Nurse id: " + nurse.getUserId());
-		return null;
-	}
-
-	public String getPrimaryPersonPhoneNumber(Person person) {
-		PersonAttributeType phoneNumberAttrType = getPrimaryPhoneNumberAttributeType();
+	public String getPersonPhoneNumber(Person person) {
 		PersonAttribute phoneNumberAttr = person
-				.getAttribute(phoneNumberAttrType);
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
 		if (phoneNumberAttr != null) {
 			return phoneNumberAttr.getValue();
 		}
@@ -3634,21 +3474,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return null;
 	}
 
-	public String getPersonLanguageCode(Person person, MediaType mediaType) {
-		PersonAttributeType languageAttrType = null;
-		switch (mediaType) {
-		case TEXT:
-			languageAttrType = getLanguageTextAttributeType();
-			break;
-		case VOICE:
-			languageAttrType = getLanguageVoiceAttributeType();
-			break;
-		default:
-			log.error("Unhandled media type for language: " + mediaType);
-			return null;
-		}
-
-		PersonAttribute languageAttr = person.getAttribute(languageAttrType);
+	public String getPersonLanguageCode(Person person) {
+		PersonAttribute languageAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
 		if (languageAttr != null) {
 			return languageAttr.getValue();
 		}
@@ -3656,9 +3484,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return null;
 	}
 
-	public ContactNumberType getPrimaryPersonPhoneType(Person person) {
-		PersonAttributeType phoneTypeAttrType = getPrimaryPhoneTypeAttributeType();
-		PersonAttribute phoneTypeAttr = person.getAttribute(phoneTypeAttrType);
+	public ContactNumberType getPersonPhoneType(Person person) {
+		PersonAttribute phoneTypeAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
 		if (phoneTypeAttr != null && phoneTypeAttr.getValue() != null) {
 			return ContactNumberType.valueOf(phoneTypeAttr.getValue());
 		}
@@ -3667,26 +3495,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return null;
 	}
 
-	public MediaType getPersonMediaType(Person person, MessageType messageType) {
-		PersonAttributeType mediaAttrType = null;
-		switch (messageType) {
-		case INFORMATIONAL:
-			mediaAttrType = getMediaTypeInformationalAttributeType();
-			break;
-		case REMINDER:
-			mediaAttrType = getMediaTypeReminderAttributeType();
-			break;
-		default:
-			log.error("Unhandled message type for media type: " + messageType);
-			return null;
-		}
-
-		PersonAttribute mediaTypeAttr = person.getAttribute(mediaAttrType);
+	public MediaType getPersonMediaType(Person person) {
+		PersonAttribute mediaTypeAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
 		if (mediaTypeAttr != null && mediaTypeAttr.getValue() != null) {
 			return MediaType.valueOf(mediaTypeAttr.getValue());
 		}
-		log.debug("No " + messageType + " media type found for Person id: "
-				+ person.getPersonId());
+		log.debug("No media type found for Person id: " + person.getPersonId());
 		return null;
 	}
 
@@ -3750,19 +3565,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.PERSON_ATTRIBUTE_CHPS_ID);
 	}
 
-	public PersonAttributeType getClinicAttributeType() {
+	public PersonAttributeType getCommunityAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_HEALTH_CENTER);
+				MotechConstants.PERSON_ATTRIBUTE_COMMUNITY);
 	}
 
-	public PersonAttributeType getPrimaryPhoneNumberAttributeType() {
+	public PersonAttributeType getPhoneNumberAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_NUMBER);
-	}
-
-	public PersonAttributeType getSecondaryPhoneNumberAttributeType() {
-		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_NUMBER);
+				MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
 	}
 
 	public PersonAttributeType getNHISNumberAttributeType() {
@@ -3775,34 +3585,19 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE);
 	}
 
-	public PersonAttributeType getPrimaryPhoneTypeAttributeType() {
+	public PersonAttributeType getPhoneTypeAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_PRIMARY_PHONE_TYPE);
+				MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
 	}
 
-	public PersonAttributeType getSecondaryPhoneTypeAttributeType() {
+	public PersonAttributeType getLanguageAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_SECONDARY_PHONE_TYPE);
+				MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
 	}
 
-	public PersonAttributeType getLanguageTextAttributeType() {
+	public PersonAttributeType getMediaTypeAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_TEXT);
-	}
-
-	public PersonAttributeType getLanguageVoiceAttributeType() {
-		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_LANGUAGE_VOICE);
-	}
-
-	public PersonAttributeType getMediaTypeInformationalAttributeType() {
-		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_INFORMATIONAL);
-	}
-
-	public PersonAttributeType getMediaTypeReminderAttributeType() {
-		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE_REMINDER);
+				MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
 	}
 
 	public PersonAttributeType getDeliveryTimeAttributeType() {
@@ -3810,44 +3605,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
 	}
 
-	public PersonAttributeType getANCRegistrationNumberAttributeType() {
-		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_GHS_ANC_REG_NUMBER);
-	}
-
-	public PersonAttributeType getCWCRegistrationNumberAttributeType() {
-		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_GHS_CWC_REG_NUMBER);
-	}
-
-	public PersonAttributeType getGHSRegisteredAttributeType() {
-		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_GHS_REGISTERED);
-	}
-
 	public PersonAttributeType getInsuredAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(
 				MotechConstants.PERSON_ATTRIBUTE_INSURED);
-	}
-
-	public PersonAttributeType getHIVStatusAttributeType() {
-		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_HIV_STATUS);
-	}
-
-	public PersonAttributeType getWhoRegisteredAttributeType() {
-		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_WHO_REGISTERED);
-	}
-
-	public PersonAttributeType getReligionAttributeType() {
-		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_RELIGION);
-	}
-
-	public PersonAttributeType getOccupationAttributeType() {
-		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_OCCUPATION);
 	}
 
 	public PersonAttributeType getHowLearnedAttributeType() {
@@ -3858,6 +3618,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public PersonAttributeType getWhyInterestedAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(
 				MotechConstants.PERSON_ATTRIBUTE_WHY_INTERESTED);
+	}
+
+	public PersonAttributeType getDeliveryDayAttributeType() {
+		return contextService.getPersonService().getPersonAttributeTypeByName(
+				MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY);
 	}
 
 	public Location getGhanaLocation() {

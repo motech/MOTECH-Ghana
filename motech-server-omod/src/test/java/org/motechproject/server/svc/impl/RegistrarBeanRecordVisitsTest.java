@@ -14,8 +14,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.motechproject.server.model.HIVStatus;
-import org.motechproject.server.model.WhoRegistered;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.BirthOutcomeChild;
@@ -23,9 +21,14 @@ import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.BirthOutcome;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.HIVResult;
+import org.motechproject.ws.HowLearned;
+import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.MediaType;
+import org.motechproject.ws.RegistrantType;
+import org.motechproject.ws.RegistrationMode;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.User;
@@ -90,8 +93,8 @@ public class RegistrarBeanRecordVisitsTest extends
 			RegistrarBean regService = motechService.getRegistrarBean();
 			OpenmrsBean openmrsService = motechService.getOpenmrsBean();
 
-			String mother1Id = "1234575";
-			String mother2Id = "1234581";
+			Integer mother1Id = 1234575;
+			Integer mother2Id = 1234581;
 			Integer child1Id = 1234599;
 			Integer child2Id = 1234608;
 			Integer child3Id = 1234612;
@@ -103,43 +106,44 @@ public class RegistrarBeanRecordVisitsTest extends
 			User nurse = openmrsService.getNurseByCHPSId(nurseId);
 			assertNotNull("Nurse not registered", nurse);
 
-			regService.registerPregnantMother(mother1Id, "Mother1FirstName",
-					"Mother1MiddleName", "Mother1LastName", "Mother1PrefName",
-					date, false, true, "Mother1GHSNum", true, "nhisNumber1",
-					date, "region", "district", "community", "address", 1,
-					date, true, 0, 0, HIVStatus.NEGATIVE, false,
-					"primaryPhone", ContactNumberType.PERSONAL,
-					"secondaryPhone", ContactNumberType.PERSONAL,
-					MediaType.TEXT, MediaType.TEXT, "languageVoice",
-					"languageText", WhoRegistered.CHPS_STAFF, "religion",
-					"occupation");
+			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+					mother1Id, RegistrantType.PREGNANT_MOTHER,
+					"Mother1FirstName", "Mother1MiddleName", "Mother1LastName",
+					"Mother1PrefName", date, false, Gender.FEMALE, true,
+					"nhisNumber1", date, null, "Region", "District",
+					"Subdistrict", "Community", "Address", 1111111111, date,
+					true, 0, 0, true, true, ContactNumberType.PERSONAL,
+					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
+					InterestReason.CURRENTLY_PREGNANT, HowLearned.FRIEND, null);
 
-			Patient mother1 = openmrsService.getPatientByMotechId(mother1Id);
+			Patient mother1 = openmrsService.getPatientByMotechId(mother1Id
+					.toString());
 			assertNotNull("Mother 1 not registered", mother1);
 
-			regService.registerPregnantMother(mother2Id, "Mother2FirstName",
-					"Mother2MiddleName", "Mother2LastName", "Mother2PrefName",
-					date, false, true, "Mother2GHSNum", true, "nhisNumber2",
-					date, "region", "district", "community", "address", 1,
-					date, true, 0, 0, HIVStatus.NEGATIVE, false,
-					"primaryPhone", ContactNumberType.PERSONAL,
-					"secondaryPhone", ContactNumberType.PERSONAL,
-					MediaType.TEXT, MediaType.TEXT, "languageVoice",
-					"languageText", WhoRegistered.CHPS_STAFF, "religion",
-					"occupation");
+			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+					mother2Id, RegistrantType.PREGNANT_MOTHER,
+					"Mother2FirstName", "Mother2MiddleName", "Mother2LastName",
+					"Mother2PrefName", date, false, Gender.FEMALE, true,
+					"nhisNumber2", date, null, "Region", "District",
+					"Subdistrict", "Community", "Address", 1111111111, date,
+					true, 0, 0, true, true, ContactNumberType.PERSONAL,
+					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
+					InterestReason.CURRENTLY_PREGNANT, HowLearned.FRIEND, null);
 
-			Patient mother2 = openmrsService.getPatientByMotechId(mother2Id);
+			Patient mother2 = openmrsService.getPatientByMotechId(mother2Id
+					.toString());
 			assertNotNull("Mother 2 not registered", mother2);
 
-			regService.registerChild(child1Id.toString(), "Child1FirstName",
-					"Child1MiddleName", "Child1LastName", "Child1PrefName",
-					date, false, Gender.FEMALE, mother1Id, true,
-					"Child1GHSNum", true, "nhisNumber3", date, "region",
-					"district", "community", "address", 1, false,
-					"primaryPhone", ContactNumberType.PERSONAL,
-					"secondaryPhone", ContactNumberType.PERSONAL,
-					MediaType.TEXT, MediaType.TEXT, "languageVoice",
-					"languageText", WhoRegistered.CHPS_STAFF);
+			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+					child1Id, RegistrantType.CHILD_UNDER_FIVE,
+					"Child1FirstName", "Child1MiddleName", "Child1LastName",
+					"Child1PrefName", date, false, Gender.FEMALE, true,
+					"nhisNumber3", date, null, "Region", "District",
+					"Subdistrict", "Community", "Address", 1111111111, null,
+					null, null, null, false, false, ContactNumberType.PERSONAL,
+					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
+					InterestReason.FAMILY_FRIEND_PREGNANT, HowLearned.FRIEND,
+					null);
 
 			Patient child1 = openmrsService.getPatientByMotechId(child1Id
 					.toString());

@@ -19,8 +19,9 @@ import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.Gender;
+import org.motechproject.ws.RegistrantType;
+import org.motechproject.ws.RegistrationMode;
 import org.openmrs.Patient;
-import org.openmrs.PersonAddress;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.SkipBaseSetup;
@@ -82,15 +83,18 @@ public class RegistrarBeanExpectedCareTest extends
 			RegistrarBean regService = motechService.getRegistrarBean();
 			OpenmrsBean openmrsService = motechService.getOpenmrsBean();
 
-			Patient mother = new Patient();
-			PersonAddress address = new PersonAddress();
-			mother.addAddress(address);
-
 			Date date = new Date();
-			String childId = "1234631";
-			regService.registerChild(null, mother, childId, date,
-					Gender.FEMALE, "FirstName", "nhis", date);
-			Patient patient = openmrsService.getPatientByMotechId(childId);
+			Integer childId = 1234631;
+			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+					childId, RegistrantType.CHILD_UNDER_FIVE, "childfirstName",
+					"childmiddleName", "childlastName", "childprefName", date,
+					false, Gender.FEMALE, true, "nhis", date, null, null, null,
+					null, null, "Address", 1111111111, null, null, null, null,
+					false, false, null, null, null, null, null, null, null,
+					null);
+
+			Patient patient = openmrsService.getPatientByMotechId(childId
+					.toString());
 
 			Calendar calendar = Calendar.getInstance();
 			calendar.add(Calendar.MONTH, -2);

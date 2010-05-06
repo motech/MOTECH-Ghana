@@ -11,6 +11,7 @@ import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.ws.RegistrantType;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,21 +175,22 @@ public class PersonController {
 		}
 
 		if (!errors.hasErrors()) {
-			registrarBean.registerPerson(person.getMotechId(), person
+			registrarBean.registerPatient(null, Integer.parseInt(person
+					.getMotechId()), RegistrantType.OTHER, person
 					.getFirstName(), person.getMiddleName(), person
 					.getLastName(), person.getPrefName(),
 					person.getBirthDate(), person.getBirthDateEst(), person
-							.getSex(), person.getRegion(),
-					person.getDistrict(), person.getCommunity(), person
-							.getAddress(), person.getClinic(), person
-							.getRegisterPregProgram(), person
-							.getMessagesStartWeek(), person.getPrimaryPhone(),
-					person.getPrimaryPhoneType(), person.getSecondaryPhone(),
-					person.getSecondaryPhoneType(), person.getMediaTypeInfo(),
-					person.getMediaTypeReminder(), person.getLanguageVoice(),
-					person.getLanguageText(), person.getHowLearned(), person
-							.getReligion(), person.getOccupation(), person
-							.getWhyInterested());
+							.getSex(), person.getInsured(), person.getNhis(),
+					person.getNhisExpDate(), null, person.getRegion(), person
+							.getDistrict(), null, person.getCommunity(), person
+							.getAddress(), Integer.parseInt(person
+							.getPrimaryPhone()), person.getDueDate(), person
+							.getDueDateConfirmed(), person.getGravida(), person
+							.getParity(), person.getRegisterPregProgram(),
+					person.getRegisterPregProgram(), person
+							.getPrimaryPhoneType(), person.getMediaTypeInfo(),
+					person.getLanguageText(), null, null, null, null, person
+							.getMessagesStartWeek());
 
 			model.addAttribute("successMsg",
 					"motechmodule.Person.register.success");

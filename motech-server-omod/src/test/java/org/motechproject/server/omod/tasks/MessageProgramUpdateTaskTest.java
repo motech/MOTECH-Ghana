@@ -22,14 +22,18 @@ import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.model.MessageType;
 import org.motechproject.server.model.ScheduledMessage;
-import org.motechproject.server.model.WhyInterested;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
+import org.motechproject.ws.HowLearned;
+import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.MediaType;
+import org.motechproject.ws.RegistrantType;
+import org.motechproject.ws.RegistrationMode;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
@@ -98,19 +102,23 @@ public class MessageProgramUpdateTaskTest extends
 					.getRegistrarBean();
 
 			Date date = new Date();
-			String motechId = "1234665";
-			regService.registerPerson(motechId, "firstName", "middleName",
-					"lastName", "prefName", date, false, Gender.FEMALE,
-					"region", "district", "community", "address", 1, true, 4,
-					"primaryPhone", ContactNumberType.PERSONAL,
-					"secondaryPhone", ContactNumberType.HOUSEHOLD,
-					MediaType.TEXT, MediaType.TEXT, "languageVoice",
-					"languageText", "howLearned", "religion", "occupation",
-					WhyInterested.OUT_HOUSEHOLD_PREGNANCY);
+			Integer motechId = 1234665;
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.YEAR, -30);
+			Date birthdate = calendar.getTime();
+			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+					motechId, RegistrantType.OTHER, "firstName", "middleName",
+					"lastName", "prefName", birthdate, false, Gender.MALE,
+					false, null, null, null, null, null, null, null, "Address",
+					1111111111, null, null, null, null, true, true,
+					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
+					DayOfWeek.MONDAY, date,
+					InterestReason.KNOW_MORE_PREGNANCY_CHILDBIRTH,
+					HowLearned.FRIEND, 4);
 
 			List<Patient> matchingPatients = regService.getPatients(
 					"firstName", "lastName", "prefName", date, "community",
-					"primaryPhone", null, motechId);
+					"primaryPhone", "nhis", motechId.toString());
 			assertEquals(1, matchingPatients.size());
 			Patient patient = matchingPatients.get(0);
 			patientId = patient.getPatientId();
@@ -118,9 +126,13 @@ public class MessageProgramUpdateTaskTest extends
 			List<MessageProgramEnrollment> enrollments = Context.getService(
 					MotechService.class).getActiveMessageProgramEnrollments(
 					patientId, null, null);
-			assertEquals(1, enrollments.size());
-			MessageProgramEnrollment enrollment = enrollments.get(0);
-			assertNotNull("Obs is not set on enrollment", enrollment.getObsId());
+			assertEquals(2, enrollments.size());
+			for (MessageProgramEnrollment enrollment : enrollments) {
+				if (enrollment.getProgram().equals(
+						"Weekly Info Pregnancy Message Program"))
+					assertNotNull("Obs is not set on enrollment", enrollment
+							.getObsId());
+			}
 
 			// Add needed message definitions for pregnancy program
 			Context.getService(MotechService.class).saveMessageDefinition(
@@ -184,12 +196,19 @@ public class MessageProgramUpdateTaskTest extends
 			List<MessageProgramEnrollment> enrollments = Context.getService(
 					MotechService.class).getActiveMessageProgramEnrollments(
 					patient.getPatientId(), null, null);
-			assertEquals(1, enrollments.size());
-			MessageProgramEnrollment enrollment = enrollments.get(0);
+			assertEquals(2, enrollments.size());
+			MessageProgramEnrollment infoEnrollment = null;
+			for (MessageProgramEnrollment enrollment : enrollments) {
+				if (enrollment.getProgram().equals(
+						"Weekly Info Pregnancy Message Program"))
+					infoEnrollment = enrollment;
+			}
+			assertNotNull("Missing pregnancy information program enrollment",
+					infoEnrollment);
 
-			enrollment.setObsId(refDateObs.getObsId());
+			infoEnrollment.setObsId(refDateObs.getObsId());
 			Context.getService(MotechService.class)
-					.saveMessageProgramEnrollment(enrollment);
+					.saveMessageProgramEnrollment(infoEnrollment);
 
 		} finally {
 			Context.closeSession();
@@ -204,10 +223,6 @@ public class MessageProgramUpdateTaskTest extends
 					MotechService.class).getAllScheduledMessages();
 
 			assertEquals(2, scheduledMessages.size());
-
-			for (ScheduledMessage scheduledMessage : scheduledMessages) {
-				log.debug(scheduledMessage.getScheduledFor());
-			}
 
 			// Make sure new message is scheduled and previous message is
 			// cancelled

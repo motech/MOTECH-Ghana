@@ -310,13 +310,11 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public List<Patient> getPatients(String firstName, String lastName,
 			String preferredName, Date birthDate, String community,
-			String phoneNumber, PersonAttributeType primaryPhoneNumberAttrType,
-			PersonAttributeType secondaryPhoneNumberAttrType,
+			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
 			String patientId, PatientIdentifierType patientIdType) {
 		return motechDAO.getPatients(firstName, lastName, preferredName,
-				birthDate, community, phoneNumber, primaryPhoneNumberAttrType,
-				secondaryPhoneNumberAttrType, nhisNumber, nhisAttrType,
-				patientId, patientIdType);
+				birthDate, community, phoneNumber, phoneNumberAttrType,
+				nhisNumber, nhisAttrType, patientId, patientIdType);
 	}
 }
