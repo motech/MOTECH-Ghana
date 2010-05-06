@@ -3,11 +3,11 @@
  
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-	<appender name="CONSOLE" class="org.apache.log4j.FileAppender">
-		<param name="File" value="${project.build.directory}/test-openmrs.log" />
+	<appender name="LOGFILE" class="org.apache.log4j.FileAppender">
+		<param name="File" value="${project.build.directory}/test-motech-server.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
-				value="%p - %C{1}.%M(%L) |%d{ISO8601}| %m%n" />
+				value="%d %-5p [%c] %m%n" /> 
 		</layout>
 	</appender>
 	
@@ -29,7 +29,7 @@
 	
 	<root>
 		<level value="ERROR" />
-		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="LOGFILE" />
 	</root>
 
 </log4j:configuration>
