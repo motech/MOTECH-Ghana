@@ -2173,7 +2173,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	private Date determineUserPreferredMessageDate(Integer recipientId,
 			Date messageDate) {
-		return determineMessageStartDate(messageDate);
+		PersonService personService = contextService.getPersonService();
+		Person recipient = personService.getPerson(recipientId);
+
+		return determineMessageStartDate(recipient, messageDate);
 	}
 
 	private void createScheduledMessage(Integer recipientId,
@@ -2650,7 +2653,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		dailyNurseProps.put(MotechConstants.TASK_PROPERTY_CARE_GROUPS,
 				dailyGroupsProperty);
 		dailyNurseProps.put(MotechConstants.TASK_PROPERTY_DELIVERY_TIME_OFFSET,
-				new Long(86400).toString());
+				new Long(36000).toString());
 		createTask(MotechConstants.TASK_DAILY_NURSE_CARE_MESSAGING,
 				"Task to send out nurse SMS care messages for next day",
 				calendar.getTime(), new Long(86400), Boolean.FALSE,
@@ -2666,7 +2669,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				weeklyGroupsProperty);
 		weeklyNurseProps.put(
 				MotechConstants.TASK_PROPERTY_DELIVERY_TIME_OFFSET, new Long(
-						86400).toString());
+						36000).toString());
 		createTask(MotechConstants.TASK_WEEKLY_NURSE_CARE_MESSAGING,
 				"Task to send out nurse SMS care messages for week", calendar
 						.getTime(), new Long(604800), Boolean.FALSE,
@@ -3061,9 +3064,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			}
 			// All nurse messages sent as SMS
 			MediaType mediaType = MediaType.TEXT;
-			// Schedule delivery time range between earliest and latest
-			Date messageStartDate = determineMessageStartDate(deliveryDate);
-			Date messageEndDate = determineMessageEndDate(deliveryDate);
 			// No corresponding message stored for nurse care messages
 			String messageId = null;
 
@@ -3079,8 +3079,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 						.defaultedToWebServiceCares(defaultedEncounters,
 								defaultedObs);
 				sendNurseDefaultedCareMessage(messageId, phoneNumber,
-						mediaType, messageStartDate, messageEndDate,
-						defaultedCares);
+						mediaType, deliveryDate, null, defaultedCares);
 			}
 
 			if (sendUpcoming) {
@@ -3092,8 +3091,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 							.upcomingEncounterToWebServicePatient(upcomingEncounter);
 
 					sendNurseUpcomingCareMessage(messageId, phoneNumber,
-							mediaType, messageStartDate, messageEndDate,
-							patient);
+							mediaType, deliveryDate, null, patient);
 				}
 				List<ExpectedObs> upcomingObs = getUpcomingExpectedObs(
 						careGroups, startDate, endDate);
@@ -3102,8 +3100,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 							.upcomingObsToWebServicePatient(upcomingObservation);
 
 					sendNurseUpcomingCareMessage(messageId, phoneNumber,
-							mediaType, messageStartDate, messageEndDate,
-							patient);
+							mediaType, deliveryDate, null, patient);
 				}
 			}
 		}
@@ -3171,7 +3168,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 			if (!sendImmediate) {
 				messageStartDate = message.getAttemptDate();
-				messageEndDate = determineMessageEndDate(messageStartDate);
 			}
 
 			Patient patient = patientService.getPatient(recipientId);
@@ -3529,23 +3525,101 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return null;
 	}
 
-	public Date determineMessageStartDate(Date messageDate) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(messageDate);
-		// TODO: Use day of week and time of day preferences
-		calendar.set(Calendar.HOUR_OF_DAY, 9);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		return calendar.getTime();
+	public DayOfWeek getPersonMessageDayOfWeek(Person person) {
+		PersonAttribute dayAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY);
+		DayOfWeek day = null;
+		if (dayAttr != null && dayAttr.getValue() != null) {
+			try {
+				day = DayOfWeek.valueOf(dayAttr.getValue());
+			} catch (Exception e) {
+				log.error("Invalid Patient Day of Week Attribute: "
+						+ dayAttr.getValue(), e);
+			}
+		} else {
+			log.debug("No day of week found for Person id: "
+					+ person.getPersonId());
+		}
+		return day;
 	}
 
-	public Date determineMessageEndDate(Date startDate) {
+	public Date getPersonMessageTimeOfDay(Person person) {
+		PersonAttribute timeAttr = person
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
+		Date time = null;
+		if (timeAttr != null && timeAttr.getValue() != null) {
+			SimpleDateFormat timeFormat = new SimpleDateFormat(
+					MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME);
+			try {
+				time = timeFormat.parse(timeAttr.getValue());
+			} catch (Exception e) {
+				log.error("Invalid Patient Time of Day Attribute: "
+						+ timeAttr.getValue(), e);
+			}
+		} else {
+			log.debug("No time of day found for Person id: "
+					+ person.getPersonId());
+		}
+		return time;
+	}
+
+	public DayOfWeek getDefaultPatientDayOfWeek() {
+		String dayProperty = getPatientDayOfWeekProperty();
+		DayOfWeek day = null;
+		try {
+			day = DayOfWeek.valueOf(dayProperty);
+		} catch (Exception e) {
+			log
+					.error("Invalid Patient Day of Week Property: "
+							+ dayProperty, e);
+		}
+		return day;
+	}
+
+	public Date getDefaultPatientTimeOfDay() {
+		String timeProperty = getPatientTimeOfDayProperty();
+		SimpleDateFormat timeFormat = new SimpleDateFormat(
+				MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME);
+		Date time = null;
+		try {
+			time = timeFormat.parse(timeProperty);
+		} catch (Exception e) {
+			log.error("Invalid Patient Time of Day Property: " + timeProperty,
+					e);
+		}
+		return time;
+	}
+
+	public Date determineMessageStartDate(Person person, Date messageDate) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(startDate);
-		// TODO: Use day of week and time of day preferences
-		calendar.set(Calendar.HOUR_OF_DAY, 21);
-		calendar.set(Calendar.MINUTE, 0);
+		Date currentDate = calendar.getTime();
+		calendar.setTime(messageDate);
+
+		Date time = getPersonMessageTimeOfDay(person);
+		if (time == null) {
+			time = getDefaultPatientTimeOfDay();
+		}
+		if (time != null) {
+			Calendar timeCalendar = Calendar.getInstance();
+			timeCalendar.setTime(time);
+			calendar.set(Calendar.HOUR_OF_DAY, timeCalendar
+					.get(Calendar.HOUR_OF_DAY));
+			calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+		}
 		calendar.set(Calendar.SECOND, 0);
+
+		DayOfWeek day = getPersonMessageDayOfWeek(person);
+		if (day == null) {
+			day = getDefaultPatientDayOfWeek();
+		}
+		if (day != null) {
+			calendar.set(Calendar.DAY_OF_WEEK, day.getCalendarValue());
+			if (calendar.getTime().before(currentDate)) {
+				// Add a week if date in past after setting the day of week
+				calendar.add(Calendar.DATE, 7);
+			}
+		}
+
 		return calendar.getTime();
 	}
 
@@ -4072,6 +4146,16 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public String getPatientCareRemindersProperty() {
 		return contextService.getAdministrationService().getGlobalProperty(
 				MotechConstants.GLOBAL_PROPERTY_CARE_REMINDERS);
+	}
+
+	public String getPatientDayOfWeekProperty() {
+		return contextService.getAdministrationService().getGlobalProperty(
+				MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK);
+	}
+
+	public String getPatientTimeOfDayProperty() {
+		return contextService.getAdministrationService().getGlobalProperty(
+				MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY);
 	}
 	/* Factored out methods end */
 

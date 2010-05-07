@@ -118,7 +118,19 @@
 		<defaultValue>3</defaultValue>
 		<description>Maximum number of reminders for a specific care to send to a patient</description>
 	</globalProperty>
+
+	<globalProperty>
+		<property>motechmodule.patient_message_delivery_day_of_week</property>
+		<defaultValue>MONDAY</defaultValue>
+		<description>Default day of week to send messages to a patient</description>
+	</globalProperty>
 	
+	<globalProperty>
+		<property>motechmodule.patient_message_delivery_time_of_day</property>
+		<defaultValue>09:00</defaultValue>
+		<description>Default time of day to send messages to a patient</description>
+	</globalProperty>
+		
 	<dwr>
 		<allow>
 			<create creator="new" javascript="DWRMotechService">
