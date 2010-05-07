@@ -392,7 +392,7 @@ public class RegistrarWebService implements RegistrarService {
 	}
 
 	@WebMethod
-	public void registerPatient(
+	public Patient registerPatient(
 			@WebParam(name = "staffId") Integer staffId,
 			@WebParam(name = "facilityId") Integer facilityId,
 			@WebParam(name = "date") Date date,
@@ -410,10 +410,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "nhis") String nhis,
 			@WebParam(name = "nhisExpires") Date nhisExpires,
 			@WebParam(name = "motherMotechId") Integer motherMotechId,
-			@WebParam(name = "region") String region,
-			@WebParam(name = "district") String district,
-			@WebParam(name = "subDistrict") String subDistrict,
-			@WebParam(name = "community") String community,
+			@WebParam(name = "community") Integer community,
 			@WebParam(name = "address") String address,
 			@WebParam(name = "phoneNumber") Integer phoneNumber,
 			@WebParam(name = "expDeliveryDate") Date expDeliveryDate,
@@ -478,14 +475,16 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		registrarBean.registerPatient(nurse, facilityId, date,
-				registrationMode, motechId, registrantType, firstName,
-				middleName, lastName, preferredName, dateOfBirth,
+		org.openmrs.Patient patient = registrarBean.registerPatient(nurse,
+				facilityId, date, registrationMode, motechId, registrantType,
+				firstName, middleName, lastName, preferredName, dateOfBirth,
 				estimatedBirthDate, sex, insured, nhis, nhisExpires, mother,
-				region, district, subDistrict, community, address, phoneNumber,
-				expDeliveryDate, deliveryDateConfirmed, gravida, parity,
-				enroll, consent, ownership, format, language, dayOfWeek,
-				timeOfDay, reason, howLearned, messagesStartWeek);
+				community, address, phoneNumber, expDeliveryDate,
+				deliveryDateConfirmed, gravida, parity, enroll, consent,
+				ownership, format, language, dayOfWeek, timeOfDay, reason,
+				howLearned, messagesStartWeek);
+
+		return modelConverter.patientToWebService(patient, true);
 	}
 
 	@WebMethod

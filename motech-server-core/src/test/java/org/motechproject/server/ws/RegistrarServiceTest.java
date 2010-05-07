@@ -828,10 +828,10 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3, motherMotechId = 4;
 		String firstName = "First", middleName = "Middle", lastName = "Last", prefName = "Pref";
 		String nhis = "NHIS", address = "Address", language = "Language";
-		String region = "Region", district = "District", subdistrict = "SubDistrict", community = "Community";
 		Gender gender = Gender.FEMALE;
 		Boolean estBirthDate = false, insured = true, delivDateConf = true, enroll = true, consent = true;
 		Integer gravida = 0, parity = 0, messageWeek = 5, phone = 15555555;
+		Integer community = 11111;
 		Date date = new Date();
 		RegistrationMode mode = RegistrationMode.USE_PREPRINTED_ID;
 		RegistrantType type = RegistrantType.CHILD_UNDER_FIVE;
@@ -845,29 +845,37 @@ public class RegistrarServiceTest {
 		org.openmrs.Patient patient = null;
 		org.openmrs.Patient mother = new org.openmrs.Patient(3);
 
+		org.openmrs.Patient createdPatient = new org.openmrs.Patient(4);
+
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
 		expect(openmrsBean.getPatientByMotechId(motherMotechId.toString()))
 				.andReturn(mother);
-		registrarBean.registerPatient(nurse, facilityId, date, mode, motechId,
-				type, firstName, middleName, lastName, prefName, date,
-				estBirthDate, gender, insured, nhis, date, mother, region,
-				district, subdistrict, community, address, phone, date,
-				delivDateConf, gravida, parity, enroll, consent, phoneType,
-				format, language, day, date, reason, how, messageWeek);
+		expect(
+				registrarBean.registerPatient(nurse, facilityId, date, mode,
+						motechId, type, firstName, middleName, lastName,
+						prefName, date, estBirthDate, gender, insured, nhis,
+						date, mother, community, address, phone, date,
+						delivDateConf, gravida, parity, enroll, consent,
+						phoneType, format, language, day, date, reason, how,
+						messageWeek)).andReturn(createdPatient);
+		expect(modelConverter.patientToWebService(createdPatient, true))
+				.andReturn(new Patient());
 
-		replay(registrarBean, openmrsBean);
+		replay(registrarBean, openmrsBean, modelConverter);
 
-		regWs.registerPatient(staffId, facilityId, date, mode, motechId, type,
-				firstName, middleName, lastName, prefName, date, estBirthDate,
-				gender, insured, nhis, date, motherMotechId, region, district,
-				subdistrict, community, address, phone, date, delivDateConf,
+		Patient wsPatient = regWs.registerPatient(staffId, facilityId, date,
+				mode, motechId, type, firstName, middleName, lastName,
+				prefName, date, estBirthDate, gender, insured, nhis, date,
+				motherMotechId, community, address, phone, date, delivDateConf,
 				gravida, parity, enroll, consent, phoneType, format, language,
 				day, date, reason, how, messageWeek);
 
-		verify(registrarBean, openmrsBean);
+		verify(registrarBean, openmrsBean, modelConverter);
+
+		assertNotNull("Patient is null", wsPatient);
 	}
 
 	@Test
@@ -875,10 +883,10 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3, motherMotechId = 4;
 		String firstName = "First", middleName = "Middle", lastName = "Last", prefName = "Pref";
 		String nhis = "NHIS", address = "Address", language = "Language";
-		String region = "Region", district = "District", subdistrict = "SubDistrict", community = "Community";
 		Gender gender = Gender.FEMALE;
 		Boolean estBirthDate = false, insured = true, delivDateConf = true, enroll = true, consent = true;
 		Integer gravida = 0, parity = 0, messageWeek = 5, phone = 15555555;
+		Integer community = 11111;
 		Date date = new Date();
 		RegistrationMode mode = RegistrationMode.USE_PREPRINTED_ID;
 		RegistrantType type = RegistrantType.CHILD_UNDER_FIVE;
@@ -909,10 +917,9 @@ public class RegistrarServiceTest {
 			regWs.registerPatient(staffId, facilityId, date, mode, motechId,
 					type, firstName, middleName, lastName, prefName,
 					childBirthDate, estBirthDate, gender, insured, nhis, date,
-					motherMotechId, region, district, subdistrict, community,
-					address, phone, date, delivDateConf, gravida, parity,
-					enroll, consent, phoneType, format, language, day, date,
-					reason, how, messageWeek);
+					motherMotechId, community, address, phone, date,
+					delivDateConf, gravida, parity, enroll, consent, phoneType,
+					format, language, day, date, reason, how, messageWeek);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Register Patient request", e.getMessage());

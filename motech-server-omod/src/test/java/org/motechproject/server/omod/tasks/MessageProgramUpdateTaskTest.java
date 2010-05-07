@@ -109,10 +109,9 @@ public class MessageProgramUpdateTaskTest extends
 			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
 					motechId, RegistrantType.OTHER, "firstName", "middleName",
 					"lastName", "prefName", birthdate, false, Gender.MALE,
-					false, null, null, null, null, null, null, null, "Address",
-					1111111111, null, null, null, null, true, true,
-					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
-					DayOfWeek.MONDAY, date,
+					false, null, null, null, null, "Address", 1111111111, null,
+					null, null, null, true, true, ContactNumberType.PERSONAL,
+					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
 					InterestReason.KNOW_MORE_PREGNANCY_CHILDBIRTH,
 					HowLearned.FRIEND, 4);
 

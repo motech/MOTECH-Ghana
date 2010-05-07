@@ -52,15 +52,14 @@ public interface RegistrarBean {
 			Integer clinicId);
 
 	@RunAsAdminUser
-	public void registerPatient(
+	public Patient registerPatient(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Integer facilityId, Date date, RegistrationMode registrationMode,
 			Integer motechId, RegistrantType registrantType, String firstName,
 			String middleName, String lastName, String preferredName,
 			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
 			Boolean insured, String nhis, Date nhisExpires, Patient mother,
-			String region, String district, String subDistrict,
-			String community, String address, Integer phoneNumber,
+			Integer community, String address, Integer phoneNumber,
 			Date expDeliveryDate, Boolean deliveryDateConfirmed,
 			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, MediaType format, String language,
@@ -72,8 +71,7 @@ public interface RegistrarBean {
 			String middleName, String lastName, String preferredName,
 			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
 			Boolean insured, String nhis, Date nhisExpires, Patient mother,
-			String region, String district, String subDistrict,
-			String community, String address, Integer phoneNumber,
+			Integer community, String address, Integer phoneNumber,
 			Date expDeliveryDate, Boolean deliveryDateConfirmed,
 			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, MediaType format, String language,

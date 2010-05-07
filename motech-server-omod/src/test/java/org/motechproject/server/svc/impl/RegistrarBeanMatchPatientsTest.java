@@ -88,7 +88,6 @@ public class RegistrarBeanMatchPatientsTest extends
 			String middleName = "MiddleName";
 			String lastName = "LastName";
 			String prefName = "PrefName";
-			String community = "Community";
 			Integer phoneNumber = 1111111111;
 			String nhisNumber = "NHISNumber";
 			Date date = new Date();
@@ -96,18 +95,17 @@ public class RegistrarBeanMatchPatientsTest extends
 			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
 					motechId, RegistrantType.PREGNANT_MOTHER, firstName,
 					middleName, lastName, prefName, date, false, Gender.FEMALE,
-					true, nhisNumber, date, null, null, null, null, community,
-					"Address", phoneNumber, date, true, 0, 0, true, true,
-					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
-					DayOfWeek.MONDAY, date, InterestReason.CURRENTLY_PREGNANT,
-					HowLearned.FRIEND, null);
+					true, nhisNumber, date, null, null, "Address", phoneNumber,
+					date, true, 0, 0, true, true, ContactNumberType.PERSONAL,
+					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
+					InterestReason.CURRENTLY_PREGNANT, HowLearned.FRIEND, null);
 
 			assertEquals(3, Context.getPatientService().getAllPatients().size());
 
 			// Match on all
 			List<Patient> matches = regService.getPatients(firstName, lastName,
-					prefName, date, community, phoneNumber.toString(),
-					nhisNumber, motechId.toString());
+					prefName, date, null, phoneNumber.toString(), nhisNumber,
+					motechId.toString());
 			assertEquals(1, matches.size());
 
 			// Match on NHIS number
@@ -120,10 +118,7 @@ public class RegistrarBeanMatchPatientsTest extends
 					null, null, null, null);
 			assertEquals(1, matches.size());
 
-			// Match on first name, last name, and community
-			matches = regService.getPatients(firstName, lastName, null, null,
-					community, null, null, null);
-			assertEquals(1, matches.size());
+			// TODO: Match on first name, last name, and community
 
 			// Match on first name, last name, and phone
 			matches = regService.getPatients(firstName, lastName, null, null,
@@ -145,10 +140,7 @@ public class RegistrarBeanMatchPatientsTest extends
 					null, date, null, null, null, null);
 			assertEquals(0, matches.size());
 
-			// No match on first name, community, and different last name
-			matches = regService.getPatients(firstName, "DifferentLastName",
-					null, null, community, null, null, null);
-			assertEquals(0, matches.size());
+			// TODO: No match on first name, community, and different last name
 
 			// No match on first name, last name, and different phone number
 			matches = regService.getPatients(firstName, lastName, null, null,
@@ -168,8 +160,8 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// No match for Person on firstName, lastName, birthDate
 			matches = regService.getPatients(firstName, lastName, prefName,
-					date, community, phoneNumber.toString(), nhisNumber,
-					motechId.toString());
+					date, null, phoneNumber.toString(), nhisNumber, motechId
+							.toString());
 			assertEquals(1, matches.size());
 
 		} finally {

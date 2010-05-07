@@ -181,13 +181,12 @@ public class PersonController {
 					.getLastName(), person.getPrefName(),
 					person.getBirthDate(), person.getBirthDateEst(), person
 							.getSex(), person.getInsured(), person.getNhis(),
-					person.getNhisExpDate(), null, person.getRegion(), person
-							.getDistrict(), null, person.getCommunity(), person
-							.getAddress(), Integer.parseInt(person
-							.getPrimaryPhone()), person.getDueDate(), person
-							.getDueDateConfirmed(), person.getGravida(), person
-							.getParity(), person.getRegisterPregProgram(),
-					person.getRegisterPregProgram(), person
+					person.getNhisExpDate(), null, null, person.getAddress(),
+					Integer.parseInt(person.getPrimaryPhone()), person
+							.getDueDate(), person.getDueDateConfirmed(), person
+							.getGravida(), person.getParity(), person
+							.getRegisterPregProgram(), person
+							.getRegisterPregProgram(), person
 							.getPrimaryPhoneType(), person.getMediaTypeInfo(),
 					person.getLanguageText(), null, null, null, null, person
 							.getMessagesStartWeek());

@@ -536,12 +536,12 @@ public class RegistrarBeanTest extends TestCase {
 		Integer motechId = 123456;
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String nhis = "456DEF";
-		String region = "Region", district = "District", subdistrict = "Subdistrict", community = "Community", address = "Address";
+		String address = "Address";
 		Integer phoneNumber = 2075555555;
 		String language = "Language";
 		Date date = new Date();
 		Boolean birthDateEst = true, insured = true, dueDateConfirmed = true, enroll = true, consent = true;
-		Integer gravida = 0, parity = 1;
+		Integer gravida = 0, parity = 1, community = 123;
 		Gender gender = Gender.FEMALE;
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType mediaType = MediaType.TEXT;
@@ -589,6 +589,10 @@ public class RegistrarBeanTest extends TestCase {
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation);
 
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_COMMUNITY))
+				.andReturn(communityAttributeType);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
@@ -692,10 +696,9 @@ public class RegistrarBeanTest extends TestCase {
 		regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
 				RegistrantType.PREGNANT_MOTHER, firstName, middleName,
 				lastName, prefName, date, birthDateEst, gender, insured, nhis,
-				date, null, region, district, subdistrict, community, address,
-				phoneNumber, date, dueDateConfirmed, gravida, parity, enroll,
-				consent, phoneType, mediaType, language, dayOfWeek, date,
-				reason, howLearned, null);
+				date, null, community, address, phoneNumber, date,
+				dueDateConfirmed, gravida, parity, enroll, consent, phoneType,
+				mediaType, language, dayOfWeek, date, reason, howLearned, null);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
@@ -724,8 +727,8 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
 		assertEquals(GenderTypeConverter.toOpenMRSString(Gender.FEMALE),
 				capturedPatient.getGender());
-		assertEquals(community, capturedPatient.getPersonAddress()
-				.getCityVillage());
+		assertEquals(community.toString(), capturedPatient.getAttribute(
+				communityAttributeType).getValue());
 		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
 		assertEquals(insured, Boolean.valueOf(capturedPatient.getAttribute(
 				insuredAttributeType).getValue()));
@@ -842,12 +845,12 @@ public class RegistrarBeanTest extends TestCase {
 		Integer motechId = 123456;
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String nhis = "456DEF";
-		String region = "Region", district = "District", subdistrict = "Subdistrict", community = "Community", address = "Address";
+		String address = "Address";
 		Integer phoneNumber = 2075555555;
 		String language = "Language";
 		Date date = new Date();
 		Boolean birthDateEst = true, insured = true, dueDateConfirmed = true, enroll = true, consent = true;
-		Integer gravida = 0, parity = 1;
+		Integer gravida = 0, parity = 1, community = 123;
 		Gender gender = Gender.FEMALE;
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType mediaType = MediaType.TEXT;
@@ -889,6 +892,10 @@ public class RegistrarBeanTest extends TestCase {
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation);
 
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_COMMUNITY))
+				.andReturn(communityAttributeType);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
@@ -968,10 +975,9 @@ public class RegistrarBeanTest extends TestCase {
 		regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
 				RegistrantType.CHILD_UNDER_FIVE, firstName, middleName,
 				lastName, prefName, date, birthDateEst, gender, insured, nhis,
-				date, mother, region, district, subdistrict, community,
-				address, phoneNumber, date, dueDateConfirmed, gravida, parity,
-				enroll, consent, phoneType, mediaType, language, dayOfWeek,
-				date, reason, howLearned, null);
+				date, mother, community, address, phoneNumber, date,
+				dueDateConfirmed, gravida, parity, enroll, consent, phoneType,
+				mediaType, language, dayOfWeek, date, reason, howLearned, null);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
@@ -1000,8 +1006,8 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
 		assertEquals(GenderTypeConverter.toOpenMRSString(gender),
 				capturedPatient.getGender());
-		assertEquals(community, capturedPatient.getPersonAddress()
-				.getCityVillage());
+		assertEquals(community.toString(), capturedPatient.getAttribute(
+				communityAttributeType).getValue());
 		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
 		assertEquals(insured, Boolean.valueOf(capturedPatient.getAttribute(
 				insuredAttributeType).getValue()));
@@ -1074,12 +1080,12 @@ public class RegistrarBeanTest extends TestCase {
 		Integer motechId = 123456;
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String nhis = "456DEF";
-		String region = "Region", district = "District", subdistrict = "Subdistrict", community = "Community", address = "Address";
+		String address = "Address";
 		Integer phoneNumber = 2075555555;
 		String language = "Language";
 		Date date = new Date();
 		Boolean birthDateEst = true, insured = true, dueDateConfirmed = true, enroll = true, consent = true;
-		Integer gravida = 0, parity = 1;
+		Integer gravida = 0, parity = 1, community = 123;
 		Gender gender = Gender.FEMALE;
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType mediaType = MediaType.TEXT;
@@ -1122,6 +1128,11 @@ public class RegistrarBeanTest extends TestCase {
 				patientService
 						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
 				.andReturn(motechIdType).atLeastOnce();
+
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_COMMUNITY))
+				.andReturn(communityAttributeType);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
@@ -1203,10 +1214,10 @@ public class RegistrarBeanTest extends TestCase {
 		regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
 				RegistrantType.OTHER, firstName, middleName, lastName,
 				prefName, date, birthDateEst, gender, insured, nhis, date,
-				null, region, district, subdistrict, community, address,
-				phoneNumber, date, dueDateConfirmed, gravida, parity, enroll,
-				consent, phoneType, mediaType, language, dayOfWeek, date,
-				reason, howLearned, messagesStartWeek);
+				null, community, address, phoneNumber, date, dueDateConfirmed,
+				gravida, parity, enroll, consent, phoneType, mediaType,
+				language, dayOfWeek, date, reason, howLearned,
+				messagesStartWeek);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
@@ -1235,8 +1246,8 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
 		assertEquals(GenderTypeConverter.toOpenMRSString(Gender.FEMALE),
 				capturedPatient.getGender());
-		assertEquals(community, capturedPatient.getPersonAddress()
-				.getCityVillage());
+		assertEquals(community.toString(), capturedPatient.getAttribute(
+				communityAttributeType).getValue());
 		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
 		assertEquals(phoneNumber.toString(), capturedPatient.getAttribute(
 				phoneAttributeType).getValue());

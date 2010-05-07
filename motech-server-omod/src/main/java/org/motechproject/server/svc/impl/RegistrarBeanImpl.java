@@ -194,13 +194,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void registerPatient(User nurse, Integer facilityId, Date date,
+	public Patient registerPatient(User nurse, Integer facilityId, Date date,
 			RegistrationMode registrationMode, Integer motechId,
 			RegistrantType registrantType, String firstName, String middleName,
 			String lastName, String preferredName, Date dateOfBirth,
 			Boolean estimatedBirthDate, Gender sex, Boolean insured,
-			String nhis, Date nhisExpires, Patient mother, String region,
-			String district, String subDistrict, String community,
+			String nhis, Date nhisExpires, Patient mother, Integer community,
 			String address, Integer phoneNumber, Date expDeliveryDate,
 			Boolean deliveryDateConfirmed, Integer gravida, Integer parity,
 			Boolean enroll, Boolean consent, ContactNumberType ownership,
@@ -208,13 +207,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Date timeOfDay, InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek) {
 
-		registerPatient(registrationMode, motechId, registrantType, firstName,
-				middleName, lastName, preferredName, dateOfBirth,
+		return registerPatient(registrationMode, motechId, registrantType,
+				firstName, middleName, lastName, preferredName, dateOfBirth,
 				estimatedBirthDate, sex, insured, nhis, nhisExpires, mother,
-				region, district, subDistrict, community, address, phoneNumber,
-				expDeliveryDate, deliveryDateConfirmed, gravida, parity,
-				enroll, consent, ownership, format, language, dayOfWeek,
-				timeOfDay, reason, howLearned, messagesStartWeek);
+				community, address, phoneNumber, expDeliveryDate,
+				deliveryDateConfirmed, gravida, parity, enroll, consent,
+				ownership, format, language, dayOfWeek, timeOfDay, reason,
+				howLearned, messagesStartWeek);
 	}
 
 	@Transactional
@@ -223,8 +222,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			String middleName, String lastName, String preferredName,
 			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
 			Boolean insured, String nhis, Date nhisExpires, Patient mother,
-			String region, String district, String subDistrict,
-			String community, String address, Integer phoneNumber,
+			Integer community, String address, Integer phoneNumber,
 			Date expDeliveryDate, Boolean deliveryDateConfirmed,
 			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, MediaType format, String language,
@@ -237,9 +235,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// TODO: Handle storing community and hierarchy
 		Patient patient = createPatient(motechId, firstName, middleName,
 				lastName, preferredName, dateOfBirth, estimatedBirthDate, sex,
-				insured, nhis, nhisExpires, community, null, address,
-				phoneNumber, ownership, format, language, dayOfWeek, timeOfDay,
-				howLearned, reason);
+				insured, nhis, nhisExpires, community, address, phoneNumber,
+				ownership, format, language, dayOfWeek, timeOfDay, howLearned,
+				reason);
 
 		patient = patientService.savePatient(patient);
 
@@ -324,7 +322,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// TODO: Update demo patient registration
 		Patient patient = createPatient(Integer.parseInt(motechId), firstName,
 				middleName, lastName, prefName, birthDate, birthDateEst, sex,
-				insured, nhis, nhisExpDate, community, null, address, Integer
+				insured, nhis, nhisExpDate, null, address, Integer
 						.parseInt(primaryPhone), primaryPhoneType,
 				mediaTypeInfo, languageText, null, null, null, null);
 
@@ -347,11 +345,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	private Patient createPatient(Integer motechId, String firstName,
 			String middleName, String lastName, String prefName,
 			Date birthDate, Boolean birthDateEst, Gender sex, Boolean insured,
-			String nhis, Date nhisExpDate, String communityName,
-			Integer communityId, String address, Integer phoneNumber,
-			ContactNumberType phoneType, MediaType mediaType, String language,
-			DayOfWeek dayOfWeek, Date timeOfDay, HowLearned howLearned,
-			InterestReason whyInterested) {
+			String nhis, Date nhisExpDate, Integer community, String address,
+			Integer phoneNumber, ContactNumberType phoneType,
+			MediaType mediaType, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, HowLearned howLearned, InterestReason whyInterested) {
 
 		Patient patient = new Patient();
 
@@ -382,12 +379,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		if (address != null) {
 			PersonAddress personAddress = new PersonAddress();
 			personAddress.setAddress1(address);
-			// TODO: Remove storing community as String value
-			personAddress.setCityVillage(communityName);
 			patient.addAddress(personAddress);
 		}
 
-		setPatientAttributes(patient, communityId, phoneNumber, phoneType,
+		setPatientAttributes(patient, community, phoneNumber, phoneType,
 				mediaType, language, dayOfWeek, timeOfDay, howLearned,
 				whyInterested, insured, nhis, nhisExpDate);
 
@@ -1019,7 +1014,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 							.getFirstName(), null, null, null, date, false,
 					childOutcome.getSex(), null, null, null, patient, null,
 					null, null, null, null, null, null, null, null, null, null,
-					null, null, null, null, null, null, null, null, null);
+					null, null, null, null, null, null);
 
 			Integer opvDose = null;
 			if (Boolean.TRUE.equals(childOutcome.getOpv())) {
