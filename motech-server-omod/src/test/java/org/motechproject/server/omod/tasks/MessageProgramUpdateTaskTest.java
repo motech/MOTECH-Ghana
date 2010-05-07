@@ -113,7 +113,7 @@ public class MessageProgramUpdateTaskTest extends
 					null, null, null, true, true, ContactNumberType.PERSONAL,
 					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
 					InterestReason.KNOW_MORE_PREGNANCY_CHILDBIRTH,
-					HowLearned.FRIEND, 4);
+					HowLearned.FRIEND, 5);
 
 			List<Patient> matchingPatients = regService.getPatients(
 					"firstName", "lastName", "prefName", date, "community",
@@ -135,16 +135,13 @@ public class MessageProgramUpdateTaskTest extends
 
 			// Add needed message definitions for pregnancy program
 			Context.getService(MotechService.class).saveMessageDefinition(
-					new MessageDefinition("pregnancy.week.3", 16L,
-							MessageType.INFORMATIONAL));
-			Context.getService(MotechService.class).saveMessageDefinition(
-					new MessageDefinition("pregnancy.week.4", 17L,
-							MessageType.INFORMATIONAL));
-			Context.getService(MotechService.class).saveMessageDefinition(
 					new MessageDefinition("pregnancy.week.5", 18L,
 							MessageType.INFORMATIONAL));
 			Context.getService(MotechService.class).saveMessageDefinition(
 					new MessageDefinition("pregnancy.week.6", 19L,
+							MessageType.INFORMATIONAL));
+			Context.getService(MotechService.class).saveMessageDefinition(
+					new MessageDefinition("pregnancy.week.7", 20L,
 							MessageType.INFORMATIONAL));
 		} finally {
 			Context.closeSession();
@@ -163,7 +160,7 @@ public class MessageProgramUpdateTaskTest extends
 
 			// Make sure message is scheduled with proper message
 			ScheduledMessage scheduledMessage = scheduledMessages.get(0);
-			assertEquals("pregnancy.week.4", scheduledMessage.getMessage()
+			assertEquals("pregnancy.week.5", scheduledMessage.getMessage()
 					.getMessageKey());
 
 			Concept refDate = Context.getConceptService().getConcept(
@@ -229,11 +226,11 @@ public class MessageProgramUpdateTaskTest extends
 				assertEquals(1, scheduledMessage.getMessageAttempts().size());
 				Message message = scheduledMessage.getMessageAttempts().get(0);
 				if (scheduledMessage.getMessage().getMessageKey().equals(
-						"pregnancy.week.4")) {
+						"pregnancy.week.5")) {
 					assertEquals(MessageStatus.CANCELLED, message
 							.getAttemptStatus());
 				} else if (scheduledMessage.getMessage().getMessageKey()
-						.equals("pregnancy.week.6")) {
+						.equals("pregnancy.week.7")) {
 					assertEquals(MessageStatus.SHOULD_ATTEMPT, message
 							.getAttemptStatus());
 				} else {

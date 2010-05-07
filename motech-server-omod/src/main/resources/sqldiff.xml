@@ -112,8 +112,6 @@
 			(5,'tetanus.1.prompt',4,'REMINDER'),(6,'tetanus.1.reminder.1',7,'REMINDER'),
 			(7,'tetanus.1.reminder.2',8,'REMINDER'),(8,'tetanus.2.prompt',9,'REMINDER'),
 			(9,'tetanus.2.reminder.1',10,'REMINDER'),(10,'tetanus.2.reminder.2',11,'REMINDER'),
-			(11,'pregnancy.week.1',14,'INFORMATIONAL'),(12,'pregnancy.week.2',15,'INFORMATIONAL'),
-			(13,'pregnancy.week.3',16,'INFORMATIONAL'),(14,'pregnancy.week.4',17,'INFORMATIONAL'),
 			(15,'pregnancy.week.5',18,'INFORMATIONAL'),(16,'pregnancy.week.6',19,'INFORMATIONAL'),
 			(17,'pregnancy.week.7',20,'INFORMATIONAL'),(18,'pregnancy.week.8',21,'INFORMATIONAL'),
 			(19,'pregnancy.week.9',22,'INFORMATIONAL'),(20,'pregnancy.week.10',23,'INFORMATIONAL'),
@@ -157,17 +155,6 @@
 			(95,'measles.upcoming',98,'REMINDER'),(96,'measles.overdue',99,'REMINDER'),
 			(97,'vitamina.upcoming',100,'REMINDER'),(98,'vitamina.overdue',101,'REMINDER');
 
-			INSERT INTO `motechmodule_messageattribute` (`motechmodule_messageattribute_id`,`attribute_name`,`attribute_property`)
-			VALUES (1,'PatientFirstName','person.givenName'),(2,'DueDate','obs.concept.name=ESTIMATED DATE OF CONFINEMENT');
-			
-			INSERT INTO `motechmodule_messagedefinition_attribute` (`definition_id`,`attribute_id`) VALUES 
-			(11,1),(11,2),(12,1),(12,2),(13,1),(13,2),(14,1),(14,2),(15,1),(15,2),(16,1),(16,2),(17,1),(17,2),(18,1),(18,2),
-			(19,1),(19,2),(20,1),(20,2),(21,1),(21,2),(22,1),(22,2),(23,1),(23,2),(24,1),(24,2),(25,1),(25,2),(26,1),(26,2),
-			(27,1),(27,2),(28,1),(28,2),(29,1),(29,2),(30,1),(30,2),(31,1),(31,2),(32,1),(32,2),(33,1),(33,2),(34,1),(34,2),
-			(35,1),(35,2),(36,1),(36,2),(37,1),(37,2),(38,1),(38,2),(39,1),(39,2),(40,1),(40,2),(41,1),(41,2),(42,1),(42,2),
-			(43,1),(43,2),(44,1),(44,2),(45,1),(45,2),(46,1),(46,2),(47,1),(47,2),(48,1),(48,2),(49,1),(49,2),(50,1),(50,2),
-			(51,1),(52,1),(53,1),(54,1);
-			
 			CREATE TABLE IF NOT EXISTS `motechmodule_generalencounter` (
 				`motechmodule_generalencounter_id` bigint NOT NULL auto_increment,
 				`date` date NOT NULL,
