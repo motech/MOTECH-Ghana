@@ -639,6 +639,7 @@ public class RegistrarServiceTest {
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
+		registrarBean.recordTTVisit(nurse, date, patient, ttDose);
 
 		replay(registrarBean, openmrsBean);
 

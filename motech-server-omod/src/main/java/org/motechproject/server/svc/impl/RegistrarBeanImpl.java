@@ -1287,6 +1287,31 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
+	public void recordTTVisit(User nurse, Date date, Patient patient,
+			Integer ttDose) {
+
+		EncounterService encounterService = contextService
+				.getEncounterService();
+
+		Location location = getGhanaLocation();
+
+		Encounter encounter = new Encounter();
+		encounter.setEncounterType(getTTVisitEncounterType());
+		encounter.setEncounterDatetime(date);
+		encounter.setPatient(patient);
+		encounter.setLocation(location);
+		encounter.setProvider(contextService.getAuthenticatedUser());
+
+		if (ttDose != null) {
+			Obs ttDoseObs = createNumericValueObs(date,
+					getTetanusDoseConcept(), patient, location, ttDose,
+					encounter, null);
+			encounter.addObs(ttDoseObs);
+		}
+		encounterService.saveEncounter(encounter);
+	}
+
+	@Transactional
 	public void recordDeath(User nurse, Date date, Patient patient,
 			Integer cause) {
 

@@ -188,6 +188,11 @@ public interface RegistrarBean {
 			Integer ttDose);
 
 	@RunAsAdminUser
+	public void recordTTVisit(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Date date, Patient patient, Integer ttDose);
+
+	@RunAsAdminUser
 	public void recordDeath(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Date date, Patient patient, Integer cause);

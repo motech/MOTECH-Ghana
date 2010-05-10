@@ -306,15 +306,16 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
-		validateMotechId(motechId, errors, "MotechID");
+		User nurse = validateChpsId(staffId, errors, "StaffID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException("Errors in Record TT Visit request",
 					errors);
 		}
 
-		// TODO: Update to add call to store TT encounter
+		registrarBean.recordTTVisit(nurse, date, patient, ttDose);
 	}
 
 	@WebMethod
