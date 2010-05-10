@@ -124,6 +124,35 @@ public interface RegistrarBean {
 			WhoRegistered whoRegistered, String howLearned);
 
 	@RunAsAdminUser
+	public void registerPregnancy(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Date date, Patient patient, Date estDeliveryDate, Boolean enroll,
+			Boolean consent, ContactNumberType ownership, Integer phoneNumber,
+			MediaType format, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, InterestReason reason, HowLearned howLearned,
+			Integer messagesStartWeek);
+
+	@RunAsAdminUser
+	public void registerANCMother(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Date date, Patient patient, String ancRegNumber,
+			Date estDeliveryDate, Integer height, Integer gravida,
+			Integer parity, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, Integer phoneNumber, MediaType format,
+			String language, DayOfWeek dayOfWeek, Date timeOfDay,
+			InterestReason reason, HowLearned howLearned,
+			Integer messagesStartWeek);
+
+	@RunAsAdminUser
+	public void registerCWCChild(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Date date, Patient patient, String cwcRegNumber, Boolean enroll,
+			Boolean consent, ContactNumberType ownership, Integer phoneNumber,
+			MediaType format, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, InterestReason reason, HowLearned howLearned,
+			Integer messagesStartWeek);
+
+	@RunAsAdminUser
 	public void recordMotherANCVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Integer facilityId, Date date, Patient patient,

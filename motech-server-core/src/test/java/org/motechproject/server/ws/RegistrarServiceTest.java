@@ -966,6 +966,9 @@ public class RegistrarServiceTest {
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
+		registrarBean.registerPregnancy(nurse, date, patient, date, enroll,
+				consent, phoneType, phone, format, language, day, date, reason,
+				how, messageWeek);
 
 		replay(registrarBean, openmrsBean);
 
@@ -1042,6 +1045,9 @@ public class RegistrarServiceTest {
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
+		registrarBean.registerANCMother(nurse, date, patient, regNumber, date,
+				height, gravida, parity, enroll, consent, phoneType, phone,
+				format, language, day, date, reason, how, messageWeek);
 
 		replay(registrarBean, openmrsBean);
 
@@ -1121,6 +1127,9 @@ public class RegistrarServiceTest {
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
+		registrarBean.registerCWCChild(nurse, date, patient, regNumber, enroll,
+				consent, phoneType, phone, format, language, day, date, reason,
+				how, messageWeek);
 
 		replay(registrarBean, openmrsBean);
 

@@ -33,6 +33,8 @@ public final class MotechConstants {
 	public static final String ENCOUNTER_TYPE_CWCVISIT = "CWCVISIT";
 	public static final String ENCOUNTER_TYPE_PNCMOTHERVISIT = "PNCMOTHERVISIT";
 	public static final String ENCOUNTER_TYPE_PNCCHILDVISIT = "PNCCHILDVISIT";
+	public static final String ENCOUNTER_TYPE_ANCREGVISIT = "ANCREGVISIT";
+	public static final String ENCOUNTER_TYPE_CWCREGVISIT = "CWCREGVISIT";
 	public static final String CONCEPT_VISIT_NUMBER = "VISIT NUMBER";
 	public static final String CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_INFANTS = "INTERMITTENT PREVENTATIVE TREATMENT INFANTS";
 	public static final String CONCEPT_ORAL_POLIO_VACCINATION_DOSE = "ORAL POLIO VACCINATION DOSE";
@@ -90,6 +92,8 @@ public final class MotechConstants {
 	public static final String CONCEPT_ANC_PNC_LOCATION = "ANC PNC LOCATION";
 	public static final String CONCEPT_CWC_LOCATION = "CWC LOCATION";
 	public static final String CONCEPT_COMMENTS = "COMMENTS";
+	public static final String CONCEPT_ANC_REG_NUMBER = "ANC REGISTRATION NUMBER";
+	public static final String CONCEPT_CWC_REG_NUMBER = "CWC REGISTRATION NUMBER";
 	public static final String TASK_PROPERTY_SEND_IMMEDIATE = "sendImmediate";
 	public static final String TASK_PROPERTY_TIME_OFFSET = "timeOffset";
 	public static final String TASK_DAILY_NOTIFICATION = "Daily Notification Task";

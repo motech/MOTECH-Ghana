@@ -249,25 +249,55 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			personService.saveRelationship(motherRelationship);
 		}
 
+		Integer pregnancyDueDateObsId = null;
+		if (registrantType == RegistrantType.PREGNANT_MOTHER) {
+			pregnancyDueDateObsId = registerPregnancy(patient, expDeliveryDate,
+					deliveryDateConfirmed, gravida, parity, null);
+		}
+
+		enrollPatient(registrantType, patient, enroll, consent,
+				messagesStartWeek, pregnancyDueDateObsId);
+
+		return patient;
+	}
+
+	private void enrollPatientWithAttributes(RegistrantType patientType,
+			Patient patient, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, Integer phoneNumber, MediaType format,
+			String language, DayOfWeek dayOfWeek, Date timeOfDay,
+			InterestReason reason, HowLearned howLearned,
+			Integer messagesStartWeek, Integer pregnancyDueDateObsId) {
+
+		setPatientAttributes(patient, null, phoneNumber, ownership, format,
+				language, dayOfWeek, timeOfDay, howLearned, reason, null, null,
+				null);
+
+		enrollPatient(patientType, patient, enroll, consent, messagesStartWeek,
+				pregnancyDueDateObsId);
+	}
+
+	private void enrollPatient(RegistrantType patientType, Patient patient,
+			Boolean enroll, Boolean consent, Integer messagesStartWeek,
+			Integer pregnancyDueDateObsId) {
+
 		boolean enrollPatient = Boolean.TRUE.equals(enroll)
 				&& Boolean.TRUE.equals(consent);
 
 		Integer referenceDateObsId = null;
 		String infoMessageProgramName = null;
 
-		if (registrantType == RegistrantType.PREGNANT_MOTHER) {
+		if (patientType == RegistrantType.PREGNANT_MOTHER) {
 			infoMessageProgramName = "Weekly Pregnancy Message Program";
 
-			referenceDateObsId = registerPregnancy(patient, expDeliveryDate,
-					deliveryDateConfirmed, gravida, parity);
+			referenceDateObsId = pregnancyDueDateObsId;
 
-		} else if (registrantType == RegistrantType.CHILD_UNDER_FIVE) {
+		} else if (patientType == RegistrantType.CHILD_UNDER_FIVE) {
 			infoMessageProgramName = "Weekly Info Child Message Program";
 
 			// TODO: If mother specified, Remove mother's pregnancy message
 			// enrollment
 
-		} else if (registrantType == RegistrantType.OTHER) {
+		} else if (patientType == RegistrantType.OTHER) {
 			infoMessageProgramName = "Weekly Info Pregnancy Message Program";
 
 			if (messagesStartWeek != null && enrollPatient) {
@@ -299,8 +329,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			addMessageProgramEnrollment(patient.getPatientId(),
 					"Expected Care Message Program", null);
 		}
-
-		return patient;
 	}
 
 	@Transactional
@@ -604,7 +632,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		patientService.savePatient(patient);
 
 		Integer dueDateObsId = registerPregnancy(patient, dueDate,
-				dueDateConfirmed, null, null);
+				dueDateConfirmed, null, null, null);
 
 		if (registerPregProgram) {
 			addMessageProgramEnrollment(patient.getPatientId(),
@@ -613,7 +641,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	private Integer registerPregnancy(Patient patient, Date dueDate,
-			Boolean dueDateConfirmed, Integer gravida, Integer parity) {
+			Boolean dueDateConfirmed, Integer gravida, Integer parity,
+			Integer height) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -667,12 +696,133 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			pregnancyObs.addGroupMember(parityObs);
 		}
 
+		if (height != null) {
+			Obs heightObs = createNumericValueObs(currentDate,
+					getHeightConcept(), patient, ghanaLocation, height,
+					encounter, null);
+			pregnancyObs.addGroupMember(heightObs);
+		}
+
 		obsService.saveObs(pregnancyObs, null);
 
 		if (dueDateObs != null) {
 			return dueDateObs.getObsId();
 		}
 		return null;
+	}
+
+	@Transactional
+	public void registerPregnancy(User nurse, Date date, Patient patient,
+			Date estDeliveryDate, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, Integer phoneNumber, MediaType format,
+			String language, DayOfWeek dayOfWeek, Date timeOfDay,
+			InterestReason reason, HowLearned howLearned,
+			Integer messagesStartWeek) {
+
+		Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
+
+		if (pregnancyDueDateObsId == null) {
+			pregnancyDueDateObsId = registerPregnancy(patient, estDeliveryDate,
+					null, null, null, null);
+		}
+
+		enrollPatientWithAttributes(RegistrantType.PREGNANT_MOTHER, patient,
+				enroll, consent, ownership, phoneNumber, format, language,
+				dayOfWeek, timeOfDay, reason, howLearned, messagesStartWeek,
+				pregnancyDueDateObsId);
+	}
+
+	private Integer checkExistingPregnancy(Patient patient) {
+		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
+
+		Integer pregnancyDueDateObsId = null;
+		if (pregnancyObs != null) {
+			log.warn("Entering Pregnancy for patient with active pregnancy, "
+					+ "patient id=" + patient.getPatientId());
+
+			Obs pregnancyDueDateObs = getActivePregnancyDueDateObs(patient
+					.getPatientId(), pregnancyObs);
+			if (pregnancyDueDateObs != null) {
+				pregnancyDueDateObsId = pregnancyDueDateObs.getObsId();
+			} else {
+				log.warn("No due date found for active pregnancy, patient id="
+						+ patient.getPatientId());
+			}
+		}
+		return pregnancyDueDateObsId;
+	}
+
+	@Transactional
+	public void registerANCMother(User nurse, Date date, Patient patient,
+			String ancRegNumber, Date estDeliveryDate, Integer height,
+			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, Integer phoneNumber, MediaType format,
+			String language, DayOfWeek dayOfWeek, Date timeOfDay,
+			InterestReason reason, HowLearned howLearned,
+			Integer messagesStartWeek) {
+
+		EncounterService encounterService = contextService
+				.getEncounterService();
+
+		Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
+		if (pregnancyDueDateObsId == null) {
+			pregnancyDueDateObsId = registerPregnancy(patient, estDeliveryDate,
+					null, gravida, parity, height);
+		}
+
+		enrollPatientWithAttributes(RegistrantType.PREGNANT_MOTHER, patient,
+				enroll, consent, ownership, phoneNumber, format, language,
+				dayOfWeek, timeOfDay, reason, howLearned, messagesStartWeek,
+				pregnancyDueDateObsId);
+
+		Location encounterLocation = getGhanaLocation();
+
+		Encounter encounter = new Encounter();
+		encounter.setEncounterType(getANCRegistrationEncounterType());
+		encounter.setEncounterDatetime(date);
+		encounter.setPatient(patient);
+		encounter.setLocation(encounterLocation);
+		encounter.setProvider(contextService.getAuthenticatedUser());
+
+		Obs ancRegNumObs = createTextValueObs(date,
+				getANCRegistrationNumberConcept(), patient, encounterLocation,
+				ancRegNumber, encounter, null);
+		encounter.addObs(ancRegNumObs);
+
+		encounterService.saveEncounter(encounter);
+	}
+
+	@Transactional
+	public void registerCWCChild(User nurse, Date date, Patient patient,
+			String cwcRegNumber, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, Integer phoneNumber, MediaType format,
+			String language, DayOfWeek dayOfWeek, Date timeOfDay,
+			InterestReason reason, HowLearned howLearned,
+			Integer messagesStartWeek) {
+
+		enrollPatientWithAttributes(RegistrantType.CHILD_UNDER_FIVE, patient,
+				enroll, consent, ownership, phoneNumber, format, language,
+				dayOfWeek, timeOfDay, reason, howLearned, messagesStartWeek,
+				null);
+
+		EncounterService encounterService = contextService
+				.getEncounterService();
+
+		Location encounterLocation = getGhanaLocation();
+
+		Encounter encounter = new Encounter();
+		encounter.setEncounterType(getCWCRegistrationEncounterType());
+		encounter.setEncounterDatetime(date);
+		encounter.setPatient(patient);
+		encounter.setLocation(encounterLocation);
+		encounter.setProvider(contextService.getAuthenticatedUser());
+
+		Obs cwcRegNumObs = createTextValueObs(date,
+				getCWCRegistrationNumberConcept(), patient, encounterLocation,
+				cwcRegNumber, encounter, null);
+		encounter.addObs(cwcRegNumObs);
+
+		encounterService.saveEncounter(encounter);
 	}
 
 	@Transactional
@@ -2380,6 +2530,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Ghana Child Postnatal Care (PNC) Visit", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGDELNOTIFYVISIT,
 				"Ghana Pregnancy Delivery Notification", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_ANCREGVISIT,
+				"Ghana Antental Care (ANC) Registration", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_CWCREGVISIT,
+				"Ghana Child Immunization Registration", admin);
 
 		log.info("Verifying Concepts Exist");
 		createConcept(MotechConstants.CONCEPT_VISIT_NUMBER, "Visit Number",
@@ -2626,6 +2780,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.CONCEPT_CLASS_MISC,
 				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
 		createConcept(MotechConstants.CONCEPT_COMMENTS, "Comments",
+				MotechConstants.CONCEPT_CLASS_MISC,
+				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
+		createConcept(MotechConstants.CONCEPT_ANC_REG_NUMBER,
+				"Ghana ANC Registration Number",
+				MotechConstants.CONCEPT_CLASS_MISC,
+				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
+		createConcept(MotechConstants.CONCEPT_CWC_REG_NUMBER,
+				"Ghana CWC Registration Number",
 				MotechConstants.CONCEPT_CLASS_MISC,
 				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
 
@@ -3781,6 +3943,16 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.ENCOUNTER_TYPE_PNCCHILDVISIT);
 	}
 
+	public EncounterType getANCRegistrationEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_ANCREGVISIT);
+	}
+
+	public EncounterType getCWCRegistrationEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_CWCREGVISIT);
+	}
+
 	public Concept getImmunizationsOrderedConcept() {
 		return contextService.getConceptService().getConcept(
 				MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED);
@@ -4173,6 +4345,16 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public Concept getNegativeConcept() {
 		return contextService.getConceptService().getConcept(
 				MotechConstants.CONCEPT_NEGATIVE);
+	}
+
+	public Concept getANCRegistrationNumberConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_ANC_REG_NUMBER);
+	}
+
+	public Concept getCWCRegistrationNumberConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_CWC_REG_NUMBER);
 	}
 
 	public String getTroubledPhoneProperty() {

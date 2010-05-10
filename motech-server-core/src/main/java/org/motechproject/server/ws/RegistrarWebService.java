@@ -510,15 +510,18 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
-		validateMotechId(motechId, errors, "MotechID");
+		User nurse = validateChpsId(staffId, errors, "StaffID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Register Pregnancy request", errors);
 		}
 
-		// TODO: Update to add call to store Pregnancy registration encounter
+		registrarBean.registerPregnancy(nurse, date, patient, estDeliveryDate,
+				enroll, consent, ownership, phoneNumber, format, language,
+				dayOfWeek, timeOfDay, reason, howLearned, messagesStartWeek);
 	}
 
 	@WebMethod
@@ -546,15 +549,19 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
-		validateMotechId(motechId, errors, "MotechID");
+		User nurse = validateChpsId(staffId, errors, "StaffID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Register ANC Mother request", errors);
 		}
 
-		// TODO: Update to add call to store ANC registration encounter
+		registrarBean.registerANCMother(nurse, date, patient, ancRegNumber,
+				estDeliveryDate, height, gravida, parity, enroll, consent,
+				ownership, phoneNumber, format, language, dayOfWeek, timeOfDay,
+				reason, howLearned, messagesStartWeek);
 	}
 
 	@WebMethod
@@ -578,15 +585,18 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
-		validateMotechId(motechId, errors, "MotechID");
+		User nurse = validateChpsId(staffId, errors, "StaffID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Register CWC Child request", errors);
 		}
 
-		// TODO: Update to add call to store CWC registration encounter
+		registrarBean.registerCWCChild(nurse, date, patient, cwcRegNumber,
+				enroll, consent, ownership, phoneNumber, format, language,
+				dayOfWeek, timeOfDay, reason, howLearned, messagesStartWeek);
 	}
 
 	@WebMethod
