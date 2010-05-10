@@ -516,7 +516,7 @@ public class RegistrarServiceTest {
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordMotherPPCVisit(nurse, date, patient, visitNumber,
+		registrarBean.recordMotherPNCVisit(nurse, date, patient, visitNumber,
 				vitaminA, ttDose);
 
 		replay(registrarBean, openmrsBean);
@@ -1550,7 +1550,7 @@ public class RegistrarServiceTest {
 		verify(registrarBean, modelConverter, openmrsBean);
 
 		assertEquals(1, encounterGroups.getValue().length);
-		assertEquals("PPC", encounterGroups.getValue()[0]);
+		assertEquals("PNC(mother)", encounterGroups.getValue()[0]);
 
 		assertNotNull("Care result array is null", cares);
 		assertEquals(1, cares.length);
@@ -1587,7 +1587,7 @@ public class RegistrarServiceTest {
 		verify(registrarBean, modelConverter, openmrsBean);
 
 		assertEquals(1, encounterGroups.getValue().length);
-		assertEquals("PNC", encounterGroups.getValue()[0]);
+		assertEquals("PNC(baby)", encounterGroups.getValue()[0]);
 
 		assertNotNull("Care result array is null", cares);
 		assertEquals(1, cares.length);

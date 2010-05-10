@@ -51,7 +51,7 @@
 				<ref bean="childYellowFeverSchedule" />
 				<ref bean="pregnancyTetanusSchedule" />
 				<ref bean="pregnancyIPTSchedule" />
-				<ref bean="pregnancyPPCSchedule" />
+				<ref bean="pregnancyPNCSchedule" />
 				<ref bean="pregnancyANCSchedule" />
 			</list>
 		</property>

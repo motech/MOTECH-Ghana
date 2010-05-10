@@ -36,17 +36,17 @@
 				</bean>
 				<bean
 					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
-					<property name="name" value="PPC" />
-					<property name="upcomingMessageKey" value="ppc.upcoming" />
-					<property name="overdueMessageKey" value="ppc.overdue" />
+					<property name="name" value="PNC(mother)" />
+					<property name="upcomingMessageKey" value="pnc.mother.upcoming" />
+					<property name="overdueMessageKey" value="pnc.mother.overdue" />
 					<property name="timeValue" value="1" />
 					<property name="timePeriod" value="day" />
 				</bean>
 				<bean
 					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
-					<property name="name" value="PNC" />
-					<property name="upcomingMessageKey" value="pnc.upcoming" />
-					<property name="overdueMessageKey" value="pnc.overdue" />
+					<property name="name" value="PNC(baby)" />
+					<property name="upcomingMessageKey" value="pnc.baby.upcoming" />
+					<property name="overdueMessageKey" value="pnc.baby.overdue" />
 					<property name="timeValue" value="1" />
 					<property name="timePeriod" value="day" />
 				</bean>

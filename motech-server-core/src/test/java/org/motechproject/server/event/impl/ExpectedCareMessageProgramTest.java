@@ -92,7 +92,7 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		List<ScheduledMessage> schMsgs = new ArrayList<ScheduledMessage>();
 
 		String realMessageKey1 = "tt.upcoming";
-		String realMessageKey2 = "pnc.overdue";
+		String realMessageKey2 = "pnc.baby.overdue";
 		String fakeMessageKey = "fakecare.upcoming";
 
 		Date date = new Date();

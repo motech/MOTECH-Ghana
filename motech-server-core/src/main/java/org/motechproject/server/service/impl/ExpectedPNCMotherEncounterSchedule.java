@@ -5,7 +5,8 @@ import java.util.Date;
 import org.motechproject.server.time.TimePeriod;
 import org.openmrs.Patient;
 
-public class ExpectedPPCEncounterSchedule extends ExpectedEncounterSchedule {
+public class ExpectedPNCMotherEncounterSchedule extends
+		ExpectedEncounterSchedule {
 
 	protected Integer maxDeliveryValue;
 	protected TimePeriod maxDeliveryPeriod;

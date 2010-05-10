@@ -5,8 +5,8 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="childPNCSchedule" class="org.motechproject.server.service.impl.ExpectedEncounterSchedule">
-		<property name="name" value="PNC" />
-		<property name="encounterTypeName" value="PNCVISIT" />
+		<property name="name" value="PNC(baby)" />
+		<property name="encounterTypeName" value="PNCCHILDVISIT" />
 		<property name="lateValue" value="1" />
 		<property name="latePeriod" value="day" />
 		<property name="registrarBean" ref="registrarBean" />	

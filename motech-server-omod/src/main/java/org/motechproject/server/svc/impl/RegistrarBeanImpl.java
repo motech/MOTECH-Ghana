@@ -1249,7 +1249,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordMotherPPCVisit(User nurse, Date date, Patient patient,
+	public void recordMotherPNCVisit(User nurse, Date date, Patient patient,
 			Integer visitNumber, Boolean vitaminA, Integer ttDose) {
 
 		EncounterService encounterService = contextService
@@ -2837,7 +2837,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Map<String, String> dailyNurseProps = new HashMap<String, String>();
 		dailyNurseProps.put(MotechConstants.TASK_PROPERTY_SEND_UPCOMING,
 				Boolean.TRUE.toString());
-		String[] dailyGroups = { "PPC", "PNC" };
+		String[] dailyGroups = { "PNC(mother)", "PNC(baby)" };
 		String dailyGroupsProperty = StringUtils.join(dailyGroups,
 				MotechConstants.TASK_PROPERTY_CARE_GROUPS_DELIMITER);
 		dailyNurseProps.put(MotechConstants.TASK_PROPERTY_CARE_GROUPS,

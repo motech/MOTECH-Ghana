@@ -406,7 +406,7 @@ public class WebServiceModelConverterTest extends TestCase {
 	}
 
 	public void testUpcomingEncounters() {
-		String anc1 = "ANC1", pnc2 = "PNC2", ppc3 = "PPC3";
+		String anc1 = "ANC1", pnc2 = "PNC2", pnc3 = "PNC3";
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(2010, Calendar.JANUARY, 1);
 		Date encounter1Date = calendar.getTime();
@@ -424,7 +424,7 @@ public class WebServiceModelConverterTest extends TestCase {
 		encounter2.setDueEncounterDatetime(encounter2Date);
 
 		ExpectedEncounter encounter3 = new ExpectedEncounter();
-		encounter3.setName(ppc3);
+		encounter3.setName(pnc3);
 		encounter3.setDueEncounterDatetime(encounter3Date);
 
 		List<ExpectedEncounter> upcomingEncounters = new ArrayList<ExpectedEncounter>();
@@ -446,7 +446,7 @@ public class WebServiceModelConverterTest extends TestCase {
 		assertEquals(encounter2Date, care2.getDate());
 
 		Care care3 = cares[2];
-		assertEquals(ppc3, care3.getName());
+		assertEquals(pnc3, care3.getName());
 		assertEquals(encounter3Date, care3.getDate());
 	}
 
@@ -512,7 +512,7 @@ public class WebServiceModelConverterTest extends TestCase {
 	}
 
 	public void testUpcoming() {
-		String anc1 = "ANC1", pnc2 = "PNC2", ppc3 = "PPC3";
+		String anc1 = "ANC1", pnc2 = "PNC2", pnc3 = "PNC3";
 		String tt1 = "TT1", opv2 = "OPV2", penta3 = "Penta3";
 
 		Calendar calendar = Calendar.getInstance();
@@ -539,7 +539,7 @@ public class WebServiceModelConverterTest extends TestCase {
 		encounter2.setDueEncounterDatetime(encounter2Date);
 
 		ExpectedEncounter encounter3 = new ExpectedEncounter();
-		encounter3.setName(ppc3);
+		encounter3.setName(pnc3);
 		encounter3.setDueEncounterDatetime(encounter3Date);
 
 		List<ExpectedEncounter> upcomingEncounters = new ArrayList<ExpectedEncounter>();
@@ -586,7 +586,7 @@ public class WebServiceModelConverterTest extends TestCase {
 		assertEquals(obs2Date, care4.getDate());
 
 		Care care5 = cares[4];
-		assertEquals(ppc3, care5.getName());
+		assertEquals(pnc3, care5.getName());
 		assertEquals(encounter3Date, care5.getDate());
 
 		Care care6 = cares[5];

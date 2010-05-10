@@ -182,7 +182,7 @@ public interface RegistrarBean {
 			Date date, Patient patient);
 
 	@RunAsAdminUser
-	public void recordMotherPPCVisit(
+	public void recordMotherPNCVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Date date, Patient patient, Integer visitNumber, Boolean vitaminA,
 			Integer ttDose);

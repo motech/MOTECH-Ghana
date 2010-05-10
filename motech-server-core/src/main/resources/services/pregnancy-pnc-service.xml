@@ -4,9 +4,9 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="pregnancyPPCSchedule" class="org.motechproject.server.service.impl.ExpectedPPCEncounterSchedule">
-		<property name="name" value="PPC" />
-		<property name="encounterTypeName" value="PPCVISIT" />
+	<bean id="pregnancyPNCSchedule" class="org.motechproject.server.service.impl.ExpectedPNCMotherEncounterSchedule">
+		<property name="name" value="PNC(mother)" />
+		<property name="encounterTypeName" value="PNCMOTHERVISIT" />
 		<property name="lateValue" value="1" />
 		<property name="latePeriod" value="day" />
 		<property name="maxDeliveryValue" value="1" />
@@ -20,17 +20,17 @@
 		<property name="events">
 			<list>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
-					<property name="name" value="PPC1" />
+					<property name="name" value="PNC1" />
 					<property name="dueValue" value="2" />
 					<property name="duePeriod" value="day" />				
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
-					<property name="name" value="PPC2" />
+					<property name="name" value="PNC2" />
 					<property name="dueValue" value="7" />
 					<property name="duePeriod" value="day" />				
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
-					<property name="name" value="PPC3" />
+					<property name="name" value="PNC3" />
 					<property name="dueValue" value="14" />
 					<property name="duePeriod" value="day" />				
 				</bean>

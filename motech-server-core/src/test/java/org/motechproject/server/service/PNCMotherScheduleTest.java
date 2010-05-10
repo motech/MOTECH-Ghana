@@ -22,25 +22,25 @@ import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class PPCScheduleTest extends TestCase {
+public class PNCMotherScheduleTest extends TestCase {
 	ApplicationContext ctx;
 
 	RegistrarBean registrarBean;
-	ExpectedEncounterSchedule ppcSchedule;
-	ExpectedCareEvent ppc1Event;
-	ExpectedCareEvent ppc2Event;
-	ExpectedCareEvent ppc3Event;
+	ExpectedEncounterSchedule pncSchedule;
+	ExpectedCareEvent pnc1Event;
+	ExpectedCareEvent pnc2Event;
+	ExpectedCareEvent pnc3Event;
 
 	@Override
 	protected void setUp() throws Exception {
 		ctx = new ClassPathXmlApplicationContext(new String[] {
 				"test-common-program-beans.xml",
-				"services/pregnancy-ppc-service.xml" });
-		ppcSchedule = (ExpectedEncounterSchedule) ctx
-				.getBean("pregnancyPPCSchedule");
-		ppc1Event = ppcSchedule.getEvents().get(0);
-		ppc2Event = ppcSchedule.getEvents().get(1);
-		ppc3Event = ppcSchedule.getEvents().get(2);
+				"services/pregnancy-pnc-service.xml" });
+		pncSchedule = (ExpectedEncounterSchedule) ctx
+				.getBean("pregnancyPNCSchedule");
+		pnc1Event = pncSchedule.getEvents().get(0);
+		pnc2Event = pncSchedule.getEvents().get(1);
+		pnc3Event = pncSchedule.getEvents().get(2);
 
 		// EasyMock setup in Spring config
 		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
@@ -49,10 +49,10 @@ public class PPCScheduleTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		ctx = null;
-		ppcSchedule = null;
-		ppc1Event = null;
-		ppc2Event = null;
-		ppc3Event = null;
+		pncSchedule = null;
+		pnc1Event = null;
+		pnc2Event = null;
+		pnc3Event = null;
 		registrarBean = null;
 	}
 
@@ -82,37 +82,37 @@ public class PPCScheduleTest extends TestCase {
 		expect(registrarBean.getCurrentDeliveryDate(patient)).andReturn(
 				deliveryDate);
 		expect(
-				registrarBean.getEncounters(patient, ppcSchedule
+				registrarBean.getEncounters(patient, pncSchedule
 						.getEncounterTypeName(), deliveryDate)).andReturn(
 				encounterList);
 		expect(
-				registrarBean.getExpectedEncounters(patient, ppcSchedule
+				registrarBean.getExpectedEncounters(patient, pncSchedule
 						.getName())).andReturn(expectedEncounterList);
 		expect(
 				registrarBean.createExpectedEncounter(eq(patient),
-						eq(ppcSchedule.getEncounterTypeName()),
+						eq(pncSchedule.getEncounterTypeName()),
 						capture(minDate1Capture), capture(dueDate1Capture),
 						capture(lateDate1Capture), capture(maxDate1Capture),
-						eq(ppc1Event.getName()), eq(ppcSchedule.getName())))
+						eq(pnc1Event.getName()), eq(pncSchedule.getName())))
 				.andReturn(new ExpectedEncounter());
 		expect(
 				registrarBean.createExpectedEncounter(eq(patient),
-						eq(ppcSchedule.getEncounterTypeName()),
+						eq(pncSchedule.getEncounterTypeName()),
 						capture(minDate2Capture), capture(dueDate2Capture),
 						capture(lateDate2Capture), capture(maxDate2Capture),
-						eq(ppc2Event.getName()), eq(ppcSchedule.getName())))
+						eq(pnc2Event.getName()), eq(pncSchedule.getName())))
 				.andReturn(new ExpectedEncounter());
 		expect(
 				registrarBean.createExpectedEncounter(eq(patient),
-						eq(ppcSchedule.getEncounterTypeName()),
+						eq(pncSchedule.getEncounterTypeName()),
 						capture(minDate3Capture), capture(dueDate3Capture),
 						capture(lateDate3Capture), capture(maxDate3Capture),
-						eq(ppc3Event.getName()), eq(ppcSchedule.getName())))
+						eq(pnc3Event.getName()), eq(pncSchedule.getName())))
 				.andReturn(new ExpectedEncounter());
 
 		replay(registrarBean);
 
-		ppcSchedule.updateSchedule(patient, date);
+		pncSchedule.updateSchedule(patient, date);
 
 		verify(registrarBean);
 
@@ -155,9 +155,9 @@ public class PPCScheduleTest extends TestCase {
 
 		Patient patient = new Patient();
 
-		Capture<ExpectedEncounter> ppc1ExpectedCapture = new Capture<ExpectedEncounter>();
-		Capture<ExpectedEncounter> ppc2ExpectedCapture = new Capture<ExpectedEncounter>();
-		Capture<ExpectedEncounter> ppc3ExpectedCapture = new Capture<ExpectedEncounter>();
+		Capture<ExpectedEncounter> pnc1ExpectedCapture = new Capture<ExpectedEncounter>();
+		Capture<ExpectedEncounter> pnc2ExpectedCapture = new Capture<ExpectedEncounter>();
+		Capture<ExpectedEncounter> pnc3ExpectedCapture = new Capture<ExpectedEncounter>();
 
 		List<Encounter> encounterList = new ArrayList<Encounter>();
 		Encounter encounter1 = new Encounter();
@@ -169,13 +169,13 @@ public class PPCScheduleTest extends TestCase {
 
 		List<ExpectedEncounter> expectedEncounterList = new ArrayList<ExpectedEncounter>();
 		ExpectedEncounter expectedEncounter1 = new ExpectedEncounter();
-		expectedEncounter1.setName(ppc1Event.getName());
+		expectedEncounter1.setName(pnc1Event.getName());
 		expectedEncounterList.add(expectedEncounter1);
 		ExpectedEncounter expectedEncounter2 = new ExpectedEncounter();
-		expectedEncounter2.setName(ppc2Event.getName());
+		expectedEncounter2.setName(pnc2Event.getName());
 		expectedEncounterList.add(expectedEncounter2);
 		ExpectedEncounter expectedEncounter3 = new ExpectedEncounter();
-		expectedEncounter3.setName(ppc3Event.getName());
+		expectedEncounter3.setName(pnc3Event.getName());
 		expectedEncounterList.add(expectedEncounter3);
 
 		Date deliveryDate = new Date();
@@ -183,41 +183,41 @@ public class PPCScheduleTest extends TestCase {
 		expect(registrarBean.getCurrentDeliveryDate(patient)).andReturn(
 				deliveryDate);
 		expect(
-				registrarBean.getEncounters(patient, ppcSchedule
+				registrarBean.getEncounters(patient, pncSchedule
 						.getEncounterTypeName(), deliveryDate)).andReturn(
 				encounterList);
 		expect(
-				registrarBean.getExpectedEncounters(patient, ppcSchedule
+				registrarBean.getExpectedEncounters(patient, pncSchedule
 						.getName())).andReturn(expectedEncounterList);
 		expect(
 				registrarBean
-						.saveExpectedEncounter(capture(ppc1ExpectedCapture)))
+						.saveExpectedEncounter(capture(pnc1ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 		expect(
 				registrarBean
-						.saveExpectedEncounter(capture(ppc2ExpectedCapture)))
+						.saveExpectedEncounter(capture(pnc2ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 		expect(
 				registrarBean
-						.saveExpectedEncounter(capture(ppc3ExpectedCapture)))
+						.saveExpectedEncounter(capture(pnc3ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 
 		replay(registrarBean);
 
-		ppcSchedule.updateSchedule(patient, date);
+		pncSchedule.updateSchedule(patient, date);
 
 		verify(registrarBean);
 
-		ExpectedEncounter capturedPPC1Expected = ppc1ExpectedCapture.getValue();
-		assertEquals(Boolean.TRUE, capturedPPC1Expected.getVoided());
-		assertEquals(encounter1, capturedPPC1Expected.getEncounter());
+		ExpectedEncounter capturedPNC1Expected = pnc1ExpectedCapture.getValue();
+		assertEquals(Boolean.TRUE, capturedPNC1Expected.getVoided());
+		assertEquals(encounter1, capturedPNC1Expected.getEncounter());
 
-		ExpectedEncounter capturedPPC2Expected = ppc2ExpectedCapture.getValue();
-		assertEquals(Boolean.TRUE, capturedPPC2Expected.getVoided());
-		assertEquals(encounter2, capturedPPC2Expected.getEncounter());
+		ExpectedEncounter capturedPNC2Expected = pnc2ExpectedCapture.getValue();
+		assertEquals(Boolean.TRUE, capturedPNC2Expected.getVoided());
+		assertEquals(encounter2, capturedPNC2Expected.getEncounter());
 
-		ExpectedEncounter capturedPPC3Expected = ppc3ExpectedCapture.getValue();
-		assertEquals(Boolean.FALSE, capturedPPC3Expected.getVoided());
+		ExpectedEncounter capturedPNC3Expected = pnc3ExpectedCapture.getValue();
+		assertEquals(Boolean.FALSE, capturedPNC3Expected.getVoided());
 	}
 
 	public void testRemoveExpected() {
@@ -230,44 +230,44 @@ public class PPCScheduleTest extends TestCase {
 		expectedEncounterList.add(new ExpectedEncounter());
 		expectedEncounterList.add(new ExpectedEncounter());
 
-		Capture<ExpectedEncounter> ppc1ExpectedCapture = new Capture<ExpectedEncounter>();
-		Capture<ExpectedEncounter> ppc2ExpectedCapture = new Capture<ExpectedEncounter>();
-		Capture<ExpectedEncounter> ppc3ExpectedCapture = new Capture<ExpectedEncounter>();
+		Capture<ExpectedEncounter> pnc1ExpectedCapture = new Capture<ExpectedEncounter>();
+		Capture<ExpectedEncounter> pnc2ExpectedCapture = new Capture<ExpectedEncounter>();
+		Capture<ExpectedEncounter> pnc3ExpectedCapture = new Capture<ExpectedEncounter>();
 
 		Date deliveryDate = null;
 
 		expect(registrarBean.getCurrentDeliveryDate(patient)).andReturn(
 				deliveryDate);
 		expect(
-				registrarBean.getExpectedEncounters(patient, ppcSchedule
+				registrarBean.getExpectedEncounters(patient, pncSchedule
 						.getName())).andReturn(expectedEncounterList);
 		expect(
 				registrarBean
-						.saveExpectedEncounter(capture(ppc1ExpectedCapture)))
+						.saveExpectedEncounter(capture(pnc1ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 		expect(
 				registrarBean
-						.saveExpectedEncounter(capture(ppc2ExpectedCapture)))
+						.saveExpectedEncounter(capture(pnc2ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 		expect(
 				registrarBean
-						.saveExpectedEncounter(capture(ppc3ExpectedCapture)))
+						.saveExpectedEncounter(capture(pnc3ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 
 		replay(registrarBean);
 
-		ppcSchedule.updateSchedule(patient, date);
+		pncSchedule.updateSchedule(patient, date);
 
 		verify(registrarBean);
 
-		ExpectedEncounter capturedPPC1Expected = ppc1ExpectedCapture.getValue();
-		assertEquals(Boolean.TRUE, capturedPPC1Expected.getVoided());
+		ExpectedEncounter capturedPNC1Expected = pnc1ExpectedCapture.getValue();
+		assertEquals(Boolean.TRUE, capturedPNC1Expected.getVoided());
 
-		ExpectedEncounter capturedPPC2Expected = ppc2ExpectedCapture.getValue();
-		assertEquals(Boolean.TRUE, capturedPPC2Expected.getVoided());
+		ExpectedEncounter capturedPNC2Expected = pnc2ExpectedCapture.getValue();
+		assertEquals(Boolean.TRUE, capturedPNC2Expected.getVoided());
 
-		ExpectedEncounter capturedPPC3Expected = ppc3ExpectedCapture.getValue();
-		assertEquals(Boolean.TRUE, capturedPPC3Expected.getVoided());
+		ExpectedEncounter capturedPNC3Expected = pnc3ExpectedCapture.getValue();
+		assertEquals(Boolean.TRUE, capturedPNC3Expected.getVoided());
 	}
 
 	public void testNoActionNoDelivery() {
@@ -282,12 +282,12 @@ public class PPCScheduleTest extends TestCase {
 		expect(registrarBean.getCurrentDeliveryDate(patient)).andReturn(
 				deliveryDate);
 		expect(
-				registrarBean.getExpectedEncounters(patient, ppcSchedule
+				registrarBean.getExpectedEncounters(patient, pncSchedule
 						.getName())).andReturn(expectedEncounterList);
 
 		replay(registrarBean);
 
-		ppcSchedule.updateSchedule(patient, date);
+		pncSchedule.updateSchedule(patient, date);
 
 		verify(registrarBean);
 	}
@@ -307,12 +307,12 @@ public class PPCScheduleTest extends TestCase {
 		expect(registrarBean.getCurrentDeliveryDate(patient)).andReturn(
 				deliveryDate);
 		expect(
-				registrarBean.getExpectedEncounters(patient, ppcSchedule
+				registrarBean.getExpectedEncounters(patient, pncSchedule
 						.getName())).andReturn(expectedEncounterList);
 
 		replay(registrarBean);
 
-		ppcSchedule.updateSchedule(patient, date);
+		pncSchedule.updateSchedule(patient, date);
 
 		verify(registrarBean);
 	}

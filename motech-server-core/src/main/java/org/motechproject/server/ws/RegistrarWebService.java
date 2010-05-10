@@ -271,7 +271,7 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		// TODO: Update to include new values and rename to Mother PNC
-		registrarBean.recordMotherPPCVisit(nurse, datetime, patient,
+		registrarBean.recordMotherPNCVisit(nurse, datetime, patient,
 				visitNumber, vitaminA, ttDose);
 	}
 
@@ -786,7 +786,7 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		List<ExpectedEncounter> defaultedEncounters = registrarBean
-				.getDefaultedExpectedEncounters(new String[] { "PPC" });
+				.getDefaultedExpectedEncounters(new String[] { "PNC(mother)" });
 		return modelConverter
 				.defaultedEncountersToWebServiceCares(defaultedEncounters);
 	}
@@ -807,7 +807,7 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		List<ExpectedEncounter> defaultedEncounters = registrarBean
-				.getDefaultedExpectedEncounters(new String[] { "PNC" });
+				.getDefaultedExpectedEncounters(new String[] { "PNC(baby)" });
 		return modelConverter
 				.defaultedEncountersToWebServiceCares(defaultedEncounters);
 	}

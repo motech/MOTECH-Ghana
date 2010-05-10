@@ -212,10 +212,10 @@ public class RegistrarBeanRecordVisitsTest extends
 			assertNull("Pregnancy is still active after termination",
 					mother2Pregnancy);
 
-			// PPC Visit for Mother 2
-			regService.recordMotherPPCVisit(nurse, date, mother2, 1, true, 2);
+			// PNC Visit for Mother 2
+			regService.recordMotherPNCVisit(nurse, date, mother2, 1, true, 2);
 
-			assertEquals("PPC visit not added for Mother 2", 3, Context
+			assertEquals("PNC visit not added for Mother 2", 3, Context
 					.getEncounterService().getEncountersByPatient(mother2)
 					.size());
 
