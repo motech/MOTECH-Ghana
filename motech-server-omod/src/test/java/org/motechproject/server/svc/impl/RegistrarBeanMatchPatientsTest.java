@@ -104,8 +104,8 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// Match on all
 			List<Patient> matches = regService.getPatients(firstName, lastName,
-					prefName, date, null, phoneNumber.toString(), nhisNumber,
-					motechId.toString());
+					prefName, date, null, phoneNumber, nhisNumber, motechId
+							.toString());
 			assertEquals(1, matches.size());
 
 			// Match on NHIS number
@@ -122,7 +122,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// Match on first name, last name, and phone
 			matches = regService.getPatients(firstName, lastName, null, null,
-					null, phoneNumber.toString(), null, null);
+					null, phoneNumber, null, null);
 			assertEquals(1, matches.size());
 
 			// Match on first name, last name, and MotechID
@@ -144,7 +144,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// No match on first name, last name, and different phone number
 			matches = regService.getPatients(firstName, lastName, null, null,
-					null, "DifferentPhoneNumber", null, null);
+					null, 4534656, null, null);
 			assertEquals(0, matches.size());
 
 			// No matches on empty
@@ -160,8 +160,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// No match for Person on firstName, lastName, birthDate
 			matches = regService.getPatients(firstName, lastName, prefName,
-					date, null, phoneNumber.toString(), nhisNumber, motechId
-							.toString());
+					date, null, phoneNumber, nhisNumber, motechId.toString());
 			assertEquals(1, matches.size());
 
 		} finally {

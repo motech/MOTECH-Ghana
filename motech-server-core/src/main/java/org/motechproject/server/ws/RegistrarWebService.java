@@ -605,7 +605,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "facilityId") Integer facilityId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "phoneNumber") String phoneNumber,
+			@WebParam(name = "phoneNumber") Integer phoneNumber,
 			@WebParam(name = "phoneOwnership") ContactNumberType phoneOwnership,
 			@WebParam(name = "nhis") String nhis,
 			@WebParam(name = "nhisExpires") Date nhisExpires,
@@ -623,9 +623,8 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		// TODO: Update to include new values and handle removed values
-		registrarBean.editPatient(nurse, patient, phoneNumber, phoneOwnership,
-				null, null, nhis, nhisExpires);
+		registrarBean.editPatient(nurse, date, patient, phoneNumber,
+				phoneOwnership, nhis, nhisExpires, stopEnrollment);
 	}
 
 	@WebMethod
@@ -932,7 +931,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "preferredName") String preferredName,
 			@WebParam(name = "birthDate") Date birthDate,
 			@WebParam(name = "nhis") String nhis,
-			@WebParam(name = "phoneNumber") String phoneNumber)
+			@WebParam(name = "phoneNumber") Integer phoneNumber)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();

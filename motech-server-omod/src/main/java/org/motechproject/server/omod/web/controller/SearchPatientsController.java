@@ -102,13 +102,19 @@ public class SearchPatientsController {
 					+ webPatient.getNhis() + ", " + webPatient.getMotechId());
 		}
 
+		Integer parsedPhoneNumber = null;
+		try {
+			parsedPhoneNumber = Integer.parseInt(webPatient.getPrimaryPhone());
+		} catch (NumberFormatException e) {
+		}
+
 		if (!errors.hasErrors()) {
 			List<WebPatient> matchingWebPatientsList = new ArrayList<WebPatient>();
 			List<Patient> matchingPatientsList = registrarBean.getPatients(
 					webPatient.getFirstName(), webPatient.getLastName(),
 					webPatient.getPrefName(), webPatient.getBirthDate(),
-					webPatient.getCommunity(), webPatient.getPrimaryPhone(),
-					webPatient.getNhis(), webPatient.getMotechId());
+					webPatient.getCommunity(), parsedPhoneNumber, webPatient
+							.getNhis(), webPatient.getMotechId());
 
 			for (Patient patient : matchingPatientsList) {
 				WebPatient newWebPatient = new WebPatient();

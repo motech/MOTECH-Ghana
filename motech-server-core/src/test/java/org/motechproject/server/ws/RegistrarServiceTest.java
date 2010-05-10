@@ -1189,7 +1189,8 @@ public class RegistrarServiceTest {
 	@Test
 	public void testEditPatient() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
-		String phoneNumber = "12075557894", nhis = "125";
+		Integer phoneNumber = 2075557894;
+		String nhis = "125";
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		Boolean stopEnrollment = false;
 		Date date = new Date();
@@ -1202,8 +1203,9 @@ public class RegistrarServiceTest {
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
 
-		registrarBean.editPatient(nurse, patient, phoneNumber, phoneType, null,
-				null, nhis, date);
+		registrarBean.editPatient(nurse, date, patient, phoneNumber, phoneType,
+				nhis, date, stopEnrollment);
+
 		replay(registrarBean, openmrsBean);
 
 		regWs.editPatient(staffId, facilityId, date, motechId, phoneNumber,
@@ -1215,7 +1217,8 @@ public class RegistrarServiceTest {
 	@Test
 	public void testEditPatientAllErrors() {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
-		String phoneNumber = "12075557894", nhis = "125";
+		Integer phoneNumber = 2075557894;
+		String nhis = "125";
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		Boolean stopEnrollment = false;
 		Date date = new Date();
@@ -1783,7 +1786,8 @@ public class RegistrarServiceTest {
 	public void testQueryMotechId() throws ValidationException {
 		Integer staffId = 1, facilityId = 2;
 		String firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
-		String nhis = "NHIS", phone = "Phone";
+		String nhis = "NHIS";
+		Integer phone = 22424324;
 		Date birthDate = new Date();
 
 		List<org.openmrs.Patient> patients = new ArrayList<org.openmrs.Patient>();

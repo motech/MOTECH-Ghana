@@ -1302,19 +1302,34 @@ public class RegistrarBeanTest extends TestCase {
 	public void testEditPatient() throws ParseException {
 
 		Integer patientId = 1;
-		String pPhone = "2075551212", sPhone = "20773733373", nhis = "28";
-		Date nhisExpires = new Date();
-		ContactNumberType pPhoneType = ContactNumberType.PERSONAL;
-		ContactNumberType sPhoneType = ContactNumberType.HOUSEHOLD;
+		Integer phone = 2075551212;
+		String nhis = "28";
+		Date date = new Date();
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		Boolean stopEnrollment = true;
 
 		User nurse = new User(2);
 		Patient patient = new Patient(patientId);
 
+		List<MessageProgramEnrollment> enrollments = new ArrayList<MessageProgramEnrollment>();
+		MessageProgramEnrollment enrollment1 = new MessageProgramEnrollment();
+		enrollments.add(enrollment1);
+		MessageProgramEnrollment enrollment2 = new MessageProgramEnrollment();
+		enrollments.add(enrollment2);
+
+		List<Message> enrollment1Messages = new ArrayList<Message>();
+		enrollment1Messages.add(new Message());
+
 		Capture<Patient> patientCap = new Capture<Patient>();
+		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
+		Capture<MessageProgramEnrollment> enrollment2Cap = new Capture<MessageProgramEnrollment>();
+		Capture<Message> enrollment1MessageCap = new Capture<Message>();
 
 		expect(contextService.getPatientService()).andReturn(patientService)
 				.atLeastOnce();
 		expect(contextService.getPersonService()).andReturn(personService)
+				.atLeastOnce();
+		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
 
 		expect(
@@ -1336,17 +1351,39 @@ public class RegistrarBeanTest extends TestCase {
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				new Patient(patientId));
 
-		replay(contextService, patientService, personService);
+		expect(
+				motechService.getActiveMessageProgramEnrollments(patientId,
+						null, null)).andReturn(enrollments);
+		expect(
+				motechService.getMessages(enrollment1,
+						MessageStatus.SHOULD_ATTEMPT)).andReturn(
+				enrollment1Messages);
+		expect(motechService.saveMessage(capture(enrollment1MessageCap)))
+				.andReturn(new Message());
+		expect(
+				motechService.getMessages(enrollment2,
+						MessageStatus.SHOULD_ATTEMPT)).andReturn(
+				new ArrayList<Message>());
+		expect(
+				motechService
+						.saveMessageProgramEnrollment(capture(enrollment1Cap)))
+				.andReturn(new MessageProgramEnrollment());
+		expect(
+				motechService
+						.saveMessageProgramEnrollment(capture(enrollment2Cap)))
+				.andReturn(new MessageProgramEnrollment());
 
-		regBean.editPatient(nurse, patient, pPhone, pPhoneType, sPhone,
-				sPhoneType, nhis, nhisExpires);
+		replay(contextService, patientService, personService, motechService);
 
-		verify(contextService, patientService, personService);
+		regBean.editPatient(nurse, date, patient, phone, phoneType, nhis, date,
+				stopEnrollment);
+
+		verify(contextService, patientService, personService, motechService);
 
 		Patient capturedPatient = patientCap.getValue();
-		assertEquals(pPhone, capturedPatient.getAttribute(phoneAttributeType)
-				.getValue());
-		assertEquals(pPhoneType.toString(), capturedPatient.getAttribute(
+		assertEquals(phone.toString(), capturedPatient.getAttribute(
+				phoneAttributeType).getValue());
+		assertEquals(phoneType.toString(), capturedPatient.getAttribute(
 				phoneTypeAttributeType).getValue());
 		assertEquals(nhis, capturedPatient.getAttribute(nhisAttributeType)
 				.getValue());
@@ -1354,7 +1391,7 @@ public class RegistrarBeanTest extends TestCase {
 				.parse(capturedPatient.getAttribute(nhisExpirationType)
 						.getValue());
 		Calendar nhisExpCal = Calendar.getInstance();
-		nhisExpCal.setTime(nhisExpires);
+		nhisExpCal.setTime(date);
 		int year = nhisExpCal.get(Calendar.YEAR);
 		int month = nhisExpCal.get(Calendar.MONTH);
 		int day = nhisExpCal.get(Calendar.DAY_OF_MONTH);
@@ -1362,6 +1399,21 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(year, nhisExpCal.get(Calendar.YEAR));
 		assertEquals(month, nhisExpCal.get(Calendar.MONTH));
 		assertEquals(day, nhisExpCal.get(Calendar.DAY_OF_MONTH));
+
+		MessageProgramEnrollment enrollment1Captured = enrollment1Cap
+				.getValue();
+		assertNotNull("Enrollment 1 end date should be set",
+				enrollment1Captured.getEndDate());
+
+		Message enrollment1MessageCaptured = enrollment1MessageCap.getValue();
+		assertEquals(MessageStatus.CANCELLED, enrollment1MessageCaptured
+				.getAttemptStatus());
+
+		MessageProgramEnrollment enrollment2Captured = enrollment1Cap
+				.getValue();
+		assertNotNull("Enrollment 2 end date should be set",
+				enrollment2Captured.getEndDate());
+
 	}
 
 	public void testEditPatientAll() throws ParseException {
@@ -1496,61 +1548,6 @@ public class RegistrarBeanTest extends TestCase {
 				.getAttribute(mediaTypeAttributeType).getValue()));
 		assertEquals(languageText, capturedPatient.getAttribute(
 				languageAttributeType).getValue());
-	}
-
-	public void testStopPregnancyProgram() {
-
-		String pregnancyProgram1 = "Weekly Pregnancy Message Program", pregnancyProgram2 = "Weekly Info Pregnancy Message Program";
-
-		User nurse = new User(3);
-		Integer patientId = 2;
-		Patient patient = new Patient(patientId);
-
-		Capture<MessageProgramEnrollment> enrollmentCapture = new Capture<MessageProgramEnrollment>();
-		Capture<Message> messageCapture = new Capture<Message>();
-
-		expect(contextService.getMotechService()).andReturn(motechService)
-				.atLeastOnce();
-
-		List<MessageProgramEnrollment> enrollments = new ArrayList<MessageProgramEnrollment>();
-		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
-		enrollments.add(enrollment);
-
-		List<Message> messages = new ArrayList<Message>();
-		Message message = new Message();
-		messages.add(message);
-
-		expect(
-				motechService.getActiveMessageProgramEnrollments(patientId,
-						pregnancyProgram1, null)).andReturn(
-				new ArrayList<MessageProgramEnrollment>());
-		expect(
-				motechService.getActiveMessageProgramEnrollments(patientId,
-						pregnancyProgram2, null)).andReturn(enrollments);
-		expect(
-				motechService.getMessages(enrollment,
-						MessageStatus.SHOULD_ATTEMPT)).andReturn(messages);
-		expect(motechService.saveMessage(capture(messageCapture))).andReturn(
-				new Message());
-		expect(
-				motechService
-						.saveMessageProgramEnrollment(capture(enrollmentCapture)))
-				.andReturn(new MessageProgramEnrollment());
-
-		replay(contextService, motechService);
-
-		regBean.stopPregnancyProgram(nurse, patient);
-
-		verify(contextService, motechService);
-
-		MessageProgramEnrollment enrollmentCaptured = enrollmentCapture
-				.getValue();
-		assertNotNull("Enrollment end date must be set", enrollmentCaptured
-				.getEndDate());
-
-		Message messageCaptured = messageCapture.getValue();
-		assertEquals(MessageStatus.CANCELLED, messageCaptured
-				.getAttemptStatus());
 	}
 
 	public void testRegisterPregnancy() {

@@ -495,17 +495,20 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void editPatient(User nurse, Patient patient, String primaryPhone,
-			ContactNumberType primaryPhoneType, String secondaryPhone,
-			ContactNumberType secondaryPhoneType, String nhis, Date nhisExpires) {
+	public void editPatient(User nurse, Date date, Patient patient,
+			Integer phoneNumber, ContactNumberType phoneOwnership, String nhis,
+			Date nhisExpires, Boolean stopEnrollment) {
 
 		PatientService patientService = contextService.getPatientService();
 
-		setPatientAttributes(patient, null, Integer.parseInt(primaryPhone),
-				primaryPhoneType, null, null, null, null, null, null, null,
-				nhis, nhisExpires);
+		setPatientAttributes(patient, null, phoneNumber, phoneOwnership, null,
+				null, null, null, null, null, null, nhis, nhisExpires);
 
 		patientService.savePatient(patient);
+
+		if (Boolean.TRUE.equals(stopEnrollment)) {
+			removeAllMessageProgramEnrollments(patient.getPatientId());
+		}
 	}
 
 	@Transactional
@@ -592,19 +595,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				null, null, insured, nhis, nhisExpDate);
 
 		patientService.savePatient(patient);
-	}
-
-	@Transactional
-	public void stopPregnancyProgram(User nurse, Patient patient) {
-
-		String[] pregnancyPrograms = { "Weekly Pregnancy Message Program",
-				"Weekly Info Pregnancy Message Program" };
-
-		Integer patientId = patient.getPatientId();
-
-		for (String programName : pregnancyPrograms) {
-			removeMessageProgramEnrollment(patientId, programName, null);
-		}
 	}
 
 	@Transactional
@@ -1596,7 +1586,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	public List<Patient> getPatients(String firstName, String lastName,
 			String preferredName, Date birthDate, String community,
-			String phoneNumber, String nhisNumber, String motechId) {
+			Integer phoneNumber, String nhisNumber, String motechId) {
 
 		MotechService motechService = contextService.getMotechService();
 
@@ -1604,8 +1594,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
 		PatientIdentifierType motechIdType = getMotechPatientIdType();
 
+		String phoneString = null;
+		if (phoneNumber != null) {
+			phoneString = phoneNumber.toString();
+		}
+
 		return motechService.getPatients(firstName, lastName, preferredName,
-				birthDate, community, phoneNumber, phoneNumberAttrType,
+				birthDate, community, phoneString, phoneNumberAttrType,
 				nhisNumber, nhisAttrType, motechId, motechIdType);
 	}
 

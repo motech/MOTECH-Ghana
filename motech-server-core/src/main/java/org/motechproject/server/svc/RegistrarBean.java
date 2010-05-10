@@ -106,14 +106,9 @@ public interface RegistrarBean {
 	@RunAsAdminUser
 	public void editPatient(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Patient patient, String primaryPhone,
-			ContactNumberType primaryPhoneType, String secondaryPhone,
-			ContactNumberType secondaryPhoneType, String nhis, Date nhisExpires);
-
-	@RunAsAdminUser
-	public void stopPregnancyProgram(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Patient patient);
+			Date date, Patient patient, Integer phoneNumber,
+			ContactNumberType phoneOwnership, String nhis, Date nhisExpires,
+			Boolean stopEnrollment);
 
 	public void registerPregnancy(Integer id, Date dueDate,
 			Boolean dueDateConfirmed, Boolean registerPregProgram,
@@ -239,7 +234,7 @@ public interface RegistrarBean {
 			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES })
 	public List<Patient> getPatients(String firstName, String lastName,
 			String preferredName, Date birthDate, String community,
-			String phoneNumber, String nhisNumber, String motechId);
+			Integer phoneNumber, String nhisNumber, String motechId);
 
 	public List<Obs> getAllPregnancies();
 

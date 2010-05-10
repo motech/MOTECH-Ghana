@@ -58,9 +58,15 @@ public class DWRMotechService {
 		} catch (ParseException e) {
 		}
 
+		Integer parsedPhoneNumber = null;
+		try {
+			parsedPhoneNumber = Integer.parseInt(phoneNumber);
+		} catch (NumberFormatException e) {
+		}
+
 		List<Patient> matchingPatients = contextService.getRegistrarBean()
 				.getPatients(firstName, lastName, prefName, parsedBirthDate,
-						community, phoneNumber, nhisNumber, motechId);
+						community, parsedPhoneNumber, nhisNumber, motechId);
 
 		for (Patient patient : matchingPatients) {
 			WebPatient webPatient = new WebPatient();
