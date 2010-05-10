@@ -21,7 +21,6 @@ import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.GeneralPatientEncounter;
 import org.motechproject.server.model.HIVStatus;
 import org.motechproject.server.model.Message;
-import org.motechproject.server.model.MessageAttribute;
 import org.motechproject.server.model.MessageDefinition;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.MessageStatus;
@@ -39,6 +38,7 @@ import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
+import org.motechproject.server.ws.WebServiceModelConverter;
 import org.motechproject.server.ws.WebServiceModelConverterImpl;
 import org.motechproject.ws.BirthOutcome;
 import org.motechproject.ws.Care;
@@ -1044,6 +1044,71 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
+	public void recordPregnancyDeliveryNotification(User nurse, Date date,
+			Patient patient) {
+
+		EncounterService encounterService = contextService
+				.getEncounterService();
+
+		Location encounterLocation = getGhanaLocation();
+
+		Encounter encounter = new Encounter();
+		encounter
+				.setEncounterType(getPregnancyDeliveryNotificationEncounterType());
+		encounter.setEncounterDatetime(date);
+		encounter.setPatient(patient);
+		encounter.setLocation(encounterLocation);
+		encounter.setProvider(contextService.getAuthenticatedUser());
+
+		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
+		if (pregnancyObs == null) {
+			log
+					.warn("Entered Pregnancy delivery notification for patient without active pregnancy, "
+							+ "patient id=" + patient.getPatientId());
+		}
+
+		Obs pregnancyStatusObs = createBooleanValueObs(date,
+				getPregnancyStatusConcept(), patient, encounterLocation,
+				Boolean.FALSE, encounter, null);
+		pregnancyStatusObs.setObsGroup(pregnancyObs);
+		encounter.addObs(pregnancyStatusObs);
+
+		encounterService.saveEncounter(encounter);
+
+		sentDeliveryNotification(patient);
+	}
+
+	private void sentDeliveryNotification(Patient patient) {
+		UserService userService = contextService.getUserService();
+		List<User> users = userService.getAllUsers();
+
+		WebServiceModelConverter wsModelConverter = new WebServiceModelConverterImpl();
+		org.motechproject.ws.Patient wsPatient = wsModelConverter
+				.patientToWebService(patient, true);
+		org.motechproject.ws.Patient[] wsPatients = new org.motechproject.ws.Patient[] { wsPatient };
+
+		MessageDefinition messageDef = getMessageDefinition("pregnancy.notification");
+		if (messageDef == null) {
+			log.error("Pregnancy delivery notification message does not exist");
+			return;
+		}
+		String messageId = null;
+		NameValuePair[] nameValues = new NameValuePair[0];
+		MediaType mediaType = MediaType.TEXT;
+		String languageCode = "en";
+
+		// TODO: Only sent to facility phone for patient's community
+		for (User user : users) {
+			String phoneNumber = getPersonPhoneNumber(user);
+			if (phoneNumber == null) {
+				continue;
+			}
+			sendNurseMessage(messageId, nameValues, phoneNumber, languageCode,
+					mediaType, messageDef.getPublicId(), null, null, wsPatients);
+		}
+	}
+
+	@Transactional
 	public void recordMotherPPCVisit(User nurse, Date date, Patient patient,
 			Integer visitNumber, Boolean vitaminA, Integer ttDose) {
 
@@ -2005,40 +2070,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	/* PatientObsService methods end */
 
-	/* MessageDefinition methods start */
-	public NameValuePair[] getNameValueContent(
-			MessageDefinition messageDefinition, Integer messageRecipientId) {
-
-		List<NameValuePair> nameValueList = new ArrayList<NameValuePair>();
-		for (MessageAttribute attribute : messageDefinition
-				.getMessageAttributes()) {
-			NameValuePair pair = new NameValuePair();
-			pair.setName(attribute.getName());
-			if (attribute.getName().equals("PatientFirstName")) {
-				pair.setValue(getPatientFirstName(messageRecipientId));
-			} else if (attribute.getName().equals("DueDate")) {
-				pair.setValue(getPatientDueDate(messageRecipientId));
-			}
-			nameValueList.add(pair);
-		}
-		return nameValueList.toArray(new NameValuePair[nameValueList.size()]);
-	}
-
-	public String getPatientFirstName(Integer patientId) {
-		PersonService personService = contextService.getPersonService();
-		Person person = personService.getPerson(patientId);
-		return person.getGivenName();
-	}
-
-	public String getPatientDueDate(Integer patientId) {
-		PatientService patientService = contextService.getPatientService();
-		Patient patient = patientService.getPatient(patientId);
-		Date dueDate = this.getLastObsValue(patient, getDueDateConcept());
-		return dueDate.toString();
-	}
-
-	/* MessageDefinition methods end */
-
 	/* MessageSchedulerImpl methods start */
 	public void scheduleMessage(String messageKey,
 			MessageProgramEnrollment enrollment, Date messageDate,
@@ -2347,6 +2378,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Ghana Mother Postnatal Care (PNC) Visit", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PNCCHILDVISIT,
 				"Ghana Child Postnatal Care (PNC) Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGDELNOTIFYVISIT,
+				"Ghana Pregnancy Delivery Notification", admin);
 
 		log.info("Verifying Concepts Exist");
 		createConcept(MotechConstants.CONCEPT_VISIT_NUMBER, "Visit Number",
@@ -3160,8 +3193,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			String messageId = message.getPublicId();
 			MediaType mediaType = getPersonMediaType(person);
 			String languageCode = getPersonLanguageCode(person);
-			NameValuePair[] personalInfo = this.getNameValueContent(message
-					.getSchedule().getMessage(), recipientId);
+			NameValuePair[] personalInfo = new NameValuePair[0];
 
 			Date messageStartDate = null;
 			Date messageEndDate = null;
@@ -3717,6 +3749,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public EncounterType getPregnancyDeliveryVisitEncounterType() {
 		return contextService.getEncounterService().getEncounterType(
 				MotechConstants.ENCOUNTER_TYPE_PREGDELVISIT);
+	}
+
+	public EncounterType getPregnancyDeliveryNotificationEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_PREGDELNOTIFYVISIT);
 	}
 
 	public EncounterType getGeneralVisitEncounterType() {

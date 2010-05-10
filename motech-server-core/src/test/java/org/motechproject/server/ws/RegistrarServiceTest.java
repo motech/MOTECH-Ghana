@@ -455,6 +455,7 @@ public class RegistrarServiceTest {
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
+		registrarBean.recordPregnancyDeliveryNotification(nurse, date, patient);
 
 		replay(registrarBean, openmrsBean);
 

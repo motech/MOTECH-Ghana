@@ -27,6 +27,7 @@ public final class MotechConstants {
 	public static final String ENCOUNTER_TYPE_PREGREGVISIT = "PREGREGVISIT";
 	public static final String ENCOUNTER_TYPE_PREGTERMVISIT = "PREGTERMVISIT";
 	public static final String ENCOUNTER_TYPE_PREGDELVISIT = "PREGDELVISIT";
+	public static final String ENCOUNTER_TYPE_PREGDELNOTIFYVISIT = "PREGDELNOTIFYVISIT";
 	public static final String ENCOUNTER_TYPE_GENERALVISIT = "GENERALVISIT";
 	public static final String ENCOUNTER_TYPE_TTVISIT = "TTVISIT";
 	public static final String ENCOUNTER_TYPE_CWCVISIT = "CWCVISIT";

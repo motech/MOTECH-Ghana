@@ -225,15 +225,17 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
-		validateMotechId(motechId, errors, "MotechID");
+		User nurse = validateChpsId(staffId, errors, "StaffID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Record Delivery Notification request", errors);
 		}
 
-		// TODO: Update to add call to store delivery notification encounter
+		registrarBean.recordPregnancyDeliveryNotification(nurse, datetime,
+				patient);
 	}
 
 	@WebMethod

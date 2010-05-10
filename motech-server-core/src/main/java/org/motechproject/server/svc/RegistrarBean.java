@@ -153,6 +153,11 @@ public interface RegistrarBean {
 			Integer cause, List<BirthOutcomeChild> outcomes);
 
 	@RunAsAdminUser
+	public void recordPregnancyDeliveryNotification(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Date date, Patient patient);
+
+	@RunAsAdminUser
 	public void recordMotherPPCVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Date date, Patient patient, Integer visitNumber, Boolean vitaminA,

@@ -153,7 +153,8 @@
 			(91,'ipti.upcoming',94,'REMINDER'),(92,'ipti.overdue',95,'REMINDER'),
 			(93,'yellowfever.upcoming',96,'REMINDER'),(94,'yellowfever.overdue',97,'REMINDER'),
 			(95,'measles.upcoming',98,'REMINDER'),(96,'measles.overdue',99,'REMINDER'),
-			(97,'vitamina.upcoming',100,'REMINDER'),(98,'vitamina.overdue',101,'REMINDER');
+			(97,'vitamina.upcoming',100,'REMINDER'),(98,'vitamina.overdue',101,'REMINDER'),
+			(99,'pregnancy.notification',102,'INFORMATIONAL');
 
 			CREATE TABLE IF NOT EXISTS `motechmodule_generalencounter` (
 				`motechmodule_generalencounter_id` bigint NOT NULL auto_increment,
