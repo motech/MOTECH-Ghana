@@ -229,10 +229,11 @@ public class RegistrarBeanRecordVisitsTest extends
 					.size());
 
 			// PNC Visit for Child 2
-			regService.recordChildPNCVisit(nurse, date, child2, true, 1, 1,
-					true, true, true, true, true);
+			regService.recordChildCWCVisit(nurse, date, child2, 1, "House",
+					"Community", true, 1, 1, true, true, true, true, true,
+					true, 25.0, 5, 35, true, "Comments");
 
-			assertEquals("PNC visit not added for Child 2", 2, Context
+			assertEquals("CWC visit not added for Child 2", 2, Context
 					.getEncounterService().getEncountersByPatient(child2)
 					.size());
 

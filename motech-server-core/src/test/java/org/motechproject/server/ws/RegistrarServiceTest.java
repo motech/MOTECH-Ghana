@@ -769,8 +769,10 @@ public class RegistrarServiceTest {
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordChildPNCVisit(nurse, date, patient, bcg, opvDose,
-				pentaDose, yellowFever, csm, measles, ipti, vitaminA);
+		registrarBean.recordChildCWCVisit(nurse, date, patient, location,
+				house, community, bcg, opvDose, pentaDose, measles,
+				yellowFever, csm, ipti, vitaminA, dewormer, weight, muac,
+				height, maleInvolved, comments);
 
 		replay(registrarBean, openmrsBean);
 

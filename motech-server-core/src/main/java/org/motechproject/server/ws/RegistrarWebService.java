@@ -389,9 +389,10 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Child CWC Visit request", errors);
 		}
 
-		// TODO: Update to include new values and rename to CWC
-		registrarBean.recordChildPNCVisit(nurse, date, patient, bcg, opvDose,
-				pentaDose, yellowFever, csm, measles, ipti, vitaminA);
+		registrarBean.recordChildCWCVisit(nurse, date, patient, cwcLocation,
+				house, community, bcg, opvDose, pentaDose, measles,
+				yellowFever, csm, ipti, vitaminA, dewormer, weight, muac,
+				height, maleInvolved, comments);
 	}
 
 	@WebMethod

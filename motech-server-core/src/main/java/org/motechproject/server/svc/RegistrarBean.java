@@ -198,11 +198,13 @@ public interface RegistrarBean {
 			Date date, Patient patient, Integer cause);
 
 	@RunAsAdminUser
-	public void recordChildPNCVisit(
+	public void recordChildCWCVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, Boolean bcg, Integer opvDose,
-			Integer pentaDose, Boolean yellowFever, Boolean csm,
-			Boolean measles, Boolean ipti, Boolean vitaminA);
+			Date date, Patient patient, Integer cwcLocation, String house,
+			String community, Boolean bcg, Integer opvDose, Integer pentaDose,
+			Boolean measles, Boolean yellowFever, Boolean csm, Boolean ipti,
+			Boolean vitaminA, Boolean dewormer, Double weight, Integer muac,
+			Integer height, Boolean maleInvolved, String comments);
 
 	public void recordGeneralOutpatientVisit(Integer staffId,
 			Integer facilityId, Date date, String serialNumber, Gender sex,

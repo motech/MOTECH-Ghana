@@ -1162,8 +1162,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			}
 
 			if (Boolean.TRUE.equals(childOutcome.getBcg()) || opvDose != null) {
-				recordChildPNCVisit(nurse, date, child, childOutcome.getBcg(),
-						opvDose, null, null, null, null, null, null);
+				recordChildCWCVisit(nurse, date, child, null, null, null,
+						childOutcome.getBcg(), opvDose, null, null, null, null,
+						null, null, null, null, null, null, null, null);
 			}
 
 			if (BirthOutcome.A != childOutcome.getOutcome()) {
@@ -1344,72 +1345,121 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordChildPNCVisit(User nurse, Date date, Patient patient,
-			Boolean bcg, Integer opvDose, Integer pentaDose,
-			Boolean yellowFever, Boolean csm, Boolean measles, Boolean ipti,
-			Boolean vitaminA) {
+	public void recordChildCWCVisit(User nurse, Date date, Patient patient,
+			Integer cwcLocation, String house, String community, Boolean bcg,
+			Integer opvDose, Integer pentaDose, Boolean measles,
+			Boolean yellowFever, Boolean csm, Boolean ipti, Boolean vitaminA,
+			Boolean dewormer, Double weight, Integer muac, Integer height,
+			Boolean maleInvolved, String comments) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
-		ObsService obsService = contextService.getObsService();
 
 		Location location = getGhanaLocation();
 
 		Encounter encounter = new Encounter();
-		encounter.setEncounterType(getChildPNCVisitEncounterType());
+		encounter.setEncounterType(getCWCVisitEncounterType());
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(location);
 		encounter.setProvider(contextService.getAuthenticatedUser());
-		encounter = encounterService.saveEncounter(encounter);
 
+		if (cwcLocation != null) {
+			Obs cwcLocationObs = createNumericValueObs(date,
+					getCWCLocationConcept(), patient, location, cwcLocation,
+					encounter, null);
+			encounter.addObs(cwcLocationObs);
+		}
+		if (house != null) {
+			Obs houseObs = createTextValueObs(date, getHouseConcept(), patient,
+					location, house, encounter, null);
+			encounter.addObs(houseObs);
+		}
+		if (community != null) {
+			Obs communityObs = createTextValueObs(date, getCommunityConcept(),
+					patient, location, community, encounter, null);
+			encounter.addObs(communityObs);
+		}
 		if (Boolean.TRUE.equals(bcg)) {
 			Obs bcgObs = createConceptValueObs(date,
 					getImmunizationsOrderedConcept(), patient, location,
 					getBCGConcept(), encounter, null);
-			obsService.saveObs(bcgObs, null);
+			encounter.addObs(bcgObs);
 		}
 		if (opvDose != null) {
 			Obs opvDoseObs = createNumericValueObs(date, getOPVDoseConcept(),
 					patient, location, opvDose, encounter, null);
-			obsService.saveObs(opvDoseObs, null);
+			encounter.addObs(opvDoseObs);
 		}
 		if (pentaDose != null) {
 			Obs pentaDoseObs = createNumericValueObs(date,
 					getPentaDoseConcept(), patient, location, pentaDose,
 					encounter, null);
-			obsService.saveObs(pentaDoseObs, null);
+			encounter.addObs(pentaDoseObs);
 		}
 		if (Boolean.TRUE.equals(yellowFever)) {
 			Obs yellowFeverObs = createConceptValueObs(date,
 					getImmunizationsOrderedConcept(), patient, location,
 					getYellowFeverConcept(), encounter, null);
-			obsService.saveObs(yellowFeverObs, null);
+			encounter.addObs(yellowFeverObs);
 		}
 		if (Boolean.TRUE.equals(csm)) {
 			Obs csmObs = createConceptValueObs(date,
 					getImmunizationsOrderedConcept(), patient, location,
 					getCSMConcept(), encounter, null);
-			obsService.saveObs(csmObs, null);
+			encounter.addObs(csmObs);
 		}
 		if (Boolean.TRUE.equals(measles)) {
 			Obs measlesObs = createConceptValueObs(date,
 					getImmunizationsOrderedConcept(), patient, location,
 					getMeaslesConcept(), encounter, null);
-			obsService.saveObs(measlesObs, null);
+			encounter.addObs(measlesObs);
 		}
 		if (Boolean.TRUE.equals(ipti)) {
 			Obs iptiObs = createConceptValueObs(date,
 					getImmunizationsOrderedConcept(), patient, location,
 					getIPTiConcept(), encounter, null);
-			obsService.saveObs(iptiObs, null);
+			encounter.addObs(iptiObs);
 		}
 		if (Boolean.TRUE.equals(vitaminA)) {
 			Obs vitaminAObs = createConceptValueObs(date,
 					getImmunizationsOrderedConcept(), patient, location,
 					getVitaminAConcept(), encounter, null);
-			obsService.saveObs(vitaminAObs, null);
+			encounter.addObs(vitaminAObs);
 		}
+		if (dewormer != null) {
+			Obs dewormerObs = createBooleanValueObs(date, getDewormerConcept(),
+					patient, location, dewormer, encounter, null);
+			encounter.addObs(dewormerObs);
+		}
+		if (weight != null) {
+			Obs weightObs = createNumericValueObs(date, getWeightConcept(),
+					patient, location, weight, encounter, null);
+			encounter.addObs(weightObs);
+		}
+		if (muac != null) {
+			Obs muacObs = createNumericValueObs(date, getMUACConcept(),
+					patient, location, muac, encounter, null);
+			encounter.addObs(muacObs);
+		}
+		if (height != null) {
+			Obs heightObs = createNumericValueObs(date, getHeightConcept(),
+					patient, location, height, encounter, null);
+			encounter.addObs(heightObs);
+		}
+		if (maleInvolved != null) {
+			Obs maleInvolvedObs = createBooleanValueObs(date,
+					getMaleInvolvementConcept(), patient, location,
+					maleInvolved, encounter, null);
+			encounter.addObs(maleInvolvedObs);
+		}
+		if (comments != null) {
+			Obs commentsObs = createTextValueObs(date, getCommentsConcept(),
+					patient, location, comments, encounter, null);
+			encounter.addObs(commentsObs);
+		}
+
+		encounterService.saveEncounter(encounter);
 	}
 
 	@Transactional
