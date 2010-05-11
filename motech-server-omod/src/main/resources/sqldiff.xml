@@ -216,12 +216,22 @@
 				CONSTRAINT `location_of_facility` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			
-			CREATE TABLE IF NOT EXISTS `motechmodule_facility_community` (
-				`facility_id` bigint NOT NULL,
-				`location_id` int(11) NOT NULL UNIQUE,
-				CONSTRAINT `fac_com_rel_facility` FOREIGN KEY (`facility_id`) REFERENCES `motechmodule_facility` (`id`),
-				CONSTRAINT `fac_com_rel_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`)
+			CREATE TABLE IF NOT EXISTS `motechmodule_community` (
+				`id` bigint NOT NULL auto_increment,
+				`community_id` bigint NOT NULL UNIQUE,
+				`name` varchar(50) NOT NULL UNIQUE,
+				`facility_id` bigint,
+				PRIMARY KEY (`id`),
+				CONSTRAINT `facility_of_community` FOREIGN KEY (`facility_id`) REFERENCES `motechmodule_facility` (`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			CREATE TABLE IF NOT EXISTS `motechmodule_community_patient` (
+				`community_id` bigint NOT NULL,
+				`patient_id` int(11) NOT NULL UNIQUE,
+				CONSTRAINT `com_pat_rel_community` FOREIGN KEY (`community_id`) REFERENCES `motechmodule_community` (`id`),
+				CONSTRAINT `com_pat_rel_patient` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+						
 		</sql>
 	</diff>
 	

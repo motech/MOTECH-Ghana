@@ -13,7 +13,7 @@ public class Facility implements Serializable {
 	private Long facilityId;
 	private Location location;
 	private String phoneNumber;
-	private Set<Location> communities;
+	private Set<Community> communities;
 
 	public Long getId() {
 		return id;
@@ -47,11 +47,11 @@ public class Facility implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public Set<Location> getCommunities() {
+	public Set<Community> getCommunities() {
 		return communities;
 	}
 
-	public void setCommunities(Set<Location> communities) {
+	public void setCommunities(Set<Community> communities) {
 		this.communities = communities;
 	}
 }

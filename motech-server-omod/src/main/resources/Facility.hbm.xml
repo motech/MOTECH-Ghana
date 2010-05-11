@@ -11,10 +11,9 @@
 			column="location_id" not-null="true" />
 		<property name="phoneNumber" type="string" column="phone_number"
 			length="50" />
-		<set name="communities" table="motechmodule_facility_community">
+		<set name="communities" inverse="true">
 			<key column="facility_id" />
-			<many-to-many column="location_id" class="org.openmrs.Location"
-				unique="true" />
+			<one-to-many class="Community" />
 		</set>
 	</class>
 </hibernate-mapping>
