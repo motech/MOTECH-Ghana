@@ -204,22 +204,20 @@ public interface RegistrarBean {
 			Integer pentaDose, Boolean yellowFever, Boolean csm,
 			Boolean measles, Boolean ipti, Boolean vitaminA);
 
-	public void recordGeneralVisit(String chpsId, Date date,
-			String serialNumber, Gender sex, Date birthDate, Boolean insured,
-			Boolean newCase, Integer diagnosis, Integer secondaryDiagnosis,
-			Boolean referred);
+	public void recordGeneralOutpatientVisit(Integer staffId,
+			Integer facilityId, Date date, String serialNumber, Gender sex,
+			Date dateOfBirth, Boolean insured, Integer diagnosis,
+			Integer secondDiagnosis, Boolean rdtGiven, Boolean rdtPositive,
+			Boolean actTreated, Boolean newCase, Boolean referred,
+			String comments);
 
 	@RunAsAdminUser
-	public void recordChildVisit(
+	public void recordOutpatientVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, String serialNumber, Boolean newCase,
-			Integer diagnosis, Integer secondDiagnosis, Boolean referred);
-
-	@RunAsAdminUser
-	public void recordMotherVisit(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, String serialNumber, Boolean newCase,
-			Integer diagnosis, Integer secondDiagnosis, Boolean referred);
+			Date date, Patient patient, String serialNumber, Integer diagnosis,
+			Integer secondDiagnosis, Boolean rdtGiven, Boolean rdtPositive,
+			Boolean actTreated, Boolean newCase, Boolean referred,
+			String comments);
 
 	public void log(LogType type, String message);
 

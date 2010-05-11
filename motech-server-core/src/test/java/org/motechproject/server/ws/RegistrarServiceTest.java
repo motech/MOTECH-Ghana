@@ -1270,9 +1270,9 @@ public class RegistrarServiceTest {
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
 
-		registrarBean.recordGeneralVisit(staffId.toString(), date, serial,
-				gender, date, insured, newCase, diagnosis, secondDiagnosis,
-				referred);
+		registrarBean.recordGeneralOutpatientVisit(staffId, facilityId, date,
+				serial, gender, date, insured, diagnosis, secondDiagnosis,
+				rdtGiven, rdtPositive, actTreated, newCase, referred, comments);
 
 		replay(registrarBean, openmrsBean);
 
@@ -1325,8 +1325,9 @@ public class RegistrarServiceTest {
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordChildVisit(nurse, date, patient, serial, newCase,
-				diagnosis, secondDiagnosis, referred);
+		registrarBean.recordOutpatientVisit(nurse, date, patient, serial,
+				diagnosis, secondDiagnosis, rdtGiven, rdtPositive, actTreated,
+				newCase, referred, comments);
 
 		replay(registrarBean, openmrsBean);
 
@@ -1390,8 +1391,9 @@ public class RegistrarServiceTest {
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordMotherVisit(nurse, date, patient, serial, newCase,
-				diagnosis, secondDiagnosis, referred);
+		registrarBean.recordOutpatientVisit(nurse, date, patient, serial,
+				diagnosis, secondDiagnosis, rdtGiven, rdtPositive, actTreated,
+				newCase, referred, comments);
 
 		replay(registrarBean, openmrsBean);
 

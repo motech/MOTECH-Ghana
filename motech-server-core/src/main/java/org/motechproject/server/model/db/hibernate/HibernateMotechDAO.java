@@ -18,7 +18,7 @@ import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.GeneralPatientEncounter;
+import org.motechproject.server.model.GeneralOutpatientEncounter;
 import org.motechproject.server.model.Log;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageAttribute;
@@ -278,8 +278,8 @@ public class HibernateMotechDAO implements MotechDAO {
 		return (List<MessageProgramEnrollment>) criteria.list();
 	}
 
-	public GeneralPatientEncounter saveGeneralPatientEncounter(
-			GeneralPatientEncounter encounter) {
+	public GeneralOutpatientEncounter saveGeneralOutpatientEncounter(
+			GeneralOutpatientEncounter encounter) {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(encounter);
 		return encounter;

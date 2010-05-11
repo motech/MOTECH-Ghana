@@ -655,10 +655,10 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		// TODO: Update to include new values
-		registrarBean.recordGeneralVisit(staffId.toString(), date,
-				serialNumber, sex, dateOfBirth, insured, newCase, diagnosis,
-				secondDiagnosis, referred);
+		registrarBean.recordGeneralOutpatientVisit(staffId, facilityId, date,
+				serialNumber, sex, dateOfBirth, insured, diagnosis,
+				secondDiagnosis, rdtGiven, rdtPositive, actTreated, newCase,
+				referred, comments);
 	}
 
 	@WebMethod
@@ -688,9 +688,9 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Child Visit request", errors);
 		}
 
-		// TODO: Update to include new values
-		registrarBean.recordChildVisit(nurse, date, patient, serialNumber,
-				newCase, diagnosis, secondDiagnosis, referred);
+		registrarBean.recordOutpatientVisit(nurse, date, patient, serialNumber,
+				diagnosis, secondDiagnosis, rdtGiven, rdtPositive, actTreated,
+				newCase, referred, comments);
 	}
 
 	@WebMethod
@@ -720,9 +720,9 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Mother Visit request", errors);
 		}
 
-		// TODO: Update to include new values
-		registrarBean.recordMotherVisit(nurse, date, patient, serialNumber,
-				newCase, diagnosis, secondDiagnosis, referred);
+		registrarBean.recordOutpatientVisit(nurse, date, patient, serialNumber,
+				diagnosis, secondDiagnosis, rdtGiven, rdtPositive, actTreated,
+				newCase, referred, comments);
 	}
 
 	@WebMethod

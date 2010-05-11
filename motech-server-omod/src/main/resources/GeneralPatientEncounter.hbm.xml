@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="${corePackage}.model">
-	<class name="GeneralPatientEncounter" table="motechmodule_generalencounter">
-		<id name="id" type="long" column="motechmodule_generalencounter_id">
+	<class name="GeneralOutpatientEncounter" table="motechmodule_generaloutpatientencounter">
+		<id name="id" type="long" column="id">
 			<generator class="native" />
 		</id>
 		<property name="date" type="java.util.Date" column="date"
 			not-null="true" length="19" />
-		<property name="facilityId" type="string" column="facility_id"
-			not-null="true" length="255" />
+		<property name="staffId" type="int" column="staff_id"
+			not-null="true" />
+		<property name="facilityId" type="int" column="facility_id"
+			not-null="true" />
 		<property name="serialNumber" type="string" column="serial_number"
 			not-null="true" length="255" />
 		<property name="sex"
@@ -26,5 +28,10 @@
 			column="secondary_diagnosis" />
 		<property name="referred" type="boolean" column="referred"
 			not-null="true" />
+		<property name="rdtGiven" type="boolean" column="rdt_given" />
+		<property name="rdtPositive" type="boolean" column="rdt_positive" />
+		<property name="actTreated" type="boolean" column="act_treated" />
+		<property name="comments" type="string" column="comments"
+			length="200" />
 	</class>
 </hibernate-mapping>

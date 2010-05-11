@@ -7,7 +7,7 @@ import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.GeneralPatientEncounter;
+import org.motechproject.server.model.GeneralOutpatientEncounter;
 import org.motechproject.server.model.Log;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageAttribute;
@@ -90,8 +90,8 @@ public interface MotechDAO {
 	List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
 			Integer personId, String program, Integer obsId);
 
-	GeneralPatientEncounter saveGeneralPatientEncounter(
-			GeneralPatientEncounter encounter);
+	GeneralOutpatientEncounter saveGeneralOutpatientEncounter(
+			GeneralOutpatientEncounter encounter);
 
 	List<Location> getAllCountries();
 

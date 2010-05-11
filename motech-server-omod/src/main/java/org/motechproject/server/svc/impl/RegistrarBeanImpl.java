@@ -18,7 +18,7 @@ import org.motechproject.server.event.MessageProgram;
 import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.model.GeneralPatientEncounter;
+import org.motechproject.server.model.GeneralOutpatientEncounter;
 import org.motechproject.server.model.HIVStatus;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageDefinition;
@@ -1413,98 +1413,98 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordGeneralVisit(String chpsId, Date date,
-			String serialNumber, Gender sex, Date birthDate, Boolean insured,
-			Boolean newCase, Integer diagnosis, Integer secondaryDiagnosis,
-			Boolean referred) {
-
-		log.debug("Date: " + date + ", CHPS Id: " + chpsId + ", Serial: "
-				+ serialNumber + ", Sex: " + sex + ", Birthdate: " + birthDate
-				+ ", Insured: " + insured + ", New Case: " + newCase
-				+ ", Diagnosis: " + diagnosis + ", Sec Diagnosis: "
-				+ secondaryDiagnosis + ", Referred: " + referred);
+	public void recordGeneralOutpatientVisit(Integer staffId,
+			Integer facilityId, Date date, String serialNumber, Gender sex,
+			Date dateOfBirth, Boolean insured, Integer diagnosis,
+			Integer secondDiagnosis, Boolean rdtGiven, Boolean rdtPositive,
+			Boolean actTreated, Boolean newCase, Boolean referred,
+			String comments) {
 
 		MotechService motechService = contextService.getMotechService();
 
-		GeneralPatientEncounter encounter = new GeneralPatientEncounter();
-		encounter.setFacilityId(chpsId);
-		encounter.setDate(date);
-		encounter.setSerialNumber(serialNumber);
-		encounter.setSex(sex);
-		encounter.setBirthDate(birthDate);
-		encounter.setInsured(insured);
-		encounter.setNewCase(newCase);
-		encounter.setDiagnosis(diagnosis);
-		encounter.setSecondaryDiagnosis(secondaryDiagnosis);
-		encounter.setReferred(referred);
+		GeneralOutpatientEncounter encounter = new GeneralOutpatientEncounter(
+				date, staffId, facilityId, serialNumber, sex, dateOfBirth,
+				insured, newCase, diagnosis, secondDiagnosis, referred,
+				rdtGiven, rdtPositive, actTreated, comments);
 
-		motechService.saveGeneralPatientEncounter(encounter);
+		if (log.isDebugEnabled()) {
+			log.debug(encounter.toString());
+		}
+
+		motechService.saveGeneralOutpatientEncounter(encounter);
 	}
 
 	@Transactional
-	public void recordChildVisit(User nurse, Date date, Patient patient,
-			String serialNumber, Boolean newCase, Integer diagnosis,
-			Integer secondDiagnosis, Boolean referred) {
-
-		recordMotherChildGeneralVisit(nurse, date, patient, serialNumber,
-				newCase, diagnosis, secondDiagnosis, referred);
-	}
-
-	@Transactional
-	public void recordMotherVisit(User nurse, Date date, Patient patient,
-			String serialNumber, Boolean newCase, Integer diagnosis,
-			Integer secondDiagnosis, Boolean referred) {
-
-		recordMotherChildGeneralVisit(nurse, date, patient, serialNumber,
-				newCase, diagnosis, secondDiagnosis, referred);
-	}
-
-	private void recordMotherChildGeneralVisit(User nurse, Date date,
-			Patient patient, String serialNumber, Boolean newCase,
-			Integer diagnosis, Integer secondDiagnosis, Boolean referred) {
+	public void recordOutpatientVisit(User nurse, Date date, Patient patient,
+			String serialNumber, Integer diagnosis, Integer secondDiagnosis,
+			Boolean rdtGiven, Boolean rdtPositive, Boolean actTreated,
+			Boolean newCase, Boolean referred, String comments) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
-		ObsService obsService = contextService.getObsService();
 
 		Location location = getGhanaLocation();
 
 		Encounter encounter = new Encounter();
-		encounter.setEncounterType(getGeneralVisitEncounterType());
+		encounter.setEncounterType(getOutpatientVisitEncounterType());
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(location);
 		encounter.setProvider(contextService.getAuthenticatedUser());
-		encounter = encounterService.saveEncounter(encounter);
 
 		if (serialNumber != null) {
 			Obs serialNumberObs = createTextValueObs(date,
 					getSerialNumberConcept(), patient, location, serialNumber,
 					encounter, null);
-			obsService.saveObs(serialNumberObs, null);
+			encounter.addObs(serialNumberObs);
 		}
 		if (newCase != null) {
 			Obs newCaseObs = createBooleanValueObs(date, getNewCaseConcept(),
 					patient, location, newCase, encounter, null);
-			obsService.saveObs(newCaseObs, null);
+			encounter.addObs(newCaseObs);
 		}
 		if (diagnosis != null) {
 			Obs diagnosisObs = createNumericValueObs(date,
 					getPrimaryDiagnosisConcept(), patient, location, diagnosis,
 					encounter, null);
-			obsService.saveObs(diagnosisObs, null);
+			encounter.addObs(diagnosisObs);
 		}
 		if (secondDiagnosis != null) {
 			Obs secondDiagnosisObs = createNumericValueObs(date,
 					getSecondaryDiagnosisConcept(), patient, location,
 					secondDiagnosis, encounter, null);
-			obsService.saveObs(secondDiagnosisObs, null);
+			encounter.addObs(secondDiagnosisObs);
 		}
 		if (referred != null) {
 			Obs referredObs = createBooleanValueObs(date, getReferredConcept(),
 					patient, location, referred, encounter, null);
-			obsService.saveObs(referredObs, null);
+			encounter.addObs(referredObs);
 		}
+		if (Boolean.TRUE.equals(rdtGiven)) {
+			Concept rdtTestValueConcept = null;
+			if (Boolean.TRUE.equals(rdtPositive)) {
+				rdtTestValueConcept = getPositiveConcept();
+			} else {
+				rdtTestValueConcept = getNegativeConcept();
+			}
+			Obs rdtTestObs = createConceptValueObs(date,
+					getMalariaRDTConcept(), patient, location,
+					rdtTestValueConcept, encounter, null);
+			encounter.addObs(rdtTestObs);
+		}
+		if (actTreated != null) {
+			Obs actTreatedObs = createBooleanValueObs(date,
+					getACTTreatmentConcept(), patient, location, actTreated,
+					encounter, null);
+			encounter.addObs(actTreatedObs);
+		}
+		if (comments != null) {
+			Obs commentsObs = createTextValueObs(date, getCommentsConcept(),
+					patient, location, comments, encounter, null);
+			encounter.addObs(commentsObs);
+		}
+
+		encounterService.saveEncounter(encounter);
 	}
 
 	@Transactional
@@ -2538,8 +2538,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Ghana Pregnancy Termination Visit", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGDELVISIT,
 				"Ghana Pregnancy Delivery Visit", admin);
-		createEncounterType(MotechConstants.ENCOUNTER_TYPE_GENERALVISIT,
-				"Ghana General Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_OUTPATIENTVISIT,
+				"Ghana Outpatient Visit", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_TTVISIT,
 				"Ghana Tetanus outside Pregnancy Visit", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_CWCVISIT,
@@ -3938,9 +3938,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.ENCOUNTER_TYPE_PREGDELNOTIFYVISIT);
 	}
 
-	public EncounterType getGeneralVisitEncounterType() {
+	public EncounterType getOutpatientVisitEncounterType() {
 		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_GENERALVISIT);
+				MotechConstants.ENCOUNTER_TYPE_OUTPATIENTVISIT);
 	}
 
 	public EncounterType getTTVisitEncounterType() {

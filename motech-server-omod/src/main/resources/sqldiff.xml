@@ -156,10 +156,11 @@
 			(97,'vitamina.upcoming',100,'REMINDER'),(98,'vitamina.overdue',101,'REMINDER'),
 			(99,'pregnancy.notification',102,'INFORMATIONAL');
 
-			CREATE TABLE IF NOT EXISTS `motechmodule_generalencounter` (
-				`motechmodule_generalencounter_id` bigint NOT NULL auto_increment,
+			CREATE TABLE IF NOT EXISTS `motechmodule_generaloutpatientencounter` (
+				`id` bigint NOT NULL auto_increment,
 				`date` date NOT NULL,
-				`facility_id` varchar(255) NOT NULL,
+				`staff_id` int NOT NULL,
+				`facility_id` int NOT NULL,
 				`serial_number` varchar(255) NOT NULL,
 				`sex` varchar(6) NOT NULL,
 				`birthdate` date NOT NULL,
@@ -168,7 +169,11 @@
 				`diagnosis` int NOT NULL,	
 				`secondary_diagnosis` int,
 				`referred` boolean NOT NULL,
-				PRIMARY KEY (`motechmodule_generalencounter_id`)
+				`rdt_given` boolean,
+				`rdt_positive` boolean,
+				`act_treated` boolean,
+				`comments` varchar(200),
+				PRIMARY KEY (`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			
 			CREATE TABLE IF NOT EXISTS `motechmodule_expected_obs` (

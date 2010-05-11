@@ -19,7 +19,7 @@ import java.util.List;
 import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.model.GeneralPatientEncounter;
+import org.motechproject.server.model.GeneralOutpatientEncounter;
 import org.motechproject.server.model.Log;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageAttribute;
@@ -228,9 +228,9 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		}
 	}
 
-	public GeneralPatientEncounter saveGeneralPatientEncounter(
-			GeneralPatientEncounter encounter) {
-		return motechDAO.saveGeneralPatientEncounter(encounter);
+	public GeneralOutpatientEncounter saveGeneralOutpatientEncounter(
+			GeneralOutpatientEncounter encounter) {
+		return motechDAO.saveGeneralOutpatientEncounter(encounter);
 	}
 
 	public List<Location> getAllCountries() {

@@ -19,7 +19,7 @@ import java.util.List;
 import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.model.GeneralPatientEncounter;
+import org.motechproject.server.model.GeneralOutpatientEncounter;
 import org.motechproject.server.model.Log;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageAttribute;
@@ -142,8 +142,8 @@ public interface MotechService extends OpenmrsService {
 	void removeTroubledPhone(String phoneNumber);
 
 	@Transactional
-	GeneralPatientEncounter saveGeneralPatientEncounter(
-			GeneralPatientEncounter encounter);
+	GeneralOutpatientEncounter saveGeneralOutpatientEncounter(
+			GeneralOutpatientEncounter encounter);
 
 	@Transactional(readOnly = true)
 	List<Location> getAllCountries();

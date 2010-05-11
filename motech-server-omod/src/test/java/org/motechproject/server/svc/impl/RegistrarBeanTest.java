@@ -108,7 +108,7 @@ public class RegistrarBeanTest extends TestCase {
 	EncounterType pregnancyRegVisitType;
 	EncounterType pregnancyTermVisitType;
 	EncounterType pregnancyDelVisitType;
-	EncounterType generalVisitType;
+	EncounterType outpatientVisitType;
 	ConceptName immunizationConceptNameObj;
 	Concept immunizationConcept;
 	ConceptName tetanusConceptNameObj;
@@ -258,8 +258,9 @@ public class RegistrarBeanTest extends TestCase {
 		pregnancyRegVisitType
 				.setName(MotechConstants.ENCOUNTER_TYPE_PREGREGVISIT);
 
-		generalVisitType = new EncounterType(5);
-		generalVisitType.setName(MotechConstants.ENCOUNTER_TYPE_GENERALVISIT);
+		outpatientVisitType = new EncounterType(5);
+		outpatientVisitType
+				.setName(MotechConstants.ENCOUNTER_TYPE_OUTPATIENTVISIT);
 
 		pregnancyTermVisitType = new EncounterType(6);
 		pregnancyTermVisitType
