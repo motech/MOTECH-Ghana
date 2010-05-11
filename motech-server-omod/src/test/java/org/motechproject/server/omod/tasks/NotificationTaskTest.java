@@ -189,8 +189,6 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 			assertEquals(MessageStatus.ATTEMPT_PENDING, message
 					.getAttemptStatus());
 
-			assertEquals(1, Context.getService(MotechService.class)
-					.getAllLogs().size());
 		} finally {
 			Context.closeSession();
 		}

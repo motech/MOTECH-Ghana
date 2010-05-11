@@ -83,18 +83,4 @@
 	</c:choose>
 </div>
 
-<div>
-	<h3>Logs</h3>
-	<c:choose>
-		<c:when test="${not empty allLogs}">
-		<table><tr><th>Id</th><th>Type</th><th>Date</th><th>Message</th></tr>
-		<c:forEach items="${allLogs}" var="log">
-			<tr><td>${log.id}</td><td>${log.type}</td><td><openmrs:formatDate type="both" date="${log.date}"/></td><td>${log.message}</td></tr>
-		</c:forEach>
-		</table>
-		</c:when>
-		<c:otherwise>${noResultMsg}</c:otherwise>
-	</c:choose>
-</div>
-
 <%@ include file="/WEB-INF/template/footer.jsp"%>

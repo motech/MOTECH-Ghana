@@ -38,7 +38,6 @@ import org.motechproject.ws.Gender;
 import org.motechproject.ws.HIVResult;
 import org.motechproject.ws.HowLearned;
 import org.motechproject.ws.InterestReason;
-import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.Patient;
 import org.motechproject.ws.RegistrantType;
@@ -1921,20 +1920,6 @@ public class RegistrarServiceTest {
 		}
 
 		verify(registrarBean, modelConverter, openmrsBean);
-	}
-
-	@Test
-	public void testLog() {
-		LogType type = LogType.SUCCESS;
-		String msg = "logging over ws is slow";
-
-		registrarBean.log(type, msg);
-
-		replay(registrarBean);
-
-		regWs.log(type, msg);
-
-		verify(registrarBean);
 	}
 
 	@Test

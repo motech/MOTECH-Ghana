@@ -20,7 +20,6 @@ import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.GeneralOutpatientEncounter;
-import org.motechproject.server.model.Log;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageAttribute;
 import org.motechproject.server.model.MessageDefinition;
@@ -106,10 +105,6 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 				obsId);
 	}
 
-	public List<Log> getAllLogs() {
-		return motechDAO.getLogs();
-	}
-
 	public List<ScheduledMessage> getAllScheduledMessages() {
 		return motechDAO.getScheduledMessages();
 	}
@@ -165,10 +160,6 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public List<MessageAttribute> getAllMessageAttributes() {
 		return motechDAO.getMessageAttributes();
-	}
-
-	public Log saveLog(Log log) {
-		return motechDAO.saveLog(log);
 	}
 
 	public ScheduledMessage saveScheduledMessage(

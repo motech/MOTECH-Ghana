@@ -19,7 +19,6 @@ import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.GeneralOutpatientEncounter;
-import org.motechproject.server.model.Log;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageAttribute;
 import org.motechproject.server.model.MessageDefinition;
@@ -49,18 +48,6 @@ public class HibernateMotechDAO implements MotechDAO {
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
-	}
-
-	public Log saveLog(Log log) {
-		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(log);
-		return log;
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Log> getLogs() {
-		Session session = sessionFactory.getCurrentSession();
-		return (List<Log>) session.createCriteria(Log.class).list();
 	}
 
 	@SuppressWarnings("unchecked")

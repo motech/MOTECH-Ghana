@@ -110,7 +110,6 @@ public class MotechModuleFormController {
 		model.addAttribute("allPregnancies", registrarBean.getAllPregnancies());
 		model.addAttribute("allScheduledMessages", registrarBean
 				.getAllScheduledMessages());
-		model.addAttribute("allLogs", registrarBean.getAllLogs());
 
 		return "/module/motechmodule/viewdata";
 	}

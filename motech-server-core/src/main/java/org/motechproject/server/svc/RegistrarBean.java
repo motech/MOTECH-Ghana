@@ -9,7 +9,6 @@ import org.motechproject.server.annotation.RunWithPrivileges;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.HIVStatus;
-import org.motechproject.server.model.Log;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.model.WhoRegistered;
@@ -19,7 +18,6 @@ import org.motechproject.ws.Gender;
 import org.motechproject.ws.HIVResult;
 import org.motechproject.ws.HowLearned;
 import org.motechproject.ws.InterestReason;
-import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.RegistrantType;
 import org.motechproject.ws.RegistrationMode;
@@ -221,8 +219,6 @@ public interface RegistrarBean {
 			Boolean actTreated, Boolean newCase, Boolean referred,
 			String comments);
 
-	public void log(LogType type, String message);
-
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSONS,
 			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
 	public void setMessageStatus(String messageId, Boolean success);
@@ -291,8 +287,6 @@ public interface RegistrarBean {
 
 	public List<ScheduledMessage> getScheduledMessages(
 			MessageProgramEnrollment enrollment);
-
-	public List<Log> getAllLogs();
 
 	public Date getPatientBirthDate(Integer patientId);
 

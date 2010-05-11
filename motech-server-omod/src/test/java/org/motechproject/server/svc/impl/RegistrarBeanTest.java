@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.HIVStatus;
-import org.motechproject.server.model.Log;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.MessageStatus;
@@ -39,7 +38,6 @@ import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.HowLearned;
 import org.motechproject.ws.InterestReason;
-import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.RegistrantType;
 import org.motechproject.ws.RegistrationMode;
@@ -1714,76 +1712,6 @@ public class RegistrarBeanTest extends TestCase {
 		assertTrue("Due Date Obs missing", containsDueDateObs);
 		assertTrue("Due Date Confirmed Obs missing",
 				containsDueDateConfirmedObs);
-	}
-
-	public void testLog() {
-		LogType type = LogType.FAILURE;
-		String message = "A simple message";
-		Date beforeCall = new Date();
-
-		Capture<Log> logCap = new Capture<Log>();
-
-		expect(contextService.getMotechService()).andReturn(motechService);
-
-		expect(motechService.saveLog(capture(logCap))).andReturn(new Log());
-
-		replay(contextService, motechService);
-
-		regBean.log(type, message);
-
-		verify(contextService, motechService);
-
-		Log log = logCap.getValue();
-		Date logDate = log.getDate();
-		Date afterCall = new Date();
-
-		assertEquals(type, log.getType());
-		assertEquals(message, log.getMessage());
-		assertNotNull("Date is null", logDate);
-		assertFalse("Date not between invocation and return", logDate
-				.before(beforeCall)
-				|| logDate.after(afterCall));
-	}
-
-	public void testLogMessageTrim() {
-		LogType type = LogType.SUCCESS;
-		// String length trimmed from 306 to 255 characters (max length for log
-		// message)
-		String originalMessage = "This message is just too long and will be trimmed. "
-				+ "This message is just too long and will be trimmed. "
-				+ "This message is just too long and will be trimmed. "
-				+ "This message is just too long and will be trimmed. "
-				+ "This message is just too long and will be trimmed. "
-				+ "This message is just too long and will be trimmed. ";
-		String trimmedMessage = "This message is just too long and will be trimmed. "
-				+ "This message is just too long and will be trimmed. "
-				+ "This message is just too long and will be trimmed. "
-				+ "This message is just too long and will be trimmed. "
-				+ "This message is just too long and will be trimmed. ";
-		Date beforeCall = new Date();
-
-		Capture<Log> logCap = new Capture<Log>();
-
-		expect(contextService.getMotechService()).andReturn(motechService);
-
-		expect(motechService.saveLog(capture(logCap))).andReturn(new Log());
-
-		replay(contextService, motechService);
-
-		regBean.log(type, originalMessage);
-
-		verify(contextService, motechService);
-
-		Log log = logCap.getValue();
-		Date logDate = log.getDate();
-		Date afterCall = new Date();
-
-		assertEquals(type, log.getType());
-		assertEquals(trimmedMessage, log.getMessage());
-		assertNotNull("Date is null", logDate);
-		assertFalse("Date not between invocation and return", logDate
-				.before(beforeCall)
-				|| logDate.after(afterCall));
 	}
 
 	public void testSetMessageStatusSuccessMessageFoundNotTroubled() {

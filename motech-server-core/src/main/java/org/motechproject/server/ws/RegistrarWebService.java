@@ -994,7 +994,7 @@ public class RegistrarWebService implements RegistrarService {
 	public void log(@WebParam(name = "type") LogType type,
 			@WebParam(name = "message") String message) {
 
-		registrarBean.log(type, message);
+		log.info("Logtype: " + type + ", Message: " + message);
 	}
 
 	@WebMethod

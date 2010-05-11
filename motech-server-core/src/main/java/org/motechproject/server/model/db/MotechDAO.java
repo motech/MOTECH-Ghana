@@ -8,7 +8,6 @@ import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.GeneralOutpatientEncounter;
-import org.motechproject.server.model.Log;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageAttribute;
 import org.motechproject.server.model.MessageDefinition;
@@ -27,10 +26,6 @@ import org.openmrs.PersonAttributeType;
  * The interface definition for the motech server's data access requirements.
  */
 public interface MotechDAO {
-
-	Log saveLog(Log log);
-
-	List<Log> getLogs();
 
 	List<Integer> getUsersByPersonAttribute(Integer personAttributeTypeId,
 			String personAttributeValue);

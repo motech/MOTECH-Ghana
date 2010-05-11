@@ -20,7 +20,6 @@ import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.GeneralOutpatientEncounter;
-import org.motechproject.server.model.Log;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageAttribute;
 import org.motechproject.server.model.MessageDefinition;
@@ -64,9 +63,6 @@ public interface MotechService extends OpenmrsService {
 	@Transactional
 	MessageAttribute saveMessageAttribute(MessageAttribute messageAttribute);
 
-	@Transactional
-	Log saveLog(Log log);
-
 	@Transactional(readOnly = true)
 	List<ScheduledMessage> getAllScheduledMessages();
 
@@ -107,9 +103,6 @@ public interface MotechService extends OpenmrsService {
 
 	@Transactional(readOnly = true)
 	List<MessageAttribute> getAllMessageAttributes();
-
-	@Transactional(readOnly = true)
-	List<Log> getAllLogs();
 
 	@Transactional(readOnly = true)
 	List<Integer> getUserIdsByPersonAttribute(

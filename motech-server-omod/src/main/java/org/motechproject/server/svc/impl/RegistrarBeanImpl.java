@@ -48,7 +48,6 @@ import org.motechproject.ws.Gender;
 import org.motechproject.ws.HIVResult;
 import org.motechproject.ws.HowLearned;
 import org.motechproject.ws.InterestReason;
-import org.motechproject.ws.LogType;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.NameValuePair;
 import org.motechproject.ws.RegistrantType;
@@ -1558,26 +1557,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void log(LogType type, String message) {
-
-		log.debug("log WS: type: " + type + ", message: " + message);
-
-		String limitedMessage = message;
-		if (limitedMessage.length() > 255) {
-			limitedMessage = limitedMessage.substring(0, 255);
-			log.debug("log WS: trimmed message: " + limitedMessage);
-		}
-
-		MotechService motechService = contextService.getMotechService();
-
-		org.motechproject.server.model.Log log = new org.motechproject.server.model.Log();
-		log.setDate(new Date());
-		log.setType(type);
-		log.setMessage(limitedMessage);
-		motechService.saveLog(log);
-	}
-
-	@Transactional
 	public void setMessageStatus(String messageId, Boolean success) {
 
 		log.debug("setMessageStatus WS: messageId: " + messageId
@@ -1879,11 +1858,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			MessageProgramEnrollment enrollment) {
 		MotechService motechService = contextService.getMotechService();
 		return motechService.getScheduledMessages(null, null, enrollment, null);
-	}
-
-	public List<org.motechproject.server.model.Log> getAllLogs() {
-		MotechService motechService = contextService.getMotechService();
-		return motechService.getAllLogs();
 	}
 
 	/* Controller methods end */
@@ -3399,9 +3373,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		PatientService patientService = contextService.getPatientService();
 		UserService userService = contextService.getUserService();
 
-		org.motechproject.server.model.Log motechLog = new org.motechproject.server.model.Log();
-		motechLog.setDate(new Date());
-
 		Long notificationType = message.getSchedule().getMessage()
 				.getPublicId();
 		Integer recipientId = message.getSchedule().getRecipientId();
@@ -3411,16 +3382,19 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		// Cancel message if phone number is considered troubled
 		if (isPhoneTroubled(phoneNumber)) {
-			motechLog.setMessage("Attempt to send to Troubled Phone, Phone: "
-					+ phoneNumber + ", Notification cancelled: "
-					+ notificationType);
-			motechLog.setType(LogType.FAILURE);
+			if (log.isDebugEnabled()) {
+				log.debug("Attempt to send to Troubled Phone, Phone: "
+						+ phoneNumber + ", Notification cancelled: "
+						+ notificationType);
+			}
 
 			message.setAttemptStatus(MessageStatus.CANCELLED);
 
 		} else {
-			motechLog.setMessage("Scheduled Message Notification, Phone: "
-					+ phoneNumber + ", Notification: " + notificationType);
+			if (log.isDebugEnabled()) {
+				log.debug("Scheduled Message, Phone: " + phoneNumber
+						+ ", Notification: " + notificationType);
+			}
 
 			String messageId = message.getPublicId();
 			MediaType mediaType = getPersonMediaType(person);
@@ -3460,13 +3434,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			}
 			if (sendMessageSuccess) {
 				message.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
-				motechLog.setType(LogType.SUCCESS);
 			} else {
 				message.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
-				motechLog.setType(LogType.FAILURE);
 			}
 		}
-		motechService.saveLog(motechLog);
 
 		motechService.saveMessage(message);
 	}
