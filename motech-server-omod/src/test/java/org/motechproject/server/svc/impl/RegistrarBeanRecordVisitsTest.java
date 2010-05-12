@@ -171,12 +171,15 @@ public class RegistrarBeanRecordVisitsTest extends
 
 			// Pregnancy Delivery for Mother 1, Adding Child 2
 			List<BirthOutcomeChild> outcomes = new ArrayList<BirthOutcomeChild>();
-			outcomes.add(new BirthOutcomeChild(BirthOutcome.A, child2Id,
-					Gender.MALE, "Child2FirstName", true, true));
-			outcomes.add(new BirthOutcomeChild(BirthOutcome.FSB, child3Id,
-					Gender.MALE, "Child3FirstName", true, true));
+			outcomes.add(new BirthOutcomeChild(BirthOutcome.A,
+					RegistrationMode.USE_PREPRINTED_ID, child2Id, Gender.MALE,
+					"Child2FirstName", true, true, 2.5));
+			outcomes.add(new BirthOutcomeChild(BirthOutcome.FSB,
+					RegistrationMode.USE_PREPRINTED_ID, child3Id, Gender.MALE,
+					"Child3FirstName", true, true, 3.0));
 			regService.recordPregnancyDelivery(nurse, date, mother1, 1, 1, 1,
-					1, false, 1, outcomes);
+					1, true, new Integer[] { 1, 2, 3 }, 1, true, "Comments",
+					outcomes);
 
 			assertEquals("Pregnancy delivery not added for Mother 1", 3,
 					Context.getEncounterService().getEncountersByPatient(
@@ -187,8 +190,8 @@ public class RegistrarBeanRecordVisitsTest extends
 					mother1Pregnancy);
 			assertEquals("Child 2 and Child 3 not added", 7, Context
 					.getPatientService().getAllPatients(true).size());
-			assertEquals("Child 3 not voided", 6, Context.getPatientService()
-					.getAllPatients().size());
+			assertEquals("Child 3 or Mother 1 not voided", 5, Context
+					.getPatientService().getAllPatients().size());
 
 			Patient child2 = openmrsService.getPatientByMotechId(child2Id
 					.toString());
@@ -231,7 +234,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					.getPatientId());
 			assertNull("Pregnancy is still active after termination",
 					mother2Pregnancy);
-			assertEquals("Mother 2 not voided", 5, Context.getPatientService()
+			assertEquals("Mother 2 not voided", 4, Context.getPatientService()
 					.getAllPatients().size());
 
 			// CWC Visit for Child 2
@@ -264,7 +267,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			// Record Death of Child 1
 			regService.recordDeath(nurse, date, child1, 1);
 
-			assertEquals("Deceased child 1 not voided", 4, Context
+			assertEquals("Deceased child 1 not voided", 3, Context
 					.getPatientService().getAllPatients().size());
 
 		} finally {

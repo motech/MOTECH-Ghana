@@ -172,9 +172,11 @@ public interface RegistrarBean {
 	@RunAsAdminUser
 	public void recordPregnancyDelivery(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, Integer method, Integer outcome,
-			Integer location, Integer deliveredBy, Boolean maternalDeath,
-			Integer cause, List<BirthOutcomeChild> outcomes);
+			Date datetime, Patient patient, Integer mode, Integer outcome,
+			Integer deliveryLocation, Integer deliveredBy,
+			Boolean maleInvolved, Integer[] complications, Integer vvf,
+			Boolean maternalDeath, String comments,
+			List<BirthOutcomeChild> outcomes);
 
 	@RunAsAdminUser
 	public void recordPregnancyDeliveryNotification(

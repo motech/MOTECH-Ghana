@@ -159,8 +159,8 @@ public class RegistrarBeanTest extends TestCase {
 	Concept diagnosisConcept;
 	ConceptName secondDiagnosisNameObj;
 	Concept secondDiagnosisConcept;
-	ConceptName deliveyMethodNameObj;
-	Concept deliveyMethodConcept;
+	ConceptName deliveyModeNameObj;
+	Concept deliveyModeConcept;
 	ConceptName deliveryLocationNameObj;
 	Concept deliveryLocationConcept;
 	ConceptName deliveredByNameObj;
@@ -360,11 +360,6 @@ public class RegistrarBeanTest extends TestCase {
 				MotechConstants.CONCEPT_CAUSE_OF_DEATH, Locale.getDefault());
 		deathCauseConcept = new Concept(33);
 
-		maternalDeathCauseNameObj = new ConceptName(
-				MotechConstants.CONCEPT_MATERNAL_CAUSE_OF_DEATH, Locale
-						.getDefault());
-		maternalDeathCauseConcept = new Concept(34);
-
 		serialNumberNameObj = new ConceptName(
 				MotechConstants.CONCEPT_SERIAL_NUMBER, Locale.getDefault());
 		serialNumberConcept = new Concept(35);
@@ -386,9 +381,9 @@ public class RegistrarBeanTest extends TestCase {
 						.getDefault());
 		secondDiagnosisConcept = new Concept(39);
 
-		deliveyMethodNameObj = new ConceptName(
-				MotechConstants.CONCEPT_DELIVERY_METHOD, Locale.getDefault());
-		deliveyMethodConcept = new Concept(40);
+		deliveyModeNameObj = new ConceptName(
+				MotechConstants.CONCEPT_DELIVERY_MODE, Locale.getDefault());
+		deliveyModeConcept = new Concept(40);
 
 		deliveryLocationNameObj = new ConceptName(
 				MotechConstants.CONCEPT_DELIVERY_LOCATION, Locale.getDefault());

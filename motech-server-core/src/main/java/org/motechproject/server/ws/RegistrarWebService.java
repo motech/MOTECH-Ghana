@@ -198,22 +198,24 @@ public class RegistrarWebService implements RegistrarService {
 
 		List<BirthOutcomeChild> outcomes = new ArrayList<BirthOutcomeChild>();
 		if (child1Outcome != null && child1Sex != null) {
-			outcomes.add(new BirthOutcomeChild(child1Outcome, child1MotechId,
-					child1Sex, child1FirstName, child1OPV, child1BCG));
+			outcomes.add(new BirthOutcomeChild(child1Outcome,
+					child1RegistrationType, child1MotechId, child1Sex,
+					child1FirstName, child1OPV, child1BCG, child1Weight));
 		}
 		if (child2Outcome != null && child2Sex != null) {
-			outcomes.add(new BirthOutcomeChild(child2Outcome, child2MotechId,
-					child2Sex, child2FirstName, child2OPV, child2BCG));
+			outcomes.add(new BirthOutcomeChild(child2Outcome,
+					child2RegistrationType, child2MotechId, child2Sex,
+					child2FirstName, child2OPV, child2BCG, child2Weight));
 		}
 		if (child3Outcome != null && child3Sex != null) {
-			outcomes.add(new BirthOutcomeChild(child3Outcome, child3MotechId,
-					child3Sex, child3FirstName, child3OPV, child3BCG));
+			outcomes.add(new BirthOutcomeChild(child3Outcome,
+					child3RegistrationType, child3MotechId, child3Sex,
+					child3FirstName, child3OPV, child3BCG, child3Weight));
 		}
 
-		// TODO: Update to include new values
 		registrarBean.recordPregnancyDelivery(nurse, datetime, patient, mode,
-				outcome, deliveryLocation, deliveredBy, maternalDeath, null,
-				outcomes);
+				outcome, deliveryLocation, deliveredBy, maleInvolved,
+				complications, vvf, maternalDeath, comments, outcomes);
 	}
 
 	@WebMethod

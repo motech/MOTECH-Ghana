@@ -1134,99 +1134,131 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordPregnancyDelivery(User nurse, Date date, Patient patient,
-			Integer method, Integer outcome, Integer location,
-			Integer deliveredBy, Boolean maternalDeath, Integer cause,
+	public void recordPregnancyDelivery(User nurse, Date datetime,
+			Patient patient, Integer mode, Integer outcome,
+			Integer deliveryLocation, Integer deliveredBy,
+			Boolean maleInvolved, Integer[] complications, Integer vvf,
+			Boolean maternalDeath, String comments,
 			List<BirthOutcomeChild> outcomes) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
-		ObsService obsService = contextService.getObsService();
 
-		Location encounterLocation = getGhanaLocation();
+		Location location = getGhanaLocation();
 
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getPregnancyDeliveryVisitEncounterType());
-		encounter.setEncounterDatetime(date);
+		encounter.setEncounterDatetime(datetime);
 		encounter.setPatient(patient);
-		encounter.setLocation(encounterLocation);
+		encounter.setLocation(location);
 		encounter.setProvider(contextService.getAuthenticatedUser());
-		encounter = encounterService.saveEncounter(encounter);
 
 		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
+		if (pregnancyObs == null) {
+			log.warn("Entered Pregnancy delivery "
+					+ "for patient without active pregnancy, patient id="
+					+ patient.getPatientId());
+		}
 
-		if (method != null) {
-			Obs methodObs = createNumericValueObs(date,
-					getDeliveryMethodConcept(), patient, encounterLocation,
-					method, encounter, null);
-			obsService.saveObs(methodObs, null);
+		if (mode != null) {
+			Obs modeObs = createNumericValueObs(datetime,
+					getDeliveryModeConcept(), patient, location, mode,
+					encounter, null);
+			encounter.addObs(modeObs);
 		}
 		if (outcome != null) {
-			Obs outcomeObs = createNumericValueObs(date,
-					getDeliveryOutcomeConcept(), patient, encounterLocation,
-					outcome, encounter, null);
-			obsService.saveObs(outcomeObs, null);
+			Obs outcomeObs = createNumericValueObs(datetime,
+					getDeliveryOutcomeConcept(), patient, location, outcome,
+					encounter, null);
+			encounter.addObs(outcomeObs);
 		}
-		if (location != null) {
-			Obs locationObs = createNumericValueObs(date,
-					getDeliveryLocationConcept(), patient, encounterLocation,
-					location, encounter, null);
-			obsService.saveObs(locationObs, null);
+		if (deliveryLocation != null) {
+			Obs locationObs = createNumericValueObs(datetime,
+					getDeliveryLocationConcept(), patient, location,
+					deliveryLocation, encounter, null);
+			encounter.addObs(locationObs);
 		}
 		if (deliveredBy != null) {
-			Obs deliveredByObs = createNumericValueObs(date,
-					getDeliveredByConcept(), patient, encounterLocation,
-					deliveredBy, encounter, null);
-			obsService.saveObs(deliveredByObs, null);
+			Obs deliveredByObs = createNumericValueObs(datetime,
+					getDeliveredByConcept(), patient, location, deliveredBy,
+					encounter, null);
+			encounter.addObs(deliveredByObs);
+		}
+		if (maleInvolved != null) {
+			Obs maleInvolvedObs = createBooleanValueObs(datetime,
+					getMaleInvolvementConcept(), patient, location,
+					maleInvolved, encounter, null);
+			encounter.addObs(maleInvolvedObs);
+		}
+		if (complications != null) {
+			for (Integer complication : complications) {
+				Obs complicationObs = createNumericValueObs(datetime,
+						getDeliveryComplicationConcept(), patient, location,
+						complication, encounter, null);
+				encounter.addObs(complicationObs);
+			}
+		}
+		if (vvf != null) {
+			Obs vvfObs = createNumericValueObs(datetime, getVVFRepairConcept(),
+					patient, location, vvf, encounter, null);
+			encounter.addObs(vvfObs);
+		}
+		if (maternalDeath != null) {
+			Obs maternalDeathObs = createBooleanValueObs(datetime,
+					getMaternalDeathConcept(), patient, location,
+					maternalDeath, encounter, null);
+			encounter.addObs(maternalDeathObs);
+		}
+		if (comments != null) {
+			Obs commentsObs = createTextValueObs(datetime,
+					getCommentsConcept(), patient, location, comments,
+					encounter, null);
+			encounter.addObs(commentsObs);
 		}
 
-		Obs pregnancyStatusObs = createBooleanValueObs(date,
-				getPregnancyStatusConcept(), patient, encounterLocation,
-				Boolean.FALSE, encounter, null);
+		Obs pregnancyStatusObs = createBooleanValueObs(datetime,
+				getPregnancyStatusConcept(), patient, location, Boolean.FALSE,
+				encounter, null);
 		pregnancyStatusObs.setObsGroup(pregnancyObs);
-		obsService.saveObs(pregnancyStatusObs, null);
+		encounter.addObs(pregnancyStatusObs);
 
 		for (BirthOutcomeChild childOutcome : outcomes) {
-			if (childOutcome.getOutcome() != null) {
-				Obs childOutcomeObs = createTextValueObs(date,
-						getBirthOutcomeConcept(), patient, encounterLocation,
-						childOutcome.getOutcome().name(), encounter, null);
-				obsService.saveObs(childOutcomeObs, null);
+			if (childOutcome.getOutcome() == null
+					|| childOutcome.getSex() == null) {
+				// Skip child outcomes missing required outcome or sex
+				continue;
 			}
+			Obs childOutcomeObs = createTextValueObs(datetime,
+					getBirthOutcomeConcept(), patient, location, childOutcome
+							.getOutcome().name(), encounter, null);
+			encounter.addObs(childOutcomeObs);
 
-			// TODO: Update to include registration mode in birth outcome
-			Patient child = registerPatient(null, childOutcome.getMotechId(),
+			Patient child = registerPatient(childOutcome.getIdMode(),
+					childOutcome.getMotechId(),
 					RegistrantType.CHILD_UNDER_FIVE, childOutcome
-							.getFirstName(), null, null, null, date, false,
+							.getFirstName(), null, null, null, datetime, false,
 					childOutcome.getSex(), null, null, null, patient, null,
 					null, null, null, null, null, null, null, null, null, null,
 					null, null, null, null, null, null);
 
-			Integer opvDose = null;
-			if (Boolean.TRUE.equals(childOutcome.getOpv())) {
-				opvDose = 0;
-			}
-
-			if (Boolean.TRUE.equals(childOutcome.getBcg()) || opvDose != null) {
-				recordChildCWCVisit(nurse, date, child, null, null, null,
-						childOutcome.getBcg(), opvDose, null, null, null, null,
-						null, null, null, null, null, null, null, null);
+			if (Boolean.TRUE.equals(childOutcome.getBcg())
+					|| Boolean.TRUE.equals(childOutcome.getOpv()
+							|| childOutcome.getWeight() != null)) {
+				recordChildPNCVisit(nurse, datetime, child, null, null, null,
+						null, null, null, childOutcome.getWeight(), null,
+						childOutcome.getBcg(), childOutcome.getOpv(), null,
+						null, null, null);
 			}
 
 			if (BirthOutcome.A != childOutcome.getOutcome()) {
-				processPatientDeath(child, date);
+				processPatientDeath(child, datetime);
 			}
 		}
 
-		if (Boolean.TRUE.equals(maternalDeath)) {
-			if (cause != null) {
-				Obs maternalDeathCauseObs = createNumericValueObs(date,
-						getMaternalDeathCauseConcept(), patient,
-						encounterLocation, cause, encounter, null);
-				obsService.saveObs(maternalDeathCauseObs, null);
-			}
+		encounterService.saveEncounter(encounter);
 
-			processPatientDeath(patient, date);
+		if (Boolean.TRUE.equals(maternalDeath)) {
+			processPatientDeath(patient, datetime);
 		}
 	}
 
@@ -2862,10 +2894,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Numeric coded cause of patient death",
 				MotechConstants.CONCEPT_CLASS_DIAGNOSIS,
 				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
-		createConcept(MotechConstants.CONCEPT_MATERNAL_CAUSE_OF_DEATH,
-				"Numeric coded maternal cause of patient death",
-				MotechConstants.CONCEPT_CLASS_DIAGNOSIS,
-				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
 		createConcept(MotechConstants.CONCEPT_SERIAL_NUMBER,
 				"Patient register serial number",
 				MotechConstants.CONCEPT_CLASS_MISC,
@@ -2886,8 +2914,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Numeric coded secondary diagnosis",
 				MotechConstants.CONCEPT_CLASS_DIAGNOSIS,
 				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
-		createConcept(MotechConstants.CONCEPT_DELIVERY_METHOD,
-				"Numeric coded method of delivery",
+		createConcept(MotechConstants.CONCEPT_DELIVERY_MODE,
+				"Numeric coded mode of delivery",
 				MotechConstants.CONCEPT_CLASS_FINDING,
 				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
 		createConcept(MotechConstants.CONCEPT_DELIVERY_LOCATION,
@@ -4298,11 +4326,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.CONCEPT_CAUSE_OF_DEATH);
 	}
 
-	public Concept getMaternalDeathCauseConcept() {
-		return contextService.getConceptService().getConcept(
-				MotechConstants.CONCEPT_MATERNAL_CAUSE_OF_DEATH);
-	}
-
 	public Concept getBCGConcept() {
 		return contextService.getConceptService().getConcept(
 				MotechConstants.CONCEPT_BCG_VACCINATION);
@@ -4365,9 +4388,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.CONCEPT_SECONDARY_DIAGNOSIS);
 	}
 
-	public Concept getDeliveryMethodConcept() {
+	public Concept getDeliveryModeConcept() {
 		return contextService.getConceptService().getConcept(
-				MotechConstants.CONCEPT_DELIVERY_METHOD);
+				MotechConstants.CONCEPT_DELIVERY_MODE);
 	}
 
 	public Concept getDeliveryLocationConcept() {

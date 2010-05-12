@@ -49,8 +49,7 @@ public final class MotechConstants {
 	public static final String CONCEPT_HIV_TEST_RESULT = "HIV TEST RESULT";
 	public static final String CONCEPT_TERMINATION_TYPE = "TERMINATION TYPE";
 	public static final String CONCEPT_TERMINATION_COMPLICATION = "TERMINATION COMPLICATION";
-	public static final String CONCEPT_MATERNAL_CAUSE_OF_DEATH = "MATERNAL CAUSE OF DEATH";
-	public static final String CONCEPT_DELIVERY_METHOD = "DELIVERY METHOD";
+	public static final String CONCEPT_DELIVERY_MODE = "DELIVERY MODE";
 	public static final String CONCEPT_DELIVERY_LOCATION = "DELIVERY LOCATION";
 	public static final String CONCEPT_DELIVERED_BY = "DELIVERED BY";
 	public static final String CONCEPT_DELIVERY_OUTCOME = "DELIVERY OUTCOME";

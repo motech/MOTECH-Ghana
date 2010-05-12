@@ -259,7 +259,7 @@ public class RegistrarServiceTest {
 		Integer child1Id = 246, child2Id = 468, child3Id = 579, deliveredBy = 1;
 		Integer[] complications = new Integer[] { 1, 3, 5, 7 };
 		String child1Name = "Child1First", child2Name = "Child2First", child3Name = "Child3First", comments = "Comments";
-		Integer method = 1, outcome = 2, location = 1, vvf = 2;
+		Integer mode = 1, outcome = 2, location = 1, vvf = 2;
 		Double child1Weight = 4.2, child2Weight = 4.4, child3Weight = 3.7;
 		Boolean maternalDeath = false, maleInvolved = true;
 		Boolean child1opv = true, child1bcg = false, child2opv = false, child2bcg = true, child3opv = false, child3bcg = true;
@@ -283,16 +283,15 @@ public class RegistrarServiceTest {
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean
-				.recordPregnancyDelivery(eq(nurse), eq(date), eq(patient),
-						eq(method), eq(outcome), eq(location), eq(deliveredBy),
-						eq(maternalDeath), eq((Integer) null),
-						capture(outcomesCapture));
+		registrarBean.recordPregnancyDelivery(eq(nurse), eq(date), eq(patient),
+				eq(mode), eq(outcome), eq(location), eq(deliveredBy),
+				eq(maleInvolved), aryEq(complications), eq(vvf),
+				eq(maternalDeath), eq(comments), capture(outcomesCapture));
 
 		replay(registrarBean, openmrsBean);
 
 		regWs.recordPregnancyDelivery(staffId, facilityId, date, motechId,
-				method, outcome, location, deliveredBy, maleInvolved,
+				mode, outcome, location, deliveredBy, maleInvolved,
 				complications, vvf, maternalDeath, comments,
 				child1birthOutcome, child1RegType, child1Id, child1Sex,
 				child1Name, child1Weight, child1opv, child1bcg,
@@ -339,7 +338,7 @@ public class RegistrarServiceTest {
 		Integer child1Id = 246, deliveredBy = 1;
 		Integer[] complications = new Integer[] { 1, 3, 5, 7 };
 		String child1Name = "Child1First", comments = "Comments";
-		Integer method = 1, outcome = 2, location = 1, vvf = 2;
+		Integer mode = 1, outcome = 2, location = 1, vvf = 2;
 		Double child1Weight = 4.2;
 		Boolean maternalDeath = false, maleInvolved = true;
 		Boolean child1opv = true, child1bcg = false;
@@ -357,16 +356,15 @@ public class RegistrarServiceTest {
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean
-				.recordPregnancyDelivery(eq(nurse), eq(date), eq(patient),
-						eq(method), eq(outcome), eq(location), eq(deliveredBy),
-						eq(maternalDeath), eq((Integer) null),
-						capture(outcomesCapture));
+		registrarBean.recordPregnancyDelivery(eq(nurse), eq(date), eq(patient),
+				eq(mode), eq(outcome), eq(location), eq(deliveredBy),
+				eq(maleInvolved), aryEq(complications), eq(vvf),
+				eq(maternalDeath), eq(comments), capture(outcomesCapture));
 
 		replay(registrarBean, openmrsBean);
 
 		regWs.recordPregnancyDelivery(staffId, facilityId, date, motechId,
-				method, outcome, location, deliveredBy, maleInvolved,
+				mode, outcome, location, deliveredBy, maleInvolved,
 				complications, vvf, maternalDeath, comments,
 				child1birthOutcome, child1RegType, child1Id, child1Sex,
 				child1Name, child1Weight, child1opv, child1bcg, null, null,
