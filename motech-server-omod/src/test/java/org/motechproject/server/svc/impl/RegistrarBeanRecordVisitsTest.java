@@ -177,9 +177,9 @@ public class RegistrarBeanRecordVisitsTest extends
 			outcomes.add(new BirthOutcomeChild(BirthOutcome.FSB,
 					RegistrationMode.USE_PREPRINTED_ID, child3Id, Gender.MALE,
 					"Child3FirstName", true, true, 3.0));
-			regService.recordPregnancyDelivery(nurse, date, mother1, 1, 1, 1,
-					1, true, new Integer[] { 1, 2, 3 }, 1, true, "Comments",
-					outcomes);
+			List<Patient> childPatients = regService.recordPregnancyDelivery(
+					nurse, date, mother1, 1, 1, 1, 1, true, new Integer[] { 1,
+							2, 3 }, 1, true, "Comments", outcomes);
 
 			assertEquals("Pregnancy delivery not added for Mother 1", 3,
 					Context.getEncounterService().getEncountersByPatient(
@@ -192,6 +192,13 @@ public class RegistrarBeanRecordVisitsTest extends
 					.getPatientService().getAllPatients(true).size());
 			assertEquals("Child 3 or Mother 1 not voided", 5, Context
 					.getPatientService().getAllPatients().size());
+
+			// Confirm return value of pregnancy delivery includes alive child
+			assertEquals(1, childPatients.size());
+			Patient registeredChild = childPatients.get(0);
+			assertEquals(child2Id.toString(), registeredChild
+					.getPatientIdentifier().getIdentifier());
+			assertEquals("Child2FirstName", registeredChild.getGivenName());
 
 			Patient child2 = openmrsService.getPatientByMotechId(child2Id
 					.toString());

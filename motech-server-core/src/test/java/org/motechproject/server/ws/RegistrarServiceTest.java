@@ -277,16 +277,24 @@ public class RegistrarServiceTest {
 		User nurse = new User(1);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
+		List<org.openmrs.Patient> childPatients = new ArrayList<org.openmrs.Patient>();
+		childPatients.add(new org.openmrs.Patient(3));
+
 		Capture<List<BirthOutcomeChild>> outcomesCapture = new Capture<List<BirthOutcomeChild>>();
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordPregnancyDelivery(eq(nurse), eq(date), eq(patient),
-				eq(mode), eq(outcome), eq(location), eq(deliveredBy),
-				eq(maleInvolved), aryEq(complications), eq(vvf),
-				eq(maternalDeath), eq(comments), capture(outcomesCapture));
+		expect(
+				registrarBean.recordPregnancyDelivery(eq(nurse), eq(date),
+						eq(patient), eq(mode), eq(outcome), eq(location),
+						eq(deliveredBy), eq(maleInvolved),
+						aryEq(complications), eq(vvf), eq(maternalDeath),
+						eq(comments), capture(outcomesCapture))).andReturn(
+				childPatients);
+		expect(modelConverter.patientToWebService(childPatients, true))
+				.andReturn(new Patient[1]);
 
 		replay(registrarBean, openmrsBean);
 
@@ -350,16 +358,24 @@ public class RegistrarServiceTest {
 		User nurse = new User(1);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
+		List<org.openmrs.Patient> childPatients = new ArrayList<org.openmrs.Patient>();
+		childPatients.add(new org.openmrs.Patient(3));
+
 		Capture<List<BirthOutcomeChild>> outcomesCapture = new Capture<List<BirthOutcomeChild>>();
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordPregnancyDelivery(eq(nurse), eq(date), eq(patient),
-				eq(mode), eq(outcome), eq(location), eq(deliveredBy),
-				eq(maleInvolved), aryEq(complications), eq(vvf),
-				eq(maternalDeath), eq(comments), capture(outcomesCapture));
+		expect(
+				registrarBean.recordPregnancyDelivery(eq(nurse), eq(date),
+						eq(patient), eq(mode), eq(outcome), eq(location),
+						eq(deliveredBy), eq(maleInvolved),
+						aryEq(complications), eq(vvf), eq(maternalDeath),
+						eq(comments), capture(outcomesCapture))).andReturn(
+				childPatients);
+		expect(modelConverter.patientToWebService(childPatients, true))
+				.andReturn(new Patient[1]);
 
 		replay(registrarBean, openmrsBean);
 

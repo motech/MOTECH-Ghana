@@ -145,7 +145,7 @@ public class RegistrarWebService implements RegistrarService {
 	}
 
 	@WebMethod
-	public void recordPregnancyDelivery(
+	public Patient[] recordPregnancyDelivery(
 			@WebParam(name = "staffId") Integer staffId,
 			@WebParam(name = "facilityId") Integer facilityId,
 			@WebParam(name = "datetime") Date datetime,
@@ -213,9 +213,12 @@ public class RegistrarWebService implements RegistrarService {
 					child3FirstName, child3OPV, child3BCG, child3Weight));
 		}
 
-		registrarBean.recordPregnancyDelivery(nurse, datetime, patient, mode,
-				outcome, deliveryLocation, deliveredBy, maleInvolved,
-				complications, vvf, maternalDeath, comments, outcomes);
+		List<org.openmrs.Patient> childPatients = registrarBean
+				.recordPregnancyDelivery(nurse, datetime, patient, mode,
+						outcome, deliveryLocation, deliveredBy, maleInvolved,
+						complications, vvf, maternalDeath, comments, outcomes);
+
+		return modelConverter.patientToWebService(childPatients, true);
 	}
 
 	@WebMethod

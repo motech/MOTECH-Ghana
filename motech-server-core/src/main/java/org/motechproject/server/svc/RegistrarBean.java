@@ -170,7 +170,7 @@ public interface RegistrarBean {
 			Boolean postAbortionFPAccepted, String comments);
 
 	@RunAsAdminUser
-	public void recordPregnancyDelivery(
+	public List<Patient> recordPregnancyDelivery(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Date datetime, Patient patient, Integer mode, Integer outcome,
 			Integer deliveryLocation, Integer deliveredBy,

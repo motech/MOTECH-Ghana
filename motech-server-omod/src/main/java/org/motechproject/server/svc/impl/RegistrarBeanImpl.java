@@ -1134,7 +1134,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordPregnancyDelivery(User nurse, Date datetime,
+	public List<Patient> recordPregnancyDelivery(User nurse, Date datetime,
 			Patient patient, Integer mode, Integer outcome,
 			Integer deliveryLocation, Integer deliveredBy,
 			Boolean maleInvolved, Integer[] complications, Integer vvf,
@@ -1222,6 +1222,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		pregnancyStatusObs.setObsGroup(pregnancyObs);
 		encounter.addObs(pregnancyStatusObs);
 
+		List<Patient> aliveChildPatients = new ArrayList<Patient>();
+
 		for (BirthOutcomeChild childOutcome : outcomes) {
 			if (childOutcome.getOutcome() == null
 					|| childOutcome.getSex() == null) {
@@ -1252,6 +1254,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 			if (BirthOutcome.A != childOutcome.getOutcome()) {
 				processPatientDeath(child, datetime);
+			} else {
+				aliveChildPatients.add(child);
 			}
 		}
 
@@ -1260,6 +1264,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		if (Boolean.TRUE.equals(maternalDeath)) {
 			processPatientDeath(patient, datetime);
 		}
+
+		return aliveChildPatients;
 	}
 
 	@Transactional
