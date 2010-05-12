@@ -516,7 +516,8 @@ public class RegistrarServiceTest {
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
 		registrarBean.recordMotherPNCVisit(nurse, date, patient, visitNumber,
-				vitaminA, ttDose);
+				location, house, community, referred, maleInvolved, vitaminA,
+				ttDose, lochiaColour, lochiaExcess, temperature, fht, comments);
 
 		replay(registrarBean, openmrsBean);
 
@@ -697,6 +698,10 @@ public class RegistrarServiceTest {
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
+		registrarBean.recordChildPNCVisit(nurse, date, patient, visitNumber,
+				location, house, community, referred, maleInvolved, weight,
+				temperature, bcg, opv0, respiration, cordCondition,
+				babyCondition, comments);
 
 		replay(registrarBean, openmrsBean);
 

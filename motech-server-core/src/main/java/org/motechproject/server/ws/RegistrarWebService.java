@@ -270,9 +270,10 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Mother PNC Visit request", errors);
 		}
 
-		// TODO: Update to include new values and rename to Mother PNC
 		registrarBean.recordMotherPNCVisit(nurse, datetime, patient,
-				visitNumber, vitaminA, ttDose);
+				visitNumber, location, house, community, referred,
+				maleInvolved, vitaminA, ttDose, lochiaColour,
+				lochiaAmountExcess, temperature, fht, comments);
 	}
 
 	@WebMethod
@@ -342,15 +343,19 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
-		validateMotechId(motechId, errors, "MotechID");
+		User nurse = validateChpsId(staffId, errors, "StaffID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Record Child PNC Visit request", errors);
 		}
 
-		// TODO: Update to add call to store Child PNC encounter
+		registrarBean.recordChildPNCVisit(nurse, datetime, patient,
+				visitNumber, location, house, community, referred,
+				maleInvolved, weight, temperature, bcg, opv0, respiration,
+				cordConditionNormal, babyConditionGood, comments);
 	}
 
 	@WebMethod

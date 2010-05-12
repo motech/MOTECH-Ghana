@@ -182,8 +182,21 @@ public interface RegistrarBean {
 	@RunAsAdminUser
 	public void recordMotherPNCVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, Integer visitNumber, Boolean vitaminA,
-			Integer ttDose);
+			Date datetime, Patient patient, Integer visitNumber,
+			Integer pncLocation, String house, String community,
+			Boolean referred, Boolean maleInvolved, Boolean vitaminA,
+			Integer ttDose, Integer lochiaColour, Boolean lochiaAmountExcess,
+			Integer temperature, Integer fht, String comments);
+
+	@RunAsAdminUser
+	public void recordChildPNCVisit(
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			Date datetime, Patient patient, Integer visitNumber,
+			Integer pncLocation, String house, String community,
+			Boolean referred, Boolean maleInvolved, Double weight,
+			Integer temperature, Boolean bcg, Boolean opv0,
+			Integer respiration, Boolean cordConditionNormal,
+			Boolean babyConditionGood, String comments);
 
 	@RunAsAdminUser
 	public void recordTTVisit(

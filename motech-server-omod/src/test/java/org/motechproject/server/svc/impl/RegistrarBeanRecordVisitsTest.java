@@ -213,7 +213,9 @@ public class RegistrarBeanRecordVisitsTest extends
 					mother2Pregnancy);
 
 			// PNC Visit for Mother 2
-			regService.recordMotherPNCVisit(nurse, date, mother2, 1, true, 2);
+			regService.recordMotherPNCVisit(nurse, date, mother2, 1, 1,
+					"House", "Community", false, true, true, 1, 1, false, 36,
+					100, "Comments");
 
 			assertEquals("PNC visit not added for Mother 2", 3, Context
 					.getEncounterService().getEncountersByPatient(mother2)
@@ -228,12 +230,21 @@ public class RegistrarBeanRecordVisitsTest extends
 					.getEncounterService().getEncountersByPatient(mother2)
 					.size());
 
-			// PNC Visit for Child 2
+			// CWC Visit for Child 2
 			regService.recordChildCWCVisit(nurse, date, child2, 1, "House",
 					"Community", true, 1, 1, true, true, true, true, true,
 					true, 25.0, 5, 35, true, "Comments");
 
 			assertEquals("CWC visit not added for Child 2", 2, Context
+					.getEncounterService().getEncountersByPatient(child2)
+					.size());
+
+			// PNC Visit for Child 2
+			regService.recordChildPNCVisit(nurse, date, child2, 1, 1, "House",
+					"Community", false, true, 7.0, 36, true, true, 140, true,
+					true, "Comments");
+
+			assertEquals("PNC visit not added for Child 2", 3, Context
 					.getEncounterService().getEncountersByPatient(child2)
 					.size());
 
