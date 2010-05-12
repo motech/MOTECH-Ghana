@@ -138,9 +138,10 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Pregnancy Termination request", errors);
 		}
 
-		// TODO: Update to include new values
 		registrarBean.recordPregnancyTermination(nurse, date, patient,
-				terminationType, null);
+				terminationType, procedure, complications, maternalDeath,
+				referred, postAbortionFPCounseled, postAbortionFPAccepted,
+				comments);
 	}
 
 	@WebMethod

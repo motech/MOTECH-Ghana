@@ -164,8 +164,10 @@ public interface RegistrarBean {
 	@RunAsAdminUser
 	public void recordPregnancyTermination(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, Integer abortionType,
-			Integer complication);
+			Date date, Patient patient, Integer terminationType,
+			Integer procedure, Integer[] complications, Boolean maternalDeath,
+			Boolean referred, Boolean postAbortionFPCounseled,
+			Boolean postAbortionFPAccepted, String comments);
 
 	@RunAsAdminUser
 	public void recordPregnancyDelivery(

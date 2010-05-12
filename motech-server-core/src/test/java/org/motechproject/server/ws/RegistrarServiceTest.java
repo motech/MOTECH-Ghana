@@ -1,5 +1,6 @@
 package org.motechproject.server.ws;
 
+import static org.easymock.EasyMock.aryEq;
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.eq;
@@ -198,8 +199,10 @@ public class RegistrarServiceTest {
 				nurse);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordPregnancyTermination(nurse, date, patient,
-				terminationType, null);
+		registrarBean.recordPregnancyTermination(eq(nurse), eq(date),
+				eq(patient), eq(terminationType), eq(procedure),
+				aryEq(complications), eq(maternalDeath), eq(referred),
+				eq(postCounsel), eq(postAccept), eq(comments));
 
 		replay(registrarBean, openmrsBean);
 

@@ -1047,11 +1047,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	@Transactional
 	public void recordPregnancyTermination(User nurse, Date date,
-			Patient patient, Integer abortionType, Integer complication) {
+			Patient patient, Integer terminationType, Integer procedure,
+			Integer[] complications, Boolean maternalDeath, Boolean referred,
+			Boolean postAbortionFPCounseled, Boolean postAbortionFPAccepted,
+			String comments) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
-		ObsService obsService = contextService.getObsService();
 
 		Location location = getGhanaLocation();
 
@@ -1061,29 +1063,74 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setPatient(patient);
 		encounter.setLocation(location);
 		encounter.setProvider(contextService.getAuthenticatedUser());
-		encounter = encounterService.saveEncounter(encounter);
 
 		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
+		if (pregnancyObs == null) {
+			log.warn("Entered Pregnancy termination "
+					+ "for patient without active pregnancy, patient id="
+					+ patient.getPatientId());
+		}
 
-		if (abortionType != null) {
-			Obs abortionTypeObs = createNumericValueObs(date,
+		if (terminationType != null) {
+			Obs terminationTypeObs = createNumericValueObs(date,
 					getTerminationTypeConcept(), patient, location,
-					abortionType, encounter, null);
-			abortionTypeObs.setObsGroup(pregnancyObs);
-			obsService.saveObs(abortionTypeObs, null);
+					terminationType, encounter, null);
+			encounter.addObs(terminationTypeObs);
 		}
-		if (complication != null) {
-			Obs complicationObs = createNumericValueObs(date,
-					getTerminationComplicationConcept(), patient, location,
-					complication, encounter, null);
-			complicationObs.setObsGroup(pregnancyObs);
-			obsService.saveObs(complicationObs, null);
+		if (procedure != null) {
+			Obs procedureObs = createNumericValueObs(date,
+					getTerminationProcedureConcept(), patient, location,
+					procedure, encounter, null);
+			encounter.addObs(procedureObs);
 		}
+		if (complications != null) {
+			for (Integer complication : complications) {
+				Obs complicationObs = createNumericValueObs(date,
+						getTerminationComplicationConcept(), patient, location,
+						complication, encounter, null);
+				encounter.addObs(complicationObs);
+			}
+		}
+		if (maternalDeath != null) {
+			Obs maternalDeathObs = createBooleanValueObs(date,
+					getMaternalDeathConcept(), patient, location,
+					maternalDeath, encounter, null);
+			encounter.addObs(maternalDeathObs);
+		}
+		if (referred != null) {
+			Obs referredObs = createBooleanValueObs(date, getReferredConcept(),
+					patient, location, referred, encounter, null);
+			encounter.addObs(referredObs);
+		}
+		if (postAbortionFPCounseled != null) {
+			Obs postCounseledObs = createBooleanValueObs(date,
+					getPostAbortionFPCounselingConcept(), patient, location,
+					postAbortionFPCounseled, encounter, null);
+			encounter.addObs(postCounseledObs);
+		}
+		if (postAbortionFPAccepted != null) {
+			Obs postAcceptedObs = createBooleanValueObs(date,
+					getPostAbortionFPAcceptedConcept(), patient, location,
+					postAbortionFPAccepted, encounter, null);
+			encounter.addObs(postAcceptedObs);
+		}
+		if (comments != null) {
+			Obs commentsObs = createTextValueObs(date, getCommentsConcept(),
+					patient, location, comments, encounter, null);
+			encounter.addObs(commentsObs);
+		}
+
 		Obs pregnancyStatusObs = createBooleanValueObs(date,
 				getPregnancyStatusConcept(), patient, location, Boolean.FALSE,
 				encounter, null);
 		pregnancyStatusObs.setObsGroup(pregnancyObs);
-		obsService.saveObs(pregnancyStatusObs, null);
+		encounter.addObs(pregnancyStatusObs);
+
+		encounterService.saveEncounter(encounter);
+
+		if (Boolean.TRUE.equals(maternalDeath)) {
+			processPatientDeath(patient, date);
+		}
 	}
 
 	@Transactional
