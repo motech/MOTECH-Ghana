@@ -226,7 +226,7 @@
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			
 			CREATE TABLE IF NOT EXISTS `motechmodule_community_patient` (
-				`community_id` int NOT NULL,
+				`community_id` bigint NOT NULL,
 				`patient_id` int(11) NOT NULL UNIQUE,
 				CONSTRAINT `com_pat_rel_community` FOREIGN KEY (`community_id`) REFERENCES `motechmodule_community` (`id`),
 				CONSTRAINT `com_pat_rel_patient` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`)
