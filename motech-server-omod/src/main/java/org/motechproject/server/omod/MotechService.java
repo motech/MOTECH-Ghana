@@ -19,6 +19,7 @@ import java.util.List;
 import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.GeneralOutpatientEncounter;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageAttribute;
@@ -197,4 +198,6 @@ public interface MotechService extends OpenmrsService {
 			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
 			String patientId, PatientIdentifierType patientIdType);
+	
+	Facility getFacilityById(Integer facilityId);
 }

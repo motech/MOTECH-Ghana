@@ -19,6 +19,7 @@ import java.util.List;
 import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.GeneralOutpatientEncounter;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageAttribute;
@@ -307,5 +308,9 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return motechDAO.getPatients(firstName, lastName, preferredName,
 				birthDate, community, phoneNumber, phoneNumberAttrType,
 				nhisNumber, nhisAttrType, patientId, patientIdType);
+	}
+
+	public Facility getFacilityById(Integer facilityId) {
+		return motechDAO.getFacilityByFacilityId(facilityId);
 	}
 }

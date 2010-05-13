@@ -18,6 +18,7 @@ import org.motechproject.server.event.MessageProgram;
 import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.GeneralOutpatientEncounter;
 import org.motechproject.server.model.HIVStatus;
 import org.motechproject.server.model.Message;
@@ -4645,6 +4646,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return contextService.getAdministrationService().getGlobalProperty(
 				MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY);
 	}
+
 	/* Factored out methods end */
+
+	public Facility getFacilityById(Integer facilityId) {
+		return contextService.getMotechService().getFacilityById(facilityId);
+	}
 
 }

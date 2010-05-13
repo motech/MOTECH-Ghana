@@ -8,6 +8,7 @@ import org.motechproject.server.annotation.RunAsUserParam;
 import org.motechproject.server.annotation.RunWithPrivileges;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.HIVStatus;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.ScheduledMessage;
@@ -434,4 +435,6 @@ public interface RegistrarBean {
 	public void updateAllMessageProgramsState();
 
 	public void demoEnrollPatient(String regNumberGHS);
+
+	public Facility getFacilityById(Integer facilityId);
 }
