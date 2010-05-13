@@ -2787,26 +2787,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechIdVerhoeffValidator.VERHOEFF_ID_LENGTH);
 
 		log.info("Verifying Locations Exist");
-		Location ghana = createLocation(MotechConstants.LOCATION_GHANA,
+		createLocation(MotechConstants.LOCATION_GHANA,
 				"Republic of Ghana, Country, Root in hierarchy", null, admin);
-		Location upperEast = createLocation(
-				MotechConstants.LOCATION_UPPER_EAST,
-				"Upper East Region in Ghana", ghana, admin);
-		createLocation(MotechConstants.LOCATION_KASSENA_NANKANA,
-				"Kassena-Nankana District in Upper East Region, Ghana",
-				upperEast, admin);
-		Location kassenaNankanaWest = createLocation(
-				MotechConstants.LOCATION_KASSENA_NANKANA_WEST,
-				"Kassena-Nankana West District in Upper East Region, Ghana",
-				upperEast, admin);
-		Location westTest = createLocation(
-				"West Test Community",
-				"Test Community in Kassena-Nankana West District, Upper East Region, Ghana",
-				kassenaNankanaWest, admin);
-		createLocation(
-				"West Test Clinic",
-				"Test Clinic in West Test Community, Kassena-Nankana West District, Upper East Region, Ghana",
-				westTest, admin);
 
 		log.info("Verifying Encounter Types Exist");
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_ANCVISIT,
