@@ -209,7 +209,7 @@
 			
 			CREATE TABLE IF NOT EXISTS `motechmodule_facility` (
 				`id` bigint NOT NULL auto_increment,
-				`facility_id` bigint NOT NULL UNIQUE,
+				`facility_id` int NOT NULL UNIQUE,
 				`location_id` int(11) NOT NULL UNIQUE,
 				`phone_number` varchar(50),
 				PRIMARY KEY (`id`),
@@ -218,7 +218,7 @@
 			
 			CREATE TABLE IF NOT EXISTS `motechmodule_community` (
 				`id` bigint NOT NULL auto_increment,
-				`community_id` bigint NOT NULL UNIQUE,
+				`community_id` int NOT NULL UNIQUE,
 				`name` varchar(50) NOT NULL UNIQUE,
 				`facility_id` bigint,
 				PRIMARY KEY (`id`),
@@ -226,12 +226,12 @@
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			
 			CREATE TABLE IF NOT EXISTS `motechmodule_community_patient` (
-				`community_id` bigint NOT NULL,
+				`community_id` int NOT NULL,
 				`patient_id` int(11) NOT NULL UNIQUE,
 				CONSTRAINT `com_pat_rel_community` FOREIGN KEY (`community_id`) REFERENCES `motechmodule_community` (`id`),
 				CONSTRAINT `com_pat_rel_patient` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-						
+			
 		</sql>
 	</diff>
 	

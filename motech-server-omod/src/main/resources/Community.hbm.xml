@@ -5,7 +5,7 @@
 		<id name="id" type="long" column="id">
 			<generator class="native" />
 		</id>
-		<property name="communityId" type="long" column="community_id"
+		<property name="communityId" type="int" column="community_id"
 			not-null="true" unique="true" />
 		<property name="name" type="string" column="name" not-null="true" />
 		<many-to-one name="facility" class="Facility" column="facility_id" />

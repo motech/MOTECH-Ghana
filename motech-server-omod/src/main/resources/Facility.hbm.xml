@@ -5,8 +5,8 @@
 		<id name="id" type="long" column="id">
 			<generator class="native" />
 		</id>
-		<property name="facilityId" type="string" column="facility_id"
-			not-null="true" unique="true" length="36" />
+		<property name="facilityId" type="int" column="facility_id"
+			not-null="true" unique="true" />
 		<many-to-one name="location" class="org.openmrs.Location"
 			column="location_id" not-null="true" />
 		<property name="phoneNumber" type="string" column="phone_number"

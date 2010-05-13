@@ -10,7 +10,7 @@ public class Facility implements Serializable {
 	private static final long serialVersionUID = -791545747208269078L;
 
 	private Long id;
-	private Long facilityId;
+	private Integer facilityId;
 	private Location location;
 	private String phoneNumber;
 	private Set<Community> communities;
@@ -23,11 +23,11 @@ public class Facility implements Serializable {
 		this.id = id;
 	}
 
-	public Long getFacilityId() {
+	public Integer getFacilityId() {
 		return facilityId;
 	}
 
-	public void setFacilityId(Long facilityId) {
+	public void setFacilityId(Integer facilityId) {
 		this.facilityId = facilityId;
 	}
 
