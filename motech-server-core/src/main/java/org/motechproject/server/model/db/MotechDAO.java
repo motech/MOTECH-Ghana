@@ -89,24 +89,25 @@ public interface MotechDAO {
 	GeneralOutpatientEncounter saveGeneralOutpatientEncounter(
 			GeneralOutpatientEncounter encounter);
 
-	List<Location> getAllCountries();
+	List<Location> getAllCountryLocations();
 
-	List<Location> getAllRegions();
+	List<Location> getAllRegionLocations();
 
-	List<Location> getRegions(String country);
+	List<Location> getRegionLocationsForCountry(String country);
 
-	List<Location> getAllDistricts();
+	List<Location> getAllDistrictLocations();
 
-	List<Location> getDistricts(String country, String region);
+	List<Location> getDistrictLocations(String country, String region);
 
-	List<Location> getAllCommunities();
+	List<Location> getAllCommunityLocations();
 
-	List<Location> getCommunities(String country, String region, String district);
+	List<Location> getCommunityLocations(String country, String region,
+			String district);
 
-	List<Location> getAllClinics();
+	List<Location> getAllFacilityLocations();
 
-	List<Location> getClinics(String country, String region, String district,
-			String community);
+	List<Location> getFacilityLocations(String country, String region,
+			String district, String community);
 
 	List<Obs> getActivePregnancies(Integer patientId, Concept pregnancyConcept,
 			Concept pregnancyStatusConcept);
@@ -138,6 +139,8 @@ public interface MotechDAO {
 	List<Facility> getFacilityByLocation(Location location);
 
 	List<Facility> getAllFacilities();
-	
+
 	Community getCommunityByCommunityId(Integer communityId);
+
+	List<Community> getAllCommunities();
 }

@@ -227,41 +227,41 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	}
 
 	public List<Location> getAllCountries() {
-		return motechDAO.getAllCountries();
+		return motechDAO.getAllCountryLocations();
 	}
 
 	public List<Location> getAllRegions() {
-		return motechDAO.getAllRegions();
+		return motechDAO.getAllRegionLocations();
 	}
 
 	public List<Location> getRegions(String country) {
-		return motechDAO.getRegions(country);
+		return motechDAO.getRegionLocationsForCountry(country);
 	}
 
 	public List<Location> getAllDistricts() {
-		return motechDAO.getAllDistricts();
+		return motechDAO.getAllDistrictLocations();
 	}
 
 	public List<Location> getDistricts(String country, String region) {
-		return motechDAO.getDistricts(country, region);
+		return motechDAO.getDistrictLocations(country, region);
 	}
 
 	public List<Location> getAllCommunities() {
-		return motechDAO.getAllCommunities();
+		return motechDAO.getAllCommunityLocations();
 	}
 
 	public List<Location> getCommunities(String country, String region,
 			String district) {
-		return motechDAO.getCommunities(country, region, district);
+		return motechDAO.getCommunityLocations(country, region, district);
 	}
 
 	public List<Location> getAllClinics() {
-		return motechDAO.getAllClinics();
+		return motechDAO.getAllFacilityLocations();
 	}
 
 	public List<Location> getClinics(String country, String region,
 			String district, String community) {
-		return motechDAO.getClinics(country, region, district, community);
+		return motechDAO.getFacilityLocations(country, region, district, community);
 	}
 
 	public List<Obs> getActivePregnancies(Integer patientId,

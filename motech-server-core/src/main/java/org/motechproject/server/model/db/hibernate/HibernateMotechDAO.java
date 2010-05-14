@@ -273,7 +273,7 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Location> getAllCountries() {
+	public List<Location> getAllCountryLocations() {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<Location>) session.createCriteria(Location.class).add(
 				Restrictions.isNotNull("country")).add(
@@ -284,7 +284,7 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Location> getAllRegions() {
+	public List<Location> getAllRegionLocations() {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<Location>) session.createCriteria(Location.class).add(
 				Restrictions.isNotNull("country")).add(
@@ -295,7 +295,7 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Location> getRegions(String country) {
+	public List<Location> getRegionLocationsForCountry(String country) {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<Location>) session.createCriteria(Location.class).add(
 				Restrictions.eq("country", country)).add(
@@ -306,7 +306,7 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Location> getAllDistricts() {
+	public List<Location> getAllDistrictLocations() {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<Location>) session.createCriteria(Location.class).add(
 				Restrictions.isNotNull("country")).add(
@@ -317,7 +317,7 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Location> getDistricts(String country, String region) {
+	public List<Location> getDistrictLocations(String country, String region) {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<Location>) session.createCriteria(Location.class).add(
 				Restrictions.eq("country", country)).add(
@@ -328,7 +328,7 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Location> getAllCommunities() {
+	public List<Location> getAllCommunityLocations() {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<Location>) session.createCriteria(Location.class).add(
 				Restrictions.isNotNull("country")).add(
@@ -339,7 +339,7 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Location> getCommunities(String country, String region,
+	public List<Location> getCommunityLocations(String country, String region,
 			String district) {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<Location>) session.createCriteria(Location.class).add(
@@ -351,7 +351,7 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Location> getAllClinics() {
+	public List<Location> getAllFacilityLocations() {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<Location>) session.createCriteria(Location.class).add(
 				Restrictions.isNotNull("country")).add(
@@ -362,7 +362,7 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Location> getClinics(String country, String region,
+	public List<Location> getFacilityLocations(String country, String region,
 			String district, String community) {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<Location>) session.createCriteria(Location.class).add(
@@ -609,5 +609,11 @@ public class HibernateMotechDAO implements MotechDAO {
 		return (Community) sessionFactory.getCurrentSession().createCriteria(
 				Community.class).add(
 				Restrictions.eq("communityId", communityId)).uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Community> getAllCommunities() {
+		return (List<Community>) sessionFactory.getCurrentSession()
+				.createCriteria(Community.class).list();
 	}
 }
