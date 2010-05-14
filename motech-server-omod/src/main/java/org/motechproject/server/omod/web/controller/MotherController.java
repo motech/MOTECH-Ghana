@@ -213,11 +213,10 @@ public class MotherController {
 					mother.getBirthDate(), mother.getBirthDateEst(), mother
 							.getSex(), mother.getInsured(), mother.getNhis(),
 					mother.getNhisExpDate(), null, null, mother.getAddress(),
-					Integer.parseInt(mother.getPrimaryPhone()), mother
-							.getDueDate(), mother.getDueDateConfirmed(), mother
-							.getGravida(), mother.getParity(), mother
-							.getRegisterPregProgram(), mother
-							.getRegisterPregProgram(), mother
+					mother.getPrimaryPhone(), mother.getDueDate(), mother
+							.getDueDateConfirmed(), mother.getGravida(), mother
+							.getParity(), mother.getRegisterPregProgram(),
+					mother.getRegisterPregProgram(), mother
 							.getPrimaryPhoneType(), mother.getMediaTypeInfo(),
 					mother.getLanguageText(), null, null, null, null, mother
 							.getMessagesStartWeek());

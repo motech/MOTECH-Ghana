@@ -88,7 +88,7 @@ public class RegistrarBeanMatchPatientsTest extends
 			String middleName = "MiddleName";
 			String lastName = "LastName";
 			String prefName = "PrefName";
-			Integer phoneNumber = 1111111111;
+			String phoneNumber = "1111111111";
 			String nhisNumber = "NHISNumber";
 			Date date = new Date();
 
@@ -144,7 +144,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// No match on first name, last name, and different phone number
 			matches = regService.getPatients(firstName, lastName, null, null,
-					null, 4534656, null, null);
+					null, "4534656", null, null);
 			assertEquals(0, matches.size());
 
 			// No matches on empty

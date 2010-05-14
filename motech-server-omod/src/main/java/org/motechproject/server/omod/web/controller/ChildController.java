@@ -210,10 +210,9 @@ public class ChildController {
 							.getBirthDate(), child.getBirthDateEst(), child
 							.getSex(), child.getInsured(), child.getNhis(),
 					child.getNhisExpDate(), mother, null, child.getAddress(),
-					Integer.parseInt(child.getPrimaryPhone()), child
-							.getDueDate(), child.getDueDateConfirmed(), child
-							.getGravida(), child.getParity(), child
-							.getRegisterPregProgram(), child
+					child.getPrimaryPhone(), child.getDueDate(), child
+							.getDueDateConfirmed(), child.getGravida(), child
+							.getParity(), child.getRegisterPregProgram(), child
 							.getRegisterPregProgram(), child
 							.getPrimaryPhoneType(), child.getMediaTypeInfo(),
 					child.getLanguageText(), null, null, null, null, child

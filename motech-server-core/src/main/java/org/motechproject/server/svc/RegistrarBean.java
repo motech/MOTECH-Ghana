@@ -58,7 +58,7 @@ public interface RegistrarBean {
 			String middleName, String lastName, String preferredName,
 			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
 			Boolean insured, String nhis, Date nhisExpires, Patient mother,
-			Integer community, String address, Integer phoneNumber,
+			Integer community, String address, String phoneNumber,
 			Date expDeliveryDate, Boolean deliveryDateConfirmed,
 			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, MediaType format, String language,
@@ -70,7 +70,7 @@ public interface RegistrarBean {
 			String middleName, String lastName, String preferredName,
 			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
 			Boolean insured, String nhis, Date nhisExpires, Patient mother,
-			Integer community, String address, Integer phoneNumber,
+			Integer community, String address, String phoneNumber,
 			Date expDeliveryDate, Boolean deliveryDateConfirmed,
 			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, MediaType format, String language,
@@ -105,7 +105,7 @@ public interface RegistrarBean {
 	@RunAsAdminUser
 	public void editPatient(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, Integer phoneNumber,
+			Date date, Patient patient, String phoneNumber,
 			ContactNumberType phoneOwnership, String nhis, Date nhisExpires,
 			Boolean stopEnrollment);
 
@@ -121,7 +121,7 @@ public interface RegistrarBean {
 	public void registerPregnancy(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Date date, Patient patient, Date estDeliveryDate, Boolean enroll,
-			Boolean consent, ContactNumberType ownership, Integer phoneNumber,
+			Boolean consent, ContactNumberType ownership, String phoneNumber,
 			MediaType format, String language, DayOfWeek dayOfWeek,
 			Date timeOfDay, InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek);
@@ -132,7 +132,7 @@ public interface RegistrarBean {
 			Date date, Patient patient, String ancRegNumber,
 			Date estDeliveryDate, Integer height, Integer gravida,
 			Integer parity, Boolean enroll, Boolean consent,
-			ContactNumberType ownership, Integer phoneNumber, MediaType format,
+			ContactNumberType ownership, String phoneNumber, MediaType format,
 			String language, DayOfWeek dayOfWeek, Date timeOfDay,
 			InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek);
@@ -141,7 +141,7 @@ public interface RegistrarBean {
 	public void registerCWCChild(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
 			Date date, Patient patient, String cwcRegNumber, Boolean enroll,
-			Boolean consent, ContactNumberType ownership, Integer phoneNumber,
+			Boolean consent, ContactNumberType ownership, String phoneNumber,
 			MediaType format, String language, DayOfWeek dayOfWeek,
 			Date timeOfDay, InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek);
@@ -253,7 +253,7 @@ public interface RegistrarBean {
 			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES })
 	public List<Patient> getPatients(String firstName, String lastName,
 			String preferredName, Date birthDate, String community,
-			Integer phoneNumber, String nhisNumber, String motechId);
+			String phoneNumber, String nhisNumber, String motechId);
 
 	public List<Obs> getAllPregnancies();
 

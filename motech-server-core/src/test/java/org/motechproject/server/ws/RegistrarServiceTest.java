@@ -879,7 +879,8 @@ public class RegistrarServiceTest {
 		String nhis = "NHIS", address = "Address", language = "Language";
 		Gender gender = Gender.FEMALE;
 		Boolean estBirthDate = false, insured = true, delivDateConf = true, enroll = true, consent = true;
-		Integer gravida = 0, parity = 0, messageWeek = 5, phone = 15555555;
+		Integer gravida = 0, parity = 0, messageWeek = 5;
+		String phone = "15555555";
 		Integer community = 11111;
 		Date date = new Date();
 		RegistrationMode mode = RegistrationMode.USE_PREPRINTED_ID;
@@ -936,7 +937,8 @@ public class RegistrarServiceTest {
 		String nhis = "NHIS", address = "Address", language = "Language";
 		Gender gender = Gender.FEMALE;
 		Boolean estBirthDate = false, insured = true, delivDateConf = true, enroll = true, consent = true;
-		Integer gravida = 0, parity = 0, messageWeek = 5, phone = 15555555;
+		Integer gravida = 0, parity = 0, messageWeek = 5;
+		String phone = "15555555";
 		Integer community = 11111;
 		Date date = new Date();
 		RegistrationMode mode = RegistrationMode.USE_PREPRINTED_ID;
@@ -1005,7 +1007,8 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language";
 		Boolean enroll = true, consent = true;
-		Integer messageWeek = 5, phone = 15555555;
+		Integer messageWeek = 5;
+		String phone = "15555555";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType format = MediaType.VOICE;
@@ -1040,7 +1043,8 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language";
 		Boolean enroll = true, consent = true;
-		Integer messageWeek = 5, phone = 15555555;
+		Integer messageWeek = 5;
+		String phone = "15555555";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType format = MediaType.VOICE;
@@ -1090,7 +1094,8 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language", regNumber = "RegNumber";
 		Boolean enroll = true, consent = true;
-		Integer gravida = 0, parity = 0, messageWeek = 5, phone = 15555555, height = 45;
+		Integer gravida = 0, parity = 0, messageWeek = 5, height = 45;
+		String phone = "15555555";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType format = MediaType.VOICE;
@@ -1125,7 +1130,8 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language", regNumber = "RegNumber";
 		Boolean enroll = true, consent = true;
-		Integer gravida = 0, parity = 0, messageWeek = 5, phone = 15555555, height = 45;
+		Integer gravida = 0, parity = 0, messageWeek = 5, height = 45;
+		String phone = "15555555";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType format = MediaType.VOICE;
@@ -1178,7 +1184,8 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language", regNumber = "RegNumber";
 		Boolean enroll = true, consent = true;
-		Integer messageWeek = 5, phone = 15555555;
+		Integer messageWeek = 5;
+		String phone = "15555555";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType format = MediaType.VOICE;
@@ -1213,7 +1220,8 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language", regNumber = "RegNumber";
 		Boolean enroll = true, consent = true;
-		Integer messageWeek = 5, phone = 15555555;
+		Integer messageWeek = 5;
+		String phone = "15555555";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType format = MediaType.VOICE;
@@ -1261,7 +1269,7 @@ public class RegistrarServiceTest {
 	@Test
 	public void testEditPatient() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
-		Integer phoneNumber = 2075557894;
+		String phoneNumber = "2075557894";
 		String nhis = "125";
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		Boolean stopEnrollment = false;
@@ -1291,7 +1299,7 @@ public class RegistrarServiceTest {
 	@Test
 	public void testEditPatientAllErrors() {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
-		Integer phoneNumber = 2075557894;
+		String phoneNumber = "2075557894";
 		String nhis = "125";
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		Boolean stopEnrollment = false;
@@ -1458,7 +1466,7 @@ public class RegistrarServiceTest {
 			assertEquals("FacilityID", facilityError.getField());
 			ValidationError error = errors.get(1);
 			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField());	
+			assertEquals("MotechID", error.getField());
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -1902,7 +1910,7 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2;
 		String firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
 		String nhis = "NHIS";
-		Integer phone = 22424324;
+		String phone = "22424324";
 		Date birthDate = new Date();
 
 		List<org.openmrs.Patient> patients = new ArrayList<org.openmrs.Patient>();

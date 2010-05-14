@@ -531,7 +531,7 @@ public class RegistrarBeanTest extends TestCase {
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String nhis = "456DEF";
 		String address = "Address";
-		Integer phoneNumber = 2075555555;
+		String phoneNumber = "2075555555";
 		String language = "Language";
 		Date date = new Date();
 		Boolean birthDateEst = true, insured = true, dueDateConfirmed = true, enroll = true, consent = true;
@@ -840,7 +840,7 @@ public class RegistrarBeanTest extends TestCase {
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String nhis = "456DEF";
 		String address = "Address";
-		Integer phoneNumber = 2075555555;
+		String phoneNumber = "2075555555";
 		String language = "Language";
 		Date date = new Date();
 		Boolean birthDateEst = true, insured = true, dueDateConfirmed = true, enroll = true, consent = true;
@@ -1075,7 +1075,7 @@ public class RegistrarBeanTest extends TestCase {
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String nhis = "456DEF";
 		String address = "Address";
-		Integer phoneNumber = 2075555555;
+		String phoneNumber = "2075555555";
 		String language = "Language";
 		Date date = new Date();
 		Boolean birthDateEst = true, insured = true, dueDateConfirmed = true, enroll = true, consent = true;
@@ -1296,7 +1296,7 @@ public class RegistrarBeanTest extends TestCase {
 	public void testEditPatient() throws ParseException {
 
 		Integer patientId = 1;
-		Integer phone = 2075551212;
+		String phone = "2075551212";
 		String nhis = "28";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
