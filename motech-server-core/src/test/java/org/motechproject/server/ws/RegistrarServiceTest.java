@@ -1406,6 +1406,8 @@ public class RegistrarServiceTest {
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(
+				new Facility());
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
 		registrarBean.recordOutpatientVisit(nurse, date, patient, serial,
@@ -1422,8 +1424,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordChildVisitInvalidPatientId()
-			throws ValidationException {
+	public void testRecordChildVisitInvalidIds() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
@@ -1434,6 +1435,7 @@ public class RegistrarServiceTest {
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(null);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(null);
 
@@ -1450,10 +1452,13 @@ public class RegistrarServiceTest {
 					.getFaultInfo());
 			List<ValidationError> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
-			assertEquals(1, errors.size());
-			ValidationError error = errors.get(0);
+			assertEquals(2, errors.size());
+			ValidationError facilityError = errors.get(0);
+			assertEquals(1, facilityError.getCode());
+			assertEquals("FacilityID", facilityError.getField());
+			ValidationError error = errors.get(1);
 			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField());
+			assertEquals("MotechID", error.getField());	
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -1472,6 +1477,8 @@ public class RegistrarServiceTest {
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(
+				new Facility());
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
 		registrarBean.recordOutpatientVisit(nurse, date, patient, serial,
@@ -1488,8 +1495,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordMotherVisitInvalidPatientId()
-			throws ValidationException {
+	public void testRecordMotherVisitInvalidIds() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
@@ -1500,6 +1506,7 @@ public class RegistrarServiceTest {
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(null);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(null);
 
@@ -1517,8 +1524,11 @@ public class RegistrarServiceTest {
 					.getFaultInfo());
 			List<ValidationError> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
-			assertEquals(1, errors.size());
-			ValidationError error = errors.get(0);
+			assertEquals(2, errors.size());
+			ValidationError facilityError = errors.get(0);
+			assertEquals(1, facilityError.getCode());
+			assertEquals("FacilityID", facilityError.getField());
+			ValidationError error = errors.get(1);
 			assertEquals(1, error.getCode());
 			assertEquals("MotechID", error.getField());
 		}

@@ -702,6 +702,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
+		validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -734,6 +735,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
+		validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
