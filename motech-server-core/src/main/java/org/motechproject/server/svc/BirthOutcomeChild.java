@@ -11,20 +11,15 @@ public class BirthOutcomeChild {
 	Integer motechId;
 	Gender sex;
 	String firstName;
-	Boolean opv;
-	Boolean bcg;
 	Double weight;
 
 	public BirthOutcomeChild(BirthOutcome outcome, RegistrationMode idMode,
-			Integer motechId, Gender sex, String firstName, Boolean opv,
-			Boolean bcg, Double weight) {
+			Integer motechId, Gender sex, String firstName, Double weight) {
 		this.outcome = outcome;
 		this.idMode = idMode;
 		this.motechId = motechId;
 		this.sex = sex;
 		this.firstName = firstName;
-		this.opv = opv;
-		this.bcg = bcg;
 		this.weight = weight;
 	}
 
@@ -69,22 +64,6 @@ public class BirthOutcomeChild {
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
-	}
-
-	public Boolean getOpv() {
-		return opv;
-	}
-
-	public void setOpv(Boolean opv) {
-		this.opv = opv;
-	}
-
-	public Boolean getBcg() {
-		return bcg;
-	}
-
-	public void setBcg(Boolean bcg) {
-		this.bcg = bcg;
 	}
 
 	public Double getWeight() {

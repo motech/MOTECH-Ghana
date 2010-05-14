@@ -271,7 +271,6 @@ public class RegistrarServiceTest {
 		Integer mode = 1, outcome = 2, location = 1, vvf = 2;
 		Double child1Weight = 4.2, child2Weight = 4.4, child3Weight = 3.7;
 		Boolean maternalDeath = false, maleInvolved = true;
-		Boolean child1opv = true, child1bcg = false, child2opv = false, child2bcg = true, child3opv = false, child3bcg = true;
 		Date date = new Date();
 		BirthOutcome child1birthOutcome = BirthOutcome.A;
 		BirthOutcome child2birthOutcome = BirthOutcome.FSB;
@@ -313,11 +312,10 @@ public class RegistrarServiceTest {
 				mode, outcome, location, deliveredBy, maleInvolved,
 				complications, vvf, maternalDeath, comments,
 				child1birthOutcome, child1RegType, child1Id, child1Sex,
-				child1Name, child1Weight, child1opv, child1bcg,
-				child2birthOutcome, child2RegType, child2Id, child2Sex,
-				child2Name, child2Weight, child2opv, child2bcg,
+				child1Name, child1Weight, child2birthOutcome, child2RegType,
+				child2Id, child2Sex, child2Name, child2Weight,
 				child3birthOutcome, child3RegType, child3Id, child3Sex,
-				child3Name, child3Weight, child3opv, child3bcg);
+				child3Name, child3Weight);
 
 		verify(registrarBean, openmrsBean);
 
@@ -329,25 +327,18 @@ public class RegistrarServiceTest {
 		assertEquals(child1Id, child1.getMotechId());
 		assertEquals(child1Name, child1.getFirstName());
 		assertEquals(child1Sex, child1.getSex());
-		assertEquals(child1bcg, child1.getBcg());
-		assertEquals(child1opv, child1.getOpv());
 
 		BirthOutcomeChild child2 = outcomes.get(1);
 		assertEquals(child2birthOutcome, child2.getOutcome());
 		assertEquals(child2Id, child2.getMotechId());
 		assertEquals(child2Name, child2.getFirstName());
 		assertEquals(child2Sex, child2.getSex());
-		assertEquals(child2bcg, child2.getBcg());
-		assertEquals(child2opv, child2.getOpv());
 
 		BirthOutcomeChild child3 = outcomes.get(2);
 		assertEquals(child3birthOutcome, child3.getOutcome());
 		assertEquals(child3Id, child3.getMotechId());
 		assertEquals(child3Name, child3.getFirstName());
 		assertEquals(child3Sex, child3.getSex());
-		assertEquals(child3bcg, child3.getBcg());
-		assertEquals(child3opv, child3.getOpv());
-
 	}
 
 	@Test
@@ -360,7 +351,6 @@ public class RegistrarServiceTest {
 		Integer mode = 1, outcome = 2, location = 1, vvf = 2;
 		Double child1Weight = 4.2;
 		Boolean maternalDeath = false, maleInvolved = true;
-		Boolean child1opv = true, child1bcg = false;
 		Date date = new Date();
 		BirthOutcome child1birthOutcome = BirthOutcome.A;
 		Gender child1Sex = Gender.FEMALE;
@@ -396,9 +386,8 @@ public class RegistrarServiceTest {
 				mode, outcome, location, deliveredBy, maleInvolved,
 				complications, vvf, maternalDeath, comments,
 				child1birthOutcome, child1RegType, child1Id, child1Sex,
-				child1Name, child1Weight, child1opv, child1bcg, null, null,
-				null, null, null, null, null, null, null, null, null, null,
-				null, null, null, null);
+				child1Name, child1Weight, null, null, null, null, null, null,
+				null, null, null, null, null, null);
 
 		verify(registrarBean, openmrsBean);
 
@@ -410,8 +399,6 @@ public class RegistrarServiceTest {
 		assertEquals(child1Id, child1.getMotechId());
 		assertEquals(child1Name, child1.getFirstName());
 		assertEquals(child1Sex, child1.getSex());
-		assertEquals(child1bcg, child1.getBcg());
-		assertEquals(child1opv, child1.getOpv());
 	}
 
 	@Test
@@ -424,7 +411,6 @@ public class RegistrarServiceTest {
 		Integer method = 1, outcome = 2, location = 1, vvf = 2;
 		Double child1Weight = 4.2, child2Weight = 4.4, child3Weight = 3.7;
 		Boolean maternalDeath = false, maleInvolved = true;
-		Boolean child1opv = true, child1bcg = false, child2opv = false, child2bcg = true, child3opv = false, child3bcg = true;
 		Date date = new Date();
 		BirthOutcome child1birthOutcome = BirthOutcome.A;
 		BirthOutcome child2birthOutcome = BirthOutcome.FSB;
@@ -452,11 +438,10 @@ public class RegistrarServiceTest {
 					method, outcome, location, deliveredBy, maleInvolved,
 					complications, vvf, maternalDeath, comments,
 					child1birthOutcome, child1RegType, child1Id, child1Sex,
-					child1Name, child1Weight, child1opv, child1bcg,
-					child2birthOutcome, child2RegType, child2Id, child2Sex,
-					child2Name, child2Weight, child2opv, child2bcg,
-					child3birthOutcome, child3RegType, child3Id, child3Sex,
-					child3Name, child3Weight, child3opv, child3bcg);
+					child1Name, child1Weight, child2birthOutcome,
+					child2RegType, child2Id, child2Sex, child2Name,
+					child2Weight, child3birthOutcome, child3RegType, child3Id,
+					child3Sex, child3Name, child3Weight);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Pregnancy Delivery request", e

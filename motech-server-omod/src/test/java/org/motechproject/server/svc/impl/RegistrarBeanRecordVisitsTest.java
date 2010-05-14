@@ -173,10 +173,10 @@ public class RegistrarBeanRecordVisitsTest extends
 			List<BirthOutcomeChild> outcomes = new ArrayList<BirthOutcomeChild>();
 			outcomes.add(new BirthOutcomeChild(BirthOutcome.A,
 					RegistrationMode.USE_PREPRINTED_ID, child2Id, Gender.MALE,
-					"Child2FirstName", true, true, 2.5));
+					"Child2FirstName", 2.5));
 			outcomes.add(new BirthOutcomeChild(BirthOutcome.FSB,
 					RegistrationMode.USE_PREPRINTED_ID, child3Id, Gender.MALE,
-					"Child3FirstName", true, true, 3.0));
+					"Child3FirstName", 3.0));
 			List<Patient> childPatients = regService.recordPregnancyDelivery(
 					nurse, date, mother1, 1, 1, 1, 1, true, new Integer[] { 1,
 							2, 3 }, 1, true, "Comments", outcomes);

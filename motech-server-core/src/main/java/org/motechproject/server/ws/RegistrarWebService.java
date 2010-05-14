@@ -168,24 +168,18 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "child1Sex") Gender child1Sex,
 			@WebParam(name = "child1FirstName") String child1FirstName,
 			@WebParam(name = "child1Weight") Double child1Weight,
-			@WebParam(name = "child1OPV") Boolean child1OPV,
-			@WebParam(name = "child1BCG") Boolean child1BCG,
 			@WebParam(name = "child2Outcome") BirthOutcome child2Outcome,
 			@WebParam(name = "child2RegistrationType") RegistrationMode child2RegistrationType,
 			@WebParam(name = "child2MotechId") Integer child2MotechId,
 			@WebParam(name = "child2Sex") Gender child2Sex,
 			@WebParam(name = "child2FirstName") String child2FirstName,
 			@WebParam(name = "child2Weight") Double child2Weight,
-			@WebParam(name = "child2OPV") Boolean child2OPV,
-			@WebParam(name = "child2BCG") Boolean child2BCG,
 			@WebParam(name = "child3Outcome") BirthOutcome child3Outcome,
 			@WebParam(name = "child3RegistrationType") RegistrationMode child3RegistrationType,
 			@WebParam(name = "child3MotechId") Integer child3MotechId,
 			@WebParam(name = "child3Sex") Gender child3Sex,
 			@WebParam(name = "child3FirstName") String child3FirstName,
-			@WebParam(name = "child3Weight") Double child3Weight,
-			@WebParam(name = "child3OPV") Boolean child3OPV,
-			@WebParam(name = "child3BCG") Boolean child3BCG)
+			@WebParam(name = "child3Weight") Double child3Weight)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -204,17 +198,17 @@ public class RegistrarWebService implements RegistrarService {
 		if (child1Outcome != null && child1Sex != null) {
 			outcomes.add(new BirthOutcomeChild(child1Outcome,
 					child1RegistrationType, child1MotechId, child1Sex,
-					child1FirstName, child1OPV, child1BCG, child1Weight));
+					child1FirstName, child1Weight));
 		}
 		if (child2Outcome != null && child2Sex != null) {
 			outcomes.add(new BirthOutcomeChild(child2Outcome,
 					child2RegistrationType, child2MotechId, child2Sex,
-					child2FirstName, child2OPV, child2BCG, child2Weight));
+					child2FirstName, child2Weight));
 		}
 		if (child3Outcome != null && child3Sex != null) {
 			outcomes.add(new BirthOutcomeChild(child3Outcome,
 					child3RegistrationType, child3MotechId, child3Sex,
-					child3FirstName, child3OPV, child3BCG, child3Weight));
+					child3FirstName, child3Weight));
 		}
 
 		List<org.openmrs.Patient> childPatients = registrarBean

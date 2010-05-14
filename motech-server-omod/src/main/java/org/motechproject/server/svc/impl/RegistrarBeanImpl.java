@@ -1244,13 +1244,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					null, null, null, null, null, null, null, null, null, null,
 					null, null, null, null, null, null);
 
-			if (Boolean.TRUE.equals(childOutcome.getBcg())
-					|| Boolean.TRUE.equals(childOutcome.getOpv()
-							|| childOutcome.getWeight() != null)) {
-				recordChildPNCVisit(nurse, datetime, child, null, null, null,
-						null, null, null, childOutcome.getWeight(), null,
-						childOutcome.getBcg(), childOutcome.getOpv(), null,
-						null, null, null);
+			if (childOutcome.getWeight() != null) {
+				recordBirthData(child, datetime, childOutcome.getWeight());
 			}
 
 			if (BirthOutcome.A != childOutcome.getOutcome()) {
@@ -1267,6 +1262,28 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 
 		return aliveChildPatients;
+	}
+
+	private void recordBirthData(Patient child, Date datetime, Double weight) {
+		EncounterService encounterService = contextService
+				.getEncounterService();
+
+		Location location = getGhanaLocation();
+
+		Encounter encounter = new Encounter();
+		encounter.setEncounterType(getBirthEncounterType());
+		encounter.setEncounterDatetime(datetime);
+		encounter.setPatient(child);
+		encounter.setLocation(location);
+		encounter.setProvider(contextService.getAuthenticatedUser());
+
+		if (weight != null) {
+			Obs weightObs = createNumericValueObs(datetime, getWeightConcept(),
+					child, location, weight, encounter, null);
+			encounter.addObs(weightObs);
+		}
+
+		encounterService.saveEncounter(encounter);
 	}
 
 	@Transactional
@@ -2816,6 +2833,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Ghana Antental Care (ANC) Registration", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_CWCREGVISIT,
 				"Ghana Child Immunization Registration", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_BIRTHVISIT,
+				"Ghana Child Birth Visit", admin);
 
 		log.info("Verifying Concepts Exist");
 		createConcept(MotechConstants.CONCEPT_VISIT_NUMBER, "Visit Number",
@@ -4226,6 +4245,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public EncounterType getCWCRegistrationEncounterType() {
 		return contextService.getEncounterService().getEncounterType(
 				MotechConstants.ENCOUNTER_TYPE_CWCREGVISIT);
+	}
+
+	public EncounterType getBirthEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_BIRTHVISIT);
 	}
 
 	public Concept getImmunizationsOrderedConcept() {
