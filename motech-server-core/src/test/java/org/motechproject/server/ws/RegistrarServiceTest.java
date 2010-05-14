@@ -49,6 +49,7 @@ import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationError;
 import org.motechproject.ws.server.ValidationException;
 import org.openmrs.Encounter;
+import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.User;
 import org.springframework.context.ApplicationContext;
@@ -112,20 +113,23 @@ public class RegistrarServiceTest {
 		HIVResult hivResult = HIVResult.NO_TEST;
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordMotherANCVisit(nurse, facilityId, date, patient,
-				visitNumber, location, house, community, date, bpSystolic,
-				bpDiastolic, weight, ttDose, iptDose, iptReactive, itnUse, fht,
-				fhr, urineProtein, urineGlucose, hemoglobin, vdrlReactive,
-				vdrlTreatment, dewormer, maleInvolved, pmtct, preTest,
-				hivResult, postTest, pmtctTreatment, referred, date, comments);
+		registrarBean.recordMotherANCVisit(nurse, facilityLocation, date,
+				patient, visitNumber, location, house, community, date,
+				bpSystolic, bpDiastolic, weight, ttDose, iptDose, iptReactive,
+				itnUse, fht, fhr, urineProtein, urineGlucose, hemoglobin,
+				vdrlReactive, vdrlTreatment, dewormer, maleInvolved, pmtct,
+				preTest, hivResult, postTest, pmtctTreatment, referred, date,
+				comments);
 
 		replay(registrarBean, openmrsBean);
 
@@ -199,18 +203,21 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordPregnancyTermination(eq(nurse), eq(date),
-				eq(patient), eq(terminationType), eq(procedure),
-				aryEq(complications), eq(maternalDeath), eq(referred),
-				eq(postCounsel), eq(postAccept), eq(comments));
+		registrarBean.recordPregnancyTermination(eq(nurse),
+				eq(facilityLocation), eq(date), eq(patient),
+				eq(terminationType), eq(procedure), aryEq(complications),
+				eq(maternalDeath), eq(referred), eq(postCounsel),
+				eq(postAccept), eq(comments));
 
 		replay(registrarBean, openmrsBean);
 
@@ -284,6 +291,9 @@ public class RegistrarServiceTest {
 		RegistrationMode child3RegType = RegistrationMode.AUTO_GENERATE_ID;
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		List<org.openmrs.Patient> childPatients = new ArrayList<org.openmrs.Patient>();
@@ -293,17 +303,16 @@ public class RegistrarServiceTest {
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
 		expect(
-				registrarBean.recordPregnancyDelivery(eq(nurse), eq(date),
-						eq(patient), eq(mode), eq(outcome), eq(location),
-						eq(deliveredBy), eq(maleInvolved),
-						aryEq(complications), eq(vvf), eq(maternalDeath),
-						eq(comments), capture(outcomesCapture))).andReturn(
-				childPatients);
+				registrarBean.recordPregnancyDelivery(eq(nurse),
+						eq(facilityLocation), eq(date), eq(patient), eq(mode),
+						eq(outcome), eq(location), eq(deliveredBy),
+						eq(maleInvolved), aryEq(complications), eq(vvf),
+						eq(maternalDeath), eq(comments),
+						capture(outcomesCapture))).andReturn(childPatients);
 		expect(modelConverter.patientToWebService(childPatients, true))
 				.andReturn(new Patient[1]);
 
@@ -358,6 +367,9 @@ public class RegistrarServiceTest {
 		RegistrationMode child1RegType = RegistrationMode.USE_PREPRINTED_ID;
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		List<org.openmrs.Patient> childPatients = new ArrayList<org.openmrs.Patient>();
@@ -367,17 +379,16 @@ public class RegistrarServiceTest {
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
 		expect(
-				registrarBean.recordPregnancyDelivery(eq(nurse), eq(date),
-						eq(patient), eq(mode), eq(outcome), eq(location),
-						eq(deliveredBy), eq(maleInvolved),
-						aryEq(complications), eq(vvf), eq(maternalDeath),
-						eq(comments), capture(outcomesCapture))).andReturn(
-				childPatients);
+				registrarBean.recordPregnancyDelivery(eq(nurse),
+						eq(facilityLocation), eq(date), eq(patient), eq(mode),
+						eq(outcome), eq(location), eq(deliveredBy),
+						eq(maleInvolved), aryEq(complications), eq(vvf),
+						eq(maternalDeath), eq(comments),
+						capture(outcomesCapture))).andReturn(childPatients);
 		expect(modelConverter.patientToWebService(childPatients, true))
 				.andReturn(new Patient[1]);
 
@@ -466,15 +477,18 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordPregnancyDeliveryNotification(nurse, date, patient);
+		registrarBean.recordPregnancyDeliveryNotification(nurse,
+				facilityLocation, date, patient);
 
 		replay(registrarBean, openmrsBean);
 
@@ -531,17 +545,20 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordMotherPNCVisit(nurse, date, patient, visitNumber,
-				location, house, community, referred, maleInvolved, vitaminA,
-				ttDose, lochiaColour, lochiaExcess, temperature, fht, comments);
+		registrarBean.recordMotherPNCVisit(nurse, facilityLocation, date,
+				patient, visitNumber, location, house, community, referred,
+				maleInvolved, vitaminA, ttDose, lochiaColour, lochiaExcess,
+				temperature, fht, comments);
 
 		replay(registrarBean, openmrsBean);
 
@@ -604,15 +621,18 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordDeath(nurse, date, patient, cause);
+		registrarBean
+				.recordDeath(nurse, facilityLocation, date, patient, cause);
 
 		replay(registrarBean, openmrsBean);
 
@@ -663,15 +683,18 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordTTVisit(nurse, date, patient, ttDose);
+		registrarBean.recordTTVisit(nurse, facilityLocation, date, patient,
+				ttDose);
 
 		replay(registrarBean, openmrsBean);
 
@@ -726,18 +749,20 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordChildPNCVisit(nurse, date, patient, visitNumber,
-				location, house, community, referred, maleInvolved, weight,
-				temperature, bcg, opv0, respiration, cordCondition,
-				babyCondition, comments);
+		registrarBean.recordChildPNCVisit(nurse, facilityLocation, date,
+				patient, visitNumber, location, house, community, referred,
+				maleInvolved, weight, temperature, bcg, opv0, respiration,
+				cordCondition, babyCondition, comments);
 
 		replay(registrarBean, openmrsBean);
 
@@ -805,18 +830,20 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordChildCWCVisit(nurse, date, patient, location,
-				house, community, bcg, opvDose, pentaDose, measles,
-				yellowFever, csm, ipti, vitaminA, dewormer, weight, muac,
-				height, maleInvolved, comments);
+		registrarBean.recordChildCWCVisit(nurse, facilityLocation, date,
+				patient, location, house, community, bcg, opvDose, pentaDose,
+				measles, yellowFever, csm, ipti, vitaminA, dewormer, weight,
+				muac, height, maleInvolved, comments);
 
 		replay(registrarBean, openmrsBean);
 
@@ -893,6 +920,9 @@ public class RegistrarServiceTest {
 		HowLearned how = HowLearned.GHS_NURSE;
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = null;
 		org.openmrs.Patient mother = new org.openmrs.Patient(3);
 
@@ -900,8 +930,7 @@ public class RegistrarServiceTest {
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(registrarBean.getCommunityById(community)).andReturn(
 				new Community());
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -909,8 +938,8 @@ public class RegistrarServiceTest {
 		expect(openmrsBean.getPatientByMotechId(motherMotechId.toString()))
 				.andReturn(mother);
 		expect(
-				registrarBean.registerPatient(nurse, facilityId, date, mode,
-						motechId, type, firstName, middleName, lastName,
+				registrarBean.registerPatient(nurse, facilityLocation, date,
+						mode, motechId, type, firstName, middleName, lastName,
 						prefName, date, estBirthDate, gender, insured, nhis,
 						date, mother, community, address, phone, date,
 						delivDateConf, gravida, parity, enroll, consent,
@@ -1024,17 +1053,19 @@ public class RegistrarServiceTest {
 		HowLearned how = HowLearned.GHS_NURSE;
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.registerPregnancy(nurse, date, patient, date, enroll,
-				consent, phoneType, phone, format, language, day, date, reason,
-				how, messageWeek);
+		registrarBean.registerPregnancy(nurse, facilityLocation, date, patient,
+				date, enroll, consent, phoneType, phone, format, language, day,
+				date, reason, how, messageWeek);
 
 		replay(registrarBean, openmrsBean);
 
@@ -1111,17 +1142,20 @@ public class RegistrarServiceTest {
 		HowLearned how = HowLearned.GHS_NURSE;
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.registerANCMother(nurse, date, patient, regNumber, date,
-				height, gravida, parity, enroll, consent, phoneType, phone,
-				format, language, day, date, reason, how, messageWeek);
+		registrarBean.registerANCMother(nurse, facilityLocation, date, patient,
+				regNumber, date, height, gravida, parity, enroll, consent,
+				phoneType, phone, format, language, day, date, reason, how,
+				messageWeek);
 
 		replay(registrarBean, openmrsBean);
 
@@ -1201,17 +1235,19 @@ public class RegistrarServiceTest {
 		HowLearned how = HowLearned.GHS_NURSE;
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.registerCWCChild(nurse, date, patient, regNumber, enroll,
-				consent, phoneType, phone, format, language, day, date, reason,
-				how, messageWeek);
+		registrarBean.registerCWCChild(nurse, facilityLocation, date, patient,
+				regNumber, enroll, consent, phoneType, phone, format, language,
+				day, date, reason, how, messageWeek);
 
 		replay(registrarBean, openmrsBean);
 
@@ -1417,17 +1453,19 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordOutpatientVisit(nurse, date, patient, serial,
-				diagnosis, secondDiagnosis, rdtGiven, rdtPositive, actTreated,
-				newCase, referred, comments);
+		registrarBean.recordOutpatientVisit(nurse, facilityLocation, date,
+				patient, serial, diagnosis, secondDiagnosis, rdtGiven,
+				rdtPositive, actTreated, newCase, referred, comments);
 
 		replay(registrarBean, openmrsBean);
 
@@ -1488,17 +1526,19 @@ public class RegistrarServiceTest {
 		Date date = new Date();
 
 		User nurse = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordOutpatientVisit(nurse, date, patient, serial,
-				diagnosis, secondDiagnosis, rdtGiven, rdtPositive, actTreated,
-				newCase, referred, comments);
+		registrarBean.recordOutpatientVisit(nurse, facilityLocation, date,
+				patient, serial, diagnosis, secondDiagnosis, rdtGiven,
+				rdtPositive, actTreated, newCase, referred, comments);
 
 		replay(registrarBean, openmrsBean);
 

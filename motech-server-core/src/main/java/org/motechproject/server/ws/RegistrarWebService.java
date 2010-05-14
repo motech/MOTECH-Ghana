@@ -95,7 +95,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -104,14 +104,14 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Mother ANC Visit request", errors);
 		}
 
-		registrarBean.recordMotherANCVisit(nurse, facilityId, date, patient,
-				visitNumber, location, house, community, estDeliveryDate,
-				bpSystolic, bpDiastolic, weight, ttDose, iptDose, iptReactive,
-				itnUse, fht, fhr, urineTestProteinPositive,
-				urineTestGlucosePositive, hemoglobin, vdrlReactive,
-				vdrlTreatment, dewormer, maleInvolved, pmtct, preTestCounseled,
-				hivTestResult, postTestCounseled, pmtctTreatment, referred,
-				nextANCDate, comments);
+		registrarBean.recordMotherANCVisit(nurse, facility.getLocation(), date,
+				patient, visitNumber, location, house, community,
+				estDeliveryDate, bpSystolic, bpDiastolic, weight, ttDose,
+				iptDose, iptReactive, itnUse, fht, fhr,
+				urineTestProteinPositive, urineTestGlucosePositive, hemoglobin,
+				vdrlReactive, vdrlTreatment, dewormer, maleInvolved, pmtct,
+				preTestCounseled, hivTestResult, postTestCounseled,
+				pmtctTreatment, referred, nextANCDate, comments);
 	}
 
 	@WebMethod
@@ -133,7 +133,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -142,10 +142,10 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Pregnancy Termination request", errors);
 		}
 
-		registrarBean.recordPregnancyTermination(nurse, date, patient,
-				terminationType, procedure, complications, maternalDeath,
-				referred, postAbortionFPCounseled, postAbortionFPAccepted,
-				comments);
+		registrarBean.recordPregnancyTermination(nurse, facility.getLocation(),
+				date, patient, terminationType, procedure, complications,
+				maternalDeath, referred, postAbortionFPCounseled,
+				postAbortionFPAccepted, comments);
 	}
 
 	@WebMethod
@@ -186,7 +186,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -213,9 +213,10 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		List<org.openmrs.Patient> childPatients = registrarBean
-				.recordPregnancyDelivery(nurse, datetime, patient, mode,
-						outcome, deliveryLocation, deliveredBy, maleInvolved,
-						complications, vvf, maternalDeath, comments, outcomes);
+				.recordPregnancyDelivery(nurse, facility.getLocation(),
+						datetime, patient, mode, outcome, deliveryLocation,
+						deliveredBy, maleInvolved, complications, vvf,
+						maternalDeath, comments, outcomes);
 
 		return modelConverter.patientToWebService(childPatients, true);
 	}
@@ -231,7 +232,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -240,8 +241,8 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Delivery Notification request", errors);
 		}
 
-		registrarBean.recordPregnancyDeliveryNotification(nurse, datetime,
-				patient);
+		registrarBean.recordPregnancyDeliveryNotification(nurse, facility
+				.getLocation(), datetime, patient);
 	}
 
 	@WebMethod
@@ -268,7 +269,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -277,9 +278,9 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Mother PNC Visit request", errors);
 		}
 
-		registrarBean.recordMotherPNCVisit(nurse, datetime, patient,
-				visitNumber, location, house, community, referred,
-				maleInvolved, vitaminA, ttDose, lochiaColour,
+		registrarBean.recordMotherPNCVisit(nurse, facility.getLocation(),
+				datetime, patient, visitNumber, location, house, community,
+				referred, maleInvolved, vitaminA, ttDose, lochiaColour,
 				lochiaAmountExcess, temperature, fht, comments);
 	}
 
@@ -293,7 +294,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -302,7 +303,8 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		registrarBean.recordDeath(nurse, date, patient, cause);
+		registrarBean.recordDeath(nurse, facility.getLocation(), date, patient,
+				cause);
 	}
 
 	@WebMethod
@@ -316,7 +318,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -325,7 +327,8 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		registrarBean.recordTTVisit(nurse, date, patient, ttDose);
+		registrarBean.recordTTVisit(nurse, facility.getLocation(), date,
+				patient, ttDose);
 	}
 
 	@WebMethod
@@ -353,7 +356,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -362,10 +365,10 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Child PNC Visit request", errors);
 		}
 
-		registrarBean.recordChildPNCVisit(nurse, datetime, patient,
-				visitNumber, location, house, community, referred,
-				maleInvolved, weight, temperature, bcg, opv0, respiration,
-				cordConditionNormal, babyConditionGood, comments);
+		registrarBean.recordChildPNCVisit(nurse, facility.getLocation(),
+				datetime, patient, visitNumber, location, house, community,
+				referred, maleInvolved, weight, temperature, bcg, opv0,
+				respiration, cordConditionNormal, babyConditionGood, comments);
 	}
 
 	@WebMethod
@@ -396,7 +399,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -405,10 +408,10 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Child CWC Visit request", errors);
 		}
 
-		registrarBean.recordChildCWCVisit(nurse, date, patient, cwcLocation,
-				house, community, bcg, opvDose, pentaDose, measles,
-				yellowFever, csm, ipti, vitaminA, dewormer, weight, muac,
-				height, maleInvolved, comments);
+		registrarBean.recordChildCWCVisit(nurse, facility.getLocation(), date,
+				patient, cwcLocation, house, community, bcg, opvDose,
+				pentaDose, measles, yellowFever, csm, ipti, vitaminA, dewormer,
+				weight, muac, height, maleInvolved, comments);
 	}
 
 	@WebMethod
@@ -452,7 +455,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		validateCommunity(community, errors, "Community");
 
 		if (motechId == null
@@ -498,13 +501,13 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		org.openmrs.Patient patient = registrarBean.registerPatient(nurse,
-				facilityId, date, registrationMode, motechId, registrantType,
-				firstName, middleName, lastName, preferredName, dateOfBirth,
-				estimatedBirthDate, sex, insured, nhis, nhisExpires, mother,
-				community, address, phoneNumber, expDeliveryDate,
-				deliveryDateConfirmed, gravida, parity, enroll, consent,
-				ownership, format, language, dayOfWeek, timeOfDay, reason,
-				howLearned, messagesStartWeek);
+				facility.getLocation(), date, registrationMode, motechId,
+				registrantType, firstName, middleName, lastName, preferredName,
+				dateOfBirth, estimatedBirthDate, sex, insured, nhis,
+				nhisExpires, mother, community, address, phoneNumber,
+				expDeliveryDate, deliveryDateConfirmed, gravida, parity,
+				enroll, consent, ownership, format, language, dayOfWeek,
+				timeOfDay, reason, howLearned, messagesStartWeek);
 
 		return modelConverter.patientToWebService(patient, true);
 	}
@@ -531,7 +534,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -540,9 +543,10 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Register Pregnancy request", errors);
 		}
 
-		registrarBean.registerPregnancy(nurse, date, patient, estDeliveryDate,
-				enroll, consent, ownership, phoneNumber, format, language,
-				dayOfWeek, timeOfDay, reason, howLearned, messagesStartWeek);
+		registrarBean.registerPregnancy(nurse, facility.getLocation(), date,
+				patient, estDeliveryDate, enroll, consent, ownership,
+				phoneNumber, format, language, dayOfWeek, timeOfDay, reason,
+				howLearned, messagesStartWeek);
 	}
 
 	@WebMethod
@@ -571,7 +575,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -580,10 +584,11 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Register ANC Mother request", errors);
 		}
 
-		registrarBean.registerANCMother(nurse, date, patient, ancRegNumber,
-				estDeliveryDate, height, gravida, parity, enroll, consent,
-				ownership, phoneNumber, format, language, dayOfWeek, timeOfDay,
-				reason, howLearned, messagesStartWeek);
+		registrarBean.registerANCMother(nurse, facility.getLocation(), date,
+				patient, ancRegNumber, estDeliveryDate, height, gravida,
+				parity, enroll, consent, ownership, phoneNumber, format,
+				language, dayOfWeek, timeOfDay, reason, howLearned,
+				messagesStartWeek);
 	}
 
 	@WebMethod
@@ -608,7 +613,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -617,9 +622,10 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Register CWC Child request", errors);
 		}
 
-		registrarBean.registerCWCChild(nurse, date, patient, cwcRegNumber,
-				enroll, consent, ownership, phoneNumber, format, language,
-				dayOfWeek, timeOfDay, reason, howLearned, messagesStartWeek);
+		registrarBean.registerCWCChild(nurse, facility.getLocation(), date,
+				patient, cwcRegNumber, enroll, consent, ownership, phoneNumber,
+				format, language, dayOfWeek, timeOfDay, reason, howLearned,
+				messagesStartWeek);
 	}
 
 	@WebMethod
@@ -704,7 +710,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -713,9 +719,9 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Child Visit request", errors);
 		}
 
-		registrarBean.recordOutpatientVisit(nurse, date, patient, serialNumber,
-				diagnosis, secondDiagnosis, rdtGiven, rdtPositive, actTreated,
-				newCase, referred, comments);
+		registrarBean.recordOutpatientVisit(nurse, facility.getLocation(),
+				date, patient, serialNumber, diagnosis, secondDiagnosis,
+				rdtGiven, rdtPositive, actTreated, newCase, referred, comments);
 	}
 
 	@WebMethod
@@ -737,7 +743,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
 
@@ -746,9 +752,9 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Mother Visit request", errors);
 		}
 
-		registrarBean.recordOutpatientVisit(nurse, date, patient, serialNumber,
-				diagnosis, secondDiagnosis, rdtGiven, rdtPositive, actTreated,
-				newCase, referred, comments);
+		registrarBean.recordOutpatientVisit(nurse, facility.getLocation(),
+				date, patient, serialNumber, diagnosis, secondDiagnosis,
+				rdtGiven, rdtPositive, actTreated, newCase, referred, comments);
 	}
 
 	@WebMethod

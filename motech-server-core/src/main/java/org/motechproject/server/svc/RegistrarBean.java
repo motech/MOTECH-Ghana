@@ -54,7 +54,7 @@ public interface RegistrarBean {
 	@RunAsAdminUser
 	public Patient registerPatient(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Integer facilityId, Date date, RegistrationMode registrationMode,
+			Location facility, Date date, RegistrationMode registrationMode,
 			Integer motechId, RegistrantType registrantType, String firstName,
 			String middleName, String lastName, String preferredName,
 			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
@@ -121,16 +121,17 @@ public interface RegistrarBean {
 	@RunAsAdminUser
 	public void registerPregnancy(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, Date estDeliveryDate, Boolean enroll,
-			Boolean consent, ContactNumberType ownership, String phoneNumber,
-			MediaType format, String language, DayOfWeek dayOfWeek,
-			Date timeOfDay, InterestReason reason, HowLearned howLearned,
+			Location facility, Date date, Patient patient,
+			Date estDeliveryDate, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, String phoneNumber, MediaType format,
+			String language, DayOfWeek dayOfWeek, Date timeOfDay,
+			InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek);
 
 	@RunAsAdminUser
 	public void registerANCMother(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, String ancRegNumber,
+			Location facility, Date date, Patient patient, String ancRegNumber,
 			Date estDeliveryDate, Integer height, Integer gravida,
 			Integer parity, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, String phoneNumber, MediaType format,
@@ -141,41 +142,41 @@ public interface RegistrarBean {
 	@RunAsAdminUser
 	public void registerCWCChild(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, String cwcRegNumber, Boolean enroll,
-			Boolean consent, ContactNumberType ownership, String phoneNumber,
-			MediaType format, String language, DayOfWeek dayOfWeek,
-			Date timeOfDay, InterestReason reason, HowLearned howLearned,
-			Integer messagesStartWeek);
+			Location facility, Date date, Patient patient, String cwcRegNumber,
+			Boolean enroll, Boolean consent, ContactNumberType ownership,
+			String phoneNumber, MediaType format, String language,
+			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
+			HowLearned howLearned, Integer messagesStartWeek);
 
 	@RunAsAdminUser
 	public void recordMotherANCVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Integer facilityId, Date date, Patient patient,
-			Integer visitNumber, Integer ancLocation, String house,
-			String community, Date estDeliveryDate, Integer bpSystolic,
-			Integer bpDiastolic, Double weight, Integer ttDose,
-			Integer iptDose, Boolean iptReactive, Boolean itnUse, Integer fht,
-			Integer fhr, Boolean urineTestProteinPositive,
-			Boolean urineTestGlucosePositive, Double hemoglobin,
-			Boolean vdrlReactive, Boolean vdrlTreatment, Boolean dewormer,
-			Boolean maleInvolved, Boolean pmtct, Boolean preTestCounseled,
-			HIVResult hivTestResult, Boolean postTestCounseled,
-			Boolean pmtctTreatment, Boolean referred, Date nextANCDate,
-			String comments);
+			Location facility, Date date, Patient patient, Integer visitNumber,
+			Integer ancLocation, String house, String community,
+			Date estDeliveryDate, Integer bpSystolic, Integer bpDiastolic,
+			Double weight, Integer ttDose, Integer iptDose,
+			Boolean iptReactive, Boolean itnUse, Integer fht, Integer fhr,
+			Boolean urineTestProteinPositive, Boolean urineTestGlucosePositive,
+			Double hemoglobin, Boolean vdrlReactive, Boolean vdrlTreatment,
+			Boolean dewormer, Boolean maleInvolved, Boolean pmtct,
+			Boolean preTestCounseled, HIVResult hivTestResult,
+			Boolean postTestCounseled, Boolean pmtctTreatment,
+			Boolean referred, Date nextANCDate, String comments);
 
 	@RunAsAdminUser
 	public void recordPregnancyTermination(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, Integer terminationType,
-			Integer procedure, Integer[] complications, Boolean maternalDeath,
-			Boolean referred, Boolean postAbortionFPCounseled,
-			Boolean postAbortionFPAccepted, String comments);
+			Location facility, Date date, Patient patient,
+			Integer terminationType, Integer procedure,
+			Integer[] complications, Boolean maternalDeath, Boolean referred,
+			Boolean postAbortionFPCounseled, Boolean postAbortionFPAccepted,
+			String comments);
 
 	@RunAsAdminUser
 	public List<Patient> recordPregnancyDelivery(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date datetime, Patient patient, Integer mode, Integer outcome,
-			Integer deliveryLocation, Integer deliveredBy,
+			Location facility, Date datetime, Patient patient, Integer mode,
+			Integer outcome, Integer deliveryLocation, Integer deliveredBy,
 			Boolean maleInvolved, Integer[] complications, Integer vvf,
 			Boolean maternalDeath, String comments,
 			List<BirthOutcomeChild> outcomes);
@@ -183,45 +184,47 @@ public interface RegistrarBean {
 	@RunAsAdminUser
 	public void recordPregnancyDeliveryNotification(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient);
+			Location facility, Date date, Patient patient);
 
 	@RunAsAdminUser
 	public void recordMotherPNCVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date datetime, Patient patient, Integer visitNumber,
-			Integer pncLocation, String house, String community,
-			Boolean referred, Boolean maleInvolved, Boolean vitaminA,
-			Integer ttDose, Integer lochiaColour, Boolean lochiaAmountExcess,
-			Integer temperature, Integer fht, String comments);
+			Location facility, Date datetime, Patient patient,
+			Integer visitNumber, Integer pncLocation, String house,
+			String community, Boolean referred, Boolean maleInvolved,
+			Boolean vitaminA, Integer ttDose, Integer lochiaColour,
+			Boolean lochiaAmountExcess, Integer temperature, Integer fht,
+			String comments);
 
 	@RunAsAdminUser
 	public void recordChildPNCVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date datetime, Patient patient, Integer visitNumber,
-			Integer pncLocation, String house, String community,
-			Boolean referred, Boolean maleInvolved, Double weight,
-			Integer temperature, Boolean bcg, Boolean opv0,
+			Location facility, Date datetime, Patient patient,
+			Integer visitNumber, Integer pncLocation, String house,
+			String community, Boolean referred, Boolean maleInvolved,
+			Double weight, Integer temperature, Boolean bcg, Boolean opv0,
 			Integer respiration, Boolean cordConditionNormal,
 			Boolean babyConditionGood, String comments);
 
 	@RunAsAdminUser
 	public void recordTTVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, Integer ttDose);
+			Location facility, Date date, Patient patient, Integer ttDose);
 
 	@RunAsAdminUser
 	public void recordDeath(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, Integer cause);
+			Location facility, Date date, Patient patient, Integer cause);
 
 	@RunAsAdminUser
 	public void recordChildCWCVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, Integer cwcLocation, String house,
-			String community, Boolean bcg, Integer opvDose, Integer pentaDose,
-			Boolean measles, Boolean yellowFever, Boolean csm, Boolean ipti,
-			Boolean vitaminA, Boolean dewormer, Double weight, Integer muac,
-			Integer height, Boolean maleInvolved, String comments);
+			Location facility, Date date, Patient patient, Integer cwcLocation,
+			String house, String community, Boolean bcg, Integer opvDose,
+			Integer pentaDose, Boolean measles, Boolean yellowFever,
+			Boolean csm, Boolean ipti, Boolean vitaminA, Boolean dewormer,
+			Double weight, Integer muac, Integer height, Boolean maleInvolved,
+			String comments);
 
 	public void recordGeneralOutpatientVisit(Integer staffId,
 			Integer facilityId, Date date, String serialNumber, Gender sex,
@@ -233,10 +236,10 @@ public interface RegistrarBean {
 	@RunAsAdminUser
 	public void recordOutpatientVisit(
 			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
-			Date date, Patient patient, String serialNumber, Integer diagnosis,
-			Integer secondDiagnosis, Boolean rdtGiven, Boolean rdtPositive,
-			Boolean actTreated, Boolean newCase, Boolean referred,
-			String comments);
+			Location facility, Date date, Patient patient, String serialNumber,
+			Integer diagnosis, Integer secondDiagnosis, Boolean rdtGiven,
+			Boolean rdtPositive, Boolean actTreated, Boolean newCase,
+			Boolean referred, String comments);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSONS,
 			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })

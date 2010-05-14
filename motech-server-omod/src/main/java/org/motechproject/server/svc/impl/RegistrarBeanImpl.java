@@ -195,7 +195,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public Patient registerPatient(User nurse, Integer facilityId, Date date,
+	public Patient registerPatient(User nurse, Location facility, Date date,
 			RegistrationMode registrationMode, Integer motechId,
 			RegistrantType registrantType, String firstName, String middleName,
 			String lastName, String preferredName, Date dateOfBirth,
@@ -208,13 +208,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Date timeOfDay, InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek) {
 
-		return registerPatient(registrationMode, motechId, registrantType,
-				firstName, middleName, lastName, preferredName, dateOfBirth,
-				estimatedBirthDate, sex, insured, nhis, nhisExpires, mother,
-				community, address, phoneNumber, expDeliveryDate,
-				deliveryDateConfirmed, gravida, parity, enroll, consent,
-				ownership, format, language, dayOfWeek, timeOfDay, reason,
-				howLearned, messagesStartWeek);
+		return registerPatient(facility, registrationMode, motechId,
+				registrantType, firstName, middleName, lastName, preferredName,
+				dateOfBirth, estimatedBirthDate, sex, insured, nhis,
+				nhisExpires, mother, community, address, phoneNumber,
+				expDeliveryDate, deliveryDateConfirmed, gravida, parity,
+				enroll, consent, ownership, format, language, dayOfWeek,
+				timeOfDay, reason, howLearned, messagesStartWeek);
 	}
 
 	@Transactional
@@ -229,6 +229,30 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			ContactNumberType ownership, MediaType format, String language,
 			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
 			HowLearned howLearned, Integer messagesStartWeek) {
+
+		Location facility = getGhanaLocation();
+
+		return registerPatient(facility, registrationMode, motechId,
+				registrantType, firstName, middleName, lastName, preferredName,
+				dateOfBirth, estimatedBirthDate, sex, insured, nhis,
+				nhisExpires, mother, community, address, phoneNumber,
+				expDeliveryDate, deliveryDateConfirmed, gravida, parity,
+				enroll, consent, ownership, format, language, dayOfWeek,
+				timeOfDay, reason, howLearned, messagesStartWeek);
+	}
+
+	private Patient registerPatient(Location facility,
+			RegistrationMode registrationMode, Integer motechId,
+			RegistrantType registrantType, String firstName, String middleName,
+			String lastName, String preferredName, Date dateOfBirth,
+			Boolean estimatedBirthDate, Gender sex, Boolean insured,
+			String nhis, Date nhisExpires, Patient mother, Integer community,
+			String address, String phoneNumber, Date expDeliveryDate,
+			Boolean deliveryDateConfirmed, Integer gravida, Integer parity,
+			Boolean enroll, Boolean consent, ContactNumberType ownership,
+			MediaType format, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, InterestReason reason, HowLearned howLearned,
+			Integer messagesStartWeek) {
 
 		PatientService patientService = contextService.getPatientService();
 		PersonService personService = contextService.getPersonService();
@@ -252,8 +276,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		Integer pregnancyDueDateObsId = null;
 		if (registrantType == RegistrantType.PREGNANT_MOTHER) {
-			pregnancyDueDateObsId = registerPregnancy(patient, expDeliveryDate,
-					deliveryDateConfirmed, gravida, parity, null);
+			pregnancyDueDateObsId = registerPregnancy(facility, patient,
+					expDeliveryDate, deliveryDateConfirmed, gravida, parity,
+					null);
 		}
 
 		enrollPatient(registrantType, patient, enroll, consent,
@@ -622,7 +647,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		patientService.savePatient(patient);
 
-		Integer dueDateObsId = registerPregnancy(patient, dueDate,
+		Location facility = getGhanaLocation();
+
+		Integer dueDateObsId = registerPregnancy(facility, patient, dueDate,
 				dueDateConfirmed, null, null, null);
 
 		if (registerPregProgram) {
@@ -631,66 +658,65 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 	}
 
-	private Integer registerPregnancy(Patient patient, Date dueDate,
-			Boolean dueDateConfirmed, Integer gravida, Integer parity,
-			Integer height) {
+	private Integer registerPregnancy(Location facility, Patient patient,
+			Date dueDate, Boolean dueDateConfirmed, Integer gravida,
+			Integer parity, Integer height) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
 		ObsService obsService = contextService.getObsService();
 
 		Date currentDate = new Date();
-		Location ghanaLocation = getGhanaLocation();
 
 		Encounter encounter = new Encounter();
 		encounter
 				.setEncounterType(getPregnancyRegistrationVisitEncounterType());
 		encounter.setEncounterDatetime(currentDate);
 		encounter.setPatient(patient);
-		encounter.setLocation(ghanaLocation);
+		encounter.setLocation(facility);
 		encounter.setProvider(contextService.getAuthenticatedUser());
 		encounter = encounterService.saveEncounter(encounter);
 
 		Obs pregnancyObs = createObs(currentDate, getPregnancyConcept(),
-				patient, ghanaLocation, encounter, null);
+				patient, facility, encounter, null);
 
 		Obs pregnancyStatusObs = createBooleanValueObs(currentDate,
-				getPregnancyStatusConcept(), patient, ghanaLocation,
-				Boolean.TRUE, encounter, null);
+				getPregnancyStatusConcept(), patient, facility, Boolean.TRUE,
+				encounter, null);
 		pregnancyObs.addGroupMember(pregnancyStatusObs);
 
 		Obs dueDateObs = null;
 		if (dueDate != null) {
 			dueDateObs = createDateValueObs(currentDate, getDueDateConcept(),
-					patient, ghanaLocation, dueDate, encounter, null);
+					patient, facility, dueDate, encounter, null);
 			pregnancyObs.addGroupMember(dueDateObs);
 		}
 
 		if (dueDateConfirmed != null) {
 			Obs dueDateConfirmedObs = createBooleanValueObs(currentDate,
-					getDueDateConfirmedConcept(), patient, ghanaLocation,
+					getDueDateConfirmedConcept(), patient, facility,
 					dueDateConfirmed, encounter, null);
 			pregnancyObs.addGroupMember(dueDateConfirmedObs);
 		}
 
 		if (gravida != null) {
 			Obs gravidaObs = createNumericValueObs(currentDate,
-					getGravidaConcept(), patient, ghanaLocation, gravida,
-					encounter, null);
+					getGravidaConcept(), patient, facility, gravida, encounter,
+					null);
 			pregnancyObs.addGroupMember(gravidaObs);
 		}
 
 		if (parity != null) {
 			Obs parityObs = createNumericValueObs(currentDate,
-					getParityConcept(), patient, ghanaLocation, parity,
-					encounter, null);
+					getParityConcept(), patient, facility, parity, encounter,
+					null);
 			pregnancyObs.addGroupMember(parityObs);
 		}
 
 		if (height != null) {
 			Obs heightObs = createNumericValueObs(currentDate,
-					getHeightConcept(), patient, ghanaLocation, height,
-					encounter, null);
+					getHeightConcept(), patient, facility, height, encounter,
+					null);
 			pregnancyObs.addGroupMember(heightObs);
 		}
 
@@ -703,18 +729,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void registerPregnancy(User nurse, Date date, Patient patient,
-			Date estDeliveryDate, Boolean enroll, Boolean consent,
-			ContactNumberType ownership, String phoneNumber, MediaType format,
-			String language, DayOfWeek dayOfWeek, Date timeOfDay,
-			InterestReason reason, HowLearned howLearned,
+	public void registerPregnancy(User nurse, Location facility, Date date,
+			Patient patient, Date estDeliveryDate, Boolean enroll,
+			Boolean consent, ContactNumberType ownership, String phoneNumber,
+			MediaType format, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek) {
 
 		Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
 
 		if (pregnancyDueDateObsId == null) {
-			pregnancyDueDateObsId = registerPregnancy(patient, estDeliveryDate,
-					null, null, null, null);
+			pregnancyDueDateObsId = registerPregnancy(facility, patient,
+					estDeliveryDate, null, null, null, null);
 		}
 
 		enrollPatientWithAttributes(RegistrantType.PREGNANT_MOTHER, patient,
@@ -744,12 +770,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void registerANCMother(User nurse, Date date, Patient patient,
-			String ancRegNumber, Date estDeliveryDate, Integer height,
-			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
-			ContactNumberType ownership, String phoneNumber, MediaType format,
-			String language, DayOfWeek dayOfWeek, Date timeOfDay,
-			InterestReason reason, HowLearned howLearned,
+	public void registerANCMother(User nurse, Location facility, Date date,
+			Patient patient, String ancRegNumber, Date estDeliveryDate,
+			Integer height, Integer gravida, Integer parity, Boolean enroll,
+			Boolean consent, ContactNumberType ownership, String phoneNumber,
+			MediaType format, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek) {
 
 		EncounterService encounterService = contextService
@@ -757,8 +783,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
 		if (pregnancyDueDateObsId == null) {
-			pregnancyDueDateObsId = registerPregnancy(patient, estDeliveryDate,
-					null, gravida, parity, height);
+			pregnancyDueDateObsId = registerPregnancy(facility, patient,
+					estDeliveryDate, null, gravida, parity, height);
 		}
 
 		enrollPatientWithAttributes(RegistrantType.PREGNANT_MOTHER, patient,
@@ -766,17 +792,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				dayOfWeek, timeOfDay, reason, howLearned, messagesStartWeek,
 				pregnancyDueDateObsId);
 
-		Location encounterLocation = getGhanaLocation();
-
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getANCRegistrationEncounterType());
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
-		encounter.setLocation(encounterLocation);
+		encounter.setLocation(facility);
 		encounter.setProvider(contextService.getAuthenticatedUser());
 
 		Obs ancRegNumObs = createTextValueObs(date,
-				getANCRegistrationNumberConcept(), patient, encounterLocation,
+				getANCRegistrationNumberConcept(), patient, facility,
 				ancRegNumber, encounter, null);
 		encounter.addObs(ancRegNumObs);
 
@@ -784,11 +808,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void registerCWCChild(User nurse, Date date, Patient patient,
-			String cwcRegNumber, Boolean enroll, Boolean consent,
-			ContactNumberType ownership, String phoneNumber, MediaType format,
-			String language, DayOfWeek dayOfWeek, Date timeOfDay,
-			InterestReason reason, HowLearned howLearned,
+	public void registerCWCChild(User nurse, Location facility, Date date,
+			Patient patient, String cwcRegNumber, Boolean enroll,
+			Boolean consent, ContactNumberType ownership, String phoneNumber,
+			MediaType format, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek) {
 
 		enrollPatientWithAttributes(RegistrantType.CHILD_UNDER_FIVE, patient,
@@ -799,17 +823,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		EncounterService encounterService = contextService
 				.getEncounterService();
 
-		Location encounterLocation = getGhanaLocation();
-
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getCWCRegistrationEncounterType());
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
-		encounter.setLocation(encounterLocation);
+		encounter.setLocation(facility);
 		encounter.setProvider(contextService.getAuthenticatedUser());
 
 		Obs cwcRegNumObs = createTextValueObs(date,
-				getCWCRegistrationNumberConcept(), patient, encounterLocation,
+				getCWCRegistrationNumberConcept(), patient, facility,
 				cwcRegNumber, encounter, null);
 		encounter.addObs(cwcRegNumObs);
 
@@ -817,7 +839,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordMotherANCVisit(User nurse, Integer facilityId, Date date,
+	public void recordMotherANCVisit(User nurse, Location facility, Date date,
 			Patient patient, Integer visitNumber, Integer ancLocation,
 			String house, String community, Date estDeliveryDate,
 			Integer bpSystolic, Integer bpDiastolic, Double weight,
@@ -833,13 +855,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		EncounterService encounterService = contextService
 				.getEncounterService();
 
-		Location location = getGhanaLocation();
-
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getANCVisitEncounterType());
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
-		encounter.setLocation(location);
+		encounter.setLocation(facility);
 		encounter.setProvider(contextService.getAuthenticatedUser());
 
 		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
@@ -850,53 +870,53 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		if (visitNumber != null) {
 			Obs visitNumberObs = createNumericValueObs(date,
-					getVisitNumberConcept(), patient, location, visitNumber,
+					getVisitNumberConcept(), patient, facility, visitNumber,
 					encounter, null);
 			encounter.addObs(visitNumberObs);
 		}
 		if (ancLocation != null) {
 			Obs ancLocationObs = createNumericValueObs(date,
-					getANCPNCLocationConcept(), patient, location, ancLocation,
+					getANCPNCLocationConcept(), patient, facility, ancLocation,
 					encounter, null);
 			encounter.addObs(ancLocationObs);
 		}
 		if (house != null) {
 			Obs houseObs = createTextValueObs(date, getANCPNCLocationConcept(),
-					patient, location, house, encounter, null);
+					patient, facility, house, encounter, null);
 			encounter.addObs(houseObs);
 		}
 		if (community != null) {
 			Obs communityObs = createTextValueObs(date,
-					getANCPNCLocationConcept(), patient, location, community,
+					getANCPNCLocationConcept(), patient, facility, community,
 					encounter, null);
 			encounter.addObs(communityObs);
 		}
 		if (bpSystolic != null) {
 			Obs bpSystolicObs = createNumericValueObs(date,
-					getSystolicBloodPressureConcept(), patient, location,
+					getSystolicBloodPressureConcept(), patient, facility,
 					bpSystolic, encounter, null);
 			encounter.addObs(bpSystolicObs);
 		}
 		if (bpDiastolic != null) {
 			Obs bpDiastolicObs = createNumericValueObs(date,
-					getDiastolicBloodPressureConcept(), patient, location,
+					getDiastolicBloodPressureConcept(), patient, facility,
 					bpDiastolic, encounter, null);
 			encounter.addObs(bpDiastolicObs);
 		}
 		if (weight != null) {
 			Obs weightObs = createNumericValueObs(date, getWeightConcept(),
-					patient, location, weight, encounter, null);
+					patient, facility, weight, encounter, null);
 			encounter.addObs(weightObs);
 		}
 		if (ttDose != null) {
 			Obs ttDoseObs = createNumericValueObs(date,
-					getTetanusDoseConcept(), patient, location, ttDose,
+					getTetanusDoseConcept(), patient, facility, ttDose,
 					encounter, null);
 			encounter.addObs(ttDoseObs);
 		}
 		if (iptDose != null) {
 			Obs iptDoseObs = createNumericValueObs(date, getIPTDoseConcept(),
-					patient, location, iptDose, encounter, null);
+					patient, facility, iptDose, encounter, null);
 			encounter.addObs(iptDoseObs);
 		}
 		if (iptReactive != null) {
@@ -907,23 +927,23 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				iptReactionValueConcept = getNonReactiveConcept();
 			}
 			Obs iptReactiveObs = createConceptValueObs(date,
-					getIPTReactionConcept(), patient, location,
+					getIPTReactionConcept(), patient, facility,
 					iptReactionValueConcept, encounter, null);
 			encounter.addObs(iptReactiveObs);
 		}
 		if (itnUse != null) {
 			Obs itnUseObs = createBooleanValueObs(date, getITNConcept(),
-					patient, location, itnUse, encounter, null);
+					patient, facility, itnUse, encounter, null);
 			encounter.addObs(itnUseObs);
 		}
 		if (fht != null) {
 			Obs fhtObs = createNumericValueObs(date, getFundalHeightConcept(),
-					patient, location, fht, encounter, null);
+					patient, facility, fht, encounter, null);
 			encounter.addObs(fhtObs);
 		}
 		if (fhr != null) {
 			Obs fhrObs = createNumericValueObs(date,
-					getFetalHeartRateConcept(), patient, location, fhr,
+					getFetalHeartRateConcept(), patient, facility, fhr,
 					encounter, null);
 			encounter.addObs(fhrObs);
 		}
@@ -935,7 +955,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				urineProteinTestValueConcept = getNegativeConcept();
 			}
 			Obs urineTestProteinPositiveObs = createConceptValueObs(date,
-					getUrineProteinTestConcept(), patient, location,
+					getUrineProteinTestConcept(), patient, facility,
 					urineProteinTestValueConcept, encounter, null);
 			encounter.addObs(urineTestProteinPositiveObs);
 		}
@@ -947,13 +967,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				urineGlucoseTestValueConcept = getNegativeConcept();
 			}
 			Obs urineTestProteinPositiveObs = createConceptValueObs(date,
-					getUrineGlucoseTestConcept(), patient, location,
+					getUrineGlucoseTestConcept(), patient, facility,
 					urineGlucoseTestValueConcept, encounter, null);
 			encounter.addObs(urineTestProteinPositiveObs);
 		}
 		if (hemoglobin != null) {
 			Obs hemoglobinObs = createNumericValueObs(date,
-					getHemoglobinConcept(), patient, location, hemoglobin,
+					getHemoglobinConcept(), patient, facility, hemoglobin,
 					encounter, null);
 			encounter.addObs(hemoglobinObs);
 		}
@@ -965,69 +985,69 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				vdrlValueConcept = getNonReactiveConcept();
 			}
 			Obs vdrlReactiveObs = createConceptValueObs(date, getVDRLConcept(),
-					patient, location, vdrlValueConcept, encounter, null);
+					patient, facility, vdrlValueConcept, encounter, null);
 			encounter.addObs(vdrlReactiveObs);
 		}
 		if (vdrlTreatment != null) {
 			Obs vdrlTreatmentObs = createBooleanValueObs(date,
-					getVDRLTreatmentConcept(), patient, location,
+					getVDRLTreatmentConcept(), patient, facility,
 					vdrlTreatment, encounter, null);
 			encounter.addObs(vdrlTreatmentObs);
 		}
 		if (dewormer != null) {
 			Obs dewormerObs = createBooleanValueObs(date, getDewormerConcept(),
-					patient, location, dewormer, encounter, null);
+					patient, facility, dewormer, encounter, null);
 			encounter.addObs(dewormerObs);
 		}
 		if (maleInvolved != null) {
 			Obs maleInvolvedObs = createBooleanValueObs(date,
-					getMaleInvolvementConcept(), patient, location,
+					getMaleInvolvementConcept(), patient, facility,
 					maleInvolved, encounter, null);
 			encounter.addObs(maleInvolvedObs);
 		}
 		if (pmtct != null) {
 			Obs pmtctObs = createBooleanValueObs(date, getPMTCTConcept(),
-					patient, location, pmtct, encounter, null);
+					patient, facility, pmtct, encounter, null);
 			encounter.addObs(pmtctObs);
 		}
 		if (preTestCounseled != null) {
 			Obs preTestCounseledObs = createBooleanValueObs(date,
-					getPreHIVTestCounselingConcept(), patient, location,
+					getPreHIVTestCounselingConcept(), patient, facility,
 					preTestCounseled, encounter, null);
 			encounter.addObs(preTestCounseledObs);
 		}
 		if (hivTestResult != null) {
 			Obs hivResultObs = createTextValueObs(date,
-					getHIVTestResultConcept(), patient, location, hivTestResult
+					getHIVTestResultConcept(), patient, facility, hivTestResult
 							.name(), encounter, null);
 			encounter.addObs(hivResultObs);
 		}
 		if (postTestCounseled != null) {
 			Obs postTestCounseledObs = createBooleanValueObs(date,
-					getPostHIVTestCounselingConcept(), patient, location,
+					getPostHIVTestCounselingConcept(), patient, facility,
 					postTestCounseled, encounter, null);
 			encounter.addObs(postTestCounseledObs);
 		}
 		if (pmtctTreatment != null) {
 			Obs pmtctTreatmentObs = createBooleanValueObs(date,
-					getPMTCTTreatmentConcept(), patient, location,
+					getPMTCTTreatmentConcept(), patient, facility,
 					pmtctTreatment, encounter, null);
 			encounter.addObs(pmtctTreatmentObs);
 		}
 		if (referred != null) {
 			Obs referredObs = createBooleanValueObs(date, getReferredConcept(),
-					patient, location, referred, encounter, null);
+					patient, facility, referred, encounter, null);
 			encounter.addObs(referredObs);
 		}
 		if (nextANCDate != null) {
 			Obs nextANCDateObs = createDateValueObs(date,
-					getNextANCDateConcept(), patient, location, nextANCDate,
+					getNextANCDateConcept(), patient, facility, nextANCDate,
 					encounter, null);
 			encounter.addObs(nextANCDateObs);
 		}
 		if (comments != null) {
 			Obs commentsObs = createTextValueObs(date, getCommentsConcept(),
-					patient, location, comments, encounter, null);
+					patient, facility, comments, encounter, null);
 			encounter.addObs(commentsObs);
 		}
 
@@ -1048,22 +1068,20 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordPregnancyTermination(User nurse, Date date,
-			Patient patient, Integer terminationType, Integer procedure,
-			Integer[] complications, Boolean maternalDeath, Boolean referred,
-			Boolean postAbortionFPCounseled, Boolean postAbortionFPAccepted,
-			String comments) {
+	public void recordPregnancyTermination(User nurse, Location facility,
+			Date date, Patient patient, Integer terminationType,
+			Integer procedure, Integer[] complications, Boolean maternalDeath,
+			Boolean referred, Boolean postAbortionFPCounseled,
+			Boolean postAbortionFPAccepted, String comments) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
-
-		Location location = getGhanaLocation();
 
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getPregnancyTerminationVisitEncounterType());
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
-		encounter.setLocation(location);
+		encounter.setLocation(facility);
 		encounter.setProvider(contextService.getAuthenticatedUser());
 
 		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
@@ -1075,55 +1093,55 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		if (terminationType != null) {
 			Obs terminationTypeObs = createNumericValueObs(date,
-					getTerminationTypeConcept(), patient, location,
+					getTerminationTypeConcept(), patient, facility,
 					terminationType, encounter, null);
 			encounter.addObs(terminationTypeObs);
 		}
 		if (procedure != null) {
 			Obs procedureObs = createNumericValueObs(date,
-					getTerminationProcedureConcept(), patient, location,
+					getTerminationProcedureConcept(), patient, facility,
 					procedure, encounter, null);
 			encounter.addObs(procedureObs);
 		}
 		if (complications != null) {
 			for (Integer complication : complications) {
 				Obs complicationObs = createNumericValueObs(date,
-						getTerminationComplicationConcept(), patient, location,
+						getTerminationComplicationConcept(), patient, facility,
 						complication, encounter, null);
 				encounter.addObs(complicationObs);
 			}
 		}
 		if (maternalDeath != null) {
 			Obs maternalDeathObs = createBooleanValueObs(date,
-					getMaternalDeathConcept(), patient, location,
+					getMaternalDeathConcept(), patient, facility,
 					maternalDeath, encounter, null);
 			encounter.addObs(maternalDeathObs);
 		}
 		if (referred != null) {
 			Obs referredObs = createBooleanValueObs(date, getReferredConcept(),
-					patient, location, referred, encounter, null);
+					patient, facility, referred, encounter, null);
 			encounter.addObs(referredObs);
 		}
 		if (postAbortionFPCounseled != null) {
 			Obs postCounseledObs = createBooleanValueObs(date,
-					getPostAbortionFPCounselingConcept(), patient, location,
+					getPostAbortionFPCounselingConcept(), patient, facility,
 					postAbortionFPCounseled, encounter, null);
 			encounter.addObs(postCounseledObs);
 		}
 		if (postAbortionFPAccepted != null) {
 			Obs postAcceptedObs = createBooleanValueObs(date,
-					getPostAbortionFPAcceptedConcept(), patient, location,
+					getPostAbortionFPAcceptedConcept(), patient, facility,
 					postAbortionFPAccepted, encounter, null);
 			encounter.addObs(postAcceptedObs);
 		}
 		if (comments != null) {
 			Obs commentsObs = createTextValueObs(date, getCommentsConcept(),
-					patient, location, comments, encounter, null);
+					patient, facility, comments, encounter, null);
 			encounter.addObs(commentsObs);
 		}
 
 		Obs pregnancyStatusObs = createBooleanValueObs(date,
-				getPregnancyStatusConcept(), patient, location, Boolean.FALSE,
+				getPregnancyStatusConcept(), patient, facility, Boolean.FALSE,
 				encounter, null);
 		pregnancyStatusObs.setObsGroup(pregnancyObs);
 		encounter.addObs(pregnancyStatusObs);
@@ -1136,8 +1154,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public List<Patient> recordPregnancyDelivery(User nurse, Date datetime,
-			Patient patient, Integer mode, Integer outcome,
+	public List<Patient> recordPregnancyDelivery(User nurse, Location facility,
+			Date datetime, Patient patient, Integer mode, Integer outcome,
 			Integer deliveryLocation, Integer deliveredBy,
 			Boolean maleInvolved, Integer[] complications, Integer vvf,
 			Boolean maternalDeath, String comments,
@@ -1146,13 +1164,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		EncounterService encounterService = contextService
 				.getEncounterService();
 
-		Location location = getGhanaLocation();
-
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getPregnancyDeliveryVisitEncounterType());
 		encounter.setEncounterDatetime(datetime);
 		encounter.setPatient(patient);
-		encounter.setLocation(location);
+		encounter.setLocation(facility);
 		encounter.setProvider(contextService.getAuthenticatedUser());
 
 		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
@@ -1164,62 +1180,62 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		if (mode != null) {
 			Obs modeObs = createNumericValueObs(datetime,
-					getDeliveryModeConcept(), patient, location, mode,
+					getDeliveryModeConcept(), patient, facility, mode,
 					encounter, null);
 			encounter.addObs(modeObs);
 		}
 		if (outcome != null) {
 			Obs outcomeObs = createNumericValueObs(datetime,
-					getDeliveryOutcomeConcept(), patient, location, outcome,
+					getDeliveryOutcomeConcept(), patient, facility, outcome,
 					encounter, null);
 			encounter.addObs(outcomeObs);
 		}
 		if (deliveryLocation != null) {
 			Obs locationObs = createNumericValueObs(datetime,
-					getDeliveryLocationConcept(), patient, location,
+					getDeliveryLocationConcept(), patient, facility,
 					deliveryLocation, encounter, null);
 			encounter.addObs(locationObs);
 		}
 		if (deliveredBy != null) {
 			Obs deliveredByObs = createNumericValueObs(datetime,
-					getDeliveredByConcept(), patient, location, deliveredBy,
+					getDeliveredByConcept(), patient, facility, deliveredBy,
 					encounter, null);
 			encounter.addObs(deliveredByObs);
 		}
 		if (maleInvolved != null) {
 			Obs maleInvolvedObs = createBooleanValueObs(datetime,
-					getMaleInvolvementConcept(), patient, location,
+					getMaleInvolvementConcept(), patient, facility,
 					maleInvolved, encounter, null);
 			encounter.addObs(maleInvolvedObs);
 		}
 		if (complications != null) {
 			for (Integer complication : complications) {
 				Obs complicationObs = createNumericValueObs(datetime,
-						getDeliveryComplicationConcept(), patient, location,
+						getDeliveryComplicationConcept(), patient, facility,
 						complication, encounter, null);
 				encounter.addObs(complicationObs);
 			}
 		}
 		if (vvf != null) {
 			Obs vvfObs = createNumericValueObs(datetime, getVVFRepairConcept(),
-					patient, location, vvf, encounter, null);
+					patient, facility, vvf, encounter, null);
 			encounter.addObs(vvfObs);
 		}
 		if (maternalDeath != null) {
 			Obs maternalDeathObs = createBooleanValueObs(datetime,
-					getMaternalDeathConcept(), patient, location,
+					getMaternalDeathConcept(), patient, facility,
 					maternalDeath, encounter, null);
 			encounter.addObs(maternalDeathObs);
 		}
 		if (comments != null) {
 			Obs commentsObs = createTextValueObs(datetime,
-					getCommentsConcept(), patient, location, comments,
+					getCommentsConcept(), patient, facility, comments,
 					encounter, null);
 			encounter.addObs(commentsObs);
 		}
 
 		Obs pregnancyStatusObs = createBooleanValueObs(datetime,
-				getPregnancyStatusConcept(), patient, location, Boolean.FALSE,
+				getPregnancyStatusConcept(), patient, facility, Boolean.FALSE,
 				encounter, null);
 		pregnancyStatusObs.setObsGroup(pregnancyObs);
 		encounter.addObs(pregnancyStatusObs);
@@ -1233,11 +1249,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				continue;
 			}
 			Obs childOutcomeObs = createTextValueObs(datetime,
-					getBirthOutcomeConcept(), patient, location, childOutcome
+					getBirthOutcomeConcept(), patient, facility, childOutcome
 							.getOutcome().name(), encounter, null);
 			encounter.addObs(childOutcomeObs);
 
-			Patient child = registerPatient(childOutcome.getIdMode(),
+			Patient child = registerPatient(facility, childOutcome.getIdMode(),
 					childOutcome.getMotechId(),
 					RegistrantType.CHILD_UNDER_FIVE, childOutcome
 							.getFirstName(), null, null, null, datetime, false,
@@ -1246,7 +1262,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					null, null, null, null, null, null);
 
 			if (childOutcome.getWeight() != null) {
-				recordBirthData(child, datetime, childOutcome.getWeight());
+				recordBirthData(facility, child, datetime, childOutcome
+						.getWeight());
 			}
 
 			if (BirthOutcome.A != childOutcome.getOutcome()) {
@@ -1265,22 +1282,21 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return aliveChildPatients;
 	}
 
-	private void recordBirthData(Patient child, Date datetime, Double weight) {
+	private void recordBirthData(Location facility, Patient child,
+			Date datetime, Double weight) {
 		EncounterService encounterService = contextService
 				.getEncounterService();
-
-		Location location = getGhanaLocation();
 
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getBirthEncounterType());
 		encounter.setEncounterDatetime(datetime);
 		encounter.setPatient(child);
-		encounter.setLocation(location);
+		encounter.setLocation(facility);
 		encounter.setProvider(contextService.getAuthenticatedUser());
 
 		if (weight != null) {
 			Obs weightObs = createNumericValueObs(datetime, getWeightConcept(),
-					child, location, weight, encounter, null);
+					child, facility, weight, encounter, null);
 			encounter.addObs(weightObs);
 		}
 
@@ -1288,20 +1304,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordPregnancyDeliveryNotification(User nurse, Date date,
-			Patient patient) {
+	public void recordPregnancyDeliveryNotification(User nurse,
+			Location facility, Date date, Patient patient) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
-
-		Location encounterLocation = getGhanaLocation();
 
 		Encounter encounter = new Encounter();
 		encounter
 				.setEncounterType(getPregnancyDeliveryNotificationEncounterType());
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
-		encounter.setLocation(encounterLocation);
+		encounter.setLocation(facility);
 		encounter.setProvider(contextService.getAuthenticatedUser());
 
 		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
@@ -1312,8 +1326,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 
 		Obs pregnancyStatusObs = createBooleanValueObs(date,
-				getPregnancyStatusConcept(), patient, encounterLocation,
-				Boolean.FALSE, encounter, null);
+				getPregnancyStatusConcept(), patient, facility, Boolean.FALSE,
+				encounter, null);
 		pregnancyStatusObs.setObsGroup(pregnancyObs);
 		encounter.addObs(pregnancyStatusObs);
 
@@ -1353,99 +1367,97 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordMotherPNCVisit(User nurse, Date datetime,
-			Patient patient, Integer visitNumber, Integer pncLocation,
-			String house, String community, Boolean referred,
-			Boolean maleInvolved, Boolean vitaminA, Integer ttDose,
-			Integer lochiaColour, Boolean lochiaAmountExcess,
+	public void recordMotherPNCVisit(User nurse, Location facility,
+			Date datetime, Patient patient, Integer visitNumber,
+			Integer pncLocation, String house, String community,
+			Boolean referred, Boolean maleInvolved, Boolean vitaminA,
+			Integer ttDose, Integer lochiaColour, Boolean lochiaAmountExcess,
 			Integer temperature, Integer fht, String comments) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
 
-		Location location = getGhanaLocation();
-
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getMotherPNCVisitEncounterType());
 		encounter.setEncounterDatetime(datetime);
 		encounter.setPatient(patient);
-		encounter.setLocation(location);
+		encounter.setLocation(facility);
 		encounter.setProvider(contextService.getAuthenticatedUser());
 
 		if (visitNumber != null) {
 			Obs visitNumberObs = createNumericValueObs(datetime,
-					getVisitNumberConcept(), patient, location, visitNumber,
+					getVisitNumberConcept(), patient, facility, visitNumber,
 					encounter, null);
 			encounter.addObs(visitNumberObs);
 		}
 		if (pncLocation != null) {
 			Obs pncLocationObs = createNumericValueObs(datetime,
-					getANCPNCLocationConcept(), patient, location, pncLocation,
+					getANCPNCLocationConcept(), patient, facility, pncLocation,
 					encounter, null);
 			encounter.addObs(pncLocationObs);
 		}
 		if (house != null) {
 			Obs houseObs = createTextValueObs(datetime, getHouseConcept(),
-					patient, location, house, encounter, null);
+					patient, facility, house, encounter, null);
 			encounter.addObs(houseObs);
 		}
 		if (community != null) {
 			Obs communityObs = createTextValueObs(datetime,
-					getCommunityConcept(), patient, location, community,
+					getCommunityConcept(), patient, facility, community,
 					encounter, null);
 			encounter.addObs(communityObs);
 		}
 		if (referred != null) {
 			Obs referredObs = createBooleanValueObs(datetime,
-					getReferredConcept(), patient, location, referred,
+					getReferredConcept(), patient, facility, referred,
 					encounter, null);
 			encounter.addObs(referredObs);
 		}
 		if (maleInvolved != null) {
 			Obs maleInvolvedObs = createBooleanValueObs(datetime,
-					getMaleInvolvementConcept(), patient, location,
+					getMaleInvolvementConcept(), patient, facility,
 					maleInvolved, encounter, null);
 			encounter.addObs(maleInvolvedObs);
 		}
 		if (Boolean.TRUE.equals(vitaminA)) {
 			Obs vitaminAObs = createConceptValueObs(datetime,
-					getImmunizationsOrderedConcept(), patient, location,
+					getImmunizationsOrderedConcept(), patient, facility,
 					getVitaminAConcept(), encounter, null);
 			encounter.addObs(vitaminAObs);
 		}
 		if (ttDose != null) {
 			Obs ttDoseObs = createNumericValueObs(datetime,
-					getTetanusDoseConcept(), patient, location, ttDose,
+					getTetanusDoseConcept(), patient, facility, ttDose,
 					encounter, null);
 			encounter.addObs(ttDoseObs);
 		}
 		if (lochiaColour != null) {
 			Obs lochiaColourObs = createNumericValueObs(datetime,
-					getLochiaColourConcept(), patient, location, lochiaColour,
+					getLochiaColourConcept(), patient, facility, lochiaColour,
 					encounter, null);
 			encounter.addObs(lochiaColourObs);
 		}
 		if (lochiaAmountExcess != null) {
 			Obs lochiaAmountObs = createBooleanValueObs(datetime,
-					getLochiaExcessConcept(), patient, location,
+					getLochiaExcessConcept(), patient, facility,
 					lochiaAmountExcess, encounter, null);
 			encounter.addObs(lochiaAmountObs);
 		}
 		if (temperature != null) {
 			Obs temperatureObs = createNumericValueObs(datetime,
-					getTemperatureConcept(), patient, location, temperature,
+					getTemperatureConcept(), patient, facility, temperature,
 					encounter, null);
 			encounter.addObs(temperatureObs);
 		}
 		if (fht != null) {
 			Obs fhtObs = createNumericValueObs(datetime,
-					getFundalHeightConcept(), patient, location, fht,
+					getFundalHeightConcept(), patient, facility, fht,
 					encounter, null);
 			encounter.addObs(fhtObs);
 		}
 		if (comments != null) {
 			Obs commentsObs = createTextValueObs(datetime,
-					getCommentsConcept(), patient, location, comments,
+					getCommentsConcept(), patient, facility, comments,
 					encounter, null);
 			encounter.addObs(commentsObs);
 		}
@@ -1454,105 +1466,104 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordChildPNCVisit(User nurse, Date datetime, Patient patient,
-			Integer visitNumber, Integer pncLocation, String house,
-			String community, Boolean referred, Boolean maleInvolved,
-			Double weight, Integer temperature, Boolean bcg, Boolean opv0,
+	public void recordChildPNCVisit(User nurse, Location facility,
+			Date datetime, Patient patient, Integer visitNumber,
+			Integer pncLocation, String house, String community,
+			Boolean referred, Boolean maleInvolved, Double weight,
+			Integer temperature, Boolean bcg, Boolean opv0,
 			Integer respiration, Boolean cordConditionNormal,
 			Boolean babyConditionGood, String comments) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
 
-		Location location = getGhanaLocation();
-
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getChildPNCVisitEncounterType());
 		encounter.setEncounterDatetime(datetime);
 		encounter.setPatient(patient);
-		encounter.setLocation(location);
+		encounter.setLocation(facility);
 		encounter.setProvider(contextService.getAuthenticatedUser());
 
 		if (visitNumber != null) {
 			Obs visitNumberObs = createNumericValueObs(datetime,
-					getVisitNumberConcept(), patient, location, visitNumber,
+					getVisitNumberConcept(), patient, facility, visitNumber,
 					encounter, null);
 			encounter.addObs(visitNumberObs);
 		}
 		if (pncLocation != null) {
 			Obs pncLocationObs = createNumericValueObs(datetime,
-					getANCPNCLocationConcept(), patient, location, pncLocation,
+					getANCPNCLocationConcept(), patient, facility, pncLocation,
 					encounter, null);
 			encounter.addObs(pncLocationObs);
 		}
 		if (house != null) {
 			Obs houseObs = createTextValueObs(datetime, getHouseConcept(),
-					patient, location, house, encounter, null);
+					patient, facility, house, encounter, null);
 			encounter.addObs(houseObs);
 		}
 		if (community != null) {
 			Obs communityObs = createTextValueObs(datetime,
-					getCommunityConcept(), patient, location, community,
+					getCommunityConcept(), patient, facility, community,
 					encounter, null);
 			encounter.addObs(communityObs);
 		}
 		if (referred != null) {
 			Obs referredObs = createBooleanValueObs(datetime,
-					getReferredConcept(), patient, location, referred,
+					getReferredConcept(), patient, facility, referred,
 					encounter, null);
 			encounter.addObs(referredObs);
 		}
 		if (maleInvolved != null) {
 			Obs maleInvolvedObs = createBooleanValueObs(datetime,
-					getMaleInvolvementConcept(), patient, location,
+					getMaleInvolvementConcept(), patient, facility,
 					maleInvolved, encounter, null);
 			encounter.addObs(maleInvolvedObs);
 		}
 		if (weight != null) {
 			Obs weightObs = createNumericValueObs(datetime, getWeightConcept(),
-					patient, location, weight, encounter, null);
+					patient, facility, weight, encounter, null);
 			encounter.addObs(weightObs);
 		}
 		if (temperature != null) {
 			Obs temperatureObs = createNumericValueObs(datetime,
-					getTemperatureConcept(), patient, location, temperature,
+					getTemperatureConcept(), patient, facility, temperature,
 					encounter, null);
 			encounter.addObs(temperatureObs);
 		}
 		if (Boolean.TRUE.equals(bcg)) {
 			Obs bcgObs = createConceptValueObs(datetime,
-					getImmunizationsOrderedConcept(), patient, location,
+					getImmunizationsOrderedConcept(), patient, facility,
 					getBCGConcept(), encounter, null);
 			encounter.addObs(bcgObs);
 		}
 		if (Boolean.TRUE.equals(opv0)) {
 			Integer opvDose = 0;
 			Obs opvDoseObs = createNumericValueObs(datetime,
-					getOPVDoseConcept(), patient, location, opvDose, encounter,
+					getOPVDoseConcept(), patient, facility, opvDose, encounter,
 					null);
 			encounter.addObs(opvDoseObs);
 		}
 		if (respiration != null) {
 			Obs respirationObs = createNumericValueObs(datetime,
-					getRespiratoryRateConcept(), patient, location,
+					getRespiratoryRateConcept(), patient, facility,
 					respiration, encounter, null);
 			encounter.addObs(respirationObs);
 		}
 		if (cordConditionNormal != null) {
 			Obs cordConditionObs = createBooleanValueObs(datetime,
-					getCordConditionConcept(), patient, location,
+					getCordConditionConcept(), patient, facility,
 					cordConditionNormal, encounter, null);
 			encounter.addObs(cordConditionObs);
 		}
 		if (babyConditionGood != null) {
 			Obs babyConditionObs = createBooleanValueObs(datetime,
-					getConditionBabyConcept(), patient, location,
+					getConditionBabyConcept(), patient, facility,
 					babyConditionGood, encounter, null);
 			encounter.addObs(babyConditionObs);
 		}
 		if (comments != null) {
 			Obs commentsObs = createTextValueObs(datetime,
-					getCommentsConcept(), patient, location, comments,
+					getCommentsConcept(), patient, facility, comments,
 					encounter, null);
 			encounter.addObs(commentsObs);
 		}
@@ -1561,24 +1572,22 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordTTVisit(User nurse, Date date, Patient patient,
-			Integer ttDose) {
+	public void recordTTVisit(User nurse, Location facility, Date date,
+			Patient patient, Integer ttDose) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
-
-		Location location = getGhanaLocation();
 
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getTTVisitEncounterType());
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
-		encounter.setLocation(location);
+		encounter.setLocation(facility);
 		encounter.setProvider(contextService.getAuthenticatedUser());
 
 		if (ttDose != null) {
 			Obs ttDoseObs = createNumericValueObs(date,
-					getTetanusDoseConcept(), patient, location, ttDose,
+					getTetanusDoseConcept(), patient, facility, ttDose,
 					encounter, null);
 			encounter.addObs(ttDoseObs);
 		}
@@ -1586,16 +1595,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordDeath(User nurse, Date date, Patient patient,
-			Integer cause) {
+	public void recordDeath(User nurse, Location facility, Date date,
+			Patient patient, Integer cause) {
 
 		ObsService obsService = contextService.getObsService();
 
-		Location location = getGhanaLocation();
-
 		if (cause != null) {
 			Obs deathCauseObs = createNumericValueObs(date,
-					getDeathCauseConcept(), patient, location, cause, null,
+					getDeathCauseConcept(), patient, facility, cause, null,
 					null);
 			obsService.saveObs(deathCauseObs, null);
 		}
@@ -1618,117 +1625,115 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordChildCWCVisit(User nurse, Date date, Patient patient,
-			Integer cwcLocation, String house, String community, Boolean bcg,
-			Integer opvDose, Integer pentaDose, Boolean measles,
-			Boolean yellowFever, Boolean csm, Boolean ipti, Boolean vitaminA,
-			Boolean dewormer, Double weight, Integer muac, Integer height,
-			Boolean maleInvolved, String comments) {
+	public void recordChildCWCVisit(User nurse, Location facility, Date date,
+			Patient patient, Integer cwcLocation, String house,
+			String community, Boolean bcg, Integer opvDose, Integer pentaDose,
+			Boolean measles, Boolean yellowFever, Boolean csm, Boolean ipti,
+			Boolean vitaminA, Boolean dewormer, Double weight, Integer muac,
+			Integer height, Boolean maleInvolved, String comments) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
-
-		Location location = getGhanaLocation();
 
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getCWCVisitEncounterType());
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
-		encounter.setLocation(location);
+		encounter.setLocation(facility);
 		encounter.setProvider(contextService.getAuthenticatedUser());
 
 		if (cwcLocation != null) {
 			Obs cwcLocationObs = createNumericValueObs(date,
-					getCWCLocationConcept(), patient, location, cwcLocation,
+					getCWCLocationConcept(), patient, facility, cwcLocation,
 					encounter, null);
 			encounter.addObs(cwcLocationObs);
 		}
 		if (house != null) {
 			Obs houseObs = createTextValueObs(date, getHouseConcept(), patient,
-					location, house, encounter, null);
+					facility, house, encounter, null);
 			encounter.addObs(houseObs);
 		}
 		if (community != null) {
 			Obs communityObs = createTextValueObs(date, getCommunityConcept(),
-					patient, location, community, encounter, null);
+					patient, facility, community, encounter, null);
 			encounter.addObs(communityObs);
 		}
 		if (Boolean.TRUE.equals(bcg)) {
 			Obs bcgObs = createConceptValueObs(date,
-					getImmunizationsOrderedConcept(), patient, location,
+					getImmunizationsOrderedConcept(), patient, facility,
 					getBCGConcept(), encounter, null);
 			encounter.addObs(bcgObs);
 		}
 		if (opvDose != null) {
 			Obs opvDoseObs = createNumericValueObs(date, getOPVDoseConcept(),
-					patient, location, opvDose, encounter, null);
+					patient, facility, opvDose, encounter, null);
 			encounter.addObs(opvDoseObs);
 		}
 		if (pentaDose != null) {
 			Obs pentaDoseObs = createNumericValueObs(date,
-					getPentaDoseConcept(), patient, location, pentaDose,
+					getPentaDoseConcept(), patient, facility, pentaDose,
 					encounter, null);
 			encounter.addObs(pentaDoseObs);
 		}
 		if (Boolean.TRUE.equals(yellowFever)) {
 			Obs yellowFeverObs = createConceptValueObs(date,
-					getImmunizationsOrderedConcept(), patient, location,
+					getImmunizationsOrderedConcept(), patient, facility,
 					getYellowFeverConcept(), encounter, null);
 			encounter.addObs(yellowFeverObs);
 		}
 		if (Boolean.TRUE.equals(csm)) {
 			Obs csmObs = createConceptValueObs(date,
-					getImmunizationsOrderedConcept(), patient, location,
+					getImmunizationsOrderedConcept(), patient, facility,
 					getCSMConcept(), encounter, null);
 			encounter.addObs(csmObs);
 		}
 		if (Boolean.TRUE.equals(measles)) {
 			Obs measlesObs = createConceptValueObs(date,
-					getImmunizationsOrderedConcept(), patient, location,
+					getImmunizationsOrderedConcept(), patient, facility,
 					getMeaslesConcept(), encounter, null);
 			encounter.addObs(measlesObs);
 		}
 		if (Boolean.TRUE.equals(ipti)) {
 			Obs iptiObs = createConceptValueObs(date,
-					getImmunizationsOrderedConcept(), patient, location,
+					getImmunizationsOrderedConcept(), patient, facility,
 					getIPTiConcept(), encounter, null);
 			encounter.addObs(iptiObs);
 		}
 		if (Boolean.TRUE.equals(vitaminA)) {
 			Obs vitaminAObs = createConceptValueObs(date,
-					getImmunizationsOrderedConcept(), patient, location,
+					getImmunizationsOrderedConcept(), patient, facility,
 					getVitaminAConcept(), encounter, null);
 			encounter.addObs(vitaminAObs);
 		}
 		if (dewormer != null) {
 			Obs dewormerObs = createBooleanValueObs(date, getDewormerConcept(),
-					patient, location, dewormer, encounter, null);
+					patient, facility, dewormer, encounter, null);
 			encounter.addObs(dewormerObs);
 		}
 		if (weight != null) {
 			Obs weightObs = createNumericValueObs(date, getWeightConcept(),
-					patient, location, weight, encounter, null);
+					patient, facility, weight, encounter, null);
 			encounter.addObs(weightObs);
 		}
 		if (muac != null) {
 			Obs muacObs = createNumericValueObs(date, getMUACConcept(),
-					patient, location, muac, encounter, null);
+					patient, facility, muac, encounter, null);
 			encounter.addObs(muacObs);
 		}
 		if (height != null) {
 			Obs heightObs = createNumericValueObs(date, getHeightConcept(),
-					patient, location, height, encounter, null);
+					patient, facility, height, encounter, null);
 			encounter.addObs(heightObs);
 		}
 		if (maleInvolved != null) {
 			Obs maleInvolvedObs = createBooleanValueObs(date,
-					getMaleInvolvementConcept(), patient, location,
+					getMaleInvolvementConcept(), patient, facility,
 					maleInvolved, encounter, null);
 			encounter.addObs(maleInvolvedObs);
 		}
 		if (comments != null) {
 			Obs commentsObs = createTextValueObs(date, getCommentsConcept(),
-					patient, location, comments, encounter, null);
+					patient, facility, comments, encounter, null);
 			encounter.addObs(commentsObs);
 		}
 
@@ -1758,49 +1763,48 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordOutpatientVisit(User nurse, Date date, Patient patient,
-			String serialNumber, Integer diagnosis, Integer secondDiagnosis,
-			Boolean rdtGiven, Boolean rdtPositive, Boolean actTreated,
-			Boolean newCase, Boolean referred, String comments) {
+	public void recordOutpatientVisit(User nurse, Location facility, Date date,
+			Patient patient, String serialNumber, Integer diagnosis,
+			Integer secondDiagnosis, Boolean rdtGiven, Boolean rdtPositive,
+			Boolean actTreated, Boolean newCase, Boolean referred,
+			String comments) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
-
-		Location location = getGhanaLocation();
 
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getOutpatientVisitEncounterType());
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
-		encounter.setLocation(location);
+		encounter.setLocation(facility);
 		encounter.setProvider(contextService.getAuthenticatedUser());
 
 		if (serialNumber != null) {
 			Obs serialNumberObs = createTextValueObs(date,
-					getSerialNumberConcept(), patient, location, serialNumber,
+					getSerialNumberConcept(), patient, facility, serialNumber,
 					encounter, null);
 			encounter.addObs(serialNumberObs);
 		}
 		if (newCase != null) {
 			Obs newCaseObs = createBooleanValueObs(date, getNewCaseConcept(),
-					patient, location, newCase, encounter, null);
+					patient, facility, newCase, encounter, null);
 			encounter.addObs(newCaseObs);
 		}
 		if (diagnosis != null) {
 			Obs diagnosisObs = createNumericValueObs(date,
-					getPrimaryDiagnosisConcept(), patient, location, diagnosis,
+					getPrimaryDiagnosisConcept(), patient, facility, diagnosis,
 					encounter, null);
 			encounter.addObs(diagnosisObs);
 		}
 		if (secondDiagnosis != null) {
 			Obs secondDiagnosisObs = createNumericValueObs(date,
-					getSecondaryDiagnosisConcept(), patient, location,
+					getSecondaryDiagnosisConcept(), patient, facility,
 					secondDiagnosis, encounter, null);
 			encounter.addObs(secondDiagnosisObs);
 		}
 		if (referred != null) {
 			Obs referredObs = createBooleanValueObs(date, getReferredConcept(),
-					patient, location, referred, encounter, null);
+					patient, facility, referred, encounter, null);
 			encounter.addObs(referredObs);
 		}
 		if (Boolean.TRUE.equals(rdtGiven)) {
@@ -1811,19 +1815,19 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				rdtTestValueConcept = getNegativeConcept();
 			}
 			Obs rdtTestObs = createConceptValueObs(date,
-					getMalariaRDTConcept(), patient, location,
+					getMalariaRDTConcept(), patient, facility,
 					rdtTestValueConcept, encounter, null);
 			encounter.addObs(rdtTestObs);
 		}
 		if (actTreated != null) {
 			Obs actTreatedObs = createBooleanValueObs(date,
-					getACTTreatmentConcept(), patient, location, actTreated,
+					getACTTreatmentConcept(), patient, facility, actTreated,
 					encounter, null);
 			encounter.addObs(actTreatedObs);
 		}
 		if (comments != null) {
 			Obs commentsObs = createTextValueObs(date, getCommentsConcept(),
-					patient, location, comments, encounter, null);
+					patient, facility, comments, encounter, null);
 			encounter.addObs(commentsObs);
 		}
 
@@ -3061,7 +3065,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.CONCEPT_CLASS_MISC,
 				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
 		createConcept(MotechConstants.CONCEPT_HOUSE,
-				"House details on the location of care",
+				"House details on the facility of care",
 				MotechConstants.CONCEPT_CLASS_MISC,
 				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
 		createConcept(MotechConstants.CONCEPT_ANC_PNC_LOCATION,

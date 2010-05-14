@@ -868,7 +868,8 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
-		expect(contextService.getLocationService()).andReturn(locationService);
+		expect(contextService.getLocationService()).andReturn(locationService)
+				.atLeastOnce();
 		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
 		expect(contextService.getIdentifierSourceService())
@@ -884,7 +885,7 @@ public class RegistrarBeanTest extends TestCase {
 						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
 				.andReturn(motechIdType).atLeastOnce();
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
-				.andReturn(ghanaLocation);
+				.andReturn(ghanaLocation).times(2);
 
 		expect(
 				personService
