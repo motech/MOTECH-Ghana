@@ -15,6 +15,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.motechproject.server.model.Blackout;
+import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
@@ -611,5 +612,11 @@ public class HibernateMotechDAO implements MotechDAO {
 	public List<Facility> getAllFacilities() {
 		return (List<Facility>) sessionFactory.getCurrentSession()
 				.createCriteria(Facility.class).list();
+	}
+
+	public Community getCommunityByCommunityId(Integer communityId) {
+		return (Community) sessionFactory.getCurrentSession().createCriteria(
+				Community.class).add(
+				Restrictions.eq("communityId", communityId)).uniqueResult();
 	}
 }

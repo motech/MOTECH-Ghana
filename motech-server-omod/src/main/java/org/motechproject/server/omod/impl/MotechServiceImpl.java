@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.motechproject.server.model.Blackout;
+import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
@@ -312,5 +313,9 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public Facility getFacilityById(Integer facilityId) {
 		return motechDAO.getFacilityByFacilityId(facilityId);
+	}
+
+	public Community getCommunityById(Integer communityId) {
+		return motechDAO.getCommunityByCommunityId(communityId);
 	}
 }

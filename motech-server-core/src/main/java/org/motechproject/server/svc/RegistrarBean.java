@@ -6,6 +6,7 @@ import java.util.List;
 import org.motechproject.server.annotation.RunAsAdminUser;
 import org.motechproject.server.annotation.RunAsUserParam;
 import org.motechproject.server.annotation.RunWithPrivileges;
+import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
@@ -437,4 +438,6 @@ public interface RegistrarBean {
 	public void demoEnrollPatient(String regNumberGHS);
 
 	public Facility getFacilityById(Integer facilityId);
+
+	public Community getCommunityById(Integer communityId);
 }

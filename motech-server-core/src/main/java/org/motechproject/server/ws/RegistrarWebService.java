@@ -11,6 +11,7 @@ import javax.jws.WebService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
@@ -452,6 +453,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
 		validateFacility(facilityId, errors, "FacilityID");
+		validateCommunity(community, errors, "Community");
 
 		if (motechId == null
 				&& registrationMode == RegistrationMode.USE_PREPRINTED_ID) {
@@ -1092,5 +1094,18 @@ public class RegistrarWebService implements RegistrarService {
 			errors.add(1, fieldName);
 		}
 		return facility;
+	}
+
+	private Community validateCommunity(Integer communityId,
+			ValidationErrors errors, String fieldName) {
+		if (communityId == null) {
+			errors.add(3, fieldName);
+			return null;
+		}
+		Community community = registrarBean.getCommunityById(communityId);
+		if (community == null) {
+			errors.add(1, fieldName);
+		}
+		return community;
 	}
 }

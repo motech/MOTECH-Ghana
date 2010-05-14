@@ -26,6 +26,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
@@ -901,6 +902,8 @@ public class RegistrarServiceTest {
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
+		expect(registrarBean.getCommunityById(community)).andReturn(
+				new Community());
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
 		expect(openmrsBean.getPatientByMotechId(motherMotechId.toString()))
@@ -960,6 +963,7 @@ public class RegistrarServiceTest {
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(null);
+		expect(registrarBean.getCommunityById(community)).andReturn(null);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
 		expect(openmrsBean.getPatientByMotechId(motherMotechId.toString()))
@@ -981,20 +985,23 @@ public class RegistrarServiceTest {
 					.getFaultInfo());
 			List<ValidationError> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
-			assertEquals(5, errors.size());
+			assertEquals(6, errors.size());
 			ValidationError nurseError = errors.get(0);
 			assertEquals(1, nurseError.getCode());
 			assertEquals("StaffID", nurseError.getField());
 			ValidationError facilityError = errors.get(1);
 			assertEquals(1, facilityError.getCode());
 			assertEquals("FacilityID", facilityError.getField());
-			ValidationError patientError = errors.get(2);
+			ValidationError communityError = errors.get(2);
+			assertEquals(1, communityError.getCode());
+			assertEquals("Community", communityError.getField());
+			ValidationError patientError = errors.get(3);
 			assertEquals(2, patientError.getCode());
 			assertEquals("MotechID", patientError.getField());
-			ValidationError motherError = errors.get(3);
+			ValidationError motherError = errors.get(4);
 			assertEquals(1, motherError.getCode());
 			assertEquals("MotherMotechID", motherError.getField());
-			ValidationError dobError = errors.get(4);
+			ValidationError dobError = errors.get(5);
 			assertEquals(2, dobError.getCode());
 			assertEquals("DoB", dobError.getField());
 		}

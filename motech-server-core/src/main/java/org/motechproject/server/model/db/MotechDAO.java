@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.motechproject.server.model.Blackout;
+import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
@@ -139,4 +140,6 @@ public interface MotechDAO {
 	Facility getFacilityByCommunity(Location community);
 
 	List<Facility> getAllFacilities();
+	
+	Community getCommunityByCommunityId(Integer communityId);
 }
