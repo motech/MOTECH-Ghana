@@ -137,8 +137,6 @@ public interface MotechDAO {
 
 	List<Facility> getFacilityByLocation(Location location);
 
-	Facility getFacilityByCommunity(Location community);
-
 	List<Facility> getAllFacilities();
 	
 	Community getCommunityByCommunityId(Integer communityId);

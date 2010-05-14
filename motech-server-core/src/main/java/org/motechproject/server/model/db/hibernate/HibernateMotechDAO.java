@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
@@ -598,14 +597,6 @@ public class HibernateMotechDAO implements MotechDAO {
 				Facility.class);
 		criteria.add(Restrictions.eq("location", location));
 		return (List<Facility>) criteria.list();
-	}
-
-	public Facility getFacilityByCommunity(Location community) {
-		Query query = sessionFactory.getCurrentSession().createQuery(
-				"select f from Facility f "
-						+ "join fetch f.communities c with c = :community")
-				.setParameter("community", community);
-		return (Facility) query.uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
