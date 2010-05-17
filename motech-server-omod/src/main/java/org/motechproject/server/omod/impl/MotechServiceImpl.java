@@ -261,7 +261,8 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public List<Location> getClinics(String country, String region,
 			String district, String community) {
-		return motechDAO.getFacilityLocations(country, region, district, community);
+		return motechDAO.getFacilityLocations(country, region, district,
+				community);
 	}
 
 	public List<Obs> getActivePregnancies(Integer patientId,
@@ -317,5 +318,9 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public Community getCommunityById(Integer communityId) {
 		return motechDAO.getCommunityByCommunityId(communityId);
+	}
+
+	public Community getCommunityByPatient(Patient patient) {
+		return motechDAO.getCommunityByPatient(patient);
 	}
 }

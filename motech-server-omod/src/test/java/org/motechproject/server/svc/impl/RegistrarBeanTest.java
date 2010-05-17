@@ -21,6 +21,7 @@ import junit.framework.TestCase;
 
 import org.easymock.Capture;
 import org.motechproject.server.messaging.MessageNotFoundException;
+import org.motechproject.server.model.Community;
 import org.motechproject.server.model.HIVStatus;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageProgramEnrollment;
@@ -88,7 +89,6 @@ public class RegistrarBeanTest extends TestCase {
 	PatientIdentifierType motechIdType;
 	PersonAttributeType nurseIdAttributeType;
 	PersonAttributeType phoneAttributeType;
-	PersonAttributeType communityAttributeType;
 	PersonAttributeType nhisAttributeType;
 	PersonAttributeType languageAttributeType;
 	PersonAttributeType phoneTypeAttributeType;
@@ -194,10 +194,6 @@ public class RegistrarBeanTest extends TestCase {
 		phoneAttributeType = new PersonAttributeType(2);
 		phoneAttributeType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
-
-		communityAttributeType = new PersonAttributeType(3);
-		communityAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_COMMUNITY);
 
 		nhisAttributeType = new PersonAttributeType(4);
 		nhisAttributeType.setName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER);
@@ -535,7 +531,7 @@ public class RegistrarBeanTest extends TestCase {
 		String language = "Language";
 		Date date = new Date();
 		Boolean birthDateEst = true, insured = true, dueDateConfirmed = true, enroll = true, consent = true;
-		Integer gravida = 0, parity = 1, community = 123;
+		Integer gravida = 0, parity = 1;
 		Gender gender = Gender.FEMALE;
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType mediaType = MediaType.TEXT;
@@ -548,6 +544,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		Patient patient = new Patient(2);
 		Location ghanaLocation = new Location(1);
+		Community community = new Community();
 
 		Capture<Patient> patientCap = new Capture<Patient>();
 		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
@@ -583,10 +580,6 @@ public class RegistrarBeanTest extends TestCase {
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation);
 
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_COMMUNITY))
-				.andReturn(communityAttributeType);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
@@ -721,8 +714,7 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
 		assertEquals(GenderTypeConverter.toOpenMRSString(Gender.FEMALE),
 				capturedPatient.getGender());
-		assertEquals(community.toString(), capturedPatient.getAttribute(
-				communityAttributeType).getValue());
+		assertEquals(1, community.getResidents().size());
 		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
 		assertEquals(insured, Boolean.valueOf(capturedPatient.getAttribute(
 				insuredAttributeType).getValue()));
@@ -844,7 +836,7 @@ public class RegistrarBeanTest extends TestCase {
 		String language = "Language";
 		Date date = new Date();
 		Boolean birthDateEst = true, insured = true, dueDateConfirmed = true, enroll = true, consent = true;
-		Integer gravida = 0, parity = 1, community = 123;
+		Integer gravida = 0, parity = 1;
 		Gender gender = Gender.FEMALE;
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType mediaType = MediaType.TEXT;
@@ -858,6 +850,7 @@ public class RegistrarBeanTest extends TestCase {
 		Patient child = new Patient(1);
 		Patient mother = new Patient(2);
 		Location ghanaLocation = new Location(1);
+		Community community = new Community();
 
 		Capture<Patient> patientCap = new Capture<Patient>();
 		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
@@ -887,10 +880,6 @@ public class RegistrarBeanTest extends TestCase {
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation).times(2);
 
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_COMMUNITY))
-				.andReturn(communityAttributeType);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
@@ -1001,8 +990,7 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
 		assertEquals(GenderTypeConverter.toOpenMRSString(gender),
 				capturedPatient.getGender());
-		assertEquals(community.toString(), capturedPatient.getAttribute(
-				communityAttributeType).getValue());
+		assertEquals(1, community.getResidents().size());
 		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
 		assertEquals(insured, Boolean.valueOf(capturedPatient.getAttribute(
 				insuredAttributeType).getValue()));
@@ -1080,7 +1068,7 @@ public class RegistrarBeanTest extends TestCase {
 		String language = "Language";
 		Date date = new Date();
 		Boolean birthDateEst = true, insured = true, dueDateConfirmed = true, enroll = true, consent = true;
-		Integer gravida = 0, parity = 1, community = 123;
+		Integer gravida = 0, parity = 1;
 		Gender gender = Gender.FEMALE;
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType mediaType = MediaType.TEXT;
@@ -1094,6 +1082,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		Patient patient = new Patient(2);
 		Location ghanaLocation = new Location(1);
+		Community community = new Community();
 
 		Capture<Patient> patientCap = new Capture<Patient>();
 		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
@@ -1124,10 +1113,6 @@ public class RegistrarBeanTest extends TestCase {
 						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
 				.andReturn(motechIdType).atLeastOnce();
 
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_COMMUNITY))
-				.andReturn(communityAttributeType);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
@@ -1241,8 +1226,7 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
 		assertEquals(GenderTypeConverter.toOpenMRSString(Gender.FEMALE),
 				capturedPatient.getGender());
-		assertEquals(community.toString(), capturedPatient.getAttribute(
-				communityAttributeType).getValue());
+		assertEquals(1, community.getResidents().size());
 		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
 		assertEquals(phoneNumber.toString(), capturedPatient.getAttribute(
 				phoneAttributeType).getValue());

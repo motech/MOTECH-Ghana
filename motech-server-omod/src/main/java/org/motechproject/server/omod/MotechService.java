@@ -200,7 +200,12 @@ public interface MotechService extends OpenmrsService {
 			String nhisNumber, PersonAttributeType nhisAttrType,
 			String patientId, PatientIdentifierType patientIdType);
 
+	@Transactional(readOnly = true)
 	Facility getFacilityById(Integer facilityId);
 
+	@Transactional(readOnly = true)
 	Community getCommunityById(Integer communityId);
+
+	@Transactional(readOnly = true)
+	Community getCommunityByPatient(Patient patient);
 }

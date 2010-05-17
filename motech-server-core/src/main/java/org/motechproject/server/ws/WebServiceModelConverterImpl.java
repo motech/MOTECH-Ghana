@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.svc.RegistrarBean;
@@ -16,7 +17,6 @@ import org.motechproject.ws.Patient;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.PatientIdentifier;
-import org.openmrs.PersonAddress;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonName;
 
@@ -43,9 +43,9 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 		wsPatient.setSex(GenderTypeConverter
 				.valueOfOpenMRS(patient.getGender()));
 
-		PersonAddress patientAddress = patient.getPersonAddress();
-		if (patientAddress != null) {
-			wsPatient.setCommunity(patientAddress.getCityVillage());
+		Community community = registrarBean.getCommunityByPatient(patient);
+		if (community != null) {
+			wsPatient.setCommunity(community.getName());
 		}
 
 		PatientIdentifier patientId = patient

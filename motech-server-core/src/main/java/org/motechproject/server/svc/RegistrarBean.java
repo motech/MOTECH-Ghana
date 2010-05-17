@@ -59,7 +59,7 @@ public interface RegistrarBean {
 			String middleName, String lastName, String preferredName,
 			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
 			Boolean insured, String nhis, Date nhisExpires, Patient mother,
-			Integer community, String address, String phoneNumber,
+			Community community, String address, String phoneNumber,
 			Date expDeliveryDate, Boolean deliveryDateConfirmed,
 			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, MediaType format, String language,
@@ -71,7 +71,7 @@ public interface RegistrarBean {
 			String middleName, String lastName, String preferredName,
 			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
 			Boolean insured, String nhis, Date nhisExpires, Patient mother,
-			Integer community, String address, String phoneNumber,
+			Community community, String address, String phoneNumber,
 			Date expDeliveryDate, Boolean deliveryDateConfirmed,
 			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, MediaType format, String language,
@@ -443,4 +443,6 @@ public interface RegistrarBean {
 	public Facility getFacilityById(Integer facilityId);
 
 	public Community getCommunityById(Integer communityId);
+
+	public Community getCommunityByPatient(Patient patient);
 }

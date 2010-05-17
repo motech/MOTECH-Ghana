@@ -17,7 +17,6 @@ public final class MotechConstants {
 	public static final String PERSON_ATTRIBUTE_INSURED = "Insured";
 	public static final String PERSON_ATTRIBUTE_HOW_LEARNED = "How learned of service";
 	public static final String PERSON_ATTRIBUTE_WHY_INTERESTED = "Why interested in service";
-	public static final String PERSON_ATTRIBUTE_COMMUNITY = "Community";
 	public static final String PATIENT_IDENTIFIER_MOTECH_ID = "MoTeCH Id";
 	public static final String LOCATION_GHANA = "Ghana";
 	public static final String LOCATION_UPPER_EAST = "Upper East";

@@ -456,7 +456,8 @@ public class RegistrarWebService implements RegistrarService {
 
 		User nurse = validateChpsId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
-		validateCommunity(community, errors, "Community");
+		Community communityObj = validateCommunity(community, errors,
+				"Community");
 
 		if (motechId == null
 				&& registrationMode == RegistrationMode.USE_PREPRINTED_ID) {
@@ -504,7 +505,7 @@ public class RegistrarWebService implements RegistrarService {
 				facility.getLocation(), date, registrationMode, motechId,
 				registrantType, firstName, middleName, lastName, preferredName,
 				dateOfBirth, estimatedBirthDate, sex, insured, nhis,
-				nhisExpires, mother, community, address, phoneNumber,
+				nhisExpires, mother, communityObj, address, phoneNumber,
 				expDeliveryDate, deliveryDateConfirmed, gravida, parity,
 				enroll, consent, ownership, format, language, dayOfWeek,
 				timeOfDay, reason, howLearned, messagesStartWeek);

@@ -200,7 +200,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			RegistrantType registrantType, String firstName, String middleName,
 			String lastName, String preferredName, Date dateOfBirth,
 			Boolean estimatedBirthDate, Gender sex, Boolean insured,
-			String nhis, Date nhisExpires, Patient mother, Integer community,
+			String nhis, Date nhisExpires, Patient mother, Community community,
 			String address, String phoneNumber, Date expDeliveryDate,
 			Boolean deliveryDateConfirmed, Integer gravida, Integer parity,
 			Boolean enroll, Boolean consent, ContactNumberType ownership,
@@ -223,7 +223,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			String middleName, String lastName, String preferredName,
 			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
 			Boolean insured, String nhis, Date nhisExpires, Patient mother,
-			Integer community, String address, String phoneNumber,
+			Community community, String address, String phoneNumber,
 			Date expDeliveryDate, Boolean deliveryDateConfirmed,
 			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, MediaType format, String language,
@@ -246,7 +246,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			RegistrantType registrantType, String firstName, String middleName,
 			String lastName, String preferredName, Date dateOfBirth,
 			Boolean estimatedBirthDate, Gender sex, Boolean insured,
-			String nhis, Date nhisExpires, Patient mother, Integer community,
+			String nhis, Date nhisExpires, Patient mother, Community community,
 			String address, String phoneNumber, Date expDeliveryDate,
 			Boolean deliveryDateConfirmed, Integer gravida, Integer parity,
 			Boolean enroll, Boolean consent, ContactNumberType ownership,
@@ -257,14 +257,16 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		PatientService patientService = contextService.getPatientService();
 		PersonService personService = contextService.getPersonService();
 
-		// TODO: Handle storing community and hierarchy
 		Patient patient = createPatient(motechId, firstName, middleName,
 				lastName, preferredName, dateOfBirth, estimatedBirthDate, sex,
-				insured, nhis, nhisExpires, community, address, phoneNumber,
-				ownership, format, language, dayOfWeek, timeOfDay, howLearned,
-				reason);
+				insured, nhis, nhisExpires, address, phoneNumber, ownership,
+				format, language, dayOfWeek, timeOfDay, howLearned, reason);
 
 		patient = patientService.savePatient(patient);
+
+		if (community != null) {
+			community.getResidents().add(patient);
+		}
 
 		if (mother != null) {
 			RelationshipType parentChildRelationshipType = personService
@@ -294,9 +296,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek, Integer pregnancyDueDateObsId) {
 
-		setPatientAttributes(patient, null, phoneNumber, ownership, format,
-				language, dayOfWeek, timeOfDay, howLearned, reason, null, null,
-				null);
+		setPatientAttributes(patient, phoneNumber, ownership, format, language,
+				dayOfWeek, timeOfDay, howLearned, reason, null, null, null);
 
 		enrollPatient(patientType, patient, enroll, consent, messagesStartWeek,
 				pregnancyDueDateObsId);
@@ -376,7 +377,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// TODO: Update demo patient registration
 		Patient patient = createPatient(Integer.parseInt(motechId), firstName,
 				middleName, lastName, prefName, birthDate, birthDateEst, sex,
-				insured, nhis, nhisExpDate, null, address, primaryPhone,
+				insured, nhis, nhisExpDate, address, primaryPhone,
 				primaryPhoneType, mediaTypeInfo, languageText, null, null,
 				null, null);
 
@@ -399,10 +400,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	private Patient createPatient(Integer motechId, String firstName,
 			String middleName, String lastName, String prefName,
 			Date birthDate, Boolean birthDateEst, Gender sex, Boolean insured,
-			String nhis, Date nhisExpDate, Integer community, String address,
-			String phoneNumber, ContactNumberType phoneType,
-			MediaType mediaType, String language, DayOfWeek dayOfWeek,
-			Date timeOfDay, HowLearned howLearned, InterestReason whyInterested) {
+			String nhis, Date nhisExpDate, String address, String phoneNumber,
+			ContactNumberType phoneType, MediaType mediaType, String language,
+			DayOfWeek dayOfWeek, Date timeOfDay, HowLearned howLearned,
+			InterestReason whyInterested) {
 
 		Patient patient = new Patient();
 
@@ -436,26 +437,20 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			patient.addAddress(personAddress);
 		}
 
-		setPatientAttributes(patient, community, phoneNumber, phoneType,
-				mediaType, language, dayOfWeek, timeOfDay, howLearned,
-				whyInterested, insured, nhis, nhisExpDate);
+		setPatientAttributes(patient, phoneNumber, phoneType, mediaType,
+				language, dayOfWeek, timeOfDay, howLearned, whyInterested,
+				insured, nhis, nhisExpDate);
 
 		return patient;
 	}
 
-	private void setPatientAttributes(Patient patient, Integer community,
-			String phoneNumber, ContactNumberType phoneType,
-			MediaType mediaType, String language, DayOfWeek dayOfWeek,
-			Date timeOfDay, HowLearned howLearned,
+	private void setPatientAttributes(Patient patient, String phoneNumber,
+			ContactNumberType phoneType, MediaType mediaType, String language,
+			DayOfWeek dayOfWeek, Date timeOfDay, HowLearned howLearned,
 			InterestReason whyInterested, Boolean insured, String nhis,
 			Date nhisExpDate) {
 
 		List<PersonAttribute> attrs = new ArrayList<PersonAttribute>();
-
-		if (community != null) {
-			attrs.add(new PersonAttribute(getCommunityAttributeType(),
-					community.toString()));
-		}
 
 		if (phoneNumber != null) {
 			attrs.add(new PersonAttribute(getPhoneNumberAttributeType(),
@@ -527,8 +522,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		PatientService patientService = contextService.getPatientService();
 
-		setPatientAttributes(patient, null, phoneNumber, phoneOwnership, null,
-				null, null, null, null, null, null, nhis, nhisExpires);
+		setPatientAttributes(patient, phoneNumber, phoneOwnership, null, null,
+				null, null, null, null, null, nhis, nhisExpires);
 
 		patientService.savePatient(patient);
 
@@ -616,7 +611,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 
 		// TODO: Update to handle removed attributes and changed types
-		setPatientAttributes(patient, null, primaryPhone, primaryPhoneType,
+		setPatientAttributes(patient, primaryPhone, primaryPhoneType,
 				mediaTypeInfo, languageText, null, null, null, null, insured,
 				nhis, nhisExpDate);
 
@@ -641,7 +636,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 
 		// TODO: Update to handle removed attributes and changed types
-		setPatientAttributes(patient, null, primaryPhone, primaryPhoneType,
+		setPatientAttributes(patient, primaryPhone, primaryPhoneType,
 				mediaTypeInfo, languageText, null, null, null, null, null,
 				null, null);
 
@@ -2787,9 +2782,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Why person is interested in services "
 						+ "(IN_HOUSEHOLD_PREGNANCY, OUT_HOUSEHOLD_PREGNANCY, or IN_HOUSEHOLD_BIRTH).",
 				String.class.getName(), admin);
-		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_COMMUNITY,
-				"A person's community (as Location id).", Location.class
-						.getName(), admin);
 
 		log.info("Verifying Patient Identifier Exist");
 		PatientIdentifierType motechIDType = createPatientIdentifierType(
@@ -4122,11 +4114,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.PERSON_ATTRIBUTE_CHPS_ID);
 	}
 
-	public PersonAttributeType getCommunityAttributeType() {
-		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_COMMUNITY);
-	}
-
 	public PersonAttributeType getPhoneNumberAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(
 				MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
@@ -4679,6 +4666,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	public Community getCommunityById(Integer communityId) {
 		return contextService.getMotechService().getCommunityById(communityId);
+	}
+
+	public Community getCommunityByPatient(Patient patient) {
+		return contextService.getMotechService().getCommunityByPatient(patient);
 	}
 
 }

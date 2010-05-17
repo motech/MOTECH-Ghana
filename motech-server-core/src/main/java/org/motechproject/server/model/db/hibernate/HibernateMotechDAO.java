@@ -616,4 +616,11 @@ public class HibernateMotechDAO implements MotechDAO {
 		return (List<Community>) sessionFactory.getCurrentSession()
 				.createCriteria(Community.class).list();
 	}
+
+	public Community getCommunityByPatient(Patient patient) {
+		return (Community) sessionFactory.getCurrentSession().createCriteria(
+				Community.class).createAlias("residents", "resident").add(
+				Restrictions.eq("resident.patientId", patient.getPatientId()))
+				.uniqueResult();
+	}
 }

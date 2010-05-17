@@ -909,7 +909,7 @@ public class RegistrarServiceTest {
 		Boolean estBirthDate = false, insured = true, delivDateConf = true, enroll = true, consent = true;
 		Integer gravida = 0, parity = 0, messageWeek = 5;
 		String phone = "15555555";
-		Integer community = 11111;
+		Integer communityId = 11111;
 		Date date = new Date();
 		RegistrationMode mode = RegistrationMode.USE_PREPRINTED_ID;
 		RegistrantType type = RegistrantType.CHILD_UNDER_FIVE;
@@ -925,14 +925,14 @@ public class RegistrarServiceTest {
 		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = null;
 		org.openmrs.Patient mother = new org.openmrs.Patient(3);
+		Community comm = new Community();
 
 		org.openmrs.Patient createdPatient = new org.openmrs.Patient(4);
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
-		expect(registrarBean.getCommunityById(community)).andReturn(
-				new Community());
+		expect(registrarBean.getCommunityById(communityId)).andReturn(comm);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
 		expect(openmrsBean.getPatientByMotechId(motherMotechId.toString()))
@@ -941,7 +941,7 @@ public class RegistrarServiceTest {
 				registrarBean.registerPatient(nurse, facilityLocation, date,
 						mode, motechId, type, firstName, middleName, lastName,
 						prefName, date, estBirthDate, gender, insured, nhis,
-						date, mother, community, address, phone, date,
+						date, mother, comm, address, phone, date,
 						delivDateConf, gravida, parity, enroll, consent,
 						phoneType, format, language, day, date, reason, how,
 						messageWeek)).andReturn(createdPatient);
@@ -953,9 +953,9 @@ public class RegistrarServiceTest {
 		Patient wsPatient = regWs.registerPatient(staffId, facilityId, date,
 				mode, motechId, type, firstName, middleName, lastName,
 				prefName, date, estBirthDate, gender, insured, nhis, date,
-				motherMotechId, community, address, phone, date, delivDateConf,
-				gravida, parity, enroll, consent, phoneType, format, language,
-				day, date, reason, how, messageWeek);
+				motherMotechId, communityId, address, phone, date,
+				delivDateConf, gravida, parity, enroll, consent, phoneType,
+				format, language, day, date, reason, how, messageWeek);
 
 		verify(registrarBean, openmrsBean, modelConverter);
 

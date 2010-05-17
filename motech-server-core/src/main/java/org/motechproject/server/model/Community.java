@@ -1,6 +1,7 @@
 package org.motechproject.server.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.openmrs.Patient;
@@ -13,7 +14,7 @@ public class Community implements Serializable {
 	private Integer communityId;
 	private String name;
 	private Facility facility;
-	private Set<Patient> residents;
+	private Set<Patient> residents = new HashSet<Patient>();
 
 	public Long getId() {
 		return id;

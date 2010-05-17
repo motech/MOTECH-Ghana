@@ -1,6 +1,9 @@
 package org.motechproject.server.ws;
 
 import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -9,6 +12,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.svc.RegistrarBean;
@@ -60,6 +64,13 @@ public class WebServiceModelConverterTest extends TestCase {
 		calendar.set(1983, Calendar.MARCH, 3);
 		Date patient3Birth = calendar.getTime();
 
+		Community comm1 = new Community();
+		comm1.setName(patient1Community);
+		Community comm2 = new Community();
+		comm2.setName(patient2Community);
+		Community comm3 = new Community();
+		comm3.setName(patient3Community);
+
 		ExpectedEncounter encounter1 = new ExpectedEncounter();
 		encounter1.setName(anc1);
 		ExpectedEncounter encounter2 = new ExpectedEncounter();
@@ -74,7 +85,6 @@ public class WebServiceModelConverterTest extends TestCase {
 		patient1.setGender("F");
 		patient1.addName(new PersonName(patient1Pref, null, patient1Last));
 		PersonAddress patient1Address = new PersonAddress();
-		patient1Address.setCityVillage(patient1Community);
 		patient1.addAddress(patient1Address);
 
 		org.openmrs.Patient patient2 = new org.openmrs.Patient(2);
@@ -84,7 +94,6 @@ public class WebServiceModelConverterTest extends TestCase {
 		patient2.setGender("M");
 		patient2.addName(new PersonName(patient2Pref, null, patient2Last));
 		PersonAddress patient2Address = new PersonAddress();
-		patient2Address.setCityVillage(patient2Community);
 		patient2.addAddress(patient2Address);
 
 		org.openmrs.Patient patient3 = new org.openmrs.Patient(3);
@@ -94,7 +103,6 @@ public class WebServiceModelConverterTest extends TestCase {
 		patient3.setGender("F");
 		patient3.addName(new PersonName(patient3Pref, null, patient3Last));
 		PersonAddress patient3Address = new PersonAddress();
-		patient3Address.setCityVillage(patient3Community);
 		patient3.addAddress(patient3Address);
 
 		encounter1.setPatient(patient1);
@@ -106,8 +114,16 @@ public class WebServiceModelConverterTest extends TestCase {
 		defaultedEncounters.add(encounter2);
 		defaultedEncounters.add(encounter3);
 
+		expect(registrarBean.getCommunityByPatient(patient1)).andReturn(comm1);
+		expect(registrarBean.getCommunityByPatient(patient2)).andReturn(comm2);
+		expect(registrarBean.getCommunityByPatient(patient3)).andReturn(comm3);
+
+		replay(registrarBean);
+
 		Care[] cares = modelConverter
 				.defaultedEncountersToWebServiceCares(defaultedEncounters);
+
+		verify(registrarBean);
 
 		assertEquals(2, cares.length);
 
@@ -167,6 +183,13 @@ public class WebServiceModelConverterTest extends TestCase {
 		calendar.set(1983, Calendar.MARCH, 3);
 		Date patient3Birth = calendar.getTime();
 
+		Community comm1 = new Community();
+		comm1.setName(patient1Community);
+		Community comm2 = new Community();
+		comm2.setName(patient2Community);
+		Community comm3 = new Community();
+		comm3.setName(patient3Community);
+
 		ExpectedObs obs1 = new ExpectedObs();
 		obs1.setName(tt1);
 		ExpectedObs obs2 = new ExpectedObs();
@@ -181,7 +204,6 @@ public class WebServiceModelConverterTest extends TestCase {
 		patient1.setGender("F");
 		patient1.addName(new PersonName(patient1Pref, null, patient1Last));
 		PersonAddress patient1Address = new PersonAddress();
-		patient1Address.setCityVillage(patient1Community);
 		patient1.addAddress(patient1Address);
 
 		org.openmrs.Patient patient2 = new org.openmrs.Patient(2);
@@ -191,7 +213,6 @@ public class WebServiceModelConverterTest extends TestCase {
 		patient2.setGender("M");
 		patient2.addName(new PersonName(patient2Pref, null, patient2Last));
 		PersonAddress patient2Address = new PersonAddress();
-		patient2Address.setCityVillage(patient2Community);
 		patient2.addAddress(patient2Address);
 
 		org.openmrs.Patient patient3 = new org.openmrs.Patient(3);
@@ -201,7 +222,6 @@ public class WebServiceModelConverterTest extends TestCase {
 		patient3.setGender("F");
 		patient3.addName(new PersonName(patient3Pref, null, patient3Last));
 		PersonAddress patient3Address = new PersonAddress();
-		patient3Address.setCityVillage(patient3Community);
 		patient3.addAddress(patient3Address);
 
 		obs1.setPatient(patient1);
@@ -213,8 +233,16 @@ public class WebServiceModelConverterTest extends TestCase {
 		defaultedObs.add(obs2);
 		defaultedObs.add(obs3);
 
+		expect(registrarBean.getCommunityByPatient(patient1)).andReturn(comm1);
+		expect(registrarBean.getCommunityByPatient(patient2)).andReturn(comm2);
+		expect(registrarBean.getCommunityByPatient(patient3)).andReturn(comm3);
+
+		replay(registrarBean);
+
 		Care[] cares = modelConverter
 				.defaultedObsToWebServiceCares(defaultedObs);
+
+		verify(registrarBean);
 
 		assertEquals(2, cares.length);
 
@@ -275,6 +303,13 @@ public class WebServiceModelConverterTest extends TestCase {
 		calendar.set(1983, Calendar.MARCH, 3);
 		Date patient3Birth = calendar.getTime();
 
+		Community comm1 = new Community();
+		comm1.setName(patient1Community);
+		Community comm2 = new Community();
+		comm2.setName(patient2Community);
+		Community comm3 = new Community();
+		comm3.setName(patient3Community);
+
 		org.openmrs.Patient patient1 = new org.openmrs.Patient(1);
 		patient1.addIdentifier(new PatientIdentifier(patient1Id, motechIdType,
 				new Location()));
@@ -282,7 +317,6 @@ public class WebServiceModelConverterTest extends TestCase {
 		patient1.setGender("F");
 		patient1.addName(new PersonName(patient1Pref, null, patient1Last));
 		PersonAddress patient1Address = new PersonAddress();
-		patient1Address.setCityVillage(patient1Community);
 		patient1.addAddress(patient1Address);
 
 		org.openmrs.Patient patient2 = new org.openmrs.Patient(2);
@@ -292,7 +326,6 @@ public class WebServiceModelConverterTest extends TestCase {
 		patient2.setGender("M");
 		patient2.addName(new PersonName(patient2Pref, null, patient2Last));
 		PersonAddress patient2Address = new PersonAddress();
-		patient2Address.setCityVillage(patient2Community);
 		patient2.addAddress(patient2Address);
 
 		org.openmrs.Patient patient3 = new org.openmrs.Patient(3);
@@ -302,7 +335,6 @@ public class WebServiceModelConverterTest extends TestCase {
 		patient3.setGender("F");
 		patient3.addName(new PersonName(patient3Pref, null, patient3Last));
 		PersonAddress patient3Address = new PersonAddress();
-		patient3Address.setCityVillage(patient3Community);
 		patient3.addAddress(patient3Address);
 
 		ExpectedEncounter encounter1 = new ExpectedEncounter();
@@ -335,8 +367,19 @@ public class WebServiceModelConverterTest extends TestCase {
 		defaultedObs.add(obs2);
 		defaultedObs.add(obs3);
 
+		expect(registrarBean.getCommunityByPatient(patient1)).andReturn(comm1)
+				.times(2);
+		expect(registrarBean.getCommunityByPatient(patient2)).andReturn(comm2)
+				.times(2);
+		expect(registrarBean.getCommunityByPatient(patient3)).andReturn(comm3)
+				.times(2);
+
+		replay(registrarBean);
+
 		Care[] cares = modelConverter.defaultedToWebServiceCares(
 				defaultedEncounters, defaultedObs);
+
+		verify(registrarBean);
 
 		assertEquals(4, cares.length);
 

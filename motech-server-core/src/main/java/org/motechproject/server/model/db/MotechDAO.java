@@ -143,4 +143,6 @@ public interface MotechDAO {
 	Community getCommunityByCommunityId(Integer communityId);
 
 	List<Community> getAllCommunities();
+
+	Community getCommunityByPatient(Patient patient);
 }
