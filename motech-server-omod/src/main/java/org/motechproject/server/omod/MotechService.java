@@ -33,7 +33,6 @@ import org.motechproject.server.omod.sdsched.ScheduleMaintService;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Concept;
-import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
@@ -141,32 +140,19 @@ public interface MotechService extends OpenmrsService {
 			GeneralOutpatientEncounter encounter);
 
 	@Transactional(readOnly = true)
-	List<Location> getAllCountries();
+	List<String> getAllCountries();
 
 	@Transactional(readOnly = true)
-	List<Location> getAllRegions();
+	List<String> getAllRegions();
 
 	@Transactional(readOnly = true)
-	List<Location> getRegions(String country);
+	List<String> getRegions(String country);
 
 	@Transactional(readOnly = true)
-	List<Location> getAllDistricts();
+	List<String> getAllDistricts();
 
 	@Transactional(readOnly = true)
-	List<Location> getDistricts(String country, String region);
-
-	@Transactional(readOnly = true)
-	List<Location> getAllCommunities();
-
-	@Transactional(readOnly = true)
-	List<Location> getCommunities(String country, String region, String district);
-
-	@Transactional(readOnly = true)
-	List<Location> getAllClinics();
-
-	@Transactional(readOnly = true)
-	List<Location> getClinics(String country, String region, String district,
-			String community);
+	List<String> getDistricts(String country, String region);
 
 	@Transactional(readOnly = true)
 	List<Obs> getActivePregnancies(Integer patientId, Concept pregnancyConcept,
@@ -205,6 +191,13 @@ public interface MotechService extends OpenmrsService {
 
 	@Transactional(readOnly = true)
 	Community getCommunityById(Integer communityId);
+
+	@Transactional(readOnly = true)
+	List<Community> getAllCommunities();
+
+	@Transactional(readOnly = true)
+	List<Community> getCommunities(String country, String region,
+			String district);
 
 	@Transactional(readOnly = true)
 	Community getCommunityByPatient(Patient patient);

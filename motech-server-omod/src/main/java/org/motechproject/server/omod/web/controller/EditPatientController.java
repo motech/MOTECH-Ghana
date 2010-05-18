@@ -6,11 +6,11 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motechproject.server.model.Community;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.RegistrarBean;
-import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -71,23 +71,18 @@ public class EditPatientController {
 	}
 
 	@ModelAttribute("regions")
-	public List<Location> getRegions() {
+	public List<String> getRegions() {
 		return contextService.getMotechService().getAllRegions();
 	}
 
 	@ModelAttribute("districts")
-	public List<Location> getDistricts() {
+	public List<String> getDistricts() {
 		return contextService.getMotechService().getAllDistricts();
 	}
 
 	@ModelAttribute("communities")
-	public List<Location> getCommunities() {
+	public List<Community> getCommunities() {
 		return contextService.getMotechService().getAllCommunities();
-	}
-
-	@ModelAttribute("clinics")
-	public List<Location> getClinics() {
-		return contextService.getMotechService().getAllClinics();
 	}
 
 	@ModelAttribute("patient")

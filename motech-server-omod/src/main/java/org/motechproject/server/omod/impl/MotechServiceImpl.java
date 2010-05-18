@@ -35,7 +35,6 @@ import org.motechproject.server.omod.sdsched.ScheduleMaintService;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Concept;
-import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
@@ -226,43 +225,24 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return motechDAO.saveGeneralOutpatientEncounter(encounter);
 	}
 
-	public List<Location> getAllCountries() {
-		return motechDAO.getAllCountryLocations();
+	public List<String> getAllCountries() {
+		return motechDAO.getAllCountries();
 	}
 
-	public List<Location> getAllRegions() {
-		return motechDAO.getAllRegionLocations();
+	public List<String> getAllRegions() {
+		return motechDAO.getAllRegions();
 	}
 
-	public List<Location> getRegions(String country) {
-		return motechDAO.getRegionLocationsForCountry(country);
+	public List<String> getRegions(String country) {
+		return motechDAO.getRegions(country);
 	}
 
-	public List<Location> getAllDistricts() {
-		return motechDAO.getAllDistrictLocations();
+	public List<String> getAllDistricts() {
+		return motechDAO.getAllDistricts();
 	}
 
-	public List<Location> getDistricts(String country, String region) {
-		return motechDAO.getDistrictLocations(country, region);
-	}
-
-	public List<Location> getAllCommunities() {
-		return motechDAO.getAllCommunityLocations();
-	}
-
-	public List<Location> getCommunities(String country, String region,
-			String district) {
-		return motechDAO.getCommunityLocations(country, region, district);
-	}
-
-	public List<Location> getAllClinics() {
-		return motechDAO.getAllFacilityLocations();
-	}
-
-	public List<Location> getClinics(String country, String region,
-			String district, String community) {
-		return motechDAO.getFacilityLocations(country, region, district,
-				community);
+	public List<String> getDistricts(String country, String region) {
+		return motechDAO.getDistricts(country, region);
 	}
 
 	public List<Obs> getActivePregnancies(Integer patientId,
@@ -318,6 +298,15 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public Community getCommunityById(Integer communityId) {
 		return motechDAO.getCommunityByCommunityId(communityId);
+	}
+
+	public List<Community> getAllCommunities() {
+		return motechDAO.getAllCommunities();
+	}
+
+	public List<Community> getCommunities(String country, String region,
+			String district) {
+		return motechDAO.getCommunities(country, region, district);
 	}
 
 	public Community getCommunityByPatient(Patient patient) {

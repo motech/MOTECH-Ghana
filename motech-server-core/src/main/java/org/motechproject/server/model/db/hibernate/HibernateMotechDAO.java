@@ -273,104 +273,51 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Location> getAllCountryLocations() {
+	public List<String> getAllCountries() {
 		Session session = sessionFactory.getCurrentSession();
-		return (List<Location>) session.createCriteria(Location.class).add(
-				Restrictions.isNotNull("country")).add(
-				Restrictions.isNull("region")).add(
-				Restrictions.isNull("countyDistrict")).add(
-				Restrictions.isNull("cityVillage")).add(
-				Restrictions.isNull("neighborhoodCell")).list();
+		return (List<String>) session.createQuery(
+				"select distinct country from " + Location.class.getName()
+						+ " where country is not null order by country").list();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Location> getAllRegionLocations() {
+	public List<String> getAllRegions() {
 		Session session = sessionFactory.getCurrentSession();
-		return (List<Location>) session.createCriteria(Location.class).add(
-				Restrictions.isNotNull("country")).add(
-				Restrictions.isNotNull("region")).add(
-				Restrictions.isNull("countyDistrict")).add(
-				Restrictions.isNull("cityVillage")).add(
-				Restrictions.isNull("neighborhoodCell")).list();
+		return (List<String>) session.createQuery(
+				"select distinct region from " + Location.class.getName()
+						+ " where region is not null order by region").list();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Location> getRegionLocationsForCountry(String country) {
+	public List<String> getRegions(String country) {
 		Session session = sessionFactory.getCurrentSession();
-		return (List<Location>) session.createCriteria(Location.class).add(
-				Restrictions.eq("country", country)).add(
-				Restrictions.isNotNull("region")).add(
-				Restrictions.isNull("countyDistrict")).add(
-				Restrictions.isNull("cityVillage")).add(
-				Restrictions.isNull("neighborhoodCell")).list();
+		return (List<String>) session.createQuery(
+				"select distinct region from " + Location.class.getName()
+						+ " where region is not null and country = :country "
+						+ "order by region").setString("country", country)
+				.list();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Location> getAllDistrictLocations() {
+	public List<String> getAllDistricts() {
 		Session session = sessionFactory.getCurrentSession();
-		return (List<Location>) session.createCriteria(Location.class).add(
-				Restrictions.isNotNull("country")).add(
-				Restrictions.isNotNull("region")).add(
-				Restrictions.isNotNull("countyDistrict")).add(
-				Restrictions.isNull("cityVillage")).add(
-				Restrictions.isNull("neighborhoodCell")).list();
+		return (List<String>) session.createQuery(
+				"select distinct countyDistrict from "
+						+ Location.class.getName()
+						+ " where countyDistrict is not null "
+						+ "order by countyDistrict").list();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Location> getDistrictLocations(String country, String region) {
+	public List<String> getDistricts(String country, String region) {
 		Session session = sessionFactory.getCurrentSession();
-		return (List<Location>) session.createCriteria(Location.class).add(
-				Restrictions.eq("country", country)).add(
-				Restrictions.eq("region", region)).add(
-				Restrictions.isNotNull("countyDistrict")).add(
-				Restrictions.isNull("cityVillage")).add(
-				Restrictions.isNull("neighborhoodCell")).list();
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Location> getAllCommunityLocations() {
-		Session session = sessionFactory.getCurrentSession();
-		return (List<Location>) session.createCriteria(Location.class).add(
-				Restrictions.isNotNull("country")).add(
-				Restrictions.isNotNull("region")).add(
-				Restrictions.isNotNull("countyDistrict")).add(
-				Restrictions.isNotNull("cityVillage")).add(
-				Restrictions.isNull("neighborhoodCell")).list();
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Location> getCommunityLocations(String country, String region,
-			String district) {
-		Session session = sessionFactory.getCurrentSession();
-		return (List<Location>) session.createCriteria(Location.class).add(
-				Restrictions.eq("country", country)).add(
-				Restrictions.eq("region", region)).add(
-				Restrictions.eq("countyDistrict", district)).add(
-				Restrictions.isNotNull("cityVillage")).add(
-				Restrictions.isNull("neighborhoodCell")).list();
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Location> getAllFacilityLocations() {
-		Session session = sessionFactory.getCurrentSession();
-		return (List<Location>) session.createCriteria(Location.class).add(
-				Restrictions.isNotNull("country")).add(
-				Restrictions.isNotNull("region")).add(
-				Restrictions.isNotNull("countyDistrict")).add(
-				Restrictions.isNotNull("cityVillage")).add(
-				Restrictions.isNotNull("neighborhoodCell")).list();
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Location> getFacilityLocations(String country, String region,
-			String district, String community) {
-		Session session = sessionFactory.getCurrentSession();
-		return (List<Location>) session.createCriteria(Location.class).add(
-				Restrictions.eq("country", country)).add(
-				Restrictions.eq("region", region)).add(
-				Restrictions.eq("countyDistrict", district)).add(
-				Restrictions.eq("cityVillage", community)).add(
-				Restrictions.isNotNull("neighborhoodCell")).list();
+		return (List<String>) session.createQuery(
+				"select distinct countyDistrict from "
+						+ Location.class.getName()
+						+ " where countyDistrict is not null and "
+						+ "country = :country and region = :region "
+						+ "order by countyDistrict").setString("country",
+				country).setString("region", region).list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -614,7 +561,24 @@ public class HibernateMotechDAO implements MotechDAO {
 	@SuppressWarnings("unchecked")
 	public List<Community> getAllCommunities() {
 		return (List<Community>) sessionFactory.getCurrentSession()
-				.createCriteria(Community.class).list();
+				.createCriteria(Community.class).addOrder(Order.asc("name"))
+				.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Community> getCommunities(String country, String region,
+			String district) {
+		return (List<Community>) sessionFactory
+				.getCurrentSession()
+				.createQuery(
+						"from "
+								+ Community.class.getName()
+								+ " where facility.location.country = :country and "
+								+ "facility.location.region = :region and "
+								+ "facility.location.countyDistrict = :district "
+								+ "order by name")
+				.setString("country", country).setString("region", region)
+				.setString("district", district).list();
 	}
 
 	public Community getCommunityByPatient(Patient patient) {

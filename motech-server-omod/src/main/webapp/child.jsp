@@ -134,7 +134,7 @@
 		<td>
 			<form:select path="region">
 				<form:option value="" label="Select Value" />
-				<form:options items="${regions}" itemValue="name" itemLabel="name" />
+				<form:options items="${regions}" />
 			</form:select>
 		</td>
 		<td><form:errors path="region" cssClass="error" /></td>
@@ -144,7 +144,7 @@
 		<td>
 			<form:select path="district">
 				<form:option value="" label="Select Value" />
-				<form:options items="${districts}" itemValue="name" itemLabel="name" />
+				<form:options items="${districts}" />
 			</form:select>
 		</td>
 		<td><form:errors path="district" cssClass="error" /></td>
@@ -163,16 +163,6 @@
 		<td><label for="address">Address:</label></td>
 		<td><form:input path="address" /></td>
 		<td><form:errors path="address" cssClass="error" /></td>
-	</tr>
-	<tr>
-		<td><label for="clinic">Nearest Clinic:</label></td>
-		<td>
-			<form:select path="clinic">
-				<form:option value="" label="Select Value" />
-				<form:options items="${clinics}" itemValue="locationId" itemLabel="name" />
-			</form:select>
-		</td>
-		<td><form:errors path="clinic" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td><label for="registerPregProgram">Register in Healthy Children Info Service:</label></td>

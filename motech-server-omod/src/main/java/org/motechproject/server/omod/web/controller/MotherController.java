@@ -7,13 +7,15 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motechproject.server.model.Community;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.util.MotechConstants;
+import org.motechproject.ws.Gender;
 import org.motechproject.ws.RegistrantType;
-import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -83,23 +85,24 @@ public class MotherController {
 	}
 
 	@ModelAttribute("regions")
-	public List<Location> getRegions() {
-		return contextService.getMotechService().getAllRegions();
+	public List<String> getRegions() {
+		return contextService.getMotechService().getRegions(
+				MotechConstants.LOCATION_GHANA);
 	}
 
 	@ModelAttribute("districts")
-	public List<Location> getDistricts() {
-		return contextService.getMotechService().getAllDistricts();
+	public List<String> getDistricts() {
+		return contextService.getMotechService().getDistricts(
+				MotechConstants.LOCATION_GHANA,
+				MotechConstants.LOCATION_UPPER_EAST);
 	}
 
 	@ModelAttribute("communities")
-	public List<Location> getCommunities() {
-		return contextService.getMotechService().getAllCommunities();
-	}
-
-	@ModelAttribute("clinics")
-	public List<Location> getClinics() {
-		return contextService.getMotechService().getAllClinics();
+	public List<Community> getCommunities() {
+		return contextService.getMotechService().getCommunities(
+				MotechConstants.LOCATION_GHANA,
+				MotechConstants.LOCATION_UPPER_EAST,
+				MotechConstants.LOCATION_KASSENA_NANKANA_WEST);
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -152,8 +155,6 @@ public class MotherController {
 				"motechmodule.community.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address",
 				"motechmodule.address.required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "clinic",
-				"motechmodule.clinic.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "dueDate",
 				"motechmodule.dueDate.required");
 		if (mother.getDueDate() != null) {
@@ -210,8 +211,8 @@ public class MotherController {
 					.getMotechId()), RegistrantType.OTHER, mother
 					.getFirstName(), mother.getMiddleName(), mother
 					.getLastName(), mother.getPrefName(),
-					mother.getBirthDate(), mother.getBirthDateEst(), mother
-							.getSex(), mother.getInsured(), mother.getNhis(),
+					mother.getBirthDate(), mother.getBirthDateEst(),
+					Gender.FEMALE, mother.getInsured(), mother.getNhis(),
 					mother.getNhisExpDate(), null, null, mother.getAddress(),
 					mother.getPrimaryPhone(), mother.getDueDate(), mother
 							.getDueDateConfirmed(), mother.getGravida(), mother

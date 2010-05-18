@@ -12,6 +12,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
+import org.motechproject.server.model.Community;
 import org.motechproject.server.model.HIVStatus;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
@@ -21,7 +22,6 @@ import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
-import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.api.PatientService;
 import org.springframework.ui.ModelMap;
@@ -68,8 +68,8 @@ public class EditPatientControllerTest extends TestCase {
 
 	public void testGetRegions() {
 		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getAllRegions()).andReturn(
-				new ArrayList<Location>());
+		expect(motechService.getAllRegions())
+				.andReturn(new ArrayList<String>());
 
 		replay(contextService, motechService);
 
@@ -81,7 +81,7 @@ public class EditPatientControllerTest extends TestCase {
 	public void testGetDistricts() {
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(motechService.getAllDistricts()).andReturn(
-				new ArrayList<Location>());
+				new ArrayList<String>());
 
 		replay(contextService, motechService);
 
@@ -93,23 +93,11 @@ public class EditPatientControllerTest extends TestCase {
 	public void testGetCommunities() {
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(motechService.getAllCommunities()).andReturn(
-				new ArrayList<Location>());
+				new ArrayList<Community>());
 
 		replay(contextService, motechService);
 
 		controller.getCommunities();
-
-		verify(contextService, motechService);
-	}
-
-	public void testGetClinics() {
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getAllClinics()).andReturn(
-				new ArrayList<Location>());
-
-		replay(contextService, motechService);
-
-		controller.getClinics();
 
 		verify(contextService, motechService);
 	}
