@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.Community;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.HIVStatus;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageProgramEnrollment;
@@ -545,6 +546,12 @@ public class RegistrarBeanTest extends TestCase {
 		Patient patient = new Patient(2);
 		Location ghanaLocation = new Location(1);
 		Community community = new Community();
+		Facility facility = new Facility();
+		Location facilityLocation = new Location(2);
+		facilityLocation
+				.setCountyDistrict(MotechConstants.LOCATION_KASSENA_NANKANA_WEST);
+		facility.setLocation(facilityLocation);
+		community.setFacility(facility);
 
 		Capture<Patient> patientCap = new Capture<Patient>();
 		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
@@ -851,6 +858,12 @@ public class RegistrarBeanTest extends TestCase {
 		Patient mother = new Patient(2);
 		Location ghanaLocation = new Location(1);
 		Community community = new Community();
+		Facility facility = new Facility();
+		Location facilityLocation = new Location(2);
+		facilityLocation
+				.setCountyDistrict(MotechConstants.LOCATION_KASSENA_NANKANA_WEST);
+		facility.setLocation(facilityLocation);
+		community.setFacility(facility);
 
 		Capture<Patient> patientCap = new Capture<Patient>();
 		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
@@ -943,6 +956,7 @@ public class RegistrarBeanTest extends TestCase {
 				motechService
 						.saveMessageProgramEnrollment(capture(enrollment1Cap)))
 				.andReturn(new MessageProgramEnrollment());
+		expect(motechService.getCommunityByPatient(child)).andReturn(community);
 		expect(
 				motechService.getActiveMessageProgramEnrollments(child
 						.getPatientId(), careProgramName, null)).andReturn(
@@ -959,7 +973,7 @@ public class RegistrarBeanTest extends TestCase {
 		regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
 				RegistrantType.CHILD_UNDER_FIVE, firstName, middleName,
 				lastName, prefName, date, birthDateEst, gender, insured, nhis,
-				date, mother, community, address, phoneNumber, date,
+				date, mother, null, address, phoneNumber, date,
 				dueDateConfirmed, gravida, parity, enroll, consent, phoneType,
 				mediaType, language, dayOfWeek, date, reason, howLearned, null);
 
@@ -990,7 +1004,6 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
 		assertEquals(GenderTypeConverter.toOpenMRSString(gender),
 				capturedPatient.getGender());
-		assertEquals(1, community.getResidents().size());
 		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
 		assertEquals(insured, Boolean.valueOf(capturedPatient.getAttribute(
 				insuredAttributeType).getValue()));
@@ -1083,6 +1096,12 @@ public class RegistrarBeanTest extends TestCase {
 		Patient patient = new Patient(2);
 		Location ghanaLocation = new Location(1);
 		Community community = new Community();
+		Facility facility = new Facility();
+		Location facilityLocation = new Location(2);
+		facilityLocation
+				.setCountyDistrict(MotechConstants.LOCATION_KASSENA_NANKANA_WEST);
+		facility.setLocation(facilityLocation);
+		community.setFacility(facility);
 
 		Capture<Patient> patientCap = new Capture<Patient>();
 		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();

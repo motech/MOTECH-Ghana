@@ -582,9 +582,9 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	public Community getCommunityByPatient(Patient patient) {
-		return (Community) sessionFactory.getCurrentSession().createCriteria(
-				Community.class).createAlias("residents", "resident").add(
-				Restrictions.eq("resident.patientId", patient.getPatientId()))
-				.uniqueResult();
+		return (Community) sessionFactory.getCurrentSession().createQuery(
+				"from " + Community.class.getName()
+						+ " c where :patient in elements(c.residents)")
+				.setEntity("patient", patient).uniqueResult();
 	}
 }

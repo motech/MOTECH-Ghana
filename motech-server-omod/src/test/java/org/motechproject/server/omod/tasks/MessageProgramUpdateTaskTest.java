@@ -126,13 +126,11 @@ public class MessageProgramUpdateTaskTest extends
 			List<MessageProgramEnrollment> enrollments = Context.getService(
 					MotechService.class).getActiveMessageProgramEnrollments(
 					patientId, null, null);
-			assertEquals(2, enrollments.size());
-			for (MessageProgramEnrollment enrollment : enrollments) {
-				if (enrollment.getProgram().equals(
-						"Weekly Info Pregnancy Message Program"))
-					assertNotNull("Obs is not set on enrollment", enrollment
-							.getObsId());
-			}
+			assertEquals(1, enrollments.size());
+			assertEquals("Weekly Info Pregnancy Message Program", enrollments
+					.get(0).getProgram());
+			assertNotNull("Obs is not set on enrollment", enrollments.get(0)
+					.getObsId());
 
 			// Add needed message definitions for pregnancy program
 			Context.getService(MotechService.class).saveMessageDefinition(
@@ -193,15 +191,8 @@ public class MessageProgramUpdateTaskTest extends
 			List<MessageProgramEnrollment> enrollments = Context.getService(
 					MotechService.class).getActiveMessageProgramEnrollments(
 					patient.getPatientId(), null, null);
-			assertEquals(2, enrollments.size());
-			MessageProgramEnrollment infoEnrollment = null;
-			for (MessageProgramEnrollment enrollment : enrollments) {
-				if (enrollment.getProgram().equals(
-						"Weekly Info Pregnancy Message Program"))
-					infoEnrollment = enrollment;
-			}
-			assertNotNull("Missing pregnancy information program enrollment",
-					infoEnrollment);
+			assertEquals(1, enrollments.size());
+			MessageProgramEnrollment infoEnrollment = enrollments.get(0);
 
 			infoEnrollment.setObsId(refDateObs.getObsId());
 			Context.getService(MotechService.class)

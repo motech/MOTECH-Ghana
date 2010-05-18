@@ -283,29 +283,29 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					null);
 		}
 
-		enrollPatient(registrantType, patient, enroll, consent,
+		enrollPatient(registrantType, patient, community, enroll, consent,
 				messagesStartWeek, pregnancyDueDateObsId);
 
 		return patient;
 	}
 
 	private void enrollPatientWithAttributes(RegistrantType patientType,
-			Patient patient, Boolean enroll, Boolean consent,
-			ContactNumberType ownership, String phoneNumber, MediaType format,
-			String language, DayOfWeek dayOfWeek, Date timeOfDay,
-			InterestReason reason, HowLearned howLearned,
+			Patient patient, Community community, Boolean enroll,
+			Boolean consent, ContactNumberType ownership, String phoneNumber,
+			MediaType format, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek, Integer pregnancyDueDateObsId) {
 
 		setPatientAttributes(patient, phoneNumber, ownership, format, language,
 				dayOfWeek, timeOfDay, howLearned, reason, null, null, null);
 
-		enrollPatient(patientType, patient, enroll, consent, messagesStartWeek,
-				pregnancyDueDateObsId);
+		enrollPatient(patientType, patient, community, enroll, consent,
+				messagesStartWeek, pregnancyDueDateObsId);
 	}
 
 	private void enrollPatient(RegistrantType patientType, Patient patient,
-			Boolean enroll, Boolean consent, Integer messagesStartWeek,
-			Integer pregnancyDueDateObsId) {
+			Community community, Boolean enroll, Boolean consent,
+			Integer messagesStartWeek, Integer pregnancyDueDateObsId) {
 
 		boolean enrollPatient = Boolean.TRUE.equals(enroll)
 				&& Boolean.TRUE.equals(consent);
@@ -352,9 +352,21 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			addMessageProgramEnrollment(patient.getPatientId(),
 					infoMessageProgramName, referenceDateObsId);
 
-			// TODO: Base care enrollment on community
-			addMessageProgramEnrollment(patient.getPatientId(),
-					"Expected Care Message Program", null);
+			// Lookup patient community if not provided
+			// Only enroll patient in care messages if in KNDW district
+			if (community == null) {
+				community = getCommunityByPatient(patient);
+			}
+			if (community != null
+					&& community.getFacility() != null
+					&& community.getFacility().getLocation() != null
+					&& MotechConstants.LOCATION_KASSENA_NANKANA_WEST
+							.equals(community.getFacility().getLocation()
+									.getCountyDistrict())) {
+
+				addMessageProgramEnrollment(patient.getPatientId(),
+						"Expected Care Message Program", null);
+			}
 		}
 	}
 
@@ -739,9 +751,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 
 		enrollPatientWithAttributes(RegistrantType.PREGNANT_MOTHER, patient,
-				enroll, consent, ownership, phoneNumber, format, language,
-				dayOfWeek, timeOfDay, reason, howLearned, messagesStartWeek,
-				pregnancyDueDateObsId);
+				null, enroll, consent, ownership, phoneNumber, format,
+				language, dayOfWeek, timeOfDay, reason, howLearned,
+				messagesStartWeek, pregnancyDueDateObsId);
 	}
 
 	private Integer checkExistingPregnancy(Patient patient) {
@@ -783,9 +795,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 
 		enrollPatientWithAttributes(RegistrantType.PREGNANT_MOTHER, patient,
-				enroll, consent, ownership, phoneNumber, format, language,
-				dayOfWeek, timeOfDay, reason, howLearned, messagesStartWeek,
-				pregnancyDueDateObsId);
+				null, enroll, consent, ownership, phoneNumber, format,
+				language, dayOfWeek, timeOfDay, reason, howLearned,
+				messagesStartWeek, pregnancyDueDateObsId);
 
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getANCRegistrationEncounterType());
@@ -811,9 +823,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Integer messagesStartWeek) {
 
 		enrollPatientWithAttributes(RegistrantType.CHILD_UNDER_FIVE, patient,
-				enroll, consent, ownership, phoneNumber, format, language,
-				dayOfWeek, timeOfDay, reason, howLearned, messagesStartWeek,
-				null);
+				null, enroll, consent, ownership, phoneNumber, format,
+				language, dayOfWeek, timeOfDay, reason, howLearned,
+				messagesStartWeek, null);
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -1328,36 +1340,40 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		encounterService.saveEncounter(encounter);
 
-		sentDeliveryNotification(patient);
+		// Send message only if closing active pregnancy
+		if (pregnancyObs != null) {
+			sendDeliveryNotification(patient);
+		}
 	}
 
-	private void sentDeliveryNotification(Patient patient) {
-		UserService userService = contextService.getUserService();
-		List<User> users = userService.getAllUsers();
+	private void sendDeliveryNotification(Patient patient) {
+		// Send message to phone number of facility serving patient's community
+		Community community = getCommunityByPatient(patient);
+		if (community != null && community.getFacility() != null) {
+			String phoneNumber = community.getFacility().getPhoneNumber();
+			if (phoneNumber != null) {
 
-		WebServiceModelConverter wsModelConverter = new WebServiceModelConverterImpl();
-		org.motechproject.ws.Patient wsPatient = wsModelConverter
-				.patientToWebService(patient, true);
-		org.motechproject.ws.Patient[] wsPatients = new org.motechproject.ws.Patient[] { wsPatient };
+				MessageDefinition messageDef = getMessageDefinition("pregnancy.notification");
+				if (messageDef == null) {
+					log.error("Pregnancy delivery notification message "
+							+ "does not exist");
+					return;
+				}
 
-		MessageDefinition messageDef = getMessageDefinition("pregnancy.notification");
-		if (messageDef == null) {
-			log.error("Pregnancy delivery notification message does not exist");
-			return;
-		}
-		String messageId = null;
-		NameValuePair[] nameValues = new NameValuePair[0];
-		MediaType mediaType = MediaType.TEXT;
-		String languageCode = "en";
+				String messageId = null;
+				NameValuePair[] nameValues = new NameValuePair[0];
+				MediaType mediaType = MediaType.TEXT;
+				String languageCode = "en";
 
-		// TODO: Only sent to facility phone for patient's community
-		for (User user : users) {
-			String phoneNumber = getPersonPhoneNumber(user);
-			if (phoneNumber == null) {
-				continue;
+				WebServiceModelConverter wsModelConverter = new WebServiceModelConverterImpl();
+				org.motechproject.ws.Patient wsPatient = wsModelConverter
+						.patientToWebService(patient, true);
+				org.motechproject.ws.Patient[] wsPatients = new org.motechproject.ws.Patient[] { wsPatient };
+
+				sendNurseMessage(messageId, nameValues, phoneNumber,
+						languageCode, mediaType, messageDef.getPublicId(),
+						null, null, wsPatients);
 			}
-			sendNurseMessage(messageId, nameValues, phoneNumber, languageCode,
-					mediaType, messageDef.getPublicId(), null, null, wsPatients);
 		}
 	}
 
