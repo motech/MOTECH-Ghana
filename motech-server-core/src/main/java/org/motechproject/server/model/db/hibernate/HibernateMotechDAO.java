@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
@@ -396,9 +397,9 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ExpectedObs> getExpectedObs(Patient patient, String[] groups,
-			Date minDueDate, Date maxDueDate, Date maxLateDate,
-			Date minMaxDate, boolean nameOrdering) {
+	public List<ExpectedObs> getExpectedObs(Patient patient, Facility facility,
+			String[] groups, Date minDueDate, Date maxDueDate,
+			Date maxLateDate, Date minMaxDate, boolean nameOrdering) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(ExpectedObs.class);
 		if (patient != null) {
@@ -420,6 +421,16 @@ public class HibernateMotechDAO implements MotechDAO {
 			criteria.add(Restrictions.or(Restrictions.isNull("maxObsDatetime"),
 					Restrictions.gt("maxObsDatetime", minMaxDate)));
 		}
+		if (facility != null) {
+			criteria
+					.add(Restrictions
+							.sqlRestriction(
+									"exists (select c.id from motechmodule_community c "
+											+ "inner join motechmodule_community_patient cp "
+											+ "on c.id = cp.community_id "
+											+ "where c.facility_id = ? and cp.patient_id = {alias}.patient_id)",
+									facility.getId(), Hibernate.LONG));
+		}
 		criteria.add(Restrictions.eq("voided", false));
 		if (nameOrdering) {
 			criteria.addOrder(Order.asc("group"));
@@ -438,8 +449,9 @@ public class HibernateMotechDAO implements MotechDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<ExpectedEncounter> getExpectedEncounter(Patient patient,
-			String[] groups, Date minDueDate, Date maxDueDate,
-			Date maxLateDate, Date minMaxDate, boolean nameOrdering) {
+			Facility facility, String[] groups, Date minDueDate,
+			Date maxDueDate, Date maxLateDate, Date minMaxDate,
+			boolean nameOrdering) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(ExpectedEncounter.class);
 		if (patient != null) {
@@ -461,6 +473,16 @@ public class HibernateMotechDAO implements MotechDAO {
 			criteria.add(Restrictions.or(Restrictions
 					.isNull("maxEncounterDatetime"), Restrictions.gt(
 					"maxEncounterDatetime", minMaxDate)));
+		}
+		if (facility != null) {
+			criteria
+					.add(Restrictions
+							.sqlRestriction(
+									"exists (select c.id from motechmodule_community c "
+											+ "inner join motechmodule_community_patient cp "
+											+ "on c.id = cp.community_id "
+											+ "where c.facility_id = ? and cp.patient_id = {alias}.patient_id)",
+									facility.getId(), Hibernate.LONG));
 		}
 		criteria.add(Restrictions.eq("voided", false));
 		if (nameOrdering) {

@@ -1601,6 +1601,8 @@ public class RegistrarServiceTest {
 		List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
 		List<ExpectedObs> expectedObs = new ArrayList<ExpectedObs>();
 
+		Facility facility = new Facility();
+
 		Care encounterCare = new Care();
 		encounterCare.setName("EncounterCare");
 		Care obsCare = new Care();
@@ -1609,15 +1611,15 @@ public class RegistrarServiceTest {
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				new User(1));
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 
 		expect(
-				registrarBean
-						.getDefaultedExpectedEncounters(capture(encounterGroups)))
+				registrarBean.getDefaultedExpectedEncounters(eq(facility),
+						capture(encounterGroups)))
 				.andReturn(expectedEncounters);
-		expect(registrarBean.getDefaultedExpectedObs(capture(obsGroups)))
-				.andReturn(expectedObs);
+		expect(
+				registrarBean.getDefaultedExpectedObs(eq(facility),
+						capture(obsGroups))).andReturn(expectedObs);
 		expect(
 				modelConverter.defaultedToWebServiceCares(expectedEncounters,
 						expectedObs)).andReturn(defaultedCares);
@@ -1649,16 +1651,18 @@ public class RegistrarServiceTest {
 
 		List<ExpectedObs> expectedObs = new ArrayList<ExpectedObs>();
 
+		Facility facility = new Facility();
+
 		Care obsCare = new Care();
 		obsCare.setName("ObsCare");
 		Care[] obsCares = { obsCare };
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				new User(1));
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
-		expect(registrarBean.getDefaultedExpectedObs(capture(obsGroups)))
-				.andReturn(expectedObs);
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
+		expect(
+				registrarBean.getDefaultedExpectedObs(eq(facility),
+						capture(obsGroups))).andReturn(expectedObs);
 		expect(modelConverter.defaultedObsToWebServiceCares(expectedObs))
 				.andReturn(obsCares);
 
@@ -1684,17 +1688,18 @@ public class RegistrarServiceTest {
 
 		List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
 
+		Facility facility = new Facility();
+
 		Care encounterCare = new Care();
 		encounterCare.setName("EncounterCare");
 		Care[] encounterCares = { encounterCare };
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				new User(1));
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(
-				registrarBean
-						.getDefaultedExpectedEncounters(capture(encounterGroups)))
+				registrarBean.getDefaultedExpectedEncounters(eq(facility),
+						capture(encounterGroups)))
 				.andReturn(expectedEncounters);
 		expect(
 				modelConverter
@@ -1723,17 +1728,18 @@ public class RegistrarServiceTest {
 
 		List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
 
+		Facility facility = new Facility();
+
 		Care encounterCare = new Care();
 		encounterCare.setName("EncounterCare");
 		Care[] encounterCares = { encounterCare };
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				new User(1));
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(
-				registrarBean
-						.getDefaultedExpectedEncounters(capture(encounterGroups)))
+				registrarBean.getDefaultedExpectedEncounters(eq(facility),
+						capture(encounterGroups)))
 				.andReturn(expectedEncounters);
 		expect(
 				modelConverter
@@ -1762,16 +1768,18 @@ public class RegistrarServiceTest {
 
 		List<ExpectedObs> expectedObs = new ArrayList<ExpectedObs>();
 
+		Facility facility = new Facility();
+
 		Care obsCare = new Care();
 		obsCare.setName("ObsCare");
 		Care[] obsCares = { obsCare };
 
 		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
 				new User(1));
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
-		expect(registrarBean.getDefaultedExpectedObs(capture(obsGroups)))
-				.andReturn(expectedObs);
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
+		expect(
+				registrarBean.getDefaultedExpectedObs(eq(facility),
+						capture(obsGroups))).andReturn(expectedObs);
 		expect(modelConverter.defaultedObsToWebServiceCares(expectedObs))
 				.andReturn(obsCares);
 

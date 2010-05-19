@@ -767,7 +767,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -775,9 +775,10 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		List<ExpectedEncounter> defaultedEncounters = registrarBean
-				.getDefaultedExpectedEncounters(new String[] { "ANC" });
-		List<ExpectedObs> defaultedObs = registrarBean
-				.getDefaultedExpectedObs(new String[] { "TT", "IPT" });
+				.getDefaultedExpectedEncounters(facility,
+						new String[] { "ANC" });
+		List<ExpectedObs> defaultedObs = registrarBean.getDefaultedExpectedObs(
+				facility, new String[] { "TT", "IPT" });
 
 		Care[] upcomingCares = modelConverter.defaultedToWebServiceCares(
 				defaultedEncounters, defaultedObs);
@@ -794,15 +795,15 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in TT Defaulters Query request", errors);
 		}
 
-		List<ExpectedObs> defaultedObs = registrarBean
-				.getDefaultedExpectedObs(new String[] { "TT" });
+		List<ExpectedObs> defaultedObs = registrarBean.getDefaultedExpectedObs(
+				facility, new String[] { "TT" });
 		return modelConverter.defaultedObsToWebServiceCares(defaultedObs);
 	}
 
@@ -815,7 +816,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -823,7 +824,8 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		List<ExpectedEncounter> defaultedEncounters = registrarBean
-				.getDefaultedExpectedEncounters(new String[] { "PNC(mother)" });
+				.getDefaultedExpectedEncounters(facility,
+						new String[] { "PNC(mother)" });
 		return modelConverter
 				.defaultedEncountersToWebServiceCares(defaultedEncounters);
 	}
@@ -837,7 +839,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -845,7 +847,8 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		List<ExpectedEncounter> defaultedEncounters = registrarBean
-				.getDefaultedExpectedEncounters(new String[] { "PNC(baby)" });
+				.getDefaultedExpectedEncounters(facility,
+						new String[] { "PNC(baby)" });
 		return modelConverter
 				.defaultedEncountersToWebServiceCares(defaultedEncounters);
 	}
@@ -859,16 +862,16 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		validateChpsId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in CWC Defaulters Query request", errors);
 		}
 
-		List<ExpectedObs> defaultedObs = registrarBean
-				.getDefaultedExpectedObs(new String[] { "OPV", "BCG", "Penta",
-						"YellowFever", "Measles", "VitaA", "IPTI" });
+		List<ExpectedObs> defaultedObs = registrarBean.getDefaultedExpectedObs(
+				facility, new String[] { "OPV", "BCG", "Penta", "YellowFever",
+						"Measles", "VitaA", "IPTI" });
 		return modelConverter.defaultedObsToWebServiceCares(defaultedObs);
 	}
 

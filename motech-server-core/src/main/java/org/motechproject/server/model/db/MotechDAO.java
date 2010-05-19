@@ -108,15 +108,16 @@ public interface MotechDAO {
 
 	ExpectedObs saveExpectedObs(ExpectedObs expectedObs);
 
-	List<ExpectedObs> getExpectedObs(Patient patient, String[] groups,
-			Date minDueDate, Date maxDueDate, Date maxLateDate,
-			Date minMaxDate, boolean nameOrdering);
+	List<ExpectedObs> getExpectedObs(Patient patient, Facility facility,
+			String[] groups, Date minDueDate, Date maxDueDate,
+			Date maxLateDate, Date minMaxDate, boolean nameOrdering);
 
 	ExpectedEncounter saveExpectedEncounter(ExpectedEncounter expectedEncounter);
 
 	List<ExpectedEncounter> getExpectedEncounter(Patient patient,
-			String[] groups, Date minDueDate, Date maxDueDate,
-			Date maxLateDate, Date minMaxDate, boolean nameOrdering);
+			Facility facility, String[] groups, Date minDueDate,
+			Date maxDueDate, Date maxLateDate, Date minMaxDate,
+			boolean nameOrdering);
 
 	List<Patient> getPatients(String firstName, String lastName,
 			String preferredName, Date birthDate, String community,

@@ -167,17 +167,18 @@ public interface MotechService extends OpenmrsService {
 	ExpectedObs saveExpectedObs(ExpectedObs expectedObs);
 
 	@Transactional(readOnly = true)
-	List<ExpectedObs> getExpectedObs(Patient patient, String[] groups,
-			Date minDueDate, Date maxDueDate, Date maxLateDate,
-			Date minMaxDate, boolean nameOrdering);
+	List<ExpectedObs> getExpectedObs(Patient patient, Facility facility,
+			String[] groups, Date minDueDate, Date maxDueDate,
+			Date maxLateDate, Date minMaxDate, boolean nameOrdering);
 
 	@Transactional
 	ExpectedEncounter saveExpectedEncounter(ExpectedEncounter expectedEncounter);
 
 	@Transactional(readOnly = true)
 	List<ExpectedEncounter> getExpectedEncounter(Patient patient,
-			String[] groups, Date minDueDate, Date maxDueDate,
-			Date maxLateDate, Date minMaxDate, boolean nameOrdering);
+			Facility facility, String[] groups, Date minDueDate,
+			Date maxDueDate, Date maxLateDate, Date minMaxDate,
+			boolean nameOrdering);
 
 	@Transactional(readOnly = true)
 	List<Patient> getPatients(String firstName, String lastName,
@@ -188,6 +189,9 @@ public interface MotechService extends OpenmrsService {
 
 	@Transactional(readOnly = true)
 	Facility getFacilityById(Integer facilityId);
+
+	@Transactional(readOnly = true)
+	List<Facility> getAllFacilities();
 
 	@Transactional(readOnly = true)
 	Community getCommunityById(Integer communityId);

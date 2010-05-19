@@ -263,10 +263,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return motechDAO.saveExpectedObs(expectedObs);
 	}
 
-	public List<ExpectedObs> getExpectedObs(Patient patient, String[] groups,
-			Date minDueDate, Date maxDueDate, Date maxLateDate,
-			Date minMaxDate, boolean nameOrdering) {
-		return motechDAO.getExpectedObs(patient, groups, minDueDate,
+	public List<ExpectedObs> getExpectedObs(Patient patient, Facility facility,
+			String[] groups, Date minDueDate, Date maxDueDate,
+			Date maxLateDate, Date minMaxDate, boolean nameOrdering) {
+		return motechDAO.getExpectedObs(patient, facility, groups, minDueDate,
 				maxDueDate, maxLateDate, minMaxDate, nameOrdering);
 	}
 
@@ -276,10 +276,11 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	}
 
 	public List<ExpectedEncounter> getExpectedEncounter(Patient patient,
-			String[] groups, Date minDueDate, Date maxDueDate,
-			Date maxLateDate, Date minMaxDate, boolean nameOrdering) {
-		return motechDAO.getExpectedEncounter(patient, groups, minDueDate,
-				maxDueDate, maxLateDate, minMaxDate, nameOrdering);
+			Facility facility, String[] groups, Date minDueDate,
+			Date maxDueDate, Date maxLateDate, Date minMaxDate,
+			boolean nameOrdering) {
+		return motechDAO.getExpectedEncounter(patient, facility, groups,
+				minDueDate, maxDueDate, maxLateDate, minMaxDate, nameOrdering);
 	}
 
 	public List<Patient> getPatients(String firstName, String lastName,
@@ -294,6 +295,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public Facility getFacilityById(Integer facilityId) {
 		return motechDAO.getFacilityByFacilityId(facilityId);
+	}
+
+	public List<Facility> getAllFacilities() {
+		return motechDAO.getAllFacilities();
 	}
 
 	public Community getCommunityById(Integer communityId) {

@@ -266,25 +266,19 @@ public interface RegistrarBean {
 	public List<ExpectedObs> getUpcomingExpectedObs(Patient patient);
 
 	public List<ExpectedEncounter> getDefaultedExpectedEncounters(
+			Facility facility, String[] groups);
+
+	public List<ExpectedObs> getDefaultedExpectedObs(Facility facility,
 			String[] groups);
-
-	public List<ExpectedObs> getDefaultedExpectedObs(String[] groups);
-
-	public List<ExpectedEncounter> getUpcomingExpectedEncounters(
-			String[] groups, Date fromDate, Date toDate);
-
-	public List<ExpectedObs> getUpcomingExpectedObs(String[] groups,
-			Date fromDate, Date toDate);
-
-	public List<ExpectedEncounter> getDefaultedExpectedEncounters(
-			String[] groups, Date forDate);
-
-	public List<ExpectedObs> getDefaultedExpectedObs(String[] groups,
-			Date forDate);
 
 	public List<ExpectedEncounter> getExpectedEncounters(Patient patient);
 
 	public List<ExpectedObs> getExpectedObs(Patient patient);
+
+	public List<ExpectedEncounter> getExpectedEncounters(Patient patient,
+			String group);
+
+	public List<ExpectedObs> getExpectedObs(Patient patient, String group);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES,
 			OpenmrsConstants.PRIV_VIEW_ENCOUNTERS })
@@ -315,8 +309,6 @@ public interface RegistrarBean {
 	public List<Obs> getObs(Patient patient, String conceptName,
 			String valueConceptName, Date minDate);
 
-	public List<ExpectedObs> getExpectedObs(Patient patient, String group);
-
 	public ExpectedObs createExpectedObs(Patient patient, String conceptName,
 			String valueConceptName, Integer value, Date minDate, Date dueDate,
 			Date lateDate, Date maxDate, String name, String group);
@@ -325,9 +317,6 @@ public interface RegistrarBean {
 
 	public List<Encounter> getEncounters(Patient patient,
 			String encounterTypeName, Date minDate);
-
-	public List<ExpectedEncounter> getExpectedEncounters(Patient patient,
-			String group);
 
 	public ExpectedEncounter createExpectedEncounter(Patient patient,
 			String encounterTypeName, Date minDate, Date dueDate,

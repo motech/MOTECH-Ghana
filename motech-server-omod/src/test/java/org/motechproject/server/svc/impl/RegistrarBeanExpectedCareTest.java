@@ -1,6 +1,7 @@
 package org.motechproject.server.svc.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -11,8 +12,10 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.OpenmrsBean;
@@ -60,6 +63,9 @@ public class RegistrarBeanExpectedCareTest extends
 		// Removed all patients and related patient/person info (id 2-500)
 		executeDataSet("initial-openmrs-dataset.xml");
 
+		// Add example Location, Facility and Community
+		executeDataSet("facility-community-dataset.xml");
+
 		authenticate();
 
 		activator.startup();
@@ -83,12 +89,22 @@ public class RegistrarBeanExpectedCareTest extends
 			RegistrarBean regService = motechService.getRegistrarBean();
 			OpenmrsBean openmrsService = motechService.getOpenmrsBean();
 
+			Integer communityId = 11111;
+			Integer facilityId = 1111;
+
+			Community community = motechService.getCommunityById(communityId);
+			assertNotNull("Community in dataset is missing", community);
+			Facility facility = community.getFacility();
+			assertNotNull("Facility for community in dataset is missing",
+					facility);
+			assertEquals(facilityId, facility.getFacilityId());
+
 			Date date = new Date();
 			Integer childId = 1234631;
 			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
 					childId, RegistrantType.CHILD_UNDER_FIVE, "childfirstName",
 					"childmiddleName", "childlastName", "childprefName", date,
-					false, Gender.FEMALE, true, "nhis", date, null, null,
+					false, Gender.FEMALE, true, "nhis", date, null, community,
 					"Address", "1111111111", null, null, null, null, false,
 					false, null, null, null, null, null, null, null, null);
 
@@ -235,13 +251,14 @@ public class RegistrarBeanExpectedCareTest extends
 			assertEquals("TT1", upcomingObs.get(0).getName());
 
 			List<ExpectedEncounter> defaultedEnc = regService
-					.getDefaultedExpectedEncounters(new String[] { "ANC" });
+					.getDefaultedExpectedEncounters(facility,
+							new String[] { "ANC" });
 			assertEquals(2, defaultedEnc.size());
 			assertEquals("ANC3", defaultedEnc.get(0).getName());
 			assertEquals("ANC9", defaultedEnc.get(1).getName());
 
 			List<ExpectedObs> defaultedObs = regService
-					.getDefaultedExpectedObs(new String[] { "TT" });
+					.getDefaultedExpectedObs(facility, new String[] { "TT" });
 			assertEquals(2, defaultedObs.size());
 			assertEquals("TT1", defaultedObs.get(0).getName());
 			assertEquals("TT3", defaultedObs.get(1).getName());

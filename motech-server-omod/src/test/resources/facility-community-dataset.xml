@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<location location_id="2" name="Navio" neighborhood_cell="Navio" state_province="Navio" county_district="Kassena-Nankana West" region="Upper East" country="Ghana" creator="1" date_created="2005-09-22 00:00:00.0" retired="0" uuid="437bca35-af64-11de-870f-e5004d85b1e8"/>
+	<motechmodule_facility id="1" facility_id="1111" location_id="2" />
+	<motechmodule_community id="1" community_id="11111" name="Samwo" facility_id="1" />
+</dataset>

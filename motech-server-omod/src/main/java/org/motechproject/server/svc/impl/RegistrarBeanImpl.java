@@ -1956,8 +1956,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Date currentDate = calendar.getTime();
 		calendar.add(Calendar.DATE, 7);
 		Date oneWeekLaterDate = calendar.getTime();
-		return motechService.getExpectedEncounter(patient, null, currentDate,
-				oneWeekLaterDate, null, currentDate, false);
+		return motechService.getExpectedEncounter(patient, null, null,
+				currentDate, oneWeekLaterDate, null, currentDate, false);
 	}
 
 	public List<ExpectedObs> getUpcomingExpectedObs(Patient patient) {
@@ -1966,65 +1966,79 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Date currentDate = calendar.getTime();
 		calendar.add(Calendar.DATE, 7);
 		Date oneWeekLaterDate = calendar.getTime();
-		return motechService.getExpectedObs(patient, null, currentDate,
+		return motechService.getExpectedObs(patient, null, null, currentDate,
 				oneWeekLaterDate, null, currentDate, false);
 	}
 
 	public List<ExpectedEncounter> getDefaultedExpectedEncounters(
+			Facility facility, String[] groups) {
+		MotechService motechService = contextService.getMotechService();
+		Date currentDate = new Date();
+		return motechService.getExpectedEncounter(null, facility, groups, null,
+				null, currentDate, currentDate, true);
+	}
+
+	public List<ExpectedObs> getDefaultedExpectedObs(Facility facility,
 			String[] groups) {
 		MotechService motechService = contextService.getMotechService();
 		Date currentDate = new Date();
-		return motechService.getExpectedEncounter(null, groups, null, null,
+		return motechService.getExpectedObs(null, facility, groups, null, null,
 				currentDate, currentDate, true);
 	}
 
-	public List<ExpectedObs> getDefaultedExpectedObs(String[] groups) {
+	private List<ExpectedEncounter> getUpcomingExpectedEncounters(
+			Facility facility, String[] groups, Date fromDate, Date toDate) {
 		MotechService motechService = contextService.getMotechService();
-		Date currentDate = new Date();
-		return motechService.getExpectedObs(null, groups, null, null,
-				currentDate, currentDate, true);
+		return motechService.getExpectedEncounter(null, facility, groups,
+				fromDate, toDate, null, fromDate, false);
 	}
 
-	public List<ExpectedEncounter> getUpcomingExpectedEncounters(
+	private List<ExpectedObs> getUpcomingExpectedObs(Facility facility,
 			String[] groups, Date fromDate, Date toDate) {
 		MotechService motechService = contextService.getMotechService();
-		return motechService.getExpectedEncounter(null, groups, fromDate,
+		return motechService.getExpectedObs(null, facility, groups, fromDate,
 				toDate, null, fromDate, false);
 	}
 
-	public List<ExpectedObs> getUpcomingExpectedObs(String[] groups,
-			Date fromDate, Date toDate) {
+	private List<ExpectedEncounter> getDefaultedExpectedEncounters(
+			Facility facility, String[] groups, Date forDate) {
 		MotechService motechService = contextService.getMotechService();
-		return motechService.getExpectedObs(null, groups, fromDate, toDate,
-				null, fromDate, false);
+		return motechService.getExpectedEncounter(null, facility, groups, null,
+				null, forDate, forDate, true);
 	}
 
-	public List<ExpectedEncounter> getDefaultedExpectedEncounters(
+	private List<ExpectedObs> getDefaultedExpectedObs(Facility facility,
 			String[] groups, Date forDate) {
 		MotechService motechService = contextService.getMotechService();
-		return motechService.getExpectedEncounter(null, groups, null, null,
+		return motechService.getExpectedObs(null, facility, groups, null, null,
 				forDate, forDate, true);
-	}
-
-	public List<ExpectedObs> getDefaultedExpectedObs(String[] groups,
-			Date forDate) {
-		MotechService motechService = contextService.getMotechService();
-		return motechService.getExpectedObs(null, groups, null, null, forDate,
-				forDate, true);
 	}
 
 	public List<ExpectedEncounter> getExpectedEncounters(Patient patient) {
 		MotechService motechService = contextService.getMotechService();
 		Date currentDate = new Date();
 		return motechService.getExpectedEncounter(patient, null, null, null,
-				null, currentDate, true);
+				null, null, currentDate, true);
 	}
 
 	public List<ExpectedObs> getExpectedObs(Patient patient) {
 		MotechService motechService = contextService.getMotechService();
 		Date currentDate = new Date();
 		return motechService.getExpectedObs(patient, null, null, null, null,
-				currentDate, true);
+				null, currentDate, true);
+	}
+
+	public List<ExpectedEncounter> getExpectedEncounters(Patient patient,
+			String group) {
+		MotechService motechService = contextService.getMotechService();
+		return motechService.getExpectedEncounter(patient, null,
+				new String[] { group }, null, null, null, null, false);
+	}
+
+	public List<ExpectedObs> getExpectedObs(Patient patient, String group) {
+		MotechService motechService = contextService.getMotechService();
+		return motechService.getExpectedObs(patient, null,
+				new String[] { group }, null, null, null, null, false);
 	}
 
 	public List<Encounter> getRecentDeliveries() {
@@ -2170,12 +2184,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				null, null, null, null, minDate, null, false);
 	}
 
-	public List<ExpectedObs> getExpectedObs(Patient patient, String group) {
-		MotechService motechService = contextService.getMotechService();
-		return motechService.getExpectedObs(patient, new String[] { group },
-				null, null, null, null, false);
-	}
-
 	public ExpectedObs createExpectedObs(Patient patient, String conceptName,
 			String valueConceptName, Integer value, Date minDate, Date dueDate,
 			Date lateDate, Date maxDate, String name, String group) {
@@ -2230,13 +2238,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		return encounterService.getEncounters(patient, null, minDate, null,
 				null, encounterTypes, null, false);
-	}
-
-	public List<ExpectedEncounter> getExpectedEncounters(Patient patient,
-			String group) {
-		MotechService motechService = contextService.getMotechService();
-		return motechService.getExpectedEncounter(patient,
-				new String[] { group }, null, null, null, null, false);
 	}
 
 	public ExpectedEncounter createExpectedEncounter(Patient patient,
@@ -3553,13 +3554,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public void sendNurseCareMessages(Date startDate, Date endDate,
 			Date deliveryDate, String[] careGroups, boolean sendUpcoming) {
 
-		UserService userService = contextService.getUserService();
-		List<User> users = userService.getAllUsers();
+		MotechService motechService = contextService.getMotechService();
+		List<Facility> facilities = motechService.getAllFacilities();
 
-		for (User user : users) {
-			String phoneNumber = getPersonPhoneNumber(user);
-			if (phoneNumber == null) {
-				// Skip nurses without a phone number
+		for (Facility facility : facilities) {
+			String phoneNumber = facility.getPhoneNumber();
+			Location facilityLocation = facility.getLocation();
+			if (phoneNumber == null
+					|| facilityLocation == null
+					|| !MotechConstants.LOCATION_KASSENA_NANKANA_WEST
+							.equals(facilityLocation.getCountyDistrict())) {
+				// Skip facilities without a phone number or
+				// not in KNDW district
 				continue;
 			}
 			// All nurse messages sent as SMS
@@ -3571,8 +3577,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 			// Send Defaulted Care Message
 			List<ExpectedEncounter> defaultedEncounters = getDefaultedExpectedEncounters(
-					careGroups, startDate);
-			List<ExpectedObs> defaultedObs = getDefaultedExpectedObs(
+					facility, careGroups, startDate);
+			List<ExpectedObs> defaultedObs = getDefaultedExpectedObs(facility,
 					careGroups, startDate);
 			if (!defaultedEncounters.isEmpty() || !defaultedObs.isEmpty()) {
 				Care[] defaultedCares = modelConverter
@@ -3585,7 +3591,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			if (sendUpcoming) {
 				// Send Upcoming Care Messages
 				List<ExpectedEncounter> upcomingEncounters = getUpcomingExpectedEncounters(
-						careGroups, startDate, endDate);
+						facility, careGroups, startDate, endDate);
 				for (ExpectedEncounter upcomingEncounter : upcomingEncounters) {
 					org.motechproject.ws.Patient patient = modelConverter
 							.upcomingEncounterToWebServicePatient(upcomingEncounter);
@@ -3594,7 +3600,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 							mediaType, deliveryDate, null, patient);
 				}
 				List<ExpectedObs> upcomingObs = getUpcomingExpectedObs(
-						careGroups, startDate, endDate);
+						facility, careGroups, startDate, endDate);
 				for (ExpectedObs upcomingObservation : upcomingObs) {
 					org.motechproject.ws.Patient patient = modelConverter
 							.upcomingObsToWebServicePatient(upcomingObservation);
