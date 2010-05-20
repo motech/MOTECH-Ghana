@@ -16,6 +16,7 @@ import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
@@ -189,6 +190,12 @@ public class DemoPatientController {
 					"motechmodule.mediaType.required");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
 					"motechmodule.language.required");
+		}
+		if (patient.getPhoneNumber() != null
+				&& !patient.getPhoneNumber().matches(
+						MotechConstants.PHONE_REGEX_PATTERN)) {
+			errors.rejectValue("phoneNumber",
+					"motechmodule.phoneNumber.invalid");
 		}
 
 		if (!errors.hasErrors()) {

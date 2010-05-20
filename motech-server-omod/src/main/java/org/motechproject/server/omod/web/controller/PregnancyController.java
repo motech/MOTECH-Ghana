@@ -10,6 +10,7 @@ import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.Gender;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,6 +134,12 @@ public class PregnancyController {
 					"motechmodule.language.required");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "howLearned",
 					"motechmodule.howLearned.required");
+		}
+		if (pregnancy.getPhoneNumber() != null
+				&& !pregnancy.getPhoneNumber().matches(
+						MotechConstants.PHONE_REGEX_PATTERN)) {
+			errors.rejectValue("phoneNumber",
+					"motechmodule.phoneNumber.invalid");
 		}
 
 		if (!errors.hasErrors()) {

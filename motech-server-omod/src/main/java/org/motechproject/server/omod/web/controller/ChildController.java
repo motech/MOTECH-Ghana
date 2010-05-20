@@ -13,6 +13,7 @@ import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.RegistrantType;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -186,6 +187,12 @@ public class ChildController {
 					"motechmodule.mediaType.required");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
 					"motechmodule.language.required");
+		}
+		if (child.getPhoneNumber() != null
+				&& !child.getPhoneNumber().matches(
+						MotechConstants.PHONE_REGEX_PATTERN)) {
+			errors.rejectValue("phoneNumber",
+					"motechmodule.phoneNumber.invalid");
 		}
 
 		if (!errors.hasErrors()) {

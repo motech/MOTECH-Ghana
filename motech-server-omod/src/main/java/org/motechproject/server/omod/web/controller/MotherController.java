@@ -196,6 +196,12 @@ public class MotherController {
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
 					"motechmodule.language.required");
 		}
+		if (mother.getPhoneNumber() != null
+				&& !mother.getPhoneNumber().matches(
+						MotechConstants.PHONE_REGEX_PATTERN)) {
+			errors.rejectValue("phoneNumber",
+					"motechmodule.phoneNumber.invalid");
+		}
 
 		if (!errors.hasErrors()) {
 			registrarBean.registerPatient(null, mother.getMotechId(),
