@@ -371,7 +371,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void demoRegisterPatient(String motechId, String firstName,
+	public void demoRegisterPatient(Integer motechId, String firstName,
 			String middleName, String lastName, String prefName,
 			Date birthDate, Boolean birthDateEst, Gender sex,
 			Boolean registeredGHS, String regNumberGHS, Boolean insured,
@@ -387,11 +387,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		PatientService patientService = contextService.getPatientService();
 
 		// TODO: Update demo patient registration
-		Patient patient = createPatient(Integer.parseInt(motechId), firstName,
-				middleName, lastName, prefName, birthDate, birthDateEst, sex,
-				insured, nhis, nhisExpDate, address, primaryPhone,
-				primaryPhoneType, mediaTypeInfo, languageText, null, null,
-				null, null);
+		Patient patient = createPatient(motechId, firstName, middleName,
+				lastName, prefName, birthDate, birthDateEst, sex, insured,
+				nhis, nhisExpDate, address, primaryPhone, primaryPhoneType,
+				mediaTypeInfo, languageText, null, null, null, null);
 
 		patient = patientService.savePatient(patient);
 

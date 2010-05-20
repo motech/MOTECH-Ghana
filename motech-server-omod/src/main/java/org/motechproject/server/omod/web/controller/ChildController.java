@@ -122,7 +122,8 @@ public class ChildController {
 		log.debug("Register Child");
 
 		if (child.getMotechId() != null
-				&& openmrsBean.getPatientByMotechId(child.getMotechId()) != null) {
+				&& openmrsBean.getPatientByMotechId(child.getMotechId()
+						.toString()) != null) {
 			errors.rejectValue("motechId", "motechmodule.motechId.nonunique");
 		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName",
@@ -196,16 +197,17 @@ public class ChildController {
 		}
 
 		if (!errors.hasErrors()) {
-			registrarBean.registerPatient(null, Integer.parseInt(child
-					.getMotechId()), RegistrantType.OTHER,
-					child.getFirstName(), child.getMiddleName(), child
-							.getLastName(), child.getPrefName(), child
-							.getBirthDate(), child.getBirthDateEst(), child
-							.getSex(), child.getInsured(), child.getNhis(),
-					child.getNhisExpDate(), mother, null, child.getAddress(),
-					child.getPrimaryPhone(), child.getDueDate(), child
-							.getDueDateConfirmed(), child.getGravida(), child
-							.getParity(), child.getRegisterPregProgram(), child
+			registrarBean.registerPatient(null, child.getMotechId(),
+					RegistrantType.OTHER, child.getFirstName(), child
+							.getMiddleName(), child.getLastName(), child
+							.getPrefName(), child.getBirthDate(), child
+							.getBirthDateEst(), child.getSex(), child
+							.getInsured(), child.getNhis(), child
+							.getNhisExpDate(), mother, null,
+					child.getAddress(), child.getPrimaryPhone(), child
+							.getDueDate(), child.getDueDateConfirmed(), child
+							.getGravida(), child.getParity(), child
+							.getRegisterPregProgram(), child
 							.getRegisterPregProgram(), child
 							.getPrimaryPhoneType(), child.getMediaTypeInfo(),
 					child.getLanguageText(), null, null, null, null, child

@@ -117,7 +117,8 @@ public class PersonController {
 		log.debug("Register Person");
 
 		if (person.getMotechId() != null
-				&& openmrsBean.getPatientByMotechId(person.getMotechId()) != null) {
+				&& openmrsBean.getPatientByMotechId(person.getMotechId()
+						.toString()) != null) {
 			errors.rejectValue("motechId", "motechmodule.motechId.nonunique");
 		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "whyInterested",
@@ -168,13 +169,13 @@ public class PersonController {
 		}
 
 		if (!errors.hasErrors()) {
-			registrarBean.registerPatient(null, Integer.parseInt(person
-					.getMotechId()), RegistrantType.OTHER, person
-					.getFirstName(), person.getMiddleName(), person
-					.getLastName(), person.getPrefName(),
-					person.getBirthDate(), person.getBirthDateEst(), person
-							.getSex(), person.getInsured(), person.getNhis(),
-					person.getNhisExpDate(), null, null, person.getAddress(),
+			registrarBean.registerPatient(null, person.getMotechId(),
+					RegistrantType.OTHER, person.getFirstName(), person
+							.getMiddleName(), person.getLastName(), person
+							.getPrefName(), person.getBirthDate(), person
+							.getBirthDateEst(), person.getSex(), person
+							.getInsured(), person.getNhis(), person
+							.getNhisExpDate(), null, null, person.getAddress(),
 					person.getPrimaryPhone(), person.getDueDate(), person
 							.getDueDateConfirmed(), person.getGravida(), person
 							.getParity(), person.getRegisterPregProgram(),

@@ -102,13 +102,18 @@ public class SearchPatientsController {
 					+ webPatient.getNhis() + ", " + webPatient.getMotechId());
 		}
 
+		String motechIdString = null;
+		if (webPatient.getMotechId() != null) {
+			motechIdString = webPatient.getMotechId().toString();
+		}
+
 		if (!errors.hasErrors()) {
 			List<WebPatient> matchingWebPatientsList = new ArrayList<WebPatient>();
 			List<Patient> matchingPatientsList = registrarBean.getPatients(
 					webPatient.getFirstName(), webPatient.getLastName(),
 					webPatient.getPrefName(), webPatient.getBirthDate(),
 					webPatient.getCommunity(), webPatient.getPrimaryPhone(),
-					webPatient.getNhis(), webPatient.getMotechId());
+					webPatient.getNhis(), motechIdString);
 
 			for (Patient patient : matchingPatientsList) {
 				WebPatient newWebPatient = new WebPatient();

@@ -26,7 +26,14 @@ public class WebModelConverterImpl implements WebModelConverter {
 		PatientIdentifier patientId = patient
 				.getPatientIdentifier(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
 		if (patientId != null) {
-			webPatient.setMotechId(patientId.getIdentifier());
+			Integer motechId = null;
+			try {
+				motechId = Integer.parseInt(patientId.getIdentifier());
+			} catch (Exception e) {
+				log.error("Unable to parse Motech ID: "
+						+ patientId.getIdentifier(), e);
+			}
+			webPatient.setMotechId(motechId);
 		}
 
 		webPatient.setId(patient.getPersonId());

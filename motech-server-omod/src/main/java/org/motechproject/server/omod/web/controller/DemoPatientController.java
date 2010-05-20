@@ -146,7 +146,8 @@ public class DemoPatientController {
 		log.debug("Register Demo Patient");
 
 		if (patient.getMotechId() != null
-				&& openmrsBean.getPatientByMotechId(patient.getMotechId()) != null) {
+				&& openmrsBean.getPatientByMotechId(patient.getMotechId()
+						.toString()) != null) {
 			errors.rejectValue("motechId", "motechmodule.motechId.nonunique");
 		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName",

@@ -130,7 +130,8 @@ public class MotherController {
 		log.debug("Register Pregnant Mother");
 
 		if (mother.getMotechId() != null
-				&& openmrsBean.getPatientByMotechId(mother.getMotechId()) != null) {
+				&& openmrsBean.getPatientByMotechId(mother.getMotechId()
+						.toString()) != null) {
 			errors.rejectValue("motechId", "motechmodule.motechId.nonunique");
 		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName",
@@ -207,13 +208,13 @@ public class MotherController {
 		}
 
 		if (!errors.hasErrors()) {
-			registrarBean.registerPatient(null, Integer.parseInt(mother
-					.getMotechId()), RegistrantType.OTHER, mother
-					.getFirstName(), mother.getMiddleName(), mother
-					.getLastName(), mother.getPrefName(),
-					mother.getBirthDate(), mother.getBirthDateEst(),
-					Gender.FEMALE, mother.getInsured(), mother.getNhis(),
-					mother.getNhisExpDate(), null, null, mother.getAddress(),
+			registrarBean.registerPatient(null, mother.getMotechId(),
+					RegistrantType.OTHER, mother.getFirstName(), mother
+							.getMiddleName(), mother.getLastName(), mother
+							.getPrefName(), mother.getBirthDate(), mother
+							.getBirthDateEst(), Gender.FEMALE, mother
+							.getInsured(), mother.getNhis(), mother
+							.getNhisExpDate(), null, null, mother.getAddress(),
 					mother.getPrimaryPhone(), mother.getDueDate(), mother
 							.getDueDateConfirmed(), mother.getGravida(), mother
 							.getParity(), mother.getRegisterPregProgram(),

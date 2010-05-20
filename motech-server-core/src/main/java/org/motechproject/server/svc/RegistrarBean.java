@@ -78,7 +78,7 @@ public interface RegistrarBean {
 			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
 			HowLearned howLearned, Integer messagesStartWeek);
 
-	public void demoRegisterPatient(String motechId, String firstName,
+	public void demoRegisterPatient(Integer motechId, String firstName,
 			String middleName, String lastName, String prefName,
 			Date birthDate, Boolean birthDateEst, Gender sex,
 			Boolean registeredGHS, String regNumberGHS, Boolean insured,
