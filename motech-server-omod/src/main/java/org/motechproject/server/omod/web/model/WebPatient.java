@@ -2,11 +2,9 @@ package org.motechproject.server.omod.web.model;
 
 import java.util.Date;
 
-import org.motechproject.server.model.HIVStatus;
-import org.motechproject.server.model.WhoRegistered;
-import org.motechproject.server.model.WhyInterested;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Gender;
+import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.MediaType;
 
 public class WebPatient {
@@ -35,7 +33,6 @@ public class WebPatient {
 	private Boolean dueDateConfirmed;
 	private Integer gravida;
 	private Integer parity;
-	private HIVStatus hivStatus;
 	private Boolean registerPregProgram;
 	private Boolean termsConsent;
 	private String primaryPhone;
@@ -46,11 +43,10 @@ public class WebPatient {
 	private MediaType mediaTypeReminder;
 	private String languageVoice;
 	private String languageText;
-	private WhoRegistered whoRegistered;
 	private String religion;
 	private String occupation;
 	private String howLearned;
-	private WhyInterested whyInterested;
+	private InterestReason interestReason;
 	private Integer messagesStartWeek;
 
 	public WebPatient() {
@@ -248,14 +244,6 @@ public class WebPatient {
 		this.parity = parity;
 	}
 
-	public HIVStatus getHivStatus() {
-		return hivStatus;
-	}
-
-	public void setHivStatus(HIVStatus hivStatus) {
-		this.hivStatus = hivStatus;
-	}
-
 	public Boolean getRegisterPregProgram() {
 		return registerPregProgram;
 	}
@@ -336,14 +324,6 @@ public class WebPatient {
 		this.languageText = languageText;
 	}
 
-	public WhoRegistered getWhoRegistered() {
-		return whoRegistered;
-	}
-
-	public void setWhoRegistered(WhoRegistered whoRegistered) {
-		this.whoRegistered = whoRegistered;
-	}
-
 	public String getReligion() {
 		return religion;
 	}
@@ -368,12 +348,12 @@ public class WebPatient {
 		this.howLearned = howLearned;
 	}
 
-	public WhyInterested getWhyInterested() {
-		return whyInterested;
+	public InterestReason getInterestReason() {
+		return interestReason;
 	}
 
-	public void setWhyInterested(WhyInterested whyInterested) {
-		this.whyInterested = whyInterested;
+	public void setInterestReason(InterestReason interestReason) {
+		this.interestReason = interestReason;
 	}
 
 	public Integer getMessagesStartWeek() {

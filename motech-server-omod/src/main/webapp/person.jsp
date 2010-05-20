@@ -21,18 +21,6 @@
 <form:errors cssClass="error" />
 <table>
 	<tr>
-		<td><label for="whyInterested">Why Interested in Service:</label></td>
-		<td>
-			<form:select path="whyInterested">
-				<form:option value="" label="Select Value" />
-				<form:option value="IN_HOUSEHOLD_PREGNANCY" label="Family member in household currently pregnant" />
-				<form:option value="OUT_HOUSEHOLD_PREGNANCY" label="Family member outside of household currently pregnant" />
-				<form:option value="IN_HOUSEHOLD_BIRTH" label="Family member in household recently had new baby" />
-			</form:select>
-		</td>
-		<td><form:errors path="whyInterested" cssClass="error" /></td>
-	</tr>
-	<tr>
 		<td><label for="motechId">MoTeCH ID:</label></td>
 		<td><form:input path="motechId" /></td>
 		<td><form:errors path="motechId" cssClass="error" /></td>

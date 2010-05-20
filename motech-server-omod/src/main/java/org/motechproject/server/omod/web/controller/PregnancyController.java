@@ -137,8 +137,6 @@ public class PregnancyController {
 					"motechmodule.languageVoice.required");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "languageText",
 					"motechmodule.languageText.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "whoRegistered",
-					"motechmodule.whoRegistered.required");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "howLearned",
 					"motechmodule.howLearned.required");
 		}
@@ -153,7 +151,7 @@ public class PregnancyController {
 							.getMediaTypeInfo(), pregnancy
 							.getMediaTypeReminder(), pregnancy
 							.getLanguageVoice(), pregnancy.getLanguageText(),
-					pregnancy.getWhoRegistered(), pregnancy.getHowLearned());
+					pregnancy.getHowLearned());
 			;
 			model.addAttribute("successMsg",
 					"motechmodule.Pregnancy.register.success");

@@ -18,20 +18,6 @@
 </div>
 <table>
 	<tr>
-		<td><form:label path="whoRegistered">Who Registered:</form:label></td>
-		<td>
-			<form:select path="whoRegistered">
-				<form:option value="" label="Select Value" />
-				<form:option value="MOTHER" label="Mother" />
-				<form:option value="FATHER" label="Father" />
-				<form:option value="FAMILY_MEMBER" label="Family member" />
-				<form:option value="CHPS_STAFF" label="CHPS staff" />
-				<form:option value="OTHER" label="Other" />
-			</form:select>
-		</td>
-		<td><form:errors path="whoRegistered" cssClass="error" /></td>
-	</tr>
-	<tr>
 		<td><form:label path="termsConsent">Info Service Terms Consent:</form:label></td>
 		<td><form:checkbox path="termsConsent" /></td>
 		<td><form:errors path="termsConsent" cssClass="error" /></td>

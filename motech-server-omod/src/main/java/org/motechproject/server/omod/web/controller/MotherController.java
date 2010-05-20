@@ -178,8 +178,6 @@ public class MotherController {
 				errors.rejectValue("parity", "motechmodule.parity.range");
 			}
 		}
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "hivStatus",
-				"motechmodule.hivStatus.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors,
 				"registerPregProgram",
 				"motechmodule.registerPregProgram.required");
@@ -203,8 +201,6 @@ public class MotherController {
 					"motechmodule.languageVoice.required");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "languageText",
 					"motechmodule.languageText.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "whoRegistered",
-					"motechmodule.whoRegistered.required");
 		}
 
 		if (!errors.hasErrors()) {

@@ -13,7 +13,6 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import org.motechproject.server.model.Community;
-import org.motechproject.server.model.HIVStatus;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
@@ -160,7 +159,6 @@ public class EditPatientControllerTest extends TestCase {
 		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
 		MediaType mediaTypeInfo = MediaType.TEXT, mediaTypeReminder = MediaType.VOICE;
 		String languageVoice = "LanguageVoice", languageText = "LanguageText";
-		HIVStatus hivStatus = HIVStatus.UNKNOWN;
 
 		WebPatient patient = new WebPatient();
 		patient.setId(patientId);
@@ -191,7 +189,6 @@ public class EditPatientControllerTest extends TestCase {
 		patient.setLanguageText(languageText);
 		patient.setReligion(religion);
 		patient.setOccupation(occupation);
-		patient.setHivStatus(hivStatus);
 
 		ModelMap model = new ModelMap();
 
@@ -202,7 +199,7 @@ public class EditPatientControllerTest extends TestCase {
 				insured, nhis, date, region, district, community, address,
 				clinic, primaryPhone, primaryPhoneType, secondaryPhone,
 				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
-				languageVoice, languageText, religion, occupation, hivStatus);
+				languageVoice, languageText, religion, occupation);
 
 		status.setComplete();
 

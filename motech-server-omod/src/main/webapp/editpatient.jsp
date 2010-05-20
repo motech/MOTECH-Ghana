@@ -218,18 +218,6 @@
 		<td><form:errors path="occupation" cssClass="error" /></td>
 	</tr>
 	<tr>
-		<td><label for="hivStatus">HIV Status:</label></td>
-		<td>
-			<form:select path="hivStatus">
-				<form:option value="" label="Select Value" />
-				<form:option value="POSITIVE" label="Positive" />
-				<form:option value="NEGATIVE" label="Negative" />
-				<form:option value="UNKNOWN" label="Unknown" />
-			</form:select>
-		</td>
-		<td><form:errors path="hivStatus" cssClass="error" /></td>
-	</tr>
-	<tr>
 		<td colspan="2">
 			<input type="submit" />
 		</td>

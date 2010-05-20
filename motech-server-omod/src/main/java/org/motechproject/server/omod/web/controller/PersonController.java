@@ -121,8 +121,6 @@ public class PersonController {
 						.toString()) != null) {
 			errors.rejectValue("motechId", "motechmodule.motechId.nonunique");
 		}
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "whyInterested",
-				"motechmodule.whyinterested.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName",
 				"motechmodule.firstName.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName",

@@ -23,13 +23,11 @@ import org.easymock.Capture;
 import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.HIVStatus;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.model.TroubledPhone;
-import org.motechproject.server.model.WhoRegistered;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
@@ -99,7 +97,7 @@ public class RegistrarBeanTest extends TestCase {
 	PersonAttributeType nhisExpirationType;
 	PersonAttributeType insuredAttributeType;
 	PersonAttributeType howLearnedAttributeType;
-	PersonAttributeType whyInterestedAttributeType;
+	PersonAttributeType interestReasonAttributeType;
 	Role providerRole;
 	EncounterType ancVisitType;
 	EncounterType pncChildVisitType;
@@ -229,9 +227,9 @@ public class RegistrarBeanTest extends TestCase {
 		howLearnedAttributeType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED);
 
-		whyInterestedAttributeType = new PersonAttributeType(24);
-		whyInterestedAttributeType
-				.setName(MotechConstants.PERSON_ATTRIBUTE_WHY_INTERESTED);
+		interestReasonAttributeType = new PersonAttributeType(24);
+		interestReasonAttributeType
+				.setName(MotechConstants.PERSON_ATTRIBUTE_INTEREST_REASON);
 
 		deliveryDayAttributeType = new PersonAttributeType(25);
 		deliveryDayAttributeType
@@ -629,8 +627,8 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(howLearnedAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_WHY_INTERESTED))
-				.andReturn(whyInterestedAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INTEREST_REASON))
+				.andReturn(interestReasonAttributeType);
 
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				patient);
@@ -750,7 +748,7 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(howLearned, HowLearned.valueOf(capturedPatient
 				.getAttribute(howLearnedAttributeType).getValue()));
 		assertEquals(reason, InterestReason.valueOf(capturedPatient
-				.getAttribute(whyInterestedAttributeType).getValue()));
+				.getAttribute(interestReasonAttributeType).getValue()));
 		assertEquals(dayOfWeek, DayOfWeek.valueOf(capturedPatient.getAttribute(
 				deliveryDayAttributeType).getValue()));
 		Calendar timeOfDayCal = Calendar.getInstance();
@@ -935,8 +933,8 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(howLearnedAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_WHY_INTERESTED))
-				.andReturn(whyInterestedAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INTEREST_REASON))
+				.andReturn(interestReasonAttributeType);
 
 		expect(patientService.savePatient(capture(patientCap)))
 				.andReturn(child);
@@ -1032,7 +1030,7 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(howLearned, HowLearned.valueOf(capturedPatient
 				.getAttribute(howLearnedAttributeType).getValue()));
 		assertEquals(reason, InterestReason.valueOf(capturedPatient
-				.getAttribute(whyInterestedAttributeType).getValue()));
+				.getAttribute(interestReasonAttributeType).getValue()));
 		assertEquals(dayOfWeek, DayOfWeek.valueOf(capturedPatient.getAttribute(
 				deliveryDayAttributeType).getValue()));
 		Calendar timeOfDayCal = Calendar.getInstance();
@@ -1174,8 +1172,8 @@ public class RegistrarBeanTest extends TestCase {
 				.andReturn(howLearnedAttributeType);
 		expect(
 				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_WHY_INTERESTED))
-				.andReturn(whyInterestedAttributeType);
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INTEREST_REASON))
+				.andReturn(interestReasonAttributeType);
 
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				patient);
@@ -1258,7 +1256,7 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(howLearned, HowLearned.valueOf(capturedPatient
 				.getAttribute(howLearnedAttributeType).getValue()));
 		assertEquals(reason, InterestReason.valueOf(capturedPatient
-				.getAttribute(whyInterestedAttributeType).getValue()));
+				.getAttribute(interestReasonAttributeType).getValue()));
 		assertEquals(dayOfWeek, DayOfWeek.valueOf(capturedPatient.getAttribute(
 				deliveryDayAttributeType).getValue()));
 		Calendar timeOfDayCal = Calendar.getInstance();
@@ -1427,7 +1425,6 @@ public class RegistrarBeanTest extends TestCase {
 		Boolean birthDateEst = true, registeredGHS = true, insured = true;
 		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
 		MediaType mediaTypeInfo = MediaType.TEXT, mediaTypeReminder = MediaType.VOICE;
-		HIVStatus hivStatus = HIVStatus.NEGATIVE;
 
 		Patient patient = new Patient(patientId);
 		Location ghanaLocation = new Location(1);
@@ -1491,7 +1488,7 @@ public class RegistrarBeanTest extends TestCase {
 				insured, nhis, date, region, district, community, address,
 				clinic, primaryPhone, primaryPhoneType, secondaryPhone,
 				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
-				languageVoice, languageText, religion, occupation, hivStatus);
+				languageVoice, languageText, religion, occupation);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
@@ -1556,7 +1553,6 @@ public class RegistrarBeanTest extends TestCase {
 		String languageVoice = "LanguageVoice", languageText = "LanguageText";
 		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
 		MediaType mediaTypeInfo = MediaType.TEXT, mediaTypeReminder = MediaType.VOICE;
-		WhoRegistered whoRegistered = WhoRegistered.CHPS_STAFF;
 		String howLearned = "HowLearned";
 
 		String pregnancyProgramName = "Weekly Pregnancy Message Program";
@@ -1646,8 +1642,7 @@ public class RegistrarBeanTest extends TestCase {
 		regBean.registerPregnancy(patientId, date, dueDateConfirmed,
 				registerPregProgram, primaryPhone, primaryPhoneType,
 				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
-				mediaTypeReminder, languageVoice, languageText, whoRegistered,
-				howLearned);
+				mediaTypeReminder, languageVoice, languageText, howLearned);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, encounterService, obsService, conceptService,

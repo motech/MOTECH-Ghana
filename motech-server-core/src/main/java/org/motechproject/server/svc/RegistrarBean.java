@@ -10,10 +10,8 @@ import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.HIVStatus;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.ScheduledMessage;
-import org.motechproject.server.model.WhoRegistered;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
@@ -88,8 +86,7 @@ public interface RegistrarBean {
 			ContactNumberType primaryPhoneType, String secondaryPhone,
 			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
 			MediaType mediaTypeReminder, String languageVoice,
-			String languageText, WhoRegistered whoRegistered, String religion,
-			String occupation);
+			String languageText, String religion, String occupation);
 
 	public void editPatient(Integer id, String firstName, String middleName,
 			String lastName, String prefName, Date birthDate,
@@ -100,8 +97,7 @@ public interface RegistrarBean {
 			ContactNumberType primaryPhoneType, String secondaryPhone,
 			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
 			MediaType mediaTypeReminder, String languageVoice,
-			String languageText, String religion, String occupation,
-			HIVStatus hivStatus);
+			String languageText, String religion, String occupation);
 
 	@RunAsAdminUser
 	public void editPatient(
@@ -115,8 +111,7 @@ public interface RegistrarBean {
 			String primaryPhone, ContactNumberType primaryPhoneType,
 			String secondaryPhone, ContactNumberType secondaryPhoneType,
 			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText,
-			WhoRegistered whoRegistered, String howLearned);
+			String languageVoice, String languageText, String howLearned);
 
 	@RunAsAdminUser
 	public void registerPregnancy(

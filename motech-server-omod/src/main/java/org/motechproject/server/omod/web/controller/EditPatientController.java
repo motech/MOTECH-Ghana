@@ -125,8 +125,7 @@ public class EditPatientController {
 							.getMediaTypeInfo(), webPatient
 							.getMediaTypeReminder(), webPatient
 							.getLanguageVoice(), webPatient.getLanguageText(),
-					webPatient.getReligion(), webPatient.getOccupation(),
-					webPatient.getHivStatus());
+					webPatient.getReligion(), webPatient.getOccupation());
 
 			model.addAttribute("successMsg",
 					"motechmodule.Patient.edit.success");

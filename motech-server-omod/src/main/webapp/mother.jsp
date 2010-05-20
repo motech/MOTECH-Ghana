@@ -22,20 +22,6 @@
 <form:errors cssClass="error" />
 <table>
 	<tr>
-		<td><label for="whoRegistered">Who Registered:</label></td>
-		<td>
-			<form:select path="whoRegistered">
-				<form:option value="" label="Select Value" />
-				<form:option value="MOTHER" label="Mother" />
-				<form:option value="FATHER" label="Father" />
-				<form:option value="FAMILY_MEMBER" label="Family member" />
-				<form:option value="CHPS_STAFF" label="CHPS staff" />
-				<form:option value="OTHER" label="Other" />
-			</form:select>
-		</td>
-		<td><form:errors path="whoRegistered" cssClass="error" /></td>
-	</tr>
-	<tr>
 		<td><label for="motechId">MoTeCH ID:</label></td>
 		<td><form:input path="motechId" /></td>
 		<td><form:errors path="motechId" cssClass="error" /></td>
@@ -173,18 +159,6 @@
 		<td><label for="parity">Previous Births (parity):</label></td>
 		<td><form:input path="parity" /></td>
 		<td><form:errors path="parity" cssClass="error" /></td>
-	</tr>
-	<tr>
-		<td><label for="hivStatus">HIV Status:</label></td>
-		<td>
-			<form:select path="hivStatus">
-				<form:option value="" label="Select Value" />
-				<form:option value="POSITIVE" label="Positive" />
-				<form:option value="NEGATIVE" label="Negative" />
-				<form:option value="UNKNOWN" label="Unknown" />
-			</form:select>
-		</td>
-		<td><form:errors path="hivStatus" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td><label for="registerPregProgram">Register in Pregnant Parents Info Service:</label></td>

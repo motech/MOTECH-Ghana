@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.Community;
-import org.motechproject.server.model.WhoRegistered;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
@@ -114,7 +113,6 @@ public class DemoPatientController {
 			}
 		} else {
 			// Pre-populate so demo entry isn't a long process
-			result.setWhoRegistered(WhoRegistered.CHPS_STAFF);
 			result.setFirstName("Jane");
 			result.setLastName("Doe");
 			result.setSex(Gender.FEMALE);
@@ -199,8 +197,6 @@ public class DemoPatientController {
 					"motechmodule.languageVoice.required");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "languageText",
 					"motechmodule.languageText.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "whoRegistered",
-					"motechmodule.whoRegistered.required");
 		}
 
 		if (!errors.hasErrors()) {
@@ -219,8 +215,8 @@ public class DemoPatientController {
 							.getSecondaryPhoneType(), patient
 							.getMediaTypeInfo(),
 					patient.getMediaTypeReminder(), patient.getLanguageVoice(),
-					patient.getLanguageText(), patient.getWhoRegistered(),
-					patient.getReligion(), patient.getOccupation());
+					patient.getLanguageText(), patient.getReligion(), patient
+							.getOccupation());
 
 			model.addAttribute("successMsg",
 					"motechmodule.Demo.Patient.register.success");

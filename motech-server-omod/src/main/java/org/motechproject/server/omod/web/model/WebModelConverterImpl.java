@@ -6,10 +6,10 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.model.WhyInterested;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.MediaType;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
@@ -112,11 +112,11 @@ public class WebModelConverterImpl implements WebModelConverter {
 			webPatient.setLanguageText(languageTextAttr.getValue());
 		}
 
-		PersonAttribute whyInterestedAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_WHY_INTERESTED);
-		if (whyInterestedAttr != null) {
-			webPatient.setWhyInterested(WhyInterested.valueOf(whyInterestedAttr
-					.getValue()));
+		PersonAttribute interestReasonAttr = patient
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_INTEREST_REASON);
+		if (interestReasonAttr != null) {
+			webPatient.setInterestReason(InterestReason
+					.valueOf(interestReasonAttr.getValue()));
 		}
 
 		PersonAttribute howLearnedAttr = patient
