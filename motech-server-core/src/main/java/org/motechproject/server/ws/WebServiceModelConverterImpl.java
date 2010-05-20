@@ -64,10 +64,10 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 
 			wsPatient.setAge(patient.getAge());
 
-			PersonAttribute primaryPhoneAttr = patient
+			PersonAttribute phoneNumberAttr = patient
 					.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
-			if (primaryPhoneAttr != null) {
-				wsPatient.setPhoneNumber(primaryPhoneAttr.getValue());
+			if (phoneNumberAttr != null) {
+				wsPatient.setPhoneNumber(phoneNumberAttr.getValue());
 			}
 
 			wsPatient.setEstimateDueDate(registrarBean

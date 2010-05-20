@@ -161,84 +161,44 @@
 		<td><form:errors path="termsConsent" cssClass="error" /></td>
 	</tr>
 	<tr>
-		<td><label for="primaryPhone">Primary Phone Number:</label></td>
-		<td><form:input path="primaryPhone" onchange="findDuplicates()" /></td>
-		<td><form:errors path="primaryPhone" cssClass="error" /></td>
+		<td><label for="phoneNumber">Phone Number:</label></td>
+		<td><form:input path="phoneNumber" onchange="findDuplicates()" /></td>
+		<td><form:errors path="phoneNumber" cssClass="error" /></td>
 	</tr>
 	<tr>
-		<td><label for="primaryPhoneType">Primary Phone Ownership:</label></td>
+		<td><label for="phoneType">Phone Ownership:</label></td>
 		<td>
-			<form:select path="primaryPhoneType">
+			<form:select path="phoneType">
 				<form:option value="" label="Select Value" />
 				<form:option value="PERSONAL" label="Personal phone" />
 				<form:option value="HOUSEHOLD" label="Owned by household" />
 				<form:option value="PUBLIC" label="Public phone" />
 			</form:select>
 		</td>
-		<td><form:errors path="primaryPhoneType" cssClass="error" /></td>
+		<td><form:errors path="phoneType" cssClass="error" /></td>
 	</tr>
 	<tr>
-		<td><label for="secondaryPhone">Secondary Phone Number:</label></td>
-		<td><form:input path="secondaryPhone" /></td>
-		<td><form:errors path="secondaryPhone" cssClass="error" /></td>		
-	</tr>
-	<tr>
-		<td><label for="secondaryPhoneType">Secondary Phone Ownership:</label></td>
+		<td><label for="mediaType">Message Format:</label></td>
 		<td>
-			<form:select path="secondaryPhoneType">
-				<form:option value="" label="Select Value" />
-				<form:option value="PERSONAL" label="Personal phone" />
-				<form:option value="HOUSEHOLD" label="Owned by household" />
-				<form:option value="PUBLIC" label="Public phone" />
-			</form:select>
-		</td>
-		<td><form:errors path="secondaryPhoneType" cssClass="error" /></td>
-	</tr>
-	<tr>
-		<td><label for="mediaTypeInfo">Weekly Info Message Format:</label></td>
-		<td>
-			<form:select path="mediaTypeInfo">
+			<form:select path="mediaType">
 				<form:option value="" label="Select Value" />
 				<form:option value="TEXT" label="Text" />
 				<form:option value="VOICE" label="Voice" />
 			</form:select>
 		</td>
-		<td><form:errors path="mediaTypeInfo" cssClass="error" /></td>
+		<td><form:errors path="mediaType" cssClass="error" /></td>
 	</tr>
 	<tr>
-		<td><label for="mediaTypeReminder">Notification/Reminder Format:</label></td>
+		<td><label for="language">Language for Messages:</label></td>
 		<td>
-			<form:select path="mediaTypeReminder">
-				<form:option value="" label="Select Value" />
-				<form:option value="TEXT" label="Text" />
-				<form:option value="VOICE" label="Voice" />
-			</form:select>
-		</td>
-		<td><form:errors path="mediaTypeReminder" cssClass="error" /></td>
-	</tr>
-	<tr>
-		<td><label for="languageVoice">Language for Voice Messages:</label></td>
-		<td>
-			<form:select path="languageVoice">
+			<form:select path="language">
 				<form:option value="" label="Select Value" />
 				<form:option value="en" label="English" />
 				<form:option value="kas" label="Kassim" />
 				<form:option value="nan" label="Nankam" />
 			</form:select>
 		</td>
-		<td><form:errors path="languageVoice" cssClass="error" /></td>
-	</tr>
-	<tr>
-		<td><label for="languageText">Language for Text Messages:</label></td>
-		<td>
-			<form:select path="languageText">
-				<form:option value="" label="Select Value" />
-				<form:option value="en" label="English" />
-				<form:option value="kas" label="Kassim" />
-				<form:option value="nan" label="Nankam" />
-			</form:select>
-		</td>
-		<td><form:errors path="languageText" cssClass="error" /></td>
+		<td><form:errors path="language" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td><label for="religion">Religion:</label></td>
@@ -267,8 +227,7 @@
 				<th>Community</th>
 				<th>Reg Number</th>
 				<th>NHIS Number</th>
-				<th>Primary Phone</th>
-				<th>Secondary Phone</th>
+				<th>Phone Number</th>
 			</tr>
 		</thead>
 		<tbody id="matchingPatientsBody" />

@@ -35,14 +35,10 @@ public class WebPatient {
 	private Integer parity;
 	private Boolean registerPregProgram;
 	private Boolean termsConsent;
-	private String primaryPhone;
-	private ContactNumberType primaryPhoneType;
-	private String secondaryPhone;
-	private ContactNumberType secondaryPhoneType;
-	private MediaType mediaTypeInfo;
-	private MediaType mediaTypeReminder;
-	private String languageVoice;
-	private String languageText;
+	private String phoneNumber;
+	private ContactNumberType phoneType;
+	private MediaType mediaType;
+	private String language;
 	private String religion;
 	private String occupation;
 	private String howLearned;
@@ -260,68 +256,36 @@ public class WebPatient {
 		this.termsConsent = termsConsent;
 	}
 
-	public String getPrimaryPhone() {
-		return primaryPhone;
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
 
-	public void setPrimaryPhone(String primaryPhone) {
-		this.primaryPhone = primaryPhone;
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
-	public ContactNumberType getPrimaryPhoneType() {
-		return primaryPhoneType;
+	public ContactNumberType getPhoneType() {
+		return phoneType;
 	}
 
-	public void setPrimaryPhoneType(ContactNumberType primaryPhoneType) {
-		this.primaryPhoneType = primaryPhoneType;
+	public void setPhoneType(ContactNumberType phoneType) {
+		this.phoneType = phoneType;
 	}
 
-	public String getSecondaryPhone() {
-		return secondaryPhone;
+	public MediaType getMediaType() {
+		return mediaType;
 	}
 
-	public void setSecondaryPhone(String secondaryPhone) {
-		this.secondaryPhone = secondaryPhone;
+	public void setMediaType(MediaType mediaType) {
+		this.mediaType = mediaType;
 	}
 
-	public ContactNumberType getSecondaryPhoneType() {
-		return secondaryPhoneType;
+	public String getLanguage() {
+		return language;
 	}
 
-	public void setSecondaryPhoneType(ContactNumberType secondaryPhoneType) {
-		this.secondaryPhoneType = secondaryPhoneType;
-	}
-
-	public MediaType getMediaTypeInfo() {
-		return mediaTypeInfo;
-	}
-
-	public void setMediaTypeInfo(MediaType mediaTypeInfo) {
-		this.mediaTypeInfo = mediaTypeInfo;
-	}
-
-	public MediaType getMediaTypeReminder() {
-		return mediaTypeReminder;
-	}
-
-	public void setMediaTypeReminder(MediaType mediaTypeReminder) {
-		this.mediaTypeReminder = mediaTypeReminder;
-	}
-
-	public String getLanguageVoice() {
-		return languageVoice;
-	}
-
-	public void setLanguageVoice(String languageVoice) {
-		this.languageVoice = languageVoice;
-	}
-
-	public String getLanguageText() {
-		return languageText;
-	}
-
-	public void setLanguageText(String languageText) {
-		this.languageText = languageText;
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
 	public String getReligion() {

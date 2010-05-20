@@ -151,14 +151,14 @@ public class EditPatientControllerTest extends TestCase {
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String region = "Region", district = "District", community = "Community", address = "Address";
 		String regNumberGHS = "123ABC", nhis = "1234DEF";
-		String primaryPhone = "12075555555", secondaryPhone = "12075555556";
+		String phoneNumber = "12075555555";
 		String religion = "Religion", occupation = "Occupation";
 		Boolean birthDateEst = true, registeredGHS = true, insured = true;
 		Date date = new Date();
 		Gender sex = Gender.FEMALE;
-		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
-		MediaType mediaTypeInfo = MediaType.TEXT, mediaTypeReminder = MediaType.VOICE;
-		String languageVoice = "LanguageVoice", languageText = "LanguageText";
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		MediaType mediaType = MediaType.TEXT;
+		String language = "Language";
 
 		WebPatient patient = new WebPatient();
 		patient.setId(patientId);
@@ -179,14 +179,10 @@ public class EditPatientControllerTest extends TestCase {
 		patient.setCommunity(community);
 		patient.setAddress(address);
 		patient.setClinic(clinic);
-		patient.setPrimaryPhone(primaryPhone);
-		patient.setPrimaryPhoneType(primaryPhoneType);
-		patient.setSecondaryPhone(secondaryPhone);
-		patient.setSecondaryPhoneType(secondaryPhoneType);
-		patient.setMediaTypeInfo(mediaTypeInfo);
-		patient.setMediaTypeReminder(mediaTypeReminder);
-		patient.setLanguageVoice(languageVoice);
-		patient.setLanguageText(languageText);
+		patient.setPhoneNumber(phoneNumber);
+		patient.setPhoneType(phoneType);
+		patient.setMediaType(mediaType);
+		patient.setLanguage(language);
 		patient.setReligion(religion);
 		patient.setOccupation(occupation);
 
@@ -197,9 +193,8 @@ public class EditPatientControllerTest extends TestCase {
 		registrarBean.editPatient(patientId, firstName, middleName, lastName,
 				prefName, date, birthDateEst, sex, registeredGHS, regNumberGHS,
 				insured, nhis, date, region, district, community, address,
-				clinic, primaryPhone, primaryPhoneType, secondaryPhone,
-				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
-				languageVoice, languageText, religion, occupation);
+				clinic, phoneNumber, phoneType, mediaType, language, religion,
+				occupation);
 
 		status.setComplete();
 

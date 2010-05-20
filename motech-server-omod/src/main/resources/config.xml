@@ -138,7 +138,7 @@
 				<include method="findMatchingPatients"/>
 			</create>
 			<convert converter="bean" match="${modulePackage}.web.model.WebPatient">
-				<param name="include" value="id, motechId, firstName, lastName, prefName, birthDate, community, regNumberGHS, nhis, primaryPhone, secondaryPhone" />
+				<param name="include" value="id, motechId, firstName, lastName, prefName, birthDate, community, regNumberGHS, nhis, phoneNumber" />
 			</convert>
 		</allow>
 	</dwr>

@@ -178,20 +178,14 @@ public class ChildController {
 				errors.rejectValue("termsConsent",
 						"motechmodule.termsConsent.required");
 			}
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "primaryPhone",
-					"motechmodule.primaryPhone.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-					"primaryPhoneType",
-					"motechmodule.primaryPhoneType.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaTypeInfo",
-					"motechmodule.mediaTypeInfo.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-					"mediaTypeReminder",
-					"motechmodule.mediaTypeReminder.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "languageVoice",
-					"motechmodule.languageVoice.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "languageText",
-					"motechmodule.languageText.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phoneNumber",
+					"motechmodule.phoneNumber.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phoneType",
+					"motechmodule.phoneType.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaType",
+					"motechmodule.mediaType.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
+					"motechmodule.language.required");
 		}
 
 		if (!errors.hasErrors()) {
@@ -202,14 +196,13 @@ public class ChildController {
 							.getBirthDateEst(), child.getSex(), child
 							.getInsured(), child.getNhis(), child
 							.getNhisExpDate(), mother, null,
-					child.getAddress(), child.getPrimaryPhone(), child
+					child.getAddress(), child.getPhoneNumber(), child
 							.getDueDate(), child.getDueDateConfirmed(), child
 							.getGravida(), child.getParity(), child
 							.getRegisterPregProgram(), child
-							.getRegisterPregProgram(), child
-							.getPrimaryPhoneType(), child.getMediaTypeInfo(),
-					child.getLanguageText(), null, null, null, null, child
-							.getMessagesStartWeek());
+							.getRegisterPregProgram(), child.getPhoneType(),
+					child.getMediaType(), child.getLanguage(), null, null,
+					null, null, child.getMessagesStartWeek());
 
 			model.addAttribute("successMsg",
 					"motechmodule.Child.register.success");

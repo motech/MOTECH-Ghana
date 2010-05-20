@@ -375,19 +375,17 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Boolean registeredGHS, String regNumberGHS, Boolean insured,
 			String nhis, Date nhisExpDate, String region, String district,
 			String community, String address, Integer clinic,
-			Boolean registerPregProgram, String primaryPhone,
-			ContactNumberType primaryPhoneType, String secondaryPhone,
-			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
-			MediaType mediaTypeReminder, String languageVoice,
-			String languageText, String religion, String occupation) {
+			Boolean registerPregProgram, String phoneNumber,
+			ContactNumberType phoneType, MediaType mediaType, String language,
+			String religion, String occupation) {
 
 		PatientService patientService = contextService.getPatientService();
 
 		// TODO: Update demo patient registration
 		Patient patient = createPatient(motechId, firstName, middleName,
 				lastName, prefName, birthDate, birthDateEst, sex, insured,
-				nhis, nhisExpDate, address, primaryPhone, primaryPhoneType,
-				mediaTypeInfo, languageText, null, null, null, null);
+				nhis, nhisExpDate, address, phoneNumber, phoneType, mediaType,
+				language, null, null, null, null);
 
 		patient = patientService.savePatient(patient);
 
@@ -546,11 +544,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Boolean birthDateEst, Gender sex, Boolean registeredGHS,
 			String regNumberGHS, Boolean insured, String nhis,
 			Date nhisExpDate, String region, String district, String community,
-			String address, Integer clinic, String primaryPhone,
-			ContactNumberType primaryPhoneType, String secondaryPhone,
-			ContactNumberType secondaryPhoneType, MediaType mediaTypeInfo,
-			MediaType mediaTypeReminder, String languageVoice,
-			String languageText, String religion, String occupation) {
+			String address, Integer clinic, String phoneNumber,
+			ContactNumberType phoneType, MediaType mediaType, String language,
+			String religion, String occupation) {
 
 		PatientService patientService = contextService.getPatientService();
 
@@ -618,9 +614,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 
 		// TODO: Update to handle removed attributes and changed types
-		setPatientAttributes(patient, primaryPhone, primaryPhoneType,
-				mediaTypeInfo, languageText, null, null, null, null, insured,
-				nhis, nhisExpDate);
+		setPatientAttributes(patient, phoneNumber, phoneType, mediaType,
+				language, null, null, null, null, insured, nhis, nhisExpDate);
 
 		patientService.savePatient(patient);
 	}
@@ -628,10 +623,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	@Transactional
 	public void registerPregnancy(Integer id, Date dueDate,
 			Boolean dueDateConfirmed, Boolean registerPregProgram,
-			String primaryPhone, ContactNumberType primaryPhoneType,
-			String secondaryPhone, ContactNumberType secondaryPhoneType,
-			MediaType mediaTypeInfo, MediaType mediaTypeReminder,
-			String languageVoice, String languageText, String howLearned) {
+			String phoneNumber, ContactNumberType phoneType,
+			MediaType mediaType, String language, String howLearned) {
 
 		PatientService patientService = contextService.getPatientService();
 
@@ -642,9 +635,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 
 		// TODO: Update to handle removed attributes and changed types
-		setPatientAttributes(patient, primaryPhone, primaryPhoneType,
-				mediaTypeInfo, languageText, null, null, null, null, null,
-				null, null);
+		setPatientAttributes(patient, phoneNumber, phoneType, mediaType,
+				language, null, null, null, null, null, null, null);
 
 		patientService.savePatient(patient);
 

@@ -52,9 +52,9 @@
 		<td><form:errors path="community" cssClass="error" /></td>
 	</tr>
 	<tr>
-		<td><form:label path="primaryPhone">Phone Number:</form:label></td>
-		<td><form:input path="primaryPhone" /></td>
-		<td><form:errors path="primaryPhone" cssClass="error" /></td>
+		<td><form:label path="phoneNumber">Phone Number:</form:label></td>
+		<td><form:input path="phoneNumber" /></td>
+		<td><form:errors path="phoneNumber" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td colspan="2">
@@ -76,8 +76,7 @@
 				<th>Birth Date</th>
 				<th>Community</th>
 				<th>NHIS Number</th>
-				<th>Primary Phone</th>
-				<th>Secondary Phone</th>
+				<th>Phone Number</th>
 				<th></th>
 				<th></th>
 			</tr>
@@ -92,8 +91,7 @@
 					<td><openmrs:formatDate date="${webPatient.birthDate}" format="dd/MM/yyyy" /></td>
 					<td>${webPatient.community}</td>
 					<td>${webPatient.nhis}</td>
-					<td>${webPatient.primaryPhone}</td>
-					<td>${webPatient.secondaryPhone}</td>
+					<td>${webPatient.phoneNumber}</td>
 					<td>
 						<a href="editpatient.form?id=${webPatient.id}">Edit</a>
 					</td>

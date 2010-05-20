@@ -1417,14 +1417,14 @@ public class RegistrarBeanTest extends TestCase {
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String regNumberGHS = "123ABC", nhis = "456DEF";
 		String region = "Region", district = "District", community = "Community", address = "Address";
-		String primaryPhone = "2075555555", secondaryPhone = "2075555556";
-		String languageVoice = "LanguageVoice", languageText = "LanguageText";
+		String phoneNumber = "2075555555";
+		String language = "Language";
 		String religion = "Religion", occupation = "Occupation";
 		Date date = new Date();
 		Gender sex = Gender.FEMALE;
 		Boolean birthDateEst = true, registeredGHS = true, insured = true;
-		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
-		MediaType mediaTypeInfo = MediaType.TEXT, mediaTypeReminder = MediaType.VOICE;
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		MediaType mediaType = MediaType.TEXT;
 
 		Patient patient = new Patient(patientId);
 		Location ghanaLocation = new Location(1);
@@ -1486,9 +1486,8 @@ public class RegistrarBeanTest extends TestCase {
 		regBean.editPatient(patientId, firstName, middleName, lastName,
 				prefName, date, birthDateEst, sex, registeredGHS, regNumberGHS,
 				insured, nhis, date, region, district, community, address,
-				clinic, primaryPhone, primaryPhoneType, secondaryPhone,
-				secondaryPhoneType, mediaTypeInfo, mediaTypeReminder,
-				languageVoice, languageText, religion, occupation);
+				clinic, phoneNumber, phoneType, mediaType, language, religion,
+				occupation);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
@@ -1534,14 +1533,13 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(year, nhisExpCal.get(Calendar.YEAR));
 		assertEquals(month, nhisExpCal.get(Calendar.MONTH));
 		assertEquals(day, nhisExpCal.get(Calendar.DAY_OF_MONTH));
-		assertEquals(primaryPhone, capturedPatient.getAttribute(
+		assertEquals(phoneNumber, capturedPatient.getAttribute(
 				phoneAttributeType).getValue());
-		assertEquals(primaryPhoneType, ContactNumberType
-				.valueOf(capturedPatient.getAttribute(phoneTypeAttributeType)
-						.getValue()));
-		assertEquals(mediaTypeInfo, MediaType.valueOf(capturedPatient
-				.getAttribute(mediaTypeAttributeType).getValue()));
-		assertEquals(languageText, capturedPatient.getAttribute(
+		assertEquals(phoneType, ContactNumberType.valueOf(capturedPatient
+				.getAttribute(phoneTypeAttributeType).getValue()));
+		assertEquals(mediaType, MediaType.valueOf(capturedPatient.getAttribute(
+				mediaTypeAttributeType).getValue()));
+		assertEquals(language, capturedPatient.getAttribute(
 				languageAttributeType).getValue());
 	}
 
@@ -1549,10 +1547,10 @@ public class RegistrarBeanTest extends TestCase {
 		Integer patientId = 2;
 		Date date = new Date();
 		Boolean dueDateConfirmed = true, registerPregProgram = true;
-		String primaryPhone = "2075555555", secondaryPhone = "2075555556";
-		String languageVoice = "LanguageVoice", languageText = "LanguageText";
-		ContactNumberType primaryPhoneType = ContactNumberType.PERSONAL, secondaryPhoneType = ContactNumberType.PUBLIC;
-		MediaType mediaTypeInfo = MediaType.TEXT, mediaTypeReminder = MediaType.VOICE;
+		String phoneNumber = "2075555555";
+		String language = "Language";
+		ContactNumberType phoneType = ContactNumberType.PERSONAL;
+		MediaType mediaType = MediaType.TEXT;
 		String howLearned = "HowLearned";
 
 		String pregnancyProgramName = "Weekly Pregnancy Message Program";
@@ -1640,23 +1638,21 @@ public class RegistrarBeanTest extends TestCase {
 				userService);
 
 		regBean.registerPregnancy(patientId, date, dueDateConfirmed,
-				registerPregProgram, primaryPhone, primaryPhoneType,
-				secondaryPhone, secondaryPhoneType, mediaTypeInfo,
-				mediaTypeReminder, languageVoice, languageText, howLearned);
+				registerPregProgram, phoneNumber, phoneType, mediaType,
+				language, howLearned);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, encounterService, obsService, conceptService,
 				userService);
 
 		Patient capturedPatient = patientCap.getValue();
-		assertEquals(primaryPhone, capturedPatient.getAttribute(
+		assertEquals(phoneNumber, capturedPatient.getAttribute(
 				phoneAttributeType).getValue());
-		assertEquals(primaryPhoneType, ContactNumberType
-				.valueOf(capturedPatient.getAttribute(phoneTypeAttributeType)
-						.getValue()));
-		assertEquals(mediaTypeInfo, MediaType.valueOf(capturedPatient
-				.getAttribute(mediaTypeAttributeType).getValue()));
-		assertEquals(languageText, capturedPatient.getAttribute(
+		assertEquals(phoneType, ContactNumberType.valueOf(capturedPatient
+				.getAttribute(phoneTypeAttributeType).getValue()));
+		assertEquals(mediaType, MediaType.valueOf(capturedPatient.getAttribute(
+				mediaTypeAttributeType).getValue()));
+		assertEquals(language, capturedPatient.getAttribute(
 				languageAttributeType).getValue());
 
 		MessageProgramEnrollment enrollment = enrollmentCap.getValue();

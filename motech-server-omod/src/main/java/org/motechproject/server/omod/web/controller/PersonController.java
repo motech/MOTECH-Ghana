@@ -150,20 +150,14 @@ public class PersonController {
 				errors.rejectValue("termsConsent",
 						"motechmodule.termsConsent.required");
 			}
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "primaryPhone",
-					"motechmodule.primaryPhone.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-					"primaryPhoneType",
-					"motechmodule.primaryPhoneType.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaTypeInfo",
-					"motechmodule.mediaTypeInfo.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-					"mediaTypeReminder",
-					"motechmodule.mediaTypeReminder.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "languageVoice",
-					"motechmodule.languageVoice.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "languageText",
-					"motechmodule.languageText.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phoneNumber",
+					"motechmodule.phoneNumber.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phoneType",
+					"motechmodule.phoneType.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaType",
+					"motechmodule.mediaType.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
+					"motechmodule.language.required");
 		}
 
 		if (!errors.hasErrors()) {
@@ -174,13 +168,12 @@ public class PersonController {
 							.getBirthDateEst(), person.getSex(), person
 							.getInsured(), person.getNhis(), person
 							.getNhisExpDate(), null, null, person.getAddress(),
-					person.getPrimaryPhone(), person.getDueDate(), person
+					person.getPhoneNumber(), person.getDueDate(), person
 							.getDueDateConfirmed(), person.getGravida(), person
 							.getParity(), person.getRegisterPregProgram(),
-					person.getRegisterPregProgram(), person
-							.getPrimaryPhoneType(), person.getMediaTypeInfo(),
-					person.getLanguageText(), null, null, null, null, person
-							.getMessagesStartWeek());
+					person.getRegisterPregProgram(), person.getPhoneType(),
+					person.getMediaType(), person.getLanguage(), null, null,
+					null, null, person.getMessagesStartWeek());
 
 			model.addAttribute("successMsg",
 					"motechmodule.Person.register.success");

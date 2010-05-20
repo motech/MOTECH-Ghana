@@ -60,56 +60,30 @@ public class WebModelConverterImpl implements WebModelConverter {
 
 		// TODO: populate registerPregProgram
 
-		PersonAttribute primaryPhoneAttr = patient
+		PersonAttribute phoneNumberAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
-		if (primaryPhoneAttr != null) {
-			webPatient.setPrimaryPhone(primaryPhoneAttr.getValue());
+		if (phoneNumberAttr != null) {
+			webPatient.setPhoneNumber(phoneNumberAttr.getValue());
 		}
 
-		PersonAttribute primaryPhoneTypeAttr = patient
+		PersonAttribute phoneTypeAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
-		if (primaryPhoneTypeAttr != null) {
-			webPatient.setPrimaryPhoneType(ContactNumberType
-					.valueOf(primaryPhoneTypeAttr.getValue()));
-		}
-
-		PersonAttribute secondaryPhoneAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
-		if (secondaryPhoneAttr != null) {
-			webPatient.setSecondaryPhone(secondaryPhoneAttr.getValue());
-		}
-
-		PersonAttribute secondaryPhoneTypeAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
-		if (secondaryPhoneTypeAttr != null) {
-			webPatient.setSecondaryPhoneType(ContactNumberType
-					.valueOf(secondaryPhoneTypeAttr.getValue()));
-		}
-
-		PersonAttribute mediaTypeInfoAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
-		if (mediaTypeInfoAttr != null) {
-			webPatient.setMediaTypeInfo(MediaType.valueOf(mediaTypeInfoAttr
+		if (phoneTypeAttr != null) {
+			webPatient.setPhoneType(ContactNumberType.valueOf(phoneTypeAttr
 					.getValue()));
 		}
 
-		PersonAttribute mediaTypeReminderAttr = patient
+		PersonAttribute mediaTypeAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
-		if (mediaTypeReminderAttr != null) {
-			webPatient.setMediaTypeReminder(MediaType
-					.valueOf(mediaTypeReminderAttr.getValue()));
+		if (mediaTypeAttr != null) {
+			webPatient
+					.setMediaType(MediaType.valueOf(mediaTypeAttr.getValue()));
 		}
 
-		PersonAttribute languageVoiceAttr = patient
+		PersonAttribute languageAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
-		if (languageVoiceAttr != null) {
-			webPatient.setLanguageVoice(languageVoiceAttr.getValue());
-		}
-
-		PersonAttribute languageTextAttr = patient
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
-		if (languageTextAttr != null) {
-			webPatient.setLanguageText(languageTextAttr.getValue());
+		if (languageAttr != null) {
+			webPatient.setLanguage(languageAttr.getValue());
 		}
 
 		PersonAttribute interestReasonAttr = patient

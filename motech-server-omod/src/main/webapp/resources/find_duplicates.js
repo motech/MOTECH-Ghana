@@ -8,15 +8,15 @@ function findDuplicates() {
 	var prefName = dwr.util.getValue('prefName');
 	var birthDate = dwr.util.getValue('birthDate');
 	var community = dwr.util.getValue('community');
-	var primaryPhone = dwr.util.getValue('primaryPhone');
+	var phoneNumber = dwr.util.getValue('phoneNumber');
 	var nhisNumber = dwr.util.getValue('nhis');
 	
 	if( motechId != '' || nhisNumber != '' || 
 			(((firstName != '' && lastName != '') || (prefName != '' && lastName != '')) && 
 			((birthDate != '' && birthDateRegex.test(birthDate)) || 
-			community != '' || primaryPhone != ''))) {
+			community != '' || phoneNumber != ''))) {
 		DWRMotechService.findMatchingPatients(firstName, lastName, prefName,
-			birthDate, community, primaryPhone, nhisNumber, motechId,
+			birthDate, community, phoneNumber, nhisNumber, motechId,
 			displayMatchesFunction);
 	}
 }
@@ -28,14 +28,14 @@ function findDuplicatesForPerson() {
 	var prefName = dwr.util.getValue('prefName');
 	var birthDate = dwr.util.getValue('birthDate');
 	var community = dwr.util.getValue('community');
-	var primaryPhone = dwr.util.getValue('primaryPhone');
+	var phoneNumber = dwr.util.getValue('phoneNumber');
 	
 	if(motechId != '' || 
 			(((firstName != '' && lastName != '') || (prefName != '' && lastName != '')) && 
 			((birthDate != '' && birthDateRegex.test(birthDate)) || 
-			community != '' || primaryPhone != ''))) {
+			community != '' || phoneNumber != ''))) {
 		DWRMotechService.findMatchingPatients(firstName, lastName, prefName,
-			birthDate, community, primaryPhone, null, motechId, 
+			birthDate, community, phoneNumber, null, motechId, 
 			displayMatchesFunctionForPerson);
 	}
 }
@@ -48,8 +48,7 @@ var tableColumnFunctions = [
 	function(webPatient) { return webPatient.community; },
 	function(webPatient) { return webPatient.regNumberGHS; },
 	function(webPatient) { return webPatient.nhis; },
-	function(webPatient) { return webPatient.primaryPhone; },
-	function(webPatient) { return webPatient.secondaryPhone; }
+	function(webPatient) { return webPatient.phoneNumber; }
 ];
 
 var tableColumnFunctionsForPerson = [
@@ -58,8 +57,7 @@ var tableColumnFunctionsForPerson = [
 	function(webPatient) { return webPatient.lastName; },
 	function(webPatient) { return formatDate(webPatient.birthDate); },
 	function(webPatient) { return webPatient.community; },
-	function(webPatient) { return webPatient.primaryPhone; },
-	function(webPatient) { return webPatient.secondaryPhone; }
+	function(webPatient) { return webPatient.phoneNumber; }
 ];
 
 function displayMatchesFunction(webPatientList) {

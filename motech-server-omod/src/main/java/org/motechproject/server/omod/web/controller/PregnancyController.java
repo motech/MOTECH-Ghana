@@ -123,20 +123,14 @@ public class PregnancyController {
 				errors.rejectValue("termsConsent",
 						"motechmodule.termsConsent.required");
 			}
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "primaryPhone",
-					"motechmodule.primaryPhone.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-					"primaryPhoneType",
-					"motechmodule.primaryPhoneType.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaTypeInfo",
-					"motechmodule.mediaTypeInfo.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-					"mediaTypeReminder",
-					"motechmodule.mediaTypeReminder.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "languageVoice",
-					"motechmodule.languageVoice.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "languageText",
-					"motechmodule.languageText.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phoneNumber",
+					"motechmodule.phoneNumber.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phoneType",
+					"motechmodule.phoneType.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaType",
+					"motechmodule.mediaType.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
+					"motechmodule.language.required");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "howLearned",
 					"motechmodule.howLearned.required");
 		}
@@ -144,14 +138,9 @@ public class PregnancyController {
 		if (!errors.hasErrors()) {
 			registrarBean.registerPregnancy(pregnancy.getId(), pregnancy
 					.getDueDate(), pregnancy.getDueDateConfirmed(), pregnancy
-					.getRegisterPregProgram(), pregnancy.getPrimaryPhone(),
-					pregnancy.getPrimaryPhoneType(), pregnancy
-							.getSecondaryPhone(), pregnancy
-							.getSecondaryPhoneType(), pregnancy
-							.getMediaTypeInfo(), pregnancy
-							.getMediaTypeReminder(), pregnancy
-							.getLanguageVoice(), pregnancy.getLanguageText(),
-					pregnancy.getHowLearned());
+					.getRegisterPregProgram(), pregnancy.getPhoneNumber(),
+					pregnancy.getPhoneType(), pregnancy.getMediaType(),
+					pregnancy.getLanguage(), pregnancy.getHowLearned());
 			;
 			model.addAttribute("successMsg",
 					"motechmodule.Pregnancy.register.success");

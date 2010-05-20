@@ -127,11 +127,9 @@ public class DemoPatientController {
 			result.setCommunity(getCommunities().get(0).getName());
 			result.setAddress("Somewhere important");
 			result.setRegisterPregProgram(Boolean.TRUE);
-			result.setPrimaryPhoneType(ContactNumberType.PERSONAL);
-			result.setMediaTypeInfo(MediaType.TEXT);
-			result.setMediaTypeReminder(MediaType.TEXT);
-			result.setLanguageText("en");
-			result.setLanguageVoice("en");
+			result.setPhoneType(ContactNumberType.PERSONAL);
+			result.setMediaType(MediaType.TEXT);
+			result.setLanguage("en");
 		}
 		return result;
 	}
@@ -183,20 +181,14 @@ public class DemoPatientController {
 				errors.rejectValue("termsConsent",
 						"motechmodule.termsConsent.required");
 			}
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "primaryPhone",
-					"motechmodule.primaryPhone.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-					"primaryPhoneType",
-					"motechmodule.primaryPhoneType.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaTypeInfo",
-					"motechmodule.mediaTypeInfo.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-					"mediaTypeReminder",
-					"motechmodule.mediaTypeReminder.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "languageVoice",
-					"motechmodule.languageVoice.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "languageText",
-					"motechmodule.languageText.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phoneNumber",
+					"motechmodule.phoneNumber.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phoneType",
+					"motechmodule.phoneType.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaType",
+					"motechmodule.mediaType.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
+					"motechmodule.language.required");
 		}
 
 		if (!errors.hasErrors()) {
@@ -210,13 +202,9 @@ public class DemoPatientController {
 							.getRegion(), patient.getDistrict(), patient
 							.getCommunity(), patient.getAddress(), patient
 							.getClinic(), patient.getRegisterPregProgram(),
-					patient.getPrimaryPhone(), patient.getPrimaryPhoneType(),
-					patient.getSecondaryPhone(), patient
-							.getSecondaryPhoneType(), patient
-							.getMediaTypeInfo(),
-					patient.getMediaTypeReminder(), patient.getLanguageVoice(),
-					patient.getLanguageText(), patient.getReligion(), patient
-							.getOccupation());
+					patient.getPhoneNumber(), patient.getPhoneType(), patient
+							.getMediaType(), patient.getLanguage(), patient
+							.getReligion(), patient.getOccupation());
 
 			model.addAttribute("successMsg",
 					"motechmodule.Demo.Patient.register.success");

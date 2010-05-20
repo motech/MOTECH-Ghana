@@ -187,20 +187,14 @@ public class MotherController {
 				errors.rejectValue("termsConsent",
 						"motechmodule.termsConsent.required");
 			}
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "primaryPhone",
-					"motechmodule.primaryPhone.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-					"primaryPhoneType",
-					"motechmodule.primaryPhoneType.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaTypeInfo",
-					"motechmodule.mediaTypeInfo.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-					"mediaTypeReminder",
-					"motechmodule.mediaTypeReminder.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "languageVoice",
-					"motechmodule.languageVoice.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "languageText",
-					"motechmodule.languageText.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phoneNumber",
+					"motechmodule.phoneNumber.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phoneType",
+					"motechmodule.phoneType.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaType",
+					"motechmodule.mediaType.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
+					"motechmodule.language.required");
 		}
 
 		if (!errors.hasErrors()) {
@@ -211,13 +205,12 @@ public class MotherController {
 							.getBirthDateEst(), Gender.FEMALE, mother
 							.getInsured(), mother.getNhis(), mother
 							.getNhisExpDate(), null, null, mother.getAddress(),
-					mother.getPrimaryPhone(), mother.getDueDate(), mother
+					mother.getPhoneNumber(), mother.getDueDate(), mother
 							.getDueDateConfirmed(), mother.getGravida(), mother
 							.getParity(), mother.getRegisterPregProgram(),
-					mother.getRegisterPregProgram(), mother
-							.getPrimaryPhoneType(), mother.getMediaTypeInfo(),
-					mother.getLanguageText(), null, null, null, null, mother
-							.getMessagesStartWeek());
+					mother.getRegisterPregProgram(), mother.getPhoneType(),
+					mother.getMediaType(), mother.getLanguage(), null, null,
+					null, null, mother.getMessagesStartWeek());
 
 			model.addAttribute("successMsg",
 					"motechmodule.Mother.register.success");

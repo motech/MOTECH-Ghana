@@ -119,13 +119,10 @@ public class EditPatientController {
 					.getNhis(), webPatient.getNhisExpDate(), webPatient
 					.getRegion(), webPatient.getDistrict(), webPatient
 					.getCommunity(), webPatient.getAddress(), webPatient
-					.getClinic(), webPatient.getPrimaryPhone(), webPatient
-					.getPrimaryPhoneType(), webPatient.getSecondaryPhone(),
-					webPatient.getSecondaryPhoneType(), webPatient
-							.getMediaTypeInfo(), webPatient
-							.getMediaTypeReminder(), webPatient
-							.getLanguageVoice(), webPatient.getLanguageText(),
-					webPatient.getReligion(), webPatient.getOccupation());
+					.getClinic(), webPatient.getPhoneNumber(), webPatient
+					.getPhoneType(), webPatient.getMediaType(), webPatient
+					.getLanguage(), webPatient.getReligion(), webPatient
+					.getOccupation());
 
 			model.addAttribute("successMsg",
 					"motechmodule.Patient.edit.success");
