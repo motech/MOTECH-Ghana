@@ -294,8 +294,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek, Integer pregnancyDueDateObsId) {
 
+		PatientService patientService = contextService.getPatientService();
+
 		setPatientAttributes(patient, phoneNumber, ownership, format, language,
 				dayOfWeek, timeOfDay, howLearned, reason, null, null, null);
+
+		patientService.savePatient(patient);
 
 		enrollPatient(patient, community, enroll, consent, messagesStartWeek,
 				pregnancyDueDateObsId);

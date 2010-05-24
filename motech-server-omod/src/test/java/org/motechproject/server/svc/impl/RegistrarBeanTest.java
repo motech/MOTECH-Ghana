@@ -1559,6 +1559,7 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getObsService()).andReturn(obsService);
 		expect(contextService.getConceptService()).andReturn(conceptService)
 				.atLeastOnce();
+		expect(contextService.getPatientService()).andReturn(patientService);
 
 		expect(
 				motechService.getActivePregnancies(patientId, pregConcept,
@@ -1596,6 +1597,8 @@ public class RegistrarBeanTest extends TestCase {
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INTEREST_REASON))
 				.andReturn(interestReasonAttributeType);
+		expect(patientService.savePatient((Patient) anyObject())).andReturn(
+				new Patient());
 
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation);
