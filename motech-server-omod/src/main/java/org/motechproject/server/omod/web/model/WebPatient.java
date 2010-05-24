@@ -3,13 +3,19 @@ package org.motechproject.server.omod.web.model;
 import java.util.Date;
 
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
+import org.motechproject.ws.HowLearned;
 import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.MediaType;
+import org.motechproject.ws.RegistrantType;
+import org.motechproject.ws.RegistrationMode;
 
 public class WebPatient {
 
 	private Integer id;
+	private RegistrationMode registrationMode;
+	private RegistrantType registrantType;
 	private Integer motechId;
 	private String firstName;
 	private String middleName;
@@ -18,30 +24,28 @@ public class WebPatient {
 	private Date birthDate;
 	private Boolean birthDateEst;
 	private Gender sex;
-	private Boolean registeredGHS;
-	private String regNumberGHS;
-	private String motherMotechId;
+	private Integer motherMotechId;
 	private Boolean insured;
 	private String nhis;
 	private Date nhisExpDate;
 	private String region;
 	private String district;
-	private String community;
+	private Integer communityId;
+	private String communityName;
 	private String address;
-	private Integer clinic;
 	private Date dueDate;
 	private Boolean dueDateConfirmed;
 	private Integer gravida;
 	private Integer parity;
-	private Boolean registerPregProgram;
-	private Boolean termsConsent;
+	private Boolean enroll;
+	private Boolean consent;
 	private String phoneNumber;
 	private ContactNumberType phoneType;
 	private MediaType mediaType;
 	private String language;
-	private String religion;
-	private String occupation;
-	private String howLearned;
+	private DayOfWeek dayOfWeek;
+	private Date timeOfDay;
+	private HowLearned howLearned;
 	private InterestReason interestReason;
 	private Integer messagesStartWeek;
 
@@ -54,6 +58,22 @@ public class WebPatient {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public RegistrationMode getRegistrationMode() {
+		return registrationMode;
+	}
+
+	public void setRegistrationMode(RegistrationMode registrationMode) {
+		this.registrationMode = registrationMode;
+	}
+
+	public RegistrantType getRegistrantType() {
+		return registrantType;
+	}
+
+	public void setRegistrantType(RegistrantType registrantType) {
+		this.registrantType = registrantType;
 	}
 
 	public Integer getMotechId() {
@@ -120,27 +140,11 @@ public class WebPatient {
 		this.sex = sex;
 	}
 
-	public Boolean getRegisteredGHS() {
-		return registeredGHS;
-	}
-
-	public void setRegisteredGHS(Boolean registeredGHS) {
-		this.registeredGHS = registeredGHS;
-	}
-
-	public String getRegNumberGHS() {
-		return regNumberGHS;
-	}
-
-	public void setRegNumberGHS(String regNumberGHS) {
-		this.regNumberGHS = regNumberGHS;
-	}
-
-	public String getMotherMotechId() {
+	public Integer getMotherMotechId() {
 		return motherMotechId;
 	}
 
-	public void setMotherMotechId(String motherMotechId) {
+	public void setMotherMotechId(Integer motherMotechId) {
 		this.motherMotechId = motherMotechId;
 	}
 
@@ -184,12 +188,20 @@ public class WebPatient {
 		this.district = district;
 	}
 
-	public String getCommunity() {
-		return community;
+	public Integer getCommunityId() {
+		return communityId;
 	}
 
-	public void setCommunity(String community) {
-		this.community = community;
+	public void setCommunityId(Integer communityId) {
+		this.communityId = communityId;
+	}
+
+	public String getCommunityName() {
+		return communityName;
+	}
+
+	public void setCommunityName(String communityName) {
+		this.communityName = communityName;
 	}
 
 	public String getAddress() {
@@ -198,14 +210,6 @@ public class WebPatient {
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public Integer getClinic() {
-		return clinic;
-	}
-
-	public void setClinic(Integer clinic) {
-		this.clinic = clinic;
 	}
 
 	public Date getDueDate() {
@@ -240,20 +244,20 @@ public class WebPatient {
 		this.parity = parity;
 	}
 
-	public Boolean getRegisterPregProgram() {
-		return registerPregProgram;
+	public Boolean getEnroll() {
+		return enroll;
 	}
 
-	public void setRegisterPregProgram(Boolean registerPregProgram) {
-		this.registerPregProgram = registerPregProgram;
+	public void setEnroll(Boolean enroll) {
+		this.enroll = enroll;
 	}
 
-	public Boolean getTermsConsent() {
-		return termsConsent;
+	public Boolean getConsent() {
+		return consent;
 	}
 
-	public void setTermsConsent(Boolean termsConsent) {
-		this.termsConsent = termsConsent;
+	public void setConsent(Boolean consent) {
+		this.consent = consent;
 	}
 
 	public String getPhoneNumber() {
@@ -288,27 +292,27 @@ public class WebPatient {
 		this.language = language;
 	}
 
-	public String getReligion() {
-		return religion;
+	public DayOfWeek getDayOfWeek() {
+		return dayOfWeek;
 	}
 
-	public void setReligion(String religion) {
-		this.religion = religion;
+	public void setDayOfWeek(DayOfWeek dayOfWeek) {
+		this.dayOfWeek = dayOfWeek;
 	}
 
-	public String getOccupation() {
-		return occupation;
+	public Date getTimeOfDay() {
+		return timeOfDay;
 	}
 
-	public void setOccupation(String occupation) {
-		this.occupation = occupation;
+	public void setTimeOfDay(Date timeOfDay) {
+		this.timeOfDay = timeOfDay;
 	}
 
-	public String getHowLearned() {
+	public HowLearned getHowLearned() {
 		return howLearned;
 	}
 
-	public void setHowLearned(String howLearned) {
+	public void setHowLearned(HowLearned howLearned) {
 		this.howLearned = howLearned;
 	}
 

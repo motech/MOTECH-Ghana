@@ -281,29 +281,29 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					null);
 		}
 
-		enrollPatient(registrantType, patient, community, enroll, consent,
-				messagesStartWeek, pregnancyDueDateObsId);
+		enrollPatient(patient, community, enroll, consent, messagesStartWeek,
+				pregnancyDueDateObsId);
 
 		return patient;
 	}
 
-	private void enrollPatientWithAttributes(RegistrantType patientType,
-			Patient patient, Community community, Boolean enroll,
-			Boolean consent, ContactNumberType ownership, String phoneNumber,
-			MediaType format, String language, DayOfWeek dayOfWeek,
-			Date timeOfDay, InterestReason reason, HowLearned howLearned,
+	private void enrollPatientWithAttributes(Patient patient,
+			Community community, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, String phoneNumber, MediaType format,
+			String language, DayOfWeek dayOfWeek, Date timeOfDay,
+			InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek, Integer pregnancyDueDateObsId) {
 
 		setPatientAttributes(patient, phoneNumber, ownership, format, language,
 				dayOfWeek, timeOfDay, howLearned, reason, null, null, null);
 
-		enrollPatient(patientType, patient, community, enroll, consent,
-				messagesStartWeek, pregnancyDueDateObsId);
+		enrollPatient(patient, community, enroll, consent, messagesStartWeek,
+				pregnancyDueDateObsId);
 	}
 
-	private void enrollPatient(RegistrantType patientType, Patient patient,
-			Community community, Boolean enroll, Boolean consent,
-			Integer messagesStartWeek, Integer pregnancyDueDateObsId) {
+	private void enrollPatient(Patient patient, Community community,
+			Boolean enroll, Boolean consent, Integer messagesStartWeek,
+			Integer pregnancyDueDateObsId) {
 
 		boolean enrollPatient = Boolean.TRUE.equals(enroll)
 				&& Boolean.TRUE.equals(consent);
@@ -311,18 +311,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Integer referenceDateObsId = null;
 		String infoMessageProgramName = null;
 
-		if (patientType == RegistrantType.PREGNANT_MOTHER) {
+		if (pregnancyDueDateObsId != null) {
 			infoMessageProgramName = "Weekly Pregnancy Message Program";
 
 			referenceDateObsId = pregnancyDueDateObsId;
 
-		} else if (patientType == RegistrantType.CHILD_UNDER_FIVE) {
+		} else if (patient.getAge() != null && patient.getAge() < 5) {
 			infoMessageProgramName = "Weekly Info Child Message Program";
 
 			// TODO: If mother specified, Remove mother's pregnancy message
 			// enrollment
 
-		} else if (patientType == RegistrantType.OTHER) {
+		} else if (messagesStartWeek != null) {
 			infoMessageProgramName = "Weekly Info Pregnancy Message Program";
 
 			if (messagesStartWeek != null && enrollPatient) {
@@ -369,35 +369,33 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void demoRegisterPatient(Integer motechId, String firstName,
-			String middleName, String lastName, String prefName,
-			Date birthDate, Boolean birthDateEst, Gender sex,
-			Boolean registeredGHS, String regNumberGHS, Boolean insured,
-			String nhis, Date nhisExpDate, String region, String district,
-			String community, String address, Integer clinic,
-			Boolean registerPregProgram, String phoneNumber,
-			ContactNumberType phoneType, MediaType mediaType, String language,
-			String religion, String occupation) {
+	public void demoRegisterPatient(RegistrationMode registrationMode,
+			Integer motechId, String firstName, String middleName,
+			String lastName, String preferredName, Date dateOfBirth,
+			Boolean estimatedBirthDate, Gender sex, Boolean insured,
+			String nhis, Date nhisExpires, Community community, String address,
+			String phoneNumber, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, MediaType format, String language,
+			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
+			HowLearned howLearned) {
 
 		PatientService patientService = contextService.getPatientService();
 
-		// TODO: Update demo patient registration
 		Patient patient = createPatient(motechId, firstName, middleName,
-				lastName, prefName, birthDate, birthDateEst, sex, insured,
-				nhis, nhisExpDate, address, phoneNumber, phoneType, mediaType,
-				language, null, null, null, null);
+				lastName, preferredName, dateOfBirth, estimatedBirthDate, sex,
+				insured, nhis, nhisExpires, address, phoneNumber, ownership,
+				format, language, dayOfWeek, timeOfDay, howLearned, reason);
 
 		patient = patientService.savePatient(patient);
 
-		if (registerPregProgram) {
+		if (Boolean.TRUE.equals(enroll) && Boolean.TRUE.equals(consent)) {
 			addMessageProgramEnrollment(patient.getPatientId(),
 					"Demo Minute Message Program", null);
 		}
 	}
 
 	@Transactional
-	public void demoEnrollPatient(String regNumGHS) {
-		Patient patient = getPatientByMotechId(regNumGHS);
+	public void demoEnrollPatient(Patient patient) {
 		addMessageProgramEnrollment(patient.getPersonId(),
 				"Input Demo Message Program", null);
 	}
@@ -539,32 +537,26 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void editPatient(Integer id, String firstName, String middleName,
-			String lastName, String prefName, Date birthDate,
-			Boolean birthDateEst, Gender sex, Boolean registeredGHS,
-			String regNumberGHS, Boolean insured, String nhis,
-			Date nhisExpDate, String region, String district, String community,
-			String address, Integer clinic, String phoneNumber,
-			ContactNumberType phoneType, MediaType mediaType, String language,
-			String religion, String occupation) {
+	public void editPatient(Patient patient, String firstName,
+			String middleName, String lastName, String preferredName,
+			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
+			Boolean insured, String nhis, Date nhisExpires,
+			Community community, String address, String phoneNumber,
+			Date expDeliveryDate, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, MediaType format, String language,
+			DayOfWeek dayOfWeek, Date timeOfDay) {
 
 		PatientService patientService = contextService.getPatientService();
 
-		Patient patient = patientService.getPatient(id);
-		if (patient == null) {
-			log.error("No matching patient for id: " + id);
-			return;
-		}
-
-		patient.setBirthdate(birthDate);
-		patient.setBirthdateEstimated(birthDateEst);
+		patient.setBirthdate(dateOfBirth);
+		patient.setBirthdateEstimated(estimatedBirthDate);
 		patient.setGender(GenderTypeConverter.toOpenMRSString(sex));
 
 		Set<PersonName> patientNames = patient.getNames();
 		if (patientNames.isEmpty()) {
 			patient.addName(new PersonName(firstName, middleName, lastName));
-			if (prefName != null) {
-				PersonName preferredPersonName = new PersonName(prefName,
+			if (preferredName != null) {
+				PersonName preferredPersonName = new PersonName(preferredName,
 						middleName, lastName);
 				preferredPersonName.setPreferred(true);
 				patient.addName(preferredPersonName);
@@ -572,8 +564,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		} else {
 			for (PersonName name : patient.getNames()) {
 				if (name.isPreferred()) {
-					if (prefName != null) {
-						name.setGivenName(prefName);
+					if (preferredName != null) {
+						name.setGivenName(preferredName);
 						name.setFamilyName(lastName);
 						name.setMiddleName(middleName);
 					} else {
@@ -590,65 +582,76 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		PersonAddress patientAddress = patient.getPersonAddress();
 		if (patientAddress == null) {
 			patientAddress = new PersonAddress();
-			patientAddress.setRegion(region);
-			patientAddress.setCountyDistrict(district);
-			patientAddress.setCityVillage(community);
 			patientAddress.setAddress1(address);
 			patient.addAddress(patientAddress);
 		} else {
-			patientAddress.setRegion(region);
-			patientAddress.setCountyDistrict(district);
-			patientAddress.setCityVillage(community);
 			patientAddress.setAddress1(address);
 		}
 
-		PatientIdentifier patientId = patient.getPatientIdentifier();
-		if (patientId == null) {
-			patientId = new PatientIdentifier();
-			patientId.setIdentifierType(getMotechPatientIdType());
-			patientId.setLocation(getGhanaLocation());
-			patientId.setIdentifier(regNumberGHS);
-			patient.addIdentifier(patientId);
-		} else {
-			patientId.setIdentifier(regNumberGHS);
+		Community currentCommunity = getCommunityByPatient(patient);
+		if (currentCommunity != null
+				&& currentCommunity.getCommunityId() != null
+				&& community != null
+				&& community.getCommunityId() != null
+				&& !currentCommunity.getCommunityId().equals(
+						community.getCommunityId())) {
+			currentCommunity.getResidents().remove(patient);
+			// Query flushes session
+			if (getCommunityByPatient(patient) == null) {
+				community.getResidents().add(patient);
+				currentCommunity = community;
+			}
 		}
 
-		// TODO: Update to handle removed attributes and changed types
-		setPatientAttributes(patient, phoneNumber, phoneType, mediaType,
-				language, null, null, null, null, insured, nhis, nhisExpDate);
+		setPatientAttributes(patient, phoneNumber, ownership, format, language,
+				dayOfWeek, timeOfDay, null, null, insured, nhis, nhisExpires);
 
 		patientService.savePatient(patient);
+
+		Integer dueDateObsId = null;
+		if (expDeliveryDate != null) {
+			Obs pregnancy = getActivePregnancy(patient.getPatientId());
+			Obs dueDateObs = getActivePregnancyDueDateObs(patient
+					.getPatientId(), pregnancy);
+			if (dueDateObs != null) {
+				dueDateObsId = dueDateObs.getObsId();
+				if (!expDeliveryDate.equals(dueDateObs.getValueDatetime())) {
+					dueDateObsId = updatePregnancyDueDateObs(pregnancy,
+							dueDateObs, expDeliveryDate, dueDateObs
+									.getEncounter());
+				}
+			}
+		}
+
+		if (Boolean.FALSE.equals(enroll)) {
+			removeAllMessageProgramEnrollments(patient.getPatientId());
+		} else {
+			enrollPatient(patient, currentCommunity, enroll, consent, null,
+					dueDateObsId);
+		}
 	}
 
 	@Transactional
-	public void registerPregnancy(Integer id, Date dueDate,
-			Boolean dueDateConfirmed, Boolean registerPregProgram,
-			String phoneNumber, ContactNumberType phoneType,
-			MediaType mediaType, String language, String howLearned) {
+	public void registerPregnancy(Patient patient, Date expDeliveryDate,
+			Boolean deliveryDateConfirmed, Integer gravida, Integer parity,
+			Boolean enroll, Boolean consent, String phoneNumber,
+			ContactNumberType ownership, MediaType format, String language,
+			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
+			HowLearned howLearned) {
 
-		PatientService patientService = contextService.getPatientService();
-
-		Patient patient = patientService.getPatient(id);
-		if (patient == null) {
-			log.error("No matching patient for id: " + id);
-			return;
-		}
-
-		// TODO: Update to handle removed attributes and changed types
-		setPatientAttributes(patient, phoneNumber, phoneType, mediaType,
-				language, null, null, null, null, null, null, null);
-
-		patientService.savePatient(patient);
+		Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
 
 		Location facility = getGhanaLocation();
 
-		Integer dueDateObsId = registerPregnancy(facility, patient, dueDate,
-				dueDateConfirmed, null, null, null);
-
-		if (registerPregProgram) {
-			addMessageProgramEnrollment(patient.getPatientId(),
-					"Weekly Pregnancy Message Program", dueDateObsId);
+		if (pregnancyDueDateObsId == null) {
+			pregnancyDueDateObsId = registerPregnancy(facility, patient,
+					expDeliveryDate, deliveryDateConfirmed, gravida, parity,
+					null);
 		}
+
+		enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
+				phoneNumber, format, language, dayOfWeek, timeOfDay, reason,
+				howLearned, null, pregnancyDueDateObsId);
 	}
 
 	private Integer registerPregnancy(Location facility, Patient patient,
@@ -736,10 +739,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					estDeliveryDate, null, null, null, null);
 		}
 
-		enrollPatientWithAttributes(RegistrantType.PREGNANT_MOTHER, patient,
-				null, enroll, consent, ownership, phoneNumber, format,
-				language, dayOfWeek, timeOfDay, reason, howLearned,
-				messagesStartWeek, pregnancyDueDateObsId);
+		enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
+				phoneNumber, format, language, dayOfWeek, timeOfDay, reason,
+				howLearned, messagesStartWeek, pregnancyDueDateObsId);
 	}
 
 	private Integer checkExistingPregnancy(Patient patient) {
@@ -780,10 +782,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					estDeliveryDate, null, gravida, parity, height);
 		}
 
-		enrollPatientWithAttributes(RegistrantType.PREGNANT_MOTHER, patient,
-				null, enroll, consent, ownership, phoneNumber, format,
-				language, dayOfWeek, timeOfDay, reason, howLearned,
-				messagesStartWeek, pregnancyDueDateObsId);
+		enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
+				phoneNumber, format, language, dayOfWeek, timeOfDay, reason,
+				howLearned, messagesStartWeek, pregnancyDueDateObsId);
 
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getANCRegistrationEncounterType());
@@ -808,10 +809,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Date timeOfDay, InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek) {
 
-		enrollPatientWithAttributes(RegistrantType.CHILD_UNDER_FIVE, patient,
-				null, enroll, consent, ownership, phoneNumber, format,
-				language, dayOfWeek, timeOfDay, reason, howLearned,
-				messagesStartWeek, null);
+		enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
+				phoneNumber, format, language, dayOfWeek, timeOfDay, reason,
+				howLearned, messagesStartWeek, null);
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -2087,7 +2087,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				pregnancyStatusConcept);
 	}
 
-	private void updatePregnancyDueDateObs(Obs pregnancyObs, Obs dueDateObs,
+	private Integer updatePregnancyDueDateObs(Obs pregnancyObs, Obs dueDateObs,
 			Date newDueDate, Encounter encounter) {
 		ObsService obsService = contextService.getObsService();
 		MotechService motechService = contextService.getMotechService();
@@ -2112,6 +2112,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			enrollment.setObsId(newDueDateObs.getObsId());
 			motechService.saveMessageProgramEnrollment(enrollment);
 		}
+		return newDueDateObs.getObsId();
 	}
 
 	public Patient getPatientById(Integer patientId) {

@@ -24,7 +24,10 @@ public class DWRMotechService {
 
 	public DWRMotechService() {
 		contextService = new ContextServiceImpl();
-		webModelConverter = new WebModelConverterImpl();
+		WebModelConverterImpl webModelConverterImpl = new WebModelConverterImpl();
+		webModelConverterImpl.setRegistrarBean(contextService
+				.getRegistrarBean());
+		webModelConverter = webModelConverterImpl;
 	}
 
 	public void setContextService(ContextService contextService) {

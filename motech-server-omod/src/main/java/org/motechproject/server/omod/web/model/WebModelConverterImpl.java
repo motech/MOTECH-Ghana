@@ -6,11 +6,16 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motechproject.server.model.Community;
+import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DayOfWeek;
+import org.motechproject.ws.HowLearned;
 import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.MediaType;
+import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PersonAddress;
@@ -20,6 +25,12 @@ import org.openmrs.PersonName;
 public class WebModelConverterImpl implements WebModelConverter {
 
 	private final Log log = LogFactory.getLog(WebModelConverterImpl.class);
+
+	RegistrarBean registrarBean;
+
+	public void setRegistrarBean(RegistrarBean registrarBean) {
+		this.registrarBean = registrarBean;
+	}
 
 	public void patientToWeb(Patient patient, WebPatient webPatient) {
 
@@ -31,20 +42,21 @@ public class WebModelConverterImpl implements WebModelConverter {
 				motechId = Integer.parseInt(patientId.getIdentifier());
 			} catch (Exception e) {
 				log.error("Unable to parse Motech ID: "
-						+ patientId.getIdentifier(), e);
+						+ patientId.getIdentifier() + ", for Patient ID:"
+						+ patient.getPatientId(), e);
 			}
 			webPatient.setMotechId(motechId);
 		}
 
-		webPatient.setId(patient.getPersonId());
+		webPatient.setId(patient.getPatientId());
 		for (PersonName name : patient.getNames()) {
-			if (!name.isPreferred() && name.getGivenName() != null) {
+			if (name.isPreferred()) {
+				webPatient.setPrefName(name.getGivenName());
+			} else {
 				webPatient.setFirstName(name.getGivenName());
-				break;
 			}
 		}
 		webPatient.setLastName(patient.getFamilyName());
-		webPatient.setPrefName(patient.getGivenName());
 		webPatient.setBirthDate(patient.getBirthdate());
 		webPatient.setBirthDateEst(patient.getBirthdateEstimated());
 		webPatient.setSex(GenderTypeConverter.valueOfOpenMRS(patient
@@ -52,13 +64,32 @@ public class WebModelConverterImpl implements WebModelConverter {
 
 		PersonAddress patientAddress = patient.getPersonAddress();
 		if (patientAddress != null) {
-			webPatient.setRegion(patientAddress.getRegion());
-			webPatient.setDistrict(patientAddress.getCountyDistrict());
-			webPatient.setCommunity(patientAddress.getCityVillage());
 			webPatient.setAddress(patientAddress.getAddress1());
 		}
 
-		// TODO: populate registerPregProgram
+		Community community = registrarBean.getCommunityByPatient(patient);
+		if (community != null) {
+			webPatient.setCommunityId(community.getCommunityId());
+			webPatient.setCommunityName(community.getName());
+
+			if (community.getFacility() != null
+					&& community.getFacility().getLocation() != null) {
+				Location facilityLocation = community.getFacility()
+						.getLocation();
+				webPatient.setRegion(facilityLocation.getRegion());
+				webPatient.setDistrict(facilityLocation.getCountyDistrict());
+			}
+		}
+
+		String[] enrollments = registrarBean
+				.getActiveMessageProgramEnrollmentNames(patient);
+		if (enrollments != null && enrollments.length > 0) {
+			webPatient.setEnroll(true);
+			webPatient.setConsent(true);
+		} else {
+			webPatient.setEnroll(false);
+			webPatient.setConsent(false);
+		}
 
 		PersonAttribute phoneNumberAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
@@ -69,15 +100,29 @@ public class WebModelConverterImpl implements WebModelConverter {
 		PersonAttribute phoneTypeAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
 		if (phoneTypeAttr != null) {
-			webPatient.setPhoneType(ContactNumberType.valueOf(phoneTypeAttr
-					.getValue()));
+			ContactNumberType phoneType = null;
+			try {
+				phoneType = ContactNumberType.valueOf(phoneTypeAttr.getValue());
+			} catch (Exception e) {
+				log.error("Unable to parse phone type: "
+						+ phoneTypeAttr.getValue() + ", for Patient ID:"
+						+ patient.getPatientId(), e);
+			}
+			webPatient.setPhoneType(phoneType);
 		}
 
 		PersonAttribute mediaTypeAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
 		if (mediaTypeAttr != null) {
-			webPatient
-					.setMediaType(MediaType.valueOf(mediaTypeAttr.getValue()));
+			MediaType mediaType = null;
+			try {
+				mediaType = MediaType.valueOf(mediaTypeAttr.getValue());
+			} catch (Exception e) {
+				log.error("Unable to parse media type: "
+						+ mediaTypeAttr.getValue() + ", for Patient ID:"
+						+ patient.getPatientId(), e);
+			}
+			webPatient.setMediaType(mediaType);
 		}
 
 		PersonAttribute languageAttr = patient
@@ -86,17 +131,63 @@ public class WebModelConverterImpl implements WebModelConverter {
 			webPatient.setLanguage(languageAttr.getValue());
 		}
 
+		PersonAttribute dayOfWeekAttr = patient
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY);
+		if (dayOfWeekAttr != null) {
+			DayOfWeek dayOfWeek = null;
+			try {
+				dayOfWeek = DayOfWeek.valueOf(dayOfWeekAttr.getValue());
+			} catch (Exception e) {
+				log.error("Unable to parse day of week: "
+						+ dayOfWeekAttr.getValue() + ", for Patient ID:"
+						+ patient.getPatientId(), e);
+			}
+			webPatient.setDayOfWeek(dayOfWeek);
+		}
+
+		PersonAttribute timeOfDayAttr = patient
+				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
+		if (timeOfDayAttr != null) {
+			Date timeOfDay = null;
+			String timeOfDayString = timeOfDayAttr.getValue();
+			try {
+				SimpleDateFormat timeFormat = new SimpleDateFormat(
+						MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME);
+				timeOfDay = timeFormat.parse(timeOfDayString);
+			} catch (ParseException e) {
+				log.error("Cannot parse time of day Date: " + timeOfDayString
+						+ ", for Patient ID:" + patient.getPatientId(), e);
+			}
+			webPatient.setTimeOfDay(timeOfDay);
+		}
+
 		PersonAttribute interestReasonAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_INTEREST_REASON);
 		if (interestReasonAttr != null) {
-			webPatient.setInterestReason(InterestReason
-					.valueOf(interestReasonAttr.getValue()));
+			InterestReason interestReason = null;
+			try {
+				interestReason = InterestReason.valueOf(interestReasonAttr
+						.getValue());
+			} catch (Exception e) {
+				log.error("Unable to parse interest reason: "
+						+ interestReasonAttr.getValue() + ", for Patient ID:"
+						+ patient.getPatientId(), e);
+			}
+			webPatient.setInterestReason(interestReason);
 		}
 
 		PersonAttribute howLearnedAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED);
 		if (howLearnedAttr != null) {
-			webPatient.setHowLearned(howLearnedAttr.getValue());
+			HowLearned howLearned = null;
+			try {
+				howLearned = HowLearned.valueOf(howLearnedAttr.getValue());
+			} catch (Exception e) {
+				log.error("Unable to parse how learned: "
+						+ howLearnedAttr.getValue() + ", for Patient ID:"
+						+ patient.getPatientId(), e);
+			}
+			webPatient.setHowLearned(howLearned);
 		}
 
 		PersonAttribute nhisExpDateAttr = patient
@@ -110,7 +201,8 @@ public class WebModelConverterImpl implements WebModelConverter {
 				nhisExpDate = dateFormat.parse(nhisExpDateString);
 			} catch (ParseException e) {
 				log.error("Cannot parse NHIS Expiration Date: "
-						+ nhisExpDateString, e);
+						+ nhisExpDateString + ", for Patient ID:"
+						+ patient.getPatientId(), e);
 			}
 			webPatient.setNhisExpDate(nhisExpDate);
 		}
@@ -127,7 +219,8 @@ public class WebModelConverterImpl implements WebModelConverter {
 			webPatient.setNhis(nhisAttr.getValue());
 		}
 
-		// TODO: populate dueDate
+		webPatient.setDueDate(registrarBean.getActivePregnancyDueDate(patient
+				.getPatientId()));
 	}
 
 }

@@ -23,14 +23,14 @@
 <form:errors cssClass="error" />
 <table>
 	<tr>
-		<td><label for="regNumberGHS">GHS Registration Number:</label></td>
-		<td><form:input path="regNumberGHS" /></td>
-		<td><form:errors path="regNumberGHS" cssClass="error" /></td>
+		<td><label for="motechId">MoTeCH ID:</label></td>
+		<td><form:input path="motechId" /></td>
+		<td><form:errors path="motechId" cssClass="error" /></td>
 	</tr>
 	<tr>
-		<td><label for="termsConsent">Info Service Terms Consent:</label></td>
-		<td><form:checkbox path="termsConsent" /></td>
-		<td><form:errors path="termsConsent" cssClass="error" /></td>
+		<td><label for="consent">Info Service Terms Consent:</label></td>
+		<td><form:checkbox path="consent" /></td>
+		<td><form:errors path="consent" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td colspan="2"><input type="submit" /></td>

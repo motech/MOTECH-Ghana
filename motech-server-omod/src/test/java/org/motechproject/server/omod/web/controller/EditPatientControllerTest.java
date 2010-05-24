@@ -18,12 +18,15 @@ import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.MediaType;
 import org.openmrs.Patient;
 import org.openmrs.api.PatientService;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -34,7 +37,6 @@ public class EditPatientControllerTest extends TestCase {
 	ContextService contextService;
 	MotechService motechService;
 	WebModelConverter webModelConverter;
-	Errors errors;
 	SessionStatus status;
 	PatientService patientService;
 
@@ -50,7 +52,6 @@ public class EditPatientControllerTest extends TestCase {
 		motechService = createMock(MotechService.class);
 
 		patientService = createMock(PatientService.class);
-		errors = createMock(Errors.class);
 		status = createMock(SessionStatus.class);
 	}
 
@@ -61,13 +62,12 @@ public class EditPatientControllerTest extends TestCase {
 		patientService = null;
 		contextService = null;
 		motechService = null;
-		errors = null;
 		status = null;
 	}
 
 	public void testGetRegions() {
 		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getAllRegions())
+		expect(motechService.getRegions(MotechConstants.LOCATION_GHANA))
 				.andReturn(new ArrayList<String>());
 
 		replay(contextService, motechService);
@@ -79,7 +79,9 @@ public class EditPatientControllerTest extends TestCase {
 
 	public void testGetDistricts() {
 		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getAllDistricts()).andReturn(
+		expect(
+				motechService.getDistricts(MotechConstants.LOCATION_GHANA,
+						MotechConstants.LOCATION_UPPER_EAST)).andReturn(
 				new ArrayList<String>());
 
 		replay(contextService, motechService);
@@ -91,8 +93,11 @@ public class EditPatientControllerTest extends TestCase {
 
 	public void testGetCommunities() {
 		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getAllCommunities()).andReturn(
-				new ArrayList<Community>());
+		expect(
+				motechService.getCommunities(MotechConstants.LOCATION_GHANA,
+						MotechConstants.LOCATION_UPPER_EAST,
+						MotechConstants.LOCATION_KASSENA_NANKANA_WEST))
+				.andReturn(new ArrayList<Community>());
 
 		replay(contextService, motechService);
 
@@ -147,18 +152,17 @@ public class EditPatientControllerTest extends TestCase {
 	}
 
 	public void testEditPatient() {
-		Integer patientId = 1, clinic = 2;
+		Integer patientId = 1, communityId = 11112;
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
-		String region = "Region", district = "District", community = "Community", address = "Address";
-		String regNumberGHS = "123ABC", nhis = "1234DEF";
+		String region = "Region", district = "District", address = "Address", nhis = "1234DEF";
 		String phoneNumber = "12075555555";
-		String religion = "Religion", occupation = "Occupation";
-		Boolean birthDateEst = true, registeredGHS = true, insured = true;
+		Boolean birthDateEst = true, enroll = true, consent = true, insured = true;
 		Date date = new Date();
 		Gender sex = Gender.FEMALE;
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType mediaType = MediaType.TEXT;
 		String language = "Language";
+		DayOfWeek dayOfWeek = DayOfWeek.FRIDAY;
 
 		WebPatient patient = new WebPatient();
 		patient.setId(patientId);
@@ -169,40 +173,46 @@ public class EditPatientControllerTest extends TestCase {
 		patient.setBirthDate(date);
 		patient.setBirthDateEst(birthDateEst);
 		patient.setSex(sex);
-		patient.setRegisteredGHS(registeredGHS);
-		patient.setRegNumberGHS(regNumberGHS);
 		patient.setInsured(insured);
 		patient.setNhis(nhis);
 		patient.setNhisExpDate(date);
 		patient.setRegion(region);
 		patient.setDistrict(district);
-		patient.setCommunity(community);
+		patient.setCommunityId(communityId);
 		patient.setAddress(address);
-		patient.setClinic(clinic);
 		patient.setPhoneNumber(phoneNumber);
 		patient.setPhoneType(phoneType);
 		patient.setMediaType(mediaType);
 		patient.setLanguage(language);
-		patient.setReligion(religion);
-		patient.setOccupation(occupation);
+		patient.setDueDate(date);
+		patient.setEnroll(enroll);
+		patient.setConsent(consent);
+		patient.setDayOfWeek(dayOfWeek);
+		patient.setTimeOfDay(date);
 
+		Errors errors = new BeanPropertyBindingResult(patient, "patient");
 		ModelMap model = new ModelMap();
 
-		expect(errors.hasErrors()).andReturn(false);
+		Patient openmrsPatient = new Patient(1);
+		Community community = new Community();
 
-		registrarBean.editPatient(patientId, firstName, middleName, lastName,
-				prefName, date, birthDateEst, sex, registeredGHS, regNumberGHS,
-				insured, nhis, date, region, district, community, address,
-				clinic, phoneNumber, phoneType, mediaType, language, religion,
-				occupation);
+		expect(registrarBean.getPatientById(patientId)).andReturn(
+				openmrsPatient);
+		expect(registrarBean.getCommunityById(communityId))
+				.andReturn(community);
+
+		registrarBean.editPatient(openmrsPatient, firstName, middleName,
+				lastName, prefName, date, birthDateEst, sex, insured, nhis,
+				date, community, address, phoneNumber, date, enroll, consent,
+				phoneType, mediaType, language, dayOfWeek, date);
 
 		status.setComplete();
 
-		replay(registrarBean, errors, status);
+		replay(registrarBean, status);
 
 		controller.submitForm(patient, errors, model, status);
 
-		verify(registrarBean, errors, status);
+		verify(registrarBean, status);
 
 		assertTrue("Missing success message in model", model
 				.containsAttribute("successMsg"));

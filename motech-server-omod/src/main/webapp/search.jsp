@@ -42,14 +42,14 @@
 		<td><form:errors path="nhis" cssClass="error" /></td>
 	</tr>
 	<tr>
-		<td><form:label path="community">Community:</form:label></td>
+		<td><form:label path="communityId">Community:</form:label></td>
 		<td>
-			<form:select path="community">
+			<form:select path="communityId">
 				<form:option value="" label="" />
-				<form:options items="${communities}" itemValue="name" itemLabel="name" />
+				<form:options items="${communities}" itemValue="communityId" itemLabel="name" />
 			</form:select>
 		</td>
-		<td><form:errors path="community" cssClass="error" /></td>
+		<td><form:errors path="communityId" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td><form:label path="phoneNumber">Phone Number:</form:label></td>
@@ -89,16 +89,14 @@
 					<td>${webPatient.lastName}</td>
 					<td>${webPatient.prefName}</td>
 					<td><openmrs:formatDate date="${webPatient.birthDate}" format="dd/MM/yyyy" /></td>
-					<td>${webPatient.community}</td>
+					<td>${webPatient.communityName}</td>
 					<td>${webPatient.nhis}</td>
 					<td>${webPatient.phoneNumber}</td>
 					<td>
 						<a href="editpatient.form?id=${webPatient.id}">Edit</a>
 					</td>
 					<td>
-						<c:if test="${not empty webPatient.regNumberGHS}">
-							<a href="pregnancy.form?id=${webPatient.id}">Add Pregnancy</a>
-						</c:if>
+						<a href="pregnancy.form?id=${webPatient.id}">Add Pregnancy</a>
 					</td>
 				</tr>
 			</c:forEach>

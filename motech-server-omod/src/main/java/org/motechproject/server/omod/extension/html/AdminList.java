@@ -52,11 +52,9 @@ public class AdminList extends AdministrationSectionExt {
 
 		Map<String, String> map = new HashMap<String, String>();
 
-		map.put("module/motechmodule/mother.form", "Register Pregnant Mother");
+		map.put("module/motechmodule/patient.form", "Register Patient");
 		map.put("module/motechmodule/clinic.form", "Register Clinic");
 		map.put("module/motechmodule/nurse.form", "Register Nurse");
-		map.put("module/motechmodule/child.form", "Register Child");
-		map.put("module/motechmodule/person.form", "Register Person");
 		map.put("module/motechmodule/viewdata.form", "View Data");
 		map.put("module/motechmodule/search.form", "Search");
 		map.put("module/motechmodule/blackout.form", "Blackout Interval");

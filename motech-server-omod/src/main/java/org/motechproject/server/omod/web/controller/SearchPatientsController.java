@@ -97,7 +97,7 @@ public class SearchPatientsController {
 					+ ", " + webPatient.getLastName() + ", "
 					+ webPatient.getPrefName() + ", "
 					+ webPatient.getBirthDate() + ", "
-					+ webPatient.getCommunity() + ", "
+					+ webPatient.getCommunityId() + ", "
 					+ webPatient.getPhoneNumber() + ", " + webPatient.getNhis()
 					+ ", " + webPatient.getMotechId());
 		}
@@ -107,13 +107,25 @@ public class SearchPatientsController {
 			motechIdString = webPatient.getMotechId().toString();
 		}
 
+		String communityName = null;
+		if (webPatient.getCommunityId() != null) {
+			Community community = registrarBean.getCommunityById(webPatient
+					.getCommunityId());
+			if (community == null) {
+				errors.rejectValue("communityId",
+						"motechmodule.communityId.notexist");
+			} else {
+				communityName = community.getName();
+			}
+		}
+
 		if (!errors.hasErrors()) {
 			List<WebPatient> matchingWebPatientsList = new ArrayList<WebPatient>();
 			List<Patient> matchingPatientsList = registrarBean.getPatients(
 					webPatient.getFirstName(), webPatient.getLastName(),
 					webPatient.getPrefName(), webPatient.getBirthDate(),
-					webPatient.getCommunity(), webPatient.getPhoneNumber(),
-					webPatient.getNhis(), motechIdString);
+					communityName, webPatient.getPhoneNumber(), webPatient
+							.getNhis(), motechIdString);
 
 			for (Patient patient : matchingPatientsList) {
 				WebPatient newWebPatient = new WebPatient();

@@ -3,10 +3,7 @@ package org.motechproject.server.omod.web.controller;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,9 +17,8 @@ import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Gender;
-import org.motechproject.ws.HowLearned;
-import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.MediaType;
+import org.motechproject.ws.RegistrantType;
 import org.motechproject.ws.RegistrationMode;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +39,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
-@RequestMapping("/module/motechmodule/demo-patient")
+@RequestMapping("/module/motechmodule/patient")
 @SessionAttributes("patient")
-public class DemoPatientController {
+public class PatientController {
 
-	private static Log log = LogFactory.getLog(DemoPatientController.class);
+	private static Log log = LogFactory.getLog(PatientController.class);
 
 	private WebModelConverter webModelConverter;
 
@@ -70,6 +66,11 @@ public class DemoPatientController {
 		this.registrarBean = registrarBean;
 	}
 
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
+	}
+
+	@Autowired
 	public void setWebModelConverter(WebModelConverter webModelConverter) {
 		this.webModelConverter = webModelConverter;
 	}
@@ -121,45 +122,24 @@ public class DemoPatientController {
 
 	@ModelAttribute("patient")
 	public WebPatient getWebPatient(@RequestParam(required = false) Integer id) {
-		WebPatient result = new WebPatient();
+		WebPatient webPatient = new WebPatient();
+		// Set default region for new patients
+		webPatient.setRegion(MotechConstants.LOCATION_UPPER_EAST);
 		if (id != null) {
 			Patient patient = contextService.getPatientService().getPatient(id);
 
 			if (patient != null) {
-				webModelConverter.patientToWeb(patient, result);
+				webModelConverter.patientToWeb(patient, webPatient);
 			}
-		} else {
-			// Pre-populate so demo entry isn't a long process
-			result.setRegistrationMode(RegistrationMode.AUTO_GENERATE_ID);
-			result.setFirstName("Jane");
-			result.setLastName("Doe");
-			result.setSex(Gender.FEMALE);
-			Calendar dobCal = new GregorianCalendar();
-			dobCal.set(1984, 0, 4);
-			result.setBirthDate(dobCal.getTime());
-			result.setBirthDateEst(Boolean.FALSE);
-			result.setInsured(Boolean.FALSE);
-			result.setRegion(getRegions().get(0));
-			result.setDistrict(getDistricts().get(0));
-			result.setCommunityId(getCommunities().get(0).getCommunityId());
-			result.setAddress("Somewhere important");
-			result.setEnroll(Boolean.TRUE);
-			result.setPhoneType(ContactNumberType.PERSONAL);
-			result.setMediaType(MediaType.TEXT);
-			result.setLanguage("en");
-			result.setHowLearned(HowLearned.MOTECH_FIELD_AGENT);
-			result
-					.setInterestReason(InterestReason.KNOW_MORE_PREGNANCY_CHILDBIRTH);
 		}
-		return result;
+		return webPatient;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String submitForm(@ModelAttribute("patient") WebPatient patient,
-			Errors errors, ModelMap model, SessionStatus status,
-			HttpSession session) {
+			Errors errors, ModelMap model, SessionStatus status) {
 
-		log.debug("Register Demo Patient");
+		log.debug("Register Patient");
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "registrationMode",
 				"motechmodule.registrationMode.required");
@@ -182,7 +162,44 @@ public class DemoPatientController {
 						"motechmodule.motechId.nonunique");
 			}
 		}
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "registrantType",
+				"motechmodule.registrantType.required");
 
+		if (patient.getRegistrantType() == RegistrantType.PREGNANT_MOTHER) {
+			if (patient.getSex() != null && patient.getSex() != Gender.FEMALE) {
+				errors.rejectValue("sex", "motechmodule.sex.female.required");
+			}
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "dueDate",
+					"motechmodule.dueDate.required");
+			if (patient.getDueDate() != null) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.add(Calendar.MONTH, 9);
+				if (patient.getDueDate().after(calendar.getTime())) {
+					errors.rejectValue("dueDate",
+							"motechmodule.dueDate.overninemonths");
+				}
+			}
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors,
+					"dueDateConfirmed",
+					"motechmodule.dueDateConfirmed.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "gravida",
+					"motechmodule.gravida.required");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "parity",
+					"motechmodule.parity.required");
+			if (patient.getParity() != null && patient.getGravida() != null
+					&& patient.getParity() > patient.getGravida()) {
+				errors.rejectValue("parity", "motechmodule.parity.range");
+			}
+		} else if (patient.getRegistrantType() == RegistrantType.CHILD_UNDER_FIVE) {
+			if (patient.getBirthDate() != null) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.add(Calendar.YEAR, -5);
+				if (patient.getBirthDate().before(calendar.getTime())) {
+					errors.rejectValue("birthDate",
+							"motechmodule.birthDate.notunderfive");
+				}
+			}
+		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName",
 				"motechmodule.firstName.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName",
@@ -238,6 +255,11 @@ public class DemoPatientController {
 					"motechmodule.interestReason.required");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "howLearned",
 					"motechmodule.howLearned.required");
+			if (patient.getRegistrantType() == RegistrantType.OTHER) {
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors,
+						"messagesStartWeek",
+						"motechmodule.messagesStartWeek.required");
+			}
 		}
 
 		Community community = null;
@@ -250,6 +272,16 @@ public class DemoPatientController {
 			}
 		}
 
+		Patient mother = null;
+		if (patient.getMotherMotechId() != null) {
+			mother = openmrsBean.getPatientByMotechId(patient
+					.getMotherMotechId().toString());
+			if (mother == null) {
+				errors.rejectValue("motherMotechId",
+						"motechmodule.motechId.notexist");
+			}
+		}
+
 		if (patient.getPhoneNumber() != null
 				&& !patient.getPhoneNumber().matches(
 						MotechConstants.PHONE_REGEX_PATTERN)) {
@@ -258,30 +290,30 @@ public class DemoPatientController {
 		}
 
 		if (!errors.hasErrors()) {
-			registrarBean.demoRegisterPatient(patient.getRegistrationMode(),
-					patient.getMotechId(), patient.getFirstName(), patient
-							.getMiddleName(), patient.getLastName(), patient
-							.getPrefName(), patient.getBirthDate(), patient
-							.getBirthDateEst(), patient.getSex(), patient
-							.getInsured(), patient.getNhis(), patient
-							.getNhisExpDate(), community, patient.getAddress(),
-					patient.getPhoneNumber(), patient.getEnroll(), patient
-							.getConsent(), patient.getPhoneType(), patient
-							.getMediaType(), patient.getLanguage(), patient
-							.getDayOfWeek(), patient.getTimeOfDay(), patient
-							.getInterestReason(), patient.getHowLearned());
+			registrarBean.registerPatient(patient.getRegistrationMode(),
+					patient.getMotechId(), patient.getRegistrantType(), patient
+							.getFirstName(), patient.getMiddleName(), patient
+							.getLastName(), patient.getPrefName(), patient
+							.getBirthDate(), patient.getBirthDateEst(), patient
+							.getSex(), patient.getInsured(), patient.getNhis(),
+					patient.getNhisExpDate(), mother, community, patient
+							.getAddress(), patient.getPhoneNumber(), patient
+							.getDueDate(), patient.getDueDateConfirmed(),
+					patient.getGravida(), patient.getParity(), patient
+							.getEnroll(), patient.getConsent(), patient
+							.getPhoneType(), patient.getMediaType(), patient
+							.getLanguage(), patient.getDayOfWeek(), patient
+							.getTimeOfDay(), patient.getInterestReason(),
+					patient.getHowLearned(), patient.getMessagesStartWeek());
 
 			model.addAttribute("successMsg",
-					"motechmodule.Demo.Patient.register.success");
+					"motechmodule.Patient.register.success");
 
 			status.setComplete();
 
-			// Save the registration number for next step of demo
-			session.setAttribute("demoLastMotechId", patient.getMotechId());
-
-			return "redirect:/module/motechmodule/demo-success.htm";
+			return "redirect:/module/motechmodule/viewdata.form";
 		}
 
-		return "/module/motechmodule/demo-patient";
+		return "/module/motechmodule/patient";
 	}
 }

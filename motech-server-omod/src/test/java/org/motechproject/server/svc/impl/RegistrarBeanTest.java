@@ -538,9 +538,6 @@ public class RegistrarBeanTest extends TestCase {
 		InterestReason reason = InterestReason.CURRENTLY_PREGNANT;
 		HowLearned howLearned = HowLearned.FRIEND;
 
-		String pregnancyProgramName = "Weekly Pregnancy Message Program";
-		String careProgramName = "Expected Care Message Program";
-
 		Patient patient = new Patient(2);
 		Location ghanaLocation = new Location(1);
 		Community community = new Community();
@@ -552,8 +549,6 @@ public class RegistrarBeanTest extends TestCase {
 		community.setFacility(facility);
 
 		Capture<Patient> patientCap = new Capture<Patient>();
-		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
-		Capture<MessageProgramEnrollment> enrollment2Cap = new Capture<MessageProgramEnrollment>();
 		Capture<Encounter> pregnancyEncounterCap = new Capture<Encounter>();
 		Capture<Obs> pregnancyObsCap = new Capture<Obs>();
 
@@ -562,8 +557,6 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
 		expect(contextService.getLocationService()).andReturn(locationService)
-				.atLeastOnce();
-		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
 		expect(contextService.getEncounterService())
 				.andReturn(encounterService).atLeastOnce();
@@ -632,23 +625,6 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				patient);
-
-		expect(
-				motechService.getActiveMessageProgramEnrollments(patient
-						.getPatientId(), pregnancyProgramName, null))
-				.andReturn(new ArrayList<MessageProgramEnrollment>());
-		expect(
-				motechService
-						.saveMessageProgramEnrollment(capture(enrollment1Cap)))
-				.andReturn(new MessageProgramEnrollment());
-		expect(
-				motechService.getActiveMessageProgramEnrollments(patient
-						.getPatientId(), careProgramName, null)).andReturn(
-				new ArrayList<MessageProgramEnrollment>());
-		expect(
-				motechService
-						.saveMessageProgramEnrollment(capture(enrollment2Cap)))
-				.andReturn(new MessageProgramEnrollment());
 
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation);
@@ -763,22 +739,6 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(hour, timeOfDayCal.get(Calendar.HOUR_OF_DAY));
 		assertEquals(min, timeOfDayCal.get(Calendar.MINUTE));
 
-		MessageProgramEnrollment enrollment1 = enrollment1Cap.getValue();
-		assertEquals(patient.getPatientId(), enrollment1.getPersonId());
-		assertEquals(pregnancyProgramName, enrollment1.getProgram());
-		assertNotNull("Enrollment start date should not be null", enrollment1
-				.getStartDate());
-		assertNull("Enrollment end date should be null", enrollment1
-				.getEndDate());
-
-		MessageProgramEnrollment enrollment2 = enrollment2Cap.getValue();
-		assertEquals(patient.getPatientId(), enrollment2.getPersonId());
-		assertEquals(careProgramName, enrollment2.getProgram());
-		assertNotNull("Enrollment start date should not be null", enrollment2
-				.getStartDate());
-		assertNull("Enrollment end date should be null", enrollment2
-				.getEndDate());
-
 		Encounter pregnancyEncounter = pregnancyEncounterCap.getValue();
 		assertNotNull(pregnancyEncounter.getEncounterDatetime());
 		assertEquals(ghanaLocation, pregnancyEncounter.getLocation());
@@ -849,10 +809,15 @@ public class RegistrarBeanTest extends TestCase {
 		InterestReason reason = InterestReason.FAMILY_FRIEND_PREGNANT;
 		HowLearned howLearned = HowLearned.FRIEND;
 
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.YEAR, -2);
+		Date birthDate = calendar.getTime();
+
 		String pregnancyProgramName = "Weekly Info Child Message Program";
 		String careProgramName = "Expected Care Message Program";
 
 		Patient child = new Patient(1);
+		child.setBirthdate(birthDate);
 		Patient mother = new Patient(2);
 		Location ghanaLocation = new Location(1);
 		Community community = new Community();
@@ -970,8 +935,8 @@ public class RegistrarBeanTest extends TestCase {
 
 		regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
 				RegistrantType.CHILD_UNDER_FIVE, firstName, middleName,
-				lastName, prefName, date, birthDateEst, gender, insured, nhis,
-				date, mother, null, address, phoneNumber, date,
+				lastName, prefName, birthDate, birthDateEst, gender, insured,
+				nhis, date, mother, null, address, phoneNumber, date,
 				dueDateConfirmed, gravida, parity, enroll, consent, phoneType,
 				mediaType, language, dayOfWeek, date, reason, howLearned, null);
 
@@ -998,7 +963,7 @@ public class RegistrarBeanTest extends TestCase {
 				assertEquals(middleName, personName.getMiddleName());
 			}
 		}
-		assertEquals(date, capturedPatient.getBirthdate());
+		assertEquals(birthDate, capturedPatient.getBirthdate());
 		assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
 		assertEquals(GenderTypeConverter.toOpenMRSString(gender),
 				capturedPatient.getGender());
@@ -1413,21 +1378,24 @@ public class RegistrarBeanTest extends TestCase {
 	}
 
 	public void testEditPatientAll() throws ParseException {
-		Integer patientId = 2, clinic = 1;
+		Integer patientId = 2;
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
-		String regNumberGHS = "123ABC", nhis = "456DEF";
-		String region = "Region", district = "District", community = "Community", address = "Address";
-		String phoneNumber = "2075555555";
-		String language = "Language";
-		String religion = "Religion", occupation = "Occupation";
+		String nhis = "456DEF", address = "Address";
+		String phoneNumber = "2075555555", language = "Language";
 		Date date = new Date();
 		Gender sex = Gender.FEMALE;
-		Boolean birthDateEst = true, registeredGHS = true, insured = true;
+		Boolean birthDateEst = true, enroll = false, consent = true, insured = true;
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType mediaType = MediaType.TEXT;
+		DayOfWeek dayOfWeek = DayOfWeek.MONDAY;
+		Date dueDate = null;
 
 		Patient patient = new Patient(patientId);
-		Location ghanaLocation = new Location(1);
+		Community oldCommunity = new Community();
+		oldCommunity.setCommunityId(1);
+		oldCommunity.getResidents().add(patient);
+		Community community = new Community();
+		community.setCommunityId(2);
 
 		Capture<Patient> patientCap = new Capture<Patient>();
 
@@ -1435,17 +1403,8 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
-		expect(contextService.getLocationService()).andReturn(locationService)
+		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
-
-		expect(patientService.getPatient(patientId)).andReturn(patient);
-
-		expect(
-				patientService
-						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
-				.andReturn(motechIdType);
-		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
-				.andReturn(ghanaLocation);
 
 		expect(
 				personService
@@ -1475,6 +1434,21 @@ public class RegistrarBeanTest extends TestCase {
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE))
 				.andReturn(languageAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY))
+				.andReturn(deliveryDayAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME))
+				.andReturn(deliveryTimeAttributeType);
+		expect(motechService.getCommunityByPatient(patient)).andReturn(
+				oldCommunity);
+		expect(motechService.getCommunityByPatient(patient)).andReturn(null);
+		expect(
+				motechService.getActiveMessageProgramEnrollments(patientId,
+						null, null)).andReturn(
+				new ArrayList<MessageProgramEnrollment>());
 
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				patient);
@@ -1483,11 +1457,10 @@ public class RegistrarBeanTest extends TestCase {
 				locationService, userService, encounterService, obsService,
 				conceptService);
 
-		regBean.editPatient(patientId, firstName, middleName, lastName,
-				prefName, date, birthDateEst, sex, registeredGHS, regNumberGHS,
-				insured, nhis, date, region, district, community, address,
-				clinic, phoneNumber, phoneType, mediaType, language, religion,
-				occupation);
+		regBean.editPatient(patient, firstName, middleName, lastName, prefName,
+				date, birthDateEst, sex, insured, nhis, date, community,
+				address, phoneNumber, dueDate, enroll, consent, phoneType,
+				mediaType, language, dayOfWeek, date);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
@@ -1509,18 +1482,16 @@ public class RegistrarBeanTest extends TestCase {
 				assertEquals(middleName, name.getMiddleName());
 			}
 		}
-		assertEquals(region, capturedPatient.getPersonAddress().getRegion());
-		assertEquals(district, capturedPatient.getPersonAddress()
-				.getCountyDistrict());
-		assertEquals(community, capturedPatient.getPersonAddress()
-				.getCityVillage());
+		assertEquals(0, oldCommunity.getResidents().size());
+		assertEquals(1, community.getResidents().size());
+		assertEquals(capturedPatient, community.getResidents().iterator()
+				.next());
 		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
-		assertEquals(regNumberGHS, capturedPatient.getPatientIdentifier(
-				motechIdType).getIdentifier());
 		assertEquals(insured, Boolean.valueOf(capturedPatient.getAttribute(
 				insuredAttributeType).getValue()));
 		assertEquals(nhis, capturedPatient.getAttribute(nhisAttributeType)
 				.getValue());
+
 		Date nhisExpDate = (new SimpleDateFormat(MotechConstants.DATE_FORMAT))
 				.parse(capturedPatient.getAttribute(nhisExpirationType)
 						.getValue());
@@ -1533,6 +1504,7 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(year, nhisExpCal.get(Calendar.YEAR));
 		assertEquals(month, nhisExpCal.get(Calendar.MONTH));
 		assertEquals(day, nhisExpCal.get(Calendar.DAY_OF_MONTH));
+
 		assertEquals(phoneNumber, capturedPatient.getAttribute(
 				phoneAttributeType).getValue());
 		assertEquals(phoneType, ContactNumberType.valueOf(capturedPatient
@@ -1541,30 +1513,41 @@ public class RegistrarBeanTest extends TestCase {
 				mediaTypeAttributeType).getValue()));
 		assertEquals(language, capturedPatient.getAttribute(
 				languageAttributeType).getValue());
+
+		assertEquals(dayOfWeek, DayOfWeek.valueOf(capturedPatient.getAttribute(
+				deliveryDayAttributeType).getValue()));
+
+		Date timeOfDayDate = (new SimpleDateFormat(
+				MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME))
+				.parse(capturedPatient.getAttribute(deliveryTimeAttributeType)
+						.getValue());
+		Calendar timeCal = Calendar.getInstance();
+		timeCal.setTime(date);
+		int hour = timeCal.get(Calendar.HOUR_OF_DAY);
+		int minute = timeCal.get(Calendar.MINUTE);
+		timeCal.setTime(timeOfDayDate);
+		assertEquals(hour, timeCal.get(Calendar.HOUR_OF_DAY));
+		assertEquals(minute, timeCal.get(Calendar.MINUTE));
 	}
 
-	public void testRegisterPregnancy() {
-		Integer patientId = 2;
+	public void testRegisterPregnancy() throws ParseException {
+		Integer patientId = 2, parity = 0, gravida = 0;
 		Date date = new Date();
-		Boolean dueDateConfirmed = true, registerPregProgram = true;
+		Boolean dueDateConfirmed = true, enroll = true, consent = true;
 		String phoneNumber = "2075555555";
 		String language = "Language";
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType mediaType = MediaType.TEXT;
-		String howLearned = "HowLearned";
-
-		String pregnancyProgramName = "Weekly Pregnancy Message Program";
+		HowLearned howLearned = HowLearned.FRIEND;
+		InterestReason reason = InterestReason.CURRENTLY_PREGNANT;
+		DayOfWeek dayOfWeek = DayOfWeek.MONDAY;
 
 		Patient patient = new Patient(patientId);
 		Location ghanaLocation = new Location(1);
 
-		Capture<Patient> patientCap = new Capture<Patient>();
-		Capture<MessageProgramEnrollment> enrollmentCap = new Capture<MessageProgramEnrollment>();
 		Capture<Encounter> pregnancyEncounterCap = new Capture<Encounter>();
 		Capture<Obs> pregnancyObsCap = new Capture<Obs>();
 
-		expect(contextService.getPatientService()).andReturn(patientService)
-				.atLeastOnce();
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
 		expect(contextService.getMotechService()).andReturn(motechService)
@@ -1577,7 +1560,10 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getConceptService()).andReturn(conceptService)
 				.atLeastOnce();
 
-		expect(patientService.getPatient(patientId)).andReturn(patient);
+		expect(
+				motechService.getActivePregnancies(patientId, pregConcept,
+						pregStatusConcept)).andReturn(new ArrayList<Obs>());
+
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
@@ -1594,8 +1580,22 @@ public class RegistrarBeanTest extends TestCase {
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE))
 				.andReturn(languageAttributeType);
-		expect(patientService.savePatient(capture(patientCap))).andReturn(
-				new Patient());
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY))
+				.andReturn(deliveryDayAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME))
+				.andReturn(deliveryTimeAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED))
+				.andReturn(howLearnedAttributeType);
+		expect(
+				personService
+						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INTEREST_REASON))
+				.andReturn(interestReasonAttributeType);
 
 		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
 				.andReturn(ghanaLocation);
@@ -1607,11 +1607,15 @@ public class RegistrarBeanTest extends TestCase {
 		expect(encounterService.saveEncounter(capture(pregnancyEncounterCap)))
 				.andReturn(new Encounter());
 		expect(conceptService.getConcept(MotechConstants.CONCEPT_PREGNANCY))
-				.andReturn(pregConcept);
+				.andReturn(pregConcept).atLeastOnce();
 		expect(
 				conceptService
 						.getConcept(MotechConstants.CONCEPT_PREGNANCY_STATUS))
-				.andReturn(pregStatusConcept);
+				.andReturn(pregStatusConcept).atLeastOnce();
+		expect(conceptService.getConcept(MotechConstants.CONCEPT_GRAVIDA))
+				.andReturn(gravidaConcept);
+		expect(conceptService.getConcept(MotechConstants.CONCEPT_PARITY))
+				.andReturn(parityConcept);
 		expect(
 				conceptService
 						.getConcept(MotechConstants.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT))
@@ -1624,44 +1628,40 @@ public class RegistrarBeanTest extends TestCase {
 				obsService.saveObs(capture(pregnancyObsCap),
 						(String) anyObject())).andReturn(new Obs());
 
-		expect(
-				motechService.getActiveMessageProgramEnrollments(patient
-						.getPatientId(), pregnancyProgramName, null))
-				.andReturn(new ArrayList<MessageProgramEnrollment>());
-		expect(
-				motechService
-						.saveMessageProgramEnrollment(capture(enrollmentCap)))
-				.andReturn(new MessageProgramEnrollment());
-
 		replay(contextService, patientService, motechService, personService,
 				locationService, encounterService, obsService, conceptService,
 				userService);
 
-		regBean.registerPregnancy(patientId, date, dueDateConfirmed,
-				registerPregProgram, phoneNumber, phoneType, mediaType,
-				language, howLearned);
+		regBean.registerPregnancy(patient, date, dueDateConfirmed, gravida,
+				parity, enroll, consent, phoneNumber, phoneType, mediaType,
+				language, dayOfWeek, date, reason, howLearned);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, encounterService, obsService, conceptService,
 				userService);
 
-		Patient capturedPatient = patientCap.getValue();
-		assertEquals(phoneNumber, capturedPatient.getAttribute(
-				phoneAttributeType).getValue());
-		assertEquals(phoneType, ContactNumberType.valueOf(capturedPatient
-				.getAttribute(phoneTypeAttributeType).getValue()));
-		assertEquals(mediaType, MediaType.valueOf(capturedPatient.getAttribute(
+		assertEquals(phoneNumber, patient.getAttribute(phoneAttributeType)
+				.getValue());
+		assertEquals(phoneType, ContactNumberType.valueOf(patient.getAttribute(
+				phoneTypeAttributeType).getValue()));
+		assertEquals(mediaType, MediaType.valueOf(patient.getAttribute(
 				mediaTypeAttributeType).getValue()));
-		assertEquals(language, capturedPatient.getAttribute(
-				languageAttributeType).getValue());
+		assertEquals(language, patient.getAttribute(languageAttributeType)
+				.getValue());
+		assertEquals(dayOfWeek, DayOfWeek.valueOf(patient.getAttribute(
+				deliveryDayAttributeType).getValue()));
 
-		MessageProgramEnrollment enrollment = enrollmentCap.getValue();
-		assertEquals(patient.getPatientId(), enrollment.getPersonId());
-		assertEquals(pregnancyProgramName, enrollment.getProgram());
-		assertNotNull("Enrollment start date should not be null", enrollment
-				.getStartDate());
-		assertNull("Enrollment end date should be null", enrollment
-				.getEndDate());
+		Date timeOfDayDate = (new SimpleDateFormat(
+				MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME))
+				.parse(patient.getAttribute(deliveryTimeAttributeType)
+						.getValue());
+		Calendar timeCal = Calendar.getInstance();
+		timeCal.setTime(date);
+		int hour = timeCal.get(Calendar.HOUR_OF_DAY);
+		int minute = timeCal.get(Calendar.MINUTE);
+		timeCal.setTime(timeOfDayDate);
+		assertEquals(hour, timeCal.get(Calendar.HOUR_OF_DAY));
+		assertEquals(minute, timeCal.get(Calendar.MINUTE));
 
 		Encounter pregnancyEncounter = pregnancyEncounterCap.getValue();
 		assertNotNull(pregnancyEncounter.getEncounterDatetime());
@@ -1677,11 +1677,13 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(pregConcept, pregnancyObs.getConcept());
 
 		Set<Obs> pregnancyObsMembers = pregnancyObs.getGroupMembers();
-		assertEquals(3, pregnancyObsMembers.size());
+		assertEquals(5, pregnancyObsMembers.size());
 
 		boolean containsPregnancyStatusObs = false;
 		boolean containsDueDateObs = false;
 		boolean containsDueDateConfirmedObs = false;
+		boolean containsGravidaObs = false;
+		boolean containsParityObs = false;
 		Iterator<Obs> obsIterator = pregnancyObsMembers.iterator();
 		while (obsIterator.hasNext()) {
 			Obs memberObs = obsIterator.next();
@@ -1696,12 +1698,22 @@ public class RegistrarBeanTest extends TestCase {
 			} else if (dateConfConfirmedConcept.equals(memberObs.getConcept())) {
 				containsDueDateConfirmedObs = true;
 				assertEquals(dueDateConfirmed, memberObs.getValueAsBoolean());
+			} else if (gravidaConcept.equals(memberObs.getConcept())) {
+				containsGravidaObs = true;
+				assertEquals(gravida.intValue(), memberObs.getValueNumeric()
+						.intValue());
+			} else if (parityConcept.equals(memberObs.getConcept())) {
+				containsParityObs = true;
+				assertEquals(parity.intValue(), memberObs.getValueNumeric()
+						.intValue());
 			}
 		}
 		assertTrue("Pregnancy Status Obs missing", containsPregnancyStatusObs);
 		assertTrue("Due Date Obs missing", containsDueDateObs);
 		assertTrue("Due Date Confirmed Obs missing",
 				containsDueDateConfirmedObs);
+		assertTrue("Gravida Confirmed Obs missing", containsGravidaObs);
+		assertTrue("Parity Obs missing", containsParityObs);
 	}
 
 	public void testSetMessageStatusSuccessMessageFoundNotTroubled() {

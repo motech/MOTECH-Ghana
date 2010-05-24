@@ -31,7 +31,7 @@ import org.springframework.web.bind.support.SessionStatus;
 @SessionAttributes("enrollpatient")
 public class DemoEnrollController {
 
-	private static Log log = LogFactory.getLog(MotherController.class);
+	private static Log log = LogFactory.getLog(DemoEnrollController.class);
 
 	private WebModelConverter webModelConverter;
 
@@ -87,43 +87,48 @@ public class DemoEnrollController {
 			}
 		}
 
-		String regNum = (String) session.getAttribute("demoLastGHSRN");
-		if (regNum != null)
-			result.setRegNumberGHS(regNum);
+		Integer motechId = (Integer) session.getAttribute("demoLastMotechId");
+		if (motechId != null)
+			result.setMotechId(motechId);
 
 		return result;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String submitForm(
-			@ModelAttribute("enrollpatient") WebPatient patient, Errors errors,
-			ModelMap model, SessionStatus status, HttpSession session) {
+			@ModelAttribute("enrollpatient") WebPatient webPatient,
+			Errors errors, ModelMap model, SessionStatus status,
+			HttpSession session) {
 
-		log.debug("Register Demo Patient");
+		log.debug("Enroll Demo Patient");
 
-		ValidationUtils.rejectIfEmpty(errors, "regNumberGHS",
-				"motechmodule.regNumberGHS.required");
+		ValidationUtils.rejectIfEmpty(errors, "motechId",
+				"motechmodule.motechId.required");
 
-		if (patient.getRegNumberGHS() != null
-				&& openmrsBean.getPatientByMotechId(patient.getRegNumberGHS()) == null) {
-			errors.rejectValue("regNumberGHS",
-					"motechmodule.regNumberGHS.notexist");
+		Patient patient = null;
+		if (webPatient.getMotechId() != null) {
+			patient = openmrsBean.getPatientByMotechId(webPatient.getMotechId()
+					.toString());
+			if (patient == null) {
+				errors
+						.rejectValue("motechId",
+								"motechmodule.motechId.notexist");
+			}
 		}
 
-		if (!Boolean.TRUE.equals(patient.getTermsConsent())) {
-			errors.rejectValue("termsConsent",
-					"motechmodule.termsConsent.required");
+		if (!Boolean.TRUE.equals(webPatient.getConsent())) {
+			errors.rejectValue("consent", "motechmodule.consent.required");
 		}
 
 		if (!errors.hasErrors()) {
-			registrarBean.demoEnrollPatient(patient.getRegNumberGHS());
+			registrarBean.demoEnrollPatient(patient);
 
 			model.addAttribute("successMsg",
 					"motechmodule.Demo.Patient.enroll.success");
 
 			status.setComplete();
 
-			session.removeAttribute("demoLastGHSRN");
+			session.removeAttribute("demoLastMotechId");
 
 			return "redirect:/module/motechmodule/demo-success.htm";
 		}

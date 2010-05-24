@@ -11,7 +11,9 @@ import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
+import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Gender;
+import org.motechproject.ws.MediaType;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -64,9 +66,15 @@ public class PregnancyController {
 		String datePattern = "dd/MM/yyyy";
 		SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
 		dateFormat.setLenient(false);
-
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(
 				dateFormat, true, datePattern.length()));
+
+		String timePattern = MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME;
+		SimpleDateFormat timeFormat = new SimpleDateFormat(timePattern);
+		dateFormat.setLenient(false);
+		binder.registerCustomEditor(Date.class, "timeOfDay",
+				new CustomDateEditor(timeFormat, true, timePattern.length()));
+
 		binder
 				.registerCustomEditor(String.class, new StringTrimmerEditor(
 						true));
@@ -96,6 +104,16 @@ public class PregnancyController {
 
 		log.debug("Register New Pregnancy on Existing Patient");
 
+		Patient patient = null;
+		if (pregnancy.getId() != null) {
+			patient = registrarBean.getPatientById(pregnancy.getId());
+			if (patient == null) {
+				errors.reject("motechmodule.id.notexist");
+			}
+		} else {
+			errors.reject("motechmodule.id.required");
+		}
+
 		if (!Gender.FEMALE.equals(pregnancy.getSex())) {
 			errors.reject("motechmodule.sex.female.required");
 		}
@@ -115,23 +133,47 @@ public class PregnancyController {
 		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "dueDateConfirmed",
 				"motechmodule.dueDateConfirmed.required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-				"registerPregProgram",
-				"motechmodule.registerPregProgram.required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "gravida",
+				"motechmodule.gravida.required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "parity",
+				"motechmodule.parity.required");
+		if (pregnancy.getParity() != null && pregnancy.getGravida() != null
+				&& pregnancy.getParity() > pregnancy.getGravida()) {
+			errors.rejectValue("parity", "motechmodule.parity.range");
+		}
 
-		if (Boolean.TRUE.equals(pregnancy.getRegisterPregProgram())) {
-			if (!Boolean.TRUE.equals(pregnancy.getTermsConsent())) {
-				errors.rejectValue("termsConsent",
-						"motechmodule.termsConsent.required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "enroll",
+				"motechmodule.enroll.required");
+
+		if (Boolean.TRUE.equals(pregnancy.getEnroll())) {
+			if (!Boolean.TRUE.equals(pregnancy.getConsent())) {
+				errors.rejectValue("consent", "motechmodule.consent.required");
 			}
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phoneNumber",
-					"motechmodule.phoneNumber.required");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phoneType",
 					"motechmodule.phoneType.required");
+			if (pregnancy.getPhoneType() == ContactNumberType.PERSONAL
+					|| pregnancy.getPhoneType() == ContactNumberType.HOUSEHOLD) {
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors,
+						"phoneNumber", "motechmodule.phoneNumber.required");
+			}
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaType",
 					"motechmodule.mediaType.required");
+			if (pregnancy.getPhoneType() == ContactNumberType.PUBLIC
+					&& pregnancy.getMediaType() != null
+					&& pregnancy.getMediaType() != MediaType.VOICE) {
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaType",
+						"motechmodule.mediaType.voice");
+			}
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
 					"motechmodule.language.required");
+			if (pregnancy.getMediaType() == MediaType.TEXT
+					&& pregnancy.getLanguage() != null
+					&& !pregnancy.getLanguage().equals("en")) {
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
+						"motechmodule.language.english");
+			}
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "interestReason",
+					"motechmodule.interestReason.required");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "howLearned",
 					"motechmodule.howLearned.required");
 		}
@@ -143,11 +185,14 @@ public class PregnancyController {
 		}
 
 		if (!errors.hasErrors()) {
-			registrarBean.registerPregnancy(pregnancy.getId(), pregnancy
-					.getDueDate(), pregnancy.getDueDateConfirmed(), pregnancy
-					.getRegisterPregProgram(), pregnancy.getPhoneNumber(),
+			registrarBean.registerPregnancy(patient, pregnancy.getDueDate(),
+					pregnancy.getDueDateConfirmed(), pregnancy.getGravida(),
+					pregnancy.getParity(), pregnancy.getEnroll(), pregnancy
+							.getConsent(), pregnancy.getPhoneNumber(),
 					pregnancy.getPhoneType(), pregnancy.getMediaType(),
-					pregnancy.getLanguage(), pregnancy.getHowLearned());
+					pregnancy.getLanguage(), pregnancy.getDayOfWeek(),
+					pregnancy.getTimeOfDay(), pregnancy.getInterestReason(),
+					pregnancy.getHowLearned());
 			;
 			model.addAttribute("successMsg",
 					"motechmodule.Pregnancy.register.success");

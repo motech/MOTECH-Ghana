@@ -128,6 +128,8 @@
 		<property name="modelConverter" ref="webserviceModelConverter" />
 	</bean>
 	
-	<bean id="webModelConverter" class="org.motechproject.server.omod.web.model.WebModelConverterImpl" />
+	<bean id="webModelConverter" class="org.motechproject.server.omod.web.model.WebModelConverterImpl">
+		<property name="registrarBean" ref="registrarBeanProxy" />
+	</bean>
 
 </beans>

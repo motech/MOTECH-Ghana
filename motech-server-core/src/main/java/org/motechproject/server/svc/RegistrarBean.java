@@ -76,24 +76,24 @@ public interface RegistrarBean {
 			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
 			HowLearned howLearned, Integer messagesStartWeek);
 
-	public void demoRegisterPatient(Integer motechId, String firstName,
-			String middleName, String lastName, String prefName,
-			Date birthDate, Boolean birthDateEst, Gender sex,
-			Boolean registeredGHS, String regNumberGHS, Boolean insured,
-			String nhis, Date nhisExpDate, String region, String district,
-			String community, String address, Integer clinic,
-			Boolean registerPregProgram, String phoneNumber,
-			ContactNumberType phoneType, MediaType mediaType, String language,
-			String religion, String occupation);
+	public void demoRegisterPatient(RegistrationMode registrationMode,
+			Integer motechId, String firstName, String middleName,
+			String lastName, String preferredName, Date dateOfBirth,
+			Boolean estimatedBirthDate, Gender sex, Boolean insured,
+			String nhis, Date nhisExpires, Community community, String address,
+			String phoneNumber, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, MediaType format, String language,
+			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
+			HowLearned howLearned);
 
-	public void editPatient(Integer id, String firstName, String middleName,
-			String lastName, String prefName, Date birthDate,
-			Boolean birthDateEst, Gender sex, Boolean registeredGHS,
-			String regNumberGHS, Boolean insured, String nhis,
-			Date nhisExpDate, String region, String district, String community,
-			String address, Integer clinic, String phoneNumber,
-			ContactNumberType phoneType, MediaType mediaType, String language,
-			String religion, String occupation);
+	public void editPatient(Patient patient, String firstName,
+			String middleName, String lastName, String preferredName,
+			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
+			Boolean insured, String nhis, Date nhisExpires,
+			Community community, String address, String phoneNumber,
+			Date expDeliveryDate, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, MediaType format, String language,
+			DayOfWeek dayOfWeek, Date timeOfDay);
 
 	@RunAsAdminUser
 	public void editPatient(
@@ -102,10 +102,12 @@ public interface RegistrarBean {
 			ContactNumberType phoneOwnership, String nhis, Date nhisExpires,
 			Boolean stopEnrollment);
 
-	public void registerPregnancy(Integer id, Date dueDate,
-			Boolean dueDateConfirmed, Boolean registerPregProgram,
-			String phoneNumber, ContactNumberType phoneType,
-			MediaType mediaType, String language, String howLearned);
+	public void registerPregnancy(Patient patient, Date expDeliveryDate,
+			Boolean deliveryDateConfirmed, Integer gravida, Integer parity,
+			Boolean enroll, Boolean consent, String phoneNumber,
+			ContactNumberType ownership, MediaType format, String language,
+			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
+			HowLearned howLearned);
 
 	@RunAsAdminUser
 	public void registerPregnancy(
@@ -416,7 +418,7 @@ public interface RegistrarBean {
 			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
 	public void updateAllMessageProgramsState();
 
-	public void demoEnrollPatient(String regNumberGHS);
+	public void demoEnrollPatient(Patient patient);
 
 	public Facility getFacilityById(Integer facilityId);
 
