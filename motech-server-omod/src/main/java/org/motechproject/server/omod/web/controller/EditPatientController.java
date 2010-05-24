@@ -175,16 +175,14 @@ public class EditPatientController {
 			if (webPatient.getPhoneType() == ContactNumberType.PUBLIC
 					&& webPatient.getMediaType() != null
 					&& webPatient.getMediaType() != MediaType.VOICE) {
-				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaType",
-						"motechmodule.mediaType.voice");
+				errors.rejectValue("mediaType", "motechmodule.mediaType.voice");
 			}
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
 					"motechmodule.language.required");
 			if (webPatient.getMediaType() == MediaType.TEXT
 					&& webPatient.getLanguage() != null
 					&& !webPatient.getLanguage().equals("en")) {
-				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
-						"motechmodule.language.english");
+				errors.rejectValue("language", "motechmodule.language.english");
 			}
 		}
 

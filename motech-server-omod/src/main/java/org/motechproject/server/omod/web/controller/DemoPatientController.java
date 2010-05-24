@@ -223,16 +223,14 @@ public class DemoPatientController {
 			if (patient.getPhoneType() == ContactNumberType.PUBLIC
 					&& patient.getMediaType() != null
 					&& patient.getMediaType() != MediaType.VOICE) {
-				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaType",
-						"motechmodule.mediaType.voice");
+				errors.rejectValue("mediaType", "motechmodule.mediaType.voice");
 			}
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
 					"motechmodule.language.required");
 			if (patient.getMediaType() == MediaType.TEXT
 					&& patient.getLanguage() != null
 					&& !patient.getLanguage().equals("en")) {
-				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
-						"motechmodule.language.english");
+				errors.rejectValue("language", "motechmodule.language.english");
 			}
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "interestReason",
 					"motechmodule.interestReason.required");

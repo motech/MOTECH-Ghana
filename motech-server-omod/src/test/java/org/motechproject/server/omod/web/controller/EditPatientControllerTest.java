@@ -161,7 +161,7 @@ public class EditPatientControllerTest extends TestCase {
 		Gender sex = Gender.FEMALE;
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType mediaType = MediaType.TEXT;
-		String language = "Language";
+		String language = "en";
 		DayOfWeek dayOfWeek = DayOfWeek.FRIDAY;
 
 		WebPatient patient = new WebPatient();

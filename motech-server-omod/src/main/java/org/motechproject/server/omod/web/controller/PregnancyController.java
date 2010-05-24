@@ -161,16 +161,14 @@ public class PregnancyController {
 			if (pregnancy.getPhoneType() == ContactNumberType.PUBLIC
 					&& pregnancy.getMediaType() != null
 					&& pregnancy.getMediaType() != MediaType.VOICE) {
-				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaType",
-						"motechmodule.mediaType.voice");
+				errors.rejectValue("mediaType", "motechmodule.mediaType.voice");
 			}
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
 					"motechmodule.language.required");
 			if (pregnancy.getMediaType() == MediaType.TEXT
 					&& pregnancy.getLanguage() != null
 					&& !pregnancy.getLanguage().equals("en")) {
-				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
-						"motechmodule.language.english");
+				errors.rejectValue("language", "motechmodule.language.english");
 			}
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "interestReason",
 					"motechmodule.interestReason.required");
