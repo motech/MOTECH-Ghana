@@ -114,6 +114,7 @@ public final class MotechConstants {
 	public static final String IDGEN_SEQ_ID_GEN_MOTECH_ID_MANUAL_COMMENT = "MANUAL ENTRY";
 	public static final String TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME = "HH:mm";
 	public static final String PHONE_REGEX_PATTERN = "^\\+?[0-9]+$";
+	public static final int MAX_STRING_LENGTH_OPENMRS = 50;
 
 	/*
 	 * Values already existing in OpenMRS, used by Motech

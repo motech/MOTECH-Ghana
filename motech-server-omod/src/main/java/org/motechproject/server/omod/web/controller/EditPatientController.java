@@ -203,6 +203,21 @@ public class EditPatientController {
 					"motechmodule.phoneNumber.invalid");
 		}
 
+		validateTextLength(errors, "firstName", webPatient.getFirstName(),
+				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+		validateTextLength(errors, "middleName", webPatient.getMiddleName(),
+				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+		validateTextLength(errors, "lastName", webPatient.getLastName(),
+				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+		validateTextLength(errors, "prefName", webPatient.getPrefName(),
+				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+		validateTextLength(errors, "nhis", webPatient.getNhis(),
+				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+		validateTextLength(errors, "address", webPatient.getAddress(),
+				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+		validateTextLength(errors, "phoneNumber", webPatient.getPhoneNumber(),
+				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+
 		if (!errors.hasErrors()) {
 			registrarBean.editPatient(patient, webPatient.getFirstName(),
 					webPatient.getMiddleName(), webPatient.getLastName(),
@@ -219,6 +234,16 @@ public class EditPatientController {
 			model.addAttribute("successMsg",
 					"motechmodule.Patient.edit.success");
 			status.setComplete();
+		}
+	}
+
+	void validateTextLength(Errors errors, String fieldname, String fieldValue,
+			int lengthLimit) {
+
+		if (fieldValue != null && fieldValue.length() > lengthLimit) {
+			errors.rejectValue(fieldname, "motechmodule.string.maxlength",
+					new Integer[] { lengthLimit },
+					"Specified text is longer than max characters.");
 		}
 	}
 

@@ -68,7 +68,7 @@
 	</tr>
 	<tr>
 		<td class="labelcolumn"><label for="phoneNumber">Phone Number:</label></td>
-		<td><form:input path="phoneNumber" /></td>
+		<td><form:input path="phoneNumber" maxlength="50" /></td>
 		<td><form:errors path="phoneNumber" cssClass="error" /></td>
 	</tr>
 	<tr>

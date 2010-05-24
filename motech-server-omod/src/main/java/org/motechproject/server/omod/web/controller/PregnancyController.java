@@ -182,6 +182,9 @@ public class PregnancyController {
 					"motechmodule.phoneNumber.invalid");
 		}
 
+		validateTextLength(errors, "phoneNumber", pregnancy.getPhoneNumber(),
+				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+
 		if (!errors.hasErrors()) {
 			registrarBean.registerPregnancy(patient, pregnancy.getDueDate(),
 					pregnancy.getDueDateConfirmed(), pregnancy.getGravida(),
@@ -201,5 +204,15 @@ public class PregnancyController {
 		}
 
 		return "/module/motechmodule/pregnancy";
+	}
+
+	void validateTextLength(Errors errors, String fieldname, String fieldValue,
+			int lengthLimit) {
+
+		if (fieldValue != null && fieldValue.length() > lengthLimit) {
+			errors.rejectValue(fieldname, "motechmodule.string.maxlength",
+					new Integer[] { lengthLimit },
+					"Specified text is longer than max characters.");
+		}
 	}
 }

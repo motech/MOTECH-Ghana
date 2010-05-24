@@ -287,6 +287,21 @@ public class PatientController {
 					"motechmodule.phoneNumber.invalid");
 		}
 
+		validateTextLength(errors, "firstName", patient.getFirstName(),
+				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+		validateTextLength(errors, "middleName", patient.getMiddleName(),
+				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+		validateTextLength(errors, "lastName", patient.getLastName(),
+				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+		validateTextLength(errors, "prefName", patient.getPrefName(),
+				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+		validateTextLength(errors, "nhis", patient.getNhis(),
+				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+		validateTextLength(errors, "address", patient.getAddress(),
+				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+		validateTextLength(errors, "phoneNumber", patient.getPhoneNumber(),
+				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+
 		if (!errors.hasErrors()) {
 			registrarBean.registerPatient(patient.getRegistrationMode(),
 					patient.getMotechId(), patient.getRegistrantType(), patient
@@ -313,5 +328,15 @@ public class PatientController {
 		}
 
 		return "/module/motechmodule/patient";
+	}
+
+	void validateTextLength(Errors errors, String fieldname, String fieldValue,
+			int lengthLimit) {
+
+		if (fieldValue != null && fieldValue.length() > lengthLimit) {
+			errors.rejectValue(fieldname, "motechmodule.string.maxlength",
+					new Integer[] { lengthLimit },
+					"Specified text is longer than max characters.");
+		}
 	}
 }

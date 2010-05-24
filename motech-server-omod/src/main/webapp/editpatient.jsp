@@ -20,22 +20,22 @@
 <table>
 	<tr>
 		<td class="labelcolumn"><label for="firstName">First Name:</label></td>
-		<td><form:input path="firstName" /></td>
+		<td><form:input path="firstName" maxlength="50" /></td>
 		<td><form:errors path="firstName" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td class="labelcolumn"><label for="middleName">Middle Name:</label></td>
-		<td><form:input path="middleName" /></td>
+		<td><form:input path="middleName" maxlength="50" /></td>
 		<td><form:errors path="middleName" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td class="labelcolumn"><label for="lastName">Last Name:</label></td>
-		<td><form:input path="lastName" /></td>
+		<td><form:input path="lastName" maxlength="50" /></td>
 		<td><form:errors path="lastName" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td class="labelcolumn"><label for="prefName">Preferred Name:</label></td>
-		<td><form:input path="prefName" /></td>
+		<td><form:input path="prefName" maxlength="50" /></td>
 		<td><form:errors path="prefName" cssClass="error" /></td>
 	</tr>
 	<tr>
@@ -78,7 +78,7 @@
 	</tr>
 	<tr>
 		<td class="labelcolumn"><label for="nhis">NHIS Number:</label></td>
-		<td><form:input path="nhis" /></td>
+		<td><form:input path="nhis" maxlength="50" /></td>
 		<td><form:errors path="nhis" cssClass="error" /></td>
 	</tr>
 	<tr>
@@ -118,7 +118,7 @@
 	</tr>
 	<tr>
 		<td class="labelcolumn"><label for="address">Address/household:</label></td>
-		<td><form:input path="address" /></td>
+		<td><form:input path="address" maxlength="50" /></td>
 		<td><form:errors path="address" cssClass="error" /></td>
 	</tr>
 </table>
@@ -152,7 +152,7 @@
 	</tr>
 	<tr>
 		<td class="labelcolumn"><label for="phoneNumber">Phone Number:</label></td>
-		<td><form:input path="phoneNumber" /></td>
+		<td><form:input path="phoneNumber" maxlength="50" /></td>
 		<td><form:errors path="phoneNumber" cssClass="error" /></td>
 	</tr>
 	<tr>
