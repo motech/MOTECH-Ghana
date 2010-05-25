@@ -733,8 +733,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Patient patient, Date estDeliveryDate, Boolean enroll,
 			Boolean consent, ContactNumberType ownership, String phoneNumber,
 			MediaType format, String language, DayOfWeek dayOfWeek,
-			Date timeOfDay, InterestReason reason, HowLearned howLearned,
-			Integer messagesStartWeek) {
+			Date timeOfDay, HowLearned howLearned) {
 
 		Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
 
@@ -744,8 +743,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 
 		enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
-				phoneNumber, format, language, dayOfWeek, timeOfDay, reason,
-				howLearned, messagesStartWeek, pregnancyDueDateObsId);
+				phoneNumber, format, language, dayOfWeek, timeOfDay, null,
+				howLearned, null, pregnancyDueDateObsId);
 	}
 
 	private Integer checkExistingPregnancy(Patient patient) {
@@ -774,8 +773,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Integer height, Integer gravida, Integer parity, Boolean enroll,
 			Boolean consent, ContactNumberType ownership, String phoneNumber,
 			MediaType format, String language, DayOfWeek dayOfWeek,
-			Date timeOfDay, InterestReason reason, HowLearned howLearned,
-			Integer messagesStartWeek) {
+			Date timeOfDay, HowLearned howLearned) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -787,8 +785,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 
 		enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
-				phoneNumber, format, language, dayOfWeek, timeOfDay, reason,
-				howLearned, messagesStartWeek, pregnancyDueDateObsId);
+				phoneNumber, format, language, dayOfWeek, timeOfDay, null,
+				howLearned, null, pregnancyDueDateObsId);
 
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getANCRegistrationEncounterType());
@@ -810,12 +808,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Patient patient, String cwcRegNumber, Boolean enroll,
 			Boolean consent, ContactNumberType ownership, String phoneNumber,
 			MediaType format, String language, DayOfWeek dayOfWeek,
-			Date timeOfDay, InterestReason reason, HowLearned howLearned,
-			Integer messagesStartWeek) {
+			Date timeOfDay, HowLearned howLearned) {
 
 		enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
-				phoneNumber, format, language, dayOfWeek, timeOfDay, reason,
-				howLearned, messagesStartWeek, null);
+				phoneNumber, format, language, dayOfWeek, timeOfDay, null,
+				howLearned, null, null);
 
 		EncounterService encounterService = contextService
 				.getEncounterService();

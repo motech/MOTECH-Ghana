@@ -116,8 +116,7 @@ public interface RegistrarBean {
 			Date estDeliveryDate, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, String phoneNumber, MediaType format,
 			String language, DayOfWeek dayOfWeek, Date timeOfDay,
-			InterestReason reason, HowLearned howLearned,
-			Integer messagesStartWeek);
+			HowLearned howLearned);
 
 	@RunAsAdminUser
 	public void registerANCMother(
@@ -127,8 +126,7 @@ public interface RegistrarBean {
 			Integer parity, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, String phoneNumber, MediaType format,
 			String language, DayOfWeek dayOfWeek, Date timeOfDay,
-			InterestReason reason, HowLearned howLearned,
-			Integer messagesStartWeek);
+			HowLearned howLearned);
 
 	@RunAsAdminUser
 	public void registerCWCChild(
@@ -136,8 +134,7 @@ public interface RegistrarBean {
 			Location facility, Date date, Patient patient, String cwcRegNumber,
 			Boolean enroll, Boolean consent, ContactNumberType ownership,
 			String phoneNumber, MediaType format, String language,
-			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
-			HowLearned howLearned, Integer messagesStartWeek);
+			DayOfWeek dayOfWeek, Date timeOfDay, HowLearned howLearned);
 
 	@RunAsAdminUser
 	public void recordMotherANCVisit(

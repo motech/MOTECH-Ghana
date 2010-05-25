@@ -527,9 +527,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "language") String language,
 			@WebParam(name = "dayOfWeek") DayOfWeek dayOfWeek,
 			@WebParam(name = "timeOfDay") Date timeOfDay,
-			@WebParam(name = "reason") InterestReason reason,
-			@WebParam(name = "howLearned") HowLearned howLearned,
-			@WebParam(name = "messagesStartWeek") Integer messagesStartWeek)
+			@WebParam(name = "howLearned") HowLearned howLearned)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -544,10 +542,11 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Register Pregnancy request", errors);
 		}
 
-		registrarBean.registerPregnancy(nurse, facility.getLocation(), date,
-				patient, estDeliveryDate, enroll, consent, ownership,
-				phoneNumber, format, language, dayOfWeek, timeOfDay, reason,
-				howLearned, messagesStartWeek);
+		registrarBean
+				.registerPregnancy(nurse, facility.getLocation(), date,
+						patient, estDeliveryDate, enroll, consent, ownership,
+						phoneNumber, format, language, dayOfWeek, timeOfDay,
+						howLearned);
 	}
 
 	@WebMethod
@@ -568,9 +567,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "language") String language,
 			@WebParam(name = "dayOfWeek") DayOfWeek dayOfWeek,
 			@WebParam(name = "timeOfDay") Date timeOfDay,
-			@WebParam(name = "reason") InterestReason reason,
-			@WebParam(name = "howLearned") HowLearned howLearned,
-			@WebParam(name = "messagesStartWeek") Integer messagesStartWeek)
+			@WebParam(name = "howLearned") HowLearned howLearned)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -588,8 +585,7 @@ public class RegistrarWebService implements RegistrarService {
 		registrarBean.registerANCMother(nurse, facility.getLocation(), date,
 				patient, ancRegNumber, estDeliveryDate, height, gravida,
 				parity, enroll, consent, ownership, phoneNumber, format,
-				language, dayOfWeek, timeOfDay, reason, howLearned,
-				messagesStartWeek);
+				language, dayOfWeek, timeOfDay, howLearned);
 	}
 
 	@WebMethod
@@ -606,9 +602,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "language") String language,
 			@WebParam(name = "dayOfWeek") DayOfWeek dayOfWeek,
 			@WebParam(name = "timeOfDay") Date timeOfDay,
-			@WebParam(name = "reason") InterestReason reason,
-			@WebParam(name = "howLearned") HowLearned howLearned,
-			@WebParam(name = "messagesStartWeek") Integer messagesStartWeek)
+			@WebParam(name = "howLearned") HowLearned howLearned)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -625,8 +619,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		registrarBean.registerCWCChild(nurse, facility.getLocation(), date,
 				patient, cwcRegNumber, enroll, consent, ownership, phoneNumber,
-				format, language, dayOfWeek, timeOfDay, reason, howLearned,
-				messagesStartWeek);
+				format, language, dayOfWeek, timeOfDay, howLearned);
 	}
 
 	@WebMethod

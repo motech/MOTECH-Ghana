@@ -1043,13 +1043,11 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language";
 		Boolean enroll = true, consent = true;
-		Integer messageWeek = 5;
 		String phone = "15555555";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType format = MediaType.VOICE;
 		DayOfWeek day = DayOfWeek.MONDAY;
-		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
 		HowLearned how = HowLearned.GHS_NURSE;
 
 		User nurse = new User(1);
@@ -1065,13 +1063,13 @@ public class RegistrarServiceTest {
 				.andReturn(patient);
 		registrarBean.registerPregnancy(nurse, facilityLocation, date, patient,
 				date, enroll, consent, phoneType, phone, format, language, day,
-				date, reason, how, messageWeek);
+				date, how);
 
 		replay(registrarBean, openmrsBean);
 
 		regWs.registerPregnancy(staffId, facilityId, date, motechId, date,
 				enroll, consent, phoneType, phone, format, language, day, date,
-				reason, how, messageWeek);
+				how);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -1081,13 +1079,11 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language";
 		Boolean enroll = true, consent = true;
-		Integer messageWeek = 5;
 		String phone = "15555555";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType format = MediaType.VOICE;
 		DayOfWeek day = DayOfWeek.MONDAY;
-		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
 		HowLearned how = HowLearned.GHS_NURSE;
 
 		User nurse = null;
@@ -1104,7 +1100,7 @@ public class RegistrarServiceTest {
 		try {
 			regWs.registerPregnancy(staffId, facilityId, date, motechId, date,
 					enroll, consent, phoneType, phone, format, language, day,
-					date, reason, how, messageWeek);
+					date, how);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Register Pregnancy request", e.getMessage());
@@ -1132,13 +1128,12 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language", regNumber = "RegNumber";
 		Boolean enroll = true, consent = true;
-		Integer gravida = 0, parity = 0, messageWeek = 5, height = 45;
+		Integer gravida = 0, parity = 0, height = 45;
 		String phone = "15555555";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType format = MediaType.VOICE;
 		DayOfWeek day = DayOfWeek.MONDAY;
-		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
 		HowLearned how = HowLearned.GHS_NURSE;
 
 		User nurse = new User(1);
@@ -1154,14 +1149,13 @@ public class RegistrarServiceTest {
 				.andReturn(patient);
 		registrarBean.registerANCMother(nurse, facilityLocation, date, patient,
 				regNumber, date, height, gravida, parity, enroll, consent,
-				phoneType, phone, format, language, day, date, reason, how,
-				messageWeek);
+				phoneType, phone, format, language, day, date, how);
 
 		replay(registrarBean, openmrsBean);
 
 		regWs.registerANCMother(staffId, facilityId, date, motechId, regNumber,
 				date, height, gravida, parity, enroll, consent, phoneType,
-				phone, format, language, day, date, reason, how, messageWeek);
+				phone, format, language, day, date, how);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -1171,13 +1165,12 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language", regNumber = "RegNumber";
 		Boolean enroll = true, consent = true;
-		Integer gravida = 0, parity = 0, messageWeek = 5, height = 45;
+		Integer gravida = 0, parity = 0, height = 45;
 		String phone = "15555555";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType format = MediaType.VOICE;
 		DayOfWeek day = DayOfWeek.MONDAY;
-		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
 		HowLearned how = HowLearned.GHS_NURSE;
 
 		User nurse = null;
@@ -1195,8 +1188,7 @@ public class RegistrarServiceTest {
 
 			regWs.registerANCMother(staffId, facilityId, date, motechId,
 					regNumber, date, height, gravida, parity, enroll, consent,
-					phoneType, phone, format, language, day, date, reason, how,
-					messageWeek);
+					phoneType, phone, format, language, day, date, how);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Register ANC Mother request", e
@@ -1225,13 +1217,11 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language", regNumber = "RegNumber";
 		Boolean enroll = true, consent = true;
-		Integer messageWeek = 5;
 		String phone = "15555555";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType format = MediaType.VOICE;
 		DayOfWeek day = DayOfWeek.MONDAY;
-		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
 		HowLearned how = HowLearned.GHS_NURSE;
 
 		User nurse = new User(1);
@@ -1247,13 +1237,13 @@ public class RegistrarServiceTest {
 				.andReturn(patient);
 		registrarBean.registerCWCChild(nurse, facilityLocation, date, patient,
 				regNumber, enroll, consent, phoneType, phone, format, language,
-				day, date, reason, how, messageWeek);
+				day, date, how);
 
 		replay(registrarBean, openmrsBean);
 
 		regWs.registerCWCChild(staffId, facilityId, date, motechId, regNumber,
 				enroll, consent, phoneType, phone, format, language, day, date,
-				reason, how, messageWeek);
+				how);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -1263,13 +1253,11 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language", regNumber = "RegNumber";
 		Boolean enroll = true, consent = true;
-		Integer messageWeek = 5;
 		String phone = "15555555";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType format = MediaType.VOICE;
 		DayOfWeek day = DayOfWeek.MONDAY;
-		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
 		HowLearned how = HowLearned.GHS_NURSE;
 
 		User nurse = null;
@@ -1286,7 +1274,7 @@ public class RegistrarServiceTest {
 		try {
 			regWs.registerCWCChild(staffId, facilityId, date, motechId,
 					regNumber, enroll, consent, phoneType, phone, format,
-					language, day, date, reason, how, messageWeek);
+					language, day, date, how);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Register CWC Child request", e.getMessage());
