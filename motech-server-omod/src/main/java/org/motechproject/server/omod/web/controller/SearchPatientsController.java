@@ -32,7 +32,7 @@ import org.springframework.web.bind.support.SessionStatus;
 @RequestMapping(value = "/module/motechmodule/search")
 public class SearchPatientsController {
 
-	protected final Log log = LogFactory.getLog(EditPatientController.class);
+	protected final Log log = LogFactory.getLog(SearchPatientsController.class);
 
 	@Autowired
 	@Qualifier("registrarBean")
@@ -107,15 +107,12 @@ public class SearchPatientsController {
 			motechIdString = webPatient.getMotechId().toString();
 		}
 
-		String communityName = null;
 		if (webPatient.getCommunityId() != null) {
 			Community community = registrarBean.getCommunityById(webPatient
 					.getCommunityId());
 			if (community == null) {
 				errors.rejectValue("communityId",
 						"motechmodule.communityId.notexist");
-			} else {
-				communityName = community.getName();
 			}
 		}
 
@@ -124,8 +121,8 @@ public class SearchPatientsController {
 			List<Patient> matchingPatientsList = registrarBean.getPatients(
 					webPatient.getFirstName(), webPatient.getLastName(),
 					webPatient.getPrefName(), webPatient.getBirthDate(),
-					communityName, webPatient.getPhoneNumber(), webPatient
-							.getNhis(), motechIdString);
+					webPatient.getCommunityId(), webPatient.getPhoneNumber(),
+					webPatient.getNhis(), motechIdString);
 
 			for (Patient patient : matchingPatientsList) {
 				WebPatient newWebPatient = new WebPatient();

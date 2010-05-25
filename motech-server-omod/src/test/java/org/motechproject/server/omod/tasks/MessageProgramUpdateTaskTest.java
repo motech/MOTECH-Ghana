@@ -109,7 +109,7 @@ public class MessageProgramUpdateTaskTest extends
 			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
 					motechId, RegistrantType.OTHER, "firstName", "middleName",
 					"lastName", "prefName", birthdate, false, Gender.MALE,
-					false, null, null, null, null, "Address", "1111111111",
+					true, "nhis", null, null, null, "Address", "1111111111",
 					null, null, null, null, true, true,
 					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
 					DayOfWeek.MONDAY, date,
@@ -117,7 +117,7 @@ public class MessageProgramUpdateTaskTest extends
 					HowLearned.FRIEND, 5);
 
 			List<Patient> matchingPatients = regService.getPatients(
-					"firstName", "lastName", "prefName", date, "community",
+					"firstName", "lastName", "prefName", birthdate, null,
 					"1111111111", "nhis", motechId.toString());
 			assertEquals(1, matchingPatients.size());
 			Patient patient = matchingPatients.get(0);

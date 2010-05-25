@@ -40,12 +40,12 @@ public class DWRMotechService {
 
 	public List<WebPatient> findMatchingPatients(String firstName,
 			String lastName, String prefName, String birthDate,
-			String community, String phoneNumber, String nhisNumber,
+			String communityId, String phoneNumber, String nhisNumber,
 			String motechId) {
 
 		if (log.isDebugEnabled()) {
 			log.debug("Get Matching Patients: " + firstName + ", " + lastName
-					+ ", " + prefName + ", " + birthDate + ", " + community
+					+ ", " + prefName + ", " + birthDate + ", " + communityId
 					+ ", " + phoneNumber + ", " + nhisNumber + ", " + motechId);
 		}
 
@@ -61,9 +61,16 @@ public class DWRMotechService {
 		} catch (ParseException e) {
 		}
 
+		Integer parsedCommunityId = null;
+		try {
+			parsedCommunityId = Integer.parseInt(communityId);
+		} catch (NumberFormatException e) {
+		}
+
 		List<Patient> matchingPatients = contextService.getRegistrarBean()
-				.getPatients(firstName, lastName, prefName, parsedBirthDate,
-						community, phoneNumber, nhisNumber, motechId);
+				.getDuplicatePatients(firstName, lastName, prefName,
+						parsedBirthDate, parsedCommunityId, phoneNumber,
+						nhisNumber, motechId);
 
 		for (Patient patient : matchingPatients) {
 			WebPatient webPatient = new WebPatient();

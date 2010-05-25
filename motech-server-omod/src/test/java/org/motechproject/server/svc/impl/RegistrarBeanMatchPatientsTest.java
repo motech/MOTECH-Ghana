@@ -10,6 +10,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.motechproject.server.model.Community;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
@@ -62,6 +63,9 @@ public class RegistrarBeanMatchPatientsTest extends
 		// Removed all patients and related patient/person info (id 2-500)
 		executeDataSet("initial-openmrs-dataset.xml");
 
+		// Add example Location, Facility and Community
+		executeDataSet("facility-community-dataset.xml");
+
 		authenticate();
 
 		activator.startup();
@@ -90,67 +94,148 @@ public class RegistrarBeanMatchPatientsTest extends
 			String prefName = "PrefName";
 			String phoneNumber = "1111111111";
 			String nhisNumber = "NHISNumber";
+			Integer communityId = 11111;
 			Date date = new Date();
+
+			Community community = regService.getCommunityById(communityId);
 
 			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
 					motechId, RegistrantType.PREGNANT_MOTHER, firstName,
 					middleName, lastName, prefName, date, false, Gender.FEMALE,
-					true, nhisNumber, date, null, null, "Address", phoneNumber,
-					date, true, 0, 0, true, true, ContactNumberType.PERSONAL,
-					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
-					InterestReason.CURRENTLY_PREGNANT, HowLearned.FRIEND, null);
+					true, nhisNumber, date, null, community, "Address",
+					phoneNumber, date, true, 0, 0, true, true,
+					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
+					DayOfWeek.MONDAY, date, InterestReason.CURRENTLY_PREGNANT,
+					HowLearned.FRIEND, null);
 
 			assertEquals(3, Context.getPatientService().getAllPatients().size());
 
-			// Match on all
-			List<Patient> matches = regService.getPatients(firstName, lastName,
-					prefName, date, null, phoneNumber, nhisNumber, motechId
+			// Match on all (duplicate)
+			List<Patient> matches = regService.getDuplicatePatients(firstName,
+					lastName, prefName, date, communityId, phoneNumber,
+					nhisNumber, motechId.toString());
+			assertEquals(1, matches.size());
+
+			// Match on all (any)
+			matches = regService.getPatients(firstName, lastName, prefName,
+					date, communityId, phoneNumber, nhisNumber, motechId
 							.toString());
 			assertEquals(1, matches.size());
 
-			// Match on NHIS number
+			// Match on NHIS number (duplicate)
+			matches = regService.getDuplicatePatients(null, null, null, null,
+					null, null, nhisNumber, null);
+			assertEquals(1, matches.size());
+
+			// Match on NHIS number (any)
 			matches = regService.getPatients(null, null, null, null, null,
 					null, nhisNumber, null);
 			assertEquals(1, matches.size());
 
-			// Match on first name, last name, and birthdate
+			// Match on first name, last name, and birthdate (duplicate)
+			matches = regService.getDuplicatePatients(firstName, lastName,
+					null, date, null, null, null, null);
+			assertEquals(1, matches.size());
+
+			// Match on first name, last name, and birthdate (any)
 			matches = regService.getPatients(firstName, lastName, null, date,
 					null, null, null, null);
 			assertEquals(1, matches.size());
 
-			// TODO: Match on first name, last name, and community
+			// Match on first name, last name, and community (duplicate)
+			matches = regService.getDuplicatePatients(firstName, lastName,
+					null, null, communityId, null, null, null);
+			assertEquals(1, matches.size());
 
-			// Match on first name, last name, and phone
+			// Match on first name, last name, and community (any)
+			matches = regService.getPatients(firstName, lastName, null, null,
+					communityId, null, null, null);
+			assertEquals(1, matches.size());
+
+			// Match on first name, last name, and phone (duplicate)
+			matches = regService.getDuplicatePatients(firstName, lastName,
+					null, null, null, phoneNumber, null, null);
+			assertEquals(1, matches.size());
+
+			// Match on first name, last name, and phone (any)
 			matches = regService.getPatients(firstName, lastName, null, null,
 					null, phoneNumber, null, null);
 			assertEquals(1, matches.size());
 
-			// Match on first name, last name, and MotechID
-			matches = regService.getPatients(firstName, lastName, null, null,
+			// Match on MotechID (duplicate)
+			matches = regService.getDuplicatePatients(null, null, null, null,
 					null, null, null, motechId.toString());
 			assertEquals(1, matches.size());
 
-			// No match on different NHIS number
+			// Match on MotechID (any)
+			matches = regService.getPatients(null, null, null, null, null,
+					null, null, motechId.toString());
+			assertEquals(1, matches.size());
+
+			// No match on different NHIS number (duplicate)
+			matches = regService.getDuplicatePatients(null, null, null, null,
+					null, null, "DifferentNHISValue", null);
+			assertEquals(0, matches.size());
+
+			// No match on different NHIS number (any)
 			matches = regService.getPatients(null, null, null, null, null,
 					null, "DifferentNHISValue", null);
 			assertEquals(0, matches.size());
 
 			// No match on last name, birthdate, and different first name
+			// (duplicate)
+			matches = regService.getDuplicatePatients("DifferentFirstName",
+					lastName, null, date, null, null, null, null);
+			assertEquals(0, matches.size());
+
+			// No match on last name, birthdate, and different first name (any)
 			matches = regService.getPatients("DifferentFirstName", lastName,
 					null, date, null, null, null, null);
 			assertEquals(0, matches.size());
 
-			// TODO: No match on first name, community, and different last name
+			// No match on first name, community, and different last name
+			// (duplicate)
+			matches = regService.getDuplicatePatients(firstName,
+					"DifferentLastName", null, null, communityId, null, null,
+					null);
+			assertEquals(0, matches.size());
+
+			// No match on first name, community, and different last name (any)
+			matches = regService.getPatients(firstName, "DifferentLastName",
+					null, null, communityId, null, null, null);
+			assertEquals(0, matches.size());
 
 			// No match on first name, last name, and different phone number
+			// (duplicate)
+			matches = regService.getDuplicatePatients(firstName, lastName,
+					null, null, null, "4534656", null, null);
+			assertEquals(0, matches.size());
+
+			// No match on first name, last name, and different phone number
+			// (any)
 			matches = regService.getPatients(firstName, lastName, null, null,
 					null, "4534656", null, null);
 			assertEquals(0, matches.size());
 
-			// No matches on empty
+			// No matches on empty (duplicate)
+			matches = regService.getDuplicatePatients(null, null, null, null,
+					null, null, null, null);
+			assertEquals(0, matches.size());
+
+			// Matches on empty, returns all patients (any)
 			matches = regService.getPatients(null, null, null, null, null,
 					null, null, null);
-			assertEquals(0, matches.size());
+			assertEquals(3, matches.size());
+
+			// Match on partial first name and partial last name (any)
+			matches = regService.getPatients("Fir", "Name", null, null, null,
+					null, null, null);
+			assertEquals(1, matches.size());
+
+			// Match on partial pref name and partial last name (any)
+			matches = regService.getPatients(null, "stNa", "refNa", null, null,
+					null, null, null);
+			assertEquals(1, matches.size());
 
 			Person person = new Person();
 			person.addName(new PersonName(firstName, null, lastName));
@@ -158,9 +243,14 @@ public class RegistrarBeanMatchPatientsTest extends
 			person.setGender("F");
 			Context.getPersonService().savePerson(person);
 
-			// No match for Person on firstName, lastName, birthDate
-			matches = regService.getPatients(firstName, lastName, prefName,
-					date, null, phoneNumber, nhisNumber, motechId.toString());
+			// No match for Person on firstName, lastName, birthDate (duplicate)
+			matches = regService.getDuplicatePatients(firstName, lastName,
+					null, date, null, null, null, null);
+			assertEquals(1, matches.size());
+
+			// No match for Person on firstName, lastName, birthDate (any)
+			matches = regService.getPatients(firstName, lastName, null, date,
+					null, null, null, null);
 			assertEquals(1, matches.size());
 
 		} finally {

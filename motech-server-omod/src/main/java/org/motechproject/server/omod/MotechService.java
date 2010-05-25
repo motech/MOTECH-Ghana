@@ -182,7 +182,14 @@ public interface MotechService extends OpenmrsService {
 
 	@Transactional(readOnly = true)
 	List<Patient> getPatients(String firstName, String lastName,
-			String preferredName, Date birthDate, String community,
+			String preferredName, Date birthDate, Integer communityId,
+			String phoneNumber, PersonAttributeType phoneNumberAttrType,
+			String nhisNumber, PersonAttributeType nhisAttrType,
+			String patientId, PatientIdentifierType patientIdType);
+
+	@Transactional(readOnly = true)
+	List<Patient> getDuplicatePatients(String firstName, String lastName,
+			String preferredName, Date birthDate, Integer communityId,
 			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
 			String patientId, PatientIdentifierType patientIdType);

@@ -284,13 +284,25 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	}
 
 	public List<Patient> getPatients(String firstName, String lastName,
-			String preferredName, Date birthDate, String community,
+			String preferredName, Date birthDate, Integer communityId,
 			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
 			String patientId, PatientIdentifierType patientIdType) {
 		return motechDAO.getPatients(firstName, lastName, preferredName,
-				birthDate, community, phoneNumber, phoneNumberAttrType,
+				birthDate, communityId, phoneNumber, phoneNumberAttrType,
 				nhisNumber, nhisAttrType, patientId, patientIdType);
+	}
+
+	public List<Patient> getDuplicatePatients(String firstName,
+			String lastName, String preferredName, Date birthDate,
+			Integer communityId, String phoneNumber,
+			PersonAttributeType phoneNumberAttrType, String nhisNumber,
+			PersonAttributeType nhisAttrType, String patientId,
+			PatientIdentifierType patientIdType) {
+		return motechDAO.getDuplicatePatients(firstName, lastName,
+				preferredName, birthDate, communityId, phoneNumber,
+				phoneNumberAttrType, nhisNumber, nhisAttrType, patientId,
+				patientIdType);
 	}
 
 	public Facility getFacilityById(Integer facilityId) {

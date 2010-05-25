@@ -1915,7 +1915,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	public List<Patient> getPatients(String firstName, String lastName,
-			String preferredName, Date birthDate, String community,
+			String preferredName, Date birthDate, Integer communityId,
 			String phoneNumber, String nhisNumber, String motechId) {
 
 		MotechService motechService = contextService.getMotechService();
@@ -1925,8 +1925,25 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		PatientIdentifierType motechIdType = getMotechPatientIdType();
 
 		return motechService.getPatients(firstName, lastName, preferredName,
-				birthDate, community, phoneNumber, phoneNumberAttrType,
+				birthDate, communityId, phoneNumber, phoneNumberAttrType,
 				nhisNumber, nhisAttrType, motechId, motechIdType);
+	}
+
+	public List<Patient> getDuplicatePatients(String firstName,
+			String lastName, String preferredName, Date birthDate,
+			Integer communityId, String phoneNumber, String nhisNumber,
+			String motechId) {
+
+		MotechService motechService = contextService.getMotechService();
+
+		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
+		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
+		PatientIdentifierType motechIdType = getMotechPatientIdType();
+
+		return motechService.getDuplicatePatients(firstName, lastName,
+				preferredName, birthDate, communityId, phoneNumber,
+				phoneNumberAttrType, nhisNumber, nhisAttrType, motechId,
+				motechIdType);
 	}
 
 	public List<Obs> getAllPregnancies() {

@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -33,6 +34,7 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
+import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 
 /**
@@ -494,23 +496,22 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Patient> getPatients(String firstName, String lastName,
-			String preferredName, Date birthDate, String community,
-			String phoneNumber, PersonAttributeType phoneNumberAttrType,
-			String nhisNumber, PersonAttributeType nhisAttrType,
-			String patientId, PatientIdentifierType patientIdType) {
+	public List<Patient> getDuplicatePatients(String firstName,
+			String lastName, String preferredName, Date birthDate,
+			Integer communityId, String phoneNumber,
+			PersonAttributeType phoneNumberAttrType, String nhisNumber,
+			PersonAttributeType nhisAttrType, String patientId,
+			PatientIdentifierType patientIdType) {
 
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
 				Patient.class);
 
 		criteria.createAlias("names", "name");
-		criteria.createAlias("addresses", "addr");
 		criteria.createAlias("attributes", "att");
 		criteria.createAlias("identifiers", "id");
 
 		criteria.add(Restrictions.eq("voided", false));
 		criteria.add(Restrictions.eq("name.voided", false));
-		criteria.add(Restrictions.eq("addr.voided", false));
 		criteria.add(Restrictions.eq("att.voided", false));
 		criteria.add(Restrictions.eq("id.voided", false));
 
@@ -528,9 +529,17 @@ public class HibernateMotechDAO implements MotechDAO {
 		Criterion phoneCriterion = Restrictions.and(Restrictions.eq(
 				"att.attributeType", phoneNumberAttrType), Restrictions.eq(
 				"att.value", phoneNumber));
+
 		Disjunction otherCriterion = Restrictions.disjunction();
 		otherCriterion.add(Restrictions.eq("birthdate", birthDate));
-		otherCriterion.add(Restrictions.eq("addr.cityVillage", community));
+		otherCriterion
+				.add(Restrictions
+						.sqlRestriction(
+								"exists (select c.id from motechmodule_community c "
+										+ "inner join motechmodule_community_patient cp "
+										+ "on c.id = cp.community_id "
+										+ "where c.community_id = ? and cp.patient_id = {alias}.patient_id)",
+								communityId, Hibernate.INTEGER));
 		otherCriterion.add(phoneCriterion);
 
 		// Get Patients by PatientId or NHIS or
@@ -546,7 +555,99 @@ public class HibernateMotechDAO implements MotechDAO {
 		criteria.addOrder(Order.asc("name.givenName"));
 		criteria.addOrder(Order.asc("name.familyName"));
 		criteria.addOrder(Order.asc("birthdate"));
-		criteria.addOrder(Order.asc("addr.cityVillage"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+		return criteria.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Patient> getPatients(String firstName, String lastName,
+			String preferredName, Date birthDate, Integer communityId,
+			String phoneNumber, PersonAttributeType phoneNumberAttrType,
+			String nhisNumber, PersonAttributeType nhisAttrType,
+			String patientId, PatientIdentifierType patientIdType) {
+
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				Patient.class, "p");
+
+		criteria.createAlias("p.names", "name");
+		criteria.createAlias("p.identifiers", "id");
+
+		criteria.add(Restrictions.eq("p.voided", false));
+		criteria.add(Restrictions.eq("name.voided", false));
+		criteria.add(Restrictions.eq("id.voided", false));
+
+		if (patientId != null && patientIdType != null) {
+			criteria.add(Restrictions
+					.and(Restrictions.eq("id.identifierType", patientIdType),
+							Restrictions.eq("id.identifier", patientId)));
+		}
+
+		Criterion firstNameCriterion = Restrictions.like("name.givenName",
+				firstName, MatchMode.ANYWHERE);
+		Criterion preferredNameCriterion = Restrictions.like("name.givenName",
+				preferredName, MatchMode.ANYWHERE);
+		if (firstName != null && preferredName != null) {
+			criteria.add(Restrictions.or(firstNameCriterion,
+					preferredNameCriterion));
+		} else if (firstName != null) {
+			criteria.add(firstNameCriterion);
+		} else if (preferredName != null) {
+			criteria.add(preferredNameCriterion);
+		}
+
+		if (lastName != null) {
+			criteria.add(Restrictions.like("name.familyName", lastName,
+					MatchMode.ANYWHERE));
+		}
+
+		if (birthDate != null) {
+			criteria.add(Restrictions.eq("p.birthdate", birthDate));
+		}
+
+		if (communityId != null) {
+			criteria
+					.add(Restrictions
+							.sqlRestriction(
+									"exists (select c.id from motechmodule_community c "
+											+ "inner join motechmodule_community_patient cp "
+											+ "on c.id = cp.community_id "
+											+ "where c.community_id = ? and cp.patient_id = {alias}.patient_id)",
+									communityId, Hibernate.INTEGER));
+		}
+
+		if (nhisNumber != null && nhisAttrType != null) {
+			DetachedCriteria nhisCriteria = DetachedCriteria.forClass(
+					PersonAttribute.class, "nattr").setProjection(
+					Projections.id()).add(
+					Restrictions.eq("nattr.voided", false)).add(
+					Restrictions.eqProperty("nattr.person.personId",
+							"p.patientId")).add(
+					Restrictions.and(Restrictions.eq("nattr.attributeType",
+							nhisAttrType), Restrictions.eq("nattr.value",
+							nhisNumber)));
+
+			criteria.add(Subqueries.exists(nhisCriteria));
+		}
+
+		if (phoneNumber != null && phoneNumberAttrType != null) {
+			DetachedCriteria phoneCriteria = DetachedCriteria.forClass(
+					PersonAttribute.class, "pattr").setProjection(
+					Projections.id()).add(
+					Restrictions.eq("pattr.voided", false)).add(
+					Restrictions.eqProperty("pattr.person.personId",
+							"p.patientId")).add(
+					Restrictions.and(Restrictions.eq("pattr.attributeType",
+							phoneNumberAttrType), Restrictions.eq(
+							"pattr.value", phoneNumber)));
+
+			criteria.add(Subqueries.exists(phoneCriteria));
+		}
+
+		criteria.addOrder(Order.asc("name.givenName"));
+		criteria.addOrder(Order.asc("name.familyName"));
+		criteria.addOrder(Order.asc("p.birthdate"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 

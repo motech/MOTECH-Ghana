@@ -244,8 +244,15 @@ public interface RegistrarBean {
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
 			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES })
 	public List<Patient> getPatients(String firstName, String lastName,
-			String preferredName, Date birthDate, String community,
+			String preferredName, Date birthDate, Integer communityId,
 			String phoneNumber, String nhisNumber, String motechId);
+
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
+			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES })
+	public List<Patient> getDuplicatePatients(String firstName,
+			String lastName, String preferredName, Date birthDate,
+			Integer communityId, String phoneNumber, String nhisNumber,
+			String motechId);
 
 	public List<Obs> getAllPregnancies();
 

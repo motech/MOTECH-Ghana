@@ -66,42 +66,53 @@
 
 <div>
 	<h3>Matches</h3>
-	<table>
-		<thead>
-			<tr>
-				<th>MoTeCH ID</th>
-				<th>First Name</th>
-				<th>Last Name</th>
-				<th>Preferred Name</th>
-				<th>Birth Date</th>
-				<th>Community</th>
-				<th>NHIS Number</th>
-				<th>Phone Number</th>
-				<th></th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${matchingPatients}" var="webPatient">
+	<c:choose>
+		<c:when test="${not empty matchingPatients}">
+			<table>
+				<thead>
+					<tr>
+						<th>MoTeCH ID</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Preferred Name</th>
+						<th>Birth Date</th>
+						<th>Community</th>
+						<th>NHIS Number</th>
+						<th>Phone Number</th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${matchingPatients}" var="webPatient">
+						<tr>
+							<td>${webPatient.motechId}</td>
+							<td>${webPatient.firstName}</td>
+							<td>${webPatient.lastName}</td>
+							<td>${webPatient.prefName}</td>
+							<td><openmrs:formatDate date="${webPatient.birthDate}" format="dd/MM/yyyy" /></td>
+							<td>${webPatient.communityName}</td>
+							<td>${webPatient.nhis}</td>
+							<td>${webPatient.phoneNumber}</td>
+							<td>
+								<a href="editpatient.form?id=${webPatient.id}">Edit</a>
+							</td>
+							<td>
+								<a href="pregnancy.form?id=${webPatient.id}">Add Pregnancy</a>
+							</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</c:when>
+		<c:otherwise>
+			<table>
 				<tr>
-					<td>${webPatient.motechId}</td>
-					<td>${webPatient.firstName}</td>
-					<td>${webPatient.lastName}</td>
-					<td>${webPatient.prefName}</td>
-					<td><openmrs:formatDate date="${webPatient.birthDate}" format="dd/MM/yyyy" /></td>
-					<td>${webPatient.communityName}</td>
-					<td>${webPatient.nhis}</td>
-					<td>${webPatient.phoneNumber}</td>
-					<td>
-						<a href="editpatient.form?id=${webPatient.id}">Edit</a>
-					</td>
-					<td>
-						<a href="pregnancy.form?id=${webPatient.id}">Add Pregnancy</a>
-					</td>
+					<td>No matching patients</td>
 				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+			</table>
+		</c:otherwise>
+	</c:choose>
 </div>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>
