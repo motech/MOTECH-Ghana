@@ -206,7 +206,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Date timeOfDay, InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek) {
 
-		return registerPatient(facility, registrationMode, motechId,
+		return registerPatient(nurse, facility, registrationMode, motechId,
 				registrantType, firstName, middleName, lastName, preferredName,
 				dateOfBirth, estimatedBirthDate, sex, insured, nhis,
 				nhisExpires, mother, community, address, phoneNumber,
@@ -229,8 +229,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			HowLearned howLearned, Integer messagesStartWeek) {
 
 		Location facility = getGhanaLocation();
+		User nurse = contextService.getAuthenticatedUser();
 
-		return registerPatient(facility, registrationMode, motechId,
+		return registerPatient(nurse, facility, registrationMode, motechId,
 				registrantType, firstName, middleName, lastName, preferredName,
 				dateOfBirth, estimatedBirthDate, sex, insured, nhis,
 				nhisExpires, mother, community, address, phoneNumber,
@@ -239,7 +240,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				timeOfDay, reason, howLearned, messagesStartWeek);
 	}
 
-	private Patient registerPatient(Location facility,
+	private Patient registerPatient(User nurse, Location facility,
 			RegistrationMode registrationMode, Integer motechId,
 			RegistrantType registrantType, String firstName, String middleName,
 			String lastName, String preferredName, Date dateOfBirth,
@@ -255,7 +256,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		PatientService patientService = contextService.getPatientService();
 		PersonService personService = contextService.getPersonService();
 
-		Patient patient = createPatient(motechId, firstName, middleName,
+		Patient patient = createPatient(nurse, motechId, firstName, middleName,
 				lastName, preferredName, dateOfBirth, estimatedBirthDate, sex,
 				insured, nhis, nhisExpires, address, phoneNumber, ownership,
 				format, language, dayOfWeek, timeOfDay, howLearned, reason);
@@ -276,7 +277,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		Integer pregnancyDueDateObsId = null;
 		if (registrantType == RegistrantType.PREGNANT_MOTHER) {
-			pregnancyDueDateObsId = registerPregnancy(facility, patient,
+			pregnancyDueDateObsId = registerPregnancy(nurse, facility, patient,
 					expDeliveryDate, deliveryDateConfirmed, gravida, parity,
 					null);
 		}
@@ -385,7 +386,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		PatientService patientService = contextService.getPatientService();
 
-		Patient patient = createPatient(motechId, firstName, middleName,
+		User nurse = contextService.getAuthenticatedUser();
+
+		Patient patient = createPatient(nurse, motechId, firstName, middleName,
 				lastName, preferredName, dateOfBirth, estimatedBirthDate, sex,
 				insured, nhis, nhisExpires, address, phoneNumber, ownership,
 				format, language, dayOfWeek, timeOfDay, howLearned, reason);
@@ -405,13 +408,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	private Patient createPatient(Integer motechId, String firstName,
-			String middleName, String lastName, String prefName,
-			Date birthDate, Boolean birthDateEst, Gender sex, Boolean insured,
-			String nhis, Date nhisExpDate, String address, String phoneNumber,
-			ContactNumberType phoneType, MediaType mediaType, String language,
-			DayOfWeek dayOfWeek, Date timeOfDay, HowLearned howLearned,
-			InterestReason interestReason) {
+	private Patient createPatient(User nurse, Integer motechId,
+			String firstName, String middleName, String lastName,
+			String prefName, Date birthDate, Boolean birthDateEst, Gender sex,
+			Boolean insured, String nhis, Date nhisExpDate, String address,
+			String phoneNumber, ContactNumberType phoneType,
+			MediaType mediaType, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, HowLearned howLearned, InterestReason interestReason) {
 
 		Patient patient = new Patient();
 
@@ -420,7 +423,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			motechIdString = generateMotechId();
 		} else {
 			motechIdString = motechId.toString();
-			excludeIdForGenerator(motechIdString);
+			excludeIdForGenerator(nurse, motechIdString);
 		}
 
 		patient.addIdentifier(new PatientIdentifier(motechIdString,
@@ -646,9 +649,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
 
 		Location facility = getGhanaLocation();
+		User nurse = contextService.getAuthenticatedUser();
 
 		if (pregnancyDueDateObsId == null) {
-			pregnancyDueDateObsId = registerPregnancy(facility, patient,
+			pregnancyDueDateObsId = registerPregnancy(nurse, facility, patient,
 					expDeliveryDate, deliveryDateConfirmed, gravida, parity,
 					null);
 		}
@@ -658,9 +662,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				howLearned, null, pregnancyDueDateObsId);
 	}
 
-	private Integer registerPregnancy(Location facility, Patient patient,
-			Date dueDate, Boolean dueDateConfirmed, Integer gravida,
-			Integer parity, Integer height) {
+	private Integer registerPregnancy(User nurse, Location facility,
+			Patient patient, Date dueDate, Boolean dueDateConfirmed,
+			Integer gravida, Integer parity, Integer height) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -674,7 +678,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(currentDate);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter.setProvider(nurse);
 		encounter = encounterService.saveEncounter(encounter);
 
 		Obs pregnancyObs = createObs(currentDate, getPregnancyConcept(),
@@ -738,7 +742,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
 
 		if (pregnancyDueDateObsId == null) {
-			pregnancyDueDateObsId = registerPregnancy(facility, patient,
+			pregnancyDueDateObsId = registerPregnancy(nurse, facility, patient,
 					estDeliveryDate, null, null, null, null);
 		}
 
@@ -780,7 +784,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
 		if (pregnancyDueDateObsId == null) {
-			pregnancyDueDateObsId = registerPregnancy(facility, patient,
+			pregnancyDueDateObsId = registerPregnancy(nurse, facility, patient,
 					estDeliveryDate, null, gravida, parity, height);
 		}
 
@@ -793,7 +797,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter.setProvider(nurse);
 
 		Obs ancRegNumObs = createTextValueObs(date,
 				getANCRegistrationNumberConcept(), patient, facility,
@@ -822,7 +826,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter.setProvider(nurse);
 
 		Obs cwcRegNumObs = createTextValueObs(date,
 				getCWCRegistrationNumberConcept(), patient, facility,
@@ -854,7 +858,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter.setProvider(nurse);
 
 		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
 		if (pregnancyObs == null) {
@@ -1076,7 +1080,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter.setProvider(nurse);
 
 		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
 		if (pregnancyObs == null) {
@@ -1163,7 +1167,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(datetime);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter.setProvider(nurse);
 
 		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
 		if (pregnancyObs == null) {
@@ -1247,8 +1251,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 							.getOutcome().name(), encounter, null);
 			encounter.addObs(childOutcomeObs);
 
-			Patient child = registerPatient(facility, childOutcome.getIdMode(),
-					childOutcome.getMotechId(),
+			Patient child = registerPatient(nurse, facility, childOutcome
+					.getIdMode(), childOutcome.getMotechId(),
 					RegistrantType.CHILD_UNDER_FIVE, childOutcome
 							.getFirstName(), null, null, null, datetime, false,
 					childOutcome.getSex(), null, null, null, patient, null,
@@ -1256,7 +1260,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					null, null, null, null, null, null);
 
 			if (childOutcome.getWeight() != null) {
-				recordBirthData(facility, child, datetime, childOutcome
+				recordBirthData(nurse, facility, child, datetime, childOutcome
 						.getWeight());
 			}
 
@@ -1276,7 +1280,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return aliveChildPatients;
 	}
 
-	private void recordBirthData(Location facility, Patient child,
+	private void recordBirthData(User nurse, Location facility, Patient child,
 			Date datetime, Double weight) {
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -1286,7 +1290,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(datetime);
 		encounter.setPatient(child);
 		encounter.setLocation(facility);
-		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter.setProvider(nurse);
 
 		if (weight != null) {
 			Obs weightObs = createNumericValueObs(datetime, getWeightConcept(),
@@ -1310,7 +1314,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter.setProvider(nurse);
 
 		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
 		if (pregnancyObs == null) {
@@ -1380,7 +1384,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(datetime);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter.setProvider(nurse);
 
 		if (visitNumber != null) {
 			Obs visitNumberObs = createNumericValueObs(datetime,
@@ -1480,7 +1484,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(datetime);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter.setProvider(nurse);
 
 		if (visitNumber != null) {
 			Obs visitNumberObs = createNumericValueObs(datetime,
@@ -1581,7 +1585,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter.setProvider(nurse);
 
 		if (ttDose != null) {
 			Obs ttDoseObs = createNumericValueObs(date,
@@ -1638,7 +1642,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter.setProvider(nurse);
 
 		if (cwcLocation != null) {
 			Obs cwcLocationObs = createNumericValueObs(date,
@@ -1775,7 +1779,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(contextService.getAuthenticatedUser());
+		encounter.setProvider(nurse);
 
 		if (serialNumber != null) {
 			Obs serialNumberObs = createTextValueObs(date,
@@ -3215,7 +3219,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return motechId;
 	}
 
-	private void excludeIdForGenerator(String motechId) {
+	private void excludeIdForGenerator(User nurse, String motechId) {
 		PatientIdentifierType motechIdType = getMotechPatientIdType();
 		try {
 			IdentifierSourceService idSourceService = contextService
@@ -3229,7 +3233,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			newLog.setSource(idGenerator);
 			newLog.setIdentifier(motechId);
 			newLog.setDateGenerated(new Date());
-			newLog.setGeneratedBy(contextService.getAuthenticatedUser());
+			newLog.setGeneratedBy(nurse);
 			newLog
 					.setComment(MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID_MANUAL_COMMENT);
 			idSourceService.saveLogEntry(newLog);

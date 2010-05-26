@@ -566,9 +566,9 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getIdentifierSourceService())
 				.andReturn(idService).atLeastOnce();
 
+		expect(contextService.getAuthenticatedUser()).andReturn(new User());
 		expect(idService.getAllIdentifierSources(false)).andReturn(
 				new ArrayList<IdentifierSource>());
-		expect(contextService.getAuthenticatedUser()).andReturn(new User());
 		expect(idService.saveLogEntry((LogEntry) anyObject())).andReturn(
 				new LogEntry());
 		expect(
@@ -632,7 +632,6 @@ public class RegistrarBeanTest extends TestCase {
 				encounterService
 						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGREGVISIT))
 				.andReturn(pregnancyRegVisitType);
-		expect(contextService.getAuthenticatedUser()).andReturn(new User());
 		expect(encounterService.saveEncounter(capture(pregnancyEncounterCap)))
 				.andReturn(new Encounter());
 		expect(conceptService.getConcept(MotechConstants.CONCEPT_PREGNANCY))
@@ -844,9 +843,9 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getIdentifierSourceService())
 				.andReturn(idService).atLeastOnce();
 
+		expect(contextService.getAuthenticatedUser()).andReturn(new User());
 		expect(idService.getAllIdentifierSources(false)).andReturn(
 				new ArrayList<IdentifierSource>());
-		expect(contextService.getAuthenticatedUser()).andReturn(new User());
 		expect(idService.saveLogEntry((LogEntry) anyObject())).andReturn(
 				new LogEntry());
 		expect(
@@ -1085,9 +1084,9 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getIdentifierSourceService())
 				.andReturn(idService).atLeastOnce();
 
+		expect(contextService.getAuthenticatedUser()).andReturn(new User());
 		expect(idService.getAllIdentifierSources(false)).andReturn(
 				new ArrayList<IdentifierSource>());
-		expect(contextService.getAuthenticatedUser()).andReturn(new User());
 		expect(idService.saveLogEntry((LogEntry) anyObject())).andReturn(
 				new LogEntry());
 		expect(
@@ -1561,6 +1560,7 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getPatientService()).andReturn(patientService);
 
+		expect(contextService.getAuthenticatedUser()).andReturn(new User());
 		expect(
 				motechService.getActivePregnancies(patientId, pregConcept,
 						pregStatusConcept)).andReturn(new ArrayList<Obs>());
@@ -1606,7 +1606,6 @@ public class RegistrarBeanTest extends TestCase {
 				encounterService
 						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGREGVISIT))
 				.andReturn(pregnancyRegVisitType);
-		expect(contextService.getAuthenticatedUser()).andReturn(new User());
 		expect(encounterService.saveEncounter(capture(pregnancyEncounterCap)))
 				.andReturn(new Encounter());
 		expect(conceptService.getConcept(MotechConstants.CONCEPT_PREGNANCY))
