@@ -731,7 +731,7 @@ public class RegistrarBeanTest extends TestCase {
 		int hour = timeOfDayCal.get(Calendar.HOUR_OF_DAY);
 		int min = timeOfDayCal.get(Calendar.MINUTE);
 		Date timeOfDayDate = (new SimpleDateFormat(
-				MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME))
+				MotechConstants.TIME_FORMAT_DELIVERY_TIME))
 				.parse(capturedPatient.getAttribute(deliveryTimeAttributeType)
 						.getValue());
 		timeOfDayCal.setTime(timeOfDayDate);
@@ -1002,7 +1002,7 @@ public class RegistrarBeanTest extends TestCase {
 		int hour = timeOfDayCal.get(Calendar.HOUR_OF_DAY);
 		int min = timeOfDayCal.get(Calendar.MINUTE);
 		Date timeOfDayDate = (new SimpleDateFormat(
-				MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME))
+				MotechConstants.TIME_FORMAT_DELIVERY_TIME))
 				.parse(capturedPatient.getAttribute(deliveryTimeAttributeType)
 						.getValue());
 		timeOfDayCal.setTime(timeOfDayDate);
@@ -1228,7 +1228,7 @@ public class RegistrarBeanTest extends TestCase {
 		int hour = timeOfDayCal.get(Calendar.HOUR_OF_DAY);
 		int min = timeOfDayCal.get(Calendar.MINUTE);
 		Date timeOfDayDate = (new SimpleDateFormat(
-				MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME))
+				MotechConstants.TIME_FORMAT_DELIVERY_TIME))
 				.parse(capturedPatient.getAttribute(deliveryTimeAttributeType)
 						.getValue());
 		timeOfDayCal.setTime(timeOfDayDate);
@@ -1517,7 +1517,7 @@ public class RegistrarBeanTest extends TestCase {
 				deliveryDayAttributeType).getValue()));
 
 		Date timeOfDayDate = (new SimpleDateFormat(
-				MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME))
+				MotechConstants.TIME_FORMAT_DELIVERY_TIME))
 				.parse(capturedPatient.getAttribute(deliveryTimeAttributeType)
 						.getValue());
 		Calendar timeCal = Calendar.getInstance();
@@ -1654,9 +1654,8 @@ public class RegistrarBeanTest extends TestCase {
 				deliveryDayAttributeType).getValue()));
 
 		Date timeOfDayDate = (new SimpleDateFormat(
-				MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME))
-				.parse(patient.getAttribute(deliveryTimeAttributeType)
-						.getValue());
+				MotechConstants.TIME_FORMAT_DELIVERY_TIME)).parse(patient
+				.getAttribute(deliveryTimeAttributeType).getValue());
 		Calendar timeCal = Calendar.getInstance();
 		timeCal.setTime(date);
 		int hour = timeCal.get(Calendar.HOUR_OF_DAY);

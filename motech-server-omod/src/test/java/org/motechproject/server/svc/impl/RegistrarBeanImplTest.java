@@ -145,4 +145,46 @@ public class RegistrarBeanImplTest extends TestCase {
 				.get(Calendar.MINUTE));
 		assertEquals(0, prefCal.get(Calendar.SECOND));
 	}
+
+	public void testAdjustDateTime() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.HOUR_OF_DAY, 22);
+		calendar.set(Calendar.MINUTE, 13);
+		calendar.set(Calendar.SECOND, 54);
+		Date messageDate = calendar.getTime();
+
+		int hour = 15;
+		int minute = 37;
+		int second = 0;
+
+		Calendar timeCalendar = Calendar.getInstance();
+		timeCalendar.set(Calendar.YEAR, 1986);
+		timeCalendar.set(Calendar.MONTH, 6);
+		timeCalendar.set(Calendar.DAY_OF_MONTH, 4);
+		timeCalendar.set(Calendar.HOUR_OF_DAY, hour);
+		timeCalendar.set(Calendar.MINUTE, minute);
+		timeCalendar.set(Calendar.SECOND, 34);
+
+		Date prefDate = regBean.adjustTime(messageDate, timeCalendar.getTime());
+
+		Calendar messageCal = Calendar.getInstance();
+		messageCal.setTime(messageDate);
+		Calendar prefCal = Calendar.getInstance();
+		prefCal.setTime(prefDate);
+
+		assertEquals(messageCal.get(Calendar.YEAR), prefCal.get(Calendar.YEAR));
+		assertEquals(messageCal.get(Calendar.MONTH), prefCal
+				.get(Calendar.MONTH));
+		assertEquals(messageCal.get(Calendar.DATE), prefCal.get(Calendar.DATE));
+		assertFalse("Hour not updated",
+				messageCal.get(Calendar.HOUR_OF_DAY) == prefCal
+						.get(Calendar.HOUR_OF_DAY));
+		assertEquals(hour, prefCal.get(Calendar.HOUR_OF_DAY));
+		assertFalse("Minute not updated",
+				messageCal.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
+		assertEquals(minute, prefCal.get(Calendar.MINUTE));
+		assertFalse("Second not updated",
+				messageCal.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
+		assertEquals(second, prefCal.get(Calendar.SECOND));
+	}
 }

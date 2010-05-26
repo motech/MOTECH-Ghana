@@ -152,7 +152,7 @@ public class WebModelConverterImpl implements WebModelConverter {
 			String timeOfDayString = timeOfDayAttr.getValue();
 			try {
 				SimpleDateFormat timeFormat = new SimpleDateFormat(
-						MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME);
+						MotechConstants.TIME_FORMAT_DELIVERY_TIME);
 				timeOfDay = timeFormat.parse(timeOfDayString);
 			} catch (ParseException e) {
 				log.error("Cannot parse time of day Date: " + timeOfDayString

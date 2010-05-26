@@ -1,5 +1,6 @@
 package org.motechproject.server.omod.tasks;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
@@ -35,24 +36,31 @@ public class NurseCareMessagingTask extends AbstractTask {
 		String[] careGroups = StringUtils.split(careGroupsProperty,
 				MotechConstants.TASK_PROPERTY_CARE_GROUPS_DELIMITER);
 
-		String deliveryTimeOffsetString = this.taskDefinition
-				.getProperty(MotechConstants.TASK_PROPERTY_DELIVERY_TIME_OFFSET);
-		Long deliveryTimeOffset = 0L;
-		if (deliveryTimeOffsetString != null) {
-			deliveryTimeOffset = Long.valueOf(deliveryTimeOffsetString);
-		}
+		String deliveryTimeString = this.taskDefinition
+				.getProperty(MotechConstants.TASK_PROPERTY_DELIVERY_TIME);
 
-		Date startDate = new Date();
-		Date endDate = new Date(startDate.getTime()
+		Date currentDate = new Date();
+		Date endDate = new Date(currentDate.getTime()
 				+ (this.taskDefinition.getRepeatInterval() * 1000));
-		Date deliveryDate = new Date(startDate.getTime()
-				+ (deliveryTimeOffset * 1000));
+
+		Date deliveryTime = null;
+		if (deliveryTimeString != null) {
+			SimpleDateFormat timeFormat = new SimpleDateFormat(
+					MotechConstants.TIME_FORMAT_DELIVERY_TIME);
+			try {
+				deliveryTime = timeFormat.parse(deliveryTimeString);
+			} catch (Exception e) {
+				log.error("Error parsing nurse messaging task "
+						+ "delivery time", e);
+			}
+		}
 
 		// Session required for Task to get RegistrarBean through Context
 		try {
 			contextService.openSession();
-			contextService.getRegistrarBean().sendNurseCareMessages(startDate,
-					endDate, deliveryDate, careGroups, sendUpcoming);
+			contextService.getRegistrarBean().sendNurseCareMessages(
+					currentDate, endDate, currentDate, deliveryTime,
+					careGroups, sendUpcoming);
 		} finally {
 			contextService.closeSession();
 		}

@@ -100,7 +100,7 @@ public final class MotechConstants {
 	public static final String TASK_MESSAGEPROGRAM_UPDATE = "MessageProgram Update Task";
 	public static final String TASK_DAILY_NURSE_CARE_MESSAGING = "Daily Nurse Care Messaging Task";
 	public static final String TASK_WEEKLY_NURSE_CARE_MESSAGING = "Weekly Nurse Care Messaging Task";
-	public static final String TASK_PROPERTY_DELIVERY_TIME_OFFSET = "deliveryTimeOffset";
+	public static final String TASK_PROPERTY_DELIVERY_TIME = "deliveryTime";
 	public static final String TASK_PROPERTY_SEND_UPCOMING = "sendUpcoming";
 	public static final String TASK_PROPERTY_CARE_GROUPS = "careGroups";
 	public static final String TASK_PROPERTY_CARE_GROUPS_DELIMITER = ",";
@@ -112,7 +112,7 @@ public final class MotechConstants {
 	public static final String IDGEN_SEQ_ID_GEN_FIRST_MOTECH_ID_BASE = "123456";
 	public static final String IDGEN_SEQ_ID_GEN_MOTECH_ID_GEN_COMMENT = "AUTO GENERATED";
 	public static final String IDGEN_SEQ_ID_GEN_MOTECH_ID_MANUAL_COMMENT = "MANUAL ENTRY";
-	public static final String TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME = "HH:mm";
+	public static final String TIME_FORMAT_DELIVERY_TIME = "HH:mm";
 	public static final String PHONE_REGEX_PATTERN = "^\\+?[0-9]+$";
 	public static final int MAX_STRING_LENGTH_OPENMRS = 50;
 

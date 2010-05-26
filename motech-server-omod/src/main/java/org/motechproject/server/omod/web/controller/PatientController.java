@@ -83,7 +83,7 @@ public class PatientController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(
 				dateFormat, true, datePattern.length()));
 
-		String timePattern = MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME;
+		String timePattern = MotechConstants.TIME_FORMAT_DELIVERY_TIME;
 		SimpleDateFormat timeFormat = new SimpleDateFormat(timePattern);
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, "timeOfDay",

@@ -38,7 +38,6 @@ import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
-import org.motechproject.server.ws.WebServiceModelConverter;
 import org.motechproject.server.ws.WebServiceModelConverterImpl;
 import org.motechproject.ws.BirthOutcome;
 import org.motechproject.ws.Care;
@@ -491,7 +490,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		if (timeOfDay != null) {
 			SimpleDateFormat formatter = new SimpleDateFormat(
-					MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME);
+					MotechConstants.TIME_FORMAT_DELIVERY_TIME);
 			attrs.add(new PersonAttribute(getDeliveryTimeAttributeType(),
 					formatter.format(timeOfDay)));
 		}
@@ -1356,7 +1355,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MediaType mediaType = MediaType.TEXT;
 				String languageCode = "en";
 
-				WebServiceModelConverter wsModelConverter = new WebServiceModelConverterImpl();
+				WebServiceModelConverterImpl wsModelConverter = new WebServiceModelConverterImpl();
+				wsModelConverter.setRegistrarBean(this);
 				org.motechproject.ws.Patient wsPatient = wsModelConverter
 						.patientToWebService(patient, true);
 				org.motechproject.ws.Patient[] wsPatients = new org.motechproject.ws.Patient[] { wsPatient };
@@ -3161,8 +3161,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.TASK_PROPERTY_CARE_GROUPS_DELIMITER);
 		dailyNurseProps.put(MotechConstants.TASK_PROPERTY_CARE_GROUPS,
 				dailyGroupsProperty);
-		dailyNurseProps.put(MotechConstants.TASK_PROPERTY_DELIVERY_TIME_OFFSET,
-				new Long(36000).toString());
+		dailyNurseProps.put(MotechConstants.TASK_PROPERTY_DELIVERY_TIME,
+				"08:00");
 		createTask(MotechConstants.TASK_DAILY_NURSE_CARE_MESSAGING,
 				"Task to send out nurse SMS care messages for next day",
 				calendar.getTime(), new Long(86400), Boolean.FALSE,
@@ -3176,9 +3176,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.TASK_PROPERTY_CARE_GROUPS_DELIMITER);
 		weeklyNurseProps.put(MotechConstants.TASK_PROPERTY_CARE_GROUPS,
 				weeklyGroupsProperty);
-		weeklyNurseProps.put(
-				MotechConstants.TASK_PROPERTY_DELIVERY_TIME_OFFSET, new Long(
-						36000).toString());
+		weeklyNurseProps.put(MotechConstants.TASK_PROPERTY_DELIVERY_TIME,
+				"08:00");
 		createTask(MotechConstants.TASK_WEEKLY_NURSE_CARE_MESSAGING,
 				"Task to send out nurse SMS care messages for week", calendar
 						.getTime(), new Long(604800), Boolean.FALSE,
@@ -3560,10 +3559,21 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	public void sendNurseCareMessages(Date startDate, Date endDate,
-			Date deliveryDate, String[] careGroups, boolean sendUpcoming) {
+			Date deliveryDate, Date deliveryTime, String[] careGroups,
+			boolean sendUpcoming) {
 
 		MotechService motechService = contextService.getMotechService();
 		List<Facility> facilities = motechService.getAllFacilities();
+
+		// All nurse messages sent as SMS
+		MediaType mediaType = MediaType.TEXT;
+		// No corresponding message stored for nurse care messages
+		String messageId = null;
+		// Set the time on the delivery date if needed
+		deliveryDate = adjustTime(deliveryDate, deliveryTime);
+
+		WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
+		modelConverter.setRegistrarBean(this);
 
 		for (Facility facility : facilities) {
 			String phoneNumber = facility.getPhoneNumber();
@@ -3576,12 +3586,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				// not in KNDW district
 				continue;
 			}
-			// All nurse messages sent as SMS
-			MediaType mediaType = MediaType.TEXT;
-			// No corresponding message stored for nurse care messages
-			String messageId = null;
-
-			WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
 
 			// Send Defaulted Care Message
 			List<ExpectedEncounter> defaultedEncounters = getDefaultedExpectedEncounters(
@@ -4059,7 +4063,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Date time = null;
 		if (timeAttr != null && timeAttr.getValue() != null) {
 			SimpleDateFormat timeFormat = new SimpleDateFormat(
-					MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME);
+					MotechConstants.TIME_FORMAT_DELIVERY_TIME);
 			try {
 				time = timeFormat.parse(timeAttr.getValue());
 			} catch (Exception e) {
@@ -4089,7 +4093,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public Date getDefaultPatientTimeOfDay() {
 		String timeProperty = getPatientTimeOfDayProperty();
 		SimpleDateFormat timeFormat = new SimpleDateFormat(
-				MotechConstants.TIME_FORMAT_PERSON_ATTRIBUTE_DELIVERY_TIME);
+				MotechConstants.TIME_FORMAT_DELIVERY_TIME);
 		Date time = null;
 		try {
 			time = timeFormat.parse(timeProperty);
@@ -4130,6 +4134,27 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			}
 		}
 
+		return calendar.getTime();
+	}
+
+	Date adjustTime(Date date, Date time) {
+		if (date == null || time == null) {
+			return date;
+		}
+		Calendar calendar = Calendar.getInstance();
+		Date currentDate = calendar.getTime();
+		calendar.setTime(date);
+
+		Calendar timeCalendar = Calendar.getInstance();
+		timeCalendar.setTime(time);
+		calendar.set(Calendar.HOUR_OF_DAY, timeCalendar
+				.get(Calendar.HOUR_OF_DAY));
+		calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+		calendar.set(Calendar.SECOND, 0);
+		if (calendar.getTime().before(currentDate)) {
+			// Add a day if date in past after setting the time of day
+			calendar.add(Calendar.DATE, 1);
+		}
 		return calendar.getTime();
 	}
 
