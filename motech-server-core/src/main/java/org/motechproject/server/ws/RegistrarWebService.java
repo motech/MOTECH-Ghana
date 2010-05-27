@@ -1065,7 +1065,7 @@ public class RegistrarWebService implements RegistrarService {
 			errors.add(3, fieldName);
 			return null;
 		}
-		User nurse = openmrsBean.getNurseByCHPSId(staffId.toString());
+		User nurse = openmrsBean.getNurseBySystemId(staffId.toString());
 		if (nurse == null) {
 			errors.add(1, fieldName);
 		}

@@ -118,7 +118,7 @@ public class RegistrarServiceTest {
 		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -159,7 +159,7 @@ public class RegistrarServiceTest {
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -208,7 +208,7 @@ public class RegistrarServiceTest {
 		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -240,7 +240,7 @@ public class RegistrarServiceTest {
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -301,7 +301,7 @@ public class RegistrarServiceTest {
 
 		Capture<List<BirthOutcomeChild>> outcomesCapture = new Capture<List<BirthOutcomeChild>>();
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -377,7 +377,7 @@ public class RegistrarServiceTest {
 
 		Capture<List<BirthOutcomeChild>> outcomesCapture = new Capture<List<BirthOutcomeChild>>();
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -436,7 +436,7 @@ public class RegistrarServiceTest {
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -482,7 +482,7 @@ public class RegistrarServiceTest {
 		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -505,7 +505,7 @@ public class RegistrarServiceTest {
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -550,7 +550,7 @@ public class RegistrarServiceTest {
 		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -583,7 +583,7 @@ public class RegistrarServiceTest {
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -626,7 +626,7 @@ public class RegistrarServiceTest {
 		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -649,7 +649,7 @@ public class RegistrarServiceTest {
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -688,7 +688,7 @@ public class RegistrarServiceTest {
 		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -711,7 +711,7 @@ public class RegistrarServiceTest {
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -754,7 +754,7 @@ public class RegistrarServiceTest {
 		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -787,7 +787,7 @@ public class RegistrarServiceTest {
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -835,7 +835,7 @@ public class RegistrarServiceTest {
 		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -869,7 +869,7 @@ public class RegistrarServiceTest {
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -929,7 +929,7 @@ public class RegistrarServiceTest {
 
 		org.openmrs.Patient createdPatient = new org.openmrs.Patient(4);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(registrarBean.getCommunityById(communityId)).andReturn(comm);
@@ -989,7 +989,7 @@ public class RegistrarServiceTest {
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 		org.openmrs.Patient mother = null;
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(null);
 		expect(registrarBean.getCommunityById(community)).andReturn(null);
@@ -1056,7 +1056,7 @@ public class RegistrarServiceTest {
 		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -1089,7 +1089,7 @@ public class RegistrarServiceTest {
 		User nurse = null;
 		org.openmrs.Patient patient = null;
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(null);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -1142,7 +1142,7 @@ public class RegistrarServiceTest {
 		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -1176,7 +1176,7 @@ public class RegistrarServiceTest {
 		User nurse = null;
 		org.openmrs.Patient patient = null;
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(null);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -1230,7 +1230,7 @@ public class RegistrarServiceTest {
 		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -1263,7 +1263,7 @@ public class RegistrarServiceTest {
 		User nurse = null;
 		org.openmrs.Patient patient = null;
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(null);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -1309,7 +1309,7 @@ public class RegistrarServiceTest {
 		User nurse = new User(1);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -1339,7 +1339,7 @@ public class RegistrarServiceTest {
 		User nurse = null;
 		org.openmrs.Patient patient = null;
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(null);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -1383,7 +1383,7 @@ public class RegistrarServiceTest {
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -1446,7 +1446,7 @@ public class RegistrarServiceTest {
 		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -1474,7 +1474,7 @@ public class RegistrarServiceTest {
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(null);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -1519,7 +1519,7 @@ public class RegistrarServiceTest {
 		facility.setLocation(facilityLocation);
 		org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -1547,7 +1547,7 @@ public class RegistrarServiceTest {
 
 		User nurse = new User(1);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				nurse);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(null);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
@@ -1597,7 +1597,7 @@ public class RegistrarServiceTest {
 		obsCare.setName("ObsCare");
 		Care[] defaultedCares = { encounterCare, obsCare };
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				new User(1));
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 
@@ -1645,7 +1645,7 @@ public class RegistrarServiceTest {
 		obsCare.setName("ObsCare");
 		Care[] obsCares = { obsCare };
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				new User(1));
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(
@@ -1682,7 +1682,7 @@ public class RegistrarServiceTest {
 		encounterCare.setName("EncounterCare");
 		Care[] encounterCares = { encounterCare };
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				new User(1));
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(
@@ -1722,7 +1722,7 @@ public class RegistrarServiceTest {
 		encounterCare.setName("EncounterCare");
 		Care[] encounterCares = { encounterCare };
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				new User(1));
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(
@@ -1762,7 +1762,7 @@ public class RegistrarServiceTest {
 		obsCare.setName("ObsCare");
 		Care[] obsCares = { obsCare };
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				new User(1));
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(
@@ -1802,7 +1802,7 @@ public class RegistrarServiceTest {
 		patient.setMotechId("MotechId");
 		Patient[] result = { patient };
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				new User(1));
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -1832,7 +1832,7 @@ public class RegistrarServiceTest {
 		patient.setMotechId("MotechId");
 		Patient[] result = { patient };
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				new User(1));
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -1861,7 +1861,7 @@ public class RegistrarServiceTest {
 		patient.setMotechId("MotechId");
 		Patient[] result = { patient };
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				new User(1));
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -1910,7 +1910,7 @@ public class RegistrarServiceTest {
 
 		org.openmrs.Patient patient = new org.openmrs.Patient(1);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				new User(1));
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -1963,7 +1963,7 @@ public class RegistrarServiceTest {
 		patient.setMotechId("MotechId");
 		Patient[] result = { patient };
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				new User(1));
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -1991,7 +1991,7 @@ public class RegistrarServiceTest {
 
 		org.openmrs.Patient patient = new org.openmrs.Patient(1);
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				new User(1));
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
@@ -2011,7 +2011,7 @@ public class RegistrarServiceTest {
 	public void testQueryPatientInvalidIds() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 
-		expect(openmrsBean.getNurseByCHPSId(staffId.toString())).andReturn(
+		expect(openmrsBean.getNurseBySystemId(staffId.toString())).andReturn(
 				new User(1));
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(null);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))

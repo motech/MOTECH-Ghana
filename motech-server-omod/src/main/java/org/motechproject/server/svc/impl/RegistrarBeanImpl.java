@@ -3947,24 +3947,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return null;
 	}
 
-	public User getNurseByCHPSId(String chpsId) {
-		MotechService motechService = contextService.getMotechService();
+	public User getNurseBySystemId(String systemId) {
 		UserService userService = contextService.getUserService();
-
-		PersonAttributeType chpsAttributeType = getNurseIdAttributeType();
-		List<Integer> matchingUsers = motechService
-				.getUserIdsByPersonAttribute(chpsAttributeType, chpsId);
-		if (matchingUsers.size() > 0) {
-			if (matchingUsers.size() > 1) {
-				log.warn("Multiple Nurses found for CHPS ID: " + chpsId);
-			}
-			// If more than one user matches chps ID, first user in list is
-			// returned
-			Integer userId = matchingUsers.get(0);
-			return userService.getUser(userId);
-		}
-		log.warn("No Nurse found for CHPS ID: " + chpsId);
-		return null;
+		return userService.getUserByUsername(systemId);	
 	}
 
 	public String getPersonPhoneNumber(Person person) {
