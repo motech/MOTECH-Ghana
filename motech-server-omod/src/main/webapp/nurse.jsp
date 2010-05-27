@@ -1,46 +1,50 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-<openmrs:require privilege="Register MoTeCH Nurse" otherwise="/login.htm" redirect="/module/motechmodule/nurse.form" />
+<openmrs:require privilege="Register MoTeCH Staff" otherwise="/login.htm" redirect="/module/motechmodule/nurse.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
-<meta name="heading" content="Nurse Registration" />
+<meta name="heading" content="Staff Registration" />
 <%@ include file="localHeader.jsp" %>
-<h2>Register a Nurse</h2>
-<div class="instructions">
-	This test allows you to create a new nurse record. A nurse is
-	associated with an existing clinic.
-	<em>
-		NOTE: A clinic must already exist with the specified name 
-		and a nurse phone needs to be unique.
-	</em>
-</div>
-<form method="post">
-<table>
-	<tr>
-		<td><label for="name">Name:</label></td>
-		<td><input name="name" value="Nurse Name" /></td>
-	</tr>
-	<tr>
-		<td><label for="nurseId">Nurse Id:</label></td>
-		<td><input name="nurseId" value="123ABC" /></td>
-	</tr>
-	<tr>
-		<td><label for="nursePhone">Nurse Phone:</label></td>
-		<td><input name="nursePhone" value="5555555555" /></td>
-	</tr>
-	<tr>
-		<td><label for="clinic">Clinic:</label></td>
-		<td>
-			<select name="clinic">
-				<c:forEach items="${clinics}" var="clinic">
-					<option value="${clinic.locationId}">${clinic.name}</option>
-				</c:forEach>
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2"><input type="submit" /></td>
-	</tr>
-</table>
-</form>
+<h2>Register a Staff Member</h2>
+<c:choose>
+	<c:when test="${not empty successMsg}">
+	<span style="color:green;">
+		<spring:message text="${successMsg}" />
+	</span>
+	</c:when>
+	<c:otherwise>
+	<div class="instructions">
+		This form allows you register a staff member.
+	</div>
+	<form method="post">
+	<table>
+		<tr>
+			<td><label for="firstName">First Name:</label></td>
+			<td><input name="firstName" value="First Name" maxlength="50" /></td>
+		</tr>
+		<tr>
+			<td><label for="lastName">Last Name:</label></td>
+			<td><input name="lastName" value="Last Name" maxlength="50" /></td>
+		</tr>
+		<tr>
+			<td><label for="phone">Phone Number:</label></td>
+			<td><input name="phone" value="5555555555" maxlength="50" /></td>
+		</tr>
+		<tr>
+			<td><label for="type">Staff Type:</label></td>
+			<td>
+				<select name="type">
+					<c:forEach items="${staffTypes}" var="staffType">
+						<option value="${staffType}">${staffType}</option>
+					</c:forEach>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="submit" /></td>
+		</tr>
+	</table>
+	</form>
+	</c:otherwise>
+</c:choose>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>

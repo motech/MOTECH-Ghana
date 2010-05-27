@@ -66,6 +66,16 @@
 		<property name="contextService" ref="contextService" />
 		<property name="mobileService" ref="mobileClient" />
 		<property name="messagePrograms" ref="messageProgramMap" />
+		<property name="staffTypes">
+			<list>
+				<value>CHO</value>
+				<value>CHN</value>
+				<value>Midwife</value>
+				<value>HEW</value>
+				<value>CHV</value>
+				<value>Field agent</value>
+			</list>
+		</property>
 	</bean>
 	
 	<!-- To avoid circular reference, expectedCareProgram injects registrarBean -->

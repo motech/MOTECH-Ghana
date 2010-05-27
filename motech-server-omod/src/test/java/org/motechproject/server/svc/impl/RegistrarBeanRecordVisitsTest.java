@@ -103,13 +103,10 @@ public class RegistrarBeanRecordVisitsTest extends
 			Integer child1Id = 1234599;
 			Integer child2Id = 1234608;
 			Integer child3Id = 1234612;
-			String nurseId = "NurseId";
 			Date date = new Date();
 
-			regService.registerNurse("Nurse", nurseId, "nursePhone",
-					"West Test Clinic");
-			User nurse = openmrsService.getNurseByCHPSId(nurseId);
-			assertNotNull("Nurse not registered", nurse);
+			User nurse = regService.registerNurse("Nurse", "Betty",
+					"7777777777", "CHO");
 
 			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
 					mother1Id, RegistrantType.PREGNANT_MOTHER,

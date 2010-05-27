@@ -31,9 +31,9 @@
 	<h3>Nurses</h3>
 	<c:choose>
 		<c:when test="${not empty allNurses}">
-		<table><tr><th>Id</th><th>First Name</th><th>Last Name</th><th>Username</th></tr>
+		<table><tr><th>Id</th><th>First Name</th><th>Last Name</th><th>System Id</th></tr>
 		<c:forEach items="${allNurses}" var="nurse">
-			<tr><td>${nurse.userId}</td><td>${nurse.givenName}</td><td>${nurse.familyName}</td><td>${nurse.username}</td></tr>
+			<tr><td>${nurse.userId}</td><td>${nurse.givenName}</td><td>${nurse.familyName}</td><td>${nurse.systemId}</td></tr>
 		</c:forEach>
 		</table>
 		</c:when>

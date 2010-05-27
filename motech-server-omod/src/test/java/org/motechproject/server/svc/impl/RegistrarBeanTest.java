@@ -480,45 +480,40 @@ public class RegistrarBeanTest extends TestCase {
 
 	public void testRegisterNurse() {
 
-		String name = "Jenny", id = "123abc", phone = "12078675309", clinic = "Mayo Clinic";
-
-		Location clinicLocation = new Location(1);
-		clinicLocation.setName(clinic);
+		String firstName = "Jenny", lastName = "Jones", phone = "12078675309", staffType = "CHO";
 
 		Capture<User> nurseCap = new Capture<User>();
+		Capture<String> passCap = new Capture<String>();
 
+		expect(contextService.getUserService()).andReturn(userService)
+				.atLeastOnce();
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
-		expect(contextService.getUserService()).andReturn(userService);
-		expect(contextService.getLocationService()).andReturn(locationService);
 
-		expect(personService.parsePersonName(name)).andReturn(
-				new PersonName(name, null, null));
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_CHPS_ID))
-				.andReturn(nurseIdAttributeType);
 		expect(
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
 				.andReturn(phoneAttributeType);
 		expect(userService.getRole(OpenmrsConstants.PROVIDER_ROLE)).andReturn(
 				providerRole);
-		expect(locationService.getLocation(clinic)).andReturn(clinicLocation);
 
-		expect(userService.saveUser(capture(nurseCap), (String) anyObject()))
+		expect(userService.getAllUsers()).andReturn(new ArrayList<User>());
+
+		expect(userService.saveUser(capture(nurseCap), capture(passCap)))
 				.andReturn(new User());
 
-		replay(contextService, personService, userService, locationService);
+		replay(contextService, userService, personService);
 
-		regBean.registerNurse(name, id, phone, clinic);
+		regBean.registerNurse(firstName, lastName, phone, staffType);
 
-		verify(contextService, personService, userService, locationService);
+		verify(contextService, userService, personService);
 
 		User nurse = nurseCap.getValue();
-		assertEquals(name, nurse.getGivenName());
-		assertEquals(id, nurse.getAttribute(nurseIdAttributeType).getValue());
+		String password = passCap.getValue();
+		assertEquals(firstName, nurse.getGivenName());
+		assertEquals(lastName, nurse.getFamilyName());
 		assertEquals(phone, nurse.getAttribute(phoneAttributeType).getValue());
+		assertTrue(password.matches("[a-zA-Z0-9]{8}"));
 	}
 
 	public void testRegisterPregnantMother() throws ParseException {

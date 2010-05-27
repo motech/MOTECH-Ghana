@@ -43,11 +43,8 @@ public interface RegistrarBean {
 	public void registerClinic(String name, Integer parentId);
 
 	@RunAsAdminUser
-	public void registerNurse(String name, String nurseId, String phoneNumber,
-			String clinicName);
-
-	public void registerNurse(String name, String nurseId, String phoneNumber,
-			Integer clinicId);
+	public User registerNurse(String firstName, String lastName, String phone,
+			String staffType);
 
 	@RunAsAdminUser
 	public Patient registerPatient(
@@ -238,6 +235,8 @@ public interface RegistrarBean {
 	public List<Location> getAllLocations();
 
 	public List<User> getAllNurses();
+	
+	public List<String> getStaffTypes();
 
 	public List<Patient> getAllPatients();
 

@@ -102,6 +102,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	private ContextService contextService;
 	public MessageService mobileService;
 	private Map<String, MessageProgram> messagePrograms;
+	private List<String> staffTypes;
 
 	public void setContextService(ContextService contextService) {
 		this.contextService = contextService;
@@ -139,56 +140,55 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 	}
 
-	@Transactional
-	public void registerNurse(String name, String nurseId, String phoneNumber,
-			String clinicName) {
-		LocationService locationService = contextService.getLocationService();
-		Location clinic = locationService.getLocation(clinicName);
-
-		registerNurse(name, nurseId, phoneNumber, clinic);
-	}
-
-	@Transactional
-	public void registerNurse(String name, String nurseId, String phoneNumber,
-			Integer clinicId) {
-		LocationService locationService = contextService.getLocationService();
-		Location clinic = locationService.getLocation(clinicId);
-
-		registerNurse(name, nurseId, phoneNumber, clinic);
-	}
-
-	private void registerNurse(String name, String nurseId, String phoneNumber,
-			Location clinic) {
+	public User registerNurse(String firstName, String lastName, String phone,
+			String staffType) {
 
 		UserService userService = contextService.getUserService();
-		PersonService personService = contextService.getPersonService();
 
 		// User creating other users must have atleast the Privileges to be
 		// given
 
 		// TODO: Create nurses as person and use same User for all actions ?
 		User nurse = new User();
-		nurse.setUsername(name);
 
-		// TODO: Nurse gender hardcoded, required for Person
-		nurse.setGender(GenderTypeConverter.toOpenMRSString(Gender.FEMALE));
+		// TODO: Remove this uber-hack with something more correct/efficient
+		nurse.setSystemId(generateSystemId());
 
-		nurse.addName(personService.parsePersonName(name));
+		nurse.setGender(MotechConstants.GENDER_UNKNOWN_OPENMRS);
 
-		PersonAttributeType nurseIdAttrType = getNurseIdAttributeType();
-		nurse.addAttribute(new PersonAttribute(nurseIdAttrType, nurseId));
+		PersonName name = new PersonName(firstName, null, lastName);
+		nurse.addName(name);
 
 		// Must be created previously through API or UI to lookup
 		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
-		nurse
-				.addAttribute(new PersonAttribute(phoneNumberAttrType,
-						phoneNumber));
+		nurse.addAttribute(new PersonAttribute(phoneNumberAttrType, phone));
 
 		// TODO: Create Nurse role with proper privileges
 		Role role = userService.getRole(OpenmrsConstants.PROVIDER_ROLE);
 		nurse.addRole(role);
 
-		userService.saveUser(nurse, "password");
+		return userService.saveUser(nurse, generatePassword(8));
+	}
+
+	private String generateSystemId() {
+		UserService userService = contextService.getUserService();
+		return Integer.toString(userService.getAllUsers().size() + 1);
+	}
+
+	private char[] PASSCHARS = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
+			'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+			'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
+			'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+			'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8',
+			'9', '0' };
+
+	private String generatePassword(int length) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < length; i++) {
+			int charIndex = (int) (Math.random() * PASSCHARS.length);
+			sb.append(PASSCHARS[charIndex]);
+		}
+		return sb.toString();
 	}
 
 	@Transactional
@@ -4725,6 +4725,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	public Community getCommunityByPatient(Patient patient) {
 		return contextService.getMotechService().getCommunityByPatient(patient);
+	}
+
+	public List<String> getStaffTypes() {
+		return staffTypes;
+	}
+
+	public void setStaffTypes(List<String> staffTypes) {
+		this.staffTypes = staffTypes;
 	}
 
 }

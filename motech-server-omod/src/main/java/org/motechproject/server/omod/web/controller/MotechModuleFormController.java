@@ -25,6 +25,7 @@ import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.xml.LocationXStream;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Location;
+import org.openmrs.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -75,7 +76,7 @@ public class MotechModuleFormController {
 
 	@RequestMapping(value = "/module/motechmodule/nurse", method = RequestMethod.GET)
 	public String viewNurseForm(ModelMap model) {
-		model.addAttribute("clinics", registrarBean.getAllLocations());
+		model.addAttribute("staffTypes", registrarBean.getStaffTypes());
 		return "/module/motechmodule/nurse";
 	}
 
@@ -92,13 +93,16 @@ public class MotechModuleFormController {
 	}
 
 	@RequestMapping(value = "/module/motechmodule/nurse", method = RequestMethod.POST)
-	public String registerNurse(@RequestParam("name") String name,
-			@RequestParam("nurseId") String nurseId,
-			@RequestParam("nursePhone") String nursePhone,
-			@RequestParam("clinic") Integer clinicId) {
+	public String registerNurse(@RequestParam("firstName") String firstName,
+			@RequestParam("lastName") String lastName,
+			@RequestParam("phone") String phone,
+			@RequestParam("type") String type, ModelMap model) {
 		log.debug("Register Nurse");
-		registrarBean.registerNurse(name, nurseId, nursePhone, clinicId);
-		return "redirect:/module/motechmodule/viewdata.form";
+		User user = registrarBean.registerNurse(firstName, lastName, phone,
+				type);
+		model.addAttribute("successMsg", "Added user: name = "
+				+ user.getPersonName() + ", system id = " + user.getSystemId());
+		return "/module/motechmodule/nurse";
 	}
 
 	@RequestMapping("/module/motechmodule/viewdata")

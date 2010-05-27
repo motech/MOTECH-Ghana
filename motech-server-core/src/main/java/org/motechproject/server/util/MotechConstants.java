@@ -121,6 +121,7 @@ public final class MotechConstants {
 	 */
 	public static final String GENDER_MALE_OPENMRS = "M";
 	public static final String GENDER_FEMALE_OPENMRS = "F";
+	public static final String GENDER_UNKNOWN_OPENMRS = "?";
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	public static final String CONCEPT_CLASS_DRUG = "Drug";
 	public static final String CONCEPT_CLASS_MISC = "Misc";
