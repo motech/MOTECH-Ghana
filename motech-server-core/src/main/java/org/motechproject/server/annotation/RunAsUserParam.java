@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 @Inherited
 @Documented
 public @interface RunAsUserParam {
-	String resolverBean() default "chpsIdUserResolver";
+	String resolverBean() default "verbatimUserResolver";
 }

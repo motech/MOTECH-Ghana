@@ -23,6 +23,6 @@ public interface OpenmrsBean {
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_USERS,
 			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
-	public User getStaffBySystemId(String chpsId);
+	public User getStaffBySystemId(String systemId);
 
 }

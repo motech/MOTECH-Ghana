@@ -13,7 +13,6 @@ public final class MotechConstants {
 	public static final String PERSON_ATTRIBUTE_MEDIA_TYPE = "Media Type";
 	public static final String PERSON_ATTRIBUTE_DELIVERY_DAY = "Delivery Day";
 	public static final String PERSON_ATTRIBUTE_DELIVERY_TIME = "Delivery Time";
-	public static final String PERSON_ATTRIBUTE_CHPS_ID = "CHPS ID";
 	public static final String PERSON_ATTRIBUTE_INSURED = "Insured";
 	public static final String PERSON_ATTRIBUTE_HOW_LEARNED = "How learned of service";
 	public static final String PERSON_ATTRIBUTE_INTEREST_REASON = "Reason interested in service";

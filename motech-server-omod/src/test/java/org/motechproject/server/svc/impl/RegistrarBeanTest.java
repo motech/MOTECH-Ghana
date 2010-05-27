@@ -213,9 +213,6 @@ public class RegistrarBeanTest extends TestCase {
 		deliveryTimeAttributeType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
 
-		staffIdAttributeType = new PersonAttributeType(9);
-		staffIdAttributeType.setName(MotechConstants.PERSON_ATTRIBUTE_CHPS_ID);
-
 		nhisExpirationType = new PersonAttributeType(12);
 		nhisExpirationType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE);

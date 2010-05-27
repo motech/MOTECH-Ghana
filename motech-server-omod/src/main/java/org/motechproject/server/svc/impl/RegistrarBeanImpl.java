@@ -2768,8 +2768,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		User admin = userService.getUser(1);
 
 		log.info("Verifying Person Attributes Exist");
-		createPersonAttributeType(MotechConstants.PERSON_ATTRIBUTE_CHPS_ID,
-				"A nurse's CHPS ID.", String.class.getName(), admin);
 		createPersonAttributeType(
 				MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER,
 				"A person's phone number.", String.class.getName(), admin);
@@ -4147,11 +4145,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return contextService.getPatientService()
 				.getPatientIdentifierTypeByName(
 						MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
-	}
-
-	public PersonAttributeType getNurseIdAttributeType() {
-		return contextService.getPersonService().getPersonAttributeTypeByName(
-				MotechConstants.PERSON_ATTRIBUTE_CHPS_ID);
 	}
 
 	public PersonAttributeType getPhoneNumberAttributeType() {

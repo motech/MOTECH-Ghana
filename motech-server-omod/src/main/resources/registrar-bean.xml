@@ -26,23 +26,6 @@
 			</list>
 		</property>
 	</bean>
-
-	<bean id="chpsIdUserResolver" class="org.springframework.aop.framework.ProxyFactoryBean">
-		<property name="proxyInterfaces">
-			<value>org.motechproject.server.omod.UserResolver</value>
-		</property>
-		<property name="target">
-			<bean class="org.motechproject.server.omod.impl.PersonAttributeUserResolverImpl">
-				<property name="attributeName" value="CHPS ID" />
-				<property name="contextService" ref="contextService" />
-			</bean>
-		</property>
-		<property name="interceptorNames">
-			<list>
-				<idref bean="proxyPrivilegesAdvice" />
-			</list>
-		</property>
-	</bean>
 	
 	<bean id="verbatimUserResolver" class="org.motechproject.server.omod.impl.VerbatimUserResolverImpl" />
 
