@@ -28,12 +28,12 @@
 </div>
 
 <div>
-	<h3>Nurses</h3>
+	<h3>Staff</h3>
 	<c:choose>
-		<c:when test="${not empty allNurses}">
+		<c:when test="${not empty allStaff}">
 		<table><tr><th>Id</th><th>First Name</th><th>Last Name</th><th>System Id</th></tr>
-		<c:forEach items="${allNurses}" var="nurse">
-			<tr><td>${nurse.userId}</td><td>${nurse.givenName}</td><td>${nurse.familyName}</td><td>${nurse.systemId}</td></tr>
+		<c:forEach items="${allStaff}" var="staff">
+			<tr><td>${staff.userId}</td><td>${staff.givenName}</td><td>${staff.familyName}</td><td>${staff.systemId}</td></tr>
 		</c:forEach>
 		</table>
 		</c:when>

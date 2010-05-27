@@ -94,7 +94,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -104,7 +104,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Mother ANC Visit request", errors);
 		}
 
-		registrarBean.recordMotherANCVisit(nurse, facility.getLocation(), date,
+		registrarBean.recordMotherANCVisit(staff, facility.getLocation(), date,
 				patient, visitNumber, location, house, community,
 				estDeliveryDate, bpSystolic, bpDiastolic, weight, ttDose,
 				iptDose, iptReactive, itnUse, fht, fhr,
@@ -132,7 +132,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -142,7 +142,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Pregnancy Termination request", errors);
 		}
 
-		registrarBean.recordPregnancyTermination(nurse, facility.getLocation(),
+		registrarBean.recordPregnancyTermination(staff, facility.getLocation(),
 				date, patient, terminationType, procedure, complications,
 				maternalDeath, referred, postAbortionFPCounseled,
 				postAbortionFPAccepted, comments);
@@ -185,7 +185,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -213,7 +213,7 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		List<org.openmrs.Patient> childPatients = registrarBean
-				.recordPregnancyDelivery(nurse, facility.getLocation(),
+				.recordPregnancyDelivery(staff, facility.getLocation(),
 						datetime, patient, mode, outcome, deliveryLocation,
 						deliveredBy, maleInvolved, complications, vvf,
 						maternalDeath, comments, outcomes);
@@ -231,7 +231,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -241,7 +241,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Delivery Notification request", errors);
 		}
 
-		registrarBean.recordPregnancyDeliveryNotification(nurse, facility
+		registrarBean.recordPregnancyDeliveryNotification(staff, facility
 				.getLocation(), datetime, patient);
 	}
 
@@ -268,7 +268,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -278,7 +278,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Mother PNC Visit request", errors);
 		}
 
-		registrarBean.recordMotherPNCVisit(nurse, facility.getLocation(),
+		registrarBean.recordMotherPNCVisit(staff, facility.getLocation(),
 				datetime, patient, visitNumber, location, house, community,
 				referred, maleInvolved, vitaminA, ttDose, lochiaColour,
 				lochiaAmountExcess, temperature, fht, comments);
@@ -293,7 +293,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -303,7 +303,7 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		registrarBean.recordDeath(nurse, facility.getLocation(), date, patient,
+		registrarBean.recordDeath(staff, facility.getLocation(), date, patient,
 				cause);
 	}
 
@@ -317,7 +317,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -327,7 +327,7 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		registrarBean.recordTTVisit(nurse, facility.getLocation(), date,
+		registrarBean.recordTTVisit(staff, facility.getLocation(), date,
 				patient, ttDose);
 	}
 
@@ -355,7 +355,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -365,7 +365,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Child PNC Visit request", errors);
 		}
 
-		registrarBean.recordChildPNCVisit(nurse, facility.getLocation(),
+		registrarBean.recordChildPNCVisit(staff, facility.getLocation(),
 				datetime, patient, visitNumber, location, house, community,
 				referred, maleInvolved, weight, temperature, bcg, opv0,
 				respiration, cordConditionNormal, babyConditionGood, comments);
@@ -398,7 +398,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -408,7 +408,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Child CWC Visit request", errors);
 		}
 
-		registrarBean.recordChildCWCVisit(nurse, facility.getLocation(), date,
+		registrarBean.recordChildCWCVisit(staff, facility.getLocation(), date,
 				patient, cwcLocation, house, community, bcg, opvDose,
 				pentaDose, measles, yellowFever, csm, ipti, vitaminA, dewormer,
 				weight, muac, height, maleInvolved, comments);
@@ -454,7 +454,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		Community communityObj = validateCommunity(community, errors,
 				"Community");
@@ -501,7 +501,7 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		org.openmrs.Patient patient = registrarBean.registerPatient(nurse,
+		org.openmrs.Patient patient = registrarBean.registerPatient(staff,
 				facility.getLocation(), date, registrationMode, motechId,
 				registrantType, firstName, middleName, lastName, preferredName,
 				dateOfBirth, estimatedBirthDate, sex, insured, nhis,
@@ -532,7 +532,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -543,7 +543,7 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		registrarBean
-				.registerPregnancy(nurse, facility.getLocation(), date,
+				.registerPregnancy(staff, facility.getLocation(), date,
 						patient, estDeliveryDate, enroll, consent, ownership,
 						phoneNumber, format, language, dayOfWeek, timeOfDay,
 						howLearned);
@@ -572,7 +572,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -582,7 +582,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Register ANC Mother request", errors);
 		}
 
-		registrarBean.registerANCMother(nurse, facility.getLocation(), date,
+		registrarBean.registerANCMother(staff, facility.getLocation(), date,
 				patient, ancRegNumber, estDeliveryDate, height, gravida,
 				parity, enroll, consent, ownership, phoneNumber, format,
 				language, dayOfWeek, timeOfDay, howLearned);
@@ -607,7 +607,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -617,7 +617,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Register CWC Child request", errors);
 		}
 
-		registrarBean.registerCWCChild(nurse, facility.getLocation(), date,
+		registrarBean.registerCWCChild(staff, facility.getLocation(), date,
 				patient, cwcRegNumber, enroll, consent, ownership, phoneNumber,
 				format, language, dayOfWeek, timeOfDay, howLearned);
 	}
@@ -637,7 +637,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -647,7 +647,7 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		registrarBean.editPatient(nurse, date, patient, phoneNumber,
+		registrarBean.editPatient(staff, date, patient, phoneNumber,
 				phoneOwnership, nhis, nhisExpires, stopEnrollment);
 	}
 
@@ -671,7 +671,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
+		validateStaffId(staffId, errors, "StaffID");
 		validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
@@ -703,7 +703,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -713,7 +713,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Child Visit request", errors);
 		}
 
-		registrarBean.recordOutpatientVisit(nurse, facility.getLocation(),
+		registrarBean.recordOutpatientVisit(staff, facility.getLocation(),
 				date, patient, serialNumber, diagnosis, secondDiagnosis,
 				rdtGiven, rdtPositive, actTreated, newCase, referred, comments);
 	}
@@ -736,7 +736,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		User nurse = validateChpsId(staffId, errors, "StaffID");
+		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
 				"MotechID");
@@ -746,7 +746,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Mother Visit request", errors);
 		}
 
-		registrarBean.recordOutpatientVisit(nurse, facility.getLocation(),
+		registrarBean.recordOutpatientVisit(staff, facility.getLocation(),
 				date, patient, serialNumber, diagnosis, secondDiagnosis,
 				rdtGiven, rdtPositive, actTreated, newCase, referred, comments);
 	}
@@ -759,7 +759,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
+		validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
@@ -787,7 +787,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
+		validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
@@ -808,7 +808,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
+		validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
@@ -831,7 +831,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
+		validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
@@ -854,7 +854,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
+		validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
@@ -876,7 +876,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
+		validateStaffId(staffId, errors, "StaffID");
 		validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
@@ -896,7 +896,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
+		validateStaffId(staffId, errors, "StaffID");
 		validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
@@ -916,7 +916,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
+		validateStaffId(staffId, errors, "StaffID");
 		validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
@@ -937,7 +937,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
+		validateStaffId(staffId, errors, "StaffID");
 		validateFacility(facilityId, errors, "FacilityID");
 
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
@@ -975,7 +975,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
+		validateStaffId(staffId, errors, "StaffID");
 		validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
@@ -997,7 +997,7 @@ public class RegistrarWebService implements RegistrarService {
 
 		ValidationErrors errors = new ValidationErrors();
 
-		validateChpsId(staffId, errors, "StaffID");
+		validateStaffId(staffId, errors, "StaffID");
 		validateFacility(facilityId, errors, "FacilityID");
 
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
@@ -1059,17 +1059,17 @@ public class RegistrarWebService implements RegistrarService {
 		this.modelConverter = modelConverter;
 	}
 
-	private User validateChpsId(Integer staffId, ValidationErrors errors,
+	private User validateStaffId(Integer staffId, ValidationErrors errors,
 			String fieldName) {
 		if (staffId == null) {
 			errors.add(3, fieldName);
 			return null;
 		}
-		User nurse = openmrsBean.getNurseBySystemId(staffId.toString());
-		if (nurse == null) {
+		User staff = openmrsBean.getStaffBySystemId(staffId.toString());
+		if (staff == null) {
 			errors.add(1, fieldName);
 		}
-		return nurse;
+		return staff;
 	}
 
 	private org.openmrs.Patient validateMotechId(Integer motechId,

@@ -26,7 +26,7 @@ import org.openmrs.scheduler.tasks.AbstractTask;
  * Defines a task implementation that OpenMRS can execute using the built-in
  * task scheduler. This is how periodic notifications are handled for the
  * OpenMRS motech server implementation. It periodically runs, looks up stored
- * Message objects and constructs and sends messages to patients and nurses if
+ * Message objects and constructs and sends messages to patients and staff if
  * required.
  */
 public class NotificationTask extends AbstractTask {

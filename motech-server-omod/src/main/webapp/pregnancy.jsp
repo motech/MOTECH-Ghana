@@ -10,7 +10,7 @@
 <h2>Register a Pregnancy</h2>
 <div class="instructions">
 	This allows you to create a new pregnancy record. A pregnacy record is, in
-	essence, a case record. It is initiated when a nurse becomes aware of a new
+	essence, a case record. It is initiated when a staff becomes aware of a new
 	pregnancy. It, along with associated maternal visits, records information 
 	about communication and service delivery during a pregnancy episode.
 </div>

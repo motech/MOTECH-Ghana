@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-<openmrs:require privilege="Register MoTeCH Staff" otherwise="/login.htm" redirect="/module/motechmodule/nurse.form" />
+<openmrs:require privilege="Register MoTeCH Staff" otherwise="/login.htm" redirect="/module/motechmodule/staff.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
 <meta name="heading" content="Staff Registration" />

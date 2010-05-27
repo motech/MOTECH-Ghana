@@ -11,13 +11,13 @@ import org.motechproject.server.omod.impl.ContextServiceImpl;
 import org.motechproject.server.util.MotechConstants;
 import org.openmrs.scheduler.tasks.AbstractTask;
 
-public class NurseCareMessagingTask extends AbstractTask {
+public class StaffCareMessagingTask extends AbstractTask {
 
-	private static Log log = LogFactory.getLog(NurseCareMessagingTask.class);
+	private static Log log = LogFactory.getLog(StaffCareMessagingTask.class);
 
 	private ContextService contextService;
 
-	public NurseCareMessagingTask() {
+	public StaffCareMessagingTask() {
 		contextService = new ContextServiceImpl();
 	}
 
@@ -27,7 +27,7 @@ public class NurseCareMessagingTask extends AbstractTask {
 
 	@Override
 	public void execute() {
-		log.debug("Executing Task - Sending Care Messages to all Nurses");
+		log.debug("Executing Task - Sending Care Messages to all Staff");
 
 		Boolean sendUpcoming = Boolean.valueOf(this.taskDefinition
 				.getProperty(MotechConstants.TASK_PROPERTY_SEND_UPCOMING));
@@ -50,7 +50,7 @@ public class NurseCareMessagingTask extends AbstractTask {
 			try {
 				deliveryTime = timeFormat.parse(deliveryTimeString);
 			} catch (Exception e) {
-				log.error("Error parsing nurse messaging task "
+				log.error("Error parsing staff messaging task "
 						+ "delivery time", e);
 			}
 		}
@@ -58,7 +58,7 @@ public class NurseCareMessagingTask extends AbstractTask {
 		// Session required for Task to get RegistrarBean through Context
 		try {
 			contextService.openSession();
-			contextService.getRegistrarBean().sendNurseCareMessages(
+			contextService.getRegistrarBean().sendStaffCareMessages(
 					currentDate, endDate, currentDate, deliveryTime,
 					careGroups, sendUpcoming);
 		} finally {

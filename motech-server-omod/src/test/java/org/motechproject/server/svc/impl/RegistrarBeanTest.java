@@ -86,7 +86,7 @@ public class RegistrarBeanTest extends TestCase {
 
 	Location ghanaLocation;
 	PatientIdentifierType motechIdType;
-	PersonAttributeType nurseIdAttributeType;
+	PersonAttributeType staffIdAttributeType;
 	PersonAttributeType phoneAttributeType;
 	PersonAttributeType nhisAttributeType;
 	PersonAttributeType languageAttributeType;
@@ -213,8 +213,8 @@ public class RegistrarBeanTest extends TestCase {
 		deliveryTimeAttributeType
 				.setName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
 
-		nurseIdAttributeType = new PersonAttributeType(9);
-		nurseIdAttributeType.setName(MotechConstants.PERSON_ATTRIBUTE_CHPS_ID);
+		staffIdAttributeType = new PersonAttributeType(9);
+		staffIdAttributeType.setName(MotechConstants.PERSON_ATTRIBUTE_CHPS_ID);
 
 		nhisExpirationType = new PersonAttributeType(12);
 		nhisExpirationType
@@ -478,11 +478,11 @@ public class RegistrarBeanTest extends TestCase {
 				.getLocationId());
 	}
 
-	public void testRegisterNurse() {
+	public void testRegisterStaff() {
 
 		String firstName = "Jenny", lastName = "Jones", phone = "12078675309", staffType = "CHO";
 
-		Capture<User> nurseCap = new Capture<User>();
+		Capture<User> staffCap = new Capture<User>();
 		Capture<String> passCap = new Capture<String>();
 
 		expect(contextService.getUserService()).andReturn(userService)
@@ -499,20 +499,20 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(userService.getAllUsers()).andReturn(new ArrayList<User>());
 
-		expect(userService.saveUser(capture(nurseCap), capture(passCap)))
+		expect(userService.saveUser(capture(staffCap), capture(passCap)))
 				.andReturn(new User());
 
 		replay(contextService, userService, personService);
 
-		regBean.registerNurse(firstName, lastName, phone, staffType);
+		regBean.registerStaff(firstName, lastName, phone, staffType);
 
 		verify(contextService, userService, personService);
 
-		User nurse = nurseCap.getValue();
+		User staff = staffCap.getValue();
 		String password = passCap.getValue();
-		assertEquals(firstName, nurse.getGivenName());
-		assertEquals(lastName, nurse.getFamilyName());
-		assertEquals(phone, nurse.getAttribute(phoneAttributeType).getValue());
+		assertEquals(firstName, staff.getGivenName());
+		assertEquals(lastName, staff.getFamilyName());
+		assertEquals(phone, staff.getAttribute(phoneAttributeType).getValue());
 		assertTrue(password.matches("[a-zA-Z0-9]{8}"));
 	}
 
@@ -1263,7 +1263,7 @@ public class RegistrarBeanTest extends TestCase {
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		Boolean stopEnrollment = true;
 
-		User nurse = new User(2);
+		User staff = new User(2);
 		Patient patient = new Patient(patientId);
 
 		List<MessageProgramEnrollment> enrollments = new ArrayList<MessageProgramEnrollment>();
@@ -1330,7 +1330,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		replay(contextService, patientService, personService, motechService);
 
-		regBean.editPatient(nurse, date, patient, phone, phoneType, nhis, date,
+		regBean.editPatient(staff, date, patient, phone, phoneType, nhis, date,
 				stopEnrollment);
 
 		verify(contextService, patientService, personService, motechService);

@@ -105,7 +105,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			Integer child3Id = 1234612;
 			Date date = new Date();
 
-			User nurse = regService.registerNurse("Nurse", "Betty",
+			User staff = regService.registerStaff("Nurse", "Betty",
 					"7777777777", "CHO");
 
 			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
@@ -157,7 +157,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			Date newDueDate = calendar.getTime();
 
 			// ANC Visit for Mother 1
-			regService.recordMotherANCVisit(nurse, facility, date, mother1, 1,
+			regService.recordMotherANCVisit(staff, facility, date, mother1, 1,
 					1, "House", "Community", newDueDate, 1, 1, 1.0, 1, 1,
 					false, true, 1, 1, false, false, 1.0, false, false, false,
 					true, false, false, HIVResult.NO_TEST, false, false, false,
@@ -180,7 +180,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					RegistrationMode.USE_PREPRINTED_ID, child3Id, Gender.MALE,
 					"Child3FirstName", 3.0));
 			List<Patient> childPatients = regService.recordPregnancyDelivery(
-					nurse, facility, date, mother1, 1, 1, 1, 1, true,
+					staff, facility, date, mother1, 1, 1, 1, 1, true,
 					new Integer[] { 1, 2, 3 }, 1, true, "Comments", outcomes);
 
 			assertEquals("Pregnancy delivery not added for Mother 1", 3,
@@ -214,7 +214,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			assertNull("Child 3 not voided", child3);
 
 			// PNC Visit for Mother 2
-			regService.recordMotherPNCVisit(nurse, facility, date, mother2, 1,
+			regService.recordMotherPNCVisit(staff, facility, date, mother2, 1,
 					1, "House", "Community", false, true, true, 1, 1, false,
 					36, 100, "Comments");
 
@@ -223,7 +223,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					.size());
 
 			// General Visit for Mother 2
-			regService.recordOutpatientVisit(nurse, facility, date, mother2,
+			regService.recordOutpatientVisit(staff, facility, date, mother2,
 					"Mother2GeneralId", 1, 2, true, true, true, false, false,
 					"Comments");
 
@@ -232,7 +232,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					.size());
 
 			// Pregnancy Termination for Mother 2 (with maternal death)
-			regService.recordPregnancyTermination(nurse, facility,
+			regService.recordPregnancyTermination(staff, facility,
 					currentDueDate, mother2, 1, 1, new Integer[] { 1, 2, 3 },
 					true, false, false, false, "Comments");
 
@@ -247,7 +247,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					.getAllPatients().size());
 
 			// CWC Visit for Child 2
-			regService.recordChildCWCVisit(nurse, facility, date, child2, 1,
+			regService.recordChildCWCVisit(staff, facility, date, child2, 1,
 					"House", "Community", true, 1, 1, true, true, true, true,
 					true, true, 25.0, 5, 35, true, "Comments");
 
@@ -256,7 +256,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					.size());
 
 			// PNC Visit for Child 2
-			regService.recordChildPNCVisit(nurse, facility, date, child2, 1, 1,
+			regService.recordChildPNCVisit(staff, facility, date, child2, 1, 1,
 					"House", "Community", false, true, 7.0, 36, true, true,
 					140, true, true, "Comments");
 
@@ -265,7 +265,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					.size());
 
 			// General Visit for Child 1
-			regService.recordOutpatientVisit(nurse, facility, date, child1,
+			regService.recordOutpatientVisit(staff, facility, date, child1,
 					"Child1GeneralId", 4, 5, true, true, true, false, false,
 					"Comments");
 
@@ -274,7 +274,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					.size());
 
 			// Record Death of Child 1
-			regService.recordDeath(nurse, facility, date, child1, 1);
+			regService.recordDeath(staff, facility, date, child1, 1);
 
 			assertEquals("Deceased child 1 not voided", 3, Context
 					.getPatientService().getAllPatients().size());

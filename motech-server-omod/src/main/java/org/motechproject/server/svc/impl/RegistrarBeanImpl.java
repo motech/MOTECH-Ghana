@@ -32,7 +32,7 @@ import org.motechproject.server.omod.MotechIdVerhoeffValidator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.tasks.MessageProgramUpdateTask;
 import org.motechproject.server.omod.tasks.NotificationTask;
-import org.motechproject.server.omod.tasks.NurseCareMessagingTask;
+import org.motechproject.server.omod.tasks.StaffCareMessagingTask;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
@@ -140,7 +140,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 	}
 
-	public User registerNurse(String firstName, String lastName, String phone,
+	public User registerStaff(String firstName, String lastName, String phone,
 			String staffType) {
 
 		UserService userService = contextService.getUserService();
@@ -148,26 +148,26 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// User creating other users must have atleast the Privileges to be
 		// given
 
-		// TODO: Create nurses as person and use same User for all actions ?
-		User nurse = new User();
+		// TODO: Create staff as person and use same User for all actions ?
+		User staff = new User();
 
 		// TODO: Remove this uber-hack with something more correct/efficient
-		nurse.setSystemId(generateSystemId());
+		staff.setSystemId(generateSystemId());
 
-		nurse.setGender(MotechConstants.GENDER_UNKNOWN_OPENMRS);
+		staff.setGender(MotechConstants.GENDER_UNKNOWN_OPENMRS);
 
 		PersonName name = new PersonName(firstName, null, lastName);
-		nurse.addName(name);
+		staff.addName(name);
 
 		// Must be created previously through API or UI to lookup
 		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
-		nurse.addAttribute(new PersonAttribute(phoneNumberAttrType, phone));
+		staff.addAttribute(new PersonAttribute(phoneNumberAttrType, phone));
 
-		// TODO: Create Nurse role with proper privileges
+		// TODO: Create staff role with proper privileges
 		Role role = userService.getRole(OpenmrsConstants.PROVIDER_ROLE);
-		nurse.addRole(role);
+		staff.addRole(role);
 
-		return userService.saveUser(nurse, generatePassword(8));
+		return userService.saveUser(staff, generatePassword(8));
 	}
 
 	private String generateSystemId() {
@@ -192,7 +192,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public Patient registerPatient(User nurse, Location facility, Date date,
+	public Patient registerPatient(User staff, Location facility, Date date,
 			RegistrationMode registrationMode, Integer motechId,
 			RegistrantType registrantType, String firstName, String middleName,
 			String lastName, String preferredName, Date dateOfBirth,
@@ -205,7 +205,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Date timeOfDay, InterestReason reason, HowLearned howLearned,
 			Integer messagesStartWeek) {
 
-		return registerPatient(nurse, facility, registrationMode, motechId,
+		return registerPatient(staff, facility, registrationMode, motechId,
 				registrantType, firstName, middleName, lastName, preferredName,
 				dateOfBirth, estimatedBirthDate, sex, insured, nhis,
 				nhisExpires, mother, community, address, phoneNumber,
@@ -228,9 +228,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			HowLearned howLearned, Integer messagesStartWeek) {
 
 		Location facility = getGhanaLocation();
-		User nurse = contextService.getAuthenticatedUser();
+		User staff = contextService.getAuthenticatedUser();
 
-		return registerPatient(nurse, facility, registrationMode, motechId,
+		return registerPatient(staff, facility, registrationMode, motechId,
 				registrantType, firstName, middleName, lastName, preferredName,
 				dateOfBirth, estimatedBirthDate, sex, insured, nhis,
 				nhisExpires, mother, community, address, phoneNumber,
@@ -239,7 +239,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				timeOfDay, reason, howLearned, messagesStartWeek);
 	}
 
-	private Patient registerPatient(User nurse, Location facility,
+	private Patient registerPatient(User staff, Location facility,
 			RegistrationMode registrationMode, Integer motechId,
 			RegistrantType registrantType, String firstName, String middleName,
 			String lastName, String preferredName, Date dateOfBirth,
@@ -255,7 +255,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		PatientService patientService = contextService.getPatientService();
 		PersonService personService = contextService.getPersonService();
 
-		Patient patient = createPatient(nurse, motechId, firstName, middleName,
+		Patient patient = createPatient(staff, motechId, firstName, middleName,
 				lastName, preferredName, dateOfBirth, estimatedBirthDate, sex,
 				insured, nhis, nhisExpires, address, phoneNumber, ownership,
 				format, language, dayOfWeek, timeOfDay, howLearned, reason);
@@ -276,7 +276,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		Integer pregnancyDueDateObsId = null;
 		if (registrantType == RegistrantType.PREGNANT_MOTHER) {
-			pregnancyDueDateObsId = registerPregnancy(nurse, facility, patient,
+			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
 					expDeliveryDate, deliveryDateConfirmed, gravida, parity,
 					null);
 		}
@@ -385,9 +385,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		PatientService patientService = contextService.getPatientService();
 
-		User nurse = contextService.getAuthenticatedUser();
+		User staff = contextService.getAuthenticatedUser();
 
-		Patient patient = createPatient(nurse, motechId, firstName, middleName,
+		Patient patient = createPatient(staff, motechId, firstName, middleName,
 				lastName, preferredName, dateOfBirth, estimatedBirthDate, sex,
 				insured, nhis, nhisExpires, address, phoneNumber, ownership,
 				format, language, dayOfWeek, timeOfDay, howLearned, reason);
@@ -407,7 +407,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	private Patient createPatient(User nurse, Integer motechId,
+	private Patient createPatient(User staff, Integer motechId,
 			String firstName, String middleName, String lastName,
 			String prefName, Date birthDate, Boolean birthDateEst, Gender sex,
 			Boolean insured, String nhis, Date nhisExpDate, String address,
@@ -422,7 +422,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			motechIdString = generateMotechId();
 		} else {
 			motechIdString = motechId.toString();
-			excludeIdForGenerator(nurse, motechIdString);
+			excludeIdForGenerator(staff, motechIdString);
 		}
 
 		patient.addIdentifier(new PatientIdentifier(motechIdString,
@@ -526,7 +526,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void editPatient(User nurse, Date date, Patient patient,
+	public void editPatient(User staff, Date date, Patient patient,
 			String phoneNumber, ContactNumberType phoneOwnership, String nhis,
 			Date nhisExpires, Boolean stopEnrollment) {
 
@@ -648,10 +648,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
 
 		Location facility = getGhanaLocation();
-		User nurse = contextService.getAuthenticatedUser();
+		User staff = contextService.getAuthenticatedUser();
 
 		if (pregnancyDueDateObsId == null) {
-			pregnancyDueDateObsId = registerPregnancy(nurse, facility, patient,
+			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
 					expDeliveryDate, deliveryDateConfirmed, gravida, parity,
 					null);
 		}
@@ -661,7 +661,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				howLearned, null, pregnancyDueDateObsId);
 	}
 
-	private Integer registerPregnancy(User nurse, Location facility,
+	private Integer registerPregnancy(User staff, Location facility,
 			Patient patient, Date dueDate, Boolean dueDateConfirmed,
 			Integer gravida, Integer parity, Integer height) {
 
@@ -677,7 +677,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(currentDate);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(nurse);
+		encounter.setProvider(staff);
 		encounter = encounterService.saveEncounter(encounter);
 
 		Obs pregnancyObs = createObs(currentDate, getPregnancyConcept(),
@@ -732,7 +732,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void registerPregnancy(User nurse, Location facility, Date date,
+	public void registerPregnancy(User staff, Location facility, Date date,
 			Patient patient, Date estDeliveryDate, Boolean enroll,
 			Boolean consent, ContactNumberType ownership, String phoneNumber,
 			MediaType format, String language, DayOfWeek dayOfWeek,
@@ -741,7 +741,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
 
 		if (pregnancyDueDateObsId == null) {
-			pregnancyDueDateObsId = registerPregnancy(nurse, facility, patient,
+			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
 					estDeliveryDate, null, null, null, null);
 		}
 
@@ -771,7 +771,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void registerANCMother(User nurse, Location facility, Date date,
+	public void registerANCMother(User staff, Location facility, Date date,
 			Patient patient, String ancRegNumber, Date estDeliveryDate,
 			Integer height, Integer gravida, Integer parity, Boolean enroll,
 			Boolean consent, ContactNumberType ownership, String phoneNumber,
@@ -783,7 +783,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
 		if (pregnancyDueDateObsId == null) {
-			pregnancyDueDateObsId = registerPregnancy(nurse, facility, patient,
+			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
 					estDeliveryDate, null, gravida, parity, height);
 		}
 
@@ -796,7 +796,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(nurse);
+		encounter.setProvider(staff);
 
 		Obs ancRegNumObs = createTextValueObs(date,
 				getANCRegistrationNumberConcept(), patient, facility,
@@ -807,7 +807,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void registerCWCChild(User nurse, Location facility, Date date,
+	public void registerCWCChild(User staff, Location facility, Date date,
 			Patient patient, String cwcRegNumber, Boolean enroll,
 			Boolean consent, ContactNumberType ownership, String phoneNumber,
 			MediaType format, String language, DayOfWeek dayOfWeek,
@@ -825,7 +825,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(nurse);
+		encounter.setProvider(staff);
 
 		Obs cwcRegNumObs = createTextValueObs(date,
 				getCWCRegistrationNumberConcept(), patient, facility,
@@ -836,7 +836,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordMotherANCVisit(User nurse, Location facility, Date date,
+	public void recordMotherANCVisit(User staff, Location facility, Date date,
 			Patient patient, Integer visitNumber, Integer ancLocation,
 			String house, String community, Date estDeliveryDate,
 			Integer bpSystolic, Integer bpDiastolic, Double weight,
@@ -857,7 +857,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(nurse);
+		encounter.setProvider(staff);
 
 		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
 		if (pregnancyObs == null) {
@@ -1065,7 +1065,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordPregnancyTermination(User nurse, Location facility,
+	public void recordPregnancyTermination(User staff, Location facility,
 			Date date, Patient patient, Integer terminationType,
 			Integer procedure, Integer[] complications, Boolean maternalDeath,
 			Boolean referred, Boolean postAbortionFPCounseled,
@@ -1079,7 +1079,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(nurse);
+		encounter.setProvider(staff);
 
 		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
 		if (pregnancyObs == null) {
@@ -1151,7 +1151,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public List<Patient> recordPregnancyDelivery(User nurse, Location facility,
+	public List<Patient> recordPregnancyDelivery(User staff, Location facility,
 			Date datetime, Patient patient, Integer mode, Integer outcome,
 			Integer deliveryLocation, Integer deliveredBy,
 			Boolean maleInvolved, Integer[] complications, Integer vvf,
@@ -1166,7 +1166,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(datetime);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(nurse);
+		encounter.setProvider(staff);
 
 		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
 		if (pregnancyObs == null) {
@@ -1250,7 +1250,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 							.getOutcome().name(), encounter, null);
 			encounter.addObs(childOutcomeObs);
 
-			Patient child = registerPatient(nurse, facility, childOutcome
+			Patient child = registerPatient(staff, facility, childOutcome
 					.getIdMode(), childOutcome.getMotechId(),
 					RegistrantType.CHILD_UNDER_FIVE, childOutcome
 							.getFirstName(), null, null, null, datetime, false,
@@ -1259,7 +1259,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					null, null, null, null, null, null);
 
 			if (childOutcome.getWeight() != null) {
-				recordBirthData(nurse, facility, child, datetime, childOutcome
+				recordBirthData(staff, facility, child, datetime, childOutcome
 						.getWeight());
 			}
 
@@ -1279,7 +1279,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return aliveChildPatients;
 	}
 
-	private void recordBirthData(User nurse, Location facility, Patient child,
+	private void recordBirthData(User staff, Location facility, Patient child,
 			Date datetime, Double weight) {
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -1289,7 +1289,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(datetime);
 		encounter.setPatient(child);
 		encounter.setLocation(facility);
-		encounter.setProvider(nurse);
+		encounter.setProvider(staff);
 
 		if (weight != null) {
 			Obs weightObs = createNumericValueObs(datetime, getWeightConcept(),
@@ -1301,7 +1301,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordPregnancyDeliveryNotification(User nurse,
+	public void recordPregnancyDeliveryNotification(User staff,
 			Location facility, Date date, Patient patient) {
 
 		EncounterService encounterService = contextService
@@ -1313,7 +1313,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(nurse);
+		encounter.setProvider(staff);
 
 		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
 		if (pregnancyObs == null) {
@@ -1361,7 +1361,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 						.patientToWebService(patient, true);
 				org.motechproject.ws.Patient[] wsPatients = new org.motechproject.ws.Patient[] { wsPatient };
 
-				sendNurseMessage(messageId, nameValues, phoneNumber,
+				sendStaffMessage(messageId, nameValues, phoneNumber,
 						languageCode, mediaType, messageDef.getPublicId(),
 						null, null, wsPatients);
 			}
@@ -1369,7 +1369,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordMotherPNCVisit(User nurse, Location facility,
+	public void recordMotherPNCVisit(User staff, Location facility,
 			Date datetime, Patient patient, Integer visitNumber,
 			Integer pncLocation, String house, String community,
 			Boolean referred, Boolean maleInvolved, Boolean vitaminA,
@@ -1384,7 +1384,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(datetime);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(nurse);
+		encounter.setProvider(staff);
 
 		if (visitNumber != null) {
 			Obs visitNumberObs = createNumericValueObs(datetime,
@@ -1468,7 +1468,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordChildPNCVisit(User nurse, Location facility,
+	public void recordChildPNCVisit(User staff, Location facility,
 			Date datetime, Patient patient, Integer visitNumber,
 			Integer pncLocation, String house, String community,
 			Boolean referred, Boolean maleInvolved, Double weight,
@@ -1484,7 +1484,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(datetime);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(nurse);
+		encounter.setProvider(staff);
 
 		if (visitNumber != null) {
 			Obs visitNumberObs = createNumericValueObs(datetime,
@@ -1574,7 +1574,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordTTVisit(User nurse, Location facility, Date date,
+	public void recordTTVisit(User staff, Location facility, Date date,
 			Patient patient, Integer ttDose) {
 
 		EncounterService encounterService = contextService
@@ -1585,7 +1585,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(nurse);
+		encounter.setProvider(staff);
 
 		if (ttDose != null) {
 			Obs ttDoseObs = createNumericValueObs(date,
@@ -1597,7 +1597,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordDeath(User nurse, Location facility, Date date,
+	public void recordDeath(User staff, Location facility, Date date,
 			Patient patient, Integer cause) {
 
 		ObsService obsService = contextService.getObsService();
@@ -1627,7 +1627,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordChildCWCVisit(User nurse, Location facility, Date date,
+	public void recordChildCWCVisit(User staff, Location facility, Date date,
 			Patient patient, Integer cwcLocation, String house,
 			String community, Boolean bcg, Integer opvDose, Integer pentaDose,
 			Boolean measles, Boolean yellowFever, Boolean csm, Boolean ipti,
@@ -1642,7 +1642,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(nurse);
+		encounter.setProvider(staff);
 
 		if (cwcLocation != null) {
 			Obs cwcLocationObs = createNumericValueObs(date,
@@ -1765,7 +1765,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void recordOutpatientVisit(User nurse, Location facility, Date date,
+	public void recordOutpatientVisit(User staff, Location facility, Date date,
 			Patient patient, String serialNumber, Integer diagnosis,
 			Integer secondDiagnosis, Boolean rdtGiven, Boolean rdtPositive,
 			Boolean actTreated, Boolean newCase, Boolean referred,
@@ -1779,7 +1779,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
-		encounter.setProvider(nurse);
+		encounter.setProvider(staff);
 
 		if (serialNumber != null) {
 			Obs serialNumberObs = createTextValueObs(date,
@@ -1885,7 +1885,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				.getUserIdsByPersonAttribute(phoneAttributeType, phoneNumber);
 		if (matchingUsers.size() > 0) {
 			if (matchingUsers.size() > 1) {
-				log.warn("Multiple Nurses found for phone number: "
+				log.warn("Multiple staff found for phone number: "
 						+ phoneNumber);
 			}
 			// If more than one user matches phone number, first user in list is
@@ -1893,7 +1893,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Integer userId = matchingUsers.get(0);
 			return userService.getUser(userId);
 		}
-		log.warn("No Nurse found for phone number: " + phoneNumber);
+		log.warn("No staff found for phone number: " + phoneNumber);
 		return null;
 	}
 
@@ -1905,7 +1905,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return locationService.getAllLocations();
 	}
 
-	public List<User> getAllNurses() {
+	public List<User> getAllStaff() {
 		UserService userService = contextService.getUserService();
 		return userService.getAllUsers();
 	}
@@ -3153,35 +3153,35 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				new Date(), new Long(30), Boolean.FALSE,
 				MessageProgramUpdateTask.class.getName(), admin, null);
 
-		Map<String, String> dailyNurseProps = new HashMap<String, String>();
-		dailyNurseProps.put(MotechConstants.TASK_PROPERTY_SEND_UPCOMING,
+		Map<String, String> dailyStaffProps = new HashMap<String, String>();
+		dailyStaffProps.put(MotechConstants.TASK_PROPERTY_SEND_UPCOMING,
 				Boolean.TRUE.toString());
 		String[] dailyGroups = { "PNC(mother)", "PNC(baby)" };
 		String dailyGroupsProperty = StringUtils.join(dailyGroups,
 				MotechConstants.TASK_PROPERTY_CARE_GROUPS_DELIMITER);
-		dailyNurseProps.put(MotechConstants.TASK_PROPERTY_CARE_GROUPS,
+		dailyStaffProps.put(MotechConstants.TASK_PROPERTY_CARE_GROUPS,
 				dailyGroupsProperty);
-		dailyNurseProps.put(MotechConstants.TASK_PROPERTY_DELIVERY_TIME,
+		dailyStaffProps.put(MotechConstants.TASK_PROPERTY_DELIVERY_TIME,
 				"08:00");
 		createTask(MotechConstants.TASK_DAILY_NURSE_CARE_MESSAGING,
-				"Task to send out nurse SMS care messages for next day",
+				"Task to send out staff SMS care messages for next day",
 				calendar.getTime(), new Long(86400), Boolean.FALSE,
-				NurseCareMessagingTask.class.getName(), admin, dailyNurseProps);
+				StaffCareMessagingTask.class.getName(), admin, dailyStaffProps);
 
 		calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-		Map<String, String> weeklyNurseProps = new HashMap<String, String>();
+		Map<String, String> weeklyStaffProps = new HashMap<String, String>();
 		String[] weeklyGroups = { "ANC", "TT", "IPT", "BCG", "OPV", "Penta",
 				"YellowFever", "Measles", "IPTI", "VitaA" };
 		String weeklyGroupsProperty = StringUtils.join(weeklyGroups,
 				MotechConstants.TASK_PROPERTY_CARE_GROUPS_DELIMITER);
-		weeklyNurseProps.put(MotechConstants.TASK_PROPERTY_CARE_GROUPS,
+		weeklyStaffProps.put(MotechConstants.TASK_PROPERTY_CARE_GROUPS,
 				weeklyGroupsProperty);
-		weeklyNurseProps.put(MotechConstants.TASK_PROPERTY_DELIVERY_TIME,
+		weeklyStaffProps.put(MotechConstants.TASK_PROPERTY_DELIVERY_TIME,
 				"08:00");
 		createTask(MotechConstants.TASK_WEEKLY_NURSE_CARE_MESSAGING,
-				"Task to send out nurse SMS care messages for week", calendar
+				"Task to send out staff SMS care messages for week", calendar
 						.getTime(), new Long(604800), Boolean.FALSE,
-				NurseCareMessagingTask.class.getName(), admin, weeklyNurseProps);
+				StaffCareMessagingTask.class.getName(), admin, weeklyStaffProps);
 	}
 
 	private void createPersonAttributeType(String name, String description,
@@ -3218,7 +3218,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return motechId;
 	}
 
-	private void excludeIdForGenerator(User nurse, String motechId) {
+	private void excludeIdForGenerator(User staff, String motechId) {
 		PatientIdentifierType motechIdType = getMotechPatientIdType();
 		try {
 			IdentifierSourceService idSourceService = contextService
@@ -3232,7 +3232,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			newLog.setSource(idGenerator);
 			newLog.setIdentifier(motechId);
 			newLog.setDateGenerated(new Date());
-			newLog.setGeneratedBy(nurse);
+			newLog.setGeneratedBy(staff);
 			newLog
 					.setComment(MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID_MANUAL_COMMENT);
 			idSourceService.saveLogEntry(newLog);
@@ -3558,16 +3558,16 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 	}
 
-	public void sendNurseCareMessages(Date startDate, Date endDate,
+	public void sendStaffCareMessages(Date startDate, Date endDate,
 			Date deliveryDate, Date deliveryTime, String[] careGroups,
 			boolean sendUpcoming) {
 
 		MotechService motechService = contextService.getMotechService();
 		List<Facility> facilities = motechService.getAllFacilities();
 
-		// All nurse messages sent as SMS
+		// All staff messages sent as SMS
 		MediaType mediaType = MediaType.TEXT;
-		// No corresponding message stored for nurse care messages
+		// No corresponding message stored for staff care messages
 		String messageId = null;
 		// Set the time on the delivery date if needed
 		deliveryDate = adjustTime(deliveryDate, deliveryTime);
@@ -3596,7 +3596,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				Care[] defaultedCares = modelConverter
 						.defaultedToWebServiceCares(defaultedEncounters,
 								defaultedObs);
-				sendNurseDefaultedCareMessage(messageId, phoneNumber,
+				sendStaffDefaultedCareMessage(messageId, phoneNumber,
 						mediaType, deliveryDate, null, defaultedCares);
 			}
 
@@ -3608,7 +3608,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					org.motechproject.ws.Patient patient = modelConverter
 							.upcomingEncounterToWebServicePatient(upcomingEncounter);
 
-					sendNurseUpcomingCareMessage(messageId, phoneNumber,
+					sendStaffUpcomingCareMessage(messageId, phoneNumber,
 							mediaType, deliveryDate, null, patient);
 				}
 				List<ExpectedObs> upcomingObs = getUpcomingExpectedObs(
@@ -3617,7 +3617,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					org.motechproject.ws.Patient patient = modelConverter
 							.upcomingObsToWebServicePatient(upcomingObservation);
 
-					sendNurseUpcomingCareMessage(messageId, phoneNumber,
+					sendStaffUpcomingCareMessage(messageId, phoneNumber,
 							mediaType, deliveryDate, null, patient);
 				}
 			}
@@ -3688,7 +3688,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			}
 
 			Patient patient = patientService.getPatient(recipientId);
-			User nurse = userService.getUser(recipientId);
+			User staff = userService.getUser(recipientId);
 
 			boolean sendMessageSuccess = false;
 			if (patient != null) {
@@ -3701,14 +3701,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 						personalInfo, motechId, phoneNumber, languageCode,
 						mediaType, notificationType, messageStartDate,
 						messageEndDate, contactNumberType);
-			} else if (nurse != null) {
+			} else if (staff != null) {
 				org.motechproject.ws.Patient[] patients = new org.motechproject.ws.Patient[0];
 
-				sendMessageSuccess = sendNurseMessage(messageId, personalInfo,
+				sendMessageSuccess = sendStaffMessage(messageId, personalInfo,
 						phoneNumber, languageCode, mediaType, notificationType,
 						messageStartDate, messageEndDate, patients);
 			} else {
-				log.error("Attempt to send to Person not patient or nurse: "
+				log.error("Attempt to send to Person not patient or staff: "
 						+ recipientId);
 			}
 			if (sendMessageSuccess) {
@@ -3741,7 +3741,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 	}
 
-	public boolean sendNurseMessage(String messageId,
+	public boolean sendStaffMessage(String messageId,
 			NameValuePair[] personalInfo, String phoneNumber,
 			String languageCode, MediaType mediaType, Long notificationType,
 			Date messageStartDate, Date messageEndDate,
@@ -3755,12 +3755,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 			return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
 		} catch (Exception e) {
-			log.error("Mobile WS nurse message failure", e);
+			log.error("Mobile WS staff message failure", e);
 			return false;
 		}
 	}
 
-	public boolean sendNurseDefaultedCareMessage(String messageId,
+	public boolean sendStaffDefaultedCareMessage(String messageId,
 			String phoneNumber, MediaType mediaType, Date messageStartDate,
 			Date messageEndDate, Care[] cares) {
 
@@ -3771,12 +3771,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 			return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
 		} catch (Exception e) {
-			log.error("Mobile WS nurse defaulted care message failure", e);
+			log.error("Mobile WS staff defaulted care message failure", e);
 			return false;
 		}
 	}
 
-	public boolean sendNurseUpcomingCareMessage(String messageId,
+	public boolean sendStaffUpcomingCareMessage(String messageId,
 			String phoneNumber, MediaType mediaType, Date messageStartDate,
 			Date messageEndDate, org.motechproject.ws.Patient patient) {
 
@@ -3787,7 +3787,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 			return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
 		} catch (Exception e) {
-			log.error("Mobile WS nurse upcoming care message failure", e);
+			log.error("Mobile WS staff upcoming care message failure", e);
 			return false;
 		}
 	}
@@ -3947,7 +3947,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return null;
 	}
 
-	public User getNurseBySystemId(String systemId) {
+	public User getStaffBySystemId(String systemId) {
 		UserService userService = contextService.getUserService();
 		return userService.getUserByUsername(systemId);	
 	}

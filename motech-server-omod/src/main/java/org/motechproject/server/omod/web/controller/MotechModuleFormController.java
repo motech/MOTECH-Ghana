@@ -74,10 +74,10 @@ public class MotechModuleFormController {
 		return "/module/motechmodule/clinic";
 	}
 
-	@RequestMapping(value = "/module/motechmodule/nurse", method = RequestMethod.GET)
-	public String viewNurseForm(ModelMap model) {
+	@RequestMapping(value = "/module/motechmodule/staff", method = RequestMethod.GET)
+	public String viewStaffForm(ModelMap model) {
 		model.addAttribute("staffTypes", registrarBean.getStaffTypes());
-		return "/module/motechmodule/nurse";
+		return "/module/motechmodule/staff";
 	}
 
 	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.POST)
@@ -92,24 +92,24 @@ public class MotechModuleFormController {
 		return "redirect:/module/motechmodule/viewdata.form";
 	}
 
-	@RequestMapping(value = "/module/motechmodule/nurse", method = RequestMethod.POST)
-	public String registerNurse(@RequestParam("firstName") String firstName,
+	@RequestMapping(value = "/module/motechmodule/staff", method = RequestMethod.POST)
+	public String registerStaff(@RequestParam("firstName") String firstName,
 			@RequestParam("lastName") String lastName,
 			@RequestParam("phone") String phone,
 			@RequestParam("type") String type, ModelMap model) {
-		log.debug("Register Nurse");
-		User user = registrarBean.registerNurse(firstName, lastName, phone,
+		log.debug("Register Staff");
+		User user = registrarBean.registerStaff(firstName, lastName, phone,
 				type);
 		model.addAttribute("successMsg", "Added user: name = "
 				+ user.getPersonName() + ", system id = " + user.getSystemId());
-		return "/module/motechmodule/nurse";
+		return "/module/motechmodule/staff";
 	}
 
 	@RequestMapping("/module/motechmodule/viewdata")
 	public String viewData(ModelMap model) {
 
 		model.addAttribute("allLocations", registrarBean.getAllLocations());
-		model.addAttribute("allNurses", registrarBean.getAllNurses());
+		model.addAttribute("allStaff", registrarBean.getAllStaff());
 		model.addAttribute("allPatients", registrarBean.getAllPatients());
 		model.addAttribute("allPregnancies", registrarBean.getAllPregnancies());
 		model.addAttribute("allScheduledMessages", registrarBean

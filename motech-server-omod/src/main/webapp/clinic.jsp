@@ -53,8 +53,8 @@
 <h2>Register a Clinic</h2>
 <div class="instructions">
 	This test allows you to create a new clinic record. Patients and 
-	nurses are associated with a specific clinic, and the clinic 
-	must be registered prior to nurse or patient registration.
+	staff are associated with a specific clinic, and the clinic 
+	must be registered prior to staff or patient registration.
 	<em>NOTE: A clinic name needs to be unique.</em>
 </div>
 <table>

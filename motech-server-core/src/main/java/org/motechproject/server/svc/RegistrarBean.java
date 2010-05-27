@@ -43,12 +43,12 @@ public interface RegistrarBean {
 	public void registerClinic(String name, Integer parentId);
 
 	@RunAsAdminUser
-	public User registerNurse(String firstName, String lastName, String phone,
+	public User registerStaff(String firstName, String lastName, String phone,
 			String staffType);
 
 	@RunAsAdminUser
 	public Patient registerPatient(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User staff,
 			Location facility, Date date, RegistrationMode registrationMode,
 			Integer motechId, RegistrantType registrantType, String firstName,
 			String middleName, String lastName, String preferredName,
@@ -94,7 +94,7 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public void editPatient(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User staff,
 			Date date, Patient patient, String phoneNumber,
 			ContactNumberType phoneOwnership, String nhis, Date nhisExpires,
 			Boolean stopEnrollment);
@@ -108,7 +108,7 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public void registerPregnancy(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User staff,
 			Location facility, Date date, Patient patient,
 			Date estDeliveryDate, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, String phoneNumber, MediaType format,
@@ -117,7 +117,7 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public void registerANCMother(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User staff,
 			Location facility, Date date, Patient patient, String ancRegNumber,
 			Date estDeliveryDate, Integer height, Integer gravida,
 			Integer parity, Boolean enroll, Boolean consent,
@@ -127,7 +127,7 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public void registerCWCChild(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User staff,
 			Location facility, Date date, Patient patient, String cwcRegNumber,
 			Boolean enroll, Boolean consent, ContactNumberType ownership,
 			String phoneNumber, MediaType format, String language,
@@ -135,7 +135,7 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public void recordMotherANCVisit(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User staff,
 			Location facility, Date date, Patient patient, Integer visitNumber,
 			Integer ancLocation, String house, String community,
 			Date estDeliveryDate, Integer bpSystolic, Integer bpDiastolic,
@@ -150,7 +150,7 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public void recordPregnancyTermination(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User staff,
 			Location facility, Date date, Patient patient,
 			Integer terminationType, Integer procedure,
 			Integer[] complications, Boolean maternalDeath, Boolean referred,
@@ -159,7 +159,7 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public List<Patient> recordPregnancyDelivery(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User staff,
 			Location facility, Date datetime, Patient patient, Integer mode,
 			Integer outcome, Integer deliveryLocation, Integer deliveredBy,
 			Boolean maleInvolved, Integer[] complications, Integer vvf,
@@ -168,12 +168,12 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public void recordPregnancyDeliveryNotification(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User staff,
 			Location facility, Date date, Patient patient);
 
 	@RunAsAdminUser
 	public void recordMotherPNCVisit(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User staff,
 			Location facility, Date datetime, Patient patient,
 			Integer visitNumber, Integer pncLocation, String house,
 			String community, Boolean referred, Boolean maleInvolved,
@@ -183,7 +183,7 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public void recordChildPNCVisit(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User staff,
 			Location facility, Date datetime, Patient patient,
 			Integer visitNumber, Integer pncLocation, String house,
 			String community, Boolean referred, Boolean maleInvolved,
@@ -193,17 +193,17 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public void recordTTVisit(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User staff,
 			Location facility, Date date, Patient patient, Integer ttDose);
 
 	@RunAsAdminUser
 	public void recordDeath(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User staff,
 			Location facility, Date date, Patient patient, Integer cause);
 
 	@RunAsAdminUser
 	public void recordChildCWCVisit(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User staff,
 			Location facility, Date date, Patient patient, Integer cwcLocation,
 			String house, String community, Boolean bcg, Integer opvDose,
 			Integer pentaDose, Boolean measles, Boolean yellowFever,
@@ -220,7 +220,7 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public void recordOutpatientVisit(
-			@RunAsUserParam(resolverBean = "verbatimUserResolver") User nurse,
+			@RunAsUserParam(resolverBean = "verbatimUserResolver") User staff,
 			Location facility, Date date, Patient patient, String serialNumber,
 			Integer diagnosis, Integer secondDiagnosis, Boolean rdtGiven,
 			Boolean rdtPositive, Boolean actTreated, Boolean newCase,
@@ -234,7 +234,7 @@ public interface RegistrarBean {
 
 	public List<Location> getAllLocations();
 
-	public List<User> getAllNurses();
+	public List<User> getAllStaff();
 	
 	public List<String> getStaffTypes();
 
@@ -409,7 +409,7 @@ public interface RegistrarBean {
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
 			OpenmrsConstants.PRIV_VIEW_USERS })
-	public void sendNurseCareMessages(Date startDate, Date endDate,
+	public void sendStaffCareMessages(Date startDate, Date endDate,
 			Date deliveryDate, Date deliveryTime, String[] careGroups,
 			boolean sendUpcoming);
 

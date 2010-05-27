@@ -11,10 +11,10 @@
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
-	<openmrs:hasPrivilege privilege="Register MoTeCH Nurse">
-		<li <c:if test='<%= request.getRequestURI().contains("nurse") %>'>class="active"</c:if>>
-			<a href="${pageContext.request.contextPath}/module/motechmodule/nurse.form">
-				<spring:message code="motechmodule.Nurse.register"/>
+	<openmrs:hasPrivilege privilege="Register MoTeCH Staff">
+		<li <c:if test='<%= request.getRequestURI().contains("staff") %>'>class="active"</c:if>>
+			<a href="${pageContext.request.contextPath}/module/motechmodule/staff.form">
+				<spring:message code="motechmodule.Staff.register"/>
 			</a>
 		</li>
 	</openmrs:hasPrivilege>

@@ -71,18 +71,18 @@ public class MotechModuleFormControllerTest extends TestCase {
 		verify(registrarBean);
 	}
 
-	public void testRegiserNurse() throws Exception {
+	public void testRegiserStaff() throws Exception {
 		String firstName = "First Name", lastName = "Last Name", phone = "7777777777", staffType = "CHO";
 
 		User createdUser = new User();
 		expect(
-				registrarBean.registerNurse(firstName, lastName, phone,
+				registrarBean.registerStaff(firstName, lastName, phone,
 						staffType)).andReturn(createdUser);
 
 		replay(registrarBean);
 
 		ModelMap model = new ModelMap();
-		controller.registerNurse(firstName, lastName, phone, staffType, model);
+		controller.registerStaff(firstName, lastName, phone, staffType, model);
 
 		verify(registrarBean);
 

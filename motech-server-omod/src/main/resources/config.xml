@@ -93,8 +93,8 @@
 	</privilege>
 		
 	<privilege>
-		<name>Register MoTeCH Nurse</name>
-		<description>Allows registration of a nurse via MoTeCH</description>
+		<name>Register MoTeCH Staff</name>
+		<description>Allows registration of a staff member via MoTeCH</description>
 	</privilege>
 	
 	<privilege>
