@@ -260,7 +260,8 @@
 			('Ghana','Upper East','Kassena-Nankana','Central South','Biu','Biu',uuid(),1),
 			('Ghana','Upper East','Kassena-Nankana','Central Navrongo','Gongnia','Gongnia',uuid(),1),
 			('Ghana','Upper East','Kassena-Nankana','Central North','Pungu South','Pungu South',uuid(),1),
-			('Ghana','Upper East','Kassena-Nankana','Central North','Pungu North','Pungu North',uuid(),1);
+			('Ghana','Upper East','Kassena-Nankana','Central North','Pungu North','Pungu North',uuid(),1),
+			('Ghana','Field Agent','Field Agent','Field Agent','Field Agent','Field Agent',uuid(),1);
 			
 			insert into motechmodule_facility (facility_id,location_id) values
 			(1111,(select location_id from location where name = 'Navio')),
@@ -288,7 +289,8 @@
 			(1242,(select location_id from location where name = 'Biu')),
 			(1251,(select location_id from location where name = 'Gongnia')),
 			(1261,(select location_id from location where name = 'Pungu South')),
-			(1262,(select location_id from location where name = 'Pungu North'));
+			(1262,(select location_id from location where name = 'Pungu North')),
+			(9999,(select location_id from location where name = 'Field Agent'));
 			
 			insert into motechmodule_community (community_id,name,facility_id) values
 			(11111,'Samwo',(select id from motechmodule_facility where facility_id = 1111)),

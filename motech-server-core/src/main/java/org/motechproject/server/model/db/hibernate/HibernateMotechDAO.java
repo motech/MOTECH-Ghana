@@ -280,7 +280,9 @@ public class HibernateMotechDAO implements MotechDAO {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<String>) session.createQuery(
 				"select distinct country from " + Location.class.getName()
-						+ " where country is not null order by country").list();
+						+ " where country is not null "
+						+ " and region != 'Field Agent' " + "order by country")
+				.list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -288,7 +290,9 @@ public class HibernateMotechDAO implements MotechDAO {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<String>) session.createQuery(
 				"select distinct region from " + Location.class.getName()
-						+ " where region is not null order by region").list();
+						+ " where region is not null"
+						+ " and region != 'Field Agent' " + " order by region")
+				.list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -297,8 +301,8 @@ public class HibernateMotechDAO implements MotechDAO {
 		return (List<String>) session.createQuery(
 				"select distinct region from " + Location.class.getName()
 						+ " where region is not null and country = :country "
-						+ "order by region").setString("country", country)
-				.list();
+						+ " and region != 'Field Agent' " + "order by region")
+				.setString("country", country).list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -308,6 +312,7 @@ public class HibernateMotechDAO implements MotechDAO {
 				"select distinct countyDistrict from "
 						+ Location.class.getName()
 						+ " where countyDistrict is not null "
+						+ " and countyDistrict != 'Field Agent' "
 						+ "order by countyDistrict").list();
 	}
 
