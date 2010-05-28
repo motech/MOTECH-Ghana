@@ -167,7 +167,7 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 		expect(
 				registrarBean.getLastObsDate(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
-				.andReturn(new Date());
+				.andReturn(new Date()).times(2);
 
 		replay(registrarBean);
 
@@ -206,7 +206,7 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 		expect(
 				registrarBean.getLastObsDate(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
-				.andReturn(new Date());
+				.andReturn(new Date()).times(2);
 
 		replay(registrarBean);
 

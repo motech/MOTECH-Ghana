@@ -1,7 +1,10 @@
 package org.motechproject.server.event.impl;
 
+import java.util.Date;
+
 import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.messaging.MessageScheduler;
+import org.motechproject.server.model.MessageProgramEnrollment;
 
 public class ScheduleMessageCommand extends MessagesCommand {
 
@@ -9,11 +12,17 @@ public class ScheduleMessageCommand extends MessagesCommand {
 	MessageScheduler messageScheduler;
 
 	@Override
-	public void execute() {
+	public void execute(MessageProgramEnrollment enrollment, Date actionDate) {
 		if (actionDate == null) {
 			return;
 		}
 		messageScheduler.scheduleMessage(messageKey, enrollment, actionDate);
+	}
+
+	@Override
+	public Date adjustActionDate(MessageProgramEnrollment enrollment,
+			Date actionDate) {
+		return messageScheduler.adjustMessageDate(enrollment, actionDate);
 	}
 
 	public String getMessageKey() {

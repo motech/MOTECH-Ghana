@@ -1,6 +1,9 @@
 package org.motechproject.server.event.impl;
 
+import java.util.Date;
+
 import org.motechproject.server.event.MessagesCommand;
+import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.svc.RegistrarBean;
 
 public class RemoveEnrollmentCommand extends MessagesCommand {
@@ -16,7 +19,7 @@ public class RemoveEnrollmentCommand extends MessagesCommand {
 	}
 
 	@Override
-	public void execute() {
+	public void execute(MessageProgramEnrollment enrollment, Date actionDate) {
 		registrarBean.removeMessageProgramEnrollment(enrollment);
 	}
 

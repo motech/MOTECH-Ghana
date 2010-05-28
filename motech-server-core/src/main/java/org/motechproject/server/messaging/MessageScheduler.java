@@ -9,4 +9,6 @@ public interface MessageScheduler {
 	void scheduleMessage(String messageKey,
 			MessageProgramEnrollment enrollment, Date messageDate);
 
+	Date adjustMessageDate(MessageProgramEnrollment enrollment, Date messageDate);
+
 }

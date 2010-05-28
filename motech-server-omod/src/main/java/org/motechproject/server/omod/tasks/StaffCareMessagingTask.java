@@ -35,6 +35,8 @@ public class StaffCareMessagingTask extends AbstractTask {
 				.getProperty(MotechConstants.TASK_PROPERTY_CARE_GROUPS);
 		String[] careGroups = StringUtils.split(careGroupsProperty,
 				MotechConstants.TASK_PROPERTY_CARE_GROUPS_DELIMITER);
+		Boolean avoidBlackout = Boolean.valueOf(this.taskDefinition
+				.getProperty(MotechConstants.TASK_PROPERTY_AVOID_BLACKOUT));
 
 		String deliveryTimeString = this.taskDefinition
 				.getProperty(MotechConstants.TASK_PROPERTY_DELIVERY_TIME);
@@ -42,6 +44,7 @@ public class StaffCareMessagingTask extends AbstractTask {
 		Date currentDate = new Date();
 		Date endDate = new Date(currentDate.getTime()
 				+ (this.taskDefinition.getRepeatInterval() * 1000));
+		Date deliveryDate = null;
 
 		Date deliveryTime = null;
 		if (deliveryTimeString != null) {
@@ -54,13 +57,19 @@ public class StaffCareMessagingTask extends AbstractTask {
 						+ "delivery time", e);
 			}
 		}
+		// If the delivery time property is set,
+		// use the current date as the delivery date
+		// otherwise the delivery time is null for immediate messaging
+		if (deliveryTime != null) {
+			deliveryDate = currentDate;
+		}
 
 		// Session required for Task to get RegistrarBean through Context
 		try {
 			contextService.openSession();
 			contextService.getRegistrarBean().sendStaffCareMessages(
-					currentDate, endDate, currentDate, deliveryTime,
-					careGroups, sendUpcoming);
+					currentDate, endDate, deliveryDate, deliveryTime,
+					careGroups, sendUpcoming, avoidBlackout);
 		} finally {
 			contextService.closeSession();
 		}

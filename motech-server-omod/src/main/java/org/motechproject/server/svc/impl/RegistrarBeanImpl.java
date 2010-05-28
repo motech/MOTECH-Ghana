@@ -16,6 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.event.MessageProgram;
 import org.motechproject.server.messaging.MessageNotFoundException;
+import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
@@ -1355,6 +1356,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MediaType mediaType = MediaType.TEXT;
 				String languageCode = "en";
 
+				// Send immediately if not during blackout,
+				// otherwise adjust time to after the blackout period
+				Date currentDate = new Date();
+				Date messageStartDate = adjustForBlackout(currentDate);
+				if (currentDate.equals(messageStartDate)) {
+					messageStartDate = null;
+				}
+
 				WebServiceModelConverterImpl wsModelConverter = new WebServiceModelConverterImpl();
 				wsModelConverter.setRegistrarBean(this);
 				org.motechproject.ws.Patient wsPatient = wsModelConverter
@@ -1363,7 +1372,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 				sendStaffMessage(messageId, nameValues, phoneNumber,
 						languageCode, mediaType, messageDef.getPublicId(),
-						null, null, wsPatients);
+						messageStartDate, null, wsPatients);
 			}
 		}
 	}
@@ -2569,23 +2578,17 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// TODO: Assumes recipient is person in enrollment
 		Integer messageRecipientId = enrollment.getPersonId();
 
-		Date scheduledMessageDate;
-		if (!userPreferenceBased) {
-			scheduledMessageDate = messageDate;
-		} else {
-			scheduledMessageDate = this.determineUserPreferredMessageDate(
-					messageRecipientId, messageDate);
-		}
+		// Expecting message date to already be preference adjusted
 
 		// Cancel any unsent messages for the same enrollment and not matching
 		// the message to schedule
 		this.removeUnsentMessages(messageRecipientId, enrollment,
-				messageDefinition, scheduledMessageDate);
+				messageDefinition, messageDate);
 
 		// Create new scheduled message (with pending attempt) for enrollment
 		// if none matching already exist
 		this.createScheduledMessage(messageRecipientId, messageDefinition,
-				enrollment, scheduledMessageDate);
+				enrollment, messageDate);
 	}
 
 	public ScheduledMessage scheduleCareMessage(String messageKey,
@@ -2598,18 +2601,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// TODO: Assumes recipient is person in enrollment
 		Integer messageRecipientId = enrollment.getPersonId();
 
-		Date scheduledMessageDate;
-		if (!userPreferenceBased) {
-			scheduledMessageDate = messageDate;
-		} else {
-			scheduledMessageDate = this.determineUserPreferredMessageDate(
-					messageRecipientId, messageDate);
-		}
-
 		// Create new scheduled message (with pending attempt) for enrollment
 		// Does not check if one already exists
 		return this.createCareScheduledMessage(messageRecipientId,
-				messageDefinition, enrollment, scheduledMessageDate, care);
+				messageDefinition, enrollment, messageDate, care,
+				userPreferenceBased);
 	}
 
 	private MessageDefinition getMessageDefinition(String messageKey) {
@@ -2664,15 +2660,76 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	public void addMessageAttempt(ScheduledMessage scheduledMessage,
-			Date attemptDate) {
+			Date attemptDate, Date maxAttemptDate, boolean userPreferenceBased) {
+
 		MotechService motechService = contextService.getMotechService();
+		PersonService personService = contextService.getPersonService();
+
 		MessageDefinition messageDefinition = scheduledMessage.getMessage();
+		Person recipient = personService.getPerson(scheduledMessage
+				.getRecipientId());
 
-		Message message = messageDefinition.createMessage(scheduledMessage);
-		message.setAttemptDate(attemptDate);
-		scheduledMessage.getMessageAttempts().add(message);
+		Date adjustedMessageDate = adjustCareMessageDate(recipient,
+				attemptDate, userPreferenceBased);
+		// Prevent scheduling reminders too far in future
+		// Only schedule one reminder ahead
+		if (!adjustedMessageDate.after(maxAttemptDate)) {
+			Message message = messageDefinition.createMessage(scheduledMessage);
+			message.setAttemptDate(attemptDate);
+			scheduledMessage.getMessageAttempts().add(message);
 
-		motechService.saveScheduledMessage(scheduledMessage);
+			if (log.isDebugEnabled()) {
+				log.debug("Added ScheduledMessage Attempt: recipient: "
+						+ scheduledMessage.getRecipientId() + ", message key: "
+						+ messageDefinition.getMessageKey() + ", date: "
+						+ adjustedMessageDate);
+			}
+
+			motechService.saveScheduledMessage(scheduledMessage);
+		}
+	}
+
+	public void verifyMessageAttemptDate(ScheduledMessage scheduledMessage,
+			boolean userPreferenceBased) {
+
+		MotechService motechService = contextService.getMotechService();
+		PersonService personService = contextService.getPersonService();
+		Person recipient = personService.getPerson(scheduledMessage
+				.getRecipientId());
+
+		List<Message> messages = scheduledMessage.getMessageAttempts();
+		if (!messages.isEmpty()) {
+			Message recentMessage = messages.get(0);
+			if (recentMessage.getAttemptStatus() == MessageStatus.SHOULD_ATTEMPT) {
+				Date attemptDate = recentMessage.getAttemptDate();
+				// Check if current message date is valid for user
+				// preferences or blackout incase these have changed
+				if (userPreferenceBased) {
+					attemptDate = determinePreferredMessageDate(recipient,
+							attemptDate);
+				} else {
+					attemptDate = adjustForBlackout(attemptDate);
+				}
+				if (!attemptDate.equals(recentMessage.getAttemptDate())) {
+					// Recompute from original scheduled message date
+					// Allows possibly adjusting to an earlier week or day
+					Date adjustedMessageDate = adjustCareMessageDate(recipient,
+							scheduledMessage.getScheduledFor(),
+							userPreferenceBased);
+
+					if (log.isDebugEnabled()) {
+						log.debug("Updating message id="
+								+ recentMessage.getId() + " date from="
+								+ recentMessage.getAttemptDate() + " to="
+								+ adjustedMessageDate);
+					}
+
+					recentMessage.setAttemptDate(adjustedMessageDate);
+					scheduledMessage.getMessageAttempts().set(0, recentMessage);
+					motechService.saveScheduledMessage(scheduledMessage);
+				}
+			}
+		}
 	}
 
 	public void removeAllUnsentMessages(MessageProgramEnrollment enrollment) {
@@ -2690,12 +2747,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 	}
 
-	private Date determineUserPreferredMessageDate(Integer recipientId,
+	public Date determineUserPreferredMessageDate(Integer recipientId,
 			Date messageDate) {
 		PersonService personService = contextService.getPersonService();
 		Person recipient = personService.getPerson(recipientId);
 
-		return determineMessageStartDate(recipient, messageDate);
+		return determinePreferredMessageDate(recipient, messageDate);
 	}
 
 	private void createScheduledMessage(Integer recipientId,
@@ -2732,16 +2789,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	private ScheduledMessage createCareScheduledMessage(Integer recipientId,
 			MessageDefinition messageDefinition,
-			MessageProgramEnrollment enrollment, Date messageDate, String care) {
+			MessageProgramEnrollment enrollment, Date messageDate, String care,
+			boolean userPreferenceBased) {
 
 		MotechService motechService = contextService.getMotechService();
-
-		if (log.isDebugEnabled()) {
-			log.debug("Creating ScheduledMessage: recipient: " + recipientId
-					+ ", enrollment: " + enrollment.getId() + ", message key: "
-					+ messageDefinition.getMessageKey() + ", date: "
-					+ messageDate);
-		}
+		PersonService personService = contextService.getPersonService();
 
 		ScheduledMessage scheduledMessage = new ScheduledMessage();
 		scheduledMessage.setScheduledFor(messageDate);
@@ -2752,11 +2804,43 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// messages)
 		scheduledMessage.setCare(care);
 
+		Person recipient = personService.getPerson(recipientId);
+		Date adjustedMessageDate = adjustCareMessageDate(recipient,
+				messageDate, userPreferenceBased);
+
 		Message message = messageDefinition.createMessage(scheduledMessage);
-		message.setAttemptDate(messageDate);
+		message.setAttemptDate(adjustedMessageDate);
 		scheduledMessage.getMessageAttempts().add(message);
 
+		if (log.isDebugEnabled()) {
+			log.debug("Creating ScheduledMessage: recipient: " + recipientId
+					+ ", enrollment: " + enrollment.getId() + ", message key: "
+					+ messageDefinition.getMessageKey() + ", date: "
+					+ adjustedMessageDate);
+		}
+
 		return motechService.saveScheduledMessage(scheduledMessage);
+	}
+
+	Date adjustCareMessageDate(Person person, Date messageDate,
+			boolean userPreferenceBased) {
+		Date adjustedDate = verifyFutureDate(messageDate);
+		if (userPreferenceBased) {
+			adjustedDate = determinePreferredMessageDate(person, adjustedDate);
+		} else {
+			adjustedDate = adjustForBlackout(adjustedDate);
+		}
+		return adjustedDate;
+	}
+
+	Date verifyFutureDate(Date messageDate) {
+		Calendar calendar = Calendar.getInstance();
+		if (calendar.getTime().after(messageDate)) {
+			// If date in past, return date 10 minutes in future
+			calendar.add(Calendar.MINUTE, 10);
+			return calendar.getTime();
+		}
+		return messageDate;
 	}
 
 	/* MessageSchedulerImpl methods end */
@@ -3151,6 +3235,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				new Date(), new Long(30), Boolean.FALSE,
 				MessageProgramUpdateTask.class.getName(), admin, null);
 
+		calendar = Calendar.getInstance();
 		Map<String, String> dailyStaffProps = new HashMap<String, String>();
 		dailyStaffProps.put(MotechConstants.TASK_PROPERTY_SEND_UPCOMING,
 				Boolean.TRUE.toString());
@@ -3159,14 +3244,17 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.TASK_PROPERTY_CARE_GROUPS_DELIMITER);
 		dailyStaffProps.put(MotechConstants.TASK_PROPERTY_CARE_GROUPS,
 				dailyGroupsProperty);
-		dailyStaffProps.put(MotechConstants.TASK_PROPERTY_DELIVERY_TIME,
-				"08:00");
+		dailyStaffProps.put(MotechConstants.TASK_PROPERTY_AVOID_BLACKOUT,
+				Boolean.TRUE.toString());
 		createTask(MotechConstants.TASK_DAILY_NURSE_CARE_MESSAGING,
 				"Task to send out staff SMS care messages for next day",
-				calendar.getTime(), new Long(86400), Boolean.FALSE,
+				calendar.getTime(), new Long(3600), Boolean.FALSE,
 				StaffCareMessagingTask.class.getName(), admin, dailyStaffProps);
 
 		calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
 		Map<String, String> weeklyStaffProps = new HashMap<String, String>();
 		String[] weeklyGroups = { "ANC", "TT", "IPT", "BCG", "OPV", "Penta",
 				"YellowFever", "Measles", "IPTI", "VitaA" };
@@ -3558,7 +3646,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	public void sendStaffCareMessages(Date startDate, Date endDate,
 			Date deliveryDate, Date deliveryTime, String[] careGroups,
-			boolean sendUpcoming) {
+			boolean sendUpcoming, boolean avoidBlackout) {
+
+		if (avoidBlackout && isDuringBlackout(deliveryDate)) {
+			log.debug("Cancelling nurse messages during blackout");
+			return;
+		}
 
 		MotechService motechService = contextService.getMotechService();
 		List<Facility> facilities = motechService.getAllFacilities();
@@ -3947,7 +4040,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	public User getStaffBySystemId(String systemId) {
 		UserService userService = contextService.getUserService();
-		return userService.getUserByUsername(systemId);	
+		return userService.getUserByUsername(systemId);
 	}
 
 	public String getPersonPhoneNumber(Person person) {
@@ -4087,7 +4180,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return time;
 	}
 
-	public Date determineMessageStartDate(Person person, Date messageDate) {
+	public Date determinePreferredMessageDate(Person person, Date messageDate) {
 		Calendar calendar = Calendar.getInstance();
 		Date currentDate = calendar.getTime();
 		calendar.setTime(messageDate);
@@ -4125,7 +4218,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			return date;
 		}
 		Calendar calendar = Calendar.getInstance();
-		Date currentDate = calendar.getTime();
 		calendar.setTime(date);
 
 		Calendar timeCalendar = Calendar.getInstance();
@@ -4134,11 +4226,101 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				.get(Calendar.HOUR_OF_DAY));
 		calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
 		calendar.set(Calendar.SECOND, 0);
-		if (calendar.getTime().before(currentDate)) {
-			// Add a day if date in past after setting the time of day
+		if (calendar.getTime().before(date)) {
+			// Add a day if before original date
+			// after setting the time of day
 			calendar.add(Calendar.DATE, 1);
 		}
 		return calendar.getTime();
+	}
+
+	Date adjustForBlackout(Date date) {
+		if (date == null) {
+			return date;
+		}
+		MotechService motechService = contextService.getMotechService();
+		Blackout blackout = motechService.getBlackoutSettings();
+		if (blackout == null) {
+			return date;
+		}
+
+		Calendar blackoutCalendar = Calendar.getInstance();
+		blackoutCalendar.setTime(date);
+
+		Calendar timeCalendar = Calendar.getInstance();
+
+		timeCalendar.setTime(blackout.getStartTime());
+		blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
+				.get(Calendar.HOUR_OF_DAY));
+		blackoutCalendar
+				.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+		blackoutCalendar
+				.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
+		Date blackoutStart = blackoutCalendar.getTime();
+
+		timeCalendar.setTime(blackout.getEndTime());
+		blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
+				.get(Calendar.HOUR_OF_DAY));
+		blackoutCalendar
+				.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+		blackoutCalendar
+				.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
+		if (blackoutCalendar.getTime().before(blackoutStart)) {
+			// Add a day if blackout end date before start date
+			// after setting time
+			blackoutCalendar.add(Calendar.DATE, 1);
+		}
+		Date blackoutEnd = blackoutCalendar.getTime();
+
+		if (date.after(blackoutStart) && date.before(blackoutEnd)) {
+			return blackoutEnd;
+		}
+		return date;
+	}
+
+	boolean isDuringBlackout(Date date) {
+		if (date == null) {
+			// If date is missing, checks if current date is during blackout
+			date = new Date();
+		}
+		MotechService motechService = contextService.getMotechService();
+		Blackout blackout = motechService.getBlackoutSettings();
+		if (blackout == null) {
+			return false;
+		}
+
+		Calendar blackoutCalendar = Calendar.getInstance();
+		blackoutCalendar.setTime(date);
+
+		Calendar timeCalendar = Calendar.getInstance();
+
+		timeCalendar.setTime(blackout.getStartTime());
+		blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
+				.get(Calendar.HOUR_OF_DAY));
+		blackoutCalendar
+				.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+		blackoutCalendar
+				.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
+		Date blackoutStart = blackoutCalendar.getTime();
+
+		timeCalendar.setTime(blackout.getEndTime());
+		blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
+				.get(Calendar.HOUR_OF_DAY));
+		blackoutCalendar
+				.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+		blackoutCalendar
+				.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
+		if (blackoutCalendar.getTime().before(blackoutStart)) {
+			// Add a day if blackout end date before start date
+			// after setting time
+			blackoutCalendar.add(Calendar.DATE, 1);
+		}
+		Date blackoutEnd = blackoutCalendar.getTime();
+
+		if (date.after(blackoutStart) && date.before(blackoutEnd)) {
+			return true;
+		}
+		return false;
 	}
 
 	public PatientIdentifierType getMotechPatientIdType() {

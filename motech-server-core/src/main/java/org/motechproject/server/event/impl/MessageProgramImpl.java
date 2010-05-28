@@ -71,9 +71,7 @@ public class MessageProgramImpl extends BaseInterfaceImpl implements
 
 		// Perform state action using date and enrollment
 		MessagesCommand command = state.getCommand();
-		command.setActionDate(actionDate);
-		command.setEnrollment(enrollment);
-		command.execute();
+		command.execute(enrollment, actionDate);
 
 		return state;
 	}
@@ -85,7 +83,8 @@ public class MessageProgramImpl extends BaseInterfaceImpl implements
 		}
 		MessageProgramStateTransition transition = state
 				.getTransition(enrollment);
-		transition.getCommand().execute();
+		Date actionDate = state.getDateOfAction(enrollment);
+		transition.getCommand().execute(enrollment, actionDate);
 		MessageProgramState newState = transition.getNextState();
 
 		return newState;

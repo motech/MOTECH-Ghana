@@ -5,12 +5,15 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 
 import junit.framework.TestCase;
 
+import org.motechproject.server.model.Blackout;
 import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.DayOfWeek;
 import org.openmrs.Person;
@@ -24,11 +27,13 @@ public class RegistrarBeanImplTest extends TestCase {
 
 	ContextService contextService;
 	AdministrationService adminService;
+	MotechService motechService;
 
 	@Override
 	protected void setUp() throws Exception {
 		contextService = createMock(ContextService.class);
 		adminService = createMock(AdministrationService.class);
+		motechService = createMock(MotechService.class);
 
 		regBean = new RegistrarBeanImpl();
 		regBean.setContextService(contextService);
@@ -39,6 +44,7 @@ public class RegistrarBeanImplTest extends TestCase {
 		regBean = null;
 		contextService = null;
 		adminService = null;
+		motechService = null;
 	}
 
 	public void testDeterminePersonPrefDate() {
@@ -56,7 +62,8 @@ public class RegistrarBeanImplTest extends TestCase {
 		person.addAttribute(new PersonAttribute(dayType, day.toString()));
 		person.addAttribute(new PersonAttribute(timeType, timeAsString));
 
-		Date prefDate = regBean.determineMessageStartDate(person, messageDate);
+		Date prefDate = regBean.determinePreferredMessageDate(person,
+				messageDate);
 
 		Calendar messageCal = Calendar.getInstance();
 		messageCal.setTime(messageDate);
@@ -92,7 +99,8 @@ public class RegistrarBeanImplTest extends TestCase {
 
 		replay(contextService, adminService);
 
-		Date prefDate = regBean.determineMessageStartDate(person, messageDate);
+		Date prefDate = regBean.determinePreferredMessageDate(person,
+				messageDate);
 
 		verify(contextService, adminService);
 
@@ -126,7 +134,8 @@ public class RegistrarBeanImplTest extends TestCase {
 
 		replay(contextService, adminService);
 
-		Date prefDate = regBean.determineMessageStartDate(person, messageDate);
+		Date prefDate = regBean.determinePreferredMessageDate(person,
+				messageDate);
 
 		verify(contextService, adminService);
 
@@ -148,7 +157,7 @@ public class RegistrarBeanImplTest extends TestCase {
 
 	public void testAdjustDateTime() {
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, 22);
+		calendar.set(Calendar.HOUR_OF_DAY, 14);
 		calendar.set(Calendar.MINUTE, 13);
 		calendar.set(Calendar.SECOND, 54);
 		Date messageDate = calendar.getTime();
@@ -167,25 +176,90 @@ public class RegistrarBeanImplTest extends TestCase {
 
 		Date prefDate = regBean.adjustTime(messageDate, timeCalendar.getTime());
 
-		Calendar messageCal = Calendar.getInstance();
-		messageCal.setTime(messageDate);
 		Calendar prefCal = Calendar.getInstance();
 		prefCal.setTime(prefDate);
 
-		assertEquals(messageCal.get(Calendar.YEAR), prefCal.get(Calendar.YEAR));
-		assertEquals(messageCal.get(Calendar.MONTH), prefCal
-				.get(Calendar.MONTH));
-		// TODO: Slap Matt for this
-		// assertEquals(messageCal.get(Calendar.DATE), prefCal.get(Calendar.DATE));
+		assertEquals(calendar.get(Calendar.YEAR), prefCal.get(Calendar.YEAR));
+		assertEquals(calendar.get(Calendar.MONTH), prefCal.get(Calendar.MONTH));
+		assertEquals(calendar.get(Calendar.DATE), prefCal.get(Calendar.DATE));
 		assertFalse("Hour not updated",
-				messageCal.get(Calendar.HOUR_OF_DAY) == prefCal
+				calendar.get(Calendar.HOUR_OF_DAY) == prefCal
 						.get(Calendar.HOUR_OF_DAY));
 		assertEquals(hour, prefCal.get(Calendar.HOUR_OF_DAY));
 		assertFalse("Minute not updated",
-				messageCal.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
+				calendar.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
 		assertEquals(minute, prefCal.get(Calendar.MINUTE));
 		assertFalse("Second not updated",
-				messageCal.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
+				calendar.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
 		assertEquals(second, prefCal.get(Calendar.SECOND));
+	}
+
+	public void testAdjustDateBlackout() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 13);
+		calendar.set(Calendar.SECOND, 54);
+		Date messageDate = calendar.getTime();
+
+		Time blackoutStart = Time.valueOf("23:00:00");
+		Time blackoutEnd = Time.valueOf("06:00:00");
+
+		int hour = 6;
+		int minute = 0;
+		int second = 0;
+
+		Blackout blackout = new Blackout(blackoutStart, blackoutEnd);
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(motechService.getBlackoutSettings()).andReturn(blackout);
+
+		replay(contextService, adminService, motechService);
+
+		Date prefDate = regBean.adjustForBlackout(messageDate);
+
+		verify(contextService, adminService, motechService);
+
+		Calendar prefCal = Calendar.getInstance();
+		prefCal.setTime(prefDate);
+
+		assertEquals(calendar.get(Calendar.YEAR), prefCal.get(Calendar.YEAR));
+		assertEquals(calendar.get(Calendar.MONTH), prefCal.get(Calendar.MONTH));
+		assertFalse("Day not updated", calendar.get(Calendar.DATE) == prefCal
+				.get(Calendar.DATE));
+		assertFalse("Hour not updated",
+				calendar.get(Calendar.HOUR_OF_DAY) == prefCal
+						.get(Calendar.HOUR_OF_DAY));
+		assertEquals(hour, prefCal.get(Calendar.HOUR_OF_DAY));
+		assertFalse("Minute not updated",
+				calendar.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
+		assertEquals(minute, prefCal.get(Calendar.MINUTE));
+		assertFalse("Second not updated",
+				calendar.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
+		assertEquals(second, prefCal.get(Calendar.SECOND));
+	}
+
+	public void testIsDuringBlackout() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 13);
+		calendar.set(Calendar.SECOND, 54);
+		Date messageDate = calendar.getTime();
+
+		Time blackoutStart = Time.valueOf("23:00:00");
+		Time blackoutEnd = Time.valueOf("06:00:00");
+
+		Blackout blackout = new Blackout(blackoutStart, blackoutEnd);
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(motechService.getBlackoutSettings()).andReturn(blackout);
+
+		replay(contextService, adminService, motechService);
+
+		boolean duringBlackout = regBean.isDuringBlackout(messageDate);
+
+		verify(contextService, adminService, motechService);
+
+		assertEquals(true, duringBlackout);
+
 	}
 }

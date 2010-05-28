@@ -1,5 +1,6 @@
 package org.motechproject.server.event.impl;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,7 +12,7 @@ public class ScheduledMessagePredicate implements Predicate {
 
 	private Set<String> keys = new HashSet<String>();
 	private String care;
-	private String date;
+	private Date date;
 
 	public boolean evaluate(Object input) {
 		if (input instanceof ScheduledMessage) {
@@ -57,11 +58,11 @@ public class ScheduledMessagePredicate implements Predicate {
 		this.care = care;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 

@@ -1,5 +1,6 @@
 package org.motechproject.server.event.impl;
 
+import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
@@ -206,14 +207,12 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 
 		expect(
 				registrarBean.scheduleCareMessage(eq(enc1MessageKey),
-						eq(enrollment), capture(message1DateCapture),
-						eq(false), eq(enc1.getName()))).andReturn(
-				new ScheduledMessage());
+						eq(enrollment), capture(message1DateCapture), eq(true),
+						eq(enc1.getName()))).andReturn(new ScheduledMessage());
 		expect(
 				registrarBean.scheduleCareMessage(eq(obs1MessageKey),
-						eq(enrollment), capture(message2DateCapture),
-						eq(false), eq(obs1.getName()))).andReturn(
-				new ScheduledMessage());
+						eq(enrollment), capture(message2DateCapture), eq(true),
+						eq(obs1.getName()))).andReturn(new ScheduledMessage());
 
 		replay(registrarBean);
 
@@ -224,12 +223,12 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		assertNull("State returned is not null", state);
 
 		Date message1Date = message1DateCapture.getValue();
-		assertTrue("Message 1 date is not in the future", message1Date
-				.after(date));
+		assertTrue("Message 1 date is not before ANC due date", message1Date
+				.before(enc1.getDueEncounterDatetime()));
 
 		Date message2Date = message1DateCapture.getValue();
-		assertTrue("Message 2 date is not in the future", message2Date
-				.after(date));
+		assertTrue("Message 2 date is not after BCG late date", message2Date
+				.after(obs1.getLateObsDatetime()));
 	}
 
 	public void testExpectedWithReminderScheduled() {
@@ -255,7 +254,8 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		MessageDefinition msg1Def = new MessageDefinition();
 		msg1Def.setMessageKey(obs1MessageKey);
 		ScheduledMessage msg1 = new ScheduledMessage();
-		msg1.setScheduledFor(date);
+		calendar.add(Calendar.DATE, 7);
+		msg1.setScheduledFor(calendar.getTime());
 		msg1.setMessage(msg1Def);
 		msg1.setCare("TT1");
 		schMsgs.add(msg1);
@@ -271,8 +271,9 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		expect(registrarBean.getScheduledMessages(enrollment)).andReturn(
 				schMsgs);
 
+		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true));
 		registrarBean.addMessageAttempt(capture(reminderSchMsg),
-				capture(reminderDate));
+				capture(reminderDate), (Date) anyObject(), eq(true));
 
 		replay(registrarBean);
 
@@ -286,11 +287,11 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		assertEquals(msg1, reminderMsg);
 
 		Date reminderAttemptDate = reminderDate.getValue();
-		assertTrue("Reminder date is not in the future", reminderAttemptDate
-				.after(date));
+		assertTrue("Reminder date is not after TT late date",
+				reminderAttemptDate.after(obs1.getLateObsDatetime()));
 	}
 
-	public void testNoActionExpectedWithExistingReminder() {
+	public void testUpdateExpectedWithExistingReminder() {
 		Integer maxReminders = 3;
 		List<ExpectedEncounter> expEnc = new ArrayList<ExpectedEncounter>();
 		List<ExpectedObs> expObs = new ArrayList<ExpectedObs>();
@@ -313,7 +314,8 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		MessageDefinition msg1Def = new MessageDefinition();
 		msg1Def.setMessageKey(obs1MessageKey);
 		ScheduledMessage msg1 = new ScheduledMessage();
-		msg1.setScheduledFor(date);
+		calendar.add(Calendar.DATE, 7);
+		msg1.setScheduledFor(calendar.getTime());
 		msg1.setMessage(msg1Def);
 		msg1.setCare("TT1");
 		Message msgAttempt1 = new Message();
@@ -331,6 +333,8 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		expect(registrarBean.getScheduledMessages(enrollment)).andReturn(
 				schMsgs);
 
+		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true));
+
 		replay(registrarBean);
 
 		MessageProgramState state = careProgram.determineState(enrollment);
@@ -340,7 +344,7 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		assertNull("State returned is not null", state);
 	}
 
-	public void testNoActionExpectedWithMaxRemindersScheduled() {
+	public void testUpdateExpectedWithMaxRemindersScheduled() {
 		Integer maxReminders = 1;
 		List<ExpectedEncounter> expEnc = new ArrayList<ExpectedEncounter>();
 		List<ExpectedObs> expObs = new ArrayList<ExpectedObs>();
@@ -363,12 +367,13 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		MessageDefinition msg1Def = new MessageDefinition();
 		msg1Def.setMessageKey(obs1MessageKey);
 		ScheduledMessage msg1 = new ScheduledMessage();
-		msg1.setScheduledFor(date);
+		calendar.add(Calendar.DATE, 7);
+		msg1.setScheduledFor(calendar.getTime());
 		msg1.setMessage(msg1Def);
 		msg1.setCare("TT1");
 		// Add max number of attempts allowed (1)
 		Message msgAttempt1 = new Message();
-		msgAttempt1.setAttemptDate(date);
+		msgAttempt1.setAttemptDate(calendar.getTime());
 		msg1.getMessageAttempts().add(msgAttempt1);
 		schMsgs.add(msg1);
 
@@ -380,6 +385,8 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		expect(registrarBean.getScheduledMessages(enrollment)).andReturn(
 				schMsgs);
 
+		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true));
+
 		replay(registrarBean);
 
 		MessageProgramState state = careProgram.determineState(enrollment);
@@ -389,7 +396,7 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		assertNull("State returned is not null", state);
 	}
 
-	public void testNoActionExpectedWithScheduled() {
+	public void testUpdateExpectedWithScheduled() {
 		Integer maxReminders = 3;
 		List<ExpectedEncounter> expEnc = new ArrayList<ExpectedEncounter>();
 		List<ExpectedObs> expObs = new ArrayList<ExpectedObs>();
@@ -412,7 +419,8 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		MessageDefinition msg1Def = new MessageDefinition();
 		msg1Def.setMessageKey(obs1MessageKey);
 		ScheduledMessage msg1 = new ScheduledMessage();
-		msg1.setScheduledFor(date);
+		calendar.add(Calendar.DATE, -7);
+		msg1.setScheduledFor(calendar.getTime());
 		msg1.setMessage(msg1Def);
 		msg1.setCare("TT1");
 		schMsgs.add(msg1);
@@ -424,6 +432,8 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		expect(registrarBean.getExpectedObs(patient)).andReturn(expObs);
 		expect(registrarBean.getScheduledMessages(enrollment)).andReturn(
 				schMsgs);
+
+		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true));
 
 		replay(registrarBean);
 

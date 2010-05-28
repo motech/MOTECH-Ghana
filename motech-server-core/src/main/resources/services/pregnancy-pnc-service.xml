@@ -8,7 +8,7 @@
 		<property name="name" value="PNC(mother)" />
 		<property name="encounterTypeName" value="PNCMOTHERVISIT" />
 		<property name="lateValue" value="1" />
-		<property name="latePeriod" value="day" />
+		<property name="latePeriod" value="hour" />
 		<property name="maxDeliveryValue" value="1" />
 		<property name="maxDeliveryPeriod" value="month" />
 		<property name="registrarBean" ref="registrarBean" />

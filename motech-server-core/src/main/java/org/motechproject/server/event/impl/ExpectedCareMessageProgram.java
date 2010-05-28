@@ -186,13 +186,13 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 			// Schedule reminder value/period before care due date
 			Date messageDate = calculateDate(dueDate, (-1 * careDetails
 					.getTimeValue()), careDetails.getTimePeriod());
-			messageDate = verifyFutureDate(currentDate, nextDate, messageDate);
 
 			// Set predicate and get upcoming scheduled message if exists
 			ScheduledMessagePredicate scheduledMessagePredicate = new ScheduledMessagePredicate();
 			scheduledMessagePredicate.resetKeys(careDetails
 					.getUpcomingMessageKey());
 			scheduledMessagePredicate.setCare(care);
+			scheduledMessagePredicate.setDate(messageDate);
 			ScheduledMessage upcomingMessage = getMatchingScheduledMessage(
 					careScheduledMessages, scheduledMessagePredicate);
 
@@ -200,8 +200,12 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 			if (upcomingMessage == null) {
 				return registrarBean.scheduleCareMessage(careDetails
 						.getUpcomingMessageKey(), enrollment, messageDate,
-						false, care);
+						careDetails.getUserPreferenceBased(), care);
 			} else {
+				// Check if unsent message attempt date needs adjusting for
+				// blackout or preference changes
+				registrarBean.verifyMessageAttemptDate(upcomingMessage,
+						careDetails.getUserPreferenceBased());
 				return upcomingMessage;
 			}
 
@@ -209,7 +213,6 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 			// Schedule reminder value/period after care late date
 			Date reminderDate = calculateDate(lateDate, careDetails
 					.getTimeValue(), careDetails.getTimePeriod());
-			reminderDate = verifyFutureDate(currentDate, nextDate, reminderDate);
 
 			// Set predicate and get previous reminder scheduled message if
 			// exists
@@ -217,6 +220,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 			scheduledMessagePredicate.resetKeys(careDetails
 					.getOverdueMessageKey());
 			scheduledMessagePredicate.setCare(care);
+			scheduledMessagePredicate.setDate(reminderDate);
 			ScheduledMessage reminderMessage = getMatchingScheduledMessage(
 					careScheduledMessages, scheduledMessagePredicate);
 
@@ -224,15 +228,20 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 				// Schedule reminder if no previous reminders
 				return registrarBean.scheduleCareMessage(careDetails
 						.getOverdueMessageKey(), enrollment, reminderDate,
-						false, care);
+						careDetails.getUserPreferenceBased(), care);
 			} else {
+				// Check if unsent message attempt date needs adjusting for
+				// blackout or preference changes
+				registrarBean.verifyMessageAttemptDate(reminderMessage,
+						careDetails.getUserPreferenceBased());
+
 				// Determine last reminder date
 				List<Message> attempts = reminderMessage.getMessageAttempts();
 				Date previousReminderDate = null;
 				if (!attempts.isEmpty()) {
 					previousReminderDate = attempts.get(0).getAttemptDate();
 				} else {
-					previousReminderDate = reminderMessage.getScheduledFor();
+					previousReminderDate = lateDate;
 				}
 
 				// Schedule reminder value/period after most recent reminder
@@ -244,13 +253,11 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 					Date maxReminderDate = calculateDate(currentDate,
 							careDetails.getTimeValue(), careDetails
 									.getTimePeriod());
-					// Prevent scheduling reminders too far in future
-					// Only schedule one reminder ahead
+
 					if (!newReminderDate.after(maxReminderDate)) {
-						newReminderDate = verifyFutureDate(currentDate,
-								nextDate, newReminderDate);
 						registrarBean.addMessageAttempt(reminderMessage,
-								newReminderDate);
+								newReminderDate, maxReminderDate, careDetails
+										.getUserPreferenceBased());
 					}
 				}
 				return reminderMessage;
@@ -288,14 +295,6 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 			break;
 		}
 		return calendar.getTime();
-	}
-
-	protected Date verifyFutureDate(Date currentDate, Date nextDate,
-			Date calculatedDate) {
-		if (currentDate.after(calculatedDate)) {
-			return nextDate;
-		}
-		return calculatedDate;
 	}
 
 	public String getConceptName() {

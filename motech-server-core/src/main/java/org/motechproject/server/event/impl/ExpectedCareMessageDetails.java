@@ -9,6 +9,7 @@ public class ExpectedCareMessageDetails {
 	private String overdueMessageKey;
 	private Integer timeValue;
 	private TimePeriod timePeriod;
+	private Boolean userPreferenceBased = false;
 
 	public String getName() {
 		return name;
@@ -48,6 +49,14 @@ public class ExpectedCareMessageDetails {
 
 	public void setTimePeriod(TimePeriod timePeriod) {
 		this.timePeriod = timePeriod;
+	}
+
+	public Boolean getUserPreferenceBased() {
+		return userPreferenceBased;
+	}
+
+	public void setUserPreferenceBased(Boolean userPreferenceBased) {
+		this.userPreferenceBased = userPreferenceBased;
 	}
 
 }

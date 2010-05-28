@@ -92,9 +92,8 @@ public interface RegistrarBean {
 			DayOfWeek dayOfWeek, Date timeOfDay);
 
 	@RunAsAdminUser
-	public void editPatient(
-			@RunAsUserParam User staff,
-			Date date, Patient patient, String phoneNumber,
+	public void editPatient(@RunAsUserParam User staff, Date date,
+			Patient patient, String phoneNumber,
 			ContactNumberType phoneOwnership, String nhis, Date nhisExpires,
 			Boolean stopEnrollment);
 
@@ -106,8 +105,7 @@ public interface RegistrarBean {
 			HowLearned howLearned);
 
 	@RunAsAdminUser
-	public void registerPregnancy(
-			@RunAsUserParam User staff,
+	public void registerPregnancy(@RunAsUserParam User staff,
 			Location facility, Date date, Patient patient,
 			Date estDeliveryDate, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, String phoneNumber, MediaType format,
@@ -115,8 +113,7 @@ public interface RegistrarBean {
 			HowLearned howLearned);
 
 	@RunAsAdminUser
-	public void registerANCMother(
-			@RunAsUserParam User staff,
+	public void registerANCMother(@RunAsUserParam User staff,
 			Location facility, Date date, Patient patient, String ancRegNumber,
 			Date estDeliveryDate, Integer height, Integer gravida,
 			Integer parity, Boolean enroll, Boolean consent,
@@ -125,16 +122,14 @@ public interface RegistrarBean {
 			HowLearned howLearned);
 
 	@RunAsAdminUser
-	public void registerCWCChild(
-			@RunAsUserParam User staff,
-			Location facility, Date date, Patient patient, String cwcRegNumber,
-			Boolean enroll, Boolean consent, ContactNumberType ownership,
-			String phoneNumber, MediaType format, String language,
-			DayOfWeek dayOfWeek, Date timeOfDay, HowLearned howLearned);
+	public void registerCWCChild(@RunAsUserParam User staff, Location facility,
+			Date date, Patient patient, String cwcRegNumber, Boolean enroll,
+			Boolean consent, ContactNumberType ownership, String phoneNumber,
+			MediaType format, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, HowLearned howLearned);
 
 	@RunAsAdminUser
-	public void recordMotherANCVisit(
-			@RunAsUserParam User staff,
+	public void recordMotherANCVisit(@RunAsUserParam User staff,
 			Location facility, Date date, Patient patient, Integer visitNumber,
 			Integer ancLocation, String house, String community,
 			Date estDeliveryDate, Integer bpSystolic, Integer bpDiastolic,
@@ -148,8 +143,7 @@ public interface RegistrarBean {
 			Boolean referred, Date nextANCDate, String comments);
 
 	@RunAsAdminUser
-	public void recordPregnancyTermination(
-			@RunAsUserParam User staff,
+	public void recordPregnancyTermination(@RunAsUserParam User staff,
 			Location facility, Date date, Patient patient,
 			Integer terminationType, Integer procedure,
 			Integer[] complications, Boolean maternalDeath, Boolean referred,
@@ -157,8 +151,7 @@ public interface RegistrarBean {
 			String comments);
 
 	@RunAsAdminUser
-	public List<Patient> recordPregnancyDelivery(
-			@RunAsUserParam User staff,
+	public List<Patient> recordPregnancyDelivery(@RunAsUserParam User staff,
 			Location facility, Date datetime, Patient patient, Integer mode,
 			Integer outcome, Integer deliveryLocation, Integer deliveredBy,
 			Boolean maleInvolved, Integer[] complications, Integer vvf,
@@ -166,13 +159,11 @@ public interface RegistrarBean {
 			List<BirthOutcomeChild> outcomes);
 
 	@RunAsAdminUser
-	public void recordPregnancyDeliveryNotification(
-			@RunAsUserParam User staff,
+	public void recordPregnancyDeliveryNotification(@RunAsUserParam User staff,
 			Location facility, Date date, Patient patient);
 
 	@RunAsAdminUser
-	public void recordMotherPNCVisit(
-			@RunAsUserParam User staff,
+	public void recordMotherPNCVisit(@RunAsUserParam User staff,
 			Location facility, Date datetime, Patient patient,
 			Integer visitNumber, Integer pncLocation, String house,
 			String community, Boolean referred, Boolean maleInvolved,
@@ -181,8 +172,7 @@ public interface RegistrarBean {
 			String comments);
 
 	@RunAsAdminUser
-	public void recordChildPNCVisit(
-			@RunAsUserParam User staff,
+	public void recordChildPNCVisit(@RunAsUserParam User staff,
 			Location facility, Date datetime, Patient patient,
 			Integer visitNumber, Integer pncLocation, String house,
 			String community, Boolean referred, Boolean maleInvolved,
@@ -191,18 +181,15 @@ public interface RegistrarBean {
 			Boolean babyConditionGood, String comments);
 
 	@RunAsAdminUser
-	public void recordTTVisit(
-			@RunAsUserParam User staff,
-			Location facility, Date date, Patient patient, Integer ttDose);
+	public void recordTTVisit(@RunAsUserParam User staff, Location facility,
+			Date date, Patient patient, Integer ttDose);
 
 	@RunAsAdminUser
-	public void recordDeath(
-			@RunAsUserParam User staff,
-			Location facility, Date date, Patient patient, Integer cause);
+	public void recordDeath(@RunAsUserParam User staff, Location facility,
+			Date date, Patient patient, Integer cause);
 
 	@RunAsAdminUser
-	public void recordChildCWCVisit(
-			@RunAsUserParam User staff,
+	public void recordChildCWCVisit(@RunAsUserParam User staff,
 			Location facility, Date date, Patient patient, Integer cwcLocation,
 			String house, String community, Boolean bcg, Integer opvDose,
 			Integer pentaDose, Boolean measles, Boolean yellowFever,
@@ -218,8 +205,7 @@ public interface RegistrarBean {
 			String comments);
 
 	@RunAsAdminUser
-	public void recordOutpatientVisit(
-			@RunAsUserParam User staff,
+	public void recordOutpatientVisit(@RunAsUserParam User staff,
 			Location facility, Date date, Patient patient, String serialNumber,
 			Integer diagnosis, Integer secondDiagnosis, Boolean rdtGiven,
 			Boolean rdtPositive, Boolean actTreated, Boolean newCase,
@@ -370,7 +356,13 @@ public interface RegistrarBean {
 	public void removeUnsentMessages(List<ScheduledMessage> scheduledMessages);
 
 	public void addMessageAttempt(ScheduledMessage scheduledMessage,
-			Date attemptDate);
+			Date attemptDate, Date maxAttemptDate, boolean userPreferenceBased);
+
+	public Date determineUserPreferredMessageDate(Integer recipientId,
+			Date messageDate);
+
+	public void verifyMessageAttemptDate(ScheduledMessage scheduledMessage,
+			boolean userPreferenceBased);
 
 	public Integer getMaxPatientCareReminders();
 
@@ -410,7 +402,7 @@ public interface RegistrarBean {
 			OpenmrsConstants.PRIV_VIEW_USERS })
 	public void sendStaffCareMessages(Date startDate, Date endDate,
 			Date deliveryDate, Date deliveryTime, String[] careGroups,
-			boolean sendUpcoming);
+			boolean sendUpcoming, boolean avoidBlackout);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES,
 			OpenmrsConstants.PRIV_VIEW_PATIENTS,

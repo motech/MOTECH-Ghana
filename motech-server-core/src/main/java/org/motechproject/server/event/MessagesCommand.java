@@ -6,27 +6,12 @@ import org.motechproject.server.model.MessageProgramEnrollment;
 
 public class MessagesCommand {
 
-	protected MessageProgramEnrollment enrollment;
-	protected Date actionDate;
-
-	public void execute() {
+	public void execute(MessageProgramEnrollment enrollment, Date actionDate) {
 		// No operation
 	}
 
-	public MessageProgramEnrollment getEnrollment() {
-		return enrollment;
-	}
-
-	public void setEnrollment(MessageProgramEnrollment enrollment) {
-		this.enrollment = enrollment;
-	}
-
-	public Date getActionDate() {
+	public Date adjustActionDate(MessageProgramEnrollment enrollment,
+			Date actionDate) {
 		return actionDate;
 	}
-
-	public void setActionDate(Date actionDate) {
-		this.actionDate = actionDate;
-	}
-
 }
