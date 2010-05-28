@@ -1,5 +1,8 @@
 package org.motechproject.server.omod.sdsched;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Implementation of {@link ScheduleMaintService}.
  * 
@@ -7,6 +10,8 @@ package org.motechproject.server.omod.sdsched;
  * 
  */
 public class ScheduleMaintServiceImpl implements ScheduleMaintService {
+
+	private static Log log = LogFactory.getLog(ScheduleMaintServiceImpl.class);
 
 	public static String RESOURCE_NAME = "_DS_SCHEDULER_UTILS_RESOURCE";
 
@@ -28,8 +33,13 @@ public class ScheduleMaintServiceImpl implements ScheduleMaintService {
 	 *         non-existent
 	 */
 	private AffectedPatients getAffectedPatients() {
-		AffectedPatients patients = (AffectedPatients) syncManWrapper
-				.getResource(RESOURCE_NAME);
+		AffectedPatients patients = null;
+		try {
+			patients = (AffectedPatients) syncManWrapper
+					.getResource(RESOURCE_NAME);
+		} catch (ClassCastException e) {
+			log.debug("Cannot cast affected patients", e);
+		}
 		return patients;
 	}
 
