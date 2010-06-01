@@ -3,7 +3,9 @@ package org.motechproject.server.ws;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -97,7 +99,7 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -135,7 +137,7 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -188,7 +190,23 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
+
+		// Verify that patient ids are internally distinct
+		Integer[] motechIdArray = { child1MotechId, child2MotechId,
+				child3MotechId };
+		Set<Integer> motechIds = new HashSet<Integer>();
+		for (int i = 0; i < motechIdArray.length; i++) {
+			Integer childId = motechIdArray[i];
+			String fieldName = "Child" + (i + 1) + "MotechID";
+			if (childId != null) {
+				validateMotechId(childId, errors, fieldName, false);
+				if (motechIds.contains(childId))
+					errors.add(2, fieldName);
+				else
+					motechIds.add(childId);
+			}
+		}
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -234,7 +252,7 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -271,7 +289,7 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -296,7 +314,7 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException("Errors in Record Death request",
@@ -320,7 +338,7 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException("Errors in Record TT Visit request",
@@ -358,7 +376,7 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -401,7 +419,7 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -474,7 +492,8 @@ public class RegistrarWebService implements RegistrarService {
 		org.openmrs.Patient mother = null;
 		if (motherMotechId != null
 				&& registrantType == RegistrantType.CHILD_UNDER_FIVE) {
-			mother = validateMotechId(motherMotechId, errors, "MotherMotechID");
+			mother = validateMotechId(motherMotechId, errors, "MotherMotechID",
+					true);
 		}
 
 		if (registrantType == RegistrantType.CHILD_UNDER_FIVE) {
@@ -535,7 +554,7 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -575,7 +594,7 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -610,7 +629,7 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -640,7 +659,7 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException("Errors in Edit Patient request",
@@ -706,7 +725,7 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -739,7 +758,7 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -941,7 +960,7 @@ public class RegistrarWebService implements RegistrarService {
 		validateFacility(facilityId, errors, "FacilityID");
 
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -1001,7 +1020,7 @@ public class RegistrarWebService implements RegistrarService {
 		validateFacility(facilityId, errors, "FacilityID");
 
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException("Errors in Patient Query request",
@@ -1019,7 +1038,7 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID");
+				"MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
@@ -1073,15 +1092,17 @@ public class RegistrarWebService implements RegistrarService {
 	}
 
 	private org.openmrs.Patient validateMotechId(Integer motechId,
-			ValidationErrors errors, String fieldName) {
+			ValidationErrors errors, String fieldName, boolean mustExist) {
 		if (motechId == null) {
 			errors.add(3, fieldName);
 			return null;
 		}
 		org.openmrs.Patient patient = openmrsBean.getPatientByMotechId(motechId
 				.toString());
-		if (patient == null) {
+		if (mustExist && patient == null) {
 			errors.add(1, fieldName);
+		} else if (!mustExist && patient != null) {
+			errors.add(2, fieldName);
 		}
 		return patient;
 	}

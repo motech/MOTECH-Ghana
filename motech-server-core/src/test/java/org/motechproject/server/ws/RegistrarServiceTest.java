@@ -306,6 +306,12 @@ public class RegistrarServiceTest {
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
+		expect(openmrsBean.getPatientByMotechId(child1Id.toString()))
+				.andReturn(null);
+		expect(openmrsBean.getPatientByMotechId(child2Id.toString()))
+				.andReturn(null);
+		expect(openmrsBean.getPatientByMotechId(child3Id.toString()))
+				.andReturn(null);
 		expect(
 				registrarBean.recordPregnancyDelivery(eq(staff),
 						eq(facilityLocation), eq(date), eq(patient), eq(mode),
@@ -382,6 +388,8 @@ public class RegistrarServiceTest {
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
+		expect(openmrsBean.getPatientByMotechId(child1Id.toString()))
+				.andReturn(null);
 		expect(
 				registrarBean.recordPregnancyDelivery(eq(staff),
 						eq(facilityLocation), eq(date), eq(patient), eq(mode),
@@ -414,10 +422,10 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordPregnancyDeliveryInvalidPatientId()
+	public void testRecordPregnancyDeliveryInvalidIds()
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
-		Integer child1Id = 246, child2Id = 468, child3Id = 579, deliveredBy = 1;
+		Integer child1Id = 246, child2Id = 246, child3Id = 246, deliveredBy = 1;
 		Integer[] complications = new Integer[] { 1, 3, 5, 7 };
 		String child1Name = "Child1First", child2Name = "Child2First", child3Name = "Child3First", comments = "Comments";
 		Integer method = 1, outcome = 2, location = 1, vvf = 2;
@@ -442,6 +450,12 @@ public class RegistrarServiceTest {
 				new Facility());
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(null);
+		expect(openmrsBean.getPatientByMotechId(child1Id.toString()))
+				.andReturn(null);
+		expect(openmrsBean.getPatientByMotechId(child2Id.toString()))
+				.andReturn(null);
+		expect(openmrsBean.getPatientByMotechId(child3Id.toString()))
+				.andReturn(null);
 
 		replay(registrarBean, openmrsBean);
 
@@ -462,15 +476,21 @@ public class RegistrarServiceTest {
 					.getFaultInfo());
 			List<ValidationError> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
-			assertEquals(1, errors.size());
+			assertEquals(3, errors.size());
 			ValidationError error = errors.get(0);
 			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField());
+			assertEquals("MotechID", error.getField()); // Check exists
+			error = errors.get(1);
+			assertEquals(2, error.getCode());
+			assertEquals("Child2MotechID", error.getField()); // Check conflicts
+			error = errors.get(2);
+			assertEquals(2, error.getCode());
+			assertEquals("Child3MotechID", error.getField()); // Check conflicts
 		}
 
 		verify(registrarBean, openmrsBean);
 	}
-
+	
 	@Test
 	public void testRecordDeliveryNotification() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
