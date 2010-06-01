@@ -306,8 +306,8 @@ public class RegistrarWebService implements RegistrarService {
 	public void recordDeath(@WebParam(name = "staffId") Integer staffId,
 			@WebParam(name = "facilityId") Integer facilityId,
 			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "cause") Integer cause) throws ValidationException {
+			@WebParam(name = "motechId") Integer motechId)
+			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -321,8 +321,7 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		registrarBean.recordDeath(staff, facility.getLocation(), date, patient,
-				cause);
+		registrarBean.recordDeath(staff, facility.getLocation(), date, patient);
 	}
 
 	@WebMethod

@@ -186,7 +186,7 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public void recordDeath(@RunAsUserParam User staff, Location facility,
-			Date date, Patient patient, Integer cause);
+			Date date, Patient patient);
 
 	@RunAsAdminUser
 	public void recordChildCWCVisit(@RunAsUserParam User staff,

@@ -637,7 +637,6 @@ public class RegistrarServiceTest {
 	@Test
 	public void testRecordDeath() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
-		Integer cause = 1;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -651,12 +650,11 @@ public class RegistrarServiceTest {
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean
-				.recordDeath(staff, facilityLocation, date, patient, cause);
+		registrarBean.recordDeath(staff, facilityLocation, date, patient);
 
 		replay(registrarBean, openmrsBean);
 
-		regWs.recordDeath(staffId, facilityId, date, motechId, cause);
+		regWs.recordDeath(staffId, facilityId, date, motechId);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -664,7 +662,6 @@ public class RegistrarServiceTest {
 	@Test
 	public void testRecordDeathInvalidPatientId() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
-		Integer cause = 1;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -679,7 +676,7 @@ public class RegistrarServiceTest {
 		replay(registrarBean, openmrsBean);
 
 		try {
-			regWs.recordDeath(staffId, facilityId, date, motechId, cause);
+			regWs.recordDeath(staffId, facilityId, date, motechId);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Death request", e.getMessage());

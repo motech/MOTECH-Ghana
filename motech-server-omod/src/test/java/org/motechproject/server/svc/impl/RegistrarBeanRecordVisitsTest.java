@@ -274,7 +274,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					.size());
 
 			// Record Death of Child 1
-			regService.recordDeath(staff, facility, date, child1, 1);
+			regService.recordDeath(staff, facility, date, child1);
 
 			assertEquals("Deceased child 1 not voided", 3, Context
 					.getPatientService().getAllPatients().size());

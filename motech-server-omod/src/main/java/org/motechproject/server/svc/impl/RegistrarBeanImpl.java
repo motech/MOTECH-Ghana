@@ -1607,16 +1607,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	@Transactional
 	public void recordDeath(User staff, Location facility, Date date,
-			Patient patient, Integer cause) {
-
-		ObsService obsService = contextService.getObsService();
-
-		if (cause != null) {
-			Obs deathCauseObs = createNumericValueObs(date,
-					getDeathCauseConcept(), patient, facility, cause, null,
-					null);
-			obsService.saveObs(deathCauseObs, null);
-		}
+			Patient patient) {
 
 		processPatientDeath(patient, date);
 	}
