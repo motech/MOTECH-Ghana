@@ -283,6 +283,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 				minDueDate, maxDueDate, maxLateDate, minMaxDate, nameOrdering);
 	}
 
+	public Facility saveFacility(Facility facility) {
+		return motechDAO.saveFacility(facility);
+	}
+
 	public List<Patient> getPatients(String firstName, String lastName,
 			String preferredName, Date birthDate, Integer communityId,
 			String phoneNumber, PersonAttributeType phoneNumberAttrType,
@@ -329,4 +333,5 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	public Community getCommunityByPatient(Patient patient) {
 		return motechDAO.getCommunityByPatient(patient);
 	}
+
 }

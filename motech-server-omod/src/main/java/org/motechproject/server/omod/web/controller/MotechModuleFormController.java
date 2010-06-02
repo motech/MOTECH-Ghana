@@ -14,7 +14,6 @@
 package org.motechproject.server.omod.web.controller;
 
 import java.sql.Time;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,9 +21,7 @@ import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
-import org.motechproject.server.omod.xml.LocationXStream;
 import org.motechproject.server.svc.RegistrarBean;
-import org.openmrs.Location;
 import org.openmrs.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -61,35 +58,10 @@ public class MotechModuleFormController {
 		this.registrarBean = registrarBean;
 	}
 
-	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.GET)
-	public String viewClinicForm(ModelMap model) {
-		List<Location> locations = registrarBean.getAllLocations();
-
-		LocationXStream xstream = new LocationXStream();
-		String locationsXml = xstream.toLocationHierarchyXML(locations);
-
-		model.addAttribute("locationsXml", locationsXml);
-		model.addAttribute("locations", locations);
-
-		return "/module/motechmodule/clinic";
-	}
-
 	@RequestMapping(value = "/module/motechmodule/staff", method = RequestMethod.GET)
 	public String viewStaffForm(ModelMap model) {
 		model.addAttribute("staffTypes", registrarBean.getStaffTypes());
 		return "/module/motechmodule/staff";
-	}
-
-	@RequestMapping(value = "/module/motechmodule/clinic", method = RequestMethod.POST)
-	public String registerClinic(@RequestParam("name") String name,
-			@RequestParam("parent") String parent) {
-		log.debug("Register Clinic");
-		Integer parentId = null;
-		if (!parent.equals("")) {
-			parentId = Integer.valueOf(parent);
-		}
-		registrarBean.registerClinic(name, parentId);
-		return "redirect:/module/motechmodule/viewdata.form";
 	}
 
 	@RequestMapping(value = "/module/motechmodule/staff", method = RequestMethod.POST)

@@ -4,10 +4,10 @@
 			<a href="${pageContext.request.contextPath}/admin"><spring:message code="admin.title.short"/></a>
 		</li>
 	</openmrs:hasPrivilege>
-	<openmrs:hasPrivilege privilege="Register MoTeCH Clinic">
-		<li <c:if test='<%= request.getRequestURI().contains("clinic") %>'>class="active"</c:if>>
-			<a href="${pageContext.request.contextPath}/module/motechmodule/clinic.form">
-				<spring:message code="motechmodule.Clinic.register"/>
+	<openmrs:hasPrivilege privilege="Register MoTeCH Facility">
+		<li <c:if test='<%= request.getRequestURI().contains("facility") %>'>class="active"</c:if>>
+			<a href="${pageContext.request.contextPath}/module/motechmodule/facility.form">
+				<spring:message code="motechmodule.Facility.register"/>
 			</a>
 		</li>
 	</openmrs:hasPrivilege>

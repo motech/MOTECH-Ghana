@@ -453,6 +453,12 @@ public class HibernateMotechDAO implements MotechDAO {
 		session.saveOrUpdate(expectedEncounter);
 		return expectedEncounter;
 	}
+	
+	public Facility saveFacility(Facility facility) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(facility);
+		return facility;
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<ExpectedEncounter> getExpectedEncounter(Patient patient,
@@ -677,7 +683,9 @@ public class HibernateMotechDAO implements MotechDAO {
 	@SuppressWarnings("unchecked")
 	public List<Facility> getAllFacilities() {
 		return (List<Facility>) sessionFactory.getCurrentSession()
-				.createCriteria(Facility.class).list();
+				.createCriteria(Facility.class).add(
+						Restrictions.not(Restrictions.eq("facilityId", 9999)))
+				.list();
 	}
 
 	public Community getCommunityByCommunityId(Integer communityId) {

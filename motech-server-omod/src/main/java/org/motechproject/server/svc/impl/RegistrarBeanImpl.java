@@ -121,26 +121,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return messagePrograms.get(programName);
 	}
 
-	@Transactional
-	public void registerClinic(String name, Integer parentId) {
-
-		LocationService locationService = contextService.getLocationService();
-
-		Location clinic = new Location();
-		clinic.setName(name);
-		clinic.setDescription("A Ghana Clinic Location");
-		locationService.saveLocation(clinic);
-
-		if (parentId != null) {
-			Location parent = locationService.getLocation(parentId);
-			parent.addChildLocation(clinic);
-			locationService.saveLocation(parent);
-
-			copyParentHierarchy(parent, clinic);
-			locationService.saveLocation(clinic);
-		}
-	}
-
 	public User registerStaff(String firstName, String lastName, String phone,
 			String staffType) {
 

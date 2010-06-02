@@ -419,62 +419,6 @@ public class RegistrarBeanTest extends TestCase {
 		idService = null;
 	}
 
-	public void testRegisterClinic() {
-		String clinicName = "A-Test-Clinic-Name";
-		String description = "A Ghana Clinic Location";
-		Integer clinicId = 3;
-		Integer parentId = 2;
-
-		String country = "Country";
-		String region = "Region";
-		String district = "District";
-		String community = "Community";
-
-		Location clinicparent = new Location(parentId);
-		clinicparent.setCountry(country);
-		clinicparent.setRegion(region);
-		clinicparent.setCountyDistrict(district);
-		clinicparent.setCityVillage(community);
-
-		expect(contextService.getLocationService()).andReturn(locationService);
-
-		Capture<Location> clinicCap = new Capture<Location>();
-		Capture<Location> parentCap = new Capture<Location>();
-
-		expect(locationService.saveLocation(capture(clinicCap))).andReturn(
-				new Location(clinicId));
-		expect(locationService.getLocation(parentId)).andReturn(clinicparent);
-		expect(locationService.saveLocation(capture(parentCap))).andReturn(
-				new Location());
-		expect(locationService.saveLocation(capture(clinicCap))).andReturn(
-				new Location());
-
-		replay(contextService, locationService);
-
-		regBean.registerClinic(clinicName, parentId);
-
-		verify(contextService, locationService);
-
-		Location capturedClinic = clinicCap.getValue();
-		assertEquals(clinicName, capturedClinic.getName());
-		assertEquals(description, capturedClinic.getDescription());
-
-		assertEquals(country, capturedClinic.getCountry());
-		assertEquals(region, capturedClinic.getRegion());
-		assertEquals(district, capturedClinic.getCountyDistrict());
-		assertEquals(community, capturedClinic.getCityVillage());
-		assertEquals(clinicName, capturedClinic.getNeighborhoodCell());
-
-		Location capturedParent = parentCap.getValue();
-		Set<Location> childLocations = capturedParent.getChildLocations();
-		assertEquals(1, childLocations.size());
-
-		Location childLocation = childLocations.iterator().next();
-		assertEquals(clinicName, childLocation.getName());
-		assertEquals(parentId, childLocation.getParentLocation()
-				.getLocationId());
-	}
-
 	public void testRegisterStaff() {
 
 		String firstName = "Jenny", lastName = "Jones", phone = "12078675309", staffType = "CHO";

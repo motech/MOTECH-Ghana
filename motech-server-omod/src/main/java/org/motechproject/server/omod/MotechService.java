@@ -174,6 +174,9 @@ public interface MotechService extends OpenmrsService {
 	@Transactional
 	ExpectedEncounter saveExpectedEncounter(ExpectedEncounter expectedEncounter);
 
+	@Transactional
+	Facility saveFacility(Facility facility);
+
 	@Transactional(readOnly = true)
 	List<ExpectedEncounter> getExpectedEncounter(Patient patient,
 			Facility facility, String[] groups, Date minDueDate,

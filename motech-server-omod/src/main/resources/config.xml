@@ -73,8 +73,8 @@
 	</privilege>
 	
 	<privilege>
-		<name>Register MoTeCH Clinic</name>
-		<description>Allows registration of a clinic via MoTeCH</description>
+		<name>Register MoTeCH Facility</name>
+		<description>Allows registration of a facility via MoTeCH</description>
 	</privilege>
 	
 	<privilege>

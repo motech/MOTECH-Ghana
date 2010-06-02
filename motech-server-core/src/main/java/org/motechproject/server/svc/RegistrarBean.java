@@ -38,10 +38,7 @@ import org.openmrs.util.OpenmrsConstants;
  * prototypes that handled only registration.
  */
 public interface RegistrarBean {
-
-	@RunAsAdminUser
-	public void registerClinic(String name, Integer parentId);
-
+	
 	@RunAsAdminUser
 	public User registerStaff(String firstName, String lastName, String phone,
 			String staffType);

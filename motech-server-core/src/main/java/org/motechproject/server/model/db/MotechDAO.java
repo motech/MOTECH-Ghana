@@ -113,6 +113,8 @@ public interface MotechDAO {
 			Date maxLateDate, Date minMaxDate, boolean nameOrdering);
 
 	ExpectedEncounter saveExpectedEncounter(ExpectedEncounter expectedEncounter);
+	
+	Facility saveFacility(Facility facility);
 
 	List<ExpectedEncounter> getExpectedEncounter(Patient patient,
 			Facility facility, String[] groups, Date minDueDate,
