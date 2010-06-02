@@ -906,14 +906,15 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		validateStaffId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Upcoming Deliveries Query request", errors);
 		}
 
-		List<Obs> dueDates = registrarBean.getUpcomingPregnanciesDueDate();
+		List<Obs> dueDates = registrarBean
+				.getUpcomingPregnanciesDueDate(facility);
 		return modelConverter.dueDatesToWebServicePatients(dueDates);
 	}
 
@@ -926,14 +927,15 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		validateStaffId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Recent Deliveries Query request", errors);
 		}
 
-		List<Encounter> deliveries = registrarBean.getRecentDeliveries();
+		List<Encounter> deliveries = registrarBean
+				.getRecentDeliveries(facility);
 		return modelConverter.deliveriesToWebServicePatients(deliveries);
 	}
 
@@ -946,14 +948,15 @@ public class RegistrarWebService implements RegistrarService {
 		ValidationErrors errors = new ValidationErrors();
 
 		validateStaffId(staffId, errors, "StaffID");
-		validateFacility(facilityId, errors, "FacilityID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException(
 					"Errors in Overdue Deliveries Query request", errors);
 		}
 
-		List<Obs> dueDates = registrarBean.getOverduePregnanciesDueDate();
+		List<Obs> dueDates = registrarBean
+				.getOverduePregnanciesDueDate(facility);
 		return modelConverter.dueDatesToWebServicePatients(dueDates);
 	}
 

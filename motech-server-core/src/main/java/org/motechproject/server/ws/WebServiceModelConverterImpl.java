@@ -95,12 +95,9 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 
 		for (Encounter deliveryEncounter : deliveries) {
 			org.openmrs.Patient patient = deliveryEncounter.getPatient();
-			if (!patient.isVoided()) {
-				Patient wsPatient = patientToWebService(patient, true);
-				wsPatient.setDeliveryDate(deliveryEncounter
-						.getEncounterDatetime());
-				wsPatients.add(wsPatient);
-			}
+			Patient wsPatient = patientToWebService(patient, true);
+			wsPatient.setDeliveryDate(deliveryEncounter.getEncounterDatetime());
+			wsPatients.add(wsPatient);
 		}
 
 		return wsPatients.toArray(new Patient[wsPatients.size()]);

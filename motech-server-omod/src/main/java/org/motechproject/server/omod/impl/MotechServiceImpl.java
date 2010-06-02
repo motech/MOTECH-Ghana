@@ -35,6 +35,8 @@ import org.motechproject.server.omod.sdsched.ScheduleMaintService;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Concept;
+import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
@@ -251,12 +253,18 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 				pregnancyStatusConcept);
 	}
 
-	public List<Obs> getActivePregnanciesDueDateObs(Date fromDueDate,
-			Date toDueDate, Concept pregnancyDueDateConcept,
+	public List<Obs> getActivePregnanciesDueDateObs(Facility facility,
+			Date fromDueDate, Date toDueDate, Concept pregnancyDueDateConcept,
 			Concept pregnancyConcept, Concept pregnancyStatusConcept) {
-		return motechDAO.getActivePregnanciesDueDateObs(fromDueDate, toDueDate,
-				pregnancyDueDateConcept, pregnancyConcept,
+		return motechDAO.getActivePregnanciesDueDateObs(facility, fromDueDate,
+				toDueDate, pregnancyDueDateConcept, pregnancyConcept,
 				pregnancyStatusConcept);
+	}
+
+	public List<Encounter> getEncounters(Facility facility,
+			EncounterType encounterType, Date fromDate, Date toDate) {
+		return motechDAO.getEncounters(facility, encounterType, fromDate,
+				toDate);
 	}
 
 	public ExpectedObs saveExpectedObs(ExpectedObs expectedObs) {

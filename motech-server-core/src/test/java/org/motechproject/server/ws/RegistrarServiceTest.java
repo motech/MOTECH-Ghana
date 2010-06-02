@@ -1782,13 +1782,13 @@ public class RegistrarServiceTest {
 		Patient patient = new Patient();
 		patient.setMotechId("MotechId");
 		Patient[] result = { patient };
+		Facility facility = new Facility();
 
 		expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn(
 				new User(1));
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
-		expect(registrarBean.getUpcomingPregnanciesDueDate()).andReturn(
-				pregnancies);
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
+		expect(registrarBean.getUpcomingPregnanciesDueDate(facility))
+				.andReturn(pregnancies);
 		expect(modelConverter.dueDatesToWebServicePatients(pregnancies))
 				.andReturn(result);
 
@@ -1812,12 +1812,13 @@ public class RegistrarServiceTest {
 		Patient patient = new Patient();
 		patient.setMotechId("MotechId");
 		Patient[] result = { patient };
+		Facility facility = new Facility();
 
 		expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn(
 				new User(1));
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
-		expect(registrarBean.getRecentDeliveries()).andReturn(deliveries);
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
+		expect(registrarBean.getRecentDeliveries(facility)).andReturn(
+				deliveries);
 		expect(modelConverter.deliveriesToWebServicePatients(deliveries))
 				.andReturn(result);
 
@@ -1841,12 +1842,12 @@ public class RegistrarServiceTest {
 		Patient patient = new Patient();
 		patient.setMotechId("MotechId");
 		Patient[] result = { patient };
+		Facility facility = new Facility();
 
 		expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn(
 				new User(1));
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
-				new Facility());
-		expect(registrarBean.getOverduePregnanciesDueDate()).andReturn(
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
+		expect(registrarBean.getOverduePregnanciesDueDate(facility)).andReturn(
 				pregnancies);
 		expect(modelConverter.dueDatesToWebServicePatients(pregnancies))
 				.andReturn(result);

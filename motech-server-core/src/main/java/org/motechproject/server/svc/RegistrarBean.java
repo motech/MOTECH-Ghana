@@ -38,7 +38,7 @@ import org.openmrs.util.OpenmrsConstants;
  * prototypes that handled only registration.
  */
 public interface RegistrarBean {
-	
+
 	@RunAsAdminUser
 	public User registerStaff(String firstName, String lastName, String phone,
 			String staffType);
@@ -258,17 +258,17 @@ public interface RegistrarBean {
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES,
 			OpenmrsConstants.PRIV_VIEW_ENCOUNTERS })
-	public List<Encounter> getRecentDeliveries();
+	public List<Encounter> getRecentDeliveries(Facility facility);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES,
 			OpenmrsConstants.PRIV_VIEW_ENCOUNTERS })
 	public Date getCurrentDeliveryDate(Patient patient);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_CONCEPTS })
-	public List<Obs> getUpcomingPregnanciesDueDate();
+	public List<Obs> getUpcomingPregnanciesDueDate(Facility facility);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_CONCEPTS })
-	public List<Obs> getOverduePregnanciesDueDate();
+	public List<Obs> getOverduePregnanciesDueDate(Facility facility);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PATIENTS })
 	public Patient getPatientById(Integer patientId);

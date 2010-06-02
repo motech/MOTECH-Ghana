@@ -2029,20 +2029,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				new String[] { group }, null, null, null, null, false);
 	}
 
-	public List<Encounter> getRecentDeliveries() {
-		EncounterService encounterService = contextService
-				.getEncounterService();
+	public List<Encounter> getRecentDeliveries(Facility facility) {
+		MotechService motechService = contextService.getMotechService();
 
-		List<EncounterType> deliveryEncounterType = new ArrayList<EncounterType>();
-		deliveryEncounterType.add(getPregnancyDeliveryVisitEncounterType());
+		EncounterType deliveryEncounterType = getPregnancyDeliveryVisitEncounterType();
 
 		Calendar calendar = Calendar.getInstance();
 		Date currentDate = calendar.getTime();
 		calendar.add(Calendar.DATE, 2 * -7);
 		Date twoWeeksPriorDate = calendar.getTime();
 
-		return encounterService.getEncounters(null, null, twoWeeksPriorDate,
-				currentDate, null, deliveryEncounterType, null, false);
+		return motechService.getEncounters(facility, deliveryEncounterType,
+				twoWeeksPriorDate, currentDate);
 	}
 
 	public Date getCurrentDeliveryDate(Patient patient) {
@@ -2062,31 +2060,32 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return null;
 	}
 
-	public List<Obs> getUpcomingPregnanciesDueDate() {
+	public List<Obs> getUpcomingPregnanciesDueDate(Facility facility) {
 		Calendar calendar = Calendar.getInstance();
 		Date currentDate = calendar.getTime();
 		calendar.add(Calendar.DATE, 2 * 7);
 		Date twoWeeksLaterDate = calendar.getTime();
 
-		return getActivePregnanciesDueDateObs(currentDate, twoWeeksLaterDate);
+		return getActivePregnanciesDueDateObs(facility, currentDate,
+				twoWeeksLaterDate);
 	}
 
-	public List<Obs> getOverduePregnanciesDueDate() {
+	public List<Obs> getOverduePregnanciesDueDate(Facility facility) {
 		Date currentDate = new Date();
-		return getActivePregnanciesDueDateObs(null, currentDate);
+		return getActivePregnanciesDueDateObs(facility, null, currentDate);
 	}
 
-	private List<Obs> getActivePregnanciesDueDateObs(Date fromDueDate,
-			Date toDueDate) {
+	private List<Obs> getActivePregnanciesDueDateObs(Facility facility,
+			Date fromDueDate, Date toDueDate) {
 		MotechService motechService = contextService.getMotechService();
 
 		Concept pregnancyDueDateConcept = getDueDateConcept();
 		Concept pregnancyConcept = getPregnancyConcept();
 		Concept pregnancyStatusConcept = getPregnancyStatusConcept();
 
-		return motechService.getActivePregnanciesDueDateObs(fromDueDate,
-				toDueDate, pregnancyDueDateConcept, pregnancyConcept,
-				pregnancyStatusConcept);
+		return motechService.getActivePregnanciesDueDateObs(facility,
+				fromDueDate, toDueDate, pregnancyDueDateConcept,
+				pregnancyConcept, pregnancyStatusConcept);
 	}
 
 	private Integer updatePregnancyDueDateObs(Obs pregnancyObs, Obs dueDateObs,

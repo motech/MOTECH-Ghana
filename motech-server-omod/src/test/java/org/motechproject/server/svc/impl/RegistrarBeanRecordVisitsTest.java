@@ -14,12 +14,13 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.motechproject.server.model.Community;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
-import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.BirthOutcome;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DayOfWeek;
@@ -30,6 +31,7 @@ import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.RegistrantType;
 import org.motechproject.ws.RegistrationMode;
+import org.openmrs.Encounter;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
@@ -72,6 +74,9 @@ public class RegistrarBeanRecordVisitsTest extends
 		// Removed all patients and related patient/person info (id 2-500)
 		executeDataSet("initial-openmrs-dataset.xml");
 
+		// Add example Location, Facility and Community
+		executeDataSet("facility-community-dataset.xml");
+
 		authenticate();
 
 		activator.startup();
@@ -90,20 +95,26 @@ public class RegistrarBeanRecordVisitsTest extends
 			Context.openSession();
 			Context.authenticate("admin", "test");
 
-			Location facility = Context.getLocationService().getLocation(
-					MotechConstants.LOCATION_GHANA);
-
 			MotechService motechService = Context
 					.getService(MotechService.class);
 			RegistrarBean regService = motechService.getRegistrarBean();
 			OpenmrsBean openmrsService = motechService.getOpenmrsBean();
+
+			Facility facility = motechService.getFacilityById(1111);
+			Location facilityLocation = facility.getLocation();
+			Community community = motechService.getCommunityById(11111);
 
 			Integer mother1Id = 1234575;
 			Integer mother2Id = 1234581;
 			Integer child1Id = 1234599;
 			Integer child2Id = 1234608;
 			Integer child3Id = 1234612;
-			Date date = new Date();
+			Calendar calendar = Calendar.getInstance();
+			Date date = calendar.getTime();
+			calendar.add(Calendar.DATE, 5);
+			Date dueDate1 = calendar.getTime();
+			calendar.add(Calendar.DATE, -20);
+			Date dueDate2 = calendar.getTime();
 
 			User staff = regService.registerStaff("Nurse", "Betty",
 					"7777777777", "CHO");
@@ -112,10 +123,11 @@ public class RegistrarBeanRecordVisitsTest extends
 					mother1Id, RegistrantType.PREGNANT_MOTHER,
 					"Mother1FirstName", "Mother1MiddleName", "Mother1LastName",
 					"Mother1PrefName", date, false, Gender.FEMALE, true,
-					"nhisNumber1", date, null, null, "Address", "1111111111",
-					date, true, 0, 0, true, true, ContactNumberType.PERSONAL,
-					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
-					InterestReason.CURRENTLY_PREGNANT, HowLearned.FRIEND, null);
+					"nhisNumber1", date, null, community, "Address",
+					"1111111111", dueDate1, true, 0, 0, true, true,
+					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
+					DayOfWeek.MONDAY, date, InterestReason.CURRENTLY_PREGNANT,
+					HowLearned.FRIEND, null);
 
 			Patient mother1 = openmrsService.getPatientByMotechId(mother1Id
 					.toString());
@@ -125,10 +137,11 @@ public class RegistrarBeanRecordVisitsTest extends
 					mother2Id, RegistrantType.PREGNANT_MOTHER,
 					"Mother2FirstName", "Mother2MiddleName", "Mother2LastName",
 					"Mother2PrefName", date, false, Gender.FEMALE, true,
-					"nhisNumber2", date, null, null, "Address", "1111111111",
-					date, true, 0, 0, true, true, ContactNumberType.PERSONAL,
-					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
-					InterestReason.CURRENTLY_PREGNANT, HowLearned.FRIEND, null);
+					"nhisNumber2", date, null, community, "Address",
+					"1111111111", dueDate2, true, 0, 0, true, true,
+					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
+					DayOfWeek.MONDAY, date, InterestReason.CURRENTLY_PREGNANT,
+					HowLearned.FRIEND, null);
 
 			Patient mother2 = openmrsService.getPatientByMotechId(mother2Id
 					.toString());
@@ -152,16 +165,32 @@ public class RegistrarBeanRecordVisitsTest extends
 			assertEquals("3 new patients not registered", 5, Context
 					.getPatientService().getAllPatients().size());
 
-			Calendar calendar = Calendar.getInstance();
+			// Query for Mother 1 upcoming pregnancy due date
+			List<Obs> upcomingDueDate = regService
+					.getUpcomingPregnanciesDueDate(facility);
+			assertEquals(1, upcomingDueDate.size());
+			assertEquals(dueDate1, upcomingDueDate.get(0).getValueDatetime());
+			assertEquals(mother1.getPatientId(), upcomingDueDate.get(0)
+					.getPerson().getPersonId());
+
+			// Query for Mother 2 overdue pregnancy due date
+			List<Obs> overdueDueDate = regService
+					.getOverduePregnanciesDueDate(facility);
+			assertEquals(1, overdueDueDate.size());
+			assertEquals(dueDate2, overdueDueDate.get(0).getValueDatetime());
+			assertEquals(mother2.getPatientId(), overdueDueDate.get(0)
+					.getPerson().getPersonId());
+
+			calendar.setTime(date);
 			calendar.add(Calendar.MONTH, 6);
 			Date newDueDate = calendar.getTime();
 
 			// ANC Visit for Mother 1
-			regService.recordMotherANCVisit(staff, facility, date, mother1, 1,
-					1, "House", "Community", newDueDate, 1, 1, 1.0, 1, 1,
-					false, true, 1, 1, false, false, 1.0, false, false, false,
-					true, false, false, HIVResult.NO_TEST, false, false, false,
-					date, "Comments");
+			regService.recordMotherANCVisit(staff, facilityLocation, date,
+					mother1, 1, 1, "House", "Community", newDueDate, 1, 1, 1.0,
+					1, 1, false, true, 1, 1, false, false, 1.0, false, false,
+					false, true, false, false, HIVResult.NO_TEST, false, false,
+					false, date, "Comments");
 
 			assertEquals("ANC visit not added for Mother 1", 2, Context
 					.getEncounterService().getEncountersByPatient(mother1)
@@ -180,8 +209,8 @@ public class RegistrarBeanRecordVisitsTest extends
 					RegistrationMode.USE_PREPRINTED_ID, child3Id, Gender.MALE,
 					"Child3FirstName", 3.0));
 			List<Patient> childPatients = regService.recordPregnancyDelivery(
-					staff, facility, date, mother1, 1, 1, 1, 1, true,
-					new Integer[] { 1, 2, 3 }, 1, true, "Comments", outcomes);
+					staff, facilityLocation, date, mother1, 1, 1, 1, 1, true,
+					new Integer[] { 1, 2, 3 }, 1, false, "Comments", outcomes);
 
 			assertEquals("Pregnancy delivery not added for Mother 1", 3,
 					Context.getEncounterService().getEncountersByPatient(
@@ -192,8 +221,8 @@ public class RegistrarBeanRecordVisitsTest extends
 					mother1Pregnancy);
 			assertEquals("Child 2 and Child 3 not added", 7, Context
 					.getPatientService().getAllPatients(true).size());
-			assertEquals("Child 3 or Mother 1 not voided", 5, Context
-					.getPatientService().getAllPatients().size());
+			assertEquals("Child 3 not voided", 6, Context.getPatientService()
+					.getAllPatients().size());
 
 			// Confirm return value of pregnancy delivery includes alive child
 			assertEquals(1, childPatients.size());
@@ -213,26 +242,32 @@ public class RegistrarBeanRecordVisitsTest extends
 					.toString());
 			assertNull("Child 3 not voided", child3);
 
+			// Query for Delivery
+			List<Encounter> recentDeliveryEnc = regService
+					.getRecentDeliveries(facility);
+			assertEquals(1, recentDeliveryEnc.size());
+			assertEquals(mother1, recentDeliveryEnc.get(0).getPatient());
+
 			// PNC Visit for Mother 2
-			regService.recordMotherPNCVisit(staff, facility, date, mother2, 1,
-					1, "House", "Community", false, true, true, 1, 1, false,
-					36, 100, "Comments");
+			regService.recordMotherPNCVisit(staff, facilityLocation, date,
+					mother2, 1, 1, "House", "Community", false, true, true, 1,
+					1, false, 36, 100, "Comments");
 
 			assertEquals("PNC visit not added for Mother 2", 2, Context
 					.getEncounterService().getEncountersByPatient(mother2)
 					.size());
 
 			// General Visit for Mother 2
-			regService.recordOutpatientVisit(staff, facility, date, mother2,
-					"Mother2GeneralId", 1, 2, true, true, true, false, false,
-					"Comments");
+			regService.recordOutpatientVisit(staff, facilityLocation, date,
+					mother2, "Mother2GeneralId", 1, 2, true, true, true, false,
+					false, "Comments");
 
 			assertEquals("General visit not added for Mother 2", 3, Context
 					.getEncounterService().getEncountersByPatient(mother2)
 					.size());
 
 			// Pregnancy Termination for Mother 2 (with maternal death)
-			regService.recordPregnancyTermination(staff, facility,
+			regService.recordPregnancyTermination(staff, facilityLocation,
 					currentDueDate, mother2, 1, 1, new Integer[] { 1, 2, 3 },
 					true, false, false, false, "Comments");
 
@@ -243,40 +278,40 @@ public class RegistrarBeanRecordVisitsTest extends
 					.getPatientId());
 			assertNull("Pregnancy is still active after termination",
 					mother2Pregnancy);
-			assertEquals("Mother 2 not voided", 4, Context.getPatientService()
+			assertEquals("Mother 2 not voided", 5, Context.getPatientService()
 					.getAllPatients().size());
 
 			// CWC Visit for Child 2
-			regService.recordChildCWCVisit(staff, facility, date, child2, 1,
-					"House", "Community", true, 1, 1, true, true, true, true,
-					true, true, 25.0, 5, 35, true, "Comments");
+			regService.recordChildCWCVisit(staff, facilityLocation, date,
+					child2, 1, "House", "Community", true, 1, 1, true, true,
+					true, true, true, true, 25.0, 5, 35, true, "Comments");
 
 			assertEquals("CWC visit not added for Child 2", 2, Context
 					.getEncounterService().getEncountersByPatient(child2)
 					.size());
 
 			// PNC Visit for Child 2
-			regService.recordChildPNCVisit(staff, facility, date, child2, 1, 1,
-					"House", "Community", false, true, 7.0, 36, true, true,
-					140, true, true, "Comments");
+			regService.recordChildPNCVisit(staff, facilityLocation, date,
+					child2, 1, 1, "House", "Community", false, true, 7.0, 36,
+					true, true, 140, true, true, "Comments");
 
 			assertEquals("PNC visit not added for Child 2", 3, Context
 					.getEncounterService().getEncountersByPatient(child2)
 					.size());
 
 			// General Visit for Child 1
-			regService.recordOutpatientVisit(staff, facility, date, child1,
-					"Child1GeneralId", 4, 5, true, true, true, false, false,
-					"Comments");
+			regService.recordOutpatientVisit(staff, facilityLocation, date,
+					child1, "Child1GeneralId", 4, 5, true, true, true, false,
+					false, "Comments");
 
 			assertEquals("General visit not added for Child 1", 1, Context
 					.getEncounterService().getEncountersByPatient(child1)
 					.size());
 
 			// Record Death of Child 1
-			regService.recordDeath(staff, facility, date, child1);
+			regService.recordDeath(staff, facilityLocation, date, child1);
 
-			assertEquals("Deceased child 1 not voided", 3, Context
+			assertEquals("Deceased child 1 not voided", 4, Context
 					.getPatientService().getAllPatients().size());
 
 		} finally {

@@ -33,6 +33,8 @@ import org.motechproject.server.omod.sdsched.ScheduleMaintService;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Concept;
+import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
@@ -159,9 +161,13 @@ public interface MotechService extends OpenmrsService {
 			Concept pregnancyStatusConcept);
 
 	@Transactional(readOnly = true)
-	List<Obs> getActivePregnanciesDueDateObs(Date fromDueDate, Date toDueDate,
-			Concept pregnancyDueDateConcept, Concept pregnancyConcept,
-			Concept pregnancyStatusConcept);
+	List<Obs> getActivePregnanciesDueDateObs(Facility facility,
+			Date fromDueDate, Date toDueDate, Concept pregnancyDueDateConcept,
+			Concept pregnancyConcept, Concept pregnancyStatusConcept);
+
+	@Transactional(readOnly = true)
+	List<Encounter> getEncounters(Facility facility,
+			EncounterType encounterType, Date fromDate, Date toDate);
 
 	@Transactional
 	ExpectedObs saveExpectedObs(ExpectedObs expectedObs);

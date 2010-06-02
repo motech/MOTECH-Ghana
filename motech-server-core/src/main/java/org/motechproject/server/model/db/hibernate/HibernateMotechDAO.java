@@ -30,6 +30,8 @@ import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.model.db.MotechDAO;
 import org.openmrs.Concept;
+import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
@@ -351,8 +353,8 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Obs> getActivePregnanciesDueDateObs(Date fromDueDate,
-			Date toDueDate, Concept pregnancyDueDateConcept,
+	public List<Obs> getActivePregnanciesDueDateObs(Facility facility,
+			Date fromDueDate, Date toDueDate, Concept pregnancyDueDateConcept,
 			Concept pregnancyConcept, Concept pregnancyStatusConcept) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(Obs.class, "o");
@@ -379,7 +381,8 @@ public class HibernateMotechDAO implements MotechDAO {
 				Restrictions.eq("s.voided", false)).add(
 				Restrictions.eq("s.concept", pregnancyStatusConcept)).add(
 				Restrictions.eq("s.valueNumeric", 1.0)).add(
-				Restrictions.eqProperty("s.obsGroup.obsId", "g.obsId"));
+				Restrictions.eqProperty("s.obsGroup.obsId", "g.obsId")).add(
+				Restrictions.eqProperty("s.person.personId", "p.personId"));
 
 		criteria.add(Subqueries.exists(pregnancyActiveCriteria));
 
@@ -388,12 +391,53 @@ public class HibernateMotechDAO implements MotechDAO {
 				Restrictions.eq("e.voided", false)).add(
 				Restrictions.eq("e.concept", pregnancyStatusConcept)).add(
 				Restrictions.eq("e.valueNumeric", 0.0)).add(
-				Restrictions.eqProperty("e.obsGroup.obsId", "g.obsId"));
+				Restrictions.eqProperty("e.obsGroup.obsId", "g.obsId")).add(
+				Restrictions.eqProperty("e.person.personId", "p.personId"));
 
 		criteria.add(Subqueries.notExists(pregnancyInactiveCriteria));
 
+		if (facility != null) {
+			criteria
+					.add(Restrictions
+							.sqlRestriction(
+									"exists (select c.id from motechmodule_community c "
+											+ "inner join motechmodule_community_patient cp "
+											+ "on c.id = cp.community_id "
+											+ "where c.facility_id = ? and cp.patient_id = {alias}.person_id)",
+									facility.getId(), Hibernate.LONG));
+		}
+
 		criteria.addOrder(Order.asc("o.valueDatetime"));
 
+		return criteria.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Encounter> getEncounters(Facility facility,
+			EncounterType encounterType, Date fromDate, Date toDate) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				Encounter.class, "e");
+		criteria.add(Restrictions.eq("e.voided", false));
+		criteria.add(Restrictions.eq("e.encounterType", encounterType));
+		criteria.createAlias("e.patient", "p");
+		criteria.add(Restrictions.eq("p.voided", false));
+		if (fromDate != null) {
+			criteria.add(Restrictions.ge("e.encounterDatetime", fromDate));
+		}
+		if (toDate != null) {
+			criteria.add(Restrictions.le("e.encounterDatetime", toDate));
+		}
+		if (facility != null) {
+			criteria
+					.add(Restrictions
+							.sqlRestriction(
+									"exists (select c.id from motechmodule_community c "
+											+ "inner join motechmodule_community_patient cp "
+											+ "on c.id = cp.community_id "
+											+ "where c.facility_id = ? and cp.patient_id = {alias}.patient_id)",
+									facility.getId(), Hibernate.LONG));
+		}
+		criteria.addOrder(Order.asc("e.encounterDatetime"));
 		return criteria.list();
 	}
 
@@ -453,7 +497,7 @@ public class HibernateMotechDAO implements MotechDAO {
 		session.saveOrUpdate(expectedEncounter);
 		return expectedEncounter;
 	}
-	
+
 	public Facility saveFacility(Facility facility) {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(facility);

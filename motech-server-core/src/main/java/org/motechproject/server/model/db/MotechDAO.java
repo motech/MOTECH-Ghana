@@ -17,6 +17,8 @@ import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.model.TroubledPhone;
 import org.openmrs.Concept;
+import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
@@ -102,9 +104,12 @@ public interface MotechDAO {
 	List<Obs> getActivePregnancies(Integer patientId, Concept pregnancyConcept,
 			Concept pregnancyStatusConcept);
 
-	List<Obs> getActivePregnanciesDueDateObs(Date fromDueDate, Date toDueDate,
-			Concept pregnancyDueDateConcept, Concept pregnancyConcept,
-			Concept pregnancyStatusConcept);
+	List<Obs> getActivePregnanciesDueDateObs(Facility facility,
+			Date fromDueDate, Date toDueDate, Concept pregnancyDueDateConcept,
+			Concept pregnancyConcept, Concept pregnancyStatusConcept);
+
+	List<Encounter> getEncounters(Facility facility,
+			EncounterType encounterType, Date fromDate, Date toDate);
 
 	ExpectedObs saveExpectedObs(ExpectedObs expectedObs);
 
@@ -113,7 +118,7 @@ public interface MotechDAO {
 			Date maxLateDate, Date minMaxDate, boolean nameOrdering);
 
 	ExpectedEncounter saveExpectedEncounter(ExpectedEncounter expectedEncounter);
-	
+
 	Facility saveFacility(Facility facility);
 
 	List<ExpectedEncounter> getExpectedEncounter(Patient patient,
