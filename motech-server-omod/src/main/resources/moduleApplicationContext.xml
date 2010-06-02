@@ -126,6 +126,12 @@
 		<property name="registrarBean" ref="registrarBeanProxy" />
 		<property name="openmrsBean" ref="registrarBeanProxy" />
 		<property name="modelConverter" ref="webserviceModelConverter" />
+		<property name="messageBean" ref="messageSourceBean" />
+	</bean>
+
+	<bean id="messageSourceBean" class="org.motechproject.server.svc.impl.MessageSourceBeanImpl">
+		<!-- From OpenMRS Application Spring Context -->
+		<property name="messageSource" ref="mutableResourceBundleMessageSource" />
 	</bean>
 	
 	<bean id="webModelConverter" class="org.motechproject.server.omod.web.model.WebModelConverterImpl">

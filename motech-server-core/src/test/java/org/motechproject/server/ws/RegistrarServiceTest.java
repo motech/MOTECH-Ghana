@@ -46,7 +46,6 @@ import org.motechproject.ws.Patient;
 import org.motechproject.ws.RegistrantType;
 import org.motechproject.ws.RegistrationMode;
 import org.motechproject.ws.server.RegistrarService;
-import org.motechproject.ws.server.ValidationError;
 import org.motechproject.ws.server.ValidationException;
 import org.openmrs.Encounter;
 import org.openmrs.Location;
@@ -182,12 +181,11 @@ public class RegistrarServiceTest {
 					.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(1, errors.size());
-			ValidationError error = errors.get(0);
-			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField());
+			String error = errors.get(0);
+			assertEquals("MotechID=not found", error);
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -259,12 +257,11 @@ public class RegistrarServiceTest {
 					.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(1, errors.size());
-			ValidationError error = errors.get(0);
-			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField());
+			String error = errors.get(0);
+			assertEquals("MotechID=not found", error);
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -474,23 +471,20 @@ public class RegistrarServiceTest {
 					.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(3, errors.size());
-			ValidationError error = errors.get(0);
-			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField()); // Check exists
+			String error = errors.get(0);
+			assertEquals("MotechID=not found", error); // Check exists
 			error = errors.get(1);
-			assertEquals(2, error.getCode());
-			assertEquals("Child2MotechID", error.getField()); // Check conflicts
+			assertEquals("Child2MotechID=in use", error); // Check conflicts
 			error = errors.get(2);
-			assertEquals(2, error.getCode());
-			assertEquals("Child3MotechID", error.getField()); // Check conflicts
+			assertEquals("Child3MotechID=in use", error); // Check conflicts
 		}
 
 		verify(registrarBean, openmrsBean);
 	}
-	
+
 	@Test
 	public void testRecordDeliveryNotification() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
@@ -543,12 +537,11 @@ public class RegistrarServiceTest {
 					.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(1, errors.size());
-			ValidationError error = errors.get(0);
-			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField());
+			String error = errors.get(0);
+			assertEquals("MotechID=not found", error);
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -623,12 +616,11 @@ public class RegistrarServiceTest {
 					.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(1, errors.size());
-			ValidationError error = errors.get(0);
-			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField());
+			String error = errors.get(0);
+			assertEquals("MotechID=not found", error);
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -682,12 +674,11 @@ public class RegistrarServiceTest {
 			assertEquals("Errors in Record Death request", e.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(1, errors.size());
-			ValidationError error = errors.get(0);
-			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField());
+			String error = errors.get(0);
+			assertEquals("MotechID=not found", error);
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -744,12 +735,11 @@ public class RegistrarServiceTest {
 			assertEquals("Errors in Record TT Visit request", e.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(1, errors.size());
-			ValidationError error = errors.get(0);
-			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField());
+			String error = errors.get(0);
+			assertEquals("MotechID=not found", error);
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -824,12 +814,11 @@ public class RegistrarServiceTest {
 					.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(1, errors.size());
-			ValidationError error = errors.get(0);
-			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField());
+			String error = errors.get(0);
+			assertEquals("MotechID=not found", error);
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -906,12 +895,11 @@ public class RegistrarServiceTest {
 					.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(1, errors.size());
-			ValidationError error = errors.get(0);
-			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField());
+			String error = errors.get(0);
+			assertEquals("MotechID=not found", error);
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -1029,27 +1017,21 @@ public class RegistrarServiceTest {
 			assertEquals("Errors in Register Patient request", e.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(6, errors.size());
-			ValidationError staffError = errors.get(0);
-			assertEquals(1, staffError.getCode());
-			assertEquals("StaffID", staffError.getField());
-			ValidationError facilityError = errors.get(1);
-			assertEquals(1, facilityError.getCode());
-			assertEquals("FacilityID", facilityError.getField());
-			ValidationError communityError = errors.get(2);
-			assertEquals(1, communityError.getCode());
-			assertEquals("Community", communityError.getField());
-			ValidationError patientError = errors.get(3);
-			assertEquals(2, patientError.getCode());
-			assertEquals("MotechID", patientError.getField());
-			ValidationError motherError = errors.get(4);
-			assertEquals(1, motherError.getCode());
-			assertEquals("MotherMotechID", motherError.getField());
-			ValidationError dobError = errors.get(5);
-			assertEquals(2, dobError.getCode());
-			assertEquals("DoB", dobError.getField());
+			String staffError = errors.get(0);
+			assertEquals("StaffID=not found", staffError);
+			String facilityError = errors.get(1);
+			assertEquals("FacilityID=not found", facilityError);
+			String communityError = errors.get(2);
+			assertEquals("Community=not found", communityError);
+			String patientError = errors.get(3);
+			assertEquals("MotechID=in use", patientError);
+			String motherError = errors.get(4);
+			assertEquals("MotherMotechID=not found", motherError);
+			String dobError = errors.get(5);
+			assertEquals("DOB=invalid", dobError);
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -1123,18 +1105,15 @@ public class RegistrarServiceTest {
 			assertEquals("Errors in Register Pregnancy request", e.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(3, errors.size());
-			ValidationError staffError = errors.get(0);
-			assertEquals(1, staffError.getCode());
-			assertEquals("StaffID", staffError.getField());
-			ValidationError facilityError = errors.get(1);
-			assertEquals(1, facilityError.getCode());
-			assertEquals("FacilityID", facilityError.getField());
-			ValidationError patientError = errors.get(2);
-			assertEquals(1, patientError.getCode());
-			assertEquals("MotechID", patientError.getField());
+			String staffError = errors.get(0);
+			assertEquals("StaffID=not found", staffError);
+			String facilityError = errors.get(1);
+			assertEquals("FacilityID=not found", facilityError);
+			String patientError = errors.get(2);
+			assertEquals("MotechID=not found", patientError);
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -1212,18 +1191,15 @@ public class RegistrarServiceTest {
 					.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(3, errors.size());
-			ValidationError staffError = errors.get(0);
-			assertEquals(1, staffError.getCode());
-			assertEquals("StaffID", staffError.getField());
-			ValidationError facilityError = errors.get(1);
-			assertEquals(1, facilityError.getCode());
-			assertEquals("FacilityID", facilityError.getField());
-			ValidationError patientError = errors.get(2);
-			assertEquals(1, patientError.getCode());
-			assertEquals("MotechID", patientError.getField());
+			String staffError = errors.get(0);
+			assertEquals("StaffID=not found", staffError);
+			String facilityError = errors.get(1);
+			assertEquals("FacilityID=not found", facilityError);
+			String patientError = errors.get(2);
+			assertEquals("MotechID=not found", patientError);
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -1297,18 +1273,15 @@ public class RegistrarServiceTest {
 			assertEquals("Errors in Register CWC Child request", e.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(3, errors.size());
-			ValidationError staffError = errors.get(0);
-			assertEquals(1, staffError.getCode());
-			assertEquals("StaffID", staffError.getField());
-			ValidationError facilityError = errors.get(1);
-			assertEquals(1, facilityError.getCode());
-			assertEquals("FacilityID", facilityError.getField());
-			ValidationError patientError = errors.get(2);
-			assertEquals(1, patientError.getCode());
-			assertEquals("MotechID", patientError.getField());
+			String staffError = errors.get(0);
+			assertEquals("StaffID=not found", staffError);
+			String facilityError = errors.get(1);
+			assertEquals("FacilityID=not found", facilityError);
+			String patientError = errors.get(2);
+			assertEquals("MotechID=not found", patientError);
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -1372,18 +1345,15 @@ public class RegistrarServiceTest {
 			assertEquals("Errors in Edit Patient request", e.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(3, errors.size());
-			ValidationError staffError = errors.get(0);
-			assertEquals(1, staffError.getCode());
-			assertEquals("StaffID", staffError.getField());
-			ValidationError facilityError = errors.get(1);
-			assertEquals(1, facilityError.getCode());
-			assertEquals("FacilityID", facilityError.getField());
-			ValidationError patientError = errors.get(2);
-			assertEquals(1, patientError.getCode());
-			assertEquals("MotechID", patientError.getField());
+			String staffError = errors.get(0);
+			assertEquals("StaffID=not found", staffError);
+			String facilityError = errors.get(1);
+			assertEquals("FacilityID=not found", facilityError);
+			String patientError = errors.get(2);
+			assertEquals("MotechID=not found", patientError);
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -1437,15 +1407,13 @@ public class RegistrarServiceTest {
 			assertEquals("Errors in General Visit request", e.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(2, errors.size());
-			ValidationError error = errors.get(0);
-			assertEquals(1, error.getCode());
-			assertEquals("StaffID", error.getField());
-			ValidationError facilityError = errors.get(1);
-			assertEquals(1, facilityError.getCode());
-			assertEquals("FacilityID", facilityError.getField());
+			String staffError = errors.get(0);
+			assertEquals("StaffID=not found", staffError);
+			String facilityError = errors.get(1);
+			assertEquals("FacilityID=not found", facilityError);
 		}
 	}
 
@@ -1508,15 +1476,13 @@ public class RegistrarServiceTest {
 			assertEquals("Errors in Record Child Visit request", e.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(2, errors.size());
-			ValidationError facilityError = errors.get(0);
-			assertEquals(1, facilityError.getCode());
-			assertEquals("FacilityID", facilityError.getField());
-			ValidationError error = errors.get(1);
-			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField());
+			String facilityError = errors.get(0);
+			assertEquals("FacilityID=not found", facilityError);
+			String motechidError = errors.get(1);
+			assertEquals("MotechID=not found", motechidError);
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -1582,15 +1548,13 @@ public class RegistrarServiceTest {
 					.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(2, errors.size());
-			ValidationError facilityError = errors.get(0);
-			assertEquals(1, facilityError.getCode());
-			assertEquals("FacilityID", facilityError.getField());
-			ValidationError error = errors.get(1);
-			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField());
+			String facilityError = errors.get(0);
+			assertEquals("FacilityID=not found", facilityError);
+			String motechidError = errors.get(1);
+			assertEquals("MotechID=not found", motechidError);
 		}
 
 		verify(registrarBean, openmrsBean);
@@ -2044,15 +2008,13 @@ public class RegistrarServiceTest {
 			assertEquals("Errors in Patient Query request", e.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(2, errors.size());
-			ValidationError facilityError = errors.get(0);
-			assertEquals(1, facilityError.getCode());
-			assertEquals("FacilityID", facilityError.getField());
-			ValidationError error = errors.get(1);
-			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField());
+			String facilityError = errors.get(0);
+			assertEquals("FacilityID=not found", facilityError);
+			String motechidError = errors.get(1);
+			assertEquals("MotechID=not found", motechidError);
 		}
 
 		verify(registrarBean, modelConverter, openmrsBean);
@@ -2098,12 +2060,11 @@ public class RegistrarServiceTest {
 					.getMessage());
 			assertNotNull("Validation Exception FaultBean is Null", e
 					.getFaultInfo());
-			List<ValidationError> errors = e.getFaultInfo().getErrors();
+			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
 			assertEquals(1, errors.size());
-			ValidationError error = errors.get(0);
-			assertEquals(1, error.getCode());
-			assertEquals("MotechID", error.getField());
+			String error = errors.get(0);
+			assertEquals("MotechID=not found", error);
 		}
 
 		verify(registrarBean, modelConverter, openmrsBean);

@@ -18,6 +18,7 @@ import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.svc.BirthOutcomeChild;
+import org.motechproject.server.svc.MessageSourceBean;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.BirthOutcome;
@@ -56,6 +57,7 @@ public class RegistrarWebService implements RegistrarService {
 	RegistrarBean registrarBean;
 	OpenmrsBean openmrsBean;
 	WebServiceModelConverter modelConverter;
+	MessageSourceBean messageBean;
 
 	@WebMethod
 	public void recordMotherANCVisit(
@@ -202,7 +204,8 @@ public class RegistrarWebService implements RegistrarService {
 			if (childId != null) {
 				validateMotechId(childId, errors, fieldName, false);
 				if (motechIds.contains(childId))
-					errors.add(2, fieldName);
+					errors.add(messageBean.getMessage("motechmodule.ws.inuse",
+							fieldName));
 				else
 					motechIds.add(childId);
 			}
@@ -478,13 +481,15 @@ public class RegistrarWebService implements RegistrarService {
 
 		if (motechId == null
 				&& registrationMode == RegistrationMode.USE_PREPRINTED_ID) {
-			errors.add(3, "MotechID");
+			errors.add(messageBean.getMessage("motechmodule.ws.missing",
+					"MotechID"));
 		} else if (motechId != null
 				&& registrationMode == RegistrationMode.USE_PREPRINTED_ID) {
 			org.openmrs.Patient patient = openmrsBean
 					.getPatientByMotechId(motechId.toString());
 			if (patient != null) {
-				errors.add(2, "MotechID");
+				errors.add(messageBean.getMessage("motechmodule.ws.inuse",
+						"MotechID"));
 			}
 		}
 
@@ -499,19 +504,25 @@ public class RegistrarWebService implements RegistrarService {
 			Calendar calendar = Calendar.getInstance();
 			calendar.add(Calendar.YEAR, -5);
 			if (dateOfBirth.before(calendar.getTime())) {
-				errors.add(2, "DoB");
+				errors.add(messageBean.getMessage("motechmodule.ws.invalid",
+						"DOB"));
 			}
 		} else if (registrantType == RegistrantType.PREGNANT_MOTHER) {
 			if (sex != Gender.FEMALE)
-				errors.add(2, "Sex");
+				errors.add(messageBean.getMessage("motechmodule.ws.invalid",
+						"Sex"));
 			if (expDeliveryDate == null)
-				errors.add(3, "DeliveryDate");
+				errors.add(messageBean.getMessage("motechmodule.ws.missing",
+						"DeliveryDate"));
 			if (deliveryDateConfirmed == null)
-				errors.add(3, "DeliveryDateConfirmed");
+				errors.add(messageBean.getMessage("motechmodule.ws.missing",
+						"DeliveryDateConfirmed"));
 			if (gravida == null)
-				errors.add(3, "Gravida");
+				errors.add(messageBean.getMessage("motechmodule.ws.missing",
+						"Gravida"));
 			if (parity == null)
-				errors.add(3, "Parity");
+				errors.add(messageBean.getMessage("motechmodule.ws.missing",
+						"Parity"));
 		}
 
 		if (errors.getErrors().size() > 0) {
@@ -1077,15 +1088,22 @@ public class RegistrarWebService implements RegistrarService {
 		this.modelConverter = modelConverter;
 	}
 
+	@WebMethod(exclude = true)
+	public void setMessageBean(MessageSourceBean messageBean) {
+		this.messageBean = messageBean;
+	}
+
 	private User validateStaffId(Integer staffId, ValidationErrors errors,
 			String fieldName) {
 		if (staffId == null) {
-			errors.add(3, fieldName);
+			errors.add(messageBean.getMessage("motechmodule.ws.missing",
+					fieldName));
 			return null;
 		}
 		User staff = openmrsBean.getStaffBySystemId(staffId.toString());
 		if (staff == null) {
-			errors.add(1, fieldName);
+			errors.add(messageBean.getMessage("motechmodule.ws.notfound",
+					fieldName));
 		}
 		return staff;
 	}
@@ -1093,15 +1111,18 @@ public class RegistrarWebService implements RegistrarService {
 	private org.openmrs.Patient validateMotechId(Integer motechId,
 			ValidationErrors errors, String fieldName, boolean mustExist) {
 		if (motechId == null) {
-			errors.add(3, fieldName);
+			errors.add(messageBean.getMessage("motechmodule.ws.missing",
+					fieldName));
 			return null;
 		}
 		org.openmrs.Patient patient = openmrsBean.getPatientByMotechId(motechId
 				.toString());
 		if (mustExist && patient == null) {
-			errors.add(1, fieldName);
+			errors.add(messageBean.getMessage("motechmodule.ws.notfound",
+					fieldName));
 		} else if (!mustExist && patient != null) {
-			errors.add(2, fieldName);
+			errors.add(messageBean.getMessage("motechmodule.ws.inuse",
+					fieldName));
 		}
 		return patient;
 	}
@@ -1109,12 +1130,14 @@ public class RegistrarWebService implements RegistrarService {
 	private Facility validateFacility(Integer facilityId,
 			ValidationErrors errors, String fieldName) {
 		if (facilityId == null) {
-			errors.add(3, fieldName);
+			errors.add(messageBean.getMessage("motechmodule.ws.missing",
+					fieldName));
 			return null;
 		}
 		Facility facility = registrarBean.getFacilityById(facilityId);
 		if (facility == null) {
-			errors.add(1, fieldName);
+			errors.add(messageBean.getMessage("motechmodule.ws.notfound",
+					fieldName));
 		}
 		return facility;
 	}
@@ -1122,13 +1145,16 @@ public class RegistrarWebService implements RegistrarService {
 	private Community validateCommunity(Integer communityId,
 			ValidationErrors errors, String fieldName) {
 		if (communityId == null) {
-			errors.add(3, fieldName);
+			errors.add(messageBean.getMessage("motechmodule.ws.missing",
+					fieldName));
 			return null;
 		}
 		Community community = registrarBean.getCommunityById(communityId);
 		if (community == null) {
-			errors.add(1, fieldName);
+			errors.add(messageBean.getMessage("motechmodule.ws.notfound",
+					fieldName));
 		}
 		return community;
 	}
+
 }
