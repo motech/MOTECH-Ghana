@@ -8,7 +8,7 @@
 		<property name="name" value="PNC(baby)" />
 		<property name="encounterTypeName" value="PNCCHILDVISIT" />
 		<property name="lateValue" value="1" />
-		<property name="latePeriod" value="hour" />
+		<property name="latePeriod" value="day" />
 		<property name="registrarBean" ref="registrarBean" />	
 		<property name="requirements">
 			<list>
