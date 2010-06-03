@@ -1944,8 +1944,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Date currentDate = calendar.getTime();
 		calendar.add(Calendar.DATE, 7);
 		Date oneWeekLaterDate = calendar.getTime();
-		return motechService.getExpectedEncounter(patient, null, null,
-				currentDate, oneWeekLaterDate, null, currentDate, false);
+		return motechService.getExpectedEncounter(patient, null, null, null,
+				oneWeekLaterDate, null, currentDate, false);
 	}
 
 	public List<ExpectedObs> getUpcomingExpectedObs(Patient patient) {
@@ -1954,7 +1954,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Date currentDate = calendar.getTime();
 		calendar.add(Calendar.DATE, 7);
 		Date oneWeekLaterDate = calendar.getTime();
-		return motechService.getExpectedObs(patient, null, null, currentDate,
+		return motechService.getExpectedObs(patient, null, null, null,
 				oneWeekLaterDate, null, currentDate, false);
 	}
 

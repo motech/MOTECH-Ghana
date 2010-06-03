@@ -114,6 +114,8 @@ public class RegistrarBeanExpectedCareTest extends
 			Calendar calendar = Calendar.getInstance();
 			calendar.add(Calendar.MONTH, -2);
 			Date twoMonthsPast = calendar.getTime();
+			calendar.add(Calendar.MONTH, -3);
+			Date threeMonthsPast = calendar.getTime();
 			calendar.setTime(date);
 			calendar.add(Calendar.DATE, 5);
 			Date fiveDaysFuture = calendar.getTime();
@@ -162,10 +164,9 @@ public class RegistrarBeanExpectedCareTest extends
 			obs.setPatient(patient);
 			obs.setConcept(Context.getConceptService().getConcept(
 					MotechConstants.CONCEPT_TETANUS_TOXOID_DOSE));
-			obs.setDueObsDatetime(twoMonthsPast);
-			obs.setLateObsDatetime(twoMonthsPast);
-			obs.setMaxObsDatetime(fiveDaysFuture);
-			obs.setName("TT1");
+			obs.setDueObsDatetime(threeMonthsPast);
+			obs.setLateObsDatetime(threeMonthsPast);
+			obs.setName("TT5");
 			obs.setGroup("TT");
 			regService.saveExpectedObs(obs);
 
@@ -222,8 +223,8 @@ public class RegistrarBeanExpectedCareTest extends
 			enc.setPatient(patient);
 			enc.setEncounterType(Context.getEncounterService()
 					.getEncounterType(MotechConstants.ENCOUNTER_TYPE_ANCVISIT));
-			enc.setDueEncounterDatetime(twoMonthsPast);
-			enc.setLateEncounterDatetime(twoMonthsPast);
+			enc.setDueEncounterDatetime(threeMonthsPast);
+			enc.setLateEncounterDatetime(threeMonthsPast);
 			enc.setName("ANC9");
 			enc.setGroup("ANC");
 			regService.saveExpectedEncounter(enc);
@@ -242,13 +243,17 @@ public class RegistrarBeanExpectedCareTest extends
 
 			List<ExpectedEncounter> upcomingEnc = regService
 					.getUpcomingExpectedEncounters(patient);
-			assertEquals(1, upcomingEnc.size());
-			assertEquals("ANC1", upcomingEnc.get(0).getName());
+			assertEquals(3, upcomingEnc.size());
+			assertEquals("ANC9", upcomingEnc.get(0).getName());
+			assertEquals("ANC3", upcomingEnc.get(1).getName());
+			assertEquals("ANC1", upcomingEnc.get(2).getName());
 
 			List<ExpectedObs> upcomingObs = regService
 					.getUpcomingExpectedObs(patient);
-			assertEquals(1, upcomingObs.size());
-			assertEquals("TT1", upcomingObs.get(0).getName());
+			assertEquals(3, upcomingObs.size());
+			assertEquals("TT5", upcomingObs.get(0).getName());
+			assertEquals("TT3", upcomingObs.get(1).getName());
+			assertEquals("TT1", upcomingObs.get(2).getName());
 
 			List<ExpectedEncounter> defaultedEnc = regService
 					.getDefaultedExpectedEncounters(facility,
@@ -260,8 +265,8 @@ public class RegistrarBeanExpectedCareTest extends
 			List<ExpectedObs> defaultedObs = regService
 					.getDefaultedExpectedObs(facility, new String[] { "TT" });
 			assertEquals(2, defaultedObs.size());
-			assertEquals("TT1", defaultedObs.get(0).getName());
-			assertEquals("TT3", defaultedObs.get(1).getName());
+			assertEquals("TT3", defaultedObs.get(0).getName());
+			assertEquals("TT5", defaultedObs.get(1).getName());
 
 		} finally {
 			Context.closeSession();
