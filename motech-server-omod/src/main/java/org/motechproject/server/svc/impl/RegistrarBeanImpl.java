@@ -180,19 +180,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Boolean estimatedBirthDate, Gender sex, Boolean insured,
 			String nhis, Date nhisExpires, Patient mother, Community community,
 			String address, String phoneNumber, Date expDeliveryDate,
-			Boolean deliveryDateConfirmed, Integer gravida, Integer parity,
-			Boolean enroll, Boolean consent, ContactNumberType ownership,
-			MediaType format, String language, DayOfWeek dayOfWeek,
-			Date timeOfDay, InterestReason reason, HowLearned howLearned,
-			Integer messagesStartWeek) {
+			Boolean deliveryDateConfirmed, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, MediaType format, String language,
+			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
+			HowLearned howLearned, Integer messagesStartWeek) {
 
 		return registerPatient(staff, facility, registrationMode, motechId,
 				registrantType, firstName, middleName, lastName, preferredName,
 				dateOfBirth, estimatedBirthDate, sex, insured, nhis,
 				nhisExpires, mother, community, address, phoneNumber,
-				expDeliveryDate, deliveryDateConfirmed, gravida, parity,
-				enroll, consent, ownership, format, language, dayOfWeek,
-				timeOfDay, reason, howLearned, messagesStartWeek);
+				expDeliveryDate, deliveryDateConfirmed, null, null, enroll,
+				consent, ownership, format, language, dayOfWeek, timeOfDay,
+				reason, howLearned, messagesStartWeek);
 	}
 
 	@Transactional

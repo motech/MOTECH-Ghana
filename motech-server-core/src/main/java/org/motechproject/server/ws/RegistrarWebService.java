@@ -458,8 +458,6 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "phoneNumber") String phoneNumber,
 			@WebParam(name = "expDeliveryDate") Date expDeliveryDate,
 			@WebParam(name = "deliveryDateConfirmed") Boolean deliveryDateConfirmed,
-			@WebParam(name = "gravida") Integer gravida,
-			@WebParam(name = "parity") Integer parity,
 			@WebParam(name = "enroll") Boolean enroll,
 			@WebParam(name = "consent") Boolean consent,
 			@WebParam(name = "ownership") ContactNumberType ownership,
@@ -517,12 +515,6 @@ public class RegistrarWebService implements RegistrarService {
 			if (deliveryDateConfirmed == null)
 				errors.add(messageBean.getMessage("motechmodule.ws.missing",
 						"DeliveryDateConfirmed"));
-			if (gravida == null)
-				errors.add(messageBean.getMessage("motechmodule.ws.missing",
-						"Gravida"));
-			if (parity == null)
-				errors.add(messageBean.getMessage("motechmodule.ws.missing",
-						"Parity"));
 		}
 
 		if (errors.getErrors().size() > 0) {
@@ -535,9 +527,9 @@ public class RegistrarWebService implements RegistrarService {
 				registrantType, firstName, middleName, lastName, preferredName,
 				dateOfBirth, estimatedBirthDate, sex, insured, nhis,
 				nhisExpires, mother, communityObj, address, phoneNumber,
-				expDeliveryDate, deliveryDateConfirmed, gravida, parity,
-				enroll, consent, ownership, format, language, dayOfWeek,
-				timeOfDay, reason, howLearned, messagesStartWeek);
+				expDeliveryDate, deliveryDateConfirmed, enroll, consent,
+				ownership, format, language, dayOfWeek, timeOfDay, reason,
+				howLearned, messagesStartWeek);
 
 		return modelConverter.patientToWebService(patient, true);
 	}

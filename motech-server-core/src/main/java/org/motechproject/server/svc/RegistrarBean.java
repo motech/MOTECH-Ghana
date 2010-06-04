@@ -52,10 +52,10 @@ public interface RegistrarBean {
 			Boolean insured, String nhis, Date nhisExpires, Patient mother,
 			Community community, String address, String phoneNumber,
 			Date expDeliveryDate, Boolean deliveryDateConfirmed,
-			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
-			ContactNumberType ownership, MediaType format, String language,
-			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
-			HowLearned howLearned, Integer messagesStartWeek);
+			Boolean enroll, Boolean consent, ContactNumberType ownership,
+			MediaType format, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, InterestReason reason, HowLearned howLearned,
+			Integer messagesStartWeek);
 
 	public Patient registerPatient(RegistrationMode registrationMode,
 			Integer motechId, RegistrantType registrantType, String firstName,

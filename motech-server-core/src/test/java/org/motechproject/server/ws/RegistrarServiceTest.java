@@ -912,7 +912,7 @@ public class RegistrarServiceTest {
 		String nhis = "NHIS", address = "Address", language = "Language";
 		Gender gender = Gender.FEMALE;
 		Boolean estBirthDate = false, insured = true, delivDateConf = true, enroll = true, consent = true;
-		Integer gravida = 0, parity = 0, messageWeek = 5;
+		Integer messageWeek = 5;
 		String phone = "15555555";
 		Integer communityId = 11111;
 		Date date = new Date();
@@ -947,9 +947,9 @@ public class RegistrarServiceTest {
 						mode, motechId, type, firstName, middleName, lastName,
 						prefName, date, estBirthDate, gender, insured, nhis,
 						date, mother, comm, address, phone, date,
-						delivDateConf, gravida, parity, enroll, consent,
-						phoneType, format, language, day, date, reason, how,
-						messageWeek)).andReturn(createdPatient);
+						delivDateConf, enroll, consent, phoneType, format,
+						language, day, date, reason, how, messageWeek))
+				.andReturn(createdPatient);
 		expect(modelConverter.patientToWebService(createdPatient, true))
 				.andReturn(new Patient());
 
@@ -959,8 +959,8 @@ public class RegistrarServiceTest {
 				mode, motechId, type, firstName, middleName, lastName,
 				prefName, date, estBirthDate, gender, insured, nhis, date,
 				motherMotechId, communityId, address, phone, date,
-				delivDateConf, gravida, parity, enroll, consent, phoneType,
-				format, language, day, date, reason, how, messageWeek);
+				delivDateConf, enroll, consent, phoneType, format, language,
+				day, date, reason, how, messageWeek);
 
 		verify(registrarBean, openmrsBean, modelConverter);
 
@@ -974,7 +974,7 @@ public class RegistrarServiceTest {
 		String nhis = "NHIS", address = "Address", language = "Language";
 		Gender gender = Gender.FEMALE;
 		Boolean estBirthDate = false, insured = true, delivDateConf = true, enroll = true, consent = true;
-		Integer gravida = 0, parity = 0, messageWeek = 5;
+		Integer messageWeek = 5;
 		String phone = "15555555";
 		Integer community = 11111;
 		Date date = new Date();
@@ -1010,8 +1010,8 @@ public class RegistrarServiceTest {
 					type, firstName, middleName, lastName, prefName,
 					childBirthDate, estBirthDate, gender, insured, nhis, date,
 					motherMotechId, community, address, phone, date,
-					delivDateConf, gravida, parity, enroll, consent, phoneType,
-					format, language, day, date, reason, how, messageWeek);
+					delivDateConf, enroll, consent, phoneType, format,
+					language, day, date, reason, how, messageWeek);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Register Patient request", e.getMessage());
