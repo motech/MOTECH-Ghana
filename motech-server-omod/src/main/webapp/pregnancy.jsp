@@ -36,16 +36,6 @@
 		</td>
 		<td><form:errors path="dueDateConfirmed" cssClass="error" /></td>
 	</tr>
-	<tr>
-		<td class="labelcolumn"><label for="gravida">Previous Pregnancies (gravida):</label></td>
-		<td><form:input path="gravida" /></td>
-		<td><form:errors path="gravida" cssClass="error" /></td>
-	</tr>
-	<tr>
-		<td class="labelcolumn"><label for="parity">Previous Births (parity):</label></td>
-		<td><form:input path="parity" /></td>
-		<td><form:errors path="parity" cssClass="error" /></td>
-	</tr>
 </table>
 </fieldset>
 <fieldset><legend>Information Service Enrollment</legend>

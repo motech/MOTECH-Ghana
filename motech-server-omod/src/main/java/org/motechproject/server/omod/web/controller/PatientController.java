@@ -182,14 +182,6 @@ public class PatientController {
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors,
 					"dueDateConfirmed",
 					"motechmodule.dueDateConfirmed.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "gravida",
-					"motechmodule.gravida.required");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "parity",
-					"motechmodule.parity.required");
-			if (patient.getParity() != null && patient.getGravida() != null
-					&& patient.getParity() > patient.getGravida()) {
-				errors.rejectValue("parity", "motechmodule.parity.range");
-			}
 		} else if (patient.getRegistrantType() == RegistrantType.CHILD_UNDER_FIVE) {
 			if (patient.getBirthDate() != null) {
 				Calendar calendar = Calendar.getInstance();
@@ -312,8 +304,7 @@ public class PatientController {
 					patient.getNhisExpDate(), mother, community, patient
 							.getAddress(), patient.getPhoneNumber(), patient
 							.getDueDate(), patient.getDueDateConfirmed(),
-					patient.getGravida(), patient.getParity(), patient
-							.getEnroll(), patient.getConsent(), patient
+					patient.getEnroll(), patient.getConsent(), patient
 							.getPhoneType(), patient.getMediaType(), patient
 							.getLanguage(), patient.getDayOfWeek(), patient
 							.getTimeOfDay(), patient.getInterestReason(),

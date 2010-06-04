@@ -189,9 +189,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				registrantType, firstName, middleName, lastName, preferredName,
 				dateOfBirth, estimatedBirthDate, sex, insured, nhis,
 				nhisExpires, mother, community, address, phoneNumber,
-				expDeliveryDate, deliveryDateConfirmed, null, null, enroll,
-				consent, ownership, format, language, dayOfWeek, timeOfDay,
-				reason, howLearned, messagesStartWeek);
+				expDeliveryDate, deliveryDateConfirmed, enroll, consent,
+				ownership, format, language, dayOfWeek, timeOfDay, reason,
+				howLearned, messagesStartWeek);
 	}
 
 	@Transactional
@@ -202,10 +202,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Boolean insured, String nhis, Date nhisExpires, Patient mother,
 			Community community, String address, String phoneNumber,
 			Date expDeliveryDate, Boolean deliveryDateConfirmed,
-			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
-			ContactNumberType ownership, MediaType format, String language,
-			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
-			HowLearned howLearned, Integer messagesStartWeek) {
+			Boolean enroll, Boolean consent, ContactNumberType ownership,
+			MediaType format, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, InterestReason reason, HowLearned howLearned,
+			Integer messagesStartWeek) {
 
 		Location facility = getGhanaLocation();
 		User staff = contextService.getAuthenticatedUser();
@@ -214,9 +214,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				registrantType, firstName, middleName, lastName, preferredName,
 				dateOfBirth, estimatedBirthDate, sex, insured, nhis,
 				nhisExpires, mother, community, address, phoneNumber,
-				expDeliveryDate, deliveryDateConfirmed, gravida, parity,
-				enroll, consent, ownership, format, language, dayOfWeek,
-				timeOfDay, reason, howLearned, messagesStartWeek);
+				expDeliveryDate, deliveryDateConfirmed, enroll, consent,
+				ownership, format, language, dayOfWeek, timeOfDay, reason,
+				howLearned, messagesStartWeek);
 	}
 
 	private Patient registerPatient(User staff, Location facility,
@@ -226,11 +226,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Boolean estimatedBirthDate, Gender sex, Boolean insured,
 			String nhis, Date nhisExpires, Patient mother, Community community,
 			String address, String phoneNumber, Date expDeliveryDate,
-			Boolean deliveryDateConfirmed, Integer gravida, Integer parity,
-			Boolean enroll, Boolean consent, ContactNumberType ownership,
-			MediaType format, String language, DayOfWeek dayOfWeek,
-			Date timeOfDay, InterestReason reason, HowLearned howLearned,
-			Integer messagesStartWeek) {
+			Boolean deliveryDateConfirmed, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, MediaType format, String language,
+			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
+			HowLearned howLearned, Integer messagesStartWeek) {
 
 		PatientService patientService = contextService.getPatientService();
 		PersonService personService = contextService.getPersonService();
@@ -257,8 +256,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Integer pregnancyDueDateObsId = null;
 		if (registrantType == RegistrantType.PREGNANT_MOTHER) {
 			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
-					expDeliveryDate, deliveryDateConfirmed, gravida, parity,
-					null);
+					expDeliveryDate, deliveryDateConfirmed, null, null, null);
 		}
 
 		enrollPatient(patient, community, enroll, consent, messagesStartWeek,
@@ -619,11 +617,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	@Transactional
 	public void registerPregnancy(Patient patient, Date expDeliveryDate,
-			Boolean deliveryDateConfirmed, Integer gravida, Integer parity,
-			Boolean enroll, Boolean consent, String phoneNumber,
-			ContactNumberType ownership, MediaType format, String language,
-			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
-			HowLearned howLearned) {
+			Boolean deliveryDateConfirmed, Boolean enroll, Boolean consent,
+			String phoneNumber, ContactNumberType ownership, MediaType format,
+			String language, DayOfWeek dayOfWeek, Date timeOfDay,
+			InterestReason reason, HowLearned howLearned) {
 
 		Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
 
@@ -632,8 +629,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		if (pregnancyDueDateObsId == null) {
 			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
-					expDeliveryDate, deliveryDateConfirmed, gravida, parity,
-					null);
+					expDeliveryDate, deliveryDateConfirmed, null, null, null);
 		}
 
 		enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
@@ -1236,7 +1232,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 							.getFirstName(), null, null, null, datetime, false,
 					childOutcome.getSex(), null, null, null, patient, null,
 					null, null, null, null, null, null, null, null, null, null,
-					null, null, null, null, null, null);
+					null, null, null, null);
 
 			if (childOutcome.getWeight() != null) {
 				recordBirthData(staff, facility, child, datetime, childOutcome

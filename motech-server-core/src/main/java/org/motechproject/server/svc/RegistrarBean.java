@@ -64,10 +64,10 @@ public interface RegistrarBean {
 			Boolean insured, String nhis, Date nhisExpires, Patient mother,
 			Community community, String address, String phoneNumber,
 			Date expDeliveryDate, Boolean deliveryDateConfirmed,
-			Integer gravida, Integer parity, Boolean enroll, Boolean consent,
-			ContactNumberType ownership, MediaType format, String language,
-			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
-			HowLearned howLearned, Integer messagesStartWeek);
+			Boolean enroll, Boolean consent, ContactNumberType ownership,
+			MediaType format, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, InterestReason reason, HowLearned howLearned,
+			Integer messagesStartWeek);
 
 	public void demoRegisterPatient(RegistrationMode registrationMode,
 			Integer motechId, String firstName, String middleName,
@@ -95,11 +95,10 @@ public interface RegistrarBean {
 			Boolean stopEnrollment);
 
 	public void registerPregnancy(Patient patient, Date expDeliveryDate,
-			Boolean deliveryDateConfirmed, Integer gravida, Integer parity,
-			Boolean enroll, Boolean consent, String phoneNumber,
-			ContactNumberType ownership, MediaType format, String language,
-			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
-			HowLearned howLearned);
+			Boolean deliveryDateConfirmed, Boolean enroll, Boolean consent,
+			String phoneNumber, ContactNumberType ownership, MediaType format,
+			String language, DayOfWeek dayOfWeek, Date timeOfDay,
+			InterestReason reason, HowLearned howLearned);
 
 	@RunAsAdminUser
 	public void registerPregnancy(@RunAsUserParam User staff,

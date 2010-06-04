@@ -110,9 +110,8 @@ public class MessageProgramUpdateTaskTest extends
 					motechId, RegistrantType.OTHER, "firstName", "middleName",
 					"lastName", "prefName", birthdate, false, Gender.MALE,
 					true, "nhis", null, null, null, "Address", "1111111111",
-					null, null, null, null, true, true,
-					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
-					DayOfWeek.MONDAY, date,
+					null, null, true, true, ContactNumberType.PERSONAL,
+					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
 					InterestReason.KNOW_MORE_PREGNANCY_CHILDBIRTH,
 					HowLearned.FRIEND, 5);
 

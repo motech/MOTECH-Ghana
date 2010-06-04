@@ -124,7 +124,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					"Mother1FirstName", "Mother1MiddleName", "Mother1LastName",
 					"Mother1PrefName", date, false, Gender.FEMALE, true,
 					"nhisNumber1", date, null, community, "Address",
-					"1111111111", dueDate1, true, 0, 0, true, true,
+					"1111111111", dueDate1, true, true, true,
 					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
 					DayOfWeek.MONDAY, date, InterestReason.CURRENTLY_PREGNANT,
 					HowLearned.FRIEND, null);
@@ -138,7 +138,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					"Mother2FirstName", "Mother2MiddleName", "Mother2LastName",
 					"Mother2PrefName", date, false, Gender.FEMALE, true,
 					"nhisNumber2", date, null, community, "Address",
-					"1111111111", dueDate2, true, 0, 0, true, true,
+					"1111111111", dueDate2, true, true, true,
 					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
 					DayOfWeek.MONDAY, date, InterestReason.CURRENTLY_PREGNANT,
 					HowLearned.FRIEND, null);
@@ -152,9 +152,8 @@ public class RegistrarBeanRecordVisitsTest extends
 					"Child1FirstName", "Child1MiddleName", "Child1LastName",
 					"Child1PrefName", date, false, Gender.FEMALE, true,
 					"nhisNumber3", date, null, null, "Address", "1111111111",
-					null, null, null, null, false, false,
-					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
-					DayOfWeek.MONDAY, date,
+					null, null, false, false, ContactNumberType.PERSONAL,
+					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
 					InterestReason.FAMILY_FRIEND_PREGNANT, HowLearned.FRIEND,
 					null);
 

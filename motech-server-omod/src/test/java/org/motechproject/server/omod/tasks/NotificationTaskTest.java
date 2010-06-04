@@ -95,7 +95,7 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 					"motherfirstName", "mothermiddleName", "motherlastName",
 					"motherprefName", date, false, Gender.FEMALE, true,
 					"mothernhis", date, null, null, "Address", "1111111111",
-					date, true, 0, 0, true, true, ContactNumberType.PERSONAL,
+					date, true, true, true, ContactNumberType.PERSONAL,
 					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
 					InterestReason.CURRENTLY_PREGNANT, HowLearned.FRIEND, null);
 
@@ -105,9 +105,8 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 					"childfirstName", "childmiddleName", "childlastName",
 					"childprefName", date, false, Gender.FEMALE, true,
 					"childnhis", date, null, null, "Address", "1111111111",
-					null, null, null, null, false, false,
-					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
-					DayOfWeek.MONDAY, date,
+					null, null, false, false, ContactNumberType.PERSONAL,
+					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
 					InterestReason.FAMILY_FRIEND_PREGNANT, HowLearned.FRIEND,
 					null);
 

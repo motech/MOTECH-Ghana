@@ -466,7 +466,6 @@ public class RegistrarBeanTest extends TestCase {
 		String language = "Language";
 		Date date = new Date();
 		Boolean birthDateEst = true, insured = true, dueDateConfirmed = true, enroll = true, consent = true;
-		Integer gravida = 0, parity = 1;
 		Gender gender = Gender.FEMALE;
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType mediaType = MediaType.TEXT;
@@ -584,10 +583,6 @@ public class RegistrarBeanTest extends TestCase {
 				conceptService
 						.getConcept(MotechConstants.CONCEPT_DATE_OF_CONFINEMENT_CONFIRMED))
 				.andReturn(dateConfConfirmedConcept);
-		expect(conceptService.getConcept(MotechConstants.CONCEPT_GRAVIDA))
-				.andReturn(gravidaConcept);
-		expect(conceptService.getConcept(MotechConstants.CONCEPT_PARITY))
-				.andReturn(parityConcept);
 		expect(
 				obsService.saveObs(capture(pregnancyObsCap),
 						(String) anyObject())).andReturn(new Obs());
@@ -600,8 +595,8 @@ public class RegistrarBeanTest extends TestCase {
 				RegistrantType.PREGNANT_MOTHER, firstName, middleName,
 				lastName, prefName, date, birthDateEst, gender, insured, nhis,
 				date, null, community, address, phoneNumber, date,
-				dueDateConfirmed, gravida, parity, enroll, consent, phoneType,
-				mediaType, language, dayOfWeek, date, reason, howLearned, null);
+				dueDateConfirmed, enroll, consent, phoneType, mediaType,
+				language, dayOfWeek, date, reason, howLearned, null);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
@@ -689,13 +684,11 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(pregConcept, pregnancyObs.getConcept());
 
 		Set<Obs> pregnancyObsMembers = pregnancyObs.getGroupMembers();
-		assertEquals(5, pregnancyObsMembers.size());
+		assertEquals(3, pregnancyObsMembers.size());
 
 		boolean containsPregnancyStatusObs = false;
 		boolean containsDueDateObs = false;
 		boolean containsDueDateConfirmedObs = false;
-		boolean containsGravidaObs = false;
-		boolean containsParityObs = false;
 		Iterator<Obs> obsIterator = pregnancyObsMembers.iterator();
 		while (obsIterator.hasNext()) {
 			Obs memberObs = obsIterator.next();
@@ -711,20 +704,12 @@ public class RegistrarBeanTest extends TestCase {
 			} else if (dateConfConfirmedConcept.equals(memberObs.getConcept())) {
 				containsDueDateConfirmedObs = true;
 				assertEquals(dueDateConfirmed, memberObs.getValueAsBoolean());
-			} else if (gravidaConcept.equals(memberObs.getConcept())) {
-				containsGravidaObs = true;
-				assertEquals(0.0, memberObs.getValueNumeric());
-			} else if (parityConcept.equals(memberObs.getConcept())) {
-				containsParityObs = true;
-				assertEquals(1.0, memberObs.getValueNumeric());
 			}
 		}
 		assertTrue("Pregnancy Status Obs missing", containsPregnancyStatusObs);
 		assertTrue("Due Date Obs missing", containsDueDateObs);
 		assertTrue("Due Date Confirmed Obs missing",
 				containsDueDateConfirmedObs);
-		assertTrue("Gravida Obs missing", containsGravidaObs);
-		assertTrue("Parity Obs missing", containsParityObs);
 	}
 
 	public void testRegisterChild() throws ParseException {
@@ -736,7 +721,6 @@ public class RegistrarBeanTest extends TestCase {
 		String language = "Language";
 		Date date = new Date();
 		Boolean birthDateEst = true, insured = true, dueDateConfirmed = true, enroll = true, consent = true;
-		Integer gravida = 0, parity = 1;
 		Gender gender = Gender.FEMALE;
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType mediaType = MediaType.TEXT;
@@ -872,8 +856,8 @@ public class RegistrarBeanTest extends TestCase {
 				RegistrantType.CHILD_UNDER_FIVE, firstName, middleName,
 				lastName, prefName, birthDate, birthDateEst, gender, insured,
 				nhis, date, mother, null, address, phoneNumber, date,
-				dueDateConfirmed, gravida, parity, enroll, consent, phoneType,
-				mediaType, language, dayOfWeek, date, reason, howLearned, null);
+				dueDateConfirmed, enroll, consent, phoneType, mediaType,
+				language, dayOfWeek, date, reason, howLearned, null);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
@@ -979,7 +963,6 @@ public class RegistrarBeanTest extends TestCase {
 		String language = "Language";
 		Date date = new Date();
 		Boolean birthDateEst = true, insured = true, dueDateConfirmed = true, enroll = true, consent = true;
-		Integer gravida = 0, parity = 1;
 		Gender gender = Gender.FEMALE;
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType mediaType = MediaType.TEXT;
@@ -1112,9 +1095,8 @@ public class RegistrarBeanTest extends TestCase {
 				RegistrantType.OTHER, firstName, middleName, lastName,
 				prefName, date, birthDateEst, gender, insured, nhis, date,
 				null, community, address, phoneNumber, date, dueDateConfirmed,
-				gravida, parity, enroll, consent, phoneType, mediaType,
-				language, dayOfWeek, date, reason, howLearned,
-				messagesStartWeek);
+				enroll, consent, phoneType, mediaType, language, dayOfWeek,
+				date, reason, howLearned, messagesStartWeek);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
@@ -1466,7 +1448,7 @@ public class RegistrarBeanTest extends TestCase {
 	}
 
 	public void testRegisterPregnancy() throws ParseException {
-		Integer patientId = 2, parity = 0, gravida = 0;
+		Integer patientId = 2;
 		Date date = new Date();
 		Boolean dueDateConfirmed = true, enroll = true, consent = true;
 		String phoneNumber = "2075555555";
@@ -1550,10 +1532,6 @@ public class RegistrarBeanTest extends TestCase {
 				conceptService
 						.getConcept(MotechConstants.CONCEPT_PREGNANCY_STATUS))
 				.andReturn(pregStatusConcept).atLeastOnce();
-		expect(conceptService.getConcept(MotechConstants.CONCEPT_GRAVIDA))
-				.andReturn(gravidaConcept);
-		expect(conceptService.getConcept(MotechConstants.CONCEPT_PARITY))
-				.andReturn(parityConcept);
 		expect(
 				conceptService
 						.getConcept(MotechConstants.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT))
@@ -1570,9 +1548,9 @@ public class RegistrarBeanTest extends TestCase {
 				locationService, encounterService, obsService, conceptService,
 				userService);
 
-		regBean.registerPregnancy(patient, date, dueDateConfirmed, gravida,
-				parity, enroll, consent, phoneNumber, phoneType, mediaType,
-				language, dayOfWeek, date, reason, howLearned);
+		regBean.registerPregnancy(patient, date, dueDateConfirmed, enroll,
+				consent, phoneNumber, phoneType, mediaType, language,
+				dayOfWeek, date, reason, howLearned);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, encounterService, obsService, conceptService,
@@ -1614,13 +1592,11 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(pregConcept, pregnancyObs.getConcept());
 
 		Set<Obs> pregnancyObsMembers = pregnancyObs.getGroupMembers();
-		assertEquals(5, pregnancyObsMembers.size());
+		assertEquals(3, pregnancyObsMembers.size());
 
 		boolean containsPregnancyStatusObs = false;
 		boolean containsDueDateObs = false;
 		boolean containsDueDateConfirmedObs = false;
-		boolean containsGravidaObs = false;
-		boolean containsParityObs = false;
 		Iterator<Obs> obsIterator = pregnancyObsMembers.iterator();
 		while (obsIterator.hasNext()) {
 			Obs memberObs = obsIterator.next();
@@ -1635,22 +1611,12 @@ public class RegistrarBeanTest extends TestCase {
 			} else if (dateConfConfirmedConcept.equals(memberObs.getConcept())) {
 				containsDueDateConfirmedObs = true;
 				assertEquals(dueDateConfirmed, memberObs.getValueAsBoolean());
-			} else if (gravidaConcept.equals(memberObs.getConcept())) {
-				containsGravidaObs = true;
-				assertEquals(gravida.intValue(), memberObs.getValueNumeric()
-						.intValue());
-			} else if (parityConcept.equals(memberObs.getConcept())) {
-				containsParityObs = true;
-				assertEquals(parity.intValue(), memberObs.getValueNumeric()
-						.intValue());
 			}
 		}
 		assertTrue("Pregnancy Status Obs missing", containsPregnancyStatusObs);
 		assertTrue("Due Date Obs missing", containsDueDateObs);
 		assertTrue("Due Date Confirmed Obs missing",
 				containsDueDateConfirmedObs);
-		assertTrue("Gravida Confirmed Obs missing", containsGravidaObs);
-		assertTrue("Parity Obs missing", containsParityObs);
 	}
 
 	public void testSetMessageStatusSuccessMessageFoundNotTroubled() {

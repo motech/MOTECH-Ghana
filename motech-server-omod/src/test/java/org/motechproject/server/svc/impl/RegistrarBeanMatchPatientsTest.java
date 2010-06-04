@@ -103,7 +103,7 @@ public class RegistrarBeanMatchPatientsTest extends
 					motechId, RegistrantType.PREGNANT_MOTHER, firstName,
 					middleName, lastName, prefName, date, false, Gender.FEMALE,
 					true, nhisNumber, date, null, community, "Address",
-					phoneNumber, date, true, 0, 0, true, true,
+					phoneNumber, date, true, true, true,
 					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
 					DayOfWeek.MONDAY, date, InterestReason.CURRENTLY_PREGNANT,
 					HowLearned.FRIEND, null);

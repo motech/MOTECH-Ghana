@@ -133,14 +133,6 @@ public class PregnancyController {
 		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "dueDateConfirmed",
 				"motechmodule.dueDateConfirmed.required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "gravida",
-				"motechmodule.gravida.required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "parity",
-				"motechmodule.parity.required");
-		if (pregnancy.getParity() != null && pregnancy.getGravida() != null
-				&& pregnancy.getParity() > pregnancy.getGravida()) {
-			errors.rejectValue("parity", "motechmodule.parity.range");
-		}
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "enroll",
 				"motechmodule.enroll.required");
@@ -187,9 +179,8 @@ public class PregnancyController {
 
 		if (!errors.hasErrors()) {
 			registrarBean.registerPregnancy(patient, pregnancy.getDueDate(),
-					pregnancy.getDueDateConfirmed(), pregnancy.getGravida(),
-					pregnancy.getParity(), pregnancy.getEnroll(), pregnancy
-							.getConsent(), pregnancy.getPhoneNumber(),
+					pregnancy.getDueDateConfirmed(), pregnancy.getEnroll(),
+					pregnancy.getConsent(), pregnancy.getPhoneNumber(),
 					pregnancy.getPhoneType(), pregnancy.getMediaType(),
 					pregnancy.getLanguage(), pregnancy.getDayOfWeek(),
 					pregnancy.getTimeOfDay(), pregnancy.getInterestReason(),

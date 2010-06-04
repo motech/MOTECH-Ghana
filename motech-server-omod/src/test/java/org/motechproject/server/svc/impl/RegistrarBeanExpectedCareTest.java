@@ -105,8 +105,8 @@ public class RegistrarBeanExpectedCareTest extends
 					childId, RegistrantType.CHILD_UNDER_FIVE, "childfirstName",
 					"childmiddleName", "childlastName", "childprefName", date,
 					false, Gender.FEMALE, true, "nhis", date, null, community,
-					"Address", "1111111111", null, null, null, null, false,
-					false, null, null, null, null, null, null, null, null);
+					"Address", "1111111111", null, null, false, false, null,
+					null, null, null, null, null, null, null);
 
 			Patient patient = openmrsService.getPatientByMotechId(childId
 					.toString());
