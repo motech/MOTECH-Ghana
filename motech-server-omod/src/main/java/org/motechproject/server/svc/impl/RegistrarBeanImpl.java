@@ -774,11 +774,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setLocation(facility);
 		encounter.setProvider(staff);
 
-		Obs ancRegNumObs = createTextValueObs(date,
-				getANCRegistrationNumberConcept(), patient, facility,
-				ancRegNumber, encounter, null);
-		encounter.addObs(ancRegNumObs);
-
+		if (ancRegNumber != null) {
+			Obs ancRegNumObs = createTextValueObs(date,
+					getANCRegistrationNumberConcept(), patient, facility,
+					ancRegNumber, encounter, null);
+			encounter.addObs(ancRegNumObs);
+		}
 		encounterService.saveEncounter(encounter);
 	}
 
@@ -803,11 +804,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		encounter.setLocation(facility);
 		encounter.setProvider(staff);
 
-		Obs cwcRegNumObs = createTextValueObs(date,
-				getCWCRegistrationNumberConcept(), patient, facility,
-				cwcRegNumber, encounter, null);
-		encounter.addObs(cwcRegNumObs);
-
+		if (cwcRegNumber != null) {
+			Obs cwcRegNumObs = createTextValueObs(date,
+					getCWCRegistrationNumberConcept(), patient, facility,
+					cwcRegNumber, encounter, null);
+			encounter.addObs(cwcRegNumObs);
+		}
 		encounterService.saveEncounter(encounter);
 	}
 
