@@ -233,6 +233,50 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		PatientService patientService = contextService.getPatientService();
 		PersonService personService = contextService.getPersonService();
+		MotechService motechService = contextService.getMotechService();
+
+		// Inherit values from Mother's record including
+		// last name, address, messaging preferences and enrollment
+		if (mother != null) {
+			PersonName personName = mother.getPersonName();
+			if (lastName == null && personName != null) {
+				lastName = personName.getFamilyName();
+			}
+			PersonAddress personAddress = mother.getPersonAddress();
+			if (address == null && personAddress != null) {
+				address = personAddress.getAddress1();
+			}
+			if (community == null) {
+				community = getCommunityByPatient(mother);
+			}
+			if (phoneNumber == null) {
+				phoneNumber = getPersonPhoneNumber(mother);
+			}
+			if (ownership == null) {
+				ownership = getPersonPhoneType(mother);
+			}
+			if (format == null) {
+				format = getPersonMediaType(mother);
+			}
+			if (language == null) {
+				language = getPersonLanguageCode(mother);
+			}
+			if (dayOfWeek == null) {
+				dayOfWeek = getPersonMessageDayOfWeek(mother);
+			}
+			if (timeOfDay == null) {
+				timeOfDay = getPersonMessageTimeOfDay(mother);
+			}
+			if (enroll == null && consent == null) {
+				List<MessageProgramEnrollment> enrollments = motechService
+						.getActiveMessageProgramEnrollments(mother
+								.getPatientId(), null, null);
+				if (enrollments != null && !enrollments.isEmpty()) {
+					enroll = true;
+					consent = true;
+				}
+			}
+		}
 
 		Patient patient = createPatient(staff, motechId, firstName, middleName,
 				lastName, preferredName, dateOfBirth, estimatedBirthDate, sex,

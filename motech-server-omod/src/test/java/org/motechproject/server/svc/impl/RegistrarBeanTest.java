@@ -498,6 +498,8 @@ public class RegistrarBeanTest extends TestCase {
 		expect(contextService.getObsService()).andReturn(obsService);
 		expect(contextService.getConceptService()).andReturn(conceptService)
 				.atLeastOnce();
+		expect(contextService.getMotechService()).andReturn(motechService)
+				.atLeastOnce();
 		expect(contextService.getIdentifierSourceService())
 				.andReturn(idService).atLeastOnce();
 
@@ -838,7 +840,6 @@ public class RegistrarBeanTest extends TestCase {
 				motechService
 						.saveMessageProgramEnrollment(capture(enrollment1Cap)))
 				.andReturn(new MessageProgramEnrollment());
-		expect(motechService.getCommunityByPatient(child)).andReturn(community);
 		expect(
 				motechService.getActiveMessageProgramEnrollments(child
 						.getPatientId(), careProgramName, null)).andReturn(
@@ -855,7 +856,7 @@ public class RegistrarBeanTest extends TestCase {
 		regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
 				RegistrantType.CHILD_UNDER_FIVE, firstName, middleName,
 				lastName, prefName, birthDate, birthDateEst, gender, insured,
-				nhis, date, mother, null, address, phoneNumber, date,
+				nhis, date, mother, community, address, phoneNumber, date,
 				dueDateConfirmed, enroll, consent, phoneType, mediaType,
 				language, dayOfWeek, date, reason, howLearned, null);
 

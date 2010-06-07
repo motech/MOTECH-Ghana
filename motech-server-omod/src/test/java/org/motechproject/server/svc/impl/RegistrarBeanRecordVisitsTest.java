@@ -234,6 +234,11 @@ public class RegistrarBeanRecordVisitsTest extends
 			assertEquals("PNC visit at birth not added for Child 2", 1, Context
 					.getEncounterService().getEncountersByPatient(child2)
 					.size());
+			String[] child2Enrollments = regService
+					.getActiveMessageProgramEnrollmentNames(child2);
+			assertNotNull("Enrollments do not exist for Child 2",
+					child2Enrollments);
+			assertEquals(2, child2Enrollments.length);
 
 			// Query for Delivery
 			List<Encounter> recentDeliveryEnc = regService
