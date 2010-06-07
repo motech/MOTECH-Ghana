@@ -218,9 +218,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					.getPatientId());
 			assertNull("Pregnancy is still active after delivery",
 					mother1Pregnancy);
-			assertEquals("Child 2 and Child 3 not added", 7, Context
-					.getPatientService().getAllPatients(true).size());
-			assertEquals("Child 3 not voided", 6, Context.getPatientService()
+			assertEquals("Child 2 not added", 6, Context.getPatientService()
 					.getAllPatients().size());
 
 			// Confirm return value of pregnancy delivery includes alive child
@@ -236,10 +234,6 @@ public class RegistrarBeanRecordVisitsTest extends
 			assertEquals("PNC visit at birth not added for Child 2", 1, Context
 					.getEncounterService().getEncountersByPatient(child2)
 					.size());
-
-			Patient child3 = openmrsService.getPatientByMotechId(child3Id
-					.toString());
-			assertNull("Child 3 not voided", child3);
 
 			// Query for Delivery
 			List<Encounter> recentDeliveryEnc = regService

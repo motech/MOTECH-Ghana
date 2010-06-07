@@ -217,17 +217,17 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		List<BirthOutcomeChild> outcomes = new ArrayList<BirthOutcomeChild>();
-		if (child1Outcome != null && child1Sex != null) {
+		if (child1Outcome != null) {
 			outcomes.add(new BirthOutcomeChild(child1Outcome,
 					child1RegistrationType, child1MotechId, child1Sex,
 					child1FirstName, child1Weight));
 		}
-		if (child2Outcome != null && child2Sex != null) {
+		if (child2Outcome != null) {
 			outcomes.add(new BirthOutcomeChild(child2Outcome,
 					child2RegistrationType, child2MotechId, child2Sex,
 					child2FirstName, child2Weight));
 		}
-		if (child3Outcome != null && child3Sex != null) {
+		if (child3Outcome != null) {
 			outcomes.add(new BirthOutcomeChild(child3Outcome,
 					child3RegistrationType, child3MotechId, child3Sex,
 					child3FirstName, child3Weight));

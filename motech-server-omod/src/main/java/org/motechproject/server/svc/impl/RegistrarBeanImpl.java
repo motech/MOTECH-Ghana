@@ -1213,12 +1213,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		pregnancyStatusObs.setObsGroup(pregnancyObs);
 		encounter.addObs(pregnancyStatusObs);
 
-		List<Patient> aliveChildPatients = new ArrayList<Patient>();
+		List<Patient> childPatients = new ArrayList<Patient>();
 
 		for (BirthOutcomeChild childOutcome : outcomes) {
-			if (childOutcome.getOutcome() == null
-					|| childOutcome.getSex() == null) {
-				// Skip child outcomes missing required outcome or sex
+			if (childOutcome.getOutcome() == null) {
+				// Skip child outcomes missing required outcome
 				continue;
 			}
 			Obs childOutcomeObs = createTextValueObs(datetime,
@@ -1226,23 +1225,21 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 							.getOutcome().name(), encounter, null);
 			encounter.addObs(childOutcomeObs);
 
-			Patient child = registerPatient(staff, facility, childOutcome
-					.getIdMode(), childOutcome.getMotechId(),
-					RegistrantType.CHILD_UNDER_FIVE, childOutcome
-							.getFirstName(), null, null, null, datetime, false,
-					childOutcome.getSex(), null, null, null, patient, null,
-					null, null, null, null, null, null, null, null, null, null,
-					null, null, null, null);
+			if (BirthOutcome.A == childOutcome.getOutcome()) {
+				Patient child = registerPatient(staff, facility, childOutcome
+						.getIdMode(), childOutcome.getMotechId(),
+						RegistrantType.CHILD_UNDER_FIVE, childOutcome
+								.getFirstName(), null, null, null, datetime,
+						false, childOutcome.getSex(), null, null, null,
+						patient, null, null, null, null, null, null, null,
+						null, null, null, null, null, null, null, null);
 
-			if (childOutcome.getWeight() != null) {
-				recordBirthData(staff, facility, child, datetime, childOutcome
-						.getWeight());
-			}
+				if (childOutcome.getWeight() != null) {
+					recordBirthData(staff, facility, child, datetime,
+							childOutcome.getWeight());
+				}
 
-			if (BirthOutcome.A != childOutcome.getOutcome()) {
-				processPatientDeath(child, datetime);
-			} else {
-				aliveChildPatients.add(child);
+				childPatients.add(child);
 			}
 		}
 
@@ -1252,7 +1249,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			processPatientDeath(patient, datetime);
 		}
 
-		return aliveChildPatients;
+		return childPatients;
 	}
 
 	private void recordBirthData(User staff, Location facility, Patient child,
