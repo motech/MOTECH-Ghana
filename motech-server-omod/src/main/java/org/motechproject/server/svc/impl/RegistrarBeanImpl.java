@@ -2898,18 +2898,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Reason person is interested in services.", String.class
 						.getName(), admin);
 
+		// Motech ID Patient Identifier Type creation also in sqldiff
 		log.info("Verifying Patient Identifier Exist");
-		PatientIdentifierType motechIDType = createPatientIdentifierType(
+		createPatientIdentifierType(
 				MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID,
 				"Patient Id for MoTeCH system.",
 				MotechIdVerhoeffValidator.class.getName(), admin);
 
-		log.info("Verifying Patient Identifier Generator Exists");
-		createSequentialPatientIdentifierGenerator(
-				MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID, motechIDType,
-				MotechIdVerhoeffValidator.ALLOWED_CHARS,
-				MotechConstants.IDGEN_SEQ_ID_GEN_FIRST_MOTECH_ID_BASE,
-				MotechIdVerhoeffValidator.VERHOEFF_ID_LENGTH);
+		// Idgen sequential ID generator creation in sqldiff
 
 		log.info("Verifying Locations Exist");
 		createLocation(MotechConstants.LOCATION_GHANA,
@@ -3360,36 +3356,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					e);
 		}
 		return idGenerator;
-	}
-
-	private void createSequentialPatientIdentifierGenerator(String name,
-			PatientIdentifierType identifierType, String baseCharacterSet,
-			String firstIdentifierBase, Integer length) {
-		try {
-			IdentifierSourceService idSourceService = contextService
-					.getIdentifierSourceService();
-
-			SequentialIdentifierGenerator idGenerator = getSeqIdGenerator(name,
-					identifierType);
-
-			if (idGenerator == null) {
-				idGenerator = new SequentialIdentifierGenerator();
-				log
-						.info(name
-								+ " Sequential Patient Id Generator Does Not Exist - Creating");
-			}
-
-			idGenerator.setName(name);
-			idGenerator.setIdentifierType(identifierType);
-			idGenerator.setBaseCharacterSet(baseCharacterSet);
-			idGenerator.setFirstIdentifierBase(firstIdentifierBase);
-			idGenerator.setLength(length);
-
-			idSourceService.saveIdentifierSource(idGenerator);
-
-		} catch (Exception e) {
-			log.error("Error creating Patient Id generator in Idgen module", e);
-		}
 	}
 
 	private PatientIdentifierType createPatientIdentifierType(String name,

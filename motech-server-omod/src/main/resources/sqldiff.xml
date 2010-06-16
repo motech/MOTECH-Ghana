@@ -437,6 +437,15 @@
 			(12624,'Bawiu',(select id from motechmodule_facility where facility_id = 1262)),
 			(12625,'Upper Telania',(select id from motechmodule_facility where facility_id = 1262)),
 			(12626,'Kwania',(select id from motechmodule_facility where facility_id = 1262));
+			
+			INSERT INTO `patient_identifier_type` (`name`,`description`,`validator`,`check_digit`,`creator`,`date_created`,`uuid`) 
+			VALUES ('MoTeCH Id','Patient Id for MoTeCH system.','org.motechproject.server.omod.MotechIdVerhoeffValidator',1,1,now(),uuid());
+
+			INSERT INTO `idgen_identifier_source` (`name`,`identifier_type`,`creator`,`date_created`,`uuid`) 
+			VALUES ('MoTeCH ID Generator',(select patient_identifier_type_id from patient_identifier_type where name = 'MoTeCH Id'),1,now(),uuid());
+
+			INSERT INTO `idgen_seq_id_gen` (`id`,`next_sequence_value`,`base_character_set`,`first_identifier_base`,`length`) 
+			VALUES ((select id from idgen_identifier_source where name = 'MoTeCH ID Generator'),-1,'0123456789','123456',7);
 		</sql>
 	</diff>
 	
