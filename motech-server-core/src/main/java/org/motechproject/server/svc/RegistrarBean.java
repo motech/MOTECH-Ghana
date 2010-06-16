@@ -111,7 +111,7 @@ public interface RegistrarBean {
 	@RunAsAdminUser
 	public void registerANCMother(@RunAsUserParam User staff,
 			Location facility, Date date, Patient patient, String ancRegNumber,
-			Date estDeliveryDate, Integer height, Integer gravida,
+			Date estDeliveryDate, Double height, Integer gravida,
 			Integer parity, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, String phoneNumber, MediaType format,
 			String language, DayOfWeek dayOfWeek, Date timeOfDay,
@@ -130,7 +130,7 @@ public interface RegistrarBean {
 			Integer ancLocation, String house, String community,
 			Date estDeliveryDate, Integer bpSystolic, Integer bpDiastolic,
 			Double weight, Integer ttDose, Integer iptDose,
-			Boolean iptReactive, Boolean itnUse, Integer fht, Integer fhr,
+			Boolean iptReactive, Boolean itnUse, Double fht, Integer fhr,
 			Boolean urineTestProteinPositive, Boolean urineTestGlucosePositive,
 			Double hemoglobin, Boolean vdrlReactive, Boolean vdrlTreatment,
 			Boolean dewormer, Boolean maleInvolved, Boolean pmtct,
@@ -164,7 +164,7 @@ public interface RegistrarBean {
 			Integer visitNumber, Integer pncLocation, String house,
 			String community, Boolean referred, Boolean maleInvolved,
 			Boolean vitaminA, Integer ttDose, Integer lochiaColour,
-			Boolean lochiaAmountExcess, Integer temperature, Integer fht,
+			Boolean lochiaAmountExcess, Double temperature, Double fht,
 			String comments);
 
 	@RunAsAdminUser
@@ -172,7 +172,7 @@ public interface RegistrarBean {
 			Location facility, Date datetime, Patient patient,
 			Integer visitNumber, Integer pncLocation, String house,
 			String community, Boolean referred, Boolean maleInvolved,
-			Double weight, Integer temperature, Boolean bcg, Boolean opv0,
+			Double weight, Double temperature, Boolean bcg, Boolean opv0,
 			Integer respiration, Boolean cordConditionNormal,
 			Boolean babyConditionGood, String comments);
 
@@ -190,7 +190,7 @@ public interface RegistrarBean {
 			String house, String community, Boolean bcg, Integer opvDose,
 			Integer pentaDose, Boolean measles, Boolean yellowFever,
 			Boolean csm, Boolean ipti, Boolean vitaminA, Boolean dewormer,
-			Double weight, Integer muac, Integer height, Boolean maleInvolved,
+			Double weight, Double muac, Double height, Boolean maleInvolved,
 			String comments);
 
 	public void recordGeneralOutpatientVisit(Integer staffId,

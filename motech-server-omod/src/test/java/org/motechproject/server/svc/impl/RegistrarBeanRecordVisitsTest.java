@@ -187,7 +187,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			// ANC Visit for Mother 1
 			regService.recordMotherANCVisit(staff, facilityLocation, date,
 					mother1, 1, 1, "House", "Community", newDueDate, 1, 1, 1.0,
-					1, 1, false, true, 1, 1, false, false, 1.0, false, false,
+					1, 1, false, true, 1.0, 1, false, false, 1.0, false, false,
 					false, true, false, false, HIVResult.NO_TEST, false, false,
 					false, date, "Comments");
 
@@ -249,7 +249,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			// PNC Visit for Mother 2
 			regService.recordMotherPNCVisit(staff, facilityLocation, date,
 					mother2, 1, 1, "House", "Community", false, true, true, 1,
-					1, false, 36, 100, "Comments");
+					1, false, 36.0, 100.0, "Comments");
 
 			assertEquals("PNC visit not added for Mother 2", 2, Context
 					.getEncounterService().getEncountersByPatient(mother2)
@@ -282,7 +282,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			// CWC Visit for Child 2
 			regService.recordChildCWCVisit(staff, facilityLocation, date,
 					child2, 1, "House", "Community", true, 1, 1, true, true,
-					true, true, true, true, 25.0, 5, 35, true, "Comments");
+					true, true, true, true, 25.0, 5.0, 35.0, true, "Comments");
 
 			assertEquals("CWC visit not added for Child 2", 2, Context
 					.getEncounterService().getEncountersByPatient(child2)
@@ -290,7 +290,7 @@ public class RegistrarBeanRecordVisitsTest extends
 
 			// PNC Visit for Child 2
 			regService.recordChildPNCVisit(staff, facilityLocation, date,
-					child2, 1, 1, "House", "Community", false, true, 7.0, 36,
+					child2, 1, 1, "House", "Community", false, true, 7.0, 36.0,
 					true, true, 140, true, true, "Comments");
 
 			assertEquals("PNC visit not added for Child 2", 3, Context

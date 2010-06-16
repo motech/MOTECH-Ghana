@@ -683,7 +683,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	private Integer registerPregnancy(User staff, Location facility,
 			Patient patient, Date dueDate, Boolean dueDateConfirmed,
-			Integer gravida, Integer parity, Integer height) {
+			Integer gravida, Integer parity, Double height) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -793,7 +793,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	@Transactional
 	public void registerANCMother(User staff, Location facility, Date date,
 			Patient patient, String ancRegNumber, Date estDeliveryDate,
-			Integer height, Integer gravida, Integer parity, Boolean enroll,
+			Double height, Integer gravida, Integer parity, Boolean enroll,
 			Boolean consent, ContactNumberType ownership, String phoneNumber,
 			MediaType format, String language, DayOfWeek dayOfWeek,
 			Date timeOfDay, HowLearned howLearned) {
@@ -863,7 +863,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			String house, String community, Date estDeliveryDate,
 			Integer bpSystolic, Integer bpDiastolic, Double weight,
 			Integer ttDose, Integer iptDose, Boolean iptReactive,
-			Boolean itnUse, Integer fht, Integer fhr,
+			Boolean itnUse, Double fht, Integer fhr,
 			Boolean urineTestProteinPositive, Boolean urineTestGlucosePositive,
 			Double hemoglobin, Boolean vdrlReactive, Boolean vdrlTreatment,
 			Boolean dewormer, Boolean maleInvolved, Boolean pmtct,
@@ -1401,7 +1401,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Integer pncLocation, String house, String community,
 			Boolean referred, Boolean maleInvolved, Boolean vitaminA,
 			Integer ttDose, Integer lochiaColour, Boolean lochiaAmountExcess,
-			Integer temperature, Integer fht, String comments) {
+			Double temperature, Double fht, String comments) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -1499,9 +1499,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Date datetime, Patient patient, Integer visitNumber,
 			Integer pncLocation, String house, String community,
 			Boolean referred, Boolean maleInvolved, Double weight,
-			Integer temperature, Boolean bcg, Boolean opv0,
-			Integer respiration, Boolean cordConditionNormal,
-			Boolean babyConditionGood, String comments) {
+			Double temperature, Boolean bcg, Boolean opv0, Integer respiration,
+			Boolean cordConditionNormal, Boolean babyConditionGood,
+			String comments) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -1649,8 +1649,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Patient patient, Integer cwcLocation, String house,
 			String community, Boolean bcg, Integer opvDose, Integer pentaDose,
 			Boolean measles, Boolean yellowFever, Boolean csm, Boolean ipti,
-			Boolean vitaminA, Boolean dewormer, Double weight, Integer muac,
-			Integer height, Boolean maleInvolved, String comments) {
+			Boolean vitaminA, Boolean dewormer, Double weight, Double muac,
+			Double height, Boolean maleInvolved, String comments) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();

@@ -102,9 +102,9 @@ public class RegistrarServiceTest {
 	public void testRecordMotherANCVisit() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer visitNumber = 1, location = 1, bpSystolic = 130, bpDiastolic = 80;
-		Double weight = 63.3, hemoglobin = 11.1;
+		Double weight = 63.3, hemoglobin = 11.1, fht = 130.1;
 		String house = "House", community = "Community", comments = "Comments";
-		Integer ttDose = 1, iptDose = 1, fht = 130, fhr = 130;
+		Integer ttDose = 1, iptDose = 1, fhr = 130;
 		Boolean iptReactive = false, itnUse = true, urineProtein = false, urineGlucose = false;
 		Boolean vdrlReactive = false, vdrlTreatment = false, dewormer = false, maleInvolved = true;
 		Boolean pmtct = false, preTest = false, postTest = false, pmtctTreatment = false, referred = false;
@@ -147,9 +147,9 @@ public class RegistrarServiceTest {
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer visitNumber = 1, location = 1, bpSystolic = 130, bpDiastolic = 80;
-		Double weight = 63.3, hemoglobin = 11.1;
+		Double weight = 63.3, hemoglobin = 11.1, fht = 130.1;
 		String house = "House", community = "Community", comments = "Comments";
-		Integer ttDose = 1, iptDose = 1, fht = 130, fhr = 130;
+		Integer ttDose = 1, iptDose = 1, fhr = 130;
 		Boolean iptReactive = false, itnUse = true, urineProtein = false, urineGlucose = false;
 		Boolean vdrlReactive = false, vdrlTreatment = false, dewormer = false, maleInvolved = true;
 		Boolean pmtct = false, preTest = false, postTest = false, pmtctTreatment = false, referred = false;
@@ -550,8 +550,9 @@ public class RegistrarServiceTest {
 	@Test
 	public void testRecordMotherPNCVisit() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
-		Integer visitNumber = 1, location = 1, temperature = 25, ttDose = 1;
-		Integer lochiaColour = 1, fht = 140;
+		Integer visitNumber = 1, location = 1, ttDose = 1;
+		Integer lochiaColour = 1;
+		Double fht = 140.2, temperature = 25.3;
 		String house = "House", community = "Community", comments = "Comments";
 		Boolean referred = false, maleInvolved = true;
 		Boolean vitaminA = true, lochiaExcess = false;
@@ -587,8 +588,9 @@ public class RegistrarServiceTest {
 	public void testRecordMotherPNCVisitInvalidPatientId()
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
-		Integer visitNumber = 1, location = 1, temperature = 25, ttDose = 1;
-		Integer lochiaColour = 1, fht = 140;
+		Integer visitNumber = 1, location = 1, ttDose = 1;
+		Integer lochiaColour = 1;
+		Double fht = 140.2, temperature = 25.3;
 		String house = "House", community = "Community", comments = "Comments";
 		Boolean referred = false, maleInvolved = true;
 		Boolean vitaminA = true, lochiaExcess = false;
@@ -748,11 +750,11 @@ public class RegistrarServiceTest {
 	@Test
 	public void testRecordChildPNCVisit() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
-		Integer visitNumber = 1, location = 1, temperature = 25, respiration = 60;
+		Integer visitNumber = 1, location = 1, respiration = 60;
 		String house = "House", community = "Community", comments = "Comments";
 		Boolean referred = false, maleInvolved = true;
 		Boolean bcg = true, opv0 = true, cordCondition = true, babyCondition = true;
-		Double weight = 26.1;
+		Double weight = 26.1, temperature = 25.6;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -785,11 +787,11 @@ public class RegistrarServiceTest {
 	public void testRecordChildPNCVisitInvalidPatientId()
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
-		Integer visitNumber = 1, location = 1, temperature = 25, respiration = 60;
+		Integer visitNumber = 1, location = 1, respiration = 60;
 		String house = "House", community = "Community", comments = "Comments";
 		Boolean referred = false, maleInvolved = true;
 		Boolean bcg = true, opv0 = true, cordCondition = true, babyCondition = true;
-		Double weight = 26.1;
+		Double weight = 26.1, temperature = 25.6;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -831,8 +833,7 @@ public class RegistrarServiceTest {
 		Integer location = 1, opvDose = 1, pentaDose = 1;
 		Boolean bcg = true, yellowFever = true, csm = true, measles = true, ipti = true, vitaminA = true;
 		Boolean dewormer = false, maleInvolved = true;
-		Integer muac = 5, height = 37;
-		Double weight = 25.2;
+		Double weight = 25.2, muac = 5.1, height = 37.2;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -869,8 +870,7 @@ public class RegistrarServiceTest {
 		Integer location = 1, opvDose = 1, pentaDose = 1;
 		Boolean bcg = true, yellowFever = true, csm = true, measles = true, ipti = true, vitaminA = true;
 		Boolean dewormer = false, maleInvolved = true;
-		Integer muac = 5, height = 37;
-		Double weight = 25.2;
+		Double weight = 25.2, muac = 5.1, height = 37.2;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -1124,7 +1124,8 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language", regNumber = "RegNumber";
 		Boolean enroll = true, consent = true;
-		Integer gravida = 0, parity = 0, height = 45;
+		Integer gravida = 0, parity = 0;
+		Double height = 45.3;
 		String phone = "15555555";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
@@ -1161,7 +1162,8 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language", regNumber = "RegNumber";
 		Boolean enroll = true, consent = true;
-		Integer gravida = 0, parity = 0, height = 45;
+		Integer gravida = 0, parity = 0;
+		Double height = 45.3;
 		String phone = "15555555";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
