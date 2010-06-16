@@ -477,18 +477,11 @@ public class RegistrarWebService implements RegistrarService {
 		Community communityObj = validateCommunity(community, errors,
 				"Community");
 
-		if (motechId == null
-				&& registrationMode == RegistrationMode.USE_PREPRINTED_ID) {
-			errors.add(messageBean.getMessage("motechmodule.ws.missing",
-					"MotechID"));
-		} else if (motechId != null
-				&& registrationMode == RegistrationMode.USE_PREPRINTED_ID) {
-			org.openmrs.Patient patient = openmrsBean
-					.getPatientByMotechId(motechId.toString());
-			if (patient != null) {
-				errors.add(messageBean.getMessage("motechmodule.ws.inuse",
-						"MotechID"));
-			}
+		if (registrationMode == RegistrationMode.USE_PREPRINTED_ID) {
+			validateMotechId(motechId, errors, "MotechID", false);
+		} else {
+			// Ignore value if provided
+			motechId = null;
 		}
 
 		org.openmrs.Patient mother = null;
@@ -1107,6 +1100,11 @@ public class RegistrarWebService implements RegistrarService {
 			ValidationErrors errors, String fieldName, boolean mustExist) {
 		if (motechId == null) {
 			errors.add(messageBean.getMessage("motechmodule.ws.missing",
+					fieldName));
+			return null;
+		}
+		if (!registrarBean.isValidMotechIdCheckDigit(motechId)) {
+			errors.add(messageBean.getMessage("motechmodule.ws.invalid",
 					fieldName));
 			return null;
 		}

@@ -416,4 +416,6 @@ public interface RegistrarBean {
 	public Community getCommunityById(Integer communityId);
 
 	public Community getCommunityByPatient(Patient patient);
+
+	public boolean isValidMotechIdCheckDigit(Integer motechId);
 }

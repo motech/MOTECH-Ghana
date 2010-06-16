@@ -4869,4 +4869,17 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		this.staffTypes = staffTypes;
 	}
 
+	public boolean isValidMotechIdCheckDigit(Integer motechId) {
+		if (motechId == null) {
+			return false;
+		}
+		String motechIdString = motechId.toString();
+		MotechIdVerhoeffValidator validator = new MotechIdVerhoeffValidator();
+		boolean isValid = false;
+		try {
+			isValid = validator.isValid(motechIdString);
+		} catch (Exception e) {
+		}
+		return isValid;
+	}
 }
