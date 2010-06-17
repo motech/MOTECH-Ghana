@@ -624,11 +624,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				&& !currentCommunity.getCommunityId().equals(
 						community.getCommunityId())) {
 			currentCommunity.getResidents().remove(patient);
-			// Query flushes session
-			if (getCommunityByPatient(patient) == null) {
-				community.getResidents().add(patient);
-				currentCommunity = community;
-			}
+		}
+		// Query flushes session
+		// Only add if no Community currently associated
+		if (community != null && getCommunityByPatient(patient) == null) {
+			community.getResidents().add(patient);
+			currentCommunity = community;
 		}
 
 		setPatientAttributes(patient, phoneNumber, ownership, format, language,
