@@ -13,11 +13,11 @@
 	</appender>
 	
 	<logger name="${modulePackage}">
-		<level value="DEBUG" />
+		<level value="INFO" />
 	</logger>
 	
 	<logger name="${corePackage}">
-		<level value="DEBUG" />
+		<level value="INFO" />
 	</logger>
 	
 	<!-- 
