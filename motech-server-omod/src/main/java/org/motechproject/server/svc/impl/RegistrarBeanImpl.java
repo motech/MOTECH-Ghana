@@ -1785,10 +1785,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	@Transactional
 	public void recordOutpatientVisit(User staff, Location facility, Date date,
-			Patient patient, String serialNumber, Integer diagnosis,
-			Integer secondDiagnosis, Boolean rdtGiven, Boolean rdtPositive,
-			Boolean actTreated, Boolean newCase, Boolean referred,
-			String comments) {
+			Patient patient, String serialNumber, Boolean insured,
+			Integer diagnosis, Integer secondDiagnosis, Boolean rdtGiven,
+			Boolean rdtPositive, Boolean actTreated, Boolean newCase,
+			Boolean referred, String comments) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -1805,6 +1805,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					getSerialNumberConcept(), patient, facility, serialNumber,
 					encounter, null);
 			encounter.addObs(serialNumberObs);
+		}
+		if (insured != null) {
+			Obs insuredObs = createBooleanValueObs(date, getInsuredConcept(),
+					patient, facility, insured, encounter, null);
+			encounter.addObs(insuredObs);
 		}
 		if (newCase != null) {
 			Obs newCaseObs = createBooleanValueObs(date, getNewCaseConcept(),
@@ -3191,6 +3196,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Ghana CWC Registration Number",
 				MotechConstants.CONCEPT_CLASS_MISC,
 				MotechConstants.CONCEPT_DATATYPE_TEXT, admin);
+		createConcept(
+				MotechConstants.CONCEPT_INSURED,
+				"Question on encounter form: \"Is patient currently insured?\"",
+				MotechConstants.CONCEPT_CLASS_QUESTION,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
 
 		log.info("Verifying Concepts Exist as Answers");
 		// TODO: Add IPT to proper Concept as an Answer, not an immunization
@@ -4826,6 +4836,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public Concept getCWCRegistrationNumberConcept() {
 		return contextService.getConceptService().getConcept(
 				MotechConstants.CONCEPT_CWC_REG_NUMBER);
+	}
+
+	public Concept getInsuredConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_INSURED);
 	}
 
 	public String getTroubledPhoneProperty() {

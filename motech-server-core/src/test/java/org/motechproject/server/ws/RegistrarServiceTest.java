@@ -1500,7 +1500,7 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean newCase = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
+		Boolean insured = true, newCase = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -1517,14 +1517,14 @@ public class RegistrarServiceTest {
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
 		registrarBean.recordOutpatientVisit(staff, facilityLocation, date,
-				patient, serial, diagnosis, secondDiagnosis, rdtGiven,
+				patient, serial, insured, diagnosis, secondDiagnosis, rdtGiven,
 				rdtPositive, actTreated, newCase, referred, comments);
 
 		replay(registrarBean, openmrsBean);
 
 		regWs.recordChildVisit(staffId, facilityId, date, serial, motechId,
-				diagnosis, secondDiagnosis, rdtGiven, rdtPositive, actTreated,
-				newCase, referred, comments);
+				insured, diagnosis, secondDiagnosis, rdtGiven, rdtPositive,
+				actTreated, newCase, referred, comments);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -1534,7 +1534,7 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean newCase = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
+		Boolean insured = true, newCase = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -1551,7 +1551,7 @@ public class RegistrarServiceTest {
 
 		try {
 			regWs.recordChildVisit(staffId, facilityId, date, serial, motechId,
-					diagnosis, secondDiagnosis, rdtGiven, rdtPositive,
+					insured, diagnosis, secondDiagnosis, rdtGiven, rdtPositive,
 					actTreated, newCase, referred, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
@@ -1575,7 +1575,7 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean newCase = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
+		Boolean insured = true, newCase = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -1592,14 +1592,14 @@ public class RegistrarServiceTest {
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
 		registrarBean.recordOutpatientVisit(staff, facilityLocation, date,
-				patient, serial, diagnosis, secondDiagnosis, rdtGiven,
+				patient, serial, insured, diagnosis, secondDiagnosis, rdtGiven,
 				rdtPositive, actTreated, newCase, referred, comments);
 
 		replay(registrarBean, openmrsBean);
 
 		regWs.recordMotherVisit(staffId, facilityId, date, serial, motechId,
-				diagnosis, secondDiagnosis, rdtGiven, rdtPositive, actTreated,
-				newCase, referred, comments);
+				insured, diagnosis, secondDiagnosis, rdtGiven, rdtPositive,
+				actTreated, newCase, referred, comments);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -1609,7 +1609,7 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean newCase = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
+		Boolean insured = true, newCase = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -1626,7 +1626,7 @@ public class RegistrarServiceTest {
 
 		try {
 			regWs.recordMotherVisit(staffId, facilityId, date, serial,
-					motechId, diagnosis, secondDiagnosis, rdtGiven,
+					motechId, insured, diagnosis, secondDiagnosis, rdtGiven,
 					rdtPositive, actTreated, newCase, referred, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {

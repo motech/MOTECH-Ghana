@@ -705,6 +705,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "serialNumber") String serialNumber,
 			@WebParam(name = "motechId") Integer motechId,
+			@WebParam(name = "insured") Boolean insured,
 			@WebParam(name = "diagnosis") Integer diagnosis,
 			@WebParam(name = "secondDiagnosis") Integer secondDiagnosis,
 			@WebParam(name = "rdtGiven") Boolean rdtGiven,
@@ -728,8 +729,9 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		registrarBean.recordOutpatientVisit(staff, facility.getLocation(),
-				date, patient, serialNumber, diagnosis, secondDiagnosis,
-				rdtGiven, rdtPositive, actTreated, newCase, referred, comments);
+				date, patient, serialNumber, insured, diagnosis,
+				secondDiagnosis, rdtGiven, rdtPositive, actTreated, newCase,
+				referred, comments);
 	}
 
 	@WebMethod
@@ -738,6 +740,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "serialNumber") String serialNumber,
 			@WebParam(name = "motechId") Integer motechId,
+			@WebParam(name = "insured") Boolean insured,
 			@WebParam(name = "diagnosis") Integer diagnosis,
 			@WebParam(name = "secondDiagnosis") Integer secondDiagnosis,
 			@WebParam(name = "rdtGiven") Boolean rdtGiven,
@@ -761,8 +764,9 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		registrarBean.recordOutpatientVisit(staff, facility.getLocation(),
-				date, patient, serialNumber, diagnosis, secondDiagnosis,
-				rdtGiven, rdtPositive, actTreated, newCase, referred, comments);
+				date, patient, serialNumber, insured, diagnosis,
+				secondDiagnosis, rdtGiven, rdtPositive, actTreated, newCase,
+				referred, comments);
 	}
 
 	@WebMethod

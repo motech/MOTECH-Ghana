@@ -203,9 +203,9 @@ public interface RegistrarBean {
 	@RunAsAdminUser
 	public void recordOutpatientVisit(@RunAsUserParam User staff,
 			Location facility, Date date, Patient patient, String serialNumber,
-			Integer diagnosis, Integer secondDiagnosis, Boolean rdtGiven,
-			Boolean rdtPositive, Boolean actTreated, Boolean newCase,
-			Boolean referred, String comments);
+			Boolean insured, Integer diagnosis, Integer secondDiagnosis,
+			Boolean rdtGiven, Boolean rdtPositive, Boolean actTreated,
+			Boolean newCase, Boolean referred, String comments);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSONS,
 			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
