@@ -132,6 +132,10 @@ public class RegistrarBeanRecordVisitsTest extends
 			Patient mother1 = openmrsService.getPatientByMotechId(mother1Id
 					.toString());
 			assertNotNull("Mother 1 not registered", mother1);
+			assertEquals(
+					"Registration or Pregnancy visit not added for Mother 1",
+					2, Context.getEncounterService().getEncountersByPatient(
+							mother1).size());
 
 			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
 					mother2Id, RegistrantType.PREGNANT_MOTHER,
@@ -146,6 +150,10 @@ public class RegistrarBeanRecordVisitsTest extends
 			Patient mother2 = openmrsService.getPatientByMotechId(mother2Id
 					.toString());
 			assertNotNull("Mother 2 not registered", mother2);
+			assertEquals(
+					"Registration or Pregnancy visit not added for Mother 2",
+					2, Context.getEncounterService().getEncountersByPatient(
+							mother2).size());
 
 			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
 					child1Id, RegistrantType.CHILD_UNDER_FIVE,
@@ -160,6 +168,9 @@ public class RegistrarBeanRecordVisitsTest extends
 			Patient child1 = openmrsService.getPatientByMotechId(child1Id
 					.toString());
 			assertNotNull("Child 1 not registered", child1);
+			assertEquals("Registration visit not added for Child 1", 1, Context
+					.getEncounterService().getEncountersByPatient(child1)
+					.size());
 
 			assertEquals("3 new patients not registered", 5, Context
 					.getPatientService().getAllPatients().size());
@@ -191,7 +202,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					false, true, false, false, HIVResult.NO_TEST, false, false,
 					false, date, "Comments");
 
-			assertEquals("ANC visit not added for Mother 1", 2, Context
+			assertEquals("ANC visit not added for Mother 1", 3, Context
 					.getEncounterService().getEncountersByPatient(mother1)
 					.size());
 			Date currentDueDate = regService.getActivePregnancyDueDate(mother1
@@ -211,7 +222,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					staff, facilityLocation, date, mother1, 1, 1, 1, 1, true,
 					new Integer[] { 1, 2, 3 }, 1, false, "Comments", outcomes);
 
-			assertEquals("Pregnancy delivery not added for Mother 1", 3,
+			assertEquals("Pregnancy delivery not added for Mother 1", 4,
 					Context.getEncounterService().getEncountersByPatient(
 							mother1).size());
 			Obs mother1Pregnancy = regService.getActivePregnancy(mother1
@@ -231,9 +242,9 @@ public class RegistrarBeanRecordVisitsTest extends
 			Patient child2 = openmrsService.getPatientByMotechId(child2Id
 					.toString());
 			assertNotNull("Child 2 not registered", child2);
-			assertEquals("PNC visit at birth not added for Child 2", 1, Context
-					.getEncounterService().getEncountersByPatient(child2)
-					.size());
+			assertEquals("Birth or Registration visit not added for Child 2",
+					2, Context.getEncounterService().getEncountersByPatient(
+							child2).size());
 			String[] child2Enrollments = regService
 					.getActiveMessageProgramEnrollmentNames(child2);
 			assertNotNull("Enrollments do not exist for Child 2",
@@ -251,7 +262,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					mother2, 1, 1, "House", "Community", false, true, true, 1,
 					1, false, 36.0, 100.0, "Comments");
 
-			assertEquals("PNC visit not added for Mother 2", 2, Context
+			assertEquals("PNC visit not added for Mother 2", 3, Context
 					.getEncounterService().getEncountersByPatient(mother2)
 					.size());
 
@@ -260,7 +271,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					mother2, "Mother2GeneralId", true, 1, 2, true, true, true,
 					false, false, "Comments");
 
-			assertEquals("General visit not added for Mother 2", 3, Context
+			assertEquals("General visit not added for Mother 2", 4, Context
 					.getEncounterService().getEncountersByPatient(mother2)
 					.size());
 
@@ -269,7 +280,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					currentDueDate, mother2, 1, 1, new Integer[] { 1, 2, 3 },
 					true, false, false, false, "Comments");
 
-			assertEquals("Pregnancy termination not added for Mother 2", 4,
+			assertEquals("Pregnancy termination not added for Mother 2", 5,
 					Context.getEncounterService().getEncountersByPatient(
 							mother2).size());
 			Obs mother2Pregnancy = regService.getActivePregnancy(mother2
@@ -284,7 +295,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					child2, 1, "House", "Community", true, 1, 1, true, true,
 					true, true, true, true, 25.0, 5.0, 35.0, true, "Comments");
 
-			assertEquals("CWC visit not added for Child 2", 2, Context
+			assertEquals("CWC visit not added for Child 2", 3, Context
 					.getEncounterService().getEncountersByPatient(child2)
 					.size());
 
@@ -293,7 +304,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					child2, 1, 1, "House", "Community", false, true, 7.0, 36.0,
 					true, true, 140, true, true, "Comments");
 
-			assertEquals("PNC visit not added for Child 2", 3, Context
+			assertEquals("PNC visit not added for Child 2", 4, Context
 					.getEncounterService().getEncountersByPatient(child2)
 					.size());
 
@@ -302,7 +313,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					child1, "Child1GeneralId", true, 4, 5, true, true, true,
 					false, false, "Comments");
 
-			assertEquals("General visit not added for Child 1", 1, Context
+			assertEquals("General visit not added for Child 1", 2, Context
 					.getEncounterService().getEncountersByPatient(child1)
 					.size());
 

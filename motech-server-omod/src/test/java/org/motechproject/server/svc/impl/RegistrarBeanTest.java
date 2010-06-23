@@ -106,6 +106,7 @@ public class RegistrarBeanTest extends TestCase {
 	EncounterType pregnancyTermVisitType;
 	EncounterType pregnancyDelVisitType;
 	EncounterType outpatientVisitType;
+	EncounterType registrationVisitType;
 	ConceptName immunizationConceptNameObj;
 	Concept immunizationConcept;
 	ConceptName tetanusConceptNameObj;
@@ -259,6 +260,10 @@ public class RegistrarBeanTest extends TestCase {
 		pregnancyDelVisitType = new EncounterType(7);
 		pregnancyDelVisitType
 				.setName(MotechConstants.ENCOUNTER_TYPE_PREGDELVISIT);
+
+		registrationVisitType = new EncounterType(8);
+		registrationVisitType
+				.setName(MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT);
 
 		immunizationConceptNameObj = new ConceptName(
 				MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED, Locale
@@ -485,6 +490,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		Capture<Patient> patientCap = new Capture<Patient>();
 		Capture<Encounter> pregnancyEncounterCap = new Capture<Encounter>();
+		Capture<Encounter> registrationEncounterCap = new Capture<Encounter>();
 		Capture<Obs> pregnancyObsCap = new Capture<Obs>();
 
 		expect(contextService.getPatientService()).andReturn(patientService)
@@ -588,6 +594,14 @@ public class RegistrarBeanTest extends TestCase {
 		expect(
 				obsService.saveObs(capture(pregnancyObsCap),
 						(String) anyObject())).andReturn(new Obs());
+		expect(
+				encounterService
+						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT))
+				.andReturn(registrationVisitType);
+		expect(
+				encounterService
+						.saveEncounter(capture(registrationEncounterCap)))
+				.andReturn(new Encounter());
 
 		replay(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
@@ -712,6 +726,11 @@ public class RegistrarBeanTest extends TestCase {
 		assertTrue("Due Date Obs missing", containsDueDateObs);
 		assertTrue("Due Date Confirmed Obs missing",
 				containsDueDateConfirmedObs);
+
+		Encounter registration = registrationEncounterCap.getValue();
+		assertEquals(0, registration.getAllObs(true).size());
+		assertNotNull("Registation date is null", registration
+				.getEncounterDatetime());
 	}
 
 	public void testRegisterChild() throws ParseException {
@@ -753,6 +772,7 @@ public class RegistrarBeanTest extends TestCase {
 		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
 		Capture<MessageProgramEnrollment> enrollment2Cap = new Capture<MessageProgramEnrollment>();
 		Capture<Relationship> relationshipCap = new Capture<Relationship>();
+		Capture<Encounter> registrationEncounterCap = new Capture<Encounter>();
 
 		expect(contextService.getPatientService()).andReturn(patientService)
 				.atLeastOnce();
@@ -764,6 +784,8 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getIdentifierSourceService())
 				.andReturn(idService).atLeastOnce();
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService).atLeastOnce();
 
 		expect(contextService.getAuthenticatedUser()).andReturn(new User());
 		expect(idService.getAllIdentifierSources(false)).andReturn(
@@ -848,6 +870,14 @@ public class RegistrarBeanTest extends TestCase {
 				motechService
 						.saveMessageProgramEnrollment(capture(enrollment2Cap)))
 				.andReturn(new MessageProgramEnrollment());
+		expect(
+				encounterService
+						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT))
+				.andReturn(registrationVisitType);
+		expect(
+				encounterService
+						.saveEncounter(capture(registrationEncounterCap)))
+				.andReturn(new Encounter());
 
 		replay(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
@@ -953,6 +983,11 @@ public class RegistrarBeanTest extends TestCase {
 				.getPersonId());
 		assertEquals(child.getPatientId(), relationship.getPersonB()
 				.getPersonId());
+
+		Encounter registration = registrationEncounterCap.getValue();
+		assertEquals(0, registration.getAllObs(true).size());
+		assertNotNull("Registation date is null", registration
+				.getEncounterDatetime());
 	}
 
 	public void testRegisterPerson() throws ParseException {
@@ -989,6 +1024,7 @@ public class RegistrarBeanTest extends TestCase {
 		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
 		Capture<MessageProgramEnrollment> enrollment2Cap = new Capture<MessageProgramEnrollment>();
 		Capture<Obs> refDateObsCap = new Capture<Obs>();
+		Capture<Encounter> registrationEncounterCap = new Capture<Encounter>();
 
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
@@ -1003,6 +1039,8 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getIdentifierSourceService())
 				.andReturn(idService).atLeastOnce();
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService).atLeastOnce();
 
 		expect(contextService.getAuthenticatedUser()).andReturn(new User());
 		expect(idService.getAllIdentifierSources(false)).andReturn(
@@ -1087,6 +1125,14 @@ public class RegistrarBeanTest extends TestCase {
 				motechService
 						.saveMessageProgramEnrollment(capture(enrollment2Cap)))
 				.andReturn(new MessageProgramEnrollment());
+		expect(
+				encounterService
+						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT))
+				.andReturn(registrationVisitType);
+		expect(
+				encounterService
+						.saveEncounter(capture(registrationEncounterCap)))
+				.andReturn(new Encounter());
 
 		replay(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
@@ -1176,6 +1222,11 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(refDateConcept, refDateObs.getConcept());
 		assertNotNull("Enrollment reference date value is null", refDateObs
 				.getValueDatetime());
+
+		Encounter registration = registrationEncounterCap.getValue();
+		assertEquals(0, registration.getAllObs(true).size());
+		assertNotNull("Registation date is null", registration
+				.getEncounterDatetime());
 	}
 
 	public void testEditPatient() throws ParseException {

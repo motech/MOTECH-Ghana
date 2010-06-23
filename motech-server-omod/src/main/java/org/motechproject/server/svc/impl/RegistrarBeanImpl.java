@@ -173,28 +173,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public Patient registerPatient(User staff, Location facility, Date date,
-			RegistrationMode registrationMode, Integer motechId,
-			RegistrantType registrantType, String firstName, String middleName,
-			String lastName, String preferredName, Date dateOfBirth,
-			Boolean estimatedBirthDate, Gender sex, Boolean insured,
-			String nhis, Date nhisExpires, Patient mother, Community community,
-			String address, String phoneNumber, Date expDeliveryDate,
-			Boolean deliveryDateConfirmed, Boolean enroll, Boolean consent,
-			ContactNumberType ownership, MediaType format, String language,
-			DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
-			HowLearned howLearned, Integer messagesStartWeek) {
-
-		return registerPatient(staff, facility, registrationMode, motechId,
-				registrantType, firstName, middleName, lastName, preferredName,
-				dateOfBirth, estimatedBirthDate, sex, insured, nhis,
-				nhisExpires, mother, community, address, phoneNumber,
-				expDeliveryDate, deliveryDateConfirmed, enroll, consent,
-				ownership, format, language, dayOfWeek, timeOfDay, reason,
-				howLearned, messagesStartWeek);
-	}
-
-	@Transactional
 	public Patient registerPatient(RegistrationMode registrationMode,
 			Integer motechId, RegistrantType registrantType, String firstName,
 			String middleName, String lastName, String preferredName,
@@ -209,17 +187,19 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		Location facility = getGhanaLocation();
 		User staff = contextService.getAuthenticatedUser();
+		Date date = new Date();
 
-		return registerPatient(staff, facility, registrationMode, motechId,
-				registrantType, firstName, middleName, lastName, preferredName,
-				dateOfBirth, estimatedBirthDate, sex, insured, nhis,
-				nhisExpires, mother, community, address, phoneNumber,
+		return registerPatient(staff, facility, date, registrationMode,
+				motechId, registrantType, firstName, middleName, lastName,
+				preferredName, dateOfBirth, estimatedBirthDate, sex, insured,
+				nhis, nhisExpires, mother, community, address, phoneNumber,
 				expDeliveryDate, deliveryDateConfirmed, enroll, consent,
 				ownership, format, language, dayOfWeek, timeOfDay, reason,
 				howLearned, messagesStartWeek);
 	}
 
-	private Patient registerPatient(User staff, Location facility,
+	@Transactional
+	public Patient registerPatient(User staff, Location facility, Date date,
 			RegistrationMode registrationMode, Integer motechId,
 			RegistrantType registrantType, String firstName, String middleName,
 			String lastName, String preferredName, Date dateOfBirth,
@@ -305,6 +285,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		enrollPatient(patient, community, enroll, consent, messagesStartWeek,
 				pregnancyDueDateObsId);
+
+		recordPatientRegistration(staff, facility, date, patient);
 
 		return patient;
 	}
@@ -474,6 +456,22 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				insured, nhis, nhisExpDate);
 
 		return patient;
+	}
+
+	private void recordPatientRegistration(User staff, Location facility,
+			Date date, Patient patient) {
+
+		EncounterService encounterService = contextService
+				.getEncounterService();
+
+		Encounter encounter = new Encounter();
+		encounter.setEncounterType(getPatientRegistrationEncounterType());
+		encounter.setEncounterDatetime(date);
+		encounter.setPatient(patient);
+		encounter.setLocation(facility);
+		encounter.setProvider(staff);
+
+		encounterService.saveEncounter(encounter);
 	}
 
 	private void setPatientAttributes(Patient patient, String phoneNumber,
@@ -1273,8 +1271,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			encounter.addObs(childOutcomeObs);
 
 			if (BirthOutcome.A == childOutcome.getOutcome()) {
-				Patient child = registerPatient(staff, facility, childOutcome
-						.getIdMode(), childOutcome.getMotechId(),
+				Patient child = registerPatient(staff, facility, datetime,
+						childOutcome.getIdMode(), childOutcome.getMotechId(),
 						RegistrantType.CHILD_UNDER_FIVE, childOutcome
 								.getFirstName(), null, null, null, datetime,
 						false, childOutcome.getSex(), null, null, null,
@@ -2944,6 +2942,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Ghana Child Immunization Registration", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_BIRTHVISIT,
 				"Ghana Child Birth Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT,
+				"Ghana Patient Registration Visit", admin);
 
 		log.info("Verifying Concepts Exist");
 		createConcept(MotechConstants.CONCEPT_VISIT_NUMBER, "Visit Number",
@@ -4437,6 +4437,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public EncounterType getBirthEncounterType() {
 		return contextService.getEncounterService().getEncounterType(
 				MotechConstants.ENCOUNTER_TYPE_BIRTHVISIT);
+	}
+
+	public EncounterType getPatientRegistrationEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT);
 	}
 
 	public Concept getImmunizationsOrderedConcept() {
