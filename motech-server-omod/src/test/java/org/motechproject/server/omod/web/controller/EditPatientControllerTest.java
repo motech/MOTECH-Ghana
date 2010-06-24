@@ -13,12 +13,12 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import org.motechproject.server.model.Community;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.RegistrarBean;
-import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
@@ -67,7 +67,7 @@ public class EditPatientControllerTest extends TestCase {
 
 	public void testGetRegions() {
 		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getRegions(MotechConstants.LOCATION_GHANA))
+		expect(motechService.getAllRegions())
 				.andReturn(new ArrayList<String>());
 
 		replay(contextService, motechService);
@@ -79,9 +79,7 @@ public class EditPatientControllerTest extends TestCase {
 
 	public void testGetDistricts() {
 		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(
-				motechService.getDistricts(MotechConstants.LOCATION_GHANA,
-						MotechConstants.LOCATION_UPPER_EAST)).andReturn(
+		expect(motechService.getAllDistricts()).andReturn(
 				new ArrayList<String>());
 
 		replay(contextService, motechService);
@@ -93,11 +91,8 @@ public class EditPatientControllerTest extends TestCase {
 
 	public void testGetCommunities() {
 		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(
-				motechService.getCommunities(MotechConstants.LOCATION_GHANA,
-						MotechConstants.LOCATION_UPPER_EAST,
-						MotechConstants.LOCATION_KASSENA_NANKANA_WEST))
-				.andReturn(new ArrayList<Community>());
+		expect(motechService.getAllCommunities()).andReturn(
+				new ArrayList<Community>());
 
 		replay(contextService, motechService);
 
@@ -208,11 +203,15 @@ public class EditPatientControllerTest extends TestCase {
 
 		status.setComplete();
 
-		replay(registrarBean, status);
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(motechService.getAllFacilities()).andReturn(
+				new ArrayList<Facility>());
+
+		replay(registrarBean, status, contextService, motechService);
 
 		controller.submitForm(patient, errors, model, status);
 
-		verify(registrarBean, status);
+		verify(registrarBean, status, contextService, motechService);
 
 		assertTrue("Missing success message in model", model
 				.containsAttribute("successMsg"));

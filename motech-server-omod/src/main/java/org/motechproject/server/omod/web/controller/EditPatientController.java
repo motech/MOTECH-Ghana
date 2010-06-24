@@ -35,7 +35,7 @@ import org.springframework.web.bind.support.SessionStatus;
 @Controller
 @RequestMapping(value = "/module/motechmodule/editpatient")
 @SessionAttributes("patient")
-public class EditPatientController {
+public class EditPatientController extends BasePatientController {
 
 	protected final Log log = LogFactory.getLog(EditPatientController.class);
 
@@ -44,8 +44,6 @@ public class EditPatientController {
 	@Autowired
 	@Qualifier("registrarBean")
 	private RegistrarBean registrarBean;
-
-	private ContextService contextService;
 
 	@Autowired
 	public void setContextService(ContextService contextService) {
@@ -82,23 +80,17 @@ public class EditPatientController {
 
 	@ModelAttribute("regions")
 	public List<String> getRegions() {
-		return contextService.getMotechService().getRegions(
-				MotechConstants.LOCATION_GHANA);
+		return contextService.getMotechService().getAllRegions();
 	}
 
 	@ModelAttribute("districts")
 	public List<String> getDistricts() {
-		return contextService.getMotechService().getDistricts(
-				MotechConstants.LOCATION_GHANA,
-				MotechConstants.LOCATION_UPPER_EAST);
+		return contextService.getMotechService().getAllDistricts();
 	}
 
 	@ModelAttribute("communities")
 	public List<Community> getCommunities() {
-		return contextService.getMotechService().getCommunities(
-				MotechConstants.LOCATION_GHANA,
-				MotechConstants.LOCATION_UPPER_EAST,
-				MotechConstants.LOCATION_KASSENA_NANKANA_WEST);
+		return contextService.getMotechService().getAllCommunities();
 	}
 
 	@ModelAttribute("patient")
@@ -117,6 +109,8 @@ public class EditPatientController {
 	@RequestMapping(method = RequestMethod.GET)
 	public void viewForm(@RequestParam(required = false) Integer id,
 			ModelMap model) {
+
+		populateJavascriptMaps(model);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -235,6 +229,8 @@ public class EditPatientController {
 					"motechmodule.Patient.edit.success");
 			status.setComplete();
 		}
+
+		populateJavascriptMaps(model);
 	}
 
 	void validateTextLength(Errors errors, String fieldname, String fieldValue,

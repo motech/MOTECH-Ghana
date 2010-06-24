@@ -45,7 +45,7 @@ import org.springframework.web.bind.support.SessionStatus;
 @Controller
 @RequestMapping("/module/motechmodule/demo-patient")
 @SessionAttributes("patient")
-public class DemoPatientController {
+public class DemoPatientController extends BasePatientController {
 
 	private static Log log = LogFactory.getLog(DemoPatientController.class);
 
@@ -58,8 +58,6 @@ public class DemoPatientController {
 	@Autowired
 	@Qualifier("openmrsBean")
 	private OpenmrsBean openmrsBean;
-
-	private ContextService contextService;
 
 	@Autowired
 	public void setContextService(ContextService contextService) {
@@ -95,28 +93,24 @@ public class DemoPatientController {
 
 	@ModelAttribute("regions")
 	public List<String> getRegions() {
-		return contextService.getMotechService().getRegions(
-				MotechConstants.LOCATION_GHANA);
+		return contextService.getMotechService().getAllRegions();
 	}
 
 	@ModelAttribute("districts")
 	public List<String> getDistricts() {
-		return contextService.getMotechService().getDistricts(
-				MotechConstants.LOCATION_GHANA,
-				MotechConstants.LOCATION_UPPER_EAST);
+		return contextService.getMotechService().getAllDistricts();
 	}
 
 	@ModelAttribute("communities")
 	public List<Community> getCommunities() {
-		return contextService.getMotechService().getCommunities(
-				MotechConstants.LOCATION_GHANA,
-				MotechConstants.LOCATION_UPPER_EAST,
-				MotechConstants.LOCATION_KASSENA_NANKANA_WEST);
+		return contextService.getMotechService().getAllCommunities();
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public void viewForm(@RequestParam(required = false) Integer id,
 			ModelMap model) {
+
+		populateJavascriptMaps(model);
 	}
 
 	@ModelAttribute("patient")
@@ -294,6 +288,8 @@ public class DemoPatientController {
 
 			return "redirect:/module/motechmodule/demo-success.htm";
 		}
+
+		populateJavascriptMaps(model);
 
 		return "/module/motechmodule/demo-patient";
 	}

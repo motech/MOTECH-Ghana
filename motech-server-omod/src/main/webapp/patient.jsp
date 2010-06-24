@@ -8,6 +8,8 @@
 <openmrs:htmlInclude file="/dwr/interface/DWRMotechService.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/find_duplicates.js" />
 
+<%@ include file="/WEB-INF/view/module/motechmodule/dynamic-dropdowns-script.jsp"%>
+
 <meta name="heading" content="Register Patient" />
 <%@ include file="localHeader.jsp" %>
 <h2>Register Patient</h2>
@@ -126,7 +128,7 @@
 	<tr>
 		<td class="labelcolumn"><label for="region">Region:</label></td>
 		<td>
-			<form:select path="region">
+			<form:select path="region" onchange="regionDistrictUpdated()">
 				<form:option value="" label="Select Value" />
 				<form:options items="${regions}" />
 			</form:select>
@@ -136,7 +138,7 @@
 	<tr>
 		<td class="labelcolumn"><label for="district">District:</label></td>
 		<td>
-			<form:select path="district">
+			<form:select path="district" onchange="regionDistrictUpdated()">
 				<form:option value="" label="Select Value" />
 				<form:options items="${districts}" />
 			</form:select>
