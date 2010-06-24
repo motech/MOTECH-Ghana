@@ -210,6 +210,22 @@ public class RegistrarBeanRecordVisitsTest extends
 			assertEquals("EDD not updated in ANC visit", newDueDate,
 					currentDueDate);
 
+			calendar.add(Calendar.MONTH, 1);
+			newDueDate = calendar.getTime();
+
+			// ANC Registration for Mother 1
+			regService.registerANCMother(staff, facilityLocation, date,
+					mother1, "ANC2", newDueDate, 45.2, 1, 0, false, false,
+					null, null, null, null, null, null, null);
+
+			assertEquals("ANC registration not added for Mother 1", 4, Context
+					.getEncounterService().getEncountersByPatient(mother1)
+					.size());
+			currentDueDate = regService.getActivePregnancyDueDate(mother1
+					.getPatientId());
+			assertEquals("EDD not updated in ANC registration", newDueDate,
+					currentDueDate);
+
 			// Pregnancy Delivery for Mother 1, Adding Child 2
 			List<BirthOutcomeChild> outcomes = new ArrayList<BirthOutcomeChild>();
 			outcomes.add(new BirthOutcomeChild(BirthOutcome.A,
@@ -222,7 +238,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					staff, facilityLocation, date, mother1, 1, 1, 1, 1, true,
 					new Integer[] { 1, 2, 3 }, 1, false, "Comments", outcomes);
 
-			assertEquals("Pregnancy delivery not added for Mother 1", 4,
+			assertEquals("Pregnancy delivery not added for Mother 1", 5,
 					Context.getEncounterService().getEncountersByPatient(
 							mother1).size());
 			Obs mother1Pregnancy = regService.getActivePregnancy(mother1

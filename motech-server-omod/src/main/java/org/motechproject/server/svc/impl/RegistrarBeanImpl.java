@@ -280,7 +280,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Integer pregnancyDueDateObsId = null;
 		if (registrantType == RegistrantType.PREGNANT_MOTHER) {
 			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
-					expDeliveryDate, deliveryDateConfirmed, null, null, null);
+					expDeliveryDate, deliveryDateConfirmed);
 		}
 
 		enrollPatient(patient, community, enroll, consent, messagesStartWeek,
@@ -672,7 +672,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		if (pregnancyDueDateObsId == null) {
 			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
-					expDeliveryDate, deliveryDateConfirmed, null, null, null);
+					expDeliveryDate, deliveryDateConfirmed);
 		}
 
 		enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
@@ -681,8 +681,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	private Integer registerPregnancy(User staff, Location facility,
-			Patient patient, Date dueDate, Boolean dueDateConfirmed,
-			Integer gravida, Integer parity, Double height) {
+			Patient patient, Date dueDate, Boolean dueDateConfirmed) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -720,28 +719,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					dueDateConfirmed, encounter, null);
 			pregnancyObs.addGroupMember(dueDateConfirmedObs);
 		}
-
-		if (gravida != null) {
-			Obs gravidaObs = createNumericValueObs(currentDate,
-					getGravidaConcept(), patient, facility, gravida, encounter,
-					null);
-			pregnancyObs.addGroupMember(gravidaObs);
-		}
-
-		if (parity != null) {
-			Obs parityObs = createNumericValueObs(currentDate,
-					getParityConcept(), patient, facility, parity, encounter,
-					null);
-			pregnancyObs.addGroupMember(parityObs);
-		}
-
-		if (height != null) {
-			Obs heightObs = createNumericValueObs(currentDate,
-					getHeightConcept(), patient, facility, height, encounter,
-					null);
-			pregnancyObs.addGroupMember(heightObs);
-		}
-
 		obsService.saveObs(pregnancyObs, null);
 
 		if (dueDateObs != null) {
@@ -761,7 +738,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		if (pregnancyDueDateObsId == null) {
 			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
-					estDeliveryDate, null, null, null, null);
+					estDeliveryDate, null);
 		}
 
 		enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
@@ -800,16 +777,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		EncounterService encounterService = contextService
 				.getEncounterService();
 
-		Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
-		if (pregnancyDueDateObsId == null) {
-			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
-					estDeliveryDate, null, gravida, parity, height);
-		}
-
-		enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
-				phoneNumber, format, language, dayOfWeek, timeOfDay, null,
-				howLearned, null, pregnancyDueDateObsId);
-
 		Encounter encounter = new Encounter();
 		encounter.setEncounterType(getANCRegistrationEncounterType());
 		encounter.setEncounterDatetime(date);
@@ -823,7 +790,46 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					ancRegNumber, encounter, null);
 			encounter.addObs(ancRegNumObs);
 		}
+		if (gravida != null) {
+			Obs gravidaObs = createNumericValueObs(date, getGravidaConcept(),
+					patient, facility, gravida, encounter, null);
+			encounter.addObs(gravidaObs);
+		}
+
+		if (parity != null) {
+			Obs parityObs = createNumericValueObs(date, getParityConcept(),
+					patient, facility, parity, encounter, null);
+			encounter.addObs(parityObs);
+		}
+
+		if (height != null) {
+			Obs heightObs = createNumericValueObs(date, getHeightConcept(),
+					patient, facility, height, encounter, null);
+			encounter.addObs(heightObs);
+		}
 		encounterService.saveEncounter(encounter);
+
+		Integer pregnancyDueDateObsId = null;
+		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
+		if (pregnancyObs == null) {
+			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
+					estDeliveryDate, null);
+		} else if (estDeliveryDate != null) {
+			Obs pregnancyDueDateObs = getActivePregnancyDueDateObs(patient
+					.getPatientId(), pregnancyObs);
+			if (pregnancyDueDateObs != null) {
+				pregnancyDueDateObsId = updatePregnancyDueDateObs(pregnancyObs,
+						pregnancyDueDateObs, estDeliveryDate, encounter);
+			} else {
+				log.warn("Cannot update pregnancy due date, "
+						+ "no active pregnancy due date found, patient id="
+						+ patient.getPatientId());
+			}
+		}
+
+		enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
+				phoneNumber, format, language, dayOfWeek, timeOfDay, null,
+				howLearned, null, pregnancyDueDateObsId);
 	}
 
 	@Transactional
