@@ -56,6 +56,7 @@ public class WebModelConverterImpl implements WebModelConverter {
 				webPatient.setFirstName(name.getGivenName());
 			}
 		}
+		webPatient.setMiddleName(patient.getMiddleName());
 		webPatient.setLastName(patient.getFamilyName());
 		webPatient.setBirthDate(patient.getBirthdate());
 		webPatient.setBirthDateEst(patient.getBirthdateEstimated());
