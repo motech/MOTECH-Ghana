@@ -138,7 +138,7 @@
 <fieldset><legend>Enrollment Information</legend>
 <table>
 	<tr>
-		<td class="labelcolumn"><label for="enroll">Registered in Info Service:</label></td>
+		<td class="labelcolumn"><label for="enroll">Enrolled in Mobile Midwife:</label></td>
 		<td>
 			<form:select path="enroll">
 				<form:option value="" label="Select Value" />

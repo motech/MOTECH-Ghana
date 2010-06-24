@@ -15,7 +15,7 @@
 <h2>Register Patient</h2>
 <div class="instructions">
 	This form allows you to create a new patient record and 
-	optionally enroll the patient in the demo information service.
+	optionally enroll the patient in the demo Mobile Midwife service.
 </div>
 <form:form method="post" modelAttribute="patient" onsubmit="return confirmRegistrationOnMatches()">
 <span style="color:green;">
@@ -145,10 +145,10 @@
 	</tr>
 </table>
 </fieldset>
-<fieldset><legend>Information Service Enrollment</legend>
+<fieldset><legend>Mobile Midwife Enrollment</legend>
 <table>
 	<tr>
-		<td class="labelcolumn"><label for="enroll">Register in Info Service:</label></td>
+		<td class="labelcolumn"><label for="enroll">Enroll in Mobile Midwife:</label></td>
 		<td>
 			<form:select path="enroll">
 				<form:option value="" label="Select Value" />
@@ -225,7 +225,7 @@
 		<td><form:errors path="timeOfDay" cssClass="error" /></td>
 	</tr>
 	<tr>
-		<td class="labelcolumn"><label for="interestReason">Reason for interest in info service:</label></td>
+		<td class="labelcolumn"><label for="interestReason">Reason for interest in Mobile Midwife:</label></td>
 		<td>
 			<form:select path="interestReason">
 				<form:option value="" label="Select Value" />
@@ -241,7 +241,7 @@
 		<td><form:errors path="interestReason" cssClass="error" /></td>
 	</tr>
 	<tr>
-		<td class="labelcolumn"><label for="howLearned">How they learned of the service:</label></td>
+		<td class="labelcolumn"><label for="howLearned">How they learned of Mobile Midwife:</label></td>
 		<td>
 			<form:select path="howLearned">
 				<form:option value="" label="Select Value" />

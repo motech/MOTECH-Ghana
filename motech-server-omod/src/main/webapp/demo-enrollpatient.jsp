@@ -9,7 +9,7 @@
 <div class="instructions">
 	This form allows you to enroll an existing patient into a messaging program
 	that is sensitive to sms input. To enroll a patient, simply enter the 
-	existing GHS Registration Number of the patient you wish to enroll.
+	existing MoTeCH ID of the patient you wish to enroll.
 	
 	<em>
 		NOTE: To stop the program you'll need to enter a tetanus observation
@@ -28,7 +28,7 @@
 		<td><form:errors path="motechId" cssClass="error" /></td>
 	</tr>
 	<tr>
-		<td><label for="consent">Info Service Terms Consent:</label></td>
+		<td><label for="consent">Mobile Midwife Terms Consent:</label></td>
 		<td><form:checkbox path="consent" /></td>
 		<td><form:errors path="consent" cssClass="error" /></td>
 	</tr>
