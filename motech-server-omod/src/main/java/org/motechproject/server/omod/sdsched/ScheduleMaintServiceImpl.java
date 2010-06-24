@@ -39,6 +39,7 @@ public class ScheduleMaintServiceImpl implements ScheduleMaintService {
 					.getResource(RESOURCE_NAME);
 		} catch (ClassCastException e) {
 			log.debug("Cannot cast affected patients", e);
+			clearAffectedPatients();
 		}
 		return patients;
 	}
