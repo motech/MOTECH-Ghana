@@ -484,7 +484,7 @@ public class RegistrarBeanTest extends TestCase {
 		Facility facility = new Facility();
 		Location facilityLocation = new Location(2);
 		facilityLocation
-				.setCountyDistrict(MotechConstants.LOCATION_KASSENA_NANKANA_WEST);
+				.setCountyDistrict(MotechConstants.LOCATION_KASSENA_NANKANA);
 		facility.setLocation(facilityLocation);
 		community.setFacility(facility);
 
@@ -1595,6 +1595,7 @@ public class RegistrarBeanTest extends TestCase {
 		expect(
 				obsService.saveObs(capture(pregnancyObsCap),
 						(String) anyObject())).andReturn(new Obs());
+		expect(motechService.getCommunityByPatient(patient)).andReturn(null);
 
 		replay(contextService, patientService, motechService, personService,
 				locationService, encounterService, obsService, conceptService,

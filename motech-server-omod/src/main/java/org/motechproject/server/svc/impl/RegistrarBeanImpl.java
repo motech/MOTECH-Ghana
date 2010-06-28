@@ -333,30 +333,17 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		} else if (messagesStartWeek != null) {
 			infoMessageProgramName = "Weekly Info Pregnancy Message Program";
 
-			if (messagesStartWeek != null && enrollPatient) {
-				ObsService obsService = contextService.getObsService();
-
-				Location ghanaLocation = getGhanaLocation();
-				Date currentDate = new Date();
-
-				Calendar calendar = Calendar.getInstance();
-				// Convert weeks to days, plus one day
-				calendar.add(Calendar.DATE, (messagesStartWeek * -7) + 1);
-				Date referenceDate = calendar.getTime();
-
-				Obs refDateObs = createDateValueObs(currentDate,
-						getEnrollmentReferenceDateConcept(), patient,
-						ghanaLocation, referenceDate, null, null);
-
-				refDateObs = obsService.saveObs(refDateObs, null);
-				referenceDateObsId = refDateObs.getObsId();
+			if (enrollPatient) {
+				referenceDateObsId = storeMessagesWeekObs(patient,
+						messagesStartWeek);
 			}
 		}
 
-		if (enrollPatient && infoMessageProgramName != null) {
-
-			addMessageProgramEnrollment(patient.getPatientId(),
-					infoMessageProgramName, referenceDateObsId);
+		if (enrollPatient) {
+			if (infoMessageProgramName != null) {
+				addMessageProgramEnrollment(patient.getPatientId(),
+						infoMessageProgramName, referenceDateObsId);
+			}
 
 			// Lookup patient community if not provided
 			// Only enroll patient in care messages if in KNDW district
@@ -374,6 +361,26 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 						"Expected Care Message Program", null);
 			}
 		}
+	}
+
+	private Integer storeMessagesWeekObs(Patient patient,
+			Integer messagesStartWeek) {
+		ObsService obsService = contextService.getObsService();
+
+		Location ghanaLocation = getGhanaLocation();
+		Date currentDate = new Date();
+
+		Calendar calendar = Calendar.getInstance();
+		// Convert weeks to days, plus one day
+		calendar.add(Calendar.DATE, (messagesStartWeek * -7) + 1);
+		Date referenceDate = calendar.getTime();
+
+		Obs refDateObs = createDateValueObs(currentDate,
+				getEnrollmentReferenceDateConcept(), patient, ghanaLocation,
+				referenceDate, null, null);
+
+		refDateObs = obsService.saveObs(refDateObs, null);
+		return refDateObs.getObsId();
 	}
 
 	@Transactional
