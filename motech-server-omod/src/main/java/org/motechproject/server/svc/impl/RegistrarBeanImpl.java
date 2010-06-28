@@ -31,6 +31,7 @@ import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechIdVerhoeffValidator;
 import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.omod.VerhoeffValidator;
 import org.motechproject.server.omod.tasks.MessageProgramUpdateTask;
 import org.motechproject.server.omod.tasks.NotificationTask;
 import org.motechproject.server.omod.tasks.StaffCareMessagingTask;
@@ -4912,6 +4913,20 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		boolean isValid = false;
 		try {
 			isValid = validator.isValid(motechIdString);
+		} catch (Exception e) {
+		}
+		return isValid;
+	}
+
+	public boolean isValidIdCheckDigit(Integer idWithCheckDigit) {
+		if (idWithCheckDigit == null) {
+			return false;
+		}
+		String idWithCheckDigitString = idWithCheckDigit.toString();
+		VerhoeffValidator validator = new VerhoeffValidator();
+		boolean isValid = false;
+		try {
+			isValid = validator.isValid(idWithCheckDigitString);
 		} catch (Exception e) {
 		}
 		return isValid;

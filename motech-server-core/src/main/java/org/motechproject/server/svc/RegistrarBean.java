@@ -418,4 +418,6 @@ public interface RegistrarBean {
 	public Community getCommunityByPatient(Patient patient);
 
 	public boolean isValidMotechIdCheckDigit(Integer motechId);
+
+	public boolean isValidIdCheckDigit(Integer idWithCheckDigit);
 }

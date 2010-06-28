@@ -1092,6 +1092,11 @@ public class RegistrarWebService implements RegistrarService {
 					fieldName));
 			return null;
 		}
+		if (!registrarBean.isValidIdCheckDigit(staffId)) {
+			errors.add(messageBean.getMessage("motechmodule.ws.invalid",
+					fieldName));
+			return null;
+		}
 		User staff = openmrsBean.getStaffBySystemId(staffId.toString());
 		if (staff == null) {
 			errors.add(messageBean.getMessage("motechmodule.ws.notfound",
@@ -1128,6 +1133,11 @@ public class RegistrarWebService implements RegistrarService {
 			ValidationErrors errors, String fieldName) {
 		if (facilityId == null) {
 			errors.add(messageBean.getMessage("motechmodule.ws.missing",
+					fieldName));
+			return null;
+		}
+		if (!registrarBean.isValidIdCheckDigit(facilityId)) {
+			errors.add(messageBean.getMessage("motechmodule.ws.invalid",
 					fieldName));
 			return null;
 		}
