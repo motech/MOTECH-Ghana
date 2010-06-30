@@ -196,15 +196,15 @@ public class RegistrarBeanImplTest extends TestCase {
 
 	public void testAdjustDateBlackout() {
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.HOUR_OF_DAY, 7);
 		calendar.set(Calendar.MINUTE, 13);
 		calendar.set(Calendar.SECOND, 54);
 		Date messageDate = calendar.getTime();
 
-		Time blackoutStart = Time.valueOf("23:00:00");
-		Time blackoutEnd = Time.valueOf("06:00:00");
+		Time blackoutStart = Time.valueOf("06:00:00");
+		Time blackoutEnd = Time.valueOf("08:00:00");
 
-		int hour = 6;
+		int hour = 8;
 		int minute = 0;
 		int second = 0;
 
@@ -224,8 +224,7 @@ public class RegistrarBeanImplTest extends TestCase {
 
 		assertEquals(calendar.get(Calendar.YEAR), prefCal.get(Calendar.YEAR));
 		assertEquals(calendar.get(Calendar.MONTH), prefCal.get(Calendar.MONTH));
-		assertFalse("Day not updated", calendar.get(Calendar.DATE) == prefCal
-				.get(Calendar.DATE));
+		assertEquals(calendar.get(Calendar.DATE), prefCal.get(Calendar.DATE));
 		assertFalse("Hour not updated",
 				calendar.get(Calendar.HOUR_OF_DAY) == prefCal
 						.get(Calendar.HOUR_OF_DAY));
