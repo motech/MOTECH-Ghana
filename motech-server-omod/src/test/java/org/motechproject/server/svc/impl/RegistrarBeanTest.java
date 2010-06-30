@@ -66,6 +66,7 @@ import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
 import org.openmrs.module.idgen.IdentifierSource;
 import org.openmrs.module.idgen.LogEntry;
+import org.openmrs.module.idgen.SequentialIdentifierGenerator;
 import org.openmrs.module.idgen.service.IdentifierSourceService;
 import org.openmrs.util.OpenmrsConstants;
 
@@ -84,9 +85,11 @@ public class RegistrarBeanTest extends TestCase {
 	MotechService motechService;
 	IdentifierSourceService idService;
 
+	SequentialIdentifierGenerator staffIdGenerator;
+
 	Location ghanaLocation;
 	PatientIdentifierType motechIdType;
-	PersonAttributeType staffIdAttributeType;
+	PatientIdentifierType staffIdType;
 	PersonAttributeType phoneAttributeType;
 	PersonAttributeType nhisAttributeType;
 	PersonAttributeType languageAttributeType;
@@ -190,6 +193,13 @@ public class RegistrarBeanTest extends TestCase {
 
 		motechIdType = new PatientIdentifierType(1);
 		motechIdType.setName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
+
+		staffIdType = new PatientIdentifierType(2);
+		staffIdType.setName(MotechConstants.PATIENT_IDENTIFIER_STAFF_ID);
+
+		staffIdGenerator = new SequentialIdentifierGenerator();
+		staffIdGenerator.setName(MotechConstants.IDGEN_SEQ_ID_GEN_STAFF_ID);
+		staffIdGenerator.setIdentifierType(staffIdType);
 
 		phoneAttributeType = new PersonAttributeType(2);
 		phoneAttributeType
@@ -422,11 +432,14 @@ public class RegistrarBeanTest extends TestCase {
 		conceptService = null;
 		motechService = null;
 		idService = null;
+
+		staffIdGenerator = null;
 	}
 
 	public void testRegisterStaff() {
 
 		String firstName = "Jenny", lastName = "Jones", phone = "12078675309", staffType = "CHO";
+		String generatedStaffId = "27";
 
 		Capture<User> staffCap = new Capture<User>();
 		Capture<String> passCap = new Capture<String>();
@@ -435,6 +448,10 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
+		expect(contextService.getPatientService()).andReturn(patientService)
+				.atLeastOnce();
+		expect(contextService.getIdentifierSourceService())
+				.andReturn(idService).atLeastOnce();
 
 		expect(
 				personService
@@ -443,16 +460,29 @@ public class RegistrarBeanTest extends TestCase {
 		expect(userService.getRole(OpenmrsConstants.PROVIDER_ROLE)).andReturn(
 				providerRole);
 
-		expect(userService.getAllUsers()).andReturn(new ArrayList<User>());
+		expect(
+				patientService
+						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_STAFF_ID))
+				.andReturn(staffIdType);
+		List<IdentifierSource> generatorList = new ArrayList<IdentifierSource>();
+		generatorList.add(staffIdGenerator);
+		expect(idService.getAllIdentifierSources(false)).andReturn(
+				generatorList);
+		expect(
+				idService.generateIdentifier(staffIdGenerator,
+						MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID_GEN_COMMENT))
+				.andReturn(generatedStaffId);
 
 		expect(userService.saveUser(capture(staffCap), capture(passCap)))
 				.andReturn(new User());
 
-		replay(contextService, userService, personService);
+		replay(contextService, userService, personService, patientService,
+				idService);
 
 		regBean.registerStaff(firstName, lastName, phone, staffType);
 
-		verify(contextService, userService, personService);
+		verify(contextService, userService, personService, patientService,
+				idService);
 
 		User staff = staffCap.getValue();
 		String password = passCap.getValue();
@@ -460,6 +490,7 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(lastName, staff.getFamilyName());
 		assertEquals(phone, staff.getAttribute(phoneAttributeType).getValue());
 		assertTrue(password.matches("[a-zA-Z0-9]{8}"));
+		assertEquals(generatedStaffId, staff.getSystemId());
 	}
 
 	public void testRegisterPregnantMother() throws ParseException {

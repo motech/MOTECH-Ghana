@@ -22,7 +22,6 @@ import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
-import org.openmrs.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -56,25 +55,6 @@ public class MotechModuleFormController {
 
 	public void setRegistrarBean(RegistrarBean registrarBean) {
 		this.registrarBean = registrarBean;
-	}
-
-	@RequestMapping(value = "/module/motechmodule/staff", method = RequestMethod.GET)
-	public String viewStaffForm(ModelMap model) {
-		model.addAttribute("staffTypes", registrarBean.getStaffTypes());
-		return "/module/motechmodule/staff";
-	}
-
-	@RequestMapping(value = "/module/motechmodule/staff", method = RequestMethod.POST)
-	public String registerStaff(@RequestParam("firstName") String firstName,
-			@RequestParam("lastName") String lastName,
-			@RequestParam("phone") String phone,
-			@RequestParam("type") String type, ModelMap model) {
-		log.debug("Register Staff");
-		User user = registrarBean.registerStaff(firstName, lastName, phone,
-				type);
-		model.addAttribute("successMsg", "Added user: name = "
-				+ user.getPersonName() + ", system id = " + user.getSystemId());
-		return "/module/motechmodule/staff";
 	}
 
 	@RequestMapping("/module/motechmodule/viewdata")

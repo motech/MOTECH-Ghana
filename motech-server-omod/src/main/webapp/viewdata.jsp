@@ -31,7 +31,7 @@
 	<h3>Staff</h3>
 	<c:choose>
 		<c:when test="${not empty allStaff}">
-		<table><tr><th>Id</th><th>First Name</th><th>Last Name</th><th>System Id</th></tr>
+		<table><tr><th>Id</th><th>First Name</th><th>Last Name</th><th>Staff Id</th></tr>
 		<c:forEach items="${allStaff}" var="staff">
 			<tr><td>${staff.userId}</td><td>${staff.givenName}</td><td>${staff.familyName}</td><td>${staff.systemId}</td></tr>
 		</c:forEach>

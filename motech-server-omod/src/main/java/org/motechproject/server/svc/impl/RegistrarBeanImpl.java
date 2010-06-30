@@ -127,34 +127,27 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		UserService userService = contextService.getUserService();
 
-		// User creating other users must have atleast the Privileges to be
-		// given
-
-		// TODO: Create staff as person and use same User for all actions ?
 		User staff = new User();
 
-		// TODO: Remove this uber-hack with something more correct/efficient
-		staff.setSystemId(generateSystemId());
+		// Set staff id to generated id check digit
+		staff.setSystemId(generateStaffId());
 
 		staff.setGender(MotechConstants.GENDER_UNKNOWN_OPENMRS);
 
 		PersonName name = new PersonName(firstName, null, lastName);
 		staff.addName(name);
 
-		// Must be created previously through API or UI to lookup
-		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
-		staff.addAttribute(new PersonAttribute(phoneNumberAttrType, phone));
+		if (phone != null) {
+			PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
+			staff.addAttribute(new PersonAttribute(phoneNumberAttrType, phone));
+		}
 
-		// TODO: Create staff role with proper privileges
+		// No privileges given to staff user
 		Role role = userService.getRole(OpenmrsConstants.PROVIDER_ROLE);
 		staff.addRole(role);
 
+		// Generate random password for new staff user
 		return userService.saveUser(staff, generatePassword(8));
-	}
-
-	private String generateSystemId() {
-		UserService userService = contextService.getUserService();
-		return Integer.toString(userService.getAllUsers().size() + 1);
 	}
 
 	private char[] PASSCHARS = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
@@ -3316,21 +3309,39 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	private String generateMotechId() {
-		String motechId = null;
 		PatientIdentifierType motechIdType = getMotechPatientIdType();
+		return generateId(MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID,
+				motechIdType);
+	}
+
+	private String generateStaffId() {
+		PatientIdentifierType staffIdType = getStaffPatientIdType();
+		return generateId(MotechConstants.IDGEN_SEQ_ID_GEN_STAFF_ID,
+				staffIdType);
+	}
+
+	private String generateId(String generatorName,
+			PatientIdentifierType identifierType) {
+		String id = null;
+		if (generatorName == null || identifierType == null) {
+			log.error("Unable to generate ID using " + generatorName + " for "
+					+ identifierType);
+			return null;
+		}
 		try {
 			IdentifierSourceService idSourceService = contextService
 					.getIdentifierSourceService();
 
 			SequentialIdentifierGenerator idGenerator = getSeqIdGenerator(
-					MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID, motechIdType);
-			motechId = idSourceService.generateIdentifier(idGenerator,
+					generatorName, identifierType);
+			id = idSourceService.generateIdentifier(idGenerator,
 					MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID_GEN_COMMENT);
 
 		} catch (Exception e) {
-			log.error("Error generating Motech Id using Idgen module", e);
+			log.error("Error generating " + identifierType + " using "
+					+ generatorName + " in Idgen module", e);
 		}
-		return motechId;
+		return id;
 	}
 
 	private void excludeIdForGenerator(User staff, String motechId) {
@@ -3377,8 +3388,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				}
 			}
 		} catch (Exception e) {
-			log.error("Error retrieving Patient Id generator in Idgen module",
-					e);
+			log.error("Error retrieving " + name + " for " + identifierType
+					+ " in Idgen module", e);
 		}
 		return idGenerator;
 	}
@@ -4326,6 +4337,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return contextService.getPatientService()
 				.getPatientIdentifierTypeByName(
 						MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
+	}
+
+	public PatientIdentifierType getStaffPatientIdType() {
+		return contextService.getPatientService()
+				.getPatientIdentifierTypeByName(
+						MotechConstants.PATIENT_IDENTIFIER_STAFF_ID);
+	}
+
+	public PatientIdentifierType getFacilityPatientIdType() {
+		return contextService.getPatientService()
+				.getPatientIdentifierTypeByName(
+						MotechConstants.PATIENT_IDENTIFIER_FACILITY_ID);
 	}
 
 	public PersonAttributeType getPhoneNumberAttributeType() {

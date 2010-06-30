@@ -17,6 +17,8 @@ public final class MotechConstants {
 	public static final String PERSON_ATTRIBUTE_HOW_LEARNED = "How learned of service";
 	public static final String PERSON_ATTRIBUTE_INTEREST_REASON = "Reason interested in service";
 	public static final String PATIENT_IDENTIFIER_MOTECH_ID = "MoTeCH Id";
+	public static final String PATIENT_IDENTIFIER_STAFF_ID = "MoTeCH Staff Id";
+	public static final String PATIENT_IDENTIFIER_FACILITY_ID = "MoTeCH Facility Id";
 	public static final String LOCATION_GHANA = "Ghana";
 	public static final String LOCATION_UPPER_EAST = "Upper East";
 	public static final String LOCATION_KASSENA_NANKANA = "Kassena-Nankana";
@@ -111,7 +113,8 @@ public final class MotechConstants {
 	public static final String GLOBAL_PROPERTY_DAY_OF_WEEK = "motechmodule.patient_message_delivery_day_of_week";
 	public static final String GLOBAL_PROPERTY_TIME_OF_DAY = "motechmodule.patient_message_delivery_time_of_day";
 	public static final String IDGEN_SEQ_ID_GEN_MOTECH_ID = "MoTeCH ID Generator";
-	public static final String IDGEN_SEQ_ID_GEN_FIRST_MOTECH_ID_BASE = "123456";
+	public static final String IDGEN_SEQ_ID_GEN_STAFF_ID = "MoTeCH Staff ID Generator";
+	public static final String IDGEN_SEQ_ID_GEN_FACILITY_ID = "MoTeCH Facility ID Generator";
 	public static final String IDGEN_SEQ_ID_GEN_MOTECH_ID_GEN_COMMENT = "AUTO GENERATED";
 	public static final String IDGEN_SEQ_ID_GEN_MOTECH_ID_MANUAL_COMMENT = "MANUAL ENTRY";
 	public static final String TIME_FORMAT_DELIVERY_TIME = "HH:mm";

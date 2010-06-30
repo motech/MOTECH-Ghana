@@ -17,7 +17,6 @@ import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
-import org.openmrs.User;
 import org.springframework.ui.ModelMap;
 
 public class MotechModuleFormControllerTest extends TestCase {
@@ -41,24 +40,6 @@ public class MotechModuleFormControllerTest extends TestCase {
 	protected void tearDown() {
 		controller = null;
 		registrarBean = null;
-	}
-
-	public void testRegiserStaff() throws Exception {
-		String firstName = "First Name", lastName = "Last Name", phone = "7777777777", staffType = "CHO";
-
-		User createdUser = new User();
-		expect(
-				registrarBean.registerStaff(firstName, lastName, phone,
-						staffType)).andReturn(createdUser);
-
-		replay(registrarBean);
-
-		ModelMap model = new ModelMap();
-		controller.registerStaff(firstName, lastName, phone, staffType, model);
-
-		verify(registrarBean);
-
-		assertNotNull(model.get("successMsg"));
 	}
 
 	public void testViewBlackoutForm() throws ParseException {
