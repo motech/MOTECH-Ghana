@@ -30,6 +30,7 @@
 	<tr>
 		<td><form:label path="phoneNumber">Phone Number:</form:label></td>
 		<td><form:input path="phoneNumber" maxlength="50"/></td>
+		<td><form:errors path="phoneNumber" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td colspan="2"><input type="submit" /></td>

@@ -150,7 +150,7 @@ public class EditPatientControllerTest extends TestCase {
 		Integer patientId = 1, communityId = 11112;
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String region = "Region", district = "District", address = "Address", nhis = "1234DEF";
-		String phoneNumber = "12075555555";
+		String phoneNumber = "0123456789";
 		Boolean birthDateEst = true, enroll = true, consent = true, insured = true;
 		Date date = new Date();
 		Gender sex = Gender.FEMALE;

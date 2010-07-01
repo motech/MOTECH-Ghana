@@ -69,6 +69,12 @@ public class StaffController {
 		validateTextLength(errors, "phone", staff.getPhone(),
 				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
 
+		if (staff.getPhone() != null
+				&& !staff.getPhone().matches(
+						MotechConstants.PHONE_REGEX_PATTERN)) {
+			errors.rejectValue("phone", "motechmodule.phoneNumber.invalid");
+		}
+
 		if (!errors.hasErrors()) {
 			User user = registrarBean.registerStaff(staff.getFirstName(), staff
 					.getLastName(), staff.getPhone(), staff.getType());

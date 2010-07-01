@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.util.MotechConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -46,7 +47,7 @@ public class EditFacilityController {
 		}
 		return facility;
 	}
-	
+
 	@RequestMapping(value = "/module/motechmodule/editfacility", method = RequestMethod.GET)
 	public String viewFacilityForm(
 			@RequestParam(required = true) Integer facilityId) {
@@ -58,9 +59,19 @@ public class EditFacilityController {
 			ModelMap model, SessionStatus status) {
 
 		log.debug("Saving Facility");
-		contextService.getMotechService().saveFacility(facility);
-		status.setComplete();
 
-		return "redirect:/module/motechmodule/facility.form";
+		if (facility.getPhoneNumber() != null
+				&& !facility.getPhoneNumber().matches(
+						MotechConstants.PHONE_REGEX_PATTERN)) {
+			errors.rejectValue("phoneNumber",
+					"motechmodule.phoneNumber.invalid");
+		}
+
+		if (!errors.hasErrors()) {
+			contextService.getMotechService().saveFacility(facility);
+			status.setComplete();
+			return "redirect:/module/motechmodule/facility.form";
+		}
+		return "/module/motechmodule/editfacility";
 	}
 }
