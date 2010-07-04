@@ -178,7 +178,8 @@ public class MessageProgramUpdateTaskTest extends
 
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(date);
-			calendar.add(Calendar.DATE, 2 * -7);
+			int slush = 2;
+			calendar.add(Calendar.DATE, -(2 * 7 + slush));
 			refDateObs.setValueDatetime(calendar.getTime());
 			refDateObs = Context.getObsService().saveObs(refDateObs,
 					"New date in future");
