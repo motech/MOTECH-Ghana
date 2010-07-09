@@ -482,11 +482,13 @@
 		<author>Matthew Blanchette</author>
 		<date>July 9 2010</date>
 		<description>
-			Inserting community.
+			Inserting community and updating facility name.
 		</description>
 		<sql>
 			insert into motechmodule_community (community_id,name,facility_id) values
 			(11423,'Abulo',(select id from motechmodule_facility where facility_id = 11425));
+			
+			update location set name = 'Kajelo CHPS', neighborhood_cell = 'Kajelo CHPS' where name = 'Kejelo CHPS';
 		</sql>
 	</diff>
 	
