@@ -111,7 +111,7 @@ public class MessageProgramUpdateTaskTest extends
 					"lastName", "prefName", birthdate, false, Gender.MALE,
 					true, "nhis", null, null, null, "Address", "1111111111",
 					null, null, true, true, ContactNumberType.PERSONAL,
-					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
+					MediaType.VOICE, "language", DayOfWeek.MONDAY, date,
 					InterestReason.KNOW_MORE_PREGNANCY_CHILDBIRTH,
 					HowLearned.FRIEND, 5);
 

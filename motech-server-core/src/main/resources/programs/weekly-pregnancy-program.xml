@@ -18,6 +18,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.5" />
+				<property name="messageKeyA" value="pregnancy.week.5.a" />
+				<property name="messageKeyB" value="pregnancy.week.5.b" />
+				<property name="messageKeyC" value="pregnancy.week.5.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -47,6 +50,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.6" />
+				<property name="messageKeyA" value="pregnancy.week.6.a" />
+				<property name="messageKeyB" value="pregnancy.week.6.b" />
+				<property name="messageKeyC" value="pregnancy.week.6.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -76,6 +82,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.7" />
+				<property name="messageKeyA" value="pregnancy.week.7.a" />
+				<property name="messageKeyB" value="pregnancy.week.7.b" />
+				<property name="messageKeyC" value="pregnancy.week.7.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -105,6 +114,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.8" />
+				<property name="messageKeyA" value="pregnancy.week.8.a" />
+				<property name="messageKeyB" value="pregnancy.week.8.b" />
+				<property name="messageKeyC" value="pregnancy.week.8.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -134,6 +146,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.9" />
+				<property name="messageKeyA" value="pregnancy.week.9.a" />
+				<property name="messageKeyB" value="pregnancy.week.9.b" />
+				<property name="messageKeyC" value="pregnancy.week.9.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -163,6 +178,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.10" />
+				<property name="messageKeyA" value="pregnancy.week.10.a" />
+				<property name="messageKeyB" value="pregnancy.week.10.b" />
+				<property name="messageKeyC" value="pregnancy.week.10.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -192,6 +210,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.11" />
+				<property name="messageKeyA" value="pregnancy.week.11.a" />
+				<property name="messageKeyB" value="pregnancy.week.11.b" />
+				<property name="messageKeyC" value="pregnancy.week.11.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -221,6 +242,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.12" />
+				<property name="messageKeyA" value="pregnancy.week.12.a" />
+				<property name="messageKeyB" value="pregnancy.week.12.b" />
+				<property name="messageKeyC" value="pregnancy.week.12.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -250,6 +274,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.13" />
+				<property name="messageKeyA" value="pregnancy.week.13.a" />
+				<property name="messageKeyB" value="pregnancy.week.13.b" />
+				<property name="messageKeyC" value="pregnancy.week.13.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -279,6 +306,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.14" />
+				<property name="messageKeyA" value="pregnancy.week.14.a" />
+				<property name="messageKeyB" value="pregnancy.week.14.b" />
+				<property name="messageKeyC" value="pregnancy.week.14.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -308,6 +338,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.15" />
+				<property name="messageKeyA" value="pregnancy.week.15.a" />
+				<property name="messageKeyB" value="pregnancy.week.15.b" />
+				<property name="messageKeyC" value="pregnancy.week.15.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -337,6 +370,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.16" />
+				<property name="messageKeyA" value="pregnancy.week.16.a" />
+				<property name="messageKeyB" value="pregnancy.week.16.b" />
+				<property name="messageKeyC" value="pregnancy.week.16.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -366,6 +402,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.17" />
+				<property name="messageKeyA" value="pregnancy.week.17.a" />
+				<property name="messageKeyB" value="pregnancy.week.17.b" />
+				<property name="messageKeyC" value="pregnancy.week.17.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -395,6 +434,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.18" />
+				<property name="messageKeyA" value="pregnancy.week.18.a" />
+				<property name="messageKeyB" value="pregnancy.week.18.b" />
+				<property name="messageKeyC" value="pregnancy.week.18.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -424,6 +466,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.19" />
+				<property name="messageKeyA" value="pregnancy.week.19.a" />
+				<property name="messageKeyB" value="pregnancy.week.19.b" />
+				<property name="messageKeyC" value="pregnancy.week.19.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -453,6 +498,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.20" />
+				<property name="messageKeyA" value="pregnancy.week.20.a" />
+				<property name="messageKeyB" value="pregnancy.week.20.b" />
+				<property name="messageKeyC" value="pregnancy.week.20.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -482,6 +530,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.21" />
+				<property name="messageKeyA" value="pregnancy.week.21.a" />
+				<property name="messageKeyB" value="pregnancy.week.21.b" />
+				<property name="messageKeyC" value="pregnancy.week.21.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -511,6 +562,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.22" />
+				<property name="messageKeyA" value="pregnancy.week.22.a" />
+				<property name="messageKeyB" value="pregnancy.week.22.b" />
+				<property name="messageKeyC" value="pregnancy.week.22.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -540,6 +594,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.23" />
+				<property name="messageKeyA" value="pregnancy.week.23.a" />
+				<property name="messageKeyB" value="pregnancy.week.23.b" />
+				<property name="messageKeyC" value="pregnancy.week.23.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -569,6 +626,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.24" />
+				<property name="messageKeyA" value="pregnancy.week.24.a" />
+				<property name="messageKeyB" value="pregnancy.week.24.b" />
+				<property name="messageKeyC" value="pregnancy.week.24.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -598,6 +658,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.25" />
+				<property name="messageKeyA" value="pregnancy.week.25.a" />
+				<property name="messageKeyB" value="pregnancy.week.25.b" />
+				<property name="messageKeyC" value="pregnancy.week.25.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -627,6 +690,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.26" />
+				<property name="messageKeyA" value="pregnancy.week.26.a" />
+				<property name="messageKeyB" value="pregnancy.week.26.b" />
+				<property name="messageKeyC" value="pregnancy.week.26.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -656,6 +722,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.27" />
+				<property name="messageKeyA" value="pregnancy.week.27.a" />
+				<property name="messageKeyB" value="pregnancy.week.27.b" />
+				<property name="messageKeyC" value="pregnancy.week.27.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -685,6 +754,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.28" />
+				<property name="messageKeyA" value="pregnancy.week.28.a" />
+				<property name="messageKeyB" value="pregnancy.week.28.b" />
+				<property name="messageKeyC" value="pregnancy.week.28.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -714,6 +786,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.29" />
+				<property name="messageKeyA" value="pregnancy.week.29.a" />
+				<property name="messageKeyB" value="pregnancy.week.29.b" />
+				<property name="messageKeyC" value="pregnancy.week.29.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -743,6 +818,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.30" />
+				<property name="messageKeyA" value="pregnancy.week.30.a" />
+				<property name="messageKeyB" value="pregnancy.week.30.b" />
+				<property name="messageKeyC" value="pregnancy.week.30.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -772,6 +850,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.31" />
+				<property name="messageKeyA" value="pregnancy.week.31.a" />
+				<property name="messageKeyB" value="pregnancy.week.31.b" />
+				<property name="messageKeyC" value="pregnancy.week.31.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -801,6 +882,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.32" />
+				<property name="messageKeyA" value="pregnancy.week.32.a" />
+				<property name="messageKeyB" value="pregnancy.week.32.b" />
+				<property name="messageKeyC" value="pregnancy.week.32.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -830,6 +914,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.33" />
+				<property name="messageKeyA" value="pregnancy.week.33.a" />
+				<property name="messageKeyB" value="pregnancy.week.33.b" />
+				<property name="messageKeyC" value="pregnancy.week.33.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -859,6 +946,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.34" />
+				<property name="messageKeyA" value="pregnancy.week.34.a" />
+				<property name="messageKeyB" value="pregnancy.week.34.b" />
+				<property name="messageKeyC" value="pregnancy.week.34.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -888,6 +978,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.35" />
+				<property name="messageKeyA" value="pregnancy.week.35.a" />
+				<property name="messageKeyB" value="pregnancy.week.35.b" />
+				<property name="messageKeyC" value="pregnancy.week.35.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -917,6 +1010,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.36" />
+				<property name="messageKeyA" value="pregnancy.week.36.a" />
+				<property name="messageKeyB" value="pregnancy.week.36.b" />
+				<property name="messageKeyC" value="pregnancy.week.36.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -946,6 +1042,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.37" />
+				<property name="messageKeyA" value="pregnancy.week.37.a" />
+				<property name="messageKeyB" value="pregnancy.week.37.b" />
+				<property name="messageKeyC" value="pregnancy.week.37.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -975,6 +1074,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.38" />
+				<property name="messageKeyA" value="pregnancy.week.38.a" />
+				<property name="messageKeyB" value="pregnancy.week.38.b" />
+				<property name="messageKeyC" value="pregnancy.week.38.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -1004,6 +1106,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.39" />
+				<property name="messageKeyA" value="pregnancy.week.39.a" />
+				<property name="messageKeyB" value="pregnancy.week.39.b" />
+				<property name="messageKeyC" value="pregnancy.week.39.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -1033,6 +1138,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="pregnancy.week.40" />
+				<property name="messageKeyA" value="pregnancy.week.40.a" />
+				<property name="messageKeyB" value="pregnancy.week.40.b" />
+				<property name="messageKeyC" value="pregnancy.week.40.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -1062,6 +1170,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="child.week.1" />
+				<property name="messageKeyA" value="child.week.1.a" />
+				<property name="messageKeyB" value="child.week.1.b" />
+				<property name="messageKeyC" value="child.week.1.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -1091,6 +1202,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="child.week.2" />
+				<property name="messageKeyA" value="child.week.2.a" />
+				<property name="messageKeyB" value="child.week.2.b" />
+				<property name="messageKeyC" value="child.week.2.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -1120,6 +1234,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="child.week.3" />
+				<property name="messageKeyA" value="child.week.3.a" />
+				<property name="messageKeyB" value="child.week.3.b" />
+				<property name="messageKeyC" value="child.week.3.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>
@@ -1149,6 +1266,9 @@
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
 				<property name="messageKey" value="child.week.4" />
+				<property name="messageKeyA" value="child.week.4.a" />
+				<property name="messageKeyB" value="child.week.4.b" />
+				<property name="messageKeyC" value="child.week.4.c" />
 				<property name="messageScheduler" ref="userPrefmessageScheduler" />
 			</bean>
 		</property>

@@ -137,10 +137,25 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 			// Add Test Message Definition, Enrollment and Scheduled Message
 			String messageKey = "Test Definition";
+			String messageKeyA = "Test DefinitionA";
+			String messageKeyB = "Test DefinitionB";
+			String messageKeyC = "Test DefinitionC";
 			MessageDefinition messageDefinition = new MessageDefinition(
 					messageKey, 2L, MessageType.INFORMATIONAL);
-			messageDefinition = Context.getService(MotechService.class)
-					.saveMessageDefinition(messageDefinition);
+			MessageDefinition messageDefinitionA = new MessageDefinition(
+					messageKeyA, 3L, MessageType.INFORMATIONAL);
+			MessageDefinition messageDefinitionB = new MessageDefinition(
+					messageKeyB, 4L, MessageType.INFORMATIONAL);
+			MessageDefinition messageDefinitionC = new MessageDefinition(
+					messageKeyC, 5L, MessageType.INFORMATIONAL);
+			Context.getService(MotechService.class).saveMessageDefinition(
+					messageDefinition);
+			Context.getService(MotechService.class).saveMessageDefinition(
+					messageDefinitionA);
+			Context.getService(MotechService.class).saveMessageDefinition(
+					messageDefinitionB);
+			Context.getService(MotechService.class).saveMessageDefinition(
+					messageDefinitionC);
 
 			MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
 			enrollment.setStartDate(new Date());
@@ -154,8 +169,8 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 					System.currentTimeMillis() + 5 * 1000);
 			MessageSchedulerImpl messageScheduler = new MessageSchedulerImpl();
 			messageScheduler.setRegistrarBean(regService);
-			messageScheduler.scheduleMessage(messageKey, enrollment,
-					scheduledMessageDate);
+			messageScheduler.scheduleMessages(messageKey, messageKeyA,
+					messageKeyB, messageKeyC, enrollment, scheduledMessageDate);
 		} finally {
 			Context.closeSession();
 		}
@@ -173,22 +188,26 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 			List<ScheduledMessage> scheduledMessages = Context.getService(
 					MotechService.class).getAllScheduledMessages();
 
-			assertEquals(1, scheduledMessages.size());
+			assertEquals(3, scheduledMessages.size());
 
-			ScheduledMessage retrievedScheduledMessage = scheduledMessages
-					.get(0);
-			List<Message> messageAttempts = retrievedScheduledMessage
-					.getMessageAttempts();
-
-			assertEquals(1, messageAttempts.size());
-
-			Message message = messageAttempts.get(0);
-
-			assertNotNull("Message attempt date is null", message
-					.getAttemptDate());
-			assertEquals(MessageStatus.ATTEMPT_PENDING, message
-					.getAttemptStatus());
-
+			// Results are ordered oldest first
+			// Oldest/last message with current date should be pending
+			// Newer/first messages with later date should not be pending
+			for (int i = 0; i < 3; i++) {
+				List<Message> messageAttempts = scheduledMessages.get(i)
+						.getMessageAttempts();
+				assertEquals(1, messageAttempts.size());
+				Message message = messageAttempts.get(0);
+				assertNotNull("Message attempt date is null", message
+						.getAttemptDate());
+				if (i == 0) {
+					assertEquals(MessageStatus.ATTEMPT_PENDING, message
+							.getAttemptStatus());
+				} else {
+					assertEquals(MessageStatus.SHOULD_ATTEMPT, message
+							.getAttemptStatus());
+				}
+			}
 		} finally {
 			Context.closeSession();
 		}

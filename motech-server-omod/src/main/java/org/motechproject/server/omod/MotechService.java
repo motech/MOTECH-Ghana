@@ -16,6 +16,7 @@ package org.motechproject.server.omod;
 import java.util.Date;
 import java.util.List;
 
+import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
@@ -94,6 +95,11 @@ public interface MotechService extends OpenmrsService {
 	List<Message> getMessages(Integer recipientId,
 			MessageProgramEnrollment enrollment, MessageDefinition definition,
 			Date messageDate, MessageStatus status);
+
+	@Transactional(readOnly = true)
+	List<Message> getMessages(Integer recipientId,
+			MessageProgramEnrollment enrollment,
+			MessageDefDate[] messageDefDates, MessageStatus status);
 
 	@Transactional(readOnly = true)
 	Message getMessage(String publicId);

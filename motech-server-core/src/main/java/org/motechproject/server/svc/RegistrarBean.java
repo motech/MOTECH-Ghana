@@ -339,7 +339,8 @@ public interface RegistrarBean {
 
 	public String[] getActiveMessageProgramEnrollmentNames(Patient patient);
 
-	public void scheduleMessage(String messageKey,
+	public void scheduleInfoMessages(String messageKey, String messageKeyA,
+			String messageKeyB, String messageKeyC,
 			MessageProgramEnrollment enrollment, Date messageDate,
 			boolean userPreferenceBased);
 

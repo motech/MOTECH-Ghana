@@ -15,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.event.MessageProgram;
+import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.Community;
@@ -2587,9 +2588,79 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	/* PatientObsService methods end */
 
 	/* MessageSchedulerImpl methods start */
-	public void scheduleMessage(String messageKey,
+	public void scheduleInfoMessages(String messageKey, String messageKeyA,
+			String messageKeyB, String messageKeyC,
 			MessageProgramEnrollment enrollment, Date messageDate,
 			boolean userPreferenceBased) {
+
+		PersonService personService = contextService.getPersonService();
+
+		// TODO: Assumes recipient is person in enrollment
+		Integer messageRecipientId = enrollment.getPersonId();
+		Person recipient = personService.getPerson(messageRecipientId);
+		MediaType mediaType = getPersonMediaType(recipient);
+
+		// Schedule multiple messages if media type preference is text, or no
+		// preference exists, using A/B/C message keys
+		if (mediaType == MediaType.TEXT) {
+			scheduleMultipleInfoMessages(messageKeyA, messageKeyB, messageKeyC,
+					enrollment, messageDate, userPreferenceBased);
+		} else {
+			scheduleSingleInfoMessage(messageKey, enrollment, messageDate,
+					userPreferenceBased);
+		}
+	}
+
+	void scheduleMultipleInfoMessages(String messageKeyA, String messageKeyB,
+			String messageKeyC, MessageProgramEnrollment enrollment,
+			Date messageDate, boolean userPreferenceBased) {
+		// Return existing message definitions
+		MessageDefinition messageDefinitionA = this
+				.getMessageDefinition(messageKeyA);
+		MessageDefinition messageDefinitionB = this
+				.getMessageDefinition(messageKeyB);
+		MessageDefinition messageDefinitionC = this
+				.getMessageDefinition(messageKeyC);
+
+		// TODO: Assumes recipient is person in enrollment
+		Integer messageRecipientId = enrollment.getPersonId();
+
+		// Expecting message date to already be preference adjusted
+		// Determine dates for second and third messages
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(messageDate);
+		calendar.add(Calendar.DATE, 2);
+		Date messageDateB = calendar.getTime();
+		calendar.add(Calendar.DATE, 2);
+		Date messageDateC = calendar.getTime();
+
+		MessageDefDate messageA = new MessageDefDate(messageDefinitionA,
+				messageDate);
+		MessageDefDate messageB = new MessageDefDate(messageDefinitionB,
+				messageDateB);
+		MessageDefDate messageC = new MessageDefDate(messageDefinitionC,
+				messageDateC);
+		MessageDefDate[] messageDefDates = { messageA, messageB, messageC };
+
+		// Cancel any unsent messages for the same enrollment and not matching
+		// the messages to schedule
+		this.removeUnsentMessages(messageRecipientId, enrollment,
+				messageDefDates);
+
+		// Create new scheduled message (with pending attempt) for all 3
+		// messages, for this enrollment, if no matching message already exist
+		this.createScheduledMessage(messageRecipientId, messageDefinitionA,
+				enrollment, messageDate);
+		this.createScheduledMessage(messageRecipientId, messageDefinitionB,
+				enrollment, messageDateB);
+		this.createScheduledMessage(messageRecipientId, messageDefinitionC,
+				enrollment, messageDateC);
+	}
+
+	void scheduleSingleInfoMessage(String messageKey,
+			MessageProgramEnrollment enrollment, Date messageDate,
+			boolean userPreferenceBased) {
+
 		// Return existing message definition
 		MessageDefinition messageDefinition = this
 				.getMessageDefinition(messageKey);
@@ -2636,6 +2707,26 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					+ messageKey);
 		}
 		return messageDefinition;
+	}
+
+	protected void removeUnsentMessages(Integer recipientId,
+			MessageProgramEnrollment enrollment,
+			MessageDefDate[] messageDefDates) {
+		MotechService motechService = contextService.getMotechService();
+		// Get Messages matching the recipient, enrollment, and status, but
+		// not matching the list of message definitions and message dates
+		List<Message> unsentMessages = motechService.getMessages(recipientId,
+				enrollment, messageDefDates, MessageStatus.SHOULD_ATTEMPT);
+		log.debug("Unsent messages found during scheduling: "
+				+ unsentMessages.size());
+
+		for (Message unsentMessage : unsentMessages) {
+			unsentMessage.setAttemptStatus(MessageStatus.CANCELLED);
+			motechService.saveMessage(unsentMessage);
+
+			log.debug("Message cancelled to schedule new: Id: "
+					+ unsentMessage.getId());
+		}
 	}
 
 	protected void removeUnsentMessages(Integer recipientId,

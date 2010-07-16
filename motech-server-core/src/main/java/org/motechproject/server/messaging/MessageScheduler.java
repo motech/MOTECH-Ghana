@@ -6,7 +6,8 @@ import org.motechproject.server.model.MessageProgramEnrollment;
 
 public interface MessageScheduler {
 
-	void scheduleMessage(String messageKey,
+	void scheduleMessages(String messageKey, String messageKeyA,
+			String messageKeyB, String messageKeyC,
 			MessageProgramEnrollment enrollment, Date messageDate);
 
 	Date adjustMessageDate(MessageProgramEnrollment enrollment, Date messageDate);

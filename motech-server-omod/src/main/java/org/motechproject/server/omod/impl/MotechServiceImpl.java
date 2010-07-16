@@ -16,6 +16,7 @@ package org.motechproject.server.omod.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
@@ -147,6 +148,13 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 			Date messageDate, MessageStatus status) {
 		return motechDAO.getMessages(recipientId, enrollment, definition,
 				messageDate, status);
+	}
+
+	public List<Message> getMessages(Integer recipientId,
+			MessageProgramEnrollment enrollment,
+			MessageDefDate[] messageDefDates, MessageStatus status) {
+		return motechDAO.getMessages(recipientId, enrollment, messageDefDates,
+				status);
 	}
 
 	public Message getMessage(String publicId) {

@@ -491,5 +491,58 @@
 			update location set name = 'Kajelo CHPS', neighborhood_cell = 'Kajelo CHPS' where name = 'Kejelo CHPS';
 		</sql>
 	</diff>
-	
+
+	<diff>
+		<version>0.7.0</version>
+		<author>Matthew Blanchette</author>
+		<date>July 15 2010</date>
+		<description>
+			Inserting new message definitions for multiple messages per week.
+		</description>
+		<sql>
+			INSERT INTO `motechmodule_messagedefinition` 
+			(`message_key`,`public_id`,`message_type`) VALUES 
+			('pregnancy.week.5.a',104,'INFORMATIONAL'),('pregnancy.week.5.b',105,'INFORMATIONAL'),('pregnancy.week.5.c',106,'INFORMATIONAL'),
+			('pregnancy.week.6.a',107,'INFORMATIONAL'),('pregnancy.week.6.b',108,'INFORMATIONAL'),('pregnancy.week.6.c',109,'INFORMATIONAL'),
+			('pregnancy.week.7.a',110,'INFORMATIONAL'),('pregnancy.week.7.b',111,'INFORMATIONAL'),('pregnancy.week.7.c',112,'INFORMATIONAL'),
+			('pregnancy.week.8.a',113,'INFORMATIONAL'),('pregnancy.week.8.b',114,'INFORMATIONAL'),('pregnancy.week.8.c',115,'INFORMATIONAL'),
+			('pregnancy.week.9.a',116,'INFORMATIONAL'),('pregnancy.week.9.b',117,'INFORMATIONAL'),('pregnancy.week.9.c',118,'INFORMATIONAL'),
+			('pregnancy.week.10.a',119,'INFORMATIONAL'),('pregnancy.week.10.b',120,'INFORMATIONAL'),('pregnancy.week.10.c',121,'INFORMATIONAL'),
+			('pregnancy.week.11.a',122,'INFORMATIONAL'),('pregnancy.week.11.b',123,'INFORMATIONAL'),('pregnancy.week.11.c',124,'INFORMATIONAL'),
+			('pregnancy.week.12.a',125,'INFORMATIONAL'),('pregnancy.week.12.b',126,'INFORMATIONAL'),('pregnancy.week.12.c',127,'INFORMATIONAL'),
+			('pregnancy.week.13.a',128,'INFORMATIONAL'),('pregnancy.week.13.b',129,'INFORMATIONAL'),('pregnancy.week.13.c',130,'INFORMATIONAL'),
+			('pregnancy.week.14.a',131,'INFORMATIONAL'),('pregnancy.week.14.b',132,'INFORMATIONAL'),('pregnancy.week.14.c',133,'INFORMATIONAL'),
+			('pregnancy.week.15.a',134,'INFORMATIONAL'),('pregnancy.week.15.b',135,'INFORMATIONAL'),('pregnancy.week.15.c',136,'INFORMATIONAL'),
+			('pregnancy.week.16.a',137,'INFORMATIONAL'),('pregnancy.week.16.b',138,'INFORMATIONAL'),('pregnancy.week.16.c',139,'INFORMATIONAL'),
+			('pregnancy.week.17.a',140,'INFORMATIONAL'),('pregnancy.week.17.b',141,'INFORMATIONAL'),('pregnancy.week.17.c',142,'INFORMATIONAL'),
+			('pregnancy.week.18.a',143,'INFORMATIONAL'),('pregnancy.week.18.b',144,'INFORMATIONAL'),('pregnancy.week.18.c',145,'INFORMATIONAL'),
+			('pregnancy.week.19.a',146,'INFORMATIONAL'),('pregnancy.week.19.b',147,'INFORMATIONAL'),('pregnancy.week.19.c',148,'INFORMATIONAL'),
+			('pregnancy.week.20.a',149,'INFORMATIONAL'),('pregnancy.week.20.b',150,'INFORMATIONAL'),('pregnancy.week.20.c',151,'INFORMATIONAL'),
+			('pregnancy.week.21.a',152,'INFORMATIONAL'),('pregnancy.week.21.b',153,'INFORMATIONAL'),('pregnancy.week.21.c',154,'INFORMATIONAL'),
+			('pregnancy.week.22.a',155,'INFORMATIONAL'),('pregnancy.week.22.b',156,'INFORMATIONAL'),('pregnancy.week.22.c',157,'INFORMATIONAL'),
+			('pregnancy.week.23.a',158,'INFORMATIONAL'),('pregnancy.week.23.b',159,'INFORMATIONAL'),('pregnancy.week.23.c',160,'INFORMATIONAL'),
+			('pregnancy.week.24.a',161,'INFORMATIONAL'),('pregnancy.week.24.b',162,'INFORMATIONAL'),('pregnancy.week.24.c',163,'INFORMATIONAL'),
+			('pregnancy.week.25.a',164,'INFORMATIONAL'),('pregnancy.week.25.b',165,'INFORMATIONAL'),('pregnancy.week.25.c',166,'INFORMATIONAL'),
+			('pregnancy.week.26.a',167,'INFORMATIONAL'),('pregnancy.week.26.b',168,'INFORMATIONAL'),('pregnancy.week.26.c',169,'INFORMATIONAL'),
+			('pregnancy.week.27.a',170,'INFORMATIONAL'),('pregnancy.week.27.b',171,'INFORMATIONAL'),('pregnancy.week.27.c',172,'INFORMATIONAL'),
+			('pregnancy.week.28.a',173,'INFORMATIONAL'),('pregnancy.week.28.b',174,'INFORMATIONAL'),('pregnancy.week.28.c',175,'INFORMATIONAL'),
+			('pregnancy.week.29.a',176,'INFORMATIONAL'),('pregnancy.week.29.b',177,'INFORMATIONAL'),('pregnancy.week.29.c',178,'INFORMATIONAL'),
+			('pregnancy.week.30.a',179,'INFORMATIONAL'),('pregnancy.week.30.b',180,'INFORMATIONAL'),('pregnancy.week.30.c',181,'INFORMATIONAL'),
+			('pregnancy.week.31.a',182,'INFORMATIONAL'),('pregnancy.week.31.b',183,'INFORMATIONAL'),('pregnancy.week.31.c',184,'INFORMATIONAL'),
+			('pregnancy.week.32.a',185,'INFORMATIONAL'),('pregnancy.week.32.b',186,'INFORMATIONAL'),('pregnancy.week.32.c',187,'INFORMATIONAL'),
+			('pregnancy.week.33.a',188,'INFORMATIONAL'),('pregnancy.week.33.b',189,'INFORMATIONAL'),('pregnancy.week.33.c',190,'INFORMATIONAL'),
+			('pregnancy.week.34.a',191,'INFORMATIONAL'),('pregnancy.week.34.b',192,'INFORMATIONAL'),('pregnancy.week.34.c',193,'INFORMATIONAL'),
+			('pregnancy.week.35.a',194,'INFORMATIONAL'),('pregnancy.week.35.b',195,'INFORMATIONAL'),('pregnancy.week.35.c',196,'INFORMATIONAL'),
+			('pregnancy.week.36.a',197,'INFORMATIONAL'),('pregnancy.week.36.b',198,'INFORMATIONAL'),('pregnancy.week.36.c',199,'INFORMATIONAL'),
+			('pregnancy.week.37.a',200,'INFORMATIONAL'),('pregnancy.week.37.b',201,'INFORMATIONAL'),('pregnancy.week.37.c',202,'INFORMATIONAL'),
+			('pregnancy.week.38.a',203,'INFORMATIONAL'),('pregnancy.week.38.b',204,'INFORMATIONAL'),('pregnancy.week.38.c',205,'INFORMATIONAL'),
+			('pregnancy.week.39.a',206,'INFORMATIONAL'),('pregnancy.week.39.b',207,'INFORMATIONAL'),('pregnancy.week.39.c',208,'INFORMATIONAL'),
+			('pregnancy.week.40.a',209,'INFORMATIONAL'),('pregnancy.week.40.b',210,'INFORMATIONAL'),('pregnancy.week.40.c',211,'INFORMATIONAL'),
+			('child.week.1.a',212,'INFORMATIONAL'),('child.week.1.b',213,'INFORMATIONAL'),('child.week.1.c',214,'INFORMATIONAL'),
+			('child.week.2.a',215,'INFORMATIONAL'),('child.week.2.b',216,'INFORMATIONAL'),('child.week.2.c',217,'INFORMATIONAL'),
+			('child.week.3.a',218,'INFORMATIONAL'),('child.week.3.b',219,'INFORMATIONAL'),('child.week.3.c',220,'INFORMATIONAL'),
+			('child.week.4.a',221,'INFORMATIONAL'),('child.week.4.b',222,'INFORMATIONAL'),('child.week.4.c',223,'INFORMATIONAL');
+		</sql>
+	</diff>
+
 </sqldiff>

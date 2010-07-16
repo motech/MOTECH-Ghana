@@ -9,6 +9,9 @@ import org.motechproject.server.model.MessageProgramEnrollment;
 public class ScheduleMessageCommand extends MessagesCommand {
 
 	String messageKey;
+	String messageKeyA;
+	String messageKeyB;
+	String messageKeyC;
 	MessageScheduler messageScheduler;
 
 	@Override
@@ -16,7 +19,8 @@ public class ScheduleMessageCommand extends MessagesCommand {
 		if (actionDate == null) {
 			return;
 		}
-		messageScheduler.scheduleMessage(messageKey, enrollment, actionDate);
+		messageScheduler.scheduleMessages(messageKey, messageKeyA, messageKeyB,
+				messageKeyC, enrollment, actionDate);
 	}
 
 	@Override
@@ -31,6 +35,30 @@ public class ScheduleMessageCommand extends MessagesCommand {
 
 	public void setMessageKey(String messageKey) {
 		this.messageKey = messageKey;
+	}
+
+	public String getMessageKeyA() {
+		return messageKeyA;
+	}
+
+	public void setMessageKeyA(String messageKeyA) {
+		this.messageKeyA = messageKeyA;
+	}
+
+	public String getMessageKeyB() {
+		return messageKeyB;
+	}
+
+	public void setMessageKeyB(String messageKeyB) {
+		this.messageKeyB = messageKeyB;
+	}
+
+	public String getMessageKeyC() {
+		return messageKeyC;
+	}
+
+	public void setMessageKeyC(String messageKeyC) {
+		this.messageKeyC = messageKeyC;
 	}
 
 	public MessageScheduler getMessageScheduler() {

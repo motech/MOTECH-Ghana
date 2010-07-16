@@ -35,17 +35,22 @@ public class MessageSchedulerImplTest extends TestCase {
 	public void testScheduleUserPref() {
 		boolean userPreferencedBased = true;
 		String messageKey = "Message Key";
+		String messageKeyA = "Message Key A";
+		String messageKeyB = "Message Key B";
+		String messageKeyC = "Message Key C";
 		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
 		Date messageDate = new Date();
 
 		messageScheduler.setUserPreferenceBased(userPreferencedBased);
 
-		registrarBean.scheduleMessage(messageKey, enrollment, messageDate,
+		registrarBean.scheduleInfoMessages(messageKey, messageKeyA,
+				messageKeyB, messageKeyC, enrollment, messageDate,
 				userPreferencedBased);
 
 		replay(registrarBean);
 
-		messageScheduler.scheduleMessage(messageKey, enrollment, messageDate);
+		messageScheduler.scheduleMessages(messageKey, messageKeyA, messageKeyB,
+				messageKeyC, enrollment, messageDate);
 
 		verify(registrarBean);
 	}
@@ -53,17 +58,22 @@ public class MessageSchedulerImplTest extends TestCase {
 	public void testScheduleNoUserPref() {
 		boolean userPreferencedBased = false;
 		String messageKey = "Message Key";
+		String messageKeyA = "Message Key A";
+		String messageKeyB = "Message Key B";
+		String messageKeyC = "Message Key C";
 		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
 		Date messageDate = new Date();
 
 		messageScheduler.setUserPreferenceBased(userPreferencedBased);
 
-		registrarBean.scheduleMessage(messageKey, enrollment, messageDate,
+		registrarBean.scheduleInfoMessages(messageKey, messageKeyA,
+				messageKeyB, messageKeyC, enrollment, messageDate,
 				userPreferencedBased);
 
 		replay(registrarBean);
 
-		messageScheduler.scheduleMessage(messageKey, enrollment, messageDate);
+		messageScheduler.scheduleMessages(messageKey, messageKeyA, messageKeyB,
+				messageKeyC, enrollment, messageDate);
 
 		verify(registrarBean);
 	}

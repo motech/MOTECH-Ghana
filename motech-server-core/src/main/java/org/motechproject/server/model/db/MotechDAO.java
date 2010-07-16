@@ -3,6 +3,7 @@ package org.motechproject.server.model.db;
 import java.util.Date;
 import java.util.List;
 
+import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
@@ -59,6 +60,10 @@ public interface MotechDAO {
 	List<Message> getMessages(Integer recipientId,
 			MessageProgramEnrollment enrollment, MessageDefinition definition,
 			Date messageDate, MessageStatus status);
+
+	List<Message> getMessages(Integer recipientId,
+			MessageProgramEnrollment enrollment,
+			MessageDefDate[] messageDefDates, MessageStatus status);
 
 	Message getMessage(String publicId);
 

@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
@@ -15,6 +16,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
+import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
@@ -100,7 +102,8 @@ public class HibernateMotechDAO implements MotechDAO {
 	public List<ScheduledMessage> getScheduledMessages() {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<ScheduledMessage>) session.createCriteria(
-				ScheduledMessage.class).list();
+				ScheduledMessage.class).addOrder(Order.asc("scheduledFor"))
+				.list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -172,6 +175,27 @@ public class HibernateMotechDAO implements MotechDAO {
 						Restrictions.or(Restrictions.ne("message", definition),
 								Restrictions.ne("scheduledFor", messageDate)))
 				.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Message> getMessages(Integer recipientId,
+			MessageProgramEnrollment enrollment,
+			MessageDefDate[] messageDefDates, MessageStatus status) {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(Message.class).add(
+				Restrictions.eq("attemptStatus", status)).createCriteria(
+				"schedule").add(Restrictions.eq("recipientId", recipientId))
+				.add(Restrictions.eq("enrollment", enrollment));
+
+		Conjunction notMatchMessages = Restrictions.conjunction();
+		for (MessageDefDate messageDefDate : messageDefDates) {
+			notMatchMessages.add(Restrictions.or(Restrictions.ne("message",
+					messageDefDate.getMessage()), Restrictions.ne(
+					"scheduledFor", messageDefDate.getDate())));
+		}
+		criteria.add(notMatchMessages);
+
+		return criteria.list();
 	}
 
 	public Message getMessage(String publicId) {
