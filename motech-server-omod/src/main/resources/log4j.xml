@@ -26,7 +26,11 @@
 		<level value="DEBUG" />
 	</logger>
 	--> 
-	 
+	
+	<!-- Avoid hibernate proxy warnings -->
+	<logger name="org.hibernate.engine.StatefulPersistenceContext.ProxyWarnLog">
+		<level value="ERROR" />
+	</logger>
 	
 	<root>
 		<level value="ERROR" />
