@@ -816,13 +816,17 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		if (pregnancyObs == null) {
 			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
 					estDeliveryDate, null);
-		} else if (estDeliveryDate != null) {
+		} else {
 			Obs pregnancyDueDateObs = getActivePregnancyDueDateObs(patient
 					.getPatientId(), pregnancyObs);
 			if (pregnancyDueDateObs != null) {
-				pregnancyDueDateObsId = updatePregnancyDueDateObs(pregnancyObs,
-						pregnancyDueDateObs, estDeliveryDate, encounter);
-			} else {
+				pregnancyDueDateObsId = pregnancyDueDateObs.getObsId();
+				if (estDeliveryDate != null) {
+					pregnancyDueDateObsId = updatePregnancyDueDateObs(
+							pregnancyObs, pregnancyDueDateObs, estDeliveryDate,
+							encounter);
+				}
+			} else if (estDeliveryDate != null) {
 				log.warn("Cannot update pregnancy due date, "
 						+ "no active pregnancy due date found, patient id="
 						+ patient.getPatientId());
