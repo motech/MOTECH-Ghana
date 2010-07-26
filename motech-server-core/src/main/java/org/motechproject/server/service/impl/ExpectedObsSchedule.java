@@ -96,8 +96,12 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 					// Update existing ExpectedObs, removing if expired or lower
 					// dose than current patient dose
 					expectedObs.setMinObsDatetime(minDate);
-					expectedObs.setDueObsDatetime(dueDate);
-					expectedObs.setLateObsDatetime(lateDate);
+					if (dueDate != null) {
+						expectedObs.setDueObsDatetime(dueDate);
+					}
+					if (lateDate != null) {
+						expectedObs.setLateObsDatetime(lateDate);
+					}
 					expectedObs.setMaxObsDatetime(maxDate);
 					if (eventExpired || eventDoseBelowLargest) {
 						expectedObs.setVoided(true);

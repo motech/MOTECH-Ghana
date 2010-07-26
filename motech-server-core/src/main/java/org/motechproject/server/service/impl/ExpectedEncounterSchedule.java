@@ -74,8 +74,12 @@ public class ExpectedEncounterSchedule extends ExpectedCareScheduleImpl {
 				} else {
 					// Update existing ExpectedEncounter, removing if expired
 					expectedEncounter.setMinEncounterDatetime(minDate);
-					expectedEncounter.setDueEncounterDatetime(dueDate);
-					expectedEncounter.setLateEncounterDatetime(lateDate);
+					if (dueDate != null) {
+						expectedEncounter.setDueEncounterDatetime(dueDate);
+					}
+					if (lateDate != null) {
+						expectedEncounter.setLateEncounterDatetime(lateDate);
+					}
 					expectedEncounter.setMaxEncounterDatetime(maxDate);
 					if (eventExpired) {
 						expectedEncounter.setVoided(true);
