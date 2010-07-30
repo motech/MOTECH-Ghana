@@ -25,6 +25,7 @@ public class MessageProgramUpdateTask extends AbstractTask {
 	 */
 	@Override
 	public void execute() {
+		long start = System.currentTimeMillis();
 		log
 				.debug("Message Program Task - Update Enrolled Programs for all Patients");
 
@@ -35,6 +36,9 @@ public class MessageProgramUpdateTask extends AbstractTask {
 		} finally {
 			contextService.closeSession();
 		}
+		long end = System.currentTimeMillis();
+		long runtime = (end - start) / 1000;
+		log.info("executed for " + runtime + " seconds");
 	}
 
 }

@@ -27,6 +27,7 @@ public class StaffCareMessagingTask extends AbstractTask {
 
 	@Override
 	public void execute() {
+		long start = System.currentTimeMillis();
 		log.debug("Executing Task - Sending Care Messages to all Staff");
 
 		Boolean sendUpcoming = Boolean.valueOf(this.taskDefinition
@@ -73,6 +74,9 @@ public class StaffCareMessagingTask extends AbstractTask {
 		} finally {
 			contextService.closeSession();
 		}
+		long end = System.currentTimeMillis();
+		long runtime = (end - start) / 1000;
+		log.info("executed for " + runtime + " seconds");
 	}
 
 }
