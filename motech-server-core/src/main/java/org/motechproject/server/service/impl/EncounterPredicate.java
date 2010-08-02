@@ -12,8 +12,8 @@ public class EncounterPredicate implements Predicate {
 
 	public boolean evaluate(Object input) {
 		if (input instanceof Encounter) {
-			Encounter obs = (Encounter) input;
-			Date encounterDate = obs.getEncounterDatetime();
+			Encounter enc = (Encounter) input;
+			Date encounterDate = enc.getEncounterDatetime();
 
 			boolean afterMinDate = true;
 			if (minDate != null) {

@@ -1,5 +1,7 @@
 package org.motechproject.server.event.impl;
 
+import java.util.Map;
+
 import org.motechproject.server.time.TimePeriod;
 
 public class ExpectedCareMessageDetails {
@@ -10,6 +12,7 @@ public class ExpectedCareMessageDetails {
 	private Integer timeValue;
 	private TimePeriod timePeriod;
 	private Boolean userPreferenceBased = false;
+	private Map<String, Integer> careTimeMap;
 
 	public String getName() {
 		return name;
@@ -59,4 +62,18 @@ public class ExpectedCareMessageDetails {
 		this.userPreferenceBased = userPreferenceBased;
 	}
 
+	public Map<String, Integer> getCareTimeMap() {
+		return careTimeMap;
+	}
+
+	public void setCareTimeMap(Map<String, Integer> careTimeMap) {
+		this.careTimeMap = careTimeMap;
+	}
+
+	public Integer getTimeValue(String care) {
+		if (careTimeMap != null && careTimeMap.containsKey(care)) {
+			return careTimeMap.get(care);
+		}
+		return timeValue;
+	}
 }

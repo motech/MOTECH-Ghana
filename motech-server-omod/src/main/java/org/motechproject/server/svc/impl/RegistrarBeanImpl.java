@@ -3352,7 +3352,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				new Date(), new Long(30), Boolean.FALSE,
 				MessageProgramUpdateTask.class.getName(), admin, null);
 
-		calendar = Calendar.getInstance();
+		calendar.add(Calendar.MINUTE, 20);
 		Map<String, String> dailyStaffProps = new HashMap<String, String>();
 		dailyStaffProps.put(MotechConstants.TASK_PROPERTY_SEND_UPCOMING,
 				Boolean.TRUE.toString());
@@ -3361,17 +3361,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.TASK_PROPERTY_CARE_GROUPS_DELIMITER);
 		dailyStaffProps.put(MotechConstants.TASK_PROPERTY_CARE_GROUPS,
 				dailyGroupsProperty);
-		dailyStaffProps.put(MotechConstants.TASK_PROPERTY_AVOID_BLACKOUT,
-				Boolean.TRUE.toString());
+		dailyStaffProps.put(MotechConstants.TASK_PROPERTY_DELIVERY_TIME,
+				"08:00");
 		createTask(MotechConstants.TASK_DAILY_NURSE_CARE_MESSAGING,
-				"Task to send out staff SMS care messages for next day",
-				calendar.getTime(), new Long(3600), Boolean.FALSE,
+				"Task to send out staff SMS care messages for day", calendar
+						.getTime(), new Long(86400), Boolean.FALSE,
 				StaffCareMessagingTask.class.getName(), admin, dailyStaffProps);
 
 		calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-		calendar.set(Calendar.HOUR_OF_DAY, 23);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
+		calendar.add(Calendar.MINUTE, 20);
 		Map<String, String> weeklyStaffProps = new HashMap<String, String>();
 		String[] weeklyGroups = { "ANC", "TT", "IPT", "BCG", "OPV", "Penta",
 				"YellowFever", "Measles", "IPTI", "VitaA" };

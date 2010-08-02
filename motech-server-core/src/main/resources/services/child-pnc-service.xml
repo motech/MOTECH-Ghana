@@ -7,8 +7,6 @@
 	<bean id="childPNCSchedule" class="org.motechproject.server.service.impl.ExpectedEncounterSchedule">
 		<property name="name" value="PNC(baby)" />
 		<property name="encounterTypeName" value="PNCCHILDVISIT" />
-		<property name="lateValue" value="1" />
-		<property name="latePeriod" value="day" />
 		<property name="registrarBean" ref="registrarBean" />	
 		<property name="requirements">
 			<list>
@@ -23,18 +21,36 @@
 			<list>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="PNC1" />
-					<property name="dueValue" value="2" />
-					<property name="duePeriod" value="day" />				
+					<property name="minValue" value="6" />
+					<property name="minPeriod" value="hour" />
+					<property name="dueValue" value="6" />
+					<property name="duePeriod" value="hour" />
+					<property name="lateValue" value="12" />
+					<property name="latePeriod" value="hour" />
+					<property name="maxValue" value="48" />
+					<property name="maxPeriod" value="hour" />
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="PNC2" />
+					<property name="minValue" value="5" />
+					<property name="minPeriod" value="day" />
 					<property name="dueValue" value="7" />
-					<property name="duePeriod" value="day" />				
+					<property name="duePeriod" value="day" />
+					<property name="lateValue" value="0" />
+					<property name="latePeriod" value="day" />
+					<property name="maxValue" value="12" />
+					<property name="maxPeriod" value="day" />
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="PNC3" />
+					<property name="minValue" value="12" />
+					<property name="minPeriod" value="day" />
 					<property name="dueValue" value="14" />
-					<property name="duePeriod" value="day" />				
+					<property name="duePeriod" value="day" />
+					<property name="lateValue" value="0" />
+					<property name="latePeriod" value="day" />
+					<property name="maxValue" value="21" />
+					<property name="maxPeriod" value="day" />
 				</bean>
 			</list>
 		</property>

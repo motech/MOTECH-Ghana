@@ -121,33 +121,33 @@ public class PNCMotherScheduleTest extends TestCase {
 		Date lateDate1 = lateDate1Capture.getValue();
 		Date maxDate1 = maxDate1Capture.getValue();
 
-		assertNull("Min date is not null", minDate1);
+		assertNotNull("Min date is null", minDate1);
 		assertNotNull("Due date is null", dueDate1);
 		assertNotNull("Late date is null", lateDate1);
 		assertTrue("Late date is not after due date", lateDate1.after(dueDate1));
-		assertNull("Max date is not null", maxDate1);
+		assertNotNull("Max date is null", maxDate1);
 
 		Date minDate2 = minDate1Capture.getValue();
 		Date dueDate2 = dueDate1Capture.getValue();
 		Date lateDate2 = lateDate1Capture.getValue();
 		Date maxDate2 = maxDate1Capture.getValue();
 
-		assertNull("Min date is not null", minDate2);
+		assertNotNull("Min date is null", minDate2);
 		assertNotNull("Due date is null", dueDate2);
 		assertNotNull("Late date is null", lateDate2);
 		assertTrue("Late date is not after due date", lateDate2.after(dueDate2));
-		assertNull("Max date is not null", maxDate2);
+		assertNotNull("Max date is null", maxDate2);
 
 		Date minDate3 = minDate1Capture.getValue();
 		Date dueDate3 = dueDate1Capture.getValue();
 		Date lateDate3 = lateDate1Capture.getValue();
 		Date maxDate3 = maxDate1Capture.getValue();
 
-		assertNull("Min date is not null", minDate3);
+		assertNotNull("Min date is null", minDate3);
 		assertNotNull("Due date is null", dueDate3);
 		assertNotNull("Late date is null", lateDate3);
 		assertTrue("Late date is not after due date", lateDate3.after(dueDate3));
-		assertNull("Max date is not null", maxDate3);
+		assertNotNull("Max date is null", maxDate3);
 	}
 
 	public void testSatisfyExpected() {
@@ -159,12 +159,17 @@ public class PNCMotherScheduleTest extends TestCase {
 		Capture<ExpectedEncounter> pnc2ExpectedCapture = new Capture<ExpectedEncounter>();
 		Capture<ExpectedEncounter> pnc3ExpectedCapture = new Capture<ExpectedEncounter>();
 
+		Date deliveryDate = new Date();
+		Calendar calendar = Calendar.getInstance();
+
 		List<Encounter> encounterList = new ArrayList<Encounter>();
 		Encounter encounter1 = new Encounter();
-		encounter1.setEncounterDatetime(date);
+		calendar.add(Calendar.HOUR_OF_DAY, 7);
+		encounter1.setEncounterDatetime(calendar.getTime());
 		encounterList.add(encounter1);
 		Encounter encounter2 = new Encounter();
-		encounter1.setEncounterDatetime(date);
+		calendar.add(Calendar.DATE, 7);
+		encounter2.setEncounterDatetime(calendar.getTime());
 		encounterList.add(encounter2);
 
 		List<ExpectedEncounter> expectedEncounterList = new ArrayList<ExpectedEncounter>();
@@ -177,8 +182,6 @@ public class PNCMotherScheduleTest extends TestCase {
 		ExpectedEncounter expectedEncounter3 = new ExpectedEncounter();
 		expectedEncounter3.setName(pnc3Event.getName());
 		expectedEncounterList.add(expectedEncounter3);
-
-		Date deliveryDate = new Date();
 
 		expect(registrarBean.getCurrentDeliveryDate(patient)).andReturn(
 				deliveryDate);

@@ -8,7 +8,7 @@
 		<property name="name" value="VitaA" />
 		<property name="conceptName" value="IMMUNIZATIONS ORDERED" />
 		<property name="valueConceptName" value="VITAMIN A" />
-		<property name="lateValue" value="2" />
+		<property name="lateValue" value="1" />
 		<property name="latePeriod" value="week" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="requirements">
@@ -24,48 +24,84 @@
 			<list>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="VitaA1" />
+					<property name="minValue" value="0" />
+					<property name="minPeriod" value="month" />
 					<property name="dueValue" value="6" />
 					<property name="duePeriod" value="month" />
+					<property name="maxValue" value="9" />
+					<property name="maxPeriod" value="month" />
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="VitaA2" />
+					<property name="minValue" value="9" />
+					<property name="minPeriod" value="month" />
 					<property name="dueValue" value="12" />
 					<property name="duePeriod" value="month" />
+					<property name="maxValue" value="15" />
+					<property name="maxPeriod" value="month" />
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="VitaA3" />
+					<property name="minValue" value="15" />
+					<property name="minPeriod" value="month" />
 					<property name="dueValue" value="18" />
 					<property name="duePeriod" value="month" />
+					<property name="maxValue" value="21" />
+					<property name="maxPeriod" value="month" />
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="VitaA4" />
+					<property name="minValue" value="21" />
+					<property name="minPeriod" value="month" />
 					<property name="dueValue" value="24" />
 					<property name="duePeriod" value="month" />
+					<property name="maxValue" value="27" />
+					<property name="maxPeriod" value="month" />
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="VitaA5" />
+					<property name="minValue" value="27" />
+					<property name="minPeriod" value="month" />
 					<property name="dueValue" value="30" />
 					<property name="duePeriod" value="month" />
+					<property name="maxValue" value="33" />
+					<property name="maxPeriod" value="month" />
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="VitaA6" />
+					<property name="minValue" value="33" />
+					<property name="minPeriod" value="month" />
 					<property name="dueValue" value="36" />
 					<property name="duePeriod" value="month" />
+					<property name="maxValue" value="39" />
+					<property name="maxPeriod" value="month" />
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="VitaA7" />
+					<property name="minValue" value="39" />
+					<property name="minPeriod" value="month" />
 					<property name="dueValue" value="42" />
 					<property name="duePeriod" value="month" />
+					<property name="maxValue" value="45" />
+					<property name="maxPeriod" value="month" />
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="VitaA8" />
+					<property name="minValue" value="45" />
+					<property name="minPeriod" value="month" />
 					<property name="dueValue" value="48" />
 					<property name="duePeriod" value="month" />
+					<property name="maxValue" value="51" />
+					<property name="maxPeriod" value="month" />
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="VitaA9" />
+					<property name="minValue" value="51" />
+					<property name="minPeriod" value="month" />
 					<property name="dueValue" value="54" />
 					<property name="duePeriod" value="month" />
+					<property name="maxValue" value="60" />
+					<property name="maxPeriod" value="month" />
 				</bean>
 			</list>
 		</property>

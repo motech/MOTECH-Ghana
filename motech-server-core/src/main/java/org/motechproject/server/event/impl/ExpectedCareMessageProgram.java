@@ -163,10 +163,10 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 	}
 
 	protected boolean isUpcoming(Date currentDate, Date expectedCareDate,
-			ExpectedCareMessageDetails careDetails) {
+			ExpectedCareMessageDetails careDetails, String care) {
 		// Upcoming care is considered twice the value for the care
 		Date endDate = calculateDate(currentDate, 2 * careDetails
-				.getTimeValue(), careDetails.getTimePeriod());
+				.getTimeValue(care), careDetails.getTimePeriod());
 		return currentDate.before(expectedCareDate)
 				&& endDate.after(expectedCareDate);
 	}
@@ -182,10 +182,10 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 			List<ScheduledMessage> careScheduledMessages,
 			Integer maxPatientReminders) {
 
-		if (isUpcoming(currentDate, dueDate, careDetails)) {
+		if (isUpcoming(currentDate, dueDate, careDetails, care)) {
 			// Schedule reminder value/period before care due date
 			Date messageDate = calculateDate(dueDate, (-1 * careDetails
-					.getTimeValue()), careDetails.getTimePeriod());
+					.getTimeValue(care)), careDetails.getTimePeriod());
 
 			// Set predicate and get upcoming scheduled message if exists
 			ScheduledMessagePredicate scheduledMessagePredicate = new ScheduledMessagePredicate();
@@ -212,7 +212,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 		} else if (isOverdue(currentDate, lateDate)) {
 			// Schedule reminder value/period after care late date
 			Date reminderDate = calculateDate(lateDate, careDetails
-					.getTimeValue(), careDetails.getTimePeriod());
+					.getTimeValue(care), careDetails.getTimePeriod());
 
 			// Set predicate and get previous reminder scheduled message if
 			// exists
@@ -248,10 +248,10 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 				// if number of previous reminders less than max property
 				if (attempts.size() < maxPatientReminders) {
 					Date newReminderDate = calculateDate(previousReminderDate,
-							careDetails.getTimeValue(), careDetails
+							careDetails.getTimeValue(care), careDetails
 									.getTimePeriod());
 					Date maxReminderDate = calculateDate(currentDate,
-							careDetails.getTimeValue(), careDetails
+							careDetails.getTimeValue(care), careDetails
 									.getTimePeriod());
 
 					if (!newReminderDate.after(maxReminderDate)) {

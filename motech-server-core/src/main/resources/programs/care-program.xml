@@ -42,16 +42,30 @@
 					<property name="name" value="PNC(mother)" />
 					<property name="upcomingMessageKey" value="pnc.mother.upcoming" />
 					<property name="overdueMessageKey" value="pnc.mother.overdue" />
-					<property name="timeValue" value="1" />
+					<property name="timeValue" value="24" />
 					<property name="timePeriod" value="hour" />
+					<property name="careTimeMap">
+						<map>
+							<entry key="PNC1" value="6" />
+							<entry key="PNC2" value="24" />
+							<entry key="PNC3" value="24" />
+						</map>
+					</property>
 				</bean>
 				<bean
 					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
 					<property name="name" value="PNC(baby)" />
 					<property name="upcomingMessageKey" value="pnc.baby.upcoming" />
 					<property name="overdueMessageKey" value="pnc.baby.overdue" />
-					<property name="timeValue" value="1" />
+					<property name="timeValue" value="24" />
 					<property name="timePeriod" value="hour" />
+					<property name="careTimeMap">
+						<map>
+							<entry key="PNC1" value="6" />
+							<entry key="PNC2" value="24" />
+							<entry key="PNC3" value="24" />
+						</map>
+					</property>
 				</bean>
 				<bean
 					class="org.motechproject.server.event.impl.ExpectedCareMessageDetails">
