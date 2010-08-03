@@ -33,6 +33,7 @@ import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechIdVerhoeffValidator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.VerhoeffValidator;
+import org.motechproject.server.omod.tasks.CareScheduleUpdateTask;
 import org.motechproject.server.omod.tasks.MessageProgramUpdateTask;
 import org.motechproject.server.omod.tasks.NotificationTask;
 import org.motechproject.server.omod.tasks.StaffCareMessagingTask;
@@ -3328,15 +3329,22 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.CONCEPT_NON_REACTIVE }, admin);
 
 		log.info("Verifying Task Exists and is Scheduled");
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MINUTE, 5);
+
 		Map<String, String> immProps = new HashMap<String, String>();
 		immProps.put(MotechConstants.TASK_PROPERTY_SEND_IMMEDIATE, Boolean.TRUE
 				.toString());
 		createTask(MotechConstants.TASK_IMMEDIATE_NOTIFICATION,
-				"Task to send out immediate SMS notifications", new Date(),
-				new Long(30), Boolean.TRUE, NotificationTask.class.getName(),
-				admin, immProps);
+				"Task to send out immediate SMS notifications", calendar
+						.getTime(), new Long(30), Boolean.TRUE,
+				NotificationTask.class.getName(), admin, immProps);
 
-		Calendar calendar = Calendar.getInstance();
+		createTask(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE,
+				"Task to update message program state for patients", calendar
+						.getTime(), new Long(30), Boolean.TRUE,
+				MessageProgramUpdateTask.class.getName(), admin, null);
+
 		calendar.set(Calendar.HOUR_OF_DAY, 23);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
@@ -3347,11 +3355,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Task to send out SMS notifications for next day", calendar
 						.getTime(), new Long(86400), Boolean.TRUE,
 				NotificationTask.class.getName(), admin, dailyProps);
-
-		createTask(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE,
-				"Task to update message program state for patients",
-				new Date(), new Long(30), Boolean.TRUE,
-				MessageProgramUpdateTask.class.getName(), admin, null);
 
 		calendar.add(Calendar.MINUTE, 20);
 		Map<String, String> dailyStaffProps = new HashMap<String, String>();
@@ -3384,6 +3387,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Task to send out staff SMS care messages for week", calendar
 						.getTime(), new Long(604800), Boolean.FALSE,
 				StaffCareMessagingTask.class.getName(), admin, weeklyStaffProps);
+
+		// Create care schedule task but avoid scheduling or repeating
+		createTask(MotechConstants.TASK_CARE_SCHEDULE_UPDATE,
+				"Task to update care schedules for all patients", null,
+				new Long(0), Boolean.FALSE, CareScheduleUpdateTask.class
+						.getName(), admin, null);
 	}
 
 	private void createPersonAttributeType(String name, String description,
@@ -3746,6 +3755,19 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					+ enrollment.getId());
 
 			program.determineState(enrollment);
+		}
+	}
+
+	public void updateAllCareSchedules() {
+		PatientService patientService = contextService.getPatientService();
+		List<Patient> patients = patientService.getAllPatients();
+		log
+				.info("Updating care schedules for " + patients.size()
+						+ " patients");
+
+		for (Patient patient : patients) {
+			// Adds patient to transaction synchronization using advice
+			patientService.savePatient(patient);
 		}
 	}
 

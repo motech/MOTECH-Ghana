@@ -410,6 +410,19 @@ public interface RegistrarBean {
 			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
 	public void updateAllMessageProgramsState();
 
+	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PATIENTS,
+			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES,
+			OpenmrsConstants.PRIV_VIEW_CONCEPTS,
+			OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES,
+			OpenmrsConstants.PRIV_VIEW_OBS,
+			OpenmrsConstants.PRIV_VIEW_ENCOUNTERS,
+			OpenmrsConstants.PRIV_VIEW_PERSONS,
+			OpenmrsConstants.PRIV_VIEW_LOCATIONS,
+			OpenmrsConstants.PRIV_VIEW_USERS,
+			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
+			OpenmrsConstants.PRIV_EDIT_PATIENTS })
+	public void updateAllCareSchedules();
+
 	public void demoEnrollPatient(Patient patient);
 
 	public Facility getFacilityById(Integer facilityId);

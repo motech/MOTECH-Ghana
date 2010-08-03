@@ -103,6 +103,7 @@ public final class MotechConstants {
 	public static final String TASK_MESSAGEPROGRAM_UPDATE = "MessageProgram Update Task";
 	public static final String TASK_DAILY_NURSE_CARE_MESSAGING = "Daily Nurse Care Messaging Task";
 	public static final String TASK_WEEKLY_NURSE_CARE_MESSAGING = "Weekly Nurse Care Messaging Task";
+	public static final String TASK_CARE_SCHEDULE_UPDATE = "Care Schedule Update Task";
 	public static final String TASK_PROPERTY_DELIVERY_TIME = "deliveryTime";
 	public static final String TASK_PROPERTY_SEND_UPCOMING = "sendUpcoming";
 	public static final String TASK_PROPERTY_CARE_GROUPS = "careGroups";
