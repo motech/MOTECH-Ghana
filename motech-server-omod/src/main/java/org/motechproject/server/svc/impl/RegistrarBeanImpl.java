@@ -3328,14 +3328,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.CONCEPT_NON_REACTIVE }, admin);
 
 		log.info("Verifying Task Exists and is Scheduled");
-		// TODO: Task should start automatically on startup, Boolean.TRUE
 		Map<String, String> immProps = new HashMap<String, String>();
 		immProps.put(MotechConstants.TASK_PROPERTY_SEND_IMMEDIATE, Boolean.TRUE
 				.toString());
 		createTask(MotechConstants.TASK_IMMEDIATE_NOTIFICATION,
 				"Task to send out immediate SMS notifications", new Date(),
-				new Long(30), Boolean.FALSE, NotificationTask.class.getName(),
+				new Long(30), Boolean.TRUE, NotificationTask.class.getName(),
 				admin, immProps);
+
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR_OF_DAY, 23);
 		calendar.set(Calendar.MINUTE, 0);
@@ -3345,11 +3345,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				new Long(3600).toString());
 		createTask(MotechConstants.TASK_DAILY_NOTIFICATION,
 				"Task to send out SMS notifications for next day", calendar
-						.getTime(), new Long(86400), Boolean.FALSE,
+						.getTime(), new Long(86400), Boolean.TRUE,
 				NotificationTask.class.getName(), admin, dailyProps);
+
 		createTask(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE,
 				"Task to update message program state for patients",
-				new Date(), new Long(30), Boolean.FALSE,
+				new Date(), new Long(30), Boolean.TRUE,
 				MessageProgramUpdateTask.class.getName(), admin, null);
 
 		calendar.add(Calendar.MINUTE, 20);
@@ -3663,12 +3664,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			task = schedulerService.getTaskByName(name);
 		}
 
-		try {
-			schedulerService.scheduleTask(task);
-		} catch (SchedulerException e) {
-			log.error("Cannot schedule task" + name, e);
+		if (Boolean.TRUE.equals(startOnStartup)) {
+			try {
+				schedulerService.scheduleTask(task);
+			} catch (SchedulerException e) {
+				log.error("Cannot schedule task" + name, e);
+			}
 		}
-
 	}
 
 	private void removeTask(String name) {
