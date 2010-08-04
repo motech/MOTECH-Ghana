@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.motechproject</groupId>
 	<artifactId>motech-server</artifactId>
-	<version>0.7.1-SNAPSHOT</version>
+	<version>0.7.1</version>
 	<packaging>pom</packaging>
 	<name>MoTeCH Server</name>
 	<description>A prototype system for the motech project.</description>
@@ -366,9 +366,9 @@
 	</build>
 
 	<scm>
-		<url>https://motech.rcg.usm.maine.edu/redmine/repositories/browse/motech/trunk</url>
-		<connection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/trunk</connection>
-		<developerConnection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/trunk</developerConnection>
+		<url>https://motech.rcg.usm.maine.edu/redmine/repositories/browse/motech/tags/0.7.1</url>
+		<connection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/tags/0.7.1</connection>
+		<developerConnection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/tags/0.7.1</developerConnection>
 	</scm>
 
 	<profiles>
