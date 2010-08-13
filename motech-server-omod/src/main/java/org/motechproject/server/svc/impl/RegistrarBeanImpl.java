@@ -275,8 +275,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		Integer pregnancyDueDateObsId = null;
 		if (registrantType == RegistrantType.PREGNANT_MOTHER) {
-			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
-					expDeliveryDate, deliveryDateConfirmed);
+			pregnancyDueDateObsId = registerPregnancy(staff, facility, date,
+					patient, expDeliveryDate, deliveryDateConfirmed);
 		}
 
 		enrollPatient(patient, community, enroll, consent, messagesStartWeek,
@@ -672,10 +672,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		Location facility = getGhanaLocation();
 		User staff = contextService.getAuthenticatedUser();
+		Date date = new Date();
 
 		if (pregnancyDueDateObsId == null) {
-			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
-					expDeliveryDate, deliveryDateConfirmed);
+			pregnancyDueDateObsId = registerPregnancy(staff, facility, date,
+					patient, expDeliveryDate, deliveryDateConfirmed);
 		}
 
 		enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
@@ -683,41 +684,39 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				howLearned, null, pregnancyDueDateObsId);
 	}
 
-	private Integer registerPregnancy(User staff, Location facility,
+	private Integer registerPregnancy(User staff, Location facility, Date date,
 			Patient patient, Date dueDate, Boolean dueDateConfirmed) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
 		ObsService obsService = contextService.getObsService();
 
-		Date currentDate = new Date();
-
 		Encounter encounter = new Encounter();
 		encounter
 				.setEncounterType(getPregnancyRegistrationVisitEncounterType());
-		encounter.setEncounterDatetime(currentDate);
+		encounter.setEncounterDatetime(date);
 		encounter.setPatient(patient);
 		encounter.setLocation(facility);
 		encounter.setProvider(staff);
 		encounter = encounterService.saveEncounter(encounter);
 
-		Obs pregnancyObs = createObs(currentDate, getPregnancyConcept(),
-				patient, facility, encounter, null);
+		Obs pregnancyObs = createObs(date, getPregnancyConcept(), patient,
+				facility, encounter, null);
 
-		Obs pregnancyStatusObs = createBooleanValueObs(currentDate,
+		Obs pregnancyStatusObs = createBooleanValueObs(date,
 				getPregnancyStatusConcept(), patient, facility, Boolean.TRUE,
 				encounter, null);
 		pregnancyObs.addGroupMember(pregnancyStatusObs);
 
 		Obs dueDateObs = null;
 		if (dueDate != null) {
-			dueDateObs = createDateValueObs(currentDate, getDueDateConcept(),
-					patient, facility, dueDate, encounter, null);
+			dueDateObs = createDateValueObs(date, getDueDateConcept(), patient,
+					facility, dueDate, encounter, null);
 			pregnancyObs.addGroupMember(dueDateObs);
 		}
 
 		if (dueDateConfirmed != null) {
-			Obs dueDateConfirmedObs = createBooleanValueObs(currentDate,
+			Obs dueDateConfirmedObs = createBooleanValueObs(date,
 					getDueDateConfirmedConcept(), patient, facility,
 					dueDateConfirmed, encounter, null);
 			pregnancyObs.addGroupMember(dueDateConfirmedObs);
@@ -740,8 +739,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
 
 		if (pregnancyDueDateObsId == null) {
-			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
-					estDeliveryDate, null);
+			pregnancyDueDateObsId = registerPregnancy(staff, facility, date,
+					patient, estDeliveryDate, null);
 		}
 
 		enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
@@ -815,8 +814,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Integer pregnancyDueDateObsId = null;
 		Obs pregnancyObs = getActivePregnancy(patient.getPatientId());
 		if (pregnancyObs == null) {
-			pregnancyDueDateObsId = registerPregnancy(staff, facility, patient,
-					estDeliveryDate, null);
+			pregnancyDueDateObsId = registerPregnancy(staff, facility, date,
+					patient, estDeliveryDate, null);
 		} else {
 			Obs pregnancyDueDateObs = getActivePregnancyDueDateObs(patient
 					.getPatientId(), pregnancyObs);
