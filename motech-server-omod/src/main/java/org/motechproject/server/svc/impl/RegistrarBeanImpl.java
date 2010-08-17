@@ -3336,12 +3336,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				.toString());
 		createTask(MotechConstants.TASK_IMMEDIATE_NOTIFICATION,
 				"Task to send out immediate SMS notifications", calendar
-						.getTime(), new Long(30), Boolean.TRUE,
+						.getTime(), new Long(300), Boolean.TRUE,
 				NotificationTask.class.getName(), admin, immProps);
 
 		createTask(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE,
 				"Task to update message program state for patients", calendar
-						.getTime(), new Long(30), Boolean.TRUE,
+						.getTime(), new Long(1200), Boolean.TRUE,
 				MessageProgramUpdateTask.class.getName(), admin, null);
 
 		calendar.set(Calendar.HOUR_OF_DAY, 23);
