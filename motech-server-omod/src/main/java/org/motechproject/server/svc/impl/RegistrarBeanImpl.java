@@ -3660,20 +3660,20 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		if (task == null) {
 			task = new TaskDefinition();
 			task.setName(name);
-			task.setDescription(description);
-			task.setStartTime(startDate);
-			task.setRepeatInterval(repeatSeconds);
-			if (properties != null)
-				task.setProperties(properties);
-			task.setTaskClass(taskClass);
-			task.setStartOnStartup(startOnStartup);
-			task.setCreator(creator);
-			schedulerService.saveTask(task);
-			task = schedulerService.getTaskByName(name);
 		}
+		task.setDescription(description);
+		task.setStartTime(startDate);
+		task.setRepeatInterval(repeatSeconds);
+		if (properties != null)
+			task.setProperties(properties);
+		task.setTaskClass(taskClass);
+		task.setStartOnStartup(startOnStartup);
+		task.setCreator(creator);
+		schedulerService.saveTask(task);
 
 		if (Boolean.TRUE.equals(startOnStartup)) {
 			try {
+				task = schedulerService.getTaskByName(name);
 				schedulerService.scheduleTask(task);
 			} catch (SchedulerException e) {
 				log.error("Cannot schedule task" + name, e);
