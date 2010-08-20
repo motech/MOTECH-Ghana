@@ -346,20 +346,21 @@ public interface RegistrarBean {
 
 	public ScheduledMessage scheduleCareMessage(String messageKey,
 			MessageProgramEnrollment enrollment, Date messageDate,
-			boolean userPreferenceBased, String care);
+			boolean userPreferenceBased, String care, Date currentDate);
 
 	public void removeAllUnsentMessages(MessageProgramEnrollment enrollment);
 
 	public void removeUnsentMessages(List<ScheduledMessage> scheduledMessages);
 
 	public void addMessageAttempt(ScheduledMessage scheduledMessage,
-			Date attemptDate, Date maxAttemptDate, boolean userPreferenceBased);
+			Date attemptDate, Date maxAttemptDate, boolean userPreferenceBased,
+			Date currentDate);
 
 	public Date determineUserPreferredMessageDate(Integer recipientId,
 			Date messageDate);
 
 	public void verifyMessageAttemptDate(ScheduledMessage scheduledMessage,
-			boolean userPreferenceBased);
+			boolean userPreferenceBased, Date currentDate);
 
 	public Integer getMaxPatientCareReminders();
 

@@ -25,8 +25,9 @@ public class ScheduleMessageCommand extends MessagesCommand {
 
 	@Override
 	public Date adjustActionDate(MessageProgramEnrollment enrollment,
-			Date actionDate) {
-		return messageScheduler.adjustMessageDate(enrollment, actionDate);
+			Date actionDate, Date currentDate) {
+		return messageScheduler.adjustMessageDate(enrollment, actionDate,
+				currentDate);
 	}
 
 	public String getMessageKey() {

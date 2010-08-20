@@ -1,5 +1,7 @@
 package org.motechproject.server.event.impl;
 
+import java.util.Date;
+
 import org.motechproject.server.event.MessageProgramState;
 import org.motechproject.server.event.MessageProgramStateTransition;
 import org.motechproject.server.event.MessagesCommand;
@@ -12,7 +14,8 @@ public class MessageProgramStateTransitionImpl extends BaseInterfaceImpl
 	protected MessageProgramState nextState;
 	protected MessagesCommand command;
 
-	public boolean evaluate(MessageProgramEnrollment enrollment) {
+	public boolean evaluate(MessageProgramEnrollment enrollment,
+			Date currentDate) {
 		// Default Transition is always taken
 		return true;
 	}

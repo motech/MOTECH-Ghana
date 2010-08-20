@@ -98,7 +98,8 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.determineState(enrollment);
+		currentPatientState = polioProgram.determineState(enrollment,
+				new Date());
 
 		verify(registrarBean);
 
@@ -117,7 +118,8 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.determineState(enrollment);
+		currentPatientState = polioProgram.determineState(enrollment,
+				new Date());
 
 		verify(registrarBean);
 
@@ -132,7 +134,8 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.determineState(enrollment);
+		currentPatientState = polioProgram.determineState(enrollment,
+				new Date());
 
 		verify(registrarBean);
 
@@ -151,7 +154,8 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.determineState(enrollment);
+		currentPatientState = polioProgram.determineState(enrollment,
+				new Date());
 
 		verify(registrarBean);
 
@@ -171,7 +175,7 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.updateState(enrollment);
+		currentPatientState = polioProgram.updateState(enrollment, new Date());
 
 		verify(registrarBean);
 
@@ -190,7 +194,8 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.determineState(enrollment);
+		currentPatientState = polioProgram.determineState(enrollment,
+				new Date());
 
 		verify(registrarBean);
 
@@ -210,7 +215,7 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.updateState(enrollment);
+		currentPatientState = polioProgram.updateState(enrollment, new Date());
 
 		verify(registrarBean);
 
@@ -225,7 +230,8 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.determineState(enrollment);
+		currentPatientState = polioProgram.determineState(enrollment,
+				new Date());
 
 		verify(registrarBean);
 
@@ -241,7 +247,7 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
 		replay(registrarBean);
 
-		currentPatientState = polioProgram.updateState(enrollment);
+		currentPatientState = polioProgram.updateState(enrollment, new Date());
 
 		verify(registrarBean);
 

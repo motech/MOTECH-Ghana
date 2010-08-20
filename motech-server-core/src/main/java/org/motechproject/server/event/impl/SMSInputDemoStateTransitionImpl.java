@@ -21,10 +21,11 @@ public class SMSInputDemoStateTransitionImpl extends
 	}
 
 	@Override
-	public boolean evaluate(MessageProgramEnrollment enrollment) {
+	public boolean evaluate(MessageProgramEnrollment enrollment,
+			Date currentDate) {
 
 		if (!terminatingTransition) {
-			boolean trueBasedOnDate = super.evaluate(enrollment);
+			boolean trueBasedOnDate = super.evaluate(enrollment, currentDate);
 
 			Date terminatingObsDate = registrarBean.getLastObsCreationDate(
 					enrollment.getPersonId(), prevState.getProgram()

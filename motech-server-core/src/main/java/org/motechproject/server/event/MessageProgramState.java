@@ -11,7 +11,7 @@ public interface MessageProgramState extends BaseInterface {
 	MessagesCommand getCommand();
 
 	MessageProgramStateTransition getTransition(
-			MessageProgramEnrollment enrollment);
+			MessageProgramEnrollment enrollment, Date currentDate);
 
 	MessageProgram getProgram();
 
@@ -21,5 +21,5 @@ public interface MessageProgramState extends BaseInterface {
 
 	TimeReference getTimeReference();
 
-	Date getDateOfAction(MessageProgramEnrollment enrollment);
+	Date getDateOfAction(MessageProgramEnrollment enrollment, Date currentDate);
 }

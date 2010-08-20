@@ -53,13 +53,13 @@ public class MessageProgramImpl extends BaseInterfaceImpl implements
 	}
 
 	public MessageProgramState determineState(
-			MessageProgramEnrollment enrollment) {
+			MessageProgramEnrollment enrollment, Date currentDate) {
 		MessageProgramState state = startState;
-		MessageProgramStateTransition transition = state
-				.getTransition(enrollment);
+		MessageProgramStateTransition transition = state.getTransition(
+				enrollment, currentDate);
 		while (!transition.getNextState().equals(state)) {
 			state = transition.getNextState();
-			transition = state.getTransition(enrollment);
+			transition = state.getTransition(enrollment, currentDate);
 		}
 
 		if (log.isDebugEnabled()) {
@@ -67,7 +67,7 @@ public class MessageProgramImpl extends BaseInterfaceImpl implements
 					+ enrollment.getId() + ", state: " + state.getName());
 		}
 
-		Date actionDate = state.getDateOfAction(enrollment);
+		Date actionDate = state.getDateOfAction(enrollment, currentDate);
 
 		// Perform state action using date and enrollment
 		MessagesCommand command = state.getCommand();
@@ -76,14 +76,15 @@ public class MessageProgramImpl extends BaseInterfaceImpl implements
 		return state;
 	}
 
-	public MessageProgramState updateState(MessageProgramEnrollment enrollment) {
-		MessageProgramState state = determineState(enrollment);
+	public MessageProgramState updateState(MessageProgramEnrollment enrollment,
+			Date currentDate) {
+		MessageProgramState state = determineState(enrollment, currentDate);
 		if (state.equals(endState)) {
 			return state;
 		}
-		MessageProgramStateTransition transition = state
-				.getTransition(enrollment);
-		Date actionDate = state.getDateOfAction(enrollment);
+		MessageProgramStateTransition transition = state.getTransition(
+				enrollment, currentDate);
+		Date actionDate = state.getDateOfAction(enrollment, currentDate);
 		transition.getCommand().execute(enrollment, actionDate);
 		MessageProgramState newState = transition.getNextState();
 

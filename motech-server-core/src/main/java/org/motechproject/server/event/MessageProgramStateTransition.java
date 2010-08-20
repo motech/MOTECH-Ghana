@@ -1,5 +1,7 @@
 package org.motechproject.server.event;
 
+import java.util.Date;
+
 import org.motechproject.server.model.MessageProgramEnrollment;
 
 public interface MessageProgramStateTransition extends BaseInterface {
@@ -10,5 +12,5 @@ public interface MessageProgramStateTransition extends BaseInterface {
 
 	MessagesCommand getCommand();
 
-	boolean evaluate(MessageProgramEnrollment enrollment);
+	boolean evaluate(MessageProgramEnrollment enrollment, Date currentDate);
 }

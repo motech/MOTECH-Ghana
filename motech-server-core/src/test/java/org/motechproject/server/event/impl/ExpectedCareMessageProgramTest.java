@@ -79,7 +79,8 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 
 		replay(registrarBean);
 
-		MessageProgramState state = careProgram.determineState(enrollment);
+		MessageProgramState state = careProgram.determineState(enrollment,
+				new Date());
 
 		verify(registrarBean);
 
@@ -141,7 +142,8 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 
 		replay(registrarBean);
 
-		MessageProgramState state = careProgram.determineState(enrollment);
+		MessageProgramState state = careProgram.determineState(enrollment,
+				new Date());
 
 		verify(registrarBean);
 
@@ -208,15 +210,18 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		expect(
 				registrarBean.scheduleCareMessage(eq(enc1MessageKey),
 						eq(enrollment), capture(message1DateCapture), eq(true),
-						eq(enc1.getName()))).andReturn(new ScheduledMessage());
+						eq(enc1.getName()), eq(date))).andReturn(
+				new ScheduledMessage());
 		expect(
 				registrarBean.scheduleCareMessage(eq(obs1MessageKey),
 						eq(enrollment), capture(message2DateCapture), eq(true),
-						eq(obs1.getName()))).andReturn(new ScheduledMessage());
+						eq(obs1.getName()), eq(date))).andReturn(
+				new ScheduledMessage());
 
 		replay(registrarBean);
 
-		MessageProgramState state = careProgram.determineState(enrollment);
+		MessageProgramState state = careProgram
+				.determineState(enrollment, date);
 
 		verify(registrarBean);
 
@@ -271,13 +276,14 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		expect(registrarBean.getScheduledMessages(enrollment)).andReturn(
 				schMsgs);
 
-		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true));
+		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true), eq(date));
 		registrarBean.addMessageAttempt(capture(reminderSchMsg),
-				capture(reminderDate), (Date) anyObject(), eq(true));
+				capture(reminderDate), (Date) anyObject(), eq(true), eq(date));
 
 		replay(registrarBean);
 
-		MessageProgramState state = careProgram.determineState(enrollment);
+		MessageProgramState state = careProgram
+				.determineState(enrollment, date);
 
 		verify(registrarBean);
 
@@ -333,11 +339,12 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		expect(registrarBean.getScheduledMessages(enrollment)).andReturn(
 				schMsgs);
 
-		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true));
+		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true), eq(date));
 
 		replay(registrarBean);
 
-		MessageProgramState state = careProgram.determineState(enrollment);
+		MessageProgramState state = careProgram
+				.determineState(enrollment, date);
 
 		verify(registrarBean);
 
@@ -385,11 +392,12 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		expect(registrarBean.getScheduledMessages(enrollment)).andReturn(
 				schMsgs);
 
-		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true));
+		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true), eq(date));
 
 		replay(registrarBean);
 
-		MessageProgramState state = careProgram.determineState(enrollment);
+		MessageProgramState state = careProgram
+				.determineState(enrollment, date);
 
 		verify(registrarBean);
 
@@ -433,11 +441,12 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		expect(registrarBean.getScheduledMessages(enrollment)).andReturn(
 				schMsgs);
 
-		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true));
+		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true), eq(date));
 
 		replay(registrarBean);
 
-		MessageProgramState state = careProgram.determineState(enrollment);
+		MessageProgramState state = careProgram
+				.determineState(enrollment, date);
 
 		verify(registrarBean);
 

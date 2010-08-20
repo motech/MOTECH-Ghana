@@ -2687,7 +2687,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	public ScheduledMessage scheduleCareMessage(String messageKey,
 			MessageProgramEnrollment enrollment, Date messageDate,
-			boolean userPreferenceBased, String care) {
+			boolean userPreferenceBased, String care, Date currentDate) {
 		// Return existing message definition
 		MessageDefinition messageDefinition = this
 				.getMessageDefinition(messageKey);
@@ -2699,7 +2699,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// Does not check if one already exists
 		return this.createCareScheduledMessage(messageRecipientId,
 				messageDefinition, enrollment, messageDate, care,
-				userPreferenceBased);
+				userPreferenceBased, currentDate);
 	}
 
 	private MessageDefinition getMessageDefinition(String messageKey) {
@@ -2774,7 +2774,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	public void addMessageAttempt(ScheduledMessage scheduledMessage,
-			Date attemptDate, Date maxAttemptDate, boolean userPreferenceBased) {
+			Date attemptDate, Date maxAttemptDate, boolean userPreferenceBased,
+			Date currentDate) {
 
 		MotechService motechService = contextService.getMotechService();
 		PersonService personService = contextService.getPersonService();
@@ -2784,7 +2785,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				.getRecipientId());
 
 		Date adjustedMessageDate = adjustCareMessageDate(recipient,
-				attemptDate, userPreferenceBased);
+				attemptDate, userPreferenceBased, currentDate);
 		// Prevent scheduling reminders too far in future
 		// Only schedule one reminder ahead
 		if (!adjustedMessageDate.after(maxAttemptDate)) {
@@ -2804,7 +2805,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	public void verifyMessageAttemptDate(ScheduledMessage scheduledMessage,
-			boolean userPreferenceBased) {
+			boolean userPreferenceBased, Date currentDate) {
 
 		MotechService motechService = contextService.getMotechService();
 		PersonService personService = contextService.getPersonService();
@@ -2820,7 +2821,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				// preferences or blackout incase these have changed
 				if (userPreferenceBased) {
 					attemptDate = determinePreferredMessageDate(recipient,
-							attemptDate);
+							attemptDate, currentDate, true);
 				} else {
 					attemptDate = adjustForBlackout(attemptDate);
 				}
@@ -2829,7 +2830,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					// Allows possibly adjusting to an earlier week or day
 					Date adjustedMessageDate = adjustCareMessageDate(recipient,
 							scheduledMessage.getScheduledFor(),
-							userPreferenceBased);
+							userPreferenceBased, currentDate);
 
 					if (log.isDebugEnabled()) {
 						log.debug("Updating message id="
@@ -2866,7 +2867,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		PersonService personService = contextService.getPersonService();
 		Person recipient = personService.getPerson(recipientId);
 
-		return determinePreferredMessageDate(recipient, messageDate);
+		return determinePreferredMessageDate(recipient, messageDate, null,
+				false);
 	}
 
 	private void createScheduledMessage(Integer recipientId,
@@ -2879,7 +2881,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				.getScheduledMessages(recipientId, messageDefinition,
 						enrollment, messageDate);
 
-		if (scheduledMessages.size() == 0) {
+		// Add scheduled message and message attempt is none matching exists
+		if (scheduledMessages.isEmpty()) {
 			if (log.isDebugEnabled()) {
 				log.debug("Creating ScheduledMessage: recipient: "
 						+ recipientId + ", enrollment: " + enrollment.getId()
@@ -2898,13 +2901,46 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			scheduledMessage.getMessageAttempts().add(message);
 
 			motechService.saveScheduledMessage(scheduledMessage);
+		} else {
+			if (scheduledMessages.size() > 1 && log.isWarnEnabled()) {
+				log.warn("Multiple matching scheduled messages: recipient: "
+						+ recipientId + ", enrollment: " + enrollment.getId()
+						+ ", message key: " + messageDefinition.getMessageKey()
+						+ ", date: " + messageDate);
+			}
+			// Add message attempt to existing scheduled message if not exist
+			boolean matchFound = false;
+			ScheduledMessage scheduledMessage = scheduledMessages.get(0);
+			for (Message message : scheduledMessage.getMessageAttempts()) {
+				if (MessageStatus.SHOULD_ATTEMPT == message.getAttemptStatus()
+						&& messageDate.equals(message.getAttemptDate())) {
+					matchFound = true;
+					break;
+				}
+			}
+			if (!matchFound) {
+				if (log.isDebugEnabled()) {
+					log.debug("Creating Message: recipient: " + recipientId
+							+ ", enrollment: " + enrollment.getId()
+							+ ", message key: "
+							+ messageDefinition.getMessageKey() + ", date: "
+							+ messageDate);
+				}
+
+				Message message = messageDefinition
+						.createMessage(scheduledMessage);
+				message.setAttemptDate(messageDate);
+				scheduledMessage.getMessageAttempts().add(message);
+
+				motechService.saveScheduledMessage(scheduledMessage);
+			}
 		}
 	}
 
 	private ScheduledMessage createCareScheduledMessage(Integer recipientId,
 			MessageDefinition messageDefinition,
 			MessageProgramEnrollment enrollment, Date messageDate, String care,
-			boolean userPreferenceBased) {
+			boolean userPreferenceBased, Date currentDate) {
 
 		MotechService motechService = contextService.getMotechService();
 		PersonService personService = contextService.getPersonService();
@@ -2920,7 +2956,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		Person recipient = personService.getPerson(recipientId);
 		Date adjustedMessageDate = adjustCareMessageDate(recipient,
-				messageDate, userPreferenceBased);
+				messageDate, userPreferenceBased, currentDate);
 
 		Message message = messageDefinition.createMessage(scheduledMessage);
 		message.setAttemptDate(adjustedMessageDate);
@@ -2937,10 +2973,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	Date adjustCareMessageDate(Person person, Date messageDate,
-			boolean userPreferenceBased) {
+			boolean userPreferenceBased, Date currentDate) {
 		Date adjustedDate = verifyFutureDate(messageDate);
 		if (userPreferenceBased) {
-			adjustedDate = determinePreferredMessageDate(person, adjustedDate);
+			adjustedDate = determinePreferredMessageDate(person, adjustedDate,
+					currentDate, true);
 		} else {
 			adjustedDate = adjustForBlackout(adjustedDate);
 		}
@@ -3722,6 +3759,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		List<MessageProgramEnrollment> patientActiveEnrollments = motechService
 				.getActiveMessageProgramEnrollments(personId, null, null);
 
+		Date currentDate = new Date();
+
 		for (MessageProgramEnrollment enrollment : patientActiveEnrollments) {
 			MessageProgram program = this.getMessageProgram(enrollment
 					.getProgram());
@@ -3732,7 +3771,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 							.debug("Save Obs - Obs matches Program concept, update Program: "
 									+ enrollment.getProgram());
 
-					program.determineState(enrollment);
+					program.determineState(enrollment, currentDate);
 				}
 			}
 		}
@@ -3746,6 +3785,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		List<MessageProgramEnrollment> activeEnrollments = motechService
 				.getActiveMessageProgramEnrollments(null, null, null);
 
+		Date currentDate = new Date();
+
 		for (MessageProgramEnrollment enrollment : activeEnrollments) {
 			MessageProgram program = this.getMessageProgram(enrollment
 					.getProgram());
@@ -3753,7 +3794,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			log.debug("MessageProgram Update - Update State: enrollment: "
 					+ enrollment.getId());
 
-			program.determineState(enrollment);
+			program.determineState(enrollment, currentDate);
 		}
 	}
 
@@ -4306,9 +4347,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return time;
 	}
 
-	public Date determinePreferredMessageDate(Person person, Date messageDate) {
+	public Date determinePreferredMessageDate(Person person, Date messageDate,
+			Date currentDate, boolean checkInFuture) {
 		Calendar calendar = Calendar.getInstance();
-		Date currentDate = calendar.getTime();
 		calendar.setTime(messageDate);
 
 		Date time = getPersonMessageTimeOfDay(person);
@@ -4330,7 +4371,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 		if (day != null) {
 			calendar.set(Calendar.DAY_OF_WEEK, day.getCalendarValue());
-			if (calendar.getTime().before(currentDate)) {
+			if (checkInFuture && calendar.getTime().before(currentDate)) {
 				// Add a week if date in past after setting the day of week
 				calendar.add(Calendar.DATE, 7);
 			}

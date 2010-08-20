@@ -1,5 +1,7 @@
 package org.motechproject.server.event.impl;
 
+import java.util.Date;
+
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.svc.RegistrarBean;
 
@@ -10,7 +12,8 @@ public class MessageProgramStateTransitionExpectedNumImpl extends
 	private int expectedNumber;
 
 	@Override
-	public boolean evaluate(MessageProgramEnrollment enrollment) {
+	public boolean evaluate(MessageProgramEnrollment enrollment,
+			Date currentDate) {
 		String conceptName = prevState.getProgram().getConceptName();
 		String conceptValue = prevState.getProgram().getConceptValue();
 		int obsNum = registrarBean.getNumberOfObs(enrollment.getPersonId(),
