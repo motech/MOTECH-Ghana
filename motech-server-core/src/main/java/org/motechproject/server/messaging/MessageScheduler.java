@@ -10,6 +10,7 @@ public interface MessageScheduler {
 			String messageKeyB, String messageKeyC,
 			MessageProgramEnrollment enrollment, Date messageDate);
 
-	Date adjustMessageDate(MessageProgramEnrollment enrollment, Date messageDate);
+	Date adjustMessageDate(MessageProgramEnrollment enrollment,
+			Date messageDate, Date currentDate);
 
 }

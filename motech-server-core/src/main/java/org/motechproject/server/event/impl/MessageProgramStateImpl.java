@@ -29,9 +29,9 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 	}
 
 	public MessageProgramStateTransition getTransition(
-			MessageProgramEnrollment enrollment) {
+			MessageProgramEnrollment enrollment, Date currentDate) {
 		for (MessageProgramStateTransition transition : transitions) {
-			if (transition.evaluate(enrollment)) {
+			if (transition.evaluate(enrollment, currentDate)) {
 				return transition;
 			}
 		}
@@ -101,12 +101,13 @@ public class MessageProgramStateImpl extends BaseInterfaceImpl implements
 		this.transitions = transitions;
 	}
 
-	public Date getDateOfAction(MessageProgramEnrollment enrollment) {
+	public Date getDateOfAction(MessageProgramEnrollment enrollment,
+			Date currentDate) {
 		Date actionDate = timeBean.determineTime(timePeriod, timeReference,
 				timeValue, null, enrollment, program.getConceptName(), program
 						.getConceptValue(), null, null);
 
-		return command.adjustActionDate(enrollment, actionDate);
+		return command.adjustActionDate(enrollment, actionDate, currentDate);
 	}
 
 }

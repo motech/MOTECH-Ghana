@@ -11,7 +11,7 @@ public class MessagesCommand {
 	}
 
 	public Date adjustActionDate(MessageProgramEnrollment enrollment,
-			Date actionDate) {
+			Date actionDate, Date currentDate) {
 		return actionDate;
 	}
 }

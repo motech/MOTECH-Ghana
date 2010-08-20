@@ -43,7 +43,7 @@ public class MessageSchedulerImpl implements MessageScheduler {
 	}
 
 	public Date adjustMessageDate(MessageProgramEnrollment enrollment,
-			Date messageDate) {
+			Date messageDate, Date currentDate) {
 
 		if (Boolean.TRUE.equals(userPreferenceBased)) {
 			return registrarBean.determineUserPreferredMessageDate(enrollment

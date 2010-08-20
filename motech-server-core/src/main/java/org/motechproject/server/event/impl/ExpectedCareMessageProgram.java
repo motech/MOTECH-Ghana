@@ -29,9 +29,8 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 	private RegistrarBean registrarBean;
 
 	public MessageProgramState determineState(
-			MessageProgramEnrollment enrollment) {
+			MessageProgramEnrollment enrollment, Date currentDate) {
 
-		Date currentDate = new Date();
 		// Calculate date 1 day in future to use for message dates calculated in
 		// past
 		Date nextDate = calculateDate(currentDate, 1, TimePeriod.day);
@@ -198,14 +197,17 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 
 			// Create new scheduled message only if not already exist
 			if (upcomingMessage == null) {
-				return registrarBean.scheduleCareMessage(careDetails
-						.getUpcomingMessageKey(), enrollment, messageDate,
-						careDetails.getUserPreferenceBased(), care);
+				return registrarBean
+						.scheduleCareMessage(careDetails
+								.getUpcomingMessageKey(), enrollment,
+								messageDate, careDetails
+										.getUserPreferenceBased(), care,
+								currentDate);
 			} else {
 				// Check if unsent message attempt date needs adjusting for
 				// blackout or preference changes
 				registrarBean.verifyMessageAttemptDate(upcomingMessage,
-						careDetails.getUserPreferenceBased());
+						careDetails.getUserPreferenceBased(), currentDate);
 				return upcomingMessage;
 			}
 
@@ -226,14 +228,17 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 
 			if (reminderMessage == null) {
 				// Schedule reminder if no previous reminders
-				return registrarBean.scheduleCareMessage(careDetails
-						.getOverdueMessageKey(), enrollment, reminderDate,
-						careDetails.getUserPreferenceBased(), care);
+				return registrarBean
+						.scheduleCareMessage(
+								careDetails.getOverdueMessageKey(), enrollment,
+								reminderDate, careDetails
+										.getUserPreferenceBased(), care,
+								currentDate);
 			} else {
 				// Check if unsent message attempt date needs adjusting for
 				// blackout or preference changes
 				registrarBean.verifyMessageAttemptDate(reminderMessage,
-						careDetails.getUserPreferenceBased());
+						careDetails.getUserPreferenceBased(), currentDate);
 
 				// Determine last reminder date
 				List<Message> attempts = reminderMessage.getMessageAttempts();
@@ -257,7 +262,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 					if (!newReminderDate.after(maxReminderDate)) {
 						registrarBean.addMessageAttempt(reminderMessage,
 								newReminderDate, maxReminderDate, careDetails
-										.getUserPreferenceBased());
+										.getUserPreferenceBased(), currentDate);
 					}
 				}
 				return reminderMessage;
@@ -313,7 +318,8 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 		return null;
 	}
 
-	public MessageProgramState updateState(MessageProgramEnrollment enrollment) {
+	public MessageProgramState updateState(MessageProgramEnrollment enrollment,
+			Date currentDate) {
 		return null;
 	}
 

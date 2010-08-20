@@ -8,8 +8,9 @@
 	<bean id="registrarBean" class="org.easymock.EasyMock" factory-method="createMock">
 		<constructor-arg index="0" value="org.motechproject.server.svc.RegistrarBean" />
 	</bean>
-	<bean id="messageScheduler" class="org.easymock.EasyMock" factory-method="createMock">
-		<constructor-arg index="0" value="org.motechproject.server.messaging.MessageScheduler" />
+	<bean id="userPrefmessageScheduler" class="org.motechproject.server.messaging.impl.MessageSchedulerImpl">
+		<property name="registrarBean" ref="registrarBean" />
+		<property name="userPreferenceBased" value="true" />
 	</bean>
 	<bean id="timeBean" class="org.motechproject.server.time.TimeBean">
 		<property name="registrarBean" ref="registrarBean" />
