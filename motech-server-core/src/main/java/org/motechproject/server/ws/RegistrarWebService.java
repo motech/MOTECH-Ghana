@@ -282,6 +282,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "ttDose") Integer ttDose,
 			@WebParam(name = "lochiaColour") Integer lochiaColour,
 			@WebParam(name = "lochiaAmountExcess") Boolean lochiaAmountExcess,
+			@WebParam(name = "lochiaOdourFoul") Boolean lochiaOdourFoul,
 			@WebParam(name = "temperature") Double temperature,
 			@WebParam(name = "fht") Double fht,
 			@WebParam(name = "comments") String comments)
@@ -299,10 +300,12 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Record Mother PNC Visit request", errors);
 		}
 
-		registrarBean.recordMotherPNCVisit(staff, facility.getLocation(),
-				datetime, patient, visitNumber, location, house, community,
-				referred, maleInvolved, vitaminA, ttDose, lochiaColour,
-				lochiaAmountExcess, temperature, fht, comments);
+		registrarBean
+				.recordMotherPNCVisit(staff, facility.getLocation(), datetime,
+						patient, visitNumber, location, house, community,
+						referred, maleInvolved, vitaminA, ttDose, lochiaColour,
+						lochiaAmountExcess, lochiaOdourFoul, temperature, fht,
+						comments);
 	}
 
 	@WebMethod

@@ -164,8 +164,8 @@ public interface RegistrarBean {
 			Integer visitNumber, Integer pncLocation, String house,
 			String community, Boolean referred, Boolean maleInvolved,
 			Boolean vitaminA, Integer ttDose, Integer lochiaColour,
-			Boolean lochiaAmountExcess, Double temperature, Double fht,
-			String comments);
+			Boolean lochiaAmountExcess, Boolean lochiaOdourFoul,
+			Double temperature, Double fht, String comments);
 
 	@RunAsAdminUser
 	public void recordChildPNCVisit(@RunAsUserParam User staff,

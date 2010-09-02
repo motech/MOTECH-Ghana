@@ -81,6 +81,7 @@ public final class MotechConstants {
 	public static final String CONCEPT_IPT_REACTION = "IPT REACTION";
 	public static final String CONCEPT_LOCHIA_COLOUR = "LOCHIA COLOUR";
 	public static final String CONCEPT_LOCHIA_EXCESS_AMOUNT = "LOCHIA EXCESS AMOUNT";
+	public static final String CONCEPT_LOCHIA_FOUL_ODOUR = "LOCHIA FOUL ODOUR";
 	public static final String CONCEPT_MIDDLE_UPPER_ARM_CIRCUMFERENCE = "MIDDLE UPPER ARM CIRCUMFERENCE";
 	public static final String CONCEPT_MATERNAL_DEATH = "MATERNAL DEATH";
 	public static final String CONCEPT_TERMINATION_PROCEDURE = "PREGNANCY, TERMINATION PROCEDURE";

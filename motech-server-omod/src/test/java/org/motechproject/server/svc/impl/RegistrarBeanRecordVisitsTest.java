@@ -276,7 +276,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			// PNC Visit for Mother 2
 			regService.recordMotherPNCVisit(staff, facilityLocation, date,
 					mother2, 1, 1, "House", "Community", false, true, true, 1,
-					1, false, 36.0, 100.0, "Comments");
+					1, false, false, 36.0, 100.0, "Comments");
 
 			assertEquals("PNC visit not added for Mother 2", 3, Context
 					.getEncounterService().getEncountersByPatient(mother2)

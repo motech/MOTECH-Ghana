@@ -605,7 +605,7 @@ public class RegistrarServiceTest {
 		Double fht = 140.2, temperature = 25.3;
 		String house = "House", community = "Community", comments = "Comments";
 		Boolean referred = false, maleInvolved = true;
-		Boolean vitaminA = true, lochiaExcess = false;
+		Boolean vitaminA = true, lochiaExcess = false, lochiaFoul = false;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -626,14 +626,14 @@ public class RegistrarServiceTest {
 		registrarBean.recordMotherPNCVisit(staff, facilityLocation, date,
 				patient, visitNumber, location, house, community, referred,
 				maleInvolved, vitaminA, ttDose, lochiaColour, lochiaExcess,
-				temperature, fht, comments);
+				lochiaFoul, temperature, fht, comments);
 
 		replay(registrarBean, openmrsBean);
 
 		regWs.recordMotherPNCVisit(staffId, facilityId, date, motechId,
 				visitNumber, location, house, community, referred,
 				maleInvolved, vitaminA, ttDose, lochiaColour, lochiaExcess,
-				temperature, fht, comments);
+				lochiaFoul, temperature, fht, comments);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -647,7 +647,7 @@ public class RegistrarServiceTest {
 		Double fht = 140.2, temperature = 25.3;
 		String house = "House", community = "Community", comments = "Comments";
 		Boolean referred = false, maleInvolved = true;
-		Boolean vitaminA = true, lochiaExcess = false;
+		Boolean vitaminA = true, lochiaExcess = false, lochiaFoul = false;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -669,7 +669,7 @@ public class RegistrarServiceTest {
 			regWs.recordMotherPNCVisit(staffId, facilityId, date, motechId,
 					visitNumber, location, house, community, referred,
 					maleInvolved, vitaminA, ttDose, lochiaColour, lochiaExcess,
-					temperature, fht, comments);
+					lochiaFoul, temperature, fht, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Mother PNC Visit request", e

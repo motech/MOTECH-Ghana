@@ -1412,7 +1412,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Integer pncLocation, String house, String community,
 			Boolean referred, Boolean maleInvolved, Boolean vitaminA,
 			Integer ttDose, Integer lochiaColour, Boolean lochiaAmountExcess,
-			Double temperature, Double fht, String comments) {
+			Boolean lochiaOdourFoul, Double temperature, Double fht,
+			String comments) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -1476,6 +1477,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					getLochiaColourConcept(), patient, facility, lochiaColour,
 					encounter, null);
 			encounter.addObs(lochiaColourObs);
+		}
+		if (lochiaOdourFoul != null) {
+			Obs lochiaOdourObs = createBooleanValueObs(datetime,
+					getLochiaFoulConcept(), patient, facility, lochiaOdourFoul,
+					encounter, null);
+			encounter.addObs(lochiaOdourObs);
 		}
 		if (lochiaAmountExcess != null) {
 			Obs lochiaAmountObs = createBooleanValueObs(datetime,
@@ -3340,6 +3347,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Question on encounter form: \"Is patient currently insured?\"",
 				MotechConstants.CONCEPT_CLASS_QUESTION,
 				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(MotechConstants.CONCEPT_LOCHIA_FOUL_ODOUR,
+				"Is smell of post-partum vaginal discharge foul?",
+				MotechConstants.CONCEPT_CLASS_FINDING,
+				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
 
 		log.info("Verifying Concepts Exist as Answers");
 		// TODO: Add IPT to proper Concept as an Answer, not an immunization
@@ -4905,6 +4916,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public Concept getLochiaExcessConcept() {
 		return contextService.getConceptService().getConcept(
 				MotechConstants.CONCEPT_LOCHIA_EXCESS_AMOUNT);
+	}
+
+	public Concept getLochiaFoulConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_LOCHIA_FOUL_ODOUR);
 	}
 
 	public Concept getMUACConcept() {
