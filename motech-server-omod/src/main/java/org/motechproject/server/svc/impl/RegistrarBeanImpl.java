@@ -768,6 +768,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return pregnancyDueDateObsId;
 	}
 
+	public void recordPatientHistory(User staff, Location facility, Date date,
+			Patient patient, Integer lastANC, Date lastANCDate,
+			Integer lastIPT, Date lastIPTDate, Integer lastTT, Date lastTTDate,
+			Integer lastPNCMotherVisit, Date lastPNCMotherDate,
+			Integer lastPNCChildVisit, Date lastPNCChildDate, Date bcgDate,
+			Integer lastOPV, Date lastOPVDate, Integer lastPenta,
+			Date lastPentaDate, Date measlesDate, Date yellowFeverDate,
+			Integer lastIPTI, Date lastIPTIDate, Date lastVitaminADate) {
+
+		// TODO: Store patient history data
+	}
+
 	@Transactional
 	public void registerANCMother(User staff, Location facility, Date date,
 			Patient patient, String ancRegNumber, Date estDeliveryDate,

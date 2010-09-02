@@ -333,6 +333,14 @@ public class RegistrarBeanRecordVisitsTest extends
 					.getEncounterService().getEncountersByPatient(child1)
 					.size());
 
+			regService.recordPatientHistory(staff, facilityLocation, date,
+					child1, 1, date, 1, date, 1, date, 1, date, 1, date, date,
+					1, date, 1, date, date, date, 1, date, date);
+
+			assertEquals("No new encounters added for Child 1", 2, Context
+					.getEncounterService().getEncountersByPatient(child1)
+					.size());
+
 			// Record Death of Child 1
 			regService.recordDeath(staff, facilityLocation, date, child1);
 

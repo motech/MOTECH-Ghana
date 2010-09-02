@@ -60,6 +60,54 @@ public class RegistrarWebService implements RegistrarService {
 	MessageSourceBean messageBean;
 
 	@WebMethod
+	public void recordPatientHistory(
+			@WebParam(name = "staffId") Integer staffId,
+			@WebParam(name = "facilityId") Integer facilityId,
+			@WebParam(name = "date") Date date,
+			@WebParam(name = "motechId") Integer motechId,
+			@WebParam(name = "lastANC") Integer lastANC,
+			@WebParam(name = "lastANCDate") Date lastANCDate,
+			@WebParam(name = "lastIPT") Integer lastIPT,
+			@WebParam(name = "lastIPTDate") Date lastIPTDate,
+			@WebParam(name = "lastTT") Integer lastTT,
+			@WebParam(name = "lastTTDate") Date lastTTDate,
+			@WebParam(name = "lastPNCMotherVisit") Integer lastPNCMotherVisit,
+			@WebParam(name = "lastPNCMotherDate") Date lastPNCMotherDate,
+			@WebParam(name = "lastPNCChildVisit") Integer lastPNCChildVisit,
+			@WebParam(name = "lastPNCChildDate") Date lastPNCChildDate,
+			@WebParam(name = "bcgDate") Date bcgDate,
+			@WebParam(name = "lastOPV") Integer lastOPV,
+			@WebParam(name = "lastOPVDate") Date lastOPVDate,
+			@WebParam(name = "lastPenta") Integer lastPenta,
+			@WebParam(name = "lastPentaDate") Date lastPentaDate,
+			@WebParam(name = "measlesDate") Date measlesDate,
+			@WebParam(name = "yellowFeverDate") Date yellowFeverDate,
+			@WebParam(name = "lastIPTI") Integer lastIPTI,
+			@WebParam(name = "lastIPTIDate") Date lastIPTIDate,
+			@WebParam(name = "lastVitaminADate") Date lastVitaminADate)
+			throws ValidationException {
+
+		ValidationErrors errors = new ValidationErrors();
+
+		User staff = validateStaffId(staffId, errors, "StaffID");
+		Facility facility = validateFacility(facilityId, errors, "FacilityID");
+		org.openmrs.Patient patient = validateMotechId(motechId, errors,
+				"MotechID", true);
+
+		if (errors.getErrors().size() > 0) {
+			throw new ValidationException(
+					"Errors in Record Patient History request", errors);
+		}
+
+		registrarBean.recordPatientHistory(staff, facility.getLocation(), date,
+				patient, lastANC, lastANCDate, lastIPT, lastIPTDate, lastTT,
+				lastTTDate, lastPNCMotherVisit, lastPNCMotherDate,
+				lastPNCChildVisit, lastPNCChildDate, bcgDate, lastOPV,
+				lastOPVDate, lastPenta, lastPentaDate, measlesDate,
+				yellowFeverDate, lastIPTI, lastIPTIDate, lastVitaminADate);
+	}
+
+	@WebMethod
 	public void recordMotherANCVisit(
 			@WebParam(name = "staffId") Integer staffId,
 			@WebParam(name = "facilityId") Integer facilityId,

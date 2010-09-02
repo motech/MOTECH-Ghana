@@ -99,6 +99,89 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
+	public void testRecordPatientHistory() throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer lastANC = 1, lastIPT = 1, lastTT = 1, lastPNCMotherVisit = 1, lastPNCChildVisit = 1;
+		Integer lastOPV = 1, lastPenta = 1, lastIPTI = 1;
+		Date date = new Date();
+
+		User staff = new User(1);
+		Location facilityLocation = new Location(1);
+		Facility facility = new Facility();
+		facility.setLocation(facilityLocation);
+		org.openmrs.Patient patient = new org.openmrs.Patient(2);
+
+		expect(registrarBean.isValidIdCheckDigit(staffId)).andReturn(true);
+		expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn(
+				staff);
+		expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
+		expect(registrarBean.isValidMotechIdCheckDigit(motechId)).andReturn(
+				true);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(patient);
+		registrarBean.recordPatientHistory(staff, facilityLocation, date,
+				patient, lastANC, date, lastIPT, date, lastTT, date,
+				lastPNCMotherVisit, date, lastPNCChildVisit, date, date,
+				lastOPV, date, lastPenta, date, date, date, lastIPTI, date,
+				date);
+
+		replay(registrarBean, openmrsBean);
+
+		regWs.recordPatientHistory(staffId, facilityId, date, motechId,
+				lastANC, date, lastIPT, date, lastTT, date, lastPNCMotherVisit,
+				date, lastPNCChildVisit, date, date, lastOPV, date, lastPenta,
+				date, date, date, lastIPTI, date, date);
+
+		verify(registrarBean, openmrsBean);
+	}
+
+	@Test
+	public void testRecordPatientHistoryInvalidPatientId()
+			throws ValidationException {
+		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer lastANC = 1, lastIPT = 1, lastTT = 1, lastPNCMotherVisit = 1, lastPNCChildVisit = 1;
+		Integer lastOPV = 1, lastPenta = 1, lastIPTI = 1;
+		Date date = new Date();
+
+		User staff = new User(1);
+
+		expect(registrarBean.isValidIdCheckDigit(staffId)).andReturn(true);
+		expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn(
+				staff);
+		expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
+		expect(registrarBean.getFacilityById(facilityId)).andReturn(
+				new Facility());
+		expect(registrarBean.isValidMotechIdCheckDigit(motechId)).andReturn(
+				true);
+		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+				.andReturn(null);
+
+		replay(registrarBean, openmrsBean);
+
+		try {
+			regWs.recordPatientHistory(staffId, facilityId, date, motechId,
+					lastANC, date, lastIPT, date, lastTT, date,
+					lastPNCMotherVisit, date, lastPNCChildVisit, date, date,
+					lastOPV, date, lastPenta, date, date, date, lastIPTI, date,
+					date);
+			fail("Expected ValidationException");
+		} catch (ValidationException e) {
+			assertEquals("Errors in Record Patient History request", e
+					.getMessage());
+			assertNotNull("Validation Exception FaultBean is Null", e
+					.getFaultInfo());
+			List<String> errors = e.getFaultInfo().getErrors();
+			assertNotNull("Validation Errors is Null", errors);
+			assertEquals(1, errors.size());
+			String error = errors.get(0);
+			assertEquals("MotechID=not found", error);
+		}
+
+		verify(registrarBean, openmrsBean);
+	}
+
+	@Test
 	public void testRecordMotherANCVisit() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer visitNumber = 1, location = 1, bpSystolic = 130, bpDiastolic = 80;
