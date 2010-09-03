@@ -333,11 +333,39 @@ public class RegistrarBeanRecordVisitsTest extends
 					.getEncounterService().getEncountersByPatient(child1)
 					.size());
 
-			regService.recordPatientHistory(staff, facilityLocation, date,
-					child1, 1, date, 1, date, 1, date, 1, date, 1, date, date,
-					1, date, 1, date, date, date, 1, date, date);
+			calendar.set(2010, 0, 1, 0, 0, 0); // Jan 1, 2010
+			date = calendar.getTime();
+			calendar.set(1990, 0, 1, 0, 0, 0); // Jan 1, 1990
+			Date ancDate = calendar.getTime();
+			calendar.set(1991, 0, 2, 0, 0, 0); // Jan 2, 1991
+			Date pncMoDate = calendar.getTime();
+			calendar.set(1992, 0, 3, 0, 0, 0); // Jan 3, 1992
+			Date pncChDate = calendar.getTime();
+			calendar.set(1993, 0, 4, 0, 0, 0); // Jan 4, 1993
+			Date ttDate = calendar.getTime();
+			calendar.set(1994, 1, 2, 0, 0, 0); // Feb 2, 1994
+			Date iptDate = calendar.getTime();
+			calendar.set(2006, 11, 3, 0, 0, 0); // Dec 3, 2006
+			Date bcgDate = calendar.getTime();
+			calendar.set(2005, 2, 5, 0, 0, 0); // Mar 5, 2005
+			Date opvDate = calendar.getTime();
+			calendar.set(2004, 3, 7, 0, 0, 0); // Apr 7, 2004
+			Date pentaDate = calendar.getTime();
+			calendar.set(2000, 4, 10, 0, 0, 0); // May 10, 2000
+			Date measlesDate = calendar.getTime();
+			calendar.set(2001, 5, 15, 0, 0, 0); // Jun 15, 2001
+			Date yellowDate = calendar.getTime();
+			calendar.set(2002, 6, 16, 0, 0, 0); // Jul 16, 2002
+			Date iptiDate = calendar.getTime();
+			calendar.set(2003, 7, 17, 0, 0, 0); // Aug 17, 2003
+			Date vitDate = calendar.getTime();
 
-			assertEquals("No new encounters added for Child 1", 2, Context
+			regService.recordPatientHistory(staff, facilityLocation, date,
+					child1, 1, ancDate, 2, iptDate, 3, ttDate, 4, pncMoDate, 5,
+					pncChDate, bcgDate, 6, opvDate, 7, pentaDate, measlesDate,
+					yellowDate, 8, iptiDate, vitDate);
+
+			assertEquals("No new encounters added for Child 1", 6, Context
 					.getEncounterService().getEncountersByPatient(child1)
 					.size());
 

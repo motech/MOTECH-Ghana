@@ -777,7 +777,125 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Date lastPentaDate, Date measlesDate, Date yellowFeverDate,
 			Integer lastIPTI, Date lastIPTIDate, Date lastVitaminADate) {
 
-		// TODO: Store patient history data
+		EncounterService encounterService = contextService
+				.getEncounterService();
+
+		// Not associating historical data with any facility
+		Location ghanaLocation = getGhanaLocation();
+
+		Encounter historyEncounter = new Encounter();
+		historyEncounter.setEncounterType(getPatientHistoryEncounterType());
+		historyEncounter.setEncounterDatetime(date);
+		historyEncounter.setPatient(patient);
+		historyEncounter.setLocation(ghanaLocation);
+		historyEncounter.setProvider(staff);
+
+		if (lastIPT != null && lastIPTDate != null) {
+			Obs iptDoseObs = createNumericValueObs(lastIPTDate,
+					getIPTDoseConcept(), patient, ghanaLocation, lastIPT,
+					historyEncounter, null);
+			historyEncounter.addObs(iptDoseObs);
+		}
+		if (lastTT != null && lastTTDate != null) {
+			Obs ttDoseObs = createNumericValueObs(lastTTDate,
+					getTetanusDoseConcept(), patient, ghanaLocation, lastTT,
+					historyEncounter, null);
+			historyEncounter.addObs(ttDoseObs);
+		}
+		if (bcgDate != null) {
+			Obs bcgObs = createConceptValueObs(bcgDate,
+					getImmunizationsOrderedConcept(), patient, ghanaLocation,
+					getBCGConcept(), historyEncounter, null);
+			historyEncounter.addObs(bcgObs);
+		}
+		if (lastOPV != null && lastOPVDate != null) {
+			Obs opvDoseObs = createNumericValueObs(lastOPVDate,
+					getOPVDoseConcept(), patient, ghanaLocation, lastOPV,
+					historyEncounter, null);
+			historyEncounter.addObs(opvDoseObs);
+		}
+		if (lastPenta != null && lastPentaDate != null) {
+			Obs pentaDoseObs = createNumericValueObs(lastPentaDate,
+					getPentaDoseConcept(), patient, ghanaLocation, lastPenta,
+					historyEncounter, null);
+			historyEncounter.addObs(pentaDoseObs);
+		}
+		if (measlesDate != null) {
+			Obs measlesObs = createConceptValueObs(measlesDate,
+					getImmunizationsOrderedConcept(), patient, ghanaLocation,
+					getMeaslesConcept(), historyEncounter, null);
+			historyEncounter.addObs(measlesObs);
+		}
+		if (yellowFeverDate != null) {
+			Obs yellowFeverObs = createConceptValueObs(yellowFeverDate,
+					getImmunizationsOrderedConcept(), patient, ghanaLocation,
+					getYellowFeverConcept(), historyEncounter, null);
+			historyEncounter.addObs(yellowFeverObs);
+		}
+		if (lastIPTI != null && lastIPTIDate != null) {
+			Obs iptiObs = createConceptValueObs(lastIPTIDate,
+					getImmunizationsOrderedConcept(), patient, ghanaLocation,
+					getIPTiConcept(), historyEncounter, null);
+			// Setting both concept and numeric values
+			// normally stored only with concept value
+			iptiObs.setValueNumeric(new Double(lastIPTI));
+			historyEncounter.addObs(iptiObs);
+		}
+		if (lastVitaminADate != null) {
+			Obs vitaminAObs = createConceptValueObs(lastVitaminADate,
+					getImmunizationsOrderedConcept(), patient, ghanaLocation,
+					getVitaminAConcept(), historyEncounter, null);
+			historyEncounter.addObs(vitaminAObs);
+		}
+		if (!historyEncounter.getAllObs().isEmpty()) {
+			encounterService.saveEncounter(historyEncounter);
+		}
+
+		if (lastANC != null && lastANCDate != null) {
+			Encounter ancEncounter = new Encounter();
+			ancEncounter.setEncounterType(getANCVisitEncounterType());
+			ancEncounter.setEncounterDatetime(lastANCDate);
+			ancEncounter.setPatient(patient);
+			ancEncounter.setLocation(ghanaLocation);
+			ancEncounter.setProvider(staff);
+
+			Obs ancVisitNumberObs = createNumericValueObs(lastANCDate,
+					getVisitNumberConcept(), patient, ghanaLocation, lastANC,
+					ancEncounter, null);
+			ancEncounter.addObs(ancVisitNumberObs);
+			encounterService.saveEncounter(ancEncounter);
+		}
+
+		if (lastPNCMotherVisit != null && lastPNCMotherDate != null) {
+			Encounter motherPNCEncounter = new Encounter();
+			motherPNCEncounter
+					.setEncounterType(getMotherPNCVisitEncounterType());
+			motherPNCEncounter.setEncounterDatetime(lastPNCMotherDate);
+			motherPNCEncounter.setPatient(patient);
+			motherPNCEncounter.setLocation(ghanaLocation);
+			motherPNCEncounter.setProvider(staff);
+
+			Obs motherPNCVisitNumberObs = createNumericValueObs(
+					lastPNCMotherDate, getVisitNumberConcept(), patient,
+					ghanaLocation, lastPNCMotherVisit, motherPNCEncounter, null);
+			motherPNCEncounter.addObs(motherPNCVisitNumberObs);
+			encounterService.saveEncounter(motherPNCEncounter);
+		}
+
+		if (lastPNCChildVisit != null && lastPNCChildDate != null) {
+			Encounter childPNCEncounter = new Encounter();
+			childPNCEncounter.setEncounterType(getChildPNCVisitEncounterType());
+			childPNCEncounter.setEncounterDatetime(lastPNCChildDate);
+			childPNCEncounter.setPatient(patient);
+			childPNCEncounter.setLocation(ghanaLocation);
+			childPNCEncounter.setProvider(staff);
+
+			Obs childPNCVisitNumberObs = createNumericValueObs(
+					lastPNCChildDate, getVisitNumberConcept(), patient,
+					ghanaLocation, lastPNCChildVisit, childPNCEncounter, null);
+			childPNCEncounter.addObs(childPNCVisitNumberObs);
+			encounterService.saveEncounter(childPNCEncounter);
+		}
 	}
 
 	@Transactional
@@ -3102,6 +3220,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Ghana Child Birth Visit", admin);
 		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT,
 				"Ghana Patient Registration Visit", admin);
+		createEncounterType(MotechConstants.ENCOUNTER_TYPE_PATIENTHISTORY,
+				"Ghana Patient History", admin);
 
 		log.info("Verifying Concepts Exist");
 		createConcept(MotechConstants.CONCEPT_VISIT_NUMBER, "Visit Number",
@@ -4659,6 +4779,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public EncounterType getPatientRegistrationEncounterType() {
 		return contextService.getEncounterService().getEncounterType(
 				MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT);
+	}
+
+	public EncounterType getPatientHistoryEncounterType() {
+		return contextService.getEncounterService().getEncounterType(
+				MotechConstants.ENCOUNTER_TYPE_PATIENTHISTORY);
 	}
 
 	public Concept getImmunizationsOrderedConcept() {
