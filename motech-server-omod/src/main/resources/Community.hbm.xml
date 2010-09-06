@@ -14,5 +14,7 @@
 			<many-to-many column="patient_id" class="org.openmrs.Patient"
 				unique="true" />
 		</set>
+		<property name="retired" type="boolean" column="retired"
+			not-null="true" />
 	</class>
 </hibernate-mapping>

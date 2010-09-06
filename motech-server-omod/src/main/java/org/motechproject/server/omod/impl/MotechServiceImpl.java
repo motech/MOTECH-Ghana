@@ -337,13 +337,14 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return motechDAO.getCommunityByCommunityId(communityId);
 	}
 
-	public List<Community> getAllCommunities() {
-		return motechDAO.getAllCommunities();
+	public List<Community> getAllCommunities(boolean includeRetired) {
+		return motechDAO.getAllCommunities(includeRetired);
 	}
 
 	public List<Community> getCommunities(String country, String region,
-			String district) {
-		return motechDAO.getCommunities(country, region, district);
+			String district, boolean includeRetired) {
+		return motechDAO.getCommunities(country, region, district,
+				includeRetired);
 	}
 
 	public Community getCommunityByPatient(Patient patient) {

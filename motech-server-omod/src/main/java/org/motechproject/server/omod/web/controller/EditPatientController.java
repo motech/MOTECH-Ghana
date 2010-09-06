@@ -90,7 +90,7 @@ public class EditPatientController extends BasePatientController {
 
 	@ModelAttribute("communities")
 	public List<Community> getCommunities() {
-		return contextService.getMotechService().getAllCommunities();
+		return contextService.getMotechService().getAllCommunities(true);
 	}
 
 	@ModelAttribute("patient")

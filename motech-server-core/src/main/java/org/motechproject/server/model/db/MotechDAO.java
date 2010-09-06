@@ -151,10 +151,10 @@ public interface MotechDAO {
 
 	Community getCommunityByCommunityId(Integer communityId);
 
-	List<Community> getAllCommunities();
+	List<Community> getAllCommunities(boolean includeRetired);
 
 	List<Community> getCommunities(String country, String region,
-			String district);
+			String district, boolean includeRetired);
 
 	Community getCommunityByPatient(Patient patient);
 }

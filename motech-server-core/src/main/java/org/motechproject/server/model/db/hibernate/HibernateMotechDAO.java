@@ -763,26 +763,33 @@ public class HibernateMotechDAO implements MotechDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Community> getAllCommunities() {
-		return (List<Community>) sessionFactory.getCurrentSession()
-				.createCriteria(Community.class).addOrder(Order.asc("name"))
-				.list();
+	public List<Community> getAllCommunities(boolean includeRetired) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				Community.class);
+		if (!includeRetired) {
+			criteria.add(Restrictions.eq("retired", false));
+		}
+		criteria.addOrder(Order.asc("name"));
+		return (List<Community>) criteria.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Community> getCommunities(String country, String region,
-			String district) {
-		return (List<Community>) sessionFactory
-				.getCurrentSession()
-				.createQuery(
-						"from "
-								+ Community.class.getName()
-								+ " where facility.location.country = :country and "
-								+ "facility.location.region = :region and "
-								+ "facility.location.countyDistrict = :district "
-								+ "order by name")
-				.setString("country", country).setString("region", region)
-				.setString("district", district).list();
+			String district, boolean includeRetired) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				Community.class, "c");
+		criteria.createAlias("c.facility", "f");
+		criteria.createAlias("f.location", "loc");
+		criteria.add(Restrictions.eq("loc.country", country));
+		criteria.add(Restrictions.eq("loc.region", region));
+		criteria.add(Restrictions.eq("loc.countyDistrict", district));
+
+		if (!includeRetired) {
+			criteria.add(Restrictions.eq("c.retired", false));
+		}
+		criteria.addOrder(Order.asc("c.name"));
+
+		return (List<Community>) criteria.list();
 	}
 
 	public Community getCommunityByPatient(Patient patient) {

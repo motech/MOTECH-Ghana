@@ -70,7 +70,7 @@ public class SearchPatientsController {
 
 	@ModelAttribute("communities")
 	public List<Community> getCommunities() {
-		return contextService.getMotechService().getAllCommunities();
+		return contextService.getMotechService().getAllCommunities(true);
 	}
 
 	@ModelAttribute("patient")

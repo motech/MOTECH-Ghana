@@ -1211,6 +1211,9 @@ public class RegistrarWebService implements RegistrarService {
 		if (community == null) {
 			errors.add(messageBean.getMessage("motechmodule.ws.notfound",
 					fieldName));
+		} else if (Boolean.TRUE.equals(community.getRetired())) {
+			errors.add(messageBean.getMessage("motechmodule.ws.invalid",
+					fieldName));
 		}
 		return community;
 	}

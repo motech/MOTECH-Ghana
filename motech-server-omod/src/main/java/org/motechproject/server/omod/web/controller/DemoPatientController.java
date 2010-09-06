@@ -103,7 +103,7 @@ public class DemoPatientController extends BasePatientController {
 
 	@ModelAttribute("communities")
 	public List<Community> getCommunities() {
-		return contextService.getMotechService().getAllCommunities();
+		return contextService.getMotechService().getAllCommunities(false);
 	}
 
 	@RequestMapping(method = RequestMethod.GET)

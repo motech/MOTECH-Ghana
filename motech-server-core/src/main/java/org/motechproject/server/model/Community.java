@@ -15,6 +15,7 @@ public class Community implements Serializable {
 	private String name;
 	private Facility facility;
 	private Set<Patient> residents = new HashSet<Patient>();
+	private Boolean retired = Boolean.FALSE;
 
 	public Long getId() {
 		return id;
@@ -55,4 +56,13 @@ public class Community implements Serializable {
 	public void setResidents(Set<Patient> residents) {
 		this.residents = residents;
 	}
+
+	public Boolean getRetired() {
+		return retired;
+	}
+
+	public void setRetired(Boolean retired) {
+		this.retired = retired;
+	}
+
 }

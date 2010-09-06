@@ -219,11 +219,11 @@ public interface MotechService extends OpenmrsService {
 	Community getCommunityById(Integer communityId);
 
 	@Transactional(readOnly = true)
-	List<Community> getAllCommunities();
+	List<Community> getAllCommunities(boolean includeRetired);
 
 	@Transactional(readOnly = true)
 	List<Community> getCommunities(String country, String region,
-			String district);
+			String district, boolean includeRetired);
 
 	@Transactional(readOnly = true)
 	Community getCommunityByPatient(Patient patient);

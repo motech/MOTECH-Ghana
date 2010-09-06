@@ -34,7 +34,7 @@ public class EditFacilityController {
 
 	@ModelAttribute("communities")
 	public List<Community> getCommunities() {
-		return contextService.getMotechService().getAllCommunities();
+		return contextService.getMotechService().getAllCommunities(true);
 	}
 
 	@ModelAttribute("facility")

@@ -91,7 +91,7 @@ public class EditPatientControllerTest extends TestCase {
 
 	public void testGetCommunities() {
 		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getAllCommunities()).andReturn(
+		expect(motechService.getAllCommunities(true)).andReturn(
 				new ArrayList<Community>());
 
 		replay(contextService, motechService);
