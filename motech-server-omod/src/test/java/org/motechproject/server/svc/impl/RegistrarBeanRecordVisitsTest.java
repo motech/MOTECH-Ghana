@@ -335,12 +335,6 @@ public class RegistrarBeanRecordVisitsTest extends
 
 			calendar.set(2010, 0, 1, 0, 0, 0); // Jan 1, 2010
 			date = calendar.getTime();
-			calendar.set(1990, 0, 1, 0, 0, 0); // Jan 1, 1990
-			Date ancDate = calendar.getTime();
-			calendar.set(1991, 0, 2, 0, 0, 0); // Jan 2, 1991
-			Date pncMoDate = calendar.getTime();
-			calendar.set(1992, 0, 3, 0, 0, 0); // Jan 3, 1992
-			Date pncChDate = calendar.getTime();
 			calendar.set(1993, 0, 4, 0, 0, 0); // Jan 4, 1993
 			Date ttDate = calendar.getTime();
 			calendar.set(1994, 1, 2, 0, 0, 0); // Feb 2, 1994
@@ -361,11 +355,10 @@ public class RegistrarBeanRecordVisitsTest extends
 			Date vitDate = calendar.getTime();
 
 			regService.recordPatientHistory(staff, facilityLocation, date,
-					child1, 1, ancDate, 2, iptDate, 3, ttDate, 4, pncMoDate, 5,
-					pncChDate, bcgDate, 6, opvDate, 7, pentaDate, measlesDate,
-					yellowDate, 8, iptiDate, vitDate);
+					child1, 2, iptDate, 3, ttDate, bcgDate, 6, opvDate, 7,
+					pentaDate, measlesDate, yellowDate, 8, iptiDate, vitDate);
 
-			assertEquals("No new encounters added for Child 1", 6, Context
+			assertEquals("No patient history added for Child 1", 3, Context
 					.getEncounterService().getEncountersByPatient(child1)
 					.size());
 

@@ -65,16 +65,10 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "facilityId") Integer facilityId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "lastANC") Integer lastANC,
-			@WebParam(name = "lastANCDate") Date lastANCDate,
 			@WebParam(name = "lastIPT") Integer lastIPT,
 			@WebParam(name = "lastIPTDate") Date lastIPTDate,
 			@WebParam(name = "lastTT") Integer lastTT,
 			@WebParam(name = "lastTTDate") Date lastTTDate,
-			@WebParam(name = "lastPNCMotherVisit") Integer lastPNCMotherVisit,
-			@WebParam(name = "lastPNCMotherDate") Date lastPNCMotherDate,
-			@WebParam(name = "lastPNCChildVisit") Integer lastPNCChildVisit,
-			@WebParam(name = "lastPNCChildDate") Date lastPNCChildDate,
 			@WebParam(name = "bcgDate") Date bcgDate,
 			@WebParam(name = "lastOPV") Integer lastOPV,
 			@WebParam(name = "lastOPVDate") Date lastOPVDate,
@@ -100,10 +94,8 @@ public class RegistrarWebService implements RegistrarService {
 		}
 
 		registrarBean.recordPatientHistory(staff, facility.getLocation(), date,
-				patient, lastANC, lastANCDate, lastIPT, lastIPTDate, lastTT,
-				lastTTDate, lastPNCMotherVisit, lastPNCMotherDate,
-				lastPNCChildVisit, lastPNCChildDate, bcgDate, lastOPV,
-				lastOPVDate, lastPenta, lastPentaDate, measlesDate,
+				patient, lastIPT, lastIPTDate, lastTT, lastTTDate, bcgDate,
+				lastOPV, lastOPVDate, lastPenta, lastPentaDate, measlesDate,
 				yellowFeverDate, lastIPTI, lastIPTIDate, lastVitaminADate);
 	}
 

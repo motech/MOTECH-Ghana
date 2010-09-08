@@ -101,7 +101,7 @@ public class RegistrarServiceTest {
 	@Test
 	public void testRecordPatientHistory() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
-		Integer lastANC = 1, lastIPT = 1, lastTT = 1, lastPNCMotherVisit = 1, lastPNCChildVisit = 1;
+		Integer lastIPT = 1, lastTT = 1;
 		Integer lastOPV = 1, lastPenta = 1, lastIPTI = 1;
 		Date date = new Date();
 
@@ -121,16 +121,13 @@ public class RegistrarServiceTest {
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
 		registrarBean.recordPatientHistory(staff, facilityLocation, date,
-				patient, lastANC, date, lastIPT, date, lastTT, date,
-				lastPNCMotherVisit, date, lastPNCChildVisit, date, date,
-				lastOPV, date, lastPenta, date, date, date, lastIPTI, date,
-				date);
+				patient, lastIPT, date, lastTT, date, date, lastOPV, date,
+				lastPenta, date, date, date, lastIPTI, date, date);
 
 		replay(registrarBean, openmrsBean);
 
 		regWs.recordPatientHistory(staffId, facilityId, date, motechId,
-				lastANC, date, lastIPT, date, lastTT, date, lastPNCMotherVisit,
-				date, lastPNCChildVisit, date, date, lastOPV, date, lastPenta,
+				lastIPT, date, lastTT, date, date, lastOPV, date, lastPenta,
 				date, date, date, lastIPTI, date, date);
 
 		verify(registrarBean, openmrsBean);
@@ -140,7 +137,7 @@ public class RegistrarServiceTest {
 	public void testRecordPatientHistoryInvalidPatientId()
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
-		Integer lastANC = 1, lastIPT = 1, lastTT = 1, lastPNCMotherVisit = 1, lastPNCChildVisit = 1;
+		Integer lastIPT = 1, lastTT = 1;
 		Integer lastOPV = 1, lastPenta = 1, lastIPTI = 1;
 		Date date = new Date();
 
@@ -161,10 +158,8 @@ public class RegistrarServiceTest {
 
 		try {
 			regWs.recordPatientHistory(staffId, facilityId, date, motechId,
-					lastANC, date, lastIPT, date, lastTT, date,
-					lastPNCMotherVisit, date, lastPNCChildVisit, date, date,
-					lastOPV, date, lastPenta, date, date, date, lastIPTI, date,
-					date);
+					lastIPT, date, lastTT, date, date, lastOPV, date,
+					lastPenta, date, date, date, lastIPTI, date, date);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Patient History request", e

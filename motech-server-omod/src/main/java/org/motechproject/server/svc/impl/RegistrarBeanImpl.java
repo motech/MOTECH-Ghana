@@ -769,13 +769,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	public void recordPatientHistory(User staff, Location facility, Date date,
-			Patient patient, Integer lastANC, Date lastANCDate,
-			Integer lastIPT, Date lastIPTDate, Integer lastTT, Date lastTTDate,
-			Integer lastPNCMotherVisit, Date lastPNCMotherDate,
-			Integer lastPNCChildVisit, Date lastPNCChildDate, Date bcgDate,
-			Integer lastOPV, Date lastOPVDate, Integer lastPenta,
-			Date lastPentaDate, Date measlesDate, Date yellowFeverDate,
-			Integer lastIPTI, Date lastIPTIDate, Date lastVitaminADate) {
+			Patient patient, Integer lastIPT, Date lastIPTDate, Integer lastTT,
+			Date lastTTDate, Date bcgDate, Integer lastOPV, Date lastOPVDate,
+			Integer lastPenta, Date lastPentaDate, Date measlesDate,
+			Date yellowFeverDate, Integer lastIPTI, Date lastIPTIDate,
+			Date lastVitaminADate) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -849,52 +847,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 		if (!historyEncounter.getAllObs().isEmpty()) {
 			encounterService.saveEncounter(historyEncounter);
-		}
-
-		if (lastANC != null && lastANCDate != null) {
-			Encounter ancEncounter = new Encounter();
-			ancEncounter.setEncounterType(getANCVisitEncounterType());
-			ancEncounter.setEncounterDatetime(lastANCDate);
-			ancEncounter.setPatient(patient);
-			ancEncounter.setLocation(ghanaLocation);
-			ancEncounter.setProvider(staff);
-
-			Obs ancVisitNumberObs = createNumericValueObs(lastANCDate,
-					getVisitNumberConcept(), patient, ghanaLocation, lastANC,
-					ancEncounter, null);
-			ancEncounter.addObs(ancVisitNumberObs);
-			encounterService.saveEncounter(ancEncounter);
-		}
-
-		if (lastPNCMotherVisit != null && lastPNCMotherDate != null) {
-			Encounter motherPNCEncounter = new Encounter();
-			motherPNCEncounter
-					.setEncounterType(getMotherPNCVisitEncounterType());
-			motherPNCEncounter.setEncounterDatetime(lastPNCMotherDate);
-			motherPNCEncounter.setPatient(patient);
-			motherPNCEncounter.setLocation(ghanaLocation);
-			motherPNCEncounter.setProvider(staff);
-
-			Obs motherPNCVisitNumberObs = createNumericValueObs(
-					lastPNCMotherDate, getVisitNumberConcept(), patient,
-					ghanaLocation, lastPNCMotherVisit, motherPNCEncounter, null);
-			motherPNCEncounter.addObs(motherPNCVisitNumberObs);
-			encounterService.saveEncounter(motherPNCEncounter);
-		}
-
-		if (lastPNCChildVisit != null && lastPNCChildDate != null) {
-			Encounter childPNCEncounter = new Encounter();
-			childPNCEncounter.setEncounterType(getChildPNCVisitEncounterType());
-			childPNCEncounter.setEncounterDatetime(lastPNCChildDate);
-			childPNCEncounter.setPatient(patient);
-			childPNCEncounter.setLocation(ghanaLocation);
-			childPNCEncounter.setProvider(staff);
-
-			Obs childPNCVisitNumberObs = createNumericValueObs(
-					lastPNCChildDate, getVisitNumberConcept(), patient,
-					ghanaLocation, lastPNCChildVisit, childPNCEncounter, null);
-			childPNCEncounter.addObs(childPNCVisitNumberObs);
-			encounterService.saveEncounter(childPNCEncounter);
 		}
 	}
 
