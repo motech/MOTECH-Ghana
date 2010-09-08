@@ -198,7 +198,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			// ANC Visit for Mother 1
 			regService.recordMotherANCVisit(staff, facilityLocation, date,
 					mother1, 1, 1, "House", "Community", newDueDate, 1, 1, 1.0,
-					1, 1, false, true, 1.0, 1, false, false, 1.0, false, false,
+					1, 1, false, true, 1.0, 1, 0, 56464, 1.0, false, false,
 					false, true, false, false, HIVResult.NO_TEST, false, false,
 					false, date, "Comments");
 

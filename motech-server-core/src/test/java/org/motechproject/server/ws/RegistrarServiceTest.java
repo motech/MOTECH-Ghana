@@ -187,8 +187,8 @@ public class RegistrarServiceTest {
 		Integer visitNumber = 1, location = 1, bpSystolic = 130, bpDiastolic = 80;
 		Double weight = 63.3, hemoglobin = 11.1, fht = 130.1;
 		String house = "House", community = "Community", comments = "Comments";
-		Integer ttDose = 1, iptDose = 1, fhr = 130;
-		Boolean iptReactive = false, itnUse = true, urineProtein = false, urineGlucose = false;
+		Integer ttDose = 1, iptDose = 1, fhr = 130, urineProtein = 0, urineGlucose = 0;
+		Boolean iptReactive = false, itnUse = true;
 		Boolean vdrlReactive = false, vdrlTreatment = false, dewormer = false, maleInvolved = true;
 		Boolean pmtct = false, preTest = false, postTest = false, pmtctTreatment = false, referred = false;
 		Date date = new Date();
@@ -236,8 +236,8 @@ public class RegistrarServiceTest {
 		Integer visitNumber = 1, location = 1, bpSystolic = 130, bpDiastolic = 80;
 		Double weight = 63.3, hemoglobin = 11.1, fht = 130.1;
 		String house = "House", community = "Community", comments = "Comments";
-		Integer ttDose = 1, iptDose = 1, fhr = 130;
-		Boolean iptReactive = false, itnUse = true, urineProtein = false, urineGlucose = false;
+		Integer ttDose = 1, iptDose = 1, fhr = 130, urineProtein = 0, urineGlucose = 0;
+		Boolean iptReactive = false, itnUse = true;
 		Boolean vdrlReactive = false, vdrlTreatment = false, dewormer = false, maleInvolved = true;
 		Boolean pmtct = false, preTest = false, postTest = false, pmtctTreatment = false, referred = false;
 		Date date = new Date();

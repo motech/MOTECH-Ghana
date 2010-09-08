@@ -98,6 +98,7 @@ public final class MotechConstants {
 	public static final String CONCEPT_ANC_REG_NUMBER = "ANC REGISTRATION NUMBER";
 	public static final String CONCEPT_CWC_REG_NUMBER = "CWC REGISTRATION NUMBER";
 	public static final String CONCEPT_INSURED = "INSURED";
+	public static final String CONCEPT_TRACE = "TRACE";
 	public static final String TASK_PROPERTY_SEND_IMMEDIATE = "sendImmediate";
 	public static final String TASK_PROPERTY_TIME_OFFSET = "timeOffset";
 	public static final String TASK_DAILY_NOTIFICATION = "Daily Notification Task";

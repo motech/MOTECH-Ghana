@@ -127,8 +127,8 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "itnUse") Boolean itnUse,
 			@WebParam(name = "fht") Double fht,
 			@WebParam(name = "fhr") Integer fhr,
-			@WebParam(name = "urineTestProteinPositive") Boolean urineTestProteinPositive,
-			@WebParam(name = "urineTestGlucosePositive") Boolean urineTestGlucosePositive,
+			@WebParam(name = "urineTestProtein") Integer urineTestProtein,
+			@WebParam(name = "urineTestGlucose") Integer urineTestGlucose,
 			@WebParam(name = "hemoglobin") Double hemoglobin,
 			@WebParam(name = "vdrlReactive") Boolean vdrlReactive,
 			@WebParam(name = "vdrlTreatment") Boolean vdrlTreatment,
@@ -159,11 +159,11 @@ public class RegistrarWebService implements RegistrarService {
 		registrarBean.recordMotherANCVisit(staff, facility.getLocation(), date,
 				patient, visitNumber, location, house, community,
 				estDeliveryDate, bpSystolic, bpDiastolic, weight, ttDose,
-				iptDose, iptReactive, itnUse, fht, fhr,
-				urineTestProteinPositive, urineTestGlucosePositive, hemoglobin,
-				vdrlReactive, vdrlTreatment, dewormer, maleInvolved, pmtct,
-				preTestCounseled, hivTestResult, postTestCounseled,
-				pmtctTreatment, referred, nextANCDate, comments);
+				iptDose, iptReactive, itnUse, fht, fhr, urineTestProtein,
+				urineTestGlucose, hemoglobin, vdrlReactive, vdrlTreatment,
+				dewormer, maleInvolved, pmtct, preTestCounseled, hivTestResult,
+				postTestCounseled, pmtctTreatment, referred, nextANCDate,
+				comments);
 	}
 
 	@WebMethod

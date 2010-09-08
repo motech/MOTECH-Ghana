@@ -142,7 +142,7 @@ public interface RegistrarBean {
 			Date estDeliveryDate, Integer bpSystolic, Integer bpDiastolic,
 			Double weight, Integer ttDose, Integer iptDose,
 			Boolean iptReactive, Boolean itnUse, Double fht, Integer fhr,
-			Boolean urineTestProteinPositive, Boolean urineTestGlucosePositive,
+			Integer urineTestProtein, Integer urineTestGlucose,
 			Double hemoglobin, Boolean vdrlReactive, Boolean vdrlTreatment,
 			Boolean dewormer, Boolean maleInvolved, Boolean pmtct,
 			Boolean preTestCounseled, HIVResult hivTestResult,

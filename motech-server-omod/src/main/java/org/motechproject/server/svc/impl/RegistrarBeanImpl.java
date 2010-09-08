@@ -1004,11 +1004,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			String house, String community, Date estDeliveryDate,
 			Integer bpSystolic, Integer bpDiastolic, Double weight,
 			Integer ttDose, Integer iptDose, Boolean iptReactive,
-			Boolean itnUse, Double fht, Integer fhr,
-			Boolean urineTestProteinPositive, Boolean urineTestGlucosePositive,
-			Double hemoglobin, Boolean vdrlReactive, Boolean vdrlTreatment,
-			Boolean dewormer, Boolean maleInvolved, Boolean pmtct,
-			Boolean preTestCounseled, HIVResult hivTestResult,
+			Boolean itnUse, Double fht, Integer fhr, Integer urineTestProtein,
+			Integer urineTestGlucose, Double hemoglobin, Boolean vdrlReactive,
+			Boolean vdrlTreatment, Boolean dewormer, Boolean maleInvolved,
+			Boolean pmtct, Boolean preTestCounseled, HIVResult hivTestResult,
 			Boolean postTestCounseled, Boolean pmtctTreatment,
 			Boolean referred, Date nextANCDate, String comments) {
 
@@ -1107,29 +1106,45 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					encounter, null);
 			encounter.addObs(fhrObs);
 		}
-		if (urineTestProteinPositive != null) {
+		if (urineTestProtein != null) {
 			Concept urineProteinTestValueConcept = null;
-			if (Boolean.TRUE.equals(urineTestProteinPositive)) {
-				urineProteinTestValueConcept = getPositiveConcept();
-			} else {
+			switch (urineTestProtein) {
+			case 0:
 				urineProteinTestValueConcept = getNegativeConcept();
+				break;
+			case 1:
+				urineProteinTestValueConcept = getPositiveConcept();
+				break;
+			case 2:
+				urineProteinTestValueConcept = getTraceConcept();
+				break;
 			}
-			Obs urineTestProteinPositiveObs = createConceptValueObs(date,
-					getUrineProteinTestConcept(), patient, facility,
-					urineProteinTestValueConcept, encounter, null);
-			encounter.addObs(urineTestProteinPositiveObs);
+			if (urineProteinTestValueConcept != null) {
+				Obs urineTestProteinPositiveObs = createConceptValueObs(date,
+						getUrineProteinTestConcept(), patient, facility,
+						urineProteinTestValueConcept, encounter, null);
+				encounter.addObs(urineTestProteinPositiveObs);
+			}
 		}
-		if (urineTestGlucosePositive != null) {
+		if (urineTestGlucose != null) {
 			Concept urineGlucoseTestValueConcept = null;
-			if (Boolean.TRUE.equals(urineTestGlucosePositive)) {
-				urineGlucoseTestValueConcept = getPositiveConcept();
-			} else {
+			switch (urineTestGlucose) {
+			case 0:
 				urineGlucoseTestValueConcept = getNegativeConcept();
+				break;
+			case 1:
+				urineGlucoseTestValueConcept = getPositiveConcept();
+				break;
+			case 2:
+				urineGlucoseTestValueConcept = getTraceConcept();
+				break;
 			}
-			Obs urineTestProteinPositiveObs = createConceptValueObs(date,
-					getUrineGlucoseTestConcept(), patient, facility,
-					urineGlucoseTestValueConcept, encounter, null);
-			encounter.addObs(urineTestProteinPositiveObs);
+			if (urineGlucoseTestValueConcept != null) {
+				Obs urineTestProteinPositiveObs = createConceptValueObs(date,
+						getUrineGlucoseTestConcept(), patient, facility,
+						urineGlucoseTestValueConcept, encounter, null);
+				encounter.addObs(urineTestProteinPositiveObs);
+			}
 		}
 		if (hemoglobin != null) {
 			Obs hemoglobinObs = createNumericValueObs(date,
@@ -3483,6 +3498,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				"Is smell of post-partum vaginal discharge foul?",
 				MotechConstants.CONCEPT_CLASS_FINDING,
 				MotechConstants.CONCEPT_DATATYPE_BOOLEAN, admin);
+		createConcept(MotechConstants.CONCEPT_TRACE,
+				"General finding of a trace positive result.",
+				MotechConstants.CONCEPT_CLASS_MISC,
+				MotechConstants.CONCEPT_DATATYPE_N_A, admin);
 
 		log.info("Verifying Concepts Exist as Answers");
 		// TODO: Add IPT to proper Concept as an Answer, not an immunization
@@ -3499,10 +3518,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 						MotechConstants.CONCEPT_NEGATIVE }, admin);
 		addConceptAnswers(MotechConstants.CONCEPT_URINE_PROTEIN_TEST,
 				new String[] { MotechConstants.CONCEPT_POSITIVE,
-						MotechConstants.CONCEPT_NEGATIVE }, admin);
+						MotechConstants.CONCEPT_NEGATIVE,
+						MotechConstants.CONCEPT_TRACE }, admin);
 		addConceptAnswers(MotechConstants.CONCEPT_URINE_GLUCOSE_TEST,
 				new String[] { MotechConstants.CONCEPT_POSITIVE,
-						MotechConstants.CONCEPT_NEGATIVE }, admin);
+						MotechConstants.CONCEPT_NEGATIVE,
+						MotechConstants.CONCEPT_TRACE }, admin);
 		addConceptAnswers(MotechConstants.CONCEPT_IPT_REACTION, new String[] {
 				MotechConstants.CONCEPT_REACTIVE,
 				MotechConstants.CONCEPT_NON_REACTIVE }, admin);
@@ -5178,6 +5199,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public Concept getNegativeConcept() {
 		return contextService.getConceptService().getConcept(
 				MotechConstants.CONCEPT_NEGATIVE);
+	}
+
+	public Concept getTraceConcept() {
+		return contextService.getConceptService().getConcept(
+				MotechConstants.CONCEPT_TRACE);
 	}
 
 	public Concept getANCRegistrationNumberConcept() {
