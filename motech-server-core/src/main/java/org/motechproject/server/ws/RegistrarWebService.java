@@ -1020,7 +1020,7 @@ public class RegistrarWebService implements RegistrarService {
 				.getUpcomingExpectedObs(patient);
 
 		Care[] upcomingCares = modelConverter.upcomingToWebServiceCares(
-				upcomingEncounters, upcomingObs, true);
+				upcomingEncounters, upcomingObs);
 
 		wsPatient.setCares(upcomingCares);
 		return wsPatient;

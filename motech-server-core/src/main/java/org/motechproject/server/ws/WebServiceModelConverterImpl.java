@@ -2,7 +2,7 @@ package org.motechproject.server.ws;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -152,7 +152,7 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 
 	public Care[] upcomingToWebServiceCares(
 			List<ExpectedEncounter> upcomingEncounters,
-			List<ExpectedObs> upcomingObs, boolean dateSorted) {
+			List<ExpectedObs> upcomingObs) {
 
 		List<Care> cares = new ArrayList<Care>();
 
@@ -169,9 +169,7 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 			cares.add(care);
 		}
 
-		if (dateSorted) {
-			Collections.sort(cares, new CareDateComparator());
-		}
+		Collections.sort(cares, new CareDateComparator());
 
 		return cares.toArray(new Care[cares.size()]);
 	}
@@ -180,7 +178,7 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 
 		List<Care> cares = new ArrayList<Care>();
 
-		LinkedHashMap<String, List<org.openmrs.Patient>> carePatientMap = new LinkedHashMap<String, List<org.openmrs.Patient>>();
+		Map<String, List<org.openmrs.Patient>> carePatientMap = new HashMap<String, List<org.openmrs.Patient>>();
 
 		for (ExpectedObs expectedObs : defaultedObs) {
 			List<org.openmrs.Patient> patients = carePatientMap.get(expectedObs
@@ -200,6 +198,8 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 			cares.add(care);
 		}
 
+		Collections.sort(cares, new CareDateComparator(true));
+
 		return cares.toArray(new Care[cares.size()]);
 	}
 
@@ -208,7 +208,7 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 
 		List<Care> cares = new ArrayList<Care>();
 
-		LinkedHashMap<String, List<org.openmrs.Patient>> carePatientMap = new LinkedHashMap<String, List<org.openmrs.Patient>>();
+		Map<String, List<org.openmrs.Patient>> carePatientMap = new HashMap<String, List<org.openmrs.Patient>>();
 
 		for (ExpectedEncounter expectedEncounter : defaultedEncounters) {
 			List<org.openmrs.Patient> patients = carePatientMap
@@ -227,6 +227,8 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 			care.setPatients(patients);
 			cares.add(care);
 		}
+
+		Collections.sort(cares, new CareDateComparator(true));
 
 		return cares.toArray(new Care[cares.size()]);
 	}
@@ -237,7 +239,7 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 
 		List<Care> cares = new ArrayList<Care>();
 
-		LinkedHashMap<String, List<org.openmrs.Patient>> carePatientMap = new LinkedHashMap<String, List<org.openmrs.Patient>>();
+		Map<String, List<org.openmrs.Patient>> carePatientMap = new HashMap<String, List<org.openmrs.Patient>>();
 
 		for (ExpectedEncounter expectedEncounter : defaultedEncounters) {
 			List<org.openmrs.Patient> patients = carePatientMap
@@ -265,6 +267,8 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 			care.setPatients(patients);
 			cares.add(care);
 		}
+
+		Collections.sort(cares, new CareDateComparator(true));
 
 		return cares.toArray(new Care[cares.size()]);
 	}

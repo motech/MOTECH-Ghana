@@ -130,6 +130,12 @@
 		<defaultValue>18:00</defaultValue>
 		<description>Default time of day to send messages to a patient</description>
 	</globalProperty>
+
+	<globalProperty>
+		<property>motechmodule.max_query_results</property>
+		<defaultValue>50</defaultValue>
+		<description>Maximum number of results returned to users</description>
+	</globalProperty>
 		
 	<dwr>
 		<allow>

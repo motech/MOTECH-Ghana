@@ -116,6 +116,7 @@ public final class MotechConstants {
 	public static final String GLOBAL_PROPERTY_CARE_REMINDERS = "motechmodule.patient_care_reminders";
 	public static final String GLOBAL_PROPERTY_DAY_OF_WEEK = "motechmodule.patient_message_delivery_day_of_week";
 	public static final String GLOBAL_PROPERTY_TIME_OF_DAY = "motechmodule.patient_message_delivery_time_of_day";
+	public static final String GLOBAL_PROPERTY_MAX_QUERY_RESULTS = "motechmodule.max_query_results";
 	public static final String IDGEN_SEQ_ID_GEN_MOTECH_ID = "MoTeCH ID Generator";
 	public static final String IDGEN_SEQ_ID_GEN_STAFF_ID = "MoTeCH Staff ID Generator";
 	public static final String IDGEN_SEQ_ID_GEN_FACILITY_ID = "MoTeCH Facility ID Generator";

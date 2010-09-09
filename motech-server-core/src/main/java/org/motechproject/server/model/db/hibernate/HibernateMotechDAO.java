@@ -379,7 +379,8 @@ public class HibernateMotechDAO implements MotechDAO {
 	@SuppressWarnings("unchecked")
 	public List<Obs> getActivePregnanciesDueDateObs(Facility facility,
 			Date fromDueDate, Date toDueDate, Concept pregnancyDueDateConcept,
-			Concept pregnancyConcept, Concept pregnancyStatusConcept) {
+			Concept pregnancyConcept, Concept pregnancyStatusConcept,
+			Integer maxResults) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(Obs.class, "o");
 
@@ -432,13 +433,16 @@ public class HibernateMotechDAO implements MotechDAO {
 		}
 
 		criteria.addOrder(Order.asc("o.valueDatetime"));
-
+		if (maxResults != null) {
+			criteria.setMaxResults(maxResults);
+		}
 		return criteria.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Encounter> getEncounters(Facility facility,
-			EncounterType encounterType, Date fromDate, Date toDate) {
+			EncounterType encounterType, Date fromDate, Date toDate,
+			Integer maxResults) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
 				Encounter.class, "e");
 		criteria.add(Restrictions.eq("e.voided", false));
@@ -462,6 +466,9 @@ public class HibernateMotechDAO implements MotechDAO {
 									facility.getId(), Hibernate.LONG));
 		}
 		criteria.addOrder(Order.asc("e.encounterDatetime"));
+		if (maxResults != null) {
+			criteria.setMaxResults(maxResults);
+		}
 		return criteria.list();
 	}
 
@@ -474,7 +481,7 @@ public class HibernateMotechDAO implements MotechDAO {
 	@SuppressWarnings("unchecked")
 	public List<ExpectedObs> getExpectedObs(Patient patient, Facility facility,
 			String[] groups, Date minDueDate, Date maxDueDate,
-			Date maxLateDate, Date minMaxDate, boolean nameOrdering) {
+			Date maxLateDate, Date minMaxDate, Integer maxResults) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(ExpectedObs.class);
 		if (patient != null) {
@@ -507,11 +514,10 @@ public class HibernateMotechDAO implements MotechDAO {
 									facility.getId(), Hibernate.LONG));
 		}
 		criteria.add(Restrictions.eq("voided", false));
-		if (nameOrdering) {
-			criteria.addOrder(Order.asc("group"));
-			criteria.addOrder(Order.asc("name"));
-		}
 		criteria.addOrder(Order.asc("dueObsDatetime"));
+		if (maxResults != null) {
+			criteria.setMaxResults(maxResults);
+		}
 		return criteria.list();
 	}
 
@@ -532,7 +538,7 @@ public class HibernateMotechDAO implements MotechDAO {
 	public List<ExpectedEncounter> getExpectedEncounter(Patient patient,
 			Facility facility, String[] groups, Date minDueDate,
 			Date maxDueDate, Date maxLateDate, Date minMaxDate,
-			boolean nameOrdering) {
+			Integer maxResults) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(ExpectedEncounter.class);
 		if (patient != null) {
@@ -566,11 +572,10 @@ public class HibernateMotechDAO implements MotechDAO {
 									facility.getId(), Hibernate.LONG));
 		}
 		criteria.add(Restrictions.eq("voided", false));
-		if (nameOrdering) {
-			criteria.addOrder(Order.asc("group"));
-			criteria.addOrder(Order.asc("name"));
-		}
 		criteria.addOrder(Order.asc("dueEncounterDatetime"));
+		if (maxResults != null) {
+			criteria.setMaxResults(maxResults);
+		}
 		return criteria.list();
 	}
 
@@ -580,7 +585,7 @@ public class HibernateMotechDAO implements MotechDAO {
 			Integer communityId, String phoneNumber,
 			PersonAttributeType phoneNumberAttrType, String nhisNumber,
 			PersonAttributeType nhisAttrType, String patientId,
-			PatientIdentifierType patientIdType) {
+			PatientIdentifierType patientIdType, Integer maxResults) {
 
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
 				Patient.class);
@@ -636,7 +641,9 @@ public class HibernateMotechDAO implements MotechDAO {
 		criteria.addOrder(Order.asc("birthdate"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
+		if (maxResults != null) {
+			criteria.setMaxResults(maxResults);
+		}
 		return criteria.list();
 	}
 
@@ -645,7 +652,8 @@ public class HibernateMotechDAO implements MotechDAO {
 			String preferredName, Date birthDate, Integer communityId,
 			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
-			String patientId, PatientIdentifierType patientIdType) {
+			String patientId, PatientIdentifierType patientIdType,
+			Integer maxResults) {
 
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
 				Patient.class, "p");
@@ -729,7 +737,9 @@ public class HibernateMotechDAO implements MotechDAO {
 		criteria.addOrder(Order.asc("p.birthdate"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
+		if (maxResults != null) {
+			criteria.setMaxResults(maxResults);
+		}
 		return criteria.list();
 	}
 

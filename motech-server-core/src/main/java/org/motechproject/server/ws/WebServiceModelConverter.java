@@ -27,7 +27,7 @@ public interface WebServiceModelConverter {
 
 	Care[] upcomingToWebServiceCares(
 			List<ExpectedEncounter> upcomingEncounters,
-			List<ExpectedObs> upcomingObs, boolean dateSorted);
+			List<ExpectedObs> upcomingObs);
 
 	Care[] defaultedObsToWebServiceCares(List<ExpectedObs> defaultedObs);
 

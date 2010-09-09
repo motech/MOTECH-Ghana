@@ -111,16 +111,18 @@ public interface MotechDAO {
 
 	List<Obs> getActivePregnanciesDueDateObs(Facility facility,
 			Date fromDueDate, Date toDueDate, Concept pregnancyDueDateConcept,
-			Concept pregnancyConcept, Concept pregnancyStatusConcept);
+			Concept pregnancyConcept, Concept pregnancyStatusConcept,
+			Integer maxResults);
 
 	List<Encounter> getEncounters(Facility facility,
-			EncounterType encounterType, Date fromDate, Date toDate);
+			EncounterType encounterType, Date fromDate, Date toDate,
+			Integer maxResults);
 
 	ExpectedObs saveExpectedObs(ExpectedObs expectedObs);
 
 	List<ExpectedObs> getExpectedObs(Patient patient, Facility facility,
 			String[] groups, Date minDueDate, Date maxDueDate,
-			Date maxLateDate, Date minMaxDate, boolean nameOrdering);
+			Date maxLateDate, Date minMaxDate, Integer maxResults);
 
 	ExpectedEncounter saveExpectedEncounter(ExpectedEncounter expectedEncounter);
 
@@ -129,19 +131,21 @@ public interface MotechDAO {
 	List<ExpectedEncounter> getExpectedEncounter(Patient patient,
 			Facility facility, String[] groups, Date minDueDate,
 			Date maxDueDate, Date maxLateDate, Date minMaxDate,
-			boolean nameOrdering);
+			Integer maxResults);
 
 	List<Patient> getPatients(String firstName, String lastName,
 			String preferredName, Date birthDate, Integer communityId,
 			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
-			String patientId, PatientIdentifierType patientIdType);
+			String patientId, PatientIdentifierType patientIdType,
+			Integer maxResults);
 
 	List<Patient> getDuplicatePatients(String firstName, String lastName,
 			String preferredName, Date birthDate, Integer communityId,
 			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
-			String patientId, PatientIdentifierType patientIdType);
+			String patientId, PatientIdentifierType patientIdType,
+			Integer maxResults);
 
 	Facility getFacilityByFacilityId(Integer facilityId);
 

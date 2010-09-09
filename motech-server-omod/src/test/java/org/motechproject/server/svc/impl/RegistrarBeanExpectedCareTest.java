@@ -259,14 +259,14 @@ public class RegistrarBeanExpectedCareTest extends
 					.getDefaultedExpectedEncounters(facility,
 							new String[] { "ANC" });
 			assertEquals(2, defaultedEnc.size());
-			assertEquals("ANC3", defaultedEnc.get(0).getName());
-			assertEquals("ANC9", defaultedEnc.get(1).getName());
+			assertEquals("ANC9", defaultedEnc.get(0).getName());
+			assertEquals("ANC3", defaultedEnc.get(1).getName());
 
 			List<ExpectedObs> defaultedObs = regService
 					.getDefaultedExpectedObs(facility, new String[] { "TT" });
 			assertEquals(2, defaultedObs.size());
-			assertEquals("TT3", defaultedObs.get(0).getName());
-			assertEquals("TT5", defaultedObs.get(1).getName());
+			assertEquals("TT5", defaultedObs.get(0).getName());
+			assertEquals("TT3", defaultedObs.get(1).getName());
 
 		} finally {
 			Context.closeSession();

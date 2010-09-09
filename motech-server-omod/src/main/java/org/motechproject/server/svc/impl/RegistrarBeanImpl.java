@@ -2065,10 +2065,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
 		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
 		PatientIdentifierType motechIdType = getMotechPatientIdType();
+		Integer maxResults = getMaxQueryResults();
 
 		return motechService.getPatients(firstName, lastName, preferredName,
 				birthDate, communityId, phoneNumber, phoneNumberAttrType,
-				nhisNumber, nhisAttrType, motechId, motechIdType);
+				nhisNumber, nhisAttrType, motechId, motechIdType, maxResults);
 	}
 
 	public List<Patient> getDuplicatePatients(String firstName,
@@ -2081,11 +2082,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		PersonAttributeType phoneNumberAttrType = getPhoneNumberAttributeType();
 		PersonAttributeType nhisAttrType = getNHISNumberAttributeType();
 		PatientIdentifierType motechIdType = getMotechPatientIdType();
+		Integer maxResults = getMaxQueryResults();
 
 		return motechService.getDuplicatePatients(firstName, lastName,
 				preferredName, birthDate, communityId, phoneNumber,
 				phoneNumberAttrType, nhisNumber, nhisAttrType, motechId,
-				motechIdType);
+				motechIdType, maxResults);
 	}
 
 	public List<Obs> getAllPregnancies() {
@@ -2102,8 +2104,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Date currentDate = calendar.getTime();
 		calendar.add(Calendar.DATE, 7);
 		Date oneWeekLaterDate = calendar.getTime();
+		Integer maxResults = getMaxQueryResults();
 		return motechService.getExpectedEncounter(patient, null, null, null,
-				oneWeekLaterDate, null, currentDate, false);
+				oneWeekLaterDate, null, currentDate, maxResults);
 	}
 
 	public List<ExpectedObs> getUpcomingExpectedObs(Patient patient) {
@@ -2112,79 +2115,86 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Date currentDate = calendar.getTime();
 		calendar.add(Calendar.DATE, 7);
 		Date oneWeekLaterDate = calendar.getTime();
+		Integer maxResults = getMaxQueryResults();
 		return motechService.getExpectedObs(patient, null, null, null,
-				oneWeekLaterDate, null, currentDate, false);
+				oneWeekLaterDate, null, currentDate, maxResults);
 	}
 
 	public List<ExpectedEncounter> getDefaultedExpectedEncounters(
 			Facility facility, String[] groups) {
 		MotechService motechService = contextService.getMotechService();
 		Date currentDate = new Date();
+		Integer maxResults = getMaxQueryResults();
 		return motechService.getExpectedEncounter(null, facility, groups, null,
-				null, currentDate, currentDate, true);
+				null, currentDate, currentDate, maxResults);
 	}
 
 	public List<ExpectedObs> getDefaultedExpectedObs(Facility facility,
 			String[] groups) {
 		MotechService motechService = contextService.getMotechService();
 		Date currentDate = new Date();
+		Integer maxResults = getMaxQueryResults();
 		return motechService.getExpectedObs(null, facility, groups, null, null,
-				currentDate, currentDate, true);
+				currentDate, currentDate, maxResults);
 	}
 
 	private List<ExpectedEncounter> getUpcomingExpectedEncounters(
 			Facility facility, String[] groups, Date fromDate, Date toDate) {
 		MotechService motechService = contextService.getMotechService();
+		Integer maxResults = getMaxQueryResults();
 		return motechService.getExpectedEncounter(null, facility, groups,
-				fromDate, toDate, null, fromDate, false);
+				fromDate, toDate, null, fromDate, maxResults);
 	}
 
 	private List<ExpectedObs> getUpcomingExpectedObs(Facility facility,
 			String[] groups, Date fromDate, Date toDate) {
 		MotechService motechService = contextService.getMotechService();
+		Integer maxResults = getMaxQueryResults();
 		return motechService.getExpectedObs(null, facility, groups, fromDate,
-				toDate, null, fromDate, false);
+				toDate, null, fromDate, maxResults);
 	}
 
 	private List<ExpectedEncounter> getDefaultedExpectedEncounters(
 			Facility facility, String[] groups, Date forDate) {
 		MotechService motechService = contextService.getMotechService();
+		Integer maxResults = getMaxQueryResults();
 		return motechService.getExpectedEncounter(null, facility, groups, null,
-				null, forDate, forDate, true);
+				null, forDate, forDate, maxResults);
 	}
 
 	private List<ExpectedObs> getDefaultedExpectedObs(Facility facility,
 			String[] groups, Date forDate) {
 		MotechService motechService = contextService.getMotechService();
+		Integer maxResults = getMaxQueryResults();
 		return motechService.getExpectedObs(null, facility, groups, null, null,
-				forDate, forDate, true);
+				forDate, forDate, maxResults);
 	}
 
 	public List<ExpectedEncounter> getExpectedEncounters(Patient patient) {
 		MotechService motechService = contextService.getMotechService();
 		Date currentDate = new Date();
 		return motechService.getExpectedEncounter(patient, null, null, null,
-				null, null, currentDate, true);
+				null, null, currentDate, null);
 	}
 
 	public List<ExpectedObs> getExpectedObs(Patient patient) {
 		MotechService motechService = contextService.getMotechService();
 		Date currentDate = new Date();
 		return motechService.getExpectedObs(patient, null, null, null, null,
-				null, currentDate, true);
+				null, currentDate, null);
 	}
 
 	public List<ExpectedEncounter> getExpectedEncounters(Patient patient,
 			String group) {
 		MotechService motechService = contextService.getMotechService();
 		return motechService.getExpectedEncounter(patient, null,
-				new String[] { group }, null, null, null, null, false);
+				new String[] { group }, null, null, null, null, null);
 	}
 
 	public List<ExpectedObs> getExpectedObs(Patient patient, String group) {
 		MotechService motechService = contextService.getMotechService();
 		return motechService.getExpectedObs(patient, null,
-				new String[] { group }, null, null, null, null, false);
+				new String[] { group }, null, null, null, null, null);
 	}
 
 	public List<Encounter> getRecentDeliveries(Facility facility) {
@@ -2197,8 +2207,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		calendar.add(Calendar.DATE, 2 * -7);
 		Date twoWeeksPriorDate = calendar.getTime();
 
+		Integer maxResults = getMaxQueryResults();
+
 		return motechService.getEncounters(facility, deliveryEncounterType,
-				twoWeeksPriorDate, currentDate);
+				twoWeeksPriorDate, currentDate, maxResults);
 	}
 
 	public Date getCurrentDeliveryDate(Patient patient) {
@@ -2240,10 +2252,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Concept pregnancyDueDateConcept = getDueDateConcept();
 		Concept pregnancyConcept = getPregnancyConcept();
 		Concept pregnancyStatusConcept = getPregnancyStatusConcept();
+		Integer maxResults = getMaxQueryResults();
 
 		return motechService.getActivePregnanciesDueDateObs(facility,
 				fromDueDate, toDueDate, pregnancyDueDateConcept,
-				pregnancyConcept, pregnancyStatusConcept);
+				pregnancyConcept, pregnancyStatusConcept, maxResults);
 	}
 
 	private Integer updatePregnancyDueDateObs(Obs pregnancyObs, Obs dueDateObs,
@@ -4463,6 +4476,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return time;
 	}
 
+	public Integer getMaxQueryResults() {
+		String maxResultsProperty = getMaxQueryResultsProperty();
+		if (maxResultsProperty != null) {
+			return Integer.parseInt(maxResultsProperty);
+		}
+		log.error("Max Query Results Property not found");
+		return null;
+	}
+
 	public Date determinePreferredMessageDate(Person person, Date messageDate,
 			Date currentDate, boolean checkInFuture) {
 		Calendar calendar = Calendar.getInstance();
@@ -5191,6 +5213,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public String getPatientTimeOfDayProperty() {
 		return contextService.getAdministrationService().getGlobalProperty(
 				MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY);
+	}
+
+	public String getMaxQueryResultsProperty() {
+		return contextService.getAdministrationService().getGlobalProperty(
+				MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS);
 	}
 
 	/* Factored out methods end */
