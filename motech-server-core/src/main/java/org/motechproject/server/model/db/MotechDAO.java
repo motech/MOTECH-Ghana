@@ -91,7 +91,10 @@ public interface MotechDAO {
 			MessageProgramEnrollment enrollment);
 
 	List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
-			Integer personId, String program, Integer obsId);
+			Integer personId, String program, Integer obsId,
+			Long minExclusiveId, Long maxInclusiveId, Integer maxResults);
+
+	Long getMaxMessageProgramEnrollmentId();
 
 	GeneralOutpatientEncounter saveGeneralOutpatientEncounter(
 			GeneralOutpatientEncounter encounter);

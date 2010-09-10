@@ -246,7 +246,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			if (enroll == null && consent == null) {
 				List<MessageProgramEnrollment> enrollments = motechService
 						.getActiveMessageProgramEnrollments(mother
-								.getPatientId(), null, null);
+								.getPatientId(), null, null, null, null, null);
 				if (enrollments != null && !enrollments.isEmpty()) {
 					enroll = true;
 					consent = true;
@@ -2279,7 +2279,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// Update enrollments using duedate Obs to reference new duedate Obs
 		List<MessageProgramEnrollment> enrollments = motechService
 				.getActiveMessageProgramEnrollments(null, null,
-						existingDueDateObsId);
+						existingDueDateObsId, null, null, null);
 		for (MessageProgramEnrollment enrollment : enrollments) {
 			enrollment.setObsId(newDueDateObs.getObsId());
 			motechService.saveMessageProgramEnrollment(enrollment);
@@ -3505,10 +3505,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 						.getTime(), new Long(300), Boolean.TRUE,
 				NotificationTask.class.getName(), admin, immProps);
 
+		calendar.add(Calendar.MINUTE, 2);
+		Map<String, String> updateProps = new HashMap<String, String>();
+		updateProps.put(MotechConstants.TASK_PROPERTY_BATCH_SIZE, "35");
 		createTask(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE,
 				"Task to update message program state for patients", calendar
-						.getTime(), new Long(1200), Boolean.TRUE,
-				MessageProgramUpdateTask.class.getName(), admin, null);
+						.getTime(), new Long(180), Boolean.TRUE,
+				MessageProgramUpdateTask.class.getName(), admin, updateProps);
 
 		calendar.set(Calendar.HOUR_OF_DAY, 23);
 		calendar.set(Calendar.MINUTE, 0);
@@ -3886,7 +3889,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		MotechService motechService = contextService.getMotechService();
 
 		List<MessageProgramEnrollment> patientActiveEnrollments = motechService
-				.getActiveMessageProgramEnrollments(personId, null, null);
+				.getActiveMessageProgramEnrollments(personId, null, null, null,
+						null, null);
 
 		Date currentDate = new Date();
 
@@ -3907,12 +3911,20 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	/* MessageProgramUpdateTask method */
-	public void updateAllMessageProgramsState() {
+	public TaskDefinition updateAllMessageProgramsState(Integer batchSize,
+			Long batchPreviousId, Long batchMaxId) {
 
 		MotechService motechService = contextService.getMotechService();
+		SchedulerService schedulerService = contextService
+				.getSchedulerService();
+
+		if (batchMaxId == null) {
+			batchMaxId = motechService.getMaxMessageProgramEnrollmentId();
+		}
 
 		List<MessageProgramEnrollment> activeEnrollments = motechService
-				.getActiveMessageProgramEnrollments(null, null, null);
+				.getActiveMessageProgramEnrollments(null, null, null,
+						batchPreviousId, batchMaxId, batchSize);
 
 		Date currentDate = new Date();
 
@@ -3924,7 +3936,38 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					+ enrollment.getId());
 
 			program.determineState(enrollment, currentDate);
+
+			batchPreviousId = enrollment.getId();
+			if (batchPreviousId >= batchMaxId) {
+				log.info("Completed updating all enrollments up to max: "
+						+ batchMaxId);
+				batchMaxId = null;
+				batchPreviousId = null;
+				break;
+			}
 		}
+
+		// Update task properties
+		TaskDefinition task = schedulerService
+				.getTaskByName(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE);
+		if (task != null) {
+			Map<String, String> properties = task.getProperties();
+			if (batchPreviousId != null) {
+				properties.put(MotechConstants.TASK_PROPERTY_BATCH_PREVIOUS_ID,
+						batchPreviousId.toString());
+			} else {
+				properties
+						.remove(MotechConstants.TASK_PROPERTY_BATCH_PREVIOUS_ID);
+			}
+			if (batchMaxId != null) {
+				properties.put(MotechConstants.TASK_PROPERTY_BATCH_MAX_ID,
+						batchMaxId.toString());
+			} else {
+				properties.remove(MotechConstants.TASK_PROPERTY_BATCH_MAX_ID);
+			}
+			schedulerService.saveTask(task);
+		}
+		return task;
 	}
 
 	public void updateAllCareSchedules() {
@@ -4187,7 +4230,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		List<MessageProgramEnrollment> enrollments = motechService
 				.getActiveMessageProgramEnrollments(patient.getPatientId(),
-						null, null);
+						null, null, null, null, null);
 
 		List<String> enrollmentNames = new ArrayList<String>();
 		for (MessageProgramEnrollment enrollment : enrollments) {
@@ -4201,7 +4244,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		MotechService motechService = contextService.getMotechService();
 
 		List<MessageProgramEnrollment> enrollments = motechService
-				.getActiveMessageProgramEnrollments(personId, program, obsId);
+				.getActiveMessageProgramEnrollments(personId, program, obsId,
+						null, null, null);
 		if (enrollments.size() == 0) {
 			MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
 			enrollment.setPersonId(personId);
@@ -4228,7 +4272,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		MotechService motechService = contextService.getMotechService();
 
 		List<MessageProgramEnrollment> enrollments = motechService
-				.getActiveMessageProgramEnrollments(personId, program, obsId);
+				.getActiveMessageProgramEnrollments(personId, program, obsId,
+						null, null, null);
 		for (MessageProgramEnrollment enrollment : enrollments) {
 			removeMessageProgramEnrollment(enrollment);
 		}
@@ -4238,7 +4283,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		MotechService motechService = contextService.getMotechService();
 
 		List<MessageProgramEnrollment> enrollments = motechService
-				.getActiveMessageProgramEnrollments(personId, null, null);
+				.getActiveMessageProgramEnrollments(personId, null, null, null,
+						null, null);
 
 		for (MessageProgramEnrollment enrollment : enrollments) {
 			removeMessageProgramEnrollment(enrollment);

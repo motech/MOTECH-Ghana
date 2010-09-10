@@ -119,7 +119,11 @@ public interface MotechService extends OpenmrsService {
 
 	@Transactional(readOnly = true)
 	List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
-			Integer personId, String program, Integer obsId);
+			Integer personId, String program, Integer obsId,
+			Long minExclusiveId, Long maxInclusiveId, Integer maxResults);
+
+	@Transactional(readOnly = true)
+	Long getMaxMessageProgramEnrollmentId();
 
 	@Transactional
 	MessageProgramEnrollment saveMessageProgramEnrollment(

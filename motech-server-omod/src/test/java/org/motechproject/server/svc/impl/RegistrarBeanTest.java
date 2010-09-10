@@ -887,15 +887,17 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				motechService.getActiveMessageProgramEnrollments(child
-						.getPatientId(), pregnancyProgramName, null))
-				.andReturn(new ArrayList<MessageProgramEnrollment>());
+						.getPatientId(), pregnancyProgramName, null, null,
+						null, null)).andReturn(
+				new ArrayList<MessageProgramEnrollment>());
 		expect(
 				motechService
 						.saveMessageProgramEnrollment(capture(enrollment1Cap)))
 				.andReturn(new MessageProgramEnrollment());
 		expect(
 				motechService.getActiveMessageProgramEnrollments(child
-						.getPatientId(), careProgramName, null)).andReturn(
+						.getPatientId(), careProgramName, null, null, null,
+						null)).andReturn(
 				new ArrayList<MessageProgramEnrollment>());
 		expect(
 				motechService
@@ -1142,15 +1144,17 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				motechService.getActiveMessageProgramEnrollments(patient
-						.getPatientId(), pregnancyProgramName, null))
-				.andReturn(new ArrayList<MessageProgramEnrollment>());
+						.getPatientId(), pregnancyProgramName, null, null,
+						null, null)).andReturn(
+				new ArrayList<MessageProgramEnrollment>());
 		expect(
 				motechService
 						.saveMessageProgramEnrollment(capture(enrollment1Cap)))
 				.andReturn(new MessageProgramEnrollment());
 		expect(
 				motechService.getActiveMessageProgramEnrollments(patient
-						.getPatientId(), careProgramName, null)).andReturn(
+						.getPatientId(), careProgramName, null, null, null,
+						null)).andReturn(
 				new ArrayList<MessageProgramEnrollment>());
 		expect(
 				motechService
@@ -1314,7 +1318,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(
 				motechService.getActiveMessageProgramEnrollments(patientId,
-						null, null)).andReturn(enrollments);
+						null, null, null, null, null)).andReturn(enrollments);
 		expect(
 				motechService.getMessages(enrollment1,
 						MessageStatus.SHOULD_ATTEMPT)).andReturn(
@@ -1447,7 +1451,7 @@ public class RegistrarBeanTest extends TestCase {
 		expect(motechService.getCommunityByPatient(patient)).andReturn(null);
 		expect(
 				motechService.getActiveMessageProgramEnrollments(patientId,
-						null, null)).andReturn(
+						null, null, null, null, null)).andReturn(
 				new ArrayList<MessageProgramEnrollment>());
 
 		expect(patientService.savePatient(capture(patientCap))).andReturn(

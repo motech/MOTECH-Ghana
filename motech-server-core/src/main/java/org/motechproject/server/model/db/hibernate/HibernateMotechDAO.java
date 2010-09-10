@@ -276,7 +276,8 @@ public class HibernateMotechDAO implements MotechDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
-			Integer personId, String program, Integer obsId) {
+			Integer personId, String program, Integer obsId,
+			Long minExclusiveId, Long maxInclusiveId, Integer maxResults) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session
 				.createCriteria(MessageProgramEnrollment.class);
@@ -291,7 +292,24 @@ public class HibernateMotechDAO implements MotechDAO {
 		if (obsId != null) {
 			criteria.add(Restrictions.eq("obsId", obsId));
 		}
+		if (minExclusiveId != null) {
+			criteria.add(Restrictions.gt("id", minExclusiveId));
+		}
+		if (maxInclusiveId != null) {
+			criteria.add(Restrictions.le("id", maxInclusiveId));
+		}
+		if (maxResults != null) {
+			criteria.setMaxResults(maxResults);
+		}
 		return (List<MessageProgramEnrollment>) criteria.list();
+	}
+
+	public Long getMaxMessageProgramEnrollmentId() {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session
+				.createCriteria(MessageProgramEnrollment.class);
+		criteria.setProjection(Projections.max("id"));
+		return (Long) criteria.uniqueResult();
 	}
 
 	public GeneralOutpatientEncounter saveGeneralOutpatientEncounter(

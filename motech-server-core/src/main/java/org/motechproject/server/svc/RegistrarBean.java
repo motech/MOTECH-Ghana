@@ -26,6 +26,7 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.User;
+import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.util.OpenmrsConstants;
 
 /**
@@ -416,8 +417,10 @@ public interface RegistrarBean {
 			OpenmrsConstants.PRIV_VIEW_OBS, OpenmrsConstants.PRIV_VIEW_PERSONS,
 			OpenmrsConstants.PRIV_VIEW_LOCATIONS,
 			OpenmrsConstants.PRIV_ADD_OBS, OpenmrsConstants.PRIV_VIEW_USERS,
-			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
-	public void updateAllMessageProgramsState();
+			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
+			OpenmrsConstants.PRIV_MANAGE_SCHEDULER })
+	public TaskDefinition updateAllMessageProgramsState(Integer batchSize,
+			Long batchPreviousId, Long batchMaxId);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PATIENTS,
 			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES,
