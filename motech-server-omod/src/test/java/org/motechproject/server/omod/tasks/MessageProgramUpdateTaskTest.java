@@ -146,6 +146,9 @@ public class MessageProgramUpdateTaskTest extends
 			Context.getService(MotechService.class).saveMessageDefinition(
 					new MessageDefinition("pregnancy.week.7", 20L,
 							MessageType.INFORMATIONAL));
+			Context.getService(MotechService.class).saveMessageDefinition(
+					new MessageDefinition("pregnancy.week.8", 21L,
+							MessageType.INFORMATIONAL));
 		} finally {
 			Context.closeSession();
 		}
@@ -183,7 +186,7 @@ public class MessageProgramUpdateTaskTest extends
 
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(date);
-			int slush = 2;
+			int slush = 4;
 			calendar.add(Calendar.DATE, -(2 * 7 + slush));
 			refDateObs.setValueDatetime(calendar.getTime());
 			refDateObs = Context.getObsService().saveObs(refDateObs,
@@ -227,7 +230,7 @@ public class MessageProgramUpdateTaskTest extends
 					assertEquals(MessageStatus.CANCELLED, message
 							.getAttemptStatus());
 				} else if (scheduledMessage.getMessage().getMessageKey()
-						.equals("pregnancy.week.7")) {
+						.equals("pregnancy.week.8")) {
 					assertEquals(MessageStatus.SHOULD_ATTEMPT, message
 							.getAttemptStatus());
 				} else {
