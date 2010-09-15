@@ -53,6 +53,7 @@ import org.motechproject.ws.HowLearned;
 import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.NameValuePair;
+import org.motechproject.ws.PatientMessage;
 import org.motechproject.ws.RegistrantType;
 import org.motechproject.ws.RegistrationMode;
 import org.motechproject.ws.mobile.MessageService;
@@ -3896,87 +3897,105 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 								+ shouldAttemptMessages.size());
 			}
 
-			for (Message shouldAttemptMessage : shouldAttemptMessages) {
-				sendMessage(shouldAttemptMessage, sendImmediate);
-			}
+			PatientMessage[] messages = constructPatientMessages(
+					shouldAttemptMessages, sendImmediate);
+
+			mobileService.sendPatientMessages(messages);
+
 		} catch (Exception e) {
-			log.error(e);
+			log.error("Failure to send patient messages", e);
 		}
 	}
 
-	public void sendMessage(Message message, boolean sendImmediate) {
+	public PatientMessage[] constructPatientMessages(List<Message> messages,
+			boolean sendImmediate) {
 		MotechService motechService = contextService.getMotechService();
-		PersonService personService = contextService.getPersonService();
-		PatientService patientService = contextService.getPatientService();
-		UserService userService = contextService.getUserService();
 
-		Long notificationType = message.getSchedule().getMessage()
-				.getPublicId();
-		Integer recipientId = message.getSchedule().getRecipientId();
-		Person person = personService.getPerson(recipientId);
+		List<PatientMessage> patientMessages = new ArrayList<PatientMessage>();
 
-		String phoneNumber = getPersonPhoneNumber(person);
+		for (Message message : messages) {
+			PatientMessage patientMessage = constructPatientMessage(message);
+			if (patientMessage != null) {
+				if (sendImmediate) {
+					patientMessage.setStartDate(null);
+					patientMessage.setEndDate(null);
+				}
+				patientMessages.add(patientMessage);
 
-		// Cancel message if phone number is considered troubled
-		if (isPhoneTroubled(phoneNumber)) {
-			if (log.isDebugEnabled()) {
-				log.debug("Attempt to send to Troubled Phone, Phone: "
-						+ phoneNumber + ", Notification cancelled: "
-						+ notificationType);
-			}
-
-			message.setAttemptStatus(MessageStatus.CANCELLED);
-
-		} else {
-			if (log.isDebugEnabled()) {
-				log.debug("Scheduled Message, Phone: " + phoneNumber
-						+ ", Notification: " + notificationType);
-			}
-
-			String messageId = message.getPublicId();
-			MediaType mediaType = getPersonMediaType(person);
-			String languageCode = getPersonLanguageCode(person);
-			NameValuePair[] personalInfo = new NameValuePair[0];
-
-			Date messageStartDate = null;
-			Date messageEndDate = null;
-
-			if (!sendImmediate) {
-				messageStartDate = message.getAttemptDate();
-			}
-
-			Patient patient = patientService.getPatient(recipientId);
-			User staff = userService.getUser(recipientId);
-
-			boolean sendMessageSuccess = false;
-			if (patient != null) {
-				ContactNumberType contactNumberType = getPersonPhoneType(person);
-				String motechId = patient.getPatientIdentifier(
-						MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID)
-						.getIdentifier();
-
-				sendMessageSuccess = sendPatientMessage(messageId,
-						personalInfo, motechId, phoneNumber, languageCode,
-						mediaType, notificationType, messageStartDate,
-						messageEndDate, contactNumberType);
-			} else if (staff != null) {
-				org.motechproject.ws.Patient[] patients = new org.motechproject.ws.Patient[0];
-
-				sendMessageSuccess = sendStaffMessage(messageId, personalInfo,
-						phoneNumber, languageCode, mediaType, notificationType,
-						messageStartDate, messageEndDate, patients);
-			} else {
-				log.error("Attempt to send to Person not patient or staff: "
-						+ recipientId);
-			}
-			if (sendMessageSuccess) {
 				message.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
 			} else {
-				message.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
+				message.setAttemptStatus(MessageStatus.CANCELLED);
 			}
+			motechService.saveMessage(message);
 		}
+		return patientMessages.toArray(new PatientMessage[patientMessages
+				.size()]);
+	}
 
-		motechService.saveMessage(message);
+	public PatientMessage constructPatientMessage(Message message) {
+		try {
+			PersonService personService = contextService.getPersonService();
+			PatientService patientService = contextService.getPatientService();
+
+			Long notificationType = message.getSchedule().getMessage()
+					.getPublicId();
+			Integer recipientId = message.getSchedule().getRecipientId();
+			Person person = personService.getPerson(recipientId);
+
+			String phoneNumber = getPersonPhoneNumber(person);
+
+			// Cancel message if phone number is considered troubled
+			if (isPhoneTroubled(phoneNumber)) {
+				if (log.isDebugEnabled()) {
+					log.debug("Attempt to send to Troubled Phone, Phone: "
+							+ phoneNumber + ", Notification cancelled: "
+							+ notificationType);
+				}
+			} else {
+				if (log.isDebugEnabled()) {
+					log.debug("Scheduled Message, Phone: " + phoneNumber
+							+ ", Notification: " + notificationType);
+				}
+
+				String messageId = message.getPublicId();
+				MediaType mediaType = getPersonMediaType(person);
+				String languageCode = getPersonLanguageCode(person);
+				NameValuePair[] personalInfo = new NameValuePair[0];
+
+				Date messageStartDate = message.getAttemptDate();
+				Date messageEndDate = null;
+
+				Patient patient = patientService.getPatient(recipientId);
+
+				if (patient != null) {
+					ContactNumberType contactNumberType = getPersonPhoneType(person);
+					String motechId = patient.getPatientIdentifier(
+							MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID)
+							.getIdentifier();
+
+					PatientMessage patientMessage = new PatientMessage();
+					patientMessage.setMessageId(messageId);
+					patientMessage.setPersonalInfo(personalInfo);
+					patientMessage.setPatientNumber(phoneNumber);
+					patientMessage.setPatientNumberType(contactNumberType);
+					patientMessage.setLangCode(languageCode);
+					patientMessage.setMediaType(mediaType);
+					patientMessage.setNotificationType(notificationType);
+					patientMessage.setStartDate(messageStartDate);
+					patientMessage.setEndDate(messageEndDate);
+					patientMessage.setRecipientId(motechId);
+					return patientMessage;
+
+				} else {
+					log
+							.error("Attempt to send message to non-existent Patient: "
+									+ recipientId);
+				}
+			}
+		} catch (Exception e) {
+			log.error("Error creating patient message", e);
+		}
+		return null;
 	}
 
 	public boolean sendPatientMessage(String messageId,

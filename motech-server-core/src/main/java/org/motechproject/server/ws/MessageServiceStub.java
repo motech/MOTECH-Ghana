@@ -10,6 +10,7 @@ import org.motechproject.ws.MediaType;
 import org.motechproject.ws.MessageStatus;
 import org.motechproject.ws.NameValuePair;
 import org.motechproject.ws.Patient;
+import org.motechproject.ws.PatientMessage;
 import org.motechproject.ws.mobile.MessageService;
 
 /**
@@ -66,6 +67,39 @@ public class MessageServiceStub implements MessageService {
 				+ "</sendCHPSMessage>\n"
 				+ "--------------------------------------");
 		return MessageStatus.DELIVERED;
+	}
+
+	public void sendPatientMessages(PatientMessage[] messages) {
+		log.info("Motech Mobile Web Service Messages\n"
+				+ "---------------------------\n");
+
+		for (PatientMessage message : messages) {
+
+			StringBuilder personalInfoString = new StringBuilder();
+			for (NameValuePair pair : message.getPersonalInfo()) {
+				personalInfoString
+						.append("<name>" + pair.getName() + "</name>");
+				personalInfoString.append("<value>" + pair.getValue()
+						+ "</value>\n");
+			}
+
+			log.info("<patientMessage>\n" + "<messageId>"
+					+ message.getMessageId() + "</messageId>\n"
+					+ "<personalInfo>" + personalInfoString.toString()
+					+ "</personalInfo>\n" + "<patientNumber>"
+					+ message.getPatientNumber() + "</patientNumber>\n"
+					+ "<contactNumberType>" + message.getPatientNumberType()
+					+ "</contactNumberType>\n" + "<langCode>"
+					+ message.getLangCode() + "</langCode>\n" + "<mediaType>"
+					+ message.getMediaType() + "</mediaType>\n"
+					+ "<notificationType>" + message.getNotificationType()
+					+ "</notificationType>\n" + "<startDate>"
+					+ message.getStartDate() + "</startDate>\n" + "<endDate>"
+					+ message.getEndDate() + "</endDate>\n" + "<recipientId>"
+					+ message.getRecipientId() + "</recipientId>\n"
+					+ "</patientMessage>\n"
+					+ "--------------------------------------");
+		}
 	}
 
 	public MessageStatus sendPatientMessage(String messageId,
