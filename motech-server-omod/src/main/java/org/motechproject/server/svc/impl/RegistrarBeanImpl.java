@@ -3897,11 +3897,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 								+ shouldAttemptMessages.size());
 			}
 
-			PatientMessage[] messages = constructPatientMessages(
-					shouldAttemptMessages, sendImmediate);
+			if (!shouldAttemptMessages.isEmpty()) {
+				PatientMessage[] messages = constructPatientMessages(
+						shouldAttemptMessages, sendImmediate);
 
-			mobileService.sendPatientMessages(messages);
-
+				if (messages.length > 0) {
+					mobileService.sendPatientMessages(messages);
+				}
+			}
 		} catch (Exception e) {
 			log.error("Failure to send patient messages", e);
 		}
