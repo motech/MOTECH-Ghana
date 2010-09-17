@@ -19,7 +19,8 @@ public class RemoveEnrollmentCommand extends MessagesCommand {
 	}
 
 	@Override
-	public void execute(MessageProgramEnrollment enrollment, Date actionDate) {
+	public void execute(MessageProgramEnrollment enrollment, Date actionDate,
+			Date currentDate) {
 		registrarBean.removeMessageProgramEnrollment(enrollment);
 	}
 

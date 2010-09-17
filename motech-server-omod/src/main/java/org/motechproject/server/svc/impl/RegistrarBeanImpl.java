@@ -2596,7 +2596,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public void scheduleInfoMessages(String messageKey, String messageKeyA,
 			String messageKeyB, String messageKeyC,
 			MessageProgramEnrollment enrollment, Date messageDate,
-			boolean userPreferenceBased) {
+			boolean userPreferenceBased, Date currentDate) {
 
 		PersonService personService = contextService.getPersonService();
 
@@ -2609,16 +2609,16 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// preference exists, using A/B/C message keys
 		if (mediaType == MediaType.TEXT) {
 			scheduleMultipleInfoMessages(messageKeyA, messageKeyB, messageKeyC,
-					enrollment, messageDate, userPreferenceBased);
+					enrollment, messageDate, userPreferenceBased, currentDate);
 		} else {
 			scheduleSingleInfoMessage(messageKey, enrollment, messageDate,
-					userPreferenceBased);
+					userPreferenceBased, currentDate);
 		}
 	}
 
 	void scheduleMultipleInfoMessages(String messageKeyA, String messageKeyB,
 			String messageKeyC, MessageProgramEnrollment enrollment,
-			Date messageDate, boolean userPreferenceBased) {
+			Date messageDate, boolean userPreferenceBased, Date currentDate) {
 		// Return existing message definitions
 		MessageDefinition messageDefinitionA = this
 				.getMessageDefinition(messageKeyA);
@@ -2655,16 +2655,16 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// Create new scheduled message (with pending attempt) for all 3
 		// messages, for this enrollment, if no matching message already exist
 		this.createScheduledMessage(messageRecipientId, messageDefinitionA,
-				enrollment, messageDate);
+				enrollment, messageDate, currentDate);
 		this.createScheduledMessage(messageRecipientId, messageDefinitionB,
-				enrollment, messageDateB);
+				enrollment, messageDateB, currentDate);
 		this.createScheduledMessage(messageRecipientId, messageDefinitionC,
-				enrollment, messageDateC);
+				enrollment, messageDateC, currentDate);
 	}
 
 	void scheduleSingleInfoMessage(String messageKey,
 			MessageProgramEnrollment enrollment, Date messageDate,
-			boolean userPreferenceBased) {
+			boolean userPreferenceBased, Date currentDate) {
 
 		// Return existing message definition
 		MessageDefinition messageDefinition = this
@@ -2683,7 +2683,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// Create new scheduled message (with pending attempt) for enrollment
 		// if none matching already exist
 		this.createScheduledMessage(messageRecipientId, messageDefinition,
-				enrollment, messageDate);
+				enrollment, messageDate, currentDate);
 	}
 
 	public ScheduledMessage scheduleCareMessage(String messageKey,
@@ -2874,7 +2874,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	private void createScheduledMessage(Integer recipientId,
 			MessageDefinition messageDefinition,
-			MessageProgramEnrollment enrollment, Date messageDate) {
+			MessageProgramEnrollment enrollment, Date messageDate,
+			Date currentDate) {
 
 		MotechService motechService = contextService.getMotechService();
 
@@ -2913,13 +2914,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			boolean matchFound = false;
 			ScheduledMessage scheduledMessage = scheduledMessages.get(0);
 			for (Message message : scheduledMessage.getMessageAttempts()) {
-				if (MessageStatus.SHOULD_ATTEMPT == message.getAttemptStatus()
+				if ((MessageStatus.SHOULD_ATTEMPT == message.getAttemptStatus()
+						|| MessageStatus.ATTEMPT_PENDING == message
+								.getAttemptStatus()
+						|| MessageStatus.DELIVERED == message
+								.getAttemptStatus() || MessageStatus.REJECTED == message
+						.getAttemptStatus())
 						&& messageDate.equals(message.getAttemptDate())) {
 					matchFound = true;
 					break;
 				}
 			}
-			if (!matchFound) {
+			if (!matchFound && !currentDate.after(messageDate)) {
 				if (log.isDebugEnabled()) {
 					log.debug("Creating Message: recipient: " + recipientId
 							+ ", enrollment: " + enrollment.getId()
@@ -3927,7 +3933,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 				message.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
 			} else {
-				message.setAttemptStatus(MessageStatus.CANCELLED);
+				message.setAttemptStatus(MessageStatus.REJECTED);
 			}
 			motechService.saveMessage(message);
 		}
@@ -3951,7 +3957,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			if (isPhoneTroubled(phoneNumber)) {
 				if (log.isDebugEnabled()) {
 					log.debug("Attempt to send to Troubled Phone, Phone: "
-							+ phoneNumber + ", Notification cancelled: "
+							+ phoneNumber + ", Notification: "
 							+ notificationType);
 				}
 			} else {

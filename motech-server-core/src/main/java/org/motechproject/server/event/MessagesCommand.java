@@ -6,7 +6,8 @@ import org.motechproject.server.model.MessageProgramEnrollment;
 
 public class MessagesCommand {
 
-	public void execute(MessageProgramEnrollment enrollment, Date actionDate) {
+	public void execute(MessageProgramEnrollment enrollment, Date actionDate,
+			Date currentDate) {
 		// No operation
 	}
 

@@ -40,17 +40,18 @@ public class MessageSchedulerImplTest extends TestCase {
 		String messageKeyC = "Message Key C";
 		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
 		Date messageDate = new Date();
+		Date currentDate = new Date();
 
 		messageScheduler.setUserPreferenceBased(userPreferencedBased);
 
 		registrarBean.scheduleInfoMessages(messageKey, messageKeyA,
 				messageKeyB, messageKeyC, enrollment, messageDate,
-				userPreferencedBased);
+				userPreferencedBased, currentDate);
 
 		replay(registrarBean);
 
 		messageScheduler.scheduleMessages(messageKey, messageKeyA, messageKeyB,
-				messageKeyC, enrollment, messageDate);
+				messageKeyC, enrollment, messageDate, currentDate);
 
 		verify(registrarBean);
 	}
@@ -63,17 +64,18 @@ public class MessageSchedulerImplTest extends TestCase {
 		String messageKeyC = "Message Key C";
 		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
 		Date messageDate = new Date();
+		Date currentDate = new Date();
 
 		messageScheduler.setUserPreferenceBased(userPreferencedBased);
 
 		registrarBean.scheduleInfoMessages(messageKey, messageKeyA,
 				messageKeyB, messageKeyC, enrollment, messageDate,
-				userPreferencedBased);
+				userPreferencedBased, currentDate);
 
 		replay(registrarBean);
 
 		messageScheduler.scheduleMessages(messageKey, messageKeyA, messageKeyB,
-				messageKeyC, enrollment, messageDate);
+				messageKeyC, enrollment, messageDate, currentDate);
 
 		verify(registrarBean);
 	}

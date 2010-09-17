@@ -283,7 +283,8 @@ public class RegistrarBeanImplTest extends TestCase {
 
 	public void testSchedulingInfoMessageWithExistingScheduled() {
 		String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
-		Date messageDate = new Date();
+		Date currentDate = new Date();
+		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
 		boolean userPreferenceBased = true;
 
 		Integer personId = 1;
@@ -328,7 +329,8 @@ public class RegistrarBeanImplTest extends TestCase {
 		replay(contextService, adminService, motechService, personService);
 
 		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
-				messageKeyC, enrollment, messageDate, userPreferenceBased);
+				messageKeyC, enrollment, messageDate, userPreferenceBased,
+				currentDate);
 
 		verify(contextService, adminService, motechService, personService);
 
@@ -340,9 +342,10 @@ public class RegistrarBeanImplTest extends TestCase {
 		assertEquals(messageDate, message.getAttemptDate());
 	}
 
-	public void testSchedulingInfoMessageWithExistingMessage() {
+	public void testSchedulingInfoMessageWithExistingMatchingMessage() {
 		String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
-		Date messageDate = new Date();
+		Date currentDate = new Date();
+		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
 		boolean userPreferenceBased = true;
 
 		Integer personId = 1;
@@ -384,8 +387,303 @@ public class RegistrarBeanImplTest extends TestCase {
 		replay(contextService, adminService, motechService, personService);
 
 		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
-				messageKeyC, enrollment, messageDate, userPreferenceBased);
+				messageKeyC, enrollment, messageDate, userPreferenceBased,
+				currentDate);
 
 		verify(contextService, adminService, motechService, personService);
+	}
+
+	public void testSchedulingInfoMessageWithExistingPendingMessage() {
+		String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
+		Date currentDate = new Date();
+		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
+		boolean userPreferenceBased = true;
+
+		Integer personId = 1;
+		Person person = new Person(personId);
+		PersonAttributeType mediaTypeAttr = new PersonAttributeType();
+		mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+		person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
+				.toString()));
+
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setPersonId(personId);
+
+		MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
+				MessageType.INFORMATIONAL);
+
+		List<Message> messagesToRemove = new ArrayList<Message>();
+
+		List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
+		ScheduledMessage schedMessage = new ScheduledMessage();
+		Message msg = messageDef.createMessage(schedMessage);
+		msg.setAttemptDate(new Timestamp(messageDate.getTime()));
+		msg.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
+		schedMessage.getMessageAttempts().add(msg);
+		existingMessages.add(schedMessage);
+
+		expect(contextService.getPersonService()).andReturn(personService);
+		expect(contextService.getMotechService()).andReturn(motechService)
+				.atLeastOnce();
+		expect(personService.getPerson(personId)).andReturn(person);
+		expect(motechService.getMessageDefinition(messageKey)).andReturn(
+				messageDef);
+		expect(
+				motechService.getMessages(personId, enrollment, messageDef,
+						messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
+				messagesToRemove);
+		expect(
+				motechService.getScheduledMessages(personId, messageDef,
+						enrollment, messageDate)).andReturn(existingMessages);
+
+		replay(contextService, adminService, motechService, personService);
+
+		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
+				messageKeyC, enrollment, messageDate, userPreferenceBased,
+				currentDate);
+
+		verify(contextService, adminService, motechService, personService);
+	}
+
+	public void testSchedulingInfoMessageWithExistingDeliveredMessage() {
+		String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
+		Date currentDate = new Date();
+		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
+		boolean userPreferenceBased = true;
+
+		Integer personId = 1;
+		Person person = new Person(personId);
+		PersonAttributeType mediaTypeAttr = new PersonAttributeType();
+		mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+		person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
+				.toString()));
+
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setPersonId(personId);
+
+		MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
+				MessageType.INFORMATIONAL);
+
+		List<Message> messagesToRemove = new ArrayList<Message>();
+
+		List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
+		ScheduledMessage schedMessage = new ScheduledMessage();
+		Message msg = messageDef.createMessage(schedMessage);
+		msg.setAttemptDate(new Timestamp(messageDate.getTime()));
+		msg.setAttemptStatus(MessageStatus.DELIVERED);
+		schedMessage.getMessageAttempts().add(msg);
+		existingMessages.add(schedMessage);
+
+		expect(contextService.getPersonService()).andReturn(personService);
+		expect(contextService.getMotechService()).andReturn(motechService)
+				.atLeastOnce();
+		expect(personService.getPerson(personId)).andReturn(person);
+		expect(motechService.getMessageDefinition(messageKey)).andReturn(
+				messageDef);
+		expect(
+				motechService.getMessages(personId, enrollment, messageDef,
+						messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
+				messagesToRemove);
+		expect(
+				motechService.getScheduledMessages(personId, messageDef,
+						enrollment, messageDate)).andReturn(existingMessages);
+
+		replay(contextService, adminService, motechService, personService);
+
+		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
+				messageKeyC, enrollment, messageDate, userPreferenceBased,
+				currentDate);
+
+		verify(contextService, adminService, motechService, personService);
+	}
+
+	public void testSchedulingInfoMessageWithExistingRejectedMessage() {
+		String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
+		Date currentDate = new Date();
+		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
+		boolean userPreferenceBased = true;
+
+		Integer personId = 1;
+		Person person = new Person(personId);
+		PersonAttributeType mediaTypeAttr = new PersonAttributeType();
+		mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+		person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
+				.toString()));
+
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setPersonId(personId);
+
+		MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
+				MessageType.INFORMATIONAL);
+
+		List<Message> messagesToRemove = new ArrayList<Message>();
+
+		List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
+		ScheduledMessage schedMessage = new ScheduledMessage();
+		Message msg = messageDef.createMessage(schedMessage);
+		msg.setAttemptDate(new Timestamp(messageDate.getTime()));
+		msg.setAttemptStatus(MessageStatus.REJECTED);
+		schedMessage.getMessageAttempts().add(msg);
+		existingMessages.add(schedMessage);
+
+		expect(contextService.getPersonService()).andReturn(personService);
+		expect(contextService.getMotechService()).andReturn(motechService)
+				.atLeastOnce();
+		expect(personService.getPerson(personId)).andReturn(person);
+		expect(motechService.getMessageDefinition(messageKey)).andReturn(
+				messageDef);
+		expect(
+				motechService.getMessages(personId, enrollment, messageDef,
+						messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
+				messagesToRemove);
+		expect(
+				motechService.getScheduledMessages(personId, messageDef,
+						enrollment, messageDate)).andReturn(existingMessages);
+
+		replay(contextService, adminService, motechService, personService);
+
+		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
+				messageKeyC, enrollment, messageDate, userPreferenceBased,
+				currentDate);
+
+		verify(contextService, adminService, motechService, personService);
+	}
+
+	public void testSchedulingInfoMessageWithExistingCancelledMessage() {
+		String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
+		Date currentDate = new Date();
+		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
+		boolean userPreferenceBased = true;
+
+		Integer personId = 1;
+		Person person = new Person(personId);
+		PersonAttributeType mediaTypeAttr = new PersonAttributeType();
+		mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+		person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
+				.toString()));
+
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setPersonId(personId);
+
+		MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
+				MessageType.INFORMATIONAL);
+
+		List<Message> messagesToRemove = new ArrayList<Message>();
+
+		List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
+		ScheduledMessage schedMessage = new ScheduledMessage();
+		Message msg = messageDef.createMessage(schedMessage);
+		msg.setAttemptDate(new Timestamp(messageDate.getTime()));
+		msg.setAttemptStatus(MessageStatus.CANCELLED);
+		schedMessage.getMessageAttempts().add(msg);
+		existingMessages.add(schedMessage);
+
+		Capture<ScheduledMessage> capturedScheduledMessage = new Capture<ScheduledMessage>();
+
+		expect(contextService.getPersonService()).andReturn(personService);
+		expect(contextService.getMotechService()).andReturn(motechService)
+				.atLeastOnce();
+		expect(personService.getPerson(personId)).andReturn(person);
+		expect(motechService.getMessageDefinition(messageKey)).andReturn(
+				messageDef);
+		expect(
+				motechService.getMessages(personId, enrollment, messageDef,
+						messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
+				messagesToRemove);
+		expect(
+				motechService.getScheduledMessages(personId, messageDef,
+						enrollment, messageDate)).andReturn(existingMessages);
+
+		expect(
+				motechService
+						.saveScheduledMessage(capture(capturedScheduledMessage)))
+				.andReturn(new ScheduledMessage());
+
+		replay(contextService, adminService, motechService, personService);
+
+		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
+				messageKeyC, enrollment, messageDate, userPreferenceBased,
+				currentDate);
+
+		verify(contextService, adminService, motechService, personService);
+
+		ScheduledMessage scheduledMessage = capturedScheduledMessage.getValue();
+		List<Message> attempts = scheduledMessage.getMessageAttempts();
+		assertEquals(2, attempts.size());
+		Message message1 = attempts.get(0);
+		assertEquals(MessageStatus.CANCELLED, message1.getAttemptStatus());
+		assertEquals(messageDate, message1.getAttemptDate());
+		Message message2 = attempts.get(1);
+		assertEquals(MessageStatus.SHOULD_ATTEMPT, message2.getAttemptStatus());
+		assertEquals(messageDate, message2.getAttemptDate());
+	}
+
+	public void testSchedulingInfoMessageWithExistingFailedMessage() {
+		String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
+		Date currentDate = new Date();
+		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
+		boolean userPreferenceBased = true;
+
+		Integer personId = 1;
+		Person person = new Person(personId);
+		PersonAttributeType mediaTypeAttr = new PersonAttributeType();
+		mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+		person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
+				.toString()));
+
+		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+		enrollment.setPersonId(personId);
+
+		MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
+				MessageType.INFORMATIONAL);
+
+		List<Message> messagesToRemove = new ArrayList<Message>();
+
+		List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
+		ScheduledMessage schedMessage = new ScheduledMessage();
+		Message msg = messageDef.createMessage(schedMessage);
+		msg.setAttemptDate(new Timestamp(messageDate.getTime()));
+		msg.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
+		schedMessage.getMessageAttempts().add(msg);
+		existingMessages.add(schedMessage);
+
+		Capture<ScheduledMessage> capturedScheduledMessage = new Capture<ScheduledMessage>();
+
+		expect(contextService.getPersonService()).andReturn(personService);
+		expect(contextService.getMotechService()).andReturn(motechService)
+				.atLeastOnce();
+		expect(personService.getPerson(personId)).andReturn(person);
+		expect(motechService.getMessageDefinition(messageKey)).andReturn(
+				messageDef);
+		expect(
+				motechService.getMessages(personId, enrollment, messageDef,
+						messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
+				messagesToRemove);
+		expect(
+				motechService.getScheduledMessages(personId, messageDef,
+						enrollment, messageDate)).andReturn(existingMessages);
+
+		expect(
+				motechService
+						.saveScheduledMessage(capture(capturedScheduledMessage)))
+				.andReturn(new ScheduledMessage());
+
+		replay(contextService, adminService, motechService, personService);
+
+		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
+				messageKeyC, enrollment, messageDate, userPreferenceBased,
+				currentDate);
+
+		verify(contextService, adminService, motechService, personService);
+
+		ScheduledMessage scheduledMessage = capturedScheduledMessage.getValue();
+		List<Message> attempts = scheduledMessage.getMessageAttempts();
+		assertEquals(2, attempts.size());
+		Message message1 = attempts.get(0);
+		assertEquals(MessageStatus.ATTEMPT_FAIL, message1.getAttemptStatus());
+		assertEquals(messageDate, message1.getAttemptDate());
+		Message message2 = attempts.get(1);
+		assertEquals(MessageStatus.SHOULD_ATTEMPT, message2.getAttemptStatus());
+		assertEquals(messageDate, message2.getAttemptDate());
 	}
 }
