@@ -15,12 +15,13 @@ public class ScheduleMessageCommand extends MessagesCommand {
 	MessageScheduler messageScheduler;
 
 	@Override
-	public void execute(MessageProgramEnrollment enrollment, Date actionDate) {
+	public void execute(MessageProgramEnrollment enrollment, Date actionDate,
+			Date currentDate) {
 		if (actionDate == null) {
 			return;
 		}
 		messageScheduler.scheduleMessages(messageKey, messageKeyA, messageKeyB,
-				messageKeyC, enrollment, actionDate);
+				messageKeyC, enrollment, actionDate, currentDate);
 	}
 
 	@Override

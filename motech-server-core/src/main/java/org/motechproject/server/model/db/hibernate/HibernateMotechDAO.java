@@ -135,6 +135,7 @@ public class HibernateMotechDAO implements MotechDAO {
 			criteria.add(Restrictions.eq("scheduledFor", messageDate));
 		}
 		criteria.addOrder(Order.desc("scheduledFor"));
+		criteria.addOrder(Order.desc("id"));
 		return criteria.list();
 	}
 

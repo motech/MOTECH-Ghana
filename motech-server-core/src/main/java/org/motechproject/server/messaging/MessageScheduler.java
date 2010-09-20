@@ -8,7 +8,8 @@ public interface MessageScheduler {
 
 	void scheduleMessages(String messageKey, String messageKeyA,
 			String messageKeyB, String messageKeyC,
-			MessageProgramEnrollment enrollment, Date messageDate);
+			MessageProgramEnrollment enrollment, Date messageDate,
+			Date currentDate);
 
 	Date adjustMessageDate(MessageProgramEnrollment enrollment,
 			Date messageDate, Date currentDate);

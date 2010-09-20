@@ -53,6 +53,7 @@ import org.motechproject.ws.HowLearned;
 import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.NameValuePair;
+import org.motechproject.ws.PatientMessage;
 import org.motechproject.ws.RegistrantType;
 import org.motechproject.ws.RegistrationMode;
 import org.motechproject.ws.mobile.MessageService;
@@ -2712,7 +2713,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public void scheduleInfoMessages(String messageKey, String messageKeyA,
 			String messageKeyB, String messageKeyC,
 			MessageProgramEnrollment enrollment, Date messageDate,
-			boolean userPreferenceBased) {
+			boolean userPreferenceBased, Date currentDate) {
 
 		PersonService personService = contextService.getPersonService();
 
@@ -2725,16 +2726,16 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// preference exists, using A/B/C message keys
 		if (mediaType == MediaType.TEXT) {
 			scheduleMultipleInfoMessages(messageKeyA, messageKeyB, messageKeyC,
-					enrollment, messageDate, userPreferenceBased);
+					enrollment, messageDate, userPreferenceBased, currentDate);
 		} else {
 			scheduleSingleInfoMessage(messageKey, enrollment, messageDate,
-					userPreferenceBased);
+					userPreferenceBased, currentDate);
 		}
 	}
 
 	void scheduleMultipleInfoMessages(String messageKeyA, String messageKeyB,
 			String messageKeyC, MessageProgramEnrollment enrollment,
-			Date messageDate, boolean userPreferenceBased) {
+			Date messageDate, boolean userPreferenceBased, Date currentDate) {
 		// Return existing message definitions
 		MessageDefinition messageDefinitionA = this
 				.getMessageDefinition(messageKeyA);
@@ -2771,16 +2772,16 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// Create new scheduled message (with pending attempt) for all 3
 		// messages, for this enrollment, if no matching message already exist
 		this.createScheduledMessage(messageRecipientId, messageDefinitionA,
-				enrollment, messageDate);
+				enrollment, messageDate, currentDate);
 		this.createScheduledMessage(messageRecipientId, messageDefinitionB,
-				enrollment, messageDateB);
+				enrollment, messageDateB, currentDate);
 		this.createScheduledMessage(messageRecipientId, messageDefinitionC,
-				enrollment, messageDateC);
+				enrollment, messageDateC, currentDate);
 	}
 
 	void scheduleSingleInfoMessage(String messageKey,
 			MessageProgramEnrollment enrollment, Date messageDate,
-			boolean userPreferenceBased) {
+			boolean userPreferenceBased, Date currentDate) {
 
 		// Return existing message definition
 		MessageDefinition messageDefinition = this
@@ -2799,7 +2800,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// Create new scheduled message (with pending attempt) for enrollment
 		// if none matching already exist
 		this.createScheduledMessage(messageRecipientId, messageDefinition,
-				enrollment, messageDate);
+				enrollment, messageDate, currentDate);
 	}
 
 	public ScheduledMessage scheduleCareMessage(String messageKey,
@@ -2990,7 +2991,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	private void createScheduledMessage(Integer recipientId,
 			MessageDefinition messageDefinition,
-			MessageProgramEnrollment enrollment, Date messageDate) {
+			MessageProgramEnrollment enrollment, Date messageDate,
+			Date currentDate) {
 
 		MotechService motechService = contextService.getMotechService();
 
@@ -3029,13 +3031,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			boolean matchFound = false;
 			ScheduledMessage scheduledMessage = scheduledMessages.get(0);
 			for (Message message : scheduledMessage.getMessageAttempts()) {
-				if (MessageStatus.SHOULD_ATTEMPT == message.getAttemptStatus()
+				if ((MessageStatus.SHOULD_ATTEMPT == message.getAttemptStatus()
+						|| MessageStatus.ATTEMPT_PENDING == message
+								.getAttemptStatus()
+						|| MessageStatus.DELIVERED == message
+								.getAttemptStatus() || MessageStatus.REJECTED == message
+						.getAttemptStatus())
 						&& messageDate.equals(message.getAttemptDate())) {
 					matchFound = true;
 					break;
 				}
 			}
-			if (!matchFound) {
+			if (!matchFound && !currentDate.after(messageDate)) {
 				if (log.isDebugEnabled()) {
 					log.debug("Creating Message: recipient: " + recipientId
 							+ ", enrollment: " + enrollment.getId()
@@ -4068,87 +4075,108 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 								+ shouldAttemptMessages.size());
 			}
 
-			for (Message shouldAttemptMessage : shouldAttemptMessages) {
-				sendMessage(shouldAttemptMessage, sendImmediate);
+			if (!shouldAttemptMessages.isEmpty()) {
+				PatientMessage[] messages = constructPatientMessages(
+						shouldAttemptMessages, sendImmediate);
+
+				if (messages.length > 0) {
+					mobileService.sendPatientMessages(messages);
+				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			log.error("Failure to send patient messages", e);
 		}
 	}
 
-	public void sendMessage(Message message, boolean sendImmediate) {
+	public PatientMessage[] constructPatientMessages(List<Message> messages,
+			boolean sendImmediate) {
 		MotechService motechService = contextService.getMotechService();
-		PersonService personService = contextService.getPersonService();
-		PatientService patientService = contextService.getPatientService();
-		UserService userService = contextService.getUserService();
 
-		Long notificationType = message.getSchedule().getMessage()
-				.getPublicId();
-		Integer recipientId = message.getSchedule().getRecipientId();
-		Person person = personService.getPerson(recipientId);
+		List<PatientMessage> patientMessages = new ArrayList<PatientMessage>();
 
-		String phoneNumber = getPersonPhoneNumber(person);
+		for (Message message : messages) {
+			PatientMessage patientMessage = constructPatientMessage(message);
+			if (patientMessage != null) {
+				if (sendImmediate) {
+					patientMessage.setStartDate(null);
+					patientMessage.setEndDate(null);
+				}
+				patientMessages.add(patientMessage);
 
-		// Cancel message if phone number is considered troubled
-		if (isPhoneTroubled(phoneNumber)) {
-			if (log.isDebugEnabled()) {
-				log.debug("Attempt to send to Troubled Phone, Phone: "
-						+ phoneNumber + ", Notification cancelled: "
-						+ notificationType);
-			}
-
-			message.setAttemptStatus(MessageStatus.CANCELLED);
-
-		} else {
-			if (log.isDebugEnabled()) {
-				log.debug("Scheduled Message, Phone: " + phoneNumber
-						+ ", Notification: " + notificationType);
-			}
-
-			String messageId = message.getPublicId();
-			MediaType mediaType = getPersonMediaType(person);
-			String languageCode = getPersonLanguageCode(person);
-			NameValuePair[] personalInfo = new NameValuePair[0];
-
-			Date messageStartDate = null;
-			Date messageEndDate = null;
-
-			if (!sendImmediate) {
-				messageStartDate = message.getAttemptDate();
-			}
-
-			Patient patient = patientService.getPatient(recipientId);
-			User staff = userService.getUser(recipientId);
-
-			boolean sendMessageSuccess = false;
-			if (patient != null) {
-				ContactNumberType contactNumberType = getPersonPhoneType(person);
-				String motechId = patient.getPatientIdentifier(
-						MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID)
-						.getIdentifier();
-
-				sendMessageSuccess = sendPatientMessage(messageId,
-						personalInfo, motechId, phoneNumber, languageCode,
-						mediaType, notificationType, messageStartDate,
-						messageEndDate, contactNumberType);
-			} else if (staff != null) {
-				org.motechproject.ws.Patient[] patients = new org.motechproject.ws.Patient[0];
-
-				sendMessageSuccess = sendStaffMessage(messageId, personalInfo,
-						phoneNumber, languageCode, mediaType, notificationType,
-						messageStartDate, messageEndDate, patients);
-			} else {
-				log.error("Attempt to send to Person not patient or staff: "
-						+ recipientId);
-			}
-			if (sendMessageSuccess) {
 				message.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
 			} else {
-				message.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
+				message.setAttemptStatus(MessageStatus.REJECTED);
 			}
+			motechService.saveMessage(message);
 		}
+		return patientMessages.toArray(new PatientMessage[patientMessages
+				.size()]);
+	}
 
-		motechService.saveMessage(message);
+	public PatientMessage constructPatientMessage(Message message) {
+		try {
+			PersonService personService = contextService.getPersonService();
+			PatientService patientService = contextService.getPatientService();
+
+			Long notificationType = message.getSchedule().getMessage()
+					.getPublicId();
+			Integer recipientId = message.getSchedule().getRecipientId();
+			Person person = personService.getPerson(recipientId);
+
+			String phoneNumber = getPersonPhoneNumber(person);
+
+			// Cancel message if phone number is considered troubled
+			if (isPhoneTroubled(phoneNumber)) {
+				if (log.isDebugEnabled()) {
+					log.debug("Attempt to send to Troubled Phone, Phone: "
+							+ phoneNumber + ", Notification: "
+							+ notificationType);
+				}
+			} else {
+				if (log.isDebugEnabled()) {
+					log.debug("Scheduled Message, Phone: " + phoneNumber
+							+ ", Notification: " + notificationType);
+				}
+
+				String messageId = message.getPublicId();
+				MediaType mediaType = getPersonMediaType(person);
+				String languageCode = getPersonLanguageCode(person);
+				NameValuePair[] personalInfo = new NameValuePair[0];
+
+				Date messageStartDate = message.getAttemptDate();
+				Date messageEndDate = null;
+
+				Patient patient = patientService.getPatient(recipientId);
+
+				if (patient != null) {
+					ContactNumberType contactNumberType = getPersonPhoneType(person);
+					String motechId = patient.getPatientIdentifier(
+							MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID)
+							.getIdentifier();
+
+					PatientMessage patientMessage = new PatientMessage();
+					patientMessage.setMessageId(messageId);
+					patientMessage.setPersonalInfo(personalInfo);
+					patientMessage.setPatientNumber(phoneNumber);
+					patientMessage.setPatientNumberType(contactNumberType);
+					patientMessage.setLangCode(languageCode);
+					patientMessage.setMediaType(mediaType);
+					patientMessage.setNotificationType(notificationType);
+					patientMessage.setStartDate(messageStartDate);
+					patientMessage.setEndDate(messageEndDate);
+					patientMessage.setRecipientId(motechId);
+					return patientMessage;
+
+				} else {
+					log
+							.error("Attempt to send message to non-existent Patient: "
+									+ recipientId);
+				}
+			}
+		} catch (Exception e) {
+			log.error("Error creating patient message", e);
+		}
+		return null;
 	}
 
 	public boolean sendPatientMessage(String messageId,

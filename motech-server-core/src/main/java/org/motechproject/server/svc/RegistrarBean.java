@@ -351,7 +351,7 @@ public interface RegistrarBean {
 	public void scheduleInfoMessages(String messageKey, String messageKeyA,
 			String messageKeyB, String messageKeyC,
 			MessageProgramEnrollment enrollment, Date messageDate,
-			boolean userPreferenceBased);
+			boolean userPreferenceBased, Date currentDate);
 
 	public ScheduledMessage scheduleCareMessage(String messageKey,
 			MessageProgramEnrollment enrollment, Date messageDate,

@@ -106,7 +106,7 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 				.atLeastOnce();
 		registrarBean.scheduleInfoMessages(eq(messageKey), eq(messageKeyA),
 				eq(messageKeyB), eq(messageKeyC), eq(enrollment),
-				(Date) anyObject(), eq(true));
+				(Date) anyObject(), eq(true), eq(week5));
 		expect(
 				registrarBean.determineUserPreferredMessageDate(eq(patientId),
 						(Date) anyObject())).andAnswer(new IAnswer<Date>() {
@@ -137,7 +137,7 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 				.atLeastOnce();
 		registrarBean.scheduleInfoMessages(eq(messageKey), eq(messageKeyA),
 				eq(messageKeyB), eq(messageKeyC), eq(enrollment),
-				(Date) anyObject(), eq(true));
+				(Date) anyObject(), eq(true), eq(week5));
 		expect(
 				registrarBean.determineUserPreferredMessageDate(eq(patientId),
 						(Date) anyObject())).andAnswer(new IAnswer<Date>() {
@@ -189,7 +189,7 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 				.atLeastOnce();
 		registrarBean.scheduleInfoMessages(eq(messageKey), eq(messageKeyA),
 				eq(messageKeyB), eq(messageKeyC), eq(enrollment),
-				(Date) anyObject(), eq(true));
+				(Date) anyObject(), eq(true), eq(week6Monday));
 		expect(
 				registrarBean.determineUserPreferredMessageDate(eq(patientId),
 						(Date) anyObject())).andAnswer(new IAnswer<Date>() {
@@ -213,7 +213,7 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 				.atLeastOnce();
 		registrarBean.scheduleInfoMessages(eq(messageKey), eq(messageKeyA),
 				eq(messageKeyB), eq(messageKeyC), eq(enrollment),
-				(Date) anyObject(), eq(true));
+				(Date) anyObject(), eq(true), eq(week6Friday));
 		expect(
 				registrarBean.determineUserPreferredMessageDate(eq(patientId),
 						(Date) anyObject())).andAnswer(new IAnswer<Date>() {

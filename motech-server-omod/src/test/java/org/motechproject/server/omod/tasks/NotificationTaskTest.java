@@ -170,7 +170,8 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 			MessageSchedulerImpl messageScheduler = new MessageSchedulerImpl();
 			messageScheduler.setRegistrarBean(regService);
 			messageScheduler.scheduleMessages(messageKey, messageKeyA,
-					messageKeyB, messageKeyC, enrollment, scheduledMessageDate);
+					messageKeyB, messageKeyC, enrollment, scheduledMessageDate,
+					date);
 		} finally {
 			Context.closeSession();
 		}
