@@ -230,7 +230,9 @@ public class MessageProgramUpdateTaskTest extends
 					assertEquals(MessageStatus.CANCELLED, message
 							.getAttemptStatus());
 				} else if (scheduledMessage.getMessage().getMessageKey()
-						.equals("pregnancy.week.8")) {
+						.equals("pregnancy.week.7")
+						|| scheduledMessage.getMessage().getMessageKey()
+								.equals("pregnancy.week.8")) {
 					assertEquals(MessageStatus.SHOULD_ATTEMPT, message
 							.getAttemptStatus());
 				} else {
