@@ -1395,13 +1395,21 @@ public class RegistrarBeanTest extends TestCase {
 		Date dueDate = null;
 
 		Patient patient = new Patient(patientId);
+		Patient currentMother = new Patient(3);
+		Patient newMother = new Patient(4);
 		Community oldCommunity = new Community();
 		oldCommunity.setCommunityId(1);
 		oldCommunity.getResidents().add(patient);
 		Community community = new Community();
 		community.setCommunityId(2);
 
+		List<Relationship> relationships = new ArrayList<Relationship>();
+		Relationship relation = new Relationship(currentMother, patient,
+				parentChildRelationshipType);
+		relationships.add(relation);
+
 		Capture<Patient> patientCap = new Capture<Patient>();
+		Capture<Relationship> relationCap = new Capture<Relationship>();
 
 		expect(contextService.getPatientService()).andReturn(patientService)
 				.atLeastOnce();
@@ -1446,6 +1454,15 @@ public class RegistrarBeanTest extends TestCase {
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME))
 				.andReturn(deliveryTimeAttributeType);
+		expect(
+				personService
+						.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD))
+				.andReturn(parentChildRelationshipType);
+		expect(
+				personService.getRelationships(null, patient,
+						parentChildRelationshipType)).andReturn(relationships);
+		expect(personService.saveRelationship(capture(relationCap))).andReturn(
+				new Relationship());
 		expect(motechService.getCommunityByPatient(patient)).andReturn(
 				oldCommunity);
 		expect(motechService.getCommunityByPatient(patient)).andReturn(null);
@@ -1462,9 +1479,9 @@ public class RegistrarBeanTest extends TestCase {
 				conceptService);
 
 		regBean.editPatient(patient, firstName, middleName, lastName, prefName,
-				date, birthDateEst, sex, insured, nhis, date, community,
-				address, phoneNumber, dueDate, enroll, consent, phoneType,
-				mediaType, language, dayOfWeek, date);
+				date, birthDateEst, sex, insured, nhis, date, newMother,
+				community, address, phoneNumber, dueDate, enroll, consent,
+				phoneType, mediaType, language, dayOfWeek, date);
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
@@ -1532,6 +1549,9 @@ public class RegistrarBeanTest extends TestCase {
 		timeCal.setTime(timeOfDayDate);
 		assertEquals(hour, timeCal.get(Calendar.HOUR_OF_DAY));
 		assertEquals(minute, timeCal.get(Calendar.MINUTE));
+
+		Relationship motherRelation = relationCap.getValue();
+		assertEquals(newMother, motherRelation.getPersonA());
 	}
 
 	public void testRegisterPregnancy() throws ParseException {

@@ -89,6 +89,11 @@
 		<td><form:input path="nhisExpDate" /></td>
 		<td><form:errors path="nhisExpDate" cssClass="error" /></td>
 	</tr>
+ 	<tr>
+		<td class="labelcolumn"><label for="motherMotechId">Mother's MoTeCH ID:</label></td>
+		<td><form:input path="motherMotechId" /></td>
+		<td><form:errors path="motherMotechId" cssClass="error" /></td>
+	</tr>
 	<tr>
 		<td class="labelcolumn"><label for="region">Region:</label></td>
 		<td>

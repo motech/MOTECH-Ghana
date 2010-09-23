@@ -18,6 +18,7 @@ import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DayOfWeek;
@@ -39,14 +40,17 @@ public class EditPatientControllerTest extends TestCase {
 	WebModelConverter webModelConverter;
 	SessionStatus status;
 	PatientService patientService;
+	OpenmrsBean openmrsBean;
 
 	@Override
 	protected void setUp() {
 		registrarBean = createMock(RegistrarBean.class);
+		openmrsBean = createMock(OpenmrsBean.class);
 		contextService = createMock(ContextService.class);
 		webModelConverter = createMock(WebModelConverter.class);
 		controller = new EditPatientController();
 		controller.setRegistrarBean(registrarBean);
+		controller.setOpenmrsBean(openmrsBean);
 		controller.setContextService(contextService);
 		controller.setWebModelConverter(webModelConverter);
 		motechService = createMock(MotechService.class);
@@ -59,6 +63,7 @@ public class EditPatientControllerTest extends TestCase {
 	protected void tearDown() {
 		controller = null;
 		registrarBean = null;
+		openmrsBean = null;
 		patientService = null;
 		contextService = null;
 		motechService = null;
@@ -147,7 +152,7 @@ public class EditPatientControllerTest extends TestCase {
 	}
 
 	public void testEditPatient() {
-		Integer patientId = 1, communityId = 11112;
+		Integer patientId = 1, communityId = 11112, motherId = 2;
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String region = "Region", district = "District", address = "Address", nhis = "1234DEF";
 		String phoneNumber = "0123456789";
@@ -171,6 +176,7 @@ public class EditPatientControllerTest extends TestCase {
 		patient.setInsured(insured);
 		patient.setNhis(nhis);
 		patient.setNhisExpDate(date);
+		patient.setMotherMotechId(motherId);
 		patient.setRegion(region);
 		patient.setDistrict(district);
 		patient.setCommunityId(communityId);
@@ -189,17 +195,21 @@ public class EditPatientControllerTest extends TestCase {
 		ModelMap model = new ModelMap();
 
 		Patient openmrsPatient = new Patient(1);
+		Patient motherPatient = new Patient(2);
 		Community community = new Community();
 
 		expect(registrarBean.getPatientById(patientId)).andReturn(
 				openmrsPatient);
+		expect(openmrsBean.getPatientByMotechId(motherId.toString()))
+				.andReturn(motherPatient);
 		expect(registrarBean.getCommunityById(communityId))
 				.andReturn(community);
 
 		registrarBean.editPatient(openmrsPatient, firstName, middleName,
 				lastName, prefName, date, birthDateEst, sex, insured, nhis,
-				date, community, address, phoneNumber, date, enroll, consent,
-				phoneType, mediaType, language, dayOfWeek, date);
+				date, motherPatient, community, address, phoneNumber, date,
+				enroll, consent, phoneType, mediaType, language, dayOfWeek,
+				date);
 
 		status.setComplete();
 
@@ -207,11 +217,13 @@ public class EditPatientControllerTest extends TestCase {
 		expect(motechService.getAllFacilities()).andReturn(
 				new ArrayList<Facility>());
 
-		replay(registrarBean, status, contextService, motechService);
+		replay(registrarBean, status, contextService, motechService,
+				openmrsBean);
 
 		controller.submitForm(patient, errors, model, status);
 
-		verify(registrarBean, status, contextService, motechService);
+		verify(registrarBean, status, contextService, motechService,
+				openmrsBean);
 
 		assertTrue("Missing success message in model", model
 				.containsAttribute("successMsg"));

@@ -83,7 +83,7 @@ public interface RegistrarBean {
 	public void editPatient(Patient patient, String firstName,
 			String middleName, String lastName, String preferredName,
 			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
-			Boolean insured, String nhis, Date nhisExpires,
+			Boolean insured, String nhis, Date nhisExpires, Patient mother,
 			Community community, String address, String phoneNumber,
 			Date expDeliveryDate, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, MediaType format, String language,
@@ -446,4 +446,6 @@ public interface RegistrarBean {
 	public boolean isValidMotechIdCheckDigit(Integer motechId);
 
 	public boolean isValidIdCheckDigit(Integer idWithCheckDigit);
+
+	public Integer getMotherMotechId(Patient patient);
 }

@@ -570,13 +570,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public void editPatient(Patient patient, String firstName,
 			String middleName, String lastName, String preferredName,
 			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
-			Boolean insured, String nhis, Date nhisExpires,
+			Boolean insured, String nhis, Date nhisExpires, Patient mother,
 			Community community, String address, String phoneNumber,
 			Date expDeliveryDate, Boolean enroll, Boolean consent,
 			ContactNumberType ownership, MediaType format, String language,
 			DayOfWeek dayOfWeek, Date timeOfDay) {
 
 		PatientService patientService = contextService.getPatientService();
+		PersonService personService = contextService.getPersonService();
 
 		patient.setBirthdate(dateOfBirth);
 		patient.setBirthdateEstimated(estimatedBirthDate);
@@ -616,6 +617,29 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			patient.addAddress(patientAddress);
 		} else {
 			patientAddress.setAddress1(address);
+		}
+
+		Relationship motherRelationship = getMotherRelationship(patient);
+		if (mother != null) {
+			if (motherRelationship != null) {
+				Person currentMother = motherRelationship.getPersonA();
+				if (!currentMother.getPersonId().equals(mother.getPatientId())) {
+					motherRelationship.setPersonA(mother);
+					personService.saveRelationship(motherRelationship);
+				}
+			} else {
+				RelationshipType parentChildRelationshipType = personService
+						.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD);
+				motherRelationship = new Relationship(mother, patient,
+						parentChildRelationshipType);
+				personService.saveRelationship(motherRelationship);
+			}
+		} else if (motherRelationship != null) {
+			motherRelationship = personService.voidRelationship(
+					motherRelationship, "Removed in web form");
+			// Saving relationship since voidRelationship will not save with
+			// required advice and void handler
+			personService.saveRelationship(motherRelationship);
 		}
 
 		Community currentCommunity = getCommunityByPatient(patient);
@@ -4716,6 +4740,52 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			return true;
 		}
 		return false;
+	}
+
+	public Integer getMotherMotechId(Patient patient) {
+		Relationship motherRelation = getMotherRelationship(patient);
+		if (motherRelation != null) {
+			Person mother = motherRelation.getPersonA();
+			return getMotechId(mother.getPersonId());
+		}
+		return null;
+	}
+
+	public Relationship getMotherRelationship(Patient patient) {
+		PersonService personService = contextService.getPersonService();
+		RelationshipType parentChildtype = personService
+				.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD);
+		List<Relationship> parentRelations = personService.getRelationships(
+				null, patient, parentChildtype);
+		if (!parentRelations.isEmpty()) {
+			if (parentRelations.size() > 1) {
+				log.warn("Multiple parent relationships found for id: "
+						+ patient.getPersonId());
+			}
+			return parentRelations.get(0);
+		}
+		return null;
+	}
+
+	public Integer getMotechId(Integer patientId) {
+		PatientService patientService = contextService.getPatientService();
+		Patient patient = patientService.getPatient(patientId);
+		if (patient == null) {
+			return null;
+		}
+		PatientIdentifier motechPatientId = patient
+				.getPatientIdentifier(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
+		Integer motechId = null;
+		if (motechPatientId != null) {
+			try {
+				motechId = Integer.parseInt(motechPatientId.getIdentifier());
+			} catch (Exception e) {
+				log.error("Unable to parse Motech ID: "
+						+ motechPatientId.getIdentifier() + ", for Patient ID:"
+						+ patientId, e);
+			}
+		}
+		return motechId;
 	}
 
 	public PatientIdentifierType getMotechPatientIdType() {

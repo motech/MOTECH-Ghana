@@ -10,6 +10,7 @@ import org.motechproject.server.model.Community;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
@@ -46,12 +47,20 @@ public class EditPatientController extends BasePatientController {
 	private RegistrarBean registrarBean;
 
 	@Autowired
+	@Qualifier("openmrsBean")
+	private OpenmrsBean openmrsBean;
+
+	@Autowired
 	public void setContextService(ContextService contextService) {
 		this.contextService = contextService;
 	}
 
 	public void setRegistrarBean(RegistrarBean registrarBean) {
 		this.registrarBean = registrarBean;
+	}
+
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
 	}
 
 	@Autowired
@@ -190,6 +199,16 @@ public class EditPatientController extends BasePatientController {
 			}
 		}
 
+		Patient mother = null;
+		if (webPatient.getMotherMotechId() != null) {
+			mother = openmrsBean.getPatientByMotechId(webPatient
+					.getMotherMotechId().toString());
+			if (mother == null) {
+				errors.rejectValue("motherMotechId",
+						"motechmodule.motechId.notexist");
+			}
+		}
+
 		if (webPatient.getPhoneNumber() != null
 				&& !webPatient.getPhoneNumber().matches(
 						MotechConstants.PHONE_REGEX_PATTERN)) {
@@ -218,7 +237,7 @@ public class EditPatientController extends BasePatientController {
 					webPatient.getPrefName(), webPatient.getBirthDate(),
 					webPatient.getBirthDateEst(), webPatient.getSex(),
 					webPatient.getInsured(), webPatient.getNhis(), webPatient
-							.getNhisExpDate(), community, webPatient
+							.getNhisExpDate(), mother, community, webPatient
 							.getAddress(), webPatient.getPhoneNumber(),
 					webPatient.getDueDate(), webPatient.getEnroll(), webPatient
 							.getConsent(), webPatient.getPhoneType(),
