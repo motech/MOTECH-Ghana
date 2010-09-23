@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.Community;
@@ -94,13 +95,15 @@ public class WebModelConverterImpl implements WebModelConverter {
 
 		PersonAttribute phoneNumberAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
-		if (phoneNumberAttr != null) {
+		if (phoneNumberAttr != null
+				&& StringUtils.isNotEmpty(phoneNumberAttr.getValue())) {
 			webPatient.setPhoneNumber(phoneNumberAttr.getValue());
 		}
 
 		PersonAttribute phoneTypeAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
-		if (phoneTypeAttr != null) {
+		if (phoneTypeAttr != null
+				&& StringUtils.isNotEmpty(phoneTypeAttr.getValue())) {
 			ContactNumberType phoneType = null;
 			try {
 				phoneType = ContactNumberType.valueOf(phoneTypeAttr.getValue());
@@ -114,7 +117,8 @@ public class WebModelConverterImpl implements WebModelConverter {
 
 		PersonAttribute mediaTypeAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
-		if (mediaTypeAttr != null) {
+		if (mediaTypeAttr != null
+				&& StringUtils.isNotEmpty(mediaTypeAttr.getValue())) {
 			MediaType mediaType = null;
 			try {
 				mediaType = MediaType.valueOf(mediaTypeAttr.getValue());
@@ -128,13 +132,15 @@ public class WebModelConverterImpl implements WebModelConverter {
 
 		PersonAttribute languageAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
-		if (languageAttr != null) {
+		if (languageAttr != null
+				&& StringUtils.isNotEmpty(languageAttr.getValue())) {
 			webPatient.setLanguage(languageAttr.getValue());
 		}
 
 		PersonAttribute dayOfWeekAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY);
-		if (dayOfWeekAttr != null) {
+		if (dayOfWeekAttr != null
+				&& StringUtils.isNotEmpty(dayOfWeekAttr.getValue())) {
 			DayOfWeek dayOfWeek = null;
 			try {
 				dayOfWeek = DayOfWeek.valueOf(dayOfWeekAttr.getValue());
@@ -148,7 +154,8 @@ public class WebModelConverterImpl implements WebModelConverter {
 
 		PersonAttribute timeOfDayAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
-		if (timeOfDayAttr != null) {
+		if (timeOfDayAttr != null
+				&& StringUtils.isNotEmpty(timeOfDayAttr.getValue())) {
 			Date timeOfDay = null;
 			String timeOfDayString = timeOfDayAttr.getValue();
 			try {
@@ -164,7 +171,8 @@ public class WebModelConverterImpl implements WebModelConverter {
 
 		PersonAttribute interestReasonAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_INTEREST_REASON);
-		if (interestReasonAttr != null) {
+		if (interestReasonAttr != null
+				&& StringUtils.isNotEmpty(interestReasonAttr.getValue())) {
 			InterestReason interestReason = null;
 			try {
 				interestReason = InterestReason.valueOf(interestReasonAttr
@@ -179,7 +187,8 @@ public class WebModelConverterImpl implements WebModelConverter {
 
 		PersonAttribute howLearnedAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED);
-		if (howLearnedAttr != null) {
+		if (howLearnedAttr != null
+				&& StringUtils.isNotEmpty(howLearnedAttr.getValue())) {
 			HowLearned howLearned = null;
 			try {
 				howLearned = HowLearned.valueOf(howLearnedAttr.getValue());
@@ -193,7 +202,8 @@ public class WebModelConverterImpl implements WebModelConverter {
 
 		PersonAttribute nhisExpDateAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE);
-		if (nhisExpDateAttr != null) {
+		if (nhisExpDateAttr != null
+				&& StringUtils.isNotEmpty(nhisExpDateAttr.getValue())) {
 			Date nhisExpDate = null;
 			String nhisExpDateString = nhisExpDateAttr.getValue();
 			try {
@@ -210,13 +220,14 @@ public class WebModelConverterImpl implements WebModelConverter {
 
 		PersonAttribute insuredAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_INSURED);
-		if (insuredAttr != null) {
+		if (insuredAttr != null
+				&& StringUtils.isNotEmpty(insuredAttr.getValue())) {
 			webPatient.setInsured(Boolean.valueOf(insuredAttr.getValue()));
 		}
 
 		PersonAttribute nhisAttr = patient
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER);
-		if (nhisAttr != null) {
+		if (nhisAttr != null && StringUtils.isNotEmpty(nhisAttr.getValue())) {
 			webPatient.setNhis(nhisAttr.getValue());
 		}
 

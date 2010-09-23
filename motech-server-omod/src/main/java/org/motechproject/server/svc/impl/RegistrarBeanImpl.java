@@ -4416,7 +4416,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public String getPersonPhoneNumber(Person person) {
 		PersonAttribute phoneNumberAttr = person
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
-		if (phoneNumberAttr != null) {
+		if (phoneNumberAttr != null
+				&& StringUtils.isNotEmpty(phoneNumberAttr.getValue())) {
 			return phoneNumberAttr.getValue();
 		}
 		log
@@ -4428,7 +4429,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public String getPersonLanguageCode(Person person) {
 		PersonAttribute languageAttr = person
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
-		if (languageAttr != null) {
+		if (languageAttr != null
+				&& StringUtils.isNotEmpty(languageAttr.getValue())) {
 			return languageAttr.getValue();
 		}
 		log.debug("No language found for Person id: " + person.getPersonId());
@@ -4438,8 +4440,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public ContactNumberType getPersonPhoneType(Person person) {
 		PersonAttribute phoneTypeAttr = person
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
-		if (phoneTypeAttr != null && phoneTypeAttr.getValue() != null) {
-			return ContactNumberType.valueOf(phoneTypeAttr.getValue());
+		if (phoneTypeAttr != null
+				&& StringUtils.isNotEmpty(phoneTypeAttr.getValue())) {
+			try {
+				return ContactNumberType.valueOf(phoneTypeAttr.getValue());
+			} catch (Exception e) {
+				log.error("Unable to parse phone type: "
+						+ phoneTypeAttr.getValue() + ", for Person ID:"
+						+ person.getPersonId(), e);
+			}
 		}
 		log.debug("No contact number type found for Person id: "
 				+ person.getPersonId());
@@ -4449,8 +4458,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public MediaType getPersonMediaType(Person person) {
 		PersonAttribute mediaTypeAttr = person
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
-		if (mediaTypeAttr != null && mediaTypeAttr.getValue() != null) {
-			return MediaType.valueOf(mediaTypeAttr.getValue());
+		if (mediaTypeAttr != null
+				&& StringUtils.isNotEmpty(mediaTypeAttr.getValue())) {
+			try {
+				return MediaType.valueOf(mediaTypeAttr.getValue());
+			} catch (Exception e) {
+				log.error("Unable to parse media type: "
+						+ mediaTypeAttr.getValue() + ", for Person ID:"
+						+ person.getPersonId(), e);
+			}
 		}
 		log.debug("No media type found for Person id: " + person.getPersonId());
 		return null;
@@ -4489,12 +4505,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		PersonAttribute dayAttr = person
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY);
 		DayOfWeek day = null;
-		if (dayAttr != null && dayAttr.getValue() != null) {
+		if (dayAttr != null && StringUtils.isNotEmpty(dayAttr.getValue())) {
 			try {
 				day = DayOfWeek.valueOf(dayAttr.getValue());
 			} catch (Exception e) {
-				log.error("Invalid Patient Day of Week Attribute: "
-						+ dayAttr.getValue(), e);
+				log.error("Unable to parse day of week: " + dayAttr.getValue()
+						+ ", for Person ID:" + person.getPersonId(), e);
 			}
 		} else {
 			log.debug("No day of week found for Person id: "
@@ -4507,14 +4523,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		PersonAttribute timeAttr = person
 				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
 		Date time = null;
-		if (timeAttr != null && timeAttr.getValue() != null) {
+		if (timeAttr != null && StringUtils.isNotEmpty(timeAttr.getValue())) {
 			SimpleDateFormat timeFormat = new SimpleDateFormat(
 					MotechConstants.TIME_FORMAT_DELIVERY_TIME);
 			try {
 				time = timeFormat.parse(timeAttr.getValue());
 			} catch (Exception e) {
-				log.error("Invalid Patient Time of Day Attribute: "
-						+ timeAttr.getValue(), e);
+				log.error("Unable to parse time of day: " + timeAttr.getValue()
+						+ ", for Person ID:" + person.getPersonId(), e);
 			}
 		} else {
 			log.debug("No time of day found for Person id: "
