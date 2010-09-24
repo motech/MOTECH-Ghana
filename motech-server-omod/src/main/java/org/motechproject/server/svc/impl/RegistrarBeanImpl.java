@@ -4675,6 +4675,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
 		blackoutCalendar
 				.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
+		if (date.before(blackoutCalendar.getTime())) {
+			// Remove a day if blackout start date before the message date
+			blackoutCalendar.add(Calendar.DATE, -1);
+		}
 		Date blackoutStart = blackoutCalendar.getTime();
 
 		timeCalendar.setTime(blackout.getEndTime());
@@ -4720,6 +4724,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
 		blackoutCalendar
 				.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
+		if (date.before(blackoutCalendar.getTime())) {
+			// Remove a day if blackout start date before the message date
+			blackoutCalendar.add(Calendar.DATE, -1);
+		}
 		Date blackoutStart = blackoutCalendar.getTime();
 
 		timeCalendar.setTime(blackout.getEndTime());
