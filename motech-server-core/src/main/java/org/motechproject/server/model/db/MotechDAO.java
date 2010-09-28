@@ -164,4 +164,6 @@ public interface MotechDAO {
 			String district, boolean includeRetired);
 
 	Community getCommunityByPatient(Patient patient);
+
+    Community saveCommunity(Community community);
 }

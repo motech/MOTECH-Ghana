@@ -3622,6 +3622,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				staffIdType);
 	}
 
+    private String generateCommunityId() {
+		PatientIdentifierType communityIdType = getCommunityPatientIdType();
+		return generateId(MotechConstants.IDGEN_SEQ_ID_GEN_COMMUNITY_ID,
+				communityIdType);
+	}
+
 	private String generateId(String generatorName,
 			PatientIdentifierType identifierType) {
 		String id = null;
@@ -4759,7 +4765,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return null;
 	}
 
-	public Relationship getMotherRelationship(Patient patient) {
+    public Community saveCommunity(String name, Integer facilityId) {
+        Community newCommunity = new Community();
+        newCommunity.setName(name);
+        newCommunity.setFacility(contextService.getMotechService().getFacilityById(facilityId));
+        newCommunity.setCommunityId(Integer.parseInt(generateCommunityId()));
+        return contextService.getMotechService().saveCommunity(newCommunity);
+    }
+
+    public Relationship getMotherRelationship(Patient patient) {
 		PersonService personService = contextService.getPersonService();
 		RelationshipType parentChildtype = personService
 				.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD);
@@ -4813,6 +4827,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				.getPatientIdentifierTypeByName(
 						MotechConstants.PATIENT_IDENTIFIER_FACILITY_ID);
 	}
+
+    public PatientIdentifierType getCommunityPatientIdType(){
+        return contextService.getPatientService()
+                .getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_COMMUNITY_ID);
+    }
 
 	public PersonAttributeType getPhoneNumberAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(

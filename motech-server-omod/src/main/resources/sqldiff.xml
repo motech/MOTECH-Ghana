@@ -630,4 +630,24 @@
 		</sql>
 	</diff>
 
+
+    <diff>
+        <version>0.9.0</version>
+        <author>ThoughtWorks</author>
+        <date>Sept 28 2010</date>
+        <description>
+            Adding the Motech Community IDGen Scheme
+        </description>
+        <sql>
+            INSERT INTO `patient_identifier_type` (`name`,`description`,`validator`,`check_digit`,`creator`,`date_created`,`uuid`) VALUES
+            ('MoTeCH Community Id','Community Id for MoTeCH system.','org.motechproject.server.omod.VerhoeffValidator',1,1,now(),uuid());
+
+			INSERT INTO `idgen_identifier_source` (`name`,`identifier_type`,`creator`,`date_created`,`uuid`) VALUES
+			('MoTeCH Community ID Generator',(select patient_identifier_type_id from patient_identifier_type where name = 'MoTeCH Community Id'),1,now(),uuid());
+
+			INSERT INTO `idgen_seq_id_gen` (`id`,`next_sequence_value`,`base_character_set`,`first_identifier_base`,`length`) VALUES
+			((select id from idgen_identifier_source where name = 'MoTeCH Community ID Generator'),-1,'0123456789','130000',NULL);
+        </sql>
+    </diff>
+
 </sqldiff>

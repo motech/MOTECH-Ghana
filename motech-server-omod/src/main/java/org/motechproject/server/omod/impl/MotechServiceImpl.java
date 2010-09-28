@@ -359,4 +359,8 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 		return motechDAO.getCommunityByPatient(patient);
 	}
 
+    public Community saveCommunity(Community community) {
+        return  motechDAO.saveCommunity(community);
+    }
+
 }

@@ -235,4 +235,7 @@ public interface MotechService extends OpenmrsService {
 
 	@Transactional(readOnly = true)
 	Community getCommunityByPatient(Patient patient);
+
+    @Transactional
+    Community saveCommunity(Community community);
 }

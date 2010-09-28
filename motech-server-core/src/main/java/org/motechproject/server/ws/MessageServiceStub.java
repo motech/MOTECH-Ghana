@@ -13,6 +13,8 @@ import org.motechproject.ws.Patient;
 import org.motechproject.ws.PatientMessage;
 import org.motechproject.ws.mobile.MessageService;
 
+import javax.jws.WebParam;
+
 /**
  * A stub implementation of the motech mobile message interface. This enables us
  * to configure the application to a working state without knowing the presence
@@ -296,5 +298,10 @@ public class MessageServiceStub implements MessageService {
 
 		return MessageStatus.DELIVERED;
 	}
+
+    public MessageStatus sendBulkCaresMessage(@WebParam(name="messageId") String s, @WebParam(name="workerNumber") String s1, @WebParam(name="patient") Care[] cares, @WebParam(name="mediaType") MediaType mediaType, @WebParam(name="startDate") Date date, @WebParam(name="endDate") Date date1) {
+        //TODO  We had to add an empty implementation because the build was breaking.
+        throw new UnsupportedOperationException();
+    }
 
 }

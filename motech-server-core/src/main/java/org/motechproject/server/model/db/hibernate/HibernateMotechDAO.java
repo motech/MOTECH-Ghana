@@ -827,4 +827,9 @@ public class HibernateMotechDAO implements MotechDAO {
 						+ " c where :patient in elements(c.residents)")
 				.setEntity("patient", patient).uniqueResult();
 	}
+
+    public Community saveCommunity(Community community) {
+        sessionFactory.getCurrentSession().saveOrUpdate(community);
+        return community;
+    }
 }
