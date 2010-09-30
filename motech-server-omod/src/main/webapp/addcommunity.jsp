@@ -8,35 +8,36 @@
 <%@ include file="localHeader.jsp" %>
 
 <h2> Add a new Community:</h2>
-<c:url value="/module/motechmodule/community/submit.form" var="submitAction" />
+<c:url value="/module/motechmodule/community/submit.form" var="submitAction"/>
 <form:form method="post" modelAttribute="community" action="${submitAction}">
     <form:errors cssClass="error"/>
     <fieldset>
         <legend>Add New Community</legend>
-    <table>
-    <tr>
-        <td><form:label path="name">Name :</form:label></td>
-        <td><form:input path="name"/></td>
-        <td><form:errors path="name" cssClass="error"/></td>
-    </tr>
-    <tr>
-        <td><form:label path="facilityId">Facility</form:label></td>
-        <td>
-            <form:select path="facilityId">
-                <c:forEach items="${facilities}" var="facility">
-                    <form:option value="${facility.facilityId}"> ${facility.location.neighborhoodCell} </form:option>
-                </c:forEach>
-            </form:select>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <input type="submit" value="Submit">
-        </td>
-    </tr>
-</table>
+        <table>
+            <tr>
+                <td><form:label path="name">Name :</form:label></td>
+                <td><form:input path="name"/></td>
+                <td><form:errors path="name" cssClass="error"/></td>
+            </tr>
+            <tr>
+                <td><form:label path="facilityId">Facility</form:label></td>
+                <td>
+                    <form:select path="facilityId">
+                        <c:forEach items="${facilities}" var="facility">
+                            <form:option
+                                    value="${facility.facilityId}"> ${facility.location.neighborhoodCell} </form:option>
+                        </c:forEach>
+                    </form:select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Submit">
+                </td>
+            </tr>
+        </table>
 
-</fieldset>
+    </fieldset>
 </form:form>
 
-<%@ include file="/WEB-INF/template/footer.jsp"%>
+<%@ include file="/WEB-INF/template/footer.jsp" %>

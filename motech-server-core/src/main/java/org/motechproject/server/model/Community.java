@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.openmrs.Patient;
 
-public class Community implements Serializable, Comparable {
+public class Community implements Serializable {
 
 	private static final long serialVersionUID = -3653103922117733357L;
 
@@ -64,9 +64,4 @@ public class Community implements Serializable, Comparable {
 	public void setRetired(Boolean retired) {
 		this.retired = retired;
 	}
-
-    public int compareTo(Object community) {
-        return ((Community)community).getName().compareTo(this.name);
-    }
-
 }
