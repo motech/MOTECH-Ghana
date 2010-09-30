@@ -54,7 +54,7 @@ public class CommunityController {
             contextService.getRegistrarBean().saveCommunity(community);
             modelMap.addAttribute("successMsg", "Community added");
             status.setComplete();
-            return "/module/motechmodule/communities";
+            return "redirect:/module/motechmodule/community.form";
         }
         modelMap.addAttribute("community", webCommunity);
         return "/module/motechmodule/addcommunity";

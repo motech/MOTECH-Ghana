@@ -9,8 +9,8 @@
 <table>
     <tbody>
     <tr>
-        <c:url value="/module/motechmodule/community/add.form" var="addCommunity"></c:url>
-        <a href="<c:out value="${addCommunity}" />"> Add new Community</a>
+        <c:url value="/module/motechmodule/community/add.form" var="addCommunity" />
+        <a href="${addCommunity}"> Add new Community</a>
     </tr>
     </tbody>
     <tbody style="border: 2px; border-color: black;">
