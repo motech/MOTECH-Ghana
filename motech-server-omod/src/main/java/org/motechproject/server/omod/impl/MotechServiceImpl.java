@@ -363,4 +363,8 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
         return  motechDAO.saveCommunity(community);
     }
 
+    public Community getCommunityByFacilityIdAndName(Integer facilityId, String name) {
+        return motechDAO.getCommunityByFacilityIdAndName(facilityId, name);
+    }
+
 }

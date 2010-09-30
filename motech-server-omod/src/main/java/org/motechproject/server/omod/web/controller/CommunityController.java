@@ -43,6 +43,9 @@ public class CommunityController {
         Community community;
         if(webCommunity.getCommunityId() == null){
             community = new Community();
+            if(contextService.getMotechService().getCommunityByFacilityIdAndName(webCommunity.getFacilityId(), webCommunity.getName()) != null){
+                errors.reject("name", "A community with the same name exists");
+            }
             community.setName(webCommunity.getName().trim());
             community.setFacility(contextService.getMotechService().getFacilityById(webCommunity.getFacilityId()));
         }else{

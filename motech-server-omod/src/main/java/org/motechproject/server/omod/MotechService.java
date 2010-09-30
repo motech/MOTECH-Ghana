@@ -238,4 +238,7 @@ public interface MotechService extends OpenmrsService {
 
     @Transactional
     Community saveCommunity(Community community);
+
+    @Transactional(readOnly = true)
+    Community getCommunityByFacilityIdAndName(Integer facilityId, String name);
 }

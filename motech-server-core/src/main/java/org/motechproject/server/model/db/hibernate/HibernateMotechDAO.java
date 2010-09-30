@@ -832,4 +832,12 @@ public class HibernateMotechDAO implements MotechDAO {
         sessionFactory.getCurrentSession().saveOrUpdate(community);
         return community;
     }
+
+    public Community getCommunityByFacilityIdAndName(Integer facilityId, String name) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Community.class)
+        .add(Restrictions.eq("name", name)).createCriteria("facility")
+        .add(Restrictions.eq("facilityId", facilityId));
+
+        return (Community) criteria.uniqueResult();
+    }
 }

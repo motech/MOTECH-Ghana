@@ -166,4 +166,6 @@ public interface MotechDAO {
 	Community getCommunityByPatient(Patient patient);
 
     Community saveCommunity(Community community);
+
+    Community getCommunityByFacilityIdAndName(Integer facilityId, String name);
 }
