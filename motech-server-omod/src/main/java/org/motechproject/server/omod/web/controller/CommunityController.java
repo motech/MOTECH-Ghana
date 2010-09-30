@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -39,17 +40,17 @@ public class CommunityController {
             errors.reject("name", "Name cannot be blank");
         }
 
+        Community community;
+        if(webCommunity.getCommunityId() == null){
+            community = new Community();
+            community.setName(webCommunity.getName().trim());
+            community.setFacility(contextService.getMotechService().getFacilityById(webCommunity.getFacilityId()));
+        }else{
+            community = contextService.getMotechService().getCommunityById(webCommunity.getCommunityId());
+            community.setFacility(contextService.getMotechService().getFacilityById(webCommunity.getFacilityId()));
+            community.setName(webCommunity.getName().trim());
+        }
         if(!errors.hasErrors()){
-            Community community;
-            if(webCommunity.getCommunityId() == null){
-                community = new Community();
-                community.setName(webCommunity.getName().trim());
-                community.setFacility(contextService.getMotechService().getFacilityById(webCommunity.getFacilityId()));
-            }else{
-                community = contextService.getMotechService().getCommunityById(webCommunity.getCommunityId());
-                community.setFacility(contextService.getMotechService().getFacilityById(webCommunity.getFacilityId()));
-                community.setName(webCommunity.getName().trim());
-            }
             contextService.getRegistrarBean().saveCommunity(community);
             modelMap.addAttribute("successMsg", "Community added");
             status.setComplete();
@@ -68,7 +69,9 @@ public class CommunityController {
 
     @ModelAttribute("communities")
     public List<Community> getCommunities(){
-        return contextService.getMotechService().getAllCommunities(true);
+        List<Community> allCommunities = contextService.getMotechService().getAllCommunities(true);
+        Collections.sort(allCommunities);
+        return allCommunities;
     }
 
     @ModelAttribute("facilities")
