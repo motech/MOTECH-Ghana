@@ -11,6 +11,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.support.SessionStatus;
 
 import java.util.List;
 
@@ -26,22 +28,41 @@ public class CommunityController {
     }
 
     @RequestMapping(value = "/module/motechmodule/community/add.form", method = RequestMethod.GET)
-    public String viewForm(ModelMap modelMap){
+    public String viewAddForm(ModelMap modelMap){
+        modelMap.addAttribute("community", new WebCommunity());
         return "/module/motechmodule/addcommunity";
     }
 
     @RequestMapping(value = "/module/motechmodule/community/submit.form", method = RequestMethod.POST)
-    public String submitForm(@ModelAttribute("community") WebCommunity community, Errors errors, ModelMap modelMap){
-        if(community.getName().equals("")){
+    public String submitForm(WebCommunity webCommunity, Errors errors, ModelMap modelMap, SessionStatus status){
+        if(webCommunity.getName().equals("")){
             errors.reject("name", "Name cannot be blank");
         }
 
         if(!errors.hasErrors()){
-            contextService.getRegistrarBean().saveCommunity(community.getName(), community.getFacilityId());
+            Community community;
+            if(webCommunity.getCommunityId() == null){
+                community = new Community();
+                community.setName(webCommunity.getName());
+                community.setFacility(contextService.getMotechService().getFacilityById(webCommunity.getFacilityId()));
+            }else{
+                community = contextService.getMotechService().getCommunityById(webCommunity.getCommunityId());
+                community.setFacility(contextService.getMotechService().getFacilityById(webCommunity.getFacilityId()));
+                community.setName(webCommunity.getName());
+            }
+            contextService.getRegistrarBean().saveCommunity(community);
             modelMap.addAttribute("successMsg", "Community added");
+            status.setComplete();
             return "/module/motechmodule/communities";
         }
         return "/module/motechmodule/addcommunity";
+    }
+
+    @RequestMapping(value = "/module/motechmodule/community/editcommunity.form", method = RequestMethod.GET)
+    public String viewEditForm(@RequestParam(required = true) Integer communityId, ModelMap modelMap){
+        Community community = contextService.getMotechService().getCommunityById(communityId);
+        modelMap.addAttribute("community", new WebCommunity(community));
+        return "/module/motechmodule/editcommunity";
     }
 
     @ModelAttribute("communities")
@@ -52,11 +73,6 @@ public class CommunityController {
     @ModelAttribute("facilities")
     public List<Facility> getFacilities(){
         return contextService.getMotechService().getAllFacilities();
-    }
-
-    @ModelAttribute("community")
-    public WebCommunity getWebCommunity(){
-        return new WebCommunity();
     }
 
 }

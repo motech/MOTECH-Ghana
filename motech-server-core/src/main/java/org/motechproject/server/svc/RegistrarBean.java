@@ -449,5 +449,5 @@ public interface RegistrarBean {
 
 	public Integer getMotherMotechId(Patient patient);
 
-    Community saveCommunity(String name, Integer facilityId);
+    Community saveCommunity(Community community);
 }

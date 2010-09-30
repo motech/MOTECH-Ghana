@@ -19,7 +19,7 @@
 		<date>July 1 2010</date>
 		<description>
 			Creating enrollment blackout, troubledphone, messaging, outpatient encounter,
-			expected care, facility, and community tables. 
+			expected care, facility, and community tables.
 			Inserting message definitions, facility locations, facilities, communities,
 			patient id types, and idgen sequential generators.
 		</description>
@@ -482,7 +482,7 @@
 		<author>Matthew Blanchette</author>
 		<date>July 9 2010</date>
 		<description>
-			Inserting community and updating facility name.
+			Inserting webCoommunity and updating facility name.
 		</description>
 		<sql>
 			insert into motechmodule_community (community_id,name,facility_id) values

@@ -4765,12 +4765,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return null;
 	}
 
-    public Community saveCommunity(String name, Integer facilityId) {
-        Community newCommunity = new Community();
-        newCommunity.setName(name);
-        newCommunity.setFacility(contextService.getMotechService().getFacilityById(facilityId));
-        newCommunity.setCommunityId(Integer.parseInt(generateCommunityId()));
-        return contextService.getMotechService().saveCommunity(newCommunity);
+    public Community saveCommunity(Community community) {
+        if(community.getCommunityId() == null){
+            community.setCommunityId(Integer.parseInt(generateCommunityId()));
+        }
+        
+        return contextService.getMotechService().saveCommunity(community);
     }
 
     public Relationship getMotherRelationship(Patient patient) {

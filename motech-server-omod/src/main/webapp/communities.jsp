@@ -10,17 +10,21 @@
     <tbody>
     <tr>
         <c:url value="/module/motechmodule/community/add.form" var="addCommunity"></c:url>
-        <a href="<c:out value="${addCommunity}"></c:out>"> Add new Community</a>
+        <a href="<c:out value="${addCommunity}" />"> Add new Community</a>
     </tr>
     </tbody>
     <tbody style="border: 2px; border-color: black;">
     <c:forEach items="${communities}" var="community">
+        <c:url value="/module/motechmodule/community/editcommunity.form" var="editUrl">
+		    <c:param name="communityId" value="${community.communityId}" />
+		</c:url>
         <tr>
-            <td><c:out value = "${community.communityId}" /></td>
-            <td><c:out value = "${community.name}" /></td>
+            <td><a href="${editUrl}"><c:out value = "${community.communityId}" /></a></td>
+            <td><a href="${editUrl}"><c:out value = "${community.name}" /></a></td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
 
 
+<%@ include file="/WEB-INF/template/footer.jsp"%>
