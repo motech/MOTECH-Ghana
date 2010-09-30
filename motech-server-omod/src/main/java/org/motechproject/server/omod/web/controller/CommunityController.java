@@ -35,16 +35,16 @@ public class CommunityController {
     }
 
     @RequestMapping(value = "/module/motechmodule/community/submit.form", method = RequestMethod.POST)
-    public String submitForm(WebCommunity webCommunity, Errors errors, ModelMap modelMap, SessionStatus status){
+    public String submitForm(@ModelAttribute("community")WebCommunity webCommunity, Errors errors, ModelMap modelMap, SessionStatus status){
         if(webCommunity.getName().trim().isEmpty()){
-            errors.reject("name", "Name cannot be blank");
+            errors.rejectValue("name", "motechmodule.communityName.invalid");
         }
 
         Community community;
         if(webCommunity.getCommunityId() == null){
             community = new Community();
             if(contextService.getMotechService().getCommunityByFacilityIdAndName(webCommunity.getFacilityId(), webCommunity.getName()) != null){
-                errors.reject("name", "A community with the same name exists");
+                errors.rejectValue("name", "motechmodule.communityName.duplicate");
             }
             community.setName(webCommunity.getName().trim());
             community.setFacility(contextService.getMotechService().getFacilityById(webCommunity.getFacilityId()));
@@ -72,9 +72,7 @@ public class CommunityController {
 
     @ModelAttribute("communities")
     public List<Community> getCommunities(){
-        List<Community> allCommunities = contextService.getMotechService().getAllCommunities(true);
-        Collections.sort(allCommunities);
-        return allCommunities;
+        return contextService.getMotechService().getAllCommunities(true);
     }
 
     @ModelAttribute("facilities")

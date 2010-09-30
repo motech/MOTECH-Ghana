@@ -19,8 +19,8 @@
 		    <c:param name="communityId" value="${community.communityId}" />
 		</c:url>
         <tr>
-            <td><a href="${editUrl}"><c:out value = "${community.communityId}" /></a></td>
-            <td><a href="${editUrl}"><c:out value = "${community.name}" /></a></td>
+            <td><a href="${editUrl}">${community.communityId}</a></td>
+            <td><a href="${editUrl}">${community.name}</a></td>
         </tr>
     </c:forEach>
     </tbody>
