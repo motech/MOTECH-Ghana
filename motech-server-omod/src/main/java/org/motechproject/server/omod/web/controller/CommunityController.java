@@ -35,7 +35,7 @@ public class CommunityController {
 
     @RequestMapping(value = "/module/motechmodule/community/submit.form", method = RequestMethod.POST)
     public String submitForm(WebCommunity webCommunity, Errors errors, ModelMap modelMap, SessionStatus status){
-        if(webCommunity.getName().equals("")){
+        if(webCommunity.getName().trim().isEmpty()){
             errors.reject("name", "Name cannot be blank");
         }
 
@@ -43,18 +43,19 @@ public class CommunityController {
             Community community;
             if(webCommunity.getCommunityId() == null){
                 community = new Community();
-                community.setName(webCommunity.getName());
+                community.setName(webCommunity.getName().trim());
                 community.setFacility(contextService.getMotechService().getFacilityById(webCommunity.getFacilityId()));
             }else{
                 community = contextService.getMotechService().getCommunityById(webCommunity.getCommunityId());
                 community.setFacility(contextService.getMotechService().getFacilityById(webCommunity.getFacilityId()));
-                community.setName(webCommunity.getName());
+                community.setName(webCommunity.getName().trim());
             }
             contextService.getRegistrarBean().saveCommunity(community);
             modelMap.addAttribute("successMsg", "Community added");
             status.setComplete();
             return "/module/motechmodule/communities";
         }
+        modelMap.addAttribute("community", webCommunity);
         return "/module/motechmodule/addcommunity";
     }
 
