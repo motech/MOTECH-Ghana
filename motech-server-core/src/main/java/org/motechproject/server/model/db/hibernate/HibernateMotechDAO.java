@@ -840,4 +840,11 @@ public class HibernateMotechDAO implements MotechDAO {
 
         return (Community) criteria.uniqueResult();
     }
+
+    public Facility getFacilityByLocationUuid(String uuid) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Facility.class)
+                .createCriteria("location").add(Restrictions.eq("uuid", uuid));
+
+        return (Facility) criteria.uniqueResult();
+    }
 }

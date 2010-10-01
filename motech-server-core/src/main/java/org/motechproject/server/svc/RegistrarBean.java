@@ -450,4 +450,6 @@ public interface RegistrarBean {
 	public Integer getMotherMotechId(Patient patient);
 
     Community saveCommunity(Community community);
+
+    Facility saveFacility(Facility newFacility);
 }

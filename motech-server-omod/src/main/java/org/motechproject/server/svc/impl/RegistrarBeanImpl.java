@@ -3628,6 +3628,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				communityIdType);
 	}
 
+    private String generateFacilityId(){
+        PatientIdentifierType facilityIdType = getFacilityPatientIdType();
+        return generateId(MotechConstants.IDGEN_SEQ_ID_GEN_FACILITY_ID,
+                facilityIdType);
+    }
+
 	private String generateId(String generatorName,
 			PatientIdentifierType identifierType) {
 		String id = null;
@@ -4771,6 +4777,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
         
         return contextService.getMotechService().saveCommunity(community);
+    }
+
+    public Facility saveFacility(Facility newFacility) {
+        newFacility.setFacilityId(Integer.parseInt(generateFacilityId()));
+        return contextService.getMotechService().saveFacility(newFacility);
     }
 
     public Relationship getMotherRelationship(Patient patient) {

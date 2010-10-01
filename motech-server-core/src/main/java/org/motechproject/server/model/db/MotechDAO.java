@@ -168,4 +168,6 @@ public interface MotechDAO {
     Community saveCommunity(Community community);
 
     Community getCommunityByFacilityIdAndName(Integer facilityId, String name);
+
+    Facility getFacilityByLocationUuid(String uuid);
 }

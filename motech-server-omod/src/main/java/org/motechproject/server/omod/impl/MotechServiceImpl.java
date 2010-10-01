@@ -367,4 +367,7 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
         return motechDAO.getCommunityByFacilityIdAndName(facilityId, name);
     }
 
+    public Facility getFacilityByLocationUuid(String uuid) {
+        return motechDAO.getFacilityByLocationUuid(uuid);
+    }
 }

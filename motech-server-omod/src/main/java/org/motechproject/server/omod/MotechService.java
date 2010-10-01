@@ -241,4 +241,7 @@ public interface MotechService extends OpenmrsService {
 
     @Transactional(readOnly = true)
     Community getCommunityByFacilityIdAndName(Integer facilityId, String name);
+
+    @Transactional(readOnly = true)
+    Facility getFacilityByLocationUuid(String uuid);
 }

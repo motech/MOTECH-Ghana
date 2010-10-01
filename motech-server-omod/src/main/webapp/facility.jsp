@@ -14,6 +14,8 @@
 <span style="color:green;">
 	<spring:message code="${successMsg}" text="" />
 </span>
+<c:url value="/module/motechmodule/addfacility.form" var="addFacility"/>
+<h2><a href="${addFacility}">Add a new Facility</a></h2>
 <table>
 	<thead>
 		<tr>

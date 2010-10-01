@@ -11,7 +11,7 @@
     <tbody>
     <tr>
         <c:url value="/module/motechmodule/community/add.form" var="addCommunity"/>
-        <a href="${addCommunity}"> Add new Community</a>
+        <h2><a href="${addCommunity}">Add new Community</a></h2>
     </tr>
     </tbody>
     <tbody style="border: 2px; border-color: black;">
