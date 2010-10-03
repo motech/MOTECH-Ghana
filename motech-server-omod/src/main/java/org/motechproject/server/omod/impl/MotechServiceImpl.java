@@ -366,8 +366,15 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
     public Community getCommunityByFacilityIdAndName(Integer facilityId, String name) {
         return motechDAO.getCommunityByFacilityIdAndName(facilityId, name);
     }
-
+    
+    public List<Patient> getAllDuplicatePatients() {
+        return motechDAO.getAllDuplicatePatients();
+    }
     public Facility getFacilityByLocationUuid(String uuid) {
         return motechDAO.getFacilityByLocationUuid(uuid);
+    }
+
+    public void deletePatientIdentifier(Integer patientId) {
+        motechDAO.deletePatientIdentifier(patientId);
     }
 }

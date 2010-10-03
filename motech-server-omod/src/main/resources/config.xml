@@ -111,6 +111,11 @@
         <name>Register MoTeCH Communities</name>
         <description>Allows to add new communities and edit existing ones</description>
     </privilege>
+    
+    <privilege>
+        <name>Duplicate Patients</name>
+        <description>Allows the admin to delete duplicate patients</description>
+    </privilege>
 	
 	<globalProperty>
 		<property>motechmodule.troubled_phone_failures</property>

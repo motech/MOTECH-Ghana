@@ -169,5 +169,9 @@ public interface MotechDAO {
 
     Community getCommunityByFacilityIdAndName(Integer facilityId, String name);
 
+    List<Patient> getAllDuplicatePatients();
+
     Facility getFacilityByLocationUuid(String uuid);
+
+    void deletePatientIdentifier(Integer patientId);
 }

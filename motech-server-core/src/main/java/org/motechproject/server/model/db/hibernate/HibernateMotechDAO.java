@@ -37,6 +37,7 @@ import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
@@ -841,10 +842,22 @@ public class HibernateMotechDAO implements MotechDAO {
         return (Community) criteria.uniqueResult();
     }
 
+      public List<Patient> getAllDuplicatePatients() {
+        return (List<Patient>) sessionFactory.getCurrentSession().createQuery("select p from "+
+                Patient.class.getName() + " p " + "where patientId in ( select i1.patient.patientId from "
+                + PatientIdentifier.class.getName() + " i1, " + PatientIdentifier.class.getName()
+                + " i2 " + "where i1.identifier = i2.identifier and " +
+                "i1.patientIdentifierId <> i2.patientIdentifierId)").list();
+    }
+
     public Facility getFacilityByLocationUuid(String uuid) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Facility.class)
                 .createCriteria("location").add(Restrictions.eq("uuid", uuid));
 
         return (Facility) criteria.uniqueResult();
+    }
+
+    public void deletePatientIdentifier(Integer patientId) {
+        sessionFactory.getCurrentSession().createQuery("delete from "+ PatientIdentifier.class.getName() + " pi where pi.patient.patientId = " + patientId);
     }
 }

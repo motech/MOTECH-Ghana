@@ -243,5 +243,11 @@ public interface MotechService extends OpenmrsService {
     Community getCommunityByFacilityIdAndName(Integer facilityId, String name);
 
     @Transactional(readOnly = true)
+    List<Patient> getAllDuplicatePatients();
+
+    @Transactional(readOnly = true)
     Facility getFacilityByLocationUuid(String uuid);
+
+    @Transactional
+    void deletePatientIdentifier(Integer patientId);
 }

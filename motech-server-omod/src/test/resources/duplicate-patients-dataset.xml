@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <patient patient_id="2" creator="1" date_created="2005-09-22 00:00:00.0" voided="0"/>
+    <patient patient_id="3" creator="1" date_created="2005-09-22 00:00:00.0" voided="0"/>
+    <patient_identifier patient_identifier_id="1" patient_id="2" identifier="101" identifier_type="2" preferred="0"
+                        location_id="1" creator="1" date_created="2005-09-22 00:00:00.0" voided="0"
+                        uuid="33875f23-af64-11de-870f-e5004d85b1e8"/>
+    <patient_identifier patient_identifier_id="2" patient_id="2" identifier="101" identifier_type="1" preferred="1"
+                        location_id="1" creator="1" date_created="2005-09-22 00:00:00.0" voided="0"
+                        uuid="3387618a-af64-11de-870f-e5004d85b1e8"/>
+    <patient_identifier patient_identifier_id="3" patient_id="3" identifier="100" identifier_type="2" preferred="0"
+                        location_id="1" creator="1" date_created="2005-09-22 00:00:00.0" voided="0"
+                        uuid="3387632d-af64-11de-870f-e5004d85b1e8"/>
+    <patient_identifier patient_identifier_id="4" patient_id="3" identifier="100" identifier_type="1" preferred="1"
+                        location_id="1" creator="1" date_created="2005-09-22 00:00:00.0" voided="0"
+                        uuid="338764c5-af64-11de-870f-e5004d85b1e8"/>
+    <patient_identifier_type patient_identifier_type_id="1" name="OpenMRS Identification Number"
+                             description="Unique number used in OpenMRS" format="" check_digit="1" creator="1"
+                             date_created="2005-09-22 00:00:00.0" required="0"
+                             validator="org.openmrs.patient.impl.LuhnIdentifierValidator" retired="0"
+                             uuid="3388327f-af64-11de-870f-e5004d85b1e8"/>
+    <patient_identifier_type patient_identifier_type_id="2" name="Old Identification Number"
+                             description="Number given out prior to the OpenMRS system (No check digit)" format=""
+                             check_digit="0" creator="1" date_created="2005-09-22 00:00:00.0" required="0" retired="0"
+                             uuid="33883515-af64-11de-870f-e5004d85b1e8"/>
+    <patient_program/>
+    <patient_state/>
+    <person person_id="1" gender="" birthdate_estimated="0" dead="0" creator="1" date_created="2005-01-01 00:00:00.0"
+            voided="0" uuid="338b81a0-af64-11de-870f-e5004d85b1e8"/>
+    <person person_id="2" gender="M" birthdate="1941-05-01" birthdate_estimated="0" dead="0" creator="1"
+            date_created="2005-09-22 00:00:00.0" voided="0" uuid="338b840f-af64-11de-870f-e5004d85b1e8"/>
+    <person person_id="3" gender="M" birthdate="1975-01-01" birthdate_estimated="0" dead="0" creator="1"
+            date_created="2005-09-22 00:00:00.0" voided="0" uuid="338b85bb-af64-11de-870f-e5004d85b1e8"/>
+</dataset>

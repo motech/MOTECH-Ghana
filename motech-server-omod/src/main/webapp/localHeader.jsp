@@ -61,4 +61,12 @@
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
+    
+        <openmrs:hasPrivilege privilege="Duplicate Patients">
+        <li <c:if test='<%= request.getRequestURI().contains("duplicatepatients") %>'>class="active"</c:if>>
+          <a href="${pageContext.request.contextPath}/module/motechmodule/duplicatepatients.form">
+            <spring:message code="motechmodule.Tools.duplicatepatients"/>
+          </a>
+        </li>
+    </openmrs:hasPrivilege>
 </ul>
