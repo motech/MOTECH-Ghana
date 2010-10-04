@@ -62,14 +62,15 @@
 	</repositories>
 
 	<pluginRepositories>
-		<pluginRepository>
-			<id>motech-repo</id>
-			<name>Motech Maven Repository</name>
-			<url>http://motech.rcg.usm.maine.edu/archiva/repository/all</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
+	  <pluginRepository>
+	    <id>motech-repo</id>
+	    <name>Motech Maven Repository</name>
+	    <url>http://motech.rcg.usm.maine.edu/archiva/repository/all</url>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	  </pluginRepository>
+	  
 	</pluginRepositories>
 
 	<dependencyManagement>
@@ -363,6 +364,28 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+		  <plugin>
+		    <groupId>com.mycila.maven-license-plugin</groupId>
+		    <artifactId>maven-license-plugin</artifactId>
+		    <version>1.8.0</version>
+		    <configuration>
+                      <header>header.txt</header>
+		      <properties>
+			<year>${project.inceptionYear}</year>
+                      </properties>
+		    </configuration>
+		    <executions>
+		      <execution>
+			<id>check-headers</id>
+			<phase>verify</phase>
+			<goals>
+			  <goal>check</goal>
+			</goals>
+		      </execution>
+		    </executions>
+		  </plugin>
+		</plugins>
 	</build>
 
 	<scm>
