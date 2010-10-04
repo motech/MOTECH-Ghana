@@ -12,7 +12,7 @@
     Edit community attributes and click submit to save.
 </div>
 
-<c:url value="/module/motechmodule/community/submit.form" var="submitAction"/>
+<c:url value="/module/motechmodule/community/editcommunity.form" var="submitAction"/>
 <form:form method="post" modelAttribute="community" action="${submitAction}">
     <form:errors cssClass="error"/>
     <fieldset>

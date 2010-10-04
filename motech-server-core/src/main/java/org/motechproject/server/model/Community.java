@@ -17,6 +17,15 @@ public class Community implements Serializable {
 	private Set<Patient> residents = new HashSet<Patient>();
 	private Boolean retired = Boolean.FALSE;
 
+    public Community(){
+
+    }
+
+    public Community(String name, Facility facility){
+        this.name = name;
+        this.facility = facility;
+    }
+
 	public Long getId() {
 		return id;
 	}

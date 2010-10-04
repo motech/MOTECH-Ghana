@@ -9,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Controller
@@ -22,6 +24,13 @@ public class CommunityController {
 
     @Autowired
     ContextService contextService;
+
+    @Resource(name = "webCommunityValidator")
+    Validator webCommunityValidator;
+    
+    public void setWebCommunityValidator(Validator webCommunityValidator) {
+        this.webCommunityValidator = webCommunityValidator;
+    }
     
     @RequestMapping(value = "/module/motechmodule/community", method = RequestMethod.GET)
     public String list(ModelMap modelMap){
@@ -34,29 +43,17 @@ public class CommunityController {
         return "/module/motechmodule/addcommunity";
     }
 
-    @RequestMapping(value = "/module/motechmodule/community/submit.form", method = RequestMethod.POST)
+    @RequestMapping(value = "/module/motechmodule/community/add.form", method = RequestMethod.POST)
     public String submitForm(@ModelAttribute("community")WebCommunity webCommunity, Errors errors, ModelMap modelMap, SessionStatus status) {
         MotechService motechService = contextService.getMotechService();
-        if (webCommunity.getName().trim().isEmpty()) {
-            errors.rejectValue("name", "motechmodule.communityName.invalid");
-        }
-        if (motechService.getCommunityByFacilityIdAndName(webCommunity.getFacilityId(), webCommunity.getName()) != null) {
-            errors.rejectValue("name", "motechmodule.communityName.duplicate");
-        }
+
+        webCommunityValidator.validate(webCommunity, errors);
 
         if (errors.hasErrors()) {
             modelMap.addAttribute("community", webCommunity);
             return "/module/motechmodule/addcommunity";
         }
-    
-        Community community;
-        if (webCommunity.getCommunityId() == null) {
-            community = new Community();
-        } else {
-            community = motechService.getCommunityById(webCommunity.getCommunityId());
-        }
-        community.setFacility(motechService.getFacilityById(webCommunity.getFacilityId()));
-        community.setName(webCommunity.getName().trim());
+        Community community = new Community(webCommunity.getName(), motechService.getFacilityById(webCommunity.getFacilityId()));
         contextService.getRegistrarBean().saveCommunity(community);
         modelMap.addAttribute("successMsg", "Community added");
         status.setComplete();
@@ -68,6 +65,23 @@ public class CommunityController {
         Community community = contextService.getMotechService().getCommunityById(communityId);
         modelMap.addAttribute("community", new WebCommunity(community));
         return "/module/motechmodule/editcommunity";
+    }
+    
+    @RequestMapping(value = "/module/motechmodule/community/editcommunity.form", method = RequestMethod.POST)
+    public String viewEditForm(@ModelAttribute("community")WebCommunity webCommunity, Errors errors, ModelMap modelMap, SessionStatus status){
+        MotechService motechService = contextService.getMotechService();
+        webCommunityValidator.validate(webCommunity, errors);
+
+        if (errors.hasErrors()) {
+            modelMap.addAttribute("community", webCommunity);
+            return "/module/motechmodule/editcommunity";
+        }
+        Community community = motechService.getCommunityById(webCommunity.getCommunityId());
+        community.setFacility(motechService.getFacilityById(webCommunity.getFacilityId()));
+        community.setName(webCommunity.getName());
+        contextService.getRegistrarBean().saveCommunity(community);
+        status.setComplete();
+        return "redirect:/module/motechmodule/community.form";
     }
 
     @ModelAttribute("communities")

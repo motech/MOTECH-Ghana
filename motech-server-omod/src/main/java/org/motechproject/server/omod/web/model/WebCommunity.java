@@ -25,7 +25,7 @@ public class WebCommunity {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public Integer getFacilityId() {

@@ -8,7 +8,7 @@
 <%@ include file="localHeader.jsp" %>
 
 <h2> Add a new Community:</h2>
-<c:url value="/module/motechmodule/community/submit.form" var="submitAction"/>
+<c:url value="/module/motechmodule/community/add.form" var="submitAction"/>
 <form:form method="post" modelAttribute="community" action="${submitAction}">
     <form:errors cssClass="error"/>
     <fieldset>
