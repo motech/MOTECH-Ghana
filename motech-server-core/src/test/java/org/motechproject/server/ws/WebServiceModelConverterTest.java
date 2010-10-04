@@ -608,7 +608,7 @@ public class WebServiceModelConverterTest extends TestCase {
 		upcomingObs.add(obs3);
 
 		Care[] cares = modelConverter.upcomingToWebServiceCares(
-				upcomingEncounters, upcomingObs);
+				upcomingEncounters, upcomingObs, false);
 
 		assertEquals(6, cares.length);
 

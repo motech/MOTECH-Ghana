@@ -27,7 +27,7 @@ public interface WebServiceModelConverter {
 
 	Care[] upcomingToWebServiceCares(
 			List<ExpectedEncounter> upcomingEncounters,
-			List<ExpectedObs> upcomingObs);
+			List<ExpectedObs> upcomingObs, boolean includePatient);
 
 	Care[] defaultedObsToWebServiceCares(List<ExpectedObs> defaultedObs);
 

@@ -2167,15 +2167,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Facility facility, String[] groups, Date fromDate, Date toDate) {
 		MotechService motechService = contextService.getMotechService();
 		Integer maxResults = getMaxQueryResults();
-		return motechService.getExpectedEncounter(null, facility, groups,
-				fromDate, toDate, null, fromDate, maxResults);
+		return motechService.getExpectedEncounter(null, facility, groups, null,
+				toDate, null, fromDate, maxResults);
 	}
 
 	private List<ExpectedObs> getUpcomingExpectedObs(Facility facility,
 			String[] groups, Date fromDate, Date toDate) {
 		MotechService motechService = contextService.getMotechService();
 		Integer maxResults = getMaxQueryResults();
-		return motechService.getExpectedObs(null, facility, groups, fromDate,
+		return motechService.getExpectedObs(null, facility, groups, null,
 				toDate, null, fromDate, maxResults);
 	}
 
@@ -3622,17 +3622,17 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				staffIdType);
 	}
 
-    private String generateCommunityId() {
+	private String generateCommunityId() {
 		PatientIdentifierType communityIdType = getCommunityPatientIdType();
 		return generateId(MotechConstants.IDGEN_SEQ_ID_GEN_COMMUNITY_ID,
 				communityIdType);
 	}
 
-    private String generateFacilityId(){
-        PatientIdentifierType facilityIdType = getFacilityPatientIdType();
-        return generateId(MotechConstants.IDGEN_SEQ_ID_GEN_FACILITY_ID,
-                facilityIdType);
-    }
+	private String generateFacilityId() {
+		PatientIdentifierType facilityIdType = getFacilityPatientIdType();
+		return generateId(MotechConstants.IDGEN_SEQ_ID_GEN_FACILITY_ID,
+				facilityIdType);
+	}
 
 	private String generateId(String generatorName,
 			PatientIdentifierType identifierType) {
@@ -4077,21 +4077,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				// Send Upcoming Care Messages
 				List<ExpectedEncounter> upcomingEncounters = getUpcomingExpectedEncounters(
 						facility, careGroups, startDate, endDate);
-				for (ExpectedEncounter upcomingEncounter : upcomingEncounters) {
-					org.motechproject.ws.Patient patient = modelConverter
-							.upcomingEncounterToWebServicePatient(upcomingEncounter);
-
-					sendStaffUpcomingCareMessage(messageId, phoneNumber,
-							mediaType, deliveryDate, null, patient);
-				}
 				List<ExpectedObs> upcomingObs = getUpcomingExpectedObs(
 						facility, careGroups, startDate, endDate);
-				for (ExpectedObs upcomingObservation : upcomingObs) {
-					org.motechproject.ws.Patient patient = modelConverter
-							.upcomingObsToWebServicePatient(upcomingObservation);
+				if (!upcomingEncounters.isEmpty() || !upcomingObs.isEmpty()) {
+					Care[] upcomingCares = modelConverter
+							.upcomingToWebServiceCares(upcomingEncounters,
+									upcomingObs, true);
 
 					sendStaffUpcomingCareMessage(messageId, phoneNumber,
-							mediaType, deliveryDate, null, patient);
+							mediaType, deliveryDate, null, upcomingCares);
 				}
 			}
 		}
@@ -4272,11 +4266,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	public boolean sendStaffUpcomingCareMessage(String messageId,
 			String phoneNumber, MediaType mediaType, Date messageStartDate,
-			Date messageEndDate, org.motechproject.ws.Patient patient) {
+			Date messageEndDate, Care[] cares) {
 
 		try {
 			org.motechproject.ws.MessageStatus messageStatus = mobileService
-					.sendUpcomingCaresMessage(messageId, phoneNumber, patient,
+					.sendBulkCaresMessage(messageId, phoneNumber, cares,
 							mediaType, messageStartDate, messageEndDate);
 
 			return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
@@ -4771,20 +4765,20 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return null;
 	}
 
-    public Community saveCommunity(Community community) {
-        if(community.getCommunityId() == null){
-            community.setCommunityId(Integer.parseInt(generateCommunityId()));
-        }
-        
-        return contextService.getMotechService().saveCommunity(community);
-    }
+	public Community saveCommunity(Community community) {
+		if (community.getCommunityId() == null) {
+			community.setCommunityId(Integer.parseInt(generateCommunityId()));
+		}
 
-    public Facility saveFacility(Facility newFacility) {
-        newFacility.setFacilityId(Integer.parseInt(generateFacilityId()));
-        return contextService.getMotechService().saveFacility(newFacility);
-    }
+		return contextService.getMotechService().saveCommunity(community);
+	}
 
-    public Relationship getMotherRelationship(Patient patient) {
+	public Facility saveFacility(Facility newFacility) {
+		newFacility.setFacilityId(Integer.parseInt(generateFacilityId()));
+		return contextService.getMotechService().saveFacility(newFacility);
+	}
+
+	public Relationship getMotherRelationship(Patient patient) {
 		PersonService personService = contextService.getPersonService();
 		RelationshipType parentChildtype = personService
 				.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD);
@@ -4839,10 +4833,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 						MotechConstants.PATIENT_IDENTIFIER_FACILITY_ID);
 	}
 
-    public PatientIdentifierType getCommunityPatientIdType(){
-        return contextService.getPatientService()
-                .getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_COMMUNITY_ID);
-    }
+	public PatientIdentifierType getCommunityPatientIdType() {
+		return contextService.getPatientService()
+				.getPatientIdentifierTypeByName(
+						MotechConstants.PATIENT_IDENTIFIER_COMMUNITY_ID);
+	}
 
 	public PersonAttributeType getPhoneNumberAttributeType() {
 		return contextService.getPersonService().getPersonAttributeTypeByName(

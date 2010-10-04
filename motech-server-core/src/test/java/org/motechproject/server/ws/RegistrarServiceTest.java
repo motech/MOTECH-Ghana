@@ -2167,7 +2167,7 @@ public class RegistrarServiceTest {
 				expectedObs);
 		expect(
 				modelConverter.upcomingToWebServiceCares(expectedEncounters,
-						expectedObs)).andReturn(upcomingCares);
+						expectedObs, false)).andReturn(upcomingCares);
 
 		replay(registrarBean, modelConverter, openmrsBean);
 

@@ -152,7 +152,7 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 
 	public Care[] upcomingToWebServiceCares(
 			List<ExpectedEncounter> upcomingEncounters,
-			List<ExpectedObs> upcomingObs) {
+			List<ExpectedObs> upcomingObs, boolean includePatient) {
 
 		List<Care> cares = new ArrayList<Care>();
 
@@ -160,12 +160,22 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 			Care care = new Care();
 			care.setName(expectedEncounter.getName());
 			care.setDate(expectedEncounter.getDueEncounterDatetime());
+			if (includePatient) {
+				Patient patient = patientToWebService(expectedEncounter
+						.getPatient(), true);
+				care.setPatients(new Patient[] { patient });
+			}
 			cares.add(care);
 		}
 		for (ExpectedObs expectedObs : upcomingObs) {
 			Care care = new Care();
 			care.setName(expectedObs.getName());
 			care.setDate(expectedObs.getDueObsDatetime());
+			if (includePatient) {
+				Patient patient = patientToWebService(expectedObs.getPatient(),
+						true);
+				care.setPatients(new Patient[] { patient });
+			}
 			cares.add(care);
 		}
 
