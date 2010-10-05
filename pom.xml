@@ -22,6 +22,12 @@
 			<name>Matt Blanchette</name>
 			<email>matt.blanchette@gmail.com</email>
 		</developer>
+		<developer>
+			<id>rlarubbio</id>
+			<name>Rob LaRubbio</name>
+			<timezone>-8</timezone>
+			<email>rlarubbio@grameenfoundation.org</email>
+		</developer>
 	</developers>
 
 	<ciManagement>
