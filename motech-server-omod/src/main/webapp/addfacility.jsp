@@ -57,7 +57,7 @@
 		<td><form:errors path="phoneNumber" cssClass="error" /></td>
 	</tr>
     <tr>
-        <td><form:label path="uuid"/></td>
+        <td><form:label path="uuid"/>Location:</td>
         <td>
             <form:select path="uuid">
                 <c:forEach items="${locations}" var="location">
