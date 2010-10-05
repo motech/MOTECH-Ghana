@@ -381,15 +381,6 @@
 			<year>${project.inceptionYear}</year>
                       </properties>
 		    </configuration>
-		    <executions>
-		      <execution>
-			<id>check-headers</id>
-			<phase>verify</phase>
-			<goals>
-			  <goal>check</goal>
-			</goals>
-		      </execution>
-		    </executions>
 		  </plugin>
 		</plugins>
 	</build>
