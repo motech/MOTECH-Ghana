@@ -41,26 +41,36 @@
 
 <meta name="heading" content="Community"/>
 <%@ include file="localHeader.jsp" %>
+<c:url value="/module/motechmodule/community/add.form" var="addCommunity"/>
 
-<table>
-    <tbody>
-    <tr>
-        <c:url value="/module/motechmodule/community/add.form" var="addCommunity"/>
-        <h2><a href="${addCommunity}">Add new Community</a></h2>
-    </tr>
-    </tbody>
-    <tbody style="border: 2px; border-color: black;">
-    <c:forEach items="${communities}" var="community">
-        <c:url value="/module/motechmodule/community/editcommunity.form" var="editUrl">
-            <c:param name="communityId" value="${community.communityId}"/>
-        </c:url>
-        <tr>
-            <td><a href="${editUrl}">${community.communityId}</a></td>
-            <td><a href="${editUrl}">${community.name}</a></td>
-        </tr>
+<div style="margin-bottom:4px;">
+    <h><a href="${addCommunity}">Add a new Community</a></h>
+</div>
+<div>
+    <c:forEach items="${facilities}" var="facility">
+        <h>Facility - ${facility.location.neighborhoodCell}</h>
+        <table cellpadding="4" cellspacing="0">
+            <tr>
+                <th>
+                    Community Id
+                </th>
+                <th>
+                    Community Name
+                </th>
+            </tr>
+            <c:forEach items="${facility.communities}" var="community">
+                <c:url value="/module/motechmodule/community/editcommunity.form" var="editUrl">
+                    <c:param name="communityId" value="${community.communityId}"/>  
+                </c:url>
+                <tr>
+                    <td><a href="${editUrl}">${community.communityId}</a></td>
+                    <td><a href="${editUrl}">${community.name}</a></td>
+                </tr>
+            </c:forEach>
+        </table>
+        <br/> <br/>
     </c:forEach>
-    </tbody>
-</table>
+</div>
 
 
 <%@ include file="/WEB-INF/template/footer.jsp" %>
