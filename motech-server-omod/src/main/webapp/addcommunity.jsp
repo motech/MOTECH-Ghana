@@ -60,7 +60,7 @@
                     <form:select path="facilityId">
                         <c:forEach items="${facilities}" var="facility">
                             <form:option
-                                    value="${facility.facilityId}"> ${facility.location.neighborhoodCell} </form:option>
+                                    value="${facility.facilityId}"> ${facility.location.name} </form:option>
                         </c:forEach>
                     </form:select>
                 </td>

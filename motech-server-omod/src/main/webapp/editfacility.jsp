@@ -60,7 +60,7 @@
 	</tr>
 	<tr>
 		<td>Facility Name:</td>
-		<td>${facility.location.neighborhoodCell}</td>
+		<td>${facility.location.name}</td>
 	</tr>
 	<tr>
 		<td><form:label path="phoneNumber">Phone Number:</form:label></td>

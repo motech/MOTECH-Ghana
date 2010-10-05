@@ -66,7 +66,7 @@
 			</c:url>
 			<tr>
 				<td><a href="${editUrl}">${facility.facilityId}</a></td>
-				<td><a href="${editUrl}">${facility.location.neighborhoodCell}</a></td>
+				<td><a href="${editUrl}">${facility.location.name}</a></td>
 				<td><a href="${editUrl}">${facility.phoneNumber}</a></td>	
 			</tr>
 		</c:forEach>
