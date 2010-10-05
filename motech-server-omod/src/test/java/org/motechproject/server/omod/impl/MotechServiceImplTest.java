@@ -40,9 +40,7 @@ import org.motechproject.server.omod.MotechService;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.core.Is.is;
+import static junit.framework.Assert.assertEquals;
 
 public class MotechServiceImplTest extends BaseModuleContextSensitiveTest {
 
@@ -60,6 +58,6 @@ public class MotechServiceImplTest extends BaseModuleContextSensitiveTest {
     @Test
     public void testGetAllDuplicatePatients() throws Exception {
         MotechService motechService = Context.getService(MotechService.class);
-        assertThat(motechService.getAllDuplicatePatients().size(), is(equalTo(2)));
+        assertEquals(2, motechService.getAllDuplicatePatients().size());
     }
 }
