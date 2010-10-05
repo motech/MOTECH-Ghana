@@ -48,7 +48,8 @@
 </div>
 <div>
     <c:forEach items="${facilities}" var="facility">
-        <h>Facility - ${facility.location.neighborhoodCell}</h>
+        <c:if test="${not empty facility.communities}">
+        <div style="background: #8FABC7; padding: 2px; text-align: center; width: 300px;">Facility - ${facility.location.neighborhoodCell}</div>
         <table cellpadding="4" cellspacing="0">
             <tr>
                 <th>
@@ -58,17 +59,20 @@
                     Community Name
                 </th>
             </tr>
-            <c:forEach items="${facility.communities}" var="community">
+            <c:forEach items="${facility.communities}" var="community" varStatus="status">
+
                 <c:url value="/module/motechmodule/community/editcommunity.form" var="editUrl">
                     <c:param name="communityId" value="${community.communityId}"/>  
                 </c:url>
-                <tr>
+                <tr class="<c:choose><c:when test="${status.index % 2 == 0}">evenRow</c:when><c:otherwise>oddRow</c:otherwise></c:choose>">
                     <td><a href="${editUrl}">${community.communityId}</a></td>
                     <td><a href="${editUrl}">${community.name}</a></td>
                 </tr>
+
             </c:forEach>
         </table>
         <br/> <br/>
+        </c:if>
     </c:forEach>
 </div>
 
