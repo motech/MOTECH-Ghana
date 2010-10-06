@@ -73,10 +73,10 @@ public class FacilityController {
     @RequestMapping(value = "/module/motechmodule/addfacility.form", method = RequestMethod.POST)
     public String submitAddFacility(@ModelAttribute("facility") WebFacility facility, Errors errors,ModelMap modelMap, SessionStatus status){
         if(facility.getName().isEmpty()){
-            errors.rejectValue("name", "Name cannot be blank");
+            errors.rejectValue("name", "motechmodule.name.blank");
         }
         if(contextService.getMotechService().getLocationByName(facility.getName()) != null){
-            errors.rejectValue("name","motechmodule.Facility.invalid.location");
+            errors.rejectValue("name","motechmodule.Facility.duplicate.location");
         }
         if(errors.hasErrors()){
             return "/module/motechmodule/addfacility";

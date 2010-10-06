@@ -52,7 +52,7 @@ public class WebCommunityValidator implements Validator {
     public void validate(Object o, Errors errors) {
         WebCommunity webCommunity = (WebCommunity) o;
         if (webCommunity.getName().isEmpty()) {
-            errors.rejectValue("name", "motechmodule.communityName.invalid");
+            errors.rejectValue("name", "motechmodule.name.blank");
         }
         if (contextService.getMotechService().getCommunityByFacilityIdAndName(webCommunity.getFacilityId(), webCommunity.getName()) != null) {
             errors.rejectValue("name", "motechmodule.communityName.duplicate");
