@@ -33,11 +33,35 @@
 
 package org.motechproject.server.omod.web.model;
 
+import org.motechproject.server.model.Facility;
+import org.openmrs.Location;
+
+import java.util.Date;
+
 public class WebFacility {
 
     private String phoneNumber;
 
-    private String uuid;
+    private String country;
+
+    private String region;
+
+    private String countyDistrict;
+
+    private String stateProvince;
+
+    private String neighborhoodCell;
+
+    private String name;
+
+    private Location location;
+    
+    private Facility facility;
+
+    public WebFacility(){
+        this.location = new Location();
+        this.facility = new Facility();
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -47,11 +71,66 @@ public class WebFacility {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getCountry() {
+        return country;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getStateProvince() {
+        return stateProvince;
+    }
+
+    public void setStateProvince(String stateProvince) {
+        this.stateProvince = stateProvince;
+    }
+
+    public String getCountyDistrict() {
+        return countyDistrict;
+    }
+
+    public void setCountyDistrict(String countyDistrict) {
+        this.countyDistrict = countyDistrict;
+    }
+
+    public String getNeighborhoodCell() {
+        return neighborhoodCell;
+    }
+
+    public void setNeighborhoodCell(String neighborhoodCell) {
+        this.neighborhoodCell = neighborhoodCell;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name.trim();
+    }
+
+    public Facility getFacility(){
+        location.setCountry(this.country);
+        location.setRegion(this.region);
+        location.setStateProvince(this.stateProvince);
+        location.setCountyDistrict(this.countyDistrict);
+        location.setNeighborhoodCell(this.neighborhoodCell);
+        location.setName(this.name);
+        location.setDateCreated(new Date());
+
+        facility.setPhoneNumber(this.phoneNumber);
+        facility.setLocation(location);
+
+        return facility;
     }
 }

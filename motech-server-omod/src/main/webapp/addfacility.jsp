@@ -51,22 +51,36 @@
 <fieldset>
 <legend>New Facility</legend>
 <table>
+    <tr>
+        <td><form:label path="name">Name:</form:label></td>
+        <td><form:input path="name" maxlength="50"/> </td>
+        <td><form:errors path="name" cssClass="error"/> </td>
+    </tr>
+    <tr>
+        <td><form:label path="country">Country:</form:label></td>
+        <td><form:input path="country" maxlength="50"/></td>
+        <td><form:errors path="country" cssClass="error"/> </td>
+    </tr>
+    <tr>
+        <td><form:label path="region">Region:</form:label></td>
+        <td><form:input path="region" maxlength="50"/> </td>
+        <td><form:errors cssClass="error"/> </td>
+    </tr>
+    <tr>
+        <td><form:label path="countyDistrict">District:</form:label></td>
+        <td><form:input path="countyDistrict" maxlength="50"/> </td>
+        <td><form:errors cssClass="error"/></td>
+    </tr>
+    <tr>
+        <td><form:label path="stateProvince">Province:</form:label></td>
+        <td><form:input path="stateProvince" maxlength="50"/> </td>
+        <td><form:errors cssClass="error"/> </td>
+    </tr>
 	<tr>
 		<td><form:label path="phoneNumber">Phone Number:</form:label></td>
 		<td><form:input path="phoneNumber" maxlength="50"/></td>
 		<td><form:errors path="phoneNumber" cssClass="error" /></td>
 	</tr>
-    <tr>
-        <td><form:label path="uuid"/>Location:</td>
-        <td>
-            <form:select path="uuid">
-                <c:forEach items="${locations}" var="location">
-                    <form:option value="${location.uuid}">${location.name}</form:option>
-                </c:forEach>
-            </form:select>
-        </td>
-        <td><form:errors path="uuid" cssClass="error" /></td>
-    </tr>
 	<tr>
 		<td colspan="2"><input type="submit" /></td>
 	</tr>

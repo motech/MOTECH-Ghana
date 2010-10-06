@@ -883,11 +883,10 @@ public class HibernateMotechDAO implements MotechDAO {
                 "i1.patientIdentifierId <> i2.patientIdentifierId)").list();
     }
 
-    public Facility getFacilityByLocationUuid(String uuid) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Facility.class)
-                .createCriteria("location").add(Restrictions.eq("uuid", uuid));
-
-        return (Facility) criteria.uniqueResult();
+    public Location getLocationByName(String name) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Location.class)
+                .add(Restrictions.eq("name", name));
+        return (Location) criteria.uniqueResult();
     }
 
     public void deletePatientIdentifier(Integer patientId) {

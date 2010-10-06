@@ -58,6 +58,7 @@ import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
+import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
@@ -390,8 +391,8 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
     public List<Patient> getAllDuplicatePatients() {
         return motechDAO.getAllDuplicatePatients();
     }
-    public Facility getFacilityByLocationUuid(String uuid) {
-        return motechDAO.getFacilityByLocationUuid(uuid);
+    public Location getLocationByName(String name) {
+        return motechDAO.getLocationByName(name);
     }
 
     public void deletePatientIdentifier(Integer patientId) {

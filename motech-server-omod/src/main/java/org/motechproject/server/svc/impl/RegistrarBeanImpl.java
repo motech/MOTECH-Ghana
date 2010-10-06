@@ -4806,9 +4806,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return contextService.getMotechService().saveCommunity(community);
 	}
 
-	public Facility saveFacility(Facility newFacility) {
-		newFacility.setFacilityId(Integer.parseInt(generateFacilityId()));
-		return contextService.getMotechService().saveFacility(newFacility);
+	public Facility saveNewFacility(Facility facility) {
+		facility.setFacilityId(Integer.parseInt(generateFacilityId()));
+		return contextService.getMotechService().saveFacility(facility);
 	}
 
 	public Relationship getMotherRelationship(Patient patient) {

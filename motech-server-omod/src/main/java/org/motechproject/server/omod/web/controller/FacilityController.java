@@ -72,16 +72,17 @@ public class FacilityController {
 
     @RequestMapping(value = "/module/motechmodule/addfacility.form", method = RequestMethod.POST)
     public String submitAddFacility(@ModelAttribute("facility") WebFacility facility, Errors errors,ModelMap modelMap, SessionStatus status){
-        if(contextService.getMotechService().getFacilityByLocationUuid(facility.getUuid()) != null){
-            errors.rejectValue("uuid","motechmodule.Facility.invalid.location");
+        if(facility.getName().isEmpty()){
+            errors.rejectValue("name", "Name cannot be blank");
+        }
+        if(contextService.getMotechService().getLocationByName(facility.getName()) != null){
+            errors.rejectValue("name","motechmodule.Facility.invalid.location");
         }
         if(errors.hasErrors()){
             return "/module/motechmodule/addfacility";
         }
-        Facility newFacility = new Facility();
-        newFacility.setLocation(contextService.getLocationService().getLocationByUuid(facility.getUuid()));
-        newFacility.setPhoneNumber(facility.getPhoneNumber());
-        contextService.getRegistrarBean().saveFacility(newFacility);
+        contextService.getLocationService().saveLocation(facility.getFacility().getLocation());
+        contextService.getRegistrarBean().saveNewFacility(facility.getFacility());
         return "redirect:/module/motechmodule/facility.form";
     }
 

@@ -204,7 +204,7 @@ public interface MotechDAO {
 
     List<Patient> getAllDuplicatePatients();
 
-    Facility getFacilityByLocationUuid(String uuid);
+    Location getLocationByName(String name);
 
     void deletePatientIdentifier(Integer patientId);
 }

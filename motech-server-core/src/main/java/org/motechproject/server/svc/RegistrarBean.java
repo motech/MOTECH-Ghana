@@ -484,5 +484,5 @@ public interface RegistrarBean {
 
     Community saveCommunity(Community community);
 
-    Facility saveFacility(Facility newFacility);
+    Facility saveNewFacility(Facility facility);
 }

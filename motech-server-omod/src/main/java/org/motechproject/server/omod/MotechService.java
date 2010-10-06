@@ -56,6 +56,7 @@ import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
+import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
@@ -266,7 +267,7 @@ public interface MotechService extends OpenmrsService {
     List<Patient> getAllDuplicatePatients();
 
     @Transactional(readOnly = true)
-    Facility getFacilityByLocationUuid(String uuid);
+    Location getLocationByName(String name);
 
     @Transactional
     void deletePatientIdentifier(Integer patientId);
