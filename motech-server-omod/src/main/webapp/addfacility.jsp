@@ -40,6 +40,25 @@
 
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
+<openmrs:htmlInclude file="/scripts/jquery/jquery-1.3.2.min.js" />
+<openmrs:htmlInclude file="/moduleResources/motechmodule/jquery-autocomplete/jquery.autocomplete.css" />
+<openmrs:htmlInclude file="/moduleResources/motechmodule/jquery-autocomplete/lib/jquery.bgiframe.min.js" />
+<openmrs:htmlInclude file="/moduleResources/motechmodule/jquery-autocomplete/jquery.autocomplete.min.js" />
+
+<script type="text/javascript">
+	var $j = jQuery.noConflict();
+    $j(document).ready(function(){
+        $j.getJSON("http://localhost:8080/openmrs/module/motechmodule/jsonfacilitydata.form", function(data){
+            $j('#country').autocomplete(data.country);
+            $j('#region').autocomplete(data.regions);
+            $j('#countyDistrict').autocomplete(data.districts);
+            $j('#stateProvince').autocomplete(data.provinces);
+        });
+
+
+    });
+</script>
+
 <meta name="heading" content="Add Facility" />
 <%@ include file="localHeader.jsp" %>
 <h2>Add a New Facility</h2>

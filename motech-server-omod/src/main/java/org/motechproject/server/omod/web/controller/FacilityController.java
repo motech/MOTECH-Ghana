@@ -33,6 +33,7 @@
 
 package org.motechproject.server.omod.web.controller;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.motechproject.server.model.Facility;
@@ -89,5 +90,25 @@ public class FacilityController {
     @ModelAttribute("locations")
     public List<Location> getLocations(){
         return contextService.getLocationService().getAllLocations(false);
+    }
+
+    @RequestMapping(value = "/module/motechmodule/jsonfacilitydata.form", method = RequestMethod.GET)
+    public String getJSON(ModelMap modelMap){
+        List<Location> locationList = contextService.getLocationService().getAllLocations();
+        HashSet<String> countries = new HashSet<String>();
+        HashSet<String> regions = new HashSet<String>();
+        HashSet<String> districts = new HashSet<String>();
+        HashSet<String> provinces = new HashSet<String>();
+        for (Location list : locationList){
+            countries.add("\"" + list.getCountry() + "\"");
+            regions.add("\"" + list.getRegion() + "\"");
+            districts.add("\"" + list.getCountyDistrict() + "\"");
+            provinces.add("\"" + list.getStateProvince() + "\"");
+        }
+        modelMap.addAttribute("countries", countries.toString());
+        modelMap.addAttribute("regions", regions.toString());
+        modelMap.addAttribute("districts", districts.toString());
+        modelMap.addAttribute("provinces", provinces.toString());
+        return "/module/motechmodule/json_data_facilities";
     }
 }

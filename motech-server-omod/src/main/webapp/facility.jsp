@@ -41,16 +41,17 @@
 
 <meta name="heading" content="Facility Maintenance" />
 <%@ include file="localHeader.jsp" %>
+<c:url value="/module/motechmodule/addfacility.form" var="addFacility"/>
+<h><a href="${addFacility}">Add a new Facility</a></h>
+
 <h2>Select a Facility</h2>
 <div class="instructions">
-	Please select a facility to edit. Currently, a limited number of facility
-	attributes are editable.
+    Please select a facility to edit. Currently, a limited number of facility
+    attributes are editable.
 </div>
 <span style="color:green;">
 	<spring:message code="${successMsg}" text="" />
 </span>
-<c:url value="/module/motechmodule/addfacility.form" var="addFacility"/>
-<h2><a href="${addFacility}">Add a new Facility</a></h2>
 <table>
 	<thead>
 		<tr>
