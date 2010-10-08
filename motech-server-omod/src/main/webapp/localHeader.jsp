@@ -89,19 +89,19 @@
 		</li>
 	</openmrs:hasPrivilege>
 
-    <openmrs:hasPrivilege privilege="Register MoTeCH Communities">
-		<li <c:if test='<%= request.getRequestURI().contains("community") %>'>class="active"</c:if>>
-			<a href="${pageContext.request.contextPath}/module/motechmodule/community.form">
-				<spring:message code="motechmodule.Community.view"/>
-			</a>
-		</li>
-	</openmrs:hasPrivilege>
-    
-        <openmrs:hasPrivilege privilege="Duplicate Patients">
-        <li <c:if test='<%= request.getRequestURI().contains("duplicatepatients") %>'>class="active"</c:if>>
-          <a href="${pageContext.request.contextPath}/module/motechmodule/duplicatepatients.form">
-            <spring:message code="motechmodule.Tools.duplicatepatients"/>
-          </a>
-        </li>
-    </openmrs:hasPrivilege>
+    <%--<openmrs:hasPrivilege privilege="Register MoTeCH Communities">--%>
+		<%--<li <c:if test='<%= request.getRequestURI().contains("community") %>'>class="active"</c:if>>--%>
+			<%--<a href="${pageContext.request.contextPath}/module/motechmodule/community.form">--%>
+				<%--<spring:message code="motechmodule.Community.view"/>--%>
+			<%--</a>--%>
+		<%--</li>--%>
+	<%--</openmrs:hasPrivilege>--%>
+    <%----%>
+        <%--<openmrs:hasPrivilege privilege="Duplicate Patients">--%>
+        <%--<li <c:if test='<%= request.getRequestURI().contains("duplicatepatients") %>'>class="active"</c:if>>--%>
+          <%--<a href="${pageContext.request.contextPath}/module/motechmodule/duplicatepatients.form">--%>
+            <%--<spring:message code="motechmodule.Tools.duplicatepatients"/>--%>
+          <%--</a>--%>
+        <%--</li>--%>
+    <%--</openmrs:hasPrivilege>--%>
 </ul>
