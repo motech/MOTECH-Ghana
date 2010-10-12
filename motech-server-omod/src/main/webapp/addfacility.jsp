@@ -48,7 +48,7 @@
 <script type="text/javascript">
 	var $j = jQuery.noConflict();
     $j(document).ready(function(){
-        $j.getJSON("http://localhost:8080/openmrs/module/motechmodule/jsonfacilitydata.form", function(data){
+        $j.getJSON("/openmrs/module/motechmodule/jsonfacilitydata.form", function(data){
             $j('#country').autocomplete(data.country);
             $j('#region').autocomplete(data.regions);
             $j('#countyDistrict').autocomplete(data.districts);
