@@ -11,6 +11,14 @@
             <property name="name">queryTimeOut</property>
             <property name="id">670</property>
         </structure>
+        <structure>
+            <property name="name">queryText</property>
+            <property name="id">674</property>
+        </structure>
+        <structure>
+            <property name="name">queryTimeOut</property>
+            <property name="id">674</property>
+        </structure>
     </list-property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -272,8 +280,7 @@ from location]]></xml-property>
       <design:criteria/>
     </design:resultSetDefinitions>
   </design:ResultSets>
-</model:DesignValues>
-]]></xml-property>
+</model:DesignValues>]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Facilities" id="672">
             <list-property name="columnHints">
@@ -336,10 +343,74 @@ from location]]></xml-property>
       <design:criteria/>
     </design:resultSetDefinitions>
   </design:ResultSets>
-</model:DesignValues>
-]]></xml-property>
+</model:DesignValues>]]></xml-property>
         </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="All OPD Cases" id="674">
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="All OPD Cases under 5 yrs" id="674">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">total</property>
+                    <text-property name="displayName">total</text-property>
+                    <text-property name="heading">total</text-property>
+                    <property name="displayLength">21</property>
+                    <property name="horizontalAlign">justify</property>
+                    <property name="wordWrap">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">total</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">openmrs</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">total</property>
+                    <property name="nativeName">total</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select count(*) as total
+from encounter where patient_id in (
+  select person_id from person where (year(now()) - year(birthdate)) <= 5 
+  and birthdate is not null
+)]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>1.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>count(*)</design:name>
+            <design:position>1</design:position>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>21</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count(*)</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count(*)</design:label>
+            <design:formattingHints>
+              <design:displaySize>21</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="All OPD Cases over 5 yrs excluding pregnant" id="692">
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">count(*)</property>
@@ -403,8 +474,7 @@ from encounter where patient_id in (
       <design:criteria/>
     </design:resultSetDefinitions>
   </design:ResultSets>
-</model:DesignValues>
-]]></xml-property>
+</model:DesignValues>]]></xml-property>
         </oda-data-set>
     </data-sets>
     <styles>
@@ -588,6 +658,15 @@ from encounter where patient_id in (
             </row>
         </grid>
         <table id="77">
+            <property name="dataSet">All OPD Cases under 5 yrs</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">total</property>
+                    <text-property name="displayName">total</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["total"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
             <column id="98"/>
             <column id="99"/>
             <column id="100"/>
@@ -665,17 +744,10 @@ from encounter where patient_id in (
                             </row>
                             <row id="116">
                                 <cell id="117">
-                                    <text id="689">
-                                        <property name="dataSet">All OPD Cases</property>
-                                        <list-property name="boundDataColumns">
-                                            <structure>
-                                                <property name="name">Column Binding</property>
-                                                <expression name="expression" type="javascript">dataSetRow["count(*)"]</expression>
-                                                <property name="dataType">string</property>
-                                            </structure>
-                                        </list-property>
-                                        <property name="contentType">plain</property>
-                                    </text>
+                                    <data id="695">
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">total</property>
+                                    </data>
                                 </cell>
                                 <cell id="118"/>
                                 <cell id="119"/>
