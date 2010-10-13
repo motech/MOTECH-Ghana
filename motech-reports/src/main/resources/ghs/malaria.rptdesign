@@ -19,6 +19,14 @@
             <property name="name">queryTimeOut</property>
             <property name="id">674</property>
         </structure>
+        <structure>
+            <property name="name">queryText</property>
+            <property name="id">697</property>
+        </structure>
+        <structure>
+            <property name="name">queryTimeOut</property>
+            <property name="id">697</property>
+        </structure>
     </list-property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -476,6 +484,136 @@ from encounter where patient_id in (
   </design:ResultSets>
 </model:DesignValues>]]></xml-property>
         </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Malaria Cases - Clinical and confirmed" id="696">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">malaria_cases</property>
+                    <text-property name="displayName">malaria_cases</text-property>
+                    <text-property name="heading">malaria_cases</text-property>
+                    <property name="displayLength">21</property>
+                    <property name="horizontalAlign">justify</property>
+                    <property name="wordWrap">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">malaria_cases</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">openmrs</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">malaria_cases</property>
+                    <property name="nativeName">malaria_cases</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select count(*) as malaria_cases
+from patient_program 
+where program_id in (
+    select program_id from program where name like '%Malaria%'
+)]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>1.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>count(*)</design:name>
+            <design:position>1</design:position>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>21</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count(*)</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count(*)</design:label>
+            <design:formattingHints>
+              <design:displaySize>21</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Malaria Cases - Confirmed only" id="697">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">confirmed_malaria_cases</property>
+                    <text-property name="displayName">confirmed_malaria_cases</text-property>
+                    <text-property name="heading">confirmed_malaria_cases</text-property>
+                    <property name="displayLength">21</property>
+                    <property name="horizontalAlign">justify</property>
+                    <property name="wordWrap">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">confirmed_malaria_cases</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">openmrs</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">confirmed_malaria_cases</property>
+                    <property name="nativeName">confirmed_malaria_cases</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select count(*) as confirmed_malaria_cases
+from patient_program 
+where program_id in (
+    select program_id from program where name like '%Malaria%'
+)]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>1.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>count(*)</design:name>
+            <design:position>1</design:position>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>21</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count(*)</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count(*)</design:label>
+            <design:formattingHints>
+              <design:displaySize>21</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
     </data-sets>
     <styles>
         <style name="report" id="4">
@@ -666,6 +804,12 @@ from encounter where patient_id in (
                     <expression name="expression" type="javascript">dataSetRow["total"]</expression>
                     <property name="dataType">decimal</property>
                 </structure>
+                <structure>
+                    <property name="name">Confirmed Malaria Cases</property>
+                    <text-property name="displayName">confirmed malaria cases</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["confirmed_malaria_cases"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
             </list-property>
             <column id="98"/>
             <column id="99"/>
@@ -746,11 +890,18 @@ from encounter where patient_id in (
                                 <cell id="117">
                                     <data id="695">
                                         <property name="whiteSpace">nowrap</property>
+                                        <structure name="toc"/>
                                         <property name="resultSetColumn">total</property>
                                     </data>
                                 </cell>
                                 <cell id="118"/>
-                                <cell id="119"/>
+                                <cell id="119">
+                                    <data id="699">
+                                        <property name="whiteSpace">nowrap</property>
+                                        <structure name="toc"/>
+                                        <property name="resultSetColumn">Confirmed Malaria Cases</property>
+                                    </data>
+                                </cell>
                             </row>
                             <row id="624">
                                 <cell id="625">
