@@ -342,7 +342,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			// CWC Visit for Child 2
 			regService.recordChildCWCVisit(staff, facilityLocation, date,
 					child2, 1, "House", "Community", true, 1, 1, true, true,
-					true, true, true, true, 25.0, 5.0, 35.0, true, "Comments");
+					true, 1, true, true, 25.0, 5.0, 35.0, true, "Comments");
 
 			assertEquals("CWC visit not added for Child 2", 3, Context
 					.getEncounterService().getEncountersByPatient(child2)

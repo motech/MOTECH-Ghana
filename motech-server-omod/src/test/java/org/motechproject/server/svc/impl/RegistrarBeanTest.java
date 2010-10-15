@@ -377,7 +377,7 @@ public class RegistrarBeanTest extends TestCase {
 		terminationComplicationConcept = new Concept(28);
 
 		iptiNameObj = new ConceptName(
-				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_INFANTS,
+				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_INFANTS_DOSE,
 				Locale.getDefault());
 		iptiConcept = new Concept(29);
 

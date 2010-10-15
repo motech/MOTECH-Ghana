@@ -231,7 +231,7 @@ public interface RegistrarBean {
 			Location facility, Date date, Patient patient, Integer cwcLocation,
 			String house, String community, Boolean bcg, Integer opvDose,
 			Integer pentaDose, Boolean measles, Boolean yellowFever,
-			Boolean csm, Boolean ipti, Boolean vitaminA, Boolean dewormer,
+			Boolean csm, Integer iptiDose, Boolean vitaminA, Boolean dewormer,
 			Double weight, Double muac, Double height, Boolean maleInvolved,
 			String comments);
 
@@ -482,7 +482,7 @@ public interface RegistrarBean {
 
 	public Integer getMotherMotechId(Patient patient);
 
-    Community saveCommunity(Community community);
+	Community saveCommunity(Community community);
 
-    Facility saveNewFacility(Facility facility);
+	Facility saveNewFacility(Facility facility);
 }

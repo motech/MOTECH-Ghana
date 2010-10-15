@@ -889,12 +889,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			historyEncounter.addObs(yellowFeverObs);
 		}
 		if (lastIPTI != null && lastIPTIDate != null) {
-			Obs iptiObs = createConceptValueObs(lastIPTIDate,
-					getImmunizationsOrderedConcept(), patient, ghanaLocation,
-					getIPTiConcept(), historyEncounter, null);
-			// Setting both concept and numeric values
-			// normally stored only with concept value
-			iptiObs.setValueNumeric(new Double(lastIPTI));
+			Obs iptiObs = createNumericValueObs(lastIPTIDate,
+					getIPTiDoseConcept(), patient, ghanaLocation, lastIPTI,
+					historyEncounter, null);
 			historyEncounter.addObs(iptiObs);
 		}
 		if (lastVitaminADate != null) {
@@ -1821,9 +1818,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	public void recordChildCWCVisit(User staff, Location facility, Date date,
 			Patient patient, Integer cwcLocation, String house,
 			String community, Boolean bcg, Integer opvDose, Integer pentaDose,
-			Boolean measles, Boolean yellowFever, Boolean csm, Boolean ipti,
-			Boolean vitaminA, Boolean dewormer, Double weight, Double muac,
-			Double height, Boolean maleInvolved, String comments) {
+			Boolean measles, Boolean yellowFever, Boolean csm,
+			Integer iptiDose, Boolean vitaminA, Boolean dewormer,
+			Double weight, Double muac, Double height, Boolean maleInvolved,
+			String comments) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -1886,10 +1884,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					getMeaslesConcept(), encounter, null);
 			encounter.addObs(measlesObs);
 		}
-		if (Boolean.TRUE.equals(ipti)) {
-			Obs iptiObs = createConceptValueObs(date,
-					getImmunizationsOrderedConcept(), patient, facility,
-					getIPTiConcept(), encounter, null);
+		if (iptiDose != null) {
+			Obs iptiObs = createNumericValueObs(date, getIPTiDoseConcept(),
+					patient, facility, iptiDose, encounter, null);
 			encounter.addObs(iptiObs);
 		}
 		if (Boolean.TRUE.equals(vitaminA)) {
@@ -3294,10 +3291,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.CONCEPT_CLASS_FINDING,
 				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
 		createConcept(
-				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_INFANTS,
-				"Malaria Treatment for infants.",
+				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_INFANTS_DOSE,
+				"Dose Number for infant Malaria treatment.",
 				MotechConstants.CONCEPT_CLASS_DRUG,
-				MotechConstants.CONCEPT_DATATYPE_N_A, admin);
+				MotechConstants.CONCEPT_DATATYPE_NUMERIC, admin);
 		createConcept(
 				MotechConstants.CONCEPT_INSECTICIDE_TREATED_NET_USAGE,
 				"Question on encounter form: \"Does the patient use insecticide-treated nets?\"",
@@ -3538,7 +3535,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED,
 				new String[] {
 						MotechConstants.CONCEPT_YELLOW_FEVER_VACCINATION,
-						MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_INFANTS,
 						MotechConstants.CONCEPT_VITAMIN_A,
 						MotechConstants.CONCEPT_CEREBRO_SPINAL_MENINGITIS_VACCINATION },
 				admin);
@@ -5124,11 +5120,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				MotechConstants.CONCEPT_MEASLES_VACCINATION);
 	}
 
-	public Concept getIPTiConcept() {
+	public Concept getIPTiDoseConcept() {
 		return contextService
 				.getConceptService()
 				.getConcept(
-						MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_INFANTS);
+						MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_INFANTS_DOSE);
 	}
 
 	public Concept getSerialNumberConcept() {
