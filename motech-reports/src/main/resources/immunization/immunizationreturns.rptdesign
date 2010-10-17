@@ -1916,7 +1916,7 @@ and
 and
     location.location_id = encounter.location_id
 and 
-    concept.name = 'INTERMITTENT PREVENTATIVE TREATMENT DOSE'
+    concept.name = 'INTERMITTENT PREVENTATIVE TREATMENT INFANTS DOSE'
 and 
     location.name = ?
 and
