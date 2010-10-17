@@ -41,8 +41,7 @@
 
 	<bean id="childIPTiSchedule" class="org.motechproject.server.service.impl.ExpectedObsSchedule">
 		<property name="name" value="IPTI" />
-		<property name="conceptName" value="IMMUNIZATIONS ORDERED" />
-		<property name="valueConceptName" value="INTERMITTENT PREVENTATIVE TREATMENT INFANTS" />
+		<property name="conceptName" value="INTERMITTENT PREVENTATIVE TREATMENT INFANTS DOSE" />
 		<property name="lateValue" value="1" />
 		<property name="latePeriod" value="week" />		
 		<property name="registrarBean" ref="registrarBean" />
@@ -59,21 +58,20 @@
 			<list>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="IPTI1" />
+					<property name="number" value="1" />
 					<property name="dueValue" value="10" />
 					<property name="duePeriod" value="week" />				
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="IPTI2" />
-					<property name="minValue" value="14" />
-					<property name="minPeriod" value="week" />
+					<property name="number" value="2" />
 					<property name="dueValue" value="4" />
 					<property name="duePeriod" value="week" />
 					<property name="dueReferencePrevious" value="true" />			
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="IPTI3" />
-					<property name="minValue" value="9" />
-					<property name="minPeriod" value="month" />
+					<property name="number" value="3" />
 					<property name="dueValue" value="4" />
 					<property name="duePeriod" value="week" />
 					<property name="dueReferencePrevious" value="true" />			

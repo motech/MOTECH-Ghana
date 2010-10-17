@@ -482,7 +482,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "measles") Boolean measles,
 			@WebParam(name = "yellowFever") Boolean yellowFever,
 			@WebParam(name = "csm") Boolean csm,
-			@WebParam(name = "ipti") Boolean ipti,
+			@WebParam(name = "iptiDose") Integer iptiDose,
 			@WebParam(name = "vitaminA") Boolean vitaminA,
 			@WebParam(name = "dewormer") Boolean dewormer,
 			@WebParam(name = "weight") Double weight,
@@ -506,8 +506,8 @@ public class RegistrarWebService implements RegistrarService {
 
 		registrarBean.recordChildCWCVisit(staff, facility.getLocation(), date,
 				patient, cwcLocation, house, community, bcg, opvDose,
-				pentaDose, measles, yellowFever, csm, ipti, vitaminA, dewormer,
-				weight, muac, height, maleInvolved, comments);
+				pentaDose, measles, yellowFever, csm, iptiDose, vitaminA,
+				dewormer, weight, muac, height, maleInvolved, comments);
 	}
 
 	@WebMethod

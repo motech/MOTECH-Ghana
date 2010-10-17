@@ -1023,8 +1023,8 @@ public class RegistrarServiceTest {
 	public void testRecordChildCWCVisit() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String house = "House", community = "Community", comments = "Comments";
-		Integer location = 1, opvDose = 1, pentaDose = 1;
-		Boolean bcg = true, yellowFever = true, csm = true, measles = true, ipti = true, vitaminA = true;
+		Integer location = 1, opvDose = 1, pentaDose = 1, iptiDose = 1;
+		Boolean bcg = true, yellowFever = true, csm = true, measles = true, vitaminA = true;
 		Boolean dewormer = false, maleInvolved = true;
 		Double weight = 25.2, muac = 5.1, height = 37.2;
 		Date date = new Date();
@@ -1046,14 +1046,14 @@ public class RegistrarServiceTest {
 				.andReturn(patient);
 		registrarBean.recordChildCWCVisit(staff, facilityLocation, date,
 				patient, location, house, community, bcg, opvDose, pentaDose,
-				measles, yellowFever, csm, ipti, vitaminA, dewormer, weight,
-				muac, height, maleInvolved, comments);
+				measles, yellowFever, csm, iptiDose, vitaminA, dewormer,
+				weight, muac, height, maleInvolved, comments);
 
 		replay(registrarBean, openmrsBean);
 
 		regWs.recordChildCWCVisit(staffId, facilityId, date, motechId,
 				location, house, community, bcg, opvDose, pentaDose, measles,
-				yellowFever, csm, ipti, vitaminA, dewormer, weight, muac,
+				yellowFever, csm, iptiDose, vitaminA, dewormer, weight, muac,
 				height, maleInvolved, comments);
 
 		verify(registrarBean, openmrsBean);
@@ -1064,8 +1064,8 @@ public class RegistrarServiceTest {
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String house = "House", community = "Community", comments = "Comments";
-		Integer location = 1, opvDose = 1, pentaDose = 1;
-		Boolean bcg = true, yellowFever = true, csm = true, measles = true, ipti = true, vitaminA = true;
+		Integer location = 1, opvDose = 1, pentaDose = 1, iptiDose = 1;
+		Boolean bcg = true, yellowFever = true, csm = true, measles = true, vitaminA = true;
 		Boolean dewormer = false, maleInvolved = true;
 		Double weight = 25.2, muac = 5.1, height = 37.2;
 		Date date = new Date();
@@ -1088,7 +1088,7 @@ public class RegistrarServiceTest {
 		try {
 			regWs.recordChildCWCVisit(staffId, facilityId, date, motechId,
 					location, house, community, bcg, opvDose, pentaDose,
-					measles, yellowFever, csm, ipti, vitaminA, dewormer,
+					measles, yellowFever, csm, iptiDose, vitaminA, dewormer,
 					weight, muac, height, maleInvolved, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
