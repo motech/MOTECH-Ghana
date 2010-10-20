@@ -813,10 +813,14 @@ public class HibernateMotechDAO implements MotechDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Facility> getAllFacilities() {
-		return (List<Facility>) sessionFactory.getCurrentSession()
-				.createCriteria(Facility.class).add(
-						Restrictions.not(Restrictions.eq("facilityId", 9999)))
-				.list();
+		Criteria criteria = sessionFactory.getCurrentSession()
+				.createCriteria(Facility.class, "f");
+        criteria.createAlias("f.location", "location");
+        criteria.add(Restrictions.not(Restrictions.eq("facilityId", 9999)));
+
+        criteria.addOrder(Order.asc("location.name"));
+
+		return (List<Facility>)criteria.list();
 	}
 
 	public Community getCommunityByCommunityId(Integer communityId) {

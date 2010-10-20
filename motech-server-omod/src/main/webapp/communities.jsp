@@ -49,7 +49,7 @@
 <div>
     <c:forEach items="${facilities}" var="facility">
         <c:if test="${not empty facility.communities}">
-        <div style="background: #8FABC7; padding: 2px; text-align: center; width: 300px;">Facility - ${facility.location.name}</div>
+        <div style="background: #8FABC7; padding: 2px; text-align: center; width: 300px;">Facility - ${facility.location.   name}</div>
         <table cellpadding="4" cellspacing="0">
             <tr>
                 <th>

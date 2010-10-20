@@ -91,7 +91,7 @@
         <td><form:errors cssClass="error"/></td>
     </tr>
     <tr>
-        <td><form:label path="stateProvince">Province:</form:label></td>
+        <td><form:label path="stateProvince">Sub-District:</form:label></td>
         <td><form:input path="stateProvince" maxlength="50"/> </td>
         <td><form:errors cssClass="error"/> </td>
     </tr>
