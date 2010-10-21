@@ -38,11 +38,11 @@
             <text-property name="promptText">Service Provider?</text-property>
             <property name="valueType">dynamic</property>
             <property name="dataSetName">Providers</property>
-            <expression name="valueExpr">dataSetRow["system_id"]</expression>
-            <expression name="labelExpr">BirtStr.concat(dataSetRow["given_name"]," ",dataSetRow["family_name"]," (",dataSetRow["system_id"],")")</expression>
+            <expression name="valueExpr" type="javascript">dataSetRow["system_id"]</expression>
+            <expression name="labelExpr" type="javascript">BirtStr.concat(dataSetRow["given_name"]," ",dataSetRow["family_name"]," (",dataSetRow["system_id"],")")</expression>
             <expression name="sortByColumn">dataSetRow["given_name"]</expression>
             <property name="sortDirection">asc</property>
-            <property name="dataType">integer</property>
+            <property name="dataType">string</property>
             <property name="distinct">true</property>
             <property name="paramType">simple</property>
             <property name="controlType">list-box</property>
@@ -202,9 +202,9 @@
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
-            <property name="odaURL">jdbc:mysql://localhost:3306/openmrs</property>
-            <property name="odaUser">openmrs</property>
-            <encrypted-property name="odaPassword" encryptionID="base64">b3Blbm1ycw==</encrypted-property>
+            <property name="odaURL">jdbc:mysql://localhost/openmrs</property>
+            <property name="odaUser">openmrsuser</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">b3Blbm1yc3Bhc3M=</encrypted-property>
         </oda-data-source>
     </data-sources>
     <data-sets>
