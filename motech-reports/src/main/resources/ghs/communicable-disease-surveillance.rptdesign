@@ -1,0 +1,1652 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.17" id="1">
+    <property name="author">Matthew Blanchette</property>
+    <property name="createdBy">Eclipse BIRT Designer Version 2.3.2.r232_20090202 Build &lt;2.3.2.v20090218-0730></property>
+    <property name="units">in</property>
+    <text-property name="title">MoTeCH Monthly Communicable Disease Surveillance</text-property>
+    <list-property name="userProperties">
+        <structure>
+            <property name="name">OPD Cube.Data Set.x</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+        <structure>
+            <property name="name">OPD Cube.Data Set.y</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+        <structure>
+            <property name="name">OPD Cube.Data Set.width</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+        <structure>
+            <property name="name">OPD Cube.Data Set.height</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+        <structure>
+            <property name="name">CWC Data Cube.CWC Data.x</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+        <structure>
+            <property name="name">CWC Data Cube.CWC Data.y</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+    </list-property>
+    <property name="OPD Cube.Data Set.x">66</property>
+    <property name="OPD Cube.Data Set.y">62</property>
+    <property name="OPD Cube.Data Set.width">150</property>
+    <property name="OPD Cube.Data Set.height">200</property>
+    <property name="CWC Data Cube.CWC Data.x">135</property>
+    <property name="CWC Data Cube.CWC Data.y">80</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <parameters>
+        <scalar-parameter name="Month" id="532">
+            <property name="valueType">static</property>
+            <property name="dataType">integer</property>
+            <property name="paramType">simple</property>
+            <text-property name="promptText">Month?</text-property>
+            <property name="controlType">list-box</property>
+            <property name="mustMatch">false</property>
+            <property name="fixedOrder">true</property>
+            <property name="distinct">true</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+            <list-property name="selectionList">
+                <structure>
+                    <property name="value">1</property>
+                    <property name="label">January</property>
+                </structure>
+                <structure>
+                    <property name="value">2</property>
+                    <property name="label">February</property>
+                </structure>
+                <structure>
+                    <property name="value">3</property>
+                    <property name="label">March</property>
+                </structure>
+                <structure>
+                    <property name="value">4</property>
+                    <property name="label">April</property>
+                </structure>
+                <structure>
+                    <property name="value">5</property>
+                    <property name="label">May</property>
+                </structure>
+                <structure>
+                    <property name="value">6</property>
+                    <property name="label">June</property>
+                </structure>
+                <structure>
+                    <property name="value">7</property>
+                    <property name="label">July</property>
+                </structure>
+                <structure>
+                    <property name="value">8</property>
+                    <property name="label">August</property>
+                </structure>
+                <structure>
+                    <property name="value">9</property>
+                    <property name="label">September</property>
+                </structure>
+                <structure>
+                    <property name="value">10</property>
+                    <property name="label">October</property>
+                </structure>
+                <structure>
+                    <property name="value">11</property>
+                    <property name="label">November</property>
+                </structure>
+                <structure>
+                    <property name="value">12</property>
+                    <property name="label">December</property>
+                </structure>
+            </list-property>
+        </scalar-parameter>
+        <scalar-parameter name="Year" id="533">
+            <property name="valueType">static</property>
+            <property name="dataType">integer</property>
+            <property name="paramType">simple</property>
+            <text-property name="promptText">Year?</text-property>
+            <property name="controlType">list-box</property>
+            <property name="mustMatch">false</property>
+            <property name="fixedOrder">true</property>
+            <property name="distinct">true</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+            <list-property name="selectionList">
+                <structure>
+                    <property name="value">2010</property>
+                    <property name="label">2010</property>
+                </structure>
+            </list-property>
+        </scalar-parameter>
+        <scalar-parameter name="Facility" id="784">
+            <property name="valueType">dynamic</property>
+            <property name="dataType">integer</property>
+            <property name="paramType">simple</property>
+            <text-property name="promptText">Facility?</text-property>
+            <property name="controlType">list-box</property>
+            <property name="dataSetName">Facilities</property>
+            <expression name="valueExpr">dataSetRow["location_id"]</expression>
+            <expression name="labelExpr">dataSetRow["name"]</expression>
+            <property name="mustMatch">false</property>
+            <property name="fixedOrder">false</property>
+            <property name="distinct">true</property>
+            <expression name="sortByColumn">dataSetRow["name"]</expression>
+            <property name="sortDirection">asc</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="Data Source" id="10">
+            <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
+            <property name="odaURL">jdbc:mysql://localhost/openmrs</property>
+            <property name="odaUser">openmrsuser</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">b3Blbm1yc3Bhc3M=</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Facilities" id="783">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">id</property>
+                    <property name="displayName">id</property>
+                </structure>
+                <structure>
+                    <property name="columnName">facility_id</property>
+                    <property name="displayName">facility_id</property>
+                </structure>
+                <structure>
+                    <property name="columnName">location_id</property>
+                    <property name="displayName">location_id</property>
+                </structure>
+                <structure>
+                    <property name="columnName">name</property>
+                    <property name="displayName">name</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">facility_id</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">location_id</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">id</property>
+                    <property name="nativeName">id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">facility_id</property>
+                    <property name="nativeName">facility_id</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">location_id</property>
+                    <property name="nativeName">location_id</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">name</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <property name="queryText">select fac.id, fac.facility_id, loc.location_id, loc.name
+from motechmodule_facility fac
+join location loc on fac.location_id = loc.location_id</property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Locations" id="797">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">location_id</property>
+                    <property name="displayName">location_id</property>
+                </structure>
+                <structure>
+                    <property name="columnName">name</property>
+                    <property name="displayName">name</property>
+                </structure>
+                <structure>
+                    <property name="columnName">region</property>
+                    <property name="displayName">region</property>
+                </structure>
+                <structure>
+                    <property name="columnName">county_district</property>
+                    <property name="displayName">county_district</property>
+                </structure>
+            </list-property>
+            <list-property name="filter">
+                <structure>
+                    <property name="operator">eq</property>
+                    <expression name="expr">params["Facility"].value</expression>
+                    <simple-property-list name="value1">
+                        <value>row["location_id"]</value>
+                    </simple-property-list>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">location_id</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">region</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">county_district</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">location_id</property>
+                    <property name="nativeName">location_id</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">name</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">region</property>
+                    <property name="nativeName">region</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">county_district</property>
+                    <property name="nativeName">county_district</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <property name="queryText">select location_id, name, region, county_district
+from location</property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>1.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>name</design:name>
+            <design:position>1</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>name</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>region</design:name>
+            <design:position>2</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>50</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>region</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>region</design:label>
+            <design:formattingHints>
+              <design:displaySize>50</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>county_district</design:name>
+            <design:position>3</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>50</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>county_district</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>county_district</design:label>
+            <design:formattingHints>
+              <design:displaySize>50</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>state_province</design:name>
+            <design:position>4</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>50</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>state_province</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>state_province</design:label>
+            <design:formattingHints>
+              <design:displaySize>50</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="OPD Data" id="1158">
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">age</property>
+                    <expression name="expression">DateTimeSpan.years(row["birthdate"],row["date"])</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">id</property>
+                    <property name="displayName">id</property>
+                </structure>
+                <structure>
+                    <property name="columnName">date</property>
+                    <property name="displayName">date</property>
+                </structure>
+                <structure>
+                    <property name="columnName">birthdate</property>
+                    <property name="displayName">birthdate</property>
+                </structure>
+                <structure>
+                    <property name="columnName">sex</property>
+                    <property name="displayName">sex</property>
+                </structure>
+                <structure>
+                    <property name="columnName">location_id</property>
+                    <property name="displayName">location_id</property>
+                </structure>
+                <structure>
+                    <property name="columnName">diagnosis</property>
+                    <property name="displayName">diagnosis</property>
+                </structure>
+            </list-property>
+            <list-property name="filter">
+                <structure>
+                    <property name="operator">eq</property>
+                    <expression name="expr">BirtDateTime.year(row["date"])</expression>
+                    <simple-property-list name="value1">
+                        <value>params["Year"].value</value>
+                    </simple-property-list>
+                </structure>
+                <structure>
+                    <property name="operator">eq</property>
+                    <expression name="expr">BirtDateTime.month(row["date"],1)</expression>
+                    <simple-property-list name="value1">
+                        <value>params["Month"].value</value>
+                    </simple-property-list>
+                </structure>
+                <structure>
+                    <property name="operator">eq</property>
+                    <expression name="expr">row["location_id"]</expression>
+                    <simple-property-list name="value1">
+                        <value>params["Facility"].value</value>
+                    </simple-property-list>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">id</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">date</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">birthdate</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">sex</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">location_id</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">diagnosis</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">age</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">id</property>
+                    <property name="nativeName">id</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">date</property>
+                    <property name="nativeName">date</property>
+                    <property name="dataType">date-time</property>
+                    <property name="nativeDataType">93</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">birthdate</property>
+                    <property name="nativeName">birthdate</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">sex</property>
+                    <property name="nativeName">sex</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">location_id</property>
+                    <property name="nativeName">location_id</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">diagnosis</property>
+                    <property name="nativeName">diagnosis</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+            </list-property>
+            <property name="queryText">select
+CONCAT('General',CAST(ge1.id AS CHAR)) as id,
+ge1.date,
+ge1.birthdate,
+ge1.sex,
+loc1.location_id,
+ge1.diagnosis
+from motechmodule_generaloutpatientencounter ge1
+join motechmodule_facility fa1 on fa1.facility_id = ge1.facility_id
+join location loc1 on loc1.location_id = fa1.location_id
+union all
+select
+CONCAT('General',CAST(ge2.id AS CHAR)) as id,
+ge2.date,
+ge2.birthdate,
+ge2.sex,
+loc2.location_id,
+ge2.secondary_diagnosis as diagnosis
+from motechmodule_generaloutpatientencounter ge2
+join motechmodule_facility fa2 on fa2.facility_id = ge2.facility_id
+join location loc2 on loc2.location_id = fa2.location_id
+where ge2.secondary_diagnosis is not null
+union all
+select
+  CONCAT('MotherChild',CAST(enc.encounter_id AS CHAR)) as id,
+  enc.encounter_datetime as date,
+  pers.birthdate,
+  IF(STRCMP(pers.gender,'M'),IF(STRCMP(pers.gender,'F'),'UNKNOWN','FEMALE'),'MALE') as sex,
+  enc.location_id,
+  obs1.value_numeric as diagnosis
+from encounter enc
+join encounter_type enctyp on enc.encounter_type = enctyp.encounter_type_id and enctyp.name = 'OUTPATIENTVISIT'
+join person pers on enc.patient_id = pers.person_id and pers.voided = 0
+left outer join (obs obs1 join concept_name cn1 on obs1.concept_id = cn1.concept_id
+and (cn1.name = 'PRIMARY DIAGNOSIS' or cn1.name = 'SECONDARY DIAGNOSIS'))
+on enc.encounter_id = obs1.encounter_id and obs1.voided = 0
+where enc.voided = 0;</property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">"Verdana"</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+            <property name="showIfBlank">true</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+            <property name="showIfBlank">false</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="type">us-legal</property>
+            <property name="orientation">landscape</property>
+            <property name="topMargin">0.25in</property>
+            <property name="leftMargin">0.25in</property>
+            <property name="bottomMargin">0.25in</property>
+            <property name="rightMargin">0.25in</property>
+            <page-header>
+                <text id="90">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<CENTER>
+<FONT size="6" color="black" >
+MoTeCH Monthly Communicable Disease Surveillance Report Form
+</FONT>
+</CENTER>]]></text-property>
+                </text>
+            </page-header>
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <grid id="1298">
+            <property name="height">0.28125in</property>
+            <property name="width">6.260416666666667in</property>
+            <column id="1299">
+                <property name="width">0.7916666666666666in</property>
+            </column>
+            <column id="1300">
+                <property name="width">1.9270833333333333in</property>
+            </column>
+            <column id="1301">
+                <property name="width">1.0416666666666667in</property>
+            </column>
+            <column id="1302">
+                <property name="width">2.1770833333333335in</property>
+            </column>
+            <row id="1303">
+                <cell id="1304">
+                    <label id="617">
+                        <text-property name="text">Year:</text-property>
+                    </label>
+                </cell>
+                <cell id="1305">
+                    <text-data id="633">
+                        <expression name="valueExpr">params["Year"].displayText</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
+                </cell>
+                <cell id="1306">
+                    <label id="793">
+                        <text-property name="text">Month:</text-property>
+                    </label>
+                </cell>
+                <cell id="1307">
+                    <text-data id="794">
+                        <expression name="valueExpr">params["Month"].displayText</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
+                </cell>
+            </row>
+        </grid>
+        <grid id="1308">
+            <property name="height">0.28125in</property>
+            <property name="width">11.166666666666666in</property>
+            <property name="dataSet">Locations</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">location_id</property>
+                    <expression name="expression">dataSetRow["location_id"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">name</property>
+                    <expression name="expression">dataSetRow["name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">region</property>
+                    <expression name="expression">dataSetRow["region"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">county_district</property>
+                    <expression name="expression">dataSetRow["county_district"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">DistrictData</property>
+                    <expression name="expression">dataSetRow["county_district"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">RegionData</property>
+                    <expression name="expression">dataSetRow["region"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <column id="1309">
+                <property name="width">1.3333333333333333in</property>
+            </column>
+            <column id="1310">
+                <property name="width">1.8020833333333333in</property>
+            </column>
+            <column id="1311">
+                <property name="width">0.9895833333333334in</property>
+            </column>
+            <column id="1312">
+                <property name="width">2.5625in</property>
+            </column>
+            <column id="1313">
+                <property name="width">1.0520833333333333in</property>
+            </column>
+            <column id="1314">
+                <property name="width">1.9791666666666667in</property>
+            </column>
+            <row id="1315">
+                <cell id="1316">
+                    <label id="788">
+                        <text-property name="text">Health Facility:</text-property>
+                    </label>
+                </cell>
+                <cell id="1317">
+                    <data id="789">
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">Facility</property>
+                                <expression name="expression">params["Facility"].displayText</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">Facility</property>
+                    </data>
+                </cell>
+                <cell id="1318">
+                    <label id="619">
+                        <text-property name="text">District:</text-property>
+                    </label>
+                </cell>
+                <cell id="1319">
+                    <data id="1488">
+                        <property name="resultSetColumn">DistrictData</property>
+                    </data>
+                </cell>
+                <cell id="1320">
+                    <label id="618">
+                        <text-property name="text">Region:</text-property>
+                    </label>
+                </cell>
+                <cell id="1321">
+                    <data id="1489">
+                        <property name="resultSetColumn">RegionData</property>
+                    </data>
+                </cell>
+            </row>
+        </grid>
+        <grid id="1322">
+            <property name="width">100%</property>
+            <property name="dataSet">OPD Data</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">id</property>
+                    <expression name="expression">dataSetRow["id"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">date</property>
+                    <expression name="expression">dataSetRow["date"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">birthdate</property>
+                    <expression name="expression">dataSetRow["birthdate"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">location_id</property>
+                    <expression name="expression">dataSetRow["location_id"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">diagnosis</property>
+                    <expression name="expression">dataSetRow["diagnosis"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">age</property>
+                    <expression name="expression">dataSetRow["age"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">UncompMalariaUnder5</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 11 &amp;&amp; dataSetRow["age"] &lt; 5</expression>
+                </structure>
+                <structure>
+                    <property name="name">UncompMalaria5Above</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 11 &amp;&amp; dataSetRow["age"] >= 5</expression>
+                </structure>
+                <structure>
+                    <property name="name">UncompMalariaUnder5Lab</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 10 &amp;&amp; dataSetRow["age"] &lt; 5</expression>
+                </structure>
+                <structure>
+                    <property name="name">UncompMalaria5AboveLab</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 10 &amp;&amp; dataSetRow["age"] >= 5</expression>
+                </structure>
+                <structure>
+                    <property name="name">MalariaPreg</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 64</expression>
+                </structure>
+                <structure>
+                    <property name="name">MalariaPregLab</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 63</expression>
+                </structure>
+                <structure>
+                    <property name="name">PneumoniaUnder5</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 61 &amp;&amp; dataSetRow["age"] &lt; 5</expression>
+                </structure>
+                <structure>
+                    <property name="name">DiarrhoeaDehydUnder5</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 16 &amp;&amp; dataSetRow["age"] &lt; 5</expression>
+                </structure>
+                <structure>
+                    <property name="name">AIDS</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 25</expression>
+                </structure>
+                <structure>
+                    <property name="name">MaleUreth</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 59</expression>
+                </structure>
+                <structure>
+                    <property name="name">MaleGenital</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 57 &amp;&amp; dataSetRow["sex"] == "MALE"</expression>
+                </structure>
+                <structure>
+                    <property name="name">FemaleGenital</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 57 &amp;&amp; dataSetRow["sex"] == "FEMALE"</expression>
+                </structure>
+                <structure>
+                    <property name="name">DiarrhoeaBlood</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 16</expression>
+                </structure>
+                <structure>
+                    <property name="name">TrachomaUnder10</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 48 &amp;&amp; dataSetRow["age"] &lt; 10</expression>
+                </structure>
+                <structure>
+                    <property name="name">Trachoma10Above</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 48 &amp;&amp; dataSetRow["age"] >= 10</expression>
+                </structure>
+                <structure>
+                    <property name="name">InfYawsUnder15</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 24 &amp;&amp; dataSetRow["age"] &lt; 15</expression>
+                </structure>
+                <structure>
+                    <property name="name">InfYaws15Above</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 24 &amp;&amp; dataSetRow["age"] >= 15</expression>
+                </structure>
+                <structure>
+                    <property name="name">Onchocer</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 21</expression>
+                </structure>
+                <structure>
+                    <property name="name">MalariaUnder5Percent</property>
+                    <expression name="expression">Finance.percent(
+(row["UncompMalariaUnder5"] + row["UncompMalaria5Above"] + row["UncompMalariaUnder5Lab"] + row["UncompMalaria5AboveLab"]),
+(row["UncompMalariaUnder5"] + row["UncompMalariaUnder5Lab"])
+)</expression>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
+            <column id="1323"/>
+            <column id="1324"/>
+            <row id="1325">
+                <cell id="1326">
+                    <label id="1439">
+                        <property name="fontWeight">bolder</property>
+                        <property name="fontVariant">normal</property>
+                        <text-property name="text">Disease or Condition</text-property>
+                    </label>
+                </cell>
+                <cell id="1327">
+                    <label id="1440">
+                        <property name="fontWeight">bolder</property>
+                        <text-property name="text">Out-Patient Cases</text-property>
+                    </label>
+                </cell>
+            </row>
+            <row id="1328">
+                <cell id="1329">
+                    <label id="1441">
+                        <text-property name="text">Uncomplicated malaria &lt; 5yrs</text-property>
+                    </label>
+                </cell>
+                <cell id="1330">
+                    <data id="1506">
+                        <property name="resultSetColumn">UncompMalariaUnder5</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1331">
+                <cell id="1332">
+                    <label id="1442">
+                        <text-property name="text">Uncomplicated malaria 5yrs and above</text-property>
+                    </label>
+                </cell>
+                <cell id="1333">
+                    <data id="1507">
+                        <property name="resultSetColumn">UncompMalaria5Above</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1334">
+                <cell id="1335">
+                    <label id="1443">
+                        <text-property name="text">Uncomplicated malaria &lt; 5yrs Lab confirmed</text-property>
+                    </label>
+                </cell>
+                <cell id="1336">
+                    <data id="1508">
+                        <property name="resultSetColumn">UncompMalariaUnder5Lab</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1337">
+                <cell id="1338">
+                    <label id="1444">
+                        <text-property name="text">Uncomplicated malaria 5yrs and above Lab confirmed</text-property>
+                    </label>
+                </cell>
+                <cell id="1339">
+                    <data id="1509">
+                        <property name="resultSetColumn">UncompMalaria5AboveLab</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1340">
+                <cell id="1341">
+                    <label id="1445">
+                        <text-property name="text">Malaria in pregnant women clinical</text-property>
+                    </label>
+                </cell>
+                <cell id="1342">
+                    <data id="1510">
+                        <property name="resultSetColumn">MalariaPreg</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1343">
+                <cell id="1344">
+                    <label id="1446">
+                        <text-property name="text">Malaria in pregnant women Lab confirmed</text-property>
+                    </label>
+                </cell>
+                <cell id="1345">
+                    <data id="1511">
+                        <property name="resultSetColumn">MalariaPregLab</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1346">
+                <cell id="1347">
+                    <label id="1447">
+                        <text-property name="text">Pneumonia (&lt;5 years)</text-property>
+                    </label>
+                </cell>
+                <cell id="1348">
+                    <data id="1512">
+                        <property name="resultSetColumn">PneumoniaUnder5</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1349">
+                <cell id="1350">
+                    <label id="1448">
+                        <text-property name="text">Diarrhoea with some dehydration (&lt;5 years)</text-property>
+                    </label>
+                </cell>
+                <cell id="1351">
+                    <data id="1513">
+                        <property name="resultSetColumn">DiarrhoeaDehydUnder5</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1352">
+                <cell id="1353">
+                    <label id="1449">
+                        <text-property name="text">AIDS</text-property>
+                    </label>
+                </cell>
+                <cell id="1354">
+                    <data id="1514">
+                        <property name="resultSetColumn">AIDS</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1355">
+                <cell id="1356">
+                    <label id="1450">
+                        <text-property name="text">Male Urethral Discharge</text-property>
+                    </label>
+                </cell>
+                <cell id="1357">
+                    <data id="1515">
+                        <property name="resultSetColumn">MaleUreth</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1358">
+                <cell id="1359">
+                    <label id="1451">
+                        <text-property name="text">Male Non-vesicular Genital Ulcer</text-property>
+                    </label>
+                </cell>
+                <cell id="1360">
+                    <data id="1517">
+                        <property name="resultSetColumn">MaleGenital</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1361">
+                <cell id="1362">
+                    <label id="1463">
+                        <text-property name="text">Female Non-vesicular Genital Ulcer</text-property>
+                    </label>
+                </cell>
+                <cell id="1363">
+                    <data id="1518">
+                        <property name="resultSetColumn">FemaleGenital</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1364">
+                <cell id="1365">
+                    <label id="1462">
+                        <text-property name="text">Diarrhoea with blood</text-property>
+                    </label>
+                </cell>
+                <cell id="1366">
+                    <data id="1519">
+                        <property name="resultSetColumn">DiarrhoeaBlood</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1367">
+                <cell id="1368">
+                    <label id="1461">
+                        <text-property name="text">Viral Hepatitis</text-property>
+                    </label>
+                </cell>
+                <cell id="1369"/>
+            </row>
+            <row id="1370">
+                <cell id="1371">
+                    <label id="1460">
+                        <text-property name="text">Trachoma &lt; 10yrs</text-property>
+                    </label>
+                </cell>
+                <cell id="1372">
+                    <data id="1521">
+                        <property name="resultSetColumn">TrachomaUnder10</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1373">
+                <cell id="1374">
+                    <label id="1459">
+                        <text-property name="text">Trachoma 10+ yrs</text-property>
+                    </label>
+                </cell>
+                <cell id="1375">
+                    <data id="1522">
+                        <property name="resultSetColumn">Trachoma10Above</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1376">
+                <cell id="1377">
+                    <label id="1458">
+                        <text-property name="text">Urinary schistosomiasis</text-property>
+                    </label>
+                </cell>
+                <cell id="1378"/>
+            </row>
+            <row id="1379">
+                <cell id="1380">
+                    <label id="1457">
+                        <text-property name="text">Infectious Yaws &lt; 15yrs</text-property>
+                    </label>
+                </cell>
+                <cell id="1381">
+                    <data id="1523">
+                        <property name="resultSetColumn">InfYawsUnder15</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1382">
+                <cell id="1383">
+                    <label id="1456">
+                        <text-property name="text">Infectious Yaws 15+yrs</text-property>
+                    </label>
+                </cell>
+                <cell id="1384">
+                    <data id="1524">
+                        <property name="resultSetColumn">InfYaws15Above</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1385">
+                <cell id="1386">
+                    <label id="1455">
+                        <text-property name="text">Lymphatic filariasis-Lymphoedema (Elephantiasis)</text-property>
+                    </label>
+                </cell>
+                <cell id="1387"/>
+            </row>
+            <row id="1388">
+                <cell id="1389">
+                    <label id="1454">
+                        <text-property name="text">Lymphatic filariasis-Hydrocele</text-property>
+                    </label>
+                </cell>
+                <cell id="1390"/>
+            </row>
+            <row id="1391">
+                <cell id="1392">
+                    <label id="1453">
+                        <text-property name="text">Onchocerciasis</text-property>
+                    </label>
+                </cell>
+                <cell id="1393">
+                    <data id="1525">
+                        <property name="resultSetColumn">Onchocer</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1464">
+                <cell id="1465"/>
+                <cell id="1466"/>
+            </row>
+            <row id="1394">
+                <cell id="1395">
+                    <label id="1452">
+                        <text-property name="text">Proportion of malaria cases that are &lt;5yrs (%)</text-property>
+                    </label>
+                </cell>
+                <cell id="1396">
+                    <data id="1529">
+                        <property name="resultSetColumn">MalariaUnder5Percent</property>
+                    </data>
+                </cell>
+            </row>
+        </grid>
+        <label id="1530">
+            <property name="fontWeight">bolder</property>
+            <text-property name="text">Total immediately reportable cases peviously reported this month on case-based forms or linelists</text-property>
+        </label>
+        <grid id="1397">
+            <property name="width">100%</property>
+            <property name="dataSet">OPD Data</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">id</property>
+                    <expression name="expression">dataSetRow["id"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">date</property>
+                    <expression name="expression">dataSetRow["date"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">birthdate</property>
+                    <expression name="expression">dataSetRow["birthdate"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">location_id</property>
+                    <expression name="expression">dataSetRow["location_id"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">diagnosis</property>
+                    <expression name="expression">dataSetRow["diagnosis"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">age</property>
+                    <expression name="expression">dataSetRow["age"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">AFPCount</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 1</expression>
+                </structure>
+                <structure>
+                    <property name="name">CholeraCount</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 15</expression>
+                </structure>
+                <structure>
+                    <property name="name">GuineaWormCount</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 20</expression>
+                </structure>
+                <structure>
+                    <property name="name">BuruliCount</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 22</expression>
+                </structure>
+                <structure>
+                    <property name="name">MeaslesCount</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 6</expression>
+                </structure>
+                <structure>
+                    <property name="name">MeningitisCount</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 18</expression>
+                </structure>
+                <structure>
+                    <property name="name">NeoTetanus</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 3</expression>
+                </structure>
+                <structure>
+                    <property name="name">OtherCount</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 76</expression>
+                </structure>
+                <structure>
+                    <property name="name">YellowFeverCount</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 7</expression>
+                </structure>
+                <structure>
+                    <property name="name">InfHepatitisCount</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNTDISTINCT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["id"]</expression>
+                        </structure>
+                    </list-property>
+                    <expression name="filterExpr">dataSetRow["diagnosis"] == 17</expression>
+                </structure>
+            </list-property>
+            <column id="1398"/>
+            <column id="1399"/>
+            <column id="1400"/>
+            <column id="1401"/>
+            <column id="1402"/>
+            <column id="1403"/>
+            <row id="1404">
+                <cell id="1405">
+                    <label id="1467">
+                        <property name="fontWeight">bolder</property>
+                        <text-property name="text">Disease</text-property>
+                    </label>
+                </cell>
+                <cell id="1406">
+                    <label id="1468">
+                        <property name="fontWeight">bolder</property>
+                        <text-property name="text">No. of cases*</text-property>
+                    </label>
+                </cell>
+                <cell id="1407">
+                    <label id="1495">
+                        <property name="fontWeight">bolder</property>
+                        <text-property name="text">Disease</text-property>
+                    </label>
+                </cell>
+                <cell id="1408">
+                    <label id="1497">
+                        <property name="fontWeight">bolder</property>
+                        <text-property name="text">No. of cases*</text-property>
+                    </label>
+                </cell>
+                <cell id="1409">
+                    <label id="1496">
+                        <property name="fontWeight">bolder</property>
+                        <text-property name="text">Disease</text-property>
+                    </label>
+                </cell>
+                <cell id="1410">
+                    <label id="1498">
+                        <property name="fontWeight">bolder</property>
+                        <text-property name="text">No. of cases*</text-property>
+                    </label>
+                </cell>
+            </row>
+            <row id="1411">
+                <cell id="1412">
+                    <label id="1473">
+                        <text-property name="text">AFP</text-property>
+                    </label>
+                </cell>
+                <cell id="1413">
+                    <data id="1486">
+                        <property name="resultSetColumn">AFPCount</property>
+                    </data>
+                </cell>
+                <cell id="1414">
+                    <label id="1477">
+                        <text-property name="text">Measles</text-property>
+                    </label>
+                </cell>
+                <cell id="1415">
+                    <data id="1499">
+                        <property name="resultSetColumn">MeaslesCount</property>
+                    </data>
+                </cell>
+                <cell id="1416">
+                    <label id="1481">
+                        <text-property name="text">Yellow fever</text-property>
+                    </label>
+                </cell>
+                <cell id="1417">
+                    <data id="1503">
+                        <property name="resultSetColumn">YellowFeverCount</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1418">
+                <cell id="1419">
+                    <label id="1474">
+                        <text-property name="text">Cholera</text-property>
+                    </label>
+                </cell>
+                <cell id="1420">
+                    <data id="1492">
+                        <property name="resultSetColumn">CholeraCount</property>
+                    </data>
+                </cell>
+                <cell id="1421">
+                    <label id="1478">
+                        <text-property name="text">Meningitis</text-property>
+                    </label>
+                </cell>
+                <cell id="1422">
+                    <data id="1500">
+                        <property name="resultSetColumn">MeningitisCount</property>
+                    </data>
+                </cell>
+                <cell id="1423">
+                    <label id="1482">
+                        <text-property name="text">Viral Hemorrhagic Fever</text-property>
+                    </label>
+                </cell>
+                <cell id="1424"/>
+            </row>
+            <row id="1425">
+                <cell id="1426">
+                    <label id="1475">
+                        <text-property name="text">Dracunculiass (Guinea worm)</text-property>
+                    </label>
+                </cell>
+                <cell id="1427">
+                    <data id="1493">
+                        <property name="resultSetColumn">GuineaWormCount</property>
+                    </data>
+                </cell>
+                <cell id="1428">
+                    <label id="1479">
+                        <text-property name="text">Neonatal tetanus</text-property>
+                    </label>
+                </cell>
+                <cell id="1429">
+                    <data id="1501">
+                        <property name="resultSetColumn">NeoTetanus</property>
+                    </data>
+                </cell>
+                <cell id="1430">
+                    <label id="1483">
+                        <text-property name="text">Human anthrax</text-property>
+                    </label>
+                </cell>
+                <cell id="1431"/>
+            </row>
+            <row id="1432">
+                <cell id="1433">
+                    <label id="1476">
+                        <text-property name="text">Buruli ulcer</text-property>
+                    </label>
+                </cell>
+                <cell id="1434">
+                    <data id="1494">
+                        <property name="resultSetColumn">BuruliCount</property>
+                    </data>
+                </cell>
+                <cell id="1435">
+                    <label id="1480">
+                        <text-property name="text">Others</text-property>
+                    </label>
+                </cell>
+                <cell id="1436">
+                    <data id="1502">
+                        <property name="resultSetColumn">OtherCount</property>
+                    </data>
+                </cell>
+                <cell id="1437">
+                    <label id="1484">
+                        <text-property name="text">Inf. Hepatitis/Acute jaundice</text-property>
+                    </label>
+                </cell>
+                <cell id="1438">
+                    <data id="1504">
+                        <property name="resultSetColumn">InfHepatitisCount</property>
+                    </data>
+                </cell>
+            </row>
+        </grid>
+    </body>
+</report>
