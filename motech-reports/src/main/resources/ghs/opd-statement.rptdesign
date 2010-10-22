@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.21" id="1">
     <property name="author">Matthew Blanchette</property>
-    <property name="createdBy">Eclipse BIRT Designer Version 2.6.0.v20100531 Build &lt;2.6.0.v20100609-1613></property>
+    <property name="createdBy">Eclipse BIRT Designer Version 2.5.2.v20100211 Build &lt;2.5.2.v20100210-0630></property>
     <text-property name="title">MoTeCH Statement of Out-Patients</text-property>
     <list-property name="userProperties">
         <structure>
@@ -1499,7 +1499,7 @@ MoTeCH Statement of Out-Patients
             </row>
         </grid>
         <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="202">
-            <property name="cube">OPD Cube</property>
+            <property name="emptyCellValue">0</property>
             <property name="measures">
                 <extended-item extensionName="MeasureView" id="650">
                     <property name="measure">idcount</property>
@@ -1653,7 +1653,7 @@ MoTeCH Statement of Out-Patients
                     <property name="whiteSpace">normal</property>
                 </extended-item>
             </property>
-            <property name="emptyCellValue">0</property>
+            <property name="cube">OPD Cube</property>
             <list-property name="boundDataColumns">
                 <structure>
                     <property name="name">insured</property>
@@ -1736,7 +1736,6 @@ MoTeCH Statement of Out-Patients
             <text-property name="text">Summary of Outpatient Malaria Cases</text-property>
         </label>
         <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="767">
-            <property name="cube">Malaria Data Cube</property>
             <property name="measures">
                 <extended-item extensionName="MeasureView" id="779">
                     <property name="measure">diagnosis</property>
@@ -1807,6 +1806,7 @@ MoTeCH Statement of Out-Patients
             <property name="header">
                 <extended-item extensionName="CrosstabCell" id="768"/>
             </property>
+            <property name="cube">Malaria Data Cube</property>
             <property name="width">769px</property>
             <list-property name="boundDataColumns">
                 <structure>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.21" id="1">
-    <property name="createdBy">Eclipse BIRT Designer Version 2.6.0.v20100531 Build &lt;2.6.0.v20100609-1613></property>
+    <property name="author">ThoughtWorks</property>
+    <property name="createdBy">Eclipse BIRT Designer Version 2.5.2.v20100211 Build &lt;2.5.2.v20100210-0630></property>
     <list-property name="userProperties">
         <structure>
             <property name="name">Dosage Summary.Tetanus Toxoid.x</property>
@@ -2560,7 +2561,6 @@ and
             <row id="316">
                 <cell id="317">
                     <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="1017">
-                        <property name="cube">Data Cube - Tetanus Toxoid</property>
                         <property name="measures">
                             <extended-item extensionName="MeasureView" id="1031">
                                 <property name="measure">Number</property>
@@ -2611,6 +2611,7 @@ and
                         <property name="header">
                             <extended-item extensionName="CrosstabCell" id="1018"/>
                         </property>
+                        <property name="cube">Data Cube - Tetanus Toxoid</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">Dosage</property>
@@ -2747,7 +2748,6 @@ and
                     <property name="borderBottomStyle">solid</property>
                     <property name="borderBottomWidth">thin</property>
                     <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="479">
-                        <property name="cube">Data Cube - Oral Polio</property>
                         <property name="measures">
                             <extended-item extensionName="MeasureView" id="511">
                                 <property name="measure">12_to_24_months</property>
@@ -2910,6 +2910,7 @@ and
                                 </property>
                             </extended-item>
                         </property>
+                        <property name="cube">Data Cube - Oral Polio</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">Dosage</property>
@@ -3039,7 +3040,6 @@ Hip
                 <property name="borderBottomWidth">thin</property>
                 <cell id="545">
                     <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="562">
-                        <property name="cube">Data Cube - Penta</property>
                         <property name="measures">
                             <extended-item extensionName="MeasureView" id="579">
                                 <property name="measure">0_to_11_months1</property>
@@ -3203,6 +3203,7 @@ Hip
                                 </property>
                             </extended-item>
                         </property>
+                        <property name="cube">Data Cube - Penta</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">Dosage</property>
@@ -3336,7 +3337,6 @@ Hip
             <row id="620">
                 <cell id="621">
                     <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="645">
-                        <property name="cube">Data Cube - BCG</property>
                         <property name="measures">
                             <extended-item extensionName="MeasureView" id="667">
                                 <property name="measure">0_to_11_months2</property>
@@ -3476,6 +3476,7 @@ Hip
                                 </property>
                             </extended-item>
                         </property>
+                        <property name="cube">Data Cube - BCG</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">Dosage</property>
@@ -3608,7 +3609,6 @@ Hip
                         </row>
                     </grid>
                     <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="869">
-                        <property name="cube">Data Cube - Measles</property>
                         <property name="measures">
                             <extended-item extensionName="MeasureView" id="876">
                                 <property name="measure">0_to_11_months3</property>
@@ -3731,6 +3731,7 @@ Hip
                                 </property>
                             </extended-item>
                         </property>
+                        <property name="cube">Data Cube - Measles</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">Dosage</property>
@@ -3842,7 +3843,6 @@ Hip
                         </row>
                     </grid>
                     <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="896">
-                        <property name="cube">Data Cube - CSM</property>
                         <property name="measures">
                             <extended-item extensionName="MeasureView" id="903">
                                 <property name="measure">0_to_11_months4</property>
@@ -3965,6 +3965,7 @@ Hip
                                 </property>
                             </extended-item>
                         </property>
+                        <property name="cube">Data Cube - CSM</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">Dosage</property>
@@ -4081,7 +4082,6 @@ Hip
             <row id="923">
                 <cell id="924">
                     <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="949">
-                        <property name="cube">Data Cube - YF</property>
                         <property name="measures">
                             <extended-item extensionName="MeasureView" id="966">
                                 <property name="measure">0_to_11_months5</property>
@@ -4204,6 +4204,7 @@ Hip
                                 </property>
                             </extended-item>
                         </property>
+                        <property name="cube">Data Cube - YF</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">Dosage</property>
@@ -4266,7 +4267,6 @@ Hip
             <row id="993">
                 <cell id="994">
                     <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="997">
-                        <property name="cube">Data Cube - IPTi</property>
                         <property name="measures">
                             <extended-item extensionName="MeasureView" id="1010">
                                 <property name="measure">value_numeric</property>
@@ -4319,6 +4319,7 @@ Hip
                         <property name="header">
                             <extended-item extensionName="CrosstabCell" id="998"/>
                         </property>
+                        <property name="cube">Data Cube - IPTi</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">Dosage</property>

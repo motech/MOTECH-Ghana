@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.21" id="1">
-    <property name="createdBy">Eclipse BIRT Designer Version 2.6.0.v20100531 Build &lt;2.6.0.v20100609-1613></property>
+    <property name="author">ThoughtWorks</property>
+    <property name="createdBy">Eclipse BIRT Designer Version 2.5.2.v20100211 Build &lt;2.5.2.v20100210-0630></property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -2697,7 +2698,6 @@ and
             <row id="860">
                 <cell id="861">
                     <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="874">
-                        <property name="cube">Data Cube - TypeOfDelivery</property>
                         <property name="measures">
                             <extended-item extensionName="MeasureView" id="875">
                                 <property name="measure">Normal</property>
@@ -2819,6 +2819,7 @@ and
                         <property name="header">
                             <extended-item extensionName="CrosstabCell" id="900"/>
                         </property>
+                        <property name="cube">Data Cube - TypeOfDelivery</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">Type of Delivery</property>
@@ -2868,7 +2869,6 @@ and
             <row id="901">
                 <cell id="902">
                     <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="903">
-                        <property name="cube">Data Cube - AgeGroupOfMaternalDeaths</property>
                         <property name="measures">
                             <extended-item extensionName="MeasureView" id="919">
                                 <property name="measure">10_to_14_years1</property>
@@ -3038,6 +3038,7 @@ and
                                 <property name="width">1.3333333333333333in</property>
                             </extended-item>
                         </property>
+                        <property name="cube">Data Cube - AgeGroupOfMaternalDeaths</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">AGE GROUP OF MATERNAL DEATHS (YEARS)</property>
@@ -3105,7 +3106,6 @@ and
             <row id="978">
                 <cell id="979">
                     <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="980">
-                        <property name="cube">Data Cube - AgeGroupOfMotherAtDelivery</property>
                         <property name="measures">
                             <extended-item extensionName="MeasureView" id="998">
                                 <property name="measure">10_to_14_years</property>
@@ -3266,6 +3266,7 @@ and
                         <property name="header">
                             <extended-item extensionName="CrosstabCell" id="981"/>
                         </property>
+                        <property name="cube">Data Cube - AgeGroupOfMotherAtDelivery</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">AGE GROUP OF MOTHER AT DELIVERY (YEARS)</property>

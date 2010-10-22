@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.21" id="1">
-    <property name="createdBy">Eclipse BIRT Designer Version 2.6.0.v20100531 Build &lt;2.6.0.v20100609-1613></property>
+    <property name="author">ThoughtWorks</property>
+    <property name="createdBy">Eclipse BIRT Designer Version 2.5.2.v20100211 Build &lt;2.5.2.v20100210-0630></property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -1617,7 +1618,6 @@ and
             <row id="15">
                 <cell id="16">
                     <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="1332">
-                        <property name="cube">Data Cube - BirthWeight</property>
                         <property name="measures">
                             <extended-item extensionName="MeasureView" id="1347">
                                 <property name="measure">lesser_than_2_and_a_half_kgs</property>
@@ -1690,6 +1690,7 @@ and
                         <property name="header">
                             <extended-item extensionName="CrosstabCell" id="1333"/>
                         </property>
+                        <property name="cube">Data Cube - BirthWeight</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">Weight</property>
@@ -1799,7 +1800,6 @@ and
             <row id="23">
                 <cell id="24">
                     <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="1388">
-                        <property name="cube">Data Cube - AgeGroupOfPNCRegistrants</property>
                         <property name="measures">
                             <extended-item extensionName="MeasureView" id="1412">
                                 <property name="measure">10_to_14_years</property>
@@ -1960,6 +1960,7 @@ and
                         <property name="header">
                             <extended-item extensionName="CrosstabCell" id="1389"/>
                         </property>
+                        <property name="cube">Data Cube - AgeGroupOfPNCRegistrants</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">AGE GROUP OF MOTHER AT DELIVERY (YEARS)</property>
@@ -2100,7 +2101,6 @@ and
                                                 <row id="1473">
                                                     <cell id="1474">
                                                         <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="1478">
-                                                            <property name="cube">Data Cube - DeliveredBy</property>
                                                             <property name="measures">
                                                                 <extended-item extensionName="MeasureView" id="1482">
                                                                     <property name="measure">UntrainedTBA</property>
@@ -2178,6 +2178,7 @@ and
                                                                     <property name="width">0.3020833333333333in</property>
                                                                 </extended-item>
                                                             </property>
+                                                            <property name="cube">Data Cube - DeliveredBy</property>
                                                             <list-property name="boundDataColumns">
                                                                 <structure>
                                                                     <property name="name">UntrainedTBA</property>
@@ -2219,7 +2220,6 @@ and
                                                     </cell>
                                                     <cell id="1475">
                                                         <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="1480">
-                                                            <property name="cube">Data Cube - DeliveredAt</property>
                                                             <property name="measures">
                                                                 <extended-item extensionName="MeasureView" id="1492">
                                                                     <property name="measure">GovtHCOrHP</property>
@@ -2413,6 +2413,7 @@ and
                                                                     <property name="width">0.4166666666666667in</property>
                                                                 </extended-item>
                                                             </property>
+                                                            <property name="cube">Data Cube - DeliveredAt</property>
                                                             <list-property name="boundDataColumns">
                                                                 <structure>
                                                                     <property name="name">GovtHCOrHP</property>

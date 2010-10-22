@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.17" id="1">
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.21" id="1">
     <property name="author">Matthew Blanchette</property>
-    <property name="createdBy">Eclipse BIRT Designer Version 2.3.2.r232_20090202 Build &lt;2.3.2.v20090218-0730></property>
-    <property name="units">in</property>
+    <property name="createdBy">Eclipse BIRT Designer Version 2.5.2.v20100211 Build &lt;2.5.2.v20100210-0630></property>
     <text-property name="title">MoTeCH Monthly Child Health Returns</text-property>
     <list-property name="userProperties">
         <structure>
@@ -42,22 +41,16 @@
     <property name="OPD Cube.Data Set.height">200</property>
     <property name="CWC Data Cube.CWC Data.x">135</property>
     <property name="CWC Data Cube.CWC Data.y">80</property>
+    <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="layoutPreference">auto layout</property>
     <property name="bidiLayoutOrientation">ltr</property>
     <parameters>
         <scalar-parameter name="Month" id="532">
+            <text-property name="promptText">Month?</text-property>
             <property name="valueType">static</property>
             <property name="dataType">integer</property>
-            <property name="paramType">simple</property>
-            <text-property name="promptText">Month?</text-property>
-            <property name="controlType">list-box</property>
-            <property name="mustMatch">false</property>
-            <property name="fixedOrder">true</property>
             <property name="distinct">true</property>
-            <structure name="format">
-                <property name="category">Unformatted</property>
-            </structure>
             <list-property name="selectionList">
                 <structure>
                     <property name="value">1</property>
@@ -108,40 +101,47 @@
                     <property name="label">December</property>
                 </structure>
             </list-property>
-        </scalar-parameter>
-        <scalar-parameter name="Year" id="533">
-            <property name="valueType">static</property>
-            <property name="dataType">integer</property>
             <property name="paramType">simple</property>
-            <text-property name="promptText">Year?</text-property>
             <property name="controlType">list-box</property>
             <property name="mustMatch">false</property>
             <property name="fixedOrder">true</property>
-            <property name="distinct">true</property>
             <structure name="format">
                 <property name="category">Unformatted</property>
             </structure>
+        </scalar-parameter>
+        <scalar-parameter name="Year" id="533">
+            <text-property name="promptText">Year?</text-property>
+            <property name="valueType">static</property>
+            <property name="dataType">integer</property>
+            <property name="distinct">true</property>
             <list-property name="selectionList">
                 <structure>
                     <property name="value">2010</property>
                     <property name="label">2010</property>
                 </structure>
             </list-property>
+            <property name="paramType">simple</property>
+            <property name="controlType">list-box</property>
+            <property name="mustMatch">false</property>
+            <property name="fixedOrder">true</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
         </scalar-parameter>
         <scalar-parameter name="Facility" id="784">
-            <property name="valueType">dynamic</property>
-            <property name="dataType">integer</property>
-            <property name="paramType">simple</property>
             <text-property name="promptText">Facility?</text-property>
-            <property name="controlType">list-box</property>
+            <property name="valueType">dynamic</property>
             <property name="dataSetName">Facilities</property>
             <expression name="valueExpr">dataSetRow["location_id"]</expression>
             <expression name="labelExpr">dataSetRow["name"]</expression>
-            <property name="mustMatch">false</property>
-            <property name="fixedOrder">false</property>
-            <property name="distinct">true</property>
             <expression name="sortByColumn">dataSetRow["name"]</expression>
             <property name="sortDirection">asc</property>
+            <property name="dataType">integer</property>
+            <property name="distinct">true</property>
+            <property name="paramType">simple</property>
+            <property name="controlType">list-box</property>
+            <property name="mustMatch">false</property>
+            <property name="fixedOrder">false</property>
             <structure name="format">
                 <property name="category">Unformatted</property>
             </structure>
@@ -180,70 +180,70 @@ else
                 <structure>
                     <property name="columnName">encounter_id</property>
                     <property name="alias">id</property>
-                    <property name="displayName">id</property>
+                    <text-property name="displayName">id</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">encounter_datetime</property>
                     <property name="alias">date</property>
-                    <property name="displayName">date</property>
+                    <text-property name="displayName">date</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">location_id</property>
-                    <property name="displayName">location_id</property>
+                    <text-property name="displayName">location_id</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">name</property>
                     <property name="alias">type</property>
-                    <property name="displayName">typer</property>
+                    <text-property name="displayName">typer</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">birthdate</property>
-                    <property name="displayName">birthdate</property>
+                    <text-property name="displayName">birthdate</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">value_numeric</property>
                     <property name="alias">muac</property>
-                    <property name="displayName">value_numeric</property>
+                    <text-property name="displayName">value_numeric</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">obs_id</property>
                     <property name="alias">vitamin</property>
-                    <property name="displayName">obs_id</property>
+                    <text-property name="displayName">obs_id</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">value_numeric_7</property>
                     <property name="alias">weight</property>
-                    <property name="displayName">weight</property>
+                    <text-property name="displayName">weight</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">value_numeric_8</property>
                     <property name="alias">height</property>
-                    <property name="displayName">height</property>
+                    <text-property name="displayName">height</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">obs_id_10</property>
                     <property name="alias">bcg</property>
-                    <property name="displayName">bcg</property>
+                    <text-property name="displayName">bcg</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">value_numeric_11</property>
                     <property name="alias">polio</property>
-                    <property name="displayName">polio</property>
+                    <text-property name="displayName">polio</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">value_numeric_12</property>
                     <property name="alias">penta</property>
-                    <property name="displayName">penta</property>
+                    <text-property name="displayName">penta</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">obs_id_13</property>
                     <property name="alias">measles</property>
-                    <property name="displayName">measles</property>
+                    <text-property name="displayName">measles</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">obs_id_14</property>
                     <property name="alias">yellow</property>
-                    <property name="displayName">yellow</property>
+                    <text-property name="displayName">yellow</text-property>
                 </structure>
             </list-property>
             <list-property name="filter">
@@ -454,7 +454,7 @@ else
                     <property name="nativeDataType">4</property>
                 </structure>
             </list-property>
-            <property name="queryText">select
+            <xml-property name="queryText"><![CDATA[select
   enc.encounter_id as id,
   enc.encounter_datetime as date,
   enc.location_id as location_id,
@@ -491,7 +491,7 @@ left outer join (obs obs8 join concept_name cn8 on obs8.value_coded = cn8.concep
 and cn8.name = 'MEASLES VACCINATION' and obs8.voided = 0) on enc.encounter_id = obs8.encounter_id
 left outer join (obs obs9 join concept_name cn9 on obs9.value_coded = cn9.concept_id
 and cn9.name = 'YELLOW FEVER VACCINATION' and obs9.voided = 0) on enc.encounter_id = obs9.encounter_id
-where enc.voided = 0;</property>
+where enc.voided = 0;]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>1.0</Version>
@@ -716,19 +716,19 @@ where enc.voided = 0;</property>
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">id</property>
-                    <property name="displayName">id</property>
+                    <text-property name="displayName">id</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">facility_id</property>
-                    <property name="displayName">facility_id</property>
+                    <text-property name="displayName">facility_id</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">location_id</property>
-                    <property name="displayName">location_id</property>
+                    <text-property name="displayName">location_id</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">name</property>
-                    <property name="displayName">name</property>
+                    <text-property name="displayName">name</text-property>
                 </structure>
             </list-property>
             <structure name="cachedMetaData">
@@ -786,31 +786,31 @@ where enc.voided = 0;</property>
                     <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
-            <property name="queryText">select fac.id, fac.facility_id, loc.location_id, loc.name
+            <xml-property name="queryText"><![CDATA[select fac.id, fac.facility_id, loc.location_id, loc.name
 from motechmodule_facility fac
-join location loc on fac.location_id = loc.location_id</property>
+join location loc on fac.location_id = loc.location_id]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Locations" id="797">
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">location_id</property>
-                    <property name="displayName">location_id</property>
+                    <text-property name="displayName">location_id</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">name</property>
-                    <property name="displayName">name</property>
+                    <text-property name="displayName">name</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">region</property>
-                    <property name="displayName">region</property>
+                    <text-property name="displayName">region</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">county_district</property>
-                    <property name="displayName">county_district</property>
+                    <text-property name="displayName">county_district</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">state_province</property>
-                    <property name="displayName">state_province</property>
+                    <text-property name="displayName">state_province</text-property>
                 </structure>
             </list-property>
             <list-property name="filter">
@@ -889,8 +889,8 @@ join location loc on fac.location_id = loc.location_id</property>
                     <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
-            <property name="queryText">select location_id, name, region, county_district, state_province
-from location</property>
+            <xml-property name="queryText"><![CDATA[select location_id, name, region, county_district, state_province
+from location]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>1.0</Version>
@@ -982,19 +982,19 @@ from location</property>
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">id</property>
-                    <property name="displayName">id</property>
+                    <text-property name="displayName">id</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">date</property>
-                    <property name="displayName">date</property>
+                    <text-property name="displayName">date</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">location_id</property>
-                    <property name="displayName">location_id</property>
+                    <text-property name="displayName">location_id</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">diagnosis</property>
-                    <property name="displayName">diagnosis</property>
+                    <text-property name="displayName">diagnosis</text-property>
                 </structure>
             </list-property>
             <list-property name="filter">
@@ -1075,7 +1075,7 @@ from location</property>
                     <property name="nativeDataType">8</property>
                 </structure>
             </list-property>
-            <property name="queryText">select
+            <xml-property name="queryText"><![CDATA[select
 CONCAT('General',CAST(ge1.id AS CHAR)) as id,
 ge1.date,
 loc1.location_id,
@@ -1112,7 +1112,7 @@ left outer join (obs obs2 join concept_name cn2 on obs2.concept_id = cn2.concept
 and cn2.name = 'REFERRED' and obs2.voided = 0) on enc.encounter_id = obs2.encounter_id
 where obs2.value_numeric = 1
 and pers.birthdate > DATE_SUB(enc.encounter_datetime, INTERVAL 5 YEAR)
-and enc.voided = 0;</property>
+and enc.voided = 0;]]></xml-property>
         </oda-data-set>
     </data-sets>
     <styles>
