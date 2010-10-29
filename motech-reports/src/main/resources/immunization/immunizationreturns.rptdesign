@@ -526,21 +526,31 @@ and
                     </structure>
                     <structure>
                         <property name="position">2</property>
+                        <property name="name">concept_name_id</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">concept_name_id</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
                         <property name="name">Dosage</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">3</property>
+                        <property name="position">5</property>
                         <property name="name">0_to_11_months</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">4</property>
+                        <property name="position">6</property>
                         <property name="name">12_to_24_months</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">5</property>
+                        <property name="position">7</property>
                         <property name="name">above_24_months</property>
                         <property name="dataType">decimal</property>
                     </structure>
@@ -556,24 +566,36 @@ and
                 </structure>
                 <structure>
                     <property name="position">2</property>
+                    <property name="name">concept_name_id</property>
+                    <property name="nativeName">concept_name_id</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">concept_name_id_3</property>
+                    <property name="nativeName">concept_name_id</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
                     <property name="name">Dosage</property>
                     <property name="nativeName">Dosage</property>
                     <property name="dataType">decimal</property>
                 </structure>
                 <structure>
-                    <property name="position">3</property>
+                    <property name="position">5</property>
                     <property name="name">0_to_11_months</property>
                     <property name="nativeName">0_to_11_months</property>
                     <property name="dataType">decimal</property>
                 </structure>
                 <structure>
-                    <property name="position">4</property>
+                    <property name="position">6</property>
                     <property name="name">12_to_24_months</property>
                     <property name="nativeName">12_to_24_months</property>
                     <property name="dataType">decimal</property>
                 </structure>
                 <structure>
-                    <property name="position">5</property>
+                    <property name="position">7</property>
                     <property name="name">above_24_months</property>
                     <property name="nativeName">above_24_months</property>
                     <property name="dataType">decimal</property>
@@ -581,6 +603,8 @@ and
             </list-property>
             <xml-property name="queryText"><![CDATA[select
     concept_coded_name.name as vaccination,
+    concept_coded_name.concept_name_id,
+    concept_obs_name.concept_name_id,
     1 as Dosage,
     SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 0 and 11,1,0)) as 0_to_11_months,
     SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 12 and 23,1,0)) as 12_to_24_months,
@@ -601,7 +625,7 @@ and
 and 
     concept_obs_name.name = 'IMMUNIZATIONS ORDERED'
 and
-    concept_coded_name.name in ('BACILLE CAMILE-GUERIN VACCINATION', 'BCG', 'BCG VACCINE')
+    concept_coded_name.name in ('BCG VACCINE')
 and
     observation.encounter_id = encounter.encounter_id 
 and
