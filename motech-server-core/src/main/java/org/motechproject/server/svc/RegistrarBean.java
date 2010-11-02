@@ -406,26 +406,6 @@ public interface RegistrarBean {
 
 	public Integer getMaxPatientCareReminders();
 
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_USERS,
-			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
-			OpenmrsConstants.PRIV_MANAGE_PERSON_ATTRIBUTE_TYPES,
-			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES,
-			OpenmrsConstants.PRIV_MANAGE_IDENTIFIER_TYPES,
-			OpenmrsConstants.PRIV_VIEW_LOCATIONS,
-			OpenmrsConstants.PRIV_MANAGE_LOCATIONS,
-			OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES,
-			OpenmrsConstants.PRIV_MANAGE_ENCOUNTER_TYPES,
-			OpenmrsConstants.PRIV_VIEW_CONCEPTS,
-			OpenmrsConstants.PRIV_MANAGE_CONCEPTS,
-			OpenmrsConstants.PRIV_VIEW_CONCEPT_DATATYPES,
-			OpenmrsConstants.PRIV_VIEW_CONCEPT_CLASSES,
-			OpenmrsConstants.PRIV_MANAGE_SCHEDULER,
-			OpenmrsConstants.PRIV_MANAGE_GLOBAL_PROPERTIES })
-	public void addInitialData();
-
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_MANAGE_SCHEDULER })
-	public void removeAllTasks();
-
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PATIENTS,
 			OpenmrsConstants.PRIV_VIEW_CONCEPTS })
 	public void updateMessageProgramState(Integer personId, String conceptName);

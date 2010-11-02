@@ -85,7 +85,7 @@ public class RegistrarBeanRecordVisitsTest extends
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		activator = new MotechModuleActivator(false);
+		activator = new MotechModuleActivator();
 	}
 
 	@AfterClass
@@ -105,8 +105,12 @@ public class RegistrarBeanRecordVisitsTest extends
 		// Removed all empty short_name="" from concepts
 		// Added missing description to relationship_type
 		// Removed all patients and related patient/person info (id 2-500)
+		// Removed all concepts except those in sqldiff
 		executeDataSet("initial-openmrs-dataset.xml");
 
+		// Includes Motech data added in sqldiff
+		executeDataSet("motech-dataset.xml");
+		
 		// Add example Location, Facility and Community
 		executeDataSet("facility-community-dataset.xml");
 
