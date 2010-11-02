@@ -52,60 +52,6 @@
                 <property name="category">Unformatted</property>
             </structure>
         </scalar-parameter>
-        <scalar-parameter name="Subdistrict" id="188">
-            <text-property name="promptText">Sub-district?</text-property>
-            <property name="valueType">dynamic</property>
-            <property name="dataSetName">Subdistricts</property>
-            <expression name="valueExpr">dataSetRow["state_province"]</expression>
-            <expression name="labelExpr">dataSetRow["state_province"]</expression>
-            <expression name="sortByColumn">dataSetRow["state_province"]</expression>
-            <property name="sortDirection">asc</property>
-            <property name="dataType">string</property>
-            <property name="distinct">true</property>
-            <property name="paramType">simple</property>
-            <property name="controlType">list-box</property>
-            <property name="mustMatch">false</property>
-            <property name="fixedOrder">false</property>
-            <structure name="format">
-                <property name="category">Unformatted</property>
-            </structure>
-        </scalar-parameter>
-        <scalar-parameter name="District" id="191">
-            <text-property name="promptText">District?</text-property>
-            <property name="valueType">dynamic</property>
-            <property name="dataSetName">Districts</property>
-            <expression name="valueExpr">dataSetRow["county_district"]</expression>
-            <expression name="labelExpr">dataSetRow["county_district"]</expression>
-            <expression name="sortByColumn">dataSetRow["county_district"]</expression>
-            <property name="sortDirection">asc</property>
-            <property name="dataType">string</property>
-            <property name="distinct">true</property>
-            <property name="paramType">simple</property>
-            <property name="controlType">list-box</property>
-            <property name="mustMatch">false</property>
-            <property name="fixedOrder">false</property>
-            <structure name="format">
-                <property name="category">Unformatted</property>
-            </structure>
-        </scalar-parameter>
-        <scalar-parameter name="Regions" id="192">
-            <text-property name="promptText">Region?</text-property>
-            <property name="valueType">dynamic</property>
-            <property name="dataSetName">Regions</property>
-            <expression name="valueExpr">dataSetRow["region"]</expression>
-            <expression name="labelExpr">dataSetRow["region"]</expression>
-            <expression name="sortByColumn">dataSetRow["region"]</expression>
-            <property name="sortDirection">asc</property>
-            <property name="dataType">string</property>
-            <property name="distinct">true</property>
-            <property name="paramType">simple</property>
-            <property name="controlType">list-box</property>
-            <property name="mustMatch">false</property>
-            <property name="fixedOrder">false</property>
-            <structure name="format">
-                <property name="category">Unformatted</property>
-            </structure>
-        </scalar-parameter>
         <scalar-parameter name="Facility" id="787">
             <property name="valueType">dynamic</property>
             <property name="dataSetName">Facility</property>
@@ -329,27 +275,6 @@ else if (row["age"] >=70)
                     <expression name="expr">BirtDateTime.month(row["date"],1)</expression>
                     <simple-property-list name="value1">
                         <value>params["Month"].value</value>
-                    </simple-property-list>
-                </structure>
-                <structure>
-                    <property name="operator">eq</property>
-                    <expression name="expr">row["region"]</expression>
-                    <simple-property-list name="value1">
-                        <value>params["Regions"].value</value>
-                    </simple-property-list>
-                </structure>
-                <structure>
-                    <property name="operator">eq</property>
-                    <expression name="expr">row["district"]</expression>
-                    <simple-property-list name="value1">
-                        <value>params["District"].value</value>
-                    </simple-property-list>
-                </structure>
-                <structure>
-                    <property name="operator">eq</property>
-                    <expression name="expr">row["subdistrict"]</expression>
-                    <simple-property-list name="value1">
-                        <value>params["Subdistrict"].value</value>
                     </simple-property-list>
                 </structure>
                 <structure>
@@ -1314,8 +1239,7 @@ join location loc on fac.location_id = loc.location_id]]></xml-property>
       <design:criteria/>
     </design:resultSetDefinitions>
   </design:ResultSets>
-</model:DesignValues>
-]]></xml-property>
+</model:DesignValues>]]></xml-property>
         </oda-data-set>
     </data-sets>
     <cubes>
@@ -1593,10 +1517,11 @@ MoTeCH Statement of Out-Patients
                 </cell>
                 <cell id="602">
                     <data id="193">
+                        <property name="dataSet">Data Set</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">Subdistrict</property>
-                                <expression name="expression">params["Subdistrict"].value</expression>
+                                <expression name="expression" type="javascript">dataSetRow["subdistrict"]</expression>
                                 <property name="dataType">string</property>
                             </structure>
                         </list-property>
@@ -1612,10 +1537,11 @@ MoTeCH Statement of Out-Patients
                 </cell>
                 <cell id="605">
                     <data id="194">
+                        <property name="dataSet">Data Set</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">District</property>
-                                <expression name="expression">params["District"].value</expression>
+                                <expression name="expression" type="javascript">dataSetRow["district"]</expression>
                                 <property name="dataType">string</property>
                             </structure>
                         </list-property>
@@ -1631,10 +1557,11 @@ MoTeCH Statement of Out-Patients
                 </cell>
                 <cell id="608">
                     <data id="195">
+                        <property name="dataSet">Data Set</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">Regions</property>
-                                <expression name="expression">params["Regions"].value</expression>
+                                <expression name="expression" type="javascript">dataSetRow["region"]</expression>
                                 <property name="dataType">string</property>
                             </structure>
                         </list-property>
