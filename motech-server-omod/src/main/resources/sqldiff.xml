@@ -593,12 +593,6 @@
 			
 			INSERT INTO motechmodule_community (community_id,name,facility_id) VALUES
 			(11413,'Nyangania',(select id from motechmodule_facility where facility_id = 11418)),
-			(11441,'Wurania',(select id from motechmodule_facility where facility_id = 11441)),
-			(11442,'Pinkwalakwaga',(select id from motechmodule_facility where facility_id = 11441)),
-			(11443,'Adognia',(select id from motechmodule_facility where facility_id = 11441)),
-			(11444,'Adasong',(select id from motechmodule_facility where facility_id = 11441)),
-			(11445,'Chiana/Saboro',(select id from motechmodule_facility where facility_id = 11441)),
-			(11446,'Asunia',(select id from motechmodule_facility where facility_id = 11441)),
 			(11436,'Kalvio',(select id from motechmodule_facility where facility_id = 11439)),
 			(11424,'Kanania',(select id from motechmodule_facility where facility_id = 11425)),
 			(11425,'Kabanga',(select id from motechmodule_facility where facility_id = 11425)),
@@ -618,23 +612,8 @@
 			(11119,'Bayono',(select id from motechmodule_facility where facility_id = 11117)),
 			(111110,'Navio',(select id from motechmodule_facility where facility_id = 11117)),
 			(11714,'Aliabolo',(select id from motechmodule_facility where facility_id = 11711)),
-			(11721,'Chania',(select id from motechmodule_facility where facility_id = 11724)),
-			(11722,'Border',(select id from motechmodule_facility where facility_id = 11724)),
-			(11723,'Gwaru',(select id from motechmodule_facility where facility_id = 11724)),
-			(11724,'Nania',(select id from motechmodule_facility where facility_id = 11724)),
-			(11725,'Zenga',(select id from motechmodule_facility where facility_id = 11724)),
 			(11616,'Amuntanga',(select id from motechmodule_facility where facility_id = 11619)),
-			(11617,'Nyangoligo',(select id from motechmodule_facility where facility_id = 11619)),
-			(11621,'Abillatae',(select id from motechmodule_facility where facility_id = 11626)),
-			(11622,'Dazongo',(select id from motechmodule_facility where facility_id = 11626)),
-			(11623,'Wugingo',(select id from motechmodule_facility where facility_id = 11626)),
-			(11624,'Basengo',(select id from motechmodule_facility where facility_id = 11626)),
-			(11625,'Tangasia',(select id from motechmodule_facility where facility_id = 11626)),
-			(11626,'Tindongo',(select id from motechmodule_facility where facility_id = 11626)),
-			(11627,'Gunwoko',(select id from motechmodule_facility where facility_id = 11626)),
-			(11628,'Puwelingo',(select id from motechmodule_facility where facility_id = 11626)),
-			(11629,'Azugzingo',(select id from motechmodule_facility where facility_id = 11626)),
-			(116210,'Tumtumbisi',(select id from motechmodule_facility where facility_id = 11626));
+			(11617,'Nyangoligo',(select id from motechmodule_facility where facility_id = 11619));
 
 			UPDATE motechmodule_community SET retired = 1 WHERE community_id = 11412;
 			UPDATE motechmodule_community SET retired = 1 WHERE community_id = 11421;
