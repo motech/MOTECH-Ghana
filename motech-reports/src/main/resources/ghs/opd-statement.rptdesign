@@ -106,6 +106,23 @@
                 <property name="category">Unformatted</property>
             </structure>
         </scalar-parameter>
+        <scalar-parameter name="Facility" id="787">
+            <property name="valueType">dynamic</property>
+            <property name="dataSetName">Facility</property>
+            <expression name="valueExpr" type="javascript">dataSetRow["facility_id"]</expression>
+            <expression name="labelExpr" type="javascript">dataSetRow["name"]</expression>
+            <expression name="sortByColumn">dataSetRow["name"]</expression>
+            <property name="sortDirection">asc</property>
+            <property name="dataType">integer</property>
+            <property name="distinct">true</property>
+            <property name="paramType">simple</property>
+            <property name="controlType">list-box</property>
+            <property name="mustMatch">false</property>
+            <property name="fixedOrder">false</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
         <scalar-parameter name="Month" id="532">
             <text-property name="promptText">Month?</text-property>
             <property name="valueType">static</property>
@@ -204,7 +221,7 @@
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
             <property name="odaURL">jdbc:mysql://localhost/openmrs</property>
             <property name="odaUser">openmrsuser</property>
-            <encrypted-property name="odaPassword" encryptionID="base64">b3Blbm1yc3Bhc3M=</encrypted-property>
+            <encrypted-property name="odaPassword" encryptionID="base64">cGFzc3dvcmQ=</encrypted-property>
         </oda-data-source>
     </data-sources>
     <data-sets>
@@ -333,6 +350,13 @@ else if (row["age"] >=70)
                     <expression name="expr">row["subdistrict"]</expression>
                     <simple-property-list name="value1">
                         <value>params["Subdistrict"].value</value>
+                    </simple-property-list>
+                </structure>
+                <structure>
+                    <property name="operator">eq</property>
+                    <expression name="expr" type="javascript">row["facility_id"]</expression>
+                    <simple-property-list name="value1">
+                        <value>params["Facility"].value</value>
                     </simple-property-list>
                 </structure>
             </list-property>
@@ -501,7 +525,7 @@ else if (row["age"] >=70)
 CONCAT('General',CAST(ge1.id AS CHAR)) as id,
 ge1.date,
 CAST(ge1.staff_id AS CHAR) as staff_id,
-ge1.facility_id,
+ge1.facility_id as facility_id,
 loc1.region as region,
 loc1.county_district as district,
 loc1.state_province as subdistrict,
@@ -518,7 +542,7 @@ select
 CONCAT('General',CAST(ge2.id AS CHAR)) as id,
 ge2.date,
 CAST(ge2.staff_id AS CHAR),
-ge2.facility_id,
+ge2.facility_id as facility_id,
 loc2.region as region,
 loc2.county_district as district,
 loc2.state_province as subdistrict,
@@ -1158,6 +1182,140 @@ from location]]></xml-property>
     </design:resultSetDefinitions>
   </design:ResultSets>
 </model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Facility" id="786">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">facility_id</property>
+                    <text-property name="displayName">facility_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">location_id</property>
+                    <text-property name="displayName">location_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">name</property>
+                    <text-property name="displayName">name</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">facility_id</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">location_id</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">facility_id</property>
+                    <property name="nativeName">facility_id</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">location_id</property>
+                    <property name="nativeName">location_id</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">name</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select 
+fac.facility_id,
+fac.location_id, 
+loc.name 
+from motechmodule_facility fac
+join location loc on fac.location_id = loc.location_id]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>1.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>facility_id</design:name>
+            <design:position>1</design:position>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>facility_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>facility_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>location_id</design:name>
+            <design:position>2</design:position>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>location_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>location_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>name</design:name>
+            <design:position>3</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>name</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>
+]]></xml-property>
         </oda-data-set>
     </data-sets>
     <cubes>
