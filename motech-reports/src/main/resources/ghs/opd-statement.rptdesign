@@ -34,24 +34,6 @@
     <property name="layoutPreference">auto layout</property>
     <property name="bidiLayoutOrientation">ltr</property>
     <parameters>
-        <scalar-parameter name="Provider" id="183">
-            <text-property name="promptText">Service Provider?</text-property>
-            <property name="valueType">dynamic</property>
-            <property name="dataSetName">Providers</property>
-            <expression name="valueExpr" type="javascript">dataSetRow["system_id"]</expression>
-            <expression name="labelExpr" type="javascript">BirtStr.concat(dataSetRow["given_name"]," ",dataSetRow["family_name"]," (",dataSetRow["system_id"],")")</expression>
-            <expression name="sortByColumn">dataSetRow["given_name"]</expression>
-            <property name="sortDirection">asc</property>
-            <property name="dataType">string</property>
-            <property name="distinct">true</property>
-            <property name="paramType">simple</property>
-            <property name="controlType">list-box</property>
-            <property name="mustMatch">false</property>
-            <property name="fixedOrder">false</property>
-            <structure name="format">
-                <property name="category">Unformatted</property>
-            </structure>
-        </scalar-parameter>
         <scalar-parameter name="Facility" id="787">
             <property name="valueType">dynamic</property>
             <property name="dataSetName">Facility</property>
@@ -256,13 +238,6 @@ else if (row["age"] >=70)
                 </structure>
             </list-property>
             <list-property name="filter">
-                <structure>
-                    <property name="operator">eq</property>
-                    <expression name="expr">row["staff_id"]</expression>
-                    <simple-property-list name="value1">
-                        <value>params["Provider"].value</value>
-                    </simple-property-list>
-                </structure>
                 <structure>
                     <property name="operator">eq</property>
                     <expression name="expr">BirtDateTime.year(row["date"])</expression>
@@ -1485,30 +1460,10 @@ MoTeCH Statement of Out-Patients
     <body>
         <grid id="594">
             <property name="width">100%</property>
-            <list-property name="boundDataColumns">
-                <structure>
-                    <property name="name">Column Binding</property>
-                    <text-property name="displayName">provider</text-property>
-                    <expression name="expression" type="javascript">params["Provider"].value</expression>
-                    <property name="dataType">string</property>
-                </structure>
-            </list-property>
             <column id="595">
                 <property name="width">1.5104166666666667in</property>
             </column>
             <column id="596"/>
-            <row id="597">
-                <cell id="598">
-                    <label id="621">
-                        <text-property name="text">Service Provider:</text-property>
-                    </label>
-                </cell>
-                <cell id="599">
-                    <data id="784">
-                        <property name="resultSetColumn">Column Binding</property>
-                    </data>
-                </cell>
-            </row>
             <row id="600">
                 <cell id="601">
                     <label id="620">
