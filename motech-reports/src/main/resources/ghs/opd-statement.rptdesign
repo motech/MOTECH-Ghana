@@ -217,6 +217,10 @@ else if (row["age"] >=70)
                     <text-property name="displayName">subdistrict</text-property>
                 </structure>
                 <structure>
+                    <property name="columnName">facility</property>
+                    <text-property name="displayName">facility</text-property>
+                </structure>
+                <structure>
                     <property name="columnName">sex</property>
                     <text-property name="displayName">sex</text-property>
                 </structure>
@@ -299,36 +303,41 @@ else if (row["age"] >=70)
                     </structure>
                     <structure>
                         <property name="position">8</property>
-                        <property name="name">sex</property>
+                        <property name="name">facility</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">9</property>
+                        <property name="name">sex</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
                         <property name="name">birthdate</property>
                         <property name="dataType">date</property>
                     </structure>
                     <structure>
-                        <property name="position">10</property>
+                        <property name="position">11</property>
                         <property name="name">diagnosis</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">11</property>
+                        <property name="position">12</property>
                         <property name="name">newcase</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">12</property>
+                        <property name="position">13</property>
                         <property name="name">insured</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
-                        <property name="position">13</property>
+                        <property name="position">14</property>
                         <property name="name">age</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">14</property>
+                        <property name="position">15</property>
                         <property name="name">agegroup</property>
                         <property name="dataType">string</property>
                     </structure>
@@ -387,34 +396,41 @@ else if (row["age"] >=70)
                 </structure>
                 <structure>
                     <property name="position">8</property>
+                    <property name="name">facility</property>
+                    <property name="nativeName">facility</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
                     <property name="name">sex</property>
                     <property name="nativeName">sex</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">9</property>
+                    <property name="position">10</property>
                     <property name="name">birthdate</property>
                     <property name="nativeName">birthdate</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
-                    <property name="position">10</property>
+                    <property name="position">11</property>
                     <property name="name">diagnosis</property>
                     <property name="nativeName">diagnosis</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">11</property>
+                    <property name="position">12</property>
                     <property name="name">newcase</property>
                     <property name="nativeName">newcase</property>
                     <property name="dataType">float</property>
                     <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
-                    <property name="position">12</property>
+                    <property name="position">13</property>
                     <property name="name">insured</property>
                     <property name="nativeName">insured</property>
                     <property name="dataType">float</property>
@@ -429,6 +445,7 @@ ge1.facility_id as facility_id,
 loc1.region as region,
 loc1.county_district as district,
 loc1.state_province as subdistrict,
+loc1.name as facility,
 ge1.sex,
 ge1.birthdate,
 ge1.diagnosis,
@@ -446,6 +463,7 @@ ge2.facility_id as facility_id,
 loc2.region as region,
 loc2.county_district as district,
 loc2.state_province as subdistrict,
+loc2.name as facility,
 ge2.sex,
 ge2.birthdate,
 ge2.secondary_diagnosis as diagnosis,
@@ -464,6 +482,7 @@ select
   loc.region as region,
   loc.county_district as district,
   loc.state_province as subdistrict,
+  loc.name as facility,
   IF(STRCMP(pers.gender,'M'),IF(STRCMP(pers.gender,'F'),'UNKNOWN','FEMALE'),'MALE') as sex,
   pers.birthdate as birthdate,
   obs1.value_numeric as diagnosis,
@@ -1460,6 +1479,13 @@ MoTeCH Statement of Out-Patients
     <body>
         <grid id="594">
             <property name="width">100%</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">Facility</property>
+                    <expression name="expression" type="javascript">params["Facility"].value</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
             <column id="595">
                 <property name="width">1.5104166666666667in</property>
             </column>
@@ -1521,6 +1547,26 @@ MoTeCH Statement of Out-Patients
                             </structure>
                         </list-property>
                         <property name="resultSetColumn">Regions</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="788">
+                <cell id="789">
+                    <label id="793">
+                        <text-property name="text">Facility:</text-property>
+                    </label>
+                </cell>
+                <cell id="790">
+                    <data id="794">
+                        <property name="dataSet">Data Set</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">Facility</property>
+                                <expression name="expression" type="javascript">dataSetRow["facility"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">Facility</property>
                     </data>
                 </cell>
             </row>
