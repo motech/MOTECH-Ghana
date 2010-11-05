@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    MOTECH PLATFORM OPENSOURCE LICENSE AGREEMENT
+
+    Copyright (c) 2010 The Trustees of Columbia University in the City of
+    New York and Grameen Foundation USA.  All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+    3. Neither the name of Grameen Foundation USA, Columbia University, or
+    their respective contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY GRAMEEN FOUNDATION USA, COLUMBIA UNIVERSITY
+    AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GRAMEEN FOUNDATION
+    USA, COLUMBIA UNIVERSITY OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+    OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:flow="http://www.springframework.org/schema/webflow-config"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:osgi="http://www.springframework.org/schema/osgi"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+       http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config-1.0.xsd
+       http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-2.5.xsd
+       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+       http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.5.xsd
+       http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+    <context:annotation-config />
+
+    <!--Spring specific-->
+    <bean id="omiPropertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:omi.settings.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean name="storeManager" class="org.motechproject.mobile.omi.manager.MessageStoreManagerImpl">
+        <property name="concatAllowance" value="${omi.settings.concatAllowance}" />
+        <property name="charsPerSMS" value="${omi.settings.charsPerSMS}" />
+        <property name="maxConcat" value="${omi.settings.maxConcat}" />
+        <property name="localNumberExpression" value="${omi.settings.localNumberExpression}" />
+        <property name="defaultCountryCode" value="${omi.settings.defaultCountryCode}" />
+    </bean>
+
+    <bean name="messageFormatter" class="org.motechproject.mobile.omi.manager.SMSMessageFormatterImpl">
+        <property name="omiManager" ref="omiManager" />
+        <property name="dateFormat" value="${omi.settings.dateFormat}" />
+    </bean>
+
+    <bean name="omiService" class="org.motechproject.mobile.omi.service.OMIServiceImpl">
+        <property name="omiManager" ref="omiManager" />
+        <property name="storeManager" ref="storeManager" />
+        <property name="statHandler" ref="statusHandler" />
+    </bean>
+
+    <bean name="omiManager" class="org.motechproject.mobile.omi.manager.OMIManagerImpl" />
+
+    <bean id="logStatAction" class="org.motechproject.mobile.omi.manager.LogStatusActionImpl">
+        <property name="regWs" ref="registrarClient" />
+    </bean>
+
+    <bean id="rptStatAction" class="org.motechproject.mobile.omi.manager.ReportStatusActionImpl">
+        <property name="regWs" ref="registrarClient" />
+    </bean>
+
+    <bean id="statusHandler" class="org.motechproject.mobile.omi.manager.StatusHandlerImpl">
+        <property name="actionRegister">
+            <map>
+                <entry key="DELIVERED">
+                    <list>
+                        <ref bean="logStatAction" />
+                        <ref bean="rptStatAction" />
+                    </list>
+                </entry>
+                <entry key="FAILED">
+                    <list>
+                        <ref bean="logStatAction" />
+                        <ref bean="rptStatAction" />
+                    </list>
+                </entry>
+                <entry key="RETRY">
+                    <list>
+                        <ref bean="logStatAction" />
+                    </list>
+                </entry>
+                <entry key="CANNOT_CONNECT">
+                    <list>
+                        <ref bean="logStatAction" />
+                    </list>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="registrarClient"
+            class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
+            <property name="serviceInterface" value="org.motechproject.ws.server.RegistrarService" />
+            <property name="wsdlDocumentUrl"
+                    value="${registrar.webservice.wsdlUrl}" />
+            <property name="namespaceUri" value="${registrar.webservice.namespaceUri}" />
+            <property name="serviceName" value="RegistrarWebServiceService" />
+            <property name="portName" value="RegistrarWebServicePort" />
+            <property name="lookupServiceOnStartup" value="false" />
+    </bean>
+</beans>

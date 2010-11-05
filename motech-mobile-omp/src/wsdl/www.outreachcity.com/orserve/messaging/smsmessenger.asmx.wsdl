@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.outreachcity.com/ORServe/Messaging/" xmlns:s1="http://microsoft.com/wsdl/types/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://www.outreachcity.com/ORServe/Messaging/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.outreachcity.com/ORServe/Messaging/">
+      <s:import namespace="http://microsoft.com/wsdl/types/" />
+      <s:element name="sendMessage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="numbers" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="senderId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="productCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="concatLim" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendMessageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sendMessageResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendCachedMessage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="numbers" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="senderId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="productCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="concatLim" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendCachedMessageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sendCachedMessageResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="checkCachedMessage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="transactionId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="checkCachedMessageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="checkCachedMessageResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendScheduledMessage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="numbers" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="senderId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="productCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="duration" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendScheduledMessageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sendScheduledMessageResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendScheduledMessageConcat">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="numbers" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="senderId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="productCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="concatLim" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="duration" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendScheduledMessageConcatResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sendScheduledMessageConcatResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMessageStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="messageId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="productCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMessageStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getMessageStatusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="validateDestination">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="number" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="productCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="validateDestinationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="validateDestinationResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMessageStatusByGateway">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="messageId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="gatewayAccountId" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMessageStatusByGatewayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getMessageStatusByGatewayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="verifyRequestString">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="numbers" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="senderId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="productCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="concatLim" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="verifyRequestStringResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="verifyRequestStringResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
+      <s:simpleType name="guid">
+        <s:restriction base="s:string">
+          <s:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+        </s:restriction>
+      </s:simpleType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="sendMessageSoapIn">
+    <wsdl:part name="parameters" element="tns:sendMessage" />
+  </wsdl:message>
+  <wsdl:message name="sendMessageSoapOut">
+    <wsdl:part name="parameters" element="tns:sendMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="sendCachedMessageSoapIn">
+    <wsdl:part name="parameters" element="tns:sendCachedMessage" />
+  </wsdl:message>
+  <wsdl:message name="sendCachedMessageSoapOut">
+    <wsdl:part name="parameters" element="tns:sendCachedMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="checkCachedMessageSoapIn">
+    <wsdl:part name="parameters" element="tns:checkCachedMessage" />
+  </wsdl:message>
+  <wsdl:message name="checkCachedMessageSoapOut">
+    <wsdl:part name="parameters" element="tns:checkCachedMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="sendScheduledMessageSoapIn">
+    <wsdl:part name="parameters" element="tns:sendScheduledMessage" />
+  </wsdl:message>
+  <wsdl:message name="sendScheduledMessageSoapOut">
+    <wsdl:part name="parameters" element="tns:sendScheduledMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="sendScheduledMessageConcatSoapIn">
+    <wsdl:part name="parameters" element="tns:sendScheduledMessageConcat" />
+  </wsdl:message>
+  <wsdl:message name="sendScheduledMessageConcatSoapOut">
+    <wsdl:part name="parameters" element="tns:sendScheduledMessageConcatResponse" />
+  </wsdl:message>
+  <wsdl:message name="getMessageStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:getMessageStatus" />
+  </wsdl:message>
+  <wsdl:message name="getMessageStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:getMessageStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="validateDestinationSoapIn">
+    <wsdl:part name="parameters" element="tns:validateDestination" />
+  </wsdl:message>
+  <wsdl:message name="validateDestinationSoapOut">
+    <wsdl:part name="parameters" element="tns:validateDestinationResponse" />
+  </wsdl:message>
+  <wsdl:message name="getMessageStatusByGatewaySoapIn">
+    <wsdl:part name="parameters" element="tns:getMessageStatusByGateway" />
+  </wsdl:message>
+  <wsdl:message name="getMessageStatusByGatewaySoapOut">
+    <wsdl:part name="parameters" element="tns:getMessageStatusByGatewayResponse" />
+  </wsdl:message>
+  <wsdl:message name="verifyRequestStringSoapIn">
+    <wsdl:part name="parameters" element="tns:verifyRequestString" />
+  </wsdl:message>
+  <wsdl:message name="verifyRequestStringSoapOut">
+    <wsdl:part name="parameters" element="tns:verifyRequestStringResponse" />
+  </wsdl:message>
+  <wsdl:portType name="SMSMessengerSoap">
+    <wsdl:operation name="sendMessage">
+      <wsdl:input message="tns:sendMessageSoapIn" />
+      <wsdl:output message="tns:sendMessageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendCachedMessage">
+      <wsdl:input message="tns:sendCachedMessageSoapIn" />
+      <wsdl:output message="tns:sendCachedMessageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="checkCachedMessage">
+      <wsdl:input message="tns:checkCachedMessageSoapIn" />
+      <wsdl:output message="tns:checkCachedMessageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendScheduledMessage">
+      <wsdl:input message="tns:sendScheduledMessageSoapIn" />
+      <wsdl:output message="tns:sendScheduledMessageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendScheduledMessageConcat">
+      <wsdl:input message="tns:sendScheduledMessageConcatSoapIn" />
+      <wsdl:output message="tns:sendScheduledMessageConcatSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getMessageStatus">
+      <wsdl:input message="tns:getMessageStatusSoapIn" />
+      <wsdl:output message="tns:getMessageStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="validateDestination">
+      <wsdl:input message="tns:validateDestinationSoapIn" />
+      <wsdl:output message="tns:validateDestinationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getMessageStatusByGateway">
+      <wsdl:input message="tns:getMessageStatusByGatewaySoapIn" />
+      <wsdl:output message="tns:getMessageStatusByGatewaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="verifyRequestString">
+      <wsdl:input message="tns:verifyRequestStringSoapIn" />
+      <wsdl:output message="tns:verifyRequestStringSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SMSMessengerSoap" type="tns:SMSMessengerSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="sendMessage">
+      <soap:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/sendMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendCachedMessage">
+      <soap:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/sendCachedMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkCachedMessage">
+      <soap:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/checkCachedMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendScheduledMessage">
+      <soap:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/sendScheduledMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendScheduledMessageConcat">
+      <soap:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/sendScheduledMessageConcat" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMessageStatus">
+      <soap:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/getMessageStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="validateDestination">
+      <soap:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/validateDestination" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMessageStatusByGateway">
+      <soap:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/getMessageStatusByGateway" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="verifyRequestString">
+      <soap:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/verifyRequestString" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SMSMessengerSoap12" type="tns:SMSMessengerSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="sendMessage">
+      <soap12:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/sendMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendCachedMessage">
+      <soap12:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/sendCachedMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkCachedMessage">
+      <soap12:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/checkCachedMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendScheduledMessage">
+      <soap12:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/sendScheduledMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendScheduledMessageConcat">
+      <soap12:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/sendScheduledMessageConcat" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMessageStatus">
+      <soap12:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/getMessageStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="validateDestination">
+      <soap12:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/validateDestination" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMessageStatusByGateway">
+      <soap12:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/getMessageStatusByGateway" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="verifyRequestString">
+      <soap12:operation soapAction="http://www.outreachcity.com/ORServe/Messaging/verifyRequestString" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SMSMessenger">
+    <wsdl:port name="SMSMessengerSoap" binding="tns:SMSMessengerSoap">
+      <soap:address location="http://www.outreachcity.com/orserve/messaging/smsmessenger.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SMSMessengerSoap12" binding="tns:SMSMessengerSoap12">
+      <soap12:address location="http://www.outreachcity.com/orserve/messaging/smsmessenger.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

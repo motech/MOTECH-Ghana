@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    MOTECH PLATFORM OPENSOURCE LICENSE AGREEMENT
+
+    Copyright (c) 2010 The Trustees of Columbia University in the City of
+    New York and Grameen Foundation USA.  All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+    3. Neither the name of Grameen Foundation USA, Columbia University, or
+    their respective contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY GRAMEEN FOUNDATION USA, COLUMBIA UNIVERSITY
+    AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GRAMEEN FOUNDATION
+    USA, COLUMBIA UNIVERSITY OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+    OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+       http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.5.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+    <bean id="imFormValidator" class="org.motechproject.mobile.imp.util.IncomingMessageFormValidatorImpl">
+        <property name="conditionalValidator" ref="conditionalValidator" />
+        <property name="subFields">
+            <map>
+                <entry key="GENERALOPD-JF">
+                    <list>
+                        <ref bean="diagSub" />
+                        <ref bean="diag2Sub" />
+                    </list>
+                </entry>
+                <entry key="CHILDOPD-JF">
+                    <list>
+                        <ref bean="diagSub" />
+                        <ref bean="diag2Sub" />
+                    </list>
+                </entry>
+                <entry key="MOTHEROPD-JF">
+                    <list>
+                        <ref bean="diagSub" />
+                        <ref bean="diag2Sub" />
+                    </list>
+                </entry>
+            </map>
+        </property>
+        <property name="paramValidators">
+            <map key-type="java.lang.String">
+                <entry key="ALPHA">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="validators">
+                            <map>
+                                <entry key="EXPRESSION">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamExpressionValidator">
+                                        <property name="expression" value="${imp.validator.alphaExpression}" />
+                                    </bean>
+                                </entry>
+                                <entry key="SIZE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamSizeValidator" />
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="ALPHANUM">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="ALPHA" />
+                        <property name="validators">
+                            <map>
+                                <entry key="EXPRESSION">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamExpressionValidator">
+                                        <property name="expression" value="${imp.validator.alphaNumExpression}" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="DATE">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="validators">
+                            <map>
+                                <entry key="SIZE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamSizeValidator" />
+                                </entry>
+                                <entry key="EXPRESSION">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamExpressionValidator">
+                                        <property name="expression" value="${imp.validator.dateExpression}" />
+                                        <property name="dateFormat" value="${imp.validator.dateFormat}" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="EXPIRYDATE">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="DATE" />
+                        <property name="validators">
+                            <map></map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="NUMERIC">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="validators">
+                            <map>
+                                <entry key="EXPRESSION">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamExpressionValidator">
+                                        <property name="expression" value="${imp.validator.numericExpression}" />
+                                    </bean>
+                                </entry>
+                                <entry key="SIZE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamSizeValidator" />
+                                </entry>
+                                <entry key="VALUE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamValueValidator">
+                                        <property name="values" value="" />
+                                        <property name="caseSensitive" value="false" />
+                                        <property name="conversions">
+                                            <map>
+                                                <entry key="NA" value="" />
+                                            </map>
+                                        </property>
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="GENDER">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="validators">
+                            <map>
+                                <entry key="EXPRESSION">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamExpressionValidator">
+                                        <property name="expression" value="${imp.validator.genderExpression}" />
+                                    </bean>
+                                </entry>
+                                <entry key="VALUE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamValueValidator">
+                                        <property name="caseSensitive" value="false" />
+                                        <property name="values" value="M,F" />
+                                        <property name="conversions">
+                                            <map>
+                                                <entry key="M" value="MALE" />
+                                                <entry key="F" value="FEMALE" />
+                                            </map>
+                                        </property>
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="BOOLEAN">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="validators">
+                            <map>
+                                <entry key="EXPRESSION">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamExpressionValidator">
+                                        <property name="expression" value="${imp.validator.yesNoExpression}" />
+                                    </bean>
+                                </entry>
+                                <entry key="VALUE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamValueValidator">
+                                        <property name="caseSensitive" value="false" />
+                                        <property name="values" value="Y,N" />
+                                        <property name="conversions">
+                                            <map>
+                                                <entry key="Y" value="true" />
+                                                <entry key="N" value="false" />
+                                            </map>
+                                        </property>
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="PHONETYPE">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="validators">
+                            <map>
+                                <entry key="EXPRESSION">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamExpressionValidator">
+                                        <property name="expression" value="${imp.validator.phoneTypeExpression}" />
+                                    </bean>
+                                </entry>
+                                <entry key="VALUE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamValueValidator">
+                                        <property name="values" value="HOUSEHOLD,PERSONAL,PUBLIC," />
+                                        <property name="caseSensitive" value="false" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="CASESTATUS">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="ALPHA" />
+                        <property name="validators">
+                            <map>
+                                <entry key="VALUE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamValueValidator">
+                                        <property name="values" value="O,N" />
+                                        <property name="conversions">
+                                            <map>
+                                                <entry key="N" value="NEW" />
+                                                <entry key="O" value="OLD" />
+                                            </map>
+                                        </property>
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="HIVSTATUS">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="ALPHA" />
+                        <property name="validators">
+                            <map>
+                                <entry key="VALUE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamValueValidator">
+                                        <property name="values" value="P,N,NA" />
+                                        <property name="caseSensitive" value="false" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="DELIVERER">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="ALPHA" />
+                        <property name="validators">
+                            <map>
+                                <entry key="VALUE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamValueValidator">
+                                        <property name="values" value="D,M,CHO,TTBA,UTBA,O" />
+                                        <property name="caseSensitive" value="false" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="BIRTHOUTCOME">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="ALPHA" />
+                        <property name="validators">
+                            <map>
+                                <entry key="VALUE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamValueValidator">
+                                        <property name="values" value="A,FSB,MSB" />
+                                        <property name="caseSensitive" value="false" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="ANCVISIT">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="NUMERIC" />
+                        <property name="validators">
+                            <map>
+                                <entry key="RANGE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamRangeValidator">
+                                        <property name="minValue" value="1" />
+                                        <property name="maxValue" value="12" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="TTDOSE">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="NUMERIC" />
+                        <property name="validators">
+                            <map>
+                                <entry key="RANGE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamRangeValidator">
+                                        <property name="minValue" value="1" />
+                                        <property name="maxValue" value="5" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="IPTDOSE">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="NUMERIC" />
+                        <property name="validators">
+                            <map>
+                                <entry key="RANGE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamRangeValidator">
+                                        <property name="minValue" value="1" />
+                                        <property name="maxValue" value="4" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="ABORTIONTYPE">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="NUMERIC" />
+                        <property name="validators">
+                            <map>
+                                <entry key="RANGE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamRangeValidator">
+                                        <property name="minValue" value="1" />
+                                        <property name="maxValue" value="3" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="ABORTIONCOMPLICATIONS">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="NUMERIC" />
+                        <property name="validators">
+                            <map>
+                                <entry key="RANGE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamRangeValidator">
+                                        <property name="minValue" value="1" />
+                                        <property name="maxValue" value="4" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="MOD">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="NUMERIC" />
+                        <property name="validators">
+                            <map>
+                                <entry key="RANGE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamRangeValidator">
+                                        <property name="minValue" value="1" />
+                                        <property name="maxValue" value="4" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="OOD">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="NUMERIC" />
+                        <property name="validators">
+                            <map>
+                                <entry key="RANGE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamRangeValidator">
+                                        <property name="minValue" value="1" />
+                                        <property name="maxValue" value="3" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="LOCATION">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="NUMERIC" />
+                        <property name="validators">
+                            <map>
+                                <entry key="RANGE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamRangeValidator">
+                                        <property name="minValue" value="1" />
+                                        <property name="maxValue" value="3" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="MATERNALDEATHCAUSE">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="NUMERIC" />
+                        <property name="validators">
+                            <map>
+                                <entry key="RANGE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamRangeValidator">
+                                        <property name="minValue" value="1" />
+                                        <property name="maxValue" value="6" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="PPCVISIT">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="NUMERIC" />
+                        <property name="validators">
+                            <map>
+                                <entry key="RANGE">
+                        <bean class="org.motechproject.mobile.imp.util.ParamRangeValidator">
+                            <property name="minValue" value="1" />
+                            <property name="maxValue" value="3" />
+                        </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="DEATHCAUSE">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="NUMERIC" />
+                        <property name="validators">
+                            <map>
+                                <entry key="RANGE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamRangeValidator">
+                                        <property name="minValue" value="1" />
+                                        <property name="maxValue" value="3" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="OPVDOSE">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="NUMERIC" />
+                        <property name="validators">
+                            <map>
+                                <entry key="RANGE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamRangeValidator">
+                                        <property name="minValue" value="0" />
+                                        <property name="maxValue" value="3" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="PENTADOSE">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="NUMERIC" />
+                        <property name="validators">
+                            <map>
+                                <entry key="RANGE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamRangeValidator">
+                                        <property name="minValue" value="1" />
+                                        <property name="maxValue" value="3" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+                <entry key="DIAGNOSIS">
+                    <bean class="org.motechproject.mobile.imp.util.ValidatorGroup">
+                        <property name="parent" value="NUMERIC" />
+                        <property name="validators">
+                            <map>
+                                <entry key="RANGE">
+                                    <bean class="org.motechproject.mobile.imp.util.ParamRangeValidator">
+                                        <property name="minValue" value="1" />
+                                        <property name="maxValue" value="78" />
+                                    </bean>
+                                </entry>
+                            </map>
+                        </property>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+        <property name="conditionalRequirements">
+            <map>
+                <entry key="ANC-JF">
+                    <list>
+                        <ref bean="bpSub" />
+                    </list>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    <bean id="conditionalValidator" class="org.motechproject.mobile.imp.util.ConditionalRequirementValidator" scope="prototype" />
+
+    <bean id="diagSub" class="org.motechproject.mobile.imp.util.SubField">
+        <property name="parentField" value="diagnosis" />
+        <property name="fieldName" value="otherdiagnosis" />
+        <property name="replaceOn" value="78" />
+    </bean>
+    <bean id="diag2Sub" class="org.motechproject.mobile.imp.util.SubField">
+        <property name="parentField" value="diagnosis" />
+        <property name="fieldName" value="othersecondarydiagnosis" />
+        <property name="replaceOn" value="78" />
+    </bean>
+    <bean id="bpSub" class="org.motechproject.mobile.imp.util.SubField">
+        <property name="parentField" value="bpSystolic" />
+        <property name="fieldName" value="bpDiastolic" />
+        <property name="replaceOn" value="*" />
+    </bean>
+</beans>

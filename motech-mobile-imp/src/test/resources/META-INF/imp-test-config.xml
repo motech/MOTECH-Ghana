@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    MOTECH PLATFORM OPENSOURCE LICENSE AGREEMENT
+
+    Copyright (c) 2010 The Trustees of Columbia University in the City of
+    New York and Grameen Foundation USA.  All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+    3. Neither the name of Grameen Foundation USA, Columbia University, or
+    their respective contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY GRAMEEN FOUNDATION USA, COLUMBIA UNIVERSITY
+    AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GRAMEEN FOUNDATION
+    USA, COLUMBIA UNIVERSITY OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+    OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:osgi="http://www.springframework.org/schema/osgi"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+       http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.5.xsd
+       http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+    <import resource="classpath:META-INF/validator-test-config.xml" />
+    <import resource="classpath:META-INF/registrar-services-test.xml" />
+
+    <!--Spring specific-->
+    <bean id="propertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:imp.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="impService" scope="prototype" class="org.motechproject.mobile.imp.serivce.IMPServiceImpl">
+        <property name="impManager" ref="impManager" />
+        <property name="parser" ref="imParser" />
+        <property name="formProcessSuccess" value="${imp.form.successResponse}" />
+        <property name="xmlParser" ref="imXMLParser" />
+        <property name="concatAllowance" value="${imp.response.concatAllowance}" />
+        <property name="charsPerSMS" value="${imp.response.charsPerSMS}" />
+        <property name="maxConcat" value="${imp.response.maxConcat}" />
+        <property name="maxSMS" value="${imp.response.maxSMS}" />
+        <property name="defaultCountryCode" value="${imp.response.defaultCountryCode}" />
+        <property name="localNumberExpression" value="${imp.response.localNumberExpression}" />
+        <property name="cmdActionMap">
+            <map key-type="java.lang.String">
+                <entry key="TYPE" value-ref="formCmdAxn" />
+                <entry key="QUERY" value-ref="qryCmdAxn" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="impManager" class="org.motechproject.mobile.imp.manager.IMPManagerImpl" />
+
+    <bean id="imParser" class="org.motechproject.mobile.imp.util.IncomingMessageParserImpl" >
+        <property name="separator" value="${imp.form.param.valueSparator}" />
+        <property name="delimiter" value="${imp.form.param.delimiter}" />
+        <property name="cmdRegex" value="${imp.form.commandExpression}" />
+        <property name="typeRegex" value="${imp.form.typeExpression}" />
+        <property name="paramRegex" value="${imp.form.paramExpression}" />
+    </bean>
+
+    <bean id="imXMLParser" class="org.motechproject.mobile.imp.util.IncomingMessageXMLParserImpl">
+        <property name="messageParser" ref="imParser" />
+        <property name="separator" value="${imp.form.param.valueSparator}" />
+        <property name="delimiter" value="${imp.xform.param.delimiter}" />
+        <property name="formTypeTagName" value="${imp.xmlparser.formTypeTagName}" />
+        <property name="formNameTagName" value="${imp.xmlparser.formNameTagName}" />
+        <property name="oxdDateFormat" value="${imp.oxd.dateFormat}" />
+        <property name="oxdDateRegex" value="${imp.oxd.dateExpression}" />
+        <property name="impDateFormat" value="${imp.validator.dateFormat}" />
+        <property name="xmlUtil" ref="xmlUtil" />
+        <property name="formTypeLookup" >
+            <map>
+                <entry key="data_entry" value="Type"/>
+                <entry key="query" value="Query"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="formCmdAxn" scope="prototype" class="org.motechproject.mobile.imp.util.FormCommandAction">
+        <property name="formValidator" ref="imFormValidator" />
+        <property name="formProcessor" ref="formProcessor" />
+        <property name="parser" ref="imParser" />
+    </bean>
+
+    <bean id="qryCmdAxn" scope="prototype" class="org.motechproject.mobile.imp.util.QueryCommandAction">
+        <property name="senderFieldName" value="${imp.oxd.senderField}" />
+        <property name="formValidator" ref="imFormValidator" />
+        <property name="formProcessor" ref="formProcessor" />
+        <property name="parser" ref="imParser" />
+    </bean>
+
+    <bean id="xmlUtil" class="org.motechproject.mobile.imp.util.XMLUtil" />
+
+    <bean id="oxdFormDefService" name="oxdUserDefService,oxdStudyDefService"
+		class="org.motechproject.mobile.imp.serivce.oxd.FormDefinitionServiceImpl"
+		init-method="init">
+		<property name="oxdFormDefResources">
+			<list>
+				<!--<value>${imp.oxd.oxdFormDefsResource1}</value>
+				<value>${imp.oxd.oxdFormDefsResource2}</value>
+                <value>${imp.oxd.oxdFormDefsResource3}</value>-->
+			</list>
+		</property>
+	</bean>
+
+    <bean id="studyProcessor" class="org.motechproject.mobile.imp.serivce.oxd.StudyProcessor" scope="prototype"/>
+
+    <bean id="registrarClient"
+            class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
+            <property name="serviceInterface" value="org.motechproject.ws.server.RegistrarService" />
+            <property name="wsdlDocumentUrl"
+                    value="${registrar.webservice.wsdlUrl}" />
+            <property name="namespaceUri" value="${registrar.webservice.namespaceUri}" />
+            <property name="serviceName" value="RegistrarWebServiceService" />
+            <property name="portName" value="RegistrarWebServicePort" />
+            <property name="lookupServiceOnStartup" value="false" />
+    </bean>
+</beans>

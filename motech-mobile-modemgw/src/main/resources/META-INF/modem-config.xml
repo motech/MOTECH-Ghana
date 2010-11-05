@@ -1,0 +1,92 @@
+<!--
+
+    MOTECH PLATFORM OPENSOURCE LICENSE AGREEMENT
+
+    Copyright (c) 2010 The Trustees of Columbia University in the City of
+    New York and Grameen Foundation USA.  All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+    3. Neither the name of Grameen Foundation USA, Columbia University, or
+    their respective contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY GRAMEEN FOUNDATION USA, COLUMBIA UNIVERSITY
+    AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GRAMEEN FOUNDATION
+    USA, COLUMBIA UNIVERSITY OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+    OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="modemResponseMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="UNSENT">
+					<value type="org.motechproject.mobile.core.model.MStatus">PENDING</value>
+				</entry>
+				<entry key="SENT">
+					<value type="org.motechproject.mobile.core.model.MStatus">DELIVERED</value>
+				</entry>
+				<entry key="ERROR_BAD_NUMBER">
+					<value type="org.motechproject.mobile.core.model.MStatus">CANCELLED</value>
+				</entry>
+				<entry key="ERROR_BAD_FORMAT">
+					<value type="org.motechproject.mobile.core.model.MStatus">CANCELLED</value>
+				</entry>
+				<entry key="ERROR_GATEWAY_FAILURE">
+					<value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+				</entry>
+				<entry key="ERROR_NO_CREDIT">
+					<value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+				</entry>
+				<entry key="ERROR_GATEWAY_AUTH">
+					<value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+				</entry>
+				<entry key="ERROR_NO_ROUTE">
+					<value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+				</entry>
+				<entry key="ERROR_UNKNOWN">
+					<value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+				</entry>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="modemMessageHandler" class="org.motechproject.mobile.modemgw.ModemGatewayMessageHandlerImpl">
+		<property name="coreManager" ref="coreManager" />
+		<property name="responseMap" ref="modemResponseMap" />
+		<property name="statusMap" ref="modemResponseMap" />
+	</bean>
+
+	<bean id="modemGateway" class="org.motechproject.mobile.modemgw.ModemGatewayImpl" lazy-init="true">
+		<property name="manufacturer" value="MultiTech" />
+		<property name="comPort" value="COM4" />
+		<property name="acceptOutgoing" value="true" />
+		<property name="acceptIncoming" value="true" />
+		<property name="inboundService" ref="impService" />
+		<property name="messageHandler" ref="modemMessageHandler" />
+		<property name="statusStore">
+			<bean class="org.motechproject.mobile.omp.manager.utils.InMemoryMessageStatusStore" />
+		</property>
+	</bean>
+
+</beans>

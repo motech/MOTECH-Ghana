@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+
+    MOTECH PLATFORM OPENSOURCE LICENSE AGREEMENT
+
+    Copyright (c) 2010 The Trustees of Columbia University in the City of
+    New York and Grameen Foundation USA.  All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+    3. Neither the name of Grameen Foundation USA, Columbia University, or
+    their respective contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY GRAMEEN FOUNDATION USA, COLUMBIA UNIVERSITY
+    AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GRAMEEN FOUNDATION
+    USA, COLUMBIA UNIVERSITY OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+    OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-1">
+        <createTable tableName="gateway_request">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="0" name="obj_vesion" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_request_id" type="BIGINT"/>
+            <column name="request_details_id" type="BIGINT"/>
+            <column name="recipients_number" type="VARCHAR(255)"/>
+            <column name="date_sent" type="DATETIME"/>
+            <column name="date_from" type="DATETIME"/>
+            <column name="date_to" type="DATETIME"/>
+            <column name="try_number" type="INT"/>
+            <column name="message" type="TEXT"/>
+            <column name="request_id" type="VARCHAR(255)"/>
+            <column name="message_status" type="VARCHAR(255)"/>
+            <column  name="last_modified" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-2">
+        <createTable tableName="gateway_request_details">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="0" name="obj_vesion" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_type" type="VARCHAR(255)"/>
+            <column name="message" type="TEXT"/>
+            <column name="number_of_pages" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-3">
+        <createTable tableName="gateway_response">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="0" name="obj_vesion" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="gateway_message_id" type="VARCHAR(255)"/>
+            <column name="request_id" type="VARCHAR(255)"/>
+            <column name="recipient_number" type="VARCHAR(255)"/>
+            <column name="message_status" type="VARCHAR(255)"/>
+            <column name="response_text" type="TEXT"/>
+            <column name="date_created" type="DATETIME"/>
+            <column  name="last_modified" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-4">
+        <createTable tableName="incoming_message">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="0" name="obj_vesion" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="incoming_message_session_id" type="BIGINT"/>
+            <column name="incoming_message_form_id" type="BIGINT"/>
+            <column name="incoming_message_response_id" type="BIGINT"/>
+            <column name="message_content" type="TEXT"/>
+            <column name="date_created" type="DATETIME"/>
+            <column  name="last_modified" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_status" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-5">
+        <createTable tableName="incoming_message_form">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="0" name="obj_vesion" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="incoming_message_form_definition_id" type="BIGINT"/>
+            <column name="date_created" type="DATETIME"/>
+            <column  name="last_modified" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_form_status" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-6">
+        <createTable tableName="incoming_message_form_definition">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="0" name="obj_vesion" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="form_code" type="VARCHAR(100)"/>
+            <column name="type" type="VARCHAR(255)"/>
+            <column name="duplicatable" type="VARCHAR(255)"/>
+            <column name="date_created" type="DATETIME"/>
+            <column name="send_response" type="BIT"/>
+            <column name="last_modified" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-7">
+        <createTable tableName="incoming_message_form_parameter">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="0" name="obj_vesion" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="incoming_message_from_message_definition_id" type="BIGINT"/>
+            <column name="incoming_message_form_id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(100)"/>
+            <column name="value" type="VARCHAR(100)"/>
+            <column name="err_code" type="INT"/>
+            <column name="err_text" type="VARCHAR(200)"/>
+            <column name="date_created" type="DATETIME"/>
+            <column name="last_modified" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_form_status" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-8">
+        <createTable tableName="incoming_message_form_parameter_definition">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="0" name="obj_vesion" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="incoming_message_form_definition_id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="parameter_type" type="VARCHAR(50)"/>
+            <column name="length" type="INT"/>
+            <column name="required" type="BIT"/>
+            <column name="date_created" type="DATETIME"/>
+            <column name="last_modified" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-9">
+        <createTable tableName="incoming_message_response">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="0" name="obj_vesion" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="response_content" type="TEXT"/>
+            <column name="date_created" type="DATETIME"/>
+            <column name="last_modified" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_status" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-10">
+        <createTable tableName="incoming_message_session">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="0" name="obj_vesion" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="requester_phone" type="VARCHAR(20)"/>
+            <column name="form_code" type="VARCHAR(100)"/>
+            <column name="date_started" type="DATETIME"/>
+            <column name="date_ended" type="DATETIME"/>
+            <column name="last_activity" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_session_status" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" dbms="hsqldb" author="joseph (generated)" id="1282409084036-11a">
+        <createTable tableName="LANGUAGE">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="code" type="VARCHAR(10)"/>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="description" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" dbms="mysql" author="joseph (generated)" id="1282409084036-11b">
+        <createTable tableName="language">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="code" type="VARCHAR(10)"/>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="description" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-12">
+        <createTable tableName="message_request">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="0" name="obj_vesion" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="request_id" type="VARCHAR(255)"/>
+            <column name="request_details_id" type="BIGINT"/>
+            <column name="notification_type_id" type="BIGINT"/>
+            <column name="language_id" type="BIGINT"/>
+            <column name="message_type" type="VARCHAR(255)"/>
+            <column name="schedule" type="DATE"/>
+            <column name="p113_nData" type="VARCHAR(255)"/>
+            <column name="recipient_number" type="VARCHAR(255)"/>
+            <column name="phone_number_type" type="VARCHAR(255)"/>
+            <column name="recipient_id" type="VARCHAR(255)"/>
+            <column name="date_from" type="DATETIME"/>
+            <column name="date_to" type="DATETIME"/>
+            <column name="date_created" type="DATETIME"/>
+            <column name="date_processed" type="DATETIME"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="max_try_number" type="INT"/>
+            <column name="days_attempted" type="INT"/>
+            <column name="last_modified" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-13">
+        <createTable tableName="message_template">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="0" name="obj_vesion" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="DATETIME"/>
+            <column name="message_type" type="VARCHAR(255)"/>
+            <column name="template" type="TEXT"/>
+            <column name="notification_type" type="BIGINT"/>
+            <column name="language" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-14">
+        <createTable tableName="notification_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(45)"/>
+            <column name="description" type="VARCHAR(200)"/>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-15">
+        <createTable tableName="personalization_info">
+            <column name="requestId" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-16">
+        <addPrimaryKey columnNames="requestId, name, value" tableName="personalization_info"/>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-17">
+        <createIndex indexName="FK81205B94893C52A" tableName="gateway_request" unique="false">
+            <column name="message_request_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-18">
+        <createIndex indexName="FK81205B94C79DBF80" tableName="gateway_request" unique="false">
+            <column name="request_details_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-19">
+        <createIndex indexName="FKA612CBDC1A05AB1D" tableName="gateway_response" unique="false">
+            <column name="message_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-20">
+        <createIndex indexName="FKA1B318EEBCC820C9" tableName="incoming_message" unique="false">
+            <column name="incoming_message_session_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-21">
+        <createIndex indexName="FKA1B318EECB919A2B" tableName="incoming_message" unique="false">
+            <column name="incoming_message_response_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-22">
+        <createIndex indexName="FKA1B318EEDF41FE4B" tableName="incoming_message" unique="false">
+            <column name="incoming_message_form_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-23">
+        <createIndex indexName="incoming_message_response_id" tableName="incoming_message" unique="true">
+            <column name="incoming_message_response_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-24">
+        <createIndex indexName="FK6081175AA3990D6" tableName="incoming_message_form" unique="false">
+            <column name="incoming_message_form_definition_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-25">
+        <createIndex indexName="form_code" tableName="incoming_message_form_definition" unique="true">
+            <column name="form_code"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-26">
+        <createIndex indexName="FK742C315F6C6BD0C1" tableName="incoming_message_form_parameter" unique="false">
+            <column name="incoming_message_from_message_definition_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-27">
+        <createIndex indexName="FK742C315FDF41FE4B" tableName="incoming_message_form_parameter" unique="false">
+            <column name="incoming_message_form_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-28">
+        <createIndex indexName="FK584F1833AA3990D6" tableName="incoming_message_form_parameter_definition" unique="false">
+            <column name="incoming_message_form_definition_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" dbms="hsqldb" author="joseph (generated)" id="1282409084036-29a">
+        <createIndex indexName="code" tableName="LANGUAGE" unique="true">
+            <column name="code"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" dbms="mysql" author="joseph (generated)" id="1282409084036-29b">
+        <createIndex indexName="code" tableName="language" unique="true">
+            <column name="code"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-30">
+        <createIndex indexName="FKF9A8A25710567610" tableName="message_request" unique="false">
+            <column name="notification_type_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-31">
+        <createIndex indexName="FKF9A8A257AA9B8299" tableName="message_request" unique="false">
+            <column name="language_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-32">
+        <createIndex indexName="FKF9A8A257C79DBF80" tableName="message_request" unique="false">
+            <column name="request_details_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-33">
+        <createIndex indexName="FK41715B29084168F" tableName="message_template" unique="false">
+            <column name="language"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-34">
+        <createIndex indexName="FK41715B2D9AA1B32" tableName="message_template" unique="false">
+            <column name="notification_type"/>
+        </createIndex>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="1282409084036-35">
+        <createIndex indexName="FK7233DE922CB4111" tableName="personalization_info" unique="false">
+            <column name="requestId"/>
+        </createIndex>
+    </changeSet>
+
+
+
+
+    <changeSet context="setup" dbms="mysql" id="1282409084036-36" author="joseph">
+        <sql>ALTER TABLE gateway_request change last_modified last_modified TIMESTAMP </sql>
+        <sql>ALTER TABLE gateway_request MODIFY last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP </sql>
+    </changeSet>
+
+    <changeSet context="setup" dbms="mysql" id="1282409084036-37" author="joseph">
+        <sql>ALTER TABLE gateway_response change last_modified last_modified TIMESTAMP </sql>
+        <sql>ALTER TABLE gateway_response MODIFY last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP </sql>
+    </changeSet>
+
+    <changeSet context="setup" dbms="mysql" id="1282409084036-38" author="joseph">
+        <sql>ALTER TABLE incoming_message change last_modified last_modified TIMESTAMP </sql>
+        <sql>ALTER TABLE incoming_message MODIFY last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP </sql>
+    </changeSet>
+
+    <changeSet context="setup" dbms="mysql" id="1282409084036-39" author="joseph">
+        <sql>ALTER TABLE incoming_message_form change last_modified last_modified TIMESTAMP </sql>
+        <sql>ALTER TABLE incoming_message_form MODIFY last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP </sql>
+    </changeSet>
+
+    <changeSet context="setup" dbms="mysql" id="1282409084036-40" author="joseph">
+        <sql>ALTER TABLE incoming_message_form_definition change last_modified last_modified TIMESTAMP </sql>
+        <sql>ALTER TABLE incoming_message_form_definition MODIFY last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP </sql>
+    </changeSet>
+
+    <changeSet context="setup" dbms="mysql" id="1282409084036-41" author="joseph">
+        <sql>ALTER TABLE incoming_message_form_parameter change last_modified last_modified TIMESTAMP </sql>
+        <sql>ALTER TABLE incoming_message_form_parameter MODIFY last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP </sql>
+    </changeSet>
+
+    <changeSet context="setup" dbms="mysql" id="1282409084036-42" author="joseph">
+        <sql>ALTER TABLE incoming_message_form_parameter_definition change last_modified last_modified TIMESTAMP </sql>
+        <sql>ALTER TABLE incoming_message_form_parameter_definition MODIFY last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP </sql>
+    </changeSet>
+
+    <changeSet context="setup" dbms="mysql" id="1282409084036-43" author="joseph">
+        <sql>ALTER TABLE incoming_message_response change last_modified last_modified TIMESTAMP </sql>
+        <sql>ALTER TABLE incoming_message_response MODIFY last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP </sql>
+    </changeSet>
+
+    <changeSet context="setup" dbms="mysql" id="1282409084036-44" author="joseph">
+        <sql>ALTER TABLE incoming_message_session change last_activity last_activity TIMESTAMP </sql>
+        <sql>ALTER TABLE incoming_message_session MODIFY last_activity TIMESTAMP DEFAULT CURRENT_TIMESTAMP </sql>
+    </changeSet>
+
+    <changeSet context="setup" dbms="mysql" id="1282409084036-45" author="joseph">
+        <sql>ALTER TABLE message_request change last_modified last_modified TIMESTAMP </sql>
+        <sql>ALTER TABLE message_request MODIFY last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP </sql>
+    </changeSet>
+
+
+
+
+    <changeSet context="setup" dbms="hsqldb" id="1282409084036-46" author="joseph">
+        <modifyColumn tableName="gateway_request">
+            <column name="last_modified" type="TIMESTAMP" defaultValueDate="CURRENT_TIMESTAMP" />
+        </modifyColumn>
+    </changeSet>
+
+    <changeSet context="setup" dbms="hsqldb" id="1282409084036-47" author="joseph">
+        <modifyColumn tableName="gateway_response">
+            <column name="last_modified" type="TIMESTAMP" defaultValueDate="CURRENT_TIMESTAMP" />
+        </modifyColumn>
+    </changeSet>
+
+    <changeSet context="setup" dbms="hsqldb" id="1282409084036-48" author="joseph">
+        <modifyColumn tableName="incoming_message">
+            <column name="last_modified" type="TIMESTAMP" defaultValueDate="CURRENT_TIMESTAMP" />
+        </modifyColumn>
+    </changeSet>
+
+    <changeSet context="setup" dbms="hsqldb" id="1282409084036-49" author="joseph">
+        <modifyColumn tableName="incoming_message_form">
+            <column name="last_modified" type="TIMESTAMP" defaultValueDate="CURRENT_TIMESTAMP" />
+        </modifyColumn>
+    </changeSet>
+
+    <changeSet context="setup" dbms="hsqldb" id="1282409084036-50" author="joseph">
+        <modifyColumn tableName="incoming_message_form_definition">
+            <column name="last_modified" type="TIMESTAMP" defaultValueDate="CURRENT_TIMESTAMP" />
+        </modifyColumn>
+    </changeSet>
+
+    <changeSet context="setup" dbms="hsqldb" id="1282409084036-51" author="joseph">
+        <modifyColumn tableName="incoming_message_form_parameter">
+            <column name="last_modified" type="TIMESTAMP" defaultValueDate="CURRENT_TIMESTAMP" />
+        </modifyColumn>
+        
+    </changeSet>
+
+    <changeSet context="setup" dbms="hsqldb" id="1282409084036-52" author="joseph">
+        <modifyColumn tableName="incoming_message_form_parameter_definition">
+            <column name="last_modified" type="TIMESTAMP" defaultValueDate="CURRENT_TIMESTAMP" />
+        </modifyColumn>
+    </changeSet>
+
+    <changeSet context="setup" dbms="hsqldb" id="1282409084036-53" author="joseph">
+        <modifyColumn tableName="incoming_message_response">
+            <column name="last_modified" type="TIMESTAMP" defaultValueDate="CURRENT_TIMESTAMP" />
+        </modifyColumn>
+    </changeSet>
+
+    <changeSet context="setup" dbms="hsqldb" id="1282409084036-54" author="joseph">
+        <modifyColumn tableName="incoming_message_session">
+            <column name="last_activity" type="TIMESTAMP" defaultValueDate="CURRENT_TIMESTAMP" />
+        </modifyColumn>
+    </changeSet>
+
+    <changeSet context="setup" dbms="hsqldb" id="1282409084036-55" author="joseph">
+        <modifyColumn tableName="message_request">
+            <column name="last_modified" type="TIMESTAMP" defaultValueDate="CURRENT_TIMESTAMP" />
+        </modifyColumn>
+    </changeSet>
+
+
+
+
+
+
+</databaseChangeLog>

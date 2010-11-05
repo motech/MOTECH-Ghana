@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+
+    MOTECH PLATFORM OPENSOURCE LICENSE AGREEMENT
+
+    Copyright (c) 2010 The Trustees of Columbia University in the City of
+    New York and Grameen Foundation USA.  All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+    3. Neither the name of Grameen Foundation USA, Columbia University, or
+    their respective contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY GRAMEEN FOUNDATION USA, COLUMBIA UNIVERSITY
+    AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GRAMEEN FOUNDATION
+    USA, COLUMBIA UNIVERSITY OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+    OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+<study description="For testing Motech M5" name="Motech M5 Test">
+<form description="Caring for Baby" name="BabyCare">
+<version description="" name="v1">
+<xform>&lt;xf:xforms xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xf:model&gt;
+    &lt;xf:instance id="babycare"&gt;
+      &lt;babycare name="BabyCare-v1" id="2"&gt;
+        &lt;baby_name/&gt;
+        &lt;baby_age/&gt;
+        &lt;formtype&gt;data_entry&lt;/formtype&gt;
+      &lt;/babycare&gt;
+    &lt;/xf:instance&gt;
+    &lt;xf:bind id="baby_name" nodeset="/babycare/baby_name" type="xsd:string"/&gt;
+    &lt;xf:bind id="baby_age" nodeset="/babycare/baby_age" type="xsd:int"/&gt;
+    &lt;xf:bind id="formtype" nodeset="/babycare/formtype" type="xsd:string" visible="false()"/&gt;
+  &lt;/xf:model&gt;
+  &lt;xf:group id="1"&gt;
+    &lt;xf:label&gt;Page1&lt;/xf:label&gt;
+    &lt;xf:input bind="baby_name"&gt;
+      &lt;xf:label&gt;Baby's name?&lt;/xf:label&gt;
+      &lt;xf:hint&gt;name&lt;/xf:hint&gt;
+    &lt;/xf:input&gt;
+    &lt;xf:input bind="baby_age"&gt;
+      &lt;xf:label&gt;Baby's Age&lt;/xf:label&gt;
+      &lt;xf:hint&gt;Baby's age&lt;/xf:hint&gt;
+    &lt;/xf:input&gt;
+    &lt;xf:input bind="formtype"&gt;
+      &lt;xf:label&gt;formtype&lt;/xf:label&gt;
+    &lt;/xf:input&gt;
+  &lt;/xf:group&gt;
+&lt;/xf:xforms&gt;
+</xform>
+<layout>&lt;Form id="2"&gt;
+  &lt;Page Text="Page1" Binding="Page1" Width="100%" Height="369px" backgroundColor=""&gt;
+    &lt;Item WidgetType="Label" Text="Question1" HelpText="Question1" Binding="question1" Left="20px" Top="20px" TabIndex="0" fontFamily="Verdana,'Lucida Grande','Trebuchet MS',Arial,Sans-Serif"/&gt;
+    &lt;Item WidgetType="TextBox" HelpText="name" Binding="baby_name" Left="110px" Top="20px" Width="200px" Height="25px" TabIndex="1" fontFamily="Verdana,'Lucida Grande','Trebuchet MS',Arial,Sans-Serif"/&gt;
+    &lt;Item WidgetType="Button" Text="Submit" HelpText="submit" Binding="submit" Left="22px" Top="148px" Width="70px" Height="30px" TabIndex="0" fontFamily="Verdana,'Lucida Grande','Trebuchet MS',Arial,Sans-Serif"/&gt;
+    &lt;Item WidgetType="Button" Text="Cancel" HelpText="cancel" Binding="cancel" Left="92px" Top="147px" Width="70px" Height="30px" TabIndex="0" fontFamily="Verdana,'Lucida Grande','Trebuchet MS',Arial,Sans-Serif"/&gt;
+    &lt;Item WidgetType="Label" Text="Baby's Age" HelpText="Baby's age" Binding="baby_age" Left="14px" Top="55px" TabIndex="0" fontFamily="Verdana,'Lucida Grande','Trebuchet MS',Arial,Sans-Serif"/&gt;
+    &lt;Item WidgetType="TextBox" HelpText="Baby's age" Binding="baby_age" Left="110px" Top="53px" Width="200px" Height="25px" TabIndex="5" fontFamily="Verdana,'Lucida Grande','Trebuchet MS',Arial,Sans-Serif"/&gt;
+  &lt;/Page&gt;
+&lt;/Form&gt;
+</layout>
+<versionText locale="en">
+<xform>&lt;xform id="2"&gt;&#13;
+    &lt;text xpath="xforms/model/instance/babycare[@name]" value="BabyCare-v1"/&gt;&#13;
+    &lt;text xpath="xforms/group[@id='1']/label" value="Page1"/&gt;&#13;
+    &lt;text xpath="xforms/group[@id='1']/input[@bind='baby_name']/label" value="Baby's name?"/&gt;&#13;
+    &lt;text xpath="xforms/group[@id='1']/input[@bind='baby_name']/hint" value="name"/&gt;&#13;
+    &lt;text xpath="xforms/group[@id='1']/input[@bind='baby_age']/label" value="Baby's Age"/&gt;&#13;
+    &lt;text xpath="xforms/group[@id='1']/input[@bind='baby_age']/hint" value="Baby's age"/&gt;&#13;
+    &lt;text xpath="xforms/group[@id='1']/input[@bind='formtype']/label" value="formtype"/&gt;&#13;
+  &lt;/xform&gt;</xform>
+<layout>&lt;Form id="2"&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1'][@Text]" value="Page1"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='question1' and @WidgetType='Label'][@Text]" value="Question1"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='question1' and @WidgetType='Label'][@HelpText]" value="Question1"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='question1' and @WidgetType='Label'][@Top]" value="20px"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='question1' and @WidgetType='Label'][@Left]" value="20px"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='baby_name' and @WidgetType='TextBox'][@HelpText]" value="name"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='baby_name' and @WidgetType='TextBox'][@Top]" value="20px"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='baby_name' and @WidgetType='TextBox'][@Left]" value="110px"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='baby_name' and @WidgetType='TextBox'][@Width]" value="200px"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='submit' and @WidgetType='Button'][@Text]" value="Submit"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='submit' and @WidgetType='Button'][@HelpText]" value="submit"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='submit' and @WidgetType='Button'][@Top]" value="148px"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='submit' and @WidgetType='Button'][@Left]" value="22px"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='submit' and @WidgetType='Button'][@Width]" value="70px"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='cancel' and @WidgetType='Button'][@Text]" value="Cancel"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='cancel' and @WidgetType='Button'][@HelpText]" value="cancel"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='cancel' and @WidgetType='Button'][@Top]" value="147px"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='cancel' and @WidgetType='Button'][@Left]" value="92px"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='cancel' and @WidgetType='Button'][@Width]" value="70px"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='baby_age' and @WidgetType='Label'][@Text]" value="Baby's Age"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='baby_age' and @WidgetType='Label'][@HelpText]" value="Baby's age"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='baby_age' and @WidgetType='Label'][@Top]" value="55px"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='baby_age' and @WidgetType='Label'][@Left]" value="14px"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='baby_age' and @WidgetType='TextBox'][@HelpText]" value="Baby's age"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='baby_age' and @WidgetType='TextBox'][@Top]" value="53px"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='baby_age' and @WidgetType='TextBox'][@Left]" value="110px"/&gt;&#13;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='baby_age' and @WidgetType='TextBox'][@Width]" value="200px"/&gt;&#13;
+  &lt;/Form&gt;</layout>
+</versionText>
+</version>
+</form>
+</study>

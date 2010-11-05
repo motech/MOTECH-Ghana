@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    MOTECH PLATFORM OPENSOURCE LICENSE AGREEMENT
+
+    Copyright (c) 2010 The Trustees of Columbia University in the City of
+    New York and Grameen Foundation USA.  All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+    3. Neither the name of Grameen Foundation USA, Columbia University, or
+    their respective contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY GRAMEEN FOUNDATION USA, COLUMBIA UNIVERSITY
+    AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GRAMEEN FOUNDATION
+    USA, COLUMBIA UNIVERSITY OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+    OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.motechproject.mobile.core.model">
+  <typedef class="org.motechproject.mobile.core.util.StringEnumUserType" name="mStatus">
+    <param name="enumClassname">org.motechproject.mobile.core.model.MStatus</param>
+  </typedef>
+  <typedef class="org.motechproject.mobile.core.util.StringEnumUserType" name="messageType">
+    <param name="enumClassname">org.motechproject.mobile.core.model.MessageType</param>
+  </typedef>
+  <class name="MessageRequestImpl" table="message_request">
+    <id column="id" name="id" type="long">
+      <generator class="assigned"/>
+    </id>
+    <version name="version">
+      <column default="0" name="obj_vesion" sql-type="int"/>
+    </version>
+    <property column="request_id" name="requestId" type="string"/>
+    <many-to-one class="GatewayRequestDetailsImpl" column="request_details_id" name="gatewayRequestDetails"/>
+    <many-to-one class="NotificationTypeImpl" column="notification_type_id" name="notificationType"/>
+    <many-to-one class="LanguageImpl" column="language_id" name="language"/>
+    <property column="message_type" name="messageType" type="messageType"/>
+    <property column="schedule" name="schedule" type="date"/>
+    <property column="p113_nData" name="p13nData" type="string"/>
+    <property column="recipient_number" name="recipientNumber" type="string"/>
+    <property column="phone_number_type" name="phoneNumberType" type="string"/>
+    <property column="recipient_id" name="recipientId" type="string"/>
+    <property column="date_from" name="dateFrom" type="timestamp"/>
+    <property column="date_to" name="dateTo" type="timestamp"/>
+    <property column="date_created" name="dateCreated" type="timestamp"/>
+    <property column="date_processed" name="dateProcessed" type="timestamp"/>
+    <property access="field" column="status" name="status" type="mStatus"/>
+    <property column="max_try_number" name="tryNumber"/>
+    <property column="days_attempted" name="daysAttempted"/>
+    <property generated="always" insert="false" name="lastModified" update="false">
+      <column default="current_timestamp" name="last_modified" sql-type="timestamp"/>
+    </property>
+    <set name="persInfos" table="personalization_info">
+      <key column="requestId"/>
+      <composite-element class="org.motechproject.ws.NameValuePair">
+        <property column="name" name="name" not-null="true" type="string"/>
+        <property column="value" name="value" not-null="true" type="string"/>
+      </composite-element>
+    </set>
+  </class>
+</hibernate-mapping>

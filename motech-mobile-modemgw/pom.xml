@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.motechproject</groupId>
+		<artifactId>motech-mobile</artifactId>
+		<version>0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>org.motechproject.mobile</groupId>
+	<artifactId>motech-mobile-modemgw</artifactId>
+	<version>0.1-SNAPSHOT</version>
+	<name>MoTeCH Mobile Modem Gateway</name>
+	<description>A gateway manager implementation based on SMSLib.</description>
+	<dependencies>
+		<dependency>
+			<groupId>smslib</groupId>
+			<artifactId>smslib-all</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.motechproject.mobile</groupId>
+			<artifactId>motech-mobile-omp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.motechproject.mobile</groupId>
+			<artifactId>motech-mobile-imp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.comm</groupId>
+			<artifactId>comm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

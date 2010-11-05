@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    MOTECH PLATFORM OPENSOURCE LICENSE AGREEMENT
+
+    Copyright (c) 2010 The Trustees of Columbia University in the City of
+    New York and Grameen Foundation USA.  All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+    3. Neither the name of Grameen Foundation USA, Columbia University, or
+    their respective contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY GRAMEEN FOUNDATION USA, COLUMBIA UNIVERSITY
+    AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GRAMEEN FOUNDATION
+    USA, COLUMBIA UNIVERSITY OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+    OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.0">
+	
+	<!-- 
+		XML schema describing the documents that can be exchanged between MoTeCH Server
+		and the INTELLIVR system
+	-->
+
+
+	<!-- 
+
+		Document from INTELLIVR to MoTeCH requesting the IVR config for one user
+
+		Example:
+
+		<getIVRConfigRequest>
+			<userid>12345</userid>
+		</getIVRConfigRequest>
+
+	-->
+	<xsd:element name="getIVRConfigRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="userid" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- 
+		Wrapper for most documents from/to INTELLIVR system
+	-->
+
+	<xsd:element name="AutoCreate">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:choice>
+					<xsd:element name="Response" type="responseType"/>
+					<xsd:element name="Request" type="requestType"/>
+					<xsd:element name="Report" type="reportType"/>
+				</xsd:choice>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- 
+
+		Sent to INTELLIVR from MoTeCH to initate outbound call
+
+		<AutoCreate>
+			<Request>
+				<ApiId>abcdef</ApiId>
+				<Callee>+2345667898495</Callee>
+				<Method>ivroriginate</Method>
+				<vxml>
+					<prompt>
+						<break time="1s"/>
+						<audio src="message1.wav"/>
+						<break time="1s"/>
+						<audio src="message2.wav"/>
+						<break time="1s"/> 
+					</prompt>
+				</vxml>
+
+				<Language>English</Language>
+				<Tree>MainMenu</Tree>
+				<ReportUrl>http://192.168.1.252/postback</ReportUrl>
+				<Private>IDENTIFIER</Private>
+
+			</Request>
+		</AutoCreate>
+
+	-->
+
+	<xsd:complexType name="requestType">
+		<xsd:sequence>
+			<xsd:element name="ApiId" type="xsd:string"/>
+			<xsd:element name="Callee" type="xsd:string"/>
+			<xsd:element name="Method" type="xsd:string"/>
+			<xsd:group ref="ivrConfigGroup"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!--
+
+		Sent from INTELLIVR to MoTeCH to report status of a call
+		
+		<AutoCreate>
+			<Report>
+				<Status>COMPLETED</Status>
+				<Callee>2334921920193</Callee>
+				<Duration>43</Duration>
+				<ConnectTime>2010-10-01T00:00:00.000Z</ConnectTime>
+				<DisconnectTime>2010-10-01T00:00:43.000Z</DisconnectTime>
+				<INTELLIVREntryCount>4</INTELLIVREntryCount>
+				<Private>IDENTIFIER</Private>
+				<INTELLIVREntry menu="message1.wav" entrytime="2010-10-01T00:00:01.000Z" duration="7" keypress="" file=""/>
+				<INTELLIVREntry menu="message2.wav" entrytime="2010-10-01T00:00:08.000Z" duration="8" keypress="" file=""/>
+				<INTELLIVREntry menu="main_menu" entrytime="2010-10-01T00:00:16.000Z" duration="8" keypress="2" file=""/>
+				<INTELLIVREntry menu="pregnancy_info" entrytime="2010-10-01T00:00:24.000Z" duration="10" keypress="1" file=""/>
+				<INTELLIVREntry menu="feedback_section" entrytime="2010-10-01T00:00:34.000Z" duration="10" keypress="" file="http://ivr/file.wav"/>
+			</Report>
+		</AutoCreate>
+
+	-->
+
+	<xsd:complexType name="reportType">
+		<xsd:sequence>
+			<xsd:element name="Status" type="reportStatusType"/>		
+			<xsd:element name="Callee" type="xsd:string"/>
+			<xsd:element name="Duration" type="xsd:int"/>
+			<xsd:element name="ConnectTime" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="DisconnectTime" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="INTELLIVREntryCount" type="xsd:int"/>
+			<xsd:element name="Private" type="xsd:string"/>
+			<xsd:element name="INTELLIVREntry" type="ivrEntryType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>	
+	</xsd:complexType>
+
+	<xsd:simpleType name="reportStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="COMPLETED"/>
+			<xsd:enumeration value="REJECTED"/>
+			<xsd:enumeration value="BUSY"/>
+			<xsd:enumeration value="CONGESTION"/>
+			<xsd:enumeration value="NOANSWER"/>
+			<xsd:enumeration value="INTERNALERROR"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="ivrEntryType">
+		<xsd:attribute name="menu" type="xsd:string"/>
+		<xsd:attribute name="entrytime" type="xsd:dateTime"/>
+		<xsd:attribute name="duration" type="xsd:int"/>
+		<xsd:attribute name="keypress" type="xsd:string"/>
+		<xsd:attribute name="file" type="xsd:string"/>
+
+	</xsd:complexType>
+
+	<!-- 
+
+		Sent from MoTeCH to INTELLIVR in response to getIVRConfigRequest document
+
+		Example:
+		
+		<?xml version="1.0" encoding="UTF-8"?>
+		<AutoCreate>
+			<Response>
+				<Status>OK</Status>
+				<vxml>
+					<prompt>
+						<break time="1s"/>
+						<audio src="message1.wav"/>
+						<break time="1s"/>
+						<audio src="message2.wav"/>
+						<break time="1s"/>
+					</prompt>
+				</vxml>
+				<Language>English</Language>
+				<Tree>Main Menu</Tree>
+				<ReportUrl>http://192.168.1.252/postback</ReportUrl>
+				<Private>IDENTIFIER</Private>
+			</Response>
+		</AutoCreate>
+
+		<AutoCreate>
+			<Response>
+				<Status>OK</Status>
+				<ErrorCode>001</ErrorCode>
+				<ErrorString>Error String</ErrorString>
+			</Response>
+		</AutoCreate>
+
+	-->
+
+
+	<xsd:complexType name="responseType">
+		<xsd:sequence>
+			<xsd:element name="Status" type="statusType"/>
+			<xsd:choice>
+				<xsd:group ref="errorDetailsGroup"/>
+				<xsd:group ref="ivrConfigGroup"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:group name="errorDetailsGroup">
+		<xsd:sequence>
+			<xsd:element name="ErrorCode" type="errorCodeType"/>
+			<xsd:element name="ErrorString" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:group>
+	
+	<xsd:complexType name="breakType">
+		<xsd:attribute name="time" type="xsd:string" use="required"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="audioType">
+		<xsd:attribute name="src" type="xsd:string" use="required"/>
+	</xsd:complexType>
+
+	<xsd:simpleType name="statusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="OK"/>
+			<xsd:enumeration value="ERROR"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="errorCodeType">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<jxb:typesafeEnumClass>
+					<jxb:typesafeEnumMember value="000" name="MOTECH_UNKNOWN_ERROR"/>
+					<jxb:typesafeEnumMember value="001" name="MOTECH_MALFORMED_XML"/>
+					<jxb:typesafeEnumMember value="002" name="MOTECH_INVALID_USER_ID"/>
+					<jxb:typesafeEnumMember value="0000" name="IVR_UNKNOWN_ERROR"/>
+					<jxb:typesafeEnumMember value="0001" name="IVR_NO_ACTION"/>
+					<jxb:typesafeEnumMember value="0002" name="IVR_MALFORMED_XML"/>
+					<jxb:typesafeEnumMember value="0003" name="IVR_INVALID_SOUND_FILENAME_FORMAT"/>
+					<jxb:typesafeEnumMember value="0004" name="IVR_INVALID_URL_FORMAT"/>
+					<jxb:typesafeEnumMember value="0005" name="IVR_UNSUPPORTED_REPORT_TYPE"/>
+					<jxb:typesafeEnumMember value="0006" name="IVR_INVALID_API_ID"/>
+					<jxb:typesafeEnumMember value="0007" name="IVR_INVALID_TREE"/>
+					<jxb:typesafeEnumMember value="0008" name="IVR_INVALID_LANGUAGE"/>
+					<jxb:typesafeEnumMember value="0009" name="IVR_INVALID_METHOD"/>
+					<jxb:typesafeEnumMember value="0010" name="IVR_INVALID_CALLEE"/>
+					<jxb:typesafeEnumMember value="0011" name="IVR_BAD_REQUEST"/>
+				</jxb:typesafeEnumClass>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="000"/>
+			<xsd:enumeration value="001"/>
+			<xsd:enumeration value="002"/>
+			<xsd:enumeration value="0000"/>
+			<xsd:enumeration value="0001"/>
+			<xsd:enumeration value="0002"/>
+			<xsd:enumeration value="0003"/>
+			<xsd:enumeration value="0004"/>
+			<xsd:enumeration value="0005"/>
+			<xsd:enumeration value="0006"/>
+			<xsd:enumeration value="0007"/>
+			<xsd:enumeration value="0008"/>
+			<xsd:enumeration value="0009"/>
+			<xsd:enumeration value="0010"/>
+			<xsd:enumeration value="0011"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+	<!-- 
+
+		IVR Config Type - common group of elements used above
+
+	-->
+	<xsd:group name="ivrConfigGroup">
+		<xsd:sequence>
+			<xsd:element name="vxml">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="prompt">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:choice minOccurs="0" maxOccurs="unbounded">
+										<xsd:element name="audio" type="audioType"/>
+										<xsd:element name="break" type="breakType"/>
+									</xsd:choice>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Language" type="xsd:string"/>
+			<xsd:element name="Tree" type="xsd:string"/>
+			<xsd:element name="ReportUrl" type="xsd:anyURI"/>
+			<xsd:element name="Private" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:group>
+
+</xsd:schema>
+

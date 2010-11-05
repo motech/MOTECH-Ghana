@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+
+    MOTECH PLATFORM OPENSOURCE LICENSE AGREEMENT
+
+    Copyright (c) 2010 The Trustees of Columbia University in the City of
+    New York and Grameen Foundation USA.  All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+    3. Neither the name of Grameen Foundation USA, Columbia University, or
+    their respective contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY GRAMEEN FOUNDATION USA, COLUMBIA UNIVERSITY
+    AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GRAMEEN FOUNDATION
+    USA, COLUMBIA UNIVERSITY OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+    OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+<study description="A study to test some features of OXD" name="Test Study">
+<form description="A form for testing" name="Test Form">
+<version description="" name="v1">
+<xform>&lt;xf:xforms xmlns:xf="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xf:model&gt;
+    &lt;xf:instance id="test_study_test_form_v1"&gt;
+      &lt;test_study_test_form_v1 name="Test Form_v1" id="66"&gt;
+        &lt;question2/&gt;
+      &lt;/test_study_test_form_v1&gt;
+    &lt;/xf:instance&gt;
+    &lt;xf:bind id="question2" nodeset="/test_study_test_form_v1/question2" type="xsd:string"/&gt;
+  &lt;/xf:model&gt;
+  &lt;xf:group id="2"&gt;
+    &lt;xf:label&gt;Page2&lt;/xf:label&gt;
+    &lt;xf:select bind="question2"&gt;
+      &lt;xf:label&gt;Question2&lt;/xf:label&gt;
+      &lt;xf:item id="option1"&gt;
+        &lt;xf:label&gt;Option1&lt;/xf:label&gt;
+        &lt;xf:value&gt;option1&lt;/xf:value&gt;
+      &lt;/xf:item&gt;
+      &lt;xf:item id="option2"&gt;
+        &lt;xf:label&gt;Option2&lt;/xf:label&gt;
+        &lt;xf:value&gt;option2&lt;/xf:value&gt;
+      &lt;/xf:item&gt;
+      &lt;xf:item id="option3"&gt;
+        &lt;xf:label&gt;Option3&lt;/xf:label&gt;
+        &lt;xf:value&gt;option3&lt;/xf:value&gt;
+      &lt;/xf:item&gt;
+      &lt;xf:item id="option4"&gt;
+        &lt;xf:label&gt;Option4&lt;/xf:label&gt;
+        &lt;xf:value&gt;option4&lt;/xf:value&gt;
+      &lt;/xf:item&gt;
+      &lt;xf:item id="option5"&gt;
+        &lt;xf:label&gt;Option5&lt;/xf:label&gt;
+        &lt;xf:value&gt;option5&lt;/xf:value&gt;
+      &lt;/xf:item&gt;
+    &lt;/xf:select&gt;
+  &lt;/xf:group&gt;
+&lt;/xf:xforms&gt;
+</xform>
+<layout>&lt;Form id="66"&gt;
+  &lt;Page Text="Page1" Binding="Page1" Width="100%" Height="466px" backgroundColor=""&gt;
+    &lt;Item WidgetType="Label" Text="Question2" HelpText="Question2" Binding="question2" Left="12px" Top="12px" TabIndex="0" fontFamily="Verdana,'Lucida Grande','Trebuchet MS',Arial,Sans-Serif"/&gt;
+    &lt;Item WidgetType="CheckBox" Text="Option1" HelpText="Option1" Binding="option1" ParentBinding="question2" Left="102px" Top="12px" TabIndex="3" fontFamily="Verdana, 'Lucida Grande', 'Trebuchet MS', Arial, Sans-Serif"/&gt;
+    &lt;Item WidgetType="CheckBox" Text="Option2" HelpText="Option2" Binding="option2" ParentBinding="question2" Left="185px" Top="13px" TabIndex="4" fontFamily="Verdana, 'Lucida Grande', 'Trebuchet MS', Arial, Sans-Serif"/&gt;
+    &lt;Item WidgetType="CheckBox" Text="Option3" HelpText="Option3" Binding="option3" ParentBinding="question2" Left="271px" Top="15px" TabIndex="5" fontFamily="Verdana, 'Lucida Grande', 'Trebuchet MS', Arial, Sans-Serif"/&gt;
+    &lt;Item WidgetType="CheckBox" Text="Option4" HelpText="Option4" Binding="option4" ParentBinding="question2" Left="104px" Top="51px" TabIndex="6" fontFamily="Verdana, 'Lucida Grande', 'Trebuchet MS', Arial, Sans-Serif"/&gt;
+    &lt;Item WidgetType="CheckBox" Text="Option5" HelpText="Option5" Binding="option5" ParentBinding="question2" Left="186px" Top="51px" TabIndex="7" fontFamily="Verdana, 'Lucida Grande', 'Trebuchet MS', Arial, Sans-Serif"/&gt;
+  &lt;/Page&gt;
+&lt;/Form&gt;
+</layout>
+<versionText locale="en">
+<xform>&lt;xform id="66"&gt;
+    &lt;text xpath="xforms/model/instance/test_study_test_form_v1[@name]" value="Test Form_v1"/&gt;
+    &lt;text xpath="xforms/group[@id='2']/label" value="Page2"/&gt;
+    &lt;text xpath="xforms/group[@id='2']/select[@bind='question2']/label" value="Question2"/&gt;
+    &lt;text xpath="xforms/group[@id='2']/select[@bind='question2']/item[@id='option1']/label" value="Option1"/&gt;
+    &lt;text xpath="xforms/group[@id='2']/select[@bind='question2']/item[@id='option2']/label" value="Option2"/&gt;
+    &lt;text xpath="xforms/group[@id='2']/select[@bind='question2']/item[@id='option3']/label" value="Option3"/&gt;
+    &lt;text xpath="xforms/group[@id='2']/select[@bind='question2']/item[@id='option4']/label" value="Option4"/&gt;
+    &lt;text xpath="xforms/group[@id='2']/select[@bind='question2']/item[@id='option5']/label" value="Option5"/&gt;
+  &lt;/xform&gt;</xform>
+<layout>&lt;Form id="66"&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1'][@Text]" value="Page1"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='question2' and @WidgetType='Label'][@Text]" value="Question2"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='question2' and @WidgetType='Label'][@HelpText]" value="Question2"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='question2' and @WidgetType='Label'][@Top]" value="12px"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='question2' and @WidgetType='Label'][@Left]" value="12px"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option1' and @WidgetType='CheckBox'][@Text]" value="Option1"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option1' and @WidgetType='CheckBox'][@HelpText]" value="Option1"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option1' and @WidgetType='CheckBox'][@Top]" value="12px"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option1' and @WidgetType='CheckBox'][@Left]" value="102px"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option2' and @WidgetType='CheckBox'][@Text]" value="Option2"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option2' and @WidgetType='CheckBox'][@HelpText]" value="Option2"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option2' and @WidgetType='CheckBox'][@Top]" value="13px"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option2' and @WidgetType='CheckBox'][@Left]" value="185px"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option3' and @WidgetType='CheckBox'][@Text]" value="Option3"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option3' and @WidgetType='CheckBox'][@HelpText]" value="Option3"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option3' and @WidgetType='CheckBox'][@Top]" value="15px"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option3' and @WidgetType='CheckBox'][@Left]" value="271px"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option4' and @WidgetType='CheckBox'][@Text]" value="Option4"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option4' and @WidgetType='CheckBox'][@HelpText]" value="Option4"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option4' and @WidgetType='CheckBox'][@Top]" value="51px"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option4' and @WidgetType='CheckBox'][@Left]" value="104px"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option5' and @WidgetType='CheckBox'][@Text]" value="Option5"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option5' and @WidgetType='CheckBox'][@HelpText]" value="Option5"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option5' and @WidgetType='CheckBox'][@Top]" value="51px"/&gt;
+    &lt;text xpath="Form/Page[@Binding='Page1']/Item[@Binding='option5' and @WidgetType='CheckBox'][@Left]" value="186px"/&gt;
+  &lt;/Form&gt;</layout>
+</versionText>
+</version>
+</form>
+</study>

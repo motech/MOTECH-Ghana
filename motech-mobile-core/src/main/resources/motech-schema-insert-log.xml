@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+
+    MOTECH PLATFORM OPENSOURCE LICENSE AGREEMENT
+
+    Copyright (c) 2010 The Trustees of Columbia University in the City of
+    New York and Grameen Foundation USA.  All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+    3. Neither the name of Grameen Foundation USA, Columbia University, or
+    their respective contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY GRAMEEN FOUNDATION USA, COLUMBIA UNIVERSITY
+    AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GRAMEEN FOUNDATION
+    USA, COLUMBIA UNIVERSITY OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+    OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <changeSet context="setup" dbms="hsqldb" author="joseph (generated)" id="2282410859067-1a">
+        <loadData encoding="UTF-8" file="data/language.csv" tableName="LANGUAGE">
+            <column header="id" type="NUMERIC"/>
+            <column header="code" type="STRING"/>
+            <column header="name" type="STRING"/>
+            <column header="description" type="STRING"/>
+        </loadData>
+    </changeSet>
+    <changeSet context="setup" dbms="mysql" author="joseph (generated)" id="2282410859067-1b">
+        <loadData encoding="UTF-8" file="data/language.csv" tableName="language">
+            <column header="id" type="NUMERIC"/>
+            <column header="code" type="STRING"/>
+            <column header="name" type="STRING"/>
+            <column header="description" type="STRING"/>
+        </loadData>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="2282410859067-2">
+        <loadData encoding="UTF-8" file="data/incoming_message_session.csv" tableName="incoming_message_session">
+            <column header="id" type="NUMERIC"/>
+            <column header="obj_vesion" type="NUMERIC"/>
+            <column header="requester_phone" type="STRING"/>
+            <column header="form_code" type="STRING"/>
+            <column header="date_started" type="DATE"/>
+            <column header="date_ended" type="DATE"/>
+            <column header="last_activity" type="DATE"/>
+            <column header="message_session_status" type="STRING"/>
+        </loadData>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="2282410859067-3">
+        <loadData encoding="UTF-8" file="data/incoming_message_form.csv" tableName="incoming_message_form">
+            <column header="id" type="NUMERIC"/>
+            <column header="obj_vesion" type="NUMERIC"/>
+            <column header="incoming_message_form_definition_id" type="NUMERIC"/>
+            <column header="date_created" type="DATE"/>
+            <column header="last_modified" type="DATE"/>
+            <column header="message_form_status" type="STRING"/>
+        </loadData>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="2282410859067-4">
+        <loadData encoding="UTF-8" file="data/incoming_message.csv" tableName="incoming_message">
+            <column header="id" type="NUMERIC"/>
+            <column header="obj_vesion" type="NUMERIC"/>
+            <column header="incoming_message_session_id" type="NUMERIC"/>
+            <column header="incoming_message_form_id" type="NUMERIC"/>
+            <column header="incoming_message_response_id" type="NUMERIC"/>
+            <column header="message_content" type="STRING"/>
+            <column header="date_created" type="DATE"/>
+            <column header="last_modified" type="DATE"/>
+            <column header="message_status" type="STRING"/>
+        </loadData>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="2282410859067-5">
+        <loadData encoding="UTF-8" file="data/notification_type.csv" tableName="notification_type">
+            <column header="id" type="NUMERIC"/>
+            <column header="name" type="STRING"/>
+            <column header="description" type="STRING"/>
+        </loadData>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="2282410859067-6">
+        <loadData encoding="UTF-8" file="data/gateway_response.csv" tableName="gateway_response">
+            <column header="id" type="NUMERIC"/>
+            <column header="obj_vesion" type="NUMERIC"/>
+            <column header="gateway_message_id" type="STRING"/>
+            <column header="request_id" type="STRING"/>
+            <column header="recipient_number" type="STRING"/>
+            <column header="message_status" type="STRING"/>
+            <column header="response_text" type="STRING"/>
+            <column header="date_created" type="DATE"/>
+            <column header="last_modified" type="DATE"/>
+            <column header="message_id" type="NUMERIC"/>
+        </loadData>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="2282410859067-7">
+        <loadData encoding="UTF-8" file="data/personalization_info.csv" tableName="personalization_info">
+            <column header="requestId" type="NUMERIC"/>
+            <column header="name" type="STRING"/>
+            <column header="value" type="STRING"/>
+        </loadData>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="2282410859067-8">
+        <loadData encoding="UTF-8" file="data/incoming_message_form_parameter.csv" tableName="incoming_message_form_parameter">
+            <column header="id" type="NUMERIC"/>
+            <column header="obj_vesion" type="NUMERIC"/>
+            <column header="incoming_message_from_message_definition_id" type="NUMERIC"/>
+            <column header="incoming_message_form_id" type="NUMERIC"/>
+            <column header="name" type="STRING"/>
+            <column header="value" type="STRING"/>
+            <column header="err_code" type="NUMERIC"/>
+            <column header="err_text" type="STRING"/>
+            <column header="date_created" type="DATE"/>
+            <column header="last_modified" type="DATE"/>
+            <column header="message_form_status" type="STRING"/>
+        </loadData>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="2282410859067-9">
+        <loadData encoding="UTF-8" file="data/gateway_request.csv" tableName="gateway_request">
+            <column header="id" type="NUMERIC"/>
+            <column header="obj_vesion" type="NUMERIC"/>
+            <column header="message_request_id" type="NUMERIC"/>
+            <column header="request_details_id" type="NUMERIC"/>
+            <column header="recipients_number" type="STRING"/>
+            <column header="date_sent" type="DATE"/>
+            <column header="date_from" type="DATE"/>
+            <column header="date_to" type="DATE"/>
+            <column header="try_number" type="NUMERIC"/>
+            <column header="message" type="STRING"/>
+            <column header="request_id" type="STRING"/>
+            <column header="message_status" type="STRING"/>
+            <column header="last_modified" type="DATE"/>
+        </loadData>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="2282410859067-10">
+        <loadData encoding="UTF-8" file="data/incoming_message_form_parameter_definition.csv" tableName="incoming_message_form_parameter_definition">
+            <column header="id" type="NUMERIC"/>
+            <column header="obj_vesion" type="NUMERIC"/>
+            <column header="incoming_message_form_definition_id" type="NUMERIC"/>
+            <column header="name" type="STRING"/>
+            <column header="parameter_type" type="STRING"/>
+            <column header="length" type="NUMERIC"/>
+            <column header="required" type="NUMERIC"/>
+            <column header="date_created" type="DATE"/>
+            <column header="last_modified" type="DATE"/>
+        </loadData>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="2282410859067-11">
+        <loadData encoding="UTF-8" file="data/message_request.csv" tableName="message_request">
+            <column header="id" type="NUMERIC"/>
+            <column header="obj_vesion" type="NUMERIC"/>
+            <column header="request_id" type="STRING"/>
+            <column header="request_details_id" type="NUMERIC"/>
+            <column header="notification_type_id" type="NUMERIC"/>
+            <column header="language_id" type="NUMERIC"/>
+            <column header="message_type" type="STRING"/>
+            <column header="schedule" type="DATE"/>
+            <column header="p113_nData" type="STRING"/>
+            <column header="recipient_number" type="STRING"/>
+            <column header="phone_number_type" type="STRING"/>
+            <column header="recipient_id" type="STRING"/>
+            <column header="date_from" type="DATE"/>
+            <column header="date_to" type="DATE"/>
+            <column header="date_created" type="DATE"/>
+            <column header="date_processed" type="DATE"/>
+            <column header="status" type="STRING"/>
+            <column header="max_try_number" type="NUMERIC"/>
+            <column header="days_attempted" type="NUMERIC"/>
+            <column header="last_modified" type="DATE"/>
+        </loadData>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="2282410859067-12">
+        <loadData encoding="UTF-8" file="data/message_template.csv" tableName="message_template">
+            <column header="id" type="NUMERIC"/>
+            <column header="obj_vesion" type="NUMERIC"/>
+            <column header="date_created" type="DATE"/>
+            <column header="message_type" type="STRING"/>
+            <column header="template" type="STRING"/>
+            <column header="notification_type" type="NUMERIC"/>
+            <column header="language" type="NUMERIC"/>
+        </loadData>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="2282410859067-13">
+        <loadData encoding="UTF-8" file="data/gateway_request_details.csv" tableName="gateway_request_details">
+            <column header="id" type="NUMERIC"/>
+            <column header="obj_vesion" type="NUMERIC"/>
+            <column header="message_type" type="STRING"/>
+            <column header="message" type="STRING"/>
+            <column header="number_of_pages" type="NUMERIC"/>
+        </loadData>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="2282410859067-14">
+        <loadData encoding="UTF-8" file="data/incoming_message_response.csv" tableName="incoming_message_response">
+            <column header="id" type="NUMERIC"/>
+            <column header="obj_vesion" type="NUMERIC"/>
+            <column header="response_content" type="STRING"/>
+            <column header="date_created" type="DATE"/>
+            <column header="last_modified" type="DATE"/>
+            <column header="message_status" type="STRING"/>
+        </loadData>
+    </changeSet>
+    <changeSet context="setup" author="joseph (generated)" id="2282410859067-15">
+        <loadData encoding="UTF-8" file="data/incoming_message_form_definition.csv" tableName="incoming_message_form_definition">
+            <column header="id" type="NUMERIC"/>
+            <column header="obj_vesion" type="NUMERIC"/>
+            <column header="form_code" type="STRING"/>
+            <column header="type" type="STRING"/>
+            <column header="duplicatable" type="STRING"/>
+            <column header="date_created" type="DATE"/>
+            <column header="send_response" type="NUMERIC"/>
+            <column header="last_modified" type="DATE"/>
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

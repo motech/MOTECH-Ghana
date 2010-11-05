@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    MOTECH PLATFORM OPENSOURCE LICENSE AGREEMENT
+
+    Copyright (c) 2010 The Trustees of Columbia University in the City of
+    New York and Grameen Foundation USA.  All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+    3. Neither the name of Grameen Foundation USA, Columbia University, or
+    their respective contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY GRAMEEN FOUNDATION USA, COLUMBIA UNIVERSITY
+    AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GRAMEEN FOUNDATION
+    USA, COLUMBIA UNIVERSITY OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+    OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+<!--
+    Document   : change-log-target-0.8.0.xml
+    Created on : August 24, 2010, 12:50 PM
+    Author     : joseph
+    Description:
+        Purpose of the document follows.
+-->
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+ 
+    <changeSet context="update" id="1000000000000-1" author="joseph">
+        <comment>
+            change to enforce mandatory BP Diastolic on ANC java form.issue #444 in redmine
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="required" valueBoolean="false"  />
+            <where>id=10000000000012</where>
+        </update>
+    </changeSet>
+    <changeSet context="update" id="1000000000000-2" author="joseph">
+        <comment>
+            change to add new field in incoming_message_form_parameter_definition for lochia odour for PNC (mother).
+            documented as issue #606 in redmine
+        </comment>
+       <insert tableName="incoming_message_form_parameter_definition">
+           <column name="id" valueNumeric="10000000000518"/>
+           <column name="obj_vesion" valueNumeric="0"/>
+           <column name="incoming_message_form_definition_id" valueNumeric="200000000000005"/>
+           <column name="name" value="locOdour" />
+           <column name="parameter_type" value="BOOLEAN"/>
+           <column name="length" valueNumeric="1"/>
+           <column name="required" valueBoolean="true" />
+           <column name="date_created" valueDate="2010-08-24 12:18:00" />
+           <column name="last_modified" valueDate="2010-08-24 12:18:00"/>
+       </insert>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-3" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motherMotechId in RegisterChild sms form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=53475686867887</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-4" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for childMotechId in RegisterChild sms form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=7645645756876</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-5" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in DeliveryNotify-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=10000000000404</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-6" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in MotherPNC-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=10000000000504</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-7" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in ChildPNC-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=10000000000804</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-8" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in ChildCWC-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=10000000000904</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-9" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in Abortion-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=10000000000104</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-10" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in ChildOPD-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=10000000001605</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-11" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in MotherOPD-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=10000000001705</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-12" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in ANC sms form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=434546463984501</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-13" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in ANC sms form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=10000000000005</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-14" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in Abortion sms form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=464546463987801</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-15" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId,C1MotechId,C2MotechId,C3MotechId in Delivery sms form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id IN (473346463981210,473346463981216,473346463981222,473346463981201)</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-17" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId, child1MotechId,child2MotechId,child3MotechId in Delivery-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id In (10000000000203,10000000000217,10000000000225,10000000000233)</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-18" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId  in PPC sms form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=254546463981101</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-19" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in Death sms form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=154546463981441</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-20" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in Death-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=10000000000604</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-21" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in TT-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=10000000000704</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-22" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in Child form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=064546463981701</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-23" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in ChildOPD form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=879874663983211</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-24" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in MotherOPD form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=695474663923331</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-25" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in RegisterPatient-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=10000000001005</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-26" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motherMotechId in RegisterPatient-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=10000000001017</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-27" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in RegisterPregnancy-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=10000000001104</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-28" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in RegisterCWCChild-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=10000000001304</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-29" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in EditPatient-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=10000000001404</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-30" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in UpcomingCare sms form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=695474663923354</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-31" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in UpcomingCare-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=1232874663923354</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-32" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in ViewPatient sms form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=695474663923356</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-33" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in ViewPatient-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id=1233174663923356</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-34" author="joseph">
+         <comment>
+            change to make motechid required for Out Patient Visit.issue #739 in redmine.
+            updating motechid required field for ChildOPD-jf and MotherOPD-jf form
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+
+            <column name="required" valueBoolean="true"  />
+            <where>id IN (10000000001605,10000000001705)</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-35" author="yoofi">
+         <comment>
+            change to set type field of form parameters to DELIVERYDATE. Partial fix for issue #586 in redmine.
+            updating estDeliveryDate and expDeliveryDate fields for ANC-jf, RegisterPatient-jf and RegisterPregnancy-jf forms
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="parameter_type" value="DELIVERYDATE"  />
+            <where>id IN (10000000001206,10000000001024,10000000001105)</where>
+        </update>
+    </changeSet>
+
+<!--    <changeSet context="update" id="1000000000000-32" author="joseph">
+         <comment>
+            change to enforce id rules.issue #732 in redmine.
+            changing id length for motechId in all forms
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="length" valueNumeric="7"  />
+            <where>id In (53475686867887,7645645756876,10000000000404,10000000000504,10000000000804,10000000000904,10000000000104,10000000001605,10000000001705,434546463984501,10000000000005,464546463987801,473346463981210,473346463981216,473346463981222,473346463981201,10000000000203,10000000000217,10000000000225,10000000000233,254546463981101154546463981441,10000000000604,10000000000704,064546463981701,879874663983211,695474663923331,10000000001005,10000000001017,10000000001104,10000000001304,10000000001404,695474663923354,1232874663923354,695474663923356,1233174663923356,1233174663923356)</where>
+        </update>
+    </changeSet>-->
+    <changeSet context="update" id="1000000000000-36" author="henry">
+         <comment>
+            Adding form [careHistory-jf]
+        </comment>
+        <insert tableName="incoming_message_form_definition">
+            <column name="id" valueNumeric="200000000000018" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="form_code" value="CareHistory-jf" />
+            <column name="type" value="JFORM" />
+            <column name="duplicatable" value="DISALLOWED" />
+            <column name="send_response" valueBoolean="true"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001801" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="staffId" />
+            <column name="parameter_type" value="NUMERIC" />
+            <column name="length" valueNumeric="10"/>
+            <column name="required" valueBoolean="true"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001802" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="facilityId" />
+            <column name="parameter_type" value="NUMERIC" />
+            <column name="length" valueNumeric="10"/>
+            <column name="required" valueBoolean="true"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001803" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="date" />
+            <column name="parameter_type" value="DATE" />
+            <column name="length" valueNumeric="10"/>
+            <column name="required" valueBoolean="true"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001804" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="motechId" />
+            <column name="parameter_type" value="NUMERIC" />
+            <column name="length" valueNumeric="7"/>
+            <column name="required" valueBoolean="true"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001805" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="lastIPT" />
+            <column name="parameter_type" value="NUMERIC" />
+            <column name="length" valueNumeric="2"/>
+            <column name="required" valueBoolean="false"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001806" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="lastIPTDate" />
+            <column name="parameter_type" value="DATE" />
+            <column name="length" valueNumeric="10"/>
+            <column name="required" valueBoolean="false"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001807" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="lastTT" />
+            <column name="parameter_type" value="NUMERIC" />
+            <column name="length" valueNumeric="2"/>
+            <column name="required" valueBoolean="false"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001808" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="lastTTDate" />
+            <column name="parameter_type" value="DATE" />
+            <column name="length" valueNumeric="10"/>
+            <column name="required" valueBoolean="false"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001809" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="bcgDate" />
+            <column name="parameter_type" value="DATE" />
+            <column name="length" valueNumeric="10"/>
+            <column name="required" valueBoolean="false"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001810" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="lastOPV" />
+            <column name="parameter_type" value="NUMERIC" />
+            <column name="length" valueNumeric="2"/>
+            <column name="required" valueBoolean="false"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001811" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="lastOPVDate" />
+            <column name="parameter_type" value="DATE" />
+            <column name="length" valueNumeric="10"/>
+            <column name="required" valueBoolean="false"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001812" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="lastPenta" />
+            <column name="parameter_type" value="NUMERIC" />
+            <column name="length" valueNumeric="2"/>
+            <column name="required" valueBoolean="false"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001813" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="lastPentaDate" />
+            <column name="parameter_type" value="DATE" />
+            <column name="length" valueNumeric="10"/>
+            <column name="required" valueBoolean="false"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001814" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="measlesDate" />
+            <column name="parameter_type" value="DATE" />
+            <column name="length" valueNumeric="10"/>
+            <column name="required" valueBoolean="false"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001815" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="yellowFeverDate" />
+            <column name="parameter_type" value="DATE" />
+            <column name="length" valueNumeric="10"/>
+            <column name="required" valueBoolean="false"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001816" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="lastIPTI" />
+            <column name="parameter_type" value="NUMERIC" />
+            <column name="length" valueNumeric="2"/>
+            <column name="required" valueBoolean="false"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001817" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="lastIPTIDate" />
+            <column name="parameter_type" value="DATE" />
+            <column name="length" valueNumeric="10"/>
+            <column name="required" valueBoolean="false"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+        <insert tableName="incoming_message_form_parameter_definition">
+            <column name="id" valueNumeric="10000000001818" />
+            <column name="obj_vesion" valueNumeric="0" />
+            <column name="incoming_message_form_definition_id" valueNumeric="200000000000018" />
+            <column name="name" value="lastVitaminADate" />
+            <column name="parameter_type" value="DATE" />
+            <column name="length" valueNumeric="10"/>
+            <column name="required" valueBoolean="false"/>
+            <column name="date_created" valueDate="2010-09-24 16:08:00" />
+        </insert>
+    </changeSet>
+    <changeSet context="update" id="1000000000000-37" author="henry">
+         <comment>
+            Change urineGlucosePositive type from BOOLEAN to NUMERIC and adding length 2
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="parameter_type" value="NUMERIC"  />
+            <column name="length" valueNumeric="2"  />
+            <where>id=10000000000021</where>
+        </update>
+    </changeSet>
+    
+    <changeSet context="update" id="1000000000000-38" author="joseph">
+        <update tableName="message_template">
+            <column name="template" value="Labour is different for each woman &amp; some signs show U are in labour.Contractions-when belly muscles tighten &amp; harden-will come regular &amp; hurt.They get stronger,longer &amp; more painful as birth gets close.U may feel pain in the low back &amp; cramps like a period.U may see a “show”-when the mucus plug that blocks neck of womb comes out &amp; looks jelly-like.If waters break &amp; U have contractions contact midwife &amp; get to clinic as babies can sometimes come fast.*From Mobile Midwife*." />
+            <where>id=41</where>
+        </update>
+        <update tableName="message_template">
+            <column name="template" value="Labour is different for each woman &amp; some signs show U are in labour.Contractions-when belly muscles tighten &amp; harden-will come regular &amp; hurt.They get stronger,longer &amp; more painful as birth gets close.U may feel pain in the low back &amp; cramps like a period.U may see a “show”-when the mucus plug that blocks neck of womb comes out &amp; looks jelly-like.If waters break &amp; U have contractions contact midwife &amp; get to clinic as babies can sometimes come fast.*From Mobile Midwife*.@@" />
+            <where>id=181</where>
+        </update>
+        <update tableName="message_template">
+            <column name="template" value="Labour is different for each woman &amp; some signs show U are in labour.Contractions-when belly muscles tighten &amp; harden-will come regular &amp; hurt.They get stronger,longer &amp; more painful as birth gets close.U may feel pain in the low back &amp; cramps like a period.U may see a “show”-when the mucus plug that blocks neck of womb comes out &amp; looks jelly-like.If waters break &amp; U have contractions contact midwife &amp; get to clinic as babies can sometimes come fast.*From Mobile Midwife*.##" />
+            <where>id=182</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" dbms="hsqldb" id="1000000000000-39a" author="joseph">
+        <renameTable oldTableName="LANGUAGE" newTableName="languages" />
+    </changeSet>
+    <changeSet context="update" dbms="mysql" id="1000000000000-39b" author="joseph">
+        <renameTable oldTableName="language" newTableName="languages" />
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-40" author="henry">
+        <comment>
+            Changing locOdour to lochiaOdourFoul. Resolves #606
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="name" value="lochiaOdourFoul"  />
+            <where>id=10000000000518</where>
+        </update>
+    </changeSet>
+
+    <changeSet context="update" id="1000000000000-41" author="mattblanchette">
+        <comment>
+            Changing IPTi from BOOLEAN to NUMERIC. Resolves #797
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="parameter_type" value="NUMERIC" />
+            <column name="length" value="2" />
+            <where>id=10000000000914</where>
+        </update>
+    </changeSet>
+    <changeSet context="update" id="1000000000000-42" author="mattblanchette">
+        <comment>
+            Changing IPTi parameter name to iptiDose. Resolves #797
+        </comment>
+        <update tableName="incoming_message_form_parameter_definition">
+            <column name="name" value="iptiDose" />
+            <where>id=10000000000914</where>
+        </update>
+    </changeSet>
+</databaseChangeLog>

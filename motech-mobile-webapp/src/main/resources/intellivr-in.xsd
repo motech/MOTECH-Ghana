@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    MOTECH PLATFORM OPENSOURCE LICENSE AGREEMENT
+
+    Copyright (c) 2010 The Trustees of Columbia University in the City of
+    New York and Grameen Foundation USA.  All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+    3. Neither the name of Grameen Foundation USA, Columbia University, or
+    their respective contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY GRAMEEN FOUNDATION USA, COLUMBIA UNIVERSITY
+    AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GRAMEEN FOUNDATION
+    USA, COLUMBIA UNIVERSITY OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+    OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.0">
+	
+	<!-- 
+	XML schema describing the documents that are accepted by the MoTeCH Server 
+	from the INTELLIVR system
+	-->
+
+
+	<!-- 
+
+		Document from INTELLIVR to MoTeCH requesting the IVR config for one user
+
+		Example:
+
+		<getIVRConfigRequest>
+			<userid>12345</userid>
+		</getIVRConfigRequest>
+
+	-->
+	<xsd:element name="getIVRConfigRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="userid" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- 
+		Wrapper for most documents from/to INTELLIVR system
+	-->
+
+	<xsd:element name="AutoCreate">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Report" type="reportType"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!--
+
+		Sent from INTELLIVR to MoTeCH to report status of a call
+		
+		<AutoCreate>
+			<Report>
+				<Status>COMPLETED</Status>
+				<Callee>2334921920193</Callee>
+				<Duration>43</Duration>
+				<ConnectTime>2010-10-01T00:00:00.000Z</ConnectTime>
+				<DisconnectTime>2010-10-01T00:00:43.000Z</DisconnectTime>
+				<INTELLIVREntryCount>4</INTELLIVREntryCount>
+				<Private>IDENTIFIER</Private>
+				<INTELLIVREntry menu="message1.wav" entrytime="2010-10-01T00:00:01.000Z" duration="7" keypress="" file=""/>
+				<INTELLIVREntry menu="message2.wav" entrytime="2010-10-01T00:00:08.000Z" duration="8" keypress="" file=""/>
+				<INTELLIVREntry menu="main_menu" entrytime="2010-10-01T00:00:16.000Z" duration="8" keypress="2" file=""/>
+				<INTELLIVREntry menu="pregnancy_info" entrytime="2010-10-01T00:00:24.000Z" duration="10" keypress="1" file=""/>
+				<INTELLIVREntry menu="feedback_section" entrytime="2010-10-01T00:00:34.000Z" duration="10" keypress="" file="http://ivr/file.wav"/>
+			</Report>
+		</AutoCreate>
+
+	-->
+
+	<xsd:complexType name="reportType">
+		<xsd:sequence>
+			<xsd:element name="Status" type="reportStatusType"/>		
+			<xsd:element name="Callee" type="xsd:string"/>
+			<xsd:element name="Duration" type="xsd:int"/>
+			<xsd:element name="ConnectTime" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="DisconnectTime" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="INTELLIVREntryCount" type="xsd:int"/>
+			<xsd:element name="Private" type="xsd:string"/>
+			<xsd:element name="INTELLIVREntry" type="ivrEntryType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>	
+	</xsd:complexType>
+
+	<xsd:simpleType name="reportStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="COMPLETED"/>
+			<xsd:enumeration value="REJECTED"/>
+			<xsd:enumeration value="BUSY"/>
+			<xsd:enumeration value="CONGESTION"/>
+			<xsd:enumeration value="NOANSWER"/>
+			<xsd:enumeration value="INTERNALERROR"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="ivrEntryType">
+		<xsd:attribute name="menu" type="xsd:string"/>
+		<xsd:attribute name="entrytime" type="xsd:dateTime"/>
+		<xsd:attribute name="duration" type="xsd:int"/>
+		<xsd:attribute name="keypress" type="xsd:string"/>
+		<xsd:attribute name="file" type="xsd:string"/>
+
+	</xsd:complexType>
+
+</xsd:schema>
+

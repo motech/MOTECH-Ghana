@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    MOTECH PLATFORM OPENSOURCE LICENSE AGREEMENT
+
+    Copyright (c) 2010 The Trustees of Columbia University in the City of
+    New York and Grameen Foundation USA.  All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+    3. Neither the name of Grameen Foundation USA, Columbia University, or
+    their respective contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY GRAMEEN FOUNDATION USA, COLUMBIA UNIVERSITY
+    AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GRAMEEN FOUNDATION
+    USA, COLUMBIA UNIVERSITY OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+    OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:flow="http://www.springframework.org/schema/webflow-config"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:osgi="http://www.springframework.org/schema/osgi"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+       http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config-1.0.xsd
+       http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-2.5.xsd
+       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+       http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.5.xsd
+       http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+    <import resource="classpath:META-INF/core-config.xml" />
+
+    <bean id="date" class="java.util.Date" scope="prototype" />
+
+    <bean id="dummyHandler" class="org.motechproject.mobile.omp.manager.DummyGatewayMessageHandlerImpl" scope="prototype">
+        <property name="coreManager" ref="coreManager" />
+        <property name="codeStatusMap">
+            <map>
+                <entry key="DELIVERED" value="004,DELIVRD" />
+                <entry key="FAILED" value="001,005,007,105,106,107,113,114,201,202,ERROR,REJECTED" />
+                <entry key="RETRY" value="009,012,103,104,301,302,failed,UNDELIV" />
+                <entry key="PENDING" value="002,003,008,011,PROCESSED," />
+                <entry key="CANCELLED" value="006" />
+                <entry key="EXPIRED" value="010,115,116,120" />
+            </map>
+        </property>
+        <property name="codeResponseMap">
+            <map>
+                <entry key="FAILED" value="005,102,105,106,107,110,111,202,305,112,113,114,552,201,failed,param,param:" />
+                <entry key="RETRY" value="001,002,003,004,007,101,101p,101t,101u,103,104,108,109,301,302,304,400,401,500,501,502" />
+                <entry key="EXPIRED" value="115,116,120" />
+                <entry key="CANNOT_CONNECT" value="901" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="dummyManager" class="org.motechproject.mobile.omp.manager.DummyGatewayManagerImpl">
+        <property name="messageHandler" ref="dummyHandler" />
+        <property name="sleepTime" value="${omp.dummy.sleepTime}" />
+        <property name="throwRandomExceptions" value="${omp.dummy.throwException}" />
+        <property name="exceptionPointRange" value="${omp.dummy.exceptionPointRange}" />
+        <property name="exceptionPoints">
+            <list>
+                <value>2</value>
+                <value>5</value>
+                <value>7</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="messageHandler" class="org.motechproject.mobile.omp.manager.orserve.ORServeGatewayMessageHandlerImpl" scope="prototype">
+        <property name="coreManager" ref="coreManager" />
+        <property name="codeStatusMap">
+            <map>
+                <entry key="DELIVERED" value="004,DELIVRD" />
+                <entry key="FAILED" value="001,005,007,105,106,107,113,114,201,202,ERROR,REJECTED" />
+                <entry key="RETRY" value="009,012,103,104,301,302,failed,UNDELIV" />
+                <entry key="PENDING" value="002,003,008,011,PROCESSED," />
+                <entry key="CANCELLED" value="006" />
+                <entry key="EXPIRED" value="010,115,116,120" />
+            </map>
+        </property>
+        <property name="codeResponseMap">
+            <map>
+                <entry key="FAILED" value="005,102,105,106,107,110,111,202,305,112,113,114,552,201,failed,param,param:" />
+                <entry key="RETRY" value="001,002,003,004,007,101,101p,101t,101u,103,104,108,109,301,302,304,400,401,500,501,502" />
+                <entry key="EXPIRED" value="115,116,120" />
+                <entry key="CANNOT_CONNECT" value="901" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="gatewayManager" class="org.motechproject.mobile.omp.manager.orserve.ORServeGatewayManagerImpl">
+        <property name="productCode" value="${orserve.gateway.productCode}" />
+        <property name="senderId" value="${orserve.gateway.senderId}" />
+        <property name="messageHandler" ref="messageHandler" />
+    </bean>
+
+    <bean id="rancardHandler" class="org.motechproject.mobile.omp.manager.rancard.RancardGatewayMessageHandlerImpl">
+        <property name="okMessageStatus" value="${rancard.gateway.okStatus}" />
+        <property name="coreManager" ref="coreManager" />
+        <property name="codeStatusMap">
+            <map>
+                <entry key="DELIVERED" value="004,DELIVRD" />
+                <entry key="FAILED" value="001,005,007,105,106,107,113,114,201,202,ERROR,REJECTED" />
+                <entry key="RETRY" value="009,012,103,104,301,302,failed,UNDELIV" />
+                <entry key="PENDING" value="002,003,008,011,PROCESSED," />
+                <entry key="CANCELLED" value="006" />
+                <entry key="EXPIRED" value="010,115,116,120" />
+            </map>
+        </property>
+        <property name="codeResponseMap">
+            <map>
+                <entry key="FAILED" value="005,102,105,106,107,110,111,202,305,112,113,114,552,201,failed,param,param:" />
+                <entry key="RETRY" value="001,002,003,004,007,101,101p,101t,101u,103,104,108,109,301,302,304,400,401,500,501,502" />
+                <entry key="EXPIRED" value="115,116,120" />
+                <entry key="CANNOT_CONNECT" value="901" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="rancardGateway" class="org.motechproject.mobile.omp.manager.rancard.RancardGatewayManagerImpl">
+        <property name="user" value="${rancard.gateway.user}" />
+        <property name="password" value="${rancard.gateway.password}" />
+        <property name="sentMessageStatus" value="${rancard.gateway.sentStatus}" />
+        <property name="sender" value="${rancard.gateway.senderId}" />
+        <property name="serviceURL" value="${rancard.gateway.serviceURL}" />
+        <property name="messageHandler" ref="rancardHandler" />
+    </bean>
+
+    <bean id="intellIVRServer" class="org.motechproject.mobile.omp.manager.intellivr.IntellIVRServerImpl" init-method="init">
+        <property name="serverURL" value="${intellivr.gateway.serverURL}"/>
+    </bean>
+
+    <bean id="intellIVRTestServer" class="org.motechproject.mobile.omp.manager.intellivr.IntellIVRTestServer"/>
+
+    <bean id="intellIVRResponseMap" class="java.util.HashMap">
+        <constructor-arg>
+            <map>
+                <entry key="0000">
+                    <value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+                </entry>
+                <entry key="0001">
+                    <value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+                </entry>
+                <entry key="0002">
+                    <value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+                </entry>
+                <entry key="0003">
+                    <value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+                </entry>
+                <entry key="0004">
+                    <value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+                </entry>
+                <entry key="0005">
+                    <value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+                </entry>
+                <entry key="0006">
+                    <value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+                </entry>
+                <entry key="0007">
+                    <value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+                </entry>
+                <entry key="0008">
+                    <value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+                </entry>
+                <entry key="0009">
+                    <value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+                </entry>
+                <entry key="0010">
+                    <value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+                </entry>
+                <entry key="0011">
+                    <value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+                </entry>
+                <entry key="ERROR">
+                    <value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+                </entry>
+                <entry key="MAXATTEMPTS">
+                    <value type="org.motechproject.mobile.core.model.MStatus">FAILED</value>
+                </entry>
+                <entry key="OK">
+                    <value type="org.motechproject.mobile.core.model.MStatus">PENDING</value>
+                </entry>
+                <entry key="REJECTED">
+                    <value type="org.motechproject.mobile.core.model.MStatus">PENDING</value>
+                </entry>
+                <entry key="BUSY">
+                    <value type="org.motechproject.mobile.core.model.MStatus">PENDING</value>
+                </entry>
+                <entry key="CONGESTION">
+                    <value type="org.motechproject.mobile.core.model.MStatus">PENDING</value>
+                </entry>
+                <entry key="NOANSWER">
+                    <value type="org.motechproject.mobile.core.model.MStatus">PENDING</value>
+                </entry>
+                <entry key="INTERNALERROR">
+                    <value type="org.motechproject.mobile.core.model.MStatus">PENDING</value>
+                </entry>
+                <entry key="BELOWTHRESHOLD">
+                    <value type="org.motechproject.mobile.core.model.MStatus">PENDING</value>
+                </entry>
+                <entry key="COMPLETED">
+                    <value type="org.motechproject.mobile.core.model.MStatus">DELIVERED</value>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="intellIVRMessageHandler" class="org.motechproject.mobile.omp.manager.intellivr.IntellIVRGatewayMessageHandler">
+        <property name="coreManager" ref="coreManager"/>
+        <property name="statusMap" ref="intellIVRResponseMap"/>
+        <property name="responseMap" ref="intellIVRResponseMap"/>
+    </bean>
+    
+    <bean id="ivrDao" class="org.motechproject.mobile.omp.manager.intellivr.IntellIVRDAO">
+    	<property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="intellivrBean" class="org.motechproject.mobile.omp.manager.intellivr.IntellIVRBean" init-method="init" destroy-method="cleanUp">
+        <property name="reportURL" value="${intellivr.gateway.reportURL}"/>
+        <property name="apiID" value="${intellivr.gateway.apiID}"/>
+        <property name="method" value="ivroriginate"/>
+        <property name="defaultLanguage" value="${intellivr.gateway.defaultLanguage}"/>
+        <property name="defaultTree" value="${intellivr.gateway.defaultTree}"/>
+        <property name="defaultReminder" value="${intellivr.gateway.defaultReminder}"/>
+        <property name="ivrServer" ref="intellIVRTestServer"/>
+        <property name="messageHandler" ref="intellIVRMessageHandler"/>
+        <property name="statusStore">
+            <bean class="org.motechproject.mobile.omp.manager.utils.InMemoryMessageStatusStore"/>
+        </property>
+        <property name="bundlingDelay" value="${intellivr.gateway.bundlingDelay}"/>
+        <property name="retryDelay" value="${intellivr.gateway.retryDelay}"/>
+        <property name="maxAttempts" value="${intellivr.gateway.maxAttempts}"/>
+        <property name="maxDays" value="${intellivr.gateway.maxDays}"/>
+        <property name="availableDays" value="${intellivr.gateway.availableDays}"/>
+        <property name="callCompletedThreshold" value="${intellivr.gateway.callCompletedThreshold}" />
+        <property name="preReminderDelay" value="${intellivr.gateway.preReminderDelay}" />
+        <property name="accelerateRetries" value="false" />
+        <property name="noPendingMessagesRecordingName" value="${intellivr.gateway.noPendingMessagesRecordingName}"/>
+        <property name="welcomeMessageRecordingName" value="${intellivr.gateway.welcomeMessageRecordingName}"/>
+        <property name="mappingResource" value="${intellivr.gateway.ivrConfig}"/>
+        <property name="coreManager" ref="coreManager"/>
+        <property name="registrarService" ref="registrarClient"/>
+        <property name="ivrDao" ref="ivrDao"/>
+        <property name="ivrCallRequester" ref="intellivrBean"/>
+    </bean>
+    
+   	<bean id="processOpenIvrSessionsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="intellivrBean"/>
+  		<property name="targetMethod" value="processOpenSessions" />
+  		<property name="concurrent" value="false" />
+	</bean>
+
+    <bean id="processWaitingIvrSessionsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="intellivrBean"/>
+  		<property name="targetMethod" value="processWaitingSessions" />
+  		<property name="concurrent" value="false" />
+	</bean>
+	
+	<bean id="processOpenIvrSessionsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="processOpenIvrSessionsJob"/>
+        <property name="cronExpression" value="15/30 * * * * ?"/>
+    </bean>
+	
+	<bean id="processWaitingIvrSessionsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="processWaitingIvrSessionsJob"/>
+        <property name="cronExpression" value="0/30 * * * * ?"/>
+    </bean>
+
+    <bean id="compositeHandler" class="org.motechproject.mobile.omp.manager.CompositeGatewayMessageHandler">
+        <property name="textHandler" ref="dummyHandler"/>
+        <property name="voiceHandler" ref="intellIVRMessageHandler"/>
+    </bean>
+
+    <bean id="compositeGatewayManager" class="org.motechproject.mobile.omp.manager.CompositeGatewayManager">
+        <property name="textGatewayManager" ref="dummyManager"/>
+        <property name="voiceGatewayManager" ref="intellivrBean"/>
+        <property name="compositeMessageHandler" ref="compositeHandler"/>
+    </bean>
+
+    <bean id="smsCache" class="org.motechproject.mobile.omp.service.SMSCacheServiceImpl">
+        <property name="coreManager" ref="coreManager" />
+    </bean>
+    
+    <bean id="smsWorker" class="org.motechproject.mobile.omp.service.SMSMessagingServiceWorkerImpl">
+        <property name="cache" ref="smsCache" />
+        <property name="gatewayManager" ref="compositeGatewayManager" />
+    </bean>
+
+    <bean id="smsService" class="org.motechproject.mobile.omp.service.SMSMessagingServiceImpl">
+        <property name="cache" ref="smsCache" />
+        <property name="gatewayManager" ref="compositeGatewayManager" />
+        <property name="coreManager" ref="coreManager" />
+        <property name="worker" ref="smsWorker" />
+    </bean>
+
+    <bean name="ompManager" class="org.motechproject.mobile.omp.manager.OMPManagerImpl" />
+
+    <!--Scheduling-->
+        <!--Job-->
+    <bean id="sendMessageUpdater" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="smsService"/>
+        <property name="targetMethod" value="sendScheduledMessages"/>
+        <property name="name" value="OMP Message Sending Service" />
+        <property name="concurrent" value="false" />
+    </bean>
+
+    <bean id="gatewayStatusUpdater" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="smsService"/>
+        <property name="targetMethod" value="updateMessageStatuses"/>
+        <property name="name" value="OMP Status Update Service" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <!--End of Job-->
+
+    <!--Listeners-->
+
+    <bean id="ompJobExecLogger" class="org.motechproject.mobile.core.util.QuartzJobExecutionLogger">
+        <property name="name" value="OMP Job Execution Logger" />
+    </bean>
+
+    <!--End Of Listeners-->
+
+        <!--Triggers-->
+    <bean id="sendMessageUpdaterTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="sendMessageUpdater"/>
+        <property name="cronExpression" value="0 * * * * ?"/>
+    </bean>
+
+    <bean id="gatewayStatusUpdaterTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="gatewayStatusUpdater"/>
+        <property name="cronExpression" value="0 * * * * ?"/>
+    </bean>
+    <!--End Of Triggers-->
+
+        <!--Scheduler Factory-->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="sendMessageUpdaterTrigger"/>
+                <ref bean="gatewayStatusUpdaterTrigger"/>
+                <ref bean="processOpenIvrSessionsTrigger"/>
+                <ref bean="processWaitingIvrSessionsTrigger"/>
+            </list>
+        </property>
+        <property name="globalJobListeners">
+            <list>
+                <ref bean="ompJobExecLogger"/>
+            </list>
+        </property>
+    </bean>
+    <!--End Of scheduler Factory-->
+    <!--End of Scheduling-->
+</beans>
