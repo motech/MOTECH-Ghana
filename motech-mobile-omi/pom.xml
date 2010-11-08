@@ -8,7 +8,7 @@
     <url>https://motech.rcg.usm.maine.edu/redmine</url>
     <parent>
         <groupId>org.motechproject</groupId>
-        <artifactId>motech-mobile</artifactId>
+        <artifactId>motech-server</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
     <dependencies>
@@ -25,6 +25,7 @@
         <dependency>
             <groupId>org.motechproject</groupId>
             <artifactId>motech-wsapi</artifactId>
+            <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -74,5 +75,9 @@
             <groupId>org.opensymphony.quartz</groupId>
             <artifactId>quartz</artifactId>
         </dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate</artifactId>
+			</dependency>
     </dependencies>
 </project>

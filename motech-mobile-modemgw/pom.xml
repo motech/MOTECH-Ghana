@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.motechproject</groupId>
-		<artifactId>motech-mobile</artifactId>
+		<artifactId>motech-server</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.motechproject.mobile</groupId>
@@ -18,10 +18,12 @@
 		<dependency>
 			<groupId>org.motechproject.mobile</groupId>
 			<artifactId>motech-mobile-omp</artifactId>
+			<version>0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.motechproject.mobile</groupId>
 			<artifactId>motech-mobile-imp</artifactId>
+			<version>0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.comm</groupId>
@@ -30,6 +32,10 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

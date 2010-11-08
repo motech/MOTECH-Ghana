@@ -8,7 +8,7 @@
     <url>https://motech.rcg.usm.maine.edu/redmine</url>
     <parent>
         <groupId>org.motechproject</groupId>
-        <artifactId>motech-mobile</artifactId>
+        <artifactId>motech-server</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
     <build>
@@ -100,10 +100,16 @@
         <dependency>
             <groupId>org.motechproject.mobile</groupId>
             <artifactId>motech-mobile-core</artifactId>
+            <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
+           <groupId>org.motechproject</groupId>
+           <artifactId>motech-wsapi</artifactId>
+           <version>0.1-SNAPSHOT</version>
+       </dependency>
+        <dependency>
             <groupId>com.sun.xml.ws</groupId>
-            <artifactId>webservices-rt</artifactId>
+            <artifactId>jaxws-rt</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -158,6 +164,18 @@
             <groupId>org.jvnet.jaxb2_commons</groupId>
             <artifactId>runtime</artifactId>
             <version>0.4.1.4</version>
+        </dependency>
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate</artifactId>
+			</dependency>
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
         </dependency>
     </dependencies>
     <properties>

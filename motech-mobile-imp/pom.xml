@@ -8,7 +8,7 @@
     <url>https://motech.rcg.usm.maine.edu/redmine</url>
     <parent>
         <groupId>org.motechproject</groupId>
-        <artifactId>motech-mobile</artifactId>
+        <artifactId>motech-server</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
     <build>
@@ -31,21 +31,25 @@
         <dependency>
             <groupId>org.motechproject.mobile</groupId>
             <artifactId>motech-mobile-core</artifactId>
+            <version>0.1-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.motechproject.mobile</groupId>
             <artifactId>motech-mobile-omi</artifactId>
+            <version>0.1-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.motechproject.mobile</groupId>
             <artifactId>motech-mobile-omp</artifactId>
+            <version>0.1-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.motechproject</groupId>
             <artifactId>motech-wsapi</artifactId>
+            <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -92,10 +96,6 @@
             <artifactId>spring-context-support</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.opensymphony.quartz</groupId>
-            <artifactId>quartz</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.jdom</groupId>
             <artifactId>jdom</artifactId>
         </dependency>
@@ -103,5 +103,13 @@
                 <groupId>org.motechproject.mforms</groupId>
                 <artifactId>xforms-server</artifactId>
             </dependency>
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate</artifactId>
+			</dependency>
     </dependencies>
 </project>

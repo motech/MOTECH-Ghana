@@ -2,13 +2,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.motechproject.mobile</groupId>
     <artifactId>motech-mobile-webapp</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <version>0.1-SNAPSHOT</version>
     <name>MoTeCH Mobile WebApp</name>
     <url>http://maven.apache.org</url>
     <parent>
         <groupId>org.motechproject</groupId>
-        <artifactId>motech-mobile</artifactId>
+        <artifactId>motech-server</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
     <dependencies>
@@ -65,54 +65,32 @@
         <dependency>
           <groupId>org.motechproject.mobile</groupId>
           <artifactId>motech-mobile-core</artifactId>
+          <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
           <groupId>org.motechproject.mobile</groupId>
           <artifactId>motech-mobile-omp</artifactId>
+          <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
           <groupId>org.motechproject.mobile</groupId>
           <artifactId>motech-mobile-omi</artifactId>
+          <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
           <groupId>org.motechproject.mobile</groupId>
           <artifactId>motech-mobile-imp</artifactId>
+          <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
         	<groupId>org.motechproject.mobile</groupId>
         	<artifactId>motech-mobile-modemgw</artifactId>
+          <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.motechproject</groupId>
             <artifactId>motech-wsapi</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.cxf</groupId>
-          <artifactId>cxf-rt-core</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.cxf</groupId>
-          <artifactId>cxf-rt-core</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.cxf</groupId>
-          <artifactId>cxf-rt-frontend-jaxws</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.cxf</groupId>
-          <artifactId>cxf-rt-transports-http</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.cxf</groupId>
-          <artifactId>cxf-rt-databinding-aegis</artifactId>
-        </dependency>
-        <dependency>
-           <groupId>org.apache.neethi</groupId>
-           <artifactId>neethi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
+          <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
           <groupId>log4j</groupId>
@@ -123,32 +101,8 @@
           <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.ws.commons.schema</groupId>
-            <artifactId>XmlSchema</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>wsdl4j</groupId>
-            <artifactId>wsdl4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.servicemix.bundles</groupId>
-            <artifactId>org.apache.servicemix.bundles.jdom</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.sun.xml.ws</groupId>
             <artifactId>jaxws-rt</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-digester</groupId>
-            <artifactId>commons-digester</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>taglibs</groupId>
-            <artifactId>standard</artifactId>
         </dependency>
         <dependency>
             <groupId>org.easymock</groupId>
@@ -166,6 +120,14 @@
           <groupId>org.liquibase</groupId>
           <artifactId>liquibase-core</artifactId>
       </dependency>
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate</artifactId>
+			</dependency>
     </dependencies>
 
     <build>

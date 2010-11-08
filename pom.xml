@@ -55,6 +55,13 @@
 	</issueManagement>
 
 	<modules>
+		<module>motech-wsapi</module>
+		<module>motech-mobile-core</module>
+		<module>motech-mobile-imp</module>
+		<module>motech-mobile-omp</module>
+		<module>motech-mobile-omi</module>
+		<module>motech-mobile-modemgw</module>
+		<module>motech-mobile-webapp</module>
 		<module>motech-server-core</module>
 		<module>motech-server-omod</module>
 	</modules>
@@ -81,11 +88,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>org.motechproject</groupId>
-				<artifactId>motech-wsapi</artifactId>
-				<version>0.7-SNAPSHOT</version>
-			</dependency>
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>idgen-core</artifactId>
@@ -219,12 +221,6 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>quartz</groupId>
-				<artifactId>quartz</artifactId>
-				<version>1.5.1</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
 				<groupId>com.thoughtworks.xstream</groupId>
 				<artifactId>xstream</artifactId>
 				<version>1.3.1</version>
@@ -234,6 +230,12 @@
 				<groupId>stax</groupId>
 				<artifactId>stax</artifactId>
 				<version>1.2.0</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.xml.stream</groupId>
+				<artifactId>stax-api</artifactId>
+				<version>1.0</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -341,6 +343,60 @@
 				<artifactId>liquibase-core</artifactId>
 				<version>1.9.4-mod</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.motechproject.mforms</groupId>
+				<artifactId>xforms-server</artifactId>
+				<version>0.7.0-beta-1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jdom</groupId>
+				<artifactId>jdom</artifactId>
+				<version>1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>smslib</groupId>
+				<artifactId>smslib-all</artifactId>
+				<version>3.4.5</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.comm</groupId>
+				<artifactId>comm</artifactId>
+				<version>2.0</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.jcraft</groupId>
+				<artifactId>jzlib</artifactId>
+				<version>1.0.7</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>1.4</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.4</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.activation</groupId>
+				<artifactId>activation</artifactId>
+				<version>1.1</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.5.6</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.opensymphony.quartz</groupId>
+				<artifactId>quartz</artifactId>
+				<version>1.6.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

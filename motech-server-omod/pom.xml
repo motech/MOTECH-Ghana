@@ -24,7 +24,40 @@
 		<dependency>
 			<groupId>org.motechproject</groupId>
 			<artifactId>motech-wsapi</artifactId>
+			<version>0.1-SNAPSHOT</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.motechproject.mobile</groupId>
+			<artifactId>motech-mobile-core</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.motechproject.mobile</groupId>
+			<artifactId>motech-mobile-omp</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.motechproject.mobile</groupId>
+			<artifactId>motech-mobile-omi</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.motechproject.mobile</groupId>
+			<artifactId>motech-mobile-imp</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.motechproject.mobile</groupId>
+			<artifactId>motech-mobile-modemgw</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.motechproject.mobile</groupId>
+			<artifactId>motech-mobile-webapp</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>idgen-core</artifactId>
