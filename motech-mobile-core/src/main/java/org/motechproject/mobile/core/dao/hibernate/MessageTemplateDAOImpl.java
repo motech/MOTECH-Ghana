@@ -39,9 +39,9 @@ import org.motechproject.mobile.core.model.MessageTemplate;
 import org.motechproject.mobile.core.model.MessageTemplateImpl;
 import org.motechproject.mobile.core.model.MessageType;
 import org.motechproject.mobile.core.model.NotificationType;
-import javax.persistence.NonUniqueResultException;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
