@@ -60,7 +60,9 @@
 	<import resource="classpath*:programs/*.xml" />
 	<import resource="classpath*:services/*.xml" />
 	<import resource="classpath*:registrar-bean.xml" />
-	
+
+	<import resource="classpath*:META-INF/webapp-config.xml" />
+
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
 
