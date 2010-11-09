@@ -65,13 +65,7 @@
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
     <context:annotation-config />
-    <!-- Transaction Management    -->
-    <tx:annotation-driven transaction-manager="transactionManager" />
-    
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory" />
-    </bean>
-    <!--  Transaction Management  -->
+
     <!-- Model -->
     <bean id="gatewayRequest" class="org.motechproject.mobile.core.model.GatewayRequestImpl" scope="prototype">
     </bean>
@@ -117,7 +111,7 @@
     <!-- End of Model-->
 
     <!-- Data Access -->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+    <bean id="mobileDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="${jdbc.driverClassName}" />
         <property name="jdbcUrl" value="${jdbc.url}"/>
         <property name="user" value="${jdbc.username}"/>
@@ -130,8 +124,8 @@
         <property name="acquireIncrement" value="${hibernate.c3p0.acquire_increment}"/>
     </bean>
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" depends-on="liquibase">
-        <property name="dataSource" ref="dataSource" />
+    <bean id="mobileSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" depends-on="liquibase">
+        <property name="dataSource" ref="mobileDataSource" />
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>
@@ -163,7 +157,7 @@
 
     <!-- Liquibase Settings   -->
     <bean id="liquibase" class="liquibase.spring.SpringLiquibase">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="mobileDataSource" />
         <property name="changeLog" value="${changeLogFile}" />
         <property name="contexts" value="${contexts}" />
     </bean>
@@ -173,59 +167,59 @@
 
 
     <bean id="gatewayRequestDAO" class="org.motechproject.mobile.core.dao.hibernate.GatewayRequestDAOImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="mobileSessionFactory"/>
     </bean>
 
     <bean id="gatewayResponseDAO" class="org.motechproject.mobile.core.dao.hibernate.GatewayResponseDAOImpl" >
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="mobileSessionFactory"/>
     </bean>
 
     <bean id="messageRequestDAO" class="org.motechproject.mobile.core.dao.hibernate.MessageRequestDAOImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="mobileSessionFactory"/>
     </bean>
 
     <bean id="languageDAO" class="org.motechproject.mobile.core.dao.hibernate.LanguageDAOImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="mobileSessionFactory"/>
     </bean>
     <bean id="messageTemplateDAO" class="org.motechproject.mobile.core.dao.hibernate.MessageTemplateDAOImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="mobileSessionFactory"/>
     </bean>
 
     <bean id="notificationTypeDAO" class="org.motechproject.mobile.core.dao.hibernate.NotificationTypeDAOImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="mobileSessionFactory"/>
     </bean>
 
     <bean id="gatewayRequestDetailsDAO" class="org.motechproject.mobile.core.dao.hibernate.GatewayRequestDetailsDAOImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="mobileSessionFactory"/>
     </bean>
 
 
     <bean id="incomingMessageSessionDAO" class="org.motechproject.mobile.model.dao.hibernate.imp.IncomingMessageSessionDAOImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="mobileSessionFactory"/>
     </bean>
 
     <bean id="incomingMessageDAO" class="org.motechproject.mobile.model.dao.hibernate.imp.IncomingMessageDAOImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="mobileSessionFactory"/>
     </bean>
 
     <bean id="incomingMessageResponseDAO" class="org.motechproject.mobile.model.dao.hibernate.imp.IncomingMessageResponseDAOImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="mobileSessionFactory"/>
     </bean>
 
     <bean id="incomingMessageFormDefinitionDAO" class="org.motechproject.mobile.model.dao.hibernate.imp.IncomingMessageFormDefinitionDAOImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="mobileSessionFactory"/>
     </bean>
 
     <bean id="incomingMessageFormParameterDefinitionDAO" class="org.motechproject.mobile.model.dao.hibernate.imp.IncomingMessageFormParameterDefinitionDAOImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="mobileSessionFactory"/>
     </bean>
 
     <bean id="incomingMessageFormDAO" class="org.motechproject.mobile.model.dao.hibernate.imp.IncomingMessageFormDAOImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="mobileSessionFactory"/>
     </bean>
 
     <bean id="incomingMessageFormParameterDAO" class="org.motechproject.mobile.model.dao.hibernate.imp.IncomingMessageFormParameterDAOImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="mobileSessionFactory"/>
     </bean>
     <!-- End of Data Access-->
 
