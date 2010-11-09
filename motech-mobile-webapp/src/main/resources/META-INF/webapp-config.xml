@@ -71,12 +71,6 @@ class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         </property>
     </bean>
 
-      
-      <jaxws:endpoint id="messageService"
-                      implementor="#messageWebServiceBean"
-                      address="/messaging">
-    </jaxws:endpoint>
-
     <bean id="messageWebServiceBean" class="org.motechproject.mobile.omi.ws.MessageServiceImpl">
         <property name="omiManager" ref="omiManager"/>
     </bean>
