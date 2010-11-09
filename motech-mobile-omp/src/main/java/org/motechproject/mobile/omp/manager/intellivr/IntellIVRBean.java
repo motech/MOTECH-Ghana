@@ -109,7 +109,6 @@ public class IntellIVRBean implements GatewayManager, GetIVRConfigRequestHandler
 	private CoreManager coreManager;
 	private RegistrarService registrarService;
 	private IVRDAO ivrDao;
-	private IVRCallRequester ivrCallRequester;
 
 	private Log log = LogFactory.getLog(IntellIVRBean.class);
 	private Log reportLog = LogFactory.getLog(IntellIVRBean.class.getName() + ".reportlog");
@@ -294,7 +293,7 @@ public class IntellIVRBean implements GatewayManager, GetIVRConfigRequestHandler
 		List<IVRCallSession> sessions = ivrDao.loadIVRCallSessionsByStateNextAttemptBeforeDate(states, new Date());
 
 		for ( IVRCallSession session : sessions )
-			ivrCallRequester.requestCall(session, UUID.randomUUID().toString());
+			requestCall(session, UUID.randomUUID().toString());
 		
 		log.debug("End processing SEND_WAIT IVRCallSessions");
 		
@@ -1376,13 +1375,6 @@ public class IntellIVRBean implements GatewayManager, GetIVRConfigRequestHandler
 		this.ivrDao = ivrDao;
 	}
 	
-	public IVRCallRequester getIvrCallRequester() {
-		return ivrCallRequester;
-	}
-
-	public void setIvrCallRequester(IVRCallRequester ivrCallRequester) {
-		this.ivrCallRequester = ivrCallRequester;
-	}
 
 	private Date toDate(XMLGregorianCalendar time) {
 		return time == null ? null : time.toGregorianCalendar().getTime();

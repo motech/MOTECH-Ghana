@@ -289,7 +289,6 @@
 		<property name="welcomeMessageRecordingName" value="welcome.wav"/>
 		<property name="mappingResource" value="classpath:intellivr.conf"/>
 		<property name="coreManager" ref="coreManager"/>
-		<property name="ivrCallRequester" ref="intellivrBean"/>  
 	</bean>
 	
 	<bean id="compositeHandler" class="org.motechproject.mobile.omp.manager.CompositeGatewayMessageHandler">

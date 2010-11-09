@@ -397,18 +397,13 @@ public class IntellIVRBeanTest {
 		
 		expect(mockDao.loadIVRCallSessionsByStateNextAttemptBeforeDate(EasyMock.aryEq(states), (Date)EasyMock.anyObject())).andReturn(expectedDaoResponse);
 		
-		IVRCallRequester mockRequester = createMock(IVRCallRequester.class);
-		intellivrBean.setIvrCallRequester(mockRequester);
-		
-		mockRequester.requestCall((IVRCallSession)EasyMock.anyObject(), (String)EasyMock.anyObject());
-		
-		replay(mockDao,mockRequester);
+		replay(mockDao);
 		
 		intellivrBean.processWaitingSessions();
 		
-		assertEquals(IVRCallSession.SEND_WAIT, session.getState());
+		assertEquals(IVRCallSession.REPORT_WAIT, session.getState());
 		
-		verify(mockDao,mockRequester);
+		verify(mockDao);
 		
 	}
 	

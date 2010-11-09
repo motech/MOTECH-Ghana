@@ -272,7 +272,6 @@
         <property name="coreManager" ref="coreManager"/>
         <property name="registrarService" ref="registrarClient"/>
         <property name="ivrDao" ref="ivrDao"/>
-        <property name="ivrCallRequester" ref="intellivrBean"/>
     </bean>
     
    	<bean id="processOpenIvrSessionsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
