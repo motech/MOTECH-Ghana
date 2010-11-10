@@ -1304,4 +1304,18 @@
         </sql>
     </diff>
 
+	<diff>
+		<version>20.1.20.1</version>
+		<author>Matthew Blanchette</author>
+		<date>Nov 10 2010</date>
+		<description>
+			Inserting new message definition for TAMA.
+		</description>
+		<sql>
+			INSERT INTO `motechmodule_messagedefinition` 
+			(`message_key`,`public_id`,`message_type`) VALUES 
+			('tama.demo.pill.reminder',201201,'REMINDER');
+		</sql>
+	</diff>
+
 </sqldiff>
