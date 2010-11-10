@@ -2315,6 +2315,14 @@ and
                         </tabular-measure>
                     </property>
                 </tabular-measure-group>
+                <tabular-measure-group name="Summary Field17" id="1251">
+                    <property name="measures">
+                        <tabular-measure name="Number1" id="1252">
+                            <expression name="measureExpression">dataSetRow["Number"]</expression>
+                            <property name="dataType">decimal</property>
+                        </tabular-measure>
+                    </property>
+                </tabular-measure-group>
             </property>
             <property name="dataSet">IPTi</property>
         </tabular-cube>
@@ -4438,28 +4446,26 @@ Hip
                     </data>
                 </cell>
             </row>
-            <row id="993">
-                <cell id="994">
-                    <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="997">
+            <row id="1254">
+                <cell id="1255">
+                    <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="1256">
                         <property name="measures">
-                            <extended-item extensionName="MeasureView" id="1010">
-                                <property name="measure">value_numeric</property>
+                            <extended-item extensionName="MeasureView" id="1263">
+                                <property name="measure">Number1</property>
                                 <property name="detail">
-                                    <extended-item extensionName="AggregationCell" id="1011">
+                                    <extended-item extensionName="AggregationCell" id="1264">
                                         <property name="aggregationOnRow">Group7/Dosage</property>
                                         <property name="content">
-                                            <data id="1012">
-                                                <property name="textAlign">center</property>
-                                                <property name="resultSetColumn">value_numeric_Group7/Dosage</property>
+                                            <data id="1265">
+                                                <property name="resultSetColumn">Number1_Group7/Dosage</property>
                                             </data>
                                         </property>
                                     </extended-item>
                                 </property>
                                 <property name="header">
-                                    <extended-item extensionName="CrosstabCell" id="1013">
+                                    <extended-item extensionName="CrosstabCell" id="1266">
                                         <property name="content">
-                                            <label id="1014">
-                                                <property name="fontWeight">bold</property>
+                                            <label id="1267">
                                                 <text-property name="text">Total</text-property>
                                             </label>
                                         </property>
@@ -4468,17 +4474,17 @@ Hip
                             </extended-item>
                         </property>
                         <property name="rows">
-                            <extended-item extensionName="CrosstabView" id="1005">
+                            <extended-item extensionName="CrosstabView" id="1258">
                                 <property name="views">
-                                    <extended-item extensionName="DimensionView" id="1006">
+                                    <extended-item extensionName="DimensionView" id="1259">
                                         <property name="dimension">Group7</property>
                                         <property name="levels">
-                                            <extended-item extensionName="LevelView" name="NewLevel View7" id="1007">
+                                            <extended-item extensionName="LevelView" name="NewLevel View7" id="1260">
                                                 <property name="level">Group7/Dosage</property>
                                                 <property name="member">
-                                                    <extended-item extensionName="CrosstabCell" id="1008">
+                                                    <extended-item extensionName="CrosstabCell" id="1261">
                                                         <property name="content">
-                                                            <data name="Dosage7" id="1009">
+                                                            <data name="Dosage7" id="1262">
                                                                 <property name="resultSetColumn">Dosage</property>
                                                             </data>
                                                         </property>
@@ -4491,7 +4497,7 @@ Hip
                             </extended-item>
                         </property>
                         <property name="header">
-                            <extended-item extensionName="CrosstabCell" id="998"/>
+                            <extended-item extensionName="CrosstabCell" id="1257"/>
                         </property>
                         <property name="cube">Data Cube - IPTi</property>
                         <list-property name="boundDataColumns">
@@ -4501,9 +4507,9 @@ Hip
                                 <property name="dataType">string</property>
                             </structure>
                             <structure>
-                                <property name="name">value_numeric_Group7/Dosage</property>
-                                <expression name="expression">measure["value_numeric"]</expression>
-                                <property name="dataType">float</property>
+                                <property name="name">Number1_Group7/Dosage</property>
+                                <expression name="expression">measure["Number1"]</expression>
+                                <property name="dataType">decimal</property>
                                 <simple-property-list name="aggregateOn">
                                     <value>Group7/Dosage</value>
                                 </simple-property-list>
