@@ -33,22 +33,17 @@
 
 package org.motechproject.server.omod.extension.html;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.openmrs.module.Extension;
-import org.openmrs.module.web.extension.AdministrationSectionExt;
+import org.openmrs.module.web.extension.LinkExt;
 
 /**
- * This class defines the links that will appear on the administration page
- * under the "basicmodule.title" heading. This extension is enabled by defining
- * (uncommenting) it in the /metadata/config.xml file.
+ * This class defines the menu link
  */
-public class AdminList extends AdministrationSectionExt {
+public class TAMAGutterLink extends LinkExt {
 
 	@Override
 	public String getRequiredPrivilege() {
-		return "Manage TAMA";
+		return "Use TAMA";
 	}
 
 	/**
@@ -58,25 +53,14 @@ public class AdminList extends AdministrationSectionExt {
 		return Extension.MEDIA_TYPE.html;
 	}
 
-	/**
-	 * @see org.openmrs.module.web.extension.AdministrationSectionExt#getTitle()
-	 */
-	public String getTitle() {
-		return "motechmodule.title";
+	@Override
+	public String getLabel() {
+		return "motechmodule.Navigation.tama";
 	}
 
-	/**
-	 * @see org.openmrs.module.web.extension.AdministrationSectionExt#getLinks()
-	 */
-	public Map<String, String> getLinks() {
-
-		Map<String, String> map = new HashMap<String, String>();
-
-		map.put("module/motechmodule/tama-messages.form", "View Messages");
-		map.put("module/motechmodule/tama-patient.form", "Register Patient");
-		map.put("module/motechmodule/tama-symptoms.form", "Report Symptoms");
-
-		return map;
+	@Override
+	public String getUrl() {
+		return "module/motechmodule/tama.htm";
 	}
 
 }

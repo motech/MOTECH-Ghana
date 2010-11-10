@@ -31,52 +31,18 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.server.omod.extension.html;
+package org.motechproject.server.omod.web.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import org.openmrs.module.Extension;
-import org.openmrs.module.web.extension.AdministrationSectionExt;
+@Controller
+@RequestMapping("/module/motechmodule/tama-symptoms")
+public class TAMASymptomsController {
 
-/**
- * This class defines the links that will appear on the administration page
- * under the "basicmodule.title" heading. This extension is enabled by defining
- * (uncommenting) it in the /metadata/config.xml file.
- */
-public class AdminList extends AdministrationSectionExt {
-
-	@Override
-	public String getRequiredPrivilege() {
-		return "Manage TAMA";
-	}
-
-	/**
-	 * @see org.openmrs.module.web.extension.AdministrationSectionExt#getMediaType()
-	 */
-	public Extension.MEDIA_TYPE getMediaType() {
-		return Extension.MEDIA_TYPE.html;
-	}
-
-	/**
-	 * @see org.openmrs.module.web.extension.AdministrationSectionExt#getTitle()
-	 */
-	public String getTitle() {
-		return "motechmodule.title";
-	}
-
-	/**
-	 * @see org.openmrs.module.web.extension.AdministrationSectionExt#getLinks()
-	 */
-	public Map<String, String> getLinks() {
-
-		Map<String, String> map = new HashMap<String, String>();
-
-		map.put("module/motechmodule/tama-messages.form", "View Messages");
-		map.put("module/motechmodule/tama-patient.form", "Register Patient");
-		map.put("module/motechmodule/tama-symptoms.form", "Report Symptoms");
-
-		return map;
+	@RequestMapping(method = RequestMethod.GET)
+	public void viewForm() {
 	}
 
 }

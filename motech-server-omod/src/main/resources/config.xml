@@ -64,12 +64,7 @@
 	
 	<extension>
 		<point>org.openmrs.gutter.tools</point>
-		<class>${modulePackage}.extension.html.GutterLink</class>
-	</extension>
-	
-	<extension>
-		<point>org.openmrs.gutter.tools</point>
-		<class>${modulePackage}.extension.html.DemoGutterLink</class>
+		<class>${modulePackage}.extension.html.TAMAGutterLink</class>
 	</extension>
 	
 	<!-- AOP -->
@@ -88,69 +83,29 @@
 	
 	<!-- Privileges used in module -->
 	<privilege>
-		<name>Manage MoTeCH</name>
-		<description>Allows viewing and interacting with the MoTeCH management functions</description>
+		<name>Manage TAMA</name>
+		<description>Allows viewing and interacting with the TAMA management functions</description>
 	</privilege>
 	
 	<privilege>
-		<name>Use MoTeCH</name>
-		<description>Enables a user to view the motech menu in the gutter</description>
+		<name>Use TAMA</name>
+		<description>Enables a user to view the TAMA menu in the gutter</description>
 	</privilege>
 
 	<privilege>
-		<name>Use MoTeCH Demo</name>
-		<description>Enables a user to view the motech menu in the gutter</description>
+		<name>View TAMA Messages</name>
+		<description>Allows viewing TAMA messages to patients</description>
 	</privilege>
 
 	<privilege>
-		<name>Register MoTeCH Maternal Visit</name>
-		<description>Allows registration of a maternal visit via MoTeCH</description>
+		<name>Register TAMA Patient</name>
+		<description>Allows registration of a patient via TAMA</description>
 	</privilege>
 	
 	<privilege>
-		<name>Register MoTeCH Facility</name>
-		<description>Allows registration of a facility via MoTeCH</description>
+		<name>Report TAMA Symptoms</name>
+		<description>Allows reporting patient symptoms via TAMA</description>
 	</privilege>
-	
-	<privilege>
-		<name>Manage MoTeCH Troubled Phones</name>
-		<description>Allows ability to view and enable troubled phones via MoTeCH</description>
-	</privilege>
-		
-	<privilege>
-		<name>Manage MoTeCH Blackout</name>
-		<description>Allows management of global blackout interval for MoTeCH</description>
-	</privilege>
-	
-	<privilege>
-		<name>View MoTeCH Data</name>
-		<description>Allows viewing MoTeCH data summary</description>
-	</privilege>
-		
-	<privilege>
-		<name>Register MoTeCH Staff</name>
-		<description>Allows registration of a staff member via MoTeCH</description>
-	</privilege>
-	
-	<privilege>
-		<name>Register MoTeCH Patient</name>
-		<description>Allows registration of a patient via MoTeCH</description>
-	</privilege>
-	
-	<privilege>
-		<name>Register MoTeCH Pregnancy</name>
-		<description>Allows registration of a pregnancy via MoTeCH</description>
-	</privilege>
-
-    <privilege>
-        <name>Register MoTeCH Communities</name>
-        <description>Allows to add new communities and edit existing ones</description>
-    </privilege>
-    
-    <privilege>
-        <name>Duplicate Patients</name>
-        <description>Allows the admin to delete duplicate patients</description>
-    </privilege>
 	
 	<globalProperty>
 		<property>motechmodule.troubled_phone_failures</property>
