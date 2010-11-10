@@ -17,44 +17,6 @@
     <property name="Dosage Summary.Tetanus Toxoid.x">135</property>
     <property name="Dosage Summary.Tetanus Toxoid.y">80</property>
     <property name="units">in</property>
-    <list-property name="propertyBindings">
-        <structure>
-            <property name="name">odaDriverClass</property>
-            <property name="id">18</property>
-        </structure>
-        <structure>
-            <property name="name">odaURL</property>
-            <property name="id">18</property>
-        </structure>
-        <structure>
-            <property name="name">odaUser</property>
-            <property name="id">18</property>
-        </structure>
-        <structure>
-            <property name="name">odaAutoCommit</property>
-            <property name="id">18</property>
-        </structure>
-        <structure>
-            <property name="name">odaIsolationMode</property>
-            <property name="id">18</property>
-        </structure>
-        <structure>
-            <property name="name">odaPassword</property>
-            <property name="id">18</property>
-        </structure>
-        <structure>
-            <property name="name">odaJndiName</property>
-            <property name="id">18</property>
-        </structure>
-        <structure>
-            <property name="name">OdaConnProfileName</property>
-            <property name="id">18</property>
-        </structure>
-        <structure>
-            <property name="name">OdaConnProfileStorePath</property>
-            <property name="id">18</property>
-        </structure>
-    </list-property>
     <property name="iconFile">/templates/crosstab.gif</property>
     <property name="cheatSheet">org.eclipse.birt.report.designer.ui.cheatsheet.crosstab</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -1259,17 +1221,22 @@ and
                 <list-property name="resultSet">
                     <structure>
                         <property name="position">1</property>
-                        <property name="name">Clinic</property>
+                        <property name="name">vaccination</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">2</property>
-                        <property name="name">Vitamin</property>
-                        <property name="dataType">string</property>
+                        <property name="name">post_partum</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
-                        <property name="name">Total</property>
+                        <property name="name">6_to_11_months</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">12_to_59_months</property>
                         <property name="dataType">decimal</property>
                     </structure>
                 </list-property>
@@ -1284,38 +1251,52 @@ and
                 </structure>
                 <structure>
                     <property name="position">2</property>
-                    <property name="name">name_2</property>
-                    <property name="nativeName">name</property>
-                    <property name="dataType">string</property>
+                    <property name="name">post_partum</property>
+                    <property name="nativeName">post_partum</property>
+                    <property name="dataType">decimal</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
-                    <property name="name">Total</property>
-                    <property name="nativeName">Total</property>
+                    <property name="name">6_to_11_months</property>
+                    <property name="nativeName">6_to_11_months</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">12_to_59_months</property>
+                    <property name="nativeName">12_to_59_months</property>
                     <property name="dataType">decimal</property>
                 </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[select
-	distinct 
-    location.name as Clinic,
-    concept.name as Vitamin, 
-    count(concept.name) as Total
+    concept_coded_name.name as vaccination,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 0 and 5,1,0)) as post_partum,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 6 and 11,1,0)) as 6_to_11_months,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 12 and 59,1,0)) as 12_to_59_months
 from 
     obs observation, 
-    concept_name concept,
+    person person,
     encounter encounter,
-    location location
-where 
-    observation.value_coded=concept.concept_id
-and 
-    concept.name = 'VITAMIN A' 
+    location location,
+    concept_name concept_coded_name,
+    concept_name obs_concept
+where
+   observation.concept_id = obs_concept.concept_id
+and
+    obs_concept.name = 'IMMUNIZATIONS ORDERED'
+and
+    observation.value_coded = concept_coded_name.concept_id
+and
+    concept_coded_name.name = 'VITAMIN A'
+and
+    observation.person_id=person.person_id
 and
     observation.encounter_id = encounter.encounter_id
 and
     encounter.location_id = location.location_id
-and 
+and
     location.name = ?
- and
+and
 	(observation.obs_datetime between ? and ?)]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Oral Polio" id="454">
@@ -1932,6 +1913,86 @@ and
  	vaccination,
  	dose]]></xml-property>
         </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Dewormer" id="1076">
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">clinic</property>
+                    <property name="paramName">Clinic</property>
+                    <property name="dataType">string</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">from</property>
+                    <property name="paramName">From</property>
+                    <property name="dataType">date</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">to</property>
+                    <property name="paramName">To</property>
+                    <property name="dataType">date</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">vaccination</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">dewormer_2_5_years</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">vaccination</property>
+                    <property name="nativeName">vaccination</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">dewormer_2_5_years</property>
+                    <property name="nativeName">dewormer_2_5_years</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select
+    '2-5 years' as vaccination,
+    SUM(if(YEAR(CURDATE()) - YEAR(person.birthdate) between 2 and 5,1,0)) as dewormer_2_5_years
+ from 
+    obs observation, 
+    person person,
+    encounter encounter,
+    location location,
+    concept_name concept_coded_name
+where
+    observation.concept_id = concept_coded_name.concept_id
+and
+    concept_coded_name.name = 'DEWORMER'
+and
+    observation.person_id=person.person_id
+and
+    observation.encounter_id = encounter.encounter_id
+and
+    encounter.location_id = location.location_id
+and
+    location.name = ?
+and
+	(observation.obs_datetime between ? and ?)]]></xml-property>
+        </oda-data-set>
     </data-sets>
     <cubes>
         <tabular-cube name="Data Cube - Oral Polio" id="481">
@@ -2284,6 +2345,70 @@ and
                 </tabular-measure-group>
             </property>
             <property name="dataSet">Tetanus Toxoid</property>
+        </tabular-cube>
+        <tabular-cube name="Data Cube - Vitamin A" id="1177">
+            <property name="dimensions">
+                <tabular-dimension name="Group8" id="1197">
+                    <property name="defaultHierarchy">NewTabularHierarchy11</property>
+                    <property name="hierarchies">
+                        <tabular-hierarchy name="NewTabularHierarchy11" id="1198">
+                            <property name="levels">
+                                <tabular-level name="name" id="1199">
+                                    <property name="dataType">string</property>
+                                    <property name="columnName">name</property>
+                                </tabular-level>
+                            </property>
+                        </tabular-hierarchy>
+                    </property>
+                </tabular-dimension>
+            </property>
+            <property name="measureGroups">
+                <tabular-measure-group name="Summary Field15" id="1178">
+                    <property name="measures">
+                        <tabular-measure name="post_partum" id="1179">
+                            <expression name="measureExpression">dataSetRow["post_partum"]</expression>
+                            <property name="dataType">decimal</property>
+                        </tabular-measure>
+                        <tabular-measure name="6_to_11_months" id="1180">
+                            <expression name="measureExpression">dataSetRow["6_to_11_months"]</expression>
+                            <property name="dataType">decimal</property>
+                        </tabular-measure>
+                        <tabular-measure name="12_to_59_months" id="1181">
+                            <expression name="measureExpression">dataSetRow["12_to_59_months"]</expression>
+                            <property name="dataType">decimal</property>
+                        </tabular-measure>
+                    </property>
+                </tabular-measure-group>
+            </property>
+            <property name="dataSet">Vitamin A</property>
+        </tabular-cube>
+        <tabular-cube name="Data Cube - Dewormer" id="1206">
+            <property name="dimensions">
+                <tabular-dimension name="Group9" id="1207">
+                    <property name="defaultHierarchy">NewTabularHierarchy12</property>
+                    <property name="hierarchies">
+                        <tabular-hierarchy name="NewTabularHierarchy12" id="1208">
+                            <property name="levels">
+                                <tabular-level name="vaccination" id="1209">
+                                    <property name="dataType">string</property>
+                                    <property name="columnName">vaccination</property>
+                                </tabular-level>
+                            </property>
+                        </tabular-hierarchy>
+                    </property>
+                </tabular-dimension>
+            </property>
+            <property name="measureGroups">
+                <tabular-measure-group name="Summary Field16" id="1210">
+                    <property name="measures">
+                        <tabular-measure name="dewormer_2_5_years" id="1211">
+                            <expression name="measureExpression">dataSetRow["dewormer_2_5_years"]</expression>
+                            <property name="dataType">decimal</property>
+                        </tabular-measure>
+                    </property>
+                </tabular-measure-group>
+            </property>
+            <property name="dataSet">Dewormer</property>
         </tabular-cube>
     </cubes>
     <styles>
@@ -4388,8 +4513,233 @@ Hip
                     </extended-item>
                 </cell>
             </row>
+            <row id="1245">
+                <cell id="1246">
+                    <label id="1247">
+                        <text-property name="text">Vitamin A Dosage</text-property>
+                    </label>
+                </cell>
+            </row>
             <row id="1043">
-                <cell id="1044"/>
+                <cell id="1044">
+                    <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="1170">
+                        <property name="measures">
+                            <extended-item extensionName="MeasureView" id="1182">
+                                <property name="measure">post_partum</property>
+                                <property name="detail">
+                                    <extended-item extensionName="AggregationCell" id="1183">
+                                        <property name="aggregationOnRow">Group8/name</property>
+                                        <property name="content">
+                                            <data id="1184">
+                                                <property name="resultSetColumn">post_partum_Group8/name</property>
+                                            </data>
+                                        </property>
+                                    </extended-item>
+                                </property>
+                                <property name="header">
+                                    <extended-item extensionName="CrosstabCell" id="1185">
+                                        <property name="content">
+                                            <label id="1186">
+                                                <text-property name="text">Post Partum</text-property>
+                                            </label>
+                                        </property>
+                                    </extended-item>
+                                </property>
+                            </extended-item>
+                            <extended-item extensionName="MeasureView" id="1187">
+                                <property name="measure">6_to_11_months</property>
+                                <property name="detail">
+                                    <extended-item extensionName="AggregationCell" id="1188">
+                                        <property name="aggregationOnRow">Group8/name</property>
+                                        <property name="content">
+                                            <data id="1189">
+                                                <property name="resultSetColumn">6_to_11_months_Group8/name</property>
+                                            </data>
+                                        </property>
+                                    </extended-item>
+                                </property>
+                                <property name="header">
+                                    <extended-item extensionName="CrosstabCell" id="1190">
+                                        <property name="content">
+                                            <label id="1191">
+                                                <text-property name="text">6-11 Months</text-property>
+                                            </label>
+                                        </property>
+                                    </extended-item>
+                                </property>
+                            </extended-item>
+                            <extended-item extensionName="MeasureView" id="1192">
+                                <property name="measure">12_to_59_months</property>
+                                <property name="detail">
+                                    <extended-item extensionName="AggregationCell" id="1193">
+                                        <property name="aggregationOnRow">Group8/name</property>
+                                        <property name="content">
+                                            <data id="1194">
+                                                <property name="resultSetColumn">12_to_59_months_Group8/name</property>
+                                            </data>
+                                        </property>
+                                    </extended-item>
+                                </property>
+                                <property name="header">
+                                    <extended-item extensionName="CrosstabCell" id="1195">
+                                        <property name="content">
+                                            <label id="1196">
+                                                <text-property name="text">12-59 Months</text-property>
+                                            </label>
+                                        </property>
+                                    </extended-item>
+                                </property>
+                            </extended-item>
+                        </property>
+                        <property name="rows">
+                            <extended-item extensionName="CrosstabView" id="1200">
+                                <property name="views">
+                                    <extended-item extensionName="DimensionView" id="1201">
+                                        <property name="dimension">Group8</property>
+                                        <property name="levels">
+                                            <extended-item extensionName="LevelView" name="NewLevel View8" id="1202">
+                                                <property name="level">Group8/name</property>
+                                                <property name="member">
+                                                    <extended-item extensionName="CrosstabCell" id="1203"/>
+                                                </property>
+                                            </extended-item>
+                                        </property>
+                                    </extended-item>
+                                </property>
+                            </extended-item>
+                        </property>
+                        <property name="header">
+                            <extended-item extensionName="CrosstabCell" id="1171"/>
+                        </property>
+                        <property name="cube">Data Cube - Vitamin A</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">post_partum</property>
+                                <expression name="expression">measure["post_partum"]</expression>
+                                <property name="dataType">decimal</property>
+                                <property name="aggregateFunction">SUM</property>
+                            </structure>
+                            <structure>
+                                <property name="name">6_to_11_months</property>
+                                <expression name="expression">measure["6_to_11_months"]</expression>
+                                <property name="dataType">decimal</property>
+                                <property name="aggregateFunction">SUM</property>
+                            </structure>
+                            <structure>
+                                <property name="name">12_to_59_months</property>
+                                <expression name="expression">measure["12_to_59_months"]</expression>
+                                <property name="dataType">decimal</property>
+                                <property name="aggregateFunction">SUM</property>
+                            </structure>
+                            <structure>
+                                <property name="name">name</property>
+                                <expression name="expression">dimension["Group8"]["name"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">post_partum_Group8/name</property>
+                                <expression name="expression">measure["post_partum"]</expression>
+                                <property name="dataType">decimal</property>
+                                <simple-property-list name="aggregateOn">
+                                    <value>Group8/name</value>
+                                </simple-property-list>
+                                <property name="aggregateFunction">SUM</property>
+                            </structure>
+                            <structure>
+                                <property name="name">6_to_11_months_Group8/name</property>
+                                <expression name="expression">measure["6_to_11_months"]</expression>
+                                <property name="dataType">decimal</property>
+                                <simple-property-list name="aggregateOn">
+                                    <value>Group8/name</value>
+                                </simple-property-list>
+                                <property name="aggregateFunction">SUM</property>
+                            </structure>
+                            <structure>
+                                <property name="name">12_to_59_months_Group8/name</property>
+                                <expression name="expression">measure["12_to_59_months"]</expression>
+                                <property name="dataType">decimal</property>
+                                <simple-property-list name="aggregateOn">
+                                    <value>Group8/name</value>
+                                </simple-property-list>
+                                <property name="aggregateFunction">SUM</property>
+                            </structure>
+                        </list-property>
+                    </extended-item>
+                </cell>
+            </row>
+            <row id="1248">
+                <cell id="1249">
+                    <label id="1250">
+                        <text-property name="text">Deworming</text-property>
+                    </label>
+                </cell>
+            </row>
+            <row id="1154">
+                <cell id="1155">
+                    <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="1212">
+                        <property name="measures">
+                            <extended-item extensionName="MeasureView" id="1239">
+                                <property name="measure">dewormer_2_5_years</property>
+                                <property name="detail">
+                                    <extended-item extensionName="AggregationCell" id="1240">
+                                        <property name="aggregationOnRow">Group9/vaccination</property>
+                                        <property name="content">
+                                            <data id="1241">
+                                                <property name="resultSetColumn">dewormer_2_5_years_Group9/vaccination</property>
+                                            </data>
+                                        </property>
+                                    </extended-item>
+                                </property>
+                                <property name="header">
+                                    <extended-item extensionName="CrosstabCell" id="1242">
+                                        <property name="content">
+                                            <label id="1243">
+                                                <text-property name="text">2-5 years</text-property>
+                                            </label>
+                                        </property>
+                                    </extended-item>
+                                </property>
+                            </extended-item>
+                        </property>
+                        <property name="rows">
+                            <extended-item extensionName="CrosstabView" id="1234">
+                                <property name="views">
+                                    <extended-item extensionName="DimensionView" id="1235">
+                                        <property name="dimension">Group9</property>
+                                        <property name="levels">
+                                            <extended-item extensionName="LevelView" name="NewLevel View9" id="1236">
+                                                <property name="level">Group9/vaccination</property>
+                                                <property name="member">
+                                                    <extended-item extensionName="CrosstabCell" id="1237"/>
+                                                </property>
+                                            </extended-item>
+                                        </property>
+                                    </extended-item>
+                                </property>
+                            </extended-item>
+                        </property>
+                        <property name="header">
+                            <extended-item extensionName="CrosstabCell" id="1213"/>
+                        </property>
+                        <property name="cube">Data Cube - Dewormer</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">vaccination</property>
+                                <expression name="expression">dimension["Group9"]["vaccination"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">dewormer_2_5_years_Group9/vaccination</property>
+                                <expression name="expression">measure["dewormer_2_5_years"]</expression>
+                                <property name="dataType">decimal</property>
+                                <simple-property-list name="aggregateOn">
+                                    <value>Group9/vaccination</value>
+                                </simple-property-list>
+                                <property name="aggregateFunction">SUM</property>
+                            </structure>
+                        </list-property>
+                    </extended-item>
+                </cell>
             </row>
         </grid>
     </body>
