@@ -1,0 +1,653 @@
+<!--
+
+    MOTECH PLATFORM OPENSOURCE LICENSE AGREEMENT
+
+    Copyright (c) 2010 The Trustees of Columbia University in the City of
+    New York and Grameen Foundation USA.  All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+    3. Neither the name of Grameen Foundation USA, Columbia University, or
+    their respective contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY GRAMEEN FOUNDATION USA, COLUMBIA UNIVERSITY
+    AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL GRAMEEN FOUNDATION
+    USA, COLUMBIA UNIVERSITY OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+    OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="tamaDemoProgram" class="org.motechproject.server.event.impl.MessageProgramImpl">
+		<property name="name" value="TAMA Demo Message Program" />
+		<property name="startState" ref="tamaDemoState1" />
+		<property name="endState" ref="tamaDemoState21" />
+	</bean>
+
+	<bean id="tamaDemoState1" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 1" />
+		<property name="timeValue" value="5" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState1" />
+					<property name="nextState" ref="tamaDemoState2" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState1" />
+					<property name="nextState" ref="tamaDemoState1" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState2" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 2" />
+		<property name="timeValue" value="10" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState2" />
+					<property name="nextState" ref="tamaDemoState3" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState2" />
+					<property name="nextState" ref="tamaDemoState2" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+
+
+	<bean id="tamaDemoState3" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 3" />
+		<property name="timeValue" value="15" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState3" />
+					<property name="nextState" ref="tamaDemoState4" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState3" />
+					<property name="nextState" ref="tamaDemoState3" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState4" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 4" />
+		<property name="timeValue" value="20" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState4" />
+					<property name="nextState" ref="tamaDemoState5" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState4" />
+					<property name="nextState" ref="tamaDemoState4" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState5" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 5" />
+		<property name="timeValue" value="25" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState5" />
+					<property name="nextState" ref="tamaDemoState6" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState5" />
+					<property name="nextState" ref="tamaDemoState5" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState6" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 6" />
+		<property name="timeValue" value="30" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState6" />
+					<property name="nextState" ref="tamaDemoState7" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState6" />
+					<property name="nextState" ref="tamaDemoState6" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState7" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 7" />
+		<property name="timeValue" value="35" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState7" />
+					<property name="nextState" ref="tamaDemoState8" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState7" />
+					<property name="nextState" ref="tamaDemoState7" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState8" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 8" />
+		<property name="timeValue" value="40" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState8" />
+					<property name="nextState" ref="tamaDemoState9" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState8" />
+					<property name="nextState" ref="tamaDemoState8" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState9" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 9" />
+		<property name="timeValue" value="45" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState9" />
+					<property name="nextState" ref="tamaDemoState10" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState9" />
+					<property name="nextState" ref="tamaDemoState9" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState10" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 10" />
+		<property name="timeValue" value="50" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState10" />
+					<property name="nextState" ref="tamaDemoState11" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState10" />
+					<property name="nextState" ref="tamaDemoState10" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState11" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 11" />
+		<property name="timeValue" value="55" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState11" />
+					<property name="nextState" ref="tamaDemoState12" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState11" />
+					<property name="nextState" ref="tamaDemoState11" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState12" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 12" />
+		<property name="timeValue" value="60" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState12" />
+					<property name="nextState" ref="tamaDemoState13" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState12" />
+					<property name="nextState" ref="tamaDemoState12" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState13" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 13" />
+		<property name="timeValue" value="65" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState13" />
+					<property name="nextState" ref="tamaDemoState14" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState13" />
+					<property name="nextState" ref="tamaDemoState13" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState14" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 14" />
+		<property name="timeValue" value="70" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState14" />
+					<property name="nextState" ref="tamaDemoState15" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState14" />
+					<property name="nextState" ref="tamaDemoState14" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState15" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 15" />
+		<property name="timeValue" value="75" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState15" />
+					<property name="nextState" ref="tamaDemoState16" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState15" />
+					<property name="nextState" ref="tamaDemoState15" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState16" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 16" />
+		<property name="timeValue" value="80" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState16" />
+					<property name="nextState" ref="tamaDemoState17" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState16" />
+					<property name="nextState" ref="tamaDemoState16" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState17" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 17" />
+		<property name="timeValue" value="85" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState17" />
+					<property name="nextState" ref="tamaDemoState18" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState17" />
+					<property name="nextState" ref="tamaDemoState17" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState18" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 18" />
+		<property name="timeValue" value="90" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState18" />
+					<property name="nextState" ref="tamaDemoState19" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState18" />
+					<property name="nextState" ref="tamaDemoState18" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState19" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 19" />
+		<property name="timeValue" value="95" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState19" />
+					<property name="nextState" ref="tamaDemoState20" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState19" />
+					<property name="nextState" ref="tamaDemoState19" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState20" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo State 20" />
+		<property name="timeValue" value="100" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="tama.demo.pill.reminder" />
+				<property name="messageScheduler" ref="messageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState20" />
+					<property name="nextState" ref="tamaDemoState21" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState20" />
+					<property name="nextState" ref="tamaDemoState20" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tamaDemoState21" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="TAMA Demo End State" />
+		<property name="timeValue" value="105" />
+		<property name="timePeriod" value="minute" />
+		<property name="timeReference" value="enrollment_startdate" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.RemoveEnrollmentCommand">
+				<property name="registrarBean" ref="registrarBean" />
+			</bean>
+		</property>
+		<property name="program" ref="tamaDemoProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="tamaDemoState21" />
+					<property name="nextState" ref="tamaDemoState21" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>

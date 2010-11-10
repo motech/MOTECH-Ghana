@@ -134,6 +134,12 @@
 			</key>
 			<ref bean="expectedCareProgram" />
 		</entry>
+		<entry>
+			<key>
+				<value>TAMA Demo Message Program</value>
+			</key>
+			<ref bean="tamaDemoProgram" />
+		</entry>
 	</util:map>
 	
 	<bean id="mobileClient" class="org.motechproject.server.ws.MessageServiceStub" />
