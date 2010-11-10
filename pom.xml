@@ -2,11 +2,11 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.motechproject</groupId>
-	<artifactId>motech-server</artifactId>
+	<artifactId>tama-server</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>MoTeCH Server</name>
-	<description>A prototype system for the motech project.</description>
+	<name>TAMA Server</name>
+	<description>A prototype system for the TAMA project.</description>
 
 	<url>http://motech.rcg.usm.maine.edu/redmine/projects/show/motech</url>
 

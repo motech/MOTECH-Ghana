@@ -3,22 +3,22 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.motechproject</groupId>
-		<artifactId>motech-server</artifactId>
+		<artifactId>tama-server</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.motechproject</groupId>
-	<artifactId>motech-server-omod</artifactId>
+	<artifactId>tama-server-omod</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>omod</packaging>
-	<name>Motech OpenMRS Module</name>
+	<name>TAMA OpenMRS Module</name>
 	<description>
-		An OpenMRS module implementing the server-side functionality of the MoTeCH project.
+		An OpenMRS module implementing the server-side functionality of the TAMA project.
 	</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.motechproject</groupId>
-			<artifactId>motech-server-core</artifactId>
+			<artifactId>tama-server-core</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
