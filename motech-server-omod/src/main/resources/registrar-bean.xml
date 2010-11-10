@@ -143,7 +143,7 @@
 		class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
 		<property name="serviceInterface" value="org.motechproject.ws.mobile.MessageService" />
 		<property name="wsdlDocumentUrl"
-			value="http://localhost:8080/motech-mobile-webapp/webservices/messaging?wsdl" />
+			value="http://localhost:8080/tama-mobile-webapp/webservices/messaging?wsdl" />
 		<property name="namespaceUri" value="http://server.ws.motechproject.org/" />
 		<property name="serviceName" value="MessageServiceImplService" />
 		<property name="portName" value="MessageServiceImplPort" />
