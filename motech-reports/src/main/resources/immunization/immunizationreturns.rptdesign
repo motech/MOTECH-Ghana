@@ -1226,16 +1226,11 @@ and
                     </structure>
                     <structure>
                         <property name="position">2</property>
-                        <property name="name">post_partum</property>
-                        <property name="dataType">decimal</property>
-                    </structure>
-                    <structure>
-                        <property name="position">3</property>
                         <property name="name">6_to_11_months</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">4</property>
+                        <property name="position">3</property>
                         <property name="name">12_to_59_months</property>
                         <property name="dataType">decimal</property>
                     </structure>
@@ -1251,18 +1246,12 @@ and
                 </structure>
                 <structure>
                     <property name="position">2</property>
-                    <property name="name">post_partum</property>
-                    <property name="nativeName">post_partum</property>
-                    <property name="dataType">decimal</property>
-                </structure>
-                <structure>
-                    <property name="position">3</property>
                     <property name="name">6_to_11_months</property>
                     <property name="nativeName">6_to_11_months</property>
                     <property name="dataType">decimal</property>
                 </structure>
                 <structure>
-                    <property name="position">4</property>
+                    <property name="position">3</property>
                     <property name="name">12_to_59_months</property>
                     <property name="nativeName">12_to_59_months</property>
                     <property name="dataType">decimal</property>
@@ -1270,7 +1259,6 @@ and
             </list-property>
             <xml-property name="queryText"><![CDATA[select
     concept_coded_name.name as vaccination,
-    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 0 and 5,1,0)) as post_partum,
     SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 6 and 11,1,0)) as 6_to_11_months,
     SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 12 and 59,1,0)) as 12_to_59_months
 from 
@@ -1993,6 +1981,96 @@ and
 and
 	(observation.obs_datetime between ? and ?)]]></xml-property>
         </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Vitamin A Post Partum" id="1370">
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">clinic</property>
+                    <property name="paramName">Clinic</property>
+                    <property name="dataType">string</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">from</property>
+                    <property name="paramName">From</property>
+                    <property name="dataType">date</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">to</property>
+                    <property name="paramName">To</property>
+                    <property name="dataType">date</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">vaccination</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">post_partum_dosage_count</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">name</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">post_partum_dosage_count</property>
+                    <property name="nativeName">post_partum_dosage_count</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select
+    concept_coded_name.name as vaccination,
+    IF( count(*) > 0 , count(*),NULL) as post_partum_dosage_count
+from 
+    obs observation, 
+    person person,
+    encounter encounter,
+    encounter_type encounter_type,
+    location location,
+    concept_name concept_coded_name,
+    concept_name obs_concept
+where
+   observation.concept_id = obs_concept.concept_id
+and
+    obs_concept.name = 'IMMUNIZATIONS ORDERED'
+and
+    observation.value_coded = concept_coded_name.concept_id
+and
+    concept_coded_name.name = 'VITAMIN A'
+and
+    observation.person_id=person.person_id
+and
+    observation.encounter_id = encounter.encounter_id
+and
+   encounter.encounter_type = encounter_type.encounter_type_id
+and
+   encounter_type.name = 'PNCMOTHERVISIT'
+and
+    encounter.location_id = location.location_id
+and
+    location.name = ?
+and
+	(observation.obs_datetime between ? and ?)]]></xml-property>
+        </oda-data-set>
     </data-sets>
     <cubes>
         <tabular-cube name="Data Cube - Oral Polio" id="481">
@@ -2353,42 +2431,6 @@ and
                 </tabular-measure-group>
             </property>
             <property name="dataSet">Tetanus Toxoid</property>
-        </tabular-cube>
-        <tabular-cube name="Data Cube - Vitamin A" id="1177">
-            <property name="dimensions">
-                <tabular-dimension name="Group8" id="1197">
-                    <property name="defaultHierarchy">NewTabularHierarchy11</property>
-                    <property name="hierarchies">
-                        <tabular-hierarchy name="NewTabularHierarchy11" id="1198">
-                            <property name="levels">
-                                <tabular-level name="name" id="1199">
-                                    <property name="dataType">string</property>
-                                    <property name="columnName">name</property>
-                                </tabular-level>
-                            </property>
-                        </tabular-hierarchy>
-                    </property>
-                </tabular-dimension>
-            </property>
-            <property name="measureGroups">
-                <tabular-measure-group name="Summary Field15" id="1178">
-                    <property name="measures">
-                        <tabular-measure name="post_partum" id="1179">
-                            <expression name="measureExpression">dataSetRow["post_partum"]</expression>
-                            <property name="dataType">decimal</property>
-                        </tabular-measure>
-                        <tabular-measure name="6_to_11_months" id="1180">
-                            <expression name="measureExpression">dataSetRow["6_to_11_months"]</expression>
-                            <property name="dataType">decimal</property>
-                        </tabular-measure>
-                        <tabular-measure name="12_to_59_months" id="1181">
-                            <expression name="measureExpression">dataSetRow["12_to_59_months"]</expression>
-                            <property name="dataType">decimal</property>
-                        </tabular-measure>
-                    </property>
-                </tabular-measure-group>
-            </property>
-            <property name="dataSet">Vitamin A</property>
         </tabular-cube>
         <tabular-cube name="Data Cube - Dewormer" id="1206">
             <property name="dimensions">
@@ -4554,19 +4596,13 @@ Hip
                                             <property name="name">vit_a_6_11_months</property>
                                             <text-property name="displayName">Vit A 6-11 months</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["6_to_11_months"]</expression>
-                                            <property name="dataType">string</property>
+                                            <property name="dataType">integer</property>
                                         </structure>
                                         <structure>
                                             <property name="name">vit_a_12_59_months</property>
                                             <text-property name="displayName">Vit A 12-59 months</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["12_to_59_months"]</expression>
-                                            <property name="dataType">string</property>
-                                        </structure>
-                                        <structure>
-                                            <property name="name">vit_a_post_partum</property>
-                                            <text-property name="displayName">Vit A Post Partum</text-property>
-                                            <expression name="expression" type="javascript">dataSetRow["post_partum"]</expression>
-                                            <property name="dataType">string</property>
+                                            <property name="dataType">integer</property>
                                         </structure>
                                     </list-property>
                                     <column id="1287"/>
@@ -4602,9 +4638,26 @@ Hip
                                             </label>
                                         </cell>
                                         <cell id="1297">
-                                            <data id="1312">
-                                                <property name="resultSetColumn">vit_a_post_partum</property>
-                                            </data>
+                                            <grid id="1371">
+                                                <property name="dataSet">Vitamin A Post Partum</property>
+                                                <column id="1372"/>
+                                                <row id="1373">
+                                                    <cell id="1374">
+                                                        <data id="1376">
+                                                            <property name="dataSet">Vitamin A Post Partum</property>
+                                                            <list-property name="boundDataColumns">
+                                                                <structure>
+                                                                    <property name="name">vit_a_post_partum</property>
+                                                                    <text-property name="displayName">Vit A Post Partum</text-property>
+                                                                    <expression name="expression" type="javascript">dataSetRow["post_partum_dosage_count"]</expression>
+                                                                    <property name="dataType">integer</property>
+                                                                </structure>
+                                                            </list-property>
+                                                            <property name="resultSetColumn">vit_a_post_partum</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                            </grid>
                                         </cell>
                                     </row>
                                     <row id="1298">
