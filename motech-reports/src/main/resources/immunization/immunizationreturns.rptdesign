@@ -4429,322 +4429,216 @@ Hip
                     </extended-item>
                 </cell>
             </row>
-            <row id="991">
-                <cell id="992">
-                    <data id="1015">
-                        <property name="fontWeight">bold</property>
-                        <property name="dataSet">IPTi</property>
-                        <list-property name="boundDataColumns">
-                            <structure>
-                                <property name="name">name_2</property>
-                                <text-property name="displayName">name_2</text-property>
-                                <expression name="expression" type="javascript">dataSetRow["name_2"]</expression>
-                                <property name="dataType">string</property>
-                            </structure>
-                        </list-property>
-                        <property name="resultSetColumn">name_2</property>
-                    </data>
-                </cell>
-            </row>
-            <row id="1254">
-                <cell id="1255">
-                    <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="1256">
-                        <property name="measures">
-                            <extended-item extensionName="MeasureView" id="1263">
-                                <property name="measure">Number1</property>
-                                <property name="detail">
-                                    <extended-item extensionName="AggregationCell" id="1264">
-                                        <property name="aggregationOnRow">Group7/Dosage</property>
-                                        <property name="content">
-                                            <data id="1265">
-                                                <property name="resultSetColumn">Number1_Group7/Dosage</property>
-                                            </data>
-                                        </property>
-                                    </extended-item>
-                                </property>
-                                <property name="header">
-                                    <extended-item extensionName="CrosstabCell" id="1266">
-                                        <property name="content">
-                                            <label id="1267">
-                                                <text-property name="text">Total</text-property>
+            <row id="1269">
+                <cell id="1270">
+                    <grid id="1271">
+                        <column id="1272"/>
+                        <column id="1273"/>
+                        <row id="1274">
+                            <cell id="1275">
+                                <grid id="1351">
+                                    <property name="borderBottomColor">#000000</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">1px</property>
+                                    <property name="borderLeftColor">#000000</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">1px</property>
+                                    <property name="borderRightColor">#000000</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">1px</property>
+                                    <property name="borderTopColor">#000000</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">1px</property>
+                                    <column id="1352"/>
+                                    <row id="1353">
+                                        <cell id="1354">
+                                            <label id="1357">
+                                                <property name="textAlign">left</property>
+                                                <property name="display">block</property>
+                                                <text-property name="text">                IPTi</text-property>
                                             </label>
-                                        </property>
-                                    </extended-item>
-                                </property>
-                            </extended-item>
-                        </property>
-                        <property name="rows">
-                            <extended-item extensionName="CrosstabView" id="1258">
-                                <property name="views">
-                                    <extended-item extensionName="DimensionView" id="1259">
-                                        <property name="dimension">Group7</property>
-                                        <property name="levels">
-                                            <extended-item extensionName="LevelView" name="NewLevel View7" id="1260">
-                                                <property name="level">Group7/Dosage</property>
-                                                <property name="member">
-                                                    <extended-item extensionName="CrosstabCell" id="1261">
-                                                        <property name="content">
-                                                            <data name="Dosage7" id="1262">
-                                                                <property name="resultSetColumn">Dosage</property>
-                                                            </data>
+                                        </cell>
+                                    </row>
+                                    <row id="1355">
+                                        <cell id="1356">
+                                            <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="1358">
+                                                <property name="measures">
+                                                    <extended-item extensionName="MeasureView" id="1365">
+                                                        <property name="measure">Number1</property>
+                                                        <property name="detail">
+                                                            <extended-item extensionName="AggregationCell" id="1366">
+                                                                <property name="aggregationOnRow">Group7/Dosage</property>
+                                                                <property name="content">
+                                                                    <data id="1367">
+                                                                        <property name="resultSetColumn">Number1_Group7/Dosage</property>
+                                                                    </data>
+                                                                </property>
+                                                            </extended-item>
+                                                        </property>
+                                                        <property name="header">
+                                                            <extended-item extensionName="CrosstabCell" id="1368">
+                                                                <property name="content">
+                                                                    <label id="1369">
+                                                                        <text-property name="text"></text-property>
+                                                                    </label>
+                                                                </property>
+                                                            </extended-item>
                                                         </property>
                                                     </extended-item>
                                                 </property>
-                                            </extended-item>
-                                        </property>
-                                    </extended-item>
-                                </property>
-                            </extended-item>
-                        </property>
-                        <property name="header">
-                            <extended-item extensionName="CrosstabCell" id="1257"/>
-                        </property>
-                        <property name="cube">Data Cube - IPTi</property>
-                        <list-property name="boundDataColumns">
-                            <structure>
-                                <property name="name">Dosage</property>
-                                <expression name="expression">dimension["Group7"]["Dosage"]</expression>
-                                <property name="dataType">string</property>
-                            </structure>
-                            <structure>
-                                <property name="name">Number1_Group7/Dosage</property>
-                                <expression name="expression">measure["Number1"]</expression>
-                                <property name="dataType">decimal</property>
-                                <simple-property-list name="aggregateOn">
-                                    <value>Group7/Dosage</value>
-                                </simple-property-list>
-                                <property name="aggregateFunction">SUM</property>
-                            </structure>
-                        </list-property>
-                    </extended-item>
-                </cell>
-            </row>
-            <row id="1245">
-                <cell id="1246">
-                    <label id="1247">
-                        <text-property name="text">Vitamin A Dosage</text-property>
-                    </label>
-                </cell>
-            </row>
-            <row id="1043">
-                <cell id="1044">
-                    <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="1170">
-                        <property name="measures">
-                            <extended-item extensionName="MeasureView" id="1182">
-                                <property name="measure">post_partum</property>
-                                <property name="detail">
-                                    <extended-item extensionName="AggregationCell" id="1183">
-                                        <property name="aggregationOnRow">Group8/name</property>
-                                        <property name="content">
-                                            <data id="1184">
-                                                <property name="resultSetColumn">post_partum_Group8/name</property>
-                                            </data>
-                                        </property>
-                                    </extended-item>
-                                </property>
-                                <property name="header">
-                                    <extended-item extensionName="CrosstabCell" id="1185">
-                                        <property name="content">
-                                            <label id="1186">
-                                                <text-property name="text">Post Partum</text-property>
-                                            </label>
-                                        </property>
-                                    </extended-item>
-                                </property>
-                            </extended-item>
-                            <extended-item extensionName="MeasureView" id="1187">
-                                <property name="measure">6_to_11_months</property>
-                                <property name="detail">
-                                    <extended-item extensionName="AggregationCell" id="1188">
-                                        <property name="aggregationOnRow">Group8/name</property>
-                                        <property name="content">
-                                            <data id="1189">
-                                                <property name="resultSetColumn">6_to_11_months_Group8/name</property>
-                                            </data>
-                                        </property>
-                                    </extended-item>
-                                </property>
-                                <property name="header">
-                                    <extended-item extensionName="CrosstabCell" id="1190">
-                                        <property name="content">
-                                            <label id="1191">
-                                                <text-property name="text">6-11 Months</text-property>
-                                            </label>
-                                        </property>
-                                    </extended-item>
-                                </property>
-                            </extended-item>
-                            <extended-item extensionName="MeasureView" id="1192">
-                                <property name="measure">12_to_59_months</property>
-                                <property name="detail">
-                                    <extended-item extensionName="AggregationCell" id="1193">
-                                        <property name="aggregationOnRow">Group8/name</property>
-                                        <property name="content">
-                                            <data id="1194">
-                                                <property name="resultSetColumn">12_to_59_months_Group8/name</property>
-                                            </data>
-                                        </property>
-                                    </extended-item>
-                                </property>
-                                <property name="header">
-                                    <extended-item extensionName="CrosstabCell" id="1195">
-                                        <property name="content">
-                                            <label id="1196">
-                                                <text-property name="text">12-59 Months</text-property>
-                                            </label>
-                                        </property>
-                                    </extended-item>
-                                </property>
-                            </extended-item>
-                        </property>
-                        <property name="rows">
-                            <extended-item extensionName="CrosstabView" id="1200">
-                                <property name="views">
-                                    <extended-item extensionName="DimensionView" id="1201">
-                                        <property name="dimension">Group8</property>
-                                        <property name="levels">
-                                            <extended-item extensionName="LevelView" name="NewLevel View8" id="1202">
-                                                <property name="level">Group8/name</property>
-                                                <property name="member">
-                                                    <extended-item extensionName="CrosstabCell" id="1203"/>
+                                                <property name="rows">
+                                                    <extended-item extensionName="CrosstabView" id="1360">
+                                                        <property name="views">
+                                                            <extended-item extensionName="DimensionView" id="1361">
+                                                                <property name="dimension">Group7</property>
+                                                                <property name="levels">
+                                                                    <extended-item extensionName="LevelView" name="NewLevel View7" id="1362">
+                                                                        <property name="level">Group7/Dosage</property>
+                                                                        <property name="member">
+                                                                            <extended-item extensionName="CrosstabCell" id="1363">
+                                                                                <property name="content">
+                                                                                    <data name="Dosage7" id="1364">
+                                                                                        <property name="resultSetColumn">Dosage</property>
+                                                                                    </data>
+                                                                                </property>
+                                                                            </extended-item>
+                                                                        </property>
+                                                                    </extended-item>
+                                                                </property>
+                                                            </extended-item>
+                                                        </property>
+                                                    </extended-item>
                                                 </property>
-                                            </extended-item>
-                                        </property>
-                                    </extended-item>
-                                </property>
-                            </extended-item>
-                        </property>
-                        <property name="header">
-                            <extended-item extensionName="CrosstabCell" id="1171"/>
-                        </property>
-                        <property name="cube">Data Cube - Vitamin A</property>
-                        <list-property name="boundDataColumns">
-                            <structure>
-                                <property name="name">post_partum</property>
-                                <expression name="expression">measure["post_partum"]</expression>
-                                <property name="dataType">decimal</property>
-                                <property name="aggregateFunction">SUM</property>
-                            </structure>
-                            <structure>
-                                <property name="name">6_to_11_months</property>
-                                <expression name="expression">measure["6_to_11_months"]</expression>
-                                <property name="dataType">decimal</property>
-                                <property name="aggregateFunction">SUM</property>
-                            </structure>
-                            <structure>
-                                <property name="name">12_to_59_months</property>
-                                <expression name="expression">measure["12_to_59_months"]</expression>
-                                <property name="dataType">decimal</property>
-                                <property name="aggregateFunction">SUM</property>
-                            </structure>
-                            <structure>
-                                <property name="name">name</property>
-                                <expression name="expression">dimension["Group8"]["name"]</expression>
-                                <property name="dataType">string</property>
-                            </structure>
-                            <structure>
-                                <property name="name">post_partum_Group8/name</property>
-                                <expression name="expression">measure["post_partum"]</expression>
-                                <property name="dataType">decimal</property>
-                                <simple-property-list name="aggregateOn">
-                                    <value>Group8/name</value>
-                                </simple-property-list>
-                                <property name="aggregateFunction">SUM</property>
-                            </structure>
-                            <structure>
-                                <property name="name">6_to_11_months_Group8/name</property>
-                                <expression name="expression">measure["6_to_11_months"]</expression>
-                                <property name="dataType">decimal</property>
-                                <simple-property-list name="aggregateOn">
-                                    <value>Group8/name</value>
-                                </simple-property-list>
-                                <property name="aggregateFunction">SUM</property>
-                            </structure>
-                            <structure>
-                                <property name="name">12_to_59_months_Group8/name</property>
-                                <expression name="expression">measure["12_to_59_months"]</expression>
-                                <property name="dataType">decimal</property>
-                                <simple-property-list name="aggregateOn">
-                                    <value>Group8/name</value>
-                                </simple-property-list>
-                                <property name="aggregateFunction">SUM</property>
-                            </structure>
-                        </list-property>
-                    </extended-item>
-                </cell>
-            </row>
-            <row id="1248">
-                <cell id="1249">
-                    <label id="1250">
-                        <text-property name="text">Deworming</text-property>
-                    </label>
-                </cell>
-            </row>
-            <row id="1154">
-                <cell id="1155">
-                    <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="1212">
-                        <property name="measures">
-                            <extended-item extensionName="MeasureView" id="1239">
-                                <property name="measure">dewormer_2_5_years</property>
-                                <property name="detail">
-                                    <extended-item extensionName="AggregationCell" id="1240">
-                                        <property name="aggregationOnRow">Group9/vaccination</property>
-                                        <property name="content">
-                                            <data id="1241">
-                                                <property name="resultSetColumn">dewormer_2_5_years_Group9/vaccination</property>
-                                            </data>
-                                        </property>
-                                    </extended-item>
-                                </property>
-                                <property name="header">
-                                    <extended-item extensionName="CrosstabCell" id="1242">
-                                        <property name="content">
-                                            <label id="1243">
-                                                <text-property name="text">2-5 years</text-property>
-                                            </label>
-                                        </property>
-                                    </extended-item>
-                                </property>
-                            </extended-item>
-                        </property>
-                        <property name="rows">
-                            <extended-item extensionName="CrosstabView" id="1234">
-                                <property name="views">
-                                    <extended-item extensionName="DimensionView" id="1235">
-                                        <property name="dimension">Group9</property>
-                                        <property name="levels">
-                                            <extended-item extensionName="LevelView" name="NewLevel View9" id="1236">
-                                                <property name="level">Group9/vaccination</property>
-                                                <property name="member">
-                                                    <extended-item extensionName="CrosstabCell" id="1237"/>
+                                                <property name="header">
+                                                    <extended-item extensionName="CrosstabCell" id="1359"/>
                                                 </property>
+                                                <property name="cube">Data Cube - IPTi</property>
+                                                <list-property name="boundDataColumns">
+                                                    <structure>
+                                                        <property name="name">Dosage</property>
+                                                        <expression name="expression">dimension["Group7"]["Dosage"]</expression>
+                                                        <property name="dataType">string</property>
+                                                    </structure>
+                                                    <structure>
+                                                        <property name="name">Number1_Group7/Dosage</property>
+                                                        <expression name="expression">measure["Number1"]</expression>
+                                                        <property name="dataType">decimal</property>
+                                                        <simple-property-list name="aggregateOn">
+                                                            <value>Group7/Dosage</value>
+                                                        </simple-property-list>
+                                                        <property name="aggregateFunction">SUM</property>
+                                                    </structure>
+                                                </list-property>
                                             </extended-item>
-                                        </property>
-                                    </extended-item>
-                                </property>
-                            </extended-item>
-                        </property>
-                        <property name="header">
-                            <extended-item extensionName="CrosstabCell" id="1213"/>
-                        </property>
-                        <property name="cube">Data Cube - Dewormer</property>
-                        <list-property name="boundDataColumns">
-                            <structure>
-                                <property name="name">vaccination</property>
-                                <expression name="expression">dimension["Group9"]["vaccination"]</expression>
-                                <property name="dataType">string</property>
-                            </structure>
-                            <structure>
-                                <property name="name">dewormer_2_5_years_Group9/vaccination</property>
-                                <expression name="expression">measure["dewormer_2_5_years"]</expression>
-                                <property name="dataType">decimal</property>
-                                <simple-property-list name="aggregateOn">
-                                    <value>Group9/vaccination</value>
-                                </simple-property-list>
-                                <property name="aggregateFunction">SUM</property>
-                            </structure>
-                        </list-property>
-                    </extended-item>
+                                        </cell>
+                                    </row>
+                                </grid>
+                            </cell>
+                            <cell id="1276">
+                                <grid id="1286">
+                                    <property name="borderBottomColor">#000000</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#000000</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#000000</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#000000</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="dataSet">Vitamin A</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">vit_a_6_11_months</property>
+                                            <text-property name="displayName">Vit A 6-11 months</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["6_to_11_months"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">vit_a_12_59_months</property>
+                                            <text-property name="displayName">Vit A 12-59 months</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["12_to_59_months"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">vit_a_post_partum</property>
+                                            <text-property name="displayName">Vit A Post Partum</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["post_partum"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
+                                    <column id="1287"/>
+                                    <column id="1288"/>
+                                    <row id="1289">
+                                        <cell id="1290">
+                                            <label id="1301">
+                                                <text-property name="text">Vit A 6-11 months:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1291">
+                                            <data id="1305">
+                                                <property name="resultSetColumn">vit_a_6_11_months</property>
+                                            </data>
+                                        </cell>
+                                    </row>
+                                    <row id="1292">
+                                        <cell id="1293">
+                                            <label id="1302">
+                                                <text-property name="text">Vit A 12-59 months:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1294">
+                                            <data id="1311">
+                                                <property name="resultSetColumn">vit_a_12_59_months</property>
+                                            </data>
+                                        </cell>
+                                    </row>
+                                    <row id="1295">
+                                        <cell id="1296">
+                                            <label id="1303">
+                                                <text-property name="text">Vit A Post Partum:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1297">
+                                            <data id="1312">
+                                                <property name="resultSetColumn">vit_a_post_partum</property>
+                                            </data>
+                                        </cell>
+                                    </row>
+                                    <row id="1298">
+                                        <cell id="1299">
+                                            <label id="1304">
+                                                <text-property name="text">Deworming 2-5yrs</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1300">
+                                            <grid id="1306">
+                                                <property name="dataSet">Dewormer</property>
+                                                <list-property name="boundDataColumns">
+                                                    <structure>
+                                                        <property name="name">deworming_2_5_yrs</property>
+                                                        <text-property name="displayName">Deworming 2-5 years</text-property>
+                                                        <expression name="expression" type="javascript">dataSetRow["dewormer_2_5_years"]</expression>
+                                                        <property name="dataType">string</property>
+                                                    </structure>
+                                                </list-property>
+                                                <column id="1307"/>
+                                                <row id="1308">
+                                                    <cell id="1309">
+                                                        <data id="1310">
+                                                            <property name="resultSetColumn">deworming_2_5_yrs</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                            </grid>
+                                        </cell>
+                                    </row>
+                                </grid>
+                            </cell>
+                        </row>
+                    </grid>
                 </cell>
             </row>
         </grid>
