@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.21" id="1">
     <property name="author">ThoughtWorks</property>
-    <property name="createdBy">Eclipse BIRT Designer Version 2.5.2.v20100208 Build &lt;2.5.2.v20100210-0630></property>
+    <property name="createdBy">Eclipse BIRT Designer Version 2.5.2.v20100211 Build &lt;2.5.2.v20100210-0630></property>
     <list-property name="userProperties">
         <structure>
             <property name="name">Dosage Summary.Tetanus Toxoid.x</property>
@@ -102,8 +102,8 @@
             </list-property>
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
             <property name="odaURL">jdbc:mysql://localhost/openmrs</property>
-            <property name="odaUser">root</property>
-            <encrypted-property name="odaPassword" encryptionID="base64">b3Blbm1ycw==</encrypted-property>
+            <property name="odaUser">openmrs</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">cGFzc3dvcmQ=</encrypted-property>
         </oda-data-source>
     </data-sources>
     <data-sets>
@@ -278,17 +278,17 @@ group by c.name
                 <list-property name="resultSet">
                     <structure>
                         <property name="position">1</property>
-                        <property name="name">name</property>
+                        <property name="name">Clinic</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">2</property>
-                        <property name="name">name_2</property>
+                        <property name="name">vaccination</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
-                        <property name="name">value_numeric</property>
+                        <property name="name">Dose</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
@@ -358,6 +358,7 @@ from
     obs observation, 
     concept_name concept,
     encounter encounter,
+    person person,
     location location
 where 
     observation.concept_id=concept.concept_id
@@ -365,6 +366,10 @@ and
     concept.name = 'TETANUS TOXOID DOSE'
 and
     observation.encounter_id = encounter.encounter_id
+and
+    observation.person_id = person.person_id
+and
+   person.gender = 'F'
 and
     encounter.location_id = location.location_id 
 and 
@@ -3377,7 +3382,13 @@ and
                                     </extended-item>
                                 </property>
                                 <property name="aggregations">
-                                    <extended-item extensionName="AggregationCell" id="607"/>
+                                    <extended-item extensionName="AggregationCell" id="607">
+                                        <property name="content">
+                                            <data id="1384">
+                                                <property name="resultSetColumn">penta_total_dosage</property>
+                                            </data>
+                                        </property>
+                                    </extended-item>
                                 </property>
                                 <property name="header">
                                     <extended-item extensionName="CrosstabCell" id="596">
@@ -3490,6 +3501,12 @@ and
                                 <expression name="expression">measure["above_24_months1"]</expression>
                                 <property name="dataType">decimal</property>
                                 <property name="aggregateFunction">SUM</property>
+                            </structure>
+                            <structure>
+                                <property name="name">penta_total_dosage</property>
+                                <text-property name="displayName">Total dosages for PENTA</text-property>
+                                <expression name="expression" type="javascript">data["0_to_11_months1"]+data["12_to_24_months1"]+data["above_24_months1"]</expression>
+                                <property name="dataType">integer</property>
                             </structure>
                         </list-property>
                     </extended-item>
