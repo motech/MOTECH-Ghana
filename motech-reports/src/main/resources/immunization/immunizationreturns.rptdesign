@@ -278,17 +278,17 @@ group by c.name
                 <list-property name="resultSet">
                     <structure>
                         <property name="position">1</property>
-                        <property name="name">Clinic</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">2</property>
                         <property name="name">name</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
+                        <property name="position">2</property>
+                        <property name="name">name_2</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
                         <property name="position">3</property>
-                        <property name="name">Dose</property>
+                        <property name="name">value_numeric</property>
                         <property name="dataType">float</property>
                     </structure>
                     <structure>
@@ -344,7 +344,7 @@ group by c.name
             <xml-property name="queryText"><![CDATA[select
 	distinct 
     location.name as Clinic,
-    concept.name as name, 
+    concept.name as vaccination, 
     observation.value_numeric as Dose,
     count(observation.value_numeric) as Number,
     CONCAT(CAST(observation.value_numeric AS CHAR), CASE
@@ -372,7 +372,7 @@ and
 and
 	(observation.obs_datetime between ? and ?)
  group by
- 	name,
+ 	vaccination,
  	dose]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
@@ -2702,6 +2702,7 @@ and
                                         <cell id="257">
                                             <grid id="419">
                                                 <property name="width">3.8333333333333335in</property>
+                                                <property name="dataSet">Tetanus Toxoid</property>
                                                 <column id="420">
                                                     <property name="width">0.625in</property>
                                                 </column>
@@ -2720,13 +2721,13 @@ and
                                                             <property name="dataSet">Tetanus Toxoid</property>
                                                             <list-property name="boundDataColumns">
                                                                 <structure>
-                                                                    <property name="name">name_2</property>
-                                                                    <text-property name="displayName">vaccine</text-property>
-                                                                    <expression name="expression" type="javascript">dataSetRow["name"]</expression>
+                                                                    <property name="name">tetanus_vaccine</property>
+                                                                    <text-property name="displayName">Tetanus Vaccine</text-property>
+                                                                    <expression name="expression" type="javascript">dataSetRow["name_2"]</expression>
                                                                     <property name="dataType">string</property>
                                                                 </structure>
                                                             </list-property>
-                                                            <property name="resultSetColumn">name_2</property>
+                                                            <property name="resultSetColumn">tetanus_vaccine</property>
                                                         </data>
                                                     </cell>
                                                 </row>
@@ -3179,15 +3180,9 @@ and
                                             </label>
                                         </cell>
                                         <cell id="551">
-                                            <text id="559">
-                                                <property name="contentType">auto</property>
-                                                <text-property name="content"><![CDATA[Diphtheria  
-Pertussis
-Tetanus 
-Hepatitis B 
-Hip
-]]></text-property>
-                                            </text>
+                                            <label id="1381">
+                                                <text-property name="text">Diptheria,Pertussis,Tetanus,Hepatitis B,Hip</text-property>
+                                            </label>
                                         </cell>
                                     </row>
                                 </grid>
