@@ -328,7 +328,7 @@ and
     location location,
     concept_name concept_name
 where 
-    enc.encounter_type=19
+    enc.encounter_type=15
 and
     obs.encounter_id=obs.encounter_id
 and
