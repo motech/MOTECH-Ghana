@@ -586,13 +586,11 @@ where
 and
     obs.person_id = person.person_id
 and
-    encounter.encounter_type = 19
+    encounter.encounter_type = 15
 and
     person.person_id=patient.patient_id
 and
     person.person_id=attribute.person_id
-and 
-    attribute.value='MOTHER'
 and    
 	(encounter.encounter_datetime between ? and ?)
 and
@@ -2543,15 +2541,9 @@ where
                                                 <property name="member">
                                                     <extended-item extensionName="CrosstabCell" id="745">
                                                         <property name="content">
-                                                            <data name="Age of mother at registration" id="746">
-                                                                <list-property name="visibility">
-                                                                    <structure>
-                                                                        <property name="format">all</property>
-                                                                        <expression name="valueExpr" type="javascript">true</expression>
-                                                                    </structure>
-                                                                </list-property>
-                                                                <property name="resultSetColumn">Age of mother at registration</property>
-                                                            </data>
+                                                            <label id="1134">
+                                                                <text-property name="text">Age of mother at registration</text-property>
+                                                            </label>
                                                         </property>
                                                     </extended-item>
                                                 </property>
@@ -2604,7 +2596,7 @@ where
                             </structure>
                             <structure>
                                 <property name="name">Age of mother at registration</property>
-                                <expression name="expression">dimension["Group6"]["Age of mother at registration"]</expression>
+                                <expression name="expression" type="javascript">dimension["Group6"]["Age of mother at registration"]</expression>
                                 <property name="dataType">string</property>
                             </structure>
                             <structure>
