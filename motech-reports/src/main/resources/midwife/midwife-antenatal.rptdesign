@@ -426,7 +426,7 @@ and
                 </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[select
-    count(distinct obs.person_id) as total
+    count(obs.person_id) as total
 from 
     obs obs,
     person_attribute attribute,
@@ -1041,7 +1041,7 @@ from
 (select
     distinct
     obs.person_id,
-    week(obs.value_datetime) - week(obs.obs_datetime) as weeks
+    week(obs.value_datetime) - week(obs.obs_datetime)  as weeks
 from
     encounter encounter, 
     obs obs,
@@ -1656,7 +1656,6 @@ from
 	location
 where
 	name = ?]]></xml-property>
-            <xml-property name="designerValues"><![CDATA[]]></xml-property>
         </oda-data-set>
     </data-sets>
     <cubes>
@@ -3224,15 +3223,9 @@ at Regist."</text-property>
                                                 <property name="member">
                                                     <extended-item extensionName="CrosstabCell" id="636">
                                                         <property name="content">
-                                                            <data name="Duration of Pregnancy" id="637">
-                                                                <list-property name="visibility">
-                                                                    <structure>
-                                                                        <property name="format">all</property>
-                                                                        <expression name="valueExpr" type="javascript">true</expression>
-                                                                    </structure>
-                                                                </list-property>
-                                                                <property name="resultSetColumn">Duration of Pregnancy</property>
-                                                            </data>
+                                                            <label id="1135">
+                                                                <text-property name="text">Duration of Pregnancy</text-property>
+                                                            </label>
                                                         </property>
                                                         <property name="width">0.8958333333333334in</property>
                                                     </extended-item>
