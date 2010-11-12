@@ -1227,7 +1227,7 @@ and
             </list-property>
             <xml-property name="queryText"><![CDATA[select 
     name.name, 
-    SUM(if(obs.value_coded = 1228,1,0)) as REACTIVE
+    SUM(if(obs.value_coded = 1229,1,0)) as REACTIVE
 from 
     obs obs, 
     concept_name name,
