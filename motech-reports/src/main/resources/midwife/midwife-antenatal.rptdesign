@@ -435,8 +435,6 @@ and
     obs.value_numeric > 2
 and
     obs.person_id = attribute.person_id
-and 
-    attribute.value='MOTHER'
 and
 	(obs.obs_datetime between ? and ?)
 and
