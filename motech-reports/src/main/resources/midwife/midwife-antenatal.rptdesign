@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.21" id="1">
     <property name="author">ThoughtWorks</property>
-    <property name="createdBy">Eclipse BIRT Designer Version 2.5.2.v20100211 Build &lt;2.5.2.v20100210-0630></property>
+    <property name="createdBy">Eclipse BIRT Designer Version 2.5.2.v20100208 Build &lt;2.5.2.v20100210-0630></property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -148,6 +148,12 @@
 </model:DesignValues>]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Registrants" id="119">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">registrants</property>
+                    <property name="alias">registrants</property>
+                </structure>
+            </list-property>
             <list-property name="parameters">
                 <structure>
                     <property name="name">param_1</property>
@@ -192,29 +198,19 @@
                     <property name="dataType">decimal</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select count(*) as registrants 
-from 
-    obs obs, 
+            <xml-property name="queryText"><![CDATA[select count(*) as registrants
+from  
     encounter encounter,
-    location location,
-  	person person, 
-    person_attribute attribute
+    location location
 where 
-    obs.encounter_id=encounter.encounter_id
-and
-    encounter.encounter_type=19
-and
-    person.person_id=obs.person_id
-and
-    person.person_id=attribute.person_id
-and 
-    attribute.value='MOTHER'
-and
-	(obs.obs_datetime between ? and ?)
+    encounter.encounter_type=15
 and
 	encounter.location_id= location.location_id
 and
-	location.name=?	]]></xml-property>
+	(encounter.encounter_datetime between ? and ?)
+and
+	location.name= ?
+	]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Attendences" id="618">
             <list-property name="parameters">
