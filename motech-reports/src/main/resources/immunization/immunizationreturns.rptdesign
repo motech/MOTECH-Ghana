@@ -3036,7 +3036,13 @@ and
                                     </extended-item>
                                 </property>
                                 <property name="aggregations">
-                                    <extended-item extensionName="AggregationCell" id="616"/>
+                                    <extended-item extensionName="AggregationCell" id="616">
+                                        <property name="content">
+                                            <data id="1383">
+                                                <property name="resultSetColumn">total_dosage</property>
+                                            </data>
+                                        </property>
+                                    </extended-item>
                                 </property>
                                 <property name="header">
                                     <extended-item extensionName="CrosstabCell" id="529">
@@ -3148,6 +3154,12 @@ and
                                 <expression name="expression">measure["above_24_months"]</expression>
                                 <property name="dataType">decimal</property>
                                 <property name="aggregateFunction">SUM</property>
+                            </structure>
+                            <structure>
+                                <property name="name">total_dosage</property>
+                                <text-property name="displayName">Total Dosages across age groups</text-property>
+                                <expression name="expression" type="javascript">data["12_to_24_months"]+data["0_to_11_months"]+data["above_24_months"]</expression>
+                                <property name="dataType">integer</property>
                             </structure>
                         </list-property>
                     </extended-item>
