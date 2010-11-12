@@ -3517,8 +3517,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 				if (patient != null) {
 					ContactNumberType contactNumberType = getPersonPhoneType(person);
-					String motechId = patient.getPatientIdentifier(
-							MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID)
+					String patientId = patient.getPatientIdentifier()
 							.getIdentifier();
 
 					PatientMessage patientMessage = new PatientMessage();
@@ -3531,7 +3530,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					patientMessage.setNotificationType(notificationType);
 					patientMessage.setStartDate(messageStartDate);
 					patientMessage.setEndDate(messageEndDate);
-					patientMessage.setRecipientId(motechId);
+					patientMessage.setRecipientId(patientId);
 					return patientMessage;
 
 				} else {
