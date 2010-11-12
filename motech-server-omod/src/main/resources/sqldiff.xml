@@ -678,6 +678,8 @@
 				(select task_config_id from scheduler_task_config where name = 'Immediate Notification Task')),
 			('timeOffset', '3600', 
 				(select task_config_id from scheduler_task_config where name = 'Daily Notification Task')),
+			('batchSize', '35', 
+				(select task_config_id from scheduler_task_config where name = 'MessageProgram Update Task')),
 			('careGroups', 'PNC(mother),PNC(baby)', 
 				(select task_config_id from scheduler_task_config where name = 'Daily Nurse Care Messaging Task')),
 			('deliveryTime', '08:00', 
