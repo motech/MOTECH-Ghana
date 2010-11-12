@@ -2709,31 +2709,22 @@ and
                                                 <property name="width">3.8333333333333335in</property>
                                                 <property name="dataSet">Tetanus Toxoid</property>
                                                 <column id="420">
-                                                    <property name="width">0.625in</property>
+                                                    <property name="width">0.75in</property>
                                                 </column>
                                                 <column id="421">
-                                                    <property name="width">3.2083333333333335in</property>
+                                                    <property name="width">3.0833333333333335in</property>
                                                 </column>
                                                 <row id="422">
                                                     <cell id="423">
                                                         <label id="427">
                                                             <property name="fontWeight">bold</property>
-                                                            <text-property name="text">Vaccine</text-property>
+                                                            <text-property name="text">Vaccine </text-property>
                                                         </label>
                                                     </cell>
                                                     <cell id="424">
-                                                        <data id="1025">
-                                                            <property name="dataSet">Tetanus Toxoid</property>
-                                                            <list-property name="boundDataColumns">
-                                                                <structure>
-                                                                    <property name="name">tetanus_vaccine</property>
-                                                                    <text-property name="displayName">Tetanus Vaccine</text-property>
-                                                                    <expression name="expression" type="javascript">dataSetRow["name_2"]</expression>
-                                                                    <property name="dataType">string</property>
-                                                                </structure>
-                                                            </list-property>
-                                                            <property name="resultSetColumn">tetanus_vaccine</property>
-                                                        </data>
+                                                        <label id="1385">
+                                                            <text-property name="text">TETANUS TOXOID DOSE</text-property>
+                                                        </label>
                                                     </cell>
                                                 </row>
                                             </grid>
@@ -2910,18 +2901,9 @@ and
                                             </label>
                                         </cell>
                                         <cell id="471">
-                                            <data id="1016">
-                                                <property name="dataSet">Oral Polio</property>
-                                                <list-property name="boundDataColumns">
-                                                    <structure>
-                                                        <property name="name">name</property>
-                                                        <text-property name="displayName">vaccine</text-property>
-                                                        <expression name="expression" type="javascript">dataSetRow["vaccination"]</expression>
-                                                        <property name="dataType">string</property>
-                                                    </structure>
-                                                </list-property>
-                                                <property name="resultSetColumn">name</property>
-                                            </data>
+                                            <label id="1386">
+                                                <text-property name="text">ORAL POLIO VACCINATION DOSE</text-property>
+                                            </label>
                                         </cell>
                                     </row>
                                 </grid>
@@ -3198,7 +3180,7 @@ and
                                         </cell>
                                         <cell id="551">
                                             <label id="1381">
-                                                <text-property name="text">Diptheria,Pertussis,Tetanus,Hepatitis B,Hip</text-property>
+                                                <text-property name="text">Diptheria,Pertussis,Tetanus,      Hepatitis B,Hip</text-property>
                                             </label>
                                         </cell>
                                     </row>
@@ -3221,48 +3203,9 @@ and
                                             </label>
                                         </cell>
                                         <cell id="557">
-                                            <data id="1048">
-                                                <property name="dataSet">Penta</property>
-                                                <list-property name="boundDataColumns">
-                                                    <structure>
-                                                        <property name="name">vaccination</property>
-                                                        <expression name="expression" type="javascript">dataSetRow["vaccination"]</expression>
-                                                        <property name="dataType">string</property>
-                                                    </structure>
-                                                    <structure>
-                                                        <property name="name">dose</property>
-                                                        <expression name="expression" type="javascript">dataSetRow["dose"]</expression>
-                                                        <property name="dataType">float</property>
-                                                    </structure>
-                                                    <structure>
-                                                        <property name="name">Dosage</property>
-                                                        <expression name="expression" type="javascript">dataSetRow["Dosage"]</expression>
-                                                        <property name="dataType">string</property>
-                                                    </structure>
-                                                    <structure>
-                                                        <property name="name">0_to_11_months</property>
-                                                        <expression name="expression" type="javascript">dataSetRow["0_to_11_months"]</expression>
-                                                        <property name="dataType">decimal</property>
-                                                    </structure>
-                                                    <structure>
-                                                        <property name="name">12_to_24_months</property>
-                                                        <expression name="expression" type="javascript">dataSetRow["12_to_24_months"]</expression>
-                                                        <property name="dataType">decimal</property>
-                                                    </structure>
-                                                    <structure>
-                                                        <property name="name">above_24_months</property>
-                                                        <expression name="expression" type="javascript">dataSetRow["above_24_months"]</expression>
-                                                        <property name="dataType">decimal</property>
-                                                    </structure>
-                                                    <structure>
-                                                        <property name="name">penta_vaccine</property>
-                                                        <text-property name="displayName">vaccine</text-property>
-                                                        <expression name="expression" type="javascript">dataSetRow["vaccination"]</expression>
-                                                        <property name="dataType">string</property>
-                                                    </structure>
-                                                </list-property>
-                                                <property name="resultSetColumn">penta_vaccine</property>
-                                            </data>
+                                            <label id="1387">
+                                                <text-property name="text">PENTA VACCINATION DOSE</text-property>
+                                            </label>
                                         </cell>
                                     </row>
                                 </grid>
@@ -3562,18 +3505,9 @@ and
                                             </label>
                                         </cell>
                                         <cell id="641">
-                                            <data id="697">
-                                                <property name="dataSet">BCG</property>
-                                                <list-property name="boundDataColumns">
-                                                    <structure>
-                                                        <property name="name">name</property>
-                                                        <text-property name="displayName">vaccine</text-property>
-                                                        <expression name="expression" type="javascript">dataSetRow["vaccination"]</expression>
-                                                        <property name="dataType">string</property>
-                                                    </structure>
-                                                </list-property>
-                                                <property name="resultSetColumn">name</property>
-                                            </data>
+                                            <label id="1388">
+                                                <text-property name="text">BACILLE CAMILE-GUERIN VACCINATION</text-property>
+                                            </label>
                                         </cell>
                                     </row>
                                 </grid>
@@ -3838,18 +3772,9 @@ and
                                             </label>
                                         </cell>
                                         <cell id="722">
-                                            <data id="725">
-                                                <property name="dataSet">Measles</property>
-                                                <list-property name="boundDataColumns">
-                                                    <structure>
-                                                        <property name="name">name</property>
-                                                        <text-property name="displayName">vaccine</text-property>
-                                                        <expression name="expression" type="javascript">dataSetRow["name"]</expression>
-                                                        <property name="dataType">string</property>
-                                                    </structure>
-                                                </list-property>
-                                                <property name="resultSetColumn">name</property>
-                                            </data>
+                                            <label id="1389">
+                                                <text-property name="text">MEASLES VACCINATION</text-property>
+                                            </label>
                                         </cell>
                                     </row>
                                 </grid>
@@ -4072,18 +3997,9 @@ and
                                             </label>
                                         </cell>
                                         <cell id="785">
-                                            <data id="791">
-                                                <property name="dataSet">CSM</property>
-                                                <list-property name="boundDataColumns">
-                                                    <structure>
-                                                        <property name="name">name</property>
-                                                        <text-property name="displayName">vaccine</text-property>
-                                                        <expression name="expression" type="javascript">dataSetRow["name"]</expression>
-                                                        <property name="dataType">string</property>
-                                                    </structure>
-                                                </list-property>
-                                                <property name="resultSetColumn">name</property>
-                                            </data>
+                                            <label id="1390">
+                                                <text-property name="text">CEREBRO-SPINAL MENINGITIS VACCINATION</text-property>
+                                            </label>
                                         </cell>
                                     </row>
                                 </grid>
@@ -4307,18 +4223,9 @@ and
                                             </label>
                                         </cell>
                                         <cell id="942">
-                                            <data id="948">
-                                                <property name="dataSet">YF</property>
-                                                <list-property name="boundDataColumns">
-                                                    <structure>
-                                                        <property name="name">name</property>
-                                                        <text-property name="displayName">vaccine</text-property>
-                                                        <expression name="expression" type="javascript">dataSetRow["name"]</expression>
-                                                        <property name="dataType">string</property>
-                                                    </structure>
-                                                </list-property>
-                                                <property name="resultSetColumn">name</property>
-                                            </data>
+                                            <label id="1391">
+                                                <text-property name="text">YELLOW FEVER VACCINATION</text-property>
+                                            </label>
                                         </cell>
                                     </row>
                                 </grid>
