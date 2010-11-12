@@ -67,6 +67,13 @@
 	<!-- Controllers -->
 	<context:component-scan base-package="org.motechproject.server.omod.web.controller" />
     <bean id="webCommunityValidator" class="org.motechproject.server.omod.web.validator.WebCommunityValidator" />
+	
+	<bean id="tamaPatientValidator" class="org.motechproject.server.omod.web.validator.TAMAPatientValidator">
+		<property name="dateFormat" value="dd/MM/yyyy" />
+		<property name="patientIdPattern" value="[a-zA-Z0-9]+" />
+		<property name="genderPattern" value="M|F|T" />
+		<property name="mobileNumberPattern" value="[0-9]+" />
+	</bean>
 
 	<bean id="txSyncManWrapper" class="org.motechproject.server.omod.sdsched.TxSyncManWrapperImpl" />
 

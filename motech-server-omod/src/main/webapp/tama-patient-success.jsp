@@ -35,7 +35,7 @@
 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
-<openmrs:require privilege="Register TAMA Patient" otherwise="/login.htm" redirect="/module/motechmodule/tama-patient.form" />
+<openmrs:require privilege="Register TAMA Patient" otherwise="/login.htm" redirect="/module/motechmodule/tama-patient-success.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
 <meta name="heading" content="Register Patient" />
@@ -43,37 +43,8 @@
 
 <h2><spring:message code="motechmodule.Patient.register"/></h2>
 
-	<form:form method="post" modelAttribute="motechmodule">
-		<form:errors cssClass="error" />
-		<table>
-			<tr>
-				<td class="labelcolumn"><form:label path="patientId"><spring:message code="motechmodule.patientId"/>: </form:label></td>
-				<td><form:input path="patientId" /></td>
-				<td><form:errors path="patientId" cssClass="error" /></td>
-			</tr>
-			<tr>
-				<td class="labelcolumn"><form:label path="gender"><spring:message code="motechmodule.gender"/>:</form:label></td>
-				<td>
-					<form:radiobutton path="gender" value="M"/>Male <form:radiobutton path="gender" value="F"/>Female <form:radiobutton path="gender" value="T"/>Hijra (Transsexual)
-				</td>
-				<td><form:errors path="gender" cssClass="error" /></td>
-			</tr>
-			<tr>
-				<td class="labelcolumn"><form:label path="dateOfBirth"><spring:message code="motechmodule.dateOfBirth"/> (DD/MM/YYYY):</form:label></td>
-				<td><form:input path="dateOfBirth" /></td>
-				<td><form:errors path="dateOfBirth" cssClass="error" /></td>
-			</tr>
-			<tr>
-				<td class="labelcolumn"><form:label path="mobileNumber"><spring:message code="motechmodule.mobileNumber"/>:</form:label></td>
-				<td><form:input path="mobileNumber" maxlength="50" /></td>
-				<td><form:errors path="mobileNumber" cssClass="error" /></td>
-			</tr>
-		</table>
-		<table>
-			<tr>
-				<td colspan="2"><input type="submit" value="Register New Patient" /></td>
-			</tr>
-		</table>
-	</form:form>
+<span style="color:green;">
+	<spring:message code="motechmodule.Patient.register.success"/>
+</span>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>
