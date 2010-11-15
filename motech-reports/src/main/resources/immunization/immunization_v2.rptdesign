@@ -358,8 +358,154 @@ and
       <design:criteria/>
     </design:resultSetDefinitions>
   </design:ResultSets>
-</model:DesignValues>
-]]></xml-property>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Measles" id="530">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">name</property>
+                    <property name="alias">vaccination</property>
+                </structure>
+                <structure>
+                    <property name="columnName">Dosage</property>
+                    <property name="alias">Dosage</property>
+                </structure>
+                <structure>
+                    <property name="columnName">0_to_11_months</property>
+                    <property name="alias">0_to_11_months</property>
+                </structure>
+                <structure>
+                    <property name="columnName">12_to_24_months</property>
+                    <property name="alias">12_to_24_months</property>
+                </structure>
+                <structure>
+                    <property name="columnName">above_24_months</property>
+                    <property name="alias">above_24_months</property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">Clinic</property>
+                    <property name="paramName">Clinic</property>
+                    <property name="dataType">string</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Year</property>
+                    <property name="paramName">Year</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Month</property>
+                    <property name="paramName">Month</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">vaccination</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">Dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">0_to_11_months</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">12_to_24_months</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">above_24_months</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">name</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">Dosage</property>
+                    <property name="nativeName">Dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">0_to_11_months</property>
+                    <property name="nativeName">0_to_11_months</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">12_to_24_months</property>
+                    <property name="nativeName">12_to_24_months</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">above_24_months</property>
+                    <property name="nativeName">above_24_months</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select
+    concept_coded_name.name as vaccination,
+    1 as Dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 0 and 11,1,0)) as 0_to_11_months,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 12 and 23,1,0)) as 12_to_24_months,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) > 24,1,0)) as above_24_months
+from 
+    obs observation, 
+    person person,
+    encounter encounter,
+    location location,
+    concept_name concept_coded_name,
+    concept_name concept_obs_name
+where
+    observation.value_coded = concept_coded_name.concept_id
+and
+    concept_coded_name.name = 'MEASLES VACCINATION'
+and
+    observation.concept_id = concept_obs_name.concept_id
+and 
+    concept_obs_name.name = 'IMMUNIZATIONS ORDERED' 
+and
+    observation.person_id=person.person_id 
+and
+    observation.encounter_id = encounter.encounter_id
+and
+    encounter.location_id = location.location_id
+and
+    location.name = ?
+and
+	YEAR(observation.obs_datetime) = ?
+and
+    MONTH(observation.obs_datetime) = ?
+ ]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[]]></xml-property>
         </oda-data-set>
     </data-sets>
     <styles>
@@ -410,6 +556,20 @@ and
     </page-setup>
     <body>
         <grid id="7">
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">Clinic</property>
+                    <text-property name="displayName">Clinic</text-property>
+                    <expression name="expression" type="javascript">params["Clinic"].value</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">month_and_year</property>
+                    <text-property name="displayName">Month / Year</text-property>
+                    <expression name="expression" type="javascript">params["Month"].value+"/"+params["Year"].value</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
             <column id="8"/>
             <row id="9">
                 <cell id="10">
@@ -451,9 +611,22 @@ and
                         </column>
                         <row id="43">
                             <cell id="44">
-                                <label id="49">
-                                    <text-property name="text">Immunisation Centre/Clinic :</text-property>
-                                </label>
+                                <grid id="535">
+                                    <column id="536"/>
+                                    <column id="537"/>
+                                    <row id="538">
+                                        <cell id="539">
+                                            <label id="541">
+                                                <text-property name="text">Immunisation Centre/Clinic</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="540">
+                                            <data id="542">
+                                                <property name="resultSetColumn">Clinic</property>
+                                            </data>
+                                        </cell>
+                                    </row>
+                                </grid>
                             </cell>
                             <cell id="45">
                                 <label id="50">
@@ -466,9 +639,22 @@ and
                                 </label>
                             </cell>
                             <cell id="47">
-                                <label id="52">
-                                    <text-property name="text">Month/Year:</text-property>
-                                </label>
+                                <grid id="543">
+                                    <column id="544"/>
+                                    <column id="545"/>
+                                    <row id="546">
+                                        <cell id="547">
+                                            <label id="549">
+                                                <text-property name="text">Month / Year :</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="548">
+                                            <data id="550">
+                                                <property name="resultSetColumn">month_and_year</property>
+                                            </data>
+                                        </cell>
+                                    </row>
+                                </grid>
                             </cell>
                             <cell id="48"/>
                         </row>
@@ -580,56 +766,53 @@ and
                                 </grid>
                             </cell>
                             <cell id="62">
-                                <grid id="103">
-                                    <property name="width">2.65625in</property>
-                                    <column id="104">
-                                        <property name="width">2.65625in</property>
-                                    </column>
-                                    <row id="105">
-                                        <cell id="106">
-                                            <label id="109">
+                                <grid id="551">
+                                    <column id="552"/>
+                                    <row id="553">
+                                        <cell id="554">
+                                            <label id="557">
                                                 <property name="textAlign">center</property>
                                                 <text-property name="text">TOTAL NO. OF VIALS USED</text-property>
                                             </label>
                                         </cell>
                                     </row>
-                                    <row id="107">
-                                        <cell id="108">
-                                            <grid id="110">
-                                                <column id="111"/>
-                                                <column id="112"/>
-                                                <column id="113"/>
-                                                <column id="114"/>
-                                                <column id="115"/>
-                                                <column id="116"/>
-                                                <row id="117">
-                                                    <cell id="118">
-                                                        <label id="124">
+                                    <row id="555">
+                                        <cell id="556">
+                                            <grid id="558">
+                                                <column id="559"/>
+                                                <column id="560"/>
+                                                <column id="561"/>
+                                                <column id="562"/>
+                                                <column id="563"/>
+                                                <column id="564"/>
+                                                <row id="565">
+                                                    <cell id="566">
+                                                        <label id="572">
                                                             <text-property name="text">1 dose</text-property>
                                                         </label>
                                                     </cell>
-                                                    <cell id="119">
-                                                        <label id="125">
-                                                            <text-property name="text">2 doses</text-property>
+                                                    <cell id="567">
+                                                        <label id="573">
+                                                            <text-property name="text">2 does</text-property>
                                                         </label>
                                                     </cell>
-                                                    <cell id="120">
-                                                        <label id="126">
+                                                    <cell id="568">
+                                                        <label id="574">
                                                             <text-property name="text">5 doses</text-property>
                                                         </label>
                                                     </cell>
-                                                    <cell id="121">
-                                                        <label id="127">
-                                                            <text-property name="text">10 doses</text-property>
+                                                    <cell id="569">
+                                                        <label id="575">
+                                                            <text-property name="text">10 does</text-property>
                                                         </label>
                                                     </cell>
-                                                    <cell id="122">
-                                                        <label id="128">
+                                                    <cell id="570">
+                                                        <label id="576">
                                                             <text-property name="text">20 doses</text-property>
                                                         </label>
                                                     </cell>
-                                                    <cell id="123">
-                                                        <label id="129">
+                                                    <cell id="571">
+                                                        <label id="577">
                                                             <text-property name="text">50 doses</text-property>
                                                         </label>
                                                     </cell>
@@ -862,15 +1045,83 @@ and
                             </cell>
                             <cell id="238">
                                 <grid id="320">
+                                    <property name="dataSet">Measles</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">vaccination</property>
+                                            <expression name="expression" type="javascript">dataSetRow["vaccination"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">Dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["Dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">0_to_11_months</property>
+                                            <expression name="expression" type="javascript">dataSetRow["0_to_11_months"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">12_to_24_months</property>
+                                            <expression name="expression" type="javascript">dataSetRow["12_to_24_months"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">above_24_months</property>
+                                            <expression name="expression" type="javascript">dataSetRow["above_24_months"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">measles_0_11_months</property>
+                                            <text-property name="displayName">0-11 Months</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["0_to_11_months"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">measles_12_24_months</property>
+                                            <text-property name="displayName">12-24 Months</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["12_to_24_months"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">measles_above_24_months</property>
+                                            <text-property name="displayName">Above 24 Months</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["above_24_months"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">measles_total</property>
+                                            <text-property name="displayName">Total</text-property>
+                                            <expression name="expression" type="javascript">row["measles_0_11_months"]+row["measles_12_24_months"]+row["measles_above_24_months"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                    </list-property>
                                     <column id="321"/>
                                     <column id="322"/>
                                     <column id="323"/>
                                     <column id="324"/>
                                     <row id="325">
-                                        <cell id="326"/>
-                                        <cell id="327"/>
-                                        <cell id="328"/>
-                                        <cell id="329"/>
+                                        <cell id="326">
+                                            <data id="531">
+                                                <property name="resultSetColumn">measles_0_11_months</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="327">
+                                            <data id="532">
+                                                <property name="resultSetColumn">measles_12_24_months</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="328">
+                                            <data id="533">
+                                                <property name="resultSetColumn">measles_above_24_months</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="329">
+                                            <data id="534">
+                                                <property name="resultSetColumn">measles_total</property>
+                                            </data>
+                                        </cell>
                                     </row>
                                 </grid>
                             </cell>

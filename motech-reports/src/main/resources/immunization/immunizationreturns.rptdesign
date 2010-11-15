@@ -460,7 +460,7 @@ and
                 <list-property name="resultSet">
                     <structure>
                         <property name="position">1</property>
-                        <property name="name">vaccination</property>
+                        <property name="name">name</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
@@ -470,7 +470,7 @@ and
                     </structure>
                     <structure>
                         <property name="position">3</property>
-                        <property name="name">concept_name_id</property>
+                        <property name="name">concept_name_id_3</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
