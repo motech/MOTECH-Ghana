@@ -971,21 +971,25 @@ where name = ?]]></xml-property>
                                                 <row id="94">
                                                     <cell id="95">
                                                         <label id="99">
+                                                            <property name="fontWeight">bold</property>
                                                             <text-property name="text">0-11 Months</text-property>
                                                         </label>
                                                     </cell>
                                                     <cell id="96">
                                                         <label id="100">
+                                                            <property name="fontWeight">bold</property>
                                                             <text-property name="text">12-23 Months</text-property>
                                                         </label>
                                                     </cell>
                                                     <cell id="97">
                                                         <label id="101">
+                                                            <property name="fontWeight">bold</property>
                                                             <text-property name="text">24 Months and above</text-property>
                                                         </label>
                                                     </cell>
                                                     <cell id="98">
                                                         <label id="102">
+                                                            <property name="fontWeight">bold</property>
                                                             <text-property name="text">Total No. of doses given</text-property>
                                                         </label>
                                                     </cell>
@@ -1054,6 +1058,7 @@ where name = ?]]></xml-property>
                             </cell>
                             <cell id="63">
                                 <label id="130">
+                                    <property name="fontWeight">bold</property>
                                     <property name="textAlign">center</property>
                                     <text-property name="text">TOTAL DOSES USED</text-property>
                                 </label>
@@ -1064,7 +1069,8 @@ where name = ?]]></xml-property>
                                     <row id="303">
                                         <cell id="304">
                                             <label id="307">
-                                                <text-property name="text">WEIGHTAGE RATE (%)</text-property>
+                                                <property name="fontWeight">bold</property>
+                                                <text-property name="text">WASTAGE RATE (%)</text-property>
                                             </label>
                                         </cell>
                                     </row>
@@ -1897,10 +1903,10 @@ where name = ?]]></xml-property>
                             <property name="width">2.7083333333333335in</property>
                         </column>
                         <column id="782">
-                            <property name="width">1.0416666666666667in</property>
+                            <property name="width">1.0729166666666667in</property>
                         </column>
                         <column id="783">
-                            <property name="width">0.9270833333333334in</property>
+                            <property name="width">0.8958333333333334in</property>
                         </column>
                         <row id="784">
                             <cell id="785">
@@ -1965,107 +1971,551 @@ where name = ?]]></xml-property>
                     </grid>
                 </cell>
             </row>
-            <row id="25">
-                <cell id="26">
-                    <grid id="833">
-                        <column id="834"/>
-                        <column id="835"/>
-                        <column id="836"/>
-                        <column id="837"/>
-                        <column id="838"/>
-                        <row id="839">
-                            <cell id="840">
-                                <grid id="845">
-                                    <column id="846"/>
-                                    <column id="847"/>
-                                    <column id="848"/>
-                                    <row id="849">
-                                        <cell id="850">
-                                            <label id="853">
+            <row id="1472">
+                <cell id="1473">
+                    <grid id="1474">
+                        <property name="width">7.802083333333333in</property>
+                        <column id="1475">
+                            <property name="width">1.5625in</property>
+                        </column>
+                        <column id="1476">
+                            <property name="width">1.5625in</property>
+                        </column>
+                        <column id="1477">
+                            <property name="width">2.6979166666666665in</property>
+                        </column>
+                        <column id="1478">
+                            <property name="width">1.0833333333333333in</property>
+                        </column>
+                        <column id="1479">
+                            <property name="width">0.8958333333333334in</property>
+                        </column>
+                        <row id="1480">
+                            <cell id="1481"/>
+                            <cell id="1482"/>
+                            <cell id="1483">
+                                <label id="1548">
+                                    <property name="textAlign">center</property>
+                                    <text-property name="text">TOTAL NO. OF VIALS USED</text-property>
+                                </label>
+                            </cell>
+                            <cell id="1484"/>
+                            <cell id="1485"/>
+                        </row>
+                    </grid>
+                </cell>
+            </row>
+            <row id="27">
+                <cell id="28">
+                    <grid id="1057">
+                        <property name="width">7.802083333333333in</property>
+                        <column id="1058">
+                            <property name="width">1.0416666666666667in</property>
+                        </column>
+                        <column id="1059">
+                            <property name="width">2.0625in</property>
+                        </column>
+                        <column id="1060">
+                            <property name="width">2.7291666666666665in</property>
+                        </column>
+                        <column id="1061">
+                            <property name="width">1.96875in</property>
+                        </column>
+                        <row id="1062">
+                            <cell id="1063">
+                                <grid id="1125">
+                                    <column id="1126"/>
+                                    <column id="1127"/>
+                                    <row id="1128">
+                                        <cell id="1129">
+                                            <label id="1174">
                                                 <text-property name="text">Tetanus</text-property>
                                             </label>
                                         </cell>
-                                        <cell id="851">
-                                            <label id="854">
+                                        <cell id="1130">
+                                            <label id="1175">
                                                 <text-property name="text">Tetanus Toxoid</text-property>
                                             </label>
                                         </cell>
-                                        <cell id="852">
-                                            <grid id="855">
-                                                <column id="856"/>
-                                                <row id="857">
-                                                    <cell id="858">
-                                                        <label id="871">
-                                                            <text-property name="text">No. of doses</text-property>
+                                    </row>
+                                </grid>
+                            </cell>
+                            <cell id="1064">
+                                <grid id="1276">
+                                    <property name="width">2in</property>
+                                    <column id="1277">
+                                        <property name="width">0.4791666666666667in</property>
+                                    </column>
+                                    <column id="1278">
+                                        <property name="width">0.4270833333333333in</property>
+                                    </column>
+                                    <column id="1279">
+                                        <property name="width">0.3541666666666667in</property>
+                                    </column>
+                                    <column id="1280">
+                                        <property name="width">0.3958333333333333in</property>
+                                    </column>
+                                    <column id="1281">
+                                        <property name="width">0.34375in</property>
+                                    </column>
+                                    <row id="1282">
+                                        <cell id="1283">
+                                            <label id="1324">
+                                                <text-property name="text">No. of doses</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1284">
+                                            <label id="1325">
+                                                <property name="fontWeight">bold</property>
+                                                <text-property name="text">Women Preg.</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1285">
+                                            <label id="1326">
+                                                <property name="fontWeight">bold</property>
+                                                <text-property name="text">Women Non-P.</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1286">
+                                            <label id="1327">
+                                                <property name="fontWeight">bold</property>
+                                                <text-property name="text">Other Patients</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1287">
+                                            <label id="1328">
+                                                <property name="fontWeight">bold</property>
+                                                <text-property name="text">Total No. of doses given</text-property>
+                                            </label>
+                                        </cell>
+                                    </row>
+                                    <row id="1288">
+                                        <cell id="1289">
+                                            <label id="1329">
+                                                <text-property name="text">1st dose</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1290"/>
+                                        <cell id="1291"/>
+                                        <cell id="1292"/>
+                                        <cell id="1293"/>
+                                    </row>
+                                    <row id="1294">
+                                        <cell id="1295">
+                                            <label id="1330">
+                                                <text-property name="text">2nd dose</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1296"/>
+                                        <cell id="1297"/>
+                                        <cell id="1298"/>
+                                        <cell id="1299"/>
+                                    </row>
+                                    <row id="1300">
+                                        <cell id="1301">
+                                            <label id="1331">
+                                                <text-property name="text">3rd dose</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1302"/>
+                                        <cell id="1303"/>
+                                        <cell id="1304"/>
+                                        <cell id="1305"/>
+                                    </row>
+                                    <row id="1306">
+                                        <cell id="1307">
+                                            <label id="1332">
+                                                <text-property name="text">4th dose</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1308"/>
+                                        <cell id="1309"/>
+                                        <cell id="1310"/>
+                                        <cell id="1311"/>
+                                    </row>
+                                    <row id="1312">
+                                        <cell id="1313">
+                                            <label id="1333">
+                                                <text-property name="text">5th dose</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1314"/>
+                                        <cell id="1315"/>
+                                        <cell id="1316"/>
+                                        <cell id="1317"/>
+                                    </row>
+                                    <row id="1318">
+                                        <cell id="1319">
+                                            <label id="1334">
+                                                <text-property name="text">TOTALS</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1320"/>
+                                        <cell id="1321"/>
+                                        <cell id="1322"/>
+                                        <cell id="1323"/>
+                                    </row>
+                                </grid>
+                            </cell>
+                            <cell id="1065">
+                                <grid id="1486">
+                                    <column id="1487"/>
+                                    <column id="1488"/>
+                                    <column id="1489"/>
+                                    <column id="1490"/>
+                                    <column id="1491"/>
+                                    <column id="1492"/>
+                                    <row id="1493">
+                                        <cell id="1494">
+                                            <label id="1542">
+                                                <text-property name="text">1 dose</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1495">
+                                            <label id="1543">
+                                                <text-property name="text">2 doses</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1496">
+                                            <label id="1544">
+                                                <text-property name="text">5 doses</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1497">
+                                            <label id="1545">
+                                                <text-property name="text">10 doses</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1498">
+                                            <label id="1546">
+                                                <text-property name="text">20 doses</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1499">
+                                            <label id="1547">
+                                                <text-property name="text">50 doses</text-property>
+                                            </label>
+                                        </cell>
+                                    </row>
+                                    <row id="1500">
+                                        <cell id="1501"/>
+                                        <cell id="1502"/>
+                                        <cell id="1503"/>
+                                        <cell id="1504"/>
+                                        <cell id="1505"/>
+                                        <cell id="1506"/>
+                                    </row>
+                                    <row id="1507">
+                                        <cell id="1508"/>
+                                        <cell id="1509"/>
+                                        <cell id="1510"/>
+                                        <cell id="1511"/>
+                                        <cell id="1512"/>
+                                        <cell id="1513"/>
+                                    </row>
+                                    <row id="1514">
+                                        <cell id="1515"/>
+                                        <cell id="1516"/>
+                                        <cell id="1517"/>
+                                        <cell id="1518"/>
+                                        <cell id="1519"/>
+                                        <cell id="1520"/>
+                                    </row>
+                                    <row id="1521">
+                                        <cell id="1522"/>
+                                        <cell id="1523"/>
+                                        <cell id="1524"/>
+                                        <cell id="1525"/>
+                                        <cell id="1526"/>
+                                        <cell id="1527"/>
+                                    </row>
+                                    <row id="1528">
+                                        <cell id="1529"/>
+                                        <cell id="1530"/>
+                                        <cell id="1531"/>
+                                        <cell id="1532"/>
+                                        <cell id="1533"/>
+                                        <cell id="1534"/>
+                                    </row>
+                                    <row id="1535">
+                                        <cell id="1536"/>
+                                        <cell id="1537"/>
+                                        <cell id="1538"/>
+                                        <cell id="1539"/>
+                                        <cell id="1540"/>
+                                        <cell id="1541"/>
+                                    </row>
+                                </grid>
+                            </cell>
+                            <cell id="1066">
+                                <grid id="1549">
+                                    <property name="width">1.90625in</property>
+                                    <column id="1550">
+                                        <property name="width">1.03125in</property>
+                                    </column>
+                                    <column id="1551">
+                                        <property name="width">0.875in</property>
+                                    </column>
+                                    <row id="1552">
+                                        <cell id="1553">
+                                            <label id="1573">
+                                                <property name="fontWeight">bold</property>
+                                                <text-property name="text">TOTAL DOSES USED</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1554">
+                                            <label id="1574">
+                                                <property name="fontWeight">bold</property>
+                                                <text-property name="text">WASTAGE RATE(%)</text-property>
+                                            </label>
+                                        </cell>
+                                    </row>
+                                    <row id="1555">
+                                        <cell id="1556"/>
+                                        <cell id="1557"/>
+                                    </row>
+                                    <row id="1558">
+                                        <cell id="1559"/>
+                                        <cell id="1560"/>
+                                    </row>
+                                    <row id="1561">
+                                        <cell id="1562"/>
+                                        <cell id="1563"/>
+                                    </row>
+                                    <row id="1564">
+                                        <cell id="1565"/>
+                                        <cell id="1566"/>
+                                    </row>
+                                    <row id="1567">
+                                        <cell id="1568"/>
+                                        <cell id="1569"/>
+                                    </row>
+                                    <row id="1570">
+                                        <cell id="1571"/>
+                                        <cell id="1572"/>
+                                    </row>
+                                </grid>
+                            </cell>
+                        </row>
+                    </grid>
+                </cell>
+            </row>
+            <row id="1587">
+                <cell id="1588"/>
+            </row>
+            <row id="29">
+                <cell id="30">
+                    <grid id="1575">
+                        <column id="1576"/>
+                        <column id="1577"/>
+                        <column id="1578"/>
+                        <column id="1579"/>
+                        <column id="1580"/>
+                        <row id="1581">
+                            <cell id="1582">
+                                <grid id="1589">
+                                    <column id="1590"/>
+                                    <row id="1591">
+                                        <cell id="1592">
+                                            <label id="1607">
+                                                <property name="textAlign">center</property>
+                                                <text-property name="text">IPTi</text-property>
+                                            </label>
+                                        </cell>
+                                    </row>
+                                    <row id="1593">
+                                        <cell id="1594">
+                                            <grid id="1595">
+                                                <column id="1596"/>
+                                                <column id="1597"/>
+                                                <row id="1598">
+                                                    <cell id="1599">
+                                                        <label id="1608">
+                                                            <text-property name="text">IPTi 1</text-property>
                                                         </label>
                                                     </cell>
+                                                    <cell id="1600"/>
                                                 </row>
-                                                <row id="859">
-                                                    <cell id="860">
-                                                        <label id="872">
-                                                            <text-property name="text">1st dose</text-property>
+                                                <row id="1601">
+                                                    <cell id="1602">
+                                                        <label id="1609">
+                                                            <text-property name="text">IPTi 2</text-property>
                                                         </label>
                                                     </cell>
+                                                    <cell id="1603"/>
                                                 </row>
-                                                <row id="861">
-                                                    <cell id="862">
-                                                        <label id="873">
-                                                            <text-property name="text">2nd dose</text-property>
+                                                <row id="1604">
+                                                    <cell id="1605">
+                                                        <label id="1610">
+                                                            <text-property name="text">IPTi 3</text-property>
                                                         </label>
                                                     </cell>
-                                                </row>
-                                                <row id="863">
-                                                    <cell id="864">
-                                                        <label id="874">
-                                                            <text-property name="text">3rd dose</text-property>
-                                                        </label>
-                                                    </cell>
-                                                </row>
-                                                <row id="865">
-                                                    <cell id="866">
-                                                        <label id="875">
-                                                            <text-property name="text">4th dose</text-property>
-                                                        </label>
-                                                    </cell>
-                                                </row>
-                                                <row id="867">
-                                                    <cell id="868">
-                                                        <label id="876">
-                                                            <text-property name="text">5th dose</text-property>
-                                                        </label>
-                                                    </cell>
-                                                </row>
-                                                <row id="869">
-                                                    <cell id="870">
-                                                        <label id="877">
-                                                            <text-property name="text">TOTALS</text-property>
-                                                        </label>
-                                                    </cell>
+                                                    <cell id="1606"/>
                                                 </row>
                                             </grid>
                                         </cell>
                                     </row>
                                 </grid>
                             </cell>
-                            <cell id="841"/>
-                            <cell id="842"/>
-                            <cell id="843"/>
-                            <cell id="844"/>
+                            <cell id="1583">
+                                <grid id="1611">
+                                    <column id="1612"/>
+                                    <column id="1613"/>
+                                    <row id="1614">
+                                        <cell id="1615">
+                                            <label id="1626">
+                                                <text-property name="text">Vit A 6-11 Months:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1616"/>
+                                    </row>
+                                    <row id="1617">
+                                        <cell id="1618">
+                                            <label id="1627">
+                                                <text-property name="text">Vit A 12-59 Months:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1619"/>
+                                    </row>
+                                    <row id="1620">
+                                        <cell id="1621">
+                                            <label id="1628">
+                                                <text-property name="text">Vit A Post Partum:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1622"/>
+                                    </row>
+                                    <row id="1623">
+                                        <cell id="1624">
+                                            <label id="1629">
+                                                <text-property name="text">Deworming 2-5yrs</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1625"/>
+                                    </row>
+                                </grid>
+                            </cell>
+                            <cell id="1584">
+                                <grid id="1630">
+                                    <column id="1631"/>
+                                    <column id="1632"/>
+                                    <row id="1633">
+                                        <cell id="1634">
+                                            <label id="1639">
+                                                <text-property name="text">Vit A Used 100000iu:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1635"/>
+                                    </row>
+                                    <row id="1636">
+                                        <cell id="1637">
+                                            <label id="1640">
+                                                <text-property name="text">Vit A Used 200000iu:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1638"/>
+                                    </row>
+                                </grid>
+                            </cell>
+                            <cell id="1585">
+                                <grid id="1641">
+                                    <column id="1642"/>
+                                    <column id="1643"/>
+                                    <row id="1644">
+                                        <cell id="1645">
+                                            <label id="1650">
+                                                <text-property name="text"> AEFI Reported:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1646"/>
+                                    </row>
+                                    <row id="1647">
+                                        <cell id="1648">
+                                            <label id="1651">
+                                                <text-property name="text">AEFI Investigated:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1649"/>
+                                    </row>
+                                </grid>
+                            </cell>
+                            <cell id="1586">
+                                <grid id="1652">
+                                    <column id="1653"/>
+                                    <column id="1654"/>
+                                    <row id="1655">
+                                        <cell id="1656">
+                                            <label id="1664">
+                                                <text-property name="text">Safety Boxes Used:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1657"/>
+                                    </row>
+                                    <row id="1658">
+                                        <cell id="1659">
+                                            <label id="1665">
+                                                <text-property name="text">Disposal by Incinerator:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1660"/>
+                                    </row>
+                                    <row id="1661">
+                                        <cell id="1662">
+                                            <label id="1666">
+                                                <text-property name="text">Disposal by Pit:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1663"/>
+                                    </row>
+                                </grid>
+                            </cell>
                         </row>
                     </grid>
                 </cell>
-            </row>
-            <row id="27">
-                <cell id="28"/>
-            </row>
-            <row id="29">
-                <cell id="30"/>
             </row>
             <row id="31">
                 <cell id="32"/>
             </row>
             <row id="33">
-                <cell id="34"/>
+                <cell id="34">
+                    <grid id="1667">
+                        <column id="1668"/>
+                        <column id="1669"/>
+                        <row id="1670">
+                            <cell id="1671"/>
+                            <cell id="1672">
+                                <grid id="1673">
+                                    <column id="1674"/>
+                                    <column id="1675"/>
+                                    <row id="1676">
+                                        <cell id="1677">
+                                            <label id="1685">
+                                                <text-property name="text">NAME:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1678"/>
+                                    </row>
+                                    <row id="1679">
+                                        <cell id="1680">
+                                            <label id="1686">
+                                                <text-property name="text">SIGNATURE:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1681"/>
+                                    </row>
+                                    <row id="1682">
+                                        <cell id="1683">
+                                            <label id="1687">
+                                                <text-property name="text">DATE:</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="1684"/>
+                                    </row>
+                                </grid>
+                            </cell>
+                        </row>
+                    </grid>
+                </cell>
             </row>
         </grid>
     </body>
