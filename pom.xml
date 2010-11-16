@@ -442,9 +442,9 @@
 	</build>
 
 	<scm>
-		<url>https://motech.rcg.usm.maine.edu/redmine/repositories/browse/motech/branches/generalize</url>
-		<connection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/branches/generalize</connection>
-		<developerConnection>scm:svn:https://motech.rcg.usm.maine.edu/svn/motech/branches/generalize</developerConnection>
+		<url>remotes/origin/generalize</url>
+		<connection>scm:git:ssh://git@github.com/motech/MOTECH.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/motech/MOTECH.git</developerConnection>
 	</scm>
 
 	<profiles>
