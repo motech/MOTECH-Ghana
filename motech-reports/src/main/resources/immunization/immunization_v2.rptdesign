@@ -875,6 +875,131 @@ and
     MONTH(observation.obs_datetime) = ? ]]></xml-property>
             <xml-property name="designerValues"><![CDATA[]]></xml-property>
         </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="CSM" id="1706">
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">Clinic</property>
+                    <property name="paramName">Clinic</property>
+                    <property name="dataType">string</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Year</property>
+                    <property name="paramName">Year</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Month</property>
+                    <property name="paramName">Month</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">vaccination</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">Dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">0_to_11_months</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">12_to_24_months</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">above_24_months</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">name</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">Dosage</property>
+                    <property name="nativeName">Dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">0_to_11_months</property>
+                    <property name="nativeName">0_to_11_months</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">12_to_24_months</property>
+                    <property name="nativeName">12_to_24_months</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">above_24_months</property>
+                    <property name="nativeName">above_24_months</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select
+    concept_coded_name.name as vaccination,
+    1 as Dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 0 and 11,1,0)) as 0_to_11_months,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 12 and 23,1,0)) as 12_to_24_months,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) > 24,1,0)) as above_24_months
+from 
+    obs observation, 
+    person person,
+    encounter encounter,
+    location location,
+    concept_name concept_coded_name,
+    concept_name concept_obs_name
+where
+    observation.value_coded = concept_coded_name.concept_id
+and
+    concept_coded_name.name = 'CEREBRO-SPINAL MENINGITIS VACCINATION'
+and
+    observation.concept_id = concept_obs_name.concept_id
+and 
+    concept_obs_name.name = 'IMMUNIZATIONS ORDERED'
+and
+    observation.person_id=person.person_id 
+and
+    observation.encounter_id = encounter.encounter_id
+and 
+    encounter.location_id = location.location_id
+and
+    location.name = ?
+and
+	YEAR(observation.obs_datetime) = ?
+and
+    MONTH(observation.obs_datetime) = ?
+ ]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[]]></xml-property>
+        </oda-data-set>
     </data-sets>
     <styles>
         <style name="report" id="4">
@@ -2314,15 +2439,58 @@ and
                             </cell>
                             <cell id="786">
                                 <grid id="801">
+                                    <property name="dataSet">CSM</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">csm_0_11_months</property>
+                                            <text-property name="displayName">CSM 0 to 11 Months</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["0_to_11_months"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">csm_12_24_months</property>
+                                            <text-property name="displayName">CSM 12 to 24 Months</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["12_to_24_months"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">csm_above_24_months</property>
+                                            <text-property name="displayName">CSM abobe 24 Months</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["above_24_months"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">csm_total_dosage</property>
+                                            <text-property name="displayName">CSM Total Dosages</text-property>
+                                            <expression name="expression" type="javascript">row["csm_0_11_months"]+row["csm_12_24_months"]+row["csm_above_24_months"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                    </list-property>
                                     <column id="802"/>
                                     <column id="803"/>
                                     <column id="804"/>
                                     <column id="805"/>
                                     <row id="806">
-                                        <cell id="807"/>
-                                        <cell id="808"/>
-                                        <cell id="809"/>
-                                        <cell id="810"/>
+                                        <cell id="807">
+                                            <data id="1707">
+                                                <property name="resultSetColumn">csm_0_11_months</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="808">
+                                            <data id="1708">
+                                                <property name="resultSetColumn">csm_12_24_months</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="809">
+                                            <data id="1709">
+                                                <property name="resultSetColumn">csm_above_24_months</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="810">
+                                            <data id="1710">
+                                                <property name="resultSetColumn">csm_total_dosage</property>
+                                            </data>
+                                        </cell>
                                     </row>
                                 </grid>
                             </cell>
