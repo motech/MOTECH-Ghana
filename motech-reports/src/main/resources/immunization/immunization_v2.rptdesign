@@ -505,7 +505,6 @@ and
 and
     MONTH(observation.obs_datetime) = ?
  ]]></xml-property>
-            <xml-property name="designerValues"><![CDATA[]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Clinic" id="578">
             <list-property name="parameters">
@@ -1991,7 +1990,60 @@ where name = ?]]></xml-property>
                                                 <text-property name="text">Tetanus Toxoid</text-property>
                                             </label>
                                         </cell>
-                                        <cell id="852"/>
+                                        <cell id="852">
+                                            <grid id="855">
+                                                <column id="856"/>
+                                                <row id="857">
+                                                    <cell id="858">
+                                                        <label id="871">
+                                                            <text-property name="text">No. of doses</text-property>
+                                                        </label>
+                                                    </cell>
+                                                </row>
+                                                <row id="859">
+                                                    <cell id="860">
+                                                        <label id="872">
+                                                            <text-property name="text">1st dose</text-property>
+                                                        </label>
+                                                    </cell>
+                                                </row>
+                                                <row id="861">
+                                                    <cell id="862">
+                                                        <label id="873">
+                                                            <text-property name="text">2nd dose</text-property>
+                                                        </label>
+                                                    </cell>
+                                                </row>
+                                                <row id="863">
+                                                    <cell id="864">
+                                                        <label id="874">
+                                                            <text-property name="text">3rd dose</text-property>
+                                                        </label>
+                                                    </cell>
+                                                </row>
+                                                <row id="865">
+                                                    <cell id="866">
+                                                        <label id="875">
+                                                            <text-property name="text">4th dose</text-property>
+                                                        </label>
+                                                    </cell>
+                                                </row>
+                                                <row id="867">
+                                                    <cell id="868">
+                                                        <label id="876">
+                                                            <text-property name="text">5th dose</text-property>
+                                                        </label>
+                                                    </cell>
+                                                </row>
+                                                <row id="869">
+                                                    <cell id="870">
+                                                        <label id="877">
+                                                            <text-property name="text">TOTALS</text-property>
+                                                        </label>
+                                                    </cell>
+                                                </row>
+                                            </grid>
+                                        </cell>
                                     </row>
                                 </grid>
                             </cell>
