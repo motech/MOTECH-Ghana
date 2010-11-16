@@ -46,6 +46,12 @@
 					<address>matt.blanchette@gmail.com</address>
 				</configuration>
 			</notifier>
+			<notifier>
+				<type>mail</type>
+				<configuration>
+					<address>rlarubbio@grameenfoundation.org</address>
+				</configuration>
+			</notifier>
 		</notifiers>
 	</ciManagement>
 
