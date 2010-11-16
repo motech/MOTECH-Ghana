@@ -386,7 +386,7 @@
 	</build>
 
 	<scm>
-		<url>remotes/origin/generalize</url>
+		<url>https://github.com/motech/MOTECH</url>
 		<connection>scm:git:ssh://git@github.com/motech/MOTECH.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/motech/MOTECH.git</developerConnection>
 	</scm>
