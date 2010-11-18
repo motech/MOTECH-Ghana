@@ -655,7 +655,6 @@ and
 	YEAR(observation.obs_datetime) = ? 
 and 
     MONTH(observation.obs_datetime) = ?]]></xml-property>
-            <xml-property name="designerValues"><![CDATA[]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Yellow Fever" id="1694">
             <list-property name="parameters">
@@ -780,7 +779,6 @@ and
 and 
     MONTH(observation.obs_datetime) = ?
  ]]></xml-property>
-            <xml-property name="designerValues"><![CDATA[]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Vitamin A Post Partum" id="1695">
             <list-property name="parameters">
@@ -873,7 +871,6 @@ and
 	YEAR(observation.obs_datetime) = ? 
 and 
     MONTH(observation.obs_datetime) = ? ]]></xml-property>
-            <xml-property name="designerValues"><![CDATA[]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="CSM" id="1706">
             <list-property name="parameters">
@@ -998,7 +995,225 @@ and
 and
     MONTH(observation.obs_datetime) = ?
  ]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Vitamin A" id="1712">
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">Clinic</property>
+                    <property name="paramName">Clinic</property>
+                    <property name="dataType">string</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Year</property>
+                    <property name="paramName">Year</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Month</property>
+                    <property name="paramName">Month</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">6_to_11_months</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">12_to_59_months</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">name</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">6_to_11_months</property>
+                    <property name="nativeName">6_to_11_months</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">12_to_59_months</property>
+                    <property name="nativeName">12_to_59_months</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select
+    concept_coded_name.name as vaccination,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 6 and 11,1,0)) as 6_to_11_months,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 12 and 59,1,0)) as 12_to_59_months
+from 
+    obs observation, 
+    person person,
+    encounter encounter,
+    location location,
+    concept_name concept_coded_name,
+    concept_name obs_concept
+where
+   observation.concept_id = obs_concept.concept_id
+and
+    obs_concept.name = 'IMMUNIZATIONS ORDERED'
+and
+    observation.value_coded = concept_coded_name.concept_id
+and
+    concept_coded_name.name = 'VITAMIN A'
+and
+    observation.person_id=person.person_id
+and
+    observation.encounter_id = encounter.encounter_id
+and
+    encounter.location_id = location.location_id
+and
+    location.name = ?
+and
+	YEAR(observation.obs_datetime) = ? 
+and 
+    MONTH(observation.obs_datetime) = ?]]></xml-property>
             <xml-property name="designerValues"><![CDATA[]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="IPTi" id="1714">
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">Clinic</property>
+                    <property name="paramName">Clinic</property>
+                    <property name="dataType">string</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Year</property>
+                    <property name="paramName">Year</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Month</property>
+                    <property name="paramName">Month</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">name_2</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">ipti_1_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">ipti_2_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">ipti_3_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">name</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">name_2</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">ipti_1_dosage</property>
+                    <property name="nativeName">ipti_1_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">ipti_2_dosage</property>
+                    <property name="nativeName">ipti_2_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">ipti_3_dosage</property>
+                    <property name="nativeName">ipti_3_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select
+	distinct 
+    location.name as Clinic,
+    concept.name as Vaccination, 
+    SUM(if(observation.value_numeric = 1 , 1,0)) as ipti_1_dosage,
+	SUM(if(observation.value_numeric = 2 , 1,0)) as ipti_2_dosage,
+	SUM(if(observation.value_numeric = 3 , 1,0)) as ipti_3_dosage
+from 
+    obs observation, 
+    concept_name concept,
+    encounter encounter,
+    location location
+where 
+    observation.concept_id=concept.concept_id 
+and
+    observation.encounter_id = encounter.encounter_id
+and
+    location.location_id = encounter.location_id
+and 
+    concept.name = 'INTERMITTENT PREVENTATIVE TREATMENT INFANTS DOSE'
+and
+    encounter.location_id = location.location_id
+and 
+    location.name = ?
+and
+	YEAR(observation.obs_datetime) = ? 
+and 
+	MONTH(observation.obs_datetime) = ?
+]]></xml-property>
         </oda-data-set>
     </data-sets>
     <styles>
@@ -2861,6 +3076,27 @@ and
                         <row id="1581">
                             <cell id="1582">
                                 <grid id="1589">
+                                    <property name="dataSet">IPTi</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">ipti_1st_dosage</property>
+                                            <text-property name="displayName">IPTi first dosage</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["ipti_1_dosage"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">ipti_2nd_dosage</property>
+                                            <text-property name="displayName">IPTi 2nd dosage</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["ipti_2_dosage"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">ipti_3rd_dosage</property>
+                                            <text-property name="displayName">IPTi 3rd dosage</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["ipti_3_dosage"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                    </list-property>
                                     <column id="1590"/>
                                     <row id="1591">
                                         <cell id="1592">
@@ -2881,7 +3117,11 @@ and
                                                             <text-property name="text">IPTi 1</text-property>
                                                         </label>
                                                     </cell>
-                                                    <cell id="1600"/>
+                                                    <cell id="1600">
+                                                        <data id="1715">
+                                                            <property name="resultSetColumn">ipti_1st_dosage</property>
+                                                        </data>
+                                                    </cell>
                                                 </row>
                                                 <row id="1601">
                                                     <cell id="1602">
@@ -2889,7 +3129,11 @@ and
                                                             <text-property name="text">IPTi 2</text-property>
                                                         </label>
                                                     </cell>
-                                                    <cell id="1603"/>
+                                                    <cell id="1603">
+                                                        <data id="1716">
+                                                            <property name="resultSetColumn">ipti_2nd_dosage</property>
+                                                        </data>
+                                                    </cell>
                                                 </row>
                                                 <row id="1604">
                                                     <cell id="1605">
@@ -2897,7 +3141,11 @@ and
                                                             <text-property name="text">IPTi 3</text-property>
                                                         </label>
                                                     </cell>
-                                                    <cell id="1606"/>
+                                                    <cell id="1606">
+                                                        <data id="1717">
+                                                            <property name="resultSetColumn">ipti_3rd_dosage</property>
+                                                        </data>
+                                                    </cell>
                                                 </row>
                                             </grid>
                                         </cell>
@@ -2906,6 +3154,21 @@ and
                             </cell>
                             <cell id="1583">
                                 <grid id="1611">
+                                    <property name="dataSet">Vitamin A</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">vit_a_6_11_months</property>
+                                            <text-property name="displayName">Vit A 6-11 Months</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["6_to_11_months"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">vit_a_12_59_months</property>
+                                            <text-property name="displayName">Vit A 12-59 Months</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["12_to_59_months"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                    </list-property>
                                     <column id="1612"/>
                                     <column id="1613"/>
                                     <row id="1614">
@@ -2914,7 +3177,11 @@ and
                                                 <text-property name="text">Vit A 6-11 Months:</text-property>
                                             </label>
                                         </cell>
-                                        <cell id="1616"/>
+                                        <cell id="1616">
+                                            <data id="1711">
+                                                <property name="resultSetColumn">vit_a_6_11_months</property>
+                                            </data>
+                                        </cell>
                                     </row>
                                     <row id="1617">
                                         <cell id="1618">
@@ -2922,7 +3189,11 @@ and
                                                 <text-property name="text">Vit A 12-59 Months:</text-property>
                                             </label>
                                         </cell>
-                                        <cell id="1619"/>
+                                        <cell id="1619">
+                                            <data id="1713">
+                                                <property name="resultSetColumn">vit_a_12_59_months</property>
+                                            </data>
+                                        </cell>
                                     </row>
                                     <row id="1620">
                                         <cell id="1621">
