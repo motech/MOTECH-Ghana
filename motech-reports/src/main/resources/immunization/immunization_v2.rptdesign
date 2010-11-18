@@ -1409,6 +1409,373 @@ and
 and 
     MONTH(observation.obs_datetime) = ?	]]></xml-property>
         </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Penta" id="1745">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">name</property>
+                    <property name="alias">vaccination</property>
+                </structure>
+                <structure>
+                    <property name="columnName">0_to_11_months_1st_dosage</property>
+                    <property name="alias">0_to_11_months_1st_dosage</property>
+                </structure>
+                <structure>
+                    <property name="columnName">0_to_11_months_2nd_dosage</property>
+                    <property name="alias">0_to_11_months_2nd_dosage</property>
+                </structure>
+                <structure>
+                    <property name="columnName">0_to_11_months_3rd_dosage</property>
+                    <property name="alias">0_to_11_months_3rd_dosage</property>
+                </structure>
+                <structure>
+                    <property name="columnName">12_to_24_months_1st_dosage</property>
+                    <property name="alias">12_to_24_months_1st_dosage</property>
+                </structure>
+                <structure>
+                    <property name="columnName">12_to_24_months_2nd_dosage</property>
+                    <property name="alias">12_to_24_months_2nd_dosage</property>
+                </structure>
+                <structure>
+                    <property name="columnName">12_to_24_months_3rd_dosage</property>
+                    <property name="alias">12_to_24_months_3rd_dosage</property>
+                </structure>
+                <structure>
+                    <property name="columnName">above_24_months_1st_dosage</property>
+                    <property name="alias">above_24_months_1st_dosage</property>
+                </structure>
+                <structure>
+                    <property name="columnName">above_24_months_2nd_dosage</property>
+                    <property name="alias">above_24_months_2nd_dosage</property>
+                </structure>
+                <structure>
+                    <property name="columnName">above_24_months_3rd_dosage</property>
+                    <property name="alias">above_24_months_3rd_dosage</property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">Clinic</property>
+                    <property name="paramName">Clinic</property>
+                    <property name="dataType">string</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Year</property>
+                    <property name="paramName">Year</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Month</property>
+                    <property name="paramName">Month</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">vaccination</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">0_to_11_months_1st_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">0_to_11_months_2nd_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">0_to_11_months_3rd_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">12_to_24_months_1st_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">12_to_24_months_2nd_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">12_to_24_months_3rd_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">above_24_months_1st_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">above_24_months_2nd_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">above_24_months_3rd_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">name</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">0_to_11_months_1st_dosage</property>
+                    <property name="nativeName">0_to_11_months_1st_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">0_to_11_months_2nd_dosage</property>
+                    <property name="nativeName">0_to_11_months_2nd_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">0_to_11_months_3rd_dosage</property>
+                    <property name="nativeName">0_to_11_months_3rd_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">12_to_24_months_1st_dosage</property>
+                    <property name="nativeName">12_to_24_months_1st_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">12_to_24_months_2nd_dosage</property>
+                    <property name="nativeName">12_to_24_months_2nd_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">12_to_24_months_3rd_dosage</property>
+                    <property name="nativeName">12_to_24_months_3rd_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">above_24_months_1st_dosage</property>
+                    <property name="nativeName">above_24_months_1st_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">above_24_months_2nd_dosage</property>
+                    <property name="nativeName">above_24_months_2nd_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">above_24_months_3rd_dosage</property>
+                    <property name="nativeName">above_24_months_3rd_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select
+    concept.name as vaccination,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 0 and 11 and observation.value_numeric = 1,1,0)) as 0_to_11_months_1st_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 0 and 11 and observation.value_numeric = 2,1,0)) as 0_to_11_months_2nd_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 0 and 11 and observation.value_numeric = 3,1,0)) as 0_to_11_months_3rd_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 12 and 23 and observation.value_numeric = 1,1,0)) as 12_to_24_months_1st_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 12 and 23 and observation.value_numeric = 1,1,0)) as 12_to_24_months_2nd_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 12 and 23 and observation.value_numeric = 1,1,0)) as 12_to_24_months_3rd_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) > 24 and observation.value_numeric = 1,1,0)) as above_24_months_1st_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) > 24 and observation.value_numeric = 2,1,0)) as above_24_months_2nd_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) > 24 and observation.value_numeric = 3,1,0)) as above_24_months_3rd_dosage
+from 
+    obs observation, 
+    concept_name concept, 
+    person person,
+    encounter encounter,
+    location location
+where  
+    concept.concept_name_id = observation.concept_id
+and 
+    concept.name = 'PENTA VACCINATION DOSE'
+and 
+    observation.person_id=person.person_id 
+and
+    observation.encounter_id = encounter.encounter_id
+and
+    encounter.location_id = location.location_id
+and
+    location.name = ?
+and
+	YEAR(observation.obs_datetime) = ? 
+and
+    MONTH(observation.obs_datetime) = ?	
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Tetanus Toxoid" id="1762">
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">Clinic</property>
+                    <property name="paramName">Clinic</property>
+                    <property name="dataType">string</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Year</property>
+                    <property name="paramName">Year</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Month</property>
+                    <property name="paramName">Month</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">name_2</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">1st_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">2nd_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">3rd_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">4th_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">5th_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">name</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">name_2</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">1st_dosage</property>
+                    <property name="nativeName">1st_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">2nd_dosage</property>
+                    <property name="nativeName">2nd_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">3rd_dosage</property>
+                    <property name="nativeName">3rd_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">4th_dosage</property>
+                    <property name="nativeName">4th_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">5th_dosage</property>
+                    <property name="nativeName">5th_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select
+    location.name as Clinic,
+    concept.name as vaccination, 
+    SUM(if(observation.value_numeric = 1,1,0)) as 1st_dosage,
+    SUM(if(observation.value_numeric = 2,1,0)) as 2nd_dosage,
+    SUM(if(observation.value_numeric = 3,1,0)) as 3rd_dosage,
+    SUM(if(observation.value_numeric = 4,1,0)) as 4th_dosage,
+    SUM(if(observation.value_numeric = 5,1,0)) as 5th_dosage
+from 
+    obs observation, 
+    concept_name concept,
+    encounter encounter,
+    person person,
+    location location
+where 
+    observation.concept_id=concept.concept_id
+and 
+    concept.name = 'TETANUS TOXOID DOSE'
+and
+    observation.encounter_id = encounter.encounter_id
+and
+    observation.person_id = person.person_id
+and
+   person.gender = 'F'
+and
+    encounter.location_id = location.location_id 
+and 
+    location.name = ?
+and
+	YEAR(observation.obs_datetime) = ? 
+and 
+     MONTH(observation.obs_datetime) = ?
+]]></xml-property>
+        </oda-data-set>
     </data-sets>
     <styles>
         <style name="report" id="4">
@@ -2310,33 +2677,185 @@ and
                             </cell>
                             <cell id="244">
                                 <grid id="439">
+                                    <property name="dataSet">Penta</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">vaccination</property>
+                                            <expression name="expression" type="javascript">dataSetRow["vaccination"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_0_11_1_months_dose</property>
+                                            <expression name="expression" type="javascript">dataSetRow["0_to_11_months_1st_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_0_11_months_2_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["0_to_11_months_2nd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_0_11_months_3_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["0_to_11_months_3rd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_0_11_months_total</property>
+                                            <expression name="expression" type="javascript">row["penta_0_11_1_months_dose"]+row["penta_0_11_months_2_dosage"]+row["penta_0_11_months_3_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_12_24_months_1st_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["12_to_24_months_1st_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_12_24_months_2nd_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["12_to_24_months_2nd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_12_24_months_3rd_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["12_to_24_months_3rd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_abv_24_months_1st_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["above_24_months_1st_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_abv_24_months_2nd_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["12_to_24_months_2nd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_abv_24_months_3rd_storage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["above_24_months_3rd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_12_24_months_total</property>
+                                            <expression name="expression" type="javascript">dataSetRow["12_to_24_months_1st_dosage"]+dataSetRow["12_to_24_months_2nd_dosage"]+dataSetRow["12_to_24_months_3rd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_abv_24_months_total</property>
+                                            <expression name="expression" type="javascript">dataSetRow["above_24_months_1st_dosage"]+dataSetRow["above_24_months_2nd_dosage"]+dataSetRow["above_24_months_3rd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_1st_dosage_total</property>
+                                            <expression name="expression" type="javascript">dataSetRow["0_to_11_months_1st_dosage"]+dataSetRow["12_to_24_months_1st_dosage"]+dataSetRow["above_24_months_1st_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_2nd_dosage_total</property>
+                                            <expression name="expression" type="javascript">dataSetRow["0_to_11_months_2nd_dosage"]+dataSetRow["12_to_24_months_2nd_dosage"]+dataSetRow["above_24_months_2nd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_3rd_dosage_total</property>
+                                            <expression name="expression" type="javascript">dataSetRow["0_to_11_months_3rd_dosage"]+dataSetRow["12_to_24_months_3rd_dosage"]+dataSetRow["above_24_months_3rd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">penta_total</property>
+                                            <expression name="expression" type="javascript">row["penta_1st_dosage_total"]+row["penta_2nd_dosage_total"]+row["penta_3rd_dosage_total"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
                                     <column id="440"/>
                                     <column id="441"/>
                                     <column id="442"/>
                                     <column id="443"/>
                                     <row id="444">
-                                        <cell id="445"/>
-                                        <cell id="446"/>
-                                        <cell id="447"/>
-                                        <cell id="448"/>
+                                        <cell id="445">
+                                            <data id="1746">
+                                                <property name="resultSetColumn">penta_0_11_1_months_dose</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="446">
+                                            <data id="1750">
+                                                <property name="resultSetColumn">penta_12_24_months_1st_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="447">
+                                            <data id="1753">
+                                                <property name="resultSetColumn">penta_abv_24_months_1st_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="448">
+                                            <data id="1758">
+                                                <property name="resultSetColumn">penta_1st_dosage_total</property>
+                                            </data>
+                                        </cell>
                                     </row>
                                     <row id="449">
-                                        <cell id="450"/>
-                                        <cell id="451"/>
-                                        <cell id="452"/>
-                                        <cell id="453"/>
+                                        <cell id="450">
+                                            <data id="1747">
+                                                <property name="resultSetColumn">penta_0_11_months_2_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="451">
+                                            <data id="1751">
+                                                <property name="resultSetColumn">penta_12_24_months_2nd_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="452">
+                                            <data id="1754">
+                                                <property name="resultSetColumn">penta_abv_24_months_2nd_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="453">
+                                            <data id="1759">
+                                                <property name="resultSetColumn">penta_2nd_dosage_total</property>
+                                            </data>
+                                        </cell>
                                     </row>
                                     <row id="454">
-                                        <cell id="455"/>
-                                        <cell id="456"/>
-                                        <cell id="457"/>
-                                        <cell id="458"/>
+                                        <cell id="455">
+                                            <data id="1748">
+                                                <property name="resultSetColumn">penta_0_11_months_3_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="456">
+                                            <data id="1752">
+                                                <property name="resultSetColumn">penta_12_24_months_3rd_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="457">
+                                            <data id="1755">
+                                                <property name="resultSetColumn">penta_abv_24_months_3rd_storage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="458">
+                                            <data id="1760">
+                                                <property name="resultSetColumn">penta_3rd_dosage_total</property>
+                                            </data>
+                                        </cell>
                                     </row>
                                     <row id="459">
-                                        <cell id="460"/>
-                                        <cell id="461"/>
-                                        <cell id="462"/>
-                                        <cell id="463"/>
+                                        <cell id="460">
+                                            <data id="1749">
+                                                <property name="resultSetColumn">penta_0_11_months_total</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="461">
+                                            <data id="1756">
+                                                <property name="resultSetColumn">penta_12_24_months_total</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="462">
+                                            <data id="1757">
+                                                <property name="resultSetColumn">penta_abv_24_months_total</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="463">
+                                            <data id="1761">
+                                                <property name="resultSetColumn">penta_total</property>
+                                            </data>
+                                        </cell>
                                     </row>
                                 </grid>
                             </cell>
@@ -2505,19 +3024,16 @@ and
                                     <list-property name="boundDataColumns">
                                         <structure>
                                             <property name="name">polio_0_11_months_1_dosage</property>
-                                            <text-property name="displayName">Polio 0-11 Months 1st Dosage</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["0_to_11_months_1st_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
                                             <property name="name">polio_0_11_2nd_dosage</property>
-                                            <text-property name="displayName">Polio 0-11 Months 2nd Dosage</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["0_to_11_months_2nd_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
                                             <property name="name">polio_0_11_3rd_dosage</property>
-                                            <text-property name="displayName">Polio 0-11 3rd dosage</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["0_to_11_months_3rd_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
@@ -2529,37 +3045,31 @@ and
                                         </structure>
                                         <structure>
                                             <property name="name">polio_12_24_months_1st_dosage</property>
-                                            <text-property name="displayName">Polio 12-24 Months 1st Dosage</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["12_to_24_months_1st_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
                                             <property name="name">polio_12_24_months_2nd_dosage</property>
-                                            <text-property name="displayName">Polio 12-24 Months 2nd Dosage</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["12_to_24_months_2nd_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
                                             <property name="name">polio_12_24_months_3rd_dosage</property>
-                                            <text-property name="displayName">Polio 12-24 Months 3rd Dosage</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["12_to_24_months_3rd_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
                                             <property name="name">polio_abv_24_months_1st_dosage</property>
-                                            <text-property name="displayName">Polio Above 24 Months 1st Dosage</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["above_24_months_1st_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
                                             <property name="name">polio_abv_24_months_2nd_dosage</property>
-                                            <text-property name="displayName">Polio Above 24 Months 2nd Dosage</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["above_24_months_2nd_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
                                             <property name="name">polio_abv_24_months_3rd_dosage</property>
-                                            <text-property name="displayName">Polio Above 24 Months 3rd dosage</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["above_24_months_3rd_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
@@ -2577,19 +3087,16 @@ and
                                         </structure>
                                         <structure>
                                             <property name="name">polio_1st_dosage_total</property>
-                                            <text-property name="displayName">Polio 1st dosage total</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["0_to_11_months_1st_dosage"]+dataSetRow["12_to_24_months_1st_dosage"]+dataSetRow["above_24_months_1st_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
                                             <property name="name">polio_2nd_dosage_total</property>
-                                            <text-property name="displayName">Polio 2nd dosage total</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["0_to_11_months_2nd_dosage"]+dataSetRow["12_to_24_months_2nd_dosage"]+dataSetRow["above_24_months_2nd_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
                                             <property name="name">polio_3rd_dosage_total</property>
-                                            <text-property name="displayName">Polio 3rd Dosage Total</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["0_to_11_months_3rd_dosage"]+dataSetRow["12_to_24_months_3rd_dosage"]+dataSetRow["above_24_months_3rd_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
@@ -3600,6 +4107,49 @@ and
                             <cell id="1064">
                                 <grid id="1276">
                                     <property name="width">2in</property>
+                                    <property name="dataSet">Tetanus Toxoid</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">Clinic</property>
+                                            <expression name="expression" type="javascript">dataSetRow["Clinic"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">vaccination</property>
+                                            <expression name="expression" type="javascript">dataSetRow["vaccination"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">tt_1st_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["1st_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">tt_2nd_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["2nd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">tt_3rd_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["3rd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">tt_4th_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["4th_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">tt_5th_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["5th_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">tt_total</property>
+                                            <expression name="expression" type="javascript">dataSetRow["1st_dosage"]+dataSetRow["2nd_dosage"]+dataSetRow["3rd_dosage"]+dataSetRow["4th_dosage"]+dataSetRow["5th_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
                                     <column id="1277">
                                         <property name="width">0.4791666666666667in</property>
                                     </column>
@@ -3652,7 +4202,11 @@ and
                                                 <text-property name="text">1st dose</text-property>
                                             </label>
                                         </cell>
-                                        <cell id="1290"/>
+                                        <cell id="1290">
+                                            <data id="1763">
+                                                <property name="resultSetColumn">tt_1st_dosage</property>
+                                            </data>
+                                        </cell>
                                         <cell id="1291"/>
                                         <cell id="1292"/>
                                         <cell id="1293"/>
@@ -3663,7 +4217,11 @@ and
                                                 <text-property name="text">2nd dose</text-property>
                                             </label>
                                         </cell>
-                                        <cell id="1296"/>
+                                        <cell id="1296">
+                                            <data id="1764">
+                                                <property name="resultSetColumn">tt_2nd_dosage</property>
+                                            </data>
+                                        </cell>
                                         <cell id="1297"/>
                                         <cell id="1298"/>
                                         <cell id="1299"/>
@@ -3674,7 +4232,11 @@ and
                                                 <text-property name="text">3rd dose</text-property>
                                             </label>
                                         </cell>
-                                        <cell id="1302"/>
+                                        <cell id="1302">
+                                            <data id="1765">
+                                                <property name="resultSetColumn">tt_3rd_dosage</property>
+                                            </data>
+                                        </cell>
                                         <cell id="1303"/>
                                         <cell id="1304"/>
                                         <cell id="1305"/>
@@ -3685,7 +4247,11 @@ and
                                                 <text-property name="text">4th dose</text-property>
                                             </label>
                                         </cell>
-                                        <cell id="1308"/>
+                                        <cell id="1308">
+                                            <data id="1766">
+                                                <property name="resultSetColumn">tt_4th_dosage</property>
+                                            </data>
+                                        </cell>
                                         <cell id="1309"/>
                                         <cell id="1310"/>
                                         <cell id="1311"/>
@@ -3696,7 +4262,11 @@ and
                                                 <text-property name="text">5th dose</text-property>
                                             </label>
                                         </cell>
-                                        <cell id="1314"/>
+                                        <cell id="1314">
+                                            <data id="1767">
+                                                <property name="resultSetColumn">tt_5th_dosage</property>
+                                            </data>
+                                        </cell>
                                         <cell id="1315"/>
                                         <cell id="1316"/>
                                         <cell id="1317"/>
@@ -3707,7 +4277,11 @@ and
                                                 <text-property name="text">TOTALS</text-property>
                                             </label>
                                         </cell>
-                                        <cell id="1320"/>
+                                        <cell id="1320">
+                                            <data id="1768">
+                                                <property name="resultSetColumn">tt_total</property>
+                                            </data>
+                                        </cell>
                                         <cell id="1321"/>
                                         <cell id="1322"/>
                                         <cell id="1323"/>
