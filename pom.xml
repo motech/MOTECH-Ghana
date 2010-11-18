@@ -389,6 +389,7 @@
 		<url>https://github.com/motech</url>
 		<connection>scm:git:ssh://git@github.com/motech/MOTECH.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/motech/MOTECH.git</developerConnection>
+		<tag>0.8.X</tag>
 	</scm>
 
 	<profiles>
