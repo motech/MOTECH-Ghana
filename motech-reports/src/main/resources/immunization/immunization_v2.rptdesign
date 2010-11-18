@@ -11,6 +11,14 @@
             <property name="name">queryTimeOut</property>
             <property name="id">1695</property>
         </structure>
+        <structure>
+            <property name="name">queryText</property>
+            <property name="id">1718</property>
+        </structure>
+        <structure>
+            <property name="name">queryTimeOut</property>
+            <property name="id">1718</property>
+        </structure>
     </list-property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -45,6 +53,7 @@
                     <text-property name="helpText">Year</text-property>
                     <text-property name="promptText">Year</text-property>
                     <property name="valueType">static</property>
+                    <property name="isRequired">true</property>
                     <property name="sortBy">label</property>
                     <property name="sortDirection">asc</property>
                     <property name="dataType">integer</property>
@@ -67,9 +76,11 @@
                         </structure>
                     </list-property>
                     <property name="paramType">simple</property>
+                    <property name="concealValue">false</property>
                     <property name="controlType">list-box</property>
                     <property name="mustMatch">false</property>
                     <property name="fixedOrder">false</property>
+                    <property name="autoSuggestThreshold">1</property>
                     <structure name="format">
                         <property name="category">Unformatted</property>
                     </structure>
@@ -78,6 +89,7 @@
                     <text-property name="helpText">Month</text-property>
                     <text-property name="promptText">Month</text-property>
                     <property name="valueType">static</property>
+                    <property name="isRequired">true</property>
                     <property name="sortBy">value</property>
                     <property name="sortDirection">asc</property>
                     <property name="dataType">integer</property>
@@ -136,9 +148,11 @@
                         </structure>
                     </list-property>
                     <property name="paramType">simple</property>
+                    <property name="concealValue">false</property>
                     <property name="controlType">list-box</property>
                     <property name="mustMatch">false</property>
                     <property name="fixedOrder">false</property>
+                    <property name="autoSuggestThreshold">1</property>
                     <structure name="format">
                         <property name="category">Unformatted</property>
                     </structure>
@@ -1094,7 +1108,6 @@ and
 	YEAR(observation.obs_datetime) = ? 
 and 
     MONTH(observation.obs_datetime) = ?]]></xml-property>
-            <xml-property name="designerValues"><![CDATA[]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="IPTi" id="1714">
             <list-property name="parameters">
@@ -1214,6 +1227,187 @@ and
 and 
 	MONTH(observation.obs_datetime) = ?
 ]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Oral Polio" id="1718">
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">Clinic</property>
+                    <property name="paramName">Clinic</property>
+                    <property name="dataType">string</property>
+                    <property name="position">1</property>
+                    <expression name="defaultValue" type="constant">Navio CHPS</expression>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Year</property>
+                    <property name="paramName">Year</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">2</property>
+                    <expression name="defaultValue" type="constant">2010</expression>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Month</property>
+                    <property name="paramName">Month</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">3</property>
+                    <expression name="defaultValue" type="constant">11</expression>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">0_to_11_months_1st_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">0_to_11_months_2nd_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">0_to_11_months_3rd_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">12_to_24_months_1st_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">12_to_24_months_2nd_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">12_to_24_months_3rd_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">above_24_months_1st_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">above_24_months_2nd_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">above_24_months_3rd_dosage</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">name</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">0_to_11_months_1st_dosage</property>
+                    <property name="nativeName">0_to_11_months_1st_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">0_to_11_months_2nd_dosage</property>
+                    <property name="nativeName">0_to_11_months_2nd_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">0_to_11_months_3rd_dosage</property>
+                    <property name="nativeName">0_to_11_months_3rd_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">12_to_24_months_1st_dosage</property>
+                    <property name="nativeName">12_to_24_months_1st_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">12_to_24_months_2nd_dosage</property>
+                    <property name="nativeName">12_to_24_months_2nd_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">12_to_24_months_3rd_dosage</property>
+                    <property name="nativeName">12_to_24_months_3rd_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">above_24_months_1st_dosage</property>
+                    <property name="nativeName">above_24_months_1st_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">above_24_months_2nd_dosage</property>
+                    <property name="nativeName">above_24_months_2nd_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">above_24_months_3rd_dosage</property>
+                    <property name="nativeName">above_24_months_3rd_dosage</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select
+    concept.name as vaccination,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 0 and 11 and observation.value_numeric = 1 ,1,0)) as 0_to_11_months_1st_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 0 and 11 and observation.value_numeric = 2 ,1,0)) as 0_to_11_months_2nd_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 0 and 11 and observation.value_numeric = 3 ,1,0)) as 0_to_11_months_3rd_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 12 and 23 and observation.value_numeric = 1,1,0)) as 12_to_24_months_1st_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 12 and 23 and observation.value_numeric = 2,1,0)) as 12_to_24_months_2nd_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) between 12 and 23 and observation.value_numeric = 3,1,0)) as 12_to_24_months_3rd_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) > 24 and observation.value_numeric = 1,1,0)) as above_24_months_1st_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) > 24 and observation.value_numeric = 2,1,0)) as above_24_months_2nd_dosage,
+    SUM(if(period_diff(date_format(now(), '%Y%m'), date_format(person.birthdate, '%Y%m')) > 24 and observation.value_numeric = 3,1,0)) as above_24_months_3rd_dosage
+from 
+    obs observation, 
+    concept_name concept, 
+    person person,
+    encounter encounter,
+    location location
+where  
+    concept.concept_name_id = observation.concept_id
+and 
+    concept.name = 'ORAL POLIO VACCINATION DOSE'
+and 
+    observation.person_id=person.person_id 
+and
+    observation.encounter_id = encounter.encounter_id
+and
+    encounter.location_id = location.location_id
+and
+    location.name = ?
+and
+	YEAR(observation.obs_datetime) = ? 
+and 
+    MONTH(observation.obs_datetime) = ?	]]></xml-property>
         </oda-data-set>
     </data-sets>
     <styles>
@@ -2328,39 +2522,210 @@ and
                             </cell>
                             <cell id="603">
                                 <grid id="634">
+                                    <property name="dataSet">Oral Polio</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">polio_0_11_months_1_dosage</property>
+                                            <text-property name="displayName">Polio 0-11 Months 1st Dosage</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["0_to_11_months_1st_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">polio_0_11_2nd_dosage</property>
+                                            <text-property name="displayName">Polio 0-11 Months 2nd Dosage</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["0_to_11_months_2nd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">polio_0_11_3rd_dosage</property>
+                                            <text-property name="displayName">Polio 0-11 3rd dosage</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["0_to_11_months_3rd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">polio_0_11_months_all_dosage_total</property>
+                                            <text-property name="displayName">Total</text-property>
+                                            <expression name="expression" type="javascript">row["polio_0_11_months_1_dosage"]+row["polio_0_11_2nd_dosage"]+row["polio_0_11_3rd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">polio_12_24_months_1st_dosage</property>
+                                            <text-property name="displayName">Polio 12-24 Months 1st Dosage</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["12_to_24_months_1st_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">polio_12_24_months_2nd_dosage</property>
+                                            <text-property name="displayName">Polio 12-24 Months 2nd Dosage</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["12_to_24_months_2nd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">polio_12_24_months_3rd_dosage</property>
+                                            <text-property name="displayName">Polio 12-24 Months 3rd Dosage</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["12_to_24_months_3rd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">polio_abv_24_months_1st_dosage</property>
+                                            <text-property name="displayName">Polio Above 24 Months 1st Dosage</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["above_24_months_1st_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">polio_abv_24_months_2nd_dosage</property>
+                                            <text-property name="displayName">Polio Above 24 Months 2nd Dosage</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["above_24_months_2nd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">polio_abv_24_months_3rd_dosage</property>
+                                            <text-property name="displayName">Polio Above 24 Months 3rd dosage</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["above_24_months_3rd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">polio_12_24_months_total</property>
+                                            <text-property name="displayName">Total</text-property>
+                                            <expression name="expression" type="javascript">row["polio_12_24_months_1st_dosage"]+row["polio_12_24_months_2nd_dosage"]+row["polio_12_24_months_3rd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">polio_abv_24_months_total</property>
+                                            <text-property name="displayName">Total</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["above_24_months_1st_dosage"]+dataSetRow["above_24_months_2nd_dosage"]+dataSetRow["above_24_months_3rd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">polio_1st_dosage_total</property>
+                                            <text-property name="displayName">Polio 1st dosage total</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["0_to_11_months_1st_dosage"]+dataSetRow["12_to_24_months_1st_dosage"]+dataSetRow["above_24_months_1st_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">polio_2nd_dosage_total</property>
+                                            <text-property name="displayName">Polio 2nd dosage total</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["0_to_11_months_2nd_dosage"]+dataSetRow["12_to_24_months_2nd_dosage"]+dataSetRow["above_24_months_2nd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">polio_3rd_dosage_total</property>
+                                            <text-property name="displayName">Polio 3rd Dosage Total</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["0_to_11_months_3rd_dosage"]+dataSetRow["12_to_24_months_3rd_dosage"]+dataSetRow["above_24_months_3rd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">polio_sum_total</property>
+                                            <text-property name="displayName">Polio Total</text-property>
+                                            <expression name="expression" type="javascript">row["polio_1st_dosage_total"]+row["polio_2nd_dosage_total"]+row["polio_3rd_dosage_total"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
                                     <column id="635"/>
                                     <column id="636"/>
                                     <column id="637"/>
                                     <column id="638"/>
                                     <row id="639">
                                         <cell id="640"/>
-                                        <cell id="641"/>
-                                        <cell id="642"/>
+                                        <cell id="641">
+                                            <label id="1735">
+                                                <text-property name="text">n/a</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="642">
+                                            <label id="1736">
+                                                <text-property name="text">n/a</text-property>
+                                            </label>
+                                        </cell>
                                         <cell id="643"/>
                                     </row>
                                     <row id="644">
-                                        <cell id="645"/>
-                                        <cell id="646"/>
-                                        <cell id="647"/>
-                                        <cell id="648"/>
+                                        <cell id="645">
+                                            <data id="1719">
+                                                <property name="resultSetColumn">polio_0_11_months_1_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="646">
+                                            <data id="1723">
+                                                <property name="resultSetColumn">polio_12_24_months_1st_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="647">
+                                            <data id="1726">
+                                                <property name="resultSetColumn">polio_abv_24_months_1st_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="648">
+                                            <data id="1731">
+                                                <property name="resultSetColumn">polio_1st_dosage_total</property>
+                                            </data>
+                                        </cell>
                                     </row>
                                     <row id="649">
-                                        <cell id="650"/>
-                                        <cell id="651"/>
-                                        <cell id="652"/>
-                                        <cell id="653"/>
+                                        <cell id="650">
+                                            <data id="1720">
+                                                <property name="resultSetColumn">polio_0_11_2nd_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="651">
+                                            <data id="1724">
+                                                <property name="resultSetColumn">polio_12_24_months_2nd_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="652">
+                                            <data id="1727">
+                                                <property name="resultSetColumn">polio_abv_24_months_2nd_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="653">
+                                            <data id="1732">
+                                                <property name="resultSetColumn">polio_2nd_dosage_total</property>
+                                            </data>
+                                        </cell>
                                     </row>
                                     <row id="654">
-                                        <cell id="655"/>
-                                        <cell id="656"/>
-                                        <cell id="657"/>
-                                        <cell id="658"/>
+                                        <cell id="655">
+                                            <data id="1721">
+                                                <property name="resultSetColumn">polio_0_11_3rd_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="656">
+                                            <data id="1725">
+                                                <property name="resultSetColumn">polio_12_24_months_3rd_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="657">
+                                            <data id="1728">
+                                                <property name="resultSetColumn">polio_abv_24_months_3rd_dosage</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="658">
+                                            <data id="1733">
+                                                <property name="resultSetColumn">polio_3rd_dosage_total</property>
+                                            </data>
+                                        </cell>
                                     </row>
                                     <row id="659">
-                                        <cell id="660"/>
-                                        <cell id="661"/>
-                                        <cell id="662"/>
-                                        <cell id="663"/>
+                                        <cell id="660">
+                                            <data id="1722">
+                                                <property name="resultSetColumn">polio_0_11_months_all_dosage_total</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="661">
+                                            <data id="1729">
+                                                <property name="resultSetColumn">polio_12_24_months_total</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="662">
+                                            <data id="1730">
+                                                <property name="resultSetColumn">polio_abv_24_months_total</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="663">
+                                            <data id="1734">
+                                                <property name="resultSetColumn">polio_sum_total</property>
+                                            </data>
+                                        </cell>
                                     </row>
                                 </grid>
                             </cell>
