@@ -5542,7 +5542,7 @@ and
                                         </structure>
                                         <structure>
                                             <property name="name">tt_total</property>
-                                            <expression name="expression" type="javascript">dataSetRow["1st_dosage"]+dataSetRow["2nd_dosage"]+dataSetRow["3rd_dosage"]+dataSetRow["4th_dosage"]+dataSetRow["5th_dosage"]</expression>
+                                            <expression name="expression" type="javascript">row["tt_1st_dosage"]+row["tt_2nd_dosage"]+row["tt_3rd_dosage"]+row["tt_4th_dosage"]+row["tt_5th_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                     </list-property>
