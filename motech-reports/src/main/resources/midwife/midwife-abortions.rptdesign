@@ -386,21 +386,16 @@ and
                     </structure>
                     <structure>
                         <property name="position">2</property>
-                        <property name="name">none</property>
-                        <property name="dataType">decimal</property>
-                    </structure>
-                    <structure>
-                        <property name="position">3</property>
                         <property name="name">d</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">4</property>
+                        <property name="position">3</property>
                         <property name="name">MVA</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">5</property>
+                        <property name="position">4</property>
                         <property name="name">Other</property>
                         <property name="dataType">decimal</property>
                     </structure>
@@ -416,24 +411,18 @@ and
                 </structure>
                 <structure>
                     <property name="position">2</property>
-                    <property name="name">none</property>
-                    <property name="nativeName">none</property>
-                    <property name="dataType">decimal</property>
-                </structure>
-                <structure>
-                    <property name="position">3</property>
                     <property name="name">d</property>
                     <property name="nativeName">d</property>
                     <property name="dataType">decimal</property>
                 </structure>
                 <structure>
-                    <property name="position">4</property>
+                    <property name="position">3</property>
                     <property name="name">MVA</property>
                     <property name="nativeName">MVA</property>
                     <property name="dataType">decimal</property>
                 </structure>
                 <structure>
-                    <property name="position">5</property>
+                    <property name="position">4</property>
                     <property name="name">Other</property>
                     <property name="nativeName">Other</property>
                     <property name="dataType">decimal</property>
@@ -441,10 +430,9 @@ and
             </list-property>
             <xml-property name="queryText"><![CDATA[SELECT
     'Termination Procedure',
-    SUM(if(obs.value_numeric =1,1,0)) as none,
-    SUM(if(obs.value_numeric = 2,1,0)) as d,
-    SUM(if(obs.value_numeric = 3 ,1,0)) as MVA,
-	SUM(if(obs.value_numeric = 4 ,1,0)) as Other    
+    SUM(if(obs.value_numeric = 1,1,0)) as d,
+    SUM(if(obs.value_numeric = 2 ,1,0)) as MVA,
+	SUM(if(obs.value_numeric = 3 ,1,0)) as Other    
     FROM 
     	obs obs,
     	encounter encounter,
@@ -501,33 +489,53 @@ and
                     </structure>
                     <structure>
                         <property name="position">2</property>
-                        <property name="name">none</property>
-                        <property name="dataType">decimal</property>
-                    </structure>
-                    <structure>
-                        <property name="position">3</property>
                         <property name="name">bleeding</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">4</property>
+                        <property name="position">3</property>
                         <property name="name">Sepsis</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">5</property>
+                        <property name="position">4</property>
                         <property name="name">Perforations</property>
                         <property name="dataType">decimal</property>
                     </structure>
                 </list-property>
             </structure>
             <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">Termination Complication</property>
+                    <property name="nativeName">Termination Complication</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">bleeding</property>
+                    <property name="nativeName">bleeding</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">Sepsis</property>
+                    <property name="nativeName">Sepsis</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">Perforations</property>
+                    <property name="nativeName">Perforations</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
             <xml-property name="queryText"><![CDATA[SELECT
     'Termination Complication',
-    SUM(if(obs.value_numeric =1,1,0)) as none,
-    SUM(if(obs.value_numeric = 2,1,0)) as bleeding,
-    SUM(if(obs.value_numeric = 3 ,1,0)) as Sepsis,
- 	SUM(if(obs.value_numeric = 4 ,1,0)) as Perforations
+    SUM(if(obs.value_numeric = 1,1,0)) as bleeding,
+    SUM(if(obs.value_numeric = 2 ,1,0)) as Sepsis,
+ 	SUM(if(obs.value_numeric = 3 ,1,0)) as Perforations
     FROM 
     	obs obs,
     	encounter encounter,
@@ -995,7 +1003,7 @@ and
     SUM(if(ages.age between 15 and 19,1,0)) as 15_to_19_years,
     SUM(if(ages.age between 20 and 24,1,0)) as 20_to_24_years,
     SUM(if(ages.age between 25 and 29,1,0)) as 25_to_29_years,
-    SUM(if(ages.age between 30 and 34,1,0)) as 30_to_35_years,
+    SUM(if(ages.age between 30 and 35,1,0)) as 30_to_35_years,
     SUM(if(ages.age > 35,1,0)) as greater_than_35_years
 from
 (select
@@ -1343,6 +1351,18 @@ and
     </page-setup>
     <body>
         <grid id="1495">
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
             <column id="1496"/>
             <row id="1497">
                 <cell id="1498">
@@ -1493,12 +1513,84 @@ and
                                     <property name="resultSetColumn">termination_induced</property>
                                 </data>
                             </cell>
-                            <cell id="1686"/>
-                            <cell id="1687"/>
-                            <cell id="1688"/>
-                            <cell id="1689"/>
-                            <cell id="1690"/>
-                            <cell id="1691"/>
+                            <cell id="1686">
+                                <data id="1795">
+                                    <property name="dataSet">Termination procedure</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">termination_mva</property>
+                                            <expression name="expression" type="javascript">dataSetRow["MVA"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">termination_mva</property>
+                                </data>
+                            </cell>
+                            <cell id="1687">
+                                <data id="1796">
+                                    <property name="dataSet">Termination procedure</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">termination_d_c</property>
+                                            <expression name="expression" type="javascript">dataSetRow["d"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">termination_d_c</property>
+                                </data>
+                            </cell>
+                            <cell id="1688">
+                                <data id="1800">
+                                    <property name="dataSet">DeathsFromAbortion</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">abortion_deaths</property>
+                                            <expression name="expression" type="javascript">dataSetRow["total"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">abortion_deaths</property>
+                                </data>
+                            </cell>
+                            <cell id="1689">
+                                <data id="1797">
+                                    <property name="dataSet">PostAbortionComplication</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">complication_bleeding</property>
+                                            <expression name="expression" type="javascript">dataSetRow["bleeding"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">complication_bleeding</property>
+                                </data>
+                            </cell>
+                            <cell id="1690">
+                                <data id="1798">
+                                    <property name="dataSet">PostAbortionComplication</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">complication_sepsis</property>
+                                            <expression name="expression" type="javascript">dataSetRow["Sepsis"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">complication_sepsis</property>
+                                </data>
+                            </cell>
+                            <cell id="1691">
+                                <data id="1799">
+                                    <property name="dataSet">PostAbortionComplication</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">complication_perforation</property>
+                                            <expression name="expression" type="javascript">dataSetRow["Perforations"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">complication_perforation</property>
+                                </data>
+                            </cell>
                         </row>
                     </grid>
                 </cell>
@@ -1679,12 +1771,294 @@ and
                                     <property name="resultSetColumn">pac_fp_accepted</property>
                                 </data>
                             </cell>
-                            <cell id="1755"/>
-                            <cell id="1756"/>
-                            <cell id="1757"/>
-                            <cell id="1758"/>
-                            <cell id="1759"/>
-                            <cell id="1760"/>
+                            <cell id="1755">
+                                <data id="1801">
+                                    <property name="dataSet">AgeGroupOfRegistrants</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">Registrants</property>
+                                            <expression name="expression" type="javascript">dataSetRow["Registrants"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">10_to_14_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["10_to_14_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">15_to_19_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["15_to_19_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">20_to_24_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["20_to_24_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">25_to_29_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["25_to_29_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">30_to_35_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["30_to_35_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">greater_than_35_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["greater_than_35_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">age_10_to_14</property>
+                                            <expression name="expression" type="javascript">dataSetRow["10_to_14_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">age_10_to_14</property>
+                                </data>
+                            </cell>
+                            <cell id="1756">
+                                <data id="1802">
+                                    <property name="dataSet">AgeGroupOfRegistrants</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">Registrants</property>
+                                            <expression name="expression" type="javascript">dataSetRow["Registrants"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">10_to_14_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["10_to_14_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">15_to_19_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["15_to_19_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">20_to_24_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["20_to_24_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">25_to_29_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["25_to_29_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">30_to_35_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["30_to_35_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">greater_than_35_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["greater_than_35_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">age_15_to_19</property>
+                                            <expression name="expression" type="javascript">dataSetRow["15_to_19_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">age_15_to_19</property>
+                                </data>
+                            </cell>
+                            <cell id="1757">
+                                <data id="1803">
+                                    <property name="dataSet">AgeGroupOfRegistrants</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">Registrants</property>
+                                            <expression name="expression" type="javascript">dataSetRow["Registrants"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">10_to_14_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["10_to_14_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">15_to_19_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["15_to_19_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">20_to_24_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["20_to_24_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">25_to_29_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["25_to_29_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">30_to_35_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["30_to_35_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">greater_than_35_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["greater_than_35_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">age_20_to_24</property>
+                                            <expression name="expression" type="javascript">dataSetRow["20_to_24_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">age_20_to_24</property>
+                                </data>
+                            </cell>
+                            <cell id="1758">
+                                <data id="1804">
+                                    <property name="dataSet">AgeGroupOfRegistrants</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">Registrants</property>
+                                            <expression name="expression" type="javascript">dataSetRow["Registrants"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">10_to_14_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["10_to_14_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">15_to_19_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["15_to_19_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">20_to_24_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["20_to_24_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">25_to_29_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["25_to_29_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">30_to_35_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["30_to_35_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">greater_than_35_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["greater_than_35_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">age_25_to_29</property>
+                                            <expression name="expression" type="javascript">dataSetRow["25_to_29_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">age_25_to_29</property>
+                                </data>
+                            </cell>
+                            <cell id="1759">
+                                <data id="1805">
+                                    <property name="dataSet">AgeGroupOfRegistrants</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">Registrants</property>
+                                            <expression name="expression" type="javascript">dataSetRow["Registrants"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">10_to_14_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["10_to_14_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">15_to_19_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["15_to_19_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">20_to_24_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["20_to_24_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">25_to_29_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["25_to_29_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">30_to_35_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["30_to_35_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">greater_than_35_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["greater_than_35_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">age_30_to_35</property>
+                                            <expression name="expression" type="javascript">dataSetRow["30_to_35_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">age_30_to_35</property>
+                                </data>
+                            </cell>
+                            <cell id="1760">
+                                <data id="1806">
+                                    <property name="dataSet">AgeGroupOfRegistrants</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">Registrants</property>
+                                            <expression name="expression" type="javascript">dataSetRow["Registrants"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">10_to_14_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["10_to_14_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">15_to_19_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["15_to_19_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">20_to_24_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["20_to_24_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">25_to_29_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["25_to_29_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">30_to_35_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["30_to_35_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">greater_than_35_years</property>
+                                            <expression name="expression" type="javascript">dataSetRow["greater_than_35_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">age_abv_35</property>
+                                            <expression name="expression" type="javascript">dataSetRow["greater_than_35_years"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">age_abv_35</property>
+                                </data>
+                            </cell>
                             <cell id="1761"/>
                             <cell id="1762"/>
                             <cell id="1763"/>
