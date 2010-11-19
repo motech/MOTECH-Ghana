@@ -1653,8 +1653,32 @@ and
                         <column id="1750"/>
                         <column id="1751"/>
                         <row id="1752">
-                            <cell id="1753"/>
-                            <cell id="1754"/>
+                            <cell id="1753">
+                                <data id="1793">
+                                    <property name="dataSet">PostAbortionCounselled</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">pac_fp_counselled</property>
+                                            <expression name="expression" type="javascript">dataSetRow["total"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">pac_fp_counselled</property>
+                                </data>
+                            </cell>
+                            <cell id="1754">
+                                <data id="1794">
+                                    <property name="dataSet">PostAbortionAccepting</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">pac_fp_accepted</property>
+                                            <expression name="expression" type="javascript">dataSetRow["total"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="resultSetColumn">pac_fp_accepted</property>
+                                </data>
+                            </cell>
                             <cell id="1755"/>
                             <cell id="1756"/>
                             <cell id="1757"/>

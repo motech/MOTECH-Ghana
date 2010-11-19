@@ -5506,43 +5506,68 @@ and
                                     <property name="dataSet">Tetanus Toxoid</property>
                                     <list-property name="boundDataColumns">
                                         <structure>
-                                            <property name="name">Clinic</property>
-                                            <expression name="expression" type="javascript">dataSetRow["Clinic"]</expression>
+                                            <property name="name">name</property>
+                                            <expression name="expression" type="javascript">dataSetRow["name"]</expression>
                                             <property name="dataType">string</property>
                                         </structure>
                                         <structure>
-                                            <property name="name">vaccination</property>
-                                            <expression name="expression" type="javascript">dataSetRow["vaccination"]</expression>
+                                            <property name="name">name_2</property>
+                                            <expression name="expression" type="javascript">dataSetRow["name_2"]</expression>
                                             <property name="dataType">string</property>
                                         </structure>
                                         <structure>
-                                            <property name="name">tt_1st_dosage</property>
+                                            <property name="name">1st_dosage</property>
                                             <expression name="expression" type="javascript">dataSetRow["1st_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
-                                            <property name="name">tt_2nd_dosage</property>
+                                            <property name="name">2nd_dosage</property>
                                             <expression name="expression" type="javascript">dataSetRow["2nd_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
-                                            <property name="name">tt_3rd_dosage</property>
+                                            <property name="name">3rd_dosage</property>
                                             <expression name="expression" type="javascript">dataSetRow["3rd_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
-                                            <property name="name">tt_4th_dosage</property>
+                                            <property name="name">4th_dosage</property>
                                             <expression name="expression" type="javascript">dataSetRow["4th_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
-                                            <property name="name">tt_5th_dosage</property>
+                                            <property name="name">5th_dosage</property>
                                             <expression name="expression" type="javascript">dataSetRow["5th_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
-                                            <property name="name">tt_total</property>
-                                            <expression name="expression" type="javascript">row["tt_1st_dosage"]+row["tt_2nd_dosage"]+row["tt_3rd_dosage"]+row["tt_4th_dosage"]+row["tt_5th_dosage"]</expression>
+                                            <property name="name">tetanus_1st_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["1st_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">tetanus_2nd_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["2nd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">tetanus_3rd_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["3rd_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">tetanus_4th_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["4th_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">tetanus_5th_dosage</property>
+                                            <expression name="expression" type="javascript">dataSetRow["5th_dosage"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">tetanus_total_dosage</property>
+                                            <expression name="expression" type="javascript">row["tetanus_1st_dosage"]+row["tetanus_2nd_dosage"]+row["tetanus_3rd_dosage"]+row["tetanus_4th_dosage"]+row["tetanus_5th_dosage"]</expression>
                                             <property name="dataType">decimal</property>
                                         </structure>
                                     </list-property>
@@ -5683,8 +5708,8 @@ and
                                             <property name="borderTopColor">#000000</property>
                                             <property name="borderTopStyle">solid</property>
                                             <property name="borderTopWidth">thin</property>
-                                            <data id="1763">
-                                                <property name="resultSetColumn">tt_1st_dosage</property>
+                                            <data id="1770">
+                                                <property name="resultSetColumn">tetanus_1st_dosage</property>
                                             </data>
                                         </cell>
                                         <cell id="1291">
@@ -5751,8 +5776,8 @@ and
                                         </cell>
                                         <cell id="1296">
                                             <property name="style">NewStyle</property>
-                                            <data id="1764">
-                                                <property name="resultSetColumn">tt_2nd_dosage</property>
+                                            <data id="1771">
+                                                <property name="resultSetColumn">tetanus_2nd_dosage</property>
                                             </data>
                                         </cell>
                                         <cell id="1297">
@@ -5785,8 +5810,8 @@ and
                                         </cell>
                                         <cell id="1302">
                                             <property name="style">NewStyle</property>
-                                            <data id="1765">
-                                                <property name="resultSetColumn">tt_3rd_dosage</property>
+                                            <data id="1772">
+                                                <property name="resultSetColumn">tetanus_3rd_dosage</property>
                                             </data>
                                         </cell>
                                         <cell id="1303">
@@ -5969,8 +5994,8 @@ and
                                             <property name="showIfBlank">false</property>
                                             <property name="canShrink">false</property>
                                             <property name="overflow">hidden</property>
-                                            <data id="1766">
-                                                <property name="resultSetColumn">tt_4th_dosage</property>
+                                            <data id="1773">
+                                                <property name="resultSetColumn">tetanus_4th_dosage</property>
                                             </data>
                                         </cell>
                                         <cell id="1309">
@@ -6203,8 +6228,8 @@ and
                                             <property name="showIfBlank">false</property>
                                             <property name="canShrink">false</property>
                                             <property name="overflow">hidden</property>
-                                            <data id="1767">
-                                                <property name="resultSetColumn">tt_5th_dosage</property>
+                                            <data id="1774">
+                                                <property name="resultSetColumn">tetanus_5th_dosage</property>
                                             </data>
                                         </cell>
                                         <cell id="1315">
@@ -6398,8 +6423,8 @@ and
                                             <property name="borderTopColor">#000000</property>
                                             <property name="borderTopStyle">solid</property>
                                             <property name="borderTopWidth">thin</property>
-                                            <data id="1768">
-                                                <property name="resultSetColumn">tt_total</property>
+                                            <data id="1775">
+                                                <property name="resultSetColumn">tetanus_total_dosage</property>
                                             </data>
                                         </cell>
                                         <cell id="1321">
