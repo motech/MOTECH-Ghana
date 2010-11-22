@@ -10,22 +10,7 @@
 	<artifactId>motech-wsapi</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>MoTeCH WS API</name>
-	<description>Web Services API for the MoTeCH mobile and server projects</description>
-
-	<dependencies>
-		<dependency>
-			<groupId>javax.jws</groupId>
-			<artifactId>jsr181-api</artifactId>
-			<version>1.0-MR1</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.xml.ws</groupId>
-			<artifactId>jaxws-api</artifactId>
-			<version>2.1</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
+	<name>MoTeCH API</name>
+	<description>API for the MoTeCH mobile and server projects</description>
 
 </project>

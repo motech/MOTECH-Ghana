@@ -311,34 +311,6 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.jvnet.jax-ws-commons.spring</groupId>
-				<artifactId>jaxws-spring</artifactId>
-				<version>1.8</version>
-				<scope>test</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>spring</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>com.sun.xml.stream.buffer</groupId>
-						<artifactId>streambuffer</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.jvnet.staxex</groupId>
-						<artifactId>stax-ex</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>com.sun.xml.ws</groupId>
-						<artifactId>jaxws-rt</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>com.sun.xml.bind</groupId>
-						<artifactId>jaxb-impl</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
 				<groupId>org.liquibase</groupId>
 				<artifactId>liquibase-core</artifactId>
 				<version>1.9.4-mod</version>

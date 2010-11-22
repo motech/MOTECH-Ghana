@@ -37,8 +37,8 @@
 	<!-- Beans to add to the current Application context definition -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ws="http://jax-ws.dev.java.net/spring/core"
-	xmlns:wss="http://jax-ws.dev.java.net/spring/servlet" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
@@ -48,11 +48,7 @@
            http://www.springframework.org/schema/util
            http://www.springframework.org/schema/util/spring-util-2.0.xsd
            http://www.springframework.org/schema/tx
-           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
-           http://jax-ws.dev.java.net/spring/core
-           http://jax-ws.dev.java.net/spring/core.xsd
-           http://jax-ws.dev.java.net/spring/servlet
-           http://jax-ws.dev.java.net/spring/servlet.xsd">
+           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
 	<tx:annotation-driven />
 
@@ -151,15 +147,11 @@
 		</property>
 	</bean>
 
-	<!-- Web Services Section -->
-	<wss:binding url="/ws/RegistrarService" service="#registrarservice" /> <!-- MUST start with /ws/ -->
-	<ws:service id="registrarservice" bean="#registrarWebService" />
-
 	<bean id="webserviceModelConverter" class="org.motechproject.server.ws.WebServiceModelConverterImpl">
 		<property name="registrarBean" ref="registrarBeanProxy" />
 	</bean>
 
-	<bean id="registrarWebService" class="org.motechproject.server.ws.RegistrarWebService">
+	<bean id="registrarWebService" name="registrarClient" class="org.motechproject.server.ws.RegistrarWebService">
 		<property name="registrarBean" ref="registrarBeanProxy" />
 		<property name="openmrsBean" ref="registrarBeanProxy" />
 		<property name="modelConverter" ref="webserviceModelConverter" />

@@ -97,9 +97,6 @@ public class RegistrarServiceTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		LogManager.getLogManager().readConfiguration(
-				RegistrarServiceTest.class
-						.getResourceAsStream("/jul-test.properties"));
 		registrarBean = createMock(RegistrarBean.class);
 		openmrsBean = createMock(OpenmrsBean.class);
 		modelConverter = createMock(WebServiceModelConverter.class);
@@ -119,7 +116,6 @@ public class RegistrarServiceTest {
 		registrarBean = null;
 		openmrsBean = null;
 		modelConverter = null;
-		LogManager.getLogManager().readConfiguration();
 	}
 
 	@Before

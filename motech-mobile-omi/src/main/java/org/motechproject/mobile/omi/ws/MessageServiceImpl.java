@@ -37,9 +37,6 @@ import org.motechproject.mobile.omi.manager.OMIManager;
 import org.motechproject.mobile.omi.service.OMIService;
 
 import java.util.Date;
-import javax.jws.WebParam;
-import javax.jws.WebMethod;
-import javax.jws.WebService;
 import org.apache.log4j.Logger;
 import org.motechproject.ws.Care;
 import org.motechproject.ws.ContactNumberType;
@@ -56,7 +53,6 @@ import org.motechproject.ws.mobile.MessageService;
  * @author Kofi A. Asamoah (yoofi@dreamoval.com)
  * Date Created 30-07-09
  */
-@WebService(targetNamespace = "http://server.ws.motechproject.org/")
 public class MessageServiceImpl implements MessageService {
 
     private OMIManager omiManager;
@@ -66,8 +62,7 @@ public class MessageServiceImpl implements MessageService {
     *
     * @see MessageService.sendPatientMessages
     */
-   @WebMethod
-    public void sendPatientMessages(@WebParam(name="messages") PatientMessage[] messages) {
+    public void sendPatientMessages(PatientMessage[] messages) {
         logger.debug("Called MessageService.sendPatientMessages with number of messages: " + 
             (messages != null ? messages.length : "null"));
        
@@ -88,17 +83,16 @@ public class MessageServiceImpl implements MessageService {
      *
      * @see MessageService.sendPatientMessage
      */
-    @WebMethod
-    public MessageStatus sendPatientMessage(@WebParam(name = "messageId") String messageId, 
-    										@WebParam(name = "personalInfo") NameValuePair[] personalInfo, 
-    										@WebParam(name = "patientNumber") String patientNumber, 
-    										@WebParam(name = "patientNumberType") ContactNumberType patientNumberType, 
-    										@WebParam(name = "langCode") String langCode, 
-    										@WebParam(name = "mediaType") MediaType messageType, 
-    										@WebParam(name = "notificationType") Long notificationType, 
-    										@WebParam(name = "startDate") Date startDate, 
-    										@WebParam(name = "endDate") Date endDate, 
-    										@WebParam(name = "recipientId") String recipientId) {
+    public MessageStatus sendPatientMessage(String messageId, 
+                                            NameValuePair[] personalInfo, 
+                                            String patientNumber, 
+                                            ContactNumberType patientNumberType, 
+                                            String langCode, 
+                                            MediaType messageType, 
+                                            Long notificationType, 
+                                            Date startDate, 
+                                            Date endDate, 
+                                            String recipientId) {
         logger.debug("Called MessageService.sendPatientMessage with parameters:\n\rmessageId - " + messageId + 
         			 "\n\rclinic - " + patientNumber + 
         			 "\n\rpatientNumbrType - " + patientNumberType + 
@@ -114,16 +108,15 @@ public class MessageServiceImpl implements MessageService {
      *
      * @see MessageService.sendCHPSMessage
      */
-    @WebMethod
-    public MessageStatus sendCHPSMessage(@WebParam(name = "messageId") String messageId,
-                                         @WebParam(name = "personalInfo") NameValuePair[] personalInfo,
-                                         @WebParam(name = "workerNumber") String workerNumber,
-                                         @WebParam(name = "patientList") Patient[] patientList,
-                                         @WebParam(name = "langCode") String langCode,
-                                         @WebParam(name = "mediaType") MediaType messageType,
-                                         @WebParam(name = "notificationType") Long notificationType,
-                                         @WebParam(name = "startDate") Date startDate,
-                                         @WebParam(name = "endDate") Date endDate) {
+    public MessageStatus sendCHPSMessage(String messageId,
+                                         NameValuePair[] personalInfo,
+                                         String workerNumber,
+                                         Patient[] patientList,
+                                         String langCode,
+                                         MediaType messageType,
+                                         Long notificationType,
+                                         Date startDate,
+                                         Date endDate) {
         logger.debug("Called MessageService.sendCHPSMessage with parameters:\n\rmessageId - " + messageId + "\n\rworkerNumber - " + workerNumber + "\n\rstartDate - " + startDate + "\n\rendDate - " + endDate);
         logger.info("Processing request...");
         return this.omiManager.createOMIService().saveCHPSMessageRequest(messageId, personalInfo, workerNumber, patientList, langCode, messageType, notificationType, startDate, endDate);
@@ -133,13 +126,12 @@ public class MessageServiceImpl implements MessageService {
      *
      * @see MessageService.sendDefaulterMessage
      */
-    @WebMethod
-    public MessageStatus sendDefaulterMessage(@WebParam(name = "messageId") String messageId,
-                                              @WebParam(name = "workerNumber") String workerNumber,
-                                              @WebParam(name = "cares") Care[] cares,
-                                              @WebParam(name = "messageType") MediaType mediaType,
-                                              @WebParam(name = "startDate") Date startDate,
-                                              @WebParam(name = "endDate") Date endDate) {
+    public MessageStatus sendDefaulterMessage(String messageId,
+                                              String workerNumber,
+                                              Care[] cares,
+                                              MediaType mediaType,
+                                              Date startDate,
+                                              Date endDate) {
         logger.info("Processing request...");
         return this.omiManager.createOMIService().sendDefaulterMessage(messageId, workerNumber, cares, mediaType, startDate, endDate);
     }
@@ -148,14 +140,13 @@ public class MessageServiceImpl implements MessageService {
      *
      * @see MessageService.sendDeliveriesMessage
      */
-    @WebMethod
-    public MessageStatus sendDeliveriesMessage(@WebParam(name = "messageId") String messageId,
-                                               @WebParam(name = "workerNumber") String workerNumber,
-                                               @WebParam(name = "patients") Patient[] patients,
-                                               @WebParam(name = "deliveryStatus") String deliveryStatus,
-                                               @WebParam(name = "mediaType") MediaType mediaType,
-                                               @WebParam(name = "startDate") Date startDate,
-                                               @WebParam(name = "endDate") Date endDate) {
+    public MessageStatus sendDeliveriesMessage(String messageId,
+                                               String workerNumber,
+                                               Patient[] patients,
+                                               String deliveryStatus,
+                                               MediaType mediaType,
+                                               Date startDate,
+                                               Date endDate) {
         logger.info("Processing request...");
         return this.omiManager.createOMIService().sendDeliveriesMessage(messageId, workerNumber, patients, deliveryStatus, mediaType, startDate, endDate);
     }
@@ -164,13 +155,12 @@ public class MessageServiceImpl implements MessageService {
      *
      * @see MessageService.sendUpcomingCaresMessage
      */
-    @WebMethod
-    public MessageStatus sendUpcomingCaresMessage(@WebParam(name = "messageId") String messageId,
-                                                  @WebParam(name = "workerNumber") String workerNumber,
-                                                  @WebParam(name = "patient") Patient patient,
-                                                  @WebParam(name = "mediaType") MediaType mediaType,
-                                                  @WebParam(name = "startDate") Date startDate,
-                                                  @WebParam(name = "endDate") Date endDate) {
+    public MessageStatus sendUpcomingCaresMessage(String messageId,
+                                                  String workerNumber,
+                                                  Patient patient,
+                                                  MediaType mediaType,
+                                                  Date startDate,
+                                                  Date endDate) {
         logger.info("Processing request...");
         return this.omiManager.createOMIService().sendUpcomingCaresMessage(messageId, workerNumber, patient, mediaType, startDate, endDate);
     }
@@ -179,13 +169,12 @@ public class MessageServiceImpl implements MessageService {
      *
      * @see MessageService.sendBulkCaresMessage
      */
-    @WebMethod
-    public MessageStatus sendBulkCaresMessage(@WebParam(name = "messageId") String messageId,
-                                                  @WebParam(name = "workerNumber") String workerNumber,
-                                                  @WebParam(name = "patient") Care[] cares,
-                                                  @WebParam(name = "mediaType") MediaType mediaType,
-                                                  @WebParam(name = "startDate") Date startDate,
-                                                  @WebParam(name = "endDate") Date endDate) {
+    public MessageStatus sendBulkCaresMessage(String messageId,
+                                              String workerNumber,
+                                              Care[] cares,
+                                              MediaType mediaType,
+                                              Date startDate,
+                                              Date endDate) {
         logger.info("Processing request...");
         return this.omiManager.createOMIService().sendBulkCaresMessage(messageId, workerNumber, cares, mediaType, startDate, endDate);
     }
@@ -194,9 +183,8 @@ public class MessageServiceImpl implements MessageService {
      *
      * @see MessageService.sendMessage
      */
-    @WebMethod
-    public MessageStatus sendMessage(@WebParam(name = "content") String content,
-                                     @WebParam(name = "recipient") String recipient) {
+    public MessageStatus sendMessage(String content,
+                                     String recipient) {
         logger.info("Processing request...");
         return this.omiManager.createOMIService().sendMessage(content, recipient);
     }
@@ -204,7 +192,6 @@ public class MessageServiceImpl implements MessageService {
     /**
      * @return the omiManager
      */
-    @WebMethod(exclude = true)
     public OMIManager getOmiManager() {
         return omiManager;
     }
@@ -212,7 +199,6 @@ public class MessageServiceImpl implements MessageService {
     /**
      * @param omiManager the omiManager to set
      */
-    @WebMethod(exclude = true)
     public void setOmiManager(OMIManager omiManager) {
         logger.debug("Setting MessageServiceImpl.omiManager:");
         logger.debug(omiManager);

@@ -3,11 +3,7 @@ package org.motechproject.ws.mobile;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebService;
 import org.motechproject.ws.Care;
-
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.MessageStatus;
@@ -16,12 +12,11 @@ import org.motechproject.ws.Patient;
 import org.motechproject.ws.PatientMessage;
 
 /**
- * A webservice interface providing functionality for sending messages
+ * An interface providing functionality for sending messages
  *
  * @author Kofi A. Asamoah (yoofi@dreamoval.com)
  * Date Created 30-07-09
  */
-@WebService
 public interface MessageService extends Serializable{
 
     /**
@@ -29,8 +24,7 @@ public interface MessageService extends Serializable{
      *
      * @param messages List of messages to be sent
      */
-    @WebMethod
-    public void sendPatientMessages(@WebParam(name="messages") PatientMessage[] messages);
+    public void sendPatientMessages(PatientMessage[] messages);
 	
     /**
      * Sends a message to a registered patient
@@ -47,17 +41,16 @@ public interface MessageService extends Serializable{
      * @param recipientId String unique identifier of the recipient
      * @return The status of the message
      */
-    @WebMethod
-    public MessageStatus sendPatientMessage(@WebParam(name="messageId") String messageId, 
-    										@WebParam(name="personalInfo") NameValuePair[] personalInfo, 
-    										@WebParam(name="patientNumber") String patientNumber, 
-    										@WebParam(name="patientNumberType") ContactNumberType patientNumberType, 
-    										@WebParam(name="langCode") String langCode, 
-    										@WebParam(name="mediaType") MediaType mediaType, 
-    										@WebParam(name="notificationType") Long notificationType, 
-    										@WebParam(name="startDate")Date startDate, 
-    										@WebParam(name="endDate")Date endDate,
-    										@WebParam(name="recipientId")String recipientId);
+    public MessageStatus sendPatientMessage(String messageId, 
+    										NameValuePair[] personalInfo, 
+    										String patientNumber, 
+    										ContactNumberType patientNumberType, 
+    										String langCode, 
+    										MediaType mediaType, 
+    										Long notificationType, 
+    										Date startDate, 
+    										Date endDate,
+    										String recipientId);
 
     /**
      * Sends a message to a registered CHPS worker
@@ -73,8 +66,7 @@ public interface MessageService extends Serializable{
      * @param endDate Date to stop message sending attempts
      * @return The status of the message
      */
-    @WebMethod
-    public MessageStatus sendCHPSMessage(@WebParam(name="messageId") String messageId, @WebParam(name="personalInfo") NameValuePair[] personalInfo, @WebParam(name="workerNumber") String workerNumber, @WebParam(name="patients") Patient[] patients, @WebParam(name="langCode") String langCode, @WebParam(name="mediaType") MediaType mediaType, @WebParam(name="notificationType") Long notificationType, @WebParam(name="startDate")Date startDate, @WebParam(name="endDate")Date endDate);
+    public MessageStatus sendCHPSMessage(String messageId, NameValuePair[] personalInfo, String workerNumber, Patient[] patients, String langCode, MediaType mediaType, Long notificationType, Date startDate, Date endDate);
 
     /**
      * Sends a list of care defaulters to a CHPS worker
@@ -87,13 +79,12 @@ public interface MessageService extends Serializable{
      * @param endDate Date to stop message sending attempts
      * @return The status of the message
      */
-    @WebMethod
-    public MessageStatus sendDefaulterMessage(@WebParam(name = "messageId") String messageId,
-                                              @WebParam(name = "workerNumber") String workerNumber,
-                                              @WebParam(name = "cares") Care[] cares,
-                                              @WebParam(name = "media") MediaType mediaType,
-                                              @WebParam(name = "startDate") Date startDate,
-                                              @WebParam(name = "endDate") Date endDate);
+    public MessageStatus sendDefaulterMessage(String messageId,
+                                              String workerNumber,
+                                              Care[] cares,
+                                              MediaType mediaType,
+                                              Date startDate,
+                                              Date endDate);
 
     /**
      * Sends a list of patients within a delivery schedule to a CHPS worker
@@ -107,14 +98,13 @@ public interface MessageService extends Serializable{
      * @param endDate Date to stop message sending attempts
      * @return The status of the message
      */
-    @WebMethod
-    public MessageStatus sendDeliveriesMessage(@WebParam(name = "messageId") String messageId,
-                                               @WebParam(name = "workerNumber") String workerNumber,
-                                               @WebParam(name = "patients") Patient[] patients,
-                                               @WebParam(name = "deliveryStatus") String deliveryStatus,
-                                               @WebParam(name = "mediaType") MediaType mediaType,
-                                               @WebParam(name = "startDate") Date startDate,
-                                               @WebParam(name = "endDate") Date endDate);
+    public MessageStatus sendDeliveriesMessage(String messageId,
+                                               String workerNumber,
+                                               Patient[] patients,
+                                               String deliveryStatus,
+                                               MediaType mediaType,
+                                               Date startDate,
+                                               Date endDate);
 
     /**
      * Sends a list of upcoming care for a particular patient to a CHPS worker
@@ -127,13 +117,12 @@ public interface MessageService extends Serializable{
      * @param endDate Date to stop message sending attempts
      * @return The status of the message
      */
-    @WebMethod
-    public MessageStatus sendUpcomingCaresMessage(@WebParam(name = "messageId") String messageId,
-                                                  @WebParam(name = "workerNumber") String workerNumber,
-                                                  @WebParam(name = "patient") Patient patient,
-                                                  @WebParam(name = "mediaType") MediaType mediaType,
-                                                  @WebParam(name = "startDate") Date startDate,
-                                                  @WebParam(name = "endDate") Date endDate);
+    public MessageStatus sendUpcomingCaresMessage(String messageId,
+                                                  String workerNumber,
+                                                  Patient patient,
+                                                  MediaType mediaType,
+                                                  Date startDate,
+                                                  Date endDate);
 
     /**
      * Sends an SMS message
@@ -142,9 +131,8 @@ public interface MessageService extends Serializable{
      * @param recipient the phone number to receive the message
      * @return
      */
-    @WebMethod
-    public MessageStatus sendMessage(@WebParam(name = "content") String content,
-                                     @WebParam(name = "recipient") String recipient);
+    public MessageStatus sendMessage(String content,
+                                     String recipient);
 
     /**
      * Sends multiple upcoming care messages to a CHPS worker
@@ -157,11 +145,10 @@ public interface MessageService extends Serializable{
      * @param endDate Date to stop message sending attempts
      * @return The status of the message
      */
-    @WebMethod
-    public MessageStatus sendBulkCaresMessage(@WebParam(name = "messageId") String messageId,
-                                                  @WebParam(name = "workerNumber") String workerNumber,
-                                                  @WebParam(name = "patient") Care[] cares,
-                                                  @WebParam(name = "mediaType") MediaType mediaType,
-                                                  @WebParam(name = "startDate") Date startDate,
-                                                  @WebParam(name = "endDate") Date endDate);
+    public MessageStatus sendBulkCaresMessage(String messageId,
+                                              String workerNumber,
+                                              Care[] cares,
+                                              MediaType mediaType,
+                                              Date startDate,
+                                              Date endDate);
 }

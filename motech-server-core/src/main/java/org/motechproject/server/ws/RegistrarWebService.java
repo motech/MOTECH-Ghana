@@ -40,10 +40,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebService;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.Community;
@@ -75,14 +71,8 @@ import org.openmrs.Obs;
 import org.openmrs.User;
 
 /**
- * This is the service enpoint implementation for the major motech server web
- * service.
- * 
- * This can be accessed via /openmrs/ws/RegistrarService since we mapped it to
- * /ws/RegistrarService in the moduleApplicationContext.xml file.
+ * This is the service implementation for the motech server interface.
  */
-
-@WebService(targetNamespace = "http://server.ws.motechproject.org/")
 public class RegistrarWebService implements RegistrarService {
 
 	Log log = LogFactory.getLog(RegistrarWebService.class);
@@ -92,26 +82,12 @@ public class RegistrarWebService implements RegistrarService {
 	WebServiceModelConverter modelConverter;
 	MessageSourceBean messageBean;
 
-	@WebMethod
-	public void recordPatientHistory(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "lastIPT") Integer lastIPT,
-			@WebParam(name = "lastIPTDate") Date lastIPTDate,
-			@WebParam(name = "lastTT") Integer lastTT,
-			@WebParam(name = "lastTTDate") Date lastTTDate,
-			@WebParam(name = "bcgDate") Date bcgDate,
-			@WebParam(name = "lastOPV") Integer lastOPV,
-			@WebParam(name = "lastOPVDate") Date lastOPVDate,
-			@WebParam(name = "lastPenta") Integer lastPenta,
-			@WebParam(name = "lastPentaDate") Date lastPentaDate,
-			@WebParam(name = "measlesDate") Date measlesDate,
-			@WebParam(name = "yellowFeverDate") Date yellowFeverDate,
-			@WebParam(name = "lastIPTI") Integer lastIPTI,
-			@WebParam(name = "lastIPTIDate") Date lastIPTIDate,
-			@WebParam(name = "lastVitaminADate") Date lastVitaminADate)
+	public void recordPatientHistory(Integer staffId, Integer facilityId,
+			Date date, Integer motechId, Integer lastIPT, Date lastIPTDate,
+			Integer lastTT, Date lastTTDate, Date bcgDate, Integer lastOPV,
+			Date lastOPVDate, Integer lastPenta, Date lastPentaDate,
+			Date measlesDate, Date yellowFeverDate, Integer lastIPTI,
+			Date lastIPTIDate, Date lastVitaminADate)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -132,41 +108,17 @@ public class RegistrarWebService implements RegistrarService {
 				yellowFeverDate, lastIPTI, lastIPTIDate, lastVitaminADate);
 	}
 
-	@WebMethod
-	public void recordMotherANCVisit(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "visitNumber") Integer visitNumber,
-			@WebParam(name = "location") Integer location,
-			@WebParam(name = "house") String house,
-			@WebParam(name = "community") String community,
-			@WebParam(name = "estDeliveryDate") Date estDeliveryDate,
-			@WebParam(name = "bpSystolic") Integer bpSystolic,
-			@WebParam(name = "bpDiastolic") Integer bpDiastolic,
-			@WebParam(name = "weight") Double weight,
-			@WebParam(name = "ttDose") Integer ttDose,
-			@WebParam(name = "iptDose") Integer iptDose,
-			@WebParam(name = "iptReactive") Boolean iptReactive,
-			@WebParam(name = "itnUse") Boolean itnUse,
-			@WebParam(name = "fht") Double fht,
-			@WebParam(name = "fhr") Integer fhr,
-			@WebParam(name = "urineTestProtein") Integer urineTestProtein,
-			@WebParam(name = "urineTestGlucose") Integer urineTestGlucose,
-			@WebParam(name = "hemoglobin") Double hemoglobin,
-			@WebParam(name = "vdrlReactive") Boolean vdrlReactive,
-			@WebParam(name = "vdrlTreatment") Boolean vdrlTreatment,
-			@WebParam(name = "dewormer") Boolean dewormer,
-			@WebParam(name = "maleInvolved") Boolean maleInvolved,
-			@WebParam(name = "pmtct") Boolean pmtct,
-			@WebParam(name = "preTestCounseled") Boolean preTestCounseled,
-			@WebParam(name = "hivTestResult") HIVResult hivTestResult,
-			@WebParam(name = "postTestCounseled") Boolean postTestCounseled,
-			@WebParam(name = "pmtctTreatment") Boolean pmtctTreatment,
-			@WebParam(name = "referred") Boolean referred,
-			@WebParam(name = "nextANCDate") Date nextANCDate,
-			@WebParam(name = "comments") String comments)
+	public void recordMotherANCVisit(Integer staffId, Integer facilityId,
+			Date date, Integer motechId, Integer visitNumber, Integer location,
+			String house, String community, Date estDeliveryDate,
+			Integer bpSystolic, Integer bpDiastolic, Double weight,
+			Integer ttDose, Integer iptDose, Boolean iptReactive,
+			Boolean itnUse, Double fht, Integer fhr, Integer urineTestProtein,
+			Integer urineTestGlucose, Double hemoglobin, Boolean vdrlReactive,
+			Boolean vdrlTreatment, Boolean dewormer, Boolean maleInvolved,
+			Boolean pmtct, Boolean preTestCounseled, HIVResult hivTestResult,
+			Boolean postTestCounseled, Boolean pmtctTreatment,
+			Boolean referred, Date nextANCDate, String comments)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -191,20 +143,11 @@ public class RegistrarWebService implements RegistrarService {
 				comments);
 	}
 
-	@WebMethod
-	public void recordPregnancyTermination(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "terminationType") Integer terminationType,
-			@WebParam(name = "procedure") Integer procedure,
-			@WebParam(name = "complications") Integer[] complications,
-			@WebParam(name = "maternalDeath") Boolean maternalDeath,
-			@WebParam(name = "referred") Boolean referred,
-			@WebParam(name = "postAbortionFPCounseled") Boolean postAbortionFPCounseled,
-			@WebParam(name = "postAbortionFPAccepted") Boolean postAbortionFPAccepted,
-			@WebParam(name = "comments") String comments)
+	public void recordPregnancyTermination(Integer staffId, Integer facilityId,
+			Date date, Integer motechId, Integer terminationType,
+			Integer procedure, Integer[] complications, Boolean maternalDeath,
+			Boolean referred, Boolean postAbortionFPCounseled,
+			Boolean postAbortionFPAccepted, String comments)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -225,39 +168,19 @@ public class RegistrarWebService implements RegistrarService {
 				postAbortionFPAccepted, comments);
 	}
 
-	@WebMethod
-	public Patient[] recordPregnancyDelivery(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "datetime") Date datetime,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "mode") Integer mode,
-			@WebParam(name = "outcome") Integer outcome,
-			@WebParam(name = "deliveryLocation") Integer deliveryLocation,
-			@WebParam(name = "deliveredBy") Integer deliveredBy,
-			@WebParam(name = "maleInvolved") Boolean maleInvolved,
-			@WebParam(name = "complications") Integer[] complications,
-			@WebParam(name = "vvf") Integer vvf,
-			@WebParam(name = "maternalDeath") Boolean maternalDeath,
-			@WebParam(name = "comments") String comments,
-			@WebParam(name = "child1Outcome") BirthOutcome child1Outcome,
-			@WebParam(name = "child1RegistrationType") RegistrationMode child1RegistrationType,
-			@WebParam(name = "child1MotechId") Integer child1MotechId,
-			@WebParam(name = "child1Sex") Gender child1Sex,
-			@WebParam(name = "child1FirstName") String child1FirstName,
-			@WebParam(name = "child1Weight") Double child1Weight,
-			@WebParam(name = "child2Outcome") BirthOutcome child2Outcome,
-			@WebParam(name = "child2RegistrationType") RegistrationMode child2RegistrationType,
-			@WebParam(name = "child2MotechId") Integer child2MotechId,
-			@WebParam(name = "child2Sex") Gender child2Sex,
-			@WebParam(name = "child2FirstName") String child2FirstName,
-			@WebParam(name = "child2Weight") Double child2Weight,
-			@WebParam(name = "child3Outcome") BirthOutcome child3Outcome,
-			@WebParam(name = "child3RegistrationType") RegistrationMode child3RegistrationType,
-			@WebParam(name = "child3MotechId") Integer child3MotechId,
-			@WebParam(name = "child3Sex") Gender child3Sex,
-			@WebParam(name = "child3FirstName") String child3FirstName,
-			@WebParam(name = "child3Weight") Double child3Weight)
+	public Patient[] recordPregnancyDelivery(Integer staffId,
+			Integer facilityId, Date datetime, Integer motechId, Integer mode,
+			Integer outcome, Integer deliveryLocation, Integer deliveredBy,
+			Boolean maleInvolved, Integer[] complications, Integer vvf,
+			Boolean maternalDeath, String comments, BirthOutcome child1Outcome,
+			RegistrationMode child1RegistrationType, Integer child1MotechId,
+			Gender child1Sex, String child1FirstName, Double child1Weight,
+			BirthOutcome child2Outcome,
+			RegistrationMode child2RegistrationType, Integer child2MotechId,
+			Gender child2Sex, String child2FirstName, Double child2Weight,
+			BirthOutcome child3Outcome,
+			RegistrationMode child3RegistrationType, Integer child3MotechId,
+			Gender child3Sex, String child3FirstName, Double child3Weight)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -315,13 +238,8 @@ public class RegistrarWebService implements RegistrarService {
 		return modelConverter.patientToWebService(childPatients, true);
 	}
 
-	@WebMethod
-	public void recordDeliveryNotification(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "datetime") Date datetime,
-			@WebParam(name = "motechId") Integer motechId)
-			throws ValidationException {
+	public void recordDeliveryNotification(Integer staffId, Integer facilityId,
+			Date datetime, Integer motechId) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -339,27 +257,13 @@ public class RegistrarWebService implements RegistrarService {
 				.getLocation(), datetime, patient);
 	}
 
-	@WebMethod
-	public void recordMotherPNCVisit(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "datetime") Date datetime,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "visitNumber") Integer visitNumber,
-			@WebParam(name = "location") Integer location,
-			@WebParam(name = "house") String house,
-			@WebParam(name = "community") String community,
-			@WebParam(name = "referred") Boolean referred,
-			@WebParam(name = "maleInvolved") Boolean maleInvolved,
-			@WebParam(name = "vitaminA") Boolean vitaminA,
-			@WebParam(name = "ttDose") Integer ttDose,
-			@WebParam(name = "lochiaColour") Integer lochiaColour,
-			@WebParam(name = "lochiaAmountExcess") Boolean lochiaAmountExcess,
-			@WebParam(name = "lochiaOdourFoul") Boolean lochiaOdourFoul,
-			@WebParam(name = "temperature") Double temperature,
-			@WebParam(name = "fht") Double fht,
-			@WebParam(name = "comments") String comments)
-			throws ValidationException {
+	public void recordMotherPNCVisit(Integer staffId, Integer facilityId,
+			Date datetime, Integer motechId, Integer visitNumber,
+			Integer location, String house, String community, Boolean referred,
+			Boolean maleInvolved, Boolean vitaminA, Integer ttDose,
+			Integer lochiaColour, Boolean lochiaAmountExcess,
+			Boolean lochiaOdourFoul, Double temperature, Double fht,
+			String comments) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -381,12 +285,8 @@ public class RegistrarWebService implements RegistrarService {
 						comments);
 	}
 
-	@WebMethod
-	public void recordDeath(@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") Integer motechId)
-			throws ValidationException {
+	public void recordDeath(Integer staffId, Integer facilityId, Date date,
+			Integer motechId) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -403,13 +303,8 @@ public class RegistrarWebService implements RegistrarService {
 		registrarBean.recordDeath(staff, facility.getLocation(), date, patient);
 	}
 
-	@WebMethod
-	public void recordTTVisit(@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "ttDose") Integer ttDose)
-			throws ValidationException {
+	public void recordTTVisit(Integer staffId, Integer facilityId, Date date,
+			Integer motechId, Integer ttDose) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -427,27 +322,13 @@ public class RegistrarWebService implements RegistrarService {
 				patient, ttDose);
 	}
 
-	@WebMethod
-	public void recordChildPNCVisit(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "datetime") Date datetime,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "visitNumber") Integer visitNumber,
-			@WebParam(name = "location") Integer location,
-			@WebParam(name = "house") String house,
-			@WebParam(name = "community") String community,
-			@WebParam(name = "referred") Boolean referred,
-			@WebParam(name = "maleInvolved") Boolean maleInvolved,
-			@WebParam(name = "weight") Double weight,
-			@WebParam(name = "temperature") Double temperature,
-			@WebParam(name = "bcg") Boolean bcg,
-			@WebParam(name = "opv0") Boolean opv0,
-			@WebParam(name = "respiration") Integer respiration,
-			@WebParam(name = "cordConditionNormal") Boolean cordConditionNormal,
-			@WebParam(name = "babyConditionGood") Boolean babyConditionGood,
-			@WebParam(name = "comments") String comments)
-			throws ValidationException {
+	public void recordChildPNCVisit(Integer staffId, Integer facilityId,
+			Date datetime, Integer motechId, Integer visitNumber,
+			Integer location, String house, String community, Boolean referred,
+			Boolean maleInvolved, Double weight, Double temperature,
+			Boolean bcg, Boolean opv0, Integer respiration,
+			Boolean cordConditionNormal, Boolean babyConditionGood,
+			String comments) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -467,30 +348,13 @@ public class RegistrarWebService implements RegistrarService {
 				respiration, cordConditionNormal, babyConditionGood, comments);
 	}
 
-	@WebMethod
-	public void recordChildCWCVisit(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "cwcLocation") Integer cwcLocation,
-			@WebParam(name = "house") String house,
-			@WebParam(name = "community") String community,
-			@WebParam(name = "bcg") Boolean bcg,
-			@WebParam(name = "opvDose") Integer opvDose,
-			@WebParam(name = "pentaDose") Integer pentaDose,
-			@WebParam(name = "measles") Boolean measles,
-			@WebParam(name = "yellowFever") Boolean yellowFever,
-			@WebParam(name = "csm") Boolean csm,
-			@WebParam(name = "iptiDose") Integer iptiDose,
-			@WebParam(name = "vitaminA") Boolean vitaminA,
-			@WebParam(name = "dewormer") Boolean dewormer,
-			@WebParam(name = "weight") Double weight,
-			@WebParam(name = "muac") Double muac,
-			@WebParam(name = "height") Double height,
-			@WebParam(name = "maleInvolved") Boolean maleInvolved,
-			@WebParam(name = "comments") String comments)
-			throws ValidationException {
+	public void recordChildCWCVisit(Integer staffId, Integer facilityId,
+			Date date, Integer motechId, Integer cwcLocation, String house,
+			String community, Boolean bcg, Integer opvDose, Integer pentaDose,
+			Boolean measles, Boolean yellowFever, Boolean csm,
+			Integer iptiDose, Boolean vitaminA, Boolean dewormer,
+			Double weight, Double muac, Double height, Boolean maleInvolved,
+			String comments) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -510,41 +374,18 @@ public class RegistrarWebService implements RegistrarService {
 				dewormer, weight, muac, height, maleInvolved, comments);
 	}
 
-	@WebMethod
-	public Patient registerPatient(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "registrationMode") RegistrationMode registrationMode,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "registrantType") RegistrantType registrantType,
-			@WebParam(name = "firstName") String firstName,
-			@WebParam(name = "middleName") String middleName,
-			@WebParam(name = "lastName") String lastName,
-			@WebParam(name = "preferredName") String preferredName,
-			@WebParam(name = "dateOfBirth") Date dateOfBirth,
-			@WebParam(name = "estimatedBirthDate") Boolean estimatedBirthDate,
-			@WebParam(name = "sex") Gender sex,
-			@WebParam(name = "insured") Boolean insured,
-			@WebParam(name = "nhis") String nhis,
-			@WebParam(name = "nhisExpires") Date nhisExpires,
-			@WebParam(name = "motherMotechId") Integer motherMotechId,
-			@WebParam(name = "community") Integer community,
-			@WebParam(name = "address") String address,
-			@WebParam(name = "phoneNumber") String phoneNumber,
-			@WebParam(name = "expDeliveryDate") Date expDeliveryDate,
-			@WebParam(name = "deliveryDateConfirmed") Boolean deliveryDateConfirmed,
-			@WebParam(name = "enroll") Boolean enroll,
-			@WebParam(name = "consent") Boolean consent,
-			@WebParam(name = "ownership") ContactNumberType ownership,
-			@WebParam(name = "format") MediaType format,
-			@WebParam(name = "language") String language,
-			@WebParam(name = "dayOfWeek") DayOfWeek dayOfWeek,
-			@WebParam(name = "timeOfDay") Date timeOfDay,
-			@WebParam(name = "reason") InterestReason reason,
-			@WebParam(name = "howLearned") HowLearned howLearned,
-			@WebParam(name = "messagesStartWeek") Integer messagesStartWeek)
-			throws ValidationException {
+	public Patient registerPatient(Integer staffId, Integer facilityId,
+			Date date, RegistrationMode registrationMode, Integer motechId,
+			RegistrantType registrantType, String firstName, String middleName,
+			String lastName, String preferredName, Date dateOfBirth,
+			Boolean estimatedBirthDate, Gender sex, Boolean insured,
+			String nhis, Date nhisExpires, Integer motherMotechId,
+			Integer community, String address, String phoneNumber,
+			Date expDeliveryDate, Boolean deliveryDateConfirmed,
+			Boolean enroll, Boolean consent, ContactNumberType ownership,
+			MediaType format, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, InterestReason reason, HowLearned howLearned,
+			Integer messagesStartWeek) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -603,22 +444,11 @@ public class RegistrarWebService implements RegistrarService {
 		return modelConverter.patientToWebService(patient, true);
 	}
 
-	@WebMethod
-	public void registerPregnancy(@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "estDeliveryDate") Date estDeliveryDate,
-			@WebParam(name = "enroll") Boolean enroll,
-			@WebParam(name = "consent") Boolean consent,
-			@WebParam(name = "ownership") ContactNumberType ownership,
-			@WebParam(name = "phoneNumber") String phoneNumber,
-			@WebParam(name = "format") MediaType format,
-			@WebParam(name = "language") String language,
-			@WebParam(name = "dayOfWeek") DayOfWeek dayOfWeek,
-			@WebParam(name = "timeOfDay") Date timeOfDay,
-			@WebParam(name = "howLearned") HowLearned howLearned)
-			throws ValidationException {
+	public void registerPregnancy(Integer staffId, Integer facilityId,
+			Date date, Integer motechId, Date estDeliveryDate, Boolean enroll,
+			Boolean consent, ContactNumberType ownership, String phoneNumber,
+			MediaType format, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, HowLearned howLearned) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -639,26 +469,13 @@ public class RegistrarWebService implements RegistrarService {
 						howLearned);
 	}
 
-	@WebMethod
-	public void registerANCMother(@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "ancRegNumber") String ancRegNumber,
-			@WebParam(name = "estDeliveryDate") Date estDeliveryDate,
-			@WebParam(name = "height") Double height,
-			@WebParam(name = "gravida") Integer gravida,
-			@WebParam(name = "parity") Integer parity,
-			@WebParam(name = "enroll") Boolean enroll,
-			@WebParam(name = "consent") Boolean consent,
-			@WebParam(name = "ownership") ContactNumberType ownership,
-			@WebParam(name = "phoneNumber") String phoneNumber,
-			@WebParam(name = "format") MediaType format,
-			@WebParam(name = "language") String language,
-			@WebParam(name = "dayOfWeek") DayOfWeek dayOfWeek,
-			@WebParam(name = "timeOfDay") Date timeOfDay,
-			@WebParam(name = "howLearned") HowLearned howLearned)
-			throws ValidationException {
+	public void registerANCMother(Integer staffId, Integer facilityId,
+			Date date, Integer motechId, String ancRegNumber,
+			Date estDeliveryDate, Double height, Integer gravida,
+			Integer parity, Boolean enroll, Boolean consent,
+			ContactNumberType ownership, String phoneNumber, MediaType format,
+			String language, DayOfWeek dayOfWeek, Date timeOfDay,
+			HowLearned howLearned) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -678,22 +495,11 @@ public class RegistrarWebService implements RegistrarService {
 				language, dayOfWeek, timeOfDay, howLearned);
 	}
 
-	@WebMethod
-	public void registerCWCChild(@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "cwcRegNumber") String cwcRegNumber,
-			@WebParam(name = "enroll") Boolean enroll,
-			@WebParam(name = "consent") Boolean consent,
-			@WebParam(name = "ownership") ContactNumberType ownership,
-			@WebParam(name = "phoneNumber") String phoneNumber,
-			@WebParam(name = "format") MediaType format,
-			@WebParam(name = "language") String language,
-			@WebParam(name = "dayOfWeek") DayOfWeek dayOfWeek,
-			@WebParam(name = "timeOfDay") Date timeOfDay,
-			@WebParam(name = "howLearned") HowLearned howLearned)
-			throws ValidationException {
+	public void registerCWCChild(Integer staffId, Integer facilityId,
+			Date date, Integer motechId, String cwcRegNumber, Boolean enroll,
+			Boolean consent, ContactNumberType ownership, String phoneNumber,
+			MediaType format, String language, DayOfWeek dayOfWeek,
+			Date timeOfDay, HowLearned howLearned) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -712,18 +518,10 @@ public class RegistrarWebService implements RegistrarService {
 				format, language, dayOfWeek, timeOfDay, howLearned);
 	}
 
-	@WebMethod
-	public void editPatient(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "phoneNumber") String phoneNumber,
-			@WebParam(name = "phoneOwnership") ContactNumberType phoneOwnership,
-			@WebParam(name = "nhis") String nhis,
-			@WebParam(name = "nhisExpires") Date nhisExpires,
-			@WebParam(name = "stopEnrollment") Boolean stopEnrollment)
-			throws ValidationException {
+	public void editPatient(Integer staffId, Integer facilityId, Date date,
+			Integer motechId, String phoneNumber,
+			ContactNumberType phoneOwnership, String nhis, Date nhisExpires,
+			Boolean stopEnrollment) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -741,22 +539,11 @@ public class RegistrarWebService implements RegistrarService {
 				phoneOwnership, nhis, nhisExpires, stopEnrollment);
 	}
 
-	@WebMethod
-	public void recordGeneralVisit(@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "serialNumber") String serialNumber,
-			@WebParam(name = "sex") Gender sex,
-			@WebParam(name = "dateOfBirth") Date dateOfBirth,
-			@WebParam(name = "insured") Boolean insured,
-			@WebParam(name = "diagnosis") Integer diagnosis,
-			@WebParam(name = "secondDiagnosis") Integer secondDiagnosis,
-			@WebParam(name = "rdtGiven") Boolean rdtGiven,
-			@WebParam(name = "rdtPositive") Boolean rdtPositive,
-			@WebParam(name = "actTreated") Boolean actTreated,
-			@WebParam(name = "newCase") Boolean newCase,
-			@WebParam(name = "referred") Boolean referred,
-			@WebParam(name = "comments") String comments)
+	public void recordGeneralVisit(Integer staffId, Integer facilityId,
+			Date date, String serialNumber, Gender sex, Date dateOfBirth,
+			Boolean insured, Integer diagnosis, Integer secondDiagnosis,
+			Boolean rdtGiven, Boolean rdtPositive, Boolean actTreated,
+			Boolean newCase, Boolean referred, String comments)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -775,22 +562,11 @@ public class RegistrarWebService implements RegistrarService {
 				referred, comments);
 	}
 
-	@WebMethod
-	public void recordChildVisit(@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "serialNumber") String serialNumber,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "insured") Boolean insured,
-			@WebParam(name = "diagnosis") Integer diagnosis,
-			@WebParam(name = "secondDiagnosis") Integer secondDiagnosis,
-			@WebParam(name = "rdtGiven") Boolean rdtGiven,
-			@WebParam(name = "rdtPositive") Boolean rdtPositive,
-			@WebParam(name = "actTreated") Boolean actTreated,
-			@WebParam(name = "newCase") Boolean newCase,
-			@WebParam(name = "referred") Boolean referred,
-			@WebParam(name = "comments") String comments)
-			throws ValidationException {
+	public void recordChildVisit(Integer staffId, Integer facilityId,
+			Date date, String serialNumber, Integer motechId, Boolean insured,
+			Integer diagnosis, Integer secondDiagnosis, Boolean rdtGiven,
+			Boolean rdtPositive, Boolean actTreated, Boolean newCase,
+			Boolean referred, String comments) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -810,22 +586,11 @@ public class RegistrarWebService implements RegistrarService {
 				referred, comments);
 	}
 
-	@WebMethod
-	public void recordMotherVisit(@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "date") Date date,
-			@WebParam(name = "serialNumber") String serialNumber,
-			@WebParam(name = "motechId") Integer motechId,
-			@WebParam(name = "insured") Boolean insured,
-			@WebParam(name = "diagnosis") Integer diagnosis,
-			@WebParam(name = "secondDiagnosis") Integer secondDiagnosis,
-			@WebParam(name = "rdtGiven") Boolean rdtGiven,
-			@WebParam(name = "rdtPositive") Boolean rdtPositive,
-			@WebParam(name = "actTreated") Boolean actTreated,
-			@WebParam(name = "newCase") Boolean newCase,
-			@WebParam(name = "referred") Boolean referred,
-			@WebParam(name = "comments") String comments)
-			throws ValidationException {
+	public void recordMotherVisit(Integer staffId, Integer facilityId,
+			Date date, String serialNumber, Integer motechId, Boolean insured,
+			Integer diagnosis, Integer secondDiagnosis, Boolean rdtGiven,
+			Boolean rdtPositive, Boolean actTreated, Boolean newCase,
+			Boolean referred, String comments) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -845,10 +610,7 @@ public class RegistrarWebService implements RegistrarService {
 				referred, comments);
 	}
 
-	@WebMethod
-	public Care[] queryANCDefaulters(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId)
+	public Care[] queryANCDefaulters(Integer staffId, Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -873,10 +635,7 @@ public class RegistrarWebService implements RegistrarService {
 		return upcomingCares;
 	}
 
-	@WebMethod
-	public Care[] queryTTDefaulters(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId)
+	public Care[] queryTTDefaulters(Integer staffId, Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -894,10 +653,7 @@ public class RegistrarWebService implements RegistrarService {
 		return modelConverter.defaultedObsToWebServiceCares(defaultedObs);
 	}
 
-	@WebMethod
-	public Care[] queryMotherPNCDefaulters(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId)
+	public Care[] queryMotherPNCDefaulters(Integer staffId, Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -917,10 +673,7 @@ public class RegistrarWebService implements RegistrarService {
 				.defaultedEncountersToWebServiceCares(defaultedEncounters);
 	}
 
-	@WebMethod
-	public Care[] queryChildPNCDefaulters(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId)
+	public Care[] queryChildPNCDefaulters(Integer staffId, Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -940,10 +693,7 @@ public class RegistrarWebService implements RegistrarService {
 				.defaultedEncountersToWebServiceCares(defaultedEncounters);
 	}
 
-	@WebMethod
-	public Care[] queryCWCDefaulters(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId)
+	public Care[] queryCWCDefaulters(Integer staffId, Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -962,10 +712,7 @@ public class RegistrarWebService implements RegistrarService {
 		return modelConverter.defaultedObsToWebServiceCares(defaultedObs);
 	}
 
-	@WebMethod
-	public Patient[] queryUpcomingDeliveries(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId)
+	public Patient[] queryUpcomingDeliveries(Integer staffId, Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -983,10 +730,7 @@ public class RegistrarWebService implements RegistrarService {
 		return modelConverter.dueDatesToWebServicePatients(dueDates);
 	}
 
-	@WebMethod
-	public Patient[] queryRecentDeliveries(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId)
+	public Patient[] queryRecentDeliveries(Integer staffId, Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -1004,10 +748,7 @@ public class RegistrarWebService implements RegistrarService {
 		return modelConverter.deliveriesToWebServicePatients(deliveries);
 	}
 
-	@WebMethod
-	public Patient[] queryOverdueDeliveries(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId)
+	public Patient[] queryOverdueDeliveries(Integer staffId, Integer facilityId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -1025,12 +766,8 @@ public class RegistrarWebService implements RegistrarService {
 		return modelConverter.dueDatesToWebServicePatients(dueDates);
 	}
 
-	@WebMethod
-	public Patient queryUpcomingCare(
-			@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "motechId") Integer motechId)
-			throws ValidationException {
+	public Patient queryUpcomingCare(Integer staffId, Integer facilityId,
+			Integer motechId) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -1059,15 +796,9 @@ public class RegistrarWebService implements RegistrarService {
 		return wsPatient;
 	}
 
-	@WebMethod
-	public Patient[] queryMotechId(@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "firstName") String firstName,
-			@WebParam(name = "lastName") String lastName,
-			@WebParam(name = "preferredName") String preferredName,
-			@WebParam(name = "birthDate") Date birthDate,
-			@WebParam(name = "nhis") String nhis,
-			@WebParam(name = "phoneNumber") String phoneNumber)
+	public Patient[] queryMotechId(Integer staffId, Integer facilityId,
+			String firstName, String lastName, String preferredName,
+			Date birthDate, String nhis, String phoneNumber)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -1086,11 +817,8 @@ public class RegistrarWebService implements RegistrarService {
 		return modelConverter.patientToWebService(patients, true);
 	}
 
-	@WebMethod
-	public Patient queryPatient(@WebParam(name = "staffId") Integer staffId,
-			@WebParam(name = "facilityId") Integer facilityId,
-			@WebParam(name = "motechId") Integer motechId)
-			throws ValidationException {
+	public Patient queryPatient(Integer staffId, Integer facilityId,
+			Integer motechId) throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
 
@@ -1108,9 +836,7 @@ public class RegistrarWebService implements RegistrarService {
 		return modelConverter.patientToWebService(patient, false);
 	}
 
-	@WebMethod
-	public String[] getPatientEnrollments(
-			@WebParam(name = "motechId") Integer motechId)
+	public String[] getPatientEnrollments(Integer motechId)
 			throws ValidationException {
 
 		ValidationErrors errors = new ValidationErrors();
@@ -1126,37 +852,28 @@ public class RegistrarWebService implements RegistrarService {
 		return registrarBean.getActiveMessageProgramEnrollmentNames(patient);
 	}
 
-	@WebMethod
-	public void log(@WebParam(name = "type") LogType type,
-			@WebParam(name = "message") String message) {
+	public void log(LogType type, String message) {
 
 		log.info("Logtype: " + type + ", Message: " + message);
 	}
 
-	@WebMethod
-	public void setMessageStatus(
-			@WebParam(name = "messageId") String messageId,
-			@WebParam(name = "success") Boolean success) {
+	public void setMessageStatus(String messageId, Boolean success) {
 
 		registrarBean.setMessageStatus(messageId, success);
 	}
 
-	@WebMethod(exclude = true)
 	public void setRegistrarBean(RegistrarBean registrarBean) {
 		this.registrarBean = registrarBean;
 	}
 
-	@WebMethod(exclude = true)
 	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
 		this.openmrsBean = openmrsBean;
 	}
 
-	@WebMethod(exclude = true)
 	public void setModelConverter(WebServiceModelConverter modelConverter) {
 		this.modelConverter = modelConverter;
 	}
 
-	@WebMethod(exclude = true)
 	public void setMessageBean(MessageSourceBean messageBean) {
 		this.messageBean = messageBean;
 	}
