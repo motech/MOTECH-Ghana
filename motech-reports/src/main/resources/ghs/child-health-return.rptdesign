@@ -1189,11 +1189,13 @@ MoTeCH Monthly Child Health Returns
     </page-setup>
     <body>
         <grid id="594">
-            <property name="width">100%</property>
+            <property name="width">4.819444444444445in</property>
             <column id="595">
                 <property name="width">1.5104166666666667in</property>
             </column>
-            <column id="596"/>
+            <column id="596">
+                <property name="width">3.3194444444444446in</property>
+            </column>
             <row id="785">
                 <cell id="786">
                     <label id="788">
