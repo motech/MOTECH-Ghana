@@ -73,7 +73,7 @@ import com.jcraft.jzlib.ZOutputStream;
  * @author Henry Sampson (henry@dreamoval.com) and Brent Atkinson
  */
 @Controller
-@RequestMapping(value = "/formupload")
+@RequestMapping(value = "/module/motechmodule/formupload")
 public class OXDFormUploadServlet implements ApplicationContextAware {
 
 	private static final long serialVersionUID = -7887474593037558262L;

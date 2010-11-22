@@ -69,7 +69,7 @@ import com.jcraft.jzlib.ZOutputStream;
  * @author Brent Atkinson
  */
 @Controller
-@RequestMapping(value = "/formdownload", method = RequestMethod.POST)
+@RequestMapping(value = "/module/motechmodule/formdownload", method = RequestMethod.POST)
 public class OXDFormDownloadServlet {
 
 	private static final long serialVersionUID = -1584248665268894165L;

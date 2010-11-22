@@ -72,6 +72,10 @@ import org.motechproject.mobile.omp.manager.intellivr.ErrorCodeType;
 import org.motechproject.mobile.omp.manager.intellivr.GetIVRConfigRequest;
 import org.motechproject.mobile.omp.manager.intellivr.ResponseType;
 import org.motechproject.mobile.omp.manager.intellivr.StatusType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 
@@ -79,8 +83,11 @@ import org.motechproject.mobile.omp.manager.intellivr.StatusType;
  * Controller implementation to handle requests from the IVR system for content for 
  * users that call the IVR system, as well as accepting reports about completed calls.
  */
-public class IntellIVRController extends AbstractController implements ResourceLoaderAware {
+@Controller
+@RequestMapping(value = "/module/motechmodule/intellivr")
+public class IntellIVRController {
 
+	@Autowired
 	private ResourceLoader resourceLoader;
 	private DocumentBuilder parser;
 	private Validator validator;
@@ -116,7 +123,7 @@ public class IntellIVRController extends AbstractController implements ResourceL
 		}
 	}
 
-	@Override
+	@RequestMapping(method = RequestMethod.POST)
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 

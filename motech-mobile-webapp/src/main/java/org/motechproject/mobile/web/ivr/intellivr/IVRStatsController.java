@@ -47,6 +47,10 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 
@@ -60,12 +64,13 @@ import org.springframework.web.servlet.mvc.AbstractController;
  * either 'd', 'h', or 'm', it will provide a listing of sessions for the last day, last hour,
  * and last 5 minutes respectively. 
  */
-public class IVRStatsController extends AbstractController implements ResourceLoaderAware  {
+@Controller
+@RequestMapping(value = "/module/motechmodule/ivrstats")
+public class IVRStatsController {
 
 	private IVRCallStatsProvider ivrStatsProvider;
 	
-	@Transactional
-	@Override
+	@RequestMapping(method = {RequestMethod.GET,RequestMethod.POST})
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		

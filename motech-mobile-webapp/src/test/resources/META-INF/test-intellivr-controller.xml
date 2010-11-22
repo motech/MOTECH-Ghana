@@ -57,17 +57,9 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
-	<bean id="intellivrController" name="/intellivr" class="org.motechproject.mobile.web.ivr.intellivr.IntellIVRController" init-method="init">
-		<property name="supportedMethods">
-			<value>POST</value>
-		</property>
-		<!-- Not setting intellivrBean as ivrConfigHandler and reportHandler properties -->
-	</bean>
+	<context:annotation-config />
 
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-		<property name="prefix" value="/WEB-INF/jsp/"/>
-		<property name="suffix" value=".jsp"/>
+	<bean id="intellivrController" class="org.motechproject.mobile.web.ivr.intellivr.IntellIVRController" init-method="init">
 	</bean>
 
 </beans>

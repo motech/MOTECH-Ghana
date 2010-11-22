@@ -57,17 +57,10 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
-	<bean id="ivrStatsController" name="/ivrstats" class="org.motechproject.mobile.web.ivr.intellivr.IVRStatsController">
-		<property name="supportedMethods">
-			<value>GET,POST</value>
-		</property>
-		<property name="ivrStatsProvider" ref="intellivrBean"/>
-	</bean>
+	<context:annotation-config />
 
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-		<property name="prefix" value="/WEB-INF/jsp/"/>
-		<property name="suffix" value=".jsp"/>
+	<bean id="ivrStatsController" class="org.motechproject.mobile.web.ivr.intellivr.IVRStatsController">
+		<property name="ivrStatsProvider" ref="intellivrBean"/>
 	</bean>
 
 </beans>

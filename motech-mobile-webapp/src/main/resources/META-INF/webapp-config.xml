@@ -60,6 +60,9 @@
     <import resource="classpath:META-INF/omi-config.xml" />
     <import resource="classpath:META-INF/imp-config.xml" />
     <import resource="classpath:META-INF/modem-config.xml" />
+    <import resource="classpath:META-INF/oxduldl-servlet.xml" />
+    <import resource="classpath:META-INF/intellivr-servlet.xml" />
+    <import resource="classpath:META-INF/ivrstats-servlet.xml" />
       
        <!--Motech Settings-->
     <bean id="propertyConfigurer"
