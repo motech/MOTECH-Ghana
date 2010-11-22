@@ -76,4 +76,129 @@
 		<appender-ref ref="LOGFILE" />
 	</root>
 
+	<!-- Mobile Logs -->
+
+	<appender name="MOBILELOGFILE" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.base}/logs/motech-mobile.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d %p [%t] [%c] - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- Default Mobile logging settings -->
+	<logger name="org.motechproject.mobile" additivity="false">
+		<appender-ref ref="MOBILELOGFILE" />
+	</logger>
+
+	<!-- Mobile Tasks -->
+	<logger name="org.motechproject.server.omod.tasks.IVRProcessOpenSessionsTask" additivity="false">
+		<appender-ref ref="MOBILELOGFILE" />
+	</logger>
+	<logger name="org.motechproject.server.omod.tasks.IVRProcessWaitingSessionsTask" additivity="false">
+		<appender-ref ref="MOBILELOGFILE" />
+	</logger>
+	<logger name="org.motechproject.server.omod.tasks.MessageRequestProcessTask" additivity="false">
+		<appender-ref ref="MOBILELOGFILE" />
+	</logger>
+	<logger name="org.motechproject.server.omod.tasks.MessageResponseProcessTask" additivity="false">
+		<appender-ref ref="MOBILELOGFILE" />
+	</logger>
+	<logger name="org.motechproject.server.omod.tasks.MessageRetryProcessTask" additivity="false">
+		<appender-ref ref="MOBILELOGFILE" />
+	</logger>
+	<logger name="org.motechproject.server.omod.tasks.MessageSendingTask" additivity="false">
+		<appender-ref ref="MOBILELOGFILE" />
+	</logger>
+	<logger name="org.motechproject.server.omod.tasks.MessageStatusUpdateTask" additivity="false">
+		<appender-ref ref="MOBILELOGFILE" />
+	</logger>
+
+	<!-- Test SMS gateway log level -->
+	<logger name="org.motechproject.mobile.omp.manager.DummyGatewayManagerImpl">
+		<level value="INFO" />
+	</logger>
+
+	<!-- So that you can tell when attempting to use modem -->
+	<logger name="smslib" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="MOBILELOGFILE" />
+	</logger>
+
+	<!-- Default IVR log level -->
+	<logger name="org.motechproject.mobile.omp.manager.intellivr">
+		<level value="ERROR" />
+	</logger>
+
+	<!-- Show upload requests so we can reference the timestamps -->
+	<logger name="org.motechproject.mobile.web.OXDFormUploadServlet">
+		<level value="INFO" />
+	</logger>
+
+	<!-- Show parsed duplicate form submissions as they are detected -->
+	<logger name="org.motechproject.mobile.imp.serivce.IMPServiceImpl">
+		<level value="WARN" />
+	</logger>
+
+	<!-- Show Rancard messages -->
+	<appender name="RANCARD" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.base}/logs/motech-rancard.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{yyyy-MM-dd HH:mm:ss},%m%n" />
+		</layout>
+	</appender>
+
+	<logger name="org.motechproject.mobile.omp.manager.rancard.RancardGatewayManagerImpl">
+		<level value="DEBUG" />
+		<appender-ref ref="RANCARD" />
+	</logger>
+
+	<!-- IVR Report Log -->
+	<appender name="IVRREPORTS" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.base}/logs/motech-ivrreports.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{yyyy-MM-dd HH:mm:ss},%m%n" />
+		</layout>
+	</appender>
+
+	<logger name="org.motechproject.mobile.omp.manager.intellivr.IntellIVRBean.reportlog">
+		<level value="INFO" />
+		<appender-ref ref="IVRREPORTS" />
+	</logger>
+
+	<!-- IVR Call Log -->
+	<appender name="IVRCALLS" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.base}/logs/motech-ivrcalls.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{yyyy-MM-dd HH:mm:ss},%m%n" />
+		</layout>
+	</appender>
+
+	<logger name="org.motechproject.mobile.omp.manager.intellivr.IntellIVRBean.calllog">
+		<level value="INFO" />
+		<appender-ref ref="IVRCALLS" />
+	</logger>
+
+	<!-- mForms Raw Upload Log -->
+	<appender name="MFORMSUPLOADS" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.base}/logs/motech-mforms-uploads.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{yyyy-MM-dd HH:mm:ss},%m%n" />
+		</layout>
+	</appender>
+
+	<logger name="org.motechproject.mobile.web.OXDFormUploadServlet.mformsraw">
+		<level value="DEBUG" />
+		<appender-ref ref="MFORMSUPLOADS" />
+	</logger>
+
 </log4j:configuration>
