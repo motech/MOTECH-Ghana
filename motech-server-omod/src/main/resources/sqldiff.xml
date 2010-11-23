@@ -1306,4 +1306,39 @@
         </sql>
     </diff>
 
+	<diff>
+		<version>1.0.0</version>
+		<author>Matthew Blanchette</author>
+		<date>November 18 2010</date>
+		<description>
+			Adding scheduler tasks used in Motech mobile.
+		</description>
+		<sql>
+			INSERT INTO 
+			scheduler_task_config 
+ 			(name,description,schedulable_class,start_time,repeat_interval,start_on_startup,started,created_by,date_created) VALUES
+			('IVR Process Open Sessions Task','Task to process open IVR sessions',
+				'org.motechproject.server.omod.tasks.IVRProcessOpenSessionsTask', 
+				'2010-11-17 06:00:15', 30, 1, 0, 1, NOW()),
+			('IVR Process Waiting Sessions Task','Task to process waiting IVR sessions',
+				'org.motechproject.server.omod.tasks.IVRProcessWaitingSessionsTask', 
+				'2010-11-17 06:00:00', 30, 1, 0, 1, NOW()),
+			('Message Sending Task','Task to send scheduled messages',
+				'org.motechproject.server.omod.tasks.MessageSendingTask', 
+				'2010-11-17 06:00:00', 60, 1, 0, 1, NOW()),
+			('Message Status Update Task','Task to update message statuses',
+				'org.motechproject.server.omod.tasks.MessageStatusUpdateTask', 
+				'2010-11-17 06:00:00', 60, 1, 0, 1, NOW()),
+			('Message Request Processing Task','Task to process message requests',
+				'org.motechproject.server.omod.tasks.MessageRequestProcessTask', 
+				'2010-11-17 06:00:00', 30, 1, 0, 1, NOW()),
+			('Message Response Processing Task','Task to process message responses',
+				'org.motechproject.server.omod.tasks.MessageResponseProcessTask', 
+				'2010-11-17 06:00:15', 180, 1, 0, 1, NOW()),
+			('Message Retry Processing Task','Task to process message retries',
+				'org.motechproject.server.omod.tasks.MessageRetryProcessTask', 
+				'2010-11-17 06:00:00', 300, 1, 0, 1, NOW());
+		</sql>
+	</diff>
+
 </sqldiff>

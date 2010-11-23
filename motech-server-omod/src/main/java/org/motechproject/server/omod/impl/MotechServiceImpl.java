@@ -36,6 +36,9 @@ package org.motechproject.server.omod.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.motechproject.mobile.omi.service.OMIService;
+import org.motechproject.mobile.omp.manager.intellivr.IVRCallSessionProcessor;
+import org.motechproject.mobile.omp.service.MessagingService;
 import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.Community;
@@ -79,6 +82,12 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	private ScheduleMaintService scheduleService;
 
+	private IVRCallSessionProcessor ivrCallSessionProcessor;
+
+	private MessagingService messagingService;
+
+	private OMIService omiService;
+
 	public MotechDAO getMotechDAO() {
 		return motechDAO;
 	}
@@ -117,6 +126,31 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public ScheduleMaintService getScheduleMaintService() {
 		return scheduleService;
+	}
+
+	public IVRCallSessionProcessor getIvrCallSessionProcessor() {
+		return ivrCallSessionProcessor;
+	}
+
+	public void setIvrCallSessionProcessor(
+			IVRCallSessionProcessor ivrCallSessionProcessor) {
+		this.ivrCallSessionProcessor = ivrCallSessionProcessor;
+	}
+
+	public MessagingService getMessagingService() {
+		return messagingService;
+	}
+
+	public void setMessagingService(MessagingService messagingService) {
+		this.messagingService = messagingService;
+	}
+
+	public OMIService getOmiService() {
+		return omiService;
+	}
+
+	public void setOmiService(OMIService omiService) {
+		this.omiService = omiService;
 	}
 
 	public MessageProgramEnrollment saveMessageProgramEnrollment(

@@ -36,6 +36,9 @@ package org.motechproject.server.omod;
 import java.util.Date;
 import java.util.List;
 
+import org.motechproject.mobile.omi.service.OMIService;
+import org.motechproject.mobile.omp.manager.intellivr.IVRCallSessionProcessor;
+import org.motechproject.mobile.omp.service.MessagingService;
 import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.Community;
@@ -75,6 +78,12 @@ public interface MotechService extends OpenmrsService {
 	OpenmrsBean getOpenmrsBean();
 
 	ScheduleMaintService getScheduleMaintService();
+
+	IVRCallSessionProcessor getIvrCallSessionProcessor();
+
+	MessagingService getMessagingService();
+
+	OMIService getOmiService();
 
 	@Transactional
 	ScheduledMessage saveScheduledMessage(ScheduledMessage scheduledMessage);

@@ -118,6 +118,9 @@
 							<property name="registrarBean" ref="registrarBeanProxy" />
 							<property name="openmrsBean" ref="registrarBeanProxy" />
 							<property name="scheduleMaintService" ref="scheduleMaintService" />
+							<property name="ivrCallSessionProcessor" ref="intellivrBean" />
+							<property name="messagingService" ref="smsService" />
+							<property name="omiService" ref="omiService" />
 						</bean>
 					</property>
 					<property name="preInterceptors">

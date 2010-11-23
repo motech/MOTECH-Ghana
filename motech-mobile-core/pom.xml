@@ -87,10 +87,6 @@
             <artifactId>spring-context-support</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.opensymphony.quartz</groupId>
-            <artifactId>quartz</artifactId>
-        </dependency>
-        <dependency>
            <groupId>org.motechproject</groupId>
            <artifactId>motech-wsapi</artifactId>
            <version>0.1-SNAPSHOT</version>

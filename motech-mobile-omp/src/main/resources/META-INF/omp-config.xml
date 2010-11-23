@@ -274,28 +274,6 @@
         <property name="ivrDao" ref="ivrDao"/>
     </bean>
     
-   	<bean id="processOpenIvrSessionsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-  		<property name="targetObject" ref="intellivrBean"/>
-  		<property name="targetMethod" value="processOpenSessions" />
-  		<property name="concurrent" value="false" />
-	</bean>
-
-    <bean id="processWaitingIvrSessionsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-  		<property name="targetObject" ref="intellivrBean"/>
-  		<property name="targetMethod" value="processWaitingSessions" />
-  		<property name="concurrent" value="false" />
-	</bean>
-	
-	<bean id="processOpenIvrSessionsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="processOpenIvrSessionsJob"/>
-        <property name="cronExpression" value="15/30 * * * * ?"/>
-    </bean>
-	
-	<bean id="processWaitingIvrSessionsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="processWaitingIvrSessionsJob"/>
-        <property name="cronExpression" value="0/30 * * * * ?"/>
-    </bean>
-
     <bean id="compositeHandler" class="org.motechproject.mobile.omp.manager.CompositeGatewayMessageHandler">
         <property name="textHandler" ref="dummyHandler"/>
         <property name="voiceHandler" ref="intellIVRMessageHandler"/>
@@ -325,59 +303,4 @@
 
     <bean name="ompManager" class="org.motechproject.mobile.omp.manager.OMPManagerImpl" />
 
-    <!--Scheduling-->
-        <!--Job-->
-    <bean id="sendMessageUpdater" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="smsService"/>
-        <property name="targetMethod" value="sendScheduledMessages"/>
-        <property name="name" value="OMP Message Sending Service" />
-        <property name="concurrent" value="false" />
-    </bean>
-
-    <bean id="gatewayStatusUpdater" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="smsService"/>
-        <property name="targetMethod" value="updateMessageStatuses"/>
-        <property name="name" value="OMP Status Update Service" />
-        <property name="concurrent" value="false" />
-    </bean>
-    <!--End of Job-->
-
-    <!--Listeners-->
-
-    <bean id="ompJobExecLogger" class="org.motechproject.mobile.core.util.QuartzJobExecutionLogger">
-        <property name="name" value="OMP Job Execution Logger" />
-    </bean>
-
-    <!--End Of Listeners-->
-
-        <!--Triggers-->
-    <bean id="sendMessageUpdaterTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="sendMessageUpdater"/>
-        <property name="cronExpression" value="0 * * * * ?"/>
-    </bean>
-
-    <bean id="gatewayStatusUpdaterTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="gatewayStatusUpdater"/>
-        <property name="cronExpression" value="0 * * * * ?"/>
-    </bean>
-    <!--End Of Triggers-->
-
-        <!--Scheduler Factory-->
-    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name="triggers">
-            <list>
-                <ref bean="sendMessageUpdaterTrigger"/>
-                <ref bean="gatewayStatusUpdaterTrigger"/>
-                <ref bean="processOpenIvrSessionsTrigger"/>
-                <ref bean="processWaitingIvrSessionsTrigger"/>
-            </list>
-        </property>
-        <property name="globalJobListeners">
-            <list>
-                <ref bean="ompJobExecLogger"/>
-            </list>
-        </property>
-    </bean>
-    <!--End Of scheduler Factory-->
-    <!--End of Scheduling-->
 </beans>
