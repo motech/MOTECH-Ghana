@@ -37,7 +37,7 @@
 			<notifier>
                                 <type>mail</type> 
                                 <configuration> 
-                                  <recipients>batkinson@usm.maine.edu matt.blanchette@gmail.com rlarubbio@grameenfoundation.org</recipients> 
+                                  <recipients>batkinson@usm.maine.edu matt.blanchette@gmail.com rlarubbio@grameenfoundation.org awalji@grameenfoundation.org</recipients> 
                                 </configuration> 
                                 <sendOnError>true</sendOnError> 
                                 <sendOnFailure>true</sendOnFailure> 
