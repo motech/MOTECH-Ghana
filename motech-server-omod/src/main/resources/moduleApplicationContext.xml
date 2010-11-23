@@ -57,6 +57,16 @@
 	<import resource="classpath*:services/*.xml" />
 	<import resource="classpath*:registrar-bean.xml" />
 
+	<!--Motech Settings-->
+	<bean id="propertyConfigurer"
+class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:motech-settings.properties</value>
+			</list>
+		</property>
+	</bean>
+
 	<import resource="classpath*:META-INF/webapp-config.xml" />
 
 	<bean

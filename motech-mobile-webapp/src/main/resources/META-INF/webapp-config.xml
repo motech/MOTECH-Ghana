@@ -64,16 +64,6 @@
     <import resource="classpath:META-INF/intellivr-servlet.xml" />
     <import resource="classpath:META-INF/ivrstats-servlet.xml" />
       
-       <!--Motech Settings-->
-    <bean id="propertyConfigurer"
-class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:motech-settings.properties</value>
-            </list>
-        </property>
-    </bean>
-
     <bean id="messageWebServiceBean" name="mobileClient" class="org.motechproject.mobile.omi.ws.MessageServiceImpl">
         <property name="omiManager" ref="omiManager"/>
     </bean>
