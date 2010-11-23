@@ -8608,6 +8608,7 @@ at 36Weeks</text-property>
                                         </cell>
                                         <cell id="1773">
                                             <label id="1776">
+                                                <property name="fontWeight">bold</property>
                                                 <property name="textAlign">center</property>
                                                 <text-property name="text">MALE INVOLVEMENT</text-property>
                                             </label>
