@@ -9045,11 +9045,63 @@ at 36Weeks</text-property>
                                                 <property name="resultSetColumn">age_abv_35</property>
                                             </data>
                                         </cell>
-                                        <cell id="1761"/>
-                                        <cell id="1762"/>
-                                        <cell id="1763"/>
+                                        <cell id="1761">
+                                            <data id="2170">
+                                                <property name="dataSet">MaleInvolvement</property>
+                                                <list-property name="boundDataColumns">
+                                                    <structure>
+                                                        <property name="name">ANCVISIT</property>
+                                                        <text-property name="displayName">ANCVISIT</text-property>
+                                                        <expression name="expression" type="javascript">dataSetRow["ANCVISIT"]</expression>
+                                                        <property name="dataType">decimal</property>
+                                                    </structure>
+                                                </list-property>
+                                                <property name="resultSetColumn">ANCVISIT</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="1762">
+                                            <data id="2173">
+                                                <property name="dataSet">MaleInvolvement</property>
+                                                <list-property name="boundDataColumns">
+                                                    <structure>
+                                                        <property name="name">PREGDELVISIT</property>
+                                                        <text-property name="displayName">PREGDELVISIT</text-property>
+                                                        <expression name="expression" type="javascript">dataSetRow["PREGDELVISIT"]</expression>
+                                                        <property name="dataType">decimal</property>
+                                                    </structure>
+                                                </list-property>
+                                                <property name="resultSetColumn">PREGDELVISIT</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="1763">
+                                            <data id="2171">
+                                                <property name="dataSet">MaleInvolvement</property>
+                                                <list-property name="boundDataColumns">
+                                                    <structure>
+                                                        <property name="name">PNCVISIT</property>
+                                                        <text-property name="displayName">PNCVISIT</text-property>
+                                                        <expression name="expression" type="javascript">dataSetRow["PNCVISIT"]</expression>
+                                                        <property name="dataType">decimal</property>
+                                                    </structure>
+                                                </list-property>
+                                                <property name="resultSetColumn">PNCVISIT</property>
+                                            </data>
+                                        </cell>
                                         <cell id="1764"/>
-                                        <cell id="1765"/>
+                                        <cell id="1765">
+                                            <data id="2172">
+                                                <property name="dataSet">MaleInvolvement</property>
+                                                <list-property name="boundDataColumns">
+                                                    <structure>
+                                                        <property name="name">CWCVISIT</property>
+                                                        <text-property name="displayName">CWCVISIT</text-property>
+                                                        <expression name="expression" type="javascript">dataSetRow["CWCVISIT"]</expression>
+                                                        <property name="dataType">decimal</property>
+                                                    </structure>
+                                                </list-property>
+                                                <property name="resultSetColumn">CWCVISIT</property>
+                                            </data>
+                                        </cell>
                                     </row>
                                 </grid>
                             </cell>
