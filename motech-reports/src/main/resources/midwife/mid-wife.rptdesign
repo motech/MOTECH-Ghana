@@ -4158,7 +4158,7 @@ and
             <list-property name="parameters">
                 <structure>
                     <property name="name">param_1</property>
-                    <property name="paramName">Month</property>
+                    <property name="paramName">Year</property>
                     <property name="dataType">decimal</property>
                     <property name="position">1</property>
                     <property name="isInput">true</property>
@@ -4166,7 +4166,7 @@ and
                 </structure>
                 <structure>
                     <property name="name">param_2</property>
-                    <property name="paramName">Year</property>
+                    <property name="paramName">Month</property>
                     <property name="dataType">decimal</property>
                     <property name="position">2</property>
                     <property name="isInput">true</property>
@@ -4309,7 +4309,8 @@ and
 and
 	encounter.location_id= location.location_id
 and
-	location.name=?]]></xml-property>
+	location.name=?
+	]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="DeliveredBy" id="1127">
             <list-property name="parameters">
@@ -7753,9 +7754,22 @@ at 36Weeks</text-property>
                                                             <property name="resultSetColumn">TrainedTBA</property>
                                                         </data>
                                                     </cell>
-                                                    <cell id="1980"/>
+                                                    <cell id="1980">
+                                                        <data id="2176">
+                                                            <property name="dataSet">DeliveredAt</property>
+                                                            <list-property name="boundDataColumns">
+                                                                <structure>
+                                                                    <property name="name">GovtHCOrHP</property>
+                                                                    <text-property name="displayName">GovtHCOrHP</text-property>
+                                                                    <expression name="expression" type="javascript">dataSetRow["GovtHCOrHP"]</expression>
+                                                                    <property name="dataType">decimal</property>
+                                                                </structure>
+                                                            </list-property>
+                                                            <property name="resultSetColumn">GovtHCOrHP</property>
+                                                        </data>
+                                                    </cell>
                                                     <cell id="1981">
-                                                        <data id="2079">
+                                                        <data id="2177">
                                                             <property name="dataSet">DeliveredAt</property>
                                                             <list-property name="boundDataColumns">
                                                                 <structure>
@@ -7769,7 +7783,7 @@ at 36Weeks</text-property>
                                                         </data>
                                                     </cell>
                                                     <cell id="1982">
-                                                        <data id="2081">
+                                                        <data id="2178">
                                                             <property name="dataSet">DeliveredAt</property>
                                                             <list-property name="boundDataColumns">
                                                                 <structure>
@@ -7783,7 +7797,7 @@ at 36Weeks</text-property>
                                                         </data>
                                                     </cell>
                                                     <cell id="1983">
-                                                        <data id="2082">
+                                                        <data id="2179">
                                                             <property name="dataSet">DeliveredAt</property>
                                                             <list-property name="boundDataColumns">
                                                                 <structure>
@@ -7797,21 +7811,21 @@ at 36Weeks</text-property>
                                                         </data>
                                                     </cell>
                                                     <cell id="1984">
-                                                        <data id="2085">
-                                                            <property name="dataSet">DeliveredBy</property>
+                                                        <data id="2183">
+                                                            <property name="dataSet">DeliveredAt</property>
                                                             <list-property name="boundDataColumns">
                                                                 <structure>
-                                                                    <property name="name">Midwife_Private</property>
-                                                                    <text-property name="displayName">Midwife_Private</text-property>
-                                                                    <expression name="expression" type="javascript">dataSetRow["Midwife_Private"]</expression>
+                                                                    <property name="name">Home</property>
+                                                                    <text-property name="displayName">Home</text-property>
+                                                                    <expression name="expression" type="javascript">dataSetRow["Home"]</expression>
                                                                     <property name="dataType">decimal</property>
                                                                 </structure>
                                                             </list-property>
-                                                            <property name="resultSetColumn">Midwife_Private</property>
+                                                            <property name="resultSetColumn">Home</property>
                                                         </data>
                                                     </cell>
                                                     <cell id="1985">
-                                                        <data id="2080">
+                                                        <data id="2180">
                                                             <property name="dataSet">DeliveredAt</property>
                                                             <list-property name="boundDataColumns">
                                                                 <structure>
@@ -7825,21 +7839,21 @@ at 36Weeks</text-property>
                                                         </data>
                                                     </cell>
                                                     <cell id="1986">
-                                                        <data id="2078">
+                                                        <data id="2181">
                                                             <property name="dataSet">DeliveredAt</property>
                                                             <list-property name="boundDataColumns">
                                                                 <structure>
-                                                                    <property name="name">GovtHCOrHP</property>
-                                                                    <text-property name="displayName">GovtHCOrHP</text-property>
-                                                                    <expression name="expression" type="javascript">dataSetRow["GovtHCOrHP"]</expression>
+                                                                    <property name="name">QuasiGovtInstitute</property>
+                                                                    <text-property name="displayName">QuasiGovtInstitute</text-property>
+                                                                    <expression name="expression" type="javascript">dataSetRow["QuasiGovtInstitute"]</expression>
                                                                     <property name="dataType">decimal</property>
                                                                 </structure>
                                                             </list-property>
-                                                            <property name="resultSetColumn">GovtHCOrHP</property>
+                                                            <property name="resultSetColumn">QuasiGovtInstitute</property>
                                                         </data>
                                                     </cell>
                                                     <cell id="1987">
-                                                        <data id="2083">
+                                                        <data id="2182">
                                                             <property name="dataSet">DeliveredAt</property>
                                                             <list-property name="boundDataColumns">
                                                                 <structure>
