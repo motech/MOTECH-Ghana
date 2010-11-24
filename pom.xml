@@ -31,26 +31,18 @@
 	</developers>
 
 	<ciManagement>
-		<system>continuum</system>
-		<url>http://motech.rcg.usm.maine.edu/continuum/</url>
+		<system>hudson</system>
+		<url>http://ci.motechproject.org/</url>
 		<notifiers>
 			<notifier>
-				<type>mail</type>
-				<configuration>
-					<address>batkinson@usm.maine.edu</address>
-				</configuration>
-			</notifier>
-			<notifier>
-				<type>mail</type>
-				<configuration>
-					<address>matt.blanchette@gmail.com</address>
-				</configuration>
-			</notifier>
-			<notifier>
-				<type>mail</type>
-				<configuration>
-					<address>rlarubbio@grameenfoundation.org</address>
-				</configuration>
+                                <type>mail</type> 
+                                <configuration> 
+                                  <recipients>batkinson@usm.maine.edu matt.blanchette@gmail.com rlarubbio@grameenfoundation.org awalji@grameenfoundation.org</recipients> 
+                                </configuration> 
+                                <sendOnError>true</sendOnError> 
+                                <sendOnFailure>true</sendOnFailure> 
+                                <sendOnSuccess>false</sendOnSuccess> 
+                                <sendOnWarning>false</sendOnWarning> 
 			</notifier>
 		</notifiers>
 	</ciManagement>
