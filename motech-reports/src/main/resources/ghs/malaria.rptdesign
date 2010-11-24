@@ -1,620 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.21" id="1">
-    <property name="createdBy">Eclipse BIRT Designer Version 2.6.0.v20100531 Build &lt;2.6.0.v20100609-1613></property>
-    <property name="units">in</property>
-    <list-property name="propertyBindings">
-        <structure>
-            <property name="name">queryText</property>
-            <property name="id">670</property>
-        </structure>
-        <structure>
-            <property name="name">queryTimeOut</property>
-            <property name="id">670</property>
-        </structure>
-        <structure>
-            <property name="name">queryText</property>
-            <property name="id">674</property>
-        </structure>
-        <structure>
-            <property name="name">queryTimeOut</property>
-            <property name="id">674</property>
-        </structure>
-        <structure>
-            <property name="name">queryText</property>
-            <property name="id">697</property>
-        </structure>
-        <structure>
-            <property name="name">queryTimeOut</property>
-            <property name="id">697</property>
-        </structure>
-    </list-property>
+    <property name="createdBy">Eclipse BIRT Designer Version 2.5.2.v20100211 Build &lt;2.5.2.v20100210-0630></property>
+    <property name="units">mm</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
-    <property name="imageDPI">96</property>
-    <parameters>
-        <scalar-parameter name="county_district" id="306">
-            <text-property name="helpText">Please enter the name of the clinic for which you want to generate a report</text-property>
-            <text-property name="promptText">District</text-property>
-            <property name="valueType">dynamic</property>
-            <property name="dataSetName">Districts</property>
-            <expression name="valueExpr" type="javascript">dataSetRow["county_district"]</expression>
-            <expression name="sortByColumn">dataSetRow["county_district"]</expression>
-            <property name="sortDirection">asc</property>
-            <property name="dataType">string</property>
-            <property name="distinct">true</property>
-            <property name="paramType">simple</property>
-            <property name="controlType">list-box</property>
-            <property name="mustMatch">false</property>
-            <property name="fixedOrder">false</property>
-            <structure name="format">
-                <property name="category">Unformatted</property>
-            </structure>
-        </scalar-parameter>
-        <scalar-parameter name="state_province" id="668">
-            <text-property name="helpText">maps to 'state_province' in Location.</text-property>
-            <text-property name="promptText">Sub District</text-property>
-            <property name="valueType">dynamic</property>
-            <property name="dataSetName">SubDistricts</property>
-            <expression name="valueExpr" type="javascript">dataSetRow["state_province"]</expression>
-            <expression name="labelExpr" type="javascript">dataSetRow["state_province"]</expression>
-            <expression name="sortByColumn">dataSetRow["state_province"]</expression>
-            <property name="sortDirection">asc</property>
-            <property name="dataType">string</property>
-            <property name="distinct">true</property>
-            <property name="paramType">simple</property>
-            <property name="controlType">list-box</property>
-            <property name="mustMatch">true</property>
-            <property name="fixedOrder">false</property>
-            <structure name="format">
-                <property name="category">Unformatted</property>
-            </structure>
-        </scalar-parameter>
-        <scalar-parameter name="neighborhood_cell" id="669">
-            <text-property name="promptText">Facility</text-property>
-            <property name="valueType">dynamic</property>
-            <property name="dataSetName">Facilities</property>
-            <expression name="valueExpr" type="javascript">dataSetRow["neighborhood_cell"]</expression>
-            <expression name="labelExpr" type="javascript">dataSetRow["neighborhood_cell"]</expression>
-            <expression name="sortByColumn">dataSetRow["neighborhood_cell"]</expression>
-            <property name="sortDirection">asc</property>
-            <property name="dataType">string</property>
-            <property name="distinct">true</property>
-            <property name="paramType">simple</property>
-            <property name="controlType">list-box</property>
-            <property name="mustMatch">true</property>
-            <property name="fixedOrder">false</property>
-            <structure name="format">
-                <property name="category">Unformatted</property>
-            </structure>
-        </scalar-parameter>
-        <scalar-parameter name="month" id="690">
-            <text-property name="promptText">Month</text-property>
-            <property name="valueType">static</property>
-            <property name="sortBy">label</property>
-            <property name="sortDirection">asc</property>
-            <property name="dataType">decimal</property>
-            <property name="distinct">true</property>
-            <list-property name="selectionList">
-                <structure>
-                    <property name="value">01</property>
-                    <property name="label">January</property>
-                </structure>
-                <structure>
-                    <property name="value">02</property>
-                    <property name="label">February</property>
-                </structure>
-                <structure>
-                    <property name="value">03</property>
-                    <property name="label">March</property>
-                </structure>
-                <structure>
-                    <property name="value">04</property>
-                    <property name="label">April</property>
-                </structure>
-                <structure>
-                    <property name="value">05</property>
-                    <property name="label">May</property>
-                </structure>
-                <structure>
-                    <property name="value">06</property>
-                    <property name="label">June</property>
-                </structure>
-                <structure>
-                    <property name="value">07</property>
-                    <property name="label">July</property>
-                </structure>
-                <structure>
-                    <property name="value">08</property>
-                    <property name="label">August</property>
-                </structure>
-                <structure>
-                    <property name="value">09</property>
-                    <property name="label">September</property>
-                </structure>
-                <structure>
-                    <property name="value">10</property>
-                    <property name="label">October</property>
-                </structure>
-                <structure>
-                    <property name="value">11</property>
-                    <property name="label">November</property>
-                </structure>
-                <structure>
-                    <property name="value">12</property>
-                    <property name="label">December</property>
-                </structure>
-            </list-property>
-            <property name="paramType">simple</property>
-            <property name="controlType">list-box</property>
-            <property name="mustMatch">true</property>
-            <property name="fixedOrder">false</property>
-            <structure name="format">
-                <property name="category">Unformatted</property>
-            </structure>
-        </scalar-parameter>
-        <scalar-parameter name="year" id="691">
-            <text-property name="promptText">Year</text-property>
-            <property name="valueType">static</property>
-            <property name="dataType">decimal</property>
-            <property name="distinct">true</property>
-            <list-property name="selectionList">
-                <structure>
-                    <property name="value">2010</property>
-                    <property name="label">2010</property>
-                </structure>
-                <structure>
-                    <property name="value">2011</property>
-                    <property name="label">2011</property>
-                </structure>
-            </list-property>
-            <property name="paramType">simple</property>
-            <property name="controlType">list-box</property>
-            <property name="mustMatch">true</property>
-            <property name="fixedOrder">true</property>
-            <structure name="format">
-                <property name="category">Unformatted</property>
-            </structure>
-        </scalar-parameter>
-    </parameters>
-    <data-sources>
-        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="openmrs" id="657">
-            <list-property name="privateDriverProperties">
-                <ex-property>
-                    <name>contentBidiFormatStr</name>
-                    <value>ILYNN</value>
-                </ex-property>
-                <ex-property>
-                    <name>metadataBidiFormatStr</name>
-                    <value>ILYNN</value>
-                </ex-property>
-            </list-property>
-            <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
-            <property name="odaURL">jdbc:mysql://localhost:3306/openmrs</property>
-            <property name="odaUser">openmrs</property>
-            <encrypted-property name="odaPassword" encryptionID="base64">b3Blbm1ycw==</encrypted-property>
-        </oda-data-source>
-    </data-sources>
-    <data-sets>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Districts" id="670">
-            <list-property name="columnHints">
-                <structure>
-                    <property name="columnName">county_district</property>
-                    <text-property name="displayName">county_district</text-property>
-                    <text-property name="heading">county_district</text-property>
-                    <property name="displayLength">50</property>
-                    <property name="horizontalAlign">justify</property>
-                    <property name="wordWrap">false</property>
-                </structure>
-            </list-property>
-            <structure name="cachedMetaData">
-                <list-property name="resultSet">
-                    <structure>
-                        <property name="position">1</property>
-                        <property name="name">county_district</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                </list-property>
-            </structure>
-            <property name="dataSource">openmrs</property>
-            <list-property name="resultSet">
-                <structure>
-                    <property name="position">1</property>
-                    <property name="name">county_district</property>
-                    <property name="nativeName">county_district</property>
-                    <property name="dataType">string</property>
-                </structure>
-            </list-property>
-            <xml-property name="queryText"><![CDATA[select distinct(county_district)
-from location]]></xml-property>
-        </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="SubDistricts" id="671">
-            <list-property name="columnHints">
-                <structure>
-                    <property name="columnName">state_province</property>
-                    <text-property name="displayName">state_province</text-property>
-                    <text-property name="heading">state_province</text-property>
-                    <property name="displayLength">50</property>
-                    <property name="horizontalAlign">justify</property>
-                    <property name="wordWrap">false</property>
-                </structure>
-            </list-property>
-            <structure name="cachedMetaData">
-                <list-property name="resultSet">
-                    <structure>
-                        <property name="position">1</property>
-                        <property name="name">state_province</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                </list-property>
-            </structure>
-            <property name="dataSource">openmrs</property>
-            <list-property name="resultSet">
-                <structure>
-                    <property name="position">1</property>
-                    <property name="name">state_province</property>
-                    <property name="nativeName">state_province</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-            </list-property>
-            <xml-property name="queryText"><![CDATA[select distinct(state_province)
-from location]]></xml-property>
-            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
-  <Version>1.0</Version>
-  <design:ResultSets derivedMetaData="true">
-    <design:resultSetDefinitions>
-      <design:resultSetColumns>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:name>state_province</design:name>
-            <design:position>1</design:position>
-            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
-            <design:precision>50</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>Nullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>state_province</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>state_province</design:label>
-            <design:formattingHints>
-              <design:displaySize>50</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-      </design:resultSetColumns>
-      <design:criteria/>
-    </design:resultSetDefinitions>
-  </design:ResultSets>
-</model:DesignValues>]]></xml-property>
-        </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Facilities" id="672">
-            <list-property name="columnHints">
-                <structure>
-                    <property name="columnName">neighborhood_cell</property>
-                    <text-property name="displayName">neighborhood_cell</text-property>
-                    <text-property name="heading">neighborhood_cell</text-property>
-                    <property name="displayLength">50</property>
-                    <property name="horizontalAlign">justify</property>
-                    <property name="wordWrap">false</property>
-                </structure>
-            </list-property>
-            <structure name="cachedMetaData">
-                <list-property name="resultSet">
-                    <structure>
-                        <property name="position">1</property>
-                        <property name="name">neighborhood_cell</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                </list-property>
-            </structure>
-            <property name="dataSource">openmrs</property>
-            <list-property name="resultSet">
-                <structure>
-                    <property name="position">1</property>
-                    <property name="name">neighborhood_cell</property>
-                    <property name="nativeName">neighborhood_cell</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-            </list-property>
-            <xml-property name="queryText"><![CDATA[select distinct(neighborhood_cell)
-from location]]></xml-property>
-            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
-  <Version>1.0</Version>
-  <design:ResultSets derivedMetaData="true">
-    <design:resultSetDefinitions>
-      <design:resultSetColumns>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:name>neighborhood_cell</design:name>
-            <design:position>1</design:position>
-            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
-            <design:precision>50</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>Nullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>neighborhood_cell</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>neighborhood_cell</design:label>
-            <design:formattingHints>
-              <design:displaySize>50</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-      </design:resultSetColumns>
-      <design:criteria/>
-    </design:resultSetDefinitions>
-  </design:ResultSets>
-</model:DesignValues>]]></xml-property>
-        </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="All OPD Cases under 5 yrs" id="674">
-            <list-property name="columnHints">
-                <structure>
-                    <property name="columnName">total</property>
-                    <text-property name="displayName">total</text-property>
-                    <text-property name="heading">total</text-property>
-                    <property name="displayLength">21</property>
-                    <property name="horizontalAlign">justify</property>
-                    <property name="wordWrap">false</property>
-                </structure>
-            </list-property>
-            <structure name="cachedMetaData">
-                <list-property name="resultSet">
-                    <structure>
-                        <property name="position">1</property>
-                        <property name="name">total</property>
-                        <property name="dataType">decimal</property>
-                    </structure>
-                </list-property>
-            </structure>
-            <property name="dataSource">openmrs</property>
-            <list-property name="resultSet">
-                <structure>
-                    <property name="position">1</property>
-                    <property name="name">total</property>
-                    <property name="nativeName">total</property>
-                    <property name="dataType">decimal</property>
-                </structure>
-            </list-property>
-            <xml-property name="queryText"><![CDATA[select count(*) as total
-from encounter where patient_id in (
-  select person_id from person where (year(now()) - year(birthdate)) <= 5 
-  and birthdate is not null
-)]]></xml-property>
-            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
-  <Version>1.0</Version>
-  <design:ResultSets derivedMetaData="true">
-    <design:resultSetDefinitions>
-      <design:resultSetColumns>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:name>count(*)</design:name>
-            <design:position>1</design:position>
-            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
-            <design:precision>21</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>NotNullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>count(*)</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>count(*)</design:label>
-            <design:formattingHints>
-              <design:displaySize>21</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-      </design:resultSetColumns>
-      <design:criteria/>
-    </design:resultSetDefinitions>
-  </design:ResultSets>
-</model:DesignValues>]]></xml-property>
-        </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="All OPD Cases over 5 yrs excluding pregnant" id="692">
-            <list-property name="columnHints">
-                <structure>
-                    <property name="columnName">count(*)</property>
-                    <text-property name="displayName">count(*)</text-property>
-                    <text-property name="heading">count(*)</text-property>
-                    <property name="displayLength">21</property>
-                    <property name="horizontalAlign">justify</property>
-                    <property name="wordWrap">false</property>
-                </structure>
-            </list-property>
-            <structure name="cachedMetaData">
-                <list-property name="resultSet">
-                    <structure>
-                        <property name="position">1</property>
-                        <property name="name">count(*)</property>
-                        <property name="dataType">decimal</property>
-                    </structure>
-                </list-property>
-            </structure>
-            <property name="dataSource">openmrs</property>
-            <list-property name="resultSet">
-                <structure>
-                    <property name="position">1</property>
-                    <property name="name">count(*)</property>
-                    <property name="nativeName">count(*)</property>
-                    <property name="dataType">decimal</property>
-                    <property name="nativeDataType">-5</property>
-                </structure>
-            </list-property>
-            <xml-property name="queryText"><![CDATA[select count(*) 
-from encounter where patient_id in (
-  select person_id from person where (year(now()) - year(birthdate)) <= 5 
-  and birthdate is not null
-)]]></xml-property>
-            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
-  <Version>1.0</Version>
-  <design:ResultSets derivedMetaData="true">
-    <design:resultSetDefinitions>
-      <design:resultSetColumns>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:name>count(*)</design:name>
-            <design:position>1</design:position>
-            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
-            <design:precision>21</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>NotNullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>count(*)</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>count(*)</design:label>
-            <design:formattingHints>
-              <design:displaySize>21</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-      </design:resultSetColumns>
-      <design:criteria/>
-    </design:resultSetDefinitions>
-  </design:ResultSets>
-</model:DesignValues>]]></xml-property>
-        </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Malaria Cases - Clinical and confirmed" id="696">
-            <list-property name="columnHints">
-                <structure>
-                    <property name="columnName">malaria_cases</property>
-                    <text-property name="displayName">malaria_cases</text-property>
-                    <text-property name="heading">malaria_cases</text-property>
-                    <property name="displayLength">21</property>
-                    <property name="horizontalAlign">justify</property>
-                    <property name="wordWrap">false</property>
-                </structure>
-            </list-property>
-            <structure name="cachedMetaData">
-                <list-property name="resultSet">
-                    <structure>
-                        <property name="position">1</property>
-                        <property name="name">malaria_cases</property>
-                        <property name="dataType">decimal</property>
-                    </structure>
-                </list-property>
-            </structure>
-            <property name="dataSource">openmrs</property>
-            <list-property name="resultSet">
-                <structure>
-                    <property name="position">1</property>
-                    <property name="name">malaria_cases</property>
-                    <property name="nativeName">malaria_cases</property>
-                    <property name="dataType">decimal</property>
-                </structure>
-            </list-property>
-            <xml-property name="queryText"><![CDATA[select count(*) as malaria_cases
-from patient_program 
-where program_id in (
-    select program_id from program where name like '%Malaria%'
-)]]></xml-property>
-            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
-  <Version>1.0</Version>
-  <design:ResultSets derivedMetaData="true">
-    <design:resultSetDefinitions>
-      <design:resultSetColumns>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:name>count(*)</design:name>
-            <design:position>1</design:position>
-            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
-            <design:precision>21</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>NotNullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>count(*)</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>count(*)</design:label>
-            <design:formattingHints>
-              <design:displaySize>21</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-      </design:resultSetColumns>
-      <design:criteria/>
-    </design:resultSetDefinitions>
-  </design:ResultSets>
-</model:DesignValues>]]></xml-property>
-        </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Malaria Cases - Confirmed only" id="697">
-            <list-property name="columnHints">
-                <structure>
-                    <property name="columnName">confirmed_malaria_cases</property>
-                    <text-property name="displayName">confirmed_malaria_cases</text-property>
-                    <text-property name="heading">confirmed_malaria_cases</text-property>
-                    <property name="displayLength">21</property>
-                    <property name="horizontalAlign">justify</property>
-                    <property name="wordWrap">false</property>
-                </structure>
-            </list-property>
-            <structure name="cachedMetaData">
-                <list-property name="resultSet">
-                    <structure>
-                        <property name="position">1</property>
-                        <property name="name">confirmed_malaria_cases</property>
-                        <property name="dataType">decimal</property>
-                    </structure>
-                </list-property>
-            </structure>
-            <property name="dataSource">openmrs</property>
-            <list-property name="resultSet">
-                <structure>
-                    <property name="position">1</property>
-                    <property name="name">confirmed_malaria_cases</property>
-                    <property name="nativeName">confirmed_malaria_cases</property>
-                    <property name="dataType">decimal</property>
-                </structure>
-            </list-property>
-            <xml-property name="queryText"><![CDATA[select count(*) as confirmed_malaria_cases
-from patient_program 
-where program_id in (
-    select program_id from program where name like '%Malaria%'
-)]]></xml-property>
-            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
-  <Version>1.0</Version>
-  <design:ResultSets derivedMetaData="true">
-    <design:resultSetDefinitions>
-      <design:resultSetColumns>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:name>count(*)</design:name>
-            <design:position>1</design:position>
-            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
-            <design:precision>21</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>NotNullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>count(*)</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>count(*)</design:label>
-            <design:formattingHints>
-              <design:displaySize>21</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-      </design:resultSetColumns>
-      <design:criteria/>
-    </design:resultSetDefinitions>
-  </design:ResultSets>
-</model:DesignValues>]]></xml-property>
-        </oda-data-set>
-    </data-sets>
+    <property name="imageDPI">120</property>
     <styles>
         <style name="report" id="4">
             <property name="fontFamily">sans-serif</property>
@@ -651,6 +41,9 @@ where program_id in (
     </styles>
     <page-setup>
         <simple-master-page name="Simple MasterPage" id="2">
+            <property name="type">a4</property>
+            <property name="rightMargin">33.655mm</property>
+            <property name="showHeaderOnFirst">true</property>
             <page-footer>
                 <text id="3">
                     <property name="contentType">html</property>
@@ -660,713 +53,1920 @@ where program_id in (
         </simple-master-page>
     </page-setup>
     <body>
-        <grid id="7">
-            <column id="8"/>
-            <row id="9">
-                <cell id="10">
-                    <label id="313">
-                        <property name="fontSize">18pt</property>
-                        <property name="fontWeight">bold</property>
-                        <text-property name="text">MALARIA REPORT</text-property>
-                    </label>
-                </cell>
-            </row>
-            <row id="11">
-                <cell id="12">
-                    <grid id="577">
-                        <column id="578"/>
-                        <column id="579"/>
-                        <column id="580"/>
-                        <column id="581"/>
-                        <column id="582"/>
-                        <column id="583"/>
-                        <row id="584">
-                            <cell id="585">
-                                <label id="598">
-                                    <text-property name="text">DISTRICT</text-property>
-                                </label>
-                            </cell>
-                            <cell id="586">
-                                <text-data id="663">
-                                    <property name="dataSet">Districts</property>
-                                    <list-property name="boundDataColumns">
-                                        <structure>
-                                            <property name="name">county_district</property>
-                                            <text-property name="displayName">DISTRICT</text-property>
-                                            <expression name="expression" type="javascript">dataSetRow["county_district"]</expression>
-                                            <property name="dataType">string</property>
-                                        </structure>
-                                    </list-property>
-                                    <expression name="valueExpr">params['county_district'].value</expression>
-                                    <property name="contentType">html</property>
-                                </text-data>
-                            </cell>
-                            <cell id="587">
-                                <label id="599">
-                                    <text-property name="text">SUBDISTRICT</text-property>
-                                </label>
-                            </cell>
-                            <cell id="588">
-                                <text-data id="664">
-                                    <property name="dataSet">SubDistricts</property>
-                                    <list-property name="boundDataColumns">
-                                        <structure>
-                                            <property name="name">state_province</property>
-                                            <text-property name="displayName">SUBDISTRICT</text-property>
-                                            <expression name="expression" type="javascript">dataSetRow["state_province"]</expression>
-                                            <property name="dataType">string</property>
-                                        </structure>
-                                    </list-property>
-                                    <expression name="valueExpr">params['state_province'].value</expression>
-                                    <property name="contentType">html</property>
-                                </text-data>
-                            </cell>
-                            <cell id="589">
-                                <label id="600">
-                                    <text-property name="text">FACILITY</text-property>
-                                </label>
-                            </cell>
-                            <cell id="590">
-                                <text-data id="665">
-                                    <property name="dataSet">Facilities</property>
-                                    <list-property name="boundDataColumns">
-                                        <structure>
-                                            <property name="name">neighborhood_cell</property>
-                                            <text-property name="displayName">FACILITY</text-property>
-                                            <expression name="expression" type="javascript">dataSetRow["neighborhood_cell"]</expression>
-                                            <property name="dataType">string</property>
-                                        </structure>
-                                    </list-property>
-                                    <expression name="valueExpr">params['neighborhood_cell'].value</expression>
-                                    <property name="contentType">html</property>
-                                </text-data>
-                            </cell>
-                        </row>
-                    </grid>
-                </cell>
-            </row>
-            <row id="13">
-                <cell id="14"/>
-            </row>
-            <row id="15">
-                <cell id="16">
-                    <grid id="601">
-                        <column id="602"/>
-                        <column id="603"/>
-                        <column id="604"/>
-                        <column id="605"/>
-                        <column id="606"/>
-                        <column id="607"/>
-                        <row id="608">
-                            <cell id="609">
-                                <label id="622">
-                                    <text-property name="text">MONTH</text-property>
-                                </label>
-                            </cell>
-                            <cell id="610">
-                                <text-data id="666">
-                                    <expression name="valueExpr">params['month'].value</expression>
-                                    <property name="contentType">html</property>
-                                </text-data>
-                            </cell>
-                            <cell id="611">
-                                <label id="623">
-                                    <text-property name="text">YEAR</text-property>
-                                </label>
-                            </cell>
-                            <cell id="612">
-                                <text-data id="667">
-                                    <expression name="valueExpr">params['year'].value</expression>
-                                    <property name="contentType">html</property>
-                                </text-data>
-                            </cell>
-                            <cell id="613"/>
-                            <cell id="614"/>
-                        </row>
-                        <row id="615">
-                            <cell id="616"/>
-                            <cell id="617"/>
-                            <cell id="618"/>
-                            <cell id="619"/>
-                            <cell id="620"/>
-                            <cell id="621"/>
-                        </row>
-                    </grid>
+        <label id="314">
+            <property name="fontFamily">"Arial Narrow"</property>
+            <property name="fontSize">18pt</property>
+            <property name="fontWeight">bold</property>
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">medium</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">medium</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">medium</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">medium</property>
+            <property name="height">8.25mm</property>
+            <property name="width">168mm</property>
+            <text-property name="text">MALARIA REPORTS</text-property>
+        </label>
+        <grid id="315">
+            <property name="height">10.16mm</property>
+            <property name="width">168.0633333333333mm</property>
+            <column id="316">
+                <property name="width">168.0633333333333mm</property>
+            </column>
+            <row id="317">
+                <cell id="318">
+                    <property name="height">10.16mm</property>
+                    <property name="width">177.8mm</property>
                 </cell>
             </row>
         </grid>
-        <table id="77">
-            <property name="dataSet">All OPD Cases under 5 yrs</property>
-            <list-property name="boundDataColumns">
-                <structure>
-                    <property name="name">total</property>
-                    <text-property name="displayName">total</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["total"]</expression>
-                    <property name="dataType">decimal</property>
-                </structure>
-                <structure>
-                    <property name="name">Confirmed Malaria Cases</property>
-                    <text-property name="displayName">confirmed malaria cases</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["confirmed_malaria_cases"]</expression>
-                    <property name="dataType">decimal</property>
-                </structure>
-            </list-property>
-            <column id="98"/>
-            <column id="99"/>
-            <column id="100"/>
-            <header>
-                <row id="281">
-                    <property name="height">0.3020833333333333in</property>
-                    <cell id="282">
-                        <property name="colSpan">3</property>
-                        <property name="rowSpan">1</property>
-                        <label id="572">
-                            <property name="fontFamily">sans-serif</property>
-                            <property name="fontWeight">bold</property>
-                            <property name="textUnderline">underline</property>
-                            <property name="textAlign">left</property>
-                            <structure name="toc"/>
-                            <text-property name="text">CFR/FORM I: OUT-PATIENTS CASES</text-property>
-                        </label>
-                    </cell>
-                </row>
-                <row id="78">
-                    <property name="height">0.4479166666666667in</property>
+        <grid id="339">
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">medium</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">medium</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">medium</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">medium</property>
+            <property name="height">18.626666666666665mm</property>
+            <property name="width">168.48666666666668mm</property>
+            <column id="340">
+                <property name="width">18.838333333333335mm</property>
+            </column>
+            <column id="341">
+                <property name="width">31.961666666666666mm</property>
+            </column>
+            <column id="342">
+                <property name="width">27.304999999999996mm</property>
+            </column>
+            <column id="343">
+                <property name="width">32.80833333333334mm</property>
+            </column>
+            <column id="344">
+                <property name="width">19.685000000000002mm</property>
+            </column>
+            <column id="345">
+                <property name="width">37.465mm</property>
+            </column>
+            <row id="346">
+                <property name="borderBottomColor">#000000</property>
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">medium</property>
+                <property name="borderLeftColor">#000000</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">medium</property>
+                <property name="borderRightColor">#000000</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">medium</property>
+                <property name="borderTopColor">#000000</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">medium</property>
+                <cell id="347">
+                    <property name="width">5.08mm</property>
+                    <property name="fontFamily">"Calibri"</property>
+                    <property name="fontSize">11pt</property>
+                    <label id="360">
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">medium</property>
+                        <text-property name="text">DISTRICT</text-property>
+                    </label>
+                </cell>
+                <cell id="348"/>
+                <cell id="349">
+                    <label id="361">
+                        <property name="fontFamily">"Calibri"</property>
+                        <property name="fontSize">11pt</property>
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">medium</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">medium</property>
+                        <text-property name="text">SUBDISTRICT		</text-property>
+                    </label>
+                </cell>
+                <cell id="350"/>
+                <cell id="351">
+                    <label id="362">
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">medium</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">medium</property>
+                        <text-property name="text">FACILITY</text-property>
+                    </label>
+                </cell>
+                <cell id="352">
+                    <property name="width">177.8mm</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                </cell>
+            </row>
+            <row id="353">
+                <property name="height">5.08mm</property>
+                <property name="borderBottomColor">#000000</property>
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">medium</property>
+                <property name="borderLeftColor">#000000</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">medium</property>
+                <property name="borderRightColor">#000000</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">medium</property>
+                <property name="borderTopColor">#000000</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">medium</property>
+                <cell id="354"/>
+                <cell id="355"/>
+                <cell id="356"/>
+                <cell id="357"/>
+                <cell id="358"/>
+                <cell id="359">
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                </cell>
+            </row>
+            <row id="363">
+                <property name="height">6.561666666666667mm</property>
+                <property name="borderBottomColor">#000000</property>
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">medium</property>
+                <property name="borderLeftColor">#000000</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">medium</property>
+                <property name="borderRightColor">#000000</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">medium</property>
+                <property name="borderTopColor">#000000</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">medium</property>
+                <cell id="364">
+                    <label id="370">
+                        <property name="fontFamily">"Calibri"</property>
+                        <property name="fontSize">11pt</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">medium</property>
+                        <property name="borderTopColor">#000000</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">medium</property>
+                        <text-property name="text">MONTH</text-property>
+                    </label>
+                </cell>
+                <cell id="365"/>
+                <cell id="366">
+                    <label id="371">
+                        <property name="backgroundAttachment">scroll</property>
+                        <property name="backgroundPositionX">0%</property>
+                        <property name="backgroundPositionY">0%</property>
+                        <property name="backgroundRepeat">repeat</property>
+                        <property name="fontFamily">"Calibri"</property>
+                        <property name="fontSize">11pt</property>
+                        <property name="fontWeight">normal</property>
+                        <property name="fontStyle">normal</property>
+                        <property name="fontVariant">normal</property>
+                        <property name="color">black</property>
+                        <property name="textLineThrough">none</property>
+                        <property name="textOverline">none</property>
+                        <property name="textUnderline">none</property>
+                        <property name="borderBottomColor">black</property>
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">medium</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">medium</property>
+                        <property name="borderTopColor">#000000</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">medium</property>
+                        <property name="marginTop">0pt</property>
+                        <property name="marginLeft">0pt</property>
+                        <property name="marginBottom">0pt</property>
+                        <property name="marginRight">0pt</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="letterSpacing">normal</property>
+                        <property name="lineHeight">normal</property>
+                        <property name="orphans">2</property>
+                        <property name="textTransform">none</property>
+                        <property name="whiteSpace">normal</property>
+                        <property name="widows">2</property>
+                        <property name="wordSpacing">normal</property>
+                        <property name="display">block</property>
+                        <property name="pageBreakAfter">auto</property>
+                        <property name="pageBreakBefore">auto</property>
+                        <property name="pageBreakInside">auto</property>
+                        <property name="showIfBlank">false</property>
+                        <property name="canShrink">false</property>
+                        <property name="overflow">hidden</property>
+                        <text-property name="text">YEAR</text-property>
+                    </label>
+                </cell>
+                <cell id="367"/>
+                <cell id="368"/>
+                <cell id="369">
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                </cell>
+            </row>
+        </grid>
+        <grid id="372">
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">medium</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">medium</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">medium</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">medium</property>
+            <property name="height">10.16mm</property>
+            <property name="width">168.69833333333332mm</property>
+            <column id="373">
+                <property name="width">168.69833333333332mm</property>
+            </column>
+            <row id="374">
+                <property name="borderBottomColor">#000000</property>
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">medium</property>
+                <property name="borderLeftColor">#000000</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">medium</property>
+                <property name="borderRightColor">#000000</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">medium</property>
+                <property name="borderTopColor">#000000</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">medium</property>
+                <cell id="375">
+                    <property name="width">177.8mm</property>
+                </cell>
+            </row>
+        </grid>
+        <label id="376">
+            <property name="fontFamily">"Arial Narrow"</property>
+            <property name="fontSize">12pt</property>
+            <property name="fontWeight">bold</property>
+            <property name="height">5.72mm</property>
+            <property name="width">168.24mm</property>
+            <text-property name="text">CFR/FORM I: OUT-PATIENTS CASES</text-property>
+        </label>
+        <grid id="377">
+            <property name="fontFamily">"Arial Narrow"</property>
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">medium</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">medium</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">medium</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">medium</property>
+            <property name="textAlign">center</property>
+            <property name="verticalAlign">bottom</property>
+            <property name="height">8.89mm</property>
+            <property name="width">168.24mm</property>
+            <column id="378"/>
+            <column id="379"/>
+            <column id="380"/>
+            <row id="381">
+                <property name="borderBottomColor">#000000</property>
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">medium</property>
+                <property name="borderLeftColor">#000000</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">medium</property>
+                <property name="borderRightColor">#000000</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">medium</property>
+                <property name="borderTopColor">#000000</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">medium</property>
+                <cell id="382">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="385">
+                        <property name="fontWeight">bold</property>
+                        <text-property name="text">CHILDREN UNDER   5 YEARS OLD</text-property>
+                    </label>
+                </cell>
+                <cell id="383">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="386">
+                        <property name="fontWeight">bold</property>
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">medium</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">medium</property>
+                        <property name="borderTopColor">#000000</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">medium</property>
+                        <text-property name="text">AGE   5-YEARS AND ABOVE (EXCLUDES PREGNANT WOMEN)</text-property>
+                    </label>
+                </cell>
+                <cell id="384">
+                    <label id="387">
+                        <property name="fontWeight">bold</property>
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">medium</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">medium</property>
+                        <property name="borderTopColor">#000000</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">medium</property>
+                        <text-property name="text">PREGNANT WOMEN ONLY</text-property>
+                    </label>
+                </cell>
+            </row>
+        </grid>
+        <grid id="388">
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">medium</property>
+            <property name="height">5.29mm</property>
+            <property name="width">168.275mm</property>
+            <column id="389">
+                <property name="width">17.56833333333333mm</property>
+            </column>
+            <column id="390">
+                <property name="width">38.31166666666667mm</property>
+            </column>
+            <column id="391">
+                <property name="width">17.779999999999998mm</property>
+            </column>
+            <column id="392">
+                <property name="width">38.735mm</property>
+            </column>
+            <column id="393">
+                <property name="width">17.779999999999998mm</property>
+            </column>
+            <column id="394">
+                <property name="width">38.1mm</property>
+            </column>
+            <row id="395">
+                <cell id="396">
+                    <property name="width">17.78mm</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="397">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">1</property>
+                    <property name="width">35.56mm</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="405">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">MALARIA CASES</text-property>
+                    </label>
+                </cell>
+                <cell id="404">
+                    <property name="width">17.78mm</property>
+                </cell>
+                <cell id="399">
+                    <property name="width">35.56mm</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <label id="407">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">MALARIA CASES</text-property>
+                    </label>
+                </cell>
+                <cell id="400">
+                    <property name="width">17.78mm</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                </cell>
+                <cell id="401">
+                    <property name="width">35.56mm</property>
+                    <label id="408">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">MALARIA CASES</text-property>
+                    </label>
+                </cell>
+            </row>
+        </grid>
+        <grid id="430">
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">medium</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">medium</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">medium</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">medium</property>
+            <property name="width">168.275mm</property>
+            <column id="431">
+                <property name="width">17.56833333333333mm</property>
+            </column>
+            <column id="432">
+                <property name="width">19.261666666666667mm</property>
+            </column>
+            <column id="433">
+                <property name="width">19.05mm</property>
+            </column>
+            <column id="434">
+                <property name="width">17.779999999999998mm</property>
+            </column>
+            <column id="435">
+                <property name="width">18.838333333333335mm</property>
+            </column>
+            <column id="436">
+                <property name="width">19.473333333333336mm</property>
+            </column>
+            <column id="437">
+                <property name="width">17.356666666666666mm</property>
+            </column>
+            <column id="438">
+                <property name="width">18.626666666666665mm</property>
+            </column>
+            <column id="439">
+                <property name="width">20.32mm</property>
+            </column>
+            <row id="440">
+                <property name="height">24.55mm</property>
+                <cell id="441">
+                    <property name="fontFamily">"Arial Narrow"</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <property name="verticalAlign">middle</property>
+                    <label id="460">
+                        <property name="textAlign">center</property>
+                        <property name="overflow">hidden</property>
+                        <property name="height">24.5mm</property>
+                        <text-property name="text">ALL OPD CASES</text-property>
+                    </label>
+                </cell>
+                <cell id="442">
+                    <property name="fontFamily">"Arial Narrow"</property>
+                    <property name="fontSize">10pt</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <property name="textAlign">left</property>
+                    <label id="461">
+                        <property name="backgroundAttachment">scroll</property>
+                        <property name="backgroundPositionX">0%</property>
+                        <property name="backgroundPositionY">0%</property>
+                        <property name="backgroundRepeat">repeat</property>
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="fontSize">10pt</property>
+                        <property name="fontWeight">normal</property>
+                        <property name="fontStyle">normal</property>
+                        <property name="fontVariant">normal</property>
+                        <property name="color">black</property>
+                        <property name="textLineThrough">none</property>
+                        <property name="textOverline">none</property>
+                        <property name="textUnderline">none</property>
+                        <property name="borderBottomColor">black</property>
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <property name="borderLeftColor">black</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderLeftWidth">medium</property>
+                        <property name="borderRightColor">black</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderRightWidth">medium</property>
+                        <property name="borderTopColor">black</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="borderTopWidth">medium</property>
+                        <property name="marginTop">0pt</property>
+                        <property name="marginLeft">0pt</property>
+                        <property name="marginBottom">0pt</property>
+                        <property name="marginRight">0pt</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="letterSpacing">normal</property>
+                        <property name="lineHeight">normal</property>
+                        <property name="orphans">2</property>
+                        <property name="textTransform">none</property>
+                        <property name="whiteSpace">normal</property>
+                        <property name="widows">2</property>
+                        <property name="wordSpacing">normal</property>
+                        <property name="display">block</property>
+                        <property name="pageBreakAfter">auto</property>
+                        <property name="pageBreakBefore">auto</property>
+                        <property name="pageBreakInside">auto</property>
+                        <property name="showIfBlank">false</property>
+                        <property name="canShrink">false</property>
+                        <property name="overflow">hidden</property>
+                        <property name="height">24.5mm</property>
+                        <property name="width">17.78mm</property>
+                        <text-property name="text">BOTH CLINICAL AND CONFIRMED</text-property>
+                    </label>
+                </cell>
+                <cell id="443">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="462">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="textAlign">center</property>
+                        <property name="height">24.5mm</property>
+                        <property name="width">17.78mm</property>
+                        <text-property name="text">Confirmed malaria cases only</text-property>
+                    </label>
+                </cell>
+                <cell id="444">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="463">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="textAlign">center</property>
+                        <property name="overflow">hidden</property>
+                        <property name="height">24.5mm</property>
+                        <text-property name="text">ALL OPD CASES</text-property>
+                    </label>
+                </cell>
+                <cell id="445">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="465">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="fontSize">10pt</property>
+                        <property name="height">24.5mm</property>
+                        <property name="width">17.78mm</property>
+                        <text-property name="text">BOTH CLINICAL AND CONFIRMED</text-property>
+                    </label>
+                </cell>
+                <cell id="446">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="467">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="textAlign">center</property>
+                        <property name="height">24.5mm</property>
+                        <property name="width">17.78mm</property>
+                        <text-property name="text">Confirmed malaria cases only</text-property>
+                    </label>
+                </cell>
+                <cell id="447">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="464">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="textAlign">center</property>
+                        <property name="overflow">hidden</property>
+                        <property name="height">24.5mm</property>
+                        <text-property name="text">ALL OPD CASES</text-property>
+                    </label>
+                </cell>
+                <cell id="448">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="466">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="fontSize">10pt</property>
+                        <property name="height">24.5mm</property>
+                        <property name="width">17.78mm</property>
+                        <text-property name="text">BOTH CLINICAL AND CONFIRMED</text-property>
+                    </label>
+                </cell>
+                <cell id="449">
+                    <label id="468">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="textAlign">center</property>
+                        <property name="height">24.5mm</property>
+                        <property name="width">17.78mm</property>
+                        <text-property name="text">Confirmed malaria cases only</text-property>
+                    </label>
+                </cell>
+            </row>
+            <row id="450">
+                <property name="height">10.16mm</property>
+                <property name="borderBottomColor">#000000</property>
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">medium</property>
+                <property name="borderLeftColor">#000000</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">medium</property>
+                <property name="borderRightColor">#000000</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">medium</property>
+                <property name="borderTopColor">#000000</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">medium</property>
+                <cell id="451">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="452">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="453">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="454">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="455">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="456">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="457">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="458">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="459"/>
+            </row>
+        </grid>
+        <label id="536">
+            <property name="height">5.5mm</property>
+            <property name="width">168.275mm</property>
+        </label>
+        <label id="658">
+            <property name="fontFamily">"Arial Narrow"</property>
+            <property name="fontSize">12pt</property>
+            <property name="fontWeight">bold</property>
+            <property name="height">5.72mm</property>
+            <property name="width">168.24mm</property>
+            <text-property name="text">CFR/FORM II: IN-PATIENTS CASES</text-property>
+        </label>
+        <grid id="659">
+            <property name="fontFamily">"Arial Narrow"</property>
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">medium</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">medium</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">medium</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">medium</property>
+            <property name="textAlign">center</property>
+            <property name="verticalAlign">bottom</property>
+            <property name="height">8.89mm</property>
+            <property name="width">168.24mm</property>
+            <column id="660"/>
+            <column id="661"/>
+            <column id="662"/>
+            <row id="663">
+                <cell id="664">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="665">
+                        <property name="fontWeight">bold</property>
+                        <text-property name="text">CHILDREN UNDER   5 YEARS OLD</text-property>
+                    </label>
+                </cell>
+                <cell id="666">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="667">
+                        <property name="fontWeight">bold</property>
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">medium</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">medium</property>
+                        <property name="borderTopColor">#000000</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">medium</property>
+                        <text-property name="text">AGE   5-YEARS AND ABOVE (EXCLUDES PREGNANT WOMEN)</text-property>
+                    </label>
+                </cell>
+                <cell id="668">
+                    <label id="669">
+                        <property name="fontWeight">bold</property>
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">medium</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">medium</property>
+                        <property name="borderTopColor">#000000</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">medium</property>
+                        <text-property name="text">PREGNANT WOMEN ONLY</text-property>
+                    </label>
+                </cell>
+            </row>
+        </grid>
+        <grid id="670">
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">medium</property>
+            <property name="height">5.29mm</property>
+            <property name="width">168.275mm</property>
+            <column id="671">
+                <property name="width">17.56833333333333mm</property>
+            </column>
+            <column id="672">
+                <property name="width">38.31166666666667mm</property>
+            </column>
+            <column id="673">
+                <property name="width">17.779999999999998mm</property>
+            </column>
+            <column id="674">
+                <property name="width">38.735mm</property>
+            </column>
+            <column id="675">
+                <property name="width">17.779999999999998mm</property>
+            </column>
+            <column id="676">
+                <property name="width">38.1mm</property>
+            </column>
+            <row id="677">
+                <cell id="678">
+                    <property name="width">17.78mm</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="679">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">1</property>
+                    <property name="width">35.56mm</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="680">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">MALARIA CASES</text-property>
+                    </label>
+                </cell>
+                <cell id="681">
+                    <property name="width">17.78mm</property>
+                </cell>
+                <cell id="682">
+                    <property name="width">35.56mm</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <label id="683">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">MALARIA CASES</text-property>
+                    </label>
+                </cell>
+                <cell id="684">
+                    <property name="width">17.78mm</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                </cell>
+                <cell id="685">
+                    <property name="width">35.56mm</property>
+                    <label id="686">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">MALARIA CASES</text-property>
+                    </label>
+                </cell>
+            </row>
+        </grid>
+        <grid id="687">
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">medium</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">medium</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">medium</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">medium</property>
+            <property name="width">168.275mm</property>
+            <column id="688">
+                <property name="width">17.56833333333333mm</property>
+            </column>
+            <column id="689">
+                <property name="width">19.261666666666667mm</property>
+            </column>
+            <column id="690">
+                <property name="width">19.05mm</property>
+            </column>
+            <column id="691">
+                <property name="width">17.779999999999998mm</property>
+            </column>
+            <column id="692">
+                <property name="width">18.838333333333335mm</property>
+            </column>
+            <column id="693">
+                <property name="width">19.473333333333336mm</property>
+            </column>
+            <column id="694">
+                <property name="width">17.356666666666666mm</property>
+            </column>
+            <column id="695">
+                <property name="width">18.626666666666665mm</property>
+            </column>
+            <column id="696">
+                <property name="width">20.32mm</property>
+            </column>
+            <row id="697">
+                <property name="height">24.55mm</property>
+                <cell id="698">
+                    <property name="fontFamily">"Arial Narrow"</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <property name="verticalAlign">middle</property>
+                    <label id="699">
+                        <property name="textAlign">center</property>
+                        <property name="overflow">hidden</property>
+                        <property name="height">24.5mm</property>
+                        <text-property name="text">ALL IN-PATIENTS</text-property>
+                    </label>
+                </cell>
+                <cell id="700">
+                    <property name="fontFamily">"Arial Narrow"</property>
+                    <property name="fontSize">10pt</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <property name="textAlign">left</property>
+                    <label id="701">
+                        <property name="backgroundAttachment">scroll</property>
+                        <property name="backgroundPositionX">0%</property>
+                        <property name="backgroundPositionY">0%</property>
+                        <property name="backgroundRepeat">repeat</property>
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="fontSize">10pt</property>
+                        <property name="fontWeight">normal</property>
+                        <property name="fontStyle">normal</property>
+                        <property name="fontVariant">normal</property>
+                        <property name="color">black</property>
+                        <property name="textLineThrough">none</property>
+                        <property name="textOverline">none</property>
+                        <property name="textUnderline">none</property>
+                        <property name="borderBottomColor">black</property>
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <property name="borderLeftColor">black</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderLeftWidth">medium</property>
+                        <property name="borderRightColor">black</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderRightWidth">medium</property>
+                        <property name="borderTopColor">black</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="borderTopWidth">medium</property>
+                        <property name="marginTop">0pt</property>
+                        <property name="marginLeft">0pt</property>
+                        <property name="marginBottom">0pt</property>
+                        <property name="marginRight">0pt</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="letterSpacing">normal</property>
+                        <property name="lineHeight">normal</property>
+                        <property name="orphans">2</property>
+                        <property name="textTransform">none</property>
+                        <property name="whiteSpace">normal</property>
+                        <property name="widows">2</property>
+                        <property name="wordSpacing">normal</property>
+                        <property name="display">block</property>
+                        <property name="pageBreakAfter">auto</property>
+                        <property name="pageBreakBefore">auto</property>
+                        <property name="pageBreakInside">auto</property>
+                        <property name="showIfBlank">false</property>
+                        <property name="canShrink">false</property>
+                        <property name="overflow">hidden</property>
+                        <property name="height">24.5mm</property>
+                        <property name="width">17.78mm</property>
+                        <text-property name="text">BOTH CLINICAL AND CONFIRMED</text-property>
+                    </label>
+                </cell>
+                <cell id="702">
+                    <property name="fontFamily">"Arial Narrow"</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="703">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="textAlign">center</property>
+                        <property name="height">24.5mm</property>
+                        <property name="width">17.78mm</property>
+                        <text-property name="text">Confirmed malaria cases only</text-property>
+                    </label>
+                </cell>
+                <cell id="704">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="705">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="textAlign">center</property>
+                        <property name="overflow">hidden</property>
+                        <property name="height">24.5mm</property>
+                        <text-property name="text">ALL IN-PATIENTS</text-property>
+                    </label>
+                </cell>
+                <cell id="706">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="707">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="fontSize">10pt</property>
+                        <property name="height">24.5mm</property>
+                        <property name="width">17.78mm</property>
+                        <text-property name="text">BOTH CLINICAL AND CONFIRMED</text-property>
+                    </label>
+                </cell>
+                <cell id="708">
+                    <property name="fontFamily">"Arial Narrow"</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="709">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="textAlign">center</property>
+                        <property name="height">24.5mm</property>
+                        <property name="width">17.78mm</property>
+                        <text-property name="text">Confirmed malaria cases only</text-property>
+                    </label>
+                </cell>
+                <cell id="710">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="711">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="textAlign">center</property>
+                        <property name="overflow">hidden</property>
+                        <property name="height">24.5mm</property>
+                        <text-property name="text">ALL IN-PATIENTS</text-property>
+                    </label>
+                </cell>
+                <cell id="712">
+                    <property name="fontFamily">"Arial Narrow"</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="713">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="fontSize">10pt</property>
+                        <property name="height">24.5mm</property>
+                        <property name="width">17.78mm</property>
+                        <text-property name="text">BOTH CLINICAL AND CONFIRMED</text-property>
+                    </label>
+                </cell>
+                <cell id="714">
+                    <property name="fontFamily">"Arial Narrow"</property>
+                    <label id="715">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="textAlign">center</property>
+                        <property name="height">24.5mm</property>
+                        <property name="width">17.78mm</property>
+                        <text-property name="text">Confirmed malaria cases only</text-property>
+                    </label>
+                </cell>
+            </row>
+            <row id="716">
+                <property name="height">10.16mm</property>
+                <property name="borderBottomColor">#000000</property>
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">medium</property>
+                <property name="borderLeftColor">#000000</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">medium</property>
+                <property name="borderRightColor">#000000</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">medium</property>
+                <property name="borderTopColor">#000000</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">medium</property>
+                <cell id="717">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="718">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="719">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="720">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="721">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="722">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="723">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="724">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="725"/>
+            </row>
+        </grid>
+        <label id="726">
+            <property name="height">5.5mm</property>
+            <property name="width">168.275mm</property>
+        </label>
+        <label id="606">
+            <property name="fontFamily">"Arial Narrow"</property>
+            <property name="fontSize">12pt</property>
+            <property name="fontWeight">bold</property>
+            <property name="height">5.72mm</property>
+            <property name="width">168.24mm</property>
+            <text-property name="text">CFR/FORM III: IN-PATIENTS DEATHS</text-property>
+        </label>
+        <grid id="607">
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">medium</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">medium</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">medium</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">medium</property>
+            <property name="height">13.34mm</property>
+            <property name="width">168.69833333333332mm</property>
+            <column id="608">
+                <property name="width">59.266666666666666mm</property>
+            </column>
+            <column id="609">
+                <property name="width">59.266666666666666mm</property>
+            </column>
+            <column id="610">
+                <property name="width">50.165000000000006mm</property>
+            </column>
+            <row id="611">
+                <property name="borderBottomColor">#000000</property>
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">medium</property>
+                <property name="borderLeftColor">#000000</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">medium</property>
+                <property name="borderRightColor">#000000</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">medium</property>
+                <property name="borderTopColor">#000000</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">medium</property>
+                <cell id="612">
+                    <property name="fontFamily">"Arial Narrow"</property>
                     <property name="fontWeight">bold</property>
-                    <cell id="79">
-                        <label id="101">
-                            <text-property name="text">CHILDREN UNDER   5 YEARS OLD</text-property>
-                        </label>
-                    </cell>
-                    <cell id="80">
-                        <label id="102">
-                            <text-property name="text">AGE   5-YEARS AND ABOVE (EXCLUDES PREGNANT WOMEN)</text-property>
-                        </label>
-                    </cell>
-                    <cell id="81">
-                        <label id="103">
-                            <text-property name="text">PREGNANT WOMEN ONLY</text-property>
-                        </label>
-                    </cell>
-                </row>
-            </header>
-            <detail>
-                <row id="82">
-                    <cell id="83">
-                        <grid id="104">
-                            <column id="105"/>
-                            <column id="106"/>
-                            <column id="107"/>
-                            <row id="108">
-                                <cell id="109">
-                                    <property name="colSpan">1</property>
-                                    <property name="rowSpan">2</property>
-                                    <label id="124">
-                                        <text-property name="text">ALL OPD CASES</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="110">
-                                    <property name="colSpan">2</property>
-                                    <property name="rowSpan">1</property>
-                                    <label id="125">
-                                        <property name="fontWeight">bold</property>
-                                        <text-property name="text">MALARIA CASES</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="112">
-                                <cell id="114">
-                                    <label id="126">
-                                        <text-property name="text">BOTH CLINICAL AND CONFIRMED</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="115">
-                                    <label id="127">
-                                        <text-property name="text">Confirmed malaria cases only</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="116">
-                                <cell id="117">
-                                    <data id="695">
-                                        <property name="whiteSpace">nowrap</property>
-                                        <structure name="toc"/>
-                                        <property name="resultSetColumn">total</property>
-                                    </data>
-                                </cell>
-                                <cell id="118"/>
-                                <cell id="119">
-                                    <data id="699">
-                                        <property name="whiteSpace">nowrap</property>
-                                        <structure name="toc"/>
-                                        <property name="resultSetColumn">Confirmed Malaria Cases</property>
-                                    </data>
-                                </cell>
-                            </row>
-                            <row id="624">
-                                <cell id="625">
-                                    <property name="colSpan">3</property>
-                                    <property name="rowSpan">1</property>
-                                </cell>
-                            </row>
-                        </grid>
-                    </cell>
-                    <cell id="84">
-                        <grid id="227">
-                            <column id="228"/>
-                            <column id="229"/>
-                            <column id="230"/>
-                            <row id="231">
-                                <cell id="232">
-                                    <property name="colSpan">1</property>
-                                    <property name="rowSpan">2</property>
-                                    <label id="233">
-                                        <text-property name="text">ALL OPD CASES</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="234">
-                                    <property name="colSpan">2</property>
-                                    <property name="rowSpan">1</property>
-                                    <label id="235">
-                                        <property name="fontWeight">bold</property>
-                                        <text-property name="text">MALARIA CASES	</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="236">
-                                <cell id="237">
-                                    <label id="238">
-                                        <text-property name="text">BOTH CLINICAL AND CONFIRMED</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="239">
-                                    <label id="240">
-                                        <text-property name="text">Confirmed malaria cases only</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="241">
-                                <cell id="242"/>
-                                <cell id="243"/>
-                                <cell id="244"/>
-                            </row>
-                            <row id="628">
-                                <cell id="629">
-                                    <property name="colSpan">3</property>
-                                    <property name="rowSpan">1</property>
-                                </cell>
-                            </row>
-                        </grid>
-                    </cell>
-                    <cell id="85">
-                        <grid id="199">
-                            <column id="200"/>
-                            <column id="201"/>
-                            <column id="202"/>
-                            <row id="203">
-                                <cell id="204">
-                                    <property name="colSpan">1</property>
-                                    <property name="rowSpan">2</property>
-                                    <label id="216">
-                                        <text-property name="text">ALL OPD CASES</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="205">
-                                    <property name="colSpan">2</property>
-                                    <property name="rowSpan">1</property>
-                                    <label id="215">
-                                        <property name="fontWeight">bold</property>
-                                        <text-property name="text">MALARIA CASES</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="207">
-                                <cell id="209">
-                                    <label id="217">
-                                        <text-property name="text">BOTH CLINICAL AND CONFIRMED</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="210">
-                                    <label id="218">
-                                        <text-property name="text">Confirmed malaria cases only</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="211">
-                                <cell id="212"/>
-                                <cell id="213"/>
-                                <cell id="214"/>
-                            </row>
-                            <row id="632">
-                                <cell id="633">
-                                    <property name="colSpan">3</property>
-                                    <property name="rowSpan">1</property>
-                                </cell>
-                            </row>
-                        </grid>
-                    </cell>
-                </row>
-                <row id="86">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <property name="textAlign">center</property>
+                    <property name="verticalAlign">middle</property>
+                    <label id="615">
+                        <property name="textAlign">center</property>
+                        <property name="height">13.34mm</property>
+                        <property name="width">53.34mm</property>
+                        <text-property name="text">CHILDREN UNDER 5 YEARS OLD</text-property>
+                    </label>
+                </cell>
+                <cell id="613">
+                    <property name="fontFamily">"Arial Narrow"</property>
                     <property name="fontWeight">bold</property>
-                    <cell id="87">
-                        <property name="colSpan">3</property>
-                        <property name="rowSpan">1</property>
-                        <label id="410">
-                            <text-property name="text">CFR/FORM II: IN-PATIENTS CASES</text-property>
-                        </label>
-                    </cell>
-                </row>
-                <row id="90">
-                    <cell id="91">
-                        <grid id="411">
-                            <column id="412"/>
-                            <column id="413"/>
-                            <column id="414"/>
-                            <row id="415">
-                                <property name="fontWeight">bold</property>
-                                <cell id="416">
-                                    <property name="colSpan">3</property>
-                                    <property name="rowSpan">1</property>
-                                    <label id="439">
-                                        <text-property name="text">CHILDREN UNDER   5 YEARS OLD</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="419">
-                                <cell id="420">
-                                    <property name="colSpan">1</property>
-                                    <property name="rowSpan">2</property>
-                                    <label id="441">
-                                        <text-property name="text">ALL IN-PATIENTS</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="421">
-                                    <property name="colSpan">2</property>
-                                    <property name="rowSpan">1</property>
-                                    <label id="440">
-                                        <property name="fontWeight">bold</property>
-                                        <text-property name="text">MALARIA CASES</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="423">
-                                <cell id="425">
-                                    <label id="442">
-                                        <text-property name="text">BOTH CLINICAL AND CONFIRMED</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="426">
-                                    <label id="443">
-                                        <text-property name="text">Confirmed malaria cases only</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="427">
-                                <cell id="428"/>
-                                <cell id="429"/>
-                                <cell id="430"/>
-                            </row>
-                            <row id="636">
-                                <cell id="637">
-                                    <property name="colSpan">3</property>
-                                    <property name="rowSpan">1</property>
-                                </cell>
-                            </row>
-                        </grid>
-                    </cell>
-                    <cell id="92">
-                        <grid id="444">
-                            <column id="445"/>
-                            <column id="446"/>
-                            <column id="447"/>
-                            <row id="448">
-                                <property name="fontWeight">bold</property>
-                                <cell id="449">
-                                    <property name="colSpan">3</property>
-                                    <property name="rowSpan">1</property>
-                                    <label id="450">
-                                        <text-property name="text">AGE   5-YEARS AND ABOVE (EXCLUDES PREGNANT WOMEN)</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="451">
-                                <cell id="452">
-                                    <property name="colSpan">1</property>
-                                    <property name="rowSpan">2</property>
-                                    <label id="453">
-                                        <text-property name="text">ALL IN-PATIENTS</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="454">
-                                    <property name="colSpan">2</property>
-                                    <property name="rowSpan">1</property>
-                                    <label id="455">
-                                        <property name="fontWeight">bold</property>
-                                        <text-property name="text">MALARIA CASES</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="456">
-                                <cell id="457">
-                                    <label id="458">
-                                        <text-property name="text">BOTH CLINICAL AND CONFIRMED</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="459">
-                                    <label id="460">
-                                        <text-property name="text">Confirmed malaria cases only</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="461">
-                                <cell id="462"/>
-                                <cell id="463"/>
-                                <cell id="464"/>
-                            </row>
-                            <row id="640">
-                                <cell id="641">
-                                    <property name="colSpan">3</property>
-                                    <property name="rowSpan">1</property>
-                                </cell>
-                            </row>
-                        </grid>
-                    </cell>
-                    <cell id="93">
-                        <grid id="473">
-                            <column id="474"/>
-                            <column id="475"/>
-                            <column id="476"/>
-                            <row id="477">
-                                <property name="fontWeight">bold</property>
-                                <cell id="478">
-                                    <property name="colSpan">3</property>
-                                    <property name="rowSpan">1</property>
-                                    <label id="479">
-                                        <text-property name="text">PREGNANT WOMEN ONLY</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="480">
-                                <cell id="481">
-                                    <property name="colSpan">1</property>
-                                    <property name="rowSpan">2</property>
-                                    <label id="482">
-                                        <text-property name="text">ALL IN-PATIENTS</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="483">
-                                    <property name="colSpan">2</property>
-                                    <property name="rowSpan">1</property>
-                                    <label id="484">
-                                        <property name="fontWeight">bold</property>
-                                        <text-property name="text">MALARIA CASES</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="485">
-                                <cell id="486">
-                                    <label id="487">
-                                        <text-property name="text">BOTH CLINICAL AND CONFIRMED</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="488">
-                                    <label id="489">
-                                        <text-property name="text">Confirmed malaria cases only</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="490">
-                                <cell id="491"/>
-                                <cell id="492"/>
-                                <cell id="493"/>
-                            </row>
-                            <row id="644">
-                                <cell id="645">
-                                    <property name="colSpan">3</property>
-                                    <property name="rowSpan">1</property>
-                                </cell>
-                            </row>
-                        </grid>
-                    </cell>
-                </row>
-                <row id="394">
-                    <cell id="395">
-                        <property name="colSpan">3</property>
-                        <property name="rowSpan">1</property>
-                        <label id="522">
-                            <property name="fontWeight">bold</property>
-                            <text-property name="text">CFR/FORM III: IN-PATIENTS DEATHS</text-property>
-                        </label>
-                    </cell>
-                </row>
-                <row id="406">
-                    <cell id="407">
-                        <property name="colSpan">3</property>
-                        <property name="rowSpan">1</property>
-                        <grid id="502">
-                            <column id="503"/>
-                            <column id="504"/>
-                            <column id="505"/>
-                            <row id="506">
-                                <cell id="507">
-                                    <label id="523">
-                                        <property name="fontWeight">bold</property>
-                                        <text-property name="text">CHILDREN UNDER 5 YEARS OLD</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="508">
-                                    <label id="524">
-                                        <property name="fontWeight">bold</property>
-                                        <text-property name="text">5 YEARS OLD AND ABOVE EXCLUDES PREGNANT WOMEN</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="509">
-                                    <label id="525">
-                                        <property name="fontWeight">bold</property>
-                                        <text-property name="text">PREGNANT WOMEN ONLY</text-property>
-                                    </label>
-                                </cell>
-                            </row>
-                            <row id="510">
-                                <cell id="511">
-                                    <grid id="527">
-                                        <column id="528"/>
-                                        <column id="529"/>
-                                        <row id="530">
-                                            <cell id="531">
-                                                <label id="536">
-                                                    <text-property name="text">ALL DEATHS</text-property>
-                                                </label>
-                                            </cell>
-                                            <cell id="532">
-                                                <label id="537">
-                                                    <text-property name="text">In-patient Malaria deaths ONLY</text-property>
-                                                </label>
-                                            </cell>
-                                        </row>
-                                        <row id="533">
-                                            <cell id="534"/>
-                                            <cell id="535"/>
-                                        </row>
-                                        <row id="648">
-                                            <cell id="649"/>
-                                            <cell id="650"/>
-                                        </row>
-                                    </grid>
-                                </cell>
-                                <cell id="512">
-                                    <grid id="538">
-                                        <column id="539"/>
-                                        <column id="540"/>
-                                        <row id="541">
-                                            <cell id="542">
-                                                <label id="543">
-                                                    <text-property name="text">ALL DEATHS</text-property>
-                                                </label>
-                                            </cell>
-                                            <cell id="544">
-                                                <label id="545">
-                                                    <text-property name="text">In-patient Malaria deaths ONLY</text-property>
-                                                </label>
-                                            </cell>
-                                        </row>
-                                        <row id="546">
-                                            <cell id="547"/>
-                                            <cell id="548"/>
-                                        </row>
-                                        <row id="651">
-                                            <cell id="652"/>
-                                            <cell id="653"/>
-                                        </row>
-                                    </grid>
-                                </cell>
-                                <cell id="513">
-                                    <grid id="549">
-                                        <column id="550"/>
-                                        <column id="551"/>
-                                        <row id="552">
-                                            <cell id="553">
-                                                <label id="554">
-                                                    <text-property name="text">ALL DEATHS</text-property>
-                                                </label>
-                                            </cell>
-                                            <cell id="555">
-                                                <label id="556">
-                                                    <text-property name="text">In-patient Malaria deaths ONLY</text-property>
-                                                </label>
-                                            </cell>
-                                        </row>
-                                        <row id="557">
-                                            <cell id="558"/>
-                                            <cell id="559"/>
-                                        </row>
-                                        <row id="654">
-                                            <cell id="655"/>
-                                            <cell id="656"/>
-                                        </row>
-                                    </grid>
-                                </cell>
-                            </row>
-                            <row id="514">
-                                <cell id="515"/>
-                                <cell id="516"/>
-                                <cell id="517"/>
-                            </row>
-                        </grid>
-                    </cell>
-                </row>
-                <row id="398">
-                    <cell id="399">
-                        <property name="colSpan">3</property>
-                        <property name="rowSpan">1</property>
-                        <grid id="560">
-                            <column id="561">
-                                <property name="width">2.375in</property>
-                            </column>
-                            <column id="562">
-                                <property name="width">1.5625in</property>
-                            </column>
-                            <column id="563">
-                                <property name="width">2.59375in</property>
-                            </column>
-                            <column id="564">
-                                <property name="width">1.34375in</property>
-                            </column>
-                            <row id="565">
-                                <cell id="566">
-                                    <label id="570">
-                                        <property name="fontWeight">bold</property>
-                                        <text-property name="text">All cerebral Malaria Deaths  </text-property>
-                                    </label>
-                                </cell>
-                                <cell id="567">
-                                    <text id="659">
-                                        <property name="contentType">plain</property>
-                                    </text>
-                                </cell>
-                                <cell id="568">
-                                    <label id="571">
-                                        <property name="fontWeight">bold</property>
-                                        <text-property name="text">All Anaemia Malaria Deaths</text-property>
-                                    </label>
-                                </cell>
-                                <cell id="569">
-                                    <text id="660">
-                                        <property name="contentType">plain</property>
-                                    </text>
-                                </cell>
-                            </row>
-                        </grid>
-                    </cell>
-                </row>
-            </detail>
-            <footer>
-                <row id="94">
-                    <cell id="95"/>
-                    <cell id="96"/>
-                    <cell id="97"/>
-                </row>
-            </footer>
-        </table>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <property name="textAlign">center</property>
+                    <property name="verticalAlign">middle</property>
+                    <label id="616">
+                        <property name="textAlign">center</property>
+                        <property name="height">13.34mm</property>
+                        <property name="width">53.34mm</property>
+                        <text-property name="text">5 YEARS OLD AND ABOVE EXCLUDES PREGNANT WOMEN</text-property>
+                    </label>
+                </cell>
+                <cell id="614">
+                    <property name="fontFamily">"Arial Narrow"</property>
+                    <property name="fontWeight">bold</property>
+                    <property name="textAlign">center</property>
+                    <property name="verticalAlign">bottom</property>
+                    <label id="617">
+                        <property name="textAlign">center</property>
+                        <property name="height">13.34mm</property>
+                        <property name="width">53.34mm</property>
+                        <text-property name="text">PREGNANT WOMEN ONLY</text-property>
+                    </label>
+                </cell>
+            </row>
+        </grid>
+        <grid id="618">
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">medium</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">medium</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">medium</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">medium</property>
+            <property name="width">168.69833333333332mm</property>
+            <column id="619">
+                <property name="width">29.633333333333333mm</property>
+            </column>
+            <column id="620">
+                <property name="width">29.633333333333333mm</property>
+            </column>
+            <column id="621">
+                <property name="width">29.633333333333333mm</property>
+            </column>
+            <column id="622">
+                <property name="width">29.633333333333333mm</property>
+            </column>
+            <column id="623">
+                <property name="width">29.633333333333333mm</property>
+            </column>
+            <column id="624">
+                <property name="width">20.531666666666666mm</property>
+            </column>
+            <row id="625">
+                <property name="height">19.68mm</property>
+                <property name="borderBottomColor">#000000</property>
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">medium</property>
+                <property name="borderLeftColor">#000000</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">medium</property>
+                <property name="borderRightColor">#000000</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">medium</property>
+                <property name="borderTopColor">#000000</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">medium</property>
+                <cell id="626">
+                    <property name="fontFamily">"Arial Narrow"</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <property name="textAlign">left</property>
+                    <property name="verticalAlign">bottom</property>
+                    <label id="639">
+                        <property name="height">19.68mm</property>
+                        <text-property name="text">ALL DEATHS</text-property>
+                    </label>
+                </cell>
+                <cell id="627">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <property name="textAlign">left</property>
+                    <label id="640">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="height">19.68mm</property>
+                        <text-property name="text">In-patient Malaria deaths ONLY</text-property>
+                    </label>
+                </cell>
+                <cell id="628">
+                    <property name="fontFamily">"Arial Narrow"</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <property name="textAlign">left</property>
+                    <property name="verticalAlign">bottom</property>
+                    <label id="641">
+                        <property name="height">19.68mm</property>
+                        <text-property name="text">ALL DEATHS</text-property>
+                    </label>
+                </cell>
+                <cell id="629">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="643">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="height">19.68mm</property>
+                        <text-property name="text">In-patient Malaria deaths ONLY</text-property>
+                    </label>
+                </cell>
+                <cell id="630">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="642">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">medium</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">medium</property>
+                        <property name="borderTopColor">#000000</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">medium</property>
+                        <property name="height">19.68mm</property>
+                        <text-property name="text">ALL DEATHS</text-property>
+                    </label>
+                </cell>
+                <cell id="631">
+                    <label id="644">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">medium</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">medium</property>
+                        <property name="borderTopColor">#000000</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">medium</property>
+                        <property name="height">19.68mm</property>
+                        <text-property name="text">In-patient Malaria deaths ONLY</text-property>
+                    </label>
+                </cell>
+            </row>
+            <row id="632">
+                <property name="height">10.16mm</property>
+                <cell id="633">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="634">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="635">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="636">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="637">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                </cell>
+                <cell id="638"/>
+            </row>
+        </grid>
+        <label id="657">
+            <property name="height">5.5mm</property>
+            <property name="width">168.24mm</property>
+        </label>
+        <grid id="645">
+            <property name="height">5.72mm</property>
+            <property name="width">168.0633333333333mm</property>
+            <column id="646">
+                <property name="width">49.95333333333333mm</property>
+            </column>
+            <column id="647">
+                <property name="width">30.26833333333333mm</property>
+            </column>
+            <column id="648">
+                <property name="width">53.763333333333335mm</property>
+            </column>
+            <column id="649">
+                <property name="width">34.07833333333333mm</property>
+            </column>
+            <row id="650">
+                <cell id="651">
+                    <property name="fontFamily">"Arial Narrow"</property>
+                    <property name="fontSize">12pt</property>
+                    <property name="fontWeight">bold</property>
+                    <property name="verticalAlign">bottom</property>
+                    <label id="655">
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">medium</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">medium</property>
+                        <property name="borderTopColor">#000000</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">medium</property>
+                        <text-property name="text">All cerebral Malaria Deaths</text-property>
+                    </label>
+                </cell>
+                <cell id="652"/>
+                <cell id="653">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">medium</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">medium</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <label id="656">
+                        <property name="fontFamily">"Arial Narrow"</property>
+                        <property name="fontSize">12pt</property>
+                        <property name="fontWeight">bold</property>
+                        <text-property name="text">All Anaemia Malaria Deaths</text-property>
+                    </label>
+                </cell>
+                <cell id="654"/>
+            </row>
+        </grid>
     </body>
 </report>
