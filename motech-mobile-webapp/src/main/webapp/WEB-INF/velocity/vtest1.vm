@@ -1,0 +1,15 @@
+<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.w3.org/TR/voicexml20/vxml.xsd">
+
+<var name="screen"/>
+<var name="retryN" expr="0"/>
+<var name="state" expr="'init'"/>
+<var name="phone" expr="'${callerid}'" />
+<var name="file" expr="'${callFile}'" />
+
+<error>
+  	<if cond="_event =='error.*'">
+  		<exit/>
+  	</if>
+</error>
+
+</vxml>
