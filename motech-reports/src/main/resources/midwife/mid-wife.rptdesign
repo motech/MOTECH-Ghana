@@ -3232,6 +3232,10 @@ and
     MONTH(obs.obs_datetime) = ?
 and
 	location.name=?
+union
+	select 0,0
+from
+	dual
 ) as ages;
 ]]></xml-property>
         </oda-data-set>
@@ -3882,11 +3886,11 @@ and
     SUM(if(obs.value_numeric =1,1,0)) as elective,
     SUM(if(obs.value_numeric = 2,1,0)) as spontaneous,
     SUM(if(obs.value_numeric between 3 and 4 ,1,0)) as induced
-    FROM 
-    	obs obs,
-    	encounter encounter,
-    	location location,
-    	concept_name concept_name
+FROM 
+    obs obs,
+    encounter encounter,
+    location location,
+    concept_name concept_name
 where 
     obs.concept_id = concept_name.concept_id
 and
@@ -4055,6 +4059,10 @@ and
 	MONTH(obs.obs_datetime)= ?
 and
 	location.name=?
+union
+	select 0,0
+from
+	dual
 ) as ages;
 ]]></xml-property>
         </oda-data-set>
