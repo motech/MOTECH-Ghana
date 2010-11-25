@@ -6,6 +6,54 @@
 <var name="phone" expr="'${data.callerid}'" />
 <var name="file" expr="'${data.callFile}'" />
 
+<form id="F1">
+
+<property name="inputmodes" value="dtmf"/>
+<property name="interdigittimeout" value="2s"/>
+<property name="timeout" value="2s"/>
+
+<block>
+	<prompt>Welcome to Motech</prompt>
+</block>
+
+<field name="fork" type="digits">
+			<prompt>To contact us press one, Press two if you are a registered user of OpenMRS.</prompt>
+
+			<filled>
+				<if cond="fork==1">
+					<goto next="#F2"/>
+				<elseif cond="fork==2" />
+					<submit next="v2next" method="get" namelist="phone file"/>
+				</if>
+			</filled>
+
+			<noinput>
+			  	<assign name="retryN" expr="retryN + 1"/>
+		        <if cond="retryN==3">
+		        	<prompt>I did not hear anything. Good bye.</prompt>
+		        	<exit/>
+		        <else/>
+		        	<prompt>I did not hear anything.</prompt>
+		        	<reprompt/>
+		        </if>
+		     </noinput>
+
+		     <nomatch>
+		        <assign name="retryN" expr="retryN + 1"/>
+		        <if cond="retryN==3">
+		        	<prompt>I did not catch that. Please try again next time. Good bye.</prompt>
+		        	<exit/>
+		        <else/>
+		        	<prompt>I did not catch that.</prompt>
+		        	<reprompt/>
+		        </if>
+		     </nomatch>
+
+
+		</field>
+
+</form>
+
 <error>
   	<if cond="_event =='error.*'">
   		<exit/>
