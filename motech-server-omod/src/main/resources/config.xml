@@ -37,7 +37,7 @@
 <!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.1//EN" "http://resources.openmrs.org/doctype/config-1.1.dtd">
 
 <module configVersion="1.0">
-	
+
 	<!-- Base Module Properties -->
 	<id>${moduleName}</id>
 	<name>${project.name}</name>
@@ -49,29 +49,29 @@
 	</description>
 
 	<activator>${modulePackage}.MotechModuleActivator</activator>
-		
+
 	<require_version>1.5.0.10342</require_version>
-	
+
 	<require_modules>
 		<require_module version="1.4.0.3">org.openmrs.module.idgen</require_module>
 	</require_modules>
-	
+
 	<!-- Extensions -->
 	<extension>
 		<point>org.openmrs.admin.list</point>
 		<class>${modulePackage}.extension.html.AdminList</class>
 	</extension>
-	
+
 	<extension>
 		<point>org.openmrs.gutter.tools</point>
 		<class>${modulePackage}.extension.html.GutterLink</class>
 	</extension>
-	
+
 	<extension>
 		<point>org.openmrs.gutter.tools</point>
 		<class>${modulePackage}.extension.html.DemoGutterLink</class>
 	</extension>
-	
+
 	<!-- AOP -->
 	<advice>
 		<point>org.openmrs.api.ObsService</point>
@@ -85,13 +85,13 @@
 		<point>org.openmrs.api.PatientService</point>
 		<class>${modulePackage}.advice.PatientAdvice</class>
 	</advice>
-	
+
 	<!-- Privileges used in module -->
 	<privilege>
 		<name>Manage MoTeCH</name>
 		<description>Allows viewing and interacting with the MoTeCH management functions</description>
 	</privilege>
-	
+
 	<privilege>
 		<name>Use MoTeCH</name>
 		<description>Enables a user to view the motech menu in the gutter</description>
@@ -106,37 +106,37 @@
 		<name>Register MoTeCH Maternal Visit</name>
 		<description>Allows registration of a maternal visit via MoTeCH</description>
 	</privilege>
-	
+
 	<privilege>
 		<name>Register MoTeCH Facility</name>
 		<description>Allows registration of a facility via MoTeCH</description>
 	</privilege>
-	
+
 	<privilege>
 		<name>Manage MoTeCH Troubled Phones</name>
 		<description>Allows ability to view and enable troubled phones via MoTeCH</description>
 	</privilege>
-		
+
 	<privilege>
 		<name>Manage MoTeCH Blackout</name>
 		<description>Allows management of global blackout interval for MoTeCH</description>
 	</privilege>
-	
+
 	<privilege>
 		<name>View MoTeCH Data</name>
 		<description>Allows viewing MoTeCH data summary</description>
 	</privilege>
-		
+
 	<privilege>
 		<name>Register MoTeCH Staff</name>
 		<description>Allows registration of a staff member via MoTeCH</description>
 	</privilege>
-	
+
 	<privilege>
 		<name>Register MoTeCH Patient</name>
 		<description>Allows registration of a patient via MoTeCH</description>
 	</privilege>
-	
+
 	<privilege>
 		<name>Register MoTeCH Pregnancy</name>
 		<description>Allows registration of a pregnancy via MoTeCH</description>
@@ -146,12 +146,12 @@
         <name>Register MoTeCH Communities</name>
         <description>Allows to add new communities and edit existing ones</description>
     </privilege>
-    
+
     <privilege>
         <name>Duplicate Patients</name>
         <description>Allows the admin to delete duplicate patients</description>
     </privilege>
-	
+
 	<globalProperty>
 		<property>motechmodule.troubled_phone_failures</property>
 		<defaultValue>4</defaultValue>
@@ -169,7 +169,7 @@
 		<defaultValue>MONDAY</defaultValue>
 		<description>Default day of week to send messages to a patient</description>
 	</globalProperty>
-	
+
 	<globalProperty>
 		<property>motechmodule.patient_message_delivery_time_of_day</property>
 		<defaultValue>18:00</defaultValue>
@@ -181,7 +181,7 @@
 		<defaultValue>50</defaultValue>
 		<description>Maximum number of results returned to users</description>
 	</globalProperty>
-		
+
 	<dwr>
 		<allow>
 			<create creator="new" javascript="DWRMotechService">
@@ -193,7 +193,13 @@
 			</convert>
 		</allow>
 	</dwr>
-	
+
+	<!-- Load up all servlets HERE -->
+	<servlet>
+		<servlet-name>ivr-voicexml</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	</servlet>
+
 	<!-- Internationalization -->
 	<!-- All message codes should start with ${project.artifactId}.* -->
 	<messages>

@@ -78,10 +78,10 @@
 
 	</bean>
 
-	<bean id="sampleController" name="/vxml1" class="org.motechproject.mobile.web.ivr.voicexml.SampleController">
+	<bean id="sampleController" name="/module/motechmodule/vxml1" class="org.motechproject.mobile.web.ivr.voicexml.SampleController">
 	</bean>
 
-	<bean id="sampleCommandController" name="/vxml2" class="org.motechproject.mobile.web.ivr.voicexml.SampleCommandController">
+	<bean id="sampleCommandController" name="/module/motechmodule/vxml2" class="org.motechproject.mobile.web.ivr.voicexml.SampleCommandController">
 		<property name="commandClass" value="org.motechproject.mobile.web.ivr.voicexml.SampleData" />
 	</bean>
 
