@@ -157,7 +157,7 @@
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
-            <property name="odaURL">jdbc:mysql://10.7.3.178/openmrs</property>
+            <property name="odaURL">jdbc:mysql://10.4.4.74/openmrs</property>
             <property name="odaUser">root</property>
             <encrypted-property name="odaPassword" encryptionID="base64">b3Blbm1ycw==</encrypted-property>
         </oda-data-source>
@@ -2885,9 +2885,9 @@ and
             </list-property>
             <xml-property name="queryText"><![CDATA[select
 	'VVF Repair', 
-    sum(if(obs.value_numeric =1,1,0)) as Seen,
-    sum(if(obs.value_numeric =2,1,0)) as Repaired,
-    sum(if(obs.value_numeric =3,1,0)) as Referred
+    coalesce(sum(if(obs.value_numeric =1,1,0)),0) as Seen,
+    coalesce(sum(if(obs.value_numeric =2,1,0)),0) as Repaired,
+    coalesce(sum(if(obs.value_numeric =3,1,0)),0) as Referred
 from
     obs obs,
     encounter encounter,
