@@ -113,6 +113,34 @@
         </property>
     </bean>
 
+    <bean id="inMxFormParser" class="org.motechproject.mobile.imp.util.InMxFormParserImpl">
+        <property name="separator" value="${imp.form.param.valueSparator}" />
+        <property name="delimiter" value="${imp.xform.param.delimiter}" />
+        <property name="formTypeTagName" value="${imp.xmlparser.formTypeTagName}" />
+        <property name="formNameTagName" value="${imp.xmlparser.formNameTagName}" />
+        <property name="oxdDateFormat">
+            <bean class="java.text.SimpleDateFormat">
+                <constructor-arg value="${imp.oxd.dateFormat}"/>
+            </bean>
+        </property>
+        <property name="oxdDatePattern">
+            <bean class="java.util.regex.Pattern" factory-method="compile">
+                <constructor-arg value="${imp.oxd.dateExpression}"/>
+            </bean>
+        </property>
+        <property name="impDateFormat">
+            <bean class="java.text.SimpleDateFormat">
+                <constructor-arg value="${imp.validator.dateFormat}"/>
+            </bean>
+        </property>
+        <property name="formTypeLookup" >
+            <map>
+                <entry key="data_entry" value="Type"/>
+                <entry key="query" value="Query"/>
+            </map>
+        </property>
+    </bean>
+
     <bean id="formCmdAxn" scope="prototype" class="org.motechproject.mobile.imp.util.FormCommandAction">
         <property name="formValidator" ref="imFormValidator" />
         <property name="formProcessor" ref="formProcessor" />

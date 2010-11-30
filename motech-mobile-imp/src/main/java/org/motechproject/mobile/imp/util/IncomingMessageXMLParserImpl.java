@@ -104,6 +104,7 @@ public class IncomingMessageXMLParserImpl implements IncomingMessageXMLParser {
     }
 
     /**
+     * @deprecated
      * Returns a String similar to SMS forms represnting the xml argument passed
      * 
      * @param xml the XML to parse
