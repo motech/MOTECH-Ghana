@@ -2598,6 +2598,52 @@ and
                         <property name="borderTopColor">#000000</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
+                        <data id="3053">
+                            <property name="dataSet">Tuberculosis</property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">name</property>
+                                    <expression name="expression" type="javascript">dataSetRow["name"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">concept_name_id</property>
+                                    <expression name="expression" type="javascript">dataSetRow["concept_name_id"]</expression>
+                                    <property name="dataType">integer</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">concept_name_id_3</property>
+                                    <expression name="expression" type="javascript">dataSetRow["concept_name_id_3"]</expression>
+                                    <property name="dataType">integer</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">Dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["Dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">0_to_11_months</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">12_to_24_months</property>
+                                    <expression name="expression" type="javascript">dataSetRow["12_to_24_months"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">above_24_months</property>
+                                    <expression name="expression" type="javascript">dataSetRow["above_24_months"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">Column Binding</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months"] + dataSetRow["12_to_24_months"] + dataSetRow["above_24_months"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                            </list-property>
+                            <property name="resultSetColumn">Column Binding</property>
+                        </data>
                     </cell>
                     <cell id="2281">
                         <property name="borderBottomColor">#000000</property>
@@ -2932,6 +2978,38 @@ and
                         <property name="borderTopColor">#000000</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
+                        <text-data id="3054">
+                            <property name="dataSet">Measles</property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">vaccination</property>
+                                    <expression name="expression" type="javascript">dataSetRow["vaccination"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">Dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["Dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">0_to_11_months</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">12_to_24_months</property>
+                                    <expression name="expression" type="javascript">dataSetRow["12_to_24_months"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">above_24_months</property>
+                                    <expression name="expression" type="javascript">dataSetRow["above_24_months"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                            </list-property>
+                            <expression name="valueExpr">row["0_to_11_months"] + row["12_to_24_months"] + row["above_24_months"]</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
                     </cell>
                     <cell id="2297">
                         <property name="borderBottomColor">#000000</property>
@@ -3342,6 +3420,67 @@ and
                         <property name="borderTopColor">#000000</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
+                        <data id="3055">
+                            <property name="dataSet">Penta</property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">vaccination</property>
+                                    <expression name="expression" type="javascript">dataSetRow["vaccination"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">0_to_11_months_1st_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months_1st_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">0_to_11_months_2nd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months_2nd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">0_to_11_months_3rd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months_3rd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">12_to_24_months_1st_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["12_to_24_months_1st_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">12_to_24_months_2nd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["12_to_24_months_2nd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">12_to_24_months_3rd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["12_to_24_months_3rd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">above_24_months_1st_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["above_24_months_1st_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">above_24_months_2nd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["above_24_months_2nd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">above_24_months_3rd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["above_24_months_3rd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">Column Binding</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months_1st_dosage"] + dataSetRow["12_to_24_months_1st_dosage"] + dataSetRow["above_24_months_1st_dosage"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                            </list-property>
+                            <property name="resultSetColumn">Column Binding</property>
+                        </data>
                     </cell>
                     <cell id="2313">
                         <property name="borderBottomColor">#000000</property>
@@ -3721,6 +3860,67 @@ and
                         <property name="borderTopColor">#000000</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
+                        <data id="3056">
+                            <property name="dataSet">Penta</property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">vaccination</property>
+                                    <expression name="expression" type="javascript">dataSetRow["vaccination"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">0_to_11_months_1st_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months_1st_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">0_to_11_months_2nd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months_2nd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">0_to_11_months_3rd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months_3rd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">12_to_24_months_1st_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["12_to_24_months_1st_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">12_to_24_months_2nd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["12_to_24_months_2nd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">12_to_24_months_3rd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["12_to_24_months_3rd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">above_24_months_1st_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["above_24_months_1st_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">above_24_months_2nd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["above_24_months_2nd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">above_24_months_3rd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["above_24_months_3rd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">Column Binding</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months_2nd_dosage"] + dataSetRow["12_to_24_months_2nd_dosage"] + dataSetRow["above_24_months_2nd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                            </list-property>
+                            <property name="resultSetColumn">Column Binding</property>
+                        </data>
                     </cell>
                     <cell id="2329">
                         <property name="borderBottomColor">#000000</property>
@@ -4100,6 +4300,67 @@ and
                         <property name="borderTopColor">#000000</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
+                        <data id="3057">
+                            <property name="dataSet">Penta</property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">vaccination</property>
+                                    <expression name="expression" type="javascript">dataSetRow["vaccination"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">0_to_11_months_1st_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months_1st_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">0_to_11_months_2nd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months_2nd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">0_to_11_months_3rd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months_3rd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">12_to_24_months_1st_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["12_to_24_months_1st_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">12_to_24_months_2nd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["12_to_24_months_2nd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">12_to_24_months_3rd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["12_to_24_months_3rd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">above_24_months_1st_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["above_24_months_1st_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">above_24_months_2nd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["above_24_months_2nd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">above_24_months_3rd_dosage</property>
+                                    <expression name="expression" type="javascript">dataSetRow["above_24_months_3rd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">Column Binding</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months_3rd_dosage"] + dataSetRow["12_to_24_months_3rd_dosage"] + dataSetRow["above_24_months_3rd_dosage"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                            </list-property>
+                            <property name="resultSetColumn">Column Binding</property>
+                        </data>
                     </cell>
                     <cell id="2345">
                         <property name="borderBottomColor">#000000</property>
@@ -4257,6 +4518,7 @@ and
                         <property name="borderTopColor">#000000</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
+                        <data id="3052"/>
                     </cell>
                     <cell id="2358">
                         <property name="borderBottomColor">#000000</property>
