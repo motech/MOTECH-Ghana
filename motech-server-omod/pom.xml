@@ -26,11 +26,11 @@
 			<artifactId>motech-wsapi</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.motechproject.mobile</groupId>
 			<artifactId>motech-mobile-core</artifactId>
 			<version>0.1-SNAPSHOT</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.motechproject.mobile</groupId>
@@ -46,18 +46,20 @@
 			<groupId>org.motechproject.mobile</groupId>
 			<artifactId>motech-mobile-imp</artifactId>
 			<version>0.1-SNAPSHOT</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.motechproject.mobile</groupId>
 			<artifactId>motech-mobile-modemgw</artifactId>
 			<version>0.1-SNAPSHOT</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.motechproject.mobile</groupId>
 			<artifactId>motech-mobile-webapp</artifactId>
 			<version>0.1-SNAPSHOT</version>
+			<scope>runtime</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>idgen-core</artifactId>
@@ -208,13 +210,18 @@
 			<artifactId>commons-lang</artifactId>
 		</dependency>
 		<dependency>
-				<groupId>org.apache.velocity</groupId>
-				<artifactId>velocity</artifactId>
-			</dependency>
-			<dependency>
-				<groupId>commons-collections</groupId>
-				<artifactId>commons-collections</artifactId>
-			</dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>aopalliance</groupId>
+			<artifactId>aopalliance</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

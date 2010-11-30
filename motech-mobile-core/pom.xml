@@ -31,6 +31,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
         </dependency>
         <dependency>
@@ -40,10 +44,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -64,7 +64,6 @@
         <dependency>
             <groupId>c3p0</groupId>
             <artifactId>c3p0</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>hsqldb</groupId>
@@ -79,21 +78,18 @@
             <artifactId>log4j</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymock</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
         </dependency>
         <dependency>
-           <groupId>org.motechproject</groupId>
-           <artifactId>motech-wsapi</artifactId>
-           <version>0.1-SNAPSHOT</version>
-       </dependency>
+            <groupId>org.motechproject</groupId>
+            <artifactId>motech-wsapi</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
        <dependency>
            <groupId>org.liquibase</groupId>
            <artifactId>liquibase-core</artifactId>
+           <scope>test</scope>
        </dependency>
     </dependencies>
     <properties>
