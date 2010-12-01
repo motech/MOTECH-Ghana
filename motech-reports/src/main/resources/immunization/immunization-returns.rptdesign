@@ -2978,7 +2978,7 @@ and
                         <property name="borderTopColor">#000000</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
-                        <text-data id="3054">
+                        <data id="3058">
                             <property name="dataSet">Measles</property>
                             <list-property name="boundDataColumns">
                                 <structure>
@@ -3006,10 +3006,14 @@ and
                                     <expression name="expression" type="javascript">dataSetRow["above_24_months"]</expression>
                                     <property name="dataType">decimal</property>
                                 </structure>
+                                <structure>
+                                    <property name="name">Column Binding</property>
+                                    <expression name="expression" type="javascript">dataSetRow["0_to_11_months"] + dataSetRow["12_to_24_months"] + dataSetRow["above_24_months"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
                             </list-property>
-                            <expression name="valueExpr">row["0_to_11_months"] + row["12_to_24_months"] + row["above_24_months"]</expression>
-                            <property name="contentType">html</property>
-                        </text-data>
+                            <property name="resultSetColumn">Column Binding</property>
+                        </data>
                     </cell>
                     <cell id="2297">
                         <property name="borderBottomColor">#000000</property>
