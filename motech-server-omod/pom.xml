@@ -270,6 +270,9 @@
 				<artifactId>maven-openmrs-plugin</artifactId>
 				<version>1.0-RC4</version>
 				<extensions>true</extensions>
+				<configuration>
+					<verifyOmod>false</verifyOmod>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -44,7 +44,7 @@
     </head>
     <body>
         <h1>IMP Test Page</h1>
-        <form method="GET" action="incomingmessage">
+        <form method="GET" action="/openmrs/moduleServlet/motechmodule/incomingmessage">
             Sender Number: <input type="text" name="from" id="from" />
             Message:
             <textarea cols="40" rows="10" name="text" id="text"></textarea>
