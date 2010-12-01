@@ -108,13 +108,13 @@
                     <property name="valueType">dynamic</property>
                     <property name="isRequired">true</property>
                     <property name="dataSetName">Locations</property>
-                    <expression name="valueExpr">row["name"]</expression>
+                    <expression name="valueExpr">row["location_id"]</expression>
                     <expression name="labelExpr">row["name"]</expression>
                     <expression name="sortByColumn">dataSetRow["name"]</expression>
                     <property name="sortDirection">asc</property>
-                    <property name="dataType">string</property>
+                    <property name="dataType">integer</property>
                     <simple-property-list name="defaultValue">
-                        <value type="constant">Navio CHPS</value>
+                        <value type="constant">2</value>
                     </simple-property-list>
                     <property name="paramType">simple</property>
                     <property name="controlType">list-box</property>
@@ -352,6 +352,11 @@ join location loc on fac.location_id = loc.location_id]]></xml-property>
                         <property name="name">name</property>
                         <property name="dataType">string</property>
                     </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">location_id</property>
+                        <property name="dataType">integer</property>
+                    </structure>
                 </list-property>
             </structure>
             <property name="dataSource">Data Source</property>
@@ -362,9 +367,15 @@ join location loc on fac.location_id = loc.location_id]]></xml-property>
                     <property name="nativeName">name</property>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">location_id</property>
+                    <property name="nativeName">location_id</property>
+                    <property name="dataType">integer</property>
+                </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[select 
-loc.name 
+loc.name,loc.location_id 
 from motechmodule_facility fac
 join location loc 
 on fac.location_id = loc.location_id
@@ -932,9 +943,16 @@ and enc.voided = 0;]]></xml-property>
                 </structure>
                 <structure>
                     <property name="operator">eq</property>
-                    <expression name="expr" type="javascript">BirtDateTime.month(row["encounter_datetime"])</expression>
+                    <expression name="expr" type="javascript">BirtDateTime.month(row["encounter_datetime"],1)</expression>
                     <simple-property-list name="value1">
                         <value>params["Month"].value</value>
+                    </simple-property-list>
+                </structure>
+                <structure>
+                    <property name="operator">eq</property>
+                    <expression name="expr" type="javascript">row["location_id"]</expression>
+                    <simple-property-list name="value1">
+                        <value>params["Facility"].value</value>
                     </simple-property-list>
                 </structure>
             </list-property>
