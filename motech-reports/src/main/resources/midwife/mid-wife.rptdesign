@@ -157,7 +157,7 @@
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
-            <property name="odaURL">jdbc:mysql://10.4.4.74/openmrs</property>
+            <property name="odaURL">jdbc:mysql://10.7.3.178/openmrs</property>
             <property name="odaUser">root</property>
             <encrypted-property name="odaPassword" encryptionID="base64">b3Blbm1ycw==</encrypted-property>
         </oda-data-source>
@@ -1847,10 +1847,10 @@ and
             </list-property>
             <xml-property name="queryText"><![CDATA[select
 	'Type of Delivery', 
-    sum(if(obs.value_numeric =1,1,0)) as Normal,
-    sum(if(obs.value_numeric =2,1,0)) as CSection,
-    sum(if(obs.value_numeric =3,1,0)) as Vacuum,
-    sum(if(obs.value_numeric =4,1,0)) as Forceps
+    coalesce(sum(if(obs.value_numeric =1,1,0)),0) as Normal,
+    coalesce(sum(if(obs.value_numeric =2,1,0)),0) as CSection,
+    coalesce(sum(if(obs.value_numeric =3,1,0)),0) as Vacuum,
+    coalesce(sum(if(obs.value_numeric =4,1,0)),0) as Forceps
 from
     obs obs,
     encounter encounter,
