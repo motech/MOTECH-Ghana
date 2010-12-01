@@ -251,7 +251,7 @@
             </list-property>
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
             <property name="odaURL">jdbc:mysql://localhost/openmrs</property>
-            <property name="odaUser">openmrs</property>
+            <property name="odaUser">openmrsuser</property>
             <encrypted-property name="odaPassword" encryptionID="base64">cGFzc3dvcmQ=</encrypted-property>
         </oda-data-source>
     </data-sources>
@@ -1605,7 +1605,7 @@ MoTeCH Monthly Child Health Returns
             </list-property>
             <column id="1285"/>
             <row id="1286">
-                <property name="height">5.53mm</property>
+                <property name="height">0.3in</property>
                 <cell id="1287">
                     <property name="borderBottomColor">#000000</property>
                     <property name="borderBottomStyle">solid</property>
@@ -1882,38 +1882,6 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                         </row>
                     </grid>
-                </cell>
-            </row>
-            <row id="1292">
-                <cell id="1293">
-                    <property name="borderBottomColor">#000000</property>
-                    <property name="borderBottomStyle">solid</property>
-                    <property name="borderBottomWidth">thin</property>
-                    <property name="borderLeftColor">#000000</property>
-                    <property name="borderLeftStyle">solid</property>
-                    <property name="borderLeftWidth">thin</property>
-                    <property name="borderRightColor">#000000</property>
-                    <property name="borderRightStyle">solid</property>
-                    <property name="borderRightWidth">thin</property>
-                    <property name="borderTopColor">#000000</property>
-                    <property name="borderTopStyle">solid</property>
-                    <property name="borderTopWidth">thin</property>
-                </cell>
-            </row>
-            <row id="1294">
-                <cell id="1295">
-                    <property name="borderBottomColor">#000000</property>
-                    <property name="borderBottomStyle">solid</property>
-                    <property name="borderBottomWidth">thin</property>
-                    <property name="borderLeftColor">#000000</property>
-                    <property name="borderLeftStyle">solid</property>
-                    <property name="borderLeftWidth">thin</property>
-                    <property name="borderRightColor">#000000</property>
-                    <property name="borderRightStyle">solid</property>
-                    <property name="borderRightWidth">thin</property>
-                    <property name="borderTopColor">#000000</property>
-                    <property name="borderTopStyle">solid</property>
-                    <property name="borderTopWidth">thin</property>
                 </cell>
             </row>
             <row id="1296">
@@ -2225,7 +2193,7 @@ MoTeCH Monthly Child Health Returns
                         <row id="1360">
                             <cell id="1361">
                                 <property name="colSpan">1</property>
-                                <property name="rowSpan">3</property>
+                                <property name="rowSpan">2</property>
                                 <property name="borderBottomColor">#000000</property>
                                 <property name="borderBottomStyle">solid</property>
                                 <property name="borderBottomWidth">thin</property>
@@ -2247,7 +2215,7 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                             <cell id="1362">
                                 <property name="colSpan">1</property>
-                                <property name="rowSpan">3</property>
+                                <property name="rowSpan">2</property>
                                 <property name="fontWeight">bold</property>
                                 <property name="borderBottomColor">#000000</property>
                                 <property name="borderBottomStyle">solid</property>
@@ -2269,7 +2237,7 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                             <cell id="1363">
                                 <property name="colSpan">1</property>
-                                <property name="rowSpan">3</property>
+                                <property name="rowSpan">2</property>
                                 <property name="borderBottomColor">#000000</property>
                                 <property name="borderBottomStyle">solid</property>
                                 <property name="borderBottomWidth">thin</property>
@@ -2311,48 +2279,8 @@ MoTeCH Monthly Child Health Returns
                                 </label>
                             </cell>
                             <cell id="1368">
-                                <property name="borderBottomColor">#000000</property>
-                                <property name="borderBottomStyle">solid</property>
-                                <property name="borderBottomWidth">thin</property>
-                                <property name="borderLeftColor">#000000</property>
-                                <property name="borderLeftStyle">solid</property>
-                                <property name="borderLeftWidth">thin</property>
-                                <property name="borderRightColor">#000000</property>
-                                <property name="borderRightStyle">solid</property>
-                                <property name="borderRightWidth">thin</property>
-                                <property name="borderTopColor">#000000</property>
-                                <property name="borderTopStyle">solid</property>
-                                <property name="borderTopWidth">thin</property>
-                            </cell>
-                            <cell id="1369">
-                                <property name="borderBottomColor">#000000</property>
-                                <property name="borderBottomStyle">solid</property>
-                                <property name="borderBottomWidth">thin</property>
-                                <property name="borderLeftColor">#000000</property>
-                                <property name="borderLeftStyle">solid</property>
-                                <property name="borderLeftWidth">thin</property>
-                                <property name="borderRightColor">#000000</property>
-                                <property name="borderRightStyle">solid</property>
-                                <property name="borderRightWidth">thin</property>
-                                <property name="borderTopColor">#000000</property>
-                                <property name="borderTopStyle">solid</property>
-                                <property name="borderTopWidth">thin</property>
-                            </cell>
-                            <cell id="1370">
-                                <property name="borderBottomColor">#000000</property>
-                                <property name="borderBottomStyle">solid</property>
-                                <property name="borderBottomWidth">thin</property>
-                                <property name="borderLeftColor">#000000</property>
-                                <property name="borderLeftStyle">solid</property>
-                                <property name="borderLeftWidth">thin</property>
-                                <property name="borderRightColor">#000000</property>
-                                <property name="borderRightStyle">solid</property>
-                                <property name="borderRightWidth">thin</property>
-                                <property name="borderTopColor">#000000</property>
-                                <property name="borderTopStyle">solid</property>
-                                <property name="borderTopWidth">thin</property>
-                            </cell>
-                            <cell id="1371">
+                                <property name="colSpan">4</property>
+                                <property name="rowSpan">1</property>
                                 <property name="borderBottomColor">#000000</property>
                                 <property name="borderBottomStyle">solid</property>
                                 <property name="borderBottomWidth">thin</property>
@@ -2368,7 +2296,7 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                         </row>
                         <row id="1372">
-                            <property name="height">0.6354166666666666in</property>
+                            <property name="height">0.4166666666666667in</property>
                             <cell id="1376">
                                 <property name="borderBottomColor">#000000</property>
                                 <property name="borderBottomStyle">solid</property>
@@ -2443,65 +2371,7 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                             <cell id="1380">
                                 <property name="colSpan">4</property>
-                                <property name="rowSpan">5</property>
-                                <property name="borderBottomColor">#000000</property>
-                                <property name="borderBottomStyle">solid</property>
-                                <property name="borderBottomWidth">thin</property>
-                                <property name="borderLeftColor">#000000</property>
-                                <property name="borderLeftStyle">solid</property>
-                                <property name="borderLeftWidth">thin</property>
-                                <property name="borderRightColor">#000000</property>
-                                <property name="borderRightStyle">solid</property>
-                                <property name="borderRightWidth">thin</property>
-                                <property name="borderTopColor">#000000</property>
-                                <property name="borderTopStyle">solid</property>
-                                <property name="borderTopWidth">thin</property>
-                            </cell>
-                        </row>
-                        <row id="1384">
-                            <cell id="1388">
-                                <property name="borderBottomColor">#000000</property>
-                                <property name="borderBottomStyle">solid</property>
-                                <property name="borderBottomWidth">thin</property>
-                                <property name="borderLeftColor">#000000</property>
-                                <property name="borderLeftStyle">solid</property>
-                                <property name="borderLeftWidth">thin</property>
-                                <property name="borderRightColor">#000000</property>
-                                <property name="borderRightStyle">solid</property>
-                                <property name="borderRightWidth">thin</property>
-                                <property name="borderTopColor">#000000</property>
-                                <property name="borderTopStyle">solid</property>
-                                <property name="borderTopWidth">thin</property>
-                            </cell>
-                            <cell id="1389">
-                                <property name="borderBottomColor">#000000</property>
-                                <property name="borderBottomStyle">solid</property>
-                                <property name="borderBottomWidth">thin</property>
-                                <property name="borderLeftColor">#000000</property>
-                                <property name="borderLeftStyle">solid</property>
-                                <property name="borderLeftWidth">thin</property>
-                                <property name="borderRightColor">#000000</property>
-                                <property name="borderRightStyle">solid</property>
-                                <property name="borderRightWidth">thin</property>
-                                <property name="borderTopColor">#000000</property>
-                                <property name="borderTopStyle">solid</property>
-                                <property name="borderTopWidth">thin</property>
-                            </cell>
-                            <cell id="1390">
-                                <property name="borderBottomColor">#000000</property>
-                                <property name="borderBottomStyle">solid</property>
-                                <property name="borderBottomWidth">thin</property>
-                                <property name="borderLeftColor">#000000</property>
-                                <property name="borderLeftStyle">solid</property>
-                                <property name="borderLeftWidth">thin</property>
-                                <property name="borderRightColor">#000000</property>
-                                <property name="borderRightStyle">solid</property>
-                                <property name="borderRightWidth">thin</property>
-                                <property name="borderTopColor">#000000</property>
-                                <property name="borderTopStyle">solid</property>
-                                <property name="borderTopWidth">thin</property>
-                            </cell>
-                            <cell id="1391">
+                                <property name="rowSpan">4</property>
                                 <property name="borderBottomColor">#000000</property>
                                 <property name="borderBottomStyle">solid</property>
                                 <property name="borderBottomWidth">thin</property>
@@ -2517,7 +2387,7 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                         </row>
                         <row id="1396">
-                            <property name="height">0.5833333333333334in</property>
+                            <property name="height">0.4166666666666667in</property>
                             <cell id="1397">
                                 <property name="fontWeight">bold</property>
                                 <property name="borderBottomColor">#000000</property>
@@ -2565,7 +2435,7 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                         </row>
                         <row id="1408">
-                            <property name="height">0.5833333333333334in</property>
+                            <property name="height">0.4166666666666667in</property>
                             <cell id="1409">
                                 <property name="borderBottomColor">#000000</property>
                                 <property name="borderBottomStyle">solid</property>
@@ -2613,7 +2483,7 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                         </row>
                         <row id="1420">
-                            <property name="height">0.5729166666666666in</property>
+                            <property name="height">0.4166666666666667in</property>
                             <cell id="1421">
                                 <property name="borderBottomColor">#000000</property>
                                 <property name="borderBottomStyle">solid</property>
@@ -2660,51 +2530,6 @@ MoTeCH Monthly Child Health Returns
                                 </data>
                             </cell>
                         </row>
-                        <row id="1432">
-                            <cell id="1433">
-                                <property name="borderBottomColor">#000000</property>
-                                <property name="borderBottomStyle">solid</property>
-                                <property name="borderBottomWidth">thin</property>
-                                <property name="borderLeftColor">#000000</property>
-                                <property name="borderLeftStyle">solid</property>
-                                <property name="borderLeftWidth">thin</property>
-                                <property name="borderRightColor">#000000</property>
-                                <property name="borderRightStyle">solid</property>
-                                <property name="borderRightWidth">thin</property>
-                                <property name="borderTopColor">#000000</property>
-                                <property name="borderTopStyle">solid</property>
-                                <property name="borderTopWidth">thin</property>
-                            </cell>
-                            <cell id="1434">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="1435">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="1436">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="1437">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="1438">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="1439">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="1440">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="1441">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="1442">
-                                <property name="colSpan">2</property>
-                                <property name="rowSpan">1</property>
-                                <property name="style">NewStyle</property>
-                            </cell>
-                        </row>
                     </grid>
                 </cell>
             </row>
@@ -2738,7 +2563,7 @@ MoTeCH Monthly Child Health Returns
             <row id="1304">
                 <cell id="1305">
                     <grid id="1458">
-                        <property name="height">2.34375in</property>
+                        <property name="height">1.675in</property>
                         <property name="dataSet">CWC Data</property>
                         <list-property name="boundDataColumns">
                             <structure>
@@ -3192,7 +3017,7 @@ MoTeCH Monthly Child Health Returns
                         <column id="1468"/>
                         <column id="1469"/>
                         <row id="1470">
-                            <property name="height">0.5729166666666666in</property>
+                            <property name="height">0.425in</property>
                             <cell id="1471">
                                 <property name="style">NewStyle</property>
                             </cell>
@@ -3268,7 +3093,7 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                         </row>
                         <row id="1482">
-                            <property name="height">0.59375in</property>
+                            <property name="height">0.4166666666666667in</property>
                             <cell id="1483">
                                 <property name="style">NewStyle</property>
                                 <label id="1518">
@@ -3338,7 +3163,7 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                         </row>
                         <row id="1494">
-                            <property name="height">0.625in</property>
+                            <property name="height">0.4166666666666667in</property>
                             <cell id="1495">
                                 <property name="style">NewStyle</property>
                                 <label id="1519">
@@ -3408,7 +3233,7 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                         </row>
                         <row id="1506">
-                            <property name="height">0.5520833333333334in</property>
+                            <property name="height">0.4166666666666667in</property>
                             <cell id="1507">
                                 <property name="style">NewStyle</property>
                                 <label id="1520">
@@ -3480,11 +3305,6 @@ MoTeCH Monthly Child Health Returns
                     </grid>
                 </cell>
             </row>
-            <row id="1455">
-                <cell id="1456">
-                    <property name="style">NewStyle</property>
-                </cell>
-            </row>
             <row id="1537">
                 <cell id="1538">
                     <property name="borderBottomColor">#000000</property>
@@ -3508,7 +3328,7 @@ MoTeCH Monthly Child Health Returns
                 </cell>
             </row>
             <row id="2143">
-                <property name="height">1.5729166666666667in</property>
+                <property name="height">0.8333333333333334in</property>
                 <cell id="2144">
                     <grid id="2398">
                         <column id="2399"/>
@@ -3522,10 +3342,11 @@ MoTeCH Monthly Child Health Returns
                         <column id="2407"/>
                         <column id="2408"/>
                         <column id="2409"/>
-                        <row id="2410">
+                        <row id="2422">
+                            <property name="height">0.675in</property>
                             <cell id="2411">
                                 <property name="colSpan">1</property>
-                                <property name="rowSpan">4</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                                 <label id="2482">
                                     <property name="fontWeight">bold</property>
@@ -3534,7 +3355,7 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                             <cell id="2412">
                                 <property name="colSpan">1</property>
-                                <property name="rowSpan">4</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                                 <label id="2483">
                                     <property name="fontWeight">bold</property>
@@ -3543,7 +3364,7 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                             <cell id="2413">
                                 <property name="colSpan">1</property>
-                                <property name="rowSpan">4</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                                 <label id="2484">
                                     <property name="fontWeight">bold</property>
@@ -3552,7 +3373,7 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                             <cell id="2414">
                                 <property name="colSpan">1</property>
-                                <property name="rowSpan">4</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                                 <label id="2485">
                                     <property name="fontWeight">bold</property>
@@ -3561,7 +3382,7 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                             <cell id="2415">
                                 <property name="colSpan">1</property>
-                                <property name="rowSpan">4</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                                 <label id="2486">
                                     <property name="fontWeight">bold</property>
@@ -3569,154 +3390,53 @@ MoTeCH Monthly Child Health Returns
                                 </label>
                             </cell>
                             <cell id="2416">
-                                <property name="colSpan">1</property>
-                                <property name="rowSpan">4</property>
+                                <property name="colSpan">2</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                                 <label id="2487">
                                     <property name="fontWeight">bold</property>
                                     <text-property name="text"># of Sick Chn given 1st dose of prescribed drugs in clinic</text-property>
                                 </label>
                             </cell>
-                            <cell id="2417">
-                                <property name="colSpan">1</property>
-                                <property name="rowSpan">1</property>
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2488">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2489">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2490">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2491">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                        </row>
-                        <row id="2422">
-                            <cell id="2492">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2493">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2494">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2495">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2496">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                        </row>
-                        <row id="2434">
-                            <cell id="2497">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2498">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2499">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2500">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2501">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                        </row>
-                        <row id="2446">
-                            <property name="height">0.7083333333333334in</property>
-                            <cell id="2502">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2503">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2504">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2505">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2506">
+                            <cell id="2529">
+                                <property name="colSpan">4</property>
+                                <property name="rowSpan">2</property>
                                 <property name="style">NewStyle</property>
                             </cell>
                         </row>
                         <row id="2458">
                             <cell id="2459">
                                 <property name="colSpan">1</property>
-                                <property name="rowSpan">2</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                             </cell>
                             <cell id="2460">
                                 <property name="colSpan">1</property>
-                                <property name="rowSpan">2</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                             </cell>
                             <cell id="2461">
                                 <property name="colSpan">1</property>
-                                <property name="rowSpan">2</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                             </cell>
                             <cell id="2462">
                                 <property name="colSpan">1</property>
-                                <property name="rowSpan">2</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                             </cell>
                             <cell id="2463">
                                 <property name="colSpan">1</property>
-                                <property name="rowSpan">2</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                             </cell>
                             <cell id="2464">
-                                <property name="colSpan">1</property>
-                                <property name="rowSpan">2</property>
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2507">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2508">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2509">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2510">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2511">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                        </row>
-                        <row id="2470">
-                            <cell id="2512">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2513">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2514">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2515">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2516">
+                                <property name="colSpan">2</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                             </cell>
                         </row>
                     </grid>
-                </cell>
-            </row>
-            <row id="2140">
-                <cell id="2141">
-                    <property name="style">NewStyle</property>
                 </cell>
             </row>
             <row id="1539">
@@ -3742,10 +3462,10 @@ MoTeCH Monthly Child Health Returns
                 </cell>
             </row>
             <row id="1541">
-                <property name="height">1.0520833333333333in</property>
+                <property name="height">0.8583333333333333in</property>
                 <cell id="1542">
                     <grid id="2006">
-                        <property name="height">0.96875in</property>
+                        <property name="height">0.8083333333333333in</property>
                         <column id="2007"/>
                         <column id="2008"/>
                         <column id="2009"/>
@@ -3758,9 +3478,10 @@ MoTeCH Monthly Child Health Returns
                         <column id="2016"/>
                         <column id="2017"/>
                         <row id="2018">
+                            <property name="height">0.5916666666666667in</property>
                             <cell id="2019">
-                                <property name="colSpan">1</property>
-                                <property name="rowSpan">2</property>
+                                <property name="colSpan">2</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                                 <property name="verticalAlign">middle</property>
                                 <label id="2138">
@@ -3769,106 +3490,48 @@ MoTeCH Monthly Child Health Returns
                                     <text-property name="text">Number of Schools</text-property>
                                 </label>
                             </cell>
-                            <cell id="2020">
-                                <property name="colSpan">1</property>
-                                <property name="rowSpan">2</property>
+                            <cell id="2021">
+                                <property name="colSpan">2</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                                 <label id="2139">
                                     <property name="fontWeight">bold</property>
+                                    <property name="textAlign">center</property>
                                     <text-property name="text">Number of Schools Visited</text-property>
                                 </label>
                             </cell>
-                            <cell id="2021">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2022">
-                                <property name="style">NewStyle</property>
-                            </cell>
                             <cell id="2023">
+                                <property name="colSpan">2</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2024">
-                                <property name="style">NewStyle</property>
+                                <label id="2525">
+                                    <property name="fontWeight">bold</property>
+                                    <text-property name="text">Number of schools receiving 3+ Health Talks&#13;
+</text-property>
+                                </label>
                             </cell>
                             <cell id="2025">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2026">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2027">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2028">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2029">
+                                <property name="colSpan">5</property>
+                                <property name="rowSpan">2</property>
                                 <property name="style">NewStyle</property>
                             </cell>
                         </row>
                         <row id="2030">
-                            <property name="height">0.3958333333333333in</property>
-                            <cell id="2033">
+                            <property name="height">0.21666666666666667in</property>
+                            <cell id="2526">
+                                <property name="colSpan">2</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
+                                <property name="verticalAlign">middle</property>
                             </cell>
-                            <cell id="2034">
+                            <cell id="2528">
+                                <property name="colSpan">2</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                             </cell>
                             <cell id="2035">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2036">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2037">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2038">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2039">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2040">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2041">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                        </row>
-                        <row id="2042">
-                            <property name="height">0.3541666666666667in</property>
-                            <cell id="2043">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2044">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2045">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2046">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2047">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2048">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2049">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2050">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2051">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2052">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2053">
+                                <property name="colSpan">2</property>
+                                <property name="rowSpan">1</property>
                                 <property name="style">NewStyle</property>
                             </cell>
                         </row>
@@ -3891,7 +3554,7 @@ MoTeCH Monthly Child Health Returns
                         <column id="2276"/>
                         <column id="2277"/>
                         <row id="2278">
-                            <property name="height">0.7083333333333334in</property>
+                            <property name="height">0.425in</property>
                             <cell id="2279">
                                 <property name="style">NewStyle</property>
                                 <label id="2350">
@@ -3930,15 +3593,8 @@ MoTeCH Monthly Child Health Returns
                                 </label>
                             </cell>
                             <cell id="2286">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2287">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2288">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2289">
+                                <property name="colSpan">4</property>
+                                <property name="rowSpan">6</property>
                                 <property name="style">NewStyle</property>
                             </cell>
                         </row>
@@ -3976,18 +3632,6 @@ MoTeCH Monthly Child Health Returns
                                     <text-property name="text">None</text-property>
                                 </label>
                             </cell>
-                            <cell id="2298">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2299">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2300">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2301">
-                                <property name="style">NewStyle</property>
-                            </cell>
                         </row>
                         <row id="2302">
                             <cell id="2303">
@@ -4013,18 +3657,6 @@ MoTeCH Monthly Child Health Returns
                                 <property name="style">NewStyle</property>
                             </cell>
                             <cell id="2309">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2310">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2311">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2312">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2313">
                                 <property name="style">NewStyle</property>
                             </cell>
                         </row>
@@ -4054,18 +3686,6 @@ MoTeCH Monthly Child Health Returns
                             <cell id="2321">
                                 <property name="style">NewStyle</property>
                             </cell>
-                            <cell id="2322">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2323">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2324">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2325">
-                                <property name="style">NewStyle</property>
-                            </cell>
                         </row>
                         <row id="2326">
                             <cell id="2327">
@@ -4091,18 +3711,6 @@ MoTeCH Monthly Child Health Returns
                                 <property name="style">NewStyle</property>
                             </cell>
                             <cell id="2333">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2334">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2335">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2336">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2337">
                                 <property name="style">NewStyle</property>
                             </cell>
                         </row>
@@ -4132,25 +3740,8 @@ MoTeCH Monthly Child Health Returns
                             <cell id="2345">
                                 <property name="style">NewStyle</property>
                             </cell>
-                            <cell id="2346">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2347">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2348">
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="2349">
-                                <property name="style">NewStyle</property>
-                            </cell>
                         </row>
                     </grid>
-                </cell>
-            </row>
-            <row id="1666">
-                <cell id="1667">
-                    <property name="style">NewStyle</property>
                 </cell>
             </row>
             <row id="1668">
@@ -4294,7 +3885,7 @@ MoTeCH Monthly Child Health Returns
                             </cell>
                             <cell id="1795">
                                 <property name="colSpan">2</property>
-                                <property name="rowSpan">9</property>
+                                <property name="rowSpan">8</property>
                                 <property name="style">NewStyle</property>
                             </cell>
                         </row>
@@ -4416,18 +4007,6 @@ MoTeCH Monthly Child Health Returns
                                 <data id="2518">
                                     <property name="resultSetColumn">other_count</property>
                                 </data>
-                            </cell>
-                        </row>
-                        <row id="1874">
-                            <cell id="1875">
-                                <property name="colSpan">6</property>
-                                <property name="rowSpan">1</property>
-                                <property name="style">NewStyle</property>
-                            </cell>
-                            <cell id="1881">
-                                <property name="colSpan">2</property>
-                                <property name="rowSpan">1</property>
-                                <property name="style">NewStyle</property>
                             </cell>
                         </row>
                     </grid>
