@@ -922,6 +922,22 @@ and enc.voided = 0;]]></xml-property>
                     <text-property name="displayName">yellow_fever</text-property>
                 </structure>
             </list-property>
+            <list-property name="filter">
+                <structure>
+                    <property name="operator">eq</property>
+                    <expression name="expr" type="javascript">BirtDateTime.year(row["encounter_datetime"])</expression>
+                    <simple-property-list name="value1">
+                        <value>params["Year"].value</value>
+                    </simple-property-list>
+                </structure>
+                <structure>
+                    <property name="operator">eq</property>
+                    <expression name="expr" type="javascript">BirtDateTime.month(row["encounter_datetime"])</expression>
+                    <simple-property-list name="value1">
+                        <value>params["Month"].value</value>
+                    </simple-property-list>
+                </structure>
+            </list-property>
             <structure name="cachedMetaData">
                 <list-property name="resultSet">
                     <structure>
