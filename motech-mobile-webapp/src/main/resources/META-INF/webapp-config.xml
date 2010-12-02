@@ -63,7 +63,7 @@
     <import resource="classpath:META-INF/oxduldl-servlet.xml" />
     <import resource="classpath:META-INF/intellivr-servlet.xml" />
     <import resource="classpath:META-INF/ivrstats-servlet.xml" />
-    <import resource="classpath:META-INF/ivr-voicexml-servlet.xml" />
+    <import resource="classpath:META-INF/voicexml-servlet.xml" />
 
     <bean id="messageWebServiceBean" name="mobileClient" class="org.motechproject.mobile.omi.ws.MessageServiceImpl">
         <property name="omiManager" ref="omiManager"/>

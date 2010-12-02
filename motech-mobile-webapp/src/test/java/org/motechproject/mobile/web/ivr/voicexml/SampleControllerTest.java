@@ -34,54 +34,38 @@
 package org.motechproject.mobile.web.ivr.voicexml;
 
 import static org.junit.Assert.*;
-import javax.annotation.Resource;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.servlet.ModelAndView;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration ( locations = { "classpath:META-INF/test-ivr-voicexml-servlet.xml" } )
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration ( locations = { "classpath:META-INF/test-ivr-voicexml-servlet.xml" } )
 public class SampleControllerTest {
 
-	@Resource
 	SampleController controller;
-	private MockHttpServletRequest mockRequest;
-	private MockHttpServletResponse mockResponse;
 
 	@Before
 	public void setUp() {
-		mockRequest = new MockHttpServletRequest();
-		mockResponse = new MockHttpServletResponse();
+		controller = new SampleController();
 	}
 
 	/*
 	 * test response when valid ivr request is posted to the servlet
 	 */
 	@Test
-	public void testRequestHandler() throws Exception {
+	public void testFirstForm() throws Exception {
+		assertTrue(controller.loadFirstForm().equals("vtest1"));
+	}
 
-		String callerid = "1234567";
-		String callFile = "sampleFile";
+	@Test
+	public void testSecondForm() throws Exception {
 
-		mockRequest.addParameter("callerid", callerid);
-		mockRequest.addParameter("callFile", callFile);
-		mockRequest.setMethod("GET");
+		SampleData model = new SampleData();
 
-		ModelAndView m = controller.handleRequest(mockRequest, mockResponse);
+		String viewName = controller.loadSecondForm(model);
 
-		assertTrue(m.getViewName().equals("vtest1"));
-		assertTrue(m.getModel().containsKey("callerid"));
-		assertTrue(m.getModel().containsKey("callFile"));
-		assertTrue(m.getModel().get("callerid").equals(callerid));
-		assertTrue(m.getModel().get("callFile").equals(callFile));
-
-
+		assertTrue(viewName.equals("vtest2"));
+		assertTrue(model.getUserName().equals("Test User"));
 	}
 
 }

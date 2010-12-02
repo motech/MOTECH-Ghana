@@ -1,30 +1,22 @@
-<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.w3.org/TR/voicexml20/vxml.xsd">
+<vxml version="2.1">
 
 <var name="screen"/>
 <var name="retryN" expr="0"/>
 <var name="state" expr="'init'"/>
-<var name="phone" expr="'${data.callerid}'" />
-<var name="file" expr="'${data.callFile}'" />
 
 <form id="F1">
 
-<property name="inputmodes" value="dtmf"/>
-<property name="interdigittimeout" value="2s"/>
-<property name="timeout" value="2s"/>
-
 <block>
-	<prompt>Welcome to Motech</prompt>
+	<prompt>Welcome to Mo tech, open M R S project</prompt>
 </block>
 
-<field name="fork" type="digits">
-			<prompt>To contact us press one, Press two if you are a registered user of OpenMRS.</prompt>
+<field name="userId" type="digits?minlength=5;maxlength=18">
+			<prompt>Please key in your authentication pin</prompt>
 
 			<filled>
-				<if cond="fork==1">
-					<goto next="#F2"/>
-				<elseif cond="fork==2" />
-					<submit next="v2next" method="get" namelist="phone file"/>
-				</if>
+					<prompt>Please wait while we are validating your input.</prompt>
+					<assign name="id" expr="userId" />
+					<submit next="#springUrl('/module/motechmodule/vxml2.form')" method="get" namelist="id"/>
 			</filled>
 
 			<noinput>
@@ -44,7 +36,7 @@
 		        	<prompt>I did not catch that. Please try again next time. Good bye.</prompt>
 		        	<exit/>
 		        <else/>
-		        	<prompt>I did not catch that.</prompt>
+		        	<prompt>I did not catch that or you entered the wrong pin which is minimum 5 digits.</prompt>
 		        	<reprompt/>
 		        </if>
 		     </nomatch>
@@ -53,6 +45,7 @@
 		</field>
 
 </form>
+
 
 <error>
   	<if cond="_event =='error.*'">

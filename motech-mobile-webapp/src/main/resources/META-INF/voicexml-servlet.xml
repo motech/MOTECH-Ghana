@@ -63,27 +63,18 @@
        http://cxf.apache.org/jaxws
        http://cxf.apache.org/schemas/jaxws.xsd">
 
-	<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
-	  <property name="resourceLoaderPath" value="classpath*:META-INF/velocity/"/>
-	</bean>
+	<context:component-scan base-package="org.motechproject.mobile.web.ivr.voicexml"/>
 
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+<!--	<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">-->
+<!--	  <property name="resourceLoaderPath" value="/WEB-INF/view/module/motechmodule/velocity/"/>-->
+<!--	</bean>-->
 
-	  <property name="cache" value="true"/>
-	  <property name="prefix" value=""/>
-	  <property name="suffix" value=".vm"/>
+<!--	<bean id="sampleController" name="/module/motechmodule/vxml1" class="org.motechproject.mobile.web.ivr.voicexml.SampleController">-->
+<!--	</bean>-->
 
-	  <!-- if you want to use the Spring Velocity macros, set this property to true -->
-	  <property name="exposeSpringMacroHelpers" value="true"/>
-
-	</bean>
-
-	<bean id="sampleController" name="/module/motechmodule/vxml1" class="org.motechproject.mobile.web.ivr.voicexml.SampleController">
-	</bean>
-
-	<bean id="sampleCommandController" name="/module/motechmodule/vxml2" class="org.motechproject.mobile.web.ivr.voicexml.SampleCommandController">
-		<property name="commandClass" value="org.motechproject.mobile.web.ivr.voicexml.SampleData" />
-	</bean>
+<!--	<bean id="sampleCommandController" name="/module/motechmodule/vxml2" class="org.motechproject.mobile.web.ivr.voicexml.SampleCommandController">-->
+<!--		<property name="commandClass" value="org.motechproject.mobile.web.ivr.voicexml.SampleData" />-->
+<!--	</bean>-->
 
 
 </beans>

@@ -45,27 +45,27 @@ public class SampleData implements Serializable {
 	private static final long serialVersionUID = 4577667732764578854L;
 
 
-	private String callerid;
-	private String callFile;
+	private String id;
+	private String userName;
 
-	public String getCallerid() {
-		return callerid;
+	public String getId() {
+		return id;
 	}
 
-	public void setCallerid(String callerid) {
-		this.callerid = callerid;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public String getCallFile() {
-		return callFile;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setCallFile(String callFile) {
-		this.callFile = callFile;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String toString(){
-        return "[Caller ID = " + callerid + ", Call File = " + callFile + "]";
+        return "[ID = " + id + ", User name = " + userName + "]";
     }
 
 

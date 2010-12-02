@@ -34,38 +34,44 @@
 
 package org.motechproject.mobile.web.ivr.voicexml;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.context.ResourceLoaderAware;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-public class SampleController extends AbstractController implements
-		ResourceLoaderAware {
+@Controller
+public class SampleController {
 
 	private Log log = LogFactory.getLog(SampleController.class);
 
-	@Override
-	protected ModelAndView handleRequestInternal(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	@RequestMapping(value = "/module/motechmodule/vxml1", method = RequestMethod.GET)
+	public String loadFirstForm() {
 
-		ModelAndView model = new ModelAndView("vtest1");
-
-		model.addObject("callFile", request.getParameter("callFile"));
-		model.addObject("callerid", request.getParameter("callerid"));
-
-		log.info("Data passed:" + request.getQueryString());
-
-		// TODO Auto-generated method stub
-		return model;
+		return "vtest1";
 	}
 
-	public void setResourceLoader(ResourceLoader arg0) {
-		// TODO Auto-generated method stub
+	@RequestMapping(value = "/module/motechmodule/vxml2", method = RequestMethod.GET)
+	public String loadSecondForm(@ModelAttribute("data") SampleData model) {
 
+		// Do something here to get user name by id
+		model.setUserName("Test User");
+		//
+		log.info("Data: " + model);
+		//
+		return "vtest2";
 	}
+
+
+	/*@RequestMapping(value = "/module/motechmodule/vxml2", method = RequestMethod.GET)
+	public String processTest(@RequestParam("callerid") String caller, @RequestParam("callFile") String callFile,  ModelMap model) {
+
+		//
+		//log.info("Data: " + (SampleData)model);
+		//
+
+		return "vtest1";
+	}*/
+
 }
