@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--
+<%--
 
     MOTECH PLATFORM OPENSOURCE LICENSE AGREEMENT
 
@@ -32,11 +31,24 @@
     NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
--->
+--%>
 
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-    <system systemId="http://cxf.apache.org/schemas/core.xsd" uri="cxf.apache.org/schemas/core.xsd"/>
-    <system systemId="http://cxf.apache.org/schemas/jaxws.xsd" uri="cxf.apache.org/schemas/jaxws.xsd"/>
-    <system systemId="http://www.springframework.org/schema/beans/spring-beans.xsd" uri="www.springframework.org/schema/beans/spring-beans.xsd"/>
-    <system systemId="http://cxf.apache.org/schemas/configuration/cxf-beans.xsd" uri="cxf.apache.org/schemas/configuration/cxf-beans.xsd"/>
-</catalog>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>IMP Test Page</title>
+    </head>
+    <body>
+        <h1>IMP Test Page</h1>
+        <form method="GET" action="/openmrs/moduleServlet/motechmodule/incomingmessage">
+            Sender Number: <input type="text" name="from" id="from" />
+            Message:
+            <textarea cols="40" rows="10" name="text" id="text"></textarea>
+            <input type="submit" value="send" />
+        </form>
+    </body>
+</html>

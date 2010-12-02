@@ -199,6 +199,10 @@
 <!--		<servlet-name>ivr-voicexml</servlet-name>-->
 <!--        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>-->
 <!--	</servlet>-->
+	<servlet>
+		<servlet-name>incomingmessage</servlet-name>
+		<servlet-class>org.motechproject.mobile.web.IncomingMessageServlet</servlet-class>
+	</servlet>
 
 	<!-- Internationalization -->
 	<!-- All message codes should start with ${project.artifactId}.* -->

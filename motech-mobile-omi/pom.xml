@@ -18,9 +18,13 @@
         </dependency>
         <dependency>
             <groupId>org.motechproject.mobile</groupId>
+            <artifactId>motech-mobile-core</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.motechproject.mobile</groupId>
             <artifactId>motech-mobile-omp</artifactId>
             <version>0.1-SNAPSHOT</version>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.motechproject</groupId>
@@ -41,23 +45,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
+            <artifactId>spring-tx</artifactId>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
@@ -68,12 +56,8 @@
             <artifactId>easymock</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate</artifactId>
         </dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate</artifactId>
-			</dependency>
     </dependencies>
 </project>

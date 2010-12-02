@@ -17,6 +17,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.motechproject.mobile</groupId>
+			<artifactId>motech-mobile-core</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.motechproject.mobile</groupId>
 			<artifactId>motech-mobile-omp</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
@@ -28,10 +33,6 @@
 		<dependency>
 			<groupId>javax.comm</groupId>
 			<artifactId>comm</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
