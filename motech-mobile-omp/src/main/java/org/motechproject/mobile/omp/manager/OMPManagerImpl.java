@@ -60,45 +60,6 @@ public class OMPManagerImpl implements OMPManager, ApplicationContextAware {
     }
 
     /**
-     * @see OMPManager.createGatewayMessageHandler()
-     */
-    public GatewayMessageHandler createGatewayMessageHandler() {
-        try{
-            return (GatewayMessageHandler)context.getBean("orserveHandler");
-        }
-        catch(Exception ex){
-            logger.error("GatewayMessageHandler creation failed", ex);
-            return null;
-        }
-    }
-
-    /**
-     * @see OMPManager.createSMSGatewayManager()
-     */
-    public GatewayManager createGatewayManager() {
-        try{
-            return (GatewayManager)context.getBean("orserveGateway");
-        }
-        catch(Exception ex){
-            logger.fatal("GatewayManager creation failed", ex);
-            throw new RuntimeException("Unable to create gateway");
-        }
-    }
-
-    /**
-     * @see OMPManager.createSMSCacheService()
-     */
-    public CacheService createCacheService() {
-        try{
-            return (CacheService)context.getBean("smsCache");
-        }
-        catch(Exception ex){
-            logger.fatal("CacheService creation failed", ex);
-            throw new RuntimeException("Unable to initialize cache");
-        }
-    }
-
-    /**
      * @see OMPManager.createSMSService()
      */
     public MessagingService createMessagingService() {

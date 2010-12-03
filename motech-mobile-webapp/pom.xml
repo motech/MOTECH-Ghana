@@ -102,10 +102,6 @@
           <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sun.xml.ws</groupId>
-            <artifactId>jaxws-rt</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
         </dependency>

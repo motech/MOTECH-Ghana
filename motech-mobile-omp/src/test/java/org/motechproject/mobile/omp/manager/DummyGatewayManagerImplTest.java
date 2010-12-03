@@ -76,7 +76,7 @@ public class DummyGatewayManagerImplTest {
     }
 
     /**
-     * Test of sendMessage method, of class ORServeGatewayManagerImpl.
+     * Test of sendMessage method, of class DummyGatewayManagerImpl.
      */
     @Test
     public void testSendMessage() {
@@ -99,7 +99,7 @@ public class DummyGatewayManagerImplTest {
     }
 
     /**
-     * Test of getMessageStatus method, of class ORServeGatewayManagerImpl.
+     * Test of getMessageStatus method, of class DummyGatewayManagerImpl.
      */
     @Test
     public void testGetMessageStatus() {
@@ -112,7 +112,7 @@ public class DummyGatewayManagerImplTest {
     }
 
     /**
-     * Test of mapMessageStatus method, of class ClickatellGatewayManagerImpl.
+     * Test of mapMessageStatus method, of class DummyGatewayManagerImpl.
      */
     @Test
     public void testMapMessageStatus() {

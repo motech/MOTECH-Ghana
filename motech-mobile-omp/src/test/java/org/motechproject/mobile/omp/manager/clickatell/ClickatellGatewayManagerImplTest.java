@@ -51,7 +51,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Unit test for th ORServeGatewayManagerImpl class
+ * Unit test for the ClickatellGatewayManagerImpl class
  *
  * @author Kofi A. Asamoah (yoofi@dreamoval.com)
  * Date Created Aug 10, 2009

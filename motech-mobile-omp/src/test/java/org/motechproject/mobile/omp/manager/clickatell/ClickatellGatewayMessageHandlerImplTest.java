@@ -47,7 +47,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Unit test fo the ORServeGaewayMessageHanlerImpl class
+ * Unit test for the ClickatellGatewayMessageHandlerImpl class
  *
  * @author Kofi A. Asamoah (yoofi@dreamoval.com)
  * Date Created Aug 10, 2009
@@ -69,7 +69,7 @@ public class ClickatellGatewayMessageHandlerImplTest {
     }
 
     /**
-     * Test of parseMessageResponse method, of class ORServeGatewayMessageHandlerImpl.
+     * Test of parseMessageResponse method, of class ClickatellGatewayMessageHandlerImpl.
      */
     @Test
     public void testParseMessageResponse() {
@@ -82,7 +82,7 @@ public class ClickatellGatewayMessageHandlerImplTest {
     }
 
     /**
-     * Test of parseMessageStatus method, of class ORServeGatewayMessageHandlerImpl.
+     * Test of parseMessageStatus method, of class ClickatellGatewayMessageHandlerImpl.
      */
     @Test
     public void testParseMessageStatus() {

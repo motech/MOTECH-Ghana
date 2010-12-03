@@ -59,36 +59,6 @@ public class OMPManagerImplTest {
     }
 
     /**
-     * Test of createGatewayMessageHandler method, of class OMPManagerImpl.
-     */
-    @Test
-    public void testCreateGatewayMessageHandler() {
-        System.out.println("createGatewayMessageHandler");
-        GatewayMessageHandler result = ompManager.createGatewayMessageHandler();
-        assertNotNull(result);
-    }
-
-    /**
-     * Test of createSMSGatewayManager method, of class OMPManagerImpl.
-     */
-    @Test
-    public void testCreateGatewayManager() {
-        System.out.println("createGatewayManager");
-        GatewayManager result = ompManager.createGatewayManager();
-        assertNotNull(result);
-    }
-
-    /**
-     * Test of createSMSCacheService method, of class OMPManagerImpl.
-     */
-    @Test
-    public void testCreateCacheService() {
-        System.out.println("createCacheService");
-        CacheService result = ompManager.createCacheService();
-        assertNotNull(result);
-    }
-
-    /**
      * Test of createSMSService method, of class OMPManagerImpl.
      */
     @Test
