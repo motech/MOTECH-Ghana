@@ -48,6 +48,7 @@ import org.motechproject.mobile.core.manager.CoreManager;
 import org.motechproject.mobile.core.model.IncMessageFormStatus;
 import org.motechproject.mobile.core.model.IncomingMessage;
 import org.motechproject.mobile.core.model.IncomingMessageResponse;
+import org.motechproject.mobile.core.model.IncomingMessageResponseImpl;
 import org.motechproject.mobile.imp.manager.IMPManager;
 import org.motechproject.mobile.imp.util.CommandAction;
 import org.motechproject.mobile.imp.util.IncomingMessageParser;
@@ -179,6 +180,45 @@ public class IMPServiceImpl implements IMPService {
             result = processXFormSMS(xmlParser.toSMSMessage(xForm));
         }
         return result;
+    }
+
+  /**
+     *  Registers given incoming message and invokes command action specified by  the message command type
+     *
+      * @param incomingMessage incoming message to be processed
+     * @return
+     * @throws DuplicateMessageException if during message registration determined that the same message already
+     * registered
+     * @throws MessageProcessException if the message can not be processed
+     */
+    public IncomingMessageResponse processIncomingMessage(IncomingMessage incomingMessage) throws DuplicateMessageException, MessageProcessException {
+
+         IncomingMessageResponse response = new IncomingMessageResponseImpl();
+        String messageContent = incomingMessage.getContent();
+
+		 messageRegistry.registerMessage(incomingMessage);
+
+        String command = parser.getCommand(messageContent);
+
+        CommandAction action = cmdActionMap.get(command.toUpperCase());
+        if (action == null) {
+            logger.error(" Unknown form type or command: "+command);
+            response.setContent("Error: Unknown form type or command!");
+            throw new MessageProcessException("Error: Unknown form type or command!");
+        }
+
+        response = action.execute(incomingMessage , null);
+
+        String responseContent = response.getContent();
+        //TODO - re-implement the following block after command action classes refactoring
+        // this implementation is a way around of  action classes returning response
+        // that might indicate an error instead of throwing an exception
+        if (!this.formProcessSuccess.equalsIgnoreCase(responseContent
+        )) {
+             throw new MessageProcessException(responseContent);
+        }
+
+        return response;
     }
 
     /**

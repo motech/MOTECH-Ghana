@@ -31,24 +31,38 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.mobile.imp.serivce;
+package org.motechproject.mobile.core.model;
 
-import org.motechproject.mobile.core.model.IncomingMessage;
+import java.util.List;
+
 
 /**
- * An interface defining a registry abstraction, useful for ensuring that
- * duplicate messages are not processed.
- * 
- * @author batkinson
- * 
+ *  POJO class that holds incoming message processing response information
+ *
+*@author Igor Opushnyev (iopushnyev@2paths.com)
+ * Creted 30-Nov-2010
  */
-public interface MessageRegistry {
+public class MxFormProcessingResponse extends MessageProcessingResponse {
 
+    private final int processedFormsNum;
+    private final int faultyFormsNum;
+    private final List<List<String>> formProcessingResults;
 
-	IncomingMessage registerMessage(String message)
-			throws DuplicateMessageException;
+    public MxFormProcessingResponse(final int processedFormsNum, final int faultyFormsNum, final List<List<String>> formProcessingResults) {
+        this.processedFormsNum = processedFormsNum;
+        this.faultyFormsNum = faultyFormsNum;
+        this.formProcessingResults = formProcessingResults;
+    }
 
-    void registerMessage(IncomingMessage incomingMessage)
-			throws DuplicateMessageException;
+    public int getProcessedFormsNum() {
+        return processedFormsNum;
+    }
 
+    public int getFaultyFormsNum() {
+        return faultyFormsNum;
+    }
+
+    public List<List<String>> getFormProcessingResults() {
+        return formProcessingResults;
+    }
 }

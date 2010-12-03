@@ -31,24 +31,15 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.mobile.imp.serivce;
+package org.motechproject.mobile.core.model;
 
-import org.motechproject.mobile.core.model.IncomingMessage;
 
 /**
- * An interface defining a registry abstraction, useful for ensuring that
- * duplicate messages are not processed.
- * 
- * @author batkinson
- * 
+ *  Parent class of all message specific processing response classes
+ *
+*@author Igor Opushnyev (iopushnyev@2paths.com)
+ * Creted 30-Nov-2010
  */
-public interface MessageRegistry {
-
-
-	IncomingMessage registerMessage(String message)
-			throws DuplicateMessageException;
-
-    void registerMessage(IncomingMessage incomingMessage)
-			throws DuplicateMessageException;
+public abstract class MessageProcessingResponse {
 
 }

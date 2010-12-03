@@ -59,7 +59,14 @@ public class MessageRegistryImpl implements MessageRegistry {
 	private int duplicatePeriod;
 	private CoreManager coreManager;
 	private IncomingMessageParser parser;
+    private IncomingMessageDAO<IncomingMessage> incomingMessageDAO;
 
+    /**
+     * @deprecated
+     * @param message
+     * @return
+     * @throws DuplicateMessageException
+     */
 	@SuppressWarnings("unchecked")
 	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = DuplicateMessageException.class)
 	public IncomingMessage registerMessage(String message)
@@ -97,7 +104,45 @@ public class MessageRegistryImpl implements MessageRegistry {
 		return msgDao.save(newMsg);
 	}
 
-	/**
+  /**
+     * Registers given incoming message if the same massage not been previously registered
+    *
+     * @param incomingMessage - incoming message
+     * @throws DuplicateMessageException if the same incoming massage already registered
+     * @throws DuplicateProcessingException
+     */
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = DuplicateMessageException.class)
+    public void registerMessage(IncomingMessage incomingMessage) throws DuplicateMessageException {
+        
+        Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE, 0 - duplicatePeriod);
+		Date beforeDate = cal.getTime();
+		IncomingMessage existingMsg = incomingMessageDAO
+				.getByContentNonDuplicatable(incomingMessage.getContent());
+
+		if (existingMsg != null) {
+
+			if (existingMsg.getMessageStatus() == IncMessageStatus.PROCESSING)
+				throw new DuplicateProcessingException(
+						"message is already processing");
+
+			IncomingMessageForm existingMsgForm = existingMsg
+					.getIncomingMessageForm();
+			if (existingMsgForm != null
+					&& (existingMsgForm.getMessageFormStatus() == IncMessageFormStatus.SERVER_VALID)
+					&& (existingMsgForm.getIncomingMsgFormDefinition()
+							.getDuplicatable() == Duplicatable.DISALLOWED || (existingMsgForm
+							.getIncomingMsgFormDefinition().getDuplicatable() == Duplicatable.TIME_BOUND && existingMsg
+							.getDateCreated().after(beforeDate)))) {
+				throw new DuplicateMessageException("message exists");
+			}
+		}
+
+		incomingMessageDAO.save(incomingMessage);
+
+    }
+
+    /**
 	 * @param duplicatePeriod
 	 *            the duplicatePeriod to set
 	 */
@@ -119,4 +164,8 @@ public class MessageRegistryImpl implements MessageRegistry {
 	public void setParser(IncomingMessageParser parser) {
 		this.parser = parser;
 	}
+
+    public void setIncomingMessageDAO(IncomingMessageDAO<IncomingMessage> incomingMessageDAO) {
+        this.incomingMessageDAO = incomingMessageDAO;
+    }
 }

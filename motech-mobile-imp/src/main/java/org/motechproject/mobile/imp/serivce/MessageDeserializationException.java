@@ -33,22 +33,27 @@
 
 package org.motechproject.mobile.imp.serivce;
 
-import org.motechproject.mobile.core.model.IncomingMessage;
-
 /**
- * An interface defining a registry abstraction, useful for ensuring that
- * duplicate messages are not processed.
- * 
- * @author batkinson
- * 
+ * An Exception that thrown if an incoming message can not be de-serialized due to inval;id format or error
+ *
+ * Created: 2-Dec-2010
+ * @author Igor Opushnyev (iopushnyev@2paths.com)
  */
-public interface MessageRegistry {
+public class MessageDeserializationException extends Exception {
 
+    public MessageDeserializationException() {
+        super();
+    }
 
-	IncomingMessage registerMessage(String message)
-			throws DuplicateMessageException;
+    public MessageDeserializationException(String message) {
+        super(message);
+    }
 
-    void registerMessage(IncomingMessage incomingMessage)
-			throws DuplicateMessageException;
+    public MessageDeserializationException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
+    public MessageDeserializationException(Throwable cause) {
+        super(cause);
+    }
 }
