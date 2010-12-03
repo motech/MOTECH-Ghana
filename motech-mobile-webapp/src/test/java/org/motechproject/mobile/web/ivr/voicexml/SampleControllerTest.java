@@ -54,7 +54,7 @@ public class SampleControllerTest {
 	 */
 	@Test
 	public void testFirstForm() throws Exception {
-		assertTrue(controller.loadFirstForm().equals("vtest1"));
+		assertTrue(controller.loadFirstForm().equals("/module/motechmodule/velocity/vtest1"));
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class SampleControllerTest {
 
 		String viewName = controller.loadSecondForm(model);
 
-		assertTrue(viewName.equals("vtest2"));
+		assertTrue(viewName.equals("/module/motechmodule/velocity/vtest2"));
 		assertTrue(model.getUserName().equals("Test User"));
 	}
 
