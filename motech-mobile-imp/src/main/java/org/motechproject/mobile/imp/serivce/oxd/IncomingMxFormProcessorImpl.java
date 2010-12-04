@@ -69,7 +69,8 @@ public class IncomingMxFormProcessorImpl implements IncomingMessageProcessor {
     //private String
 
 
-    public MxFormProcessingResponse processIncomingMessage(final String incomingMessageSerialized) throws MessageProcessException, MessageDeserializationException {
+    public MxFormProcessingResponse processIncomingMessage(final String incomingMessageSerialized)
+            throws MessageProcessException, MessageDeserializationException {
 
         long startTime = System.currentTimeMillis();
 
@@ -129,26 +130,26 @@ public class IncomingMxFormProcessorImpl implements IncomingMessageProcessor {
                                  break formprocessing;*/
 
                     IncomingMessage incomingMessage = null;
+                    String formProcessingResult = "System error";
                     try {
                         incomingMessage = inMessageParser.parseIncomingMessage(studyForms[i][j]);
                         impService.processIncomingMessage(incomingMessage);
-                        formProcessingResults.add(impService.getFormProcessSuccess());
+                        formProcessingResult = impService.getFormProcessSuccess();
                     } catch (MotechParseException e) {
-                        String message = "\"Can not process form\\n\" + e.getMessage()";
-                        log.error(message, e);
+                        formProcessingResult = "\"Can not process form\\n\" + e.getMessage()";
+                        log.error(formProcessingResult, e);
                         faultyForms++;
-                        throw new MessageProcessException(message);
                     } catch (DuplicateProcessingException dpe) {
                          log.info("duplicate form in process, returning wait message");
                         faultyForms++;
-                        throw new MessageProcessException("Error: Duplicate in progress, please try again.");
                     } catch (DuplicateMessageException e) {
+                        formProcessingResult = impService.getFormProcessSuccess();
                         log.warn("duplicate form:\n" + incomingMessage.getContent());
-                    }
-                    catch (Exception ex) {
-                        String message = "processing form failed";
-                        log.error(message, ex);
-                        throw new MessageProcessException(message);
+                    } catch (Exception ex) {
+                        formProcessingResult = "processing form failed";
+                        log.error(formProcessingResult, ex);
+                    } finally {
+                        formProcessingResults.add(formProcessingResult);
                     }
                 }
                 studyFormProcessingResults.add(formProcessingResults);

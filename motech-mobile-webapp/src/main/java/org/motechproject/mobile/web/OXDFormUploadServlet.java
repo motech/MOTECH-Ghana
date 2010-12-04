@@ -55,8 +55,13 @@ import org.apache.log4j.Logger;
 import org.fcitmuk.epihandy.EpihandyXformSerializer;
 import org.fcitmuk.epihandy.FormNotFoundException;
 import org.fcitmuk.epihandy.ResponseHeader;
+import org.motechproject.mobile.core.model.MxFormProcessingResponse;
 import org.motechproject.mobile.imp.serivce.IMPService;
+import org.motechproject.mobile.imp.serivce.MessageDeserializationException;
+import org.motechproject.mobile.imp.serivce.MessageProcessException;
+import org.motechproject.mobile.imp.serivce.XFormDefinitionNotFoundException;
 import org.motechproject.mobile.imp.serivce.oxd.FormDefinitionService;
+import org.motechproject.mobile.imp.serivce.oxd.IncomingMessageProcessor;
 import org.motechproject.mobile.imp.serivce.oxd.StudyProcessor;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -85,6 +90,8 @@ public class OXDFormUploadServlet implements ApplicationContextAware {
 	private FormDefinitionService formService;
 	
 	private ApplicationContext appCtx;
+
+    private IncomingMessageProcessor incomingMessageProcessor;
 	
 	private long maxProcessingTime;
 
@@ -109,7 +116,11 @@ public class OXDFormUploadServlet implements ApplicationContextAware {
 		this.maxProcessingTime = maxProcessingTime;
 	}
 
-	/**
+    public void setIncomingMessageProcessor(IncomingMessageProcessor incomingMessageProcessor) {
+        this.incomingMessageProcessor = incomingMessageProcessor;
+    }
+
+    /**
 	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
 	 * methods.
 	 * 
@@ -158,7 +169,8 @@ public class OXDFormUploadServlet implements ApplicationContextAware {
 				dataInput = new DataInputStream(new ByteArrayInputStream(
 						rawPayload));
 			}
-			
+
+//----
 			String name = dataInput.readUTF();
 			String password = dataInput.readUTF();
 			String serializer = dataInput.readUTF();
@@ -192,7 +204,25 @@ public class OXDFormUploadServlet implements ApplicationContextAware {
 				return;
 			}
 
-			String[][] studyForms = studyProcessor.getConvertedStudies();
+   /*         MxFormProcessingResponse formProcessingResponse;
+
+            try {
+                formProcessingResponse = (MxFormProcessingResponse) incomingMessageProcessor.processIncomingMessage("");
+            } catch (XFormDefinitionNotFoundException e) {
+                String msg = "failed to deserialize forms: ";
+				log.error(msg + e.getMessage());
+				dataOutput.writeByte(ResponseHeader.STATUS_FORMS_STALE);
+				response.setStatus(HttpServletResponse.SC_OK);
+				return;
+            } catch (MessageDeserializationException e) {
+                String msg = "failed to deserialize forms";
+				log.error(msg, e);
+				dataOutput.writeByte(ResponseHeader.STATUS_ERROR);
+				response.setStatus(HttpServletResponse.SC_OK);
+				return;
+            }
+*/
+            String[][] studyForms = studyProcessor.getConvertedStudies();
 			int numForms = studyProcessor.getNumForms();
 
 			log.debug("upload contains: studies=" + studyForms.length

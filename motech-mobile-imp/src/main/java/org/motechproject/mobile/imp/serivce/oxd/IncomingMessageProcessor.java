@@ -33,7 +33,7 @@
 
 package org.motechproject.mobile.imp.serivce.oxd;
 
-import org.motechproject.mobile.core.model.MxFormProcessingResponse;
+import org.motechproject.mobile.core.model.MessageProcessingResponse;
 import org.motechproject.mobile.imp.serivce.MessageDeserializationException;
 import org.motechproject.mobile.imp.serivce.MessageProcessException;
 
@@ -53,5 +53,5 @@ public interface IncomingMessageProcessor {
      * @return  Message processing response - a  MxFormProcessingResponse object that caries
     *  Message processing response data
      */
-   public MxFormProcessingResponse processIncomingMessage(String incomingMessageSerialized) throws MessageProcessException, MessageDeserializationException;
+   public MessageProcessingResponse processIncomingMessage(String incomingMessageSerialized) throws MessageProcessException, MessageDeserializationException;
 }
