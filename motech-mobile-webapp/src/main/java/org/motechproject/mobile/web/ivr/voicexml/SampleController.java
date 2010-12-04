@@ -49,7 +49,7 @@ public class SampleController {
 	@RequestMapping(value = "/module/motechmodule/vxml1", method = RequestMethod.GET)
 	public String loadFirstForm() {
 
-		return "vtest1";
+		return "/module/motechmodule/velocity/vtest1";
 	}
 
 	@RequestMapping(value = "/module/motechmodule/vxml2", method = RequestMethod.GET)
@@ -60,7 +60,7 @@ public class SampleController {
 		//
 		log.info("Data: " + model);
 		//
-		return "vtest2";
+		return "/module/motechmodule/velocity/vtest2";
 	}
 
 
