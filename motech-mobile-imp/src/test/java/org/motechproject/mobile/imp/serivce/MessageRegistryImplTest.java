@@ -84,6 +84,7 @@ public class MessageRegistryImplTest {
 		instance.setCoreManager(mockCoreMgr);
 		instance.setParser(mockParser);
 		instance.setDuplicatePeriod(5);
+        instance.setIncomingMessageDAO(mockMsgDao);
 	}
 
 	@Test
@@ -221,4 +222,136 @@ public class MessageRegistryImplTest {
 
 		assertEquals(newMsg, result);
 	}
+
+    @Test
+	public void testUniqueIncomingMessage() throws DuplicateMessageException {
+
+		IncomingMessage incomingMessage = new IncomingMessageImpl();
+        incomingMessage.setContent(message);
+		expect(mockMsgDao.getByContentNonDuplicatable(message)).andReturn(null);
+		expect(mockMsgDao.save(incomingMessage)).andReturn(incomingMessage);
+
+		replay(mockMsgDao);
+
+        instance.registerMessage(incomingMessage);
+
+		verify(mockMsgDao);
+	}
+
+    @Test
+    public void testDuplicateIncomingMessageDisallowed() {
+
+        IncomingMessage existingMsg = new IncomingMessageImpl();
+        IncomingMessageForm existingForm = new IncomingMessageFormImpl();
+
+        IncomingMessageFormDefinition existingDef = new IncomingMessageFormDefinitionImpl();
+        existingDef.setDuplicatable(Duplicatable.DISALLOWED);
+
+        existingMsg.setIncomingMessageForm(existingForm);
+        existingMsg.setContent(message);
+
+        existingForm.setIncomingMsgFormDefinition(existingDef);
+        existingForm.setMessageFormStatus(IncMessageFormStatus.SERVER_VALID);
+
+        expect(mockMsgDao.getByContentNonDuplicatable(message)).andReturn(
+                existingMsg);
+
+        replay(mockMsgDao);
+        try {
+            instance.registerMessage(existingMsg);
+            fail("should fail with duplicate exception");
+        } catch (DuplicateMessageException e) {
+        }
+        verify(mockMsgDao);
+    }
+
+@Test
+	public void testDuplicateMessageInProcess() {
+
+		IncomingMessage existingMsg = new IncomingMessageImpl();
+
+		existingMsg.setMessageStatus(IncMessageStatus.PROCESSING);
+		existingMsg.setContent(message);
+
+		expect(mockMsgDao.getByContentNonDuplicatable(message)).andReturn(
+				existingMsg);
+
+		replay( mockMsgDao);
+		try {
+			instance.registerMessage(existingMsg);
+			fail("should fail with duplicate processing exception");
+		} catch (DuplicateProcessingException e) {
+		} catch (DuplicateMessageException de) {
+			fail("should fail with duplicate processing exception");
+		}
+		verify(mockMsgDao);
+	}
+
+	@Test
+	public void testRejectDuplicateIncomingMessageTimeBound() {
+
+		// Compute creation date for existing message
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE, -3);
+		Date existingCreated = cal.getTime();
+
+		IncomingMessage existingMsg = new IncomingMessageImpl();
+		IncomingMessageForm existingForm = new IncomingMessageFormImpl();
+
+		IncomingMessageFormDefinition existingDef = new IncomingMessageFormDefinitionImpl();
+		existingDef.setDuplicatable(Duplicatable.TIME_BOUND);
+
+		existingMsg.setIncomingMessageForm(existingForm);
+		existingMsg.setContent(message);
+		existingMsg.setDateCreated(existingCreated);
+
+		existingForm.setIncomingMsgFormDefinition(existingDef);
+		existingForm.setMessageFormStatus(IncMessageFormStatus.SERVER_VALID);
+
+		expect(mockMsgDao.getByContentNonDuplicatable(message)).andReturn(
+				existingMsg);
+
+		replay(mockMsgDao);
+		try {
+			instance.registerMessage(existingMsg);
+			fail("should fail with duplicate message exception");
+		} catch (DuplicateMessageException e) {
+		}
+		verify(mockMsgDao);
+	}
+
+	@Test
+	public void testAcceptDuplicateIncomeMessageTimeBound()
+			throws DuplicateMessageException {
+
+		// Compute creation date for existing message
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE, -10);
+		Date existingCreated = cal.getTime();
+
+		IncomingMessage existingMsg = new IncomingMessageImpl();
+		IncomingMessageForm existingForm = new IncomingMessageFormImpl();
+		IncomingMessageFormDefinition existingDef = new IncomingMessageFormDefinitionImpl();
+		IncomingMessage incomingMessage = new IncomingMessageImpl();
+        incomingMessage.setContent(message);
+
+		existingDef.setDuplicatable(Duplicatable.TIME_BOUND);
+
+		existingMsg.setIncomingMessageForm(existingForm);
+		existingMsg.setContent(message);
+		existingMsg.setDateCreated(existingCreated);
+
+		existingForm.setIncomingMsgFormDefinition(existingDef);
+		existingForm.setMessageFormStatus(IncMessageFormStatus.SERVER_VALID);
+
+		expect(mockMsgDao.getByContentNonDuplicatable(message)).andReturn(
+				existingMsg);
+    	expect(mockMsgDao.save(incomingMessage)).andReturn(incomingMessage);
+
+		replay(mockMsgDao);
+		instance.registerMessage(incomingMessage);
+		verify(mockMsgDao);
+	}
+
+
 }

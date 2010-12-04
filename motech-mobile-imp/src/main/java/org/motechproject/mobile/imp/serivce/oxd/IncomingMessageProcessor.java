@@ -31,24 +31,27 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.mobile.imp.serivce;
+package org.motechproject.mobile.imp.serivce.oxd;
 
-import org.motechproject.mobile.core.model.IncomingMessage;
+import org.motechproject.mobile.core.model.MxFormProcessingResponse;
+import org.motechproject.mobile.imp.serivce.MessageDeserializationException;
+import org.motechproject.mobile.imp.serivce.MessageProcessException;
 
 /**
- * An interface defining a registry abstraction, useful for ensuring that
- * duplicate messages are not processed.
- * 
- * @author batkinson
- * 
+ * Interface for processing Motech incoming messages.
+ *
+ *@author Igor Opushnyev (iopushnyev@2paths.com)
+ * Creted 30-Nov-2010
+ *
  */
-public interface MessageRegistry {
+public interface IncomingMessageProcessor {
 
-
-	IncomingMessage registerMessage(String message)
-			throws DuplicateMessageException;
-
-    void registerMessage(IncomingMessage incomingMessage)
-			throws DuplicateMessageException;
-
+   /**
+     *  Processes the incoming message by the message type specific way
+     *
+     * @param incomingMessageSerialized- incoming message in serialized form
+     * @return  Message processing response - a  MxFormProcessingResponse object that caries
+    *  Message processing response data
+     */
+   public MxFormProcessingResponse processIncomingMessage(String incomingMessageSerialized) throws MessageProcessException, MessageDeserializationException;
 }

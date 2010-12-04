@@ -33,22 +33,28 @@
 
 package org.motechproject.mobile.imp.serivce;
 
-import org.motechproject.mobile.core.model.IncomingMessage;
-
 /**
- * An interface defining a registry abstraction, useful for ensuring that
- * duplicate messages are not processed.
- * 
- * @author batkinson
- * 
+ * The subclass of the MessageDeserializationException thrown when
+ *  XForm definition for the incoming XForm data can not be found
+ *
+ * Created: 1-Dec-2010
+ * @author Igor Opushnyev (iopushnyev@2paths.com)
  */
-public interface MessageRegistry {
+public class XFormDefinitionNotFoundException extends MessageDeserializationException {
 
+    public XFormDefinitionNotFoundException() {
+        super();
+    }
 
-	IncomingMessage registerMessage(String message)
-			throws DuplicateMessageException;
+    public XFormDefinitionNotFoundException(String message) {
+        super(message);
+    }
 
-    void registerMessage(IncomingMessage incomingMessage)
-			throws DuplicateMessageException;
+    public XFormDefinitionNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
+    public XFormDefinitionNotFoundException(Throwable cause) {
+        super(cause);
+    }
 }

@@ -38,6 +38,7 @@
 
 package org.motechproject.mobile.imp.serivce;
 
+import org.motechproject.mobile.core.model.IncomingMessage;
 import org.motechproject.mobile.imp.util.exception.MotechParseException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,6 +82,8 @@ public interface IMPService {
      */
     String processXForm(String xForm) throws JDOMException, IOException, MotechParseException;
 
+    IncomingMessageResponse processIncomingMessage(IncomingMessage incomingMessage) throws DuplicateMessageException, MessageProcessException;
+
     String formatPhoneNumber(String requesterPhone);
 
     /**
@@ -112,4 +115,5 @@ public interface IMPService {
      * @param maxSMS the maxSMS to set
      */
     void setMaxSMS(int maxSMS);
+
 }

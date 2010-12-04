@@ -33,22 +33,27 @@
 
 package org.motechproject.mobile.imp.serivce;
 
-import org.motechproject.mobile.core.model.IncomingMessage;
-
 /**
- * An interface defining a registry abstraction, useful for ensuring that
- * duplicate messages are not processed.
- * 
- * @author batkinson
- * 
+ *  An Exception that thrown if an incoming message can not be processed due to an error
+ *
+ * Created: 1-Dec-2010
+ * @author Igor Opushnyev (iopushnyev@2paths.com)
  */
-public interface MessageRegistry {
+public class MessageProcessException extends Exception {
 
+    public MessageProcessException() {
+        super();
+    }
 
-	IncomingMessage registerMessage(String message)
-			throws DuplicateMessageException;
+    public MessageProcessException(String message) {
+        super(message);
+    }
 
-    void registerMessage(IncomingMessage incomingMessage)
-			throws DuplicateMessageException;
+    public MessageProcessException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
+    public MessageProcessException(Throwable cause) {
+        super(cause);
+    }
 }

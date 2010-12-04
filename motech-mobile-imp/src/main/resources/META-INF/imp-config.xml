@@ -60,6 +60,7 @@
     	<property name="coreManager" ref="coreManager" />
         <property name="duplicatePeriod" value="${imp.request.duplicatePeriod}" />
         <property name="parser" ref="imParser" />
+        <property name="incomingMessageDAO" ref="incomingMessageDAO"/>
     </bean>
 
     <bean id="impService" scope="prototype" class="org.motechproject.mobile.imp.serivce.IMPServiceImpl">
@@ -112,6 +113,14 @@
                 <entry key="query" value="Query"/>
             </map>
         </property>
+    </bean>
+
+    <bean id="incomingMxFormProcessor" class="org.motechproject.mobile.imp.serivce.oxd.IncomingMxFormProcessorImpl">
+        <property name="formService" ref="oxdFormDefService"/>
+        <property name="impService" ref="impService"/>
+        <property name="inMessageParser" ref="inMxFormParser"/>
+        <property name="studyProcessor" ref="studyProcessor"/>
+        <property name="maxProcessingTime" value="25000"/>
     </bean>
 
     <bean id="inMxFormParser" class="org.motechproject.mobile.imp.util.InMxFormParserImpl">
