@@ -37,8 +37,6 @@ import org.motechproject.mobile.core.model.MessageProcessingResponse;
 import org.motechproject.mobile.imp.serivce.MessageDeserializationException;
 import org.motechproject.mobile.imp.serivce.MessageProcessException;
 
-import java.io.DataInputStream;
-
 /**
  * Interface for processing Motech incoming messages.
  *
@@ -51,11 +49,9 @@ public interface IncomingMessageProcessor {
    /**
      *  Processes the incoming message by the message type specific way
      *
-     * @param inputData- incoming message in serialized form
+     * @param incomingMessageSerialized- incoming message in serialized form
      * @return  Message processing response - a  MxFormProcessingResponse object that caries
     *  Message processing response data
      */
-   public MessageProcessingResponse processIncomingMessage(byte[] inputData, String requesterPhone)
-           throws MessageProcessException, MessageDeserializationException;
-
+   public MessageProcessingResponse processIncomingMessage(String incomingMessageSerialized) throws MessageProcessException, MessageDeserializationException;
 }

@@ -37,8 +37,6 @@ import org.apache.log4j.Logger;
 import org.fcitmuk.epihandy.EpihandyXformSerializer;
 import org.fcitmuk.epihandy.FormNotFoundException;
 import org.motechproject.mobile.core.model.IncomingMessage;
-import org.motechproject.mobile.core.model.IncomingMessageResponse;
-import org.motechproject.mobile.core.model.MessageProcessingResponse;
 import org.motechproject.mobile.core.model.MxFormProcessingResponse;
 import org.motechproject.mobile.imp.serivce.*;
 import org.motechproject.mobile.imp.util.InMessageParser;
@@ -68,20 +66,15 @@ public class IncomingMxFormProcessorImpl implements IncomingMessageProcessor {
     private InMessageParser inMessageParser;
 
 	private long maxProcessingTime;
+    //private String
 
-    private final String messageType = "MxForms"; // Type of the incoming messages this implementation is designed to process
 
-
-  /**
-     * @see IncomingMessageProcessor
-     *
-     */
-    public MxFormProcessingResponse processIncomingMessage(final byte[] inputData, String requesterPhone)
+    public MxFormProcessingResponse processIncomingMessage(final String incomingMessageSerialized)
             throws MessageProcessException, MessageDeserializationException {
 
         long startTime = System.currentTimeMillis();
 
-        DataInputStream dataInputStream = new DataInputStream(new ByteArrayInputStream(inputData));
+        DataInputStream dataInput = new DataInputStream(new ByteArrayInputStream(incomingMessageSerialized.getBytes()));
 
         //TODO - add user authentication
         String name;
@@ -91,13 +84,14 @@ public class IncomingMxFormProcessorImpl implements IncomingMessageProcessor {
         byte action;
 
         try {
-            name = dataInputStream.readUTF();
-            password = dataInputStream.readUTF();
-            serializer = dataInputStream.readUTF();
-            locale = dataInputStream.readUTF();
-            action = dataInputStream.readByte();
+            name = dataInput.readUTF();
+            password = dataInput.readUTF();
+            serializer = dataInput.readUTF();
+            locale = dataInput.readUTF();
+            action = dataInput.readByte();
         } catch (IOException e) {
-            throw new MessageDeserializationException("Invalid mForms data: " + e.getMessage(), e);
+            //TODO - handle exception properly
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
         EpihandyXformSerializer serObj = new EpihandyXformSerializer();
@@ -105,7 +99,7 @@ public class IncomingMxFormProcessorImpl implements IncomingMessageProcessor {
 
         try {
             Map<Integer, String> formVersionMap = formService.getXForms();
-            serObj.deserializeStudiesWithEvents(dataInputStream, formVersionMap);
+            serObj.deserializeStudiesWithEvents(dataInput, formVersionMap);
         } catch (FormNotFoundException fne) {
             throw new XFormDefinitionNotFoundException(fne.getMessage());
 
@@ -136,45 +130,34 @@ public class IncomingMxFormProcessorImpl implements IncomingMessageProcessor {
                                  break formprocessing;*/
 
                     IncomingMessage incomingMessage = null;
-                    String formProcessingResult = "Implementation error";
+                    String formProcessingResult = "System error";
                     try {
                         incomingMessage = inMessageParser.parseIncomingMessage(studyForms[i][j]);
-                        IncomingMessageResponse incomingMessageResponse =
-                                impService.processIncomingMessage(incomingMessage, requesterPhone);
-                        formProcessingResult = incomingMessageResponse.getContent();
-
+                        impService.processIncomingMessage(incomingMessage);
+                        formProcessingResult = impService.getFormProcessSuccess();
                     } catch (MotechParseException e) {
                         formProcessingResult = "\"Can not process form\\n\" + e.getMessage()";
                         log.error(formProcessingResult, e);
+                        faultyForms++;
                     } catch (DuplicateProcessingException dpe) {
                          log.info("duplicate form in process, returning wait message");
-                         formProcessingResult = "Error: Duplicate in progress, please try again.";
+                        faultyForms++;
                     } catch (DuplicateMessageException e) {
                         formProcessingResult = impService.getFormProcessSuccess();
                         log.warn("duplicate form:\n" + incomingMessage.getContent());
-                    } catch (MessageProcessException e) {
-                        formProcessingResult = e.getMessage();
-                        log.info(formProcessingResult);
                     } catch (Exception ex) {
                         formProcessingResult = "processing form failed";
                         log.error(formProcessingResult, ex);
                     } finally {
                         formProcessingResults.add(formProcessingResult);
-                        
-                        	if (!impService.getFormProcessSuccess()
-								.equalsIgnoreCase(formProcessingResult)) {
-							faultyForms++;
-						}
                     }
                 }
-
                 studyFormProcessingResults.add(formProcessingResults);
             }
         }
 
         return new MxFormProcessingResponse(processedForms, faultyForms, studyFormProcessingResults);
     }
-
 
     public void setFormService(FormDefinitionService formService) {
         this.formService = formService;
@@ -194,10 +177,6 @@ public class IncomingMxFormProcessorImpl implements IncomingMessageProcessor {
 
     public void setMaxProcessingTime(long maxProcessingTime) {
         this.maxProcessingTime = maxProcessingTime;
-    }
-
-    public String getMessageType() {
-        return messageType;
     }
 }
 

@@ -82,8 +82,7 @@ public interface IMPService {
      */
     String processXForm(String xForm) throws JDOMException, IOException, MotechParseException;
 
-    IncomingMessageResponse processIncomingMessage(IncomingMessage incomingMessage, String requesterPhone)
-            throws DuplicateMessageException, MessageProcessException;
+    IncomingMessageResponse processIncomingMessage(IncomingMessage incomingMessage) throws DuplicateMessageException, MessageProcessException;
 
     String formatPhoneNumber(String requesterPhone);
 
