@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="${corePackage}.model">
+	<class name="FutureServiceDelivery" table="motechmodule_futureservicedelivery">
+		<id name="id" type="int" column="motechmodule_futureservicedelivery_id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="patient" class="org.openmrs.Patient"
+			column="patient_id" not-null="true" />
+		<many-to-one name="user" class="org.openmrs.User" column="user_id"
+			not-null="true" />
+		<property name="date" type="java.util.Date" column="delivery_datetime"
+			not-null="true" length="19" />
+		<many-to-one name="service" class="org.openmrs.Concept" column="service_concept_id"
+			not-null="true" />
+		<property name="patientNotifiedDate" type="java.util.Date"
+			column="patient_notified_date" not-null="false" length="19" />
+		<property name="userNotifiedDate" type="java.util.Date"
+			column="user_notified_date" not-null="false" length="19" />
+	</class>
+</hibernate-mapping>
