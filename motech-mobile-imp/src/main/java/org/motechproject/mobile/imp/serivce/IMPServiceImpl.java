@@ -191,7 +191,8 @@ public class IMPServiceImpl implements IMPService {
      * registered
      * @throws MessageProcessException if the message can not be processed
      */
-    public IncomingMessageResponse processIncomingMessage(IncomingMessage incomingMessage) throws DuplicateMessageException, MessageProcessException {
+    public IncomingMessageResponse processIncomingMessage(IncomingMessage incomingMessage, String requesterPhone)
+          throws DuplicateMessageException, MessageProcessException {
 
          IncomingMessageResponse response = new IncomingMessageResponseImpl();
         String messageContent = incomingMessage.getContent();
@@ -207,16 +208,15 @@ public class IMPServiceImpl implements IMPService {
             throw new MessageProcessException("Error: Unknown form type or command!");
         }
 
-        response = action.execute(incomingMessage , null);
+        response = action.execute(incomingMessage , requesterPhone);
 
-        String responseContent = response.getContent();
+       /* String responseContent = response.getContent();
         //TODO - re-implement the following block after command action classes refactoring
         // this implementation is a way around of  action classes returning response
         // that might indicate an error instead of throwing an exception
-        if (!this.formProcessSuccess.equalsIgnoreCase(responseContent
-        )) {
+        if (!this.formProcessSuccess.equalsIgnoreCase(responseContent)) {
              throw new MessageProcessException(responseContent);
-        }
+        }*/
 
         return response;
     }

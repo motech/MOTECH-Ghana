@@ -40,6 +40,8 @@ public class InMxFormParserImpl implements InMessageParser {
     private Pattern oxdDatePattern;
     private Map<String, String> formTypeLookup;
 
+    private final String messageType = "MxForms"; // Type of the incoming messages this implementation is designed to parse
+
 
   /**
      * Parse a Motech incoming message in serialized form
@@ -226,5 +228,9 @@ public class InMxFormParserImpl implements InMessageParser {
 
     public void setFormTypeLookup(Map<String, String> formTypeLookup) {
         this.formTypeLookup = formTypeLookup;
+    }
+
+    public String getMessageType() {
+        return messageType;
     }
 }

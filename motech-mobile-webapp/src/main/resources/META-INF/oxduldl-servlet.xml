@@ -57,8 +57,9 @@
 
 	<!-- Configure OXD upload/download endpoints -->
 	<bean id="oxdUploadController" class="org.motechproject.mobile.web.OXDFormUploadServlet">
-		<property name="formService" ref="oxdFormDefService" />
-		<property name="maxProcessingTime" value="25000" />
+        <property name="incomingMessageProcessor" ref="incomingMxFormProcessor"/>
+        <property name="impService" ref="impService"/>
+
 	</bean>
 
 	<bean id="oxdDownloadController" class="org.motechproject.mobile.web.OXDFormDownloadServlet">
