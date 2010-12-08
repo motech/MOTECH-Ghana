@@ -119,7 +119,6 @@
         <property name="formService" ref="oxdFormDefService"/>
         <property name="impService" ref="impService"/>
         <property name="inMessageParser" ref="inMxFormParser"/>
-        <property name="studyProcessor" ref="studyProcessor"/>
         <property name="maxProcessingTime" value="25000"/>
     </bean>
 
@@ -188,5 +187,4 @@
             </property>
         </bean>
     
-        <bean id="studyProcessor" class="org.motechproject.mobile.imp.serivce.oxd.StudyProcessor" scope="prototype"/>
-    </beans>
+   </beans>

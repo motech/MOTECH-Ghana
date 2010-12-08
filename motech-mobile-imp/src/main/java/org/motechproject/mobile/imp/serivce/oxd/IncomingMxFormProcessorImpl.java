@@ -43,6 +43,9 @@ import org.motechproject.mobile.core.model.MxFormProcessingResponse;
 import org.motechproject.mobile.imp.serivce.*;
 import org.motechproject.mobile.imp.util.InMessageParser;
 import org.motechproject.mobile.imp.util.exception.MotechParseException;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -64,7 +67,6 @@ public class IncomingMxFormProcessorImpl implements IncomingMessageProcessor {
 
     private FormDefinitionService formService;
     private IMPService impService;
-    private StudyProcessor studyProcessor;
     private InMessageParser inMessageParser;
 
 	private long maxProcessingTime;
@@ -99,6 +101,9 @@ public class IncomingMxFormProcessorImpl implements IncomingMessageProcessor {
         } catch (IOException e) {
             throw new MessageDeserializationException("Invalid mForms data: " + e.getMessage(), e);
         }
+
+
+        StudyProcessor studyProcessor = new StudyProcessor();
 
         EpihandyXformSerializer serObj = new EpihandyXformSerializer();
         serObj.addDeserializationListener(studyProcessor);
@@ -184,10 +189,6 @@ public class IncomingMxFormProcessorImpl implements IncomingMessageProcessor {
         this.impService = impService;
     }
 
-    public void setStudyProcessor(StudyProcessor studyProcessor) {
-        this.studyProcessor = studyProcessor;
-    }
-
     public void setInMessageParser(InMessageParser inMessageParser) {
         this.inMessageParser = inMessageParser;
     }
@@ -199,6 +200,7 @@ public class IncomingMxFormProcessorImpl implements IncomingMessageProcessor {
     public String getMessageType() {
         return messageType;
     }
+
 }
 
 
