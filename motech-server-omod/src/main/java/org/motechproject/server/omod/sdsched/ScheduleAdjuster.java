@@ -33,6 +33,8 @@
 
 package org.motechproject.server.omod.sdsched;
 
+import org.motechproject.server.annotation.RunAsAdminUser;
+
 /**
  * An interface defining operations for adjusting patient service delivery
  * schedules.
@@ -42,6 +44,7 @@ package org.motechproject.server.omod.sdsched;
  */
 public interface ScheduleAdjuster {
 
+	@RunAsAdminUser
 	void adjustSchedule(Integer patientId);
 
 }
