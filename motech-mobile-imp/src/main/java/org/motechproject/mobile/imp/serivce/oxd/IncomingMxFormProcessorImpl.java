@@ -140,25 +140,30 @@ public class IncomingMxFormProcessorImpl implements IncomingMessageProcessor {
                              System.nanoTime();
                                  break formprocessing;*/
 
+                    String formProcessSuccessMsg = impService.getFormProcessSuccess();
                     IncomingMessage incomingMessage = null;
                     String formProcessingResult = "Implementation error";
                     try {
                         incomingMessage = inMessageParser.parseIncomingMessage(studyForms[i][j]);
                         IncomingMessageResponse incomingMessageResponse =
                                 impService.processIncomingMessage(incomingMessage, requesterPhone);
+
+                        if (incomingMessageResponse.getContent().toLowerCase().indexOf("error") < 0) {
+                            incomingMessageResponse.setContent(formProcessSuccessMsg);
+                        }
                         formProcessingResult = incomingMessageResponse.getContent();
 
                     } catch (MotechParseException e) {
-                        formProcessingResult = "\"Can not process form\\n\" + e.getMessage()";
+                        formProcessingResult = "Can not process form\n" + e.getMessage();
                         log.error(formProcessingResult, e);
                     } catch (DuplicateProcessingException dpe) {
                          log.info("duplicate form in process, returning wait message");
-                         formProcessingResult = "Error: Duplicate in progress, please try again.";
+                         formProcessingResult = "Duplicate in progress, please try again.";
                     } catch (DuplicateMessageException e) {
                         formProcessingResult = impService.getFormProcessSuccess();
                         log.warn("duplicate form:\n" + incomingMessage.getContent());
                     } catch (MessageProcessException e) {
-                        formProcessingResult = e.getMessage();
+                        formProcessingResult = "Error: " + e.getMessage();
                         log.info(formProcessingResult);
                     } catch (Exception ex) {
                         formProcessingResult = "processing form failed";
@@ -166,8 +171,7 @@ public class IncomingMxFormProcessorImpl implements IncomingMessageProcessor {
                     } finally {
                         formProcessingResults.add(formProcessingResult);
                         
-                        	if (!impService.getFormProcessSuccess()
-								.equalsIgnoreCase(formProcessingResult)) {
+                        if (!formProcessSuccessMsg.equalsIgnoreCase(formProcessingResult)) {
 							faultyForms++;
 						}
                     }
