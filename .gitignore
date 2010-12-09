@@ -4,3 +4,8 @@
 target/
 .externalToolBuilders/
 maven-eclipse.xml
+*.iml
+*.ipr
+*.iws
+.idea
+
