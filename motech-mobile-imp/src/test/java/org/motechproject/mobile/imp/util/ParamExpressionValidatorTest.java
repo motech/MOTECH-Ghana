@@ -104,10 +104,10 @@ public class ParamExpressionValidatorTest {
         param.setMessageFormParamStatus(IncMessageFormParameterStatus.NEW);
         param.setValue("10.12.2010");
 
-        expResult = false;
+        expResult = true;
         result = instance.validate(param);
         assertEquals(expResult, result);
-        assertEquals(param.getMessageFormParamStatus(), IncMessageFormParameterStatus.INVALID);
+        assertEquals(param.getMessageFormParamStatus(), IncMessageFormParameterStatus.VALID);
 
         param.setMessageFormParamStatus(IncMessageFormParameterStatus.NEW);
         param.setValue("10-01-10");
