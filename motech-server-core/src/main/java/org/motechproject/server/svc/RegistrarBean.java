@@ -259,8 +259,6 @@ public interface RegistrarBean {
 
 	public List<User> getAllStaff();
 
-	public List<String> getStaffTypes();
-
 	public List<Patient> getAllPatients();
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,

@@ -33,6 +33,10 @@
 
 package org.motechproject.server.omod.web.controller;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.web.model.WebStaff;
@@ -62,6 +66,9 @@ public class StaffController {
 	@Qualifier("registrarBean")
 	private RegistrarBean registrarBean;
 
+	@Resource(name = "staffTypes")
+	private List<String> staffTypes;
+
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder
@@ -78,7 +85,7 @@ public class StaffController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String viewStaffForm(ModelMap model) {
 
-		model.addAttribute("staffTypes", registrarBean.getStaffTypes());
+		model.addAttribute("staffTypes", staffTypes);
 		return "/module/motechmodule/staff";
 	}
 
@@ -116,7 +123,7 @@ public class StaffController {
 					+ user.getPersonName() + ", Staff ID = "
 					+ user.getSystemId());
 		}
-		model.addAttribute("staffTypes", registrarBean.getStaffTypes());
+		model.addAttribute("staffTypes", staffTypes);
 		return "/module/motechmodule/staff";
 	}
 

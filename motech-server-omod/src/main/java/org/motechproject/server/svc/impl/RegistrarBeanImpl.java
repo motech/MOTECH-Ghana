@@ -127,7 +127,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	private ContextService contextService;
 	public MessageService mobileService;
 	private Map<String, MessageProgram> messagePrograms;
-	private List<String> staffTypes;
 
 	public void setContextService(ContextService contextService) {
 		this.contextService = contextService;
@@ -4762,14 +4761,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	public Community getCommunityByPatient(Patient patient) {
 		return contextService.getMotechService().getCommunityByPatient(patient);
-	}
-
-	public List<String> getStaffTypes() {
-		return staffTypes;
-	}
-
-	public void setStaffTypes(List<String> staffTypes) {
-		this.staffTypes = staffTypes;
 	}
 
 	public boolean isValidMotechIdCheckDigit(Integer motechId) {
