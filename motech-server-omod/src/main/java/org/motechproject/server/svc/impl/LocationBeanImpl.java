@@ -31,48 +31,49 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.server.omod.tasks;
+package org.motechproject.server.svc.impl;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.motechproject.server.model.Community;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.impl.ContextServiceImpl;
-import org.openmrs.scheduler.tasks.AbstractTask;
+import org.motechproject.server.svc.IdBean;
+import org.motechproject.server.svc.LocationBean;
 
-public class CareScheduleUpdateTask extends AbstractTask {
-
-	private static Log log = LogFactory.getLog(CareScheduleUpdateTask.class);
+/**
+ * An implementation of the LocationBean interface.
+ */
+public class LocationBeanImpl implements LocationBean {
 
 	private ContextService contextService;
-
-	public CareScheduleUpdateTask() {
-		contextService = new ContextServiceImpl();
-	}
+	private IdBean idBean;
 
 	public void setContextService(ContextService contextService) {
 		this.contextService = contextService;
 	}
 
-	/**
-	 * @see org.openmrs.scheduler.tasks.AbstractTask#execute()
-	 */
-	@Override
-	public void execute() {
-		long start = System.currentTimeMillis();
-		log
-				.debug("Care Schedule Task - Update Care Schedules for all Patients");
-
-		// Session required for Task to get RegistrarBean through Context
-		try {
-			contextService.openSession();
-			contextService.getMotechService().getExpectedCareBean()
-					.updateAllCareSchedules();
-		} finally {
-			contextService.closeSession();
-		}
-		long end = System.currentTimeMillis();
-		long runtime = (end - start) / 1000;
-		log.info("executed for " + runtime + " seconds");
+	public void setIdBean(IdBean idBean) {
+		this.idBean = idBean;
 	}
 
+	public Facility getFacilityById(Integer facilityId) {
+		return contextService.getMotechService().getFacilityById(facilityId);
+	}
+
+	public Community getCommunityById(Integer communityId) {
+		return contextService.getMotechService().getCommunityById(communityId);
+	}
+
+	public Community saveCommunity(Community community) {
+		if (community.getCommunityId() == null) {
+			community.setCommunityId(Integer.parseInt(idBean
+					.generateCommunityId()));
+		}
+
+		return contextService.getMotechService().saveCommunity(community);
+	}
+
+	public Facility saveNewFacility(Facility facility) {
+		facility.setFacilityId(Integer.parseInt(idBean.generateFacilityId()));
+		return contextService.getMotechService().saveFacility(facility);
+	}
 }

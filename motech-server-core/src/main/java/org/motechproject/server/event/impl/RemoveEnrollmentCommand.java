@@ -37,24 +37,24 @@ import java.util.Date;
 
 import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.MessageBean;
 
 public class RemoveEnrollmentCommand extends MessagesCommand {
 
-	RegistrarBean registrarBean;
+	MessageBean messageBean;
 
-	public RegistrarBean getRegistrarBean() {
-		return registrarBean;
+	public MessageBean getMessageBean() {
+		return messageBean;
 	}
 
-	public void setRegistrarBean(RegistrarBean registrarBean) {
-		this.registrarBean = registrarBean;
+	public void setMessageBean(MessageBean messageBean) {
+		this.messageBean = messageBean;
 	}
 
 	@Override
 	public void execute(MessageProgramEnrollment enrollment, Date actionDate,
 			Date currentDate) {
-		registrarBean.removeMessageProgramEnrollment(enrollment);
+		messageBean.removeMessageProgramEnrollment(enrollment);
 	}
 
 }

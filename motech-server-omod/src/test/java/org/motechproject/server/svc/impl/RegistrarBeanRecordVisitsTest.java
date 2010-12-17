@@ -52,6 +52,7 @@ import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.BirthOutcomeChild;
+import org.motechproject.server.svc.MessageBean;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.BirthOutcome;
@@ -110,7 +111,7 @@ public class RegistrarBeanRecordVisitsTest extends
 
 		// Includes Motech data added in sqldiff
 		executeDataSet("motech-dataset.xml");
-		
+
 		// Add example Location, Facility and Community
 		executeDataSet("facility-community-dataset.xml");
 
@@ -136,6 +137,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					.getService(MotechService.class);
 			RegistrarBean regService = motechService.getRegistrarBean();
 			OpenmrsBean openmrsService = motechService.getOpenmrsBean();
+			MessageBean messageBean = motechService.getMessageBean();
 
 			Facility facility = motechService.getFacilityById(1111);
 			Location facilityLocation = facility.getLocation();
@@ -213,7 +215,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					.getPatientService().getAllPatients().size());
 
 			// Query for Mother 1 upcoming pregnancy due date
-			List<Obs> upcomingDueDate = regService
+			List<Obs> upcomingDueDate = openmrsService
 					.getUpcomingPregnanciesDueDate(facility);
 			assertEquals(1, upcomingDueDate.size());
 			assertEquals(dueDate1, upcomingDueDate.get(0).getValueDatetime());
@@ -221,7 +223,7 @@ public class RegistrarBeanRecordVisitsTest extends
 					.getPerson().getPersonId());
 
 			// Query for Mother 2 overdue pregnancy due date
-			List<Obs> overdueDueDate = regService
+			List<Obs> overdueDueDate = openmrsService
 					.getOverduePregnanciesDueDate(facility);
 			assertEquals(1, overdueDueDate.size());
 			assertEquals(dueDate2, overdueDueDate.get(0).getValueDatetime());
@@ -242,8 +244,8 @@ public class RegistrarBeanRecordVisitsTest extends
 			assertEquals("ANC visit not added for Mother 1", 3, Context
 					.getEncounterService().getEncountersByPatient(mother1)
 					.size());
-			Date currentDueDate = regService.getActivePregnancyDueDate(mother1
-					.getPatientId());
+			Date currentDueDate = openmrsService
+					.getActivePregnancyDueDate(mother1.getPatientId());
 			assertEquals("EDD not updated in ANC visit", newDueDate,
 					currentDueDate);
 
@@ -258,7 +260,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			assertEquals("ANC registration not added for Mother 1", 4, Context
 					.getEncounterService().getEncountersByPatient(mother1)
 					.size());
-			currentDueDate = regService.getActivePregnancyDueDate(mother1
+			currentDueDate = openmrsService.getActivePregnancyDueDate(mother1
 					.getPatientId());
 			assertEquals("EDD not updated in ANC registration", newDueDate,
 					currentDueDate);
@@ -278,7 +280,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			assertEquals("Pregnancy delivery not added for Mother 1", 5,
 					Context.getEncounterService().getEncountersByPatient(
 							mother1).size());
-			Obs mother1Pregnancy = regService.getActivePregnancy(mother1
+			Obs mother1Pregnancy = openmrsService.getActivePregnancy(mother1
 					.getPatientId());
 			assertNull("Pregnancy is still active after delivery",
 					mother1Pregnancy);
@@ -298,14 +300,14 @@ public class RegistrarBeanRecordVisitsTest extends
 			assertEquals("Birth or Registration visit not added for Child 2",
 					2, Context.getEncounterService().getEncountersByPatient(
 							child2).size());
-			String[] child2Enrollments = regService
+			String[] child2Enrollments = messageBean
 					.getActiveMessageProgramEnrollmentNames(child2);
 			assertNotNull("Enrollments do not exist for Child 2",
 					child2Enrollments);
 			assertEquals(2, child2Enrollments.length);
 
 			// Query for Delivery
-			List<Encounter> recentDeliveryEnc = regService
+			List<Encounter> recentDeliveryEnc = openmrsService
 					.getRecentDeliveries(facility);
 			assertEquals(1, recentDeliveryEnc.size());
 			assertEquals(mother1, recentDeliveryEnc.get(0).getPatient());
@@ -336,7 +338,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			assertEquals("Pregnancy termination not added for Mother 2", 5,
 					Context.getEncounterService().getEncountersByPatient(
 							mother2).size());
-			Obs mother2Pregnancy = regService.getActivePregnancy(mother2
+			Obs mother2Pregnancy = openmrsService.getActivePregnancy(mother2
 					.getPatientId());
 			assertNull("Pregnancy is still active after termination",
 					mother2Pregnancy);

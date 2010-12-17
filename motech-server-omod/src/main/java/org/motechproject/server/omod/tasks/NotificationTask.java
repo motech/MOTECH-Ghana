@@ -89,8 +89,8 @@ public class NotificationTask extends AbstractTask {
 		// Session required for Task to get RegistrarBean through Context
 		try {
 			contextService.openSession();
-			contextService.getRegistrarBean().sendMessages(startDate, endDate,
-					sendImmediate);
+			contextService.getMotechService().getMessageBean().sendMessages(
+					startDate, endDate, sendImmediate);
 		} finally {
 			contextService.closeSession();
 		}

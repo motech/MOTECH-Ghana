@@ -44,7 +44,7 @@
 		abstract="true">
 		<property name="command" ref="nopCommand" />
 		<property name="terminating" value="false" />
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="openmrsBean" ref="openmrsBean" />
 	</bean>
 	
 	<bean id="inputDemoProgram" class="org.motechproject.server.event.impl.MessageProgramImpl">
@@ -226,7 +226,7 @@
 		<property name="timeReference" value="enrollment_startdate" />
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.RemoveEnrollmentCommand">
-				<property name="registrarBean" ref="registrarBean" />
+				<property name="messageBean" ref="messageBean" />
 			</bean>
 		</property>
 		<property name="program" ref="inputDemoProgram" />

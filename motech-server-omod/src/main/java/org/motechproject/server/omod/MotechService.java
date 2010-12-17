@@ -54,6 +54,8 @@ import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.omod.sdsched.ScheduleMaintService;
+import org.motechproject.server.svc.ExpectedCareBean;
+import org.motechproject.server.svc.MessageBean;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Concept;
@@ -76,6 +78,10 @@ public interface MotechService extends OpenmrsService {
 	RegistrarBean getRegistrarBean();
 
 	OpenmrsBean getOpenmrsBean();
+
+	MessageBean getMessageBean();
+
+	ExpectedCareBean getExpectedCareBean();
 
 	ScheduleMaintService getScheduleMaintService();
 

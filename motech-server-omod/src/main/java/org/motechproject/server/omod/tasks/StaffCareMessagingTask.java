@@ -101,9 +101,10 @@ public class StaffCareMessagingTask extends AbstractTask {
 		// Session required for Task to get RegistrarBean through Context
 		try {
 			contextService.openSession();
-			contextService.getRegistrarBean().sendStaffCareMessages(
-					currentDate, endDate, deliveryDate, deliveryTime,
-					careGroups, sendUpcoming, avoidBlackout);
+			contextService.getMotechService().getMessageBean()
+					.sendStaffCareMessages(currentDate, endDate, deliveryDate,
+							deliveryTime, careGroups, sendUpcoming,
+							avoidBlackout);
 		} finally {
 			contextService.closeSession();
 		}

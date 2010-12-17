@@ -31,48 +31,24 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.server.omod.tasks;
+package org.motechproject.server.svc;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.impl.ContextServiceImpl;
-import org.openmrs.scheduler.tasks.AbstractTask;
+import org.motechproject.server.model.Community;
+import org.motechproject.server.model.Facility;
 
-public class CareScheduleUpdateTask extends AbstractTask {
+/**
+ * An interface providing methods commonly required of facilities and
+ * communities in motech.
+ * 
+ */
+public interface LocationBean {
 
-	private static Log log = LogFactory.getLog(CareScheduleUpdateTask.class);
+	public Facility getFacilityById(Integer facilityId);
 
-	private ContextService contextService;
+	public Community getCommunityById(Integer communityId);
 
-	public CareScheduleUpdateTask() {
-		contextService = new ContextServiceImpl();
-	}
+	public Community saveCommunity(Community community);
 
-	public void setContextService(ContextService contextService) {
-		this.contextService = contextService;
-	}
-
-	/**
-	 * @see org.openmrs.scheduler.tasks.AbstractTask#execute()
-	 */
-	@Override
-	public void execute() {
-		long start = System.currentTimeMillis();
-		log
-				.debug("Care Schedule Task - Update Care Schedules for all Patients");
-
-		// Session required for Task to get RegistrarBean through Context
-		try {
-			contextService.openSession();
-			contextService.getMotechService().getExpectedCareBean()
-					.updateAllCareSchedules();
-		} finally {
-			contextService.closeSession();
-		}
-		long end = System.currentTimeMillis();
-		long runtime = (end - start) / 1000;
-		log.info("executed for " + runtime + " seconds");
-	}
+	public Facility saveNewFacility(Facility facility);
 
 }

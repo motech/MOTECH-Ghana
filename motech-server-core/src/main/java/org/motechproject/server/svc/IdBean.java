@@ -31,48 +31,27 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.server.omod.tasks;
+package org.motechproject.server.svc;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.impl.ContextServiceImpl;
-import org.openmrs.scheduler.tasks.AbstractTask;
+import org.openmrs.User;
 
-public class CareScheduleUpdateTask extends AbstractTask {
+/**
+ * An interface providing methods commonly required of ids in motech.
+ */
+public interface IdBean {
 
-	private static Log log = LogFactory.getLog(CareScheduleUpdateTask.class);
+	public String generateMotechId();
 
-	private ContextService contextService;
+	public String generateStaffId();
 
-	public CareScheduleUpdateTask() {
-		contextService = new ContextServiceImpl();
-	}
+	public String generateCommunityId();
 
-	public void setContextService(ContextService contextService) {
-		this.contextService = contextService;
-	}
+	public String generateFacilityId();
 
-	/**
-	 * @see org.openmrs.scheduler.tasks.AbstractTask#execute()
-	 */
-	@Override
-	public void execute() {
-		long start = System.currentTimeMillis();
-		log
-				.debug("Care Schedule Task - Update Care Schedules for all Patients");
+	public void excludeMotechId(User staff, String motechId);
 
-		// Session required for Task to get RegistrarBean through Context
-		try {
-			contextService.openSession();
-			contextService.getMotechService().getExpectedCareBean()
-					.updateAllCareSchedules();
-		} finally {
-			contextService.closeSession();
-		}
-		long end = System.currentTimeMillis();
-		long runtime = (end - start) / 1000;
-		log.info("executed for " + runtime + " seconds");
-	}
+	public boolean isValidMotechIdCheckDigit(Integer motechId);
+
+	public boolean isValidIdCheckDigit(Integer idWithCheckDigit);
 
 }

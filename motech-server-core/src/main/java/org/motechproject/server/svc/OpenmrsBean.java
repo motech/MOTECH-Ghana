@@ -33,8 +33,25 @@
 
 package org.motechproject.server.svc;
 
+import java.util.Date;
+import java.util.List;
+
 import org.motechproject.server.annotation.RunWithPrivileges;
+import org.motechproject.server.model.Community;
+import org.motechproject.server.model.Facility;
+import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DayOfWeek;
+import org.motechproject.ws.MediaType;
+import org.openmrs.Concept;
+import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
+import org.openmrs.Location;
+import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.PatientIdentifierType;
+import org.openmrs.Person;
+import org.openmrs.PersonAttributeType;
+import org.openmrs.Relationship;
 import org.openmrs.User;
 import org.openmrs.util.OpenmrsConstants;
 
@@ -57,5 +74,343 @@ public interface OpenmrsBean {
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_USERS,
 			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
 	public User getStaffBySystemId(String systemId);
+
+	public Patient getPatientById(Integer patientId);
+
+	public List<Patient> getPatients(String firstName, String lastName,
+			String preferredName, Date birthDate, Integer communityId,
+			String phoneNumber, String nhisNumber, String motechId);
+
+	public List<Patient> getDuplicatePatients(String firstName,
+			String lastName, String preferredName, Date birthDate,
+			Integer communityId, String phoneNumber, String nhisNumber,
+			String motechId);
+
+	public PatientIdentifierType getMotechPatientIdType();
+
+	public PatientIdentifierType getStaffPatientIdType();
+
+	public PatientIdentifierType getFacilityPatientIdType();
+
+	public PatientIdentifierType getCommunityPatientIdType();
+
+	public PersonAttributeType getPhoneNumberAttributeType();
+
+	public PersonAttributeType getNHISNumberAttributeType();
+
+	public PersonAttributeType getNHISExpirationDateAttributeType();
+
+	public PersonAttributeType getPhoneTypeAttributeType();
+
+	public PersonAttributeType getLanguageAttributeType();
+
+	public PersonAttributeType getMediaTypeAttributeType();
+
+	public PersonAttributeType getDeliveryTimeAttributeType();
+
+	public PersonAttributeType getInsuredAttributeType();
+
+	public PersonAttributeType getHowLearnedAttributeType();
+
+	public PersonAttributeType getInterestReasonAttributeType();
+
+	public PersonAttributeType getDeliveryDayAttributeType();
+
+	public Location getGhanaLocation();
+
+	public EncounterType getANCVisitEncounterType();
+
+	public EncounterType getPregnancyRegistrationVisitEncounterType();
+
+	public EncounterType getPregnancyTerminationVisitEncounterType();
+
+	public EncounterType getPregnancyDeliveryVisitEncounterType();
+
+	public EncounterType getPregnancyDeliveryNotificationEncounterType();
+
+	public EncounterType getOutpatientVisitEncounterType();
+
+	public EncounterType getTTVisitEncounterType();
+
+	public EncounterType getCWCVisitEncounterType();
+
+	public EncounterType getMotherPNCVisitEncounterType();
+
+	public EncounterType getChildPNCVisitEncounterType();
+
+	public EncounterType getANCRegistrationEncounterType();
+
+	public EncounterType getCWCRegistrationEncounterType();
+
+	public EncounterType getBirthEncounterType();
+
+	public EncounterType getPatientRegistrationEncounterType();
+
+	public EncounterType getPatientHistoryEncounterType();
+
+	public Concept getImmunizationsOrderedConcept();
+
+	public Concept getTetanusDoseConcept();
+
+	public Concept getIPTDoseConcept();
+
+	public Concept getHIVTestResultConcept();
+
+	public Concept getTerminationTypeConcept();
+
+	public Concept getTerminationComplicationConcept();
+
+	public Concept getVitaminAConcept();
+
+	public Concept getITNConcept();
+
+	public Concept getVisitNumberConcept();
+
+	public Concept getPregnancyConcept();
+
+	public Concept getPregnancyStatusConcept();
+
+	public Concept getDueDateConcept();
+
+	public Concept getParityConcept();
+
+	public Concept getGravidaConcept();
+
+	public Concept getDueDateConfirmedConcept();
+
+	public Concept getEnrollmentReferenceDateConcept();
+
+	public Concept getDeathCauseConcept();
+
+	public Concept getBCGConcept();
+
+	public Concept getOPVDoseConcept();
+
+	public Concept getPentaDoseConcept();
+
+	public Concept getYellowFeverConcept();
+
+	public Concept getCSMConcept();
+
+	public Concept getMeaslesConcept();
+
+	public Concept getIPTiDoseConcept();
+
+	public Concept getSerialNumberConcept();
+
+	public Concept getNewCaseConcept();
+
+	public Concept getReferredConcept();
+
+	public Concept getPrimaryDiagnosisConcept();
+
+	public Concept getSecondaryDiagnosisConcept();
+
+	public Concept getDeliveryModeConcept();
+
+	public Concept getDeliveryLocationConcept();
+
+	public Concept getDeliveredByConcept();
+
+	public Concept getDeliveryOutcomeConcept();
+
+	public Concept getBirthOutcomeConcept();
+
+	public Concept getMalariaRDTConcept();
+
+	public Concept getVDRLTreatmentConcept();
+
+	public Concept getUrineProteinTestConcept();
+
+	public Concept getUrineGlucoseTestConcept();
+
+	public Concept getFetalHeartRateConcept();
+
+	public Concept getFundalHeightConcept();
+
+	public Concept getVVFRepairConcept();
+
+	public Concept getDewormerConcept();
+
+	public Concept getPMTCTConcept();
+
+	public Concept getPMTCTTreatmentConcept();
+
+	public Concept getACTTreatmentConcept();
+
+	public Concept getPreHIVTestCounselingConcept();
+
+	public Concept getPostHIVTestCounselingConcept();
+
+	public Concept getDeliveryComplicationConcept();
+
+	public Concept getPostAbortionFPCounselingConcept();
+
+	public Concept getPostAbortionFPAcceptedConcept();
+
+	public Concept getIPTReactionConcept();
+
+	public Concept getLochiaColourConcept();
+
+	public Concept getLochiaExcessConcept();
+
+	public Concept getLochiaFoulConcept();
+
+	public Concept getMUACConcept();
+
+	public Concept getMaternalDeathConcept();
+
+	public Concept getTerminationProcedureConcept();
+
+	public Concept getCordConditionConcept();
+
+	public Concept getConditionBabyConcept();
+
+	public Concept getNextANCDateConcept();
+
+	public Concept getMaleInvolvementConcept();
+
+	public Concept getCommunityConcept();
+
+	public Concept getHouseConcept();
+
+	public Concept getANCPNCLocationConcept();
+
+	public Concept getCWCLocationConcept();
+
+	public Concept getCommentsConcept();
+
+	public Concept getVDRLConcept();
+
+	public Concept getRespiratoryRateConcept();
+
+	public Concept getDiastolicBloodPressureConcept();
+
+	public Concept getSystolicBloodPressureConcept();
+
+	public Concept getHemoglobinConcept();
+
+	public Concept getWeightConcept();
+
+	public Concept getHeightConcept();
+
+	public Concept getTemperatureConcept();
+
+	public Concept getReactiveConcept();
+
+	public Concept getNonReactiveConcept();
+
+	public Concept getPositiveConcept();
+
+	public Concept getNegativeConcept();
+
+	public Concept getTraceConcept();
+
+	public Concept getANCRegistrationNumberConcept();
+
+	public Concept getCWCRegistrationNumberConcept();
+
+	public Concept getInsuredConcept();
+
+	public String getTroubledPhoneProperty();
+
+	public String getPatientCareRemindersProperty();
+
+	public String getPatientDayOfWeekProperty();
+
+	public String getPatientTimeOfDayProperty();
+
+	public String getMaxQueryResultsProperty();
+
+	public List<Obs> getObs(Patient patient, String conceptName,
+			String valueConceptName, Date minDate);
+
+	public List<Encounter> getEncounters(Patient patient,
+			String encounterTypeName, Date minDate);
+
+	public int getNumberOfObs(Integer personId, String conceptName,
+			String conceptValue);
+
+	public Date getLastObsCreationDate(Integer personId, String conceptName,
+			String conceptValue);
+
+	public Date getLastObsDate(Integer personId, String conceptName,
+			String conceptValue);
+
+	public Date getLastDoseObsDate(Integer personId, String conceptName,
+			Integer doseNumber);
+
+	public Date getLastObsValue(Integer personId, String conceptName);
+
+	public int getNumberOfObs(Person person, Concept concept, Concept value);
+
+	public Date getLastObsCreationDate(Person person, Concept concept,
+			Concept value);
+
+	public Date getLastObsDate(Person person, Concept concept, Concept value);
+
+	public Date getLastObsValue(Person person, Concept concept);
+
+	public Date getObsValue(Integer obsId);
+
+	public Integer getObsId(Integer personId, String conceptName,
+			String conceptValue, Date earliest, Date latest);
+
+	public Integer getObsId(Integer personId, String conceptName,
+			Integer doseNumber, Date earliest, Date latest);
+
+	public Integer getEncounterId(Integer patientId, String encounterType,
+			Date earliest, Date latest);
+
+	public List<Encounter> getRecentDeliveries(Facility facility);
+
+	public Date getCurrentDeliveryDate(Patient patient);
+
+	public List<Obs> getUpcomingPregnanciesDueDate(Facility facility);
+
+	public List<Obs> getOverduePregnanciesDueDate(Facility facility);
+
+	public Obs getActivePregnancy(Integer patientId);
+
+	public Date getPatientBirthDate(Integer patientId);
+
+	public Date getLastDoseObsDateInActivePregnancy(Integer patientId,
+			String conceptName, Integer doseNumber);
+
+	public Obs getActivePregnancyDueDateObs(Integer patientId, Obs pregnancy);
+
+	public Date getActivePregnancyDueDate(Integer patientId);
+
+	public Date getLastPregnancyEndDate(Integer patientId);
+
+	public String getPersonPhoneNumber(Person person);
+
+	public String getPersonLanguageCode(Person person);
+
+	public ContactNumberType getPersonPhoneType(Person person);
+
+	public MediaType getPersonMediaType(Person person);
+
+	public Integer getMaxPhoneNumberFailures();
+
+	public Integer getMaxPatientCareReminders();
+
+	public DayOfWeek getPersonMessageDayOfWeek(Person person);
+
+	public Date getPersonMessageTimeOfDay(Person person);
+
+	public DayOfWeek getDefaultPatientDayOfWeek();
+
+	public Date getDefaultPatientTimeOfDay();
+
+	public Integer getMaxQueryResults();
+
+	public Integer getMotherMotechId(Patient patient);
+
+	public Relationship getMotherRelationship(Patient patient);
+
+	public Integer getMotechId(Integer patientId);
+
+	public Community getCommunityByPatient(Patient patient);
 
 }

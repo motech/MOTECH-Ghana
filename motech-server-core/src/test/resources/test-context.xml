@@ -40,7 +40,7 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="registrarService" name="registrarClient" class="org.motechproject.server.ws.RegistrarWebService">
-		<property name="messageBean" ref="messageSourceBean" />
+		<property name="messageSourceBean" ref="messageSourceBean" />
 	</bean>
 
 	<bean id="messageSourceBean" class="org.motechproject.server.svc.impl.MessageSourceBeanImpl">

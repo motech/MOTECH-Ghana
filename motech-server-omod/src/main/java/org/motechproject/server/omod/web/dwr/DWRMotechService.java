@@ -42,29 +42,33 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.impl.ContextServiceImpl;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebModelConverterImpl;
 import org.motechproject.server.omod.web.model.WebPatient;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.openmrs.Patient;
 
 public class DWRMotechService {
 
 	private static Log log = LogFactory.getLog(DWRMotechService.class);
 
-	private ContextService contextService;
+	private OpenmrsBean openmrsBean;
 	private WebModelConverter webModelConverter;
 
 	public DWRMotechService() {
-		contextService = new ContextServiceImpl();
+		ContextService contextService = new ContextServiceImpl();
+		MotechService motechService = contextService.getMotechService();
 		WebModelConverterImpl webModelConverterImpl = new WebModelConverterImpl();
-		webModelConverterImpl.setRegistrarBean(contextService
-				.getRegistrarBean());
+		webModelConverterImpl.setMessageBean(motechService.getMessageBean());
+		webModelConverterImpl.setOpenmrsBean(motechService.getOpenmrsBean());
 		webModelConverter = webModelConverterImpl;
+		openmrsBean = motechService.getOpenmrsBean();
 	}
 
-	public void setContextService(ContextService contextService) {
-		this.contextService = contextService;
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
 	}
 
 	public void setWebModelConverter(WebModelConverter webModelConverter) {
@@ -100,10 +104,9 @@ public class DWRMotechService {
 		} catch (NumberFormatException e) {
 		}
 
-		List<Patient> matchingPatients = contextService.getRegistrarBean()
-				.getDuplicatePatients(firstName, lastName, prefName,
-						parsedBirthDate, parsedCommunityId, phoneNumber,
-						nhisNumber, motechId);
+		List<Patient> matchingPatients = openmrsBean.getDuplicatePatients(
+				firstName, lastName, prefName, parsedBirthDate,
+				parsedCommunityId, phoneNumber, nhisNumber, motechId);
 
 		for (Patient patient : matchingPatients) {
 			WebPatient webPatient = new WebPatient();

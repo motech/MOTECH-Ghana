@@ -38,13 +38,7 @@ import java.util.List;
 
 import org.motechproject.server.annotation.RunAsAdminUser;
 import org.motechproject.server.annotation.RunAsUserParam;
-import org.motechproject.server.annotation.RunWithPrivileges;
 import org.motechproject.server.model.Community;
-import org.motechproject.server.model.ExpectedEncounter;
-import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
@@ -54,22 +48,13 @@ import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.RegistrantType;
 import org.motechproject.ws.RegistrationMode;
-import org.openmrs.Encounter;
 import org.openmrs.Location;
-import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.User;
-import org.openmrs.scheduler.TaskDefinition;
-import org.openmrs.util.OpenmrsConstants;
 
 /**
- * The major internal service interface for the motech server project at this
- * point, the RegistrarBean interface includes all major operations necessary to
- * support the current project requirements. It is intended that these
- * operations are transactional, and we fully intend to refactor this interface
- * into multiple (more appropriate) service interfaces if/when it becomes
- * necessary. The name is a bit of a misnomer, as it is a vestige of the early
- * prototypes that handled only registration.
+ * The service interface for registration and data entry in the motech server
+ * project.
  */
 public interface RegistrarBean {
 
@@ -249,218 +234,5 @@ public interface RegistrarBean {
 			Boolean rdtGiven, Boolean rdtPositive, Boolean actTreated,
 			Boolean newCase, Boolean referred, String comments);
 
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSONS,
-			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })
-	public void setMessageStatus(String messageId, Boolean success);
-
-	public User getUserByPhoneNumber(String phoneNumber);
-
-	public List<Location> getAllLocations();
-
-	public List<User> getAllStaff();
-
-	public List<Patient> getAllPatients();
-
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
-			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES })
-	public List<Patient> getPatients(String firstName, String lastName,
-			String preferredName, Date birthDate, Integer communityId,
-			String phoneNumber, String nhisNumber, String motechId);
-
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
-			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES })
-	public List<Patient> getDuplicatePatients(String firstName,
-			String lastName, String preferredName, Date birthDate,
-			Integer communityId, String phoneNumber, String nhisNumber,
-			String motechId);
-
-	public List<Obs> getAllPregnancies();
-
-	public List<ExpectedEncounter> getUpcomingExpectedEncounters(Patient patient);
-
-	public List<ExpectedObs> getUpcomingExpectedObs(Patient patient);
-
-	public List<ExpectedEncounter> getDefaultedExpectedEncounters(
-			Facility facility, String[] groups);
-
-	public List<ExpectedObs> getDefaultedExpectedObs(Facility facility,
-			String[] groups);
-
-	public List<ExpectedEncounter> getExpectedEncounters(Patient patient);
-
-	public List<ExpectedObs> getExpectedObs(Patient patient);
-
-	public List<ExpectedEncounter> getExpectedEncounters(Patient patient,
-			String group);
-
-	public List<ExpectedObs> getExpectedObs(Patient patient, String group);
-
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES,
-			OpenmrsConstants.PRIV_VIEW_ENCOUNTERS })
-	public List<Encounter> getRecentDeliveries(Facility facility);
-
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES,
-			OpenmrsConstants.PRIV_VIEW_ENCOUNTERS })
-	public Date getCurrentDeliveryDate(Patient patient);
-
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_CONCEPTS })
-	public List<Obs> getUpcomingPregnanciesDueDate(Facility facility);
-
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_CONCEPTS })
-	public List<Obs> getOverduePregnanciesDueDate(Facility facility);
-
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PATIENTS })
-	public Patient getPatientById(Integer patientId);
-
-	public Obs getActivePregnancy(Integer patientId);
-
-	public List<ScheduledMessage> getAllScheduledMessages();
-
-	public List<ScheduledMessage> getScheduledMessages(
-			MessageProgramEnrollment enrollment);
-
-	public Date getPatientBirthDate(Integer patientId);
-
-	public List<Obs> getObs(Patient patient, String conceptName,
-			String valueConceptName, Date minDate);
-
-	public ExpectedObs createExpectedObs(Patient patient, String conceptName,
-			String valueConceptName, Integer value, Date minDate, Date dueDate,
-			Date lateDate, Date maxDate, String name, String group);
-
-	public ExpectedObs saveExpectedObs(ExpectedObs expectedObs);
-
-	public List<Encounter> getEncounters(Patient patient,
-			String encounterTypeName, Date minDate);
-
-	public ExpectedEncounter createExpectedEncounter(Patient patient,
-			String encounterTypeName, Date minDate, Date dueDate,
-			Date lateDate, Date maxDate, String name, String group);
-
-	public ExpectedEncounter saveExpectedEncounter(
-			ExpectedEncounter expectedEncounter);
-
-	public int getNumberOfObs(Integer personId, String conceptName,
-			String conceptValue);
-
-	public Date getLastObsCreationDate(Integer personId, String conceptName,
-			String conceptValue);
-
-	public Date getLastObsDate(Integer personId, String conceptName,
-			String conceptValue);
-
-	public Date getLastDoseObsDate(Integer personId, String conceptName,
-			Integer doseNumber);
-
-	public Date getLastDoseObsDateInActivePregnancy(Integer patientId,
-			String conceptName, Integer doseNumber);
-
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_CONCEPTS,
-			OpenmrsConstants.PRIV_VIEW_OBS, OpenmrsConstants.PRIV_VIEW_PERSONS })
-	public Date getActivePregnancyDueDate(Integer patientId);
-
-	public Date getLastPregnancyEndDate(Integer patientId);
-
-	public Date getLastObsValue(Integer personId, String conceptName);
-
-	public Date getObsValue(Integer obsId);
-
-	public Integer getObsId(Integer personId, String conceptName,
-			String conceptValue, Date earliest, Date latest);
-
-	public Integer getObsId(Integer personId, String conceptName,
-			Integer doseNumber, Date earliest, Date latest);
-
-	public Integer getEncounterId(Integer patientId, String encounterType,
-			Date earliest, Date latest);
-
-	public void removeMessageProgramEnrollment(
-			MessageProgramEnrollment enrollment);
-
-	public String[] getActiveMessageProgramEnrollmentNames(Patient patient);
-
-	public void scheduleInfoMessages(String messageKey, String messageKeyA,
-			String messageKeyB, String messageKeyC,
-			MessageProgramEnrollment enrollment, Date messageDate,
-			boolean userPreferenceBased, Date currentDate);
-
-	public ScheduledMessage scheduleCareMessage(String messageKey,
-			MessageProgramEnrollment enrollment, Date messageDate,
-			boolean userPreferenceBased, String care, Date currentDate);
-
-	public void removeAllUnsentMessages(MessageProgramEnrollment enrollment);
-
-	public void removeUnsentMessages(List<ScheduledMessage> scheduledMessages);
-
-	public void addMessageAttempt(ScheduledMessage scheduledMessage,
-			Date attemptDate, Date maxAttemptDate, boolean userPreferenceBased,
-			Date currentDate);
-
-	public Date determineUserPreferredMessageDate(Integer recipientId,
-			Date messageDate);
-
-	public void verifyMessageAttemptDate(ScheduledMessage scheduledMessage,
-			boolean userPreferenceBased, Date currentDate);
-
-	public Integer getMaxPatientCareReminders();
-
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PATIENTS,
-			OpenmrsConstants.PRIV_VIEW_CONCEPTS })
-	public void updateMessageProgramState(Integer personId, String conceptName);
-
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
-			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES,
-			OpenmrsConstants.PRIV_VIEW_PATIENTS,
-			OpenmrsConstants.PRIV_VIEW_USERS,
-			OpenmrsConstants.PRIV_VIEW_PERSONS,
-			OpenmrsConstants.PRIV_VIEW_CONCEPTS, OpenmrsConstants.PRIV_VIEW_OBS })
-	public void sendMessages(Date startDate, Date endDate, boolean sendImmediate);
-
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
-			OpenmrsConstants.PRIV_VIEW_USERS })
-	public void sendStaffCareMessages(Date startDate, Date endDate,
-			Date deliveryDate, Date deliveryTime, String[] careGroups,
-			boolean sendUpcoming, boolean avoidBlackout);
-
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES,
-			OpenmrsConstants.PRIV_VIEW_PATIENTS,
-			OpenmrsConstants.PRIV_VIEW_CONCEPTS,
-			OpenmrsConstants.PRIV_VIEW_OBS, OpenmrsConstants.PRIV_VIEW_PERSONS,
-			OpenmrsConstants.PRIV_VIEW_LOCATIONS,
-			OpenmrsConstants.PRIV_ADD_OBS, OpenmrsConstants.PRIV_VIEW_USERS,
-			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
-			OpenmrsConstants.PRIV_MANAGE_SCHEDULER })
-	public TaskDefinition updateAllMessageProgramsState(Integer batchSize,
-			Long batchPreviousId, Long batchMaxId);
-
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PATIENTS,
-			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES,
-			OpenmrsConstants.PRIV_VIEW_CONCEPTS,
-			OpenmrsConstants.PRIV_VIEW_ENCOUNTER_TYPES,
-			OpenmrsConstants.PRIV_VIEW_OBS,
-			OpenmrsConstants.PRIV_VIEW_ENCOUNTERS,
-			OpenmrsConstants.PRIV_VIEW_PERSONS,
-			OpenmrsConstants.PRIV_VIEW_LOCATIONS,
-			OpenmrsConstants.PRIV_VIEW_USERS,
-			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
-			OpenmrsConstants.PRIV_EDIT_PATIENTS })
-	public void updateAllCareSchedules();
-
 	public void demoEnrollPatient(Patient patient);
-
-	public Facility getFacilityById(Integer facilityId);
-
-	public Community getCommunityById(Integer communityId);
-
-	public Community getCommunityByPatient(Patient patient);
-
-	public boolean isValidMotechIdCheckDigit(Integer motechId);
-
-	public boolean isValidIdCheckDigit(Integer idWithCheckDigit);
-
-	public Integer getMotherMotechId(Patient patient);
-
-	Community saveCommunity(Community community);
-
-	Facility saveNewFacility(Facility facility);
 }

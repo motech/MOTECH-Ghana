@@ -43,7 +43,8 @@
 		<property name="name" value="Measles" />
 		<property name="conceptName" value="IMMUNIZATIONS ORDERED" />
 		<property name="valueConceptName" value="MEASLES VACCINATION" />
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="openmrsBean" ref="openmrsBean" />
+		<property name="expectedCareBean" ref="expectedCareBean" />
 		<property name="requirements">
 			<list>
 				<bean class="org.motechproject.server.service.impl.AliveRequirement" />

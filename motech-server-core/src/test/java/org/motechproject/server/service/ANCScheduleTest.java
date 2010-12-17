@@ -50,7 +50,8 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.service.impl.ExpectedEncounterSchedule;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.ExpectedCareBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.util.MotechConstants;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
@@ -63,7 +64,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class ANCScheduleTest extends TestCase {
 	ApplicationContext ctx;
 
-	RegistrarBean registrarBean;
+	OpenmrsBean openmrsBean;
+	ExpectedCareBean expectedCareBean;
 	ExpectedEncounterSchedule ancSchedule;
 	Concept nextANCDateConcept;
 
@@ -76,7 +78,8 @@ public class ANCScheduleTest extends TestCase {
 				.getBean("pregnancyANCSchedule");
 
 		// EasyMock setup in Spring config
-		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
+		openmrsBean = (OpenmrsBean) ctx.getBean("openmrsBean");
+		expectedCareBean = (ExpectedCareBean) ctx.getBean("expectedCareBean");
 
 		nextANCDateConcept = new Concept(1);
 		nextANCDateConcept.addName(new ConceptName(
@@ -87,7 +90,8 @@ public class ANCScheduleTest extends TestCase {
 	protected void tearDown() throws Exception {
 		ctx = null;
 		ancSchedule = null;
-		registrarBean = null;
+		openmrsBean = null;
+		expectedCareBean = null;
 		nextANCDateConcept = null;
 	}
 
@@ -120,29 +124,29 @@ public class ANCScheduleTest extends TestCase {
 
 		Date pregnancyDate = new Date();
 
-		expect(registrarBean.getActivePregnancyDueDate(patient.getPatientId()))
+		expect(openmrsBean.getActivePregnancyDueDate(patient.getPatientId()))
 				.andReturn(pregnancyDate);
 		expect(
-				registrarBean.getEncounters(eq(patient), eq(ancSchedule
+				openmrsBean.getEncounters(eq(patient), eq(ancSchedule
 						.getEncounterTypeName()), (Date) anyObject()))
 				.andReturn(encounterList);
 		expect(
-				registrarBean.getExpectedEncounters(patient, ancSchedule
+				expectedCareBean.getExpectedEncounters(patient, ancSchedule
 						.getName())).andReturn(expectedEncounterList);
 		expect(
-				registrarBean
+				expectedCareBean
 						.saveExpectedEncounter(capture(anc1ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 		expect(
-				registrarBean
+				expectedCareBean
 						.saveExpectedEncounter(capture(anc2ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		ancSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		ExpectedEncounter capturedANC1Expected = anc1ExpectedCapture.getValue();
 		assertEquals(Boolean.TRUE, capturedANC1Expected.getVoided());
@@ -189,28 +193,28 @@ public class ANCScheduleTest extends TestCase {
 
 		Date pregnancyDate = new Date();
 
-		expect(registrarBean.getActivePregnancyDueDate(patient.getPatientId()))
+		expect(openmrsBean.getActivePregnancyDueDate(patient.getPatientId()))
 				.andReturn(pregnancyDate);
 		expect(
-				registrarBean.getEncounters(eq(patient), eq(ancSchedule
+				openmrsBean.getEncounters(eq(patient), eq(ancSchedule
 						.getEncounterTypeName()), (Date) anyObject()))
 				.andReturn(encounterList);
 		expect(
-				registrarBean.getExpectedEncounters(patient, ancSchedule
+				expectedCareBean.getExpectedEncounters(patient, ancSchedule
 						.getName())).andReturn(expectedEncounterList);
 		expect(
-				registrarBean.createExpectedEncounter(eq(patient),
+				expectedCareBean.createExpectedEncounter(eq(patient),
 						eq(ancSchedule.getEncounterTypeName()),
 						capture(minDateCapture), capture(dueDateCapture),
 						capture(lateDateCapture), eq((Date) null),
 						eq(ancSchedule.getName()), eq(ancSchedule.getName())))
 				.andReturn(new ExpectedEncounter());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		ancSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		Date capturedMinDate = minDateCapture.getValue();
 		assertEquals(encounter2.getEncounterDatetime(), capturedMinDate);
@@ -264,21 +268,21 @@ public class ANCScheduleTest extends TestCase {
 
 		Date pregnancyDate = new Date();
 
-		expect(registrarBean.getActivePregnancyDueDate(patient.getPatientId()))
+		expect(openmrsBean.getActivePregnancyDueDate(patient.getPatientId()))
 				.andReturn(pregnancyDate);
 		expect(
-				registrarBean.getEncounters(eq(patient), eq(ancSchedule
+				openmrsBean.getEncounters(eq(patient), eq(ancSchedule
 						.getEncounterTypeName()), (Date) anyObject()))
 				.andReturn(encounterList);
 		expect(
-				registrarBean.getExpectedEncounters(patient, ancSchedule
+				expectedCareBean.getExpectedEncounters(patient, ancSchedule
 						.getName())).andReturn(expectedEncounterList);
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		ancSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 	}
 
 	public void testRemoveExpected() {
@@ -297,29 +301,29 @@ public class ANCScheduleTest extends TestCase {
 
 		Date pregnancyDate = null;
 
-		expect(registrarBean.getActivePregnancyDueDate(patient.getPatientId()))
+		expect(openmrsBean.getActivePregnancyDueDate(patient.getPatientId()))
 				.andReturn(pregnancyDate);
 		expect(
-				registrarBean.getExpectedEncounters(patient, ancSchedule
+				expectedCareBean.getExpectedEncounters(patient, ancSchedule
 						.getName())).andReturn(expectedEncounterList);
 		expect(
-				registrarBean
+				expectedCareBean
 						.saveExpectedEncounter(capture(anc1ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 		expect(
-				registrarBean
+				expectedCareBean
 						.saveExpectedEncounter(capture(anc2ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 		expect(
-				registrarBean
+				expectedCareBean
 						.saveExpectedEncounter(capture(anc3ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		ancSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		ExpectedEncounter capturedANC1Expected = anc1ExpectedCapture.getValue();
 		assertEquals(Boolean.TRUE, capturedANC1Expected.getVoided());
@@ -340,16 +344,16 @@ public class ANCScheduleTest extends TestCase {
 
 		Date pregnancyDate = null;
 
-		expect(registrarBean.getActivePregnancyDueDate(patient.getPatientId()))
+		expect(openmrsBean.getActivePregnancyDueDate(patient.getPatientId()))
 				.andReturn(pregnancyDate);
 		expect(
-				registrarBean.getExpectedEncounters(patient, ancSchedule
+				expectedCareBean.getExpectedEncounters(patient, ancSchedule
 						.getName())).andReturn(expectedEncounterList);
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		ancSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 	}
 }

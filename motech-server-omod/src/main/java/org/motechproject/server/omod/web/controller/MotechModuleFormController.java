@@ -34,6 +34,8 @@
 package org.motechproject.server.omod.web.controller;
 
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,9 +43,10 @@ import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.OpenmrsBean;
+import org.openmrs.Concept;
+import org.openmrs.PatientIdentifierType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,8 +66,7 @@ public class MotechModuleFormController {
 			.getLog(MotechModuleFormController.class);
 
 	@Autowired
-	@Qualifier("registrarBean")
-	private RegistrarBean registrarBean;
+	private OpenmrsBean openmrsBean;
 
 	private ContextService contextService;
 
@@ -73,19 +75,30 @@ public class MotechModuleFormController {
 		this.contextService = contextService;
 	}
 
-	public void setRegistrarBean(RegistrarBean registrarBean) {
-		this.registrarBean = registrarBean;
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
 	}
 
 	@RequestMapping("/module/motechmodule/viewdata")
 	public String viewData(ModelMap model) {
 
-		model.addAttribute("allLocations", registrarBean.getAllLocations());
-		model.addAttribute("allStaff", registrarBean.getAllStaff());
-		model.addAttribute("allPatients", registrarBean.getAllPatients());
-		model.addAttribute("allPregnancies", registrarBean.getAllPregnancies());
-		model.addAttribute("allScheduledMessages", registrarBean
-				.getAllScheduledMessages());
+		List<PatientIdentifierType> motechPatientIdType = new ArrayList<PatientIdentifierType>();
+		motechPatientIdType.add(openmrsBean.getMotechPatientIdType());
+
+		List<Concept> pregnancyConcept = new ArrayList<Concept>();
+		pregnancyConcept.add(openmrsBean.getPregnancyConcept());
+
+		model.addAttribute("allLocations", contextService.getLocationService()
+				.getAllLocations());
+		model.addAttribute("allStaff", contextService.getUserService()
+				.getAllUsers());
+		model.addAttribute("allPatients", contextService.getPatientService()
+				.getPatients(null, null, motechPatientIdType, false));
+		model.addAttribute("allPregnancies", contextService.getObsService()
+				.getObservations(null, null, pregnancyConcept, null, null,
+						null, null, null, null, null, null, false));
+		model.addAttribute("allScheduledMessages", contextService
+				.getMotechService().getAllScheduledMessages());
 
 		return "/module/motechmodule/viewdata";
 	}

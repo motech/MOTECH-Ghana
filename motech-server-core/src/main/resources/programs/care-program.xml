@@ -42,7 +42,9 @@
 	<bean id="expectedCareProgram"
 		class="org.motechproject.server.event.impl.ExpectedCareMessageProgram">
 		<property name="name" value="Expected Care Message Program" />
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="openmrsBean" ref="openmrsBean" />
+		<property name="expectedCareBean" ref="expectedCareBean" />
+		<property name="messageBean" ref="messageBean" />
 		<property name="careMessageDetails">
 			<list>
 				<bean

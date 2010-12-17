@@ -36,7 +36,6 @@ package org.motechproject.server.omod.impl;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.sdsched.ScheduleMaintService;
-import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
@@ -141,10 +140,6 @@ public class ContextServiceImpl implements ContextService {
 
 	public MotechService getMotechService() {
 		return Context.getService(MotechService.class);
-	}
-
-	public RegistrarBean getRegistrarBean() {
-		return this.getMotechService().getRegistrarBean();
 	}
 
 	public ScheduleMaintService getScheduleMaintService() {

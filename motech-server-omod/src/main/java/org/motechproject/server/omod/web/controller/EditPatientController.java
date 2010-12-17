@@ -43,6 +43,7 @@ import org.motechproject.server.model.Community;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
+import org.motechproject.server.svc.LocationBean;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
@@ -84,6 +85,9 @@ public class EditPatientController extends BasePatientController {
 	private OpenmrsBean openmrsBean;
 
 	@Autowired
+	private LocationBean locationBean;
+
+	@Autowired
 	public void setContextService(ContextService contextService) {
 		this.contextService = contextService;
 	}
@@ -94,6 +98,10 @@ public class EditPatientController extends BasePatientController {
 
 	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
 		this.openmrsBean = openmrsBean;
+	}
+
+	public void setLocationBean(LocationBean locationBean) {
+		this.locationBean = locationBean;
 	}
 
 	@Autowired
@@ -163,7 +171,7 @@ public class EditPatientController extends BasePatientController {
 
 		Patient patient = null;
 		if (webPatient.getId() != null) {
-			patient = registrarBean.getPatientById(webPatient.getId());
+			patient = openmrsBean.getPatientById(webPatient.getId());
 			if (patient == null) {
 				errors.reject("motechmodule.id.notexist");
 			}
@@ -224,7 +232,7 @@ public class EditPatientController extends BasePatientController {
 
 		Community community = null;
 		if (webPatient.getCommunityId() != null) {
-			community = registrarBean.getCommunityById(webPatient
+			community = locationBean.getCommunityById(webPatient
 					.getCommunityId());
 			if (community == null) {
 				errors.rejectValue("communityId",

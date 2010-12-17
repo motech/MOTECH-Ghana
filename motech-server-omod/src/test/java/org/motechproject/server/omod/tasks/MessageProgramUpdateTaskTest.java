@@ -57,6 +57,7 @@ import org.motechproject.server.model.MessageType;
 import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
@@ -114,7 +115,7 @@ public class MessageProgramUpdateTaskTest extends
 
 		// Includes Motech data added in sqldiff
 		executeDataSet("motech-dataset.xml");
-		
+
 		authenticate();
 
 		activator.startup();
@@ -142,6 +143,8 @@ public class MessageProgramUpdateTaskTest extends
 
 			RegistrarBean regService = Context.getService(MotechService.class)
 					.getRegistrarBean();
+			OpenmrsBean openmrsBean = Context.getService(MotechService.class)
+					.getOpenmrsBean();
 
 			Date date = new Date();
 			Integer motechId = 1234665;
@@ -157,7 +160,7 @@ public class MessageProgramUpdateTaskTest extends
 					InterestReason.KNOW_MORE_PREGNANCY_CHILDBIRTH,
 					HowLearned.FRIEND, 5);
 
-			List<Patient> matchingPatients = regService.getPatients(
+			List<Patient> matchingPatients = openmrsBean.getPatients(
 					"firstName", "lastName", "prefName", birthdate, null,
 					"1111111111", "nhis", motechId.toString());
 			assertEquals(1, matchingPatients.size());

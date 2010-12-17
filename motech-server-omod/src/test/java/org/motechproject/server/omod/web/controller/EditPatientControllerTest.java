@@ -51,6 +51,7 @@ import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
+import org.motechproject.server.svc.LocationBean;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
@@ -74,16 +75,19 @@ public class EditPatientControllerTest extends TestCase {
 	SessionStatus status;
 	PatientService patientService;
 	OpenmrsBean openmrsBean;
+	LocationBean locationBean;
 
 	@Override
 	protected void setUp() {
 		registrarBean = createMock(RegistrarBean.class);
 		openmrsBean = createMock(OpenmrsBean.class);
+		locationBean = createMock(LocationBean.class);
 		contextService = createMock(ContextService.class);
 		webModelConverter = createMock(WebModelConverter.class);
 		controller = new EditPatientController();
 		controller.setRegistrarBean(registrarBean);
 		controller.setOpenmrsBean(openmrsBean);
+		controller.setLocationBean(locationBean);
 		controller.setContextService(contextService);
 		controller.setWebModelConverter(webModelConverter);
 		motechService = createMock(MotechService.class);
@@ -97,6 +101,7 @@ public class EditPatientControllerTest extends TestCase {
 		controller = null;
 		registrarBean = null;
 		openmrsBean = null;
+		locationBean = null;
 		patientService = null;
 		contextService = null;
 		motechService = null;
@@ -231,12 +236,10 @@ public class EditPatientControllerTest extends TestCase {
 		Patient motherPatient = new Patient(2);
 		Community community = new Community();
 
-		expect(registrarBean.getPatientById(patientId)).andReturn(
-				openmrsPatient);
+		expect(openmrsBean.getPatientById(patientId)).andReturn(openmrsPatient);
 		expect(openmrsBean.getPatientByMotechId(motherId.toString()))
 				.andReturn(motherPatient);
-		expect(registrarBean.getCommunityById(communityId))
-				.andReturn(community);
+		expect(locationBean.getCommunityById(communityId)).andReturn(community);
 
 		registrarBean.editPatient(openmrsPatient, firstName, middleName,
 				lastName, prefName, date, birthDateEst, sex, insured, nhis,
@@ -251,12 +254,12 @@ public class EditPatientControllerTest extends TestCase {
 				new ArrayList<Facility>());
 
 		replay(registrarBean, status, contextService, motechService,
-				openmrsBean);
+				openmrsBean, locationBean);
 
 		controller.submitForm(patient, errors, model, status);
 
 		verify(registrarBean, status, contextService, motechService,
-				openmrsBean);
+				openmrsBean, locationBean);
 
 		assertTrue("Missing success message in model", model
 				.containsAttribute("successMsg"));

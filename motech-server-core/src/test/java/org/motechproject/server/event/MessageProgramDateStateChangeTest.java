@@ -48,7 +48,8 @@ import junit.framework.TestCase;
 
 import org.easymock.IAnswer;
 import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.MessageBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.ws.DayOfWeek;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -71,7 +72,8 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 	MessageProgramState pregnancyState6;
 	MessageProgramState pregnancyState45;
 	MessageProgramState currentPatientState;
-	RegistrarBean registrarBean;
+	OpenmrsBean openmrsBean;
+	MessageBean messageBean;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -114,7 +116,8 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 				.getBean("weeklyInfoPregnancyState45");
 
 		// EasyMock setup in Spring config
-		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
+		messageBean = (MessageBean) ctx.getBean("messageBean");
+		openmrsBean = (OpenmrsBean) ctx.getBean("openmrsBean");
 	}
 
 	@Override
@@ -125,7 +128,8 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 		pregnancyState5 = null;
 		pregnancyState6 = null;
 		pregnancyState45 = null;
-		registrarBean = null;
+		messageBean = null;
+		openmrsBean = null;
 	}
 
 	public void testDetermineWeek5Preferred() {
@@ -135,13 +139,13 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 		String messageKeyB = messageKey + ".b";
 		String messageKeyC = messageKey + ".c";
 
-		expect(registrarBean.getObsValue(obsId)).andReturn(referenceDate)
+		expect(openmrsBean.getObsValue(obsId)).andReturn(referenceDate)
 				.atLeastOnce();
-		registrarBean.scheduleInfoMessages(eq(messageKey), eq(messageKeyA),
+		messageBean.scheduleInfoMessages(eq(messageKey), eq(messageKeyA),
 				eq(messageKeyB), eq(messageKeyC), eq(enrollment),
 				(Date) anyObject(), eq(true), eq(week5));
 		expect(
-				registrarBean.determineUserPreferredMessageDate(eq(patientId),
+				messageBean.determineUserPreferredMessageDate(eq(patientId),
 						(Date) anyObject())).andAnswer(new IAnswer<Date>() {
 			public Date answer() throws Throwable {
 				Date messageDate = (Date) getCurrentArguments()[1];
@@ -149,12 +153,12 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 			}
 		}).atLeastOnce();
 
-		replay(registrarBean);
+		replay(openmrsBean, messageBean);
 
 		currentPatientState = pregnancyProgram
 				.determineState(enrollment, week5);
 
-		verify(registrarBean);
+		verify(openmrsBean, messageBean);
 
 		assertEquals(pregnancyState5.getName(), currentPatientState.getName());
 	}
@@ -166,47 +170,47 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 		String messageKeyB = messageKey + ".b";
 		String messageKeyC = messageKey + ".c";
 
-		expect(registrarBean.getObsValue(obsId)).andReturn(referenceDate)
+		expect(openmrsBean.getObsValue(obsId)).andReturn(referenceDate)
 				.atLeastOnce();
-		registrarBean.scheduleInfoMessages(eq(messageKey), eq(messageKeyA),
+		messageBean.scheduleInfoMessages(eq(messageKey), eq(messageKeyA),
 				eq(messageKeyB), eq(messageKeyC), eq(enrollment),
 				(Date) anyObject(), eq(true), eq(week5));
 		expect(
-				registrarBean.determineUserPreferredMessageDate(eq(patientId),
+				messageBean.determineUserPreferredMessageDate(eq(patientId),
 						(Date) anyObject())).andAnswer(new IAnswer<Date>() {
 			public Date answer() throws Throwable {
 				return (Date) getCurrentArguments()[1];
 			}
 		}).atLeastOnce();
 
-		replay(registrarBean);
+		replay(openmrsBean, messageBean);
 
 		currentPatientState = pregnancyProgram
 				.determineState(enrollment, week5);
 
-		verify(registrarBean);
+		verify(openmrsBean, messageBean);
 
 		assertEquals(pregnancyState5.getName(), currentPatientState.getName());
 	}
 
 	public void testDetermineEndState() {
-		expect(registrarBean.getObsValue(obsId)).andReturn(referenceDate)
+		expect(openmrsBean.getObsValue(obsId)).andReturn(referenceDate)
 				.atLeastOnce();
 		expect(
-				registrarBean.determineUserPreferredMessageDate(eq(patientId),
+				messageBean.determineUserPreferredMessageDate(eq(patientId),
 						(Date) anyObject())).andAnswer(new IAnswer<Date>() {
 			public Date answer() throws Throwable {
 				return (Date) getCurrentArguments()[1];
 			}
 		}).atLeastOnce();
-		registrarBean.removeMessageProgramEnrollment(enrollment);
+		messageBean.removeMessageProgramEnrollment(enrollment);
 
-		replay(registrarBean);
+		replay(openmrsBean, messageBean);
 
 		currentPatientState = pregnancyProgram.determineState(enrollment,
 				week46);
 
-		verify(registrarBean);
+		verify(openmrsBean, messageBean);
 
 		assertEquals(pregnancyState45.getName(), currentPatientState.getName());
 	}
@@ -218,49 +222,49 @@ public class MessageProgramDateStateChangeTest extends TestCase {
 		String messageKeyB = messageKey + ".b";
 		String messageKeyC = messageKey + ".c";
 
-		expect(registrarBean.getObsValue(obsId)).andReturn(referenceDate)
+		expect(openmrsBean.getObsValue(obsId)).andReturn(referenceDate)
 				.atLeastOnce();
-		registrarBean.scheduleInfoMessages(eq(messageKey), eq(messageKeyA),
+		messageBean.scheduleInfoMessages(eq(messageKey), eq(messageKeyA),
 				eq(messageKeyB), eq(messageKeyC), eq(enrollment),
 				(Date) anyObject(), eq(true), eq(week6Monday));
 		expect(
-				registrarBean.determineUserPreferredMessageDate(eq(patientId),
+				messageBean.determineUserPreferredMessageDate(eq(patientId),
 						(Date) anyObject())).andAnswer(new IAnswer<Date>() {
 			public Date answer() throws Throwable {
 				return (Date) getCurrentArguments()[1];
 			}
 		}).atLeastOnce();
 
-		replay(registrarBean);
+		replay(openmrsBean, messageBean);
 
 		currentPatientState = pregnancyProgram.determineState(enrollment,
 				week6Monday);
 
-		verify(registrarBean);
+		verify(openmrsBean, messageBean);
 
 		assertEquals(pregnancyState6.getName(), currentPatientState.getName());
 
-		reset(registrarBean);
+		reset(openmrsBean, messageBean);
 
-		expect(registrarBean.getObsValue(obsId)).andReturn(referenceDate)
+		expect(openmrsBean.getObsValue(obsId)).andReturn(referenceDate)
 				.atLeastOnce();
-		registrarBean.scheduleInfoMessages(eq(messageKey), eq(messageKeyA),
+		messageBean.scheduleInfoMessages(eq(messageKey), eq(messageKeyA),
 				eq(messageKeyB), eq(messageKeyC), eq(enrollment),
 				(Date) anyObject(), eq(true), eq(week6Friday));
 		expect(
-				registrarBean.determineUserPreferredMessageDate(eq(patientId),
+				messageBean.determineUserPreferredMessageDate(eq(patientId),
 						(Date) anyObject())).andAnswer(new IAnswer<Date>() {
 			public Date answer() throws Throwable {
 				return (Date) getCurrentArguments()[1];
 			}
 		}).atLeastOnce();
 
-		replay(registrarBean);
+		replay(openmrsBean, messageBean);
 
 		currentPatientState = pregnancyProgram.determineState(enrollment,
 				week6Friday);
 
-		verify(registrarBean);
+		verify(openmrsBean, messageBean);
 
 		assertEquals(pregnancyState6.getName(), currentPatientState.getName());
 	}

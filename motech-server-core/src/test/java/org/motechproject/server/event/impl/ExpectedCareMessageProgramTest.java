@@ -56,7 +56,9 @@ import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageDefinition;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.ScheduledMessage;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.ExpectedCareBean;
+import org.motechproject.server.svc.MessageBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -66,7 +68,9 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 	ApplicationContext ctx;
 
 	MessageProgram careProgram;
-	RegistrarBean registrarBean;
+	OpenmrsBean openmrsBean;
+	ExpectedCareBean expectedCareBean;
+	MessageBean messageBean;
 
 	MessageProgramEnrollment enrollment;
 	Patient patient;
@@ -79,7 +83,9 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		careProgram = (MessageProgram) ctx.getBean("expectedCareProgram");
 
 		// EasyMock setup in Spring config
-		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
+		openmrsBean = (OpenmrsBean) ctx.getBean("openmrsBean");
+		expectedCareBean = (ExpectedCareBean) ctx.getBean("expectedCareBean");
+		messageBean = (MessageBean) ctx.getBean("messageBean");
 
 		enrollment = new MessageProgramEnrollment();
 		patientId = 1;
@@ -91,7 +97,9 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 	protected void tearDown() throws Exception {
 		ctx = null;
 		careProgram = null;
-		registrarBean = null;
+		openmrsBean = null;
+		expectedCareBean = null;
+		messageBean = null;
 		enrollment = null;
 		patient = null;
 	}
@@ -102,20 +110,20 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		List<ExpectedObs> expObs = new ArrayList<ExpectedObs>();
 		List<ScheduledMessage> schMsgs = new ArrayList<ScheduledMessage>();
 
-		expect(registrarBean.getMaxPatientCareReminders()).andReturn(
-				maxReminders);
-		expect(registrarBean.getPatientById(patientId)).andReturn(patient);
-		expect(registrarBean.getExpectedEncounters(patient)).andReturn(expEnc);
-		expect(registrarBean.getExpectedObs(patient)).andReturn(expObs);
-		expect(registrarBean.getScheduledMessages(enrollment)).andReturn(
-				schMsgs);
+		expect(openmrsBean.getMaxPatientCareReminders())
+				.andReturn(maxReminders);
+		expect(openmrsBean.getPatientById(patientId)).andReturn(patient);
+		expect(expectedCareBean.getExpectedEncounters(patient)).andReturn(
+				expEnc);
+		expect(expectedCareBean.getExpectedObs(patient)).andReturn(expObs);
+		expect(messageBean.getScheduledMessages(enrollment)).andReturn(schMsgs);
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean, messageBean);
 
 		MessageProgramState state = careProgram.determineState(enrollment,
 				new Date());
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean, messageBean);
 
 		assertNull("State returned is not null", state);
 	}
@@ -160,25 +168,25 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		Capture<List<ScheduledMessage>> removedCare2Msgs = new Capture<List<ScheduledMessage>>();
 		Capture<List<ScheduledMessage>> removedEnrollMsgs = new Capture<List<ScheduledMessage>>();
 
-		expect(registrarBean.getMaxPatientCareReminders()).andReturn(
-				maxReminders);
-		expect(registrarBean.getPatientById(patientId)).andReturn(patient);
-		expect(registrarBean.getExpectedEncounters(patient)).andReturn(expEnc);
-		expect(registrarBean.getExpectedObs(patient)).andReturn(expObs);
-		expect(registrarBean.getScheduledMessages(enrollment)).andReturn(
-				schMsgs);
+		expect(openmrsBean.getMaxPatientCareReminders())
+				.andReturn(maxReminders);
+		expect(openmrsBean.getPatientById(patientId)).andReturn(patient);
+		expect(expectedCareBean.getExpectedEncounters(patient)).andReturn(
+				expEnc);
+		expect(expectedCareBean.getExpectedObs(patient)).andReturn(expObs);
+		expect(messageBean.getScheduledMessages(enrollment)).andReturn(schMsgs);
 
-		registrarBean.removeUnsentMessages(capture(removedCare1Msgs));
-		registrarBean.removeUnsentMessages(capture(removedCare2Msgs));
+		messageBean.removeUnsentMessages(capture(removedCare1Msgs));
+		messageBean.removeUnsentMessages(capture(removedCare2Msgs));
 
-		registrarBean.removeUnsentMessages(capture(removedEnrollMsgs));
+		messageBean.removeUnsentMessages(capture(removedEnrollMsgs));
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean, messageBean);
 
 		MessageProgramState state = careProgram.determineState(enrollment,
 				new Date());
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean, messageBean);
 
 		assertNull("State returned is not null", state);
 
@@ -232,31 +240,31 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		Capture<Date> message1DateCapture = new Capture<Date>();
 		Capture<Date> message2DateCapture = new Capture<Date>();
 
-		expect(registrarBean.getMaxPatientCareReminders()).andReturn(
-				maxReminders);
-		expect(registrarBean.getPatientById(patientId)).andReturn(patient);
-		expect(registrarBean.getExpectedEncounters(patient)).andReturn(expEnc);
-		expect(registrarBean.getExpectedObs(patient)).andReturn(expObs);
-		expect(registrarBean.getScheduledMessages(enrollment)).andReturn(
-				schMsgs);
+		expect(openmrsBean.getMaxPatientCareReminders())
+				.andReturn(maxReminders);
+		expect(openmrsBean.getPatientById(patientId)).andReturn(patient);
+		expect(expectedCareBean.getExpectedEncounters(patient)).andReturn(
+				expEnc);
+		expect(expectedCareBean.getExpectedObs(patient)).andReturn(expObs);
+		expect(messageBean.getScheduledMessages(enrollment)).andReturn(schMsgs);
 
 		expect(
-				registrarBean.scheduleCareMessage(eq(enc1MessageKey),
+				messageBean.scheduleCareMessage(eq(enc1MessageKey),
 						eq(enrollment), capture(message1DateCapture), eq(true),
 						eq(enc1.getName()), eq(date))).andReturn(
 				new ScheduledMessage());
 		expect(
-				registrarBean.scheduleCareMessage(eq(obs1MessageKey),
+				messageBean.scheduleCareMessage(eq(obs1MessageKey),
 						eq(enrollment), capture(message2DateCapture), eq(true),
 						eq(obs1.getName()), eq(date))).andReturn(
 				new ScheduledMessage());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean, messageBean);
 
 		MessageProgramState state = careProgram
 				.determineState(enrollment, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean, messageBean);
 
 		assertNull("State returned is not null", state);
 
@@ -301,24 +309,24 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		Capture<ScheduledMessage> reminderSchMsg = new Capture<ScheduledMessage>();
 		Capture<Date> reminderDate = new Capture<Date>();
 
-		expect(registrarBean.getMaxPatientCareReminders()).andReturn(
-				maxReminders);
-		expect(registrarBean.getPatientById(patientId)).andReturn(patient);
-		expect(registrarBean.getExpectedEncounters(patient)).andReturn(expEnc);
-		expect(registrarBean.getExpectedObs(patient)).andReturn(expObs);
-		expect(registrarBean.getScheduledMessages(enrollment)).andReturn(
-				schMsgs);
+		expect(openmrsBean.getMaxPatientCareReminders())
+				.andReturn(maxReminders);
+		expect(openmrsBean.getPatientById(patientId)).andReturn(patient);
+		expect(expectedCareBean.getExpectedEncounters(patient)).andReturn(
+				expEnc);
+		expect(expectedCareBean.getExpectedObs(patient)).andReturn(expObs);
+		expect(messageBean.getScheduledMessages(enrollment)).andReturn(schMsgs);
 
-		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true), eq(date));
-		registrarBean.addMessageAttempt(capture(reminderSchMsg),
+		messageBean.verifyMessageAttemptDate(eq(msg1), eq(true), eq(date));
+		messageBean.addMessageAttempt(capture(reminderSchMsg),
 				capture(reminderDate), (Date) anyObject(), eq(true), eq(date));
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean, messageBean);
 
 		MessageProgramState state = careProgram
 				.determineState(enrollment, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean, messageBean);
 
 		assertNull("State returned is not null", state);
 
@@ -364,22 +372,22 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		msg1.getMessageAttempts().add(msgAttempt1);
 		schMsgs.add(msg1);
 
-		expect(registrarBean.getMaxPatientCareReminders()).andReturn(
-				maxReminders);
-		expect(registrarBean.getPatientById(patientId)).andReturn(patient);
-		expect(registrarBean.getExpectedEncounters(patient)).andReturn(expEnc);
-		expect(registrarBean.getExpectedObs(patient)).andReturn(expObs);
-		expect(registrarBean.getScheduledMessages(enrollment)).andReturn(
-				schMsgs);
+		expect(openmrsBean.getMaxPatientCareReminders())
+				.andReturn(maxReminders);
+		expect(openmrsBean.getPatientById(patientId)).andReturn(patient);
+		expect(expectedCareBean.getExpectedEncounters(patient)).andReturn(
+				expEnc);
+		expect(expectedCareBean.getExpectedObs(patient)).andReturn(expObs);
+		expect(messageBean.getScheduledMessages(enrollment)).andReturn(schMsgs);
 
-		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true), eq(date));
+		messageBean.verifyMessageAttemptDate(eq(msg1), eq(true), eq(date));
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean, messageBean);
 
 		MessageProgramState state = careProgram
 				.determineState(enrollment, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean, messageBean);
 
 		assertNull("State returned is not null", state);
 	}
@@ -417,22 +425,22 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		msg1.getMessageAttempts().add(msgAttempt1);
 		schMsgs.add(msg1);
 
-		expect(registrarBean.getMaxPatientCareReminders()).andReturn(
-				maxReminders);
-		expect(registrarBean.getPatientById(patientId)).andReturn(patient);
-		expect(registrarBean.getExpectedEncounters(patient)).andReturn(expEnc);
-		expect(registrarBean.getExpectedObs(patient)).andReturn(expObs);
-		expect(registrarBean.getScheduledMessages(enrollment)).andReturn(
-				schMsgs);
+		expect(openmrsBean.getMaxPatientCareReminders())
+				.andReturn(maxReminders);
+		expect(openmrsBean.getPatientById(patientId)).andReturn(patient);
+		expect(expectedCareBean.getExpectedEncounters(patient)).andReturn(
+				expEnc);
+		expect(expectedCareBean.getExpectedObs(patient)).andReturn(expObs);
+		expect(messageBean.getScheduledMessages(enrollment)).andReturn(schMsgs);
 
-		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true), eq(date));
+		messageBean.verifyMessageAttemptDate(eq(msg1), eq(true), eq(date));
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean, messageBean);
 
 		MessageProgramState state = careProgram
 				.determineState(enrollment, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean, messageBean);
 
 		assertNull("State returned is not null", state);
 	}
@@ -466,22 +474,22 @@ public class ExpectedCareMessageProgramTest extends TestCase {
 		msg1.setCare("TT1");
 		schMsgs.add(msg1);
 
-		expect(registrarBean.getMaxPatientCareReminders()).andReturn(
-				maxReminders);
-		expect(registrarBean.getPatientById(patientId)).andReturn(patient);
-		expect(registrarBean.getExpectedEncounters(patient)).andReturn(expEnc);
-		expect(registrarBean.getExpectedObs(patient)).andReturn(expObs);
-		expect(registrarBean.getScheduledMessages(enrollment)).andReturn(
-				schMsgs);
+		expect(openmrsBean.getMaxPatientCareReminders())
+				.andReturn(maxReminders);
+		expect(openmrsBean.getPatientById(patientId)).andReturn(patient);
+		expect(expectedCareBean.getExpectedEncounters(patient)).andReturn(
+				expEnc);
+		expect(expectedCareBean.getExpectedObs(patient)).andReturn(expObs);
+		expect(messageBean.getScheduledMessages(enrollment)).andReturn(schMsgs);
 
-		registrarBean.verifyMessageAttemptDate(eq(msg1), eq(true), eq(date));
+		messageBean.verifyMessageAttemptDate(eq(msg1), eq(true), eq(date));
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean, messageBean);
 
 		MessageProgramState state = careProgram
 				.determineState(enrollment, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean, messageBean);
 
 		assertNull("State returned is not null", state);
 	}

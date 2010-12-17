@@ -46,6 +46,7 @@ import org.junit.Test;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DayOfWeek;
@@ -99,7 +100,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 		// Includes Motech data added in sqldiff
 		executeDataSet("motech-dataset.xml");
-		
+
 		// Add example Location, Facility and Community
 		executeDataSet("facility-community-dataset.xml");
 
@@ -121,8 +122,10 @@ public class RegistrarBeanMatchPatientsTest extends
 			Context.openSession();
 			Context.authenticate("admin", "test");
 
-			RegistrarBean regService = Context.getService(MotechService.class)
-					.getRegistrarBean();
+			MotechService motechService = Context
+					.getService(MotechService.class);
+			RegistrarBean regService = motechService.getRegistrarBean();
+			OpenmrsBean openmrsBean = motechService.getOpenmrsBean();
 
 			Integer motechId = 1234620;
 			String firstName = "FirstName";
@@ -134,7 +137,7 @@ public class RegistrarBeanMatchPatientsTest extends
 			Integer communityId = 11111;
 			Date date = new Date();
 
-			Community community = regService.getCommunityById(communityId);
+			Community community = motechService.getCommunityById(communityId);
 
 			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
 					motechId, RegistrantType.PREGNANT_MOTHER, firstName,
@@ -148,130 +151,130 @@ public class RegistrarBeanMatchPatientsTest extends
 			assertEquals(3, Context.getPatientService().getAllPatients().size());
 
 			// Match on all (duplicate)
-			List<Patient> matches = regService.getDuplicatePatients(firstName,
+			List<Patient> matches = openmrsBean.getDuplicatePatients(firstName,
 					lastName, prefName, date, communityId, phoneNumber,
 					nhisNumber, motechId.toString());
 			assertEquals(1, matches.size());
 
 			// Match on all (any)
-			matches = regService.getPatients(firstName, lastName, prefName,
+			matches = openmrsBean.getPatients(firstName, lastName, prefName,
 					date, communityId, phoneNumber, nhisNumber, motechId
 							.toString());
 			assertEquals(1, matches.size());
 
 			// Match on NHIS number (duplicate)
-			matches = regService.getDuplicatePatients(null, null, null, null,
+			matches = openmrsBean.getDuplicatePatients(null, null, null, null,
 					null, null, nhisNumber, null);
 			assertEquals(1, matches.size());
 
 			// Match on NHIS number (any)
-			matches = regService.getPatients(null, null, null, null, null,
+			matches = openmrsBean.getPatients(null, null, null, null, null,
 					null, nhisNumber, null);
 			assertEquals(1, matches.size());
 
 			// Match on first name, last name, and birthdate (duplicate)
-			matches = regService.getDuplicatePatients(firstName, lastName,
+			matches = openmrsBean.getDuplicatePatients(firstName, lastName,
 					null, date, null, null, null, null);
 			assertEquals(1, matches.size());
 
 			// Match on first name, last name, and birthdate (any)
-			matches = regService.getPatients(firstName, lastName, null, date,
+			matches = openmrsBean.getPatients(firstName, lastName, null, date,
 					null, null, null, null);
 			assertEquals(1, matches.size());
 
 			// Match on first name, last name, and community (duplicate)
-			matches = regService.getDuplicatePatients(firstName, lastName,
+			matches = openmrsBean.getDuplicatePatients(firstName, lastName,
 					null, null, communityId, null, null, null);
 			assertEquals(1, matches.size());
 
 			// Match on first name, last name, and community (any)
-			matches = regService.getPatients(firstName, lastName, null, null,
+			matches = openmrsBean.getPatients(firstName, lastName, null, null,
 					communityId, null, null, null);
 			assertEquals(1, matches.size());
 
 			// Match on first name, last name, and phone (duplicate)
-			matches = regService.getDuplicatePatients(firstName, lastName,
+			matches = openmrsBean.getDuplicatePatients(firstName, lastName,
 					null, null, null, phoneNumber, null, null);
 			assertEquals(1, matches.size());
 
 			// Match on first name, last name, and phone (any)
-			matches = regService.getPatients(firstName, lastName, null, null,
+			matches = openmrsBean.getPatients(firstName, lastName, null, null,
 					null, phoneNumber, null, null);
 			assertEquals(1, matches.size());
 
 			// Match on MotechID (duplicate)
-			matches = regService.getDuplicatePatients(null, null, null, null,
+			matches = openmrsBean.getDuplicatePatients(null, null, null, null,
 					null, null, null, motechId.toString());
 			assertEquals(1, matches.size());
 
 			// Match on MotechID (any)
-			matches = regService.getPatients(null, null, null, null, null,
+			matches = openmrsBean.getPatients(null, null, null, null, null,
 					null, null, motechId.toString());
 			assertEquals(1, matches.size());
 
 			// No match on different NHIS number (duplicate)
-			matches = regService.getDuplicatePatients(null, null, null, null,
+			matches = openmrsBean.getDuplicatePatients(null, null, null, null,
 					null, null, "DifferentNHISValue", null);
 			assertEquals(0, matches.size());
 
 			// No match on different NHIS number (any)
-			matches = regService.getPatients(null, null, null, null, null,
+			matches = openmrsBean.getPatients(null, null, null, null, null,
 					null, "DifferentNHISValue", null);
 			assertEquals(0, matches.size());
 
 			// No match on last name, birthdate, and different first name
 			// (duplicate)
-			matches = regService.getDuplicatePatients("DifferentFirstName",
+			matches = openmrsBean.getDuplicatePatients("DifferentFirstName",
 					lastName, null, date, null, null, null, null);
 			assertEquals(0, matches.size());
 
 			// No match on last name, birthdate, and different first name (any)
-			matches = regService.getPatients("DifferentFirstName", lastName,
+			matches = openmrsBean.getPatients("DifferentFirstName", lastName,
 					null, date, null, null, null, null);
 			assertEquals(0, matches.size());
 
 			// No match on first name, community, and different last name
 			// (duplicate)
-			matches = regService.getDuplicatePatients(firstName,
+			matches = openmrsBean.getDuplicatePatients(firstName,
 					"DifferentLastName", null, null, communityId, null, null,
 					null);
 			assertEquals(0, matches.size());
 
 			// No match on first name, community, and different last name (any)
-			matches = regService.getPatients(firstName, "DifferentLastName",
+			matches = openmrsBean.getPatients(firstName, "DifferentLastName",
 					null, null, communityId, null, null, null);
 			assertEquals(0, matches.size());
 
 			// No match on first name, last name, and different phone number
 			// (duplicate)
-			matches = regService.getDuplicatePatients(firstName, lastName,
+			matches = openmrsBean.getDuplicatePatients(firstName, lastName,
 					null, null, null, "4534656", null, null);
 			assertEquals(0, matches.size());
 
 			// No match on first name, last name, and different phone number
 			// (any)
-			matches = regService.getPatients(firstName, lastName, null, null,
+			matches = openmrsBean.getPatients(firstName, lastName, null, null,
 					null, "4534656", null, null);
 			assertEquals(0, matches.size());
 
 			// No matches on empty (duplicate)
-			matches = regService.getDuplicatePatients(null, null, null, null,
+			matches = openmrsBean.getDuplicatePatients(null, null, null, null,
 					null, null, null, null);
 			assertEquals(0, matches.size());
 
 			// Matches on empty, returns all patients (any)
-			matches = regService.getPatients(null, null, null, null, null,
+			matches = openmrsBean.getPatients(null, null, null, null, null,
 					null, null, null);
 			assertEquals(3, matches.size());
 
 			// Match on partial first name and partial last name (any)
-			matches = regService.getPatients("Fir", "Name", null, null, null,
+			matches = openmrsBean.getPatients("Fir", "Name", null, null, null,
 					null, null, null);
 			assertEquals(1, matches.size());
 
 			// Match on partial pref name and partial last name (any)
-			matches = regService.getPatients(null, "stNa", "refNa", null, null,
-					null, null, null);
+			matches = openmrsBean.getPatients(null, "stNa", "refNa", null,
+					null, null, null, null);
 			assertEquals(1, matches.size());
 
 			Person person = new Person();
@@ -281,12 +284,12 @@ public class RegistrarBeanMatchPatientsTest extends
 			Context.getPersonService().savePerson(person);
 
 			// No match for Person on firstName, lastName, birthDate (duplicate)
-			matches = regService.getDuplicatePatients(firstName, lastName,
+			matches = openmrsBean.getDuplicatePatients(firstName, lastName,
 					null, date, null, null, null, null);
 			assertEquals(1, matches.size());
 
 			// No match for Person on firstName, lastName, birthDate (any)
-			matches = regService.getPatients(firstName, lastName, null, date,
+			matches = openmrsBean.getPatients(firstName, lastName, null, date,
 					null, null, null, null);
 			assertEquals(1, matches.size());
 

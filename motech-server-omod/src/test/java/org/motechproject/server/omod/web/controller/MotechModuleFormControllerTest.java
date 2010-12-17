@@ -49,30 +49,25 @@ import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
-import org.motechproject.server.svc.RegistrarBean;
 import org.springframework.ui.ModelMap;
 
 public class MotechModuleFormControllerTest extends TestCase {
 
-	RegistrarBean registrarBean;
 	MotechModuleFormController controller;
 	ContextService contextService;
 	MotechService motechService;
 
 	@Override
 	protected void setUp() {
-		registrarBean = createMock(RegistrarBean.class);
 		motechService = createMock(MotechService.class);
 		contextService = createMock(ContextService.class);
 		controller = new MotechModuleFormController();
-		controller.setRegistrarBean(registrarBean);
 		controller.setContextService(contextService);
 	}
 
 	@Override
 	protected void tearDown() {
 		controller = null;
-		registrarBean = null;
 	}
 
 	public void testViewBlackoutForm() throws ParseException {

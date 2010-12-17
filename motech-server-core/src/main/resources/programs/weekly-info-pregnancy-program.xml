@@ -1412,7 +1412,7 @@
 		<property name="timeReference" value="enrollment_obs_datevalue" />
 		<property name="command">
 			<bean class="org.motechproject.server.event.impl.RemoveEnrollmentCommand">
-				<property name="registrarBean" ref="registrarBean" />
+				<property name="messageBean" ref="messageBean" />
 			</bean>
 		</property>
 		<property name="program" ref="weeklyInfoPregnancyProgram" />

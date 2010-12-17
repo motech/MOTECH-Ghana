@@ -44,7 +44,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -59,7 +59,7 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 	Date obs3;
 	Date obs4;
 	Date obs5;
-	RegistrarBean registrarBean;
+	OpenmrsBean openmrsBean;
 	MessageProgram polioProgram;
 	MessageProgramState polioState1;
 	MessageProgramState polioState2;
@@ -105,7 +105,7 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 		polioState5 = (MessageProgramState) ctx.getBean("polioState5");
 
 		// EasyMock setup in Spring config
-		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
+		openmrsBean = (OpenmrsBean) ctx.getBean("openmrsBean");
 	}
 
 	@Override
@@ -118,175 +118,175 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 		polioState3 = null;
 		polioState4 = null;
 		polioState5 = null;
-		registrarBean = null;
+		openmrsBean = null;
 	}
 
 	public void testDetermineStartState() {
 		expect(
-				registrarBean.getNumberOfObs(patientId, polioProgram
+				openmrsBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(0).atLeastOnce();
-		expect(registrarBean.getPatientBirthDate(patientId)).andReturn(
-				new Date());
+		expect(openmrsBean.getPatientBirthDate(patientId))
+				.andReturn(new Date());
 
-		replay(registrarBean);
+		replay(openmrsBean);
 
 		currentPatientState = polioProgram.determineState(enrollment,
 				new Date());
 
-		verify(registrarBean);
+		verify(openmrsBean);
 
 		assertEquals(currentPatientState.getName(), polioState1.getName());
 	}
 
 	public void testDetermineSecondState() {
 		expect(
-				registrarBean.getNumberOfObs(patientId, polioProgram
+				openmrsBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(1).atLeastOnce();
 		expect(
-				registrarBean.getLastObsDate(patientId, polioProgram
+				openmrsBean.getLastObsDate(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(new Date());
 
-		replay(registrarBean);
+		replay(openmrsBean);
 
 		currentPatientState = polioProgram.determineState(enrollment,
 				new Date());
 
-		verify(registrarBean);
+		verify(openmrsBean);
 
 		assertEquals(currentPatientState.getName(), polioState2.getName());
 	}
 
 	public void testDetermineEndState() {
 		expect(
-				registrarBean.getNumberOfObs(patientId, polioProgram
+				openmrsBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(4).atLeastOnce();
 
-		replay(registrarBean);
+		replay(openmrsBean);
 
 		currentPatientState = polioProgram.determineState(enrollment,
 				new Date());
 
-		verify(registrarBean);
+		verify(openmrsBean);
 
 		assertEquals(currentPatientState.getName(), polioState5.getName());
 	}
 
 	public void testMoveState() {
 		expect(
-				registrarBean.getNumberOfObs(patientId, polioProgram
+				openmrsBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(2).atLeastOnce();
 		expect(
-				registrarBean.getLastObsDate(patientId, polioProgram
+				openmrsBean.getLastObsDate(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(new Date());
 
-		replay(registrarBean);
+		replay(openmrsBean);
 
 		currentPatientState = polioProgram.determineState(enrollment,
 				new Date());
 
-		verify(registrarBean);
+		verify(openmrsBean);
 
 		assertEquals(currentPatientState.getName(), polioState3.getName());
 
 		// State will change with the number of Obs increasing
-		reset(registrarBean);
+		reset(openmrsBean);
 
 		expect(
-				registrarBean.getNumberOfObs(patientId, polioProgram
+				openmrsBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(3).atLeastOnce();
 		expect(
-				registrarBean.getLastObsDate(patientId, polioProgram
+				openmrsBean.getLastObsDate(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(new Date()).times(2);
 
-		replay(registrarBean);
+		replay(openmrsBean);
 
 		currentPatientState = polioProgram.updateState(enrollment, new Date());
 
-		verify(registrarBean);
+		verify(openmrsBean);
 
 		assertEquals(currentPatientState.getName(), polioState4.getName());
 	}
 
 	public void testNotMoveState() {
 		expect(
-				registrarBean.getNumberOfObs(patientId, polioProgram
+				openmrsBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(3).atLeastOnce();
 		expect(
-				registrarBean.getLastObsDate(patientId, polioProgram
+				openmrsBean.getLastObsDate(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(new Date());
 
-		replay(registrarBean);
+		replay(openmrsBean);
 
 		currentPatientState = polioProgram.determineState(enrollment,
 				new Date());
 
-		verify(registrarBean);
+		verify(openmrsBean);
 
 		assertEquals(currentPatientState.getName(), polioState4.getName());
 
 		// State does not change with the same number of Obs
-		reset(registrarBean);
+		reset(openmrsBean);
 
 		expect(
-				registrarBean.getNumberOfObs(patientId, polioProgram
+				openmrsBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(3).atLeastOnce();
 		expect(
-				registrarBean.getLastObsDate(patientId, polioProgram
+				openmrsBean.getLastObsDate(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(new Date()).times(2);
 
-		replay(registrarBean);
+		replay(openmrsBean);
 
 		currentPatientState = polioProgram.updateState(enrollment, new Date());
 
-		verify(registrarBean);
+		verify(openmrsBean);
 
 		assertEquals(currentPatientState.getName(), polioState4.getName());
 	}
 
 	public void testNotMoveEndState() {
 		expect(
-				registrarBean.getNumberOfObs(patientId, polioProgram
+				openmrsBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(4).atLeastOnce();
 
-		replay(registrarBean);
+		replay(openmrsBean);
 
 		currentPatientState = polioProgram.determineState(enrollment,
 				new Date());
 
-		verify(registrarBean);
+		verify(openmrsBean);
 
 		assertEquals(currentPatientState.getName(), polioState5.getName());
 
 		// Future calls to updateState return the end state with no actions
-		reset(registrarBean);
+		reset(openmrsBean);
 
 		expect(
-				registrarBean.getNumberOfObs(patientId, polioProgram
+				openmrsBean.getNumberOfObs(patientId, polioProgram
 						.getConceptName(), polioProgram.getConceptValue()))
 				.andReturn(4).atLeastOnce();
 
-		replay(registrarBean);
+		replay(openmrsBean);
 
 		currentPatientState = polioProgram.updateState(enrollment, new Date());
 
-		verify(registrarBean);
+		verify(openmrsBean);
 
 		assertEquals(currentPatientState.getName(), polioState5.getName());
 
-		reset(registrarBean);
+		reset(openmrsBean);
 	}
 
 }

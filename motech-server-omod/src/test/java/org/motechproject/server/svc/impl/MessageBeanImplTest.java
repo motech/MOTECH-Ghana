@@ -49,6 +49,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
+import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageDefinition;
@@ -56,42 +57,44 @@ import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.model.MessageType;
 import org.motechproject.server.model.ScheduledMessage;
+import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.MediaType;
 import org.openmrs.Person;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
-import org.openmrs.api.AdministrationService;
 import org.openmrs.api.PersonService;
 
-public class RegistrarBeanImplTest extends TestCase {
+public class MessageBeanImplTest extends TestCase {
 
-	RegistrarBeanImpl regBean;
+	MessageBeanImpl regBean;
+	OpenmrsBean openmrsBean;
 
 	ContextService contextService;
-	AdministrationService adminService;
 	MotechService motechService;
 	PersonService personService;
 
 	@Override
 	protected void setUp() throws Exception {
 		contextService = createMock(ContextService.class);
-		adminService = createMock(AdministrationService.class);
+		openmrsBean = createMock(OpenmrsBean.class);
 		motechService = createMock(MotechService.class);
 		personService = createMock(PersonService.class);
 
-		regBean = new RegistrarBeanImpl();
+		regBean = new MessageBeanImpl();
 		regBean.setContextService(contextService);
+		regBean.setOpenmrsBean(openmrsBean);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		regBean = null;
 		contextService = null;
-		adminService = null;
+		openmrsBean = null;
 		motechService = null;
 		personService = null;
 	}
@@ -100,20 +103,22 @@ public class RegistrarBeanImplTest extends TestCase {
 		DayOfWeek day = DayOfWeek.MONDAY;
 		int hour = 9;
 		int minute = 0;
-		String timeAsString = "09:00";
+		String timeAsString = "09:00:00";
 		Date messageDate = new Date();
 		Date currentDate = messageDate;
 
 		Person person = new Person(1);
-		PersonAttributeType dayType = new PersonAttributeType(1);
-		dayType.setName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY);
-		PersonAttributeType timeType = new PersonAttributeType(2);
-		timeType.setName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
-		person.addAttribute(new PersonAttribute(dayType, day.toString()));
-		person.addAttribute(new PersonAttribute(timeType, timeAsString));
+
+		expect(openmrsBean.getPersonMessageTimeOfDay(person)).andReturn(
+				Time.valueOf(timeAsString));
+		expect(openmrsBean.getPersonMessageDayOfWeek(person)).andReturn(day);
+
+		replay(openmrsBean);
 
 		Date prefDate = regBean.determinePreferredMessageDate(person,
 				messageDate, currentDate, true);
+
+		verify(openmrsBean);
 
 		Calendar messageCal = Calendar.getInstance();
 		messageCal.setTime(messageDate);
@@ -131,29 +136,24 @@ public class RegistrarBeanImplTest extends TestCase {
 		DayOfWeek day = DayOfWeek.MONDAY;
 		int hour = 9;
 		int minute = 0;
-		String timeAsString = "09:00";
+		String timeAsString = "09:00:00";
 		Date messageDate = new Date();
 		Date currentDate = messageDate;
 
 		Person person = new Person(1);
 
-		expect(contextService.getAdministrationService()).andReturn(
-				adminService).times(2);
-		expect(
-				adminService
-						.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK))
-				.andReturn(day.toString());
-		expect(
-				adminService
-						.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY))
-				.andReturn(timeAsString);
+		expect(openmrsBean.getPersonMessageTimeOfDay(person)).andReturn(null);
+		expect(openmrsBean.getDefaultPatientTimeOfDay()).andReturn(
+				Time.valueOf(timeAsString));
+		expect(openmrsBean.getPersonMessageDayOfWeek(person)).andReturn(null);
+		expect(openmrsBean.getDefaultPatientDayOfWeek()).andReturn(day);
 
-		replay(contextService, adminService);
+		replay(openmrsBean);
 
 		Date prefDate = regBean.determinePreferredMessageDate(person,
 				messageDate, currentDate, true);
 
-		verify(contextService, adminService);
+		verify(openmrsBean);
 
 		Calendar messageCal = Calendar.getInstance();
 		messageCal.setTime(messageDate);
@@ -173,23 +173,17 @@ public class RegistrarBeanImplTest extends TestCase {
 
 		Person person = new Person(1);
 
-		expect(contextService.getAdministrationService()).andReturn(
-				adminService).times(2);
-		expect(
-				adminService
-						.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK))
-				.andReturn(null);
-		expect(
-				adminService
-						.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY))
-				.andReturn(null);
+		expect(openmrsBean.getPersonMessageTimeOfDay(person)).andReturn(null);
+		expect(openmrsBean.getDefaultPatientTimeOfDay()).andReturn(null);
+		expect(openmrsBean.getPersonMessageDayOfWeek(person)).andReturn(null);
+		expect(openmrsBean.getDefaultPatientDayOfWeek()).andReturn(null);
 
-		replay(contextService, adminService);
+		replay(openmrsBean);
 
 		Date prefDate = regBean.determinePreferredMessageDate(person,
 				messageDate, currentDate, true);
 
-		verify(contextService, adminService);
+		verify(openmrsBean);
 
 		Calendar messageCal = Calendar.getInstance();
 		messageCal.setTime(messageDate);
@@ -265,11 +259,11 @@ public class RegistrarBeanImplTest extends TestCase {
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(motechService.getBlackoutSettings()).andReturn(blackout);
 
-		replay(contextService, adminService, motechService);
+		replay(contextService, motechService);
 
 		Date prefDate = regBean.adjustForBlackout(messageDate);
 
-		verify(contextService, adminService, motechService);
+		verify(contextService, motechService);
 
 		Calendar prefCal = Calendar.getInstance();
 		prefCal.setTime(prefDate);
@@ -305,11 +299,11 @@ public class RegistrarBeanImplTest extends TestCase {
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(motechService.getBlackoutSettings()).andReturn(blackout);
 
-		replay(contextService, adminService, motechService);
+		replay(contextService, motechService);
 
 		Date prefDate = regBean.adjustForBlackout(messageDate);
 
-		verify(contextService, adminService, motechService);
+		verify(contextService, motechService);
 
 		Calendar prefCal = Calendar.getInstance();
 		prefCal.setTime(prefDate);
@@ -341,11 +335,11 @@ public class RegistrarBeanImplTest extends TestCase {
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(motechService.getBlackoutSettings()).andReturn(blackout);
 
-		replay(contextService, adminService, motechService);
+		replay(contextService, motechService);
 
 		boolean duringBlackout = regBean.isDuringBlackout(messageDate);
 
-		verify(contextService, adminService, motechService);
+		verify(contextService, motechService);
 
 		assertEquals(true, duringBlackout);
 
@@ -366,11 +360,11 @@ public class RegistrarBeanImplTest extends TestCase {
 		expect(contextService.getMotechService()).andReturn(motechService);
 		expect(motechService.getBlackoutSettings()).andReturn(blackout);
 
-		replay(contextService, adminService, motechService);
+		replay(contextService, motechService);
 
 		boolean duringBlackout = regBean.isDuringBlackout(messageDate);
 
-		verify(contextService, adminService, motechService);
+		verify(contextService, motechService);
 
 		assertEquals(true, duringBlackout);
 
@@ -421,13 +415,13 @@ public class RegistrarBeanImplTest extends TestCase {
 						.saveScheduledMessage(capture(capturedScheduledMessage)))
 				.andReturn(new ScheduledMessage());
 
-		replay(contextService, adminService, motechService, personService);
+		replay(contextService, motechService, personService);
 
 		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
 				messageKeyC, enrollment, messageDate, userPreferenceBased,
 				currentDate);
 
-		verify(contextService, adminService, motechService, personService);
+		verify(contextService, motechService, personService);
 
 		ScheduledMessage scheduledMessage = capturedScheduledMessage.getValue();
 		List<Message> attempts = scheduledMessage.getMessageAttempts();
@@ -479,13 +473,13 @@ public class RegistrarBeanImplTest extends TestCase {
 				motechService.getScheduledMessages(personId, messageDef,
 						enrollment, messageDate)).andReturn(existingMessages);
 
-		replay(contextService, adminService, motechService, personService);
+		replay(contextService, motechService, personService);
 
 		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
 				messageKeyC, enrollment, messageDate, userPreferenceBased,
 				currentDate);
 
-		verify(contextService, adminService, motechService, personService);
+		verify(contextService, motechService, personService);
 	}
 
 	public void testSchedulingInfoMessageWithExistingPendingMessage() {
@@ -531,13 +525,13 @@ public class RegistrarBeanImplTest extends TestCase {
 				motechService.getScheduledMessages(personId, messageDef,
 						enrollment, messageDate)).andReturn(existingMessages);
 
-		replay(contextService, adminService, motechService, personService);
+		replay(contextService, motechService, personService);
 
 		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
 				messageKeyC, enrollment, messageDate, userPreferenceBased,
 				currentDate);
 
-		verify(contextService, adminService, motechService, personService);
+		verify(contextService, motechService, personService);
 	}
 
 	public void testSchedulingInfoMessageWithExistingDeliveredMessage() {
@@ -583,13 +577,13 @@ public class RegistrarBeanImplTest extends TestCase {
 				motechService.getScheduledMessages(personId, messageDef,
 						enrollment, messageDate)).andReturn(existingMessages);
 
-		replay(contextService, adminService, motechService, personService);
+		replay(contextService, motechService, personService);
 
 		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
 				messageKeyC, enrollment, messageDate, userPreferenceBased,
 				currentDate);
 
-		verify(contextService, adminService, motechService, personService);
+		verify(contextService, motechService, personService);
 	}
 
 	public void testSchedulingInfoMessageWithExistingRejectedMessage() {
@@ -635,13 +629,13 @@ public class RegistrarBeanImplTest extends TestCase {
 				motechService.getScheduledMessages(personId, messageDef,
 						enrollment, messageDate)).andReturn(existingMessages);
 
-		replay(contextService, adminService, motechService, personService);
+		replay(contextService, motechService, personService);
 
 		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
 				messageKeyC, enrollment, messageDate, userPreferenceBased,
 				currentDate);
 
-		verify(contextService, adminService, motechService, personService);
+		verify(contextService, motechService, personService);
 	}
 
 	public void testSchedulingInfoMessageWithExistingCancelledMessage() {
@@ -694,13 +688,13 @@ public class RegistrarBeanImplTest extends TestCase {
 						.saveScheduledMessage(capture(capturedScheduledMessage)))
 				.andReturn(new ScheduledMessage());
 
-		replay(contextService, adminService, motechService, personService);
+		replay(contextService, motechService, personService);
 
 		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
 				messageKeyC, enrollment, messageDate, userPreferenceBased,
 				currentDate);
 
-		verify(contextService, adminService, motechService, personService);
+		verify(contextService, motechService, personService);
 
 		ScheduledMessage scheduledMessage = capturedScheduledMessage.getValue();
 		List<Message> attempts = scheduledMessage.getMessageAttempts();
@@ -763,13 +757,13 @@ public class RegistrarBeanImplTest extends TestCase {
 						.saveScheduledMessage(capture(capturedScheduledMessage)))
 				.andReturn(new ScheduledMessage());
 
-		replay(contextService, adminService, motechService, personService);
+		replay(contextService, motechService, personService);
 
 		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
 				messageKeyC, enrollment, messageDate, userPreferenceBased,
 				currentDate);
 
-		verify(contextService, adminService, motechService, personService);
+		verify(contextService, motechService, personService);
 
 		ScheduledMessage scheduledMessage = capturedScheduledMessage.getValue();
 		List<Message> attempts = scheduledMessage.getMessageAttempts();
@@ -780,5 +774,189 @@ public class RegistrarBeanImplTest extends TestCase {
 		Message message2 = attempts.get(1);
 		assertEquals(MessageStatus.SHOULD_ATTEMPT, message2.getAttemptStatus());
 		assertEquals(messageDate, message2.getAttemptDate());
+	}
+
+	public void testSetMessageStatusSuccessMessageFoundNotTroubled() {
+		String messageId = "12345678-1234-1234-1234-123456789012";
+		Boolean success = true;
+
+		Integer recipientId = 2;
+		String phoneNumber = "1234567890";
+		Person recipient = new Person();
+		TroubledPhone troubledPhone = null;
+		Message message = new Message();
+		ScheduledMessage scheduledMessage = new ScheduledMessage();
+		scheduledMessage.setRecipientId(recipientId);
+		message.setSchedule(scheduledMessage);
+
+		Capture<Message> messageCap = new Capture<Message>();
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(contextService.getPersonService()).andReturn(personService)
+				.atLeastOnce();
+		expect(motechService.getMessage(messageId)).andReturn(message);
+		expect(personService.getPerson(recipientId)).andReturn(recipient);
+		expect(openmrsBean.getPersonPhoneNumber(recipient)).andReturn(
+				phoneNumber);
+		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
+				troubledPhone);
+		expect(motechService.saveMessage(capture(messageCap))).andReturn(
+				message);
+
+		replay(contextService, motechService, personService, openmrsBean);
+
+		regBean.setMessageStatus(messageId, success);
+
+		verify(contextService, motechService, personService, openmrsBean);
+
+		Message capturedMessage = messageCap.getValue();
+		assertEquals(MessageStatus.DELIVERED, capturedMessage
+				.getAttemptStatus());
+	}
+
+	public void testSetMessageStatusSuccessMessageFoundTroubled() {
+		String messageId = "12345678-1234-1234-1234-123456789012";
+		Boolean success = true;
+
+		Integer recipientId = 2;
+		String phoneNumber = "1234567890";
+		Person recipient = new Person();
+		TroubledPhone troubledPhone = new TroubledPhone();
+		Message message = new Message();
+		ScheduledMessage scheduledMessage = new ScheduledMessage();
+		scheduledMessage.setRecipientId(recipientId);
+		message.setSchedule(scheduledMessage);
+
+		Capture<Message> messageCap = new Capture<Message>();
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(contextService.getPersonService()).andReturn(personService)
+				.atLeastOnce();
+		expect(motechService.getMessage(messageId)).andReturn(message);
+		expect(personService.getPerson(recipientId)).andReturn(recipient);
+		expect(openmrsBean.getPersonPhoneNumber(recipient)).andReturn(
+				phoneNumber);
+		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
+				troubledPhone);
+		motechService.removeTroubledPhone(phoneNumber);
+		expect(motechService.saveMessage(capture(messageCap))).andReturn(
+				message);
+
+		replay(contextService, motechService, personService, openmrsBean);
+
+		regBean.setMessageStatus(messageId, success);
+
+		verify(contextService, motechService, personService, openmrsBean);
+
+		Message capturedMessage = messageCap.getValue();
+		assertEquals(MessageStatus.DELIVERED, capturedMessage
+				.getAttemptStatus());
+	}
+
+	public void testSetMessageStatusFailureMessageFoundNotTroubled() {
+		String messageId = "12345678-1234-1234-1234-123456789012";
+		Boolean success = false;
+
+		Integer recipientId = 2;
+		String phoneNumber = "1234567890";
+		Person recipient = new Person();
+		TroubledPhone troubledPhone = null;
+		Message message = new Message();
+		ScheduledMessage scheduledMessage = new ScheduledMessage();
+		scheduledMessage.setRecipientId(recipientId);
+		message.setSchedule(scheduledMessage);
+
+		Capture<Message> messageCap = new Capture<Message>();
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(contextService.getPersonService()).andReturn(personService)
+				.atLeastOnce();
+		expect(motechService.getMessage(messageId)).andReturn(message);
+		expect(personService.getPerson(recipientId)).andReturn(recipient);
+		expect(openmrsBean.getPersonPhoneNumber(recipient)).andReturn(
+				phoneNumber);
+		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
+				troubledPhone);
+		motechService.addTroubledPhone(phoneNumber);
+		expect(motechService.saveMessage(capture(messageCap))).andReturn(
+				message);
+
+		replay(contextService, motechService, personService, openmrsBean);
+
+		regBean.setMessageStatus(messageId, success);
+
+		verify(contextService, motechService, personService, openmrsBean);
+
+		Message capturedMessage = messageCap.getValue();
+		assertEquals(MessageStatus.ATTEMPT_FAIL, capturedMessage
+				.getAttemptStatus());
+	}
+
+	public void testSetMessageStatusFailureMessageFoundTroubled() {
+		String messageId = "12345678-1234-1234-1234-123456789012";
+		Boolean success = false;
+
+		Integer recipientId = 2;
+		String phoneNumber = "1234567890";
+		Person recipient = new Person();
+		Integer previousFailures = 1;
+		TroubledPhone troubledPhone = new TroubledPhone();
+		troubledPhone.setSendFailures(previousFailures);
+		Message message = new Message();
+		ScheduledMessage scheduledMessage = new ScheduledMessage();
+		scheduledMessage.setRecipientId(recipientId);
+		message.setSchedule(scheduledMessage);
+
+		Capture<TroubledPhone> troubledPhoneCap = new Capture<TroubledPhone>();
+		Capture<Message> messageCap = new Capture<Message>();
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(contextService.getPersonService()).andReturn(personService)
+				.atLeastOnce();
+		expect(motechService.getMessage(messageId)).andReturn(message);
+		expect(personService.getPerson(recipientId)).andReturn(recipient);
+		expect(openmrsBean.getPersonPhoneNumber(recipient)).andReturn(
+				phoneNumber);
+		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
+				troubledPhone);
+		motechService.saveTroubledPhone(capture(troubledPhoneCap));
+		expect(motechService.saveMessage(capture(messageCap))).andReturn(
+				message);
+
+		replay(contextService, motechService, personService, openmrsBean);
+
+		regBean.setMessageStatus(messageId, success);
+
+		verify(contextService, motechService, personService, openmrsBean);
+
+		Message capturedMessage = messageCap.getValue();
+		assertEquals(MessageStatus.ATTEMPT_FAIL, capturedMessage
+				.getAttemptStatus());
+
+		Integer expectedFailures = 2;
+		TroubledPhone capturedTroubledPhone = troubledPhoneCap.getValue();
+		assertEquals(expectedFailures, capturedTroubledPhone.getSendFailures());
+	}
+
+	public void testSetMessageStatusMessageNotFound() {
+		String messageId = "12345678-1234-1234-1234-123456789012";
+		Boolean success = true;
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(contextService.getPersonService()).andReturn(personService);
+		expect(motechService.getMessage(messageId)).andReturn(null);
+
+		replay(contextService, motechService, personService, openmrsBean);
+
+		try {
+			regBean.setMessageStatus(messageId, success);
+			fail("Expected org.motechproject.server.messaging.MessageNotFoundException: none thrown");
+		} catch (MessageNotFoundException e) {
+
+		} catch (Exception e) {
+			fail("Expected org.motechproject.server.messaging.MessageNotFoundException: other thrown");
+		}
+
+		verify(contextService, motechService, personService, openmrsBean);
 	}
 }

@@ -49,7 +49,8 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.service.impl.ExpectedEncounterSchedule;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.ExpectedCareBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
@@ -58,7 +59,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class PNCMotherScheduleTest extends TestCase {
 	ApplicationContext ctx;
 
-	RegistrarBean registrarBean;
+	OpenmrsBean openmrsBean;
+	ExpectedCareBean expectedCareBean;
 	ExpectedEncounterSchedule pncSchedule;
 	ExpectedCareEvent pnc1Event;
 	ExpectedCareEvent pnc2Event;
@@ -76,7 +78,8 @@ public class PNCMotherScheduleTest extends TestCase {
 		pnc3Event = pncSchedule.getEvents().get(2);
 
 		// EasyMock setup in Spring config
-		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
+		openmrsBean = (OpenmrsBean) ctx.getBean("openmrsBean");
+		expectedCareBean = (ExpectedCareBean) ctx.getBean("expectedCareBean");
 	}
 
 	@Override
@@ -86,7 +89,8 @@ public class PNCMotherScheduleTest extends TestCase {
 		pnc1Event = null;
 		pnc2Event = null;
 		pnc3Event = null;
-		registrarBean = null;
+		openmrsBean = null;
+		expectedCareBean = null;
 	}
 
 	public void testCreateExpected() {
@@ -112,42 +116,42 @@ public class PNCMotherScheduleTest extends TestCase {
 
 		Date deliveryDate = new Date();
 
-		expect(registrarBean.getCurrentDeliveryDate(patient)).andReturn(
+		expect(openmrsBean.getCurrentDeliveryDate(patient)).andReturn(
 				deliveryDate);
 		expect(
-				registrarBean.getEncounters(patient, pncSchedule
+				openmrsBean.getEncounters(patient, pncSchedule
 						.getEncounterTypeName(), deliveryDate)).andReturn(
 				encounterList);
 		expect(
-				registrarBean.getExpectedEncounters(patient, pncSchedule
+				expectedCareBean.getExpectedEncounters(patient, pncSchedule
 						.getName())).andReturn(expectedEncounterList);
 		expect(
-				registrarBean.createExpectedEncounter(eq(patient),
+				expectedCareBean.createExpectedEncounter(eq(patient),
 						eq(pncSchedule.getEncounterTypeName()),
 						capture(minDate1Capture), capture(dueDate1Capture),
 						capture(lateDate1Capture), capture(maxDate1Capture),
 						eq(pnc1Event.getName()), eq(pncSchedule.getName())))
 				.andReturn(new ExpectedEncounter());
 		expect(
-				registrarBean.createExpectedEncounter(eq(patient),
+				expectedCareBean.createExpectedEncounter(eq(patient),
 						eq(pncSchedule.getEncounterTypeName()),
 						capture(minDate2Capture), capture(dueDate2Capture),
 						capture(lateDate2Capture), capture(maxDate2Capture),
 						eq(pnc2Event.getName()), eq(pncSchedule.getName())))
 				.andReturn(new ExpectedEncounter());
 		expect(
-				registrarBean.createExpectedEncounter(eq(patient),
+				expectedCareBean.createExpectedEncounter(eq(patient),
 						eq(pncSchedule.getEncounterTypeName()),
 						capture(minDate3Capture), capture(dueDate3Capture),
 						capture(lateDate3Capture), capture(maxDate3Capture),
 						eq(pnc3Event.getName()), eq(pncSchedule.getName())))
 				.andReturn(new ExpectedEncounter());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		pncSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		Date minDate1 = minDate1Capture.getValue();
 		Date dueDate1 = dueDate1Capture.getValue();
@@ -216,33 +220,33 @@ public class PNCMotherScheduleTest extends TestCase {
 		expectedEncounter3.setName(pnc3Event.getName());
 		expectedEncounterList.add(expectedEncounter3);
 
-		expect(registrarBean.getCurrentDeliveryDate(patient)).andReturn(
+		expect(openmrsBean.getCurrentDeliveryDate(patient)).andReturn(
 				deliveryDate);
 		expect(
-				registrarBean.getEncounters(patient, pncSchedule
+				openmrsBean.getEncounters(patient, pncSchedule
 						.getEncounterTypeName(), deliveryDate)).andReturn(
 				encounterList);
 		expect(
-				registrarBean.getExpectedEncounters(patient, pncSchedule
+				expectedCareBean.getExpectedEncounters(patient, pncSchedule
 						.getName())).andReturn(expectedEncounterList);
 		expect(
-				registrarBean
+				expectedCareBean
 						.saveExpectedEncounter(capture(pnc1ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 		expect(
-				registrarBean
+				expectedCareBean
 						.saveExpectedEncounter(capture(pnc2ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 		expect(
-				registrarBean
+				expectedCareBean
 						.saveExpectedEncounter(capture(pnc3ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		pncSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		ExpectedEncounter capturedPNC1Expected = pnc1ExpectedCapture.getValue();
 		assertEquals(Boolean.TRUE, capturedPNC1Expected.getVoided());
@@ -272,29 +276,29 @@ public class PNCMotherScheduleTest extends TestCase {
 
 		Date deliveryDate = null;
 
-		expect(registrarBean.getCurrentDeliveryDate(patient)).andReturn(
+		expect(openmrsBean.getCurrentDeliveryDate(patient)).andReturn(
 				deliveryDate);
 		expect(
-				registrarBean.getExpectedEncounters(patient, pncSchedule
+				expectedCareBean.getExpectedEncounters(patient, pncSchedule
 						.getName())).andReturn(expectedEncounterList);
 		expect(
-				registrarBean
+				expectedCareBean
 						.saveExpectedEncounter(capture(pnc1ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 		expect(
-				registrarBean
+				expectedCareBean
 						.saveExpectedEncounter(capture(pnc2ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 		expect(
-				registrarBean
+				expectedCareBean
 						.saveExpectedEncounter(capture(pnc3ExpectedCapture)))
 				.andReturn(new ExpectedEncounter());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		pncSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		ExpectedEncounter capturedPNC1Expected = pnc1ExpectedCapture.getValue();
 		assertEquals(Boolean.TRUE, capturedPNC1Expected.getVoided());
@@ -315,17 +319,17 @@ public class PNCMotherScheduleTest extends TestCase {
 
 		Date deliveryDate = null;
 
-		expect(registrarBean.getCurrentDeliveryDate(patient)).andReturn(
+		expect(openmrsBean.getCurrentDeliveryDate(patient)).andReturn(
 				deliveryDate);
 		expect(
-				registrarBean.getExpectedEncounters(patient, pncSchedule
+				expectedCareBean.getExpectedEncounters(patient, pncSchedule
 						.getName())).andReturn(expectedEncounterList);
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		pncSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 	}
 
 	public void testNoActionPastDelivery() {
@@ -340,16 +344,16 @@ public class PNCMotherScheduleTest extends TestCase {
 
 		Date deliveryDate = calendar.getTime();
 
-		expect(registrarBean.getCurrentDeliveryDate(patient)).andReturn(
+		expect(openmrsBean.getCurrentDeliveryDate(patient)).andReturn(
 				deliveryDate);
 		expect(
-				registrarBean.getExpectedEncounters(patient, pncSchedule
+				expectedCareBean.getExpectedEncounters(patient, pncSchedule
 						.getName())).andReturn(expectedEncounterList);
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		pncSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 	}
 }

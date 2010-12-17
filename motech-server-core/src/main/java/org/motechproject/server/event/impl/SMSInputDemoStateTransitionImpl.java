@@ -36,17 +36,17 @@ package org.motechproject.server.event.impl;
 import java.util.Date;
 
 import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.OpenmrsBean;
 
 public class SMSInputDemoStateTransitionImpl extends
 		MessageProgramStateTransitionExpectedDateImpl {
 
-	RegistrarBean registrarBean;
+	OpenmrsBean openmrsBean;
 
 	boolean terminatingTransition = false;
 
-	public void setRegistrarBean(RegistrarBean registrarBean) {
-		this.registrarBean = registrarBean;
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
 	}
 
 	public void setTerminating(boolean terminating) {
@@ -60,7 +60,7 @@ public class SMSInputDemoStateTransitionImpl extends
 		if (!terminatingTransition) {
 			boolean trueBasedOnDate = super.evaluate(enrollment, currentDate);
 
-			Date terminatingObsDate = registrarBean.getLastObsCreationDate(
+			Date terminatingObsDate = openmrsBean.getLastObsCreationDate(
 					enrollment.getPersonId(), prevState.getProgram()
 							.getConceptName(), null);
 
@@ -69,7 +69,7 @@ public class SMSInputDemoStateTransitionImpl extends
 
 			return trueBasedOnDate && !terminatingObservationExists;
 		} else {
-			Date terminatingObsDate = registrarBean.getLastObsCreationDate(
+			Date terminatingObsDate = openmrsBean.getLastObsCreationDate(
 					enrollment.getPersonId(), prevState.getProgram()
 							.getConceptName(), null);
 			return terminatingObsDate != null

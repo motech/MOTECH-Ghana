@@ -48,7 +48,7 @@ import junit.framework.TestCase;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.Care;
 import org.motechproject.ws.Gender;
@@ -62,14 +62,14 @@ import org.openmrs.PersonName;
 public class WebServiceModelConverterTest extends TestCase {
 
 	WebServiceModelConverter modelConverter;
-	RegistrarBean registrarBean;
+	OpenmrsBean openmrsBean;
 	PatientIdentifierType motechIdType;
 
 	@Override
 	protected void setUp() throws Exception {
 		WebServiceModelConverterImpl modelConverterImpl = new WebServiceModelConverterImpl();
-		registrarBean = createMock(RegistrarBean.class);
-		modelConverterImpl.setRegistrarBean(registrarBean);
+		openmrsBean = createMock(OpenmrsBean.class);
+		modelConverterImpl.setOpenmrsBean(openmrsBean);
 		modelConverter = modelConverterImpl;
 
 		motechIdType = new PatientIdentifierType();
@@ -78,7 +78,7 @@ public class WebServiceModelConverterTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		registrarBean = null;
+		openmrsBean = null;
 		modelConverter = null;
 		motechIdType = null;
 	}
@@ -147,16 +147,16 @@ public class WebServiceModelConverterTest extends TestCase {
 		defaultedEncounters.add(encounter2);
 		defaultedEncounters.add(encounter3);
 
-		expect(registrarBean.getCommunityByPatient(patient1)).andReturn(comm1);
-		expect(registrarBean.getCommunityByPatient(patient2)).andReturn(comm2);
-		expect(registrarBean.getCommunityByPatient(patient3)).andReturn(comm3);
+		expect(openmrsBean.getCommunityByPatient(patient1)).andReturn(comm1);
+		expect(openmrsBean.getCommunityByPatient(patient2)).andReturn(comm2);
+		expect(openmrsBean.getCommunityByPatient(patient3)).andReturn(comm3);
 
-		replay(registrarBean);
+		replay(openmrsBean);
 
 		Care[] cares = modelConverter
 				.defaultedEncountersToWebServiceCares(defaultedEncounters);
 
-		verify(registrarBean);
+		verify(openmrsBean);
 
 		assertEquals(2, cares.length);
 
@@ -266,16 +266,16 @@ public class WebServiceModelConverterTest extends TestCase {
 		defaultedObs.add(obs2);
 		defaultedObs.add(obs3);
 
-		expect(registrarBean.getCommunityByPatient(patient1)).andReturn(comm1);
-		expect(registrarBean.getCommunityByPatient(patient2)).andReturn(comm2);
-		expect(registrarBean.getCommunityByPatient(patient3)).andReturn(comm3);
+		expect(openmrsBean.getCommunityByPatient(patient1)).andReturn(comm1);
+		expect(openmrsBean.getCommunityByPatient(patient2)).andReturn(comm2);
+		expect(openmrsBean.getCommunityByPatient(patient3)).andReturn(comm3);
 
-		replay(registrarBean);
+		replay(openmrsBean);
 
 		Care[] cares = modelConverter
 				.defaultedObsToWebServiceCares(defaultedObs);
 
-		verify(registrarBean);
+		verify(openmrsBean);
 
 		assertEquals(2, cares.length);
 
@@ -400,19 +400,19 @@ public class WebServiceModelConverterTest extends TestCase {
 		defaultedObs.add(obs2);
 		defaultedObs.add(obs3);
 
-		expect(registrarBean.getCommunityByPatient(patient1)).andReturn(comm1)
+		expect(openmrsBean.getCommunityByPatient(patient1)).andReturn(comm1)
 				.times(2);
-		expect(registrarBean.getCommunityByPatient(patient2)).andReturn(comm2)
+		expect(openmrsBean.getCommunityByPatient(patient2)).andReturn(comm2)
 				.times(2);
-		expect(registrarBean.getCommunityByPatient(patient3)).andReturn(comm3)
+		expect(openmrsBean.getCommunityByPatient(patient3)).andReturn(comm3)
 				.times(2);
 
-		replay(registrarBean);
+		replay(openmrsBean);
 
 		Care[] cares = modelConverter.defaultedToWebServiceCares(
 				defaultedEncounters, defaultedObs);
 
-		verify(registrarBean);
+		verify(openmrsBean);
 
 		assertEquals(4, cares.length);
 

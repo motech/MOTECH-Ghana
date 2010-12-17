@@ -44,7 +44,7 @@ public class ExpectedIPTObsSchedule extends ExpectedObsSchedule {
 	protected Date getReferenceDate(Patient patient) {
 		// Calculate estimated pregnancy start date as 9 months before estimated
 		// due date
-		Date dueDate = registrarBean.getActivePregnancyDueDate(patient
+		Date dueDate = openmrsBean.getActivePregnancyDueDate(patient
 				.getPatientId());
 		if (dueDate != null) {
 			Calendar calendar = Calendar.getInstance();

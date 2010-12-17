@@ -65,9 +65,9 @@ public class ExpectedANCEncounterSchedule extends ExpectedEncounterSchedule {
 		log.debug("Performing " + name + " schedule update: patient: "
 				+ patient.getPatientId());
 
-		List<Encounter> encounterList = registrarBean.getEncounters(patient,
+		List<Encounter> encounterList = openmrsBean.getEncounters(patient,
 				encounterTypeName, referenceDate);
-		List<ExpectedEncounter> expectedEncounterList = registrarBean
+		List<ExpectedEncounter> expectedEncounterList = expectedCareBean
 				.getExpectedEncounters(patient, name);
 
 		EncounterPredicate encounterPredicate = new EncounterPredicate();
@@ -100,7 +100,7 @@ public class ExpectedANCEncounterSchedule extends ExpectedEncounterSchedule {
 						expectedEncounterList, expectedEncounterPredicate);
 
 				if (expectedEncounter == null) {
-					registrarBean.createExpectedEncounter(patient,
+					expectedCareBean.createExpectedEncounter(patient,
 							encounterTypeName, minDate, nextANCDate, lateDate,
 							null, name, name);
 				}
@@ -123,10 +123,10 @@ public class ExpectedANCEncounterSchedule extends ExpectedEncounterSchedule {
 				// Remove existing satisfied ExpectedEncounter
 				expectedEncounter.setEncounter(eventEncounter);
 				expectedEncounter.setVoided(true);
-				registrarBean.saveExpectedEncounter(expectedEncounter);
+				expectedCareBean.saveExpectedEncounter(expectedEncounter);
 			} else if (eventExpired) {
 				expectedEncounter.setVoided(true);
-				registrarBean.saveExpectedEncounter(expectedEncounter);
+				expectedCareBean.saveExpectedEncounter(expectedEncounter);
 			}
 		}
 	}
@@ -155,7 +155,7 @@ public class ExpectedANCEncounterSchedule extends ExpectedEncounterSchedule {
 	protected Date getReferenceDate(Patient patient) {
 		// Calculate estimated pregnancy start date as 9 months before estimated
 		// due date
-		Date dueDate = registrarBean.getActivePregnancyDueDate(patient
+		Date dueDate = openmrsBean.getActivePregnancyDueDate(patient
 				.getPatientId());
 		if (dueDate != null) {
 			Calendar calendar = Calendar.getInstance();

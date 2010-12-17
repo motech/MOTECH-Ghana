@@ -45,7 +45,8 @@
 		<property name="valueConceptName" value="VITAMIN A" />
 		<property name="lateValue" value="1" />
 		<property name="latePeriod" value="week" />
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="openmrsBean" ref="openmrsBean" />
+		<property name="expectedCareBean" ref="expectedCareBean" />
 		<property name="requirements">
 			<list>
 				<bean class="org.motechproject.server.service.impl.AliveRequirement" />

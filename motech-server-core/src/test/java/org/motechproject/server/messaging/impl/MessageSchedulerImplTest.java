@@ -42,27 +42,27 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.MessageBean;
 
 public class MessageSchedulerImplTest extends TestCase {
 
 	MessageSchedulerImpl messageScheduler;
 
-	RegistrarBean registrarBean;
+	MessageBean messageBean;
 
 	@Override
 	protected void setUp() throws Exception {
-		registrarBean = createMock(RegistrarBean.class);
+		messageBean = createMock(MessageBean.class);
 
 		messageScheduler = new MessageSchedulerImpl();
-		messageScheduler.setRegistrarBean(registrarBean);
+		messageScheduler.setMessageBean(messageBean);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		messageScheduler = null;
 
-		registrarBean = null;
+		messageBean = null;
 	}
 
 	public void testScheduleUserPref() {
@@ -77,16 +77,16 @@ public class MessageSchedulerImplTest extends TestCase {
 
 		messageScheduler.setUserPreferenceBased(userPreferencedBased);
 
-		registrarBean.scheduleInfoMessages(messageKey, messageKeyA,
-				messageKeyB, messageKeyC, enrollment, messageDate,
-				userPreferencedBased, currentDate);
+		messageBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
+				messageKeyC, enrollment, messageDate, userPreferencedBased,
+				currentDate);
 
-		replay(registrarBean);
+		replay(messageBean);
 
 		messageScheduler.scheduleMessages(messageKey, messageKeyA, messageKeyB,
 				messageKeyC, enrollment, messageDate, currentDate);
 
-		verify(registrarBean);
+		verify(messageBean);
 	}
 
 	public void testScheduleNoUserPref() {
@@ -101,15 +101,15 @@ public class MessageSchedulerImplTest extends TestCase {
 
 		messageScheduler.setUserPreferenceBased(userPreferencedBased);
 
-		registrarBean.scheduleInfoMessages(messageKey, messageKeyA,
-				messageKeyB, messageKeyC, enrollment, messageDate,
-				userPreferencedBased, currentDate);
+		messageBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
+				messageKeyC, enrollment, messageDate, userPreferencedBased,
+				currentDate);
 
-		replay(registrarBean);
+		replay(messageBean);
 
 		messageScheduler.scheduleMessages(messageKey, messageKeyA, messageKeyB,
 				messageKeyC, enrollment, messageDate, currentDate);
 
-		verify(registrarBean);
+		verify(messageBean);
 	}
 }

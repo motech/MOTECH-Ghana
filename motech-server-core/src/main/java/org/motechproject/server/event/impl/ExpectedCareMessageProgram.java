@@ -48,7 +48,9 @@ import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Message;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.ScheduledMessage;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.ExpectedCareBean;
+import org.motechproject.server.svc.MessageBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.time.TimePeriod;
 import org.openmrs.Patient;
 
@@ -59,7 +61,9 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 			.getLog(ExpectedCareMessageProgram.class);
 
 	private List<ExpectedCareMessageDetails> careMessageDetails = new ArrayList<ExpectedCareMessageDetails>();
-	private RegistrarBean registrarBean;
+	private OpenmrsBean openmrsBean;
+	private ExpectedCareBean expectedCareBean;
+	private MessageBean messageBean;
 
 	public MessageProgramState determineState(
 			MessageProgramEnrollment enrollment, Date currentDate) {
@@ -68,12 +72,10 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 		// past
 		Date nextDate = calculateDate(currentDate, 1, TimePeriod.day);
 
-		Integer maxPatientReminders = registrarBean
-				.getMaxPatientCareReminders();
+		Integer maxPatientReminders = openmrsBean.getMaxPatientCareReminders();
 
 		// Get patient from enrollment person Id
-		Patient patient = registrarBean
-				.getPatientById(enrollment.getPersonId());
+		Patient patient = openmrsBean.getPatientById(enrollment.getPersonId());
 		if (patient == null) {
 			log.debug("Person of enrollment is not a patient: "
 					+ enrollment.getPersonId());
@@ -81,12 +83,12 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 		}
 
 		// Get all active expected care for patient (obs and encounter)
-		List<ExpectedEncounter> expectedEncounters = registrarBean
+		List<ExpectedEncounter> expectedEncounters = expectedCareBean
 				.getExpectedEncounters(patient);
-		List<ExpectedObs> expectedObservations = registrarBean
+		List<ExpectedObs> expectedObservations = expectedCareBean
 				.getExpectedObs(patient);
 		// Get all messages for enrollment (includes sent and not sent)
-		List<ScheduledMessage> scheduledMessages = registrarBean
+		List<ScheduledMessage> scheduledMessages = messageBean
 				.getScheduledMessages(enrollment);
 
 		// Create predicates for expected care (by group) and scheduled messages
@@ -151,13 +153,13 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 			// scheduled)
 			careScheduledMessages.removeAll(verifiedScheduledMessages);
 			if (!careScheduledMessages.isEmpty()) {
-				registrarBean.removeUnsentMessages(careScheduledMessages);
+				messageBean.removeUnsentMessages(careScheduledMessages);
 			}
 		}
 
 		// Cancel any unsent messages for enrollment (for unhandled care)
 		if (!scheduledMessages.isEmpty()) {
-			registrarBean.removeUnsentMessages(scheduledMessages);
+			messageBean.removeUnsentMessages(scheduledMessages);
 		}
 
 		return null;
@@ -230,7 +232,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 
 			// Create new scheduled message only if not already exist
 			if (upcomingMessage == null) {
-				return registrarBean
+				return messageBean
 						.scheduleCareMessage(careDetails
 								.getUpcomingMessageKey(), enrollment,
 								messageDate, careDetails
@@ -239,7 +241,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 			} else {
 				// Check if unsent message attempt date needs adjusting for
 				// blackout or preference changes
-				registrarBean.verifyMessageAttemptDate(upcomingMessage,
+				messageBean.verifyMessageAttemptDate(upcomingMessage,
 						careDetails.getUserPreferenceBased(), currentDate);
 				return upcomingMessage;
 			}
@@ -261,7 +263,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 
 			if (reminderMessage == null) {
 				// Schedule reminder if no previous reminders
-				return registrarBean
+				return messageBean
 						.scheduleCareMessage(
 								careDetails.getOverdueMessageKey(), enrollment,
 								reminderDate, careDetails
@@ -270,7 +272,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 			} else {
 				// Check if unsent message attempt date needs adjusting for
 				// blackout or preference changes
-				registrarBean.verifyMessageAttemptDate(reminderMessage,
+				messageBean.verifyMessageAttemptDate(reminderMessage,
 						careDetails.getUserPreferenceBased(), currentDate);
 
 				// Determine last reminder date
@@ -293,7 +295,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 									.getTimePeriod());
 
 					if (!newReminderDate.after(maxReminderDate)) {
-						registrarBean.addMessageAttempt(reminderMessage,
+						messageBean.addMessageAttempt(reminderMessage,
 								newReminderDate, maxReminderDate, careDetails
 										.getUserPreferenceBased(), currentDate);
 					}
@@ -365,12 +367,28 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 		this.careMessageDetails = careMessageDetails;
 	}
 
-	public RegistrarBean getRegistrarBean() {
-		return registrarBean;
+	public OpenmrsBean getOpenmrsBean() {
+		return openmrsBean;
 	}
 
-	public void setRegistrarBean(RegistrarBean registrarBean) {
-		this.registrarBean = registrarBean;
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
+	}
+
+	public ExpectedCareBean getExpectedCareBean() {
+		return expectedCareBean;
+	}
+
+	public void setExpectedCareBean(ExpectedCareBean expectedCareBean) {
+		this.expectedCareBean = expectedCareBean;
+	}
+
+	public MessageBean getMessageBean() {
+		return messageBean;
+	}
+
+	public void setMessageBean(MessageBean messageBean) {
+		this.messageBean = messageBean;
 	}
 
 }

@@ -47,6 +47,10 @@ import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.svc.BirthOutcomeChild;
+import org.motechproject.server.svc.ExpectedCareBean;
+import org.motechproject.server.svc.IdBean;
+import org.motechproject.server.svc.LocationBean;
+import org.motechproject.server.svc.MessageBean;
 import org.motechproject.server.svc.MessageSourceBean;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
@@ -79,8 +83,12 @@ public class RegistrarWebService implements RegistrarService {
 
 	RegistrarBean registrarBean;
 	OpenmrsBean openmrsBean;
+	IdBean idBean;
+	MessageBean messageBean;
+	ExpectedCareBean expectedCareBean;
+	LocationBean locationBean;
 	WebServiceModelConverter modelConverter;
-	MessageSourceBean messageBean;
+	MessageSourceBean messageSourceBean;
 
 	public void recordPatientHistory(Integer staffId, Integer facilityId,
 			Date date, Integer motechId, Integer lastIPT, Date lastIPTDate,
@@ -200,8 +208,8 @@ public class RegistrarWebService implements RegistrarService {
 			if (childId != null) {
 				validateMotechId(childId, errors, fieldName, false);
 				if (motechIds.contains(childId))
-					errors.add(messageBean.getMessage("motechmodule.ws.inuse",
-							fieldName));
+					errors.add(messageSourceBean.getMessage(
+							"motechmodule.ws.inuse", fieldName));
 				else
 					motechIds.add(childId);
 			}
@@ -412,19 +420,19 @@ public class RegistrarWebService implements RegistrarService {
 			Calendar calendar = Calendar.getInstance();
 			calendar.add(Calendar.YEAR, -5);
 			if (dateOfBirth.before(calendar.getTime())) {
-				errors.add(messageBean.getMessage("motechmodule.ws.invalid",
-						"DOB"));
+				errors.add(messageSourceBean.getMessage(
+						"motechmodule.ws.invalid", "DOB"));
 			}
 		} else if (registrantType == RegistrantType.PREGNANT_MOTHER) {
 			if (sex != Gender.FEMALE)
-				errors.add(messageBean.getMessage("motechmodule.ws.invalid",
-						"Sex"));
+				errors.add(messageSourceBean.getMessage(
+						"motechmodule.ws.invalid", "Sex"));
 			if (expDeliveryDate == null)
-				errors.add(messageBean.getMessage("motechmodule.ws.missing",
-						"DeliveryDate"));
+				errors.add(messageSourceBean.getMessage(
+						"motechmodule.ws.missing", "DeliveryDate"));
 			if (deliveryDateConfirmed == null)
-				errors.add(messageBean.getMessage("motechmodule.ws.missing",
-						"DeliveryDateConfirmed"));
+				errors.add(messageSourceBean.getMessage(
+						"motechmodule.ws.missing", "DeliveryDateConfirmed"));
 		}
 
 		if (errors.getErrors().size() > 0) {
@@ -623,11 +631,11 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in ANC Defaulters Query request", errors);
 		}
 
-		List<ExpectedEncounter> defaultedEncounters = registrarBean
+		List<ExpectedEncounter> defaultedEncounters = expectedCareBean
 				.getDefaultedExpectedEncounters(facility,
 						new String[] { "ANC" });
-		List<ExpectedObs> defaultedObs = registrarBean.getDefaultedExpectedObs(
-				facility, new String[] { "TT", "IPT" });
+		List<ExpectedObs> defaultedObs = expectedCareBean
+				.getDefaultedExpectedObs(facility, new String[] { "TT", "IPT" });
 
 		Care[] upcomingCares = modelConverter.defaultedToWebServiceCares(
 				defaultedEncounters, defaultedObs);
@@ -648,8 +656,8 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in TT Defaulters Query request", errors);
 		}
 
-		List<ExpectedObs> defaultedObs = registrarBean.getDefaultedExpectedObs(
-				facility, new String[] { "TT" });
+		List<ExpectedObs> defaultedObs = expectedCareBean
+				.getDefaultedExpectedObs(facility, new String[] { "TT" });
 		return modelConverter.defaultedObsToWebServiceCares(defaultedObs);
 	}
 
@@ -666,7 +674,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Mother PNC Defaulters Query request", errors);
 		}
 
-		List<ExpectedEncounter> defaultedEncounters = registrarBean
+		List<ExpectedEncounter> defaultedEncounters = expectedCareBean
 				.getDefaultedExpectedEncounters(facility,
 						new String[] { "PNC(mother)" });
 		return modelConverter
@@ -686,7 +694,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Child PNC Defaulters Query request", errors);
 		}
 
-		List<ExpectedEncounter> defaultedEncounters = registrarBean
+		List<ExpectedEncounter> defaultedEncounters = expectedCareBean
 				.getDefaultedExpectedEncounters(facility,
 						new String[] { "PNC(baby)" });
 		return modelConverter
@@ -706,9 +714,9 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in CWC Defaulters Query request", errors);
 		}
 
-		List<ExpectedObs> defaultedObs = registrarBean.getDefaultedExpectedObs(
-				facility, new String[] { "OPV", "BCG", "Penta", "YellowFever",
-						"Measles", "VitaA", "IPTI" });
+		List<ExpectedObs> defaultedObs = expectedCareBean
+				.getDefaultedExpectedObs(facility, new String[] { "OPV", "BCG",
+						"Penta", "YellowFever", "Measles", "VitaA", "IPTI" });
 		return modelConverter.defaultedObsToWebServiceCares(defaultedObs);
 	}
 
@@ -725,7 +733,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Upcoming Deliveries Query request", errors);
 		}
 
-		List<Obs> dueDates = registrarBean
+		List<Obs> dueDates = openmrsBean
 				.getUpcomingPregnanciesDueDate(facility);
 		return modelConverter.dueDatesToWebServicePatients(dueDates);
 	}
@@ -743,8 +751,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Recent Deliveries Query request", errors);
 		}
 
-		List<Encounter> deliveries = registrarBean
-				.getRecentDeliveries(facility);
+		List<Encounter> deliveries = openmrsBean.getRecentDeliveries(facility);
 		return modelConverter.deliveriesToWebServicePatients(deliveries);
 	}
 
@@ -761,8 +768,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Overdue Deliveries Query request", errors);
 		}
 
-		List<Obs> dueDates = registrarBean
-				.getOverduePregnanciesDueDate(facility);
+		List<Obs> dueDates = openmrsBean.getOverduePregnanciesDueDate(facility);
 		return modelConverter.dueDatesToWebServicePatients(dueDates);
 	}
 
@@ -784,9 +790,9 @@ public class RegistrarWebService implements RegistrarService {
 
 		Patient wsPatient = modelConverter.patientToWebService(patient, true);
 
-		List<ExpectedEncounter> upcomingEncounters = registrarBean
+		List<ExpectedEncounter> upcomingEncounters = expectedCareBean
 				.getUpcomingExpectedEncounters(patient);
-		List<ExpectedObs> upcomingObs = registrarBean
+		List<ExpectedObs> upcomingObs = expectedCareBean
 				.getUpcomingExpectedObs(patient);
 
 		Care[] upcomingCares = modelConverter.upcomingToWebServiceCares(
@@ -811,9 +817,9 @@ public class RegistrarWebService implements RegistrarService {
 					errors);
 		}
 
-		List<org.openmrs.Patient> patients = registrarBean.getPatients(
-				firstName, lastName, preferredName, birthDate, null,
-				phoneNumber, nhis, null);
+		List<org.openmrs.Patient> patients = openmrsBean.getPatients(firstName,
+				lastName, preferredName, birthDate, null, phoneNumber, nhis,
+				null);
 		return modelConverter.patientToWebService(patients, true);
 	}
 
@@ -849,7 +855,7 @@ public class RegistrarWebService implements RegistrarService {
 					"Errors in Get Patient Enrollments request", errors);
 		}
 
-		return registrarBean.getActiveMessageProgramEnrollmentNames(patient);
+		return messageBean.getActiveMessageProgramEnrollmentNames(patient);
 	}
 
 	public void log(LogType type, String message) {
@@ -859,7 +865,7 @@ public class RegistrarWebService implements RegistrarService {
 
 	public void setMessageStatus(String messageId, Boolean success) {
 
-		registrarBean.setMessageStatus(messageId, success);
+		messageBean.setMessageStatus(messageId, success);
 	}
 
 	public void setRegistrarBean(RegistrarBean registrarBean) {
@@ -870,29 +876,45 @@ public class RegistrarWebService implements RegistrarService {
 		this.openmrsBean = openmrsBean;
 	}
 
+	public void setIdBean(IdBean idBean) {
+		this.idBean = idBean;
+	}
+
+	public void setMessageBean(MessageBean messageBean) {
+		this.messageBean = messageBean;
+	}
+
+	public void setExpectedCareBean(ExpectedCareBean expectedCareBean) {
+		this.expectedCareBean = expectedCareBean;
+	}
+
+	public void setLocationBean(LocationBean locationBean) {
+		this.locationBean = locationBean;
+	}
+
 	public void setModelConverter(WebServiceModelConverter modelConverter) {
 		this.modelConverter = modelConverter;
 	}
 
-	public void setMessageBean(MessageSourceBean messageBean) {
-		this.messageBean = messageBean;
+	public void setMessageSourceBean(MessageSourceBean messageSourceBean) {
+		this.messageSourceBean = messageSourceBean;
 	}
 
 	private User validateStaffId(Integer staffId, ValidationErrors errors,
 			String fieldName) {
 		if (staffId == null) {
-			errors.add(messageBean.getMessage("motechmodule.ws.missing",
+			errors.add(messageSourceBean.getMessage("motechmodule.ws.missing",
 					fieldName));
 			return null;
 		}
-		if (!registrarBean.isValidIdCheckDigit(staffId)) {
-			errors.add(messageBean.getMessage("motechmodule.ws.invalid",
+		if (!idBean.isValidIdCheckDigit(staffId)) {
+			errors.add(messageSourceBean.getMessage("motechmodule.ws.invalid",
 					fieldName));
 			return null;
 		}
 		User staff = openmrsBean.getStaffBySystemId(staffId.toString());
 		if (staff == null) {
-			errors.add(messageBean.getMessage("motechmodule.ws.notfound",
+			errors.add(messageSourceBean.getMessage("motechmodule.ws.notfound",
 					fieldName));
 		}
 		return staff;
@@ -901,22 +923,22 @@ public class RegistrarWebService implements RegistrarService {
 	private org.openmrs.Patient validateMotechId(Integer motechId,
 			ValidationErrors errors, String fieldName, boolean mustExist) {
 		if (motechId == null) {
-			errors.add(messageBean.getMessage("motechmodule.ws.missing",
+			errors.add(messageSourceBean.getMessage("motechmodule.ws.missing",
 					fieldName));
 			return null;
 		}
-		if (!registrarBean.isValidMotechIdCheckDigit(motechId)) {
-			errors.add(messageBean.getMessage("motechmodule.ws.invalid",
+		if (!idBean.isValidMotechIdCheckDigit(motechId)) {
+			errors.add(messageSourceBean.getMessage("motechmodule.ws.invalid",
 					fieldName));
 			return null;
 		}
 		org.openmrs.Patient patient = openmrsBean.getPatientByMotechId(motechId
 				.toString());
 		if (mustExist && patient == null) {
-			errors.add(messageBean.getMessage("motechmodule.ws.notfound",
+			errors.add(messageSourceBean.getMessage("motechmodule.ws.notfound",
 					fieldName));
 		} else if (!mustExist && patient != null) {
-			errors.add(messageBean.getMessage("motechmodule.ws.inuse",
+			errors.add(messageSourceBean.getMessage("motechmodule.ws.inuse",
 					fieldName));
 		}
 		return patient;
@@ -925,18 +947,18 @@ public class RegistrarWebService implements RegistrarService {
 	private Facility validateFacility(Integer facilityId,
 			ValidationErrors errors, String fieldName) {
 		if (facilityId == null) {
-			errors.add(messageBean.getMessage("motechmodule.ws.missing",
+			errors.add(messageSourceBean.getMessage("motechmodule.ws.missing",
 					fieldName));
 			return null;
 		}
-		if (!registrarBean.isValidIdCheckDigit(facilityId)) {
-			errors.add(messageBean.getMessage("motechmodule.ws.invalid",
+		if (!idBean.isValidIdCheckDigit(facilityId)) {
+			errors.add(messageSourceBean.getMessage("motechmodule.ws.invalid",
 					fieldName));
 			return null;
 		}
-		Facility facility = registrarBean.getFacilityById(facilityId);
+		Facility facility = locationBean.getFacilityById(facilityId);
 		if (facility == null) {
-			errors.add(messageBean.getMessage("motechmodule.ws.notfound",
+			errors.add(messageSourceBean.getMessage("motechmodule.ws.notfound",
 					fieldName));
 		}
 		return facility;
@@ -945,16 +967,16 @@ public class RegistrarWebService implements RegistrarService {
 	private Community validateCommunity(Integer communityId,
 			ValidationErrors errors, String fieldName) {
 		if (communityId == null) {
-			errors.add(messageBean.getMessage("motechmodule.ws.missing",
+			errors.add(messageSourceBean.getMessage("motechmodule.ws.missing",
 					fieldName));
 			return null;
 		}
-		Community community = registrarBean.getCommunityById(communityId);
+		Community community = locationBean.getCommunityById(communityId);
 		if (community == null) {
-			errors.add(messageBean.getMessage("motechmodule.ws.notfound",
+			errors.add(messageSourceBean.getMessage("motechmodule.ws.notfound",
 					fieldName));
 		} else if (Boolean.TRUE.equals(community.getRetired())) {
-			errors.add(messageBean.getMessage("motechmodule.ws.invalid",
+			errors.add(messageSourceBean.getMessage("motechmodule.ws.invalid",
 					fieldName));
 		}
 		return community;

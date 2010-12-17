@@ -56,6 +56,8 @@ import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.model.db.MotechDAO;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.sdsched.ScheduleMaintService;
+import org.motechproject.server.svc.ExpectedCareBean;
+import org.motechproject.server.svc.MessageBean;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Concept;
@@ -80,6 +82,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	private OpenmrsBean openmrsBean;
 
+	private MessageBean messageBean;
+	
+	private ExpectedCareBean expectedCareBean;
+	
 	private ScheduleMaintService scheduleService;
 
 	private IVRCallSessionProcessor ivrCallSessionProcessor;
@@ -110,6 +116,22 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
 	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
 		this.openmrsBean = openmrsBean;
+	}
+
+	public MessageBean getMessageBean() {
+		return messageBean;
+	}
+
+	public void setMessageBean(MessageBean messageBean) {
+		this.messageBean = messageBean;
+	}
+
+	public ExpectedCareBean getExpectedCareBean() {
+		return expectedCareBean;
+	}
+
+	public void setExpectedCareBean(ExpectedCareBean expectedCareBean) {
+		this.expectedCareBean = expectedCareBean;
 	}
 
 	public ScheduleMaintService getScheduleService() {

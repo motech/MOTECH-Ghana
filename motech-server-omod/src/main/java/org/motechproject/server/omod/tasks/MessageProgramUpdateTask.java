@@ -100,9 +100,9 @@ public class MessageProgramUpdateTask extends AbstractTask {
 		// Session required for Task to get RegistrarBean through Context
 		try {
 			contextService.openSession();
-			TaskDefinition updatedTask = contextService.getRegistrarBean()
-					.updateAllMessageProgramsState(batchSize, batchPreviousId,
-							batchMaxId);
+			TaskDefinition updatedTask = contextService.getMotechService()
+					.getMessageBean().updateAllMessageProgramsState(batchSize,
+							batchPreviousId, batchMaxId);
 
 			if (updatedTask != null) {
 				// Updates this running task to use newly stored properties

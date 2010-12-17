@@ -34,7 +34,6 @@
 package org.motechproject.server.omod;
 
 import org.motechproject.server.omod.sdsched.ScheduleMaintService;
-import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
@@ -95,8 +94,6 @@ public interface ContextService {
 	public AdministrationService getAdministrationService();
 
 	public MotechService getMotechService();
-
-	public RegistrarBean getRegistrarBean();
 
 	public ScheduleMaintService getScheduleMaintService();
 

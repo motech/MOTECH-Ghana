@@ -46,7 +46,7 @@ public class ExpectedPNCMotherEncounterSchedule extends
 
 	@Override
 	protected Date getReferenceDate(Patient patient) {
-		return registrarBean.getCurrentDeliveryDate(patient);
+		return openmrsBean.getCurrentDeliveryDate(patient);
 	}
 
 	@Override

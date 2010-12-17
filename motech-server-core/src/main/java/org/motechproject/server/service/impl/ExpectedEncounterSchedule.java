@@ -65,9 +65,9 @@ public class ExpectedEncounterSchedule extends ExpectedCareScheduleImpl {
 		log.debug("Performing " + name + " schedule update: patient: "
 				+ patient.getPatientId());
 
-		List<Encounter> encounterList = registrarBean.getEncounters(patient,
+		List<Encounter> encounterList = openmrsBean.getEncounters(patient,
 				encounterTypeName, referenceDate);
-		List<ExpectedEncounter> expectedEncounterList = registrarBean
+		List<ExpectedEncounter> expectedEncounterList = expectedCareBean
 				.getExpectedEncounters(patient, name);
 
 		EncounterPredicate encounterPredicate = new EncounterPredicate();
@@ -103,7 +103,7 @@ public class ExpectedEncounterSchedule extends ExpectedCareScheduleImpl {
 					// Remove existing satisfied ExpectedEncounter
 					expectedEncounter.setEncounter(eventEncounter);
 					expectedEncounter.setVoided(true);
-					registrarBean.saveExpectedEncounter(expectedEncounter);
+					expectedCareBean.saveExpectedEncounter(expectedEncounter);
 				} else {
 					// Update existing ExpectedEncounter, removing if expired
 					expectedEncounter.setMinEncounterDatetime(minDate);
@@ -117,13 +117,13 @@ public class ExpectedEncounterSchedule extends ExpectedCareScheduleImpl {
 					if (eventExpired) {
 						expectedEncounter.setVoided(true);
 					}
-					registrarBean.saveExpectedEncounter(expectedEncounter);
+					expectedCareBean.saveExpectedEncounter(expectedEncounter);
 				}
 			} else if (!eventExpired && eventEncounter == null
 					&& dueDate != null && lateDate != null) {
 				// Create new ExpectedEncounter if not expired, not satisfied,
 				// and due date and late date are defined
-				registrarBean.createExpectedEncounter(patient,
+				expectedCareBean.createExpectedEncounter(patient,
 						encounterTypeName, minDate, dueDate, lateDate, maxDate,
 						event.getName(), name);
 			}
@@ -171,7 +171,7 @@ public class ExpectedEncounterSchedule extends ExpectedCareScheduleImpl {
 
 	@Override
 	protected void removeExpectedCare(Patient patient) {
-		List<ExpectedEncounter> expectedEncounterList = registrarBean
+		List<ExpectedEncounter> expectedEncounterList = expectedCareBean
 				.getExpectedEncounters(patient, name);
 		removeExpectedEncounters(expectedEncounterList);
 	}
@@ -180,7 +180,7 @@ public class ExpectedEncounterSchedule extends ExpectedCareScheduleImpl {
 			List<ExpectedEncounter> expectedEncounterList) {
 		for (ExpectedEncounter expectedEncounter : expectedEncounterList) {
 			expectedEncounter.setVoided(true);
-			registrarBean.saveExpectedEncounter(expectedEncounter);
+			expectedCareBean.saveExpectedEncounter(expectedEncounter);
 		}
 	}
 

@@ -42,6 +42,7 @@ import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
@@ -78,6 +79,9 @@ public class PregnancyController {
 	@Qualifier("registrarBean")
 	private RegistrarBean registrarBean;
 
+	@Autowired
+	private OpenmrsBean openmrsBean;
+
 	private ContextService contextService;
 
 	@Autowired
@@ -87,6 +91,10 @@ public class PregnancyController {
 
 	public void setRegistrarBean(RegistrarBean registrarBean) {
 		this.registrarBean = registrarBean;
+	}
+
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
 	}
 
 	@Autowired
@@ -139,7 +147,7 @@ public class PregnancyController {
 
 		Patient patient = null;
 		if (pregnancy.getId() != null) {
-			patient = registrarBean.getPatientById(pregnancy.getId());
+			patient = openmrsBean.getPatientById(pregnancy.getId());
 			if (patient == null) {
 				errors.reject("motechmodule.id.notexist");
 			}
@@ -150,7 +158,7 @@ public class PregnancyController {
 		if (!Gender.FEMALE.equals(pregnancy.getSex())) {
 			errors.reject("motechmodule.sex.female.required");
 		}
-		if (registrarBean.getActivePregnancy(pregnancy.getId()) != null) {
+		if (openmrsBean.getActivePregnancy(pregnancy.getId()) != null) {
 			errors.reject("motechmodule.Pregnancy.active");
 		}
 

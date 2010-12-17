@@ -44,10 +44,10 @@ import org.motechproject.server.model.Community;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.LocationBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -68,14 +68,20 @@ public class SearchPatientsController {
 	protected final Log log = LogFactory.getLog(SearchPatientsController.class);
 
 	@Autowired
-	@Qualifier("registrarBean")
-	private RegistrarBean registrarBean;
+	private OpenmrsBean openmrsBean;
+
+	@Autowired
+	private LocationBean locationBean;
 
 	private ContextService contextService;
 	private WebModelConverter webModelConverter;
 
-	public void setRegistrarBean(RegistrarBean registrarBean) {
-		this.registrarBean = registrarBean;
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
+	}
+
+	public void setLocationBean(LocationBean locationBean) {
+		this.locationBean = locationBean;
 	}
 
 	@Autowired
@@ -141,7 +147,7 @@ public class SearchPatientsController {
 		}
 
 		if (webPatient.getCommunityId() != null) {
-			Community community = registrarBean.getCommunityById(webPatient
+			Community community = locationBean.getCommunityById(webPatient
 					.getCommunityId());
 			if (community == null) {
 				errors.rejectValue("communityId",
@@ -151,7 +157,7 @@ public class SearchPatientsController {
 
 		if (!errors.hasErrors()) {
 			List<WebPatient> matchingWebPatientsList = new ArrayList<WebPatient>();
-			List<Patient> matchingPatientsList = registrarBean.getPatients(
+			List<Patient> matchingPatientsList = openmrsBean.getPatients(
 					webPatient.getFirstName(), webPatient.getLastName(),
 					webPatient.getPrefName(), webPatient.getBirthDate(),
 					webPatient.getCommunityId(), webPatient.getPhoneNumber(),

@@ -42,7 +42,7 @@ import java.util.Map;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.Care;
@@ -55,10 +55,10 @@ import org.openmrs.PersonName;
 
 public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 
-	RegistrarBean registrarBean;
+	OpenmrsBean openmrsBean;
 
-	public void setRegistrarBean(RegistrarBean registrarBean) {
-		this.registrarBean = registrarBean;
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
 	}
 
 	public Patient patientToWebService(org.openmrs.Patient patient,
@@ -76,7 +76,7 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 		wsPatient.setSex(GenderTypeConverter
 				.valueOfOpenMRS(patient.getGender()));
 
-		Community community = registrarBean.getCommunityByPatient(patient);
+		Community community = openmrsBean.getCommunityByPatient(patient);
 		if (community != null) {
 			wsPatient.setCommunity(community.getName());
 		}
@@ -103,7 +103,7 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 				wsPatient.setPhoneNumber(phoneNumberAttr.getValue());
 			}
 
-			wsPatient.setEstimateDueDate(registrarBean
+			wsPatient.setEstimateDueDate(openmrsBean
 					.getActivePregnancyDueDate(patient.getPatientId()));
 		}
 
@@ -142,8 +142,7 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 
 		for (Obs dueDate : dueDates) {
 			Integer patientId = dueDate.getPersonId();
-			org.openmrs.Patient patient = registrarBean
-					.getPatientById(patientId);
+			org.openmrs.Patient patient = openmrsBean.getPatientById(patientId);
 			if (patient != null) {
 				Patient wsPatient = patientToWebService(patient, true);
 				wsPatient.setEstimateDueDate(dueDate.getValueDatetime());

@@ -62,14 +62,14 @@
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState1" />
 					<property name="nextState" ref="polioState1" />
-					<property name="registrarBean" ref="registrarBean" />
+					<property name="openmrsBean" ref="openmrsBean" />
 				</bean>
 				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedNumImpl">
 					<property name="expectedNumber" value="1" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState1" />
 					<property name="nextState" ref="polioState2" />
-					<property name="registrarBean" ref="registrarBean" />
+					<property name="openmrsBean" ref="openmrsBean" />
 				</bean>
 			</list>
 		</property>
@@ -90,14 +90,14 @@
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState2" />
 					<property name="nextState" ref="polioState2" />
-					<property name="registrarBean" ref="registrarBean" />
+					<property name="openmrsBean" ref="openmrsBean" />
 				</bean>
 				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedNumImpl">
 					<property name="expectedNumber" value="2" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState2" />
 					<property name="nextState" ref="polioState3" />
-					<property name="registrarBean" ref="registrarBean" />
+					<property name="openmrsBean" ref="openmrsBean" />
 				</bean>
 			</list>
 		</property>
@@ -118,14 +118,14 @@
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState3" />
 					<property name="nextState" ref="polioState3" />
-					<property name="registrarBean" ref="registrarBean" />
+					<property name="openmrsBean" ref="openmrsBean" />
 				</bean>
 				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedNumImpl">
 					<property name="expectedNumber" value="3" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState3" />
 					<property name="nextState" ref="polioState4" />
-					<property name="registrarBean" ref="registrarBean" />
+					<property name="openmrsBean" ref="openmrsBean" />
 				</bean>
 			</list>
 		</property>
@@ -146,14 +146,14 @@
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState4" />
 					<property name="nextState" ref="polioState4" />
-					<property name="registrarBean" ref="registrarBean" />
+					<property name="openmrsBean" ref="openmrsBean" />
 				</bean>
 				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedNumImpl">
 					<property name="expectedNumber" value="4" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState4" />
 					<property name="nextState" ref="polioState5" />
-					<property name="registrarBean" ref="registrarBean" />
+					<property name="openmrsBean" ref="openmrsBean" />
 				</bean>
 			</list>
 		</property>

@@ -40,15 +40,21 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="nopCommand" class="org.motechproject.server.event.MessagesCommand" />
-	<bean id="registrarBean" class="org.easymock.EasyMock" factory-method="createMock">
-		<constructor-arg index="0" value="org.motechproject.server.svc.RegistrarBean" />
+	<bean id="openmrsBean" class="org.easymock.EasyMock" factory-method="createMock">
+		<constructor-arg index="0" value="org.motechproject.server.svc.OpenmrsBean" />
+	</bean>
+	<bean id="expectedCareBean" class="org.easymock.EasyMock" factory-method="createMock">
+		<constructor-arg index="0" value="org.motechproject.server.svc.ExpectedCareBean" />
+	</bean>
+	<bean id="messageBean" class="org.easymock.EasyMock" factory-method="createMock">
+		<constructor-arg index="0" value="org.motechproject.server.svc.MessageBean" />
 	</bean>
 	<bean id="userPrefmessageScheduler" class="org.motechproject.server.messaging.impl.MessageSchedulerImpl">
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="messageBean" ref="messageBean" />
 		<property name="userPreferenceBased" value="true" />
 	</bean>
 	<bean id="timeBean" class="org.motechproject.server.time.TimeBean">
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="openmrsBean" ref="openmrsBean" />
 	</bean>
 	
 </beans>

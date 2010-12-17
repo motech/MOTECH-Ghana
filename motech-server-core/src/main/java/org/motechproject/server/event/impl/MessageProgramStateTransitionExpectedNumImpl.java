@@ -36,12 +36,12 @@ package org.motechproject.server.event.impl;
 import java.util.Date;
 
 import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.OpenmrsBean;
 
 public class MessageProgramStateTransitionExpectedNumImpl extends
 		MessageProgramStateTransitionImpl {
 
-	private RegistrarBean registrarBean;
+	private OpenmrsBean openmrsBean;
 	private int expectedNumber;
 
 	@Override
@@ -49,7 +49,7 @@ public class MessageProgramStateTransitionExpectedNumImpl extends
 			Date currentDate) {
 		String conceptName = prevState.getProgram().getConceptName();
 		String conceptValue = prevState.getProgram().getConceptValue();
-		int obsNum = registrarBean.getNumberOfObs(enrollment.getPersonId(),
+		int obsNum = openmrsBean.getNumberOfObs(enrollment.getPersonId(),
 				conceptName, conceptValue);
 
 		if (prevState.equals(nextState)) {
@@ -59,12 +59,12 @@ public class MessageProgramStateTransitionExpectedNumImpl extends
 		}
 	}
 
-	public RegistrarBean getRegistrarBean() {
-		return registrarBean;
+	public OpenmrsBean getOpenmrsBean() {
+		return openmrsBean;
 	}
 
-	public void setRegistrarBean(RegistrarBean registrarBean) {
-		this.registrarBean = registrarBean;
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
 	}
 
 	public int getExpectedNumber() {

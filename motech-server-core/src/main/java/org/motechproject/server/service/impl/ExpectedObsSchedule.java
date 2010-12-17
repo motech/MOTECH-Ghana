@@ -66,9 +66,9 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 		log.debug("Performing " + name + " schedule update: patient: "
 				+ patient.getPatientId());
 
-		List<Obs> obsList = registrarBean.getObs(patient, conceptName,
+		List<Obs> obsList = openmrsBean.getObs(patient, conceptName,
 				valueConceptName, referenceDate);
-		List<ExpectedObs> expectedObsList = registrarBean.getExpectedObs(
+		List<ExpectedObs> expectedObsList = expectedCareBean.getExpectedObs(
 				patient, name);
 
 		Date previousEventObsDate = null;
@@ -124,7 +124,7 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 					// Remove existing satisfied ExpectedObs
 					expectedObs.setObs(eventObs);
 					expectedObs.setVoided(true);
-					registrarBean.saveExpectedObs(expectedObs);
+					expectedCareBean.saveExpectedObs(expectedObs);
 				} else {
 					// Update existing ExpectedObs, removing if expired or lower
 					// dose than current patient dose
@@ -139,14 +139,14 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 					if (eventExpired || eventDoseBelowLargest) {
 						expectedObs.setVoided(true);
 					}
-					registrarBean.saveExpectedObs(expectedObs);
+					expectedCareBean.saveExpectedObs(expectedObs);
 				}
 			} else if (!eventExpired && eventObs == null && dueDate != null
 					&& lateDate != null && !eventDoseBelowLargest) {
 				// Create new ExpectedObs if not expired, not satisfied, due
 				// date and late date are defined, and
 				// dose not lower than patient current dose
-				registrarBean.createExpectedObs(patient, conceptName,
+				expectedCareBean.createExpectedObs(patient, conceptName,
 						valueConceptName, event.getNumber(), minDate, dueDate,
 						lateDate, maxDate, event.getName(), name);
 			}
@@ -209,7 +209,7 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 
 	@Override
 	protected void removeExpectedCare(Patient patient) {
-		List<ExpectedObs> expectedObsList = registrarBean.getExpectedObs(
+		List<ExpectedObs> expectedObsList = expectedCareBean.getExpectedObs(
 				patient, name);
 		removeExpectedObs(expectedObsList);
 	}
@@ -217,7 +217,7 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 	protected void removeExpectedObs(List<ExpectedObs> expectedObsList) {
 		for (ExpectedObs expectedObs : expectedObsList) {
 			expectedObs.setVoided(true);
-			registrarBean.saveExpectedObs(expectedObs);
+			expectedCareBean.saveExpectedObs(expectedObs);
 		}
 	}
 

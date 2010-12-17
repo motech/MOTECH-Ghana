@@ -90,7 +90,7 @@ class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 	<bean id="dummyScheduleAdjuster" class="org.motechproject.server.omod.sdsched.DummyScheduleAdjuster" />
 	
 	<bean id="careScheduleAdjuster" class="org.motechproject.server.omod.sdsched.ExpectedCareScheduleAdjuster">
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="openmrsBean" ref="openmrsBean" />
 		<property name="schedules">
 			<list>
 				<ref bean="childBCGSchedule" />
@@ -111,7 +111,7 @@ class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 
 	<bean id="beanAutoProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
 		<property name="beanNames">
-			<value>registrarBean,careScheduleAdjuster</value>
+			<value>registrarBean,careScheduleAdjuster,openmrsBean,messageBean,expectedCareBean</value>
 		</property>
 		<property name="interceptorNames">
 			<list>
@@ -149,7 +149,9 @@ class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 								</bean>
 							</property>
 							<property name="registrarBean" ref="registrarBean" />
-							<property name="openmrsBean" ref="registrarBean" />
+							<property name="openmrsBean" ref="openmrsBean" />
+							<property name="messageBean" ref="messageBean" />
+							<property name="expectedCareBean" ref="expectedCareBean" />
 							<property name="scheduleMaintService" ref="scheduleMaintService" />
 							<property name="ivrCallSessionProcessor" ref="intellivrBean" />
 							<property name="messagingService" ref="smsService" />
@@ -184,14 +186,18 @@ class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 	</bean>
 
 	<bean id="webserviceModelConverter" class="org.motechproject.server.ws.WebServiceModelConverterImpl">
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="openmrsBean" ref="openmrsBean" />
 	</bean>
 
 	<bean id="registrarWebService" name="registrarClient" class="org.motechproject.server.ws.RegistrarWebService">
 		<property name="registrarBean" ref="registrarBean" />
-		<property name="openmrsBean" ref="registrarBean" />
+		<property name="openmrsBean" ref="openmrsBean" />
+		<property name="idBean" ref="idBean" />
+		<property name="messageBean" ref="messageBean" />
+		<property name="expectedCareBean" ref="expectedCareBean" />
+		<property name="locationBean" ref="locationBean" />
 		<property name="modelConverter" ref="webserviceModelConverter" />
-		<property name="messageBean" ref="messageSourceBean" />
+		<property name="messageSourceBean" ref="messageSourceBean" />
 	</bean>
 
 	<bean id="messageSourceBean" class="org.motechproject.server.svc.impl.MessageSourceBeanImpl">
@@ -200,7 +206,8 @@ class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 	</bean>
 	
 	<bean id="webModelConverter" class="org.motechproject.server.omod.web.model.WebModelConverterImpl">
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="openmrsBean" ref="openmrsBean" />
+		<property name="messageBean" ref="messageBean" />
 	</bean>
 
 </beans>

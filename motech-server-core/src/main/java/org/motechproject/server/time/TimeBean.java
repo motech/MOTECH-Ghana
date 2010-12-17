@@ -37,18 +37,18 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.OpenmrsBean;
 
 public class TimeBean {
 
-	private RegistrarBean registrarBean;
+	private OpenmrsBean openmrsBean;
 
-	public RegistrarBean getRegistrarBean() {
-		return registrarBean;
+	public OpenmrsBean getOpenmrsBean() {
+		return openmrsBean;
 	}
 
-	public void setRegistrarBean(RegistrarBean registrarBean) {
-		this.registrarBean = registrarBean;
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
 	}
 
 	public Date determineTime(TimePeriod timePeriod,
@@ -69,47 +69,47 @@ public class TimeBean {
 			switch (timeReference) {
 			case patient_birthdate:
 				if (personId != null) {
-					timeReferenceDate = registrarBean
+					timeReferenceDate = openmrsBean
 							.getPatientBirthDate(personId);
 				}
 				break;
 			case last_obs_date:
 				if (personId != null && conceptName != null
 						&& valueConceptName != null) {
-					timeReferenceDate = registrarBean.getLastObsDate(personId,
+					timeReferenceDate = openmrsBean.getLastObsDate(personId,
 							conceptName, valueConceptName);
 				}
 				break;
 			case last_dose_obs_date:
 				if (personId != null && conceptName != null
 						&& currentDoseNumber != null) {
-					timeReferenceDate = registrarBean.getLastDoseObsDate(
+					timeReferenceDate = openmrsBean.getLastDoseObsDate(
 							personId, conceptName, currentDoseNumber - 1);
 				}
 				break;
 			case last_dose_obs_date_current_pregnancy:
 				if (personId != null && conceptName != null
 						&& currentDoseNumber != null) {
-					timeReferenceDate = registrarBean
+					timeReferenceDate = openmrsBean
 							.getLastDoseObsDateInActivePregnancy(personId,
 									conceptName, currentDoseNumber - 1);
 				}
 				break;
 			case last_obs_datevalue:
 				if (personId != null && conceptName != null) {
-					timeReferenceDate = registrarBean.getLastObsValue(personId,
+					timeReferenceDate = openmrsBean.getLastObsValue(personId,
 							conceptName);
 				}
 				break;
 			case current_pregnancy_duedate:
 				if (personId != null) {
-					timeReferenceDate = registrarBean
+					timeReferenceDate = openmrsBean
 							.getActivePregnancyDueDate(personId);
 				}
 				break;
 			case last_pregnancy_end_date:
 				if (personId != null) {
-					timeReferenceDate = registrarBean
+					timeReferenceDate = openmrsBean
 							.getLastPregnancyEndDate(personId);
 				}
 				break;
@@ -120,7 +120,7 @@ public class TimeBean {
 				break;
 			case enrollment_obs_datevalue:
 				if (enrollment != null) {
-					timeReferenceDate = registrarBean.getObsValue(enrollment
+					timeReferenceDate = openmrsBean.getObsValue(enrollment
 							.getObsId());
 				}
 				break;

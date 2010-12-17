@@ -39,6 +39,7 @@ import java.util.List;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebFacility;
+import org.motechproject.server.svc.LocationBean;
 import org.openmrs.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,6 +56,9 @@ public class FacilityController {
 	@Autowired
 	private ContextService contextService;
 
+	@Autowired
+	private LocationBean locationBean;
+	
 	@ModelAttribute("facilities")
 	public List<Facility> getFacilities() {
 		return contextService.getMotechService().getAllFacilities();
@@ -83,7 +87,7 @@ public class FacilityController {
             return "/module/motechmodule/addfacility";
         }
         contextService.getLocationService().saveLocation(facility.getFacility().getLocation());
-        contextService.getRegistrarBean().saveNewFacility(facility.getFacility());
+        locationBean.saveNewFacility(facility.getFacility());
         return "redirect:/module/motechmodule/facility.form";
     }
 

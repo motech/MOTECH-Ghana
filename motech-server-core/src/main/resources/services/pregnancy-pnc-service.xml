@@ -44,7 +44,8 @@
 		<property name="encounterTypeName" value="PNCMOTHERVISIT" />
 		<property name="maxDeliveryValue" value="1" />
 		<property name="maxDeliveryPeriod" value="month" />
-		<property name="registrarBean" ref="registrarBean" />
+		<property name="openmrsBean" ref="openmrsBean" />
+		<property name="expectedCareBean" ref="expectedCareBean" />
 		<property name="requirements">
 			<list>
 				<bean class="org.motechproject.server.service.impl.AliveRequirement" />

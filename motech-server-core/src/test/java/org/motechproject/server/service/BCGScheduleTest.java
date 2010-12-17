@@ -49,7 +49,8 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.service.impl.ExpectedObsSchedule;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.ExpectedCareBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
@@ -59,7 +60,8 @@ public class BCGScheduleTest extends TestCase {
 
 	ApplicationContext ctx;
 
-	RegistrarBean registrarBean;
+	OpenmrsBean openmrsBean;
+	ExpectedCareBean expectedCareBean;
 	ExpectedObsSchedule bcgSchedule;
 	ExpectedCareEvent bcgEvent;
 
@@ -72,7 +74,8 @@ public class BCGScheduleTest extends TestCase {
 		bcgEvent = bcgSchedule.getEvents().get(0);
 
 		// EasyMock setup in Spring config
-		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
+		openmrsBean = (OpenmrsBean) ctx.getBean("openmrsBean");
+		expectedCareBean = (ExpectedCareBean) ctx.getBean("expectedCareBean");
 	}
 
 	@Override
@@ -80,7 +83,8 @@ public class BCGScheduleTest extends TestCase {
 		ctx = null;
 		bcgSchedule = null;
 		bcgEvent = null;
-		registrarBean = null;
+		openmrsBean = null;
+		expectedCareBean = null;
 	}
 
 	public void testCreateExpected() {
@@ -102,13 +106,13 @@ public class BCGScheduleTest extends TestCase {
 		List<ExpectedObs> expectedObsList = new ArrayList<ExpectedObs>();
 
 		expect(
-				registrarBean.getObs(patient, bcgSchedule.getConceptName(),
+				openmrsBean.getObs(patient, bcgSchedule.getConceptName(),
 						bcgSchedule.getValueConceptName(), patient
 								.getBirthdate())).andReturn(obsList);
-		expect(registrarBean.getExpectedObs(patient, bcgSchedule.getName()))
+		expect(expectedCareBean.getExpectedObs(patient, bcgSchedule.getName()))
 				.andReturn(expectedObsList);
 		expect(
-				registrarBean.createExpectedObs(eq(patient), eq(bcgSchedule
+				expectedCareBean.createExpectedObs(eq(patient), eq(bcgSchedule
 						.getConceptName()), eq(bcgSchedule
 						.getValueConceptName()), eq(bcgEvent.getNumber()),
 						capture(minDateCapture), capture(dueDateCapture),
@@ -116,11 +120,11 @@ public class BCGScheduleTest extends TestCase {
 						eq(bcgEvent.getName()), eq(bcgSchedule.getName())))
 				.andReturn(new ExpectedObs());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		bcgSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		Date minDate = minDateCapture.getValue();
 		Date dueDate = dueDateCapture.getValue();
@@ -157,19 +161,19 @@ public class BCGScheduleTest extends TestCase {
 		expectedObsList.add(expectedObs);
 
 		expect(
-				registrarBean.getObs(patient, bcgSchedule.getConceptName(),
+				openmrsBean.getObs(patient, bcgSchedule.getConceptName(),
 						bcgSchedule.getValueConceptName(), patient
 								.getBirthdate())).andReturn(obsList);
-		expect(registrarBean.getExpectedObs(patient, bcgSchedule.getName()))
+		expect(expectedCareBean.getExpectedObs(patient, bcgSchedule.getName()))
 				.andReturn(expectedObsList);
-		expect(registrarBean.saveExpectedObs(capture(expectedObsCapture)))
+		expect(expectedCareBean.saveExpectedObs(capture(expectedObsCapture)))
 				.andReturn(new ExpectedObs());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		bcgSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		ExpectedObs capturedExpectedObs = expectedObsCapture.getValue();
 
@@ -207,19 +211,19 @@ public class BCGScheduleTest extends TestCase {
 		expectedObsList.add(expectedObs);
 
 		expect(
-				registrarBean.getObs(patient, bcgSchedule.getConceptName(),
+				openmrsBean.getObs(patient, bcgSchedule.getConceptName(),
 						bcgSchedule.getValueConceptName(), patient
 								.getBirthdate())).andReturn(obsList);
-		expect(registrarBean.getExpectedObs(patient, bcgSchedule.getName()))
+		expect(expectedCareBean.getExpectedObs(patient, bcgSchedule.getName()))
 				.andReturn(expectedObsList);
-		expect(registrarBean.saveExpectedObs(capture(expectedObsCapture)))
+		expect(expectedCareBean.saveExpectedObs(capture(expectedObsCapture)))
 				.andReturn(new ExpectedObs());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		bcgSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		ExpectedObs capturedExpectedObs = expectedObsCapture.getValue();
 
@@ -249,16 +253,16 @@ public class BCGScheduleTest extends TestCase {
 		expectedObs.setName(bcgEvent.getName());
 		expectedObsList.add(expectedObs);
 
-		expect(registrarBean.getExpectedObs(patient, bcgSchedule.getName()))
+		expect(expectedCareBean.getExpectedObs(patient, bcgSchedule.getName()))
 				.andReturn(expectedObsList);
-		expect(registrarBean.saveExpectedObs(capture(expectedObsCapture)))
+		expect(expectedCareBean.saveExpectedObs(capture(expectedObsCapture)))
 				.andReturn(new ExpectedObs());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		bcgSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		ExpectedObs capturedExpectedObs = expectedObsCapture.getValue();
 
@@ -282,14 +286,14 @@ public class BCGScheduleTest extends TestCase {
 
 		List<ExpectedObs> expectedObsList = new ArrayList<ExpectedObs>();
 
-		expect(registrarBean.getExpectedObs(patient, bcgSchedule.getName()))
+		expect(expectedCareBean.getExpectedObs(patient, bcgSchedule.getName()))
 				.andReturn(expectedObsList);
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		bcgSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 	}
 
 }

@@ -49,7 +49,8 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.service.impl.ExpectedObsSchedule;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.ExpectedCareBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
@@ -59,7 +60,8 @@ public class PentaScheduleTest extends TestCase {
 
 	ApplicationContext ctx;
 
-	RegistrarBean registrarBean;
+	OpenmrsBean openmrsBean;
+	ExpectedCareBean expectedCareBean;
 	ExpectedObsSchedule pentaSchedule;
 	ExpectedCareEvent penta1Event;
 	ExpectedCareEvent penta2Event;
@@ -76,7 +78,8 @@ public class PentaScheduleTest extends TestCase {
 		penta3Event = pentaSchedule.getEvents().get(2);
 
 		// EasyMock setup in Spring config
-		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
+		openmrsBean = (OpenmrsBean) ctx.getBean("openmrsBean");
+		expectedCareBean = (ExpectedCareBean) ctx.getBean("expectedCareBean");
 	}
 
 	@Override
@@ -86,7 +89,8 @@ public class PentaScheduleTest extends TestCase {
 		penta1Event = null;
 		penta2Event = null;
 		penta3Event = null;
-		registrarBean = null;
+		openmrsBean = null;
+		expectedCareBean = null;
 	}
 
 	public void testCreateExpected() {
@@ -108,25 +112,27 @@ public class PentaScheduleTest extends TestCase {
 		List<ExpectedObs> expectedObsList = new ArrayList<ExpectedObs>();
 
 		expect(
-				registrarBean.getObs(patient, pentaSchedule.getConceptName(),
+				openmrsBean.getObs(patient, pentaSchedule.getConceptName(),
 						pentaSchedule.getValueConceptName(), patient
 								.getBirthdate())).andReturn(obsList);
-		expect(registrarBean.getExpectedObs(patient, pentaSchedule.getName()))
-				.andReturn(expectedObsList);
 		expect(
-				registrarBean.createExpectedObs(eq(patient), eq(pentaSchedule
-						.getConceptName()), eq(pentaSchedule
-						.getValueConceptName()), eq(penta1Event.getNumber()),
-						capture(minDateCapture), capture(dueDateCapture),
-						capture(lateDateCapture), capture(maxDateCapture),
-						eq(penta1Event.getName()), eq(pentaSchedule.getName())))
-				.andReturn(new ExpectedObs());
+				expectedCareBean.getExpectedObs(patient, pentaSchedule
+						.getName())).andReturn(expectedObsList);
+		expect(
+				expectedCareBean.createExpectedObs(eq(patient),
+						eq(pentaSchedule.getConceptName()), eq(pentaSchedule
+								.getValueConceptName()), eq(penta1Event
+								.getNumber()), capture(minDateCapture),
+						capture(dueDateCapture), capture(lateDateCapture),
+						capture(maxDateCapture), eq(penta1Event.getName()),
+						eq(pentaSchedule.getName()))).andReturn(
+				new ExpectedObs());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		pentaSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		Date dueDate = dueDateCapture.getValue();
 		Date lateDate = lateDateCapture.getValue();
@@ -156,19 +162,20 @@ public class PentaScheduleTest extends TestCase {
 		expectedObsList.add(expectedObs);
 
 		expect(
-				registrarBean.getObs(patient, pentaSchedule.getConceptName(),
+				openmrsBean.getObs(patient, pentaSchedule.getConceptName(),
 						pentaSchedule.getValueConceptName(), patient
 								.getBirthdate())).andReturn(obsList);
-		expect(registrarBean.getExpectedObs(patient, pentaSchedule.getName()))
-				.andReturn(expectedObsList);
-		expect(registrarBean.saveExpectedObs(capture(expectedObsCapture)))
+		expect(
+				expectedCareBean.getExpectedObs(patient, pentaSchedule
+						.getName())).andReturn(expectedObsList);
+		expect(expectedCareBean.saveExpectedObs(capture(expectedObsCapture)))
 				.andReturn(new ExpectedObs());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		pentaSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		ExpectedObs capturedExpectedObs = expectedObsCapture.getValue();
 
@@ -207,27 +214,29 @@ public class PentaScheduleTest extends TestCase {
 		expectedObsList.add(expectedObs);
 
 		expect(
-				registrarBean.getObs(patient, pentaSchedule.getConceptName(),
+				openmrsBean.getObs(patient, pentaSchedule.getConceptName(),
 						pentaSchedule.getValueConceptName(), patient
 								.getBirthdate())).andReturn(obsList);
-		expect(registrarBean.getExpectedObs(patient, pentaSchedule.getName()))
-				.andReturn(expectedObsList);
-		expect(registrarBean.saveExpectedObs(capture(expectedObsCapture)))
+		expect(
+				expectedCareBean.getExpectedObs(patient, pentaSchedule
+						.getName())).andReturn(expectedObsList);
+		expect(expectedCareBean.saveExpectedObs(capture(expectedObsCapture)))
 				.andReturn(new ExpectedObs());
 		expect(
-				registrarBean.createExpectedObs(eq(patient), eq(pentaSchedule
-						.getConceptName()), eq(pentaSchedule
-						.getValueConceptName()), eq(penta2Event.getNumber()),
-						capture(minDateCapture), capture(dueDateCapture),
-						capture(lateDateCapture), capture(maxDateCapture),
-						eq(penta2Event.getName()), eq(pentaSchedule.getName())))
-				.andReturn(new ExpectedObs());
+				expectedCareBean.createExpectedObs(eq(patient),
+						eq(pentaSchedule.getConceptName()), eq(pentaSchedule
+								.getValueConceptName()), eq(penta2Event
+								.getNumber()), capture(minDateCapture),
+						capture(dueDateCapture), capture(lateDateCapture),
+						capture(maxDateCapture), eq(penta2Event.getName()),
+						eq(pentaSchedule.getName()))).andReturn(
+				new ExpectedObs());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		pentaSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		ExpectedObs capturedExpectedObs = expectedObsCapture.getValue();
 
@@ -264,16 +273,17 @@ public class PentaScheduleTest extends TestCase {
 		expectedObs.setName(penta1Event.getName());
 		expectedObsList.add(expectedObs);
 
-		expect(registrarBean.getExpectedObs(patient, pentaSchedule.getName()))
-				.andReturn(expectedObsList);
-		expect(registrarBean.saveExpectedObs(capture(expectedObsCapture)))
+		expect(
+				expectedCareBean.getExpectedObs(patient, pentaSchedule
+						.getName())).andReturn(expectedObsList);
+		expect(expectedCareBean.saveExpectedObs(capture(expectedObsCapture)))
 				.andReturn(new ExpectedObs());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		pentaSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		ExpectedObs capturedExpectedObs = expectedObsCapture.getValue();
 
@@ -297,14 +307,15 @@ public class PentaScheduleTest extends TestCase {
 
 		List<ExpectedObs> expectedObsList = new ArrayList<ExpectedObs>();
 
-		expect(registrarBean.getExpectedObs(patient, pentaSchedule.getName()))
-				.andReturn(expectedObsList);
+		expect(
+				expectedCareBean.getExpectedObs(patient, pentaSchedule
+						.getName())).andReturn(expectedObsList);
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		pentaSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 	}
 
 }

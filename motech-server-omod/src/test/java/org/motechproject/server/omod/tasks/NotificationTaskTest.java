@@ -54,6 +54,8 @@ import org.motechproject.server.model.MessageType;
 import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.svc.MessageBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
@@ -102,7 +104,7 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 		// Includes Motech data added in sqldiff
 		executeDataSet("motech-dataset.xml");
-		
+
 		authenticate();
 
 		activator.startup();
@@ -123,6 +125,10 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 			RegistrarBean regService = Context.getService(MotechService.class)
 					.getRegistrarBean();
+			OpenmrsBean openmrsBean = Context.getService(MotechService.class)
+					.getOpenmrsBean();
+			MessageBean messageBean = Context.getService(MotechService.class)
+					.getMessageBean();
 
 			// Register Mother and Child
 			Date date = new Date();
@@ -162,7 +168,7 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 			// Verify Mother's Pregnancy exists
 			Patient mother = motherMatchingPatients.get(0);
-			Obs pregnancyObs = regService.getActivePregnancy(mother
+			Obs pregnancyObs = openmrsBean.getActivePregnancy(mother
 					.getPatientId());
 			assertNotNull("Pregnancy Obs does not exist", pregnancyObs);
 
@@ -205,7 +211,7 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 			Date scheduledMessageDate = new Date(
 					System.currentTimeMillis() + 5 * 1000);
 			MessageSchedulerImpl messageScheduler = new MessageSchedulerImpl();
-			messageScheduler.setRegistrarBean(regService);
+			messageScheduler.setMessageBean(messageBean);
 			messageScheduler.scheduleMessages(messageKey, messageKeyA,
 					messageKeyB, messageKeyC, enrollment, scheduledMessageDate,
 					date);

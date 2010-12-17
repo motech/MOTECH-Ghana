@@ -43,7 +43,8 @@ import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.service.ExpectedCareEvent;
 import org.motechproject.server.service.ExpectedCareSchedule;
 import org.motechproject.server.service.Requirement;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.ExpectedCareBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.time.TimePeriod;
 import org.openmrs.Patient;
 
@@ -59,7 +60,8 @@ public class ExpectedCareScheduleImpl implements ExpectedCareSchedule {
 	protected List<ExpectedCareEvent> events = new ArrayList<ExpectedCareEvent>();
 	protected List<Requirement> requirements = new ArrayList<Requirement>();
 
-	protected RegistrarBean registrarBean;
+	protected OpenmrsBean openmrsBean;
+	protected ExpectedCareBean expectedCareBean;
 
 	public void updateSchedule(Patient patient, Date date) {
 		log.debug("Evaluating schedule: " + name + ", patient: "
@@ -190,11 +192,20 @@ public class ExpectedCareScheduleImpl implements ExpectedCareSchedule {
 		this.requirements = requirements;
 	}
 
-	public RegistrarBean getRegistrarBean() {
-		return registrarBean;
+	public OpenmrsBean getOpenmrsBean() {
+		return openmrsBean;
 	}
 
-	public void setRegistrarBean(RegistrarBean registrarBean) {
-		this.registrarBean = registrarBean;
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
 	}
+
+	public ExpectedCareBean getExpectedCareBean() {
+		return expectedCareBean;
+	}
+
+	public void setExpectedCareBean(ExpectedCareBean expectedCareBean) {
+		this.expectedCareBean = expectedCareBean;
+	}
+
 }

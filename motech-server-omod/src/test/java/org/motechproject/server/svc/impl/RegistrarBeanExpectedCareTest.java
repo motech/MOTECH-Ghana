@@ -51,6 +51,7 @@ import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.svc.ExpectedCareBean;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
@@ -99,7 +100,7 @@ public class RegistrarBeanExpectedCareTest extends
 
 		// Includes Motech data added in sqldiff
 		executeDataSet("motech-dataset.xml");
-		
+
 		// Add example Location, Facility and Community
 		executeDataSet("facility-community-dataset.xml");
 
@@ -125,6 +126,8 @@ public class RegistrarBeanExpectedCareTest extends
 					.getService(MotechService.class);
 			RegistrarBean regService = motechService.getRegistrarBean();
 			OpenmrsBean openmrsService = motechService.getOpenmrsBean();
+			ExpectedCareBean expectedCareBean = motechService
+					.getExpectedCareBean();
 
 			Integer communityId = 11111;
 			Integer facilityId = 1111;
@@ -170,7 +173,7 @@ public class RegistrarBeanExpectedCareTest extends
 			obs.setMaxObsDatetime(fiveDaysFuture);
 			obs.setName("TT1");
 			obs.setGroup("TT");
-			regService.saveExpectedObs(obs);
+			expectedCareBean.saveExpectedObs(obs);
 
 			// Upcoming but too far in future
 			obs = new ExpectedObs();
@@ -182,7 +185,7 @@ public class RegistrarBeanExpectedCareTest extends
 			obs.setMaxObsDatetime(oneMonthFuture);
 			obs.setName("TT2");
 			obs.setGroup("TT");
-			regService.saveExpectedObs(obs);
+			expectedCareBean.saveExpectedObs(obs);
 
 			// Defaulted and not beyond max
 			obs = new ExpectedObs();
@@ -194,7 +197,7 @@ public class RegistrarBeanExpectedCareTest extends
 			obs.setMaxObsDatetime(fiveDaysFuture);
 			obs.setName("TT3");
 			obs.setGroup("TT");
-			regService.saveExpectedObs(obs);
+			expectedCareBean.saveExpectedObs(obs);
 
 			// Second Defaulted with null max
 			obs = new ExpectedObs();
@@ -205,7 +208,7 @@ public class RegistrarBeanExpectedCareTest extends
 			obs.setLateObsDatetime(threeMonthsPast);
 			obs.setName("TT5");
 			obs.setGroup("TT");
-			regService.saveExpectedObs(obs);
+			expectedCareBean.saveExpectedObs(obs);
 
 			// Defaulted but beyond max
 			obs = new ExpectedObs();
@@ -217,7 +220,7 @@ public class RegistrarBeanExpectedCareTest extends
 			obs.setMaxObsDatetime(twoMonthsPast);
 			obs.setName("TT4");
 			obs.setGroup("TT");
-			regService.saveExpectedObs(obs);
+			expectedCareBean.saveExpectedObs(obs);
 
 			// Upcoming
 			ExpectedEncounter enc = new ExpectedEncounter();
@@ -229,7 +232,7 @@ public class RegistrarBeanExpectedCareTest extends
 			enc.setMaxEncounterDatetime(fiveDaysFuture);
 			enc.setName("ANC1");
 			enc.setGroup("ANC");
-			regService.saveExpectedEncounter(enc);
+			expectedCareBean.saveExpectedEncounter(enc);
 
 			// Upcoming but too far in future
 			enc = new ExpectedEncounter();
@@ -241,7 +244,7 @@ public class RegistrarBeanExpectedCareTest extends
 			enc.setMaxEncounterDatetime(oneMonthFuture);
 			enc.setName("ANC2");
 			enc.setGroup("ANC");
-			regService.saveExpectedEncounter(enc);
+			expectedCareBean.saveExpectedEncounter(enc);
 
 			// Defaulted and not beyond max
 			enc = new ExpectedEncounter();
@@ -253,7 +256,7 @@ public class RegistrarBeanExpectedCareTest extends
 			enc.setMaxEncounterDatetime(fiveDaysFuture);
 			enc.setName("ANC3");
 			enc.setGroup("ANC");
-			regService.saveExpectedEncounter(enc);
+			expectedCareBean.saveExpectedEncounter(enc);
 
 			// Second Defaulted with null max
 			enc = new ExpectedEncounter();
@@ -264,7 +267,7 @@ public class RegistrarBeanExpectedCareTest extends
 			enc.setLateEncounterDatetime(threeMonthsPast);
 			enc.setName("ANC9");
 			enc.setGroup("ANC");
-			regService.saveExpectedEncounter(enc);
+			expectedCareBean.saveExpectedEncounter(enc);
 
 			// Defaulted but beyond max
 			enc = new ExpectedEncounter();
@@ -276,30 +279,30 @@ public class RegistrarBeanExpectedCareTest extends
 			enc.setMaxEncounterDatetime(twoMonthsPast);
 			enc.setName("ANC4");
 			enc.setGroup("ANC");
-			regService.saveExpectedEncounter(enc);
+			expectedCareBean.saveExpectedEncounter(enc);
 
-			List<ExpectedEncounter> upcomingEnc = regService
+			List<ExpectedEncounter> upcomingEnc = expectedCareBean
 					.getUpcomingExpectedEncounters(patient);
 			assertEquals(3, upcomingEnc.size());
 			assertEquals("ANC9", upcomingEnc.get(0).getName());
 			assertEquals("ANC3", upcomingEnc.get(1).getName());
 			assertEquals("ANC1", upcomingEnc.get(2).getName());
 
-			List<ExpectedObs> upcomingObs = regService
+			List<ExpectedObs> upcomingObs = expectedCareBean
 					.getUpcomingExpectedObs(patient);
 			assertEquals(3, upcomingObs.size());
 			assertEquals("TT5", upcomingObs.get(0).getName());
 			assertEquals("TT3", upcomingObs.get(1).getName());
 			assertEquals("TT1", upcomingObs.get(2).getName());
 
-			List<ExpectedEncounter> defaultedEnc = regService
+			List<ExpectedEncounter> defaultedEnc = expectedCareBean
 					.getDefaultedExpectedEncounters(facility,
 							new String[] { "ANC" });
 			assertEquals(2, defaultedEnc.size());
 			assertEquals("ANC9", defaultedEnc.get(0).getName());
 			assertEquals("ANC3", defaultedEnc.get(1).getName());
 
-			List<ExpectedObs> defaultedObs = regService
+			List<ExpectedObs> defaultedObs = expectedCareBean
 					.getDefaultedExpectedObs(facility, new String[] { "TT" });
 			assertEquals(2, defaultedObs.size());
 			assertEquals("TT5", defaultedObs.get(0).getName());

@@ -62,13 +62,42 @@
 		<property name="contextService" ref="contextService" />
 	</bean>
 
-	<bean id="registrarBean" name="openmrsBean" class="org.motechproject.server.svc.impl.RegistrarBeanImpl">
+	<bean id="registrarBean" class="org.motechproject.server.svc.impl.RegistrarBeanImpl">
 		<property name="contextService" ref="contextService" />
+		<property name="openmrsBean" ref="openmrsBean" />
+		<property name="idBean" ref="idBean" />
+		<property name="messageBean" ref="messageBean" />
+	</bean>
+
+	<bean id="openmrsBean" class="org.motechproject.server.svc.impl.OpenmrsBeanImpl">
+		<property name="contextService" ref="contextService" />
+	</bean>
+	
+	<bean id="idBean" class="org.motechproject.server.svc.impl.IdBeanImpl">
+		<property name="contextService" ref="contextService" />
+		<property name="openmrsBean" ref="openmrsBean" />
+	</bean>
+	
+	<bean id="expectedCareBean" class="org.motechproject.server.svc.impl.ExpectedCareBeanImpl">
+		<property name="contextService" ref="contextService" />
+		<property name="openmrsBean" ref="openmrsBean" />
+	</bean>
+
+	<bean id="locationBean" class="org.motechproject.server.svc.impl.LocationBeanImpl">
+		<property name="contextService" ref="contextService" />
+		<property name="idBean" ref="idBean" />
+	</bean>
+	
+	<bean id="messageBean" class="org.motechproject.server.svc.impl.MessageBeanImpl">
+		<property name="contextService" ref="contextService" />
+		<property name="openmrsBean" ref="openmrsBean" />
+		<property name="expectedCareBean" ref="expectedCareBean" />
+		<property name="modelConverter" ref="webserviceModelConverter" />
 		<property name="mobileService" ref="mobileClient" />
 		<property name="messagePrograms" ref="messageProgramMap" />
 	</bean>
 	
-	<!-- To avoid circular reference, expectedCareProgram injects registrarBean -->
+	<!-- To avoid circular reference, expectedCareProgram injects messageBean -->
 	<util:map id="messageProgramMap">
 		<entry>
 			<key>

@@ -49,7 +49,8 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.service.impl.ExpectedObsSchedule;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.ExpectedCareBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
@@ -59,7 +60,8 @@ public class OPVScheduleTest extends TestCase {
 
 	ApplicationContext ctx;
 
-	RegistrarBean registrarBean;
+	OpenmrsBean openmrsBean;
+	ExpectedCareBean expectedCareBean;
 	ExpectedObsSchedule opvSchedule;
 	ExpectedCareEvent opv0Event;
 	ExpectedCareEvent opv1Event;
@@ -74,7 +76,8 @@ public class OPVScheduleTest extends TestCase {
 		opv1Event = opvSchedule.getEvents().get(1);
 
 		// EasyMock setup in Spring config
-		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
+		openmrsBean = (OpenmrsBean) ctx.getBean("openmrsBean");
+		expectedCareBean = (ExpectedCareBean) ctx.getBean("expectedCareBean");
 	}
 
 	@Override
@@ -83,7 +86,8 @@ public class OPVScheduleTest extends TestCase {
 		opvSchedule = null;
 		opv0Event = null;
 		opv1Event = null;
-		registrarBean = null;
+		openmrsBean = null;
+		expectedCareBean = null;
 	}
 
 	public void testSkipExpired() {
@@ -105,13 +109,13 @@ public class OPVScheduleTest extends TestCase {
 		List<ExpectedObs> expectedObsList = new ArrayList<ExpectedObs>();
 
 		expect(
-				registrarBean.getObs(patient, opvSchedule.getConceptName(),
+				openmrsBean.getObs(patient, opvSchedule.getConceptName(),
 						opvSchedule.getValueConceptName(), patient
 								.getBirthdate())).andReturn(obsList);
-		expect(registrarBean.getExpectedObs(patient, opvSchedule.getName()))
+		expect(expectedCareBean.getExpectedObs(patient, opvSchedule.getName()))
 				.andReturn(expectedObsList);
 		expect(
-				registrarBean.createExpectedObs(eq(patient), eq(opvSchedule
+				expectedCareBean.createExpectedObs(eq(patient), eq(opvSchedule
 						.getConceptName()), eq(opvSchedule
 						.getValueConceptName()), eq(opv1Event.getNumber()),
 						capture(minDateCapture), capture(dueDateCapture),
@@ -119,11 +123,11 @@ public class OPVScheduleTest extends TestCase {
 						eq(opv1Event.getName()), eq(opvSchedule.getName())))
 				.andReturn(new ExpectedObs());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		opvSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		Date dueDate = dueDateCapture.getValue();
 		Date lateDate = lateDateCapture.getValue();
@@ -158,21 +162,21 @@ public class OPVScheduleTest extends TestCase {
 		expectedObsList.add(expectedObs1);
 
 		expect(
-				registrarBean.getObs(patient, opvSchedule.getConceptName(),
+				openmrsBean.getObs(patient, opvSchedule.getConceptName(),
 						opvSchedule.getValueConceptName(), patient
 								.getBirthdate())).andReturn(obsList);
-		expect(registrarBean.getExpectedObs(patient, opvSchedule.getName()))
+		expect(expectedCareBean.getExpectedObs(patient, opvSchedule.getName()))
 				.andReturn(expectedObsList);
-		expect(registrarBean.saveExpectedObs(capture(expectedObs0Capture)))
+		expect(expectedCareBean.saveExpectedObs(capture(expectedObs0Capture)))
 				.andReturn(new ExpectedObs());
-		expect(registrarBean.saveExpectedObs(capture(expectedObs1Capture)))
+		expect(expectedCareBean.saveExpectedObs(capture(expectedObs1Capture)))
 				.andReturn(new ExpectedObs());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		opvSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		ExpectedObs capturedExpectedObs0 = expectedObs0Capture.getValue();
 		assertEquals(opv0Event.getName(), capturedExpectedObs0.getName());

@@ -49,7 +49,8 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.service.impl.ExpectedObsSchedule;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.ExpectedCareBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
@@ -59,7 +60,8 @@ public class IPTScheduleTest extends TestCase {
 
 	ApplicationContext ctx;
 
-	RegistrarBean registrarBean;
+	OpenmrsBean openmrsBean;
+	ExpectedCareBean expectedCareBean;
 	ExpectedObsSchedule iptSchedule;
 	ExpectedCareEvent ipt1Event;
 	ExpectedCareEvent ipt2Event;
@@ -76,7 +78,8 @@ public class IPTScheduleTest extends TestCase {
 		ipt3Event = iptSchedule.getEvents().get(2);
 
 		// EasyMock setup in Spring config
-		registrarBean = (RegistrarBean) ctx.getBean("registrarBean");
+		openmrsBean = (OpenmrsBean) ctx.getBean("openmrsBean");
+		expectedCareBean = (ExpectedCareBean) ctx.getBean("expectedCareBean");
 	}
 
 	@Override
@@ -86,7 +89,8 @@ public class IPTScheduleTest extends TestCase {
 		ipt1Event = null;
 		ipt2Event = null;
 		ipt3Event = null;
-		registrarBean = null;
+		openmrsBean = null;
+		expectedCareBean = null;
 	}
 
 	public void testCreateExpected() {
@@ -103,17 +107,17 @@ public class IPTScheduleTest extends TestCase {
 
 		Date pregnancyDate = new Date();
 
-		expect(registrarBean.getActivePregnancyDueDate(patient.getPatientId()))
+		expect(openmrsBean.getActivePregnancyDueDate(patient.getPatientId()))
 				.andReturn(pregnancyDate);
 		expect(
-				registrarBean.getObs(eq(patient), eq(iptSchedule
-						.getConceptName()), eq(iptSchedule
-						.getValueConceptName()), (Date) anyObject()))
+				openmrsBean.getObs(eq(patient),
+						eq(iptSchedule.getConceptName()), eq(iptSchedule
+								.getValueConceptName()), (Date) anyObject()))
 				.andReturn(obsList);
-		expect(registrarBean.getExpectedObs(patient, iptSchedule.getName()))
+		expect(expectedCareBean.getExpectedObs(patient, iptSchedule.getName()))
 				.andReturn(expectedObsList);
 		expect(
-				registrarBean.createExpectedObs(eq(patient), eq(iptSchedule
+				expectedCareBean.createExpectedObs(eq(patient), eq(iptSchedule
 						.getConceptName()), eq(iptSchedule
 						.getValueConceptName()), eq(ipt1Event.getNumber()),
 						capture(minDateCapture), capture(dueDateCapture),
@@ -121,11 +125,11 @@ public class IPTScheduleTest extends TestCase {
 						eq(ipt1Event.getName()), eq(iptSchedule.getName())))
 				.andReturn(new ExpectedObs());
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		iptSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 
 		Date minDate = minDateCapture.getValue();
 		Date dueDate = dueDateCapture.getValue();
@@ -162,21 +166,21 @@ public class IPTScheduleTest extends TestCase {
 
 		Date pregnancyDate = new Date();
 
-		expect(registrarBean.getActivePregnancyDueDate(patient.getPatientId()))
+		expect(openmrsBean.getActivePregnancyDueDate(patient.getPatientId()))
 				.andReturn(pregnancyDate);
 		expect(
-				registrarBean.getObs(eq(patient), eq(iptSchedule
-						.getConceptName()), eq(iptSchedule
-						.getValueConceptName()), (Date) anyObject()))
+				openmrsBean.getObs(eq(patient),
+						eq(iptSchedule.getConceptName()), eq(iptSchedule
+								.getValueConceptName()), (Date) anyObject()))
 				.andReturn(obsList);
-		expect(registrarBean.getExpectedObs(patient, iptSchedule.getName()))
+		expect(expectedCareBean.getExpectedObs(patient, iptSchedule.getName()))
 				.andReturn(expectedObsList);
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		iptSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 	}
 
 	public void testNoAction() {
@@ -188,16 +192,16 @@ public class IPTScheduleTest extends TestCase {
 
 		Date pregnancyDate = null;
 
-		expect(registrarBean.getActivePregnancyDueDate(patient.getPatientId()))
+		expect(openmrsBean.getActivePregnancyDueDate(patient.getPatientId()))
 				.andReturn(pregnancyDate);
-		expect(registrarBean.getExpectedObs(patient, iptSchedule.getName()))
+		expect(expectedCareBean.getExpectedObs(patient, iptSchedule.getName()))
 				.andReturn(expectedObsList);
 
-		replay(registrarBean);
+		replay(openmrsBean, expectedCareBean);
 
 		iptSchedule.updateSchedule(patient, date);
 
-		verify(registrarBean);
+		verify(openmrsBean, expectedCareBean);
 	}
 
 }

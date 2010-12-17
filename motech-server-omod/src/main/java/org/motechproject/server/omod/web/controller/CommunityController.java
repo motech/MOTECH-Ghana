@@ -33,11 +33,16 @@
 
 package org.motechproject.server.omod.web.controller;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.web.model.WebCommunity;
+import org.motechproject.server.svc.LocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -49,15 +54,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
-import javax.annotation.Resource;
-import java.util.List;
-
 @Controller
 public class CommunityController {
 
     @Autowired
     ContextService contextService;
 
+    @Autowired
+    LocationBean locationBean;
+    
     @Resource(name = "webCommunityValidator")
     Validator webCommunityValidator;
     
@@ -87,7 +92,7 @@ public class CommunityController {
             return "/module/motechmodule/addcommunity";
         }
         Community community = new Community(webCommunity.getName(), motechService.getFacilityById(webCommunity.getFacilityId()));
-        contextService.getRegistrarBean().saveCommunity(community);
+        locationBean.saveCommunity(community);
         modelMap.addAttribute("successMsg", "Community added");
         status.setComplete();
         return "redirect:/module/motechmodule/community.form";
@@ -112,7 +117,7 @@ public class CommunityController {
         Community community = motechService.getCommunityById(webCommunity.getCommunityId());
         community.setFacility(motechService.getFacilityById(webCommunity.getFacilityId()));
         community.setName(webCommunity.getName());
-        contextService.getRegistrarBean().saveCommunity(community);
+        locationBean.saveCommunity(community);
         status.setComplete();
         return "redirect:/module/motechmodule/community.form";
     }

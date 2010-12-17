@@ -41,7 +41,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.Community;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.MessageBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
@@ -60,10 +61,15 @@ public class WebModelConverterImpl implements WebModelConverter {
 
 	private final Log log = LogFactory.getLog(WebModelConverterImpl.class);
 
-	RegistrarBean registrarBean;
+	OpenmrsBean openmrsBean;
+	MessageBean messageBean;
 
-	public void setRegistrarBean(RegistrarBean registrarBean) {
-		this.registrarBean = registrarBean;
+	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+		this.openmrsBean = openmrsBean;
+	}
+
+	public void setMessageBean(MessageBean messageBean) {
+		this.messageBean = messageBean;
 	}
 
 	public void patientToWeb(Patient patient, WebPatient webPatient) {
@@ -102,10 +108,10 @@ public class WebModelConverterImpl implements WebModelConverter {
 			webPatient.setAddress(patientAddress.getAddress1());
 		}
 
-		Integer motherMotechId = registrarBean.getMotherMotechId(patient);
+		Integer motherMotechId = openmrsBean.getMotherMotechId(patient);
 		webPatient.setMotherMotechId(motherMotechId);
 
-		Community community = registrarBean.getCommunityByPatient(patient);
+		Community community = openmrsBean.getCommunityByPatient(patient);
 		if (community != null) {
 			webPatient.setCommunityId(community.getCommunityId());
 			webPatient.setCommunityName(community.getName());
@@ -119,7 +125,7 @@ public class WebModelConverterImpl implements WebModelConverter {
 			}
 		}
 
-		String[] enrollments = registrarBean
+		String[] enrollments = messageBean
 				.getActiveMessageProgramEnrollmentNames(patient);
 		if (enrollments != null && enrollments.length > 0) {
 			webPatient.setEnroll(true);
@@ -267,7 +273,7 @@ public class WebModelConverterImpl implements WebModelConverter {
 			webPatient.setNhis(nhisAttr.getValue());
 		}
 
-		webPatient.setDueDate(registrarBean.getActivePregnancyDueDate(patient
+		webPatient.setDueDate(openmrsBean.getActivePregnancyDueDate(patient
 				.getPatientId()));
 	}
 

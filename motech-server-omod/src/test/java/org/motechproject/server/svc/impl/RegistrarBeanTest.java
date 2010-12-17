@@ -36,33 +36,29 @@ package org.motechproject.server.svc.impl;
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
-import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.Message;
-import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.model.MessageStatus;
-import org.motechproject.server.model.ScheduledMessage;
-import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.svc.IdBean;
+import org.motechproject.server.svc.MessageBean;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
@@ -82,8 +78,6 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
-import org.openmrs.Person;
-import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.PersonName;
 import org.openmrs.Relationship;
@@ -97,10 +91,6 @@ import org.openmrs.api.ObsService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
-import org.openmrs.module.idgen.IdentifierSource;
-import org.openmrs.module.idgen.LogEntry;
-import org.openmrs.module.idgen.SequentialIdentifierGenerator;
-import org.openmrs.module.idgen.service.IdentifierSourceService;
 import org.openmrs.util.OpenmrsConstants;
 
 public class RegistrarBeanTest extends TestCase {
@@ -116,9 +106,9 @@ public class RegistrarBeanTest extends TestCase {
 	ObsService obsService;
 	ConceptService conceptService;
 	MotechService motechService;
-	IdentifierSourceService idService;
-
-	SequentialIdentifierGenerator staffIdGenerator;
+	OpenmrsBean openmrsBean;
+	MessageBean messageBean;
+	IdBean idBean;
 
 	Location ghanaLocation;
 	PatientIdentifierType motechIdType;
@@ -219,7 +209,9 @@ public class RegistrarBeanTest extends TestCase {
 		obsService = createMock(ObsService.class);
 		conceptService = createMock(ConceptService.class);
 		motechService = createMock(MotechService.class);
-		idService = createMock(IdentifierSourceService.class);
+		openmrsBean = createMock(OpenmrsBean.class);
+		messageBean = createMock(MessageBean.class);
+		idBean = createMock(IdBean.class);
 
 		ghanaLocation = new Location(1);
 		ghanaLocation.setName(MotechConstants.LOCATION_GHANA);
@@ -229,10 +221,6 @@ public class RegistrarBeanTest extends TestCase {
 
 		staffIdType = new PatientIdentifierType(2);
 		staffIdType.setName(MotechConstants.PATIENT_IDENTIFIER_STAFF_ID);
-
-		staffIdGenerator = new SequentialIdentifierGenerator();
-		staffIdGenerator.setName(MotechConstants.IDGEN_SEQ_ID_GEN_STAFF_ID);
-		staffIdGenerator.setIdentifierType(staffIdType);
 
 		phoneAttributeType = new PersonAttributeType(2);
 		phoneAttributeType
@@ -447,6 +435,9 @@ public class RegistrarBeanTest extends TestCase {
 
 		RegistrarBeanImpl regBeanImpl = new RegistrarBeanImpl();
 		regBeanImpl.setContextService(contextService);
+		regBeanImpl.setOpenmrsBean(openmrsBean);
+		regBeanImpl.setMessageBean(messageBean);
+		regBeanImpl.setIdBean(idBean);
 
 		regBean = regBeanImpl;
 	}
@@ -464,9 +455,9 @@ public class RegistrarBeanTest extends TestCase {
 		obsService = null;
 		conceptService = null;
 		motechService = null;
-		idService = null;
-
-		staffIdGenerator = null;
+		openmrsBean = null;
+		messageBean = null;
+		idBean = null;
 	}
 
 	public void testRegisterStaff() {
@@ -479,43 +470,24 @@ public class RegistrarBeanTest extends TestCase {
 
 		expect(contextService.getUserService()).andReturn(userService)
 				.atLeastOnce();
-		expect(contextService.getPersonService()).andReturn(personService)
-				.atLeastOnce();
-		expect(contextService.getPatientService()).andReturn(patientService)
-				.atLeastOnce();
-		expect(contextService.getIdentifierSourceService())
-				.andReturn(idService).atLeastOnce();
 
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
+		expect(openmrsBean.getPhoneNumberAttributeType()).andReturn(
+				phoneAttributeType);
 		expect(userService.getRole(OpenmrsConstants.PROVIDER_ROLE)).andReturn(
 				providerRole);
 
-		expect(
-				patientService
-						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_STAFF_ID))
-				.andReturn(staffIdType);
-		List<IdentifierSource> generatorList = new ArrayList<IdentifierSource>();
-		generatorList.add(staffIdGenerator);
-		expect(idService.getAllIdentifierSources(false)).andReturn(
-				generatorList);
-		expect(
-				idService.generateIdentifier(staffIdGenerator,
-						MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID_GEN_COMMENT))
-				.andReturn(generatedStaffId);
+		expect(idBean.generateStaffId()).andReturn(generatedStaffId);
 
 		expect(userService.saveUser(capture(staffCap), capture(passCap)))
 				.andReturn(new User());
 
 		replay(contextService, userService, personService, patientService,
-				idService);
+				openmrsBean, messageBean, idBean);
 
 		regBean.registerStaff(firstName, lastName, phone, staffType);
 
 		verify(contextService, userService, personService, patientService,
-				idService);
+				openmrsBean, messageBean, idBean);
 
 		User staff = staffCap.getValue();
 		String password = passCap.getValue();
@@ -561,107 +533,62 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
-		expect(contextService.getLocationService()).andReturn(locationService)
-				.atLeastOnce();
 		expect(contextService.getEncounterService())
 				.andReturn(encounterService).atLeastOnce();
 		expect(contextService.getObsService()).andReturn(obsService);
-		expect(contextService.getConceptService()).andReturn(conceptService)
-				.atLeastOnce();
 		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
-		expect(contextService.getIdentifierSourceService())
-				.andReturn(idService).atLeastOnce();
 
 		expect(contextService.getAuthenticatedUser()).andReturn(new User());
-		expect(idService.getAllIdentifierSources(false)).andReturn(
-				new ArrayList<IdentifierSource>());
-		expect(idService.saveLogEntry((LogEntry) anyObject())).andReturn(
-				new LogEntry());
-		expect(
-				patientService
-						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
-				.andReturn(motechIdType).atLeastOnce();
-		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
-				.andReturn(ghanaLocation);
+		idBean.excludeMotechId((User) anyObject(), eq(motechId.toString()));
+		expect(openmrsBean.getMotechPatientIdType()).andReturn(motechIdType)
+				.atLeastOnce();
+		expect(openmrsBean.getGhanaLocation()).andReturn(ghanaLocation)
+				.times(2);
 
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
-				.andReturn(insuredAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER))
-				.andReturn(nhisAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE))
-				.andReturn(nhisExpirationType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE))
-				.andReturn(phoneTypeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE))
-				.andReturn(mediaTypeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE))
-				.andReturn(languageAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY))
-				.andReturn(deliveryDayAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME))
-				.andReturn(deliveryTimeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED))
-				.andReturn(howLearnedAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INTEREST_REASON))
-				.andReturn(interestReasonAttributeType);
+		expect(openmrsBean.getInsuredAttributeType()).andReturn(
+				insuredAttributeType);
+		expect(openmrsBean.getNHISNumberAttributeType()).andReturn(
+				nhisAttributeType);
+		expect(openmrsBean.getNHISExpirationDateAttributeType()).andReturn(
+				nhisExpirationType);
+		expect(openmrsBean.getPhoneNumberAttributeType()).andReturn(
+				phoneAttributeType);
+		expect(openmrsBean.getPhoneTypeAttributeType()).andReturn(
+				phoneTypeAttributeType);
+		expect(openmrsBean.getMediaTypeAttributeType()).andReturn(
+				mediaTypeAttributeType);
+		expect(openmrsBean.getLanguageAttributeType()).andReturn(
+				languageAttributeType);
+		expect(openmrsBean.getDeliveryDayAttributeType()).andReturn(
+				deliveryDayAttributeType);
+		expect(openmrsBean.getDeliveryTimeAttributeType()).andReturn(
+				deliveryTimeAttributeType);
+		expect(openmrsBean.getHowLearnedAttributeType()).andReturn(
+				howLearnedAttributeType);
+		expect(openmrsBean.getInterestReasonAttributeType()).andReturn(
+				interestReasonAttributeType);
 
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				patient);
 
-		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
-				.andReturn(ghanaLocation);
-		expect(
-				encounterService
-						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGREGVISIT))
+		expect(openmrsBean.getPregnancyRegistrationVisitEncounterType())
 				.andReturn(pregnancyRegVisitType);
 		expect(encounterService.saveEncounter(capture(pregnancyEncounterCap)))
 				.andReturn(new Encounter());
-		expect(conceptService.getConcept(MotechConstants.CONCEPT_PREGNANCY))
-				.andReturn(pregConcept);
-		expect(
-				conceptService
-						.getConcept(MotechConstants.CONCEPT_PREGNANCY_STATUS))
-				.andReturn(pregStatusConcept);
-		expect(
-				conceptService
-						.getConcept(MotechConstants.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT))
-				.andReturn(dateConfConcept);
-		expect(
-				conceptService
-						.getConcept(MotechConstants.CONCEPT_DATE_OF_CONFINEMENT_CONFIRMED))
-				.andReturn(dateConfConfirmedConcept);
+
+		expect(openmrsBean.getPregnancyConcept()).andReturn(pregConcept);
+		expect(openmrsBean.getPregnancyStatusConcept()).andReturn(
+				pregStatusConcept);
+		expect(openmrsBean.getDueDateConcept()).andReturn(dateConfConcept);
+		expect(openmrsBean.getDueDateConfirmedConcept()).andReturn(
+				dateConfConfirmedConcept);
 		expect(
 				obsService.saveObs(capture(pregnancyObsCap),
 						(String) anyObject())).andReturn(new Obs());
-		expect(
-				encounterService
-						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT))
-				.andReturn(registrationVisitType);
+
+		expect(openmrsBean.getPatientRegistrationEncounterType()).andReturn(
+				registrationVisitType);
 		expect(
 				encounterService
 						.saveEncounter(capture(registrationEncounterCap)))
@@ -669,7 +596,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		replay(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
-				conceptService, idService);
+				conceptService, openmrsBean, messageBean, idBean);
 
 		regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
 				RegistrantType.PREGNANT_MOTHER, firstName, middleName,
@@ -680,7 +607,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
-				conceptService, idService);
+				conceptService, openmrsBean, messageBean, idBean);
 
 		Patient capturedPatient = patientCap.getValue();
 		assertEquals(motechId.toString(), capturedPatient.getPatientIdentifier(
@@ -820,7 +747,8 @@ public class RegistrarBeanTest extends TestCase {
 		String pregnancyProgramName = "Weekly Info Child Message Program";
 		String careProgramName = "Expected Care Message Program";
 
-		Patient child = new Patient(1);
+		Integer patientId = 1;
+		Patient child = new Patient(patientId);
 		child.setBirthdate(birthDate);
 		Patient mother = new Patient(2);
 		Location ghanaLocation = new Location(1);
@@ -833,8 +761,6 @@ public class RegistrarBeanTest extends TestCase {
 		community.setFacility(facility);
 
 		Capture<Patient> patientCap = new Capture<Patient>();
-		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
-		Capture<MessageProgramEnrollment> enrollment2Cap = new Capture<MessageProgramEnrollment>();
 		Capture<Relationship> relationshipCap = new Capture<Relationship>();
 		Capture<Encounter> registrationEncounterCap = new Capture<Encounter>();
 
@@ -842,71 +768,40 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
-		expect(contextService.getLocationService()).andReturn(locationService)
-				.atLeastOnce();
 		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
-		expect(contextService.getIdentifierSourceService())
-				.andReturn(idService).atLeastOnce();
 		expect(contextService.getEncounterService())
 				.andReturn(encounterService).atLeastOnce();
 
 		expect(contextService.getAuthenticatedUser()).andReturn(new User());
-		expect(idService.getAllIdentifierSources(false)).andReturn(
-				new ArrayList<IdentifierSource>());
-		expect(idService.saveLogEntry((LogEntry) anyObject())).andReturn(
-				new LogEntry());
-		expect(
-				patientService
-						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
-				.andReturn(motechIdType).atLeastOnce();
-		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
-				.andReturn(ghanaLocation).times(2);
+		idBean.excludeMotechId((User) anyObject(), eq(motechId.toString()));
+		expect(openmrsBean.getMotechPatientIdType()).andReturn(motechIdType)
+				.atLeastOnce();
+		expect(openmrsBean.getGhanaLocation()).andReturn(ghanaLocation)
+				.times(2);
 
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
-				.andReturn(insuredAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER))
-				.andReturn(nhisAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE))
-				.andReturn(nhisExpirationType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE))
-				.andReturn(phoneTypeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE))
-				.andReturn(mediaTypeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE))
-				.andReturn(languageAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY))
-				.andReturn(deliveryDayAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME))
-				.andReturn(deliveryTimeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED))
-				.andReturn(howLearnedAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INTEREST_REASON))
-				.andReturn(interestReasonAttributeType);
+		expect(openmrsBean.getInsuredAttributeType()).andReturn(
+				insuredAttributeType);
+		expect(openmrsBean.getNHISNumberAttributeType()).andReturn(
+				nhisAttributeType);
+		expect(openmrsBean.getNHISExpirationDateAttributeType()).andReturn(
+				nhisExpirationType);
+		expect(openmrsBean.getPhoneNumberAttributeType()).andReturn(
+				phoneAttributeType);
+		expect(openmrsBean.getPhoneTypeAttributeType()).andReturn(
+				phoneTypeAttributeType);
+		expect(openmrsBean.getMediaTypeAttributeType()).andReturn(
+				mediaTypeAttributeType);
+		expect(openmrsBean.getLanguageAttributeType()).andReturn(
+				languageAttributeType);
+		expect(openmrsBean.getDeliveryDayAttributeType()).andReturn(
+				deliveryDayAttributeType);
+		expect(openmrsBean.getDeliveryTimeAttributeType()).andReturn(
+				deliveryTimeAttributeType);
+		expect(openmrsBean.getHowLearnedAttributeType()).andReturn(
+				howLearnedAttributeType);
+		expect(openmrsBean.getInterestReasonAttributeType()).andReturn(
+				interestReasonAttributeType);
 
 		expect(patientService.savePatient(capture(patientCap)))
 				.andReturn(child);
@@ -918,28 +813,13 @@ public class RegistrarBeanTest extends TestCase {
 		expect(personService.saveRelationship(capture(relationshipCap)))
 				.andReturn(new Relationship());
 
-		expect(
-				motechService.getActiveMessageProgramEnrollments(child
-						.getPatientId(), pregnancyProgramName, null, null,
-						null, null)).andReturn(
-				new ArrayList<MessageProgramEnrollment>());
-		expect(
-				motechService
-						.saveMessageProgramEnrollment(capture(enrollment1Cap)))
-				.andReturn(new MessageProgramEnrollment());
-		expect(
-				motechService.getActiveMessageProgramEnrollments(child
-						.getPatientId(), careProgramName, null, null, null,
-						null)).andReturn(
-				new ArrayList<MessageProgramEnrollment>());
-		expect(
-				motechService
-						.saveMessageProgramEnrollment(capture(enrollment2Cap)))
-				.andReturn(new MessageProgramEnrollment());
-		expect(
-				encounterService
-						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT))
-				.andReturn(registrationVisitType);
+		messageBean.addMessageProgramEnrollment(patientId,
+				pregnancyProgramName, null);
+		messageBean.addMessageProgramEnrollment(patientId, careProgramName,
+				null);
+
+		expect(openmrsBean.getPatientRegistrationEncounterType()).andReturn(
+				registrationVisitType);
 		expect(
 				encounterService
 						.saveEncounter(capture(registrationEncounterCap)))
@@ -947,7 +827,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		replay(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
-				conceptService, idService);
+				conceptService, openmrsBean, messageBean, idBean);
 
 		regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
 				RegistrantType.CHILD_UNDER_FIVE, firstName, middleName,
@@ -958,7 +838,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
-				conceptService, idService);
+				conceptService, openmrsBean, messageBean, idBean);
 
 		Patient capturedPatient = patientCap.getValue();
 		assertEquals(motechId.toString(), capturedPatient.getPatientIdentifier(
@@ -1026,22 +906,6 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(hour, timeOfDayCal.get(Calendar.HOUR_OF_DAY));
 		assertEquals(min, timeOfDayCal.get(Calendar.MINUTE));
 
-		MessageProgramEnrollment enrollment1 = enrollment1Cap.getValue();
-		assertEquals(child.getPatientId(), enrollment1.getPersonId());
-		assertEquals(pregnancyProgramName, enrollment1.getProgram());
-		assertNotNull("Enrollment start date should not be null", enrollment1
-				.getStartDate());
-		assertNull("Enrollment end date should be null", enrollment1
-				.getEndDate());
-
-		MessageProgramEnrollment enrollment2 = enrollment2Cap.getValue();
-		assertEquals(child.getPatientId(), enrollment2.getPersonId());
-		assertEquals(careProgramName, enrollment2.getProgram());
-		assertNotNull("Enrollment start date should not be null", enrollment2
-				.getStartDate());
-		assertNull("Enrollment end date should be null", enrollment2
-				.getEndDate());
-
 		Relationship relationship = relationshipCap.getValue();
 		assertEquals(parentChildRelationshipType, relationship
 				.getRelationshipType());
@@ -1076,7 +940,8 @@ public class RegistrarBeanTest extends TestCase {
 		String pregnancyProgramName = "Weekly Info Pregnancy Message Program";
 		String careProgramName = "Expected Care Message Program";
 
-		Patient patient = new Patient(2);
+		Integer patientId = 2;
+		Patient patient = new Patient(patientId);
 		Location ghanaLocation = new Location(1);
 		Community community = new Community();
 		Facility facility = new Facility();
@@ -1085,10 +950,9 @@ public class RegistrarBeanTest extends TestCase {
 				.setCountyDistrict(MotechConstants.LOCATION_KASSENA_NANKANA_WEST);
 		facility.setLocation(facilityLocation);
 		community.setFacility(facility);
+		Integer enrollmentObsId = 36;
 
 		Capture<Patient> patientCap = new Capture<Patient>();
-		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
-		Capture<MessageProgramEnrollment> enrollment2Cap = new Capture<MessageProgramEnrollment>();
 		Capture<Obs> refDateObsCap = new Capture<Obs>();
 		Capture<Encounter> registrationEncounterCap = new Capture<Encounter>();
 
@@ -1096,107 +960,57 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getPatientService()).andReturn(patientService)
 				.atLeastOnce();
-		expect(contextService.getLocationService()).andReturn(locationService)
-				.atLeastOnce();
 		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
 		expect(contextService.getObsService()).andReturn(obsService);
-		expect(contextService.getConceptService()).andReturn(conceptService)
-				.atLeastOnce();
-		expect(contextService.getIdentifierSourceService())
-				.andReturn(idService).atLeastOnce();
 		expect(contextService.getEncounterService())
 				.andReturn(encounterService).atLeastOnce();
 
 		expect(contextService.getAuthenticatedUser()).andReturn(new User());
-		expect(idService.getAllIdentifierSources(false)).andReturn(
-				new ArrayList<IdentifierSource>());
-		expect(idService.saveLogEntry((LogEntry) anyObject())).andReturn(
-				new LogEntry());
-		expect(
-				patientService
-						.getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
-				.andReturn(motechIdType).atLeastOnce();
+		idBean.excludeMotechId((User) anyObject(), eq(motechId.toString()));
+		expect(openmrsBean.getMotechPatientIdType()).andReturn(motechIdType)
+				.atLeastOnce();
+		expect(openmrsBean.getGhanaLocation()).andReturn(ghanaLocation)
+				.times(3);
 
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
-				.andReturn(insuredAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER))
-				.andReturn(nhisAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE))
-				.andReturn(nhisExpirationType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE))
-				.andReturn(phoneTypeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE))
-				.andReturn(mediaTypeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE))
-				.andReturn(languageAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY))
-				.andReturn(deliveryDayAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME))
-				.andReturn(deliveryTimeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED))
-				.andReturn(howLearnedAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INTEREST_REASON))
-				.andReturn(interestReasonAttributeType);
+		expect(openmrsBean.getInsuredAttributeType()).andReturn(
+				insuredAttributeType);
+		expect(openmrsBean.getNHISNumberAttributeType()).andReturn(
+				nhisAttributeType);
+		expect(openmrsBean.getNHISExpirationDateAttributeType()).andReturn(
+				nhisExpirationType);
+		expect(openmrsBean.getPhoneNumberAttributeType()).andReturn(
+				phoneAttributeType);
+		expect(openmrsBean.getPhoneTypeAttributeType()).andReturn(
+				phoneTypeAttributeType);
+		expect(openmrsBean.getMediaTypeAttributeType()).andReturn(
+				mediaTypeAttributeType);
+		expect(openmrsBean.getLanguageAttributeType()).andReturn(
+				languageAttributeType);
+		expect(openmrsBean.getDeliveryDayAttributeType()).andReturn(
+				deliveryDayAttributeType);
+		expect(openmrsBean.getDeliveryTimeAttributeType()).andReturn(
+				deliveryTimeAttributeType);
+		expect(openmrsBean.getHowLearnedAttributeType()).andReturn(
+				howLearnedAttributeType);
+		expect(openmrsBean.getInterestReasonAttributeType()).andReturn(
+				interestReasonAttributeType);
 
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				patient);
 
-		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
-				.andReturn(ghanaLocation).atLeastOnce();
-		expect(
-				conceptService
-						.getConcept(MotechConstants.CONCEPT_ENROLLMENT_REFERENCE_DATE))
-				.andReturn(refDateConcept);
+		expect(openmrsBean.getEnrollmentReferenceDateConcept()).andReturn(
+				refDateConcept);
 		expect(obsService.saveObs(capture(refDateObsCap), (String) anyObject()))
-				.andReturn(new Obs());
+				.andReturn(new Obs(enrollmentObsId));
 
-		expect(
-				motechService.getActiveMessageProgramEnrollments(patient
-						.getPatientId(), pregnancyProgramName, null, null,
-						null, null)).andReturn(
-				new ArrayList<MessageProgramEnrollment>());
-		expect(
-				motechService
-						.saveMessageProgramEnrollment(capture(enrollment1Cap)))
-				.andReturn(new MessageProgramEnrollment());
-		expect(
-				motechService.getActiveMessageProgramEnrollments(patient
-						.getPatientId(), careProgramName, null, null, null,
-						null)).andReturn(
-				new ArrayList<MessageProgramEnrollment>());
-		expect(
-				motechService
-						.saveMessageProgramEnrollment(capture(enrollment2Cap)))
-				.andReturn(new MessageProgramEnrollment());
-		expect(
-				encounterService
-						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT))
-				.andReturn(registrationVisitType);
+		messageBean.addMessageProgramEnrollment(patientId,
+				pregnancyProgramName, enrollmentObsId);
+		messageBean.addMessageProgramEnrollment(patientId, careProgramName,
+				null);
+
+		expect(openmrsBean.getPatientRegistrationEncounterType()).andReturn(
+				registrationVisitType);
 		expect(
 				encounterService
 						.saveEncounter(capture(registrationEncounterCap)))
@@ -1204,7 +1018,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		replay(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
-				conceptService, idService);
+				conceptService, openmrsBean, messageBean, idBean);
 
 		regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
 				RegistrantType.OTHER, firstName, middleName, lastName,
@@ -1215,7 +1029,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
-				conceptService, idService);
+				conceptService, openmrsBean, messageBean, idBean);
 
 		Patient capturedPatient = patientCap.getValue();
 		assertEquals(motechId.toString(), capturedPatient.getPatientIdentifier(
@@ -1268,22 +1082,6 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(hour, timeOfDayCal.get(Calendar.HOUR_OF_DAY));
 		assertEquals(min, timeOfDayCal.get(Calendar.MINUTE));
 
-		MessageProgramEnrollment enrollment1 = enrollment1Cap.getValue();
-		assertEquals(patient.getPatientId(), enrollment1.getPersonId());
-		assertEquals(pregnancyProgramName, enrollment1.getProgram());
-		assertNotNull("Enrollment start date should not be null", enrollment1
-				.getStartDate());
-		assertNull("Enrollment end date should be null", enrollment1
-				.getEndDate());
-
-		MessageProgramEnrollment enrollment2 = enrollment2Cap.getValue();
-		assertEquals(patient.getPatientId(), enrollment2.getPersonId());
-		assertEquals(careProgramName, enrollment2.getProgram());
-		assertNotNull("Enrollment start date should not be null", enrollment2
-				.getStartDate());
-		assertNull("Enrollment end date should be null", enrollment2
-				.getEndDate());
-
 		Obs refDateObs = refDateObsCap.getValue();
 		assertEquals(patient.getPatientId(), refDateObs.getPersonId());
 		assertEquals(ghanaLocation, refDateObs.getLocation());
@@ -1309,74 +1107,32 @@ public class RegistrarBeanTest extends TestCase {
 		User staff = new User(2);
 		Patient patient = new Patient(patientId);
 
-		List<MessageProgramEnrollment> enrollments = new ArrayList<MessageProgramEnrollment>();
-		MessageProgramEnrollment enrollment1 = new MessageProgramEnrollment();
-		enrollments.add(enrollment1);
-		MessageProgramEnrollment enrollment2 = new MessageProgramEnrollment();
-		enrollments.add(enrollment2);
-
-		List<Message> enrollment1Messages = new ArrayList<Message>();
-		enrollment1Messages.add(new Message());
-
 		Capture<Patient> patientCap = new Capture<Patient>();
-		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
-		Capture<MessageProgramEnrollment> enrollment2Cap = new Capture<MessageProgramEnrollment>();
-		Capture<Message> enrollment1MessageCap = new Capture<Message>();
 
 		expect(contextService.getPatientService()).andReturn(patientService)
 				.atLeastOnce();
-		expect(contextService.getPersonService()).andReturn(personService)
-				.atLeastOnce();
-		expect(contextService.getMotechService()).andReturn(motechService)
-				.atLeastOnce();
 
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE))
-				.andReturn(phoneTypeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER))
-				.andReturn(nhisAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE))
-				.andReturn(nhisExpirationType);
+		expect(openmrsBean.getPhoneNumberAttributeType()).andReturn(
+				phoneAttributeType);
+		expect(openmrsBean.getPhoneTypeAttributeType()).andReturn(
+				phoneTypeAttributeType);
+		expect(openmrsBean.getNHISNumberAttributeType()).andReturn(
+				nhisAttributeType);
+		expect(openmrsBean.getNHISExpirationDateAttributeType()).andReturn(
+				nhisExpirationType);
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				new Patient(patientId));
 
-		expect(
-				motechService.getActiveMessageProgramEnrollments(patientId,
-						null, null, null, null, null)).andReturn(enrollments);
-		expect(
-				motechService.getMessages(enrollment1,
-						MessageStatus.SHOULD_ATTEMPT)).andReturn(
-				enrollment1Messages);
-		expect(motechService.saveMessage(capture(enrollment1MessageCap)))
-				.andReturn(new Message());
-		expect(
-				motechService.getMessages(enrollment2,
-						MessageStatus.SHOULD_ATTEMPT)).andReturn(
-				new ArrayList<Message>());
-		expect(
-				motechService
-						.saveMessageProgramEnrollment(capture(enrollment1Cap)))
-				.andReturn(new MessageProgramEnrollment());
-		expect(
-				motechService
-						.saveMessageProgramEnrollment(capture(enrollment2Cap)))
-				.andReturn(new MessageProgramEnrollment());
+		messageBean.removeAllMessageProgramEnrollments(patientId);
 
-		replay(contextService, patientService, personService, motechService);
+		replay(contextService, patientService, personService, motechService,
+				openmrsBean, messageBean);
 
 		regBean.editPatient(staff, date, patient, phone, phoneType, nhis, date,
 				stopEnrollment);
 
-		verify(contextService, patientService, personService, motechService);
+		verify(contextService, patientService, personService, motechService,
+				openmrsBean, messageBean);
 
 		Patient capturedPatient = patientCap.getValue();
 		assertEquals(phone.toString(), capturedPatient.getAttribute(
@@ -1397,21 +1153,6 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(year, nhisExpCal.get(Calendar.YEAR));
 		assertEquals(month, nhisExpCal.get(Calendar.MONTH));
 		assertEquals(day, nhisExpCal.get(Calendar.DAY_OF_MONTH));
-
-		MessageProgramEnrollment enrollment1Captured = enrollment1Cap
-				.getValue();
-		assertNotNull("Enrollment 1 end date should be set",
-				enrollment1Captured.getEndDate());
-
-		Message enrollment1MessageCaptured = enrollment1MessageCap.getValue();
-		assertEquals(MessageStatus.CANCELLED, enrollment1MessageCaptured
-				.getAttemptStatus());
-
-		MessageProgramEnrollment enrollment2Captured = enrollment1Cap
-				.getValue();
-		assertNotNull("Enrollment 2 end date should be set",
-				enrollment2Captured.getEndDate());
-
 	}
 
 	public void testEditPatientAll() throws ParseException {
@@ -1436,10 +1177,8 @@ public class RegistrarBeanTest extends TestCase {
 		Community community = new Community();
 		community.setCommunityId(2);
 
-		List<Relationship> relationships = new ArrayList<Relationship>();
 		Relationship relation = new Relationship(currentMother, patient,
 				parentChildRelationshipType);
-		relationships.add(relation);
 
 		Capture<Patient> patientCap = new Capture<Patient>();
 		Capture<Relationship> relationCap = new Capture<Relationship>();
@@ -1448,68 +1187,39 @@ public class RegistrarBeanTest extends TestCase {
 				.atLeastOnce();
 		expect(contextService.getPersonService()).andReturn(personService)
 				.atLeastOnce();
-		expect(contextService.getMotechService()).andReturn(motechService)
-				.atLeastOnce();
 
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
-				.andReturn(insuredAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_NUMBER))
-				.andReturn(nhisAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_NHIS_EXP_DATE))
-				.andReturn(nhisExpirationType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE))
-				.andReturn(phoneTypeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE))
-				.andReturn(mediaTypeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE))
-				.andReturn(languageAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY))
-				.andReturn(deliveryDayAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME))
-				.andReturn(deliveryTimeAttributeType);
-		expect(
-				personService
-						.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD))
-				.andReturn(parentChildRelationshipType);
-		expect(
-				personService.getRelationships(null, patient,
-						parentChildRelationshipType)).andReturn(relationships);
+		expect(openmrsBean.getInsuredAttributeType()).andReturn(
+				insuredAttributeType);
+		expect(openmrsBean.getNHISNumberAttributeType()).andReturn(
+				nhisAttributeType);
+		expect(openmrsBean.getNHISExpirationDateAttributeType()).andReturn(
+				nhisExpirationType);
+		expect(openmrsBean.getPhoneNumberAttributeType()).andReturn(
+				phoneAttributeType);
+		expect(openmrsBean.getPhoneTypeAttributeType()).andReturn(
+				phoneTypeAttributeType);
+		expect(openmrsBean.getMediaTypeAttributeType()).andReturn(
+				mediaTypeAttributeType);
+		expect(openmrsBean.getLanguageAttributeType()).andReturn(
+				languageAttributeType);
+		expect(openmrsBean.getDeliveryDayAttributeType()).andReturn(
+				deliveryDayAttributeType);
+		expect(openmrsBean.getDeliveryTimeAttributeType()).andReturn(
+				deliveryTimeAttributeType);
+		expect(openmrsBean.getMotherRelationship(patient)).andReturn(relation);
 		expect(personService.saveRelationship(capture(relationCap))).andReturn(
 				new Relationship());
-		expect(motechService.getCommunityByPatient(patient)).andReturn(
+		expect(openmrsBean.getCommunityByPatient(patient)).andReturn(
 				oldCommunity);
-		expect(motechService.getCommunityByPatient(patient)).andReturn(null);
-		expect(
-				motechService.getActiveMessageProgramEnrollments(patientId,
-						null, null, null, null, null)).andReturn(
-				new ArrayList<MessageProgramEnrollment>());
+		expect(openmrsBean.getCommunityByPatient(patient)).andReturn(null);
+		messageBean.removeAllMessageProgramEnrollments(patientId);
 
 		expect(patientService.savePatient(capture(patientCap))).andReturn(
 				patient);
 
 		replay(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
-				conceptService);
+				conceptService, openmrsBean, messageBean);
 
 		regBean.editPatient(patient, firstName, middleName, lastName, prefName,
 				date, birthDateEst, sex, insured, nhis, date, newMother,
@@ -1518,7 +1228,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, userService, encounterService, obsService,
-				conceptService);
+				conceptService, openmrsBean, messageBean);
 
 		Patient capturedPatient = patientCap.getValue();
 		assertEquals(date, capturedPatient.getBirthdate());
@@ -1605,89 +1315,53 @@ public class RegistrarBeanTest extends TestCase {
 		Capture<Encounter> pregnancyEncounterCap = new Capture<Encounter>();
 		Capture<Obs> pregnancyObsCap = new Capture<Obs>();
 
-		expect(contextService.getPersonService()).andReturn(personService)
-				.atLeastOnce();
-		expect(contextService.getMotechService()).andReturn(motechService)
-				.atLeastOnce();
-		expect(contextService.getLocationService()).andReturn(locationService)
-				.atLeastOnce();
 		expect(contextService.getEncounterService())
 				.andReturn(encounterService).atLeastOnce();
 		expect(contextService.getObsService()).andReturn(obsService);
-		expect(contextService.getConceptService()).andReturn(conceptService)
-				.atLeastOnce();
 		expect(contextService.getPatientService()).andReturn(patientService);
 
 		expect(contextService.getAuthenticatedUser()).andReturn(new User());
-		expect(
-				motechService.getActivePregnancies(patientId, pregConcept,
-						pregStatusConcept)).andReturn(new ArrayList<Obs>());
+		expect(openmrsBean.getActivePregnancy(patientId)).andReturn(null);
 
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-				.andReturn(phoneAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE))
-				.andReturn(phoneTypeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE))
-				.andReturn(mediaTypeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE))
-				.andReturn(languageAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY))
-				.andReturn(deliveryDayAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME))
-				.andReturn(deliveryTimeAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_HOW_LEARNED))
-				.andReturn(howLearnedAttributeType);
-		expect(
-				personService
-						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INTEREST_REASON))
-				.andReturn(interestReasonAttributeType);
+		expect(openmrsBean.getPhoneNumberAttributeType()).andReturn(
+				phoneAttributeType);
+		expect(openmrsBean.getPhoneTypeAttributeType()).andReturn(
+				phoneTypeAttributeType);
+		expect(openmrsBean.getMediaTypeAttributeType()).andReturn(
+				mediaTypeAttributeType);
+		expect(openmrsBean.getLanguageAttributeType()).andReturn(
+				languageAttributeType);
+		expect(openmrsBean.getDeliveryDayAttributeType()).andReturn(
+				deliveryDayAttributeType);
+		expect(openmrsBean.getDeliveryTimeAttributeType()).andReturn(
+				deliveryTimeAttributeType);
+		expect(openmrsBean.getHowLearnedAttributeType()).andReturn(
+				howLearnedAttributeType);
+		expect(openmrsBean.getInterestReasonAttributeType()).andReturn(
+				interestReasonAttributeType);
 		expect(patientService.savePatient((Patient) anyObject())).andReturn(
 				new Patient());
 
-		expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
-				.andReturn(ghanaLocation);
-		expect(
-				encounterService
-						.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGREGVISIT))
+		expect(openmrsBean.getGhanaLocation()).andReturn(ghanaLocation);
+		expect(openmrsBean.getPregnancyRegistrationVisitEncounterType())
 				.andReturn(pregnancyRegVisitType);
 		expect(encounterService.saveEncounter(capture(pregnancyEncounterCap)))
 				.andReturn(new Encounter());
-		expect(conceptService.getConcept(MotechConstants.CONCEPT_PREGNANCY))
-				.andReturn(pregConcept).atLeastOnce();
-		expect(
-				conceptService
-						.getConcept(MotechConstants.CONCEPT_PREGNANCY_STATUS))
-				.andReturn(pregStatusConcept).atLeastOnce();
-		expect(
-				conceptService
-						.getConcept(MotechConstants.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT))
-				.andReturn(dateConfConcept);
-		expect(
-				conceptService
-						.getConcept(MotechConstants.CONCEPT_DATE_OF_CONFINEMENT_CONFIRMED))
-				.andReturn(dateConfConfirmedConcept);
+
+		expect(openmrsBean.getPregnancyConcept()).andReturn(pregConcept);
+		expect(openmrsBean.getPregnancyStatusConcept()).andReturn(
+				pregStatusConcept);
+		expect(openmrsBean.getDueDateConcept()).andReturn(dateConfConcept);
+		expect(openmrsBean.getDueDateConfirmedConcept()).andReturn(
+				dateConfConfirmedConcept);
 		expect(
 				obsService.saveObs(capture(pregnancyObsCap),
 						(String) anyObject())).andReturn(new Obs());
-		expect(motechService.getCommunityByPatient(patient)).andReturn(null);
+		expect(openmrsBean.getCommunityByPatient(patient)).andReturn(null);
 
 		replay(contextService, patientService, motechService, personService,
 				locationService, encounterService, obsService, conceptService,
-				userService);
+				userService, openmrsBean, messageBean);
 
 		regBean.registerPregnancy(patient, date, dueDateConfirmed, enroll,
 				consent, phoneNumber, phoneType, mediaType, language,
@@ -1695,7 +1369,7 @@ public class RegistrarBeanTest extends TestCase {
 
 		verify(contextService, patientService, motechService, personService,
 				locationService, encounterService, obsService, conceptService,
-				userService);
+				userService, openmrsBean, messageBean);
 
 		assertEquals(phoneNumber, patient.getAttribute(phoneAttributeType)
 				.getValue());
@@ -1760,187 +1434,4 @@ public class RegistrarBeanTest extends TestCase {
 				containsDueDateConfirmedObs);
 	}
 
-	public void testSetMessageStatusSuccessMessageFoundNotTroubled() {
-		String messageId = "12345678-1234-1234-1234-123456789012";
-		Boolean success = true;
-
-		Integer recipientId = 2;
-		String phoneNumber = "1234567890";
-		Person recipient = new Person();
-		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
-				phoneNumber));
-		TroubledPhone troubledPhone = null;
-		Message message = new Message();
-		ScheduledMessage scheduledMessage = new ScheduledMessage();
-		scheduledMessage.setRecipientId(recipientId);
-		message.setSchedule(scheduledMessage);
-
-		Capture<Message> messageCap = new Capture<Message>();
-
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(contextService.getPersonService()).andReturn(personService)
-				.atLeastOnce();
-		expect(motechService.getMessage(messageId)).andReturn(message);
-		expect(personService.getPerson(recipientId)).andReturn(recipient);
-		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
-				troubledPhone);
-		expect(motechService.saveMessage(capture(messageCap))).andReturn(
-				message);
-
-		replay(contextService, motechService, personService);
-
-		regBean.setMessageStatus(messageId, success);
-
-		verify(contextService, motechService, personService);
-
-		Message capturedMessage = messageCap.getValue();
-		assertEquals(MessageStatus.DELIVERED, capturedMessage
-				.getAttemptStatus());
-	}
-
-	public void testSetMessageStatusSuccessMessageFoundTroubled() {
-		String messageId = "12345678-1234-1234-1234-123456789012";
-		Boolean success = true;
-
-		Integer recipientId = 2;
-		String phoneNumber = "1234567890";
-		Person recipient = new Person();
-		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
-				phoneNumber));
-		TroubledPhone troubledPhone = new TroubledPhone();
-		Message message = new Message();
-		ScheduledMessage scheduledMessage = new ScheduledMessage();
-		scheduledMessage.setRecipientId(recipientId);
-		message.setSchedule(scheduledMessage);
-
-		Capture<Message> messageCap = new Capture<Message>();
-
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(contextService.getPersonService()).andReturn(personService)
-				.atLeastOnce();
-		expect(motechService.getMessage(messageId)).andReturn(message);
-		expect(personService.getPerson(recipientId)).andReturn(recipient);
-		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
-				troubledPhone);
-		motechService.removeTroubledPhone(phoneNumber);
-		expect(motechService.saveMessage(capture(messageCap))).andReturn(
-				message);
-
-		replay(contextService, motechService, personService);
-
-		regBean.setMessageStatus(messageId, success);
-
-		verify(contextService, motechService, personService);
-
-		Message capturedMessage = messageCap.getValue();
-		assertEquals(MessageStatus.DELIVERED, capturedMessage
-				.getAttemptStatus());
-	}
-
-	public void testSetMessageStatusFailureMessageFoundNotTroubled() {
-		String messageId = "12345678-1234-1234-1234-123456789012";
-		Boolean success = false;
-
-		Integer recipientId = 2;
-		String phoneNumber = "1234567890";
-		Person recipient = new Person();
-		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
-				phoneNumber));
-		TroubledPhone troubledPhone = null;
-		Message message = new Message();
-		ScheduledMessage scheduledMessage = new ScheduledMessage();
-		scheduledMessage.setRecipientId(recipientId);
-		message.setSchedule(scheduledMessage);
-
-		Capture<Message> messageCap = new Capture<Message>();
-
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(contextService.getPersonService()).andReturn(personService)
-				.atLeastOnce();
-		expect(motechService.getMessage(messageId)).andReturn(message);
-		expect(personService.getPerson(recipientId)).andReturn(recipient);
-		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
-				troubledPhone);
-		motechService.addTroubledPhone(phoneNumber);
-		expect(motechService.saveMessage(capture(messageCap))).andReturn(
-				message);
-
-		replay(contextService, motechService, personService);
-
-		regBean.setMessageStatus(messageId, success);
-
-		verify(contextService, motechService, personService);
-
-		Message capturedMessage = messageCap.getValue();
-		assertEquals(MessageStatus.ATTEMPT_FAIL, capturedMessage
-				.getAttemptStatus());
-	}
-
-	public void testSetMessageStatusFailureMessageFoundTroubled() {
-		String messageId = "12345678-1234-1234-1234-123456789012";
-		Boolean success = false;
-
-		Integer recipientId = 2;
-		String phoneNumber = "1234567890";
-		Person recipient = new Person();
-		recipient.addAttribute(new PersonAttribute(phoneAttributeType,
-				phoneNumber));
-		Integer previousFailures = 1;
-		TroubledPhone troubledPhone = new TroubledPhone();
-		troubledPhone.setSendFailures(previousFailures);
-		Message message = new Message();
-		ScheduledMessage scheduledMessage = new ScheduledMessage();
-		scheduledMessage.setRecipientId(recipientId);
-		message.setSchedule(scheduledMessage);
-
-		Capture<TroubledPhone> troubledPhoneCap = new Capture<TroubledPhone>();
-		Capture<Message> messageCap = new Capture<Message>();
-
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(contextService.getPersonService()).andReturn(personService)
-				.atLeastOnce();
-		expect(motechService.getMessage(messageId)).andReturn(message);
-		expect(personService.getPerson(recipientId)).andReturn(recipient);
-		expect(motechService.getTroubledPhone(phoneNumber)).andReturn(
-				troubledPhone);
-		motechService.saveTroubledPhone(capture(troubledPhoneCap));
-		expect(motechService.saveMessage(capture(messageCap))).andReturn(
-				message);
-
-		replay(contextService, motechService, personService);
-
-		regBean.setMessageStatus(messageId, success);
-
-		verify(contextService, motechService, personService);
-
-		Message capturedMessage = messageCap.getValue();
-		assertEquals(MessageStatus.ATTEMPT_FAIL, capturedMessage
-				.getAttemptStatus());
-
-		Integer expectedFailures = 2;
-		TroubledPhone capturedTroubledPhone = troubledPhoneCap.getValue();
-		assertEquals(expectedFailures, capturedTroubledPhone.getSendFailures());
-	}
-
-	public void testSetMessageStatusMessageNotFound() {
-		String messageId = "12345678-1234-1234-1234-123456789012";
-		Boolean success = true;
-
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(contextService.getPersonService()).andReturn(personService);
-		expect(motechService.getMessage(messageId)).andReturn(null);
-
-		replay(contextService, motechService, personService);
-
-		try {
-			regBean.setMessageStatus(messageId, success);
-			fail("Expected org.motechproject.server.messaging.MessageNotFoundException: none thrown");
-		} catch (MessageNotFoundException e) {
-
-		} catch (Exception e) {
-			fail("Expected org.motechproject.server.messaging.MessageNotFoundException: other thrown");
-		}
-
-		verify(contextService, motechService, personService);
-	}
 }
