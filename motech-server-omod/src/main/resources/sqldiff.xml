@@ -1322,7 +1322,7 @@
 
             INSERT INTO concept_name
 			(concept_name_id,concept_id,name,locale,creator,date_created,uuid) VALUES
-			(6160,6160,'NEW PATIENT','en',1,NOW(),UUID()),
+			(6160,6160,'NEW PATIENT','en',1,NOW(),UUID());
 
             INSERT INTO concept_name_tag_map
 			(concept_name_id,concept_name_tag_id) VALUES
