@@ -57,6 +57,8 @@
 			not-null="true" />
 		<property name="newCase" type="boolean" column="newcase"
 			not-null="true" />
+        <property name="newPatient" type="boolean" column="newpatient"
+            not-null="true"/>
 		<property name="diagnosis" type="int" column="diagnosis"
 			not-null="true" />
 		<property name="secondaryDiagnosis" type="int"

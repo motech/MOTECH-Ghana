@@ -239,7 +239,7 @@ public interface RegistrarBean {
 			Integer facilityId, Date date, String serialNumber, Gender sex,
 			Date dateOfBirth, Boolean insured, Integer diagnosis,
 			Integer secondDiagnosis, Boolean rdtGiven, Boolean rdtPositive,
-			Boolean actTreated, Boolean newCase, Boolean referred,
+			Boolean actTreated, Boolean newCase, Boolean newPatient,Boolean referred,
 			String comments);
 
 	@RunAsAdminUser
@@ -247,7 +247,7 @@ public interface RegistrarBean {
 			Location facility, Date date, Patient patient, String serialNumber,
 			Boolean insured, Integer diagnosis, Integer secondDiagnosis,
 			Boolean rdtGiven, Boolean rdtPositive, Boolean actTreated,
-			Boolean newCase, Boolean referred, String comments);
+			Boolean newCase, Boolean newPatient, Boolean referred, String comments);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSONS,
 			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES })

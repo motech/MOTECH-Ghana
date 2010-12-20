@@ -55,13 +55,14 @@ public class GeneralOutpatientEncounter {
 	private Boolean rdtPositive;
 	private Boolean actTreated;
 	private String comments;
+    private Boolean newPatient;
 
-	public GeneralOutpatientEncounter() {
+    public GeneralOutpatientEncounter() {
 	}
 
 	public GeneralOutpatientEncounter(Date date, Integer staffId,
 			Integer facilityId, String serialNumber, Gender sex,
-			Date birthDate, Boolean insured, Boolean newCase,
+			Date birthDate, Boolean insured, Boolean newCase, Boolean newPatient,
 			Integer diagnosis, Integer secondaryDiagnosis, Boolean referred,
 			Boolean rdtGiven, Boolean rdtPositive, Boolean actTreated,
 			String comments) {
@@ -73,6 +74,7 @@ public class GeneralOutpatientEncounter {
 		this.birthDate = birthDate;
 		this.insured = insured;
 		this.newCase = newCase;
+        this.newPatient = newPatient;
 		this.diagnosis = diagnosis;
 		this.secondaryDiagnosis = secondaryDiagnosis;
 		this.referred = referred;
@@ -210,12 +212,20 @@ public class GeneralOutpatientEncounter {
 		this.comments = comments;
 	}
 
+    public Boolean getNewPatient() {
+        return newPatient;
+    }
+
+    public void setNewPatient(Boolean newPatient) {
+        this.newPatient = newPatient;
+    }
+
 	@Override
 	public String toString() {
 		return "General Outpatient Encounter: [date: " + date + ", staffID: "
 				+ staffId + ", facilityID: " + facilityId + ", serial: "
 				+ serialNumber + ", sex: " + sex + ", birthdate: " + birthDate
-				+ ", insured: " + insured + ", newcase: " + newCase
+				+ ", insured: " + insured + ", newcase: " + newCase + ", newpatient: " + newPatient
 				+ ", diagnosis1: " + diagnosis + ", diagnosis2: "
 				+ secondaryDiagnosis + ", referred: " + referred
 				+ ", rdtGiven: " + rdtGiven + ", rdtPositive: " + rdtPositive

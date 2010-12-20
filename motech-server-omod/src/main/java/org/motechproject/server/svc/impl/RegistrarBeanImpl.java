@@ -1922,14 +1922,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Integer facilityId, Date date, String serialNumber, Gender sex,
 			Date dateOfBirth, Boolean insured, Integer diagnosis,
 			Integer secondDiagnosis, Boolean rdtGiven, Boolean rdtPositive,
-			Boolean actTreated, Boolean newCase, Boolean referred,
+			Boolean actTreated, Boolean newCase, Boolean newPatient, Boolean referred,
 			String comments) {
 
 		MotechService motechService = contextService.getMotechService();
 
 		GeneralOutpatientEncounter encounter = new GeneralOutpatientEncounter(
 				date, staffId, facilityId, serialNumber, sex, dateOfBirth,
-				insured, newCase, diagnosis, secondDiagnosis, referred,
+				insured, newCase, newPatient, diagnosis, secondDiagnosis, referred,
 				rdtGiven, rdtPositive, actTreated, comments);
 
 		if (log.isDebugEnabled()) {
@@ -1944,7 +1944,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			Patient patient, String serialNumber, Boolean insured,
 			Integer diagnosis, Integer secondDiagnosis, Boolean rdtGiven,
 			Boolean rdtPositive, Boolean actTreated, Boolean newCase,
-			Boolean referred, String comments) {
+			Boolean newPatient, Boolean referred, String comments) {
 
 		EncounterService encounterService = contextService
 				.getEncounterService();
@@ -1972,6 +1972,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 					patient, facility, newCase, encounter, null);
 			encounter.addObs(newCaseObs);
 		}
+        if(newPatient != null){
+            Obs newPatientObs = createBooleanValueObs(date, getNewPatientConcept(),
+                    patient, facility, newPatient, encounter, null);
+            encounter.addObs(newPatientObs);
+        }
 		if (diagnosis != null) {
 			Obs diagnosisObs = createNumericValueObs(date,
 					getPrimaryDiagnosisConcept(), patient, facility, diagnosis,
@@ -4444,6 +4449,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return contextService.getConceptService().getConcept(
 				MotechConstants.CONCEPT_NEW_CASE);
 	}
+
+    public Concept getNewPatientConcept(){
+        return contextService.getConceptService().getConcept(
+                MotechConstants.PATIENT_NEW_CASE);
+    }
 
 	public Concept getReferredConcept() {
 		return contextService.getConceptService().getConcept(

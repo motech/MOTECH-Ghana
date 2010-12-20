@@ -1611,7 +1611,7 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean insured = true, newCase = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
+		Boolean insured = true, newCase = true, newPatient = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
 		Gender gender = Gender.MALE;
 
@@ -1625,13 +1625,13 @@ public class RegistrarServiceTest {
 				new Facility());
 		registrarBean.recordGeneralOutpatientVisit(staffId, facilityId, date,
 				serial, gender, date, insured, diagnosis, secondDiagnosis,
-				rdtGiven, rdtPositive, actTreated, newCase, referred, comments);
+				rdtGiven, rdtPositive, actTreated, newCase, newPatient, referred, comments);
 
 		replay(registrarBean, openmrsBean);
 
 		regWs.recordGeneralVisit(staffId, facilityId, date, serial, gender,
 				date, insured, diagnosis, secondDiagnosis, rdtGiven,
-				rdtPositive, actTreated, newCase, referred, comments);
+				rdtPositive, actTreated, newCase, newPatient, referred, comments);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -1641,7 +1641,7 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean insured = true, newCase = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
+		Boolean insured = true, newCase = true, newPatient = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
 		Gender gender = Gender.MALE;
 
@@ -1656,7 +1656,7 @@ public class RegistrarServiceTest {
 		try {
 			regWs.recordGeneralVisit(staffId, facilityId, date, serial, gender,
 					date, insured, diagnosis, secondDiagnosis, rdtGiven,
-					rdtPositive, actTreated, newCase, referred, comments);
+					rdtPositive, actTreated, newCase, newPatient, referred, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in General Visit request", e.getMessage());
@@ -1679,7 +1679,7 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean insured = true, newCase = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
+		Boolean insured = true, newCase = true, newPatient = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -1699,13 +1699,13 @@ public class RegistrarServiceTest {
 				.andReturn(patient);
 		registrarBean.recordOutpatientVisit(staff, facilityLocation, date,
 				patient, serial, insured, diagnosis, secondDiagnosis, rdtGiven,
-				rdtPositive, actTreated, newCase, referred, comments);
+				rdtPositive, actTreated, newCase, newPatient, referred, comments);
 
 		replay(registrarBean, openmrsBean);
 
 		regWs.recordChildVisit(staffId, facilityId, date, serial, motechId,
 				insured, diagnosis, secondDiagnosis, rdtGiven, rdtPositive,
-				actTreated, newCase, referred, comments);
+				actTreated, newCase, newPatient, referred, comments);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -1715,7 +1715,7 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean insured = true, newCase = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
+		Boolean insured = true, newCase = true, newPatient = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -1735,7 +1735,7 @@ public class RegistrarServiceTest {
 		try {
 			regWs.recordChildVisit(staffId, facilityId, date, serial, motechId,
 					insured, diagnosis, secondDiagnosis, rdtGiven, rdtPositive,
-					actTreated, newCase, referred, comments);
+					actTreated, newCase, newPatient, referred, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Child Visit request", e.getMessage());
@@ -1758,7 +1758,7 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean insured = true, newCase = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
+		Boolean insured = true, newCase = true, newPatient = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -1778,13 +1778,13 @@ public class RegistrarServiceTest {
 				.andReturn(patient);
 		registrarBean.recordOutpatientVisit(staff, facilityLocation, date,
 				patient, serial, insured, diagnosis, secondDiagnosis, rdtGiven,
-				rdtPositive, actTreated, newCase, referred, comments);
+				rdtPositive, actTreated, newCase, newPatient, referred, comments);
 
 		replay(registrarBean, openmrsBean);
 
 		regWs.recordMotherVisit(staffId, facilityId, date, serial, motechId,
 				insured, diagnosis, secondDiagnosis, rdtGiven, rdtPositive,
-				actTreated, newCase, referred, comments);
+				actTreated, newCase, newPatient, referred, comments);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -1794,7 +1794,7 @@ public class RegistrarServiceTest {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
-		Boolean insured = true, newCase = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
+		Boolean insured = true, newCase = true, newPatient = true, referred = false, rdtGiven = true, rdtPositive = false, actTreated = false;
 		Date date = new Date();
 
 		User staff = new User(1);
@@ -1814,7 +1814,7 @@ public class RegistrarServiceTest {
 		try {
 			regWs.recordMotherVisit(staffId, facilityId, date, serial,
 					motechId, insured, diagnosis, secondDiagnosis, rdtGiven,
-					rdtPositive, actTreated, newCase, referred, comments);
+					rdtPositive, actTreated, newCase, newPatient, referred, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Mother Visit request", e

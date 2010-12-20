@@ -322,7 +322,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			// General Visit for Mother 2
 			regService.recordOutpatientVisit(staff, facilityLocation, date,
 					mother2, "Mother2GeneralId", true, 1, 2, true, true, true,
-					false, false, "Comments");
+					false, true, false, "Comments");
 
 			assertEquals("General visit not added for Mother 2", 4, Context
 					.getEncounterService().getEncountersByPatient(mother2)
@@ -364,7 +364,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			// General Visit for Child 1
 			regService.recordOutpatientVisit(staff, facilityLocation, date,
 					child1, "Child1GeneralId", true, 4, 5, true, true, true,
-					false, false, "Comments");
+					false, false, false, "Comments");
 
 			assertEquals("General visit not added for Child 1", 2, Context
 					.getEncounterService().getEncountersByPatient(child1)

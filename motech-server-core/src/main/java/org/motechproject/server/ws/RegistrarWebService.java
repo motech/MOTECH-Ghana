@@ -755,6 +755,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "rdtPositive") Boolean rdtPositive,
 			@WebParam(name = "actTreated") Boolean actTreated,
 			@WebParam(name = "newCase") Boolean newCase,
+            @WebParam(name = "newPatient") Boolean newPatient,
 			@WebParam(name = "referred") Boolean referred,
 			@WebParam(name = "comments") String comments)
 			throws ValidationException {
@@ -772,7 +773,7 @@ public class RegistrarWebService implements RegistrarService {
 		registrarBean.recordGeneralOutpatientVisit(staffId, facilityId, date,
 				serialNumber, sex, dateOfBirth, insured, diagnosis,
 				secondDiagnosis, rdtGiven, rdtPositive, actTreated, newCase,
-				referred, comments);
+				newPatient, referred, comments);
 	}
 
 	@WebMethod
@@ -788,6 +789,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "rdtPositive") Boolean rdtPositive,
 			@WebParam(name = "actTreated") Boolean actTreated,
 			@WebParam(name = "newCase") Boolean newCase,
+            @WebParam(name = "newPatient") Boolean newPatient,
 			@WebParam(name = "referred") Boolean referred,
 			@WebParam(name = "comments") String comments)
 			throws ValidationException {
@@ -807,7 +809,7 @@ public class RegistrarWebService implements RegistrarService {
 		registrarBean.recordOutpatientVisit(staff, facility.getLocation(),
 				date, patient, serialNumber, insured, diagnosis,
 				secondDiagnosis, rdtGiven, rdtPositive, actTreated, newCase,
-				referred, comments);
+				newPatient, referred, comments);
 	}
 
 	@WebMethod
@@ -823,6 +825,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "rdtPositive") Boolean rdtPositive,
 			@WebParam(name = "actTreated") Boolean actTreated,
 			@WebParam(name = "newCase") Boolean newCase,
+            @WebParam(name = "newPatient") Boolean newPatient,
 			@WebParam(name = "referred") Boolean referred,
 			@WebParam(name = "comments") String comments)
 			throws ValidationException {
@@ -842,7 +845,7 @@ public class RegistrarWebService implements RegistrarService {
 		registrarBean.recordOutpatientVisit(staff, facility.getLocation(),
 				date, patient, serialNumber, insured, diagnosis,
 				secondDiagnosis, rdtGiven, rdtPositive, actTreated, newCase,
-				referred, comments);
+				newPatient, referred, comments);
 	}
 
 	@WebMethod
