@@ -39,178 +39,178 @@ import org.motechproject.ws.Gender;
 
 public class GeneralOutpatientEncounter {
 
-	private Long id;
-	private Date date;
-	private Integer staffId;
-	private Integer facilityId;
-	private String serialNumber;
-	private Gender sex;
-	private Date birthDate;
-	private Boolean insured;
-	private Boolean newCase;
-	private Integer diagnosis;
-	private Integer secondaryDiagnosis;
-	private Boolean referred;
-	private Boolean rdtGiven;
-	private Boolean rdtPositive;
-	private Boolean actTreated;
-	private String comments;
+    private Long id;
+    private Date date;
+    private Integer staffId;
+    private Integer facilityId;
+    private String serialNumber;
+    private Gender sex;
+    private Date birthDate;
+    private Boolean insured;
+    private Boolean newCase;
+    private Integer diagnosis;
+    private Integer secondaryDiagnosis;
+    private Boolean referred;
+    private Boolean rdtGiven;
+    private Boolean rdtPositive;
+    private Boolean actTreated;
+    private String comments;
     private Boolean newPatient;
 
     public GeneralOutpatientEncounter() {
-	}
+    }
 
-	public GeneralOutpatientEncounter(Date date, Integer staffId,
-			Integer facilityId, String serialNumber, Gender sex,
-			Date birthDate, Boolean insured, Boolean newCase, Boolean newPatient,
-			Integer diagnosis, Integer secondaryDiagnosis, Boolean referred,
-			Boolean rdtGiven, Boolean rdtPositive, Boolean actTreated,
-			String comments) {
-		this.date = date;
-		this.staffId = staffId;
-		this.facilityId = facilityId;
-		this.serialNumber = serialNumber;
-		this.sex = sex;
-		this.birthDate = birthDate;
-		this.insured = insured;
-		this.newCase = newCase;
+    public GeneralOutpatientEncounter(Date date, Integer staffId,
+                                      Integer facilityId, String serialNumber, Gender sex,
+                                      Date birthDate, Boolean insured, Boolean newCase, Boolean newPatient,
+                                      Integer diagnosis, Integer secondaryDiagnosis, Boolean referred,
+                                      Boolean rdtGiven, Boolean rdtPositive, Boolean actTreated,
+                                      String comments) {
+        this.date = date;
+        this.staffId = staffId;
+        this.facilityId = facilityId;
+        this.serialNumber = serialNumber;
+        this.sex = sex;
+        this.birthDate = birthDate;
+        this.insured = insured;
+        this.newCase = newCase;
         this.newPatient = newPatient;
-		this.diagnosis = diagnosis;
-		this.secondaryDiagnosis = secondaryDiagnosis;
-		this.referred = referred;
-		this.rdtGiven = rdtGiven;
-		this.rdtPositive = rdtPositive;
-		this.actTreated = actTreated;
-		this.comments = comments;
-	}
+        this.diagnosis = diagnosis;
+        this.secondaryDiagnosis = secondaryDiagnosis;
+        this.referred = referred;
+        this.rdtGiven = rdtGiven;
+        this.rdtPositive = rdtPositive;
+        this.actTreated = actTreated;
+        this.comments = comments;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Date getDate() {
-		return date;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	public Integer getStaffId() {
-		return staffId;
-	}
+    public Integer getStaffId() {
+        return staffId;
+    }
 
-	public void setStaffId(Integer staffId) {
-		this.staffId = staffId;
-	}
+    public void setStaffId(Integer staffId) {
+        this.staffId = staffId;
+    }
 
-	public Integer getFacilityId() {
-		return facilityId;
-	}
+    public Integer getFacilityId() {
+        return facilityId;
+    }
 
-	public void setFacilityId(Integer facilityId) {
-		this.facilityId = facilityId;
-	}
+    public void setFacilityId(Integer facilityId) {
+        this.facilityId = facilityId;
+    }
 
-	public String getSerialNumber() {
-		return serialNumber;
-	}
+    public String getSerialNumber() {
+        return serialNumber;
+    }
 
-	public void setSerialNumber(String serialNumber) {
-		this.serialNumber = serialNumber;
-	}
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
 
-	public Gender getSex() {
-		return sex;
-	}
+    public Gender getSex() {
+        return sex;
+    }
 
-	public void setSex(Gender sex) {
-		this.sex = sex;
-	}
+    public void setSex(Gender sex) {
+        this.sex = sex;
+    }
 
-	public Date getBirthDate() {
-		return birthDate;
-	}
+    public Date getBirthDate() {
+        return birthDate;
+    }
 
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
 
-	public Boolean getInsured() {
-		return insured;
-	}
+    public Boolean getInsured() {
+        return insured;
+    }
 
-	public void setInsured(Boolean insured) {
-		this.insured = insured;
-	}
+    public void setInsured(Boolean insured) {
+        this.insured = insured;
+    }
 
-	public Boolean getNewCase() {
-		return newCase;
-	}
+    public Boolean getNewCase() {
+        return newCase;
+    }
 
-	public void setNewCase(Boolean newCase) {
-		this.newCase = newCase;
-	}
+    public void setNewCase(Boolean newCase) {
+        this.newCase = newCase;
+    }
 
-	public Integer getDiagnosis() {
-		return diagnosis;
-	}
+    public Integer getDiagnosis() {
+        return diagnosis;
+    }
 
-	public void setDiagnosis(Integer diagnosis) {
-		this.diagnosis = diagnosis;
-	}
+    public void setDiagnosis(Integer diagnosis) {
+        this.diagnosis = diagnosis;
+    }
 
-	public Integer getSecondaryDiagnosis() {
-		return secondaryDiagnosis;
-	}
+    public Integer getSecondaryDiagnosis() {
+        return secondaryDiagnosis;
+    }
 
-	public void setSecondaryDiagnosis(Integer secondaryDiagnosis) {
-		this.secondaryDiagnosis = secondaryDiagnosis;
-	}
+    public void setSecondaryDiagnosis(Integer secondaryDiagnosis) {
+        this.secondaryDiagnosis = secondaryDiagnosis;
+    }
 
-	public Boolean getReferred() {
-		return referred;
-	}
+    public Boolean getReferred() {
+        return referred;
+    }
 
-	public void setReferred(Boolean referred) {
-		this.referred = referred;
-	}
+    public void setReferred(Boolean referred) {
+        this.referred = referred;
+    }
 
-	public Boolean getRdtGiven() {
-		return rdtGiven;
-	}
+    public Boolean getRdtGiven() {
+        return rdtGiven;
+    }
 
-	public void setRdtGiven(Boolean rdtGiven) {
-		this.rdtGiven = rdtGiven;
-	}
+    public void setRdtGiven(Boolean rdtGiven) {
+        this.rdtGiven = rdtGiven;
+    }
 
-	public Boolean getRdtPositive() {
-		return rdtPositive;
-	}
+    public Boolean getRdtPositive() {
+        return rdtPositive;
+    }
 
-	public void setRdtPositive(Boolean rdtPositive) {
-		this.rdtPositive = rdtPositive;
-	}
+    public void setRdtPositive(Boolean rdtPositive) {
+        this.rdtPositive = rdtPositive;
+    }
 
-	public Boolean getActTreated() {
-		return actTreated;
-	}
+    public Boolean getActTreated() {
+        return actTreated;
+    }
 
-	public void setActTreated(Boolean actTreated) {
-		this.actTreated = actTreated;
-	}
+    public void setActTreated(Boolean actTreated) {
+        this.actTreated = actTreated;
+    }
 
-	public String getComments() {
-		return comments;
-	}
+    public String getComments() {
+        return comments;
+    }
 
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 
     public Boolean getNewPatient() {
         return newPatient;
@@ -220,17 +220,17 @@ public class GeneralOutpatientEncounter {
         this.newPatient = newPatient;
     }
 
-	@Override
-	public String toString() {
-		return "General Outpatient Encounter: [date: " + date + ", staffID: "
-				+ staffId + ", facilityID: " + facilityId + ", serial: "
-				+ serialNumber + ", sex: " + sex + ", birthdate: " + birthDate
-				+ ", insured: " + insured + ", newcase: " + newCase + ", newpatient: " + newPatient
-				+ ", diagnosis1: " + diagnosis + ", diagnosis2: "
-				+ secondaryDiagnosis + ", referred: " + referred
-				+ ", rdtGiven: " + rdtGiven + ", rdtPositive: " + rdtPositive
-				+ ", actTreated: " + actTreated + ", comments: " + comments
-				+ "]";
-	}
+    @Override
+    public String toString() {
+        return "General Outpatient Encounter: [date: " + date + ", staffID: "
+                + staffId + ", facilityID: " + facilityId + ", serial: "
+                + serialNumber + ", sex: " + sex + ", birthdate: " + birthDate
+                + ", insured: " + insured + ", newcase: " + newCase + ", newpatient: " + newPatient
+                + ", diagnosis1: " + diagnosis + ", diagnosis2: "
+                + secondaryDiagnosis + ", referred: " + referred
+                + ", rdtGiven: " + rdtGiven + ", rdtPositive: " + rdtPositive
+                + ", actTreated: " + actTreated + ", comments: " + comments
+                + "]";
+    }
 
 }
