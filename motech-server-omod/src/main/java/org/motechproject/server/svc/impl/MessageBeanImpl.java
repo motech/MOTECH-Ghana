@@ -664,19 +664,6 @@ public class MessageBeanImpl implements MessageBean {
 		return task;
 	}
 
-	public void updateAllCareSchedules() {
-		PatientService patientService = contextService.getPatientService();
-		List<Patient> patients = patientService.getAllPatients();
-		log
-				.info("Updating care schedules for " + patients.size()
-						+ " patients");
-
-		for (Patient patient : patients) {
-			// Adds patient to transaction synchronization using advice
-			patientService.savePatient(patient);
-		}
-	}
-
 	public void sendDeliveryNotification(Patient patient) {
 		// Send message to phone number of facility serving patient's community
 		Community community = openmrsBean.getCommunityByPatient(patient);
