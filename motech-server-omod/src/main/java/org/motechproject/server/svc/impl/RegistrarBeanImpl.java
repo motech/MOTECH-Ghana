@@ -2038,25 +2038,25 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		Integer recipientId = message.getSchedule().getRecipientId();
 		Person messageRecipient = personService.getPerson(recipientId);
 		String phoneNumber = getPersonPhoneNumber(messageRecipient);
-		TroubledPhone troubledPhone = motechService
-				.getTroubledPhone(phoneNumber);
+//		TroubledPhone troubledPhone = motechService
+//				.getTroubledPhone(phoneNumber);
 
 		if (success) {
 			message.setAttemptStatus(MessageStatus.DELIVERED);
-
-			if (troubledPhone != null) {
-				motechService.removeTroubledPhone(phoneNumber);
-			}
+//
+//			if (troubledPhone != null) {
+//				motechService.removeTroubledPhone(phoneNumber);
+//			}
 		} else {
 			message.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
 
-			if (troubledPhone == null) {
-				motechService.addTroubledPhone(phoneNumber);
-			} else {
-				Integer sendFailures = troubledPhone.getSendFailures() + 1;
-				troubledPhone.setSendFailures(sendFailures);
-				motechService.saveTroubledPhone(troubledPhone);
-			}
+//			if (troubledPhone == null) {
+//				motechService.addTroubledPhone(phoneNumber);
+//			} else {
+//				Integer sendFailures = troubledPhone.getSendFailures() + 1;
+//				troubledPhone.setSendFailures(sendFailures);
+//				motechService.saveTroubledPhone(troubledPhone);
+//			}
 		}
 		motechService.saveMessage(message);
 	}
