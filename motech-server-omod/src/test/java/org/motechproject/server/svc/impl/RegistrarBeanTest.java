@@ -33,77 +33,37 @@
 
 package org.motechproject.server.svc.impl;
 
-import static org.easymock.EasyMock.anyObject;
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
-import junit.framework.TestCase;
-
 import org.easymock.Capture;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.motechproject.server.messaging.MessageNotFoundException;
-import org.motechproject.server.model.Community;
-import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.Message;
-import org.motechproject.server.model.MessageProgramEnrollment;
+import org.motechproject.server.model.*;
 import org.motechproject.server.model.MessageStatus;
-import org.motechproject.server.model.ScheduledMessage;
-import org.motechproject.server.model.TroubledPhone;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
-import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DayOfWeek;
-import org.motechproject.ws.Gender;
-import org.motechproject.ws.HowLearned;
-import org.motechproject.ws.InterestReason;
-import org.motechproject.ws.MediaType;
-import org.motechproject.ws.RegistrantType;
-import org.motechproject.ws.RegistrationMode;
-import org.openmrs.Concept;
-import org.openmrs.ConceptName;
-import org.openmrs.Encounter;
-import org.openmrs.EncounterType;
-import org.openmrs.Location;
-import org.openmrs.Obs;
+import org.motechproject.ws.*;
+import org.openmrs.*;
 import org.openmrs.Patient;
-import org.openmrs.PatientIdentifierType;
-import org.openmrs.Person;
-import org.openmrs.PersonAttribute;
-import org.openmrs.PersonAttributeType;
-import org.openmrs.PersonName;
-import org.openmrs.Relationship;
-import org.openmrs.RelationshipType;
-import org.openmrs.Role;
-import org.openmrs.User;
-import org.openmrs.api.ConceptService;
-import org.openmrs.api.EncounterService;
-import org.openmrs.api.LocationService;
-import org.openmrs.api.ObsService;
-import org.openmrs.api.PatientService;
-import org.openmrs.api.PersonService;
-import org.openmrs.api.UserService;
+import org.openmrs.api.*;
 import org.openmrs.module.idgen.IdentifierSource;
 import org.openmrs.module.idgen.LogEntry;
 import org.openmrs.module.idgen.SequentialIdentifierGenerator;
 import org.openmrs.module.idgen.service.IdentifierSourceService;
 import org.openmrs.util.OpenmrsConstants;
 
-public class RegistrarBeanTest extends TestCase {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
+
+public class RegistrarBeanTest {
 
 	RegistrarBean regBean;
 
@@ -207,8 +167,8 @@ public class RegistrarBeanTest extends TestCase {
 	Concept birthOutcomeConcept;
 	RelationshipType parentChildRelationshipType;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		contextService = createMock(ContextService.class);
 
 		locationService = createMock(LocationService.class);
@@ -451,8 +411,8 @@ public class RegistrarBeanTest extends TestCase {
 		regBean = regBeanImpl;
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		regBean = null;
 
 		contextService = null;
@@ -469,7 +429,8 @@ public class RegistrarBeanTest extends TestCase {
 		staffIdGenerator = null;
 	}
 
-	public void testRegisterStaff() {
+	@Test
+    public void registerStaff() {
 
 		String firstName = "Jenny", lastName = "Jones", phone = "12078675309", staffType = "CHO";
 		String generatedStaffId = "27";
@@ -526,7 +487,8 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(generatedStaffId, staff.getSystemId());
 	}
 
-	public void testRegisterPregnantMother() throws ParseException {
+	@Test
+    public void registerPregnantMother() throws ParseException {
 		Integer motechId = 123456;
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String nhis = "456DEF";
@@ -797,7 +759,8 @@ public class RegistrarBeanTest extends TestCase {
 				.getEncounterDatetime());
 	}
 
-	public void testRegisterChild() throws ParseException {
+	@Test
+    public void registerChild() throws ParseException {
 		Integer motechId = 123456;
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String nhis = "456DEF";
@@ -1056,7 +1019,8 @@ public class RegistrarBeanTest extends TestCase {
 				.getEncounterDatetime());
 	}
 
-	public void testRegisterPerson() throws ParseException {
+	@Test
+    public void registerPerson() throws ParseException {
 		Integer motechId = 123456;
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String nhis = "456DEF";
@@ -1297,7 +1261,8 @@ public class RegistrarBeanTest extends TestCase {
 				.getEncounterDatetime());
 	}
 
-	public void testEditPatient() throws ParseException {
+	@Test
+    public void editPatient() throws ParseException {
 
 		Integer patientId = 1;
 		String phone = "2075551212";
@@ -1414,7 +1379,8 @@ public class RegistrarBeanTest extends TestCase {
 
 	}
 
-	public void testEditPatientAll() throws ParseException {
+	@Test
+    public void editPatientAll() throws ParseException {
 		Integer patientId = 2;
 		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
 		String nhis = "456DEF", address = "Address";
@@ -1587,7 +1553,8 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(newMother, motherRelation.getPersonA());
 	}
 
-	public void testRegisterPregnancy() throws ParseException {
+	@Test
+    public void registerPregnancy() throws ParseException {
 		Integer patientId = 2;
 		Date date = new Date();
 		Boolean dueDateConfirmed = true, enroll = true, consent = true;
@@ -1760,7 +1727,9 @@ public class RegistrarBeanTest extends TestCase {
 				containsDueDateConfirmedObs);
 	}
 
-	public void testSetMessageStatusSuccessMessageFoundNotTroubled() {
+	@Ignore("Troubled phones saving being disabled for now")
+    @Test
+    public void setMessageStatusSuccessMessageFoundNotTroubled() {
 		String messageId = "12345678-1234-1234-1234-123456789012";
 		Boolean success = true;
 
@@ -1798,7 +1767,9 @@ public class RegistrarBeanTest extends TestCase {
 				.getAttemptStatus());
 	}
 
-	public void testSetMessageStatusSuccessMessageFoundTroubled() {
+	@Ignore
+    @Test
+    public void setMessageStatusSuccessMessageFoundTroubled() {
 		String messageId = "12345678-1234-1234-1234-123456789012";
 		Boolean success = true;
 
@@ -1837,7 +1808,9 @@ public class RegistrarBeanTest extends TestCase {
 				.getAttemptStatus());
 	}
 
-	public void testSetMessageStatusFailureMessageFoundNotTroubled() {
+	@Ignore
+    @Test
+    public void setMessageStatusFailureMessageFoundNotTroubled() {
 		String messageId = "12345678-1234-1234-1234-123456789012";
 		Boolean success = false;
 
@@ -1876,7 +1849,9 @@ public class RegistrarBeanTest extends TestCase {
 				.getAttemptStatus());
 	}
 
-	public void testSetMessageStatusFailureMessageFoundTroubled() {
+	@Ignore
+    @Test
+    public void setMessageStatusFailureMessageFoundTroubled() {
 		String messageId = "12345678-1234-1234-1234-123456789012";
 		Boolean success = false;
 
@@ -1922,7 +1897,8 @@ public class RegistrarBeanTest extends TestCase {
 		assertEquals(expectedFailures, capturedTroubledPhone.getSendFailures());
 	}
 
-	public void testSetMessageStatusMessageNotFound() {
+	@Test
+    public void setMessageStatusMessageNotFound() {
 		String messageId = "12345678-1234-1234-1234-123456789012";
 		Boolean success = true;
 
