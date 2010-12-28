@@ -46,7 +46,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -54,6 +53,7 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.GeneralOutpatientEncounter;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.IdBean;
@@ -71,7 +71,6 @@ import org.motechproject.ws.MediaType;
 import org.motechproject.ws.RegistrantType;
 import org.motechproject.ws.RegistrationMode;
 import org.openmrs.Concept;
-import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
@@ -133,68 +132,54 @@ public class RegistrarBeanTest extends TestCase {
 	EncounterType pregnancyDelVisitType;
 	EncounterType outpatientVisitType;
 	EncounterType registrationVisitType;
-	ConceptName immunizationConceptNameObj;
+	EncounterType patientHistoryVisitType;
+	EncounterType cwcVisitType;
+	EncounterType ttVisitType;
 	Concept immunizationConcept;
-	ConceptName tetanusConceptNameObj;
 	Concept tetanusConcept;
-	ConceptName iptConceptNameObj;
 	Concept iptConcept;
-	ConceptName itnConceptNameObj;
-	Concept itnConcept;
-	ConceptName visitNumConceptNameObj;
-	Concept visitNumConcept;
-	ConceptName pregConceptNameObj;
 	Concept pregConcept;
-	ConceptName pregStatusConceptNameObj;
 	Concept pregStatusConcept;
-	ConceptName dateConfConceptNameObj;
 	Concept dateConfConcept;
-	ConceptName dateConfConfirmedConceptNameObj;
 	Concept dateConfConfirmedConcept;
-	ConceptName gravidaConceptNameObj;
-	Concept gravidaConcept;
-	ConceptName parityConceptNameObj;
-	Concept parityConcept;
-	ConceptName refDateNameObj;
 	Concept refDateConcept;
-	ConceptName hivTestNameObj;
-	Concept hivTestConcept;
-	ConceptName terminationTypeNameObj;
-	Concept terminationTypeConcept;
-	ConceptName terminationComplicationNameObj;
-	Concept terminationComplicationConcept;
-	ConceptName iptiNameObj;
 	Concept iptiConcept;
-	ConceptName opvDoseNameObj;
 	Concept opvDoseConcept;
-	ConceptName pentaDoseNameObj;
 	Concept pentaDoseConcept;
-	ConceptName csmNameObj;
 	Concept csmConcept;
-	ConceptName deathCauseNameObj;
-	Concept deathCauseConcept;
-	ConceptName maternalDeathCauseNameObj;
-	Concept maternalDeathCauseConcept;
-	ConceptName serialNumberNameObj;
 	Concept serialNumberConcept;
-	ConceptName newCaseNameObj;
 	Concept newCaseConcept;
-	ConceptName referredNameObj;
 	Concept referredConcept;
-	ConceptName diagnosisNameObj;
 	Concept diagnosisConcept;
-	ConceptName secondDiagnosisNameObj;
 	Concept secondDiagnosisConcept;
-	ConceptName deliveyModeNameObj;
-	Concept deliveyModeConcept;
-	ConceptName deliveryLocationNameObj;
-	Concept deliveryLocationConcept;
-	ConceptName deliveredByNameObj;
-	Concept deliveredByConcept;
-	ConceptName deliveryOutcomeNameObj;
-	Concept deliveryOutcomeConcept;
-	ConceptName birthOutcomeNameObj;
-	Concept birthOutcomeConcept;
+	Concept bcgConcept;
+	Concept measlesConcept;
+	Concept yellowFeverConcept;
+	Concept vitaminAConcept;
+	Concept insuredConcept;
+	Concept positiveConcept;
+	Concept negativeConcept;
+	Concept malariaRDTConcept;
+	Concept actTreatmentConcept;
+	Concept commentsConcept;
+	Concept cwcLocationConcept;
+	Concept houseConcept;
+	Concept communityConcept;
+	Concept dewormerConcept;
+	Concept weightConcept;
+	Concept muacConcept;
+	Concept heightConcept;
+	Concept maleInvolvedConcept;
+	Concept visitNumberConcept;
+	Concept ancpncLocationConcept;
+	Concept temperatureConcept;
+	Concept respirationConcept;
+	Concept cordConditionConcept;
+	Concept babyConditionConcept;
+	Concept lochiaColourConcept;
+	Concept lochiaExcessConcept;
+	Concept lochiaOdourConcept;
+	Concept fundalHeightConcept;
 	RelationshipType parentChildRelationshipType;
 
 	@Override
@@ -296,138 +281,61 @@ public class RegistrarBeanTest extends TestCase {
 		registrationVisitType
 				.setName(MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT);
 
-		immunizationConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED, Locale
-						.getDefault());
+		patientHistoryVisitType = new EncounterType(9);
+		patientHistoryVisitType
+				.setName(MotechConstants.ENCOUNTER_TYPE_PATIENTHISTORY);
+
+		cwcVisitType = new EncounterType(10);
+		cwcVisitType.setName(MotechConstants.ENCOUNTER_TYPE_CWCVISIT);
+
+		ttVisitType = new EncounterType(11);
+		ttVisitType.setName(MotechConstants.ENCOUNTER_TYPE_TTVISIT);
+
 		immunizationConcept = new Concept(6);
-
-		tetanusConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_TETANUS_TOXOID_DOSE, Locale
-						.getDefault());
 		tetanusConcept = new Concept(7);
-
-		iptConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_DOSE,
-				Locale.getDefault());
 		iptConcept = new Concept(8);
-
-		itnConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_INSECTICIDE_TREATED_NET_USAGE, Locale
-						.getDefault());
-		itnConcept = new Concept(9);
-
-		visitNumConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_VISIT_NUMBER, Locale.getDefault());
-		visitNumConcept = new Concept(10);
-
-		pregStatusConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_PREGNANCY_STATUS, Locale.getDefault());
 		pregStatusConcept = new Concept(18);
-
-		dateConfConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT, Locale
-						.getDefault());
 		dateConfConcept = new Concept(19);
-
-		gravidaConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_GRAVIDA, Locale.getDefault());
-		gravidaConcept = new Concept(20);
-
-		parityConceptNameObj = new ConceptName(MotechConstants.CONCEPT_PARITY,
-				Locale.getDefault());
-		parityConcept = new Concept(22);
-
-		dateConfConfirmedConceptNameObj = new ConceptName(
-				MotechConstants.CONCEPT_DATE_OF_CONFINEMENT_CONFIRMED, Locale
-						.getDefault());
 		dateConfConfirmedConcept = new Concept(23);
-
-		pregConceptNameObj = new ConceptName(MotechConstants.CONCEPT_PREGNANCY,
-				Locale.getDefault());
 		pregConcept = new Concept(24);
-
-		refDateNameObj = new ConceptName(
-				MotechConstants.CONCEPT_ENROLLMENT_REFERENCE_DATE, Locale
-						.getDefault());
 		refDateConcept = new Concept(25);
-
-		hivTestNameObj = new ConceptName(
-				MotechConstants.CONCEPT_HIV_TEST_RESULT, Locale.getDefault());
-		hivTestConcept = new Concept(26);
-
-		terminationTypeNameObj = new ConceptName(
-				MotechConstants.CONCEPT_TERMINATION_TYPE, Locale.getDefault());
-		terminationTypeConcept = new Concept(27);
-
-		terminationComplicationNameObj = new ConceptName(
-				MotechConstants.CONCEPT_TERMINATION_COMPLICATION, Locale
-						.getDefault());
-		terminationComplicationConcept = new Concept(28);
-
-		iptiNameObj = new ConceptName(
-				MotechConstants.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_INFANTS_DOSE,
-				Locale.getDefault());
 		iptiConcept = new Concept(29);
-
-		opvDoseNameObj = new ConceptName(
-				MotechConstants.CONCEPT_ORAL_POLIO_VACCINATION_DOSE, Locale
-						.getDefault());
 		opvDoseConcept = new Concept(30);
-
-		pentaDoseNameObj = new ConceptName(
-				MotechConstants.CONCEPT_PENTA_VACCINATION_DOSE, Locale
-						.getDefault());
 		pentaDoseConcept = new Concept(31);
-
-		csmNameObj = new ConceptName(
-				MotechConstants.CONCEPT_CEREBRO_SPINAL_MENINGITIS_VACCINATION,
-				Locale.getDefault());
 		csmConcept = new Concept(32);
-
-		deathCauseNameObj = new ConceptName(
-				MotechConstants.CONCEPT_CAUSE_OF_DEATH, Locale.getDefault());
-		deathCauseConcept = new Concept(33);
-
-		serialNumberNameObj = new ConceptName(
-				MotechConstants.CONCEPT_SERIAL_NUMBER, Locale.getDefault());
 		serialNumberConcept = new Concept(35);
-
-		newCaseNameObj = new ConceptName(MotechConstants.CONCEPT_NEW_CASE,
-				Locale.getDefault());
 		newCaseConcept = new Concept(36);
-
-		referredNameObj = new ConceptName(MotechConstants.CONCEPT_REFERRED,
-				Locale.getDefault());
 		referredConcept = new Concept(37);
-
-		diagnosisNameObj = new ConceptName(
-				MotechConstants.CONCEPT_PRIMARY_DIAGNOSIS, Locale.getDefault());
 		diagnosisConcept = new Concept(38);
-
-		secondDiagnosisNameObj = new ConceptName(
-				MotechConstants.CONCEPT_SECONDARY_DIAGNOSIS, Locale
-						.getDefault());
 		secondDiagnosisConcept = new Concept(39);
-
-		deliveyModeNameObj = new ConceptName(
-				MotechConstants.CONCEPT_DELIVERY_MODE, Locale.getDefault());
-		deliveyModeConcept = new Concept(40);
-
-		deliveryLocationNameObj = new ConceptName(
-				MotechConstants.CONCEPT_DELIVERY_LOCATION, Locale.getDefault());
-		deliveryLocationConcept = new Concept(41);
-
-		deliveredByNameObj = new ConceptName(
-				MotechConstants.CONCEPT_DELIVERED_BY, Locale.getDefault());
-		deliveredByConcept = new Concept(42);
-
-		deliveryOutcomeNameObj = new ConceptName(
-				MotechConstants.CONCEPT_DELIVERY_OUTCOME, Locale.getDefault());
-		deliveryOutcomeConcept = new Concept(43);
-
-		birthOutcomeNameObj = new ConceptName(
-				MotechConstants.CONCEPT_BIRTH_OUTCOME, Locale.getDefault());
-		birthOutcomeConcept = new Concept(44);
+		bcgConcept = new Concept(45);
+		measlesConcept = new Concept(46);
+		yellowFeverConcept = new Concept(47);
+		vitaminAConcept = new Concept(48);
+		insuredConcept = new Concept(49);
+		positiveConcept = new Concept(50);
+		negativeConcept = new Concept(51);
+		malariaRDTConcept = new Concept(52);
+		actTreatmentConcept = new Concept(53);
+		commentsConcept = new Concept(54);
+		cwcLocationConcept = new Concept(55);
+		houseConcept = new Concept(56);
+		communityConcept = new Concept(57);
+		dewormerConcept = new Concept(58);
+		weightConcept = new Concept(59);
+		muacConcept = new Concept(60);
+		heightConcept = new Concept(61);
+		maleInvolvedConcept = new Concept(62);
+		visitNumberConcept = new Concept(63);
+		ancpncLocationConcept = new Concept(64);
+		temperatureConcept = new Concept(65);
+		respirationConcept = new Concept(66);
+		cordConditionConcept = new Concept(67);
+		babyConditionConcept = new Concept(68);
+		lochiaColourConcept = new Concept(69);
+		lochiaExcessConcept = new Concept(70);
+		lochiaOdourConcept = new Concept(71);
+		fundalHeightConcept = new Concept(72);
 
 		parentChildRelationshipType = new RelationshipType(1);
 		parentChildRelationshipType.setaIsToB("Parent");
@@ -1095,6 +1003,156 @@ public class RegistrarBeanTest extends TestCase {
 				.getEncounterDatetime());
 	}
 
+	public void testDemoRegisterPatient() throws ParseException {
+		RegistrationMode registrationMode = RegistrationMode.AUTO_GENERATE_ID;
+		Integer motechId = null;
+		String generatedMotechId = "123456";
+		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", preferredName = "PrefName";
+		String nhis = "456DEF", address = "Address", phoneNumber = "2075555555", language = "Language";
+		Date date = new Date();
+		Boolean estimatedBirthDate = true, insured = true, enroll = true, consent = true;
+		Gender sex = Gender.FEMALE;
+		ContactNumberType ownership = ContactNumberType.PERSONAL;
+		MediaType format = MediaType.TEXT;
+		DayOfWeek dayOfWeek = DayOfWeek.MONDAY;
+		InterestReason reason = InterestReason.FAMILY_FRIEND_PREGNANT;
+		HowLearned howLearned = HowLearned.FRIEND;
+
+		Community community = new Community();
+		User staff = new User(1);
+		String program = "Demo Minute Message Program";
+		Integer patientId = 5;
+		Patient createdPatient = new Patient(patientId);
+
+		Capture<Patient> patientCap = new Capture<Patient>();
+
+		expect(contextService.getPatientService()).andReturn(patientService)
+				.atLeastOnce();
+		expect(contextService.getAuthenticatedUser()).andReturn(staff);
+
+		expect(idBean.generateMotechId()).andReturn(generatedMotechId);
+		expect(openmrsBean.getMotechPatientIdType()).andReturn(motechIdType);
+		expect(openmrsBean.getGhanaLocation()).andReturn(ghanaLocation);
+
+		expect(openmrsBean.getPhoneNumberAttributeType()).andReturn(
+				phoneAttributeType);
+		expect(openmrsBean.getPhoneTypeAttributeType()).andReturn(
+				phoneTypeAttributeType);
+		expect(openmrsBean.getMediaTypeAttributeType()).andReturn(
+				mediaTypeAttributeType);
+		expect(openmrsBean.getLanguageAttributeType()).andReturn(
+				languageAttributeType);
+		expect(openmrsBean.getDeliveryDayAttributeType()).andReturn(
+				deliveryDayAttributeType);
+		expect(openmrsBean.getDeliveryTimeAttributeType()).andReturn(
+				deliveryTimeAttributeType);
+		expect(openmrsBean.getHowLearnedAttributeType()).andReturn(
+				howLearnedAttributeType);
+		expect(openmrsBean.getInterestReasonAttributeType()).andReturn(
+				interestReasonAttributeType);
+		expect(openmrsBean.getInsuredAttributeType()).andReturn(
+				insuredAttributeType);
+		expect(openmrsBean.getNHISNumberAttributeType()).andReturn(
+				nhisAttributeType);
+		expect(openmrsBean.getNHISExpirationDateAttributeType()).andReturn(
+				nhisExpirationType);
+
+		expect(patientService.savePatient(capture(patientCap))).andReturn(
+				createdPatient);
+		messageBean.addMessageProgramEnrollment(patientId, program, null);
+
+		replay(contextService, patientService, idBean, openmrsBean, messageBean);
+
+		regBean.demoRegisterPatient(registrationMode, motechId, firstName,
+				middleName, lastName, preferredName, date, estimatedBirthDate,
+				sex, insured, nhis, date, community, address, phoneNumber,
+				enroll, consent, ownership, format, language, dayOfWeek, date,
+				reason, howLearned);
+
+		verify(contextService, patientService, idBean, openmrsBean, messageBean);
+
+		Patient capturedPatient = patientCap.getValue();
+		assertEquals(generatedMotechId, capturedPatient.getPatientIdentifier(
+				motechIdType).getIdentifier());
+		assertEquals(preferredName, capturedPatient.getGivenName());
+		assertEquals(lastName, capturedPatient.getFamilyName());
+		assertEquals(middleName, capturedPatient.getMiddleName());
+		Iterator<PersonName> names = capturedPatient.getNames().iterator();
+		while (names.hasNext()) {
+			PersonName personName = names.next();
+			if (personName.isPreferred()) {
+				assertEquals(preferredName, personName.getGivenName());
+				assertEquals(lastName, personName.getFamilyName());
+				assertEquals(middleName, personName.getMiddleName());
+			} else {
+				assertEquals(firstName, personName.getGivenName());
+				assertEquals(lastName, personName.getFamilyName());
+				assertEquals(middleName, personName.getMiddleName());
+			}
+		}
+		assertEquals(date, capturedPatient.getBirthdate());
+		assertEquals(estimatedBirthDate, capturedPatient
+				.getBirthdateEstimated());
+		assertEquals(GenderTypeConverter.toOpenMRSString(Gender.FEMALE),
+				capturedPatient.getGender());
+		assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
+		assertEquals(phoneNumber.toString(), capturedPatient.getAttribute(
+				phoneAttributeType).getValue());
+		assertEquals(ownership, ContactNumberType.valueOf(capturedPatient
+				.getAttribute(phoneTypeAttributeType).getValue()));
+		assertEquals(format, MediaType.valueOf(capturedPatient.getAttribute(
+				mediaTypeAttributeType).getValue()));
+		assertEquals(language, capturedPatient.getAttribute(
+				languageAttributeType).getValue());
+		assertEquals(howLearned, HowLearned.valueOf(capturedPatient
+				.getAttribute(howLearnedAttributeType).getValue()));
+		assertEquals(reason, InterestReason.valueOf(capturedPatient
+				.getAttribute(interestReasonAttributeType).getValue()));
+		assertEquals(nhis, capturedPatient.getAttribute(nhisAttributeType)
+				.getValue());
+		Date nhisExpDate = (new SimpleDateFormat(MotechConstants.DATE_FORMAT))
+				.parse(capturedPatient.getAttribute(nhisExpirationType)
+						.getValue());
+		Calendar nhisExpCal = Calendar.getInstance();
+		nhisExpCal.setTime(date);
+		int year = nhisExpCal.get(Calendar.YEAR);
+		int month = nhisExpCal.get(Calendar.MONTH);
+		int day = nhisExpCal.get(Calendar.DAY_OF_MONTH);
+		nhisExpCal.setTime(nhisExpDate);
+		assertEquals(year, nhisExpCal.get(Calendar.YEAR));
+		assertEquals(month, nhisExpCal.get(Calendar.MONTH));
+		assertEquals(day, nhisExpCal.get(Calendar.DAY_OF_MONTH));
+		assertEquals(insured, Boolean.valueOf(capturedPatient.getAttribute(
+				insuredAttributeType).getValue()));
+		assertEquals(dayOfWeek, DayOfWeek.valueOf(capturedPatient.getAttribute(
+				deliveryDayAttributeType).getValue()));
+		Calendar timeOfDayCal = Calendar.getInstance();
+		timeOfDayCal.setTime(date);
+		int hour = timeOfDayCal.get(Calendar.HOUR_OF_DAY);
+		int min = timeOfDayCal.get(Calendar.MINUTE);
+		Date timeOfDayDate = (new SimpleDateFormat(
+				MotechConstants.TIME_FORMAT_DELIVERY_TIME))
+				.parse(capturedPatient.getAttribute(deliveryTimeAttributeType)
+						.getValue());
+		timeOfDayCal.setTime(timeOfDayDate);
+		assertEquals(hour, timeOfDayCal.get(Calendar.HOUR_OF_DAY));
+		assertEquals(min, timeOfDayCal.get(Calendar.MINUTE));
+	}
+
+	public void testDemoEnrollPatient() {
+		Integer patientId = 1;
+		Patient patient = new Patient(patientId);
+		String program = "Input Demo Message Program";
+
+		messageBean.addMessageProgramEnrollment(patientId, program, null);
+
+		replay(messageBean);
+
+		regBean.demoEnrollPatient(patient);
+
+		verify(messageBean);
+	}
+
 	public void testEditPatient() throws ParseException {
 
 		Integer patientId = 1;
@@ -1432,6 +1490,1193 @@ public class RegistrarBeanTest extends TestCase {
 		assertTrue("Due Date Obs missing", containsDueDateObs);
 		assertTrue("Due Date Confirmed Obs missing",
 				containsDueDateConfirmedObs);
+	}
+
+	public void testRegisterPregnancyExistingNotEnroll() throws ParseException {
+		String phoneNumber = "2075555555", language = "Language";
+		Date date = new Date();
+		Boolean enroll = false, consent = false;
+		ContactNumberType ownership = ContactNumberType.PERSONAL;
+		MediaType format = MediaType.TEXT;
+		DayOfWeek dayOfWeek = DayOfWeek.MONDAY;
+		HowLearned howLearned = HowLearned.FRIEND;
+
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Integer patientId = 5;
+		Patient patient = new Patient(patientId);
+		Obs pregnanyObs = new Obs(7);
+		Obs pregnanyDueDateObs = new Obs(8);
+
+		Capture<Patient> patientCap = new Capture<Patient>();
+
+		expect(openmrsBean.getActivePregnancy(patientId))
+				.andReturn(pregnanyObs);
+		expect(openmrsBean.getActivePregnancyDueDateObs(patientId, pregnanyObs))
+				.andReturn(pregnanyDueDateObs);
+
+		expect(contextService.getPatientService()).andReturn(patientService)
+				.atLeastOnce();
+
+		expect(openmrsBean.getPhoneNumberAttributeType()).andReturn(
+				phoneAttributeType);
+		expect(openmrsBean.getPhoneTypeAttributeType()).andReturn(
+				phoneTypeAttributeType);
+		expect(openmrsBean.getMediaTypeAttributeType()).andReturn(
+				mediaTypeAttributeType);
+		expect(openmrsBean.getLanguageAttributeType()).andReturn(
+				languageAttributeType);
+		expect(openmrsBean.getDeliveryDayAttributeType()).andReturn(
+				deliveryDayAttributeType);
+		expect(openmrsBean.getDeliveryTimeAttributeType()).andReturn(
+				deliveryTimeAttributeType);
+		expect(openmrsBean.getHowLearnedAttributeType()).andReturn(
+				howLearnedAttributeType);
+
+		expect(patientService.savePatient(capture(patientCap))).andReturn(
+				new Patient());
+
+		replay(contextService, patientService, openmrsBean, messageBean);
+
+		regBean.registerPregnancy(staff, facility, date, patient, date, enroll,
+				consent, ownership, phoneNumber, format, language, dayOfWeek,
+				date, howLearned);
+
+		verify(contextService, patientService, openmrsBean, messageBean);
+
+		Patient capturedPatient = patientCap.getValue();
+		assertEquals(phoneNumber.toString(), capturedPatient.getAttribute(
+				phoneAttributeType).getValue());
+		assertEquals(ownership, ContactNumberType.valueOf(capturedPatient
+				.getAttribute(phoneTypeAttributeType).getValue()));
+		assertEquals(format, MediaType.valueOf(capturedPatient.getAttribute(
+				mediaTypeAttributeType).getValue()));
+		assertEquals(language, capturedPatient.getAttribute(
+				languageAttributeType).getValue());
+		assertEquals(howLearned, HowLearned.valueOf(capturedPatient
+				.getAttribute(howLearnedAttributeType).getValue()));
+		assertEquals(dayOfWeek, DayOfWeek.valueOf(capturedPatient.getAttribute(
+				deliveryDayAttributeType).getValue()));
+		Calendar timeOfDayCal = Calendar.getInstance();
+		timeOfDayCal.setTime(date);
+		int hour = timeOfDayCal.get(Calendar.HOUR_OF_DAY);
+		int min = timeOfDayCal.get(Calendar.MINUTE);
+		Date timeOfDayDate = (new SimpleDateFormat(
+				MotechConstants.TIME_FORMAT_DELIVERY_TIME))
+				.parse(capturedPatient.getAttribute(deliveryTimeAttributeType)
+						.getValue());
+		timeOfDayCal.setTime(timeOfDayDate);
+		assertEquals(hour, timeOfDayCal.get(Calendar.HOUR_OF_DAY));
+		assertEquals(min, timeOfDayCal.get(Calendar.MINUTE));
+	}
+
+	public void testRecordPatientHistory() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Patient patient = new Patient(3);
+		Integer lastIPT = 1, lastTT = 1, lastOPV = 1, lastPenta = 1, lastIPTI = 1;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 0, 0, 0);
+		Date date = calendar.getTime();
+		calendar.set(2009, 1, 1);
+		Date lastIPTDate = calendar.getTime();
+		calendar.set(2009, 2, 1);
+		Date lastTTDate = calendar.getTime();
+		calendar.set(2009, 3, 1);
+		Date bcgDate = calendar.getTime();
+		calendar.set(2009, 4, 1);
+		Date lastOPVDate = calendar.getTime();
+		calendar.set(2009, 5, 1);
+		Date lastPentaDate = calendar.getTime();
+		calendar.set(2009, 6, 1);
+		Date measlesDate = calendar.getTime();
+		calendar.set(2009, 7, 1);
+		Date yellowFeverDate = calendar.getTime();
+		calendar.set(2009, 8, 1);
+		Date lastIPTIDate = calendar.getTime();
+		calendar.set(2009, 9, 1);
+		Date lastVitaminADate = calendar.getTime();
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getGhanaLocation()).andReturn(ghanaLocation);
+		expect(openmrsBean.getPatientHistoryEncounterType()).andReturn(
+				patientHistoryVisitType);
+
+		expect(openmrsBean.getIPTDoseConcept()).andReturn(iptConcept);
+		expect(openmrsBean.getTetanusDoseConcept()).andReturn(tetanusConcept);
+		expect(openmrsBean.getBCGConcept()).andReturn(bcgConcept);
+		expect(openmrsBean.getOPVDoseConcept()).andReturn(opvDoseConcept);
+		expect(openmrsBean.getPentaDoseConcept()).andReturn(pentaDoseConcept);
+		expect(openmrsBean.getMeaslesConcept()).andReturn(measlesConcept);
+		expect(openmrsBean.getYellowFeverConcept()).andReturn(
+				yellowFeverConcept);
+		expect(openmrsBean.getIPTiDoseConcept()).andReturn(iptiConcept);
+		expect(openmrsBean.getVitaminAConcept()).andReturn(vitaminAConcept);
+		expect(openmrsBean.getImmunizationsOrderedConcept()).andReturn(
+				immunizationConcept).times(4);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordPatientHistory(staff, facility, date, patient, lastIPT,
+				lastIPTDate, lastTT, lastTTDate, bcgDate, lastOPV, lastOPVDate,
+				lastPenta, lastPentaDate, measlesDate, yellowFeverDate,
+				lastIPTI, lastIPTIDate, lastVitaminADate);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(ghanaLocation, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(patientHistoryVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(9, obsSet.size());
+		int verifiedObs = 0;
+		for (Obs obs : obsSet) {
+			assertEquals(patient, obs.getPerson());
+			assertEquals(ghanaLocation, obs.getLocation());
+			if (iptConcept.equals(obs.getConcept())) {
+				assertEquals(lastIPTDate, obs.getObsDatetime());
+				assertEquals(new Double(lastIPT), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (tetanusConcept.equals(obs.getConcept())) {
+				assertEquals(lastTTDate, obs.getObsDatetime());
+				assertEquals(new Double(lastTT), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (opvDoseConcept.equals(obs.getConcept())) {
+				assertEquals(lastOPVDate, obs.getObsDatetime());
+				assertEquals(new Double(lastOPV), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (pentaDoseConcept.equals(obs.getConcept())) {
+				assertEquals(lastPentaDate, obs.getObsDatetime());
+				assertEquals(new Double(lastPenta), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (iptiConcept.equals(obs.getConcept())) {
+				assertEquals(lastIPTIDate, obs.getObsDatetime());
+				assertEquals(new Double(lastIPTI), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (immunizationConcept.equals(obs.getConcept())) {
+				if (vitaminAConcept.equals(obs.getValueCoded())) {
+					assertEquals(lastVitaminADate, obs.getObsDatetime());
+					verifiedObs++;
+				} else if (yellowFeverConcept.equals(obs.getValueCoded())) {
+					assertEquals(yellowFeverDate, obs.getObsDatetime());
+					verifiedObs++;
+				} else if (measlesConcept.equals(obs.getValueCoded())) {
+					assertEquals(measlesDate, obs.getObsDatetime());
+					verifiedObs++;
+				} else if (bcgConcept.equals(obs.getValueCoded())) {
+					assertEquals(bcgDate, obs.getObsDatetime());
+					verifiedObs++;
+				} else {
+					fail("Unexpected immunization Obs coded value: "
+							+ obs.getValueCoded());
+				}
+			} else {
+				fail("Unexpected Obs concept: " + obs.getConcept());
+			}
+		}
+		assertEquals("Missing expected obs", 9, verifiedObs);
+	}
+
+	public void testRecordPatientHistoryEmpty() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Patient patient = new Patient(3);
+		Integer lastIPT = null, lastTT = null, lastOPV = null, lastPenta = null, lastIPTI = null;
+		Date date = new Date();
+		Date lastIPTDate = null, lastTTDate = null, bcgDate = null, lastOPVDate = null;
+		Date lastPentaDate = null, measlesDate = null, yellowFeverDate = null;
+		Date lastIPTIDate = null, lastVitaminADate = null;
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getGhanaLocation()).andReturn(ghanaLocation);
+		expect(openmrsBean.getPatientHistoryEncounterType()).andReturn(
+				patientHistoryVisitType);
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordPatientHistory(staff, facility, date, patient, lastIPT,
+				lastIPTDate, lastTT, lastTTDate, bcgDate, lastOPV, lastOPVDate,
+				lastPenta, lastPentaDate, measlesDate, yellowFeverDate,
+				lastIPTI, lastIPTIDate, lastVitaminADate);
+
+		verify(contextService, encounterService, openmrsBean);
+	}
+
+	public void testRecordPatientHistoryPartiallyEmpty() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Patient patient = new Patient(3);
+		Integer lastIPT = 1, lastTT = 1, lastOPV = 1, lastPenta = 1, lastIPTI = 1;
+		Date date = new Date();
+		Date lastIPTDate = null, lastTTDate = null, bcgDate = null, lastOPVDate = null;
+		Date lastPentaDate = null, measlesDate = null, yellowFeverDate = null;
+		Date lastIPTIDate = null, lastVitaminADate = null;
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getGhanaLocation()).andReturn(ghanaLocation);
+		expect(openmrsBean.getPatientHistoryEncounterType()).andReturn(
+				patientHistoryVisitType);
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordPatientHistory(staff, facility, date, patient, lastIPT,
+				lastIPTDate, lastTT, lastTTDate, bcgDate, lastOPV, lastOPVDate,
+				lastPenta, lastPentaDate, measlesDate, yellowFeverDate,
+				lastIPTI, lastIPTIDate, lastVitaminADate);
+
+		verify(contextService, encounterService, openmrsBean);
+	}
+
+	public void testRecordMotherPNCVisit() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Patient patient = new Patient(3);
+		String house = "A12", community = "C23", comments = "Comment";
+		Boolean referred = false, maleInvolved = true, vitaminA = true, lochiaOdourFoul = false, lochiaAmountExcess = false;
+		Integer visitNumber = 1, pncLocation = 3, ttDose = 1, lochiaColour = 3;
+		Double temperature = 23.1, fht = 25.7;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 8, 30, 0);
+		Date date = calendar.getTime();
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getMotherPNCVisitEncounterType()).andReturn(
+				pncMotherVisitType);
+
+		expect(openmrsBean.getVisitNumberConcept()).andReturn(
+				visitNumberConcept);
+		expect(openmrsBean.getANCPNCLocationConcept()).andReturn(
+				ancpncLocationConcept);
+		expect(openmrsBean.getHouseConcept()).andReturn(houseConcept);
+		expect(openmrsBean.getCommunityConcept()).andReturn(communityConcept);
+		expect(openmrsBean.getReferredConcept()).andReturn(referredConcept);
+		expect(openmrsBean.getMaleInvolvementConcept()).andReturn(
+				maleInvolvedConcept);
+		expect(openmrsBean.getVitaminAConcept()).andReturn(vitaminAConcept);
+		expect(openmrsBean.getImmunizationsOrderedConcept()).andReturn(
+				immunizationConcept);
+		expect(openmrsBean.getTetanusDoseConcept()).andReturn(tetanusConcept);
+		expect(openmrsBean.getLochiaColourConcept()).andReturn(
+				lochiaColourConcept);
+		expect(openmrsBean.getLochiaFoulConcept())
+				.andReturn(lochiaOdourConcept);
+		expect(openmrsBean.getLochiaExcessConcept()).andReturn(
+				lochiaExcessConcept);
+		expect(openmrsBean.getTemperatureConcept()).andReturn(
+				temperatureConcept);
+		expect(openmrsBean.getFundalHeightConcept()).andReturn(
+				fundalHeightConcept);
+		expect(openmrsBean.getCommentsConcept()).andReturn(commentsConcept);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean
+				.recordMotherPNCVisit(staff, facility, date, patient,
+						visitNumber, pncLocation, house, community, referred,
+						maleInvolved, vitaminA, ttDose, lochiaColour,
+						lochiaAmountExcess, lochiaOdourFoul, temperature, fht,
+						comments);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(pncMotherVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(14, obsSet.size());
+		int verifiedObs = 0;
+		for (Obs obs : obsSet) {
+			assertEquals(patient, obs.getPerson());
+			assertEquals(date, obs.getObsDatetime());
+			assertEquals(facility, obs.getLocation());
+			if (visitNumberConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(visitNumber), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (ancpncLocationConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(pncLocation), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (houseConcept.equals(obs.getConcept())) {
+				assertEquals(house, obs.getValueText());
+				verifiedObs++;
+			} else if (communityConcept.equals(obs.getConcept())) {
+				assertEquals(community, obs.getValueText());
+				verifiedObs++;
+			} else if (referredConcept.equals(obs.getConcept())) {
+				assertEquals(0.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (maleInvolvedConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (tetanusConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(ttDose), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (lochiaColourConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(lochiaColour), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (lochiaOdourConcept.equals(obs.getConcept())) {
+				assertEquals(0.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (lochiaExcessConcept.equals(obs.getConcept())) {
+				assertEquals(0.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (temperatureConcept.equals(obs.getConcept())) {
+				assertEquals(temperature, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (fundalHeightConcept.equals(obs.getConcept())) {
+				assertEquals(fht, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (commentsConcept.equals(obs.getConcept())) {
+				assertEquals(comments, obs.getValueText());
+				verifiedObs++;
+			} else if (immunizationConcept.equals(obs.getConcept())
+					&& vitaminAConcept.equals(obs.getValueCoded())) {
+				verifiedObs++;
+			} else {
+				fail("Unexpected Obs concept: " + obs.getConcept());
+			}
+		}
+		assertEquals("Missing expected obs", 14, verifiedObs);
+	}
+
+	public void testRecordMotherPNCVisitEmpty() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Patient patient = new Patient(3);
+		String house = null, community = null, comments = null;
+		Boolean referred = null, maleInvolved = null, vitaminA = null, lochiaOdourFoul = null, lochiaAmountExcess = null;
+		Integer visitNumber = null, pncLocation = null, ttDose = null, lochiaColour = null;
+		Double temperature = null, fht = null;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 8, 30, 0);
+		Date date = calendar.getTime();
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getMotherPNCVisitEncounterType()).andReturn(
+				pncMotherVisitType);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean
+				.recordMotherPNCVisit(staff, facility, date, patient,
+						visitNumber, pncLocation, house, community, referred,
+						maleInvolved, vitaminA, ttDose, lochiaColour,
+						lochiaAmountExcess, lochiaOdourFoul, temperature, fht,
+						comments);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(pncMotherVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(0, obsSet.size());
+	}
+
+	public void testRecordChildPNCVisit() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Patient patient = new Patient(3);
+		String house = "A12", community = "C23", comments = "Comment";
+		Boolean bcg = true, opv0 = true, cordConditionNormal = true, babyConditionGood = true, referred = false, maleInvolved = true;
+		Integer visitNumber = 1, pncLocation = 3, respiration = 60;
+		Double weight = 4.1, temperature = 20.2;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 8, 30, 0);
+		Date date = calendar.getTime();
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getChildPNCVisitEncounterType()).andReturn(
+				pncChildVisitType);
+
+		expect(openmrsBean.getVisitNumberConcept()).andReturn(
+				visitNumberConcept);
+		expect(openmrsBean.getANCPNCLocationConcept()).andReturn(
+				ancpncLocationConcept);
+		expect(openmrsBean.getHouseConcept()).andReturn(houseConcept);
+		expect(openmrsBean.getCommunityConcept()).andReturn(communityConcept);
+		expect(openmrsBean.getReferredConcept()).andReturn(referredConcept);
+		expect(openmrsBean.getMaleInvolvementConcept()).andReturn(
+				maleInvolvedConcept);
+		expect(openmrsBean.getWeightConcept()).andReturn(weightConcept);
+		expect(openmrsBean.getTemperatureConcept()).andReturn(
+				temperatureConcept);
+		expect(openmrsBean.getBCGConcept()).andReturn(bcgConcept);
+		expect(openmrsBean.getImmunizationsOrderedConcept()).andReturn(
+				immunizationConcept);
+		expect(openmrsBean.getOPVDoseConcept()).andReturn(opvDoseConcept);
+		expect(openmrsBean.getRespiratoryRateConcept()).andReturn(
+				respirationConcept);
+		expect(openmrsBean.getCordConditionConcept()).andReturn(
+				cordConditionConcept);
+		expect(openmrsBean.getConditionBabyConcept()).andReturn(
+				babyConditionConcept);
+		expect(openmrsBean.getCommentsConcept()).andReturn(commentsConcept);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordChildPNCVisit(staff, facility, date, patient,
+				visitNumber, pncLocation, house, community, referred,
+				maleInvolved, weight, temperature, bcg, opv0, respiration,
+				cordConditionNormal, babyConditionGood, comments);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(pncChildVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(14, obsSet.size());
+		int verifiedObs = 0;
+		for (Obs obs : obsSet) {
+			assertEquals(patient, obs.getPerson());
+			assertEquals(date, obs.getObsDatetime());
+			assertEquals(facility, obs.getLocation());
+			if (visitNumberConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(visitNumber), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (ancpncLocationConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(pncLocation), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (houseConcept.equals(obs.getConcept())) {
+				assertEquals(house, obs.getValueText());
+				verifiedObs++;
+			} else if (communityConcept.equals(obs.getConcept())) {
+				assertEquals(community, obs.getValueText());
+				verifiedObs++;
+			} else if (referredConcept.equals(obs.getConcept())) {
+				assertEquals(0.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (maleInvolvedConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (weightConcept.equals(obs.getConcept())) {
+				assertEquals(weight, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (temperatureConcept.equals(obs.getConcept())) {
+				assertEquals(temperature, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (opvDoseConcept.equals(obs.getConcept())) {
+				assertEquals(0.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (respirationConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(respiration), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (cordConditionConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (babyConditionConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (commentsConcept.equals(obs.getConcept())) {
+				assertEquals(comments, obs.getValueText());
+				verifiedObs++;
+			} else if (immunizationConcept.equals(obs.getConcept())
+					&& bcgConcept.equals(obs.getValueCoded())) {
+				verifiedObs++;
+			} else {
+				fail("Unexpected Obs concept: " + obs.getConcept());
+			}
+		}
+		assertEquals("Missing expected obs", 14, verifiedObs);
+	}
+
+	public void testRecordChildPNCVisitEmpty() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Patient patient = new Patient(3);
+		String house = null, community = null, comments = null;
+		Boolean bcg = null, opv0 = null, cordConditionNormal = null, babyConditionGood = null, referred = null, maleInvolved = null;
+		Integer visitNumber = null, pncLocation = null, respiration = null;
+		Double weight = null, temperature = null;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 8, 30, 0);
+		Date date = calendar.getTime();
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getChildPNCVisitEncounterType()).andReturn(
+				pncChildVisitType);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordChildPNCVisit(staff, facility, date, patient,
+				visitNumber, pncLocation, house, community, referred,
+				maleInvolved, weight, temperature, bcg, opv0, respiration,
+				cordConditionNormal, babyConditionGood, comments);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(pncChildVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(0, obsSet.size());
+	}
+
+	public void testRecordTTVisit() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Patient patient = new Patient(3);
+		Integer ttDose = 3;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 0, 0, 0);
+		Date date = calendar.getTime();
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getTTVisitEncounterType()).andReturn(ttVisitType);
+		expect(openmrsBean.getTetanusDoseConcept()).andReturn(tetanusConcept);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordTTVisit(staff, facility, date, patient, ttDose);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(ttVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(1, obsSet.size());
+		Obs obs = obsSet.iterator().next();
+		assertEquals(patient, obs.getPerson());
+		assertEquals(facility, obs.getLocation());
+		assertEquals(date, obs.getObsDatetime());
+		assertEquals(tetanusConcept, obs.getConcept());
+		assertEquals(new Double(ttDose), obs.getValueNumeric());
+	}
+
+	public void testRecordTTVisitEmpty() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Patient patient = new Patient(3);
+		Integer ttDose = null;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 0, 0, 0);
+		Date date = calendar.getTime();
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getTTVisitEncounterType()).andReturn(ttVisitType);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordTTVisit(staff, facility, date, patient, ttDose);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(ttVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(0, obsSet.size());
+	}
+
+	public void testRecordChildCWCVisit() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Patient patient = new Patient(3);
+		String house = "A12", community = "C23", comments = "Comment";
+		Boolean bcg = true, measles = true, yellowFever = true, csm = true, vitaminA = true, dewormer = true, maleInvolved = true;
+		Integer cwcLocation = 3, opvDose = 1, pentaDose = 1, iptiDose = 1;
+		Double weight = 4.1, muac = 5.2, height = 10.3;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 0, 0, 0);
+		Date date = calendar.getTime();
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getCWCVisitEncounterType()).andReturn(cwcVisitType);
+
+		expect(openmrsBean.getBCGConcept()).andReturn(bcgConcept);
+		expect(openmrsBean.getOPVDoseConcept()).andReturn(opvDoseConcept);
+		expect(openmrsBean.getPentaDoseConcept()).andReturn(pentaDoseConcept);
+		expect(openmrsBean.getMeaslesConcept()).andReturn(measlesConcept);
+		expect(openmrsBean.getYellowFeverConcept()).andReturn(
+				yellowFeverConcept);
+		expect(openmrsBean.getIPTiDoseConcept()).andReturn(iptiConcept);
+		expect(openmrsBean.getVitaminAConcept()).andReturn(vitaminAConcept);
+		expect(openmrsBean.getCSMConcept()).andReturn(csmConcept);
+		expect(openmrsBean.getImmunizationsOrderedConcept()).andReturn(
+				immunizationConcept).times(5);
+
+		expect(openmrsBean.getCWCLocationConcept()).andReturn(
+				cwcLocationConcept);
+		expect(openmrsBean.getHouseConcept()).andReturn(houseConcept);
+		expect(openmrsBean.getCommunityConcept()).andReturn(communityConcept);
+		expect(openmrsBean.getDewormerConcept()).andReturn(dewormerConcept);
+		expect(openmrsBean.getWeightConcept()).andReturn(weightConcept);
+		expect(openmrsBean.getMUACConcept()).andReturn(muacConcept);
+		expect(openmrsBean.getHeightConcept()).andReturn(heightConcept);
+		expect(openmrsBean.getMaleInvolvementConcept()).andReturn(
+				maleInvolvedConcept);
+		expect(openmrsBean.getCommentsConcept()).andReturn(commentsConcept);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordChildCWCVisit(staff, facility, date, patient,
+				cwcLocation, house, community, bcg, opvDose, pentaDose,
+				measles, yellowFever, csm, iptiDose, vitaminA, dewormer,
+				weight, muac, height, maleInvolved, comments);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(cwcVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(17, obsSet.size());
+		int verifiedObs = 0;
+		for (Obs obs : obsSet) {
+			assertEquals(patient, obs.getPerson());
+			assertEquals(date, obs.getObsDatetime());
+			assertEquals(facility, obs.getLocation());
+			if (cwcLocationConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(cwcLocation), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (houseConcept.equals(obs.getConcept())) {
+				assertEquals(house, obs.getValueText());
+				verifiedObs++;
+			} else if (communityConcept.equals(obs.getConcept())) {
+				assertEquals(community, obs.getValueText());
+				verifiedObs++;
+			} else if (opvDoseConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(opvDose), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (pentaDoseConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(pentaDose), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (iptiConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(iptiDose), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (dewormerConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (weightConcept.equals(obs.getConcept())) {
+				assertEquals(weight, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (muacConcept.equals(obs.getConcept())) {
+				assertEquals(muac, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (heightConcept.equals(obs.getConcept())) {
+				assertEquals(height, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (maleInvolvedConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (commentsConcept.equals(obs.getConcept())) {
+				assertEquals(comments, obs.getValueText());
+				verifiedObs++;
+			} else if (immunizationConcept.equals(obs.getConcept())) {
+				if (vitaminAConcept.equals(obs.getValueCoded())) {
+					verifiedObs++;
+				} else if (yellowFeverConcept.equals(obs.getValueCoded())) {
+					verifiedObs++;
+				} else if (measlesConcept.equals(obs.getValueCoded())) {
+					verifiedObs++;
+				} else if (bcgConcept.equals(obs.getValueCoded())) {
+					verifiedObs++;
+				} else if (csmConcept.equals(obs.getValueCoded())) {
+					verifiedObs++;
+				} else {
+					fail("Unexpected immunization Obs coded value: "
+							+ obs.getValueCoded());
+				}
+			} else {
+				fail("Unexpected Obs concept: " + obs.getConcept());
+			}
+		}
+		assertEquals("Missing expected obs", 17, verifiedObs);
+	}
+
+	public void testRecordChildCWCVisitEmpty() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Patient patient = new Patient(3);
+		String house = null, community = null, comments = null;
+		Boolean bcg = null, measles = null, yellowFever = null, csm = null, vitaminA = null, dewormer = null, maleInvolved = null;
+		Integer cwcLocation = null, opvDose = null, pentaDose = null, iptiDose = null;
+		Double weight = null, muac = null, height = null;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 0, 0, 0);
+		Date date = calendar.getTime();
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getCWCVisitEncounterType()).andReturn(cwcVisitType);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordChildCWCVisit(staff, facility, date, patient,
+				cwcLocation, house, community, bcg, opvDose, pentaDose,
+				measles, yellowFever, csm, iptiDose, vitaminA, dewormer,
+				weight, muac, height, maleInvolved, comments);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(cwcVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(0, obsSet.size());
+	}
+
+	public void testRecordGeneralOutpatientVisit() {
+		Integer staffId = 1, facilityId = 2, diagnosis = 1, secondDiagnosis = 2;
+		String serialNumber = "A12", comments = "Comment";
+		Boolean insured = true, rdtGiven = false, rdtPositive = false, actTreated = false, newCase = true, referred = false;
+		Gender sex = Gender.MALE;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 0, 0, 0);
+		Date date = calendar.getTime();
+		calendar.set(1979, 9, 1, 0, 0, 0);
+		Date dateOfBirth = calendar.getTime();
+
+		Capture<GeneralOutpatientEncounter> encounterCap = new Capture<GeneralOutpatientEncounter>();
+
+		expect(contextService.getMotechService()).andReturn(motechService);
+		expect(
+				motechService
+						.saveGeneralOutpatientEncounter(capture(encounterCap)))
+				.andReturn(new GeneralOutpatientEncounter());
+
+		replay(contextService, motechService);
+
+		regBean.recordGeneralOutpatientVisit(staffId, facilityId, date,
+				serialNumber, sex, dateOfBirth, insured, diagnosis,
+				secondDiagnosis, rdtGiven, rdtPositive, actTreated, newCase,
+				referred, comments);
+
+		verify(contextService, motechService);
+
+		GeneralOutpatientEncounter encounter = encounterCap.getValue();
+		assertEquals(staffId, encounter.getStaffId());
+		assertEquals(facilityId, encounter.getFacilityId());
+		assertEquals(date, encounter.getDate());
+		assertEquals(serialNumber, encounter.getSerialNumber());
+		assertEquals(sex, encounter.getSex());
+		assertEquals(dateOfBirth, encounter.getBirthDate());
+		assertEquals(insured, encounter.getInsured());
+		assertEquals(diagnosis, encounter.getDiagnosis());
+		assertEquals(secondDiagnosis, encounter.getSecondaryDiagnosis());
+		assertEquals(rdtGiven, encounter.getRdtGiven());
+		assertEquals(rdtPositive, encounter.getRdtPositive());
+		assertEquals(actTreated, encounter.getActTreated());
+		assertEquals(newCase, encounter.getNewCase());
+		assertEquals(referred, encounter.getReferred());
+		assertEquals(comments, encounter.getComments());
+	}
+
+	public void testRecordOutpatientVisit() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Patient patient = new Patient(3);
+		String serialNumber = "A12", comments = "Comment";
+		Boolean insured = true, rdtGiven = false, rdtPositive = false, actTreated = false, newCase = true, referred = false;
+		Integer diagnosis = 1, secondDiagnosis = 2;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 0, 0, 0);
+		Date date = calendar.getTime();
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getOutpatientVisitEncounterType()).andReturn(
+				outpatientVisitType);
+
+		expect(openmrsBean.getSerialNumberConcept()).andReturn(
+				serialNumberConcept);
+		expect(openmrsBean.getInsuredConcept()).andReturn(insuredConcept);
+		expect(openmrsBean.getNewCaseConcept()).andReturn(newCaseConcept);
+		expect(openmrsBean.getPrimaryDiagnosisConcept()).andReturn(
+				diagnosisConcept);
+		expect(openmrsBean.getSecondaryDiagnosisConcept()).andReturn(
+				secondDiagnosisConcept);
+		expect(openmrsBean.getReferredConcept()).andReturn(referredConcept);
+		expect(openmrsBean.getACTTreatmentConcept()).andReturn(
+				actTreatmentConcept);
+		expect(openmrsBean.getCommentsConcept()).andReturn(commentsConcept);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordOutpatientVisit(staff, facility, date, patient,
+				serialNumber, insured, diagnosis, secondDiagnosis, rdtGiven,
+				rdtPositive, actTreated, newCase, referred, comments);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(outpatientVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(8, obsSet.size());
+		int verifiedObs = 0;
+		for (Obs obs : obsSet) {
+			assertEquals(patient, obs.getPerson());
+			assertEquals(date, obs.getObsDatetime());
+			assertEquals(facility, obs.getLocation());
+			if (serialNumberConcept.equals(obs.getConcept())) {
+				assertEquals(serialNumber, obs.getValueText());
+				verifiedObs++;
+			} else if (insuredConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (newCaseConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (diagnosisConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(diagnosis), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (secondDiagnosisConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(secondDiagnosis), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (referredConcept.equals(obs.getConcept())) {
+				assertEquals(0.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (actTreatmentConcept.equals(obs.getConcept())) {
+				assertEquals(0.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (commentsConcept.equals(obs.getConcept())) {
+				assertEquals(comments, obs.getValueText());
+				verifiedObs++;
+			} else {
+				fail("Unexpected Obs concept: " + obs.getConcept());
+			}
+		}
+		assertEquals("Missing expected obs", 8, verifiedObs);
+	}
+
+	public void testRecordOutpatientVisitRDTPositive() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Patient patient = new Patient(3);
+		String serialNumber = "A12", comments = "Comment";
+		Boolean insured = true, rdtGiven = true, rdtPositive = true, actTreated = true, newCase = true, referred = true;
+		Integer diagnosis = 5, secondDiagnosis = 7;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 0, 0, 0);
+		Date date = calendar.getTime();
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getOutpatientVisitEncounterType()).andReturn(
+				outpatientVisitType);
+
+		expect(openmrsBean.getSerialNumberConcept()).andReturn(
+				serialNumberConcept);
+		expect(openmrsBean.getInsuredConcept()).andReturn(insuredConcept);
+		expect(openmrsBean.getNewCaseConcept()).andReturn(newCaseConcept);
+		expect(openmrsBean.getPrimaryDiagnosisConcept()).andReturn(
+				diagnosisConcept);
+		expect(openmrsBean.getSecondaryDiagnosisConcept()).andReturn(
+				secondDiagnosisConcept);
+		expect(openmrsBean.getReferredConcept()).andReturn(referredConcept);
+		expect(openmrsBean.getPositiveConcept()).andReturn(positiveConcept);
+		expect(openmrsBean.getMalariaRDTConcept()).andReturn(malariaRDTConcept);
+		expect(openmrsBean.getACTTreatmentConcept()).andReturn(
+				actTreatmentConcept);
+		expect(openmrsBean.getCommentsConcept()).andReturn(commentsConcept);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordOutpatientVisit(staff, facility, date, patient,
+				serialNumber, insured, diagnosis, secondDiagnosis, rdtGiven,
+				rdtPositive, actTreated, newCase, referred, comments);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(outpatientVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(9, obsSet.size());
+		int verifiedObs = 0;
+		for (Obs obs : obsSet) {
+			assertEquals(patient, obs.getPerson());
+			assertEquals(date, obs.getObsDatetime());
+			assertEquals(facility, obs.getLocation());
+			if (serialNumberConcept.equals(obs.getConcept())) {
+				assertEquals(serialNumber, obs.getValueText());
+				verifiedObs++;
+			} else if (insuredConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (newCaseConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (diagnosisConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(diagnosis), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (secondDiagnosisConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(secondDiagnosis), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (referredConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (malariaRDTConcept.equals(obs.getConcept())) {
+				assertEquals(positiveConcept, obs.getValueCoded());
+				verifiedObs++;
+			} else if (actTreatmentConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (commentsConcept.equals(obs.getConcept())) {
+				assertEquals(comments, obs.getValueText());
+				verifiedObs++;
+			} else {
+				fail("Unexpected Obs concept: " + obs.getConcept());
+			}
+		}
+		assertEquals("Missing expected obs", 9, verifiedObs);
+	}
+
+	public void testRecordOutpatientVisitRDTNegative() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Patient patient = new Patient(3);
+		String serialNumber = "A12", comments = "Comment";
+		Boolean insured = true, rdtGiven = true, rdtPositive = false, actTreated = true, newCase = true, referred = true;
+		Integer diagnosis = 5, secondDiagnosis = 7;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 0, 0, 0);
+		Date date = calendar.getTime();
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getOutpatientVisitEncounterType()).andReturn(
+				outpatientVisitType);
+
+		expect(openmrsBean.getSerialNumberConcept()).andReturn(
+				serialNumberConcept);
+		expect(openmrsBean.getInsuredConcept()).andReturn(insuredConcept);
+		expect(openmrsBean.getNewCaseConcept()).andReturn(newCaseConcept);
+		expect(openmrsBean.getPrimaryDiagnosisConcept()).andReturn(
+				diagnosisConcept);
+		expect(openmrsBean.getSecondaryDiagnosisConcept()).andReturn(
+				secondDiagnosisConcept);
+		expect(openmrsBean.getReferredConcept()).andReturn(referredConcept);
+		expect(openmrsBean.getNegativeConcept()).andReturn(negativeConcept);
+		expect(openmrsBean.getMalariaRDTConcept()).andReturn(malariaRDTConcept);
+		expect(openmrsBean.getACTTreatmentConcept()).andReturn(
+				actTreatmentConcept);
+		expect(openmrsBean.getCommentsConcept()).andReturn(commentsConcept);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordOutpatientVisit(staff, facility, date, patient,
+				serialNumber, insured, diagnosis, secondDiagnosis, rdtGiven,
+				rdtPositive, actTreated, newCase, referred, comments);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(outpatientVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(9, obsSet.size());
+		int verifiedObs = 0;
+		for (Obs obs : obsSet) {
+			assertEquals(patient, obs.getPerson());
+			assertEquals(date, obs.getObsDatetime());
+			assertEquals(facility, obs.getLocation());
+			if (serialNumberConcept.equals(obs.getConcept())) {
+				assertEquals(serialNumber, obs.getValueText());
+				verifiedObs++;
+			} else if (insuredConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (newCaseConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (diagnosisConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(diagnosis), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (secondDiagnosisConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(secondDiagnosis), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (referredConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (malariaRDTConcept.equals(obs.getConcept())) {
+				assertEquals(negativeConcept, obs.getValueCoded());
+				verifiedObs++;
+			} else if (actTreatmentConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (commentsConcept.equals(obs.getConcept())) {
+				assertEquals(comments, obs.getValueText());
+				verifiedObs++;
+			} else {
+				fail("Unexpected Obs concept: " + obs.getConcept());
+			}
+		}
+		assertEquals("Missing expected obs", 9, verifiedObs);
+	}
+
+	public void testRecordOutpatientVisitEmpty() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Patient patient = new Patient(3);
+		String serialNumber = null, comments = null;
+		Boolean insured = null, rdtGiven = null, rdtPositive = null, actTreated = null, newCase = null, referred = null;
+		Integer diagnosis = null, secondDiagnosis = null;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 0, 0, 0);
+		Date date = calendar.getTime();
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getOutpatientVisitEncounterType()).andReturn(
+				outpatientVisitType);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordOutpatientVisit(staff, facility, date, patient,
+				serialNumber, insured, diagnosis, secondDiagnosis, rdtGiven,
+				rdtPositive, actTreated, newCase, referred, comments);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(outpatientVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(0, obsSet.size());
 	}
 
 }
