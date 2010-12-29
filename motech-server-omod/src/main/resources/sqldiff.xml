@@ -1318,24 +1318,24 @@
 
             INSERT INTO concept
 			(concept_id,datatype_id,class_id,creator,date_created,uuid) VALUES
-			(6160,10,7,1,NOW(),UUID());
+			(6161,10,7,1,NOW(),UUID());
 
             INSERT INTO concept_name
 			(concept_name_id,concept_id,name,locale,creator,date_created,uuid) VALUES
-			(6160,6160,'NEW PATIENT','en',1,NOW(),UUID());
+			(6161,6161,'NEW PATIENT','en',1,NOW(),UUID());
 
             INSERT INTO concept_name_tag_map
 			(concept_name_id,concept_name_tag_id) VALUES
-			(6160,4);
+			(6161,4);
 
             INSERT INTO concept_word
 			(concept_id,word,locale,concept_name_id) VALUES
-			(6160,'NEW','en',6160),
-			(6160,'PATIENT','en',6160);
+			(6161,'NEW','en',6161),
+			(6161,'PATIENT','en',6161);
 
             INSERT INTO concept_description
 			(concept_id,description,locale,creator,date_created,uuid) VALUES
-			(6160,'Question: "Is this a new patient?"','en',1,NOW(),UUID());
+			(6161,'Question: "Is this a new patient?"','en',1,NOW(),UUID());
         </sql>
     </diff>
 
