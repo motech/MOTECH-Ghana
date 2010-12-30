@@ -1027,13 +1027,13 @@ public class RegistrarBeanImpl implements RegistrarBean {
 		}
 		if (house != null) {
 			Obs houseObs = createTextValueObs(date, openmrsBean
-					.getANCPNCLocationConcept(), patient, facility, house,
-					encounter, null);
+					.getHouseConcept(), patient, facility, house, encounter,
+					null);
 			encounter.addObs(houseObs);
 		}
 		if (community != null) {
 			Obs communityObs = createTextValueObs(date, openmrsBean
-					.getANCPNCLocationConcept(), patient, facility, community,
+					.getCommunityConcept(), patient, facility, community,
 					encounter, null);
 			encounter.addObs(communityObs);
 		}
