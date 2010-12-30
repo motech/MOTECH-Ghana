@@ -120,7 +120,7 @@ public final class MotechConstants {
 	public static final String CONCEPT_LOCHIA_FOUL_ODOUR = "LOCHIA FOUL ODOUR";
 	public static final String CONCEPT_MIDDLE_UPPER_ARM_CIRCUMFERENCE = "MIDDLE UPPER ARM CIRCUMFERENCE";
 	public static final String CONCEPT_MATERNAL_DEATH = "MATERNAL DEATH";
-	public static final String CONCEPT_TERMINATION_PROCEDURE = "PREGNANCY, TERMINATION PROCEDURE";
+	public static final String CONCEPT_TERMINATION_PROCEDURE = "PREGNANCY,TERMINATION PROCEDURE";
 	public static final String CONCEPT_CORD_CONDITION = "CORD CONDITION ";
 	public static final String CONCEPT_CONDITION_OF_BABY = "CONDITION OF BABY";
 	public static final String CONCEPT_NEXT_ANC_DATE = "NEXT ANC DATE";
