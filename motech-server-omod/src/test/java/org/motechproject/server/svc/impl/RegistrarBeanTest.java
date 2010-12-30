@@ -65,6 +65,7 @@ import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
+import org.motechproject.ws.HIVResult;
 import org.motechproject.ws.HowLearned;
 import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.MediaType;
@@ -135,6 +136,8 @@ public class RegistrarBeanTest extends TestCase {
 	EncounterType patientHistoryVisitType;
 	EncounterType cwcVisitType;
 	EncounterType ttVisitType;
+	EncounterType ancRegistrationType;
+	EncounterType cwcRegistrationType;
 	Concept immunizationConcept;
 	Concept tetanusConcept;
 	Concept iptConcept;
@@ -180,6 +183,30 @@ public class RegistrarBeanTest extends TestCase {
 	Concept lochiaExcessConcept;
 	Concept lochiaOdourConcept;
 	Concept fundalHeightConcept;
+	Concept ancRegNumConcept;
+	Concept gravidaConcept;
+	Concept parityConcept;
+	Concept cwcRegNumConcept;
+	Concept bpSystolicConcept;
+	Concept bpDiastolicConcept;
+	Concept iptReactionConcept;
+	Concept reactiveConcept;
+	Concept nonReactiveConcept;
+	Concept itnConcept;
+	Concept fetalHeartRateConcept;
+	Concept urineProteinTestConcept;
+	Concept urineGlucoseTestConcept;
+	Concept traceConcept;
+	Concept hemoglobinConcept;
+	Concept vdrlConcept;
+	Concept vdrlTreatmentConcept;
+	Concept pmtctConcept;
+	Concept preTestCounselConcept;
+	Concept hivTestResultConcept;
+	Concept postTestCounselConcept;
+	Concept pmtctTreatmentConcept;
+	Concept nextANCDateConcept;
+
 	RelationshipType parentChildRelationshipType;
 
 	@Override
@@ -291,6 +318,12 @@ public class RegistrarBeanTest extends TestCase {
 		ttVisitType = new EncounterType(11);
 		ttVisitType.setName(MotechConstants.ENCOUNTER_TYPE_TTVISIT);
 
+		ancRegistrationType = new EncounterType(12);
+		ancRegistrationType.setName(MotechConstants.ENCOUNTER_TYPE_ANCREGVISIT);
+
+		cwcRegistrationType = new EncounterType(13);
+		cwcRegistrationType.setName(MotechConstants.ENCOUNTER_TYPE_CWCREGVISIT);
+
 		immunizationConcept = new Concept(6);
 		tetanusConcept = new Concept(7);
 		iptConcept = new Concept(8);
@@ -336,6 +369,29 @@ public class RegistrarBeanTest extends TestCase {
 		lochiaExcessConcept = new Concept(70);
 		lochiaOdourConcept = new Concept(71);
 		fundalHeightConcept = new Concept(72);
+		ancRegNumConcept = new Concept(73);
+		gravidaConcept = new Concept(74);
+		parityConcept = new Concept(75);
+		cwcRegNumConcept = new Concept(76);
+		bpSystolicConcept = new Concept(77);
+		bpDiastolicConcept = new Concept(78);
+		iptReactionConcept = new Concept(79);
+		reactiveConcept = new Concept(80);
+		nonReactiveConcept = new Concept(81);
+		itnConcept = new Concept(82);
+		fetalHeartRateConcept = new Concept(83);
+		urineProteinTestConcept = new Concept(84);
+		urineGlucoseTestConcept = new Concept(85);
+		traceConcept = new Concept(86);
+		hemoglobinConcept = new Concept(87);
+		vdrlConcept = new Concept(88);
+		vdrlTreatmentConcept = new Concept(89);
+		pmtctConcept = new Concept(90);
+		preTestCounselConcept = new Concept(91);
+		hivTestResultConcept = new Concept(92);
+		postTestCounselConcept = new Concept(93);
+		pmtctTreatmentConcept = new Concept(94);
+		nextANCDateConcept = new Concept(95);
 
 		parentChildRelationshipType = new RelationshipType(1);
 		parentChildRelationshipType.setaIsToB("Parent");
@@ -1738,6 +1794,964 @@ public class RegistrarBeanTest extends TestCase {
 				lastIPTI, lastIPTIDate, lastVitaminADate);
 
 		verify(contextService, encounterService, openmrsBean);
+	}
+
+	public void testRegisterANCMotherNoEnrollment() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Integer patientId = 3;
+		Patient patient = new Patient(patientId);
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2009, 12, 1, 8, 30, 0);
+		Date date = calendar.getTime();
+		calendar.set(2010, 2, 1, 8, 30, 0);
+		Date estDeliveryDate = calendar.getTime();
+		Date timeOfDay = null;
+
+		String ancRegNumber = "ANCREG1", phoneNumber = null, language = null;
+		Double height = 45.2;
+		Integer gravida = 1, parity = 0;
+		Boolean enroll = false, consent = false;
+		ContactNumberType ownership = null;
+		MediaType format = null;
+		DayOfWeek dayOfWeek = null;
+		HowLearned howLearned = null;
+
+		Obs pregnancyObs = new Obs(1);
+		Obs pregnancyDueDateObs = null;
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+		Capture<Patient> patientCap = new Capture<Patient>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(contextService.getPatientService()).andReturn(patientService);
+		expect(openmrsBean.getANCRegistrationEncounterType()).andReturn(
+				ancRegistrationType);
+		expect(openmrsBean.getANCRegistrationNumberConcept()).andReturn(
+				ancRegNumConcept);
+		expect(openmrsBean.getGravidaConcept()).andReturn(gravidaConcept);
+		expect(openmrsBean.getParityConcept()).andReturn(parityConcept);
+		expect(openmrsBean.getHeightConcept()).andReturn(heightConcept);
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+		expect(openmrsBean.getActivePregnancy(patientId)).andReturn(
+				pregnancyObs);
+		expect(
+				openmrsBean.getActivePregnancyDueDateObs(patientId,
+						pregnancyObs)).andReturn(pregnancyDueDateObs);
+		expect(patientService.savePatient(capture(patientCap))).andReturn(
+				new Patient());
+
+		replay(contextService, encounterService, patientService, openmrsBean);
+
+		regBean.registerANCMother(staff, facility, date, patient, ancRegNumber,
+				estDeliveryDate, height, gravida, parity, enroll, consent,
+				ownership, phoneNumber, format, language, dayOfWeek, timeOfDay,
+				howLearned);
+
+		verify(contextService, encounterService, patientService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(ancRegistrationType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(4, obsSet.size());
+		int verifiedObs = 0;
+		for (Obs obs : obsSet) {
+			assertEquals(patient, obs.getPerson());
+			assertEquals(facility, obs.getLocation());
+			assertEquals(date, obs.getObsDatetime());
+			if (ancRegNumConcept.equals(obs.getConcept())) {
+				assertEquals(ancRegNumber, obs.getValueText());
+				verifiedObs++;
+			} else if (gravidaConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(gravida), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (parityConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(parity), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (heightConcept.equals(obs.getConcept())) {
+				assertEquals(height, obs.getValueNumeric());
+				verifiedObs++;
+			} else {
+				fail("Unexpected Obs concept: " + obs.getConcept());
+			}
+		}
+		assertEquals("Missing expected obs", 4, verifiedObs);
+
+		Patient patientCapture = patientCap.getValue();
+		assertEquals(0, patientCapture.getAttributes().size());
+	}
+
+	public void testRegisterANCMotherEmptyNoEnrollment() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Integer patientId = 3;
+		Patient patient = new Patient(patientId);
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2009, 12, 1, 8, 30, 0);
+		Date date = calendar.getTime();
+		Date estDeliveryDate = null;
+		Date timeOfDay = null;
+
+		String ancRegNumber = null, phoneNumber = null, language = null;
+		Double height = null;
+		Integer gravida = null, parity = null;
+		Boolean enroll = false, consent = false;
+		ContactNumberType ownership = null;
+		MediaType format = null;
+		DayOfWeek dayOfWeek = null;
+		HowLearned howLearned = null;
+
+		Obs pregnancyObs = new Obs(1);
+		Obs pregnancyDueDateObs = new Obs(2);
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+		Capture<Patient> patientCap = new Capture<Patient>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(contextService.getPatientService()).andReturn(patientService);
+		expect(openmrsBean.getANCRegistrationEncounterType()).andReturn(
+				ancRegistrationType);
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+		expect(openmrsBean.getActivePregnancy(patientId)).andReturn(
+				pregnancyObs);
+		expect(
+				openmrsBean.getActivePregnancyDueDateObs(patientId,
+						pregnancyObs)).andReturn(pregnancyDueDateObs);
+		expect(patientService.savePatient(capture(patientCap))).andReturn(
+				new Patient());
+
+		replay(contextService, encounterService, patientService, openmrsBean);
+
+		regBean.registerANCMother(staff, facility, date, patient, ancRegNumber,
+				estDeliveryDate, height, gravida, parity, enroll, consent,
+				ownership, phoneNumber, format, language, dayOfWeek, timeOfDay,
+				howLearned);
+
+		verify(contextService, encounterService, patientService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(ancRegistrationType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(0, obsSet.size());
+
+		Patient patientCapture = patientCap.getValue();
+		assertEquals(0, patientCapture.getAttributes().size());
+	}
+
+	public void testRegisterCWCChildNoEnrollment() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Integer patientId = 3;
+		Patient patient = new Patient(patientId);
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2009, 12, 1, 8, 30, 0);
+		Date date = calendar.getTime();
+		Date timeOfDay = null;
+
+		String cwcRegNumber = "CWCREG1", phoneNumber = null, language = null;
+		Boolean enroll = false, consent = false;
+		ContactNumberType ownership = null;
+		MediaType format = null;
+		DayOfWeek dayOfWeek = null;
+		HowLearned howLearned = null;
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+		Capture<Patient> patientCap = new Capture<Patient>();
+
+		expect(contextService.getPatientService()).andReturn(patientService);
+		expect(patientService.savePatient(capture(patientCap))).andReturn(
+				new Patient());
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getCWCRegistrationEncounterType()).andReturn(
+				cwcRegistrationType);
+		expect(openmrsBean.getCWCRegistrationNumberConcept()).andReturn(
+				cwcRegNumConcept);
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, patientService, openmrsBean);
+
+		regBean.registerCWCChild(staff, facility, date, patient, cwcRegNumber,
+				enroll, consent, ownership, phoneNumber, format, language,
+				dayOfWeek, timeOfDay, howLearned);
+
+		verify(contextService, encounterService, patientService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(cwcRegistrationType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(1, obsSet.size());
+		Obs obs = obsSet.iterator().next();
+		assertEquals(patient, obs.getPerson());
+		assertEquals(facility, obs.getLocation());
+		assertEquals(date, obs.getObsDatetime());
+		assertEquals(cwcRegNumConcept, obs.getConcept());
+		assertEquals(cwcRegNumber, obs.getValueText());
+
+		Patient patientCapture = patientCap.getValue();
+		assertEquals(0, patientCapture.getAttributes().size());
+	}
+
+	public void testRegisterCWCChildEmptyNoEnrollment() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Integer patientId = 3;
+		Patient patient = new Patient(patientId);
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2009, 12, 1, 8, 30, 0);
+		Date date = calendar.getTime();
+		Date timeOfDay = null;
+
+		String cwcRegNumber = null, phoneNumber = null, language = null;
+		Boolean enroll = false, consent = false;
+		ContactNumberType ownership = null;
+		MediaType format = null;
+		DayOfWeek dayOfWeek = null;
+		HowLearned howLearned = null;
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+		Capture<Patient> patientCap = new Capture<Patient>();
+
+		expect(contextService.getPatientService()).andReturn(patientService);
+		expect(patientService.savePatient(capture(patientCap))).andReturn(
+				new Patient());
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getCWCRegistrationEncounterType()).andReturn(
+				cwcRegistrationType);
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, patientService, openmrsBean);
+
+		regBean.registerCWCChild(staff, facility, date, patient, cwcRegNumber,
+				enroll, consent, ownership, phoneNumber, format, language,
+				dayOfWeek, timeOfDay, howLearned);
+
+		verify(contextService, encounterService, patientService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(cwcRegistrationType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(0, obsSet.size());
+
+		Patient patientCapture = patientCap.getValue();
+		assertEquals(0, patientCapture.getAttributes().size());
+	}
+
+	public void testRecordMotherANCVisitReactivePositive() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Integer patientId = 3;
+		Patient patient = new Patient(patientId);
+		String house = "A12", community = "C23", comments = "Comment";
+		Boolean dewormer = true, iptReactive = true, itnUse = true, vdrlReactive = true, vdrlTreatment = true;
+		Boolean pmtct = true, preTestCounseled = true, postTestCounseled = true, pmtctTreatment = true;
+		Boolean referred = false, maleInvolved = true;
+		Integer visitNumber = 1, ancLocation = 3, ttDose = 2, iptDose = 1, bpSystolic = 140, bpDiastolic = 80, fhr = 150;
+		Integer urineTestProtein = 1, urineTestGlucose = 1;
+		Double weight = 23.1, fht = 25.7, hemoglobin = 21.8;
+		HIVResult hivTestResult = HIVResult.POSITIVE;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 8, 30, 0);
+		Date date = calendar.getTime();
+		calendar.set(2010, 2, 1, 8, 30, 0);
+		Date estDeliveryDate = calendar.getTime();
+		calendar.set(2010, 1, 1, 8, 30, 0);
+		Date nextANCDate = calendar.getTime();
+
+		Obs pregnancyObs = null;
+		Obs pregnancyDueDateObs = null;
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getANCVisitEncounterType()).andReturn(ancVisitType);
+
+		expect(openmrsBean.getActivePregnancy(patientId)).andReturn(
+				pregnancyObs);
+
+		expect(openmrsBean.getVisitNumberConcept()).andReturn(
+				visitNumberConcept);
+		expect(openmrsBean.getANCPNCLocationConcept()).andReturn(
+				ancpncLocationConcept);
+		expect(openmrsBean.getHouseConcept()).andReturn(houseConcept);
+		expect(openmrsBean.getCommunityConcept()).andReturn(communityConcept);
+		expect(openmrsBean.getSystolicBloodPressureConcept()).andReturn(
+				bpSystolicConcept);
+		expect(openmrsBean.getDiastolicBloodPressureConcept()).andReturn(
+				bpDiastolicConcept);
+		expect(openmrsBean.getWeightConcept()).andReturn(weightConcept);
+		expect(openmrsBean.getTetanusDoseConcept()).andReturn(tetanusConcept);
+		expect(openmrsBean.getIPTDoseConcept()).andReturn(iptConcept);
+		expect(openmrsBean.getIPTReactionConcept()).andReturn(
+				iptReactionConcept);
+		expect(openmrsBean.getReactiveConcept()).andReturn(reactiveConcept);
+		expect(openmrsBean.getITNConcept()).andReturn(itnConcept);
+		expect(openmrsBean.getFundalHeightConcept()).andReturn(
+				fundalHeightConcept);
+		expect(openmrsBean.getFetalHeartRateConcept()).andReturn(
+				fetalHeartRateConcept);
+		expect(openmrsBean.getUrineProteinTestConcept()).andReturn(
+				urineProteinTestConcept);
+		expect(openmrsBean.getPositiveConcept()).andReturn(positiveConcept);
+		expect(openmrsBean.getUrineGlucoseTestConcept()).andReturn(
+				urineGlucoseTestConcept);
+		expect(openmrsBean.getPositiveConcept()).andReturn(positiveConcept);
+		expect(openmrsBean.getHemoglobinConcept()).andReturn(hemoglobinConcept);
+		expect(openmrsBean.getVDRLConcept()).andReturn(vdrlConcept);
+		expect(openmrsBean.getReactiveConcept()).andReturn(reactiveConcept);
+		expect(openmrsBean.getVDRLTreatmentConcept()).andReturn(
+				vdrlTreatmentConcept);
+		expect(openmrsBean.getDewormerConcept()).andReturn(dewormerConcept);
+		expect(openmrsBean.getMaleInvolvementConcept()).andReturn(
+				maleInvolvedConcept);
+		expect(openmrsBean.getPMTCTConcept()).andReturn(pmtctConcept);
+		expect(openmrsBean.getPreHIVTestCounselingConcept()).andReturn(
+				preTestCounselConcept);
+		expect(openmrsBean.getHIVTestResultConcept()).andReturn(
+				hivTestResultConcept);
+		expect(openmrsBean.getPostHIVTestCounselingConcept()).andReturn(
+				postTestCounselConcept);
+		expect(openmrsBean.getPMTCTTreatmentConcept()).andReturn(
+				pmtctTreatmentConcept);
+		expect(openmrsBean.getReferredConcept()).andReturn(referredConcept);
+		expect(openmrsBean.getNextANCDateConcept()).andReturn(
+				nextANCDateConcept);
+		expect(openmrsBean.getCommentsConcept()).andReturn(commentsConcept);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		expect(
+				openmrsBean.getActivePregnancyDueDateObs(patientId,
+						pregnancyObs)).andReturn(pregnancyDueDateObs);
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordMotherANCVisit(staff, facility, date, patient,
+				visitNumber, ancLocation, house, community, estDeliveryDate,
+				bpSystolic, bpDiastolic, weight, ttDose, iptDose, iptReactive,
+				itnUse, fht, fhr, urineTestProtein, urineTestGlucose,
+				hemoglobin, vdrlReactive, vdrlTreatment, dewormer,
+				maleInvolved, pmtct, preTestCounseled, hivTestResult,
+				postTestCounseled, pmtctTreatment, referred, nextANCDate,
+				comments);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(ancVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(28, obsSet.size());
+		int verifiedObs = 0;
+		for (Obs obs : obsSet) {
+			assertEquals(patient, obs.getPerson());
+			assertEquals(date, obs.getObsDatetime());
+			assertEquals(facility, obs.getLocation());
+			if (visitNumberConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(visitNumber), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (ancpncLocationConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(ancLocation), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (houseConcept.equals(obs.getConcept())) {
+				assertEquals(house, obs.getValueText());
+				verifiedObs++;
+			} else if (communityConcept.equals(obs.getConcept())) {
+				assertEquals(community, obs.getValueText());
+				verifiedObs++;
+			} else if (bpSystolicConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(bpSystolic), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (bpDiastolicConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(bpDiastolic), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (weightConcept.equals(obs.getConcept())) {
+				assertEquals(weight, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (tetanusConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(ttDose), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (iptConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(iptDose), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (iptReactionConcept.equals(obs.getConcept())) {
+				assertEquals(reactiveConcept, obs.getValueCoded());
+				verifiedObs++;
+			} else if (itnConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (fundalHeightConcept.equals(obs.getConcept())) {
+				assertEquals(fht, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (fetalHeartRateConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(fhr), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (urineProteinTestConcept.equals(obs.getConcept())) {
+				assertEquals(positiveConcept, obs.getValueCoded());
+				verifiedObs++;
+			} else if (urineGlucoseTestConcept.equals(obs.getConcept())) {
+				assertEquals(positiveConcept, obs.getValueCoded());
+				verifiedObs++;
+			} else if (hemoglobinConcept.equals(obs.getConcept())) {
+				assertEquals(hemoglobin, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (vdrlConcept.equals(obs.getConcept())) {
+				assertEquals(reactiveConcept, obs.getValueCoded());
+				verifiedObs++;
+			} else if (vdrlTreatmentConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (dewormerConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (maleInvolvedConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (pmtctConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (preTestCounselConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (hivTestResultConcept.equals(obs.getConcept())) {
+				assertEquals(hivTestResult.name(), obs.getValueText());
+				verifiedObs++;
+			} else if (postTestCounselConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (pmtctTreatmentConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (referredConcept.equals(obs.getConcept())) {
+				assertEquals(0.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (nextANCDateConcept.equals(obs.getConcept())) {
+				assertEquals(nextANCDate, obs.getValueDatetime());
+				verifiedObs++;
+			} else if (commentsConcept.equals(obs.getConcept())) {
+				assertEquals(comments, obs.getValueText());
+				verifiedObs++;
+			} else {
+				fail("Unexpected Obs concept: " + obs.getConcept());
+			}
+		}
+		assertEquals("Missing expected obs", 28, verifiedObs);
+	}
+
+	public void testRecordMotherANCVisitNonReactiveNegative() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Integer patientId = 3;
+		Patient patient = new Patient(patientId);
+		String house = "A12", community = "C23", comments = "Comment";
+		Boolean dewormer = true, iptReactive = false, itnUse = true, vdrlReactive = false, vdrlTreatment = true;
+		Boolean pmtct = true, preTestCounseled = true, postTestCounseled = true, pmtctTreatment = true;
+		Boolean referred = false, maleInvolved = true;
+		Integer visitNumber = 1, ancLocation = 3, ttDose = 2, iptDose = 1, bpSystolic = 140, bpDiastolic = 80, fhr = 150;
+		Integer urineTestProtein = 0, urineTestGlucose = 0;
+		Double weight = 23.1, fht = 25.7, hemoglobin = 21.8;
+		HIVResult hivTestResult = HIVResult.POSITIVE;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 8, 30, 0);
+		Date date = calendar.getTime();
+		calendar.set(2010, 2, 1, 8, 30, 0);
+		Date estDeliveryDate = calendar.getTime();
+		calendar.set(2010, 1, 1, 8, 30, 0);
+		Date nextANCDate = calendar.getTime();
+
+		Obs pregnancyObs = null;
+		Obs pregnancyDueDateObs = null;
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getANCVisitEncounterType()).andReturn(ancVisitType);
+
+		expect(openmrsBean.getActivePregnancy(patientId)).andReturn(
+				pregnancyObs);
+
+		expect(openmrsBean.getVisitNumberConcept()).andReturn(
+				visitNumberConcept);
+		expect(openmrsBean.getANCPNCLocationConcept()).andReturn(
+				ancpncLocationConcept);
+		expect(openmrsBean.getHouseConcept()).andReturn(houseConcept);
+		expect(openmrsBean.getCommunityConcept()).andReturn(communityConcept);
+		expect(openmrsBean.getSystolicBloodPressureConcept()).andReturn(
+				bpSystolicConcept);
+		expect(openmrsBean.getDiastolicBloodPressureConcept()).andReturn(
+				bpDiastolicConcept);
+		expect(openmrsBean.getWeightConcept()).andReturn(weightConcept);
+		expect(openmrsBean.getTetanusDoseConcept()).andReturn(tetanusConcept);
+		expect(openmrsBean.getIPTDoseConcept()).andReturn(iptConcept);
+		expect(openmrsBean.getIPTReactionConcept()).andReturn(
+				iptReactionConcept);
+		expect(openmrsBean.getNonReactiveConcept()).andReturn(
+				nonReactiveConcept);
+		expect(openmrsBean.getITNConcept()).andReturn(itnConcept);
+		expect(openmrsBean.getFundalHeightConcept()).andReturn(
+				fundalHeightConcept);
+		expect(openmrsBean.getFetalHeartRateConcept()).andReturn(
+				fetalHeartRateConcept);
+		expect(openmrsBean.getUrineProteinTestConcept()).andReturn(
+				urineProteinTestConcept);
+		expect(openmrsBean.getNegativeConcept()).andReturn(negativeConcept);
+		expect(openmrsBean.getUrineGlucoseTestConcept()).andReturn(
+				urineGlucoseTestConcept);
+		expect(openmrsBean.getNegativeConcept()).andReturn(negativeConcept);
+		expect(openmrsBean.getHemoglobinConcept()).andReturn(hemoglobinConcept);
+		expect(openmrsBean.getVDRLConcept()).andReturn(vdrlConcept);
+		expect(openmrsBean.getNonReactiveConcept()).andReturn(
+				nonReactiveConcept);
+		expect(openmrsBean.getVDRLTreatmentConcept()).andReturn(
+				vdrlTreatmentConcept);
+		expect(openmrsBean.getDewormerConcept()).andReturn(dewormerConcept);
+		expect(openmrsBean.getMaleInvolvementConcept()).andReturn(
+				maleInvolvedConcept);
+		expect(openmrsBean.getPMTCTConcept()).andReturn(pmtctConcept);
+		expect(openmrsBean.getPreHIVTestCounselingConcept()).andReturn(
+				preTestCounselConcept);
+		expect(openmrsBean.getHIVTestResultConcept()).andReturn(
+				hivTestResultConcept);
+		expect(openmrsBean.getPostHIVTestCounselingConcept()).andReturn(
+				postTestCounselConcept);
+		expect(openmrsBean.getPMTCTTreatmentConcept()).andReturn(
+				pmtctTreatmentConcept);
+		expect(openmrsBean.getReferredConcept()).andReturn(referredConcept);
+		expect(openmrsBean.getNextANCDateConcept()).andReturn(
+				nextANCDateConcept);
+		expect(openmrsBean.getCommentsConcept()).andReturn(commentsConcept);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		expect(
+				openmrsBean.getActivePregnancyDueDateObs(patientId,
+						pregnancyObs)).andReturn(pregnancyDueDateObs);
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordMotherANCVisit(staff, facility, date, patient,
+				visitNumber, ancLocation, house, community, estDeliveryDate,
+				bpSystolic, bpDiastolic, weight, ttDose, iptDose, iptReactive,
+				itnUse, fht, fhr, urineTestProtein, urineTestGlucose,
+				hemoglobin, vdrlReactive, vdrlTreatment, dewormer,
+				maleInvolved, pmtct, preTestCounseled, hivTestResult,
+				postTestCounseled, pmtctTreatment, referred, nextANCDate,
+				comments);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(ancVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(28, obsSet.size());
+		int verifiedObs = 0;
+		for (Obs obs : obsSet) {
+			assertEquals(patient, obs.getPerson());
+			assertEquals(date, obs.getObsDatetime());
+			assertEquals(facility, obs.getLocation());
+			if (visitNumberConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(visitNumber), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (ancpncLocationConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(ancLocation), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (houseConcept.equals(obs.getConcept())) {
+				assertEquals(house, obs.getValueText());
+				verifiedObs++;
+			} else if (communityConcept.equals(obs.getConcept())) {
+				assertEquals(community, obs.getValueText());
+				verifiedObs++;
+			} else if (bpSystolicConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(bpSystolic), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (bpDiastolicConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(bpDiastolic), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (weightConcept.equals(obs.getConcept())) {
+				assertEquals(weight, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (tetanusConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(ttDose), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (iptConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(iptDose), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (iptReactionConcept.equals(obs.getConcept())) {
+				assertEquals(nonReactiveConcept, obs.getValueCoded());
+				verifiedObs++;
+			} else if (itnConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (fundalHeightConcept.equals(obs.getConcept())) {
+				assertEquals(fht, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (fetalHeartRateConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(fhr), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (urineProteinTestConcept.equals(obs.getConcept())) {
+				assertEquals(negativeConcept, obs.getValueCoded());
+				verifiedObs++;
+			} else if (urineGlucoseTestConcept.equals(obs.getConcept())) {
+				assertEquals(negativeConcept, obs.getValueCoded());
+				verifiedObs++;
+			} else if (hemoglobinConcept.equals(obs.getConcept())) {
+				assertEquals(hemoglobin, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (vdrlConcept.equals(obs.getConcept())) {
+				assertEquals(nonReactiveConcept, obs.getValueCoded());
+				verifiedObs++;
+			} else if (vdrlTreatmentConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (dewormerConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (maleInvolvedConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (pmtctConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (preTestCounselConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (hivTestResultConcept.equals(obs.getConcept())) {
+				assertEquals(hivTestResult.name(), obs.getValueText());
+				verifiedObs++;
+			} else if (postTestCounselConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (pmtctTreatmentConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (referredConcept.equals(obs.getConcept())) {
+				assertEquals(0.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (nextANCDateConcept.equals(obs.getConcept())) {
+				assertEquals(nextANCDate, obs.getValueDatetime());
+				verifiedObs++;
+			} else if (commentsConcept.equals(obs.getConcept())) {
+				assertEquals(comments, obs.getValueText());
+				verifiedObs++;
+			} else {
+				fail("Unexpected Obs concept: " + obs.getConcept());
+			}
+		}
+		assertEquals("Missing expected obs", 28, verifiedObs);
+	}
+
+	public void testRecordMotherANCVisitTrace() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Integer patientId = 3;
+		Patient patient = new Patient(patientId);
+		String house = "A12", community = "C23", comments = "Comment";
+		Boolean dewormer = true, iptReactive = false, itnUse = true, vdrlReactive = false, vdrlTreatment = true;
+		Boolean pmtct = true, preTestCounseled = true, postTestCounseled = true, pmtctTreatment = true;
+		Boolean referred = false, maleInvolved = true;
+		Integer visitNumber = 1, ancLocation = 3, ttDose = 2, iptDose = 1, bpSystolic = 140, bpDiastolic = 80, fhr = 150;
+		Integer urineTestProtein = 2, urineTestGlucose = 2;
+		Double weight = 23.1, fht = 25.7, hemoglobin = 21.8;
+		HIVResult hivTestResult = HIVResult.POSITIVE;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 8, 30, 0);
+		Date date = calendar.getTime();
+		calendar.set(2010, 2, 1, 8, 30, 0);
+		Date estDeliveryDate = calendar.getTime();
+		calendar.set(2010, 1, 1, 8, 30, 0);
+		Date nextANCDate = calendar.getTime();
+
+		Obs pregnancyObs = null;
+		Obs pregnancyDueDateObs = null;
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getANCVisitEncounterType()).andReturn(ancVisitType);
+
+		expect(openmrsBean.getActivePregnancy(patientId)).andReturn(
+				pregnancyObs);
+
+		expect(openmrsBean.getVisitNumberConcept()).andReturn(
+				visitNumberConcept);
+		expect(openmrsBean.getANCPNCLocationConcept()).andReturn(
+				ancpncLocationConcept);
+		expect(openmrsBean.getHouseConcept()).andReturn(houseConcept);
+		expect(openmrsBean.getCommunityConcept()).andReturn(communityConcept);
+		expect(openmrsBean.getSystolicBloodPressureConcept()).andReturn(
+				bpSystolicConcept);
+		expect(openmrsBean.getDiastolicBloodPressureConcept()).andReturn(
+				bpDiastolicConcept);
+		expect(openmrsBean.getWeightConcept()).andReturn(weightConcept);
+		expect(openmrsBean.getTetanusDoseConcept()).andReturn(tetanusConcept);
+		expect(openmrsBean.getIPTDoseConcept()).andReturn(iptConcept);
+		expect(openmrsBean.getIPTReactionConcept()).andReturn(
+				iptReactionConcept);
+		expect(openmrsBean.getNonReactiveConcept()).andReturn(
+				nonReactiveConcept);
+		expect(openmrsBean.getITNConcept()).andReturn(itnConcept);
+		expect(openmrsBean.getFundalHeightConcept()).andReturn(
+				fundalHeightConcept);
+		expect(openmrsBean.getFetalHeartRateConcept()).andReturn(
+				fetalHeartRateConcept);
+		expect(openmrsBean.getUrineProteinTestConcept()).andReturn(
+				urineProteinTestConcept);
+		expect(openmrsBean.getTraceConcept()).andReturn(traceConcept);
+		expect(openmrsBean.getUrineGlucoseTestConcept()).andReturn(
+				urineGlucoseTestConcept);
+		expect(openmrsBean.getTraceConcept()).andReturn(traceConcept);
+		expect(openmrsBean.getHemoglobinConcept()).andReturn(hemoglobinConcept);
+		expect(openmrsBean.getVDRLConcept()).andReturn(vdrlConcept);
+		expect(openmrsBean.getNonReactiveConcept()).andReturn(
+				nonReactiveConcept);
+		expect(openmrsBean.getVDRLTreatmentConcept()).andReturn(
+				vdrlTreatmentConcept);
+		expect(openmrsBean.getDewormerConcept()).andReturn(dewormerConcept);
+		expect(openmrsBean.getMaleInvolvementConcept()).andReturn(
+				maleInvolvedConcept);
+		expect(openmrsBean.getPMTCTConcept()).andReturn(pmtctConcept);
+		expect(openmrsBean.getPreHIVTestCounselingConcept()).andReturn(
+				preTestCounselConcept);
+		expect(openmrsBean.getHIVTestResultConcept()).andReturn(
+				hivTestResultConcept);
+		expect(openmrsBean.getPostHIVTestCounselingConcept()).andReturn(
+				postTestCounselConcept);
+		expect(openmrsBean.getPMTCTTreatmentConcept()).andReturn(
+				pmtctTreatmentConcept);
+		expect(openmrsBean.getReferredConcept()).andReturn(referredConcept);
+		expect(openmrsBean.getNextANCDateConcept()).andReturn(
+				nextANCDateConcept);
+		expect(openmrsBean.getCommentsConcept()).andReturn(commentsConcept);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		expect(
+				openmrsBean.getActivePregnancyDueDateObs(patientId,
+						pregnancyObs)).andReturn(pregnancyDueDateObs);
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordMotherANCVisit(staff, facility, date, patient,
+				visitNumber, ancLocation, house, community, estDeliveryDate,
+				bpSystolic, bpDiastolic, weight, ttDose, iptDose, iptReactive,
+				itnUse, fht, fhr, urineTestProtein, urineTestGlucose,
+				hemoglobin, vdrlReactive, vdrlTreatment, dewormer,
+				maleInvolved, pmtct, preTestCounseled, hivTestResult,
+				postTestCounseled, pmtctTreatment, referred, nextANCDate,
+				comments);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(ancVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(28, obsSet.size());
+		int verifiedObs = 0;
+		for (Obs obs : obsSet) {
+			assertEquals(patient, obs.getPerson());
+			assertEquals(date, obs.getObsDatetime());
+			assertEquals(facility, obs.getLocation());
+			if (visitNumberConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(visitNumber), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (ancpncLocationConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(ancLocation), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (houseConcept.equals(obs.getConcept())) {
+				assertEquals(house, obs.getValueText());
+				verifiedObs++;
+			} else if (communityConcept.equals(obs.getConcept())) {
+				assertEquals(community, obs.getValueText());
+				verifiedObs++;
+			} else if (bpSystolicConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(bpSystolic), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (bpDiastolicConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(bpDiastolic), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (weightConcept.equals(obs.getConcept())) {
+				assertEquals(weight, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (tetanusConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(ttDose), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (iptConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(iptDose), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (iptReactionConcept.equals(obs.getConcept())) {
+				assertEquals(nonReactiveConcept, obs.getValueCoded());
+				verifiedObs++;
+			} else if (itnConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (fundalHeightConcept.equals(obs.getConcept())) {
+				assertEquals(fht, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (fetalHeartRateConcept.equals(obs.getConcept())) {
+				assertEquals(new Double(fhr), obs.getValueNumeric());
+				verifiedObs++;
+			} else if (urineProteinTestConcept.equals(obs.getConcept())) {
+				assertEquals(traceConcept, obs.getValueCoded());
+				verifiedObs++;
+			} else if (urineGlucoseTestConcept.equals(obs.getConcept())) {
+				assertEquals(traceConcept, obs.getValueCoded());
+				verifiedObs++;
+			} else if (hemoglobinConcept.equals(obs.getConcept())) {
+				assertEquals(hemoglobin, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (vdrlConcept.equals(obs.getConcept())) {
+				assertEquals(nonReactiveConcept, obs.getValueCoded());
+				verifiedObs++;
+			} else if (vdrlTreatmentConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (dewormerConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (maleInvolvedConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (pmtctConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (preTestCounselConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (hivTestResultConcept.equals(obs.getConcept())) {
+				assertEquals(hivTestResult.name(), obs.getValueText());
+				verifiedObs++;
+			} else if (postTestCounselConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (pmtctTreatmentConcept.equals(obs.getConcept())) {
+				assertEquals(1.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (referredConcept.equals(obs.getConcept())) {
+				assertEquals(0.0, obs.getValueNumeric());
+				verifiedObs++;
+			} else if (nextANCDateConcept.equals(obs.getConcept())) {
+				assertEquals(nextANCDate, obs.getValueDatetime());
+				verifiedObs++;
+			} else if (commentsConcept.equals(obs.getConcept())) {
+				assertEquals(comments, obs.getValueText());
+				verifiedObs++;
+			} else {
+				fail("Unexpected Obs concept: " + obs.getConcept());
+			}
+		}
+		assertEquals("Missing expected obs", 28, verifiedObs);
+	}
+
+	public void testRecordMotherANCVisitEmpty() {
+		User staff = new User(1);
+		Location facility = new Location(2);
+		Integer patientId = 3;
+		Patient patient = new Patient(patientId);
+		String house = null, community = null, comments = null;
+		Boolean dewormer = null, iptReactive = null, itnUse = null, vdrlReactive = null, vdrlTreatment = null;
+		Boolean pmtct = null, preTestCounseled = null, postTestCounseled = null, pmtctTreatment = null;
+		Boolean referred = null, maleInvolved = null;
+		Integer visitNumber = null, ancLocation = null, ttDose = null, iptDose = null, bpSystolic = null, bpDiastolic = null, fhr = null;
+		Integer urineTestProtein = null, urineTestGlucose = null;
+		Double weight = null, fht = null, hemoglobin = null;
+		HIVResult hivTestResult = null;
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2010, 12, 1, 8, 30, 0);
+		Date date = calendar.getTime();
+		Date estDeliveryDate = null;
+		Date nextANCDate = null;
+
+		Obs pregnancyObs = null;
+
+		Capture<Encounter> encounterCap = new Capture<Encounter>();
+
+		expect(contextService.getEncounterService())
+				.andReturn(encounterService);
+		expect(openmrsBean.getANCVisitEncounterType()).andReturn(ancVisitType);
+
+		expect(openmrsBean.getActivePregnancy(patientId)).andReturn(
+				pregnancyObs);
+
+		expect(encounterService.saveEncounter(capture(encounterCap)))
+				.andReturn(new Encounter());
+
+		replay(contextService, encounterService, openmrsBean);
+
+		regBean.recordMotherANCVisit(staff, facility, date, patient,
+				visitNumber, ancLocation, house, community, estDeliveryDate,
+				bpSystolic, bpDiastolic, weight, ttDose, iptDose, iptReactive,
+				itnUse, fht, fhr, urineTestProtein, urineTestGlucose,
+				hemoglobin, vdrlReactive, vdrlTreatment, dewormer,
+				maleInvolved, pmtct, preTestCounseled, hivTestResult,
+				postTestCounseled, pmtctTreatment, referred, nextANCDate,
+				comments);
+
+		verify(contextService, encounterService, openmrsBean);
+
+		Encounter encounter = encounterCap.getValue();
+		assertEquals(patient, encounter.getPatient());
+		assertEquals(staff, encounter.getProvider());
+		assertEquals(facility, encounter.getLocation());
+		assertEquals(date, encounter.getEncounterDatetime());
+		assertEquals(ancVisitType, encounter.getEncounterType());
+
+		Set<Obs> obsSet = encounter.getAllObs();
+		assertEquals(0, obsSet.size());
 	}
 
 	public void testRecordMotherPNCVisit() {
