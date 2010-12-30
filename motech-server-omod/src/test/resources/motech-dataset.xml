@@ -60,7 +60,7 @@
   <concept concept_id="6157" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="bb0272f1-503c-4f16-8703-049d617de673"/>
   <concept concept_id="6158" retired="0" datatype_id="10" class_id="5" is_set="0" creator="1" date_created="2010-10-04 12:34:44.0" uuid="3650a06d-02f7-463a-8374-9fb623c375aa"/>
   <concept concept_id="6159" retired="0" datatype_id="4" class_id="11" is_set="0" creator="1" date_created="2010-10-04 12:34:44.0" uuid="d5c9489e-84e7-4454-9e78-287eded8e0da"/>
-  <concept concept_id="6160" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-12-20 12:34:44.0" uuid="d5c9489e-84e7-4454-9e78-287eded8e0d9"/>
+  <concept concept_id="6161" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-12-20 12:34:44.0" uuid="d5c9489e-84e7-4454-9e78-287eded8e0d9"/>
   <concept_answer concept_answer_id="1021" concept_id="984" answer_concept="5864" creator="1" date_created="2010-06-30 16:07:26.0" uuid="8a7c14e6-14c8-4e5b-983b-e8d429c3ae9d"/>
   <concept_answer concept_answer_id="1023" concept_id="984" answer_concept="6111" creator="1" date_created="2010-06-30 16:07:26.0" uuid="e342b682-d37f-49f2-a14f-70de781f3941"/>
   <concept_answer concept_answer_id="1024" concept_id="984" answer_concept="6110" creator="1" date_created="2010-06-30 16:07:26.0" uuid="612afd03-4df8-472e-96db-95b545d7d279"/>
@@ -134,7 +134,7 @@
   <concept_description concept_description_id="6157" concept_id="6157" description="Question on encounter form: &quot;Is patient currently insured?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="dfadec1d-fd92-4dcb-8ab8-7057dc36c53f"/>
   <concept_description concept_description_id="6158" concept_id="6158" description="Is smell of post-partum vaginal discharge foul?" locale="en" creator="1" date_created="2010-10-04 12:34:44.0" uuid="b69b238b-fea9-4b80-844f-4d9e97f4622e"/>
   <concept_description concept_description_id="6159" concept_id="6159" description="General finding of a trace positive result." locale="en" creator="1" date_created="2010-10-04 12:34:44.0" uuid="35c98215-20ba-4ce0-a5c2-be4c63998bc4"/>
-  <concept_description concept_description_id="6160" concept_id="6160" description="Question: &quot;Is this a new patient?&quot;" locale="en" creator="1" date_created="2010-12-20 12:34:44.0" uuid="35c98215-20ba-4ce0-a5c2-be4c63998bc9"/>
+  <concept_description concept_description_id="6161" concept_id="6161" description="Question: &quot;Is this a new patient?&quot;" locale="en" creator="1" date_created="2010-12-20 12:34:44.0" uuid="35c98215-20ba-4ce0-a5c2-be4c63998bc9"/>
   <concept_name concept_id="6100" name="VISIT NUMBER" locale="en" creator="1" date_created="2010-06-30 16:07:23.0" concept_name_id="6100" voided="0" uuid="2d21025c-3ebc-48e5-ba86-9fa451cc6316"/>
   <concept_name concept_id="6101" name="TETANUS TOXOID DOSE" locale="en" creator="1" date_created="2010-06-30 16:07:23.0" concept_name_id="6101" voided="0" uuid="35e5afde-58b8-4eef-b94f-81f539f3f406"/>
   <concept_name concept_id="6102" name="INTERMITTENT PREVENTATIVE TREATMENT DOSE" locale="en" creator="1" date_created="2010-06-30 16:07:23.0" concept_name_id="6102" voided="0" uuid="8cc20d23-4b12-4b87-bb61-15e288ad3872"/>
@@ -195,7 +195,7 @@
   <concept_name concept_id="6157" name="INSURED" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6157" voided="0" uuid="6b08a0bf-7901-4254-93cf-03287d2994a7"/>
   <concept_name concept_id="6158" name="LOCHIA FOUL ODOUR" locale="en" creator="1" date_created="2010-10-04 12:34:44.0" concept_name_id="6158" voided="0" uuid="395caabc-36c4-4c01-83e3-c7bb2259821a"/>
   <concept_name concept_id="6159" name="TRACE" locale="en" creator="1" date_created="2010-10-04 12:34:44.0" concept_name_id="6159" voided="0" uuid="cc13f783-f711-4578-9638-f3ea285a24f5"/>
-  <concept_name concept_id="6160" name="NEW PATIENT" locale="en" creator="1" date_created="2010-12-20 16:07:24.0" concept_name_id="6160" voided="0" uuid="2c54ce51-c76c-4c0d-b0c8-1cdcf035efe9"/>
+  <concept_name concept_id="6161" name="NEW PATIENT" locale="en" creator="1" date_created="2010-12-20 16:07:24.0" concept_name_id="6161" voided="0" uuid="2c54ce51-c76c-4c0d-b0c8-1cdcf035efe9"/>
   <concept_name_tag_map concept_name_id="6100" concept_name_tag_id="4"/>
   <concept_name_tag_map concept_name_id="6101" concept_name_tag_id="4"/>
   <concept_name_tag_map concept_name_id="6102" concept_name_tag_id="4"/>
@@ -256,7 +256,7 @@
   <concept_name_tag_map concept_name_id="6157" concept_name_tag_id="4"/>
   <concept_name_tag_map concept_name_id="6158" concept_name_tag_id="4"/>
   <concept_name_tag_map concept_name_id="6159" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6160" concept_name_tag_id="4"/>
+  <concept_name_tag_map concept_name_id="6161" concept_name_tag_id="4"/>
   <concept_word concept_word_id="6598" concept_id="6100" word="VISIT" locale="en" concept_name_id="6100"/>
   <concept_word concept_word_id="6599" concept_id="6100" word="NUMBER" locale="en" concept_name_id="6100"/>
   <concept_word concept_word_id="6600" concept_id="6101" word="TETANUS" locale="en" concept_name_id="6101"/>
@@ -406,8 +406,8 @@
   <concept_word concept_word_id="6744" concept_id="6158" word="LOCHIA" locale="en" concept_name_id="6158"/>
   <concept_word concept_word_id="6745" concept_id="6159" word="TRACE" locale="en" concept_name_id="6159"/>
   <concept_word concept_word_id="6746" concept_id="6106" word="DOSE" locale="en" concept_name_id="6106"/>
-  <concept_word concept_word_id="6747" concept_id="6160" word="NEW" locale="en" concept_name_id="6160"/>
-  <concept_word concept_word_id="6748" concept_id="6160" word="PATIENT" locale="en" concept_name_id="6160"/>
+  <concept_word concept_word_id="6747" concept_id="6161" word="NEW" locale="en" concept_name_id="6161"/>
+  <concept_word concept_word_id="6748" concept_id="6161" word="PATIENT" locale="en" concept_name_id="6161"/>
   <encounter_type encounter_type_id="5" name="ANCVISIT" description="Ghana Antenatal Care (ANC) Visit" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="b91328d5-5721-4eac-8576-89a35922e26f"/>
   <encounter_type encounter_type_id="6" name="PREGREGVISIT" description="Ghana Pregnancy Registration Visit" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="235bf2ec-7f9e-4e4b-9372-f5a9506c9505"/>
   <encounter_type encounter_type_id="7" name="PREGTERMVISIT" description="Ghana Pregnancy Termination Visit" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="9421e662-30a2-4ba9-8fb2-e81fed66992e"/>
