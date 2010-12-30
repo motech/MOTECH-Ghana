@@ -1336,6 +1336,9 @@
             INSERT INTO concept_description
 			(concept_id,description,locale,creator,date_created,uuid) VALUES
 			(6161,'Question: "Is this a new patient?"','en',1,NOW(),UUID());
+
+            update obs set value_numeric=1 where concept_id=6145 and value_numeric=3;
+            update obs set value_numeric=3 where concept_id=6145 and value_numeric=4;
         </sql>
     </diff>
 
