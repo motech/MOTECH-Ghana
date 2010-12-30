@@ -180,7 +180,7 @@
   <concept_name concept_id="6142" name="LOCHIA EXCESS AMOUNT" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6142" voided="0" uuid="215e36e0-383f-432f-93ce-5a79745f2d6c"/>
   <concept_name concept_id="6143" name="MIDDLE UPPER ARM CIRCUMFERENCE" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6143" voided="0" uuid="c1afc5ab-1ed4-4f3a-94c0-c603f3b4c318"/>
   <concept_name concept_id="6144" name="MATERNAL DEATH" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6144" voided="0" uuid="2859066b-9f3e-486d-b918-84aaa9b1e173"/>
-  <concept_name concept_id="6145" name="PREGNANCY,TERMINATION PROCEDURE" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6145" voided="0" uuid="02bbadcc-8fb8-4e99-b5c6-7a77263d05e7"/>
+  <concept_name concept_id="6145" name="PREGNANCY, TERMINATION PROCEDURE" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6145" voided="0" uuid="02bbadcc-8fb8-4e99-b5c6-7a77263d05e7"/>
   <concept_name concept_id="6146" name="CORD CONDITION " locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6146" voided="0" uuid="9776acac-9d30-4888-aaa5-b3899319326e"/>
   <concept_name concept_id="6147" name="CONDITION OF BABY" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6147" voided="0" uuid="2f18abe8-ff0b-4187-9533-49da806b0e1f"/>
   <concept_name concept_id="6148" name="NEXT ANC DATE" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6148" voided="0" uuid="8283ee7b-33ac-48fd-b0b1-6322cece86c0"/>
