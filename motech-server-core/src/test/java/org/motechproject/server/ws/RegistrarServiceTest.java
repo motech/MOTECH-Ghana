@@ -87,7 +87,7 @@ import org.openmrs.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class RegistrarServiceTest {
+public class RegistrarServiceTest{
 
 	static ApplicationContext ctx;
 	static RegistrarService regWs;
@@ -132,7 +132,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordPatientHistory() throws ValidationException {
+	public void recordPatientHistory() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer lastIPT = 1, lastTT = 1;
 		Integer lastOPV = 1, lastPenta = 1, lastIPTI = 1;
@@ -167,7 +167,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordPatientHistoryInvalidPatientId()
+	public void recordPatientHistoryInvalidPatientId()
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer lastIPT = 1, lastTT = 1;
@@ -210,7 +210,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordMotherANCVisit() throws ValidationException {
+	public void recordMotherANCVisit() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer visitNumber = 1, location = 1, bpSystolic = 130, bpDiastolic = 80;
 		Double weight = 63.3, hemoglobin = 11.1, fht = 130.1;
@@ -258,7 +258,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordMotherANCVisitInvalidPatientId()
+	public void recordMotherANCVisitInvalidPatientId()
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer visitNumber = 1, location = 1, bpSystolic = 130, bpDiastolic = 80;
@@ -311,7 +311,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordPregnancyTermination() throws ValidationException {
+	public void recordPregnancyTermination() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer terminationType = 1, procedure = 2;
 		Integer[] complications = new Integer[] { 1, 3, 5, 7 };
@@ -350,7 +350,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordPregnancyTerminationInvalidPatientId()
+	public void recordPregnancyTerminationInvalidPatientId()
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer terminationType = 1, procedure = 2;
@@ -395,7 +395,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordPregnancyDelivery() throws ValidationException {
+	public void recordPregnancyDelivery() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer child1Id = 246, child2Id = 468, child3Id = 579, deliveredBy = 1;
 		Integer[] complications = new Integer[] { 1, 3, 5, 7 };
@@ -492,7 +492,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordPregnancyDeliveryOneChild()
+	public void recordPregnancyDeliveryOneChild()
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer child1Id = 246, deliveredBy = 1;
@@ -562,7 +562,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordPregnancyDeliveryInvalidIds()
+	public void recordPregnancyDeliveryInvalidIds()
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer child1Id = 246, child2Id = 246, child3Id = 246, deliveredBy = 1;
@@ -639,7 +639,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordDeliveryNotification() throws ValidationException {
+	public void recordDeliveryNotification() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Date date = new Date();
 
@@ -669,7 +669,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordRecordDeliveryNotificationInvalidPatientId()
+	public void recordRecordDeliveryNotificationInvalidPatientId()
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Date date = new Date();
@@ -709,7 +709,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordMotherPNCVisit() throws ValidationException {
+	public void recordMotherPNCVisit() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer visitNumber = 1, location = 1, ttDose = 1;
 		Integer lochiaColour = 1;
@@ -750,7 +750,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordMotherPNCVisitInvalidPatientId()
+	public void recordMotherPNCVisitInvalidPatientId()
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer visitNumber = 1, location = 1, ttDose = 1;
@@ -798,7 +798,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordDeath() throws ValidationException {
+	public void recordDeath() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Date date = new Date();
 
@@ -827,7 +827,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordDeathInvalidPatientId() throws ValidationException {
+	public void recordDeathInvalidPatientId() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Date date = new Date();
 
@@ -864,7 +864,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordTTVisit() throws ValidationException {
+	public void recordTTVisit() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer ttDose = 1;
 		Date date = new Date();
@@ -895,7 +895,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordTTVisitInvalidPatientId() throws ValidationException {
+	public void recordTTVisitInvalidPatientId() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer ttDose = 1;
 		Date date = new Date();
@@ -933,7 +933,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordChildPNCVisit() throws ValidationException {
+	public void recordChildPNCVisit() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer visitNumber = 1, location = 1, respiration = 60;
 		String house = "House", community = "Community", comments = "Comments";
@@ -973,7 +973,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordChildPNCVisitInvalidPatientId()
+	public void recordChildPNCVisitInvalidPatientId()
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		Integer visitNumber = 1, location = 1, respiration = 60;
@@ -1020,7 +1020,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordChildCWCVisit() throws ValidationException {
+	public void recordChildCWCVisit() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String house = "House", community = "Community", comments = "Comments";
 		Integer location = 1, opvDose = 1, pentaDose = 1, iptiDose = 1;
@@ -1060,7 +1060,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordChildCWCVisitInvalidPatientId()
+	public void recordChildCWCVisitInvalidPatientId()
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String house = "House", community = "Community", comments = "Comments";
@@ -1107,7 +1107,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRegisterPatient() throws ValidationException {
+	public void registerPatient() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3, motherMotechId = 4;
 		String firstName = "First", middleName = "Middle", lastName = "Last", prefName = "Pref";
 		String nhis = "NHIS", address = "Address", language = "Language";
@@ -1175,7 +1175,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRegisterPatientAllErrors() {
+	public void registerPatientAllErrors() {
 		Integer staffId = 1, facilityId = 2, motechId = 3, motherMotechId = 4;
 		String firstName = "First", middleName = "Middle", lastName = "Last", prefName = "Pref";
 		String nhis = "NHIS", address = "Address", language = "Language";
@@ -1251,7 +1251,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRegisterPregnancy() throws ValidationException {
+	public void registerPregnancy() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language";
 		Boolean enroll = true, consent = true;
@@ -1291,7 +1291,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRegisterPregnancyInvalidIds() throws ValidationException {
+	public void registerPregnancyInvalidIds() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language";
 		Boolean enroll = true, consent = true;
@@ -1383,7 +1383,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRegisterANCMotherInvalidIds() throws ValidationException {
+	public void registerANCMotherInvalidIds() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language", regNumber = "RegNumber";
 		Boolean enroll = true, consent = true;
@@ -1437,7 +1437,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRegisterCWCChild() throws ValidationException {
+	public void registerCWCChild() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language", regNumber = "RegNumber";
 		Boolean enroll = true, consent = true;
@@ -1477,7 +1477,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRegisterCWCChildInvalidIds() throws ValidationException {
+	public void registerCWCChildInvalidIds() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language", regNumber = "RegNumber";
 		Boolean enroll = true, consent = true;
@@ -1527,10 +1527,14 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testEditPatient() throws ValidationException {
+	public void editPatient() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String phoneNumber = "2075557894";
 		String nhis = "125";
+        String firstName = "Martin";
+        String middleName = "";
+        String lastName = "Odersky";
+        String prefName = "Mart";
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		Boolean stopEnrollment = false;
 		Date date = new Date();
@@ -1554,17 +1558,21 @@ public class RegistrarServiceTest {
 
 		replay(registrarBean, openmrsBean);
 
-		regWs.editPatient(staffId, facilityId, date, motechId, phoneNumber,
+		regWs.editPatient(staffId, facilityId, date, motechId, firstName, middleName, lastName, prefName, phoneNumber,
 				phoneType, nhis, date, stopEnrollment);
 
 		verify(registrarBean, openmrsBean);
 	}
 
 	@Test
-	public void testEditPatientAllErrors() {
+	public void editPatientAllErrors() {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String phoneNumber = "2075557894";
 		String nhis = "125";
+        String firstName = "Martin";
+        String middleName = "";
+        String lastName = "Odersky";
+        String prefName = "Mart";
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		Boolean stopEnrollment = false;
 		Date date = new Date();
@@ -1585,7 +1593,7 @@ public class RegistrarServiceTest {
 		replay(registrarBean, openmrsBean);
 
 		try {
-			regWs.editPatient(staffId, facilityId, date, motechId, phoneNumber,
+			regWs.editPatient(staffId, facilityId, date, motechId, firstName, middleName, lastName, prefName, phoneNumber,
 					phoneType, nhis, date, stopEnrollment);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
@@ -1607,7 +1615,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testGeneralVisit() throws ValidationException {
+	public void generalVisit() throws ValidationException {
 		Integer staffId = 1, facilityId = 2;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
@@ -1637,7 +1645,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testGeneralVisitInvalidIds() {
+	public void generalVisitInvalidIds() {
 		Integer staffId = 1, facilityId = 2;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
@@ -1675,7 +1683,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordChildVisit() throws ValidationException {
+	public void recordChildVisit() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
@@ -1711,7 +1719,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordChildVisitInvalidIds() throws ValidationException {
+	public void recordChildVisitInvalidIds() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
@@ -1754,7 +1762,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordMotherVisit() throws ValidationException {
+	public void recordMotherVisit() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
@@ -1790,7 +1798,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRecordMotherVisitInvalidIds() throws ValidationException {
+	public void recordMotherVisitInvalidIds() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String serial = "Serial", comments = "Comments";
 		Integer diagnosis = 5, secondDiagnosis = 6;
@@ -1834,7 +1842,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryANCDefaulters() throws ValidationException {
+	public void queryANCDefaulters() throws ValidationException {
 		Integer staffId = 1, facilityId = 2;
 
 		Capture<String[]> encounterGroups = new Capture<String[]>();
@@ -1888,7 +1896,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryTTDefaulters() throws ValidationException {
+	public void queryTTDefaulters() throws ValidationException {
 		Integer staffId = 1, facilityId = 2;
 
 		Capture<String[]> obsGroups = new Capture<String[]>();
@@ -1969,7 +1977,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryChildPNCDefaulters() throws ValidationException {
+	public void queryChildPNCDefaulters() throws ValidationException {
 		Integer staffId = 1, facilityId = 2;
 
 		Capture<String[]> encounterGroups = new Capture<String[]>();
@@ -2011,7 +2019,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryCWCDefaulters() throws ValidationException {
+	public void queryCWCDefaulters() throws ValidationException {
 		Integer staffId = 1, facilityId = 2;
 
 		Capture<String[]> obsGroups = new Capture<String[]>();
@@ -2056,7 +2064,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryUpcomingDeliveries() throws ValidationException {
+	public void queryUpcomingDeliveries() throws ValidationException {
 		Integer staffId = 1, facilityId = 2;
 
 		List<Obs> pregnancies = new ArrayList<Obs>();
@@ -2088,7 +2096,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryRecentDeliveries() throws ValidationException {
+	public void queryRecentDeliveries() throws ValidationException {
 		Integer staffId = 1, facilityId = 2;
 
 		List<Encounter> deliveries = new ArrayList<Encounter>();
@@ -2120,7 +2128,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryOverdueDeliveries() throws ValidationException {
+	public void queryOverdueDeliveries() throws ValidationException {
 		Integer staffId = 1, facilityId = 2;
 
 		List<Obs> pregnancies = new ArrayList<Obs>();
@@ -2152,7 +2160,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryUpcomingCare() throws ValidationException {
+	public void queryUpcomingCare() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 
 		List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
@@ -2224,7 +2232,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryMotechId() throws ValidationException {
+	public void queryMotechId() throws ValidationException {
 		Integer staffId = 1, facilityId = 2;
 		String firstName = "FirstName", lastName = "LastName", prefName = "PrefName";
 		String nhis = "NHIS";
@@ -2263,7 +2271,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryPatient() throws ValidationException {
+	public void queryPatient() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 
 		org.openmrs.Patient patient = new org.openmrs.Patient(1);
@@ -2289,7 +2297,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testQueryPatientInvalidIds() throws ValidationException {
+	public void queryPatientInvalidIds() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 
 		expect(registrarBean.isValidIdCheckDigit(staffId)).andReturn(true);
@@ -2325,7 +2333,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testGetPatientEnrollments() throws ValidationException {
+	public void getPatientEnrollments() throws ValidationException {
 		Integer motechId = 3;
 
 		org.openmrs.Patient patient = new org.openmrs.Patient(1);
@@ -2348,7 +2356,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testGetPatientEnrollmentsInvalidPatientId()
+	public void getPatientEnrollmentsInvalidPatientId()
 			throws ValidationException {
 		Integer motechId = 3;
 
@@ -2379,7 +2387,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testSetMessageStatus() {
+	public void setMessageStatus() {
 		String messageId = "12345678-1234-1234-1234-123456789012";
 		Boolean success = true;
 
@@ -2393,7 +2401,7 @@ public class RegistrarServiceTest {
 	}
 
 	@Test
-	public void testRegistrarBeanProperty() throws SecurityException,
+	public void registrarBeanProperty() throws SecurityException,
 			NoSuchFieldException, IllegalArgumentException,
 			IllegalAccessException {
 		RegistrarWebService regWs = new RegistrarWebService();

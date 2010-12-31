@@ -72,6 +72,7 @@ import org.motechproject.ws.server.ValidationErrors;
 import org.motechproject.ws.server.ValidationException;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
+import org.openmrs.PersonName;
 import org.openmrs.User;
 
 /**
@@ -718,6 +719,10 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "facilityId") Integer facilityId,
 			@WebParam(name = "date") Date date,
 			@WebParam(name = "motechId") Integer motechId,
+            @WebParam(name = "firstName") String firstName,
+            @WebParam(name = "middleName") String middleName,
+            @WebParam(name = "lastName") String lastName,
+            @WebParam(name = "preferredName") String preferredName,
 			@WebParam(name = "phoneNumber") String phoneNumber,
 			@WebParam(name = "phoneOwnership") ContactNumberType phoneOwnership,
 			@WebParam(name = "nhis") String nhis,
@@ -730,12 +735,16 @@ public class RegistrarWebService implements RegistrarService {
 		User staff = validateStaffId(staffId, errors, "StaffID");
 		validateFacility(facilityId, errors, "FacilityID");
 		org.openmrs.Patient patient = validateMotechId(motechId, errors,
-				"MotechID", true);
+                "MotechID", true);
 
 		if (errors.getErrors().size() > 0) {
 			throw new ValidationException("Errors in Edit Patient request",
 					errors);
 		}
+        patient.addName(new PersonName(firstName, middleName, lastName));
+        if(preferredName != null){
+            patient.addName(new PersonName(preferredName, middleName, lastName));
+        }
 
 		registrarBean.editPatient(staff, date, patient, phoneNumber,
 				phoneOwnership, nhis, nhisExpires, stopEnrollment);
