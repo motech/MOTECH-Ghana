@@ -741,11 +741,17 @@ public class RegistrarWebService implements RegistrarService {
 			throw new ValidationException("Errors in Edit Patient request",
 					errors);
 		}
-        patient.addName(new PersonName(firstName, middleName, lastName));
-        if(preferredName != null){
-            patient.addName(new PersonName(preferredName, middleName, lastName));
+        Set<PersonName> patientNames = patient.getNames();
+        if(patientNames != null){
+            for (PersonName personName : patientNames){
+                personName.setGivenName(firstName);
+                personName.setMiddleName(middleName);
+                personName.setFamilyName(lastName);
+                if(personName.isPreferred()){
+                    personName.setGivenName(preferredName);
+                }
+            }
         }
-
 		registrarBean.editPatient(staff, date, patient, phoneNumber,
 				phoneOwnership, nhis, nhisExpires, stopEnrollment);
 	}
