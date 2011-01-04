@@ -1554,12 +1554,12 @@ public class RegistrarServiceTest{
 				.andReturn(patient);
 
 		registrarBean.editPatient(staff, date, patient, phoneNumber, phoneType,
-				nhis, date, stopEnrollment);
+				nhis, date, date, stopEnrollment);
 
 		replay(registrarBean, openmrsBean);
 
 		regWs.editPatient(staffId, facilityId, date, motechId, firstName, middleName, lastName, prefName, phoneNumber,
-				phoneType, nhis, date, stopEnrollment);
+				phoneType, nhis, date, date, stopEnrollment);
 
 		verify(registrarBean, openmrsBean);
 	}
@@ -1594,7 +1594,7 @@ public class RegistrarServiceTest{
 
 		try {
 			regWs.editPatient(staffId, facilityId, date, motechId, firstName, middleName, lastName, prefName, phoneNumber,
-					phoneType, nhis, date, stopEnrollment);
+					phoneType, nhis, date, date, stopEnrollment);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Edit Patient request", e.getMessage());

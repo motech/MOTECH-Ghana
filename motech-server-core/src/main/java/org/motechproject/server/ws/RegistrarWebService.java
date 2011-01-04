@@ -727,6 +727,7 @@ public class RegistrarWebService implements RegistrarService {
 			@WebParam(name = "phoneOwnership") ContactNumberType phoneOwnership,
 			@WebParam(name = "nhis") String nhis,
 			@WebParam(name = "nhisExpires") Date nhisExpires,
+            @WebParam(name = "edd") Date expectedDeliveryDate,
 			@WebParam(name = "stopEnrollment") Boolean stopEnrollment)
 			throws ValidationException {
 
@@ -744,16 +745,20 @@ public class RegistrarWebService implements RegistrarService {
         Set<PersonName> patientNames = patient.getNames();
         if(patientNames != null){
             for (PersonName personName : patientNames){
-                personName.setGivenName(firstName);
-                personName.setMiddleName(middleName);
-                personName.setFamilyName(lastName);
+                if(!firstName.trim().equals(""))
+                    personName.setGivenName(firstName);
+                if(!middleName.trim().equals(""))
+                    personName.setMiddleName(middleName);
+                if(!lastName.trim().equals(""))
+                    personName.setFamilyName(lastName);
                 if(personName.isPreferred()){
-                    personName.setGivenName(preferredName);
+                    if(!preferredName.trim().equals(""))
+                        personName.setGivenName(preferredName);
                 }
             }
         }
 		registrarBean.editPatient(staff, date, patient, phoneNumber,
-				phoneOwnership, nhis, nhisExpires, stopEnrollment);
+				phoneOwnership, nhis, nhisExpires, expectedDeliveryDate, stopEnrollment);
 	}
 
 	@WebMethod

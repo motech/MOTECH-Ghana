@@ -572,9 +572,22 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	@Transactional
 	public void editPatient(User staff, Date date, Patient patient,
 			String phoneNumber, ContactNumberType phoneOwnership, String nhis,
-			Date nhisExpires, Boolean stopEnrollment) {
+			Date nhisExpires, Date expectedDeliveryDate, Boolean stopEnrollment) {
 
 		PatientService patientService = contextService.getPatientService();
+
+        if (expectedDeliveryDate != null) {
+            Obs pregnancy = getActivePregnancy(patient.getPatientId());
+            Obs dueDateObs = getActivePregnancyDueDateObs(patient
+                    .getPatientId(), pregnancy);
+            if (dueDateObs != null) {
+                if (!expectedDeliveryDate.equals(dueDateObs.getValueDatetime())) {
+                    updatePregnancyDueDateObs(pregnancy,
+                            dueDateObs, expectedDeliveryDate, dueDateObs
+                            .getEncounter());
+                }
+            }
+        }
 
 		setPatientAttributes(patient, phoneNumber, phoneOwnership, null, null,
 				null, null, null, null, null, nhis, nhisExpires);

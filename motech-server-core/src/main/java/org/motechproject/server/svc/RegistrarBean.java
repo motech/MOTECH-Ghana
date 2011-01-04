@@ -125,7 +125,7 @@ public interface RegistrarBean {
 	@RunAsAdminUser
 	public void editPatient(@RunAsUserParam User staff, Date date,
 			Patient patient, String phoneNumber,
-			ContactNumberType phoneOwnership, String nhis, Date nhisExpires,
+			ContactNumberType phoneOwnership, String nhis, Date nhisExpires, Date expectedDeliveryDate,
 			Boolean stopEnrollment);
 
 	public void registerPregnancy(Patient patient, Date expDeliveryDate,
