@@ -33,32 +33,8 @@
 
 package org.motechproject.server.ws;
 
-import static org.easymock.EasyMock.aryEq;
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.reset;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.LogManager;
-
 import org.easymock.Capture;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
@@ -66,18 +42,7 @@ import org.motechproject.server.model.Facility;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
-import org.motechproject.ws.BirthOutcome;
-import org.motechproject.ws.Care;
-import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DayOfWeek;
-import org.motechproject.ws.Gender;
-import org.motechproject.ws.HIVResult;
-import org.motechproject.ws.HowLearned;
-import org.motechproject.ws.InterestReason;
-import org.motechproject.ws.MediaType;
-import org.motechproject.ws.Patient;
-import org.motechproject.ws.RegistrantType;
-import org.motechproject.ws.RegistrationMode;
+import org.motechproject.ws.*;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationException;
 import org.openmrs.Encounter;
@@ -86,6 +51,16 @@ import org.openmrs.Obs;
 import org.openmrs.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.LogManager;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 public class RegistrarServiceTest{
 
@@ -1528,7 +1503,7 @@ public class RegistrarServiceTest{
 
 	@Test
 	public void editPatient() throws ValidationException {
-		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer staffId = 1, facilityId = 2, motechId = 3 , mothersMotechId = 4;
 		String phoneNumber = "2075557894";
 		String nhis = "125";
         String firstName = "Martin";
@@ -1540,7 +1515,9 @@ public class RegistrarServiceTest{
 		Date date = new Date();
 
 		User staff = new User(1);
-		org.openmrs.Patient patient = new org.openmrs.Patient(2);
+		org.openmrs.Patient patient = new org.openmrs.Patient(motechId);
+        patient.setBirthdateFromAge(2,new Date());
+		org.openmrs.Patient mother = new org.openmrs.Patient(mothersMotechId);
 
 		expect(registrarBean.isValidIdCheckDigit(staffId)).andReturn(true);
 		expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn(
@@ -1550,15 +1527,20 @@ public class RegistrarServiceTest{
 				new Facility());
 		expect(registrarBean.isValidMotechIdCheckDigit(motechId)).andReturn(
 				true);
+        expect(registrarBean.isValidMotechIdCheckDigit(mothersMotechId)).andReturn(
+				true);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
+        expect(openmrsBean.getPatientByMotechId(mothersMotechId.toString()))
+                        .andReturn(mother);
 
-		registrarBean.editPatient(staff, date, patient, phoneNumber, phoneType,
+
+		registrarBean.editPatient(staff, date, patient, mother, phoneNumber, phoneType,
 				nhis, date, date, stopEnrollment);
 
 		replay(registrarBean, openmrsBean);
 
-		regWs.editPatient(staffId, facilityId, date, motechId, firstName, middleName, lastName, prefName, phoneNumber,
+		regWs.editPatient(staffId, facilityId, date, motechId,mothersMotechId ,firstName, middleName, lastName, prefName, phoneNumber,
 				phoneType, nhis, date, date, stopEnrollment);
 
 		verify(registrarBean, openmrsBean);
@@ -1566,7 +1548,7 @@ public class RegistrarServiceTest{
 
 	@Test
 	public void editPatientAllErrors() {
-		Integer staffId = 1, facilityId = 2, motechId = 3;
+		Integer staffId = 1, facilityId = 2, motechId = 3 , mothersMotechId = 4;
 		String phoneNumber = "2075557894";
 		String nhis = "125";
         String firstName = "Martin";
@@ -1593,7 +1575,7 @@ public class RegistrarServiceTest{
 		replay(registrarBean, openmrsBean);
 
 		try {
-			regWs.editPatient(staffId, facilityId, date, motechId, firstName, middleName, lastName, prefName, phoneNumber,
+			regWs.editPatient(staffId, facilityId, date, motechId,mothersMotechId, firstName, middleName, lastName, prefName, phoneNumber,
 					phoneType, nhis, date, date, stopEnrollment);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {

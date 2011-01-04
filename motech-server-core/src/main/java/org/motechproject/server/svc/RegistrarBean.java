@@ -33,34 +33,18 @@
 
 package org.motechproject.server.svc;
 
-import java.util.Date;
-import java.util.List;
-
 import org.motechproject.server.annotation.RunAsAdminUser;
 import org.motechproject.server.annotation.RunAsUserParam;
 import org.motechproject.server.annotation.RunWithPrivileges;
-import org.motechproject.server.model.Community;
-import org.motechproject.server.model.ExpectedEncounter;
-import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.model.ScheduledMessage;
-import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DayOfWeek;
-import org.motechproject.ws.Gender;
-import org.motechproject.ws.HIVResult;
-import org.motechproject.ws.HowLearned;
-import org.motechproject.ws.InterestReason;
-import org.motechproject.ws.MediaType;
-import org.motechproject.ws.RegistrantType;
-import org.motechproject.ws.RegistrationMode;
-import org.openmrs.Encounter;
-import org.openmrs.Location;
-import org.openmrs.Obs;
+import org.motechproject.server.model.*;
+import org.motechproject.ws.*;
+import org.openmrs.*;
 import org.openmrs.Patient;
-import org.openmrs.User;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.util.OpenmrsConstants;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * The major internal service interface for the motech server project at this
@@ -124,7 +108,7 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public void editPatient(@RunAsUserParam User staff, Date date,
-			Patient patient, String phoneNumber,
+			Patient patient, Patient mother,String phoneNumber,
 			ContactNumberType phoneOwnership, String nhis, Date nhisExpires, Date expectedDeliveryDate,
 			Boolean stopEnrollment);
 

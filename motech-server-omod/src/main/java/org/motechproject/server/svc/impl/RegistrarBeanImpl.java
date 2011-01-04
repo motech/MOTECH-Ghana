@@ -33,80 +33,26 @@
 
 package org.motechproject.server.svc.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.event.MessageProgram;
 import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.messaging.MessageNotFoundException;
-import org.motechproject.server.model.Blackout;
-import org.motechproject.server.model.Community;
-import org.motechproject.server.model.ExpectedEncounter;
-import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.GeneralOutpatientEncounter;
-import org.motechproject.server.model.Message;
-import org.motechproject.server.model.MessageDefinition;
-import org.motechproject.server.model.MessageProgramEnrollment;
+import org.motechproject.server.model.*;
 import org.motechproject.server.model.MessageStatus;
-import org.motechproject.server.model.ScheduledMessage;
-import org.motechproject.server.model.TroubledPhone;
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.MotechIdVerhoeffValidator;
-import org.motechproject.server.omod.MotechService;
-import org.motechproject.server.omod.VerhoeffValidator;
+import org.motechproject.server.omod.*;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.server.ws.WebServiceModelConverterImpl;
-import org.motechproject.ws.BirthOutcome;
-import org.motechproject.ws.Care;
-import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DayOfWeek;
-import org.motechproject.ws.Gender;
-import org.motechproject.ws.HIVResult;
-import org.motechproject.ws.HowLearned;
-import org.motechproject.ws.InterestReason;
-import org.motechproject.ws.MediaType;
-import org.motechproject.ws.NameValuePair;
-import org.motechproject.ws.PatientMessage;
-import org.motechproject.ws.RegistrantType;
-import org.motechproject.ws.RegistrationMode;
+import org.motechproject.ws.*;
 import org.motechproject.ws.mobile.MessageService;
-import org.openmrs.Concept;
-import org.openmrs.Encounter;
-import org.openmrs.EncounterType;
-import org.openmrs.Location;
-import org.openmrs.Obs;
+import org.openmrs.*;
 import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
-import org.openmrs.PatientIdentifierType;
-import org.openmrs.Person;
-import org.openmrs.PersonAddress;
-import org.openmrs.PersonAttribute;
-import org.openmrs.PersonAttributeType;
-import org.openmrs.PersonName;
-import org.openmrs.Relationship;
-import org.openmrs.RelationshipType;
-import org.openmrs.Role;
-import org.openmrs.User;
-import org.openmrs.api.ConceptService;
-import org.openmrs.api.EncounterService;
-import org.openmrs.api.LocationService;
-import org.openmrs.api.ObsService;
-import org.openmrs.api.PatientService;
-import org.openmrs.api.PersonService;
-import org.openmrs.api.UserService;
+import org.openmrs.api.*;
 import org.openmrs.module.idgen.IdentifierSource;
 import org.openmrs.module.idgen.LogEntry;
 import org.openmrs.module.idgen.SequentialIdentifierGenerator;
@@ -115,6 +61,9 @@ import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.util.OpenmrsConstants;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * An implementation of the RegistrarBean interface, implemented using a mix of
@@ -126,7 +75,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	private ContextService contextService;
 	public MessageService mobileService;
-	private Map<String, MessageProgram> messagePrograms;
+    private RelationshipService relationshipService ;
+
+
+
+    private Map<String, MessageProgram> messagePrograms;
 	private List<String> staffTypes;
 
 	public void setContextService(ContextService contextService) {
@@ -287,11 +240,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 
 		if (mother != null) {
-			RelationshipType parentChildRelationshipType = personService
-					.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD);
-			Relationship motherRelationship = new Relationship(mother, patient,
-					parentChildRelationshipType);
-			personService.saveRelationship(motherRelationship);
+			relationshipService.createMotherChildRelationship(mother,patient);
 		}
 
 		Integer pregnancyDueDateObsId = null;
@@ -570,7 +519,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	@Transactional
-	public void editPatient(User staff, Date date, Patient patient,
+	public void editPatient(User staff, Date date, Patient patient,Patient mother,
 			String phoneNumber, ContactNumberType phoneOwnership, String nhis,
 			Date nhisExpires, Date expectedDeliveryDate, Boolean stopEnrollment) {
 
@@ -593,6 +542,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				null, null, null, null, null, nhis, nhisExpires);
 
 		patientService.savePatient(patient);
+
+        relationshipService.saveOrUpdateMotherRelationship(mother,patient);
 
 		if (Boolean.TRUE.equals(stopEnrollment)) {
 			removeAllMessageProgramEnrollments(patient.getPatientId());
@@ -652,28 +603,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			patientAddress.setAddress1(address);
 		}
 
-		Relationship motherRelationship = getMotherRelationship(patient);
-		if (mother != null) {
-			if (motherRelationship != null) {
-				Person currentMother = motherRelationship.getPersonA();
-				if (!currentMother.getPersonId().equals(mother.getPatientId())) {
-					motherRelationship.setPersonA(mother);
-					personService.saveRelationship(motherRelationship);
-				}
-			} else {
-				RelationshipType parentChildRelationshipType = personService
-						.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD);
-				motherRelationship = new Relationship(mother, patient,
-						parentChildRelationshipType);
-				personService.saveRelationship(motherRelationship);
-			}
-		} else if (motherRelationship != null) {
-			motherRelationship = personService.voidRelationship(
-					motherRelationship, "Removed in web form");
-			// Saving relationship since voidRelationship will not save with
-			// required advice and void handler
-			personService.saveRelationship(motherRelationship);
-		}
+		relationshipService.saveOrUpdateMotherRelationship(mother,patient);
 
 		Community currentCommunity = getCommunityByPatient(patient);
 		if (currentCommunity != null
@@ -4112,7 +4042,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
 	public Integer getMotherMotechId(Patient patient) {
-		Relationship motherRelation = getMotherRelationship(patient);
+		Relationship motherRelation = relationshipService.getMotherRelationship(patient);
 		if (motherRelation != null) {
 			Person mother = motherRelation.getPersonA();
 			return getMotechId(mother.getPersonId());
@@ -4133,23 +4063,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return contextService.getMotechService().saveFacility(facility);
 	}
 
-	public Relationship getMotherRelationship(Patient patient) {
-		PersonService personService = contextService.getPersonService();
-		RelationshipType parentChildtype = personService
-				.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD);
-		List<Relationship> parentRelations = personService.getRelationships(
-				null, patient, parentChildtype);
-		if (!parentRelations.isEmpty()) {
-			if (parentRelations.size() > 1) {
-				log.warn("Multiple parent relationships found for id: "
-						+ patient.getPersonId());
-			}
-			return parentRelations.get(0);
-		}
-		return null;
-	}
-
-	public Integer getMotechId(Integer patientId) {
+    public Integer getMotechId(Integer patientId) {
 		PatientService patientService = contextService.getPatientService();
 		Patient patient = patientService.getPatient(patientId);
 		if (patient == null) {
@@ -4822,4 +4736,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 		return isValid;
 	}
+
+    public void setRelationshipService(RelationshipService relationshipService) {
+        this.relationshipService = relationshipService;
+    }
 }

@@ -84,6 +84,7 @@
 		<property name="contextService" ref="contextService" />
 		<property name="mobileService" ref="mobileClient" />
 		<property name="messagePrograms" ref="messageProgramMap" />
+        <property name="relationshipService" ref="relationshipService"/>
 		<property name="staffTypes">
 			<list>
 				<value>CHO</value>
@@ -95,6 +96,10 @@
 			</list>
 		</property>
 	</bean>
+
+    <bean id="relationshipService" class="org.motechproject.server.omod.impl.RelationshipServiceImpl">
+        <property name="contextService" ref="contextService"/>
+    </bean>
 	
 	<!-- To avoid circular reference, expectedCareProgram injects registrarBean -->
 	<util:map id="messageProgramMap">

@@ -43,6 +43,7 @@ import org.motechproject.server.model.*;
 import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.omod.RelationshipService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
@@ -77,6 +78,7 @@ public class RegistrarBeanTest {
 	ConceptService conceptService;
 	MotechService motechService;
 	IdentifierSourceService idService;
+    RelationshipService relationshipService;
 
 	SequentialIdentifierGenerator staffIdGenerator;
 
@@ -180,6 +182,7 @@ public class RegistrarBeanTest {
 		conceptService = createMock(ConceptService.class);
 		motechService = createMock(MotechService.class);
 		idService = createMock(IdentifierSourceService.class);
+        relationshipService = createMock(RelationshipService.class);
 
 		ghanaLocation = new Location(1);
 		ghanaLocation.setName(MotechConstants.LOCATION_GHANA);
@@ -407,6 +410,7 @@ public class RegistrarBeanTest {
 
 		RegistrarBeanImpl regBeanImpl = new RegistrarBeanImpl();
 		regBeanImpl.setContextService(contextService);
+        regBeanImpl.setRelationshipService(relationshipService);
 
 		regBean = regBeanImpl;
 	}
@@ -798,7 +802,6 @@ public class RegistrarBeanTest {
 		Capture<Patient> patientCap = new Capture<Patient>();
 		Capture<MessageProgramEnrollment> enrollment1Cap = new Capture<MessageProgramEnrollment>();
 		Capture<MessageProgramEnrollment> enrollment2Cap = new Capture<MessageProgramEnrollment>();
-		Capture<Relationship> relationshipCap = new Capture<Relationship>();
 		Capture<Encounter> registrationEncounterCap = new Capture<Encounter>();
 
 		expect(contextService.getPatientService()).andReturn(patientService)
@@ -873,13 +876,6 @@ public class RegistrarBeanTest {
 
 		expect(patientService.savePatient(capture(patientCap)))
 				.andReturn(child);
-
-		expect(
-				personService
-						.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD))
-				.andReturn(parentChildRelationshipType);
-		expect(personService.saveRelationship(capture(relationshipCap)))
-				.andReturn(new Relationship());
 
 		expect(
 				motechService.getActiveMessageProgramEnrollments(child
@@ -1004,14 +1000,6 @@ public class RegistrarBeanTest {
 				.getStartDate());
 		assertNull("Enrollment end date should be null", enrollment2
 				.getEndDate());
-
-		Relationship relationship = relationshipCap.getValue();
-		assertEquals(parentChildRelationshipType, relationship
-				.getRelationshipType());
-		assertEquals(Integer.valueOf(2), relationship.getPersonA()
-				.getPersonId());
-		assertEquals(child.getPatientId(), relationship.getPersonB()
-				.getPersonId());
 
 		Encounter registration = registrationEncounterCap.getValue();
 		assertEquals(0, registration.getAllObs(true).size());
@@ -1265,7 +1253,7 @@ public class RegistrarBeanTest {
     @Ignore
     public void editPatient() throws ParseException {
 
-		Integer patientId = 1;
+		Integer patientId = 1 , mothersMotechId = 2;
 		String phone = "2075551212";
 		String nhis = "28";
 		Date date = new Date();
@@ -1274,6 +1262,7 @@ public class RegistrarBeanTest {
 
 		User staff = new User(2);
 		Patient patient = new Patient(patientId);
+		Patient mother = new Patient(mothersMotechId);
 
 		List<MessageProgramEnrollment> enrollments = new ArrayList<MessageProgramEnrollment>();
 		MessageProgramEnrollment enrollment1 = new MessageProgramEnrollment();
@@ -1340,7 +1329,7 @@ public class RegistrarBeanTest {
 
 		replay(contextService, patientService, personService, motechService);
 
-		regBean.editPatient(staff, date, patient, phone, phoneType, nhis, date,
+		regBean.editPatient(staff, date, patient,mother, phone, phoneType, nhis, date,
 				date,stopEnrollment);
 
 		verify(contextService, patientService, personService, motechService);
@@ -1410,7 +1399,6 @@ public class RegistrarBeanTest {
 		relationships.add(relation);
 
 		Capture<Patient> patientCap = new Capture<Patient>();
-		Capture<Relationship> relationCap = new Capture<Relationship>();
 
 		expect(contextService.getPatientService()).andReturn(patientService)
 				.atLeastOnce();
@@ -1455,15 +1443,7 @@ public class RegistrarBeanTest {
 				personService
 						.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME))
 				.andReturn(deliveryTimeAttributeType);
-		expect(
-				personService
-						.getRelationshipTypeByName(MotechConstants.RELATIONSHIP_TYPE_PARENT_CHILD))
-				.andReturn(parentChildRelationshipType);
-		expect(
-				personService.getRelationships(null, patient,
-						parentChildRelationshipType)).andReturn(relationships);
-		expect(personService.saveRelationship(capture(relationCap))).andReturn(
-				new Relationship());
+		
 		expect(motechService.getCommunityByPatient(patient)).andReturn(
 				oldCommunity);
 		expect(motechService.getCommunityByPatient(patient)).andReturn(null);
@@ -1550,9 +1530,6 @@ public class RegistrarBeanTest {
 		timeCal.setTime(timeOfDayDate);
 		assertEquals(hour, timeCal.get(Calendar.HOUR_OF_DAY));
 		assertEquals(minute, timeCal.get(Calendar.MINUTE));
-
-		Relationship motherRelation = relationCap.getValue();
-		assertEquals(newMother, motherRelation.getPersonA());
 	}
 
 	@Test
