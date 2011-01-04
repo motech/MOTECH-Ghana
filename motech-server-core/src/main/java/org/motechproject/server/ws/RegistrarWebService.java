@@ -737,15 +737,23 @@ public class RegistrarWebService implements RegistrarService {
         Set<PersonName> patientNames = patient.getNames();
         if (patientNames != null) {
             for (PersonName personName : patientNames) {
-                if(!firstName.trim().equals(""))
-                    personName.setGivenName(firstName);
-                if(!middleName.trim().equals(""))
-                    personName.setMiddleName(middleName);
-                if(!lastName.trim().equals(""))
-                    personName.setFamilyName(lastName);
+                if(firstName != null){
+                    if(!firstName.trim().equals(""))
+                        personName.setGivenName(firstName);
+                }
+                if(middleName != null){
+                    if(!middleName.trim().equals(""))
+                        personName.setMiddleName(middleName);
+                }
+                if(lastName != null){
+                    if(!lastName.trim().equals(""))
+                        personName.setFamilyName(lastName);
+                }
                 if (personName.isPreferred()) {
-                    if(!preferredName.trim().equals(""))
-                        personName.setGivenName(preferredName);
+                    if(preferredName != null){
+                        if(!preferredName.trim().equals(""))
+                            personName.setGivenName(preferredName);
+                    }
                 }
             }
         }
