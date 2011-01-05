@@ -18,7 +18,7 @@ public class RelationshipServiceImpl implements RelationshipService {
 
         private ContextService contextService;
 
-        public Relationship saveOrUpdateMotherRelationship(Person mother, Person child) {
+        public Relationship saveOrUpdateMotherRelationship(Person mother, Person child, Boolean canVoidRelationship) {
 
             Relationship motherRelationship = getMotherRelationship(child);
 
@@ -28,10 +28,11 @@ public class RelationshipServiceImpl implements RelationshipService {
 
             if(motherRelationshipCreated)
               motherRelationship = createMotherChildRelationship(mother,child);
-            else if(motherRelationshipRemoved)
-              motherRelationship = voidRelationship(motherRelationship);
             else if(motherRelationshipEdited)
               motherRelationship = updateMotherRelationship(mother,child);
+            else if(canVoidRelationship && motherRelationshipRemoved)
+              motherRelationship = voidRelationship(motherRelationship);
+
 
             return motherRelationship;
         }
@@ -83,8 +84,7 @@ public class RelationshipServiceImpl implements RelationshipService {
         }
 
         private PersonService personService() {
-            PersonService personService = contextService.getPersonService();
-            return personService;
+            return contextService.getPersonService();
         }
 
         private void logMultipleParentRelationships(Person child, List<Relationship> parentRelations) {

@@ -543,7 +543,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		patientService.savePatient(patient);
 
-        relationshipService.saveOrUpdateMotherRelationship(mother,patient);
+        relationshipService.saveOrUpdateMotherRelationship(mother,patient, false);
 
 		if (Boolean.TRUE.equals(stopEnrollment)) {
 			removeAllMessageProgramEnrollments(patient.getPatientId());
@@ -603,7 +603,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			patientAddress.setAddress1(address);
 		}
 
-		relationshipService.saveOrUpdateMotherRelationship(mother,patient);
+		relationshipService.saveOrUpdateMotherRelationship(mother,patient, true);
 
 		Community currentCommunity = getCommunityByPatient(patient);
 		if (currentCommunity != null
