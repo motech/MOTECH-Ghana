@@ -1918,7 +1918,6 @@ public class RegistrarBeanTest {
         Boolean success = true;
 
         expect(contextService.getMotechService()).andReturn(motechService);
-        expect(contextService.getPersonService()).andReturn(personService);
         expect(motechService.getMessage(messageId)).andReturn(null);
 
         replay(contextService, motechService, personService);
