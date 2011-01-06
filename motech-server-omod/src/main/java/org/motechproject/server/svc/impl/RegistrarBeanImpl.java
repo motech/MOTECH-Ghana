@@ -114,7 +114,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         staff.addName(name);
 
         if (phone != null) {
-            PersonAttributeType phoneNumberAttrType = AttributeType.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService);
+            PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService);
             staff.addAttribute(new PersonAttribute(phoneNumberAttrType, phone));
         }
 
@@ -391,7 +391,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
 
         patient.addIdentifier(new PatientIdentifier(motechIdString,
-                getMotechPatientIdType(), getGhanaLocation()));
+                PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService), getGhanaLocation()));
 
         patient.addName(new PersonName(firstName, middleName, lastName));
 
@@ -444,61 +444,61 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         List<PersonAttribute> attrs = new ArrayList<PersonAttribute>();
 
         if (phoneNumber != null) {
-            attrs.add(new PersonAttribute(AttributeType.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService),
                     phoneNumber));
         }
 
         if (phoneType != null) {
-            attrs.add(new PersonAttribute(AttributeType.PERSON_ATTRIBUTE_PHONE_TYPE.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_TYPE.getAttributeType(contextService),
                     phoneType.name()));
         }
 
         if (mediaType != null) {
-            attrs.add(new PersonAttribute(AttributeType.PERSON_ATTRIBUTE_MEDIA_TYPE.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_MEDIA_TYPE.getAttributeType(contextService),
                     mediaType.name()));
         }
 
         if (language != null) {
             attrs
-                    .add(new PersonAttribute(AttributeType.PERSON_ATTRIBUTE_LANGUAGE.getAttributeType(contextService),
+                    .add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_LANGUAGE.getAttributeType(contextService),
                             language));
         }
 
         if (dayOfWeek != null) {
-            attrs.add(new PersonAttribute(AttributeType.PERSON_ATTRIBUTE_DELIVERY_DAY.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_DELIVERY_DAY.getAttributeType(contextService),
                     dayOfWeek.name()));
         }
 
         if (timeOfDay != null) {
             SimpleDateFormat formatter = new SimpleDateFormat(
                     MotechConstants.TIME_FORMAT_DELIVERY_TIME);
-            attrs.add(new PersonAttribute(AttributeType.PERSON_ATTRIBUTE_DELIVERY_TIME.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_DELIVERY_TIME.getAttributeType(contextService),
                     formatter.format(timeOfDay)));
         }
 
         if (howLearned != null) {
-            attrs.add(new PersonAttribute(AttributeType.PERSON_ATTRIBUTE_HOW_LEARNED.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_HOW_LEARNED.getAttributeType(contextService),
                     howLearned.name()));
         }
 
         if (interestReason != null) {
-            attrs.add(new PersonAttribute(AttributeType.PERSON_ATTRIBUTE_INTEREST_REASON.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_INTEREST_REASON.getAttributeType(contextService),
                     interestReason.name()));
         }
 
         if (insured != null) {
-            attrs.add(new PersonAttribute(AttributeType.PERSON_ATTRIBUTE_INSURED.getAttributeType(contextService), insured
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_INSURED.getAttributeType(contextService), insured
                     .toString()));
         }
 
         if (nhis != null) {
-            attrs.add(new PersonAttribute(AttributeType.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(contextService), nhis));
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(contextService), nhis));
         }
 
         if (nhisExpDate != null) {
             SimpleDateFormat formatter = new SimpleDateFormat(
                     MotechConstants.DATE_FORMAT);
-            attrs.add(new PersonAttribute(AttributeType.PERSON_ATTRIBUTE_NHIS_EXP_DATE.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_EXP_DATE.getAttributeType(contextService),
                     formatter.format(nhisExpDate)));
         }
 
@@ -1976,7 +1976,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         MotechService motechService = contextService.getMotechService();
         UserService userService = contextService.getUserService();
 
-        PersonAttributeType phoneAttributeType = AttributeType.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService);
+        PersonAttributeType phoneAttributeType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService);
         List<Integer> matchingUsers = motechService
                 .getUserIdsByPersonAttribute(phoneAttributeType, phoneNumber);
         if (matchingUsers.size() > 0) {
@@ -2009,7 +2009,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     public List<Patient> getAllPatients() {
         PatientService patientService = contextService.getPatientService();
         List<PatientIdentifierType> motechPatientIdType = new ArrayList<PatientIdentifierType>();
-        motechPatientIdType.add(getMotechPatientIdType());
+        motechPatientIdType.add(PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService));
         return patientService.getPatients(null, null, motechPatientIdType,
                 false);
     }
@@ -2020,9 +2020,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         MotechService motechService = contextService.getMotechService();
 
-        PersonAttributeType phoneNumberAttrType = AttributeType.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService);
-        PersonAttributeType nhisAttrType = AttributeType.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(contextService);
-        PatientIdentifierType motechIdType = getMotechPatientIdType();
+        PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService);
+        PersonAttributeType nhisAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(contextService);
+        PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
         Integer maxResults = getMaxQueryResults();
 
         return motechService.getPatients(firstName, lastName, preferredName,
@@ -2037,9 +2037,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         MotechService motechService = contextService.getMotechService();
 
-        PersonAttributeType phoneNumberAttrType = AttributeType.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService);
-        PersonAttributeType nhisAttrType = AttributeType.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(contextService);
-        PatientIdentifierType motechIdType = getMotechPatientIdType();
+        PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService);
+        PersonAttributeType nhisAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(contextService);
+        PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
         Integer maxResults = getMaxQueryResults();
 
         return motechService.getDuplicatePatients(firstName, lastName,
@@ -3078,25 +3078,25 @@ private ScheduledMessage createCareScheduledMessage(Integer recipientId,
 	/* MessageSchedulerImpl methods end */
 
 	private String generateMotechId() {
-		PatientIdentifierType motechIdType = getMotechPatientIdType();
+		PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
 		return generateId(MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID,
 				motechIdType);
 	}
 
 	private String generateStaffId() {
-		PatientIdentifierType staffIdType = getStaffPatientIdType();
+		PatientIdentifierType staffIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_STAFF_ID.getIdentifierType(contextService);
 		return generateId(MotechConstants.IDGEN_SEQ_ID_GEN_STAFF_ID,
 				staffIdType);
 	}
 
 	private String generateCommunityId() {
-		PatientIdentifierType communityIdType = getCommunityPatientIdType();
+		PatientIdentifierType communityIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_COMMUNITY_ID.getIdentifierType(contextService);
 		return generateId(MotechConstants.IDGEN_SEQ_ID_GEN_COMMUNITY_ID,
 				communityIdType);
 	}
 
 	private String generateFacilityId() {
-		PatientIdentifierType facilityIdType = getFacilityPatientIdType();
+		PatientIdentifierType facilityIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_FACILITY_ID.getIdentifierType(contextService);
 		return generateId(MotechConstants.IDGEN_SEQ_ID_GEN_FACILITY_ID,
 				facilityIdType);
 	}
@@ -3126,7 +3126,7 @@ private ScheduledMessage createCareScheduledMessage(Integer recipientId,
 	}
 
 	private void excludeIdForGenerator(User staff, String motechId) {
-		PatientIdentifierType motechIdType = getMotechPatientIdType();
+		PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
 		try {
 			IdentifierSourceService idSourceService = contextService
 					.getIdentifierSourceService();
@@ -3642,7 +3642,7 @@ private ScheduledMessage createCareScheduledMessage(Integer recipientId,
 
 	public Patient getPatientByMotechId(String motechId) {
 		PatientService patientService = contextService.getPatientService();
-		PatientIdentifierType motechIdType = getMotechPatientIdType();
+		PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
 		List<PatientIdentifierType> idTypes = new ArrayList<PatientIdentifierType>();
 		idTypes.add(motechIdType);
 
@@ -4010,30 +4010,6 @@ private ScheduledMessage createCareScheduledMessage(Integer recipientId,
 			}
 		}
 		return motechId;
-	}
-
-	public PatientIdentifierType getMotechPatientIdType() {
-		return contextService.getPatientService()
-				.getPatientIdentifierTypeByName(
-						MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
-	}
-
-	public PatientIdentifierType getStaffPatientIdType() {
-		return contextService.getPatientService()
-				.getPatientIdentifierTypeByName(
-						MotechConstants.PATIENT_IDENTIFIER_STAFF_ID);
-	}
-
-	public PatientIdentifierType getFacilityPatientIdType() {
-		return contextService.getPatientService()
-				.getPatientIdentifierTypeByName(
-						MotechConstants.PATIENT_IDENTIFIER_FACILITY_ID);
-	}
-
-	public PatientIdentifierType getCommunityPatientIdType() {
-		return contextService.getPatientService()
-				.getPatientIdentifierTypeByName(
-						MotechConstants.PATIENT_IDENTIFIER_COMMUNITY_ID);
 	}
 
 	public Location getGhanaLocation() {

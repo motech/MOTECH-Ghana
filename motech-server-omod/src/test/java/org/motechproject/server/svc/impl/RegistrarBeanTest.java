@@ -44,6 +44,7 @@ import org.motechproject.server.model.*;
 import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.omod.PatientIdentifierTypeEnum;
 import org.motechproject.server.omod.RelationshipService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
@@ -56,6 +57,7 @@ import org.openmrs.module.idgen.IdentifierSource;
 import org.openmrs.module.idgen.LogEntry;
 import org.openmrs.module.idgen.SequentialIdentifierGenerator;
 import org.openmrs.module.idgen.service.IdentifierSourceService;
+import org.openmrs.propertyeditor.PatientIdentifierTypeEditor;
 import org.openmrs.util.OpenmrsConstants;
 
 import java.text.ParseException;
@@ -545,10 +547,6 @@ public class RegistrarBeanTest {
                 new ArrayList<IdentifierSource>());
         expect(idService.saveLogEntry((LogEntry) anyObject())).andReturn(
                 new LogEntry());
-        expect(
-                patientService
-                        .getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
-                .andReturn(motechIdType).atLeastOnce();
         expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
                 .andReturn(ghanaLocation);
 
@@ -633,6 +631,10 @@ public class RegistrarBeanTest {
                 encounterService
                         .saveEncounter(capture(registrationEncounterCap)))
                 .andReturn(new Encounter());
+        expect(
+                patientService.
+                        getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
+                .andReturn(motechIdType).atLeastOnce();
 
         replay(contextService, patientService, motechService, personService,
                 locationService, userService, encounterService, obsService,

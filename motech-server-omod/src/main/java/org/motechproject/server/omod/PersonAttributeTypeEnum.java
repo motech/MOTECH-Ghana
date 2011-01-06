@@ -1,10 +1,8 @@
-package org.motechproject.server.svc.impl;
+package org.motechproject.server.omod;
 
-import org.motechproject.server.omod.ContextService;
 import org.openmrs.PersonAttributeType;
-import org.springframework.beans.factory.annotation.Autowired;
 
-public enum AttributeType {
+public enum PersonAttributeTypeEnum {
     PERSON_ATTRIBUTE_INSURED("Insured"),
     PERSON_ATTRIBUTE_PHONE_NUMBER("Phone Number"),
     PERSON_ATTRIBUTE_NHIS_NUMBER("NHIS Number"),
@@ -19,7 +17,7 @@ public enum AttributeType {
 
     private String attributeName;
 
-    private AttributeType(String attributeName){
+    private PersonAttributeTypeEnum(String attributeName){
         this.attributeName = attributeName;
     }
     
