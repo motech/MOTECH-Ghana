@@ -47,6 +47,7 @@ import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
+import org.motechproject.server.util.Password;
 import org.motechproject.server.ws.WebServiceModelConverterImpl;
 import org.motechproject.ws.*;
 import org.motechproject.ws.mobile.MessageService;
@@ -126,20 +127,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		return userService.saveUser(staff, generatePassword(8));
 	}
 
-	private char[] PASSCHARS = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
-			'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-			'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
-			'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
-			'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8',
-			'9', '0' };
+
 
 	private String generatePassword(int length) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < length; i++) {
-			int charIndex = (int) (Math.random() * PASSCHARS.length);
-			sb.append(PASSCHARS[charIndex]);
-		}
-		return sb.toString();
+		return new Password(length).create();
 	}
 
 	@Transactional
