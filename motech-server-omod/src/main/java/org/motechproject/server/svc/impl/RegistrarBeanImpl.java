@@ -426,7 +426,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 .getEncounterService();
 
         Encounter encounter = new Encounter();
-        encounter.setEncounterType(getPatientRegistrationEncounterType());
+        encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_PATIENTREGVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(date);
         encounter.setPatient(patient);
         encounter.setLocation(facility);
@@ -668,7 +668,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         Encounter encounter = new Encounter();
         encounter
-                .setEncounterType(getPregnancyRegistrationVisitEncounterType());
+                .setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_PREGREGVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(date);
         encounter.setPatient(patient);
         encounter.setLocation(facility);
@@ -757,7 +757,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         Location ghanaLocation = getGhanaLocation();
 
         Encounter historyEncounter = new Encounter();
-        historyEncounter.setEncounterType(getPatientHistoryEncounterType());
+        historyEncounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_PATIENTHISTORY.getEncounterType(contextService));
         historyEncounter.setEncounterDatetime(date);
         historyEncounter.setPatient(patient);
         historyEncounter.setLocation(ghanaLocation);
@@ -834,7 +834,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 .getEncounterService();
 
         Encounter encounter = new Encounter();
-        encounter.setEncounterType(getANCRegistrationEncounterType());
+        encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_ANCREGVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(date);
         encounter.setPatient(patient);
         encounter.setLocation(facility);
@@ -907,7 +907,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 .getEncounterService();
 
         Encounter encounter = new Encounter();
-        encounter.setEncounterType(getCWCRegistrationEncounterType());
+        encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_CWCREGVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(date);
         encounter.setPatient(patient);
         encounter.setLocation(facility);
@@ -939,7 +939,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 .getEncounterService();
 
         Encounter encounter = new Encounter();
-        encounter.setEncounterType(getANCVisitEncounterType());
+        encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_ANCVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(date);
         encounter.setPatient(patient);
         encounter.setLocation(facility);
@@ -1177,7 +1177,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 .getEncounterService();
 
         Encounter encounter = new Encounter();
-        encounter.setEncounterType(getPregnancyTerminationVisitEncounterType());
+        encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_PREGTERMVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(date);
         encounter.setPatient(patient);
         encounter.setLocation(facility);
@@ -1264,7 +1264,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 .getEncounterService();
 
         Encounter encounter = new Encounter();
-        encounter.setEncounterType(getPregnancyDeliveryVisitEncounterType());
+        encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_PREGDELVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(datetime);
         encounter.setPatient(patient);
         encounter.setLocation(facility);
@@ -1384,7 +1384,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 .getEncounterService();
 
         Encounter encounter = new Encounter();
-        encounter.setEncounterType(getBirthEncounterType());
+        encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_BIRTHVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(datetime);
         encounter.setPatient(child);
         encounter.setLocation(facility);
@@ -1408,7 +1408,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         Encounter encounter = new Encounter();
         encounter
-                .setEncounterType(getPregnancyDeliveryNotificationEncounterType());
+                .setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_PREGDELNOTIFYVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(date);
         encounter.setPatient(patient);
         encounter.setLocation(facility);
@@ -1488,7 +1488,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 .getEncounterService();
 
         Encounter encounter = new Encounter();
-        encounter.setEncounterType(getMotherPNCVisitEncounterType());
+        encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_PNCMOTHERVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(datetime);
         encounter.setPatient(patient);
         encounter.setLocation(facility);
@@ -1594,7 +1594,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 .getEncounterService();
 
         Encounter encounter = new Encounter();
-        encounter.setEncounterType(getChildPNCVisitEncounterType());
+        encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_PNCCHILDVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(datetime);
         encounter.setPatient(patient);
         encounter.setLocation(facility);
@@ -1695,7 +1695,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 .getEncounterService();
 
         Encounter encounter = new Encounter();
-        encounter.setEncounterType(getTTVisitEncounterType());
+        encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_TTVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(date);
         encounter.setPatient(patient);
         encounter.setLocation(facility);
@@ -1744,7 +1744,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 .getEncounterService();
 
         Encounter encounter = new Encounter();
-        encounter.setEncounterType(getCWCVisitEncounterType());
+        encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_CWCVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(date);
         encounter.setPatient(patient);
         encounter.setLocation(facility);
@@ -1880,7 +1880,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 .getEncounterService();
 
         Encounter encounter = new Encounter();
-        encounter.setEncounterType(getOutpatientVisitEncounterType());
+        encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_OUTPATIENTVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(date);
         encounter.setPatient(patient);
         encounter.setLocation(facility);
@@ -2158,7 +2158,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     public List<Encounter> getRecentDeliveries(Facility facility) {
         MotechService motechService = contextService.getMotechService();
 
-        EncounterType deliveryEncounterType = getPregnancyDeliveryVisitEncounterType();
+        EncounterType deliveryEncounterType = EncounterTypeEnum.ENCOUNTER_TYPE_PREGDELVISIT.getEncounterType(contextService);
 
         Calendar calendar = Calendar.getInstance();
         Date currentDate = calendar.getTime();
@@ -2176,7 +2176,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 .getEncounterService();
 
         List<EncounterType> deliveryEncounterType = new ArrayList<EncounterType>();
-        deliveryEncounterType.add(getPregnancyDeliveryVisitEncounterType());
+        deliveryEncounterType.add(EncounterTypeEnum.ENCOUNTER_TYPE_PREGDELVISIT.getEncounterType(contextService));
 
         List<Encounter> deliveries = encounterService.getEncounters(patient,
                 null, null, null, null, deliveryEncounterType, null, false);
@@ -3813,7 +3813,8 @@ private ScheduledMessage createCareScheduledMessage(Integer recipientId,
 	}
 
 	public Integer getMaxQueryResults() {
-		String maxResultsProperty = getMaxQueryResultsProperty();
+        String maxResultsProperty = contextService.getAdministrationService().getGlobalProperty(
+                MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS);
 		if (maxResultsProperty != null) {
 			return Integer.parseInt(maxResultsProperty);
 		}
@@ -4015,81 +4016,6 @@ private ScheduledMessage createCareScheduledMessage(Integer recipientId,
 	public Location getGhanaLocation() {
 		return contextService.getLocationService().getLocation(
 				MotechConstants.LOCATION_GHANA);
-	}
-
-	public EncounterType getANCVisitEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_ANCVISIT);
-	}
-
-	public EncounterType getPregnancyRegistrationVisitEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_PREGREGVISIT);
-	}
-
-	public EncounterType getPregnancyTerminationVisitEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_PREGTERMVISIT);
-	}
-
-	public EncounterType getPregnancyDeliveryVisitEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_PREGDELVISIT);
-	}
-
-	public EncounterType getPregnancyDeliveryNotificationEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_PREGDELNOTIFYVISIT);
-	}
-
-	public EncounterType getOutpatientVisitEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_OUTPATIENTVISIT);
-	}
-
-	public EncounterType getTTVisitEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_TTVISIT);
-	}
-
-	public EncounterType getCWCVisitEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_CWCVISIT);
-	}
-
-	public EncounterType getMotherPNCVisitEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_PNCMOTHERVISIT);
-	}
-
-	public EncounterType getChildPNCVisitEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_PNCCHILDVISIT);
-	}
-
-	public EncounterType getANCRegistrationEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_ANCREGVISIT);
-	}
-
-	public EncounterType getCWCRegistrationEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_CWCREGVISIT);
-	}
-
-	public EncounterType getBirthEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_BIRTHVISIT);
-	}
-
-	public EncounterType getPatientRegistrationEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT);
-	}
-
-	public EncounterType getPatientHistoryEncounterType() {
-		return contextService.getEncounterService().getEncounterType(
-				MotechConstants.ENCOUNTER_TYPE_PATIENTHISTORY);
 	}
 
 	public Concept getImmunizationsOrderedConcept() {
@@ -4526,12 +4452,7 @@ private ScheduledMessage createCareScheduledMessage(Integer recipientId,
 				MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY);
 	}
 
-	public String getMaxQueryResultsProperty() {
-		return contextService.getAdministrationService().getGlobalProperty(
-				MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS);
-	}
-
-	/* Factored out methods end */
+    /* Factored out methods end */
 
 	public Facility getFacilityById(Integer facilityId) {
 		return contextService.getMotechService().getFacilityById(facilityId);
