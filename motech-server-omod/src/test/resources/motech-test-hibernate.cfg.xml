@@ -35,11 +35,22 @@
 -->
 
 <!DOCTYPE hibernate-configuration PUBLIC
-	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
-	<session-factory>
-		${hbmConfig}
-	</session-factory>
+    <session-factory>
+        <mapping resource="Message.hbm.xml"/>
+        <mapping resource="ExpectedEncounter.hbm.xml"/>
+        <mapping resource="MessageAttribute.hbm.xml"/>
+        <mapping resource="GeneralPatientEncounter.hbm.xml"/>
+        <mapping resource="Community.hbm.xml"/>
+        <mapping resource="MessageProgramEnrollment.hbm.xml"/>
+        <mapping resource="Blackout.hbm.xml"/>
+        <mapping resource="ScheduledMessage.hbm.xml"/>
+        <mapping resource="MessageDefinition.hbm.xml"/>
+        <mapping resource="TroubledPhone.hbm.xml"/>
+        <mapping resource="Facility.hbm.xml"/>
+        <mapping resource="ExpectedObs.hbm.xml"/>
+    </session-factory>
 </hibernate-configuration>

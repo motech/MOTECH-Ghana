@@ -45,6 +45,13 @@
 				value="%d %-5p [%c] %m%n" /> 
 		</layout>
 	</appender>
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="THREAD:%t %p - %C{1}.%M(%L) |%d{ISO8601}| %m%n"/>
+        </layout>
+    </appender>
 	
 	<logger name="${modulePackage}">
 		<level value="DEBUG" />
@@ -63,8 +70,9 @@
 	 
 	
 	<root>
-		<level value="ERROR" />
+		<level value="INFO" />
 		<appender-ref ref="LOGFILE" />
+		<appender-ref ref="CONSOLE" />
 	</root>
 
 </log4j:configuration>
