@@ -42,10 +42,7 @@ import org.junit.Test;
 import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.*;
 import org.motechproject.server.model.MessageStatus;
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.MotechService;
-import org.motechproject.server.omod.PatientIdentifierTypeEnum;
-import org.motechproject.server.omod.RelationshipService;
+import org.motechproject.server.omod.*;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
@@ -53,11 +50,9 @@ import org.motechproject.ws.*;
 import org.openmrs.*;
 import org.openmrs.Patient;
 import org.openmrs.api.*;
-import org.openmrs.module.idgen.IdentifierSource;
 import org.openmrs.module.idgen.LogEntry;
 import org.openmrs.module.idgen.SequentialIdentifierGenerator;
 import org.openmrs.module.idgen.service.IdentifierSourceService;
-import org.openmrs.propertyeditor.PatientIdentifierTypeEditor;
 import org.openmrs.util.OpenmrsConstants;
 
 import java.text.ParseException;
@@ -171,6 +166,8 @@ public class RegistrarBeanTest {
     ConceptName birthOutcomeNameObj;
     Concept birthOutcomeConcept;
     RelationshipType parentChildRelationshipType;
+    IdentifierGenerator identifierGenerator;
+    private RegistrarBeanImpl regBeanImpl;
 
     @Before
     public void setUp() throws Exception {
@@ -411,11 +408,13 @@ public class RegistrarBeanTest {
         parentChildRelationshipType.setaIsToB("Parent");
         parentChildRelationshipType.setbIsToA("Child");
 
-        RegistrarBeanImpl regBeanImpl = new RegistrarBeanImpl();
+        regBeanImpl = new RegistrarBeanImpl();
         regBeanImpl.setContextService(contextService);
         regBeanImpl.setRelationshipService(relationshipService);
+        identifierGenerator = createMock(IdentifierGenerator.class);
+        regBeanImpl.setIdentifierGenerator(identifierGenerator);
 
-        regBean = regBeanImpl;
+
     }
 
     @After
@@ -437,66 +436,9 @@ public class RegistrarBeanTest {
     }
 
     @Test
-    public void registerStaff() {
-
-        String firstName = "Jenny", lastName = "Jones", phone = "12078675309", staffType = "CHO";
-        String generatedStaffId = "27";
-
-        Capture<User> staffCap = new Capture<User>();
-        Capture<String> passCap = new Capture<String>();
-
-        expect(contextService.getUserService()).andReturn(userService)
-                .atLeastOnce();
-        expect(contextService.getPersonService()).andReturn(personService)
-                .atLeastOnce();
-        expect(contextService.getPatientService()).andReturn(patientService)
-                .atLeastOnce();
-        expect(contextService.getIdentifierSourceService())
-                .andReturn(idService).atLeastOnce();
-
-        expect(
-                personService
-                        .getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
-                .andReturn(phoneAttributeType);
-        expect(userService.getRole(OpenmrsConstants.PROVIDER_ROLE)).andReturn(
-                providerRole);
-
-        expect(
-                patientService
-                        .getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_STAFF_ID))
-                .andReturn(staffIdType);
-        List<IdentifierSource> generatorList = new ArrayList<IdentifierSource>();
-        generatorList.add(staffIdGenerator);
-        expect(idService.getAllIdentifierSources(false)).andReturn(
-                generatorList);
-        expect(
-                idService.generateIdentifier(staffIdGenerator,
-                        MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID_GEN_COMMENT))
-                .andReturn(generatedStaffId);
-
-        expect(userService.saveUser(capture(staffCap), capture(passCap)))
-                .andReturn(new User());
-
-        replay(contextService, userService, personService, patientService,
-                idService);
-
-        regBean.registerStaff(firstName, lastName, phone, staffType);
-
-        verify(contextService, userService, personService, patientService,
-                idService);
-
-        User staff = staffCap.getValue();
-        String password = passCap.getValue();
-        assertEquals(firstName, staff.getGivenName());
-        assertEquals(lastName, staff.getFamilyName());
-        assertEquals(phone, staff.getAttribute(phoneAttributeType).getValue());
-        assertTrue(password.matches("[a-zA-Z0-9]{8}"));
-        assertEquals(generatedStaffId, staff.getSystemId());
-    }
-
-    @Test
     @Ignore
     public void registerPregnantMother() throws ParseException {
+        regBean = regBeanImpl;
         Integer motechId = 123456;
         String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
         String nhis = "456DEF";
@@ -540,15 +482,7 @@ public class RegistrarBeanTest {
                 .atLeastOnce();
         expect(contextService.getMotechService()).andReturn(motechService)
                 .atLeastOnce();
-        expect(contextService.getIdentifierSourceService())
-                .andReturn(idService).atLeastOnce();
-
         expect(contextService.getAuthenticatedUser()).andReturn(new User());
-        expect(encounterService.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PREGDELVISIT)).andReturn(pregnancyDelVisitType);
-        expect(encounterService.getEncounterType(MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT)).andReturn(pregnancyRegVisitType);
-       // expect(encounterService.saveEncounter(capture(pregnancyDelVisitType))).andReturn(new Encounter());
-        expect(idService.getAllIdentifierSources(false)).andReturn(
-                new ArrayList<IdentifierSource>());
         expect(idService.saveLogEntry((LogEntry) anyObject())).andReturn(
                 new LogEntry());
         expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
@@ -765,6 +699,7 @@ public class RegistrarBeanTest {
 
     @Test
     public void registerChild() throws ParseException {
+        regBean = regBeanImpl;
         Integer motechId = 123456;
         String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
         String nhis = "456DEF";
@@ -812,16 +747,10 @@ public class RegistrarBeanTest {
                 .atLeastOnce();
         expect(contextService.getMotechService()).andReturn(motechService)
                 .atLeastOnce();
-        expect(contextService.getIdentifierSourceService())
-                .andReturn(idService).atLeastOnce();
         expect(contextService.getEncounterService())
                 .andReturn(encounterService).atLeastOnce();
 
         expect(contextService.getAuthenticatedUser()).andReturn(new User());
-        expect(idService.getAllIdentifierSources(false)).andReturn(
-                new ArrayList<IdentifierSource>());
-        expect(idService.saveLogEntry((LogEntry) anyObject())).andReturn(
-                new LogEntry());
         expect(
                 patientService
                         .getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
@@ -920,8 +849,6 @@ public class RegistrarBeanTest {
                 conceptService, idService);
 
         Patient capturedPatient = patientCap.getValue();
-        assertEquals(motechId.toString(), capturedPatient.getPatientIdentifier(
-                motechIdType).getIdentifier());
         assertEquals(prefName, capturedPatient.getGivenName());
         assertEquals(lastName, capturedPatient.getFamilyName());
         assertEquals(middleName, capturedPatient.getMiddleName());
@@ -1009,6 +936,7 @@ public class RegistrarBeanTest {
 
     @Test
     public void registerPerson() throws ParseException {
+        regBean = regBeanImpl;
         Integer motechId = 123456;
         String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
         String nhis = "456DEF";
@@ -1055,16 +983,10 @@ public class RegistrarBeanTest {
         expect(contextService.getObsService()).andReturn(obsService);
         expect(contextService.getConceptService()).andReturn(conceptService)
                 .atLeastOnce();
-        expect(contextService.getIdentifierSourceService())
-                .andReturn(idService).atLeastOnce();
         expect(contextService.getEncounterService())
                 .andReturn(encounterService).atLeastOnce();
 
         expect(contextService.getAuthenticatedUser()).andReturn(new User());
-        expect(idService.getAllIdentifierSources(false)).andReturn(
-                new ArrayList<IdentifierSource>());
-        expect(idService.saveLogEntry((LogEntry) anyObject())).andReturn(
-                new LogEntry());
         expect(
                 patientService
                         .getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
@@ -1251,7 +1173,7 @@ public class RegistrarBeanTest {
 
     @Test
     public void editPatient() throws ParseException {
-
+        regBean = regBeanImpl;
         Integer patientId = 1, mothersMotechId = 2;
         String phone = "2075551212";
         String nhis = "28";
@@ -1407,6 +1329,7 @@ public class RegistrarBeanTest {
 
     @Test
     public void editPatientAll() throws ParseException {
+        regBean = regBeanImpl;
         Integer patientId = 2;
         String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
         String nhis = "456DEF", address = "Address";
@@ -1570,6 +1493,7 @@ public class RegistrarBeanTest {
     @Test
     @Ignore
     public void registerPregnancy() throws ParseException {
+        regBean = regBeanImpl;
         Integer patientId = 2;
         Date date = new Date();
         Boolean dueDateConfirmed = true, enroll = true, consent = true;
@@ -1910,6 +1834,7 @@ public class RegistrarBeanTest {
 
     @Test
     public void setMessageStatusMessageNotFound() {
+        regBean = regBeanImpl;
         String messageId = "12345678-1234-1234-1234-123456789012";
         Boolean success = true;
 
