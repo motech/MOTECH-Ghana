@@ -34,126 +34,141 @@
 -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-	<bean id="contextService" class="org.motechproject.server.omod.impl.ContextServiceImpl" />
+    <bean id="contextService" class="org.motechproject.server.omod.impl.ContextServiceImpl"/>
 
-	<bean id="registrarBeanProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
-		<property name="proxyInterfaces">
-			<list>
-				<value>org.motechproject.server.svc.RegistrarBean</value>
-				<value>org.motechproject.server.svc.OpenmrsBean</value>
-			</list>
-		</property>
-		<property name="target" ref="registrarBean" />
-		<property name="interceptorNames">
-			<list>
-				<idref bean="contextSessionAdvice" />
-				<idref bean="authenticateAdvice" />
-				<idref bean="runAsUserAdvice" />
-				<idref bean="proxyPrivilegesAdvice" />
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="verbatimUserResolver" class="org.motechproject.server.omod.impl.VerbatimUserResolverImpl" />
+    <bean id="authenticationService" class="org.motechproject.server.svc.impl.AuthenticationServiceImpl">
+        <constructor-arg ref="contextService"/>
+    </bean>
 
-	<bean id="contextSessionAdvice" class="org.motechproject.server.omod.advice.ContextSessionAdvice">
-		<property name="contextService" ref="contextService" />
-	</bean>
+    <bean id="registrarBeanProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <list>
+                <value>org.motechproject.server.svc.RegistrarBean</value>
+                <value>org.motechproject.server.svc.OpenmrsBean</value>
+            </list>
+        </property>
+        <property name="target" ref="registrarBean"/>
+        <property name="interceptorNames">
+            <list>
+                <idref bean="contextSessionAdvice"/>
+                <idref bean="authenticateAdvice"/>
+                <idref bean="runAsUserAdvice"/>
+                <idref bean="proxyPrivilegesAdvice"/>
+            </list>
+        </property>
+    </bean>
 
-	<bean id="authenticateAdvice" class="org.motechproject.server.omod.advice.AuthenticateAdvice">
-		<property name="contextService" ref="contextService" />
-	</bean>
+    <bean id="verbatimUserResolver" class="org.motechproject.server.omod.impl.VerbatimUserResolverImpl"/>
 
-	<bean id="proxyPrivilegesAdvice" class="org.motechproject.server.omod.advice.ProxyPrivilegesAdvice">
-		<property name="contextService" ref="contextService" />
-	</bean>
-	
-	<bean id="runAsUserAdvice" class="org.motechproject.server.omod.advice.RunAsUserAdvice">
-		<property name="contextService" ref="contextService" />
-	</bean>
+    <bean id="contextSessionAdvice" class="org.motechproject.server.omod.advice.ContextSessionAdvice">
+        <property name="contextService" ref="contextService"/>
+    </bean>
 
-	<bean id="registrarBean" name="openmrsBean" class="org.motechproject.server.svc.impl.RegistrarBeanImpl">
-		<property name="contextService" ref="contextService" />
-		<property name="mobileService" ref="mobileClient" />
-		<property name="messagePrograms" ref="messageProgramMap" />
+    <bean id="authenticateAdvice" class="org.motechproject.server.omod.advice.AuthenticateAdvice">
+        <property name="contextService" ref="contextService"/>
+    </bean>
+
+    <bean id="proxyPrivilegesAdvice" class="org.motechproject.server.omod.advice.ProxyPrivilegesAdvice">
+        <property name="contextService" ref="contextService"/>
+    </bean>
+
+    <bean id="runAsUserAdvice" class="org.motechproject.server.omod.advice.RunAsUserAdvice">
+        <property name="contextService" ref="contextService"/>
+    </bean>
+
+    <bean id="registrarBean" name="openmrsBean" class="org.motechproject.server.svc.impl.RegistrarBeanImpl">
+        <property name="contextService" ref="contextService"/>
+        <property name="mobileService" ref="mobileClient"/>
+        <property name="authenticationService" ref="authenticationService"/>
         <property name="relationshipService" ref="relationshipService"/>
-		<property name="staffTypes">
-			<list>
-				<value>CHO</value>
-				<value>CHN</value>
-				<value>Midwife</value>
-				<value>HEW</value>
-				<value>CHV</value>
-				<value>Field agent</value>
-			</list>
-		</property>
-	</bean>
+        <property name="messagePrograms" ref="messageProgramMap"/>
+        <property name="patientService" ref="patientService"/>
+        <property name="personService" ref="personService"/>
+        <property name="administrationService" ref="adminService"/>
+        <property name="conceptService" ref="conceptService"/>
+        <property name="encounterService" ref="encounterService"/>
+        <property name="obsService" ref="obsService"/>
+        <property name="locationService" ref="locationService"/>
+        <property name="userService" ref="userService"/>
+        <property name="schedulerService" ref="schedulerService"/>
+
+        <property name="staffTypes">
+            <list>
+                <value>CHO</value>
+                <value>CHN</value>
+                <value>Midwife</value>
+                <value>HEW</value>
+                <value>CHV</value>
+                <value>Field agent</value>
+            </list>
+        </property>
+    </bean>
 
     <bean id="relationshipService" class="org.motechproject.server.omod.impl.RelationshipServiceImpl">
         <property name="contextService" ref="contextService"/>
     </bean>
-	
-	<!-- To avoid circular reference, expectedCareProgram injects registrarBean -->
-	<util:map id="messageProgramMap">
-		<entry>
-			<key>
-				<value>Weekly Pregnancy Message Program</value>
-			</key>
-			<ref bean="weeklyPregnancyProgram" />
-		</entry>
-		<entry>
-			<key>
-				<value>Weekly Info Pregnancy Message Program</value>
-			</key>
-			<ref bean="weeklyInfoPregnancyProgram" />
-		</entry>
-		<entry>
-			<key>
-				<value>Weekly Info Child Message Program</value>
-			</key>
-			<ref bean="weeklyInfoChildProgram" />
-		</entry>
-		<entry>
-			<key>
-				<value>Demo Minute Message Program</value>
-			</key>
-			<ref bean="demoMinuteProgram" />
-		</entry>
-		<entry>
-			<key>
-				<value>Input Demo Message Program</value>
-			</key>
-			<ref bean="inputDemoProgram" />
-		</entry>
-		<entry>
-			<key>
-				<value>Expected Care Message Program</value>
-			</key>
-			<ref bean="expectedCareProgram" />
-		</entry>
-	</util:map>
-	
-	<bean id="mobileClient" class="org.motechproject.server.ws.MessageServiceStub" />
 
-	<!-- Uncomment to enable using motech-mobile web service and comment out mobileClient bean in registrar-bean.xml
-	<bean id="mobileClient" 
-		class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
-		<property name="serviceInterface" value="org.motechproject.ws.mobile.MessageService" />
-		<property name="wsdlDocumentUrl"
-			value="http://localhost:8080/motech-mobile-webapp/webservices/messaging?wsdl" />
-		<property name="namespaceUri" value="http://server.ws.motechproject.org/" />
-		<property name="serviceName" value="MessageServiceImplService" />
-		<property name="portName" value="MessageServiceImplPort" />
-		<property name="lookupServiceOnStartup" value="false" />
-	</bean>
--->
+    <!-- To avoid circular reference, expectedCareProgram injects registrarBean -->
+    <util:map id="messageProgramMap">
+        <entry>
+            <key>
+                <value>Weekly Pregnancy Message Program</value>
+            </key>
+            <ref bean="weeklyPregnancyProgram"/>
+        </entry>
+        <entry>
+            <key>
+                <value>Weekly Info Pregnancy Message Program</value>
+            </key>
+            <ref bean="weeklyInfoPregnancyProgram"/>
+        </entry>
+        <entry>
+            <key>
+                <value>Weekly Info Child Message Program</value>
+            </key>
+            <ref bean="weeklyInfoChildProgram"/>
+        </entry>
+        <entry>
+            <key>
+                <value>Demo Minute Message Program</value>
+            </key>
+            <ref bean="demoMinuteProgram"/>
+        </entry>
+        <entry>
+            <key>
+                <value>Input Demo Message Program</value>
+            </key>
+            <ref bean="inputDemoProgram"/>
+        </entry>
+        <entry>
+            <key>
+                <value>Expected Care Message Program</value>
+            </key>
+            <ref bean="expectedCareProgram"/>
+        </entry>
+    </util:map>
+
+    <bean id="mobileClient" class="org.motechproject.server.ws.MessageServiceStub"/>
+
+    <!-- Uncomment to enable using motech-mobile web service and comment out mobileClient bean in registrar-bean.xml
+        <bean id="mobileClient"
+            class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
+            <property name="serviceInterface" value="org.motechproject.ws.mobile.MessageService" />
+            <property name="wsdlDocumentUrl"
+                value="http://localhost:8080/motech-mobile-webapp/webservices/messaging?wsdl" />
+            <property name="namespaceUri" value="http://server.ws.motechproject.org/" />
+            <property name="serviceName" value="MessageServiceImplService" />
+            <property name="portName" value="MessageServiceImplPort" />
+            <property name="lookupServiceOnStartup" value="false" />
+        </bean>
+    -->
 
 </beans>

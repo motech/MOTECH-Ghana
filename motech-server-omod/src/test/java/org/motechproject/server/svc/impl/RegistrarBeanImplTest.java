@@ -33,29 +33,9 @@
 
 package org.motechproject.server.svc.impl;
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.easymock.Capture;
-import org.motechproject.server.model.Blackout;
-import org.motechproject.server.model.Message;
-import org.motechproject.server.model.MessageDefinition;
-import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.model.MessageStatus;
-import org.motechproject.server.model.MessageType;
-import org.motechproject.server.model.ScheduledMessage;
+import org.motechproject.server.model.*;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.util.MotechConstants;
@@ -66,6 +46,15 @@ import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.PersonService;
+
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
 
 public class RegistrarBeanImplTest extends TestCase {
 
@@ -85,6 +74,8 @@ public class RegistrarBeanImplTest extends TestCase {
 
 		regBean = new RegistrarBeanImpl();
 		regBean.setContextService(contextService);
+        regBean.setAdministrationService(adminService);
+        regBean.setPersonService(personService);
 	}
 
 	@Override
@@ -137,8 +128,6 @@ public class RegistrarBeanImplTest extends TestCase {
 
 		Person person = new Person(1);
 
-		expect(contextService.getAdministrationService()).andReturn(
-				adminService).times(2);
 		expect(
 				adminService
 						.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK))
@@ -173,8 +162,6 @@ public class RegistrarBeanImplTest extends TestCase {
 
 		Person person = new Person(1);
 
-		expect(contextService.getAdministrationService()).andReturn(
-				adminService).times(2);
 		expect(
 				adminService
 						.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK))
@@ -403,7 +390,6 @@ public class RegistrarBeanImplTest extends TestCase {
 
 		Capture<ScheduledMessage> capturedScheduledMessage = new Capture<ScheduledMessage>();
 
-		expect(contextService.getPersonService()).andReturn(personService);
 		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
 		expect(personService.getPerson(personId)).andReturn(person);
@@ -465,7 +451,6 @@ public class RegistrarBeanImplTest extends TestCase {
 		schedMessage.getMessageAttempts().add(msg);
 		existingMessages.add(schedMessage);
 
-		expect(contextService.getPersonService()).andReturn(personService);
 		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
 		expect(personService.getPerson(personId)).andReturn(person);
@@ -517,7 +502,6 @@ public class RegistrarBeanImplTest extends TestCase {
 		schedMessage.getMessageAttempts().add(msg);
 		existingMessages.add(schedMessage);
 
-		expect(contextService.getPersonService()).andReturn(personService);
 		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
 		expect(personService.getPerson(personId)).andReturn(person);
@@ -569,7 +553,6 @@ public class RegistrarBeanImplTest extends TestCase {
 		schedMessage.getMessageAttempts().add(msg);
 		existingMessages.add(schedMessage);
 
-		expect(contextService.getPersonService()).andReturn(personService);
 		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
 		expect(personService.getPerson(personId)).andReturn(person);
@@ -621,7 +604,6 @@ public class RegistrarBeanImplTest extends TestCase {
 		schedMessage.getMessageAttempts().add(msg);
 		existingMessages.add(schedMessage);
 
-		expect(contextService.getPersonService()).andReturn(personService);
 		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
 		expect(personService.getPerson(personId)).andReturn(person);
@@ -675,7 +657,6 @@ public class RegistrarBeanImplTest extends TestCase {
 
 		Capture<ScheduledMessage> capturedScheduledMessage = new Capture<ScheduledMessage>();
 
-		expect(contextService.getPersonService()).andReturn(personService);
 		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
 		expect(personService.getPerson(personId)).andReturn(person);
@@ -744,7 +725,6 @@ public class RegistrarBeanImplTest extends TestCase {
 
 		Capture<ScheduledMessage> capturedScheduledMessage = new Capture<ScheduledMessage>();
 
-		expect(contextService.getPersonService()).andReturn(personService);
 		expect(contextService.getMotechService()).andReturn(motechService)
 				.atLeastOnce();
 		expect(personService.getPerson(personId)).andReturn(person);

@@ -73,7 +73,17 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     private ContextService contextService;
     public MessageService mobileService;
+    private PatientService patientService;
+    private PersonService personService;
     private RelationshipService relationshipService;
+    private UserService userService;
+    private AuthenticationService authenticationService;
+    private ConceptService conceptService;
+    private LocationService locationService;
+    private ObsService obsService;
+    private EncounterService encounterService;
+    private SchedulerService schedulerService;
+    private AdministrationService administrationService;
 
     @Autowired
     private IdentifierGenerator identifierGenerator;
@@ -85,11 +95,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     @Autowired
     private MotechUserRepository motechUserRepository;
 
+
     public void setContextService(ContextService contextService) {
         this.contextService = contextService;
     }
 
-    public void setMotechUserRepository(MotechUserRepository motechUserRepository){
+    public void setMotechUserRepository(MotechUserRepository motechUserRepository) {
         this.motechUserRepository = motechUserRepository;
     }
 
@@ -107,7 +118,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public User registerStaff(String firstName, String lastName, String phone,
                               String staffType) {
-        UserService userService = contextService.getUserService();
         return userService.saveUser(motechUserRepository.newUser(new WebStaff(firstName, lastName, phone, staffType)), generatePassword(8));
     }
 
@@ -130,7 +140,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                    Integer messagesStartWeek) {
 
         Location facility = getGhanaLocation();
-        User staff = contextService.getAuthenticatedUser();
+        User staff = authenticationService.getAuthenticatedUser();
         Date date = new Date();
 
         return registerPatient(staff, facility, date, registrationMode,
@@ -154,9 +164,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                    ContactNumberType ownership, MediaType format, String language,
                                    DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
                                    HowLearned howLearned, Integer messagesStartWeek) {
-
-        PatientService patientService = contextService.getPatientService();
-        MotechService motechService = contextService.getMotechService();
 
         // Inherit values from Mother's record including
         // last name, address, messaging preferences and enrollment
@@ -191,7 +198,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 timeOfDay = getPersonMessageTimeOfDay(mother);
             }
             if (enroll == null && consent == null) {
-                List<MessageProgramEnrollment> enrollments = motechService
+                List<MessageProgramEnrollment> enrollments = motechService()
                         .getActiveMessageProgramEnrollments(mother
                                 .getPatientId(), null, null, null, null, null);
                 if (enrollments != null && !enrollments.isEmpty()) {
@@ -236,8 +243,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                              String language, DayOfWeek dayOfWeek, Date timeOfDay,
                                              InterestReason reason, HowLearned howLearned,
                                              Integer messagesStartWeek, Integer pregnancyDueDateObsId) {
-
-        PatientService patientService = contextService.getPatientService();
 
         setPatientAttributes(patient, phoneNumber, ownership, format, language,
                 dayOfWeek, timeOfDay, howLearned, reason, null, null, null);
@@ -304,8 +309,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     private Integer storeMessagesWeekObs(Patient patient,
                                          Integer messagesStartWeek) {
-        ObsService obsService = contextService.getObsService();
-
         Location ghanaLocation = getGhanaLocation();
         Date currentDate = new Date();
 
@@ -332,8 +335,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                     ContactNumberType ownership, MediaType format, String language,
                                     DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
                                     HowLearned howLearned) {
-
-        PatientService patientService = contextService.getPatientService();
 
         User staff = contextService.getAuthenticatedUser();
 
@@ -407,9 +408,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     private void recordPatientRegistration(User staff, Location facility,
                                            Date date, Patient patient) {
 
-        EncounterService encounterService = contextService
-                .getEncounterService();
-
         Encounter encounter = new Encounter();
         encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_PATIENTREGVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(date);
@@ -429,61 +427,61 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         List<PersonAttribute> attrs = new ArrayList<PersonAttribute>();
 
         if (phoneNumber != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService.getPersonService()),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(personService),
                     phoneNumber));
         }
 
         if (phoneType != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_TYPE.getAttributeType(contextService.getPersonService()),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_TYPE.getAttributeType(personService),
                     phoneType.name()));
         }
 
         if (mediaType != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_MEDIA_TYPE.getAttributeType(contextService.getPersonService()),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_MEDIA_TYPE.getAttributeType(personService),
                     mediaType.name()));
         }
 
         if (language != null) {
             attrs
-                    .add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_LANGUAGE.getAttributeType(contextService.getPersonService()),
+                    .add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_LANGUAGE.getAttributeType(personService),
                             language));
         }
 
         if (dayOfWeek != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_DELIVERY_DAY.getAttributeType(contextService.getPersonService()),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_DELIVERY_DAY.getAttributeType(personService),
                     dayOfWeek.name()));
         }
 
         if (timeOfDay != null) {
             SimpleDateFormat formatter = new SimpleDateFormat(
                     MotechConstants.TIME_FORMAT_DELIVERY_TIME);
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_DELIVERY_TIME.getAttributeType(contextService.getPersonService()),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_DELIVERY_TIME.getAttributeType(personService),
                     formatter.format(timeOfDay)));
         }
 
         if (howLearned != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_HOW_LEARNED.getAttributeType(contextService.getPersonService()),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_HOW_LEARNED.getAttributeType(personService),
                     howLearned.name()));
         }
 
         if (interestReason != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_INTEREST_REASON.getAttributeType(contextService.getPersonService()),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_INTEREST_REASON.getAttributeType(personService),
                     interestReason.name()));
         }
 
         if (insured != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_INSURED.getAttributeType(contextService.getPersonService()), insured
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_INSURED.getAttributeType(personService), insured
                     .toString()));
         }
 
         if (nhis != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(contextService.getPersonService()), nhis));
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(personService), nhis));
         }
 
         if (nhisExpDate != null) {
             SimpleDateFormat formatter = new SimpleDateFormat(
                     MotechConstants.DATE_FORMAT);
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_EXP_DATE.getAttributeType(contextService.getPersonService()),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_EXP_DATE.getAttributeType(personService),
                     formatter.format(nhisExpDate)));
         }
 
@@ -496,8 +494,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                             String phoneNumber, ContactNumberType phoneOwnership, String nhis,
                             Date nhisExpires, Date expectedDeliveryDate, Boolean stopEnrollment) {
 
-        PatientService patientService = contextService.getPatientService();
-
         if (expectedDeliveryDate != null) {
             Obs pregnancy = getActivePregnancy(patient.getPatientId());
             Obs dueDateObs = getActivePregnancyDueDateObs(patient
@@ -506,7 +502,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 if (!expectedDeliveryDate.equals(dueDateObs.getValueDatetime())) {
                     updatePregnancyDueDateObs(pregnancy,
                             dueDateObs, expectedDeliveryDate, dueDateObs
-                            .getEncounter());
+                                    .getEncounter());
                 }
             }
         }
@@ -533,7 +529,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                             ContactNumberType ownership, MediaType format, String language,
                             DayOfWeek dayOfWeek, Date timeOfDay) {
 
-        PatientService patientService = contextService.getPatientService();
 
         patient.setBirthdate(dateOfBirth);
         patient.setBirthdateEstimated(estimatedBirthDate);
@@ -608,7 +603,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 if (!expDeliveryDate.equals(dueDateObs.getValueDatetime())) {
                     dueDateObsId = updatePregnancyDueDateObs(pregnancy,
                             dueDateObs, expDeliveryDate, dueDateObs
-                            .getEncounter());
+                                    .getEncounter());
                 }
             }
         }
@@ -631,7 +626,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
 
         Location facility = getGhanaLocation();
-        User staff = contextService.getAuthenticatedUser();
+        User staff = authenticationService.getAuthenticatedUser();
         Date date = new Date();
 
         if (pregnancyDueDateObsId == null) {
@@ -646,10 +641,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     private Integer registerPregnancy(User staff, Location facility, Date date,
                                       Patient patient, Date dueDate, Boolean dueDateConfirmed) {
-
-        EncounterService encounterService = contextService
-                .getEncounterService();
-        ObsService obsService = contextService.getObsService();
 
         Encounter encounter = new Encounter();
         encounter
@@ -735,9 +726,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                      Date yellowFeverDate, Integer lastIPTI, Date lastIPTIDate,
                                      Date lastVitaminADate) {
 
-        EncounterService encounterService = contextService
-                .getEncounterService();
-
         // Not associating historical data with any facility
         Location ghanaLocation = getGhanaLocation();
 
@@ -817,9 +805,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                   MediaType format, String language, DayOfWeek dayOfWeek,
                                   Date timeOfDay, HowLearned howLearned) {
 
-        EncounterService encounterService = contextService
-                .getEncounterService();
-
         Encounter encounter = new Encounter();
         encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_ANCREGVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(date);
@@ -890,9 +875,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 phoneNumber, format, language, dayOfWeek, timeOfDay, null,
                 howLearned, null, null);
 
-        EncounterService encounterService = contextService
-                .getEncounterService();
-
         Encounter encounter = new Encounter();
         encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_CWCREGVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(date);
@@ -921,9 +903,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                      Boolean pmtct, Boolean preTestCounseled, HIVResult hivTestResult,
                                      Boolean postTestCounseled, Boolean pmtctTreatment,
                                      Boolean referred, Date nextANCDate, String comments) {
-
-        EncounterService encounterService = contextService
-                .getEncounterService();
 
         Encounter encounter = new Encounter();
         encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_ANCVISIT.getEncounterType(contextService));
@@ -1105,7 +1084,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         if (hivTestResult != null) {
             Obs hivResultObs = createTextValueObs(date,
                     ConceptEnum.CONCEPT_HIV_TEST_RESULT.getConcept(contextService), patient, facility, hivTestResult
-                    .name(), encounter, null);
+                            .name(), encounter, null);
             encounter.addObs(hivResultObs);
         }
         if (postTestCounseled != null) {
@@ -1159,9 +1138,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                            Integer procedure, Integer[] complications, Boolean maternalDeath,
                                            Boolean referred, Boolean postAbortionFPCounseled,
                                            Boolean postAbortionFPAccepted, String comments) {
-
-        EncounterService encounterService = contextService
-                .getEncounterService();
 
         Encounter encounter = new Encounter();
         encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_PREGTERMVISIT.getEncounterType(contextService));
@@ -1246,9 +1222,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                                  Boolean maleInvolved, Integer[] complications, Integer vvf,
                                                  Boolean maternalDeath, String comments,
                                                  List<BirthOutcomeChild> outcomes) {
-
-        EncounterService encounterService = contextService
-                .getEncounterService();
 
         Encounter encounter = new Encounter();
         encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_PREGDELVISIT.getEncounterType(contextService));
@@ -1335,14 +1308,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             }
             Obs childOutcomeObs = createTextValueObs(datetime,
                     ConceptEnum.CONCEPT_BIRTH_OUTCOME.getConcept(contextService), patient, facility, childOutcome
-                    .getOutcome().name(), encounter, null);
+                            .getOutcome().name(), encounter, null);
             encounter.addObs(childOutcomeObs);
 
             if (BirthOutcome.A == childOutcome.getOutcome()) {
                 Patient child = registerPatient(staff, facility, datetime,
                         childOutcome.getIdMode(), childOutcome.getMotechId(),
                         RegistrantType.CHILD_UNDER_FIVE, childOutcome
-                        .getFirstName(), null, null, null, datetime,
+                                .getFirstName(), null, null, null, datetime,
                         false, childOutcome.getSex(), null, null, null,
                         patient, null, null, null, null, null, null, null,
                         null, null, null, null, null, null, null, null);
@@ -1367,8 +1340,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     private void recordBirthData(User staff, Location facility, Patient child,
                                  Date datetime, Double weight) {
-        EncounterService encounterService = contextService
-                .getEncounterService();
 
         Encounter encounter = new Encounter();
         encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_BIRTHVISIT.getEncounterType(contextService));
@@ -1389,9 +1360,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     @Transactional
     public void recordPregnancyDeliveryNotification(User staff,
                                                     Location facility, Date date, Patient patient) {
-
-        EncounterService encounterService = contextService
-                .getEncounterService();
 
         Encounter encounter = new Encounter();
         encounter
@@ -1471,9 +1439,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                      Boolean lochiaOdourFoul, Double temperature, Double fht,
                                      String comments) {
 
-        EncounterService encounterService = contextService
-                .getEncounterService();
-
         Encounter encounter = new Encounter();
         encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_PNCMOTHERVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(datetime);
@@ -1530,7 +1495,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
         if (lochiaColour != null) {
             Obs lochiaColourObs = createNumericValueObs(datetime,
-                   ConceptEnum.CONCEPT_LOCHIA_COLOUR.getConcept(contextService), patient, facility, lochiaColour,
+                    ConceptEnum.CONCEPT_LOCHIA_COLOUR.getConcept(contextService), patient, facility, lochiaColour,
                     encounter, null);
             encounter.addObs(lochiaColourObs);
         }
@@ -1576,9 +1541,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                     Double temperature, Boolean bcg, Boolean opv0, Integer respiration,
                                     Boolean cordConditionNormal, Boolean babyConditionGood,
                                     String comments) {
-
-        EncounterService encounterService = contextService
-                .getEncounterService();
 
         Encounter encounter = new Encounter();
         encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_PNCCHILDVISIT.getEncounterType(contextService));
@@ -1679,9 +1641,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     public void recordTTVisit(User staff, Location facility, Date date,
                               Patient patient, Integer ttDose) {
 
-        EncounterService encounterService = contextService
-                .getEncounterService();
-
         Encounter encounter = new Encounter();
         encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_TTVISIT.getEncounterType(contextService));
         encounter.setEncounterDatetime(date);
@@ -1706,9 +1665,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private void processPatientDeath(Patient patient, Date date) {
-        PatientService patientService = contextService.getPatientService();
-        PersonService personService = contextService.getPersonService();
-
         // Stop all messages and remove all message program enrollments
         removeAllMessageProgramEnrollments(patient.getPatientId());
 
@@ -1727,9 +1683,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                     Integer iptiDose, Boolean vitaminA, Boolean dewormer,
                                     Double weight, Double muac, Double height, Boolean maleInvolved,
                                     String comments) {
-
-        EncounterService encounterService = contextService
-                .getEncounterService();
 
         Encounter encounter = new Encounter();
         encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_CWCVISIT.getEncounterType(contextService));
@@ -1846,8 +1799,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                              Boolean actTreated, Boolean newCase, Boolean newPatient, Boolean referred,
                                              String comments) {
 
-        MotechService motechService = contextService.getMotechService();
-
         GeneralOutpatientEncounter encounter = new GeneralOutpatientEncounter(
                 date, staffId, facilityId, serialNumber, sex, dateOfBirth,
                 insured, newCase, newPatient, diagnosis, secondDiagnosis, referred,
@@ -1857,7 +1808,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             log.debug(encounter.toString());
         }
 
-        motechService.saveGeneralOutpatientEncounter(encounter);
+        motechService().saveGeneralOutpatientEncounter(encounter);
     }
 
     @Transactional
@@ -1866,9 +1817,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                       Integer diagnosis, Integer secondDiagnosis, Boolean rdtGiven,
                                       Boolean rdtPositive, Boolean actTreated, Boolean newCase,
                                       Boolean newPatient, Boolean referred, String comments) {
-
-        EncounterService encounterService = contextService
-                .getEncounterService();
 
         Encounter encounter = new Encounter();
         encounter.setEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_OUTPATIENTVISIT.getEncounterType(contextService));
@@ -1948,9 +1896,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         log.debug("setMessageStatus WS: messageId: " + messageId
                 + ", success: " + success);
 
-        MotechService motechService = contextService.getMotechService();
-
-        Message message = motechService.getMessage(messageId);
+        Message message = motechService().getMessage(messageId);
         if (message == null) {
             throw new MessageNotFoundException();
         }
@@ -1960,15 +1906,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         } else {
             message.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
         }
-        motechService.saveMessage(message);
+        motechService().saveMessage(message);
     }
 
     public User getUserByPhoneNumber(String phoneNumber) {
-        MotechService motechService = contextService.getMotechService();
-        UserService userService = contextService.getUserService();
-
-        PersonAttributeType phoneAttributeType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService.getPersonService());
-        List<Integer> matchingUsers = motechService
+        PersonAttributeType phoneAttributeType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(personService);
+        List<Integer> matchingUsers = motechService()
                 .getUserIdsByPersonAttribute(phoneAttributeType, phoneNumber);
         if (matchingUsers.size() > 0) {
             if (matchingUsers.size() > 1) {
@@ -1987,18 +1930,16 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     /* MotechService methods end */
 
     /* Controller methods start */
+
     public List<Location> getAllLocations() {
-        LocationService locationService = contextService.getLocationService();
         return locationService.getAllLocations();
     }
 
     public List<User> getAllStaff() {
-        UserService userService = contextService.getUserService();
         return userService.getAllUsers();
     }
 
     public List<Patient> getAllPatients() {
-        PatientService patientService = contextService.getPatientService();
         List<PatientIdentifierType> motechPatientIdType = new ArrayList<PatientIdentifierType>();
         motechPatientIdType.add(PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService));
         return patientService.getPatients(null, null, motechPatientIdType,
@@ -2008,15 +1949,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     public List<Patient> getPatients(String firstName, String lastName,
                                      String preferredName, Date birthDate, Integer communityId,
                                      String phoneNumber, String nhisNumber, String motechId) {
-
-        MotechService motechService = contextService.getMotechService();
-
-        PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService.getPersonService());
-        PersonAttributeType nhisAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(contextService.getPersonService());
+        PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(personService);
+        PersonAttributeType nhisAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(personService);
         PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
         Integer maxResults = getMaxQueryResults();
 
-        return motechService.getPatients(firstName, lastName, preferredName,
+        return motechService().getPatients(firstName, lastName, preferredName,
                 birthDate, communityId, phoneNumber, phoneNumberAttrType,
                 nhisNumber, nhisAttrType, motechId, motechIdType, maxResults);
     }
@@ -2025,22 +1963,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                               String lastName, String preferredName, Date birthDate,
                                               Integer communityId, String phoneNumber, String nhisNumber,
                                               String motechId) {
-
-        MotechService motechService = contextService.getMotechService();
-
-        PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService.getPersonService());
-        PersonAttributeType nhisAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(contextService.getPersonService());
+        PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(personService);
+        PersonAttributeType nhisAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(personService);
         PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
         Integer maxResults = getMaxQueryResults();
 
-        return motechService.getDuplicatePatients(firstName, lastName,
+        return motechService().getDuplicatePatients(firstName, lastName,
                 preferredName, birthDate, communityId, phoneNumber,
                 phoneNumberAttrType, nhisNumber, nhisAttrType, motechId,
                 motechIdType, maxResults);
     }
 
     public List<Obs> getAllPregnancies() {
-        ObsService obsService = contextService.getObsService();
         List<Concept> pregnancyConcept = new ArrayList<Concept>();
         pregnancyConcept.add(ConceptEnum.CONCEPT_PREGNANCY.getConcept(contextService));
         return obsService.getObservations(null, null, pregnancyConcept, null,
@@ -2048,107 +1982,93 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public List<ExpectedEncounter> getUpcomingExpectedEncounters(Patient patient) {
-        MotechService motechService = contextService.getMotechService();
         Calendar calendar = Calendar.getInstance();
         Date currentDate = calendar.getTime();
         calendar.add(Calendar.DATE, 7);
         Date oneWeekLaterDate = calendar.getTime();
         Integer maxResults = getMaxQueryResults();
-        return motechService.getExpectedEncounter(patient, null, null, null,
+        return motechService().getExpectedEncounter(patient, null, null, null,
                 oneWeekLaterDate, null, currentDate, maxResults);
     }
 
     public List<ExpectedObs> getUpcomingExpectedObs(Patient patient) {
-        MotechService motechService = contextService.getMotechService();
         Calendar calendar = Calendar.getInstance();
         Date currentDate = calendar.getTime();
         calendar.add(Calendar.DATE, 7);
         Date oneWeekLaterDate = calendar.getTime();
         Integer maxResults = getMaxQueryResults();
-        return motechService.getExpectedObs(patient, null, null, null,
+        return motechService().getExpectedObs(patient, null, null, null,
                 oneWeekLaterDate, null, currentDate, maxResults);
     }
 
     public List<ExpectedEncounter> getDefaultedExpectedEncounters(
             Facility facility, String[] groups) {
-        MotechService motechService = contextService.getMotechService();
         Date currentDate = new Date();
         Integer maxResults = getMaxQueryResults();
-        return motechService.getExpectedEncounter(null, facility, groups, null,
+        return motechService().getExpectedEncounter(null, facility, groups, null,
                 null, currentDate, currentDate, maxResults);
     }
 
     public List<ExpectedObs> getDefaultedExpectedObs(Facility facility,
                                                      String[] groups) {
-        MotechService motechService = contextService.getMotechService();
         Date currentDate = new Date();
         Integer maxResults = getMaxQueryResults();
-        return motechService.getExpectedObs(null, facility, groups, null, null,
+        return motechService().getExpectedObs(null, facility, groups, null, null,
                 currentDate, currentDate, maxResults);
     }
 
     private List<ExpectedEncounter> getUpcomingExpectedEncounters(
             Facility facility, String[] groups, Date fromDate, Date toDate) {
-        MotechService motechService = contextService.getMotechService();
         Integer maxResults = getMaxQueryResults();
-        return motechService.getExpectedEncounter(null, facility, groups, null,
+        return motechService().getExpectedEncounter(null, facility, groups, null,
                 toDate, null, fromDate, maxResults);
     }
 
     private List<ExpectedObs> getUpcomingExpectedObs(Facility facility,
                                                      String[] groups, Date fromDate, Date toDate) {
-        MotechService motechService = contextService.getMotechService();
         Integer maxResults = getMaxQueryResults();
-        return motechService.getExpectedObs(null, facility, groups, null,
+        return motechService().getExpectedObs(null, facility, groups, null,
                 toDate, null, fromDate, maxResults);
     }
 
     private List<ExpectedEncounter> getDefaultedExpectedEncounters(
             Facility facility, String[] groups, Date forDate) {
-        MotechService motechService = contextService.getMotechService();
         Integer maxResults = getMaxQueryResults();
-        return motechService.getExpectedEncounter(null, facility, groups, null,
+        return motechService().getExpectedEncounter(null, facility, groups, null,
                 null, forDate, forDate, maxResults);
     }
 
     private List<ExpectedObs> getDefaultedExpectedObs(Facility facility,
                                                       String[] groups, Date forDate) {
-        MotechService motechService = contextService.getMotechService();
         Integer maxResults = getMaxQueryResults();
-        return motechService.getExpectedObs(null, facility, groups, null, null,
+        return motechService().getExpectedObs(null, facility, groups, null, null,
                 forDate, forDate, maxResults);
     }
 
     public List<ExpectedEncounter> getExpectedEncounters(Patient patient) {
-        MotechService motechService = contextService.getMotechService();
         Date currentDate = new Date();
-        return motechService.getExpectedEncounter(patient, null, null, null,
+        return motechService().getExpectedEncounter(patient, null, null, null,
                 null, null, currentDate, null);
     }
 
     public List<ExpectedObs> getExpectedObs(Patient patient) {
-        MotechService motechService = contextService.getMotechService();
         Date currentDate = new Date();
-        return motechService.getExpectedObs(patient, null, null, null, null,
+        return motechService().getExpectedObs(patient, null, null, null, null,
                 null, currentDate, null);
     }
 
     public List<ExpectedEncounter> getExpectedEncounters(Patient patient,
                                                          String group) {
-        MotechService motechService = contextService.getMotechService();
-        return motechService.getExpectedEncounter(patient, null,
+        return motechService().getExpectedEncounter(patient, null,
                 new String[]{group}, null, null, null, null, null);
     }
 
     public List<ExpectedObs> getExpectedObs(Patient patient, String group) {
-        MotechService motechService = contextService.getMotechService();
-        return motechService.getExpectedObs(patient, null,
+        return motechService().getExpectedObs(patient, null,
                 new String[]{group}, null, null, null, null, null);
     }
 
     public List<Encounter> getRecentDeliveries(Facility facility) {
-        MotechService motechService = contextService.getMotechService();
-
         EncounterType deliveryEncounterType = EncounterTypeEnum.ENCOUNTER_TYPE_PREGDELVISIT.getEncounterType(contextService);
 
         Calendar calendar = Calendar.getInstance();
@@ -2158,14 +2078,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         Integer maxResults = getMaxQueryResults();
 
-        return motechService.getEncounters(facility, deliveryEncounterType,
+        return motechService().getEncounters(facility, deliveryEncounterType,
                 twoWeeksPriorDate, currentDate, maxResults);
     }
 
     public Date getCurrentDeliveryDate(Patient patient) {
-        EncounterService encounterService = contextService
-                .getEncounterService();
-
         List<EncounterType> deliveryEncounterType = new ArrayList<EncounterType>();
         deliveryEncounterType.add(EncounterTypeEnum.ENCOUNTER_TYPE_PREGDELVISIT.getEncounterType(contextService));
 
@@ -2196,28 +2113,23 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     private List<Obs> getActivePregnanciesDueDateObs(Facility facility,
                                                      Date fromDueDate, Date toDueDate) {
-        MotechService motechService = contextService.getMotechService();
-
         Concept pregnancyDueDateConcept = ConceptEnum.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT.getConcept(contextService);
         Concept pregnancyConcept = ConceptEnum.CONCEPT_PREGNANCY.getConcept(contextService);
         Concept pregnancyStatusConcept = ConceptEnum.CONCEPT_PREGNANCY_STATUS.getConcept(contextService);
         Integer maxResults = getMaxQueryResults();
 
-        return motechService.getActivePregnanciesDueDateObs(facility,
+        return motechService().getActivePregnanciesDueDateObs(facility,
                 fromDueDate, toDueDate, pregnancyDueDateConcept,
                 pregnancyConcept, pregnancyStatusConcept, maxResults);
     }
 
     private Integer updatePregnancyDueDateObs(Obs pregnancyObs, Obs dueDateObs,
                                               Date newDueDate, Encounter encounter) {
-        ObsService obsService = contextService.getObsService();
-        MotechService motechService = contextService.getMotechService();
-
         Integer existingDueDateObsId = dueDateObs.getObsId();
 
         Obs newDueDateObs = createDateValueObs(
                 encounter.getEncounterDatetime(), ConceptEnum.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT.
-                getConcept(contextService),
+                        getConcept(contextService),
                 encounter.getPatient(), encounter.getLocation(), newDueDate,
                 encounter, null);
         newDueDateObs.setObsGroup(pregnancyObs);
@@ -2227,25 +2139,22 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 + newDueDateObs.getObsId());
 
         // Update enrollments using duedate Obs to reference new duedate Obs
-        List<MessageProgramEnrollment> enrollments = motechService
+        List<MessageProgramEnrollment> enrollments = motechService()
                 .getActiveMessageProgramEnrollments(null, null,
                         existingDueDateObsId, null, null, null);
         for (MessageProgramEnrollment enrollment : enrollments) {
             enrollment.setObsId(newDueDateObs.getObsId());
-            motechService.saveMessageProgramEnrollment(enrollment);
+            motechService().saveMessageProgramEnrollment(enrollment);
         }
         return newDueDateObs.getObsId();
     }
 
     public Patient getPatientById(Integer patientId) {
-        PatientService patientService = contextService.getPatientService();
         return patientService.getPatient(patientId);
     }
 
     public Obs getActivePregnancy(Integer patientId) {
-        MotechService motechService = contextService.getMotechService();
-
-        List<Obs> pregnancies = motechService.getActivePregnancies(patientId,
+        List<Obs> pregnancies = motechService().getActivePregnancies(patientId,
                 ConceptEnum.CONCEPT_PREGNANCY.getConcept(contextService), ConceptEnum.CONCEPT_PREGNANCY_STATUS.getConcept(contextService));
         if (pregnancies.isEmpty()) {
             return null;
@@ -2257,23 +2166,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public List<ScheduledMessage> getAllScheduledMessages() {
-        MotechService motechService = contextService.getMotechService();
-        return motechService.getAllScheduledMessages();
+        return motechService().getAllScheduledMessages();
     }
 
     public List<ScheduledMessage> getScheduledMessages(
             MessageProgramEnrollment enrollment) {
-        MotechService motechService = contextService.getMotechService();
-        return motechService.getScheduledMessages(null, null, enrollment, null);
+        return motechService().getScheduledMessages(null, null, enrollment, null);
     }
 
     /* Controller methods end */
 
     public List<Obs> getObs(Patient patient, String conceptName,
                             String valueConceptName, Date minDate) {
-        ObsService obsService = contextService.getObsService();
-        ConceptService conceptService = contextService.getConceptService();
-
         Concept concept = conceptService.getConcept(conceptName);
         Concept value = conceptService.getConcept(valueConceptName);
 
@@ -2296,8 +2200,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     public ExpectedObs createExpectedObs(Patient patient, String conceptName,
                                          String valueConceptName, Integer value, Date minDate, Date dueDate,
                                          Date lateDate, Date maxDate, String name, String group) {
-        ConceptService conceptService = contextService.getConceptService();
-
         Concept concept = conceptService.getConcept(conceptName);
         Concept valueConcept = conceptService.getConcept(valueConceptName);
 
@@ -2325,8 +2227,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         if (expectedObs.getDueObsDatetime() != null
                 && expectedObs.getLateObsDatetime() != null) {
 
-            MotechService motechService = contextService.getMotechService();
-            return motechService.saveExpectedObs(expectedObs);
+            return motechService().saveExpectedObs(expectedObs);
         } else {
             log
                     .error("Attempt to store ExpectedObs with null due or late date");
@@ -2336,9 +2237,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public List<Encounter> getEncounters(Patient patient,
                                          String encounterTypeName, Date minDate) {
-        EncounterService encounterService = contextService
-                .getEncounterService();
-
         EncounterType encounterType = encounterService
                 .getEncounterType(encounterTypeName);
 
@@ -2352,9 +2250,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     public ExpectedEncounter createExpectedEncounter(Patient patient,
                                                      String encounterTypeName, Date minDate, Date dueDate,
                                                      Date lateDate, Date maxDate, String name, String group) {
-        EncounterService encounterService = contextService
-                .getEncounterService();
-
         EncounterType encounterType = encounterService
                 .getEncounterType(encounterTypeName);
 
@@ -2381,8 +2276,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         if (expectedEncounter.getDueEncounterDatetime() != null
                 && expectedEncounter.getLateEncounterDatetime() != null) {
 
-            MotechService motechService = contextService.getMotechService();
-            return motechService.saveExpectedEncounter(expectedEncounter);
+            return motechService().saveExpectedEncounter(expectedEncounter);
         } else {
             log
                     .error("Attempt to store ExpectedEncounter with null due or late date");
@@ -2391,16 +2285,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     /* PatientObsService methods start */
+
     public Date getPatientBirthDate(Integer patientId) {
-        PatientService patientService = contextService.getPatientService();
         Patient patient = patientService.getPatient(patientId);
         return patient.getBirthdate();
     }
 
     private List<Obs> getMatchingObs(Person person, Concept question,
                                      Concept answer, Integer obsGroupId, Date from, Date to) {
-
-        ObsService obsService = contextService.getObsService();
 
         List<Concept> questions = null;
         if (question != null) {
@@ -2428,8 +2320,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     public int getNumberOfObs(Integer personId, String conceptName,
                               String conceptValue) {
 
-        ConceptService conceptService = contextService.getConceptService();
-        PersonService personService = contextService.getPersonService();
         return getNumberOfObs(personService.getPerson(personId), conceptService
                 .getConcept(conceptName), conceptService
                 .getConcept(conceptValue));
@@ -2438,18 +2328,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     public Date getLastObsCreationDate(Integer personId, String conceptName,
                                        String conceptValue) {
 
-        ConceptService conceptService = contextService.getConceptService();
-        PersonService personService = contextService.getPersonService();
         return getLastObsCreationDate(personService.getPerson(personId),
                 conceptService.getConcept(conceptName), conceptService
-                .getConcept(conceptValue));
+                        .getConcept(conceptValue));
     }
 
     public Date getLastObsDate(Integer personId, String conceptName,
                                String conceptValue) {
 
-        ConceptService conceptService = contextService.getConceptService();
-        PersonService personService = contextService.getPersonService();
         return getLastObsDate(personService.getPerson(personId), conceptService
                 .getConcept(conceptName), conceptService
                 .getConcept(conceptValue));
@@ -2457,12 +2343,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public Date getLastDoseObsDate(Integer personId, String conceptName,
                                    Integer doseNumber) {
-        ConceptService conceptService = contextService.getConceptService();
-        PersonService personService = contextService.getPersonService();
-        ObsService obsService = contextService.getObsService();
         List<Obs> matchingObs = obsService.getObservationsByPersonAndConcept(
                 personService.getPerson(personId), conceptService
-                .getConcept(conceptName));
+                        .getConcept(conceptName));
         for (Obs obs : matchingObs) {
             Double value = obs.getValueNumeric();
             if (value != null && doseNumber == value.intValue()) {
@@ -2474,8 +2357,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public Date getLastDoseObsDateInActivePregnancy(Integer patientId,
                                                     String conceptName, Integer doseNumber) {
-        PersonService personService = contextService.getPersonService();
-        ConceptService conceptService = contextService.getConceptService();
         Obs pregnancy = getActivePregnancy(patientId);
         if (pregnancy != null) {
             Integer pregnancyObsId = pregnancy.getObsId();
@@ -2493,7 +2374,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public Obs getActivePregnancyDueDateObs(Integer patientId, Obs pregnancy) {
-        PersonService personService = contextService.getPersonService();
         if (pregnancy != null) {
             Integer pregnancyObsId = pregnancy.getObsId();
             List<Obs> dueDateObsList = getMatchingObs(personService
@@ -2516,7 +2396,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public Date getLastPregnancyEndDate(Integer patientId) {
-        PersonService personService = contextService.getPersonService();
         List<Obs> pregnancyStatusObsList = getMatchingObs(personService
                 .getPerson(patientId), ConceptEnum.CONCEPT_PREGNANCY_STATUS.getConcept(contextService), null, null,
                 null, null);
@@ -2530,8 +2409,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public Date getLastObsValue(Integer personId, String conceptName) {
-        ConceptService conceptService = contextService.getConceptService();
-        PersonService personService = contextService.getPersonService();
         return getLastObsValue(personService.getPerson(personId),
                 conceptService.getConcept(conceptName));
     }
@@ -2595,8 +2472,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public Date getObsValue(Integer obsId) {
-        ObsService obsService = contextService.getObsService();
-
         Date result = null;
         if (obsId != null) {
             Obs obs = obsService.getObs(obsId);
@@ -2609,9 +2484,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public Integer getObsId(Integer personId, String conceptName,
                             String conceptValue, Date earliest, Date latest) {
-        PersonService personService = contextService.getPersonService();
-        ConceptService conceptService = contextService.getConceptService();
-
         List<Obs> observations = getMatchingObs(personService
                 .getPerson(personId), conceptService.getConcept(conceptName),
                 conceptService.getConcept(conceptValue), null, earliest, latest);
@@ -2623,9 +2495,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public Integer getObsId(Integer personId, String conceptName,
                             Integer doseNumber, Date earliest, Date latest) {
-        PersonService personService = contextService.getPersonService();
-        ConceptService conceptService = contextService.getConceptService();
-
         List<Obs> observations = getMatchingObs(personService
                 .getPerson(personId), conceptService.getConcept(conceptName),
                 null, null, earliest, latest);
@@ -2640,10 +2509,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public Integer getEncounterId(Integer patientId, String encounterType,
                                   Date earliest, Date latest) {
-        PatientService patientService = contextService.getPatientService();
-        EncounterService encounterService = contextService
-                .getEncounterService();
-
         List<EncounterType> encounterTypes = new ArrayList<EncounterType>();
         encounterTypes.add(encounterService.getEncounterType(encounterType));
 
@@ -2659,12 +2524,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     /* PatientObsService methods end */
 
     /* MessageSchedulerImpl methods start */
+
     public void scheduleInfoMessages(String messageKey, String messageKeyA,
                                      String messageKeyB, String messageKeyC,
                                      MessageProgramEnrollment enrollment, Date messageDate,
                                      boolean userPreferenceBased, Date currentDate) {
-
-        PersonService personService = contextService.getPersonService();
 
         // TODO: Assumes recipient is person in enrollment
         Integer messageRecipientId = enrollment.getPersonId();
@@ -2770,8 +2634,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private MessageDefinition getMessageDefinition(String messageKey) {
-        MotechService motechService = contextService.getMotechService();
-        MessageDefinition messageDefinition = motechService
+        MessageDefinition messageDefinition = motechService()
                 .getMessageDefinition(messageKey);
         if (messageDefinition == null) {
             log.error("Invalid message key for message definition: "
@@ -2783,17 +2646,16 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     protected void removeUnsentMessages(Integer recipientId,
                                         MessageProgramEnrollment enrollment,
                                         MessageDefDate[] messageDefDates) {
-        MotechService motechService = contextService.getMotechService();
         // Get Messages matching the recipient, enrollment, and status, but
         // not matching the list of message definitions and message dates
-        List<Message> unsentMessages = motechService.getMessages(recipientId,
+        List<Message> unsentMessages = motechService().getMessages(recipientId,
                 enrollment, messageDefDates, MessageStatus.SHOULD_ATTEMPT);
         log.debug("Unsent messages found during scheduling: "
                 + unsentMessages.size());
 
         for (Message unsentMessage : unsentMessages) {
             unsentMessage.setAttemptStatus(MessageStatus.CANCELLED);
-            motechService.saveMessage(unsentMessage);
+            motechService().saveMessage(unsentMessage);
 
             log.debug("Message cancelled to schedule new: Id: "
                     + unsentMessage.getId());
@@ -2803,10 +2665,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     protected void removeUnsentMessages(Integer recipientId,
                                         MessageProgramEnrollment enrollment,
                                         MessageDefinition messageDefinition, Date messageDate) {
-        MotechService motechService = contextService.getMotechService();
         // Get Messages matching the recipient, enrollment, and status, but
         // not matching the message definition and message date
-        List<Message> unsentMessages = motechService.getMessages(recipientId,
+        List<Message> unsentMessages = motechService().getMessages(recipientId,
                 enrollment, messageDefinition, messageDate,
                 MessageStatus.SHOULD_ATTEMPT);
         log.debug("Unsent messages found during scheduling: "
@@ -2814,7 +2675,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         for (Message unsentMessage : unsentMessages) {
             unsentMessage.setAttemptStatus(MessageStatus.CANCELLED);
-            motechService.saveMessage(unsentMessage);
+            motechService().saveMessage(unsentMessage);
 
             log.debug("Message cancelled to schedule new: Id: "
                     + unsentMessage.getId());
@@ -2822,15 +2683,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public void removeUnsentMessages(List<ScheduledMessage> scheduledMessages) {
-        MotechService motechService = contextService.getMotechService();
-
         for (ScheduledMessage scheduledMessage : scheduledMessages) {
             for (Message unsentMessage : scheduledMessage.getMessageAttempts()) {
                 if (MessageStatus.SHOULD_ATTEMPT == unsentMessage
                         .getAttemptStatus()) {
 
                     unsentMessage.setAttemptStatus(MessageStatus.CANCELLED);
-                    motechService.saveMessage(unsentMessage);
+                    motechService().saveMessage(unsentMessage);
 
                     log
                             .debug("Message cancelled: Id: "
@@ -2843,10 +2702,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     public void addMessageAttempt(ScheduledMessage scheduledMessage,
                                   Date attemptDate, Date maxAttemptDate, boolean userPreferenceBased,
                                   Date currentDate) {
-
-        MotechService motechService = contextService.getMotechService();
-        PersonService personService = contextService.getPersonService();
-
         MessageDefinition messageDefinition = scheduledMessage.getMessage();
         Person recipient = personService.getPerson(scheduledMessage
                 .getRecipientId());
@@ -2867,15 +2722,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                         + adjustedMessageDate);
             }
 
-            motechService.saveScheduledMessage(scheduledMessage);
+            motechService().saveScheduledMessage(scheduledMessage);
         }
     }
 
     public void verifyMessageAttemptDate(ScheduledMessage scheduledMessage,
                                          boolean userPreferenceBased, Date currentDate) {
-
-        MotechService motechService = contextService.getMotechService();
-        PersonService personService = contextService.getPersonService();
         Person recipient = personService.getPerson(scheduledMessage
                 .getRecipientId());
 
@@ -2908,22 +2760,21 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
                     recentMessage.setAttemptDate(adjustedMessageDate);
                     scheduledMessage.getMessageAttempts().set(0, recentMessage);
-                    motechService.saveScheduledMessage(scheduledMessage);
+                    motechService().saveScheduledMessage(scheduledMessage);
                 }
             }
         }
     }
 
     public void removeAllUnsentMessages(MessageProgramEnrollment enrollment) {
-        MotechService motechService = contextService.getMotechService();
-        List<Message> unsentMessages = motechService.getMessages(enrollment,
+        List<Message> unsentMessages = motechService().getMessages(enrollment,
                 MessageStatus.SHOULD_ATTEMPT);
         log.debug("Unsent messages found to cancel: " + unsentMessages.size()
                 + ", for enrollment: " + enrollment.getId());
 
         for (Message unsentMessage : unsentMessages) {
             unsentMessage.setAttemptStatus(MessageStatus.CANCELLED);
-            motechService.saveMessage(unsentMessage);
+            motechService().saveMessage(unsentMessage);
 
             log.debug("Message cancelled: Id: " + unsentMessage.getId());
         }
@@ -2931,7 +2782,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public Date determineUserPreferredMessageDate(Integer recipientId,
                                                   Date messageDate) {
-        PersonService personService = contextService.getPersonService();
         Person recipient = personService.getPerson(recipientId);
 
         return determinePreferredMessageDate(recipient, messageDate, null,
@@ -2942,10 +2792,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                         MessageDefinition messageDefinition,
                                         MessageProgramEnrollment enrollment, Date messageDate,
                                         Date currentDate) {
-
-        MotechService motechService = contextService.getMotechService();
-
-        List<ScheduledMessage> scheduledMessages = motechService
+        List<ScheduledMessage> scheduledMessages = motechService()
                 .getScheduledMessages(recipientId, messageDefinition,
                         enrollment, messageDate);
 
@@ -2968,7 +2815,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             message.setAttemptDate(messageDate);
             scheduledMessage.getMessageAttempts().add(message);
 
-            motechService.saveScheduledMessage(scheduledMessage);
+            motechService().saveScheduledMessage(scheduledMessage);
         } else {
             if (scheduledMessages.size() > 1 && log.isWarnEnabled()) {
                 log.warn("Multiple matching scheduled messages: recipient: "
@@ -2993,1000 +2840,1015 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             }
             if (!matchFound && !currentDate.after(messageDate)) {
                 if (log.isDebugEnabled()) {
-					log.debug("Creating Message: recipient: " + recipientId
-							+ ", enrollment: " + enrollment.getId()
-							+ ", message key: "
-							+ messageDefinition.getMessageKey() + ", date: "
-							+ messageDate);
-				}
+                    log.debug("Creating Message: recipient: " + recipientId
+                            + ", enrollment: " + enrollment.getId()
+                            + ", message key: "
+                            + messageDefinition.getMessageKey() + ", date: "
+                            + messageDate);
+                }
 
-				Message message = messageDefinition
-						.createMessage(scheduledMessage);
-				message.setAttemptDate(messageDate);
-				scheduledMessage.getMessageAttempts().add(message);
+                Message message = messageDefinition
+                        .createMessage(scheduledMessage);
+                message.setAttemptDate(messageDate);
+                scheduledMessage.getMessageAttempts().add(message);
 
-				motechService.saveScheduledMessage(scheduledMessage);
-			}
-		}
-	}
+                motechService().saveScheduledMessage(scheduledMessage);
+            }
+        }
+    }
 
-private ScheduledMessage createCareScheduledMessage(Integer recipientId,
-			MessageDefinition messageDefinition,
-			MessageProgramEnrollment enrollment, Date messageDate, String care,
-			boolean userPreferenceBased, Date currentDate) {
+    private ScheduledMessage createCareScheduledMessage(Integer recipientId,
+                                                        MessageDefinition messageDefinition,
+                                                        MessageProgramEnrollment enrollment, Date messageDate, String care,
+                                                        boolean userPreferenceBased, Date currentDate) {
+        ScheduledMessage scheduledMessage = new ScheduledMessage();
+        scheduledMessage.setScheduledFor(messageDate);
+        scheduledMessage.setRecipientId(recipientId);
+        scheduledMessage.setMessage(messageDefinition);
+        scheduledMessage.setEnrollment(enrollment);
+        // Set care field on scheduled message (not set on informational
+        // messages)
+        scheduledMessage.setCare(care);
 
-		MotechService motechService = contextService.getMotechService();
-		PersonService personService = contextService.getPersonService();
+        Person recipient = personService.getPerson(recipientId);
+        Date adjustedMessageDate = adjustCareMessageDate(recipient,
+                messageDate, userPreferenceBased, currentDate);
 
-		ScheduledMessage scheduledMessage = new ScheduledMessage();
-		scheduledMessage.setScheduledFor(messageDate);
-		scheduledMessage.setRecipientId(recipientId);
-		scheduledMessage.setMessage(messageDefinition);
-		scheduledMessage.setEnrollment(enrollment);
-		// Set care field on scheduled message (not set on informational
-		// messages)
-		scheduledMessage.setCare(care);
+        Message message = messageDefinition.createMessage(scheduledMessage);
+        message.setAttemptDate(adjustedMessageDate);
+        scheduledMessage.getMessageAttempts().add(message);
 
-		Person recipient = personService.getPerson(recipientId);
-		Date adjustedMessageDate = adjustCareMessageDate(recipient,
-				messageDate, userPreferenceBased, currentDate);
+        if (log.isDebugEnabled()) {
+            log.debug("Creating ScheduledMessage: recipient: " + recipientId
+                    + ", enrollment: " + enrollment.getId() + ", message key: "
+                    + messageDefinition.getMessageKey() + ", date: "
+                    + adjustedMessageDate);
+        }
 
-		Message message = messageDefinition.createMessage(scheduledMessage);
-		message.setAttemptDate(adjustedMessageDate);
-		scheduledMessage.getMessageAttempts().add(message);
+        return motechService().saveScheduledMessage(scheduledMessage);
+    }
 
-		if (log.isDebugEnabled()) {
-			log.debug("Creating ScheduledMessage: recipient: " + recipientId
-					+ ", enrollment: " + enrollment.getId() + ", message key: "
-					+ messageDefinition.getMessageKey() + ", date: "
-					+ adjustedMessageDate);
-		}
+    Date adjustCareMessageDate(Person person, Date messageDate,
+                               boolean userPreferenceBased, Date currentDate) {
+        Date adjustedDate = verifyFutureDate(messageDate);
+        if (userPreferenceBased) {
+            adjustedDate = determinePreferredMessageDate(person, adjustedDate,
+                    currentDate, true);
+        } else {
+            adjustedDate = adjustForBlackout(adjustedDate);
+        }
+        return adjustedDate;
+    }
 
-		return motechService.saveScheduledMessage(scheduledMessage);
-	}
+    Date verifyFutureDate(Date messageDate) {
+        Calendar calendar = Calendar.getInstance();
+        if (calendar.getTime().after(messageDate)) {
+            // If date in past, return date 10 minutes in future
+            calendar.add(Calendar.MINUTE, 10);
+            return calendar.getTime();
+        }
+        return messageDate;
+    }
 
-	Date adjustCareMessageDate(Person person, Date messageDate,
-			boolean userPreferenceBased, Date currentDate) {
-		Date adjustedDate = verifyFutureDate(messageDate);
-		if (userPreferenceBased) {
-			adjustedDate = determinePreferredMessageDate(person, adjustedDate,
-					currentDate, true);
-		} else {
-			adjustedDate = adjustForBlackout(adjustedDate);
-		}
-		return adjustedDate;
-	}
-
-	Date verifyFutureDate(Date messageDate) {
-		Calendar calendar = Calendar.getInstance();
-		if (calendar.getTime().after(messageDate)) {
-			// If date in past, return date 10 minutes in future
-			calendar.add(Calendar.MINUTE, 10);
-			return calendar.getTime();
-		}
-		return messageDate;
-	}
-
-	/* MessageSchedulerImpl methods end */
+    /* MessageSchedulerImpl methods end */
 
     /* SaveObsAdvice method */
-	public void updateMessageProgramState(Integer personId, String conceptName) {
-
-		// Only determine message program state for active enrolled programs
-		// concerned with an observed concept and matching the concept of this
-		// obs
-
-		MotechService motechService = contextService.getMotechService();
-
-		List<MessageProgramEnrollment> patientActiveEnrollments = motechService
-				.getActiveMessageProgramEnrollments(personId, null, null, null,
-						null, null);
-
-		Date currentDate = new Date();
-
-		for (MessageProgramEnrollment enrollment : patientActiveEnrollments) {
-			MessageProgram program = this.getMessageProgram(enrollment
-					.getProgram());
-
-			if (program.getConceptName() != null) {
-				if (program.getConceptName().equals(conceptName)) {
-					log
-							.debug("Save Obs - Obs matches Program concept, update Program: "
-									+ enrollment.getProgram());
-
-					program.determineState(enrollment, currentDate);
-				}
-			}
-		}
-	}
-
-	/* MessageProgramUpdateTask method */
-	public TaskDefinition updateAllMessageProgramsState(Integer batchSize,
-			Long batchPreviousId, Long batchMaxId) {
-
-		MotechService motechService = contextService.getMotechService();
-		SchedulerService schedulerService = contextService
-				.getSchedulerService();
-
-		if (batchMaxId == null) {
-			batchMaxId = motechService.getMaxMessageProgramEnrollmentId();
-		}
-
-		List<MessageProgramEnrollment> activeEnrollments = motechService
-				.getActiveMessageProgramEnrollments(null, null, null,
-						batchPreviousId, batchMaxId, batchSize);
-
-		Date currentDate = new Date();
-
-		for (MessageProgramEnrollment enrollment : activeEnrollments) {
-			MessageProgram program = this.getMessageProgram(enrollment
-					.getProgram());
-
-			log.debug("MessageProgram Update - Update State: enrollment: "
-					+ enrollment.getId());
-
-			program.determineState(enrollment, currentDate);
-
-			batchPreviousId = enrollment.getId();
-			if (batchPreviousId >= batchMaxId) {
-				log.info("Completed updating all enrollments up to max: "
-						+ batchMaxId);
-				batchMaxId = null;
-				batchPreviousId = null;
-				break;
-			}
-		}
-
-		// Update task properties
-		TaskDefinition task = schedulerService
-				.getTaskByName(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE);
-		if (task != null) {
-			Map<String, String> properties = task.getProperties();
-			if (batchPreviousId != null) {
-				properties.put(MotechConstants.TASK_PROPERTY_BATCH_PREVIOUS_ID,
-						batchPreviousId.toString());
-			} else {
-				properties
-						.remove(MotechConstants.TASK_PROPERTY_BATCH_PREVIOUS_ID);
-			}
-			if (batchMaxId != null) {
-				properties.put(MotechConstants.TASK_PROPERTY_BATCH_MAX_ID,
-						batchMaxId.toString());
-			} else {
-				properties.remove(MotechConstants.TASK_PROPERTY_BATCH_MAX_ID);
-			}
-			schedulerService.saveTask(task);
-		}
-		return task;
-	}
-
-	public void updateAllCareSchedules() {
-		PatientService patientService = contextService.getPatientService();
-		List<Patient> patients = patientService.getAllPatients();
-		log
-				.info("Updating care schedules for " + patients.size()
-						+ " patients");
-
-		for (Patient patient : patients) {
-			// Adds patient to transaction synchronization using advice
-			patientService.savePatient(patient);
-		}
-	}
-
-	public void sendStaffCareMessages(Date startDate, Date endDate,
-			Date deliveryDate, Date deliveryTime, String[] careGroups,
-			boolean sendUpcoming, boolean avoidBlackout) {
-
-		if (avoidBlackout && isDuringBlackout(deliveryDate)) {
-			log.debug("Cancelling nurse messages during blackout");
-			return;
-		}
-
-		MotechService motechService = contextService.getMotechService();
-		List<Facility> facilities = motechService.getAllFacilities();
-
-		// All staff messages sent as SMS
-		MediaType mediaType = MediaType.TEXT;
-		// No corresponding message stored for staff care messages
-		String messageId = null;
-		// Set the time on the delivery date if needed
-		deliveryDate = adjustTime(deliveryDate, deliveryTime);
-
-		WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
-		modelConverter.setRegistrarBean(this);
-
-		for (Facility facility : facilities) {
-			String phoneNumber = facility.getPhoneNumber();
-			Location facilityLocation = facility.getLocation();
-			if (phoneNumber == null
-					|| facilityLocation == null
-					|| !MotechConstants.LOCATION_KASSENA_NANKANA_WEST
-							.equals(facilityLocation.getCountyDistrict())) {
-				// Skip facilities without a phone number or
-				// not in KNDW district
-				continue;
-			}
-
-			// Send Defaulted Care Message
-			List<ExpectedEncounter> defaultedEncounters = getDefaultedExpectedEncounters(
-					facility, careGroups, startDate);
-			List<ExpectedObs> defaultedObs = getDefaultedExpectedObs(facility,
-					careGroups, startDate);
-			if (!defaultedEncounters.isEmpty() || !defaultedObs.isEmpty()) {
-				Care[] defaultedCares = modelConverter
-						.defaultedToWebServiceCares(defaultedEncounters,
-								defaultedObs);
-				sendStaffDefaultedCareMessage(messageId, phoneNumber,
-						mediaType, deliveryDate, null, defaultedCares);
-			}
-
-			if (sendUpcoming) {
-				// Send Upcoming Care Messages
-				List<ExpectedEncounter> upcomingEncounters = getUpcomingExpectedEncounters(
-						facility, careGroups, startDate, endDate);
-				List<ExpectedObs> upcomingObs = getUpcomingExpectedObs(
-						facility, careGroups, startDate, endDate);
-				if (!upcomingEncounters.isEmpty() || !upcomingObs.isEmpty()) {
-					Care[] upcomingCares = modelConverter
-							.upcomingToWebServiceCares(upcomingEncounters,
-									upcomingObs, true);
-
-					sendStaffUpcomingCareMessage(messageId, phoneNumber,
-							mediaType, deliveryDate, null, upcomingCares);
-				}
-			}
-		}
-	}
-
-	/* NotificationTask methods start */
-	public void sendMessages(Date startDate, Date endDate, boolean sendImmediate) {
-		try {
-			MotechService motechService = contextService.getMotechService();
-
-			List<Message> shouldAttemptMessages = motechService.getMessages(
-					startDate, endDate, MessageStatus.SHOULD_ATTEMPT);
-
-			if (log.isDebugEnabled()) {
-				log
-						.debug("Notification Task executed, Should Attempt Messages found: "
-								+ shouldAttemptMessages.size());
-			}
-
-			if (!shouldAttemptMessages.isEmpty()) {
-				PatientMessage[] messages = constructPatientMessages(
-						shouldAttemptMessages, sendImmediate);
-
-				if (messages.length > 0) {
-					mobileService.sendPatientMessages(messages);
-				}
-			}
-		} catch (Exception e) {
-			log.error("Failure to send patient messages", e);
-		}
-	}
-
-	public PatientMessage[] constructPatientMessages(List<Message> messages,
-			boolean sendImmediate) {
-		MotechService motechService = contextService.getMotechService();
-
-		List<PatientMessage> patientMessages = new ArrayList<PatientMessage>();
-
-		for (Message message : messages) {
-			PatientMessage patientMessage = constructPatientMessage(message);
-			if (patientMessage != null) {
-				if (sendImmediate) {
-					patientMessage.setStartDate(null);
-					patientMessage.setEndDate(null);
-				}
-				patientMessages.add(patientMessage);
-
-				message.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
-			} else {
-				message.setAttemptStatus(MessageStatus.REJECTED);
-			}
-			motechService.saveMessage(message);
-		}
-		return patientMessages.toArray(new PatientMessage[patientMessages
-				.size()]);
-	}
-
-	public PatientMessage constructPatientMessage(Message message) {
-		try {
-			PersonService personService = contextService.getPersonService();
-			PatientService patientService = contextService.getPatientService();
-
-			Long notificationType = message.getSchedule().getMessage()
-					.getPublicId();
-			Integer recipientId = message.getSchedule().getRecipientId();
-			Person person = personService.getPerson(recipientId);
-
-			String phoneNumber = getPersonPhoneNumber(person);
-
-			// Cancel message if phone number is considered troubled
-			if (isPhoneTroubled(phoneNumber)) {
-				if (log.isDebugEnabled()) {
-					log.debug("Attempt to send to Troubled Phone, Phone: "
-							+ phoneNumber + ", Notification: "
-							+ notificationType);
-				}
-			} else {
-				if (log.isDebugEnabled()) {
-					log.debug("Scheduled Message, Phone: " + phoneNumber
-							+ ", Notification: " + notificationType);
-				}
-
-				String messageId = message.getPublicId();
-				MediaType mediaType = getPersonMediaType(person);
-				String languageCode = getPersonLanguageCode(person);
-				NameValuePair[] personalInfo = new NameValuePair[0];
-
-				Date messageStartDate = message.getAttemptDate();
-				Date messageEndDate = null;
-
-				Patient patient = patientService.getPatient(recipientId);
-
-				if (patient != null) {
-					ContactNumberType contactNumberType = getPersonPhoneType(person);
-					String motechId = patient.getPatientIdentifier(
-							MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID)
-							.getIdentifier();
-
-					PatientMessage patientMessage = new PatientMessage();
-					patientMessage.setMessageId(messageId);
-					patientMessage.setPersonalInfo(personalInfo);
-					patientMessage.setPatientNumber(phoneNumber);
-					patientMessage.setPatientNumberType(contactNumberType);
-					patientMessage.setLangCode(languageCode);
-					patientMessage.setMediaType(mediaType);
-					patientMessage.setNotificationType(notificationType);
-					patientMessage.setStartDate(messageStartDate);
-					patientMessage.setEndDate(messageEndDate);
-					patientMessage.setRecipientId(motechId);
-					return patientMessage;
-
-				} else {
-					log
-							.error("Attempt to send message to non-existent Patient: "
-									+ recipientId);
-				}
-			}
-		} catch (Exception e) {
-			log.error("Error creating patient message", e);
-		}
-		return null;
-	}
-
-	public boolean sendStaffMessage(String messageId,
-			NameValuePair[] personalInfo, String phoneNumber,
-			String languageCode, MediaType mediaType, Long notificationType,
-			Date messageStartDate, Date messageEndDate,
-			org.motechproject.ws.Patient[] patients) {
-
-		try {
-			org.motechproject.ws.MessageStatus messageStatus = mobileService
-					.sendCHPSMessage(messageId, personalInfo, phoneNumber,
-							patients, languageCode, mediaType,
-							notificationType, messageStartDate, messageEndDate);
-
-			return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
-		} catch (Exception e) {
-			log.error("Mobile WS staff message failure", e);
-			return false;
-		}
-	}
-
-	public boolean sendStaffDefaultedCareMessage(String messageId,
-			String phoneNumber, MediaType mediaType, Date messageStartDate,
-			Date messageEndDate, Care[] cares) {
-
-		try {
-			org.motechproject.ws.MessageStatus messageStatus = mobileService
-					.sendDefaulterMessage(messageId, phoneNumber, cares,
-							mediaType, messageStartDate, messageEndDate);
-
-			return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
-		} catch (Exception e) {
-			log.error("Mobile WS staff defaulted care message failure", e);
-			return false;
-		}
-	}
-
-	public boolean sendStaffUpcomingCareMessage(String messageId,
-			String phoneNumber, MediaType mediaType, Date messageStartDate,
-			Date messageEndDate, Care[] cares) {
-
-		try {
-			org.motechproject.ws.MessageStatus messageStatus = mobileService
-					.sendBulkCaresMessage(messageId, phoneNumber, cares,
-							mediaType, messageStartDate, messageEndDate);
-
-			return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
-		} catch (Exception e) {
-			log.error("Mobile WS staff upcoming care message failure", e);
-			return false;
-		}
-	}
-
-	/* NotificationTask methods end */
-
-	/* Factored out methods start */
-	public String[] getActiveMessageProgramEnrollmentNames(Patient patient) {
-		MotechService motechService = contextService.getMotechService();
-
-		List<MessageProgramEnrollment> enrollments = motechService
-				.getActiveMessageProgramEnrollments(patient.getPatientId(),
-						null, null, null, null, null);
-
-		List<String> enrollmentNames = new ArrayList<String>();
-		for (MessageProgramEnrollment enrollment : enrollments) {
-			enrollmentNames.add(enrollment.getProgram());
-		}
-		return enrollmentNames.toArray(new String[enrollmentNames.size()]);
-	}
-
-	public void addMessageProgramEnrollment(Integer personId, String program,
-			Integer obsId) {
-		MotechService motechService = contextService.getMotechService();
-
-		List<MessageProgramEnrollment> enrollments = motechService
-				.getActiveMessageProgramEnrollments(personId, program, obsId,
-						null, null, null);
-		if (enrollments.size() == 0) {
-			MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
-			enrollment.setPersonId(personId);
-			enrollment.setProgram(program);
-			enrollment.setStartDate(new Date());
-			enrollment.setObsId(obsId);
-			motechService.saveMessageProgramEnrollment(enrollment);
-		}
-	}
-
-	public void removeMessageProgramEnrollment(
-			MessageProgramEnrollment enrollment) {
-
-		MotechService motechService = contextService.getMotechService();
-		removeAllUnsentMessages(enrollment);
-		if (enrollment.getEndDate() == null) {
-			enrollment.setEndDate(new Date());
-			motechService.saveMessageProgramEnrollment(enrollment);
-		}
-	}
-
-	private void removeAllMessageProgramEnrollments(Integer personId) {
-		MotechService motechService = contextService.getMotechService();
-
-		List<MessageProgramEnrollment> enrollments = motechService
-				.getActiveMessageProgramEnrollments(personId, null, null, null,
-						null, null);
-
-		for (MessageProgramEnrollment enrollment : enrollments) {
-			removeMessageProgramEnrollment(enrollment);
-		}
-	}
-
-	public Obs createNumericValueObs(Date date, Concept concept, Person person,
-			Location location, Integer value, Encounter encounter, User creator) {
+
+    public void updateMessageProgramState(Integer personId, String conceptName) {
+
+        // Only determine message program state for active enrolled programs
+        // concerned with an observed concept and matching the concept of this
+        // obs
+
+        List<MessageProgramEnrollment> patientActiveEnrollments = motechService()
+                .getActiveMessageProgramEnrollments(personId, null, null, null,
+                        null, null);
+
+        Date currentDate = new Date();
+
+        for (MessageProgramEnrollment enrollment : patientActiveEnrollments) {
+            MessageProgram program = this.getMessageProgram(enrollment
+                    .getProgram());
+
+            if (program.getConceptName() != null) {
+                if (program.getConceptName().equals(conceptName)) {
+                    log
+                            .debug("Save Obs - Obs matches Program concept, update Program: "
+                                    + enrollment.getProgram());
+
+                    program.determineState(enrollment, currentDate);
+                }
+            }
+        }
+    }
+
+    /* MessageProgramUpdateTask method */
+
+    public TaskDefinition updateAllMessageProgramsState(Integer batchSize,
+                                                        Long batchPreviousId, Long batchMaxId) {
+
+        if (batchMaxId == null) {
+            batchMaxId = motechService().getMaxMessageProgramEnrollmentId();
+        }
+
+        List<MessageProgramEnrollment> activeEnrollments = motechService()
+                .getActiveMessageProgramEnrollments(null, null, null,
+                        batchPreviousId, batchMaxId, batchSize);
+
+        Date currentDate = new Date();
+
+        for (MessageProgramEnrollment enrollment : activeEnrollments) {
+            MessageProgram program = this.getMessageProgram(enrollment
+                    .getProgram());
+
+            log.debug("MessageProgram Update - Update State: enrollment: "
+                    + enrollment.getId());
+
+            program.determineState(enrollment, currentDate);
+
+            batchPreviousId = enrollment.getId();
+            if (batchPreviousId >= batchMaxId) {
+                log.info("Completed updating all enrollments up to max: "
+                        + batchMaxId);
+                batchMaxId = null;
+                batchPreviousId = null;
+                break;
+            }
+        }
+
+        // Update task properties
+        TaskDefinition task = schedulerService
+                .getTaskByName(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE);
+        if (task != null) {
+            Map<String, String> properties = task.getProperties();
+            if (batchPreviousId != null) {
+                properties.put(MotechConstants.TASK_PROPERTY_BATCH_PREVIOUS_ID,
+                        batchPreviousId.toString());
+            } else {
+                properties
+                        .remove(MotechConstants.TASK_PROPERTY_BATCH_PREVIOUS_ID);
+            }
+            if (batchMaxId != null) {
+                properties.put(MotechConstants.TASK_PROPERTY_BATCH_MAX_ID,
+                        batchMaxId.toString());
+            } else {
+                properties.remove(MotechConstants.TASK_PROPERTY_BATCH_MAX_ID);
+            }
+            schedulerService.saveTask(task);
+        }
+        return task;
+    }
+
+    public void updateAllCareSchedules() {
+        List<Patient> patients = patientService.getAllPatients();
+        log
+                .info("Updating care schedules for " + patients.size()
+                        + " patients");
+
+        for (Patient patient : patients) {
+            // Adds patient to transaction synchronization using advice
+            patientService.savePatient(patient);
+        }
+    }
+
+    public void sendStaffCareMessages(Date startDate, Date endDate,
+                                      Date deliveryDate, Date deliveryTime, String[] careGroups,
+                                      boolean sendUpcoming, boolean avoidBlackout) {
+
+        if (avoidBlackout && isDuringBlackout(deliveryDate)) {
+            log.debug("Cancelling nurse messages during blackout");
+            return;
+        }
+        List<Facility> facilities = motechService().getAllFacilities();
+        // All staff messages sent as SMS
+        MediaType mediaType = MediaType.TEXT;
+        // No corresponding message stored for staff care messages
+        String messageId = null;
+        // Set the time on the delivery date if needed
+        deliveryDate = adjustTime(deliveryDate, deliveryTime);
+
+        WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
+        modelConverter.setRegistrarBean(this);
+
+        for (Facility facility : facilities) {
+            String phoneNumber = facility.getPhoneNumber();
+            Location facilityLocation = facility.getLocation();
+            if (phoneNumber == null
+                    || facilityLocation == null
+                    || !MotechConstants.LOCATION_KASSENA_NANKANA_WEST
+                    .equals(facilityLocation.getCountyDistrict())) {
+                // Skip facilities without a phone number or
+                // not in KNDW district
+                continue;
+            }
+
+            // Send Defaulted Care Message
+            List<ExpectedEncounter> defaultedEncounters = getDefaultedExpectedEncounters(
+                    facility, careGroups, startDate);
+            List<ExpectedObs> defaultedObs = getDefaultedExpectedObs(facility,
+                    careGroups, startDate);
+            if (!defaultedEncounters.isEmpty() || !defaultedObs.isEmpty()) {
+                Care[] defaultedCares = modelConverter
+                        .defaultedToWebServiceCares(defaultedEncounters,
+                                defaultedObs);
+                sendStaffDefaultedCareMessage(messageId, phoneNumber,
+                        mediaType, deliveryDate, null, defaultedCares);
+            }
+
+            if (sendUpcoming) {
+                // Send Upcoming Care Messages
+                List<ExpectedEncounter> upcomingEncounters = getUpcomingExpectedEncounters(
+                        facility, careGroups, startDate, endDate);
+                List<ExpectedObs> upcomingObs = getUpcomingExpectedObs(
+                        facility, careGroups, startDate, endDate);
+                if (!upcomingEncounters.isEmpty() || !upcomingObs.isEmpty()) {
+                    Care[] upcomingCares = modelConverter
+                            .upcomingToWebServiceCares(upcomingEncounters,
+                                    upcomingObs, true);
+
+                    sendStaffUpcomingCareMessage(messageId, phoneNumber,
+                            mediaType, deliveryDate, null, upcomingCares);
+                }
+            }
+        }
+    }
+
+    /* NotificationTask methods start */
+
+    public void sendMessages(Date startDate, Date endDate, boolean sendImmediate) {
+        try {
+            List<Message> shouldAttemptMessages = motechService().getMessages(
+                    startDate, endDate, MessageStatus.SHOULD_ATTEMPT);
+
+            if (log.isDebugEnabled()) {
+                log
+                        .debug("Notification Task executed, Should Attempt Messages found: "
+                                + shouldAttemptMessages.size());
+            }
+
+            if (!shouldAttemptMessages.isEmpty()) {
+                PatientMessage[] messages = constructPatientMessages(
+                        shouldAttemptMessages, sendImmediate);
+
+                if (messages.length > 0) {
+                    mobileService.sendPatientMessages(messages);
+                }
+            }
+        } catch (Exception e) {
+            log.error("Failure to send patient messages", e);
+        }
+    }
+
+    public PatientMessage[] constructPatientMessages(List<Message> messages,
+                                                     boolean sendImmediate) {
+        List<PatientMessage> patientMessages = new ArrayList<PatientMessage>();
+
+        for (Message message : messages) {
+            PatientMessage patientMessage = constructPatientMessage(message);
+            if (patientMessage != null) {
+                if (sendImmediate) {
+                    patientMessage.setStartDate(null);
+                    patientMessage.setEndDate(null);
+                }
+                patientMessages.add(patientMessage);
+
+                message.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
+            } else {
+                message.setAttemptStatus(MessageStatus.REJECTED);
+            }
+            motechService().saveMessage(message);
+        }
+        return patientMessages.toArray(new PatientMessage[patientMessages
+                .size()]);
+    }
+
+    public PatientMessage constructPatientMessage(Message message) {
+        try {
+
+            Long notificationType = message.getSchedule().getMessage()
+                    .getPublicId();
+            Integer recipientId = message.getSchedule().getRecipientId();
+            Person person = personService.getPerson(recipientId);
+
+            String phoneNumber = getPersonPhoneNumber(person);
+
+            // Cancel message if phone number is considered troubled
+            if (isPhoneTroubled(phoneNumber)) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Attempt to send to Troubled Phone, Phone: "
+                            + phoneNumber + ", Notification: "
+                            + notificationType);
+                }
+            } else {
+                if (log.isDebugEnabled()) {
+                    log.debug("Scheduled Message, Phone: " + phoneNumber
+                            + ", Notification: " + notificationType);
+                }
+
+                String messageId = message.getPublicId();
+                MediaType mediaType = getPersonMediaType(person);
+                String languageCode = getPersonLanguageCode(person);
+                NameValuePair[] personalInfo = new NameValuePair[0];
+
+                Date messageStartDate = message.getAttemptDate();
+                Date messageEndDate = null;
+
+                Patient patient = patientService.getPatient(recipientId);
+
+                if (patient != null) {
+                    ContactNumberType contactNumberType = getPersonPhoneType(person);
+                    String motechId = patient.getPatientIdentifier(
+                            MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID)
+                            .getIdentifier();
+
+                    PatientMessage patientMessage = new PatientMessage();
+                    patientMessage.setMessageId(messageId);
+                    patientMessage.setPersonalInfo(personalInfo);
+                    patientMessage.setPatientNumber(phoneNumber);
+                    patientMessage.setPatientNumberType(contactNumberType);
+                    patientMessage.setLangCode(languageCode);
+                    patientMessage.setMediaType(mediaType);
+                    patientMessage.setNotificationType(notificationType);
+                    patientMessage.setStartDate(messageStartDate);
+                    patientMessage.setEndDate(messageEndDate);
+                    patientMessage.setRecipientId(motechId);
+                    return patientMessage;
+
+                } else {
+                    log
+                            .error("Attempt to send message to non-existent Patient: "
+                                    + recipientId);
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error creating patient message", e);
+        }
+        return null;
+    }
+
+    public boolean sendStaffMessage(String messageId,
+                                    NameValuePair[] personalInfo, String phoneNumber,
+                                    String languageCode, MediaType mediaType, Long notificationType,
+                                    Date messageStartDate, Date messageEndDate,
+                                    org.motechproject.ws.Patient[] patients) {
+
+        try {
+            org.motechproject.ws.MessageStatus messageStatus = mobileService
+                    .sendCHPSMessage(messageId, personalInfo, phoneNumber,
+                            patients, languageCode, mediaType,
+                            notificationType, messageStartDate, messageEndDate);
+
+            return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
+        } catch (Exception e) {
+            log.error("Mobile WS staff message failure", e);
+            return false;
+        }
+    }
+
+    public boolean sendStaffDefaultedCareMessage(String messageId,
+                                                 String phoneNumber, MediaType mediaType, Date messageStartDate,
+                                                 Date messageEndDate, Care[] cares) {
+
+        try {
+            org.motechproject.ws.MessageStatus messageStatus = mobileService
+                    .sendDefaulterMessage(messageId, phoneNumber, cares,
+                            mediaType, messageStartDate, messageEndDate);
+
+            return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
+        } catch (Exception e) {
+            log.error("Mobile WS staff defaulted care message failure", e);
+            return false;
+        }
+    }
+
+    public boolean sendStaffUpcomingCareMessage(String messageId,
+                                                String phoneNumber, MediaType mediaType, Date messageStartDate,
+                                                Date messageEndDate, Care[] cares) {
+
+        try {
+            org.motechproject.ws.MessageStatus messageStatus = mobileService
+                    .sendBulkCaresMessage(messageId, phoneNumber, cares,
+                            mediaType, messageStartDate, messageEndDate);
+
+            return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
+        } catch (Exception e) {
+            log.error("Mobile WS staff upcoming care message failure", e);
+            return false;
+        }
+    }
+
+    /* NotificationTask methods end */
+
+    /* Factored out methods start */
+
+    public String[] getActiveMessageProgramEnrollmentNames(Patient patient) {
+        List<MessageProgramEnrollment> enrollments = motechService()
+                .getActiveMessageProgramEnrollments(patient.getPatientId(),
+                        null, null, null, null, null);
+
+        List<String> enrollmentNames = new ArrayList<String>();
+        for (MessageProgramEnrollment enrollment : enrollments) {
+            enrollmentNames.add(enrollment.getProgram());
+        }
+        return enrollmentNames.toArray(new String[enrollmentNames.size()]);
+    }
+
+    public void addMessageProgramEnrollment(Integer personId, String program,
+                                            Integer obsId) {
+        List<MessageProgramEnrollment> enrollments = motechService()
+                .getActiveMessageProgramEnrollments(personId, program, obsId,
+                        null, null, null);
+        if (enrollments.size() == 0) {
+            MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+            enrollment.setPersonId(personId);
+            enrollment.setProgram(program);
+            enrollment.setStartDate(new Date());
+            enrollment.setObsId(obsId);
+            motechService().saveMessageProgramEnrollment(enrollment);
+        }
+    }
+
+    public void removeMessageProgramEnrollment(
+            MessageProgramEnrollment enrollment) {
+        removeAllUnsentMessages(enrollment);
+        if (enrollment.getEndDate() == null) {
+            enrollment.setEndDate(new Date());
+            motechService().saveMessageProgramEnrollment(enrollment);
+        }
+    }
+
+    private void removeAllMessageProgramEnrollments(Integer personId) {
+        List<MessageProgramEnrollment> enrollments = motechService()
+                .getActiveMessageProgramEnrollments(personId, null, null, null,
+                        null, null);
+
+        for (MessageProgramEnrollment enrollment : enrollments) {
+            removeMessageProgramEnrollment(enrollment);
+        }
+    }
+
+    public Obs createNumericValueObs(Date date, Concept concept, Person person,
+                                     Location location, Integer value, Encounter encounter, User creator) {
 
         return createNumericValueObs(date, concept, person, location,
                 (double) value, encounter, creator);
-	}
+    }
 
-	public Obs createNumericValueObs(Date date, Concept concept, Person person,
-			Location location, Double value, Encounter encounter, User creator) {
+    public Obs createNumericValueObs(Date date, Concept concept, Person person,
+                                     Location location, Double value, Encounter encounter, User creator) {
 
-		Obs obs = createObs(date, concept, person, location, encounter, creator);
-		obs.setValueNumeric(value);
-		return obs;
-	}
+        Obs obs = createObs(date, concept, person, location, encounter, creator);
+        obs.setValueNumeric(value);
+        return obs;
+    }
 
-	public Obs createBooleanValueObs(Date date, Concept concept, Person person,
-			Location location, Boolean value, Encounter encounter, User creator) {
+    public Obs createBooleanValueObs(Date date, Concept concept, Person person,
+                                     Location location, Boolean value, Encounter encounter, User creator) {
 
-		Double doubleValue;
-		// Boolean currently stored as Numeric 1 or 0
-		if (Boolean.TRUE.equals(value)) {
-			doubleValue = 1.0;
-		} else {
-			doubleValue = 0.0;
-		}
-		return createNumericValueObs(date, concept, person, location,
-				doubleValue, encounter, creator);
-	}
+        Double doubleValue;
+        // Boolean currently stored as Numeric 1 or 0
+        if (Boolean.TRUE.equals(value)) {
+            doubleValue = 1.0;
+        } else {
+            doubleValue = 0.0;
+        }
+        return createNumericValueObs(date, concept, person, location,
+                doubleValue, encounter, creator);
+    }
 
-	public Obs createDateValueObs(Date date, Concept concept, Person person,
-			Location location, Date value, Encounter encounter, User creator) {
+    public Obs createDateValueObs(Date date, Concept concept, Person person,
+                                  Location location, Date value, Encounter encounter, User creator) {
 
-		Obs obs = createObs(date, concept, person, location, encounter, creator);
-		obs.setValueDatetime(value);
-		return obs;
-	}
+        Obs obs = createObs(date, concept, person, location, encounter, creator);
+        obs.setValueDatetime(value);
+        return obs;
+    }
 
-	public Obs createConceptValueObs(Date date, Concept concept, Person person,
-			Location location, Concept value, Encounter encounter, User creator) {
+    public Obs createConceptValueObs(Date date, Concept concept, Person person,
+                                     Location location, Concept value, Encounter encounter, User creator) {
 
-		Obs obs = createObs(date, concept, person, location, encounter, creator);
-		obs.setValueCoded(value);
-		return obs;
-	}
+        Obs obs = createObs(date, concept, person, location, encounter, creator);
+        obs.setValueCoded(value);
+        return obs;
+    }
 
-	public Obs createTextValueObs(Date date, Concept concept, Person person,
-			Location location, String value, Encounter encounter, User creator) {
+    public Obs createTextValueObs(Date date, Concept concept, Person person,
+                                  Location location, String value, Encounter encounter, User creator) {
 
-		Obs obs = createObs(date, concept, person, location, encounter, creator);
-		obs.setValueText(value);
-		return obs;
-	}
+        Obs obs = createObs(date, concept, person, location, encounter, creator);
+        obs.setValueText(value);
+        return obs;
+    }
 
-	public Obs createObs(Date date, Concept concept, Person person,
-			Location location, Encounter encounter, User creator) {
+    public Obs createObs(Date date, Concept concept, Person person,
+                         Location location, Encounter encounter, User creator) {
 
-		Obs obs = new Obs();
-		obs.setObsDatetime(date);
-		obs.setConcept(concept);
-		obs.setPerson(person);
-		obs.setLocation(location);
-		if (encounter != null) {
-			obs.setEncounter(encounter);
-		}
-		if (creator != null) {
-			obs.setCreator(creator);
-		}
-		return obs;
-	}
+        Obs obs = new Obs();
+        obs.setObsDatetime(date);
+        obs.setConcept(concept);
+        obs.setPerson(person);
+        obs.setLocation(location);
+        if (encounter != null) {
+            obs.setEncounter(encounter);
+        }
+        if (creator != null) {
+            obs.setCreator(creator);
+        }
+        return obs;
+    }
 
-	public Patient getPatientByMotechId(String motechId) {
-		PatientService patientService = contextService.getPatientService();
-		PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
-		List<PatientIdentifierType> idTypes = new ArrayList<PatientIdentifierType>();
-		idTypes.add(motechIdType);
+    public Patient getPatientByMotechId(String motechId) {
+        PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
+        List<PatientIdentifierType> idTypes = new ArrayList<PatientIdentifierType>();
+        idTypes.add(motechIdType);
 
-		// Parameters are Name, Id, Id type, match exactly boolean
-		List<Patient> patients = patientService.getPatients(null, motechId,
-				idTypes, true);
-		if (patients.size() > 0) {
-			if (patients.size() > 1) {
-				log.warn("Multiple Patients found for Motech ID: " + motechId);
-			}
-			return patients.get(0);
-		}
-		return null;
-	}
+        // Parameters are Name, Id, Id type, match exactly boolean
+        List<Patient> patients = patientService.getPatients(null, motechId,
+                idTypes, true);
+        if (patients.size() > 0) {
+            if (patients.size() > 1) {
+                log.warn("Multiple Patients found for Motech ID: " + motechId);
+            }
+            return patients.get(0);
+        }
+        return null;
+    }
 
-	public User getStaffBySystemId(String systemId) {
-		UserService userService = contextService.getUserService();
-		return userService.getUserByUsername(systemId);
-	}
+    public User getStaffBySystemId(String systemId) {
+        return userService.getUserByUsername(systemId);
+    }
 
-	public String getPersonPhoneNumber(Person person) {
-		PersonAttribute phoneNumberAttr = person
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
-		if (phoneNumberAttr != null
-				&& StringUtils.isNotEmpty(phoneNumberAttr.getValue())) {
-			return phoneNumberAttr.getValue();
-		}
-		log
-				.warn("No phone number found for Person id: "
-						+ person.getPersonId());
-		return null;
-	}
+    public String getPersonPhoneNumber(Person person) {
+        PersonAttribute phoneNumberAttr = person
+                .getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
+        if (phoneNumberAttr != null
+                && StringUtils.isNotEmpty(phoneNumberAttr.getValue())) {
+            return phoneNumberAttr.getValue();
+        }
+        log
+                .warn("No phone number found for Person id: "
+                        + person.getPersonId());
+        return null;
+    }
 
-	public String getPersonLanguageCode(Person person) {
-		PersonAttribute languageAttr = person
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
-		if (languageAttr != null
-				&& StringUtils.isNotEmpty(languageAttr.getValue())) {
-			return languageAttr.getValue();
-		}
-		log.debug("No language found for Person id: " + person.getPersonId());
-		return null;
-	}
+    public String getPersonLanguageCode(Person person) {
+        PersonAttribute languageAttr = person
+                .getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
+        if (languageAttr != null
+                && StringUtils.isNotEmpty(languageAttr.getValue())) {
+            return languageAttr.getValue();
+        }
+        log.debug("No language found for Person id: " + person.getPersonId());
+        return null;
+    }
 
-	public ContactNumberType getPersonPhoneType(Person person) {
-		PersonAttribute phoneTypeAttr = person
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
-		if (phoneTypeAttr != null
-				&& StringUtils.isNotEmpty(phoneTypeAttr.getValue())) {
-			try {
-				return ContactNumberType.valueOf(phoneTypeAttr.getValue());
-			} catch (Exception e) {
-				log.error("Unable to parse phone type: "
-						+ phoneTypeAttr.getValue() + ", for Person ID:"
-						+ person.getPersonId(), e);
-			}
-		}
-		log.debug("No contact number type found for Person id: "
-				+ person.getPersonId());
-		return null;
-	}
+    public ContactNumberType getPersonPhoneType(Person person) {
+        PersonAttribute phoneTypeAttr = person
+                .getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
+        if (phoneTypeAttr != null
+                && StringUtils.isNotEmpty(phoneTypeAttr.getValue())) {
+            try {
+                return ContactNumberType.valueOf(phoneTypeAttr.getValue());
+            } catch (Exception e) {
+                log.error("Unable to parse phone type: "
+                        + phoneTypeAttr.getValue() + ", for Person ID:"
+                        + person.getPersonId(), e);
+            }
+        }
+        log.debug("No contact number type found for Person id: "
+                + person.getPersonId());
+        return null;
+    }
 
-	public MediaType getPersonMediaType(Person person) {
-		PersonAttribute mediaTypeAttr = person
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
-		if (mediaTypeAttr != null
-				&& StringUtils.isNotEmpty(mediaTypeAttr.getValue())) {
-			try {
-				return MediaType.valueOf(mediaTypeAttr.getValue());
-			} catch (Exception e) {
-				log.error("Unable to parse media type: "
-						+ mediaTypeAttr.getValue() + ", for Person ID:"
-						+ person.getPersonId(), e);
-			}
-		}
-		log.debug("No media type found for Person id: " + person.getPersonId());
-		return null;
-	}
+    public MediaType getPersonMediaType(Person person) {
+        PersonAttribute mediaTypeAttr = person
+                .getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+        if (mediaTypeAttr != null
+                && StringUtils.isNotEmpty(mediaTypeAttr.getValue())) {
+            try {
+                return MediaType.valueOf(mediaTypeAttr.getValue());
+            } catch (Exception e) {
+                log.error("Unable to parse media type: "
+                        + mediaTypeAttr.getValue() + ", for Person ID:"
+                        + person.getPersonId(), e);
+            }
+        }
+        log.debug("No media type found for Person id: " + person.getPersonId());
+        return null;
+    }
 
-	public boolean isPhoneTroubled(String phoneNumber) {
-		TroubledPhone troubledPhone = contextService.getMotechService()
-				.getTroubledPhone(phoneNumber);
-		Integer maxFailures = getMaxPhoneNumberFailures();
+    public boolean isPhoneTroubled(String phoneNumber) {
+        TroubledPhone troubledPhone = contextService.getMotechService()
+                .getTroubledPhone(phoneNumber);
+        Integer maxFailures = getMaxPhoneNumberFailures();
         return maxFailures != null && troubledPhone != null && troubledPhone.getSendFailures() >= maxFailures;
     }
 
-	public Integer getMaxPhoneNumberFailures() {
-		String troubledPhoneProperty = getTroubledPhoneProperty();
-		if (troubledPhoneProperty != null) {
-			return Integer.parseInt(troubledPhoneProperty);
-		}
-		log.error("Troubled Phone Property not found");
-		return null;
-	}
+    public Integer getMaxPhoneNumberFailures() {
+        String troubledPhoneProperty = getTroubledPhoneProperty();
+        if (troubledPhoneProperty != null) {
+            return Integer.parseInt(troubledPhoneProperty);
+        }
+        log.error("Troubled Phone Property not found");
+        return null;
+    }
 
-	public Integer getMaxPatientCareReminders() {
-		String careRemindersProperty = getPatientCareRemindersProperty();
-		if (careRemindersProperty != null) {
-			return Integer.parseInt(careRemindersProperty);
-		}
-		log.error("Patient Care Reminders Property not found");
-		return null;
-	}
+    public Integer getMaxPatientCareReminders() {
+        String careRemindersProperty = getPatientCareRemindersProperty();
+        if (careRemindersProperty != null) {
+            return Integer.parseInt(careRemindersProperty);
+        }
+        log.error("Patient Care Reminders Property not found");
+        return null;
+    }
 
-	public DayOfWeek getPersonMessageDayOfWeek(Person person) {
-		PersonAttribute dayAttr = person
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY);
-		DayOfWeek day = null;
-		if (dayAttr != null && StringUtils.isNotEmpty(dayAttr.getValue())) {
-			try {
-				day = DayOfWeek.valueOf(dayAttr.getValue());
-			} catch (Exception e) {
-				log.error("Unable to parse day of week: " + dayAttr.getValue()
-						+ ", for Person ID:" + person.getPersonId(), e);
-			}
-		} else {
-			log.debug("No day of week found for Person id: "
-					+ person.getPersonId());
-		}
-		return day;
-	}
+    public DayOfWeek getPersonMessageDayOfWeek(Person person) {
+        PersonAttribute dayAttr = person
+                .getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY);
+        DayOfWeek day = null;
+        if (dayAttr != null && StringUtils.isNotEmpty(dayAttr.getValue())) {
+            try {
+                day = DayOfWeek.valueOf(dayAttr.getValue());
+            } catch (Exception e) {
+                log.error("Unable to parse day of week: " + dayAttr.getValue()
+                        + ", for Person ID:" + person.getPersonId(), e);
+            }
+        } else {
+            log.debug("No day of week found for Person id: "
+                    + person.getPersonId());
+        }
+        return day;
+    }
 
-	public Date getPersonMessageTimeOfDay(Person person) {
-		PersonAttribute timeAttr = person
-				.getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
-		Date time = null;
-		if (timeAttr != null && StringUtils.isNotEmpty(timeAttr.getValue())) {
-			SimpleDateFormat timeFormat = new SimpleDateFormat(
-					MotechConstants.TIME_FORMAT_DELIVERY_TIME);
-			try {
-				time = timeFormat.parse(timeAttr.getValue());
-			} catch (Exception e) {
-				log.error("Unable to parse time of day: " + timeAttr.getValue()
-						+ ", for Person ID:" + person.getPersonId(), e);
-			}
-		} else {
-			log.debug("No time of day found for Person id: "
-					+ person.getPersonId());
-		}
-		return time;
-	}
+    public Date getPersonMessageTimeOfDay(Person person) {
+        PersonAttribute timeAttr = person
+                .getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
+        Date time = null;
+        if (timeAttr != null && StringUtils.isNotEmpty(timeAttr.getValue())) {
+            SimpleDateFormat timeFormat = new SimpleDateFormat(
+                    MotechConstants.TIME_FORMAT_DELIVERY_TIME);
+            try {
+                time = timeFormat.parse(timeAttr.getValue());
+            } catch (Exception e) {
+                log.error("Unable to parse time of day: " + timeAttr.getValue()
+                        + ", for Person ID:" + person.getPersonId(), e);
+            }
+        } else {
+            log.debug("No time of day found for Person id: "
+                    + person.getPersonId());
+        }
+        return time;
+    }
 
-	public DayOfWeek getDefaultPatientDayOfWeek() {
-		String dayProperty = getPatientDayOfWeekProperty();
-		DayOfWeek day = null;
-		try {
-			day = DayOfWeek.valueOf(dayProperty);
-		} catch (Exception e) {
-			log
-					.error("Invalid Patient Day of Week Property: "
-							+ dayProperty, e);
-		}
-		return day;
-	}
+    public DayOfWeek getDefaultPatientDayOfWeek() {
+        String dayProperty = getPatientDayOfWeekProperty();
+        DayOfWeek day = null;
+        try {
+            day = DayOfWeek.valueOf(dayProperty);
+        } catch (Exception e) {
+            log
+                    .error("Invalid Patient Day of Week Property: "
+                            + dayProperty, e);
+        }
+        return day;
+    }
 
-	public Date getDefaultPatientTimeOfDay() {
-		String timeProperty = getPatientTimeOfDayProperty();
-		SimpleDateFormat timeFormat = new SimpleDateFormat(
-				MotechConstants.TIME_FORMAT_DELIVERY_TIME);
-		Date time = null;
-		try {
-			time = timeFormat.parse(timeProperty);
-		} catch (Exception e) {
-			log.error("Invalid Patient Time of Day Property: " + timeProperty,
-					e);
-		}
-		return time;
-	}
+    public Date getDefaultPatientTimeOfDay() {
+        String timeProperty = getPatientTimeOfDayProperty();
+        SimpleDateFormat timeFormat = new SimpleDateFormat(
+                MotechConstants.TIME_FORMAT_DELIVERY_TIME);
+        Date time = null;
+        try {
+            time = timeFormat.parse(timeProperty);
+        } catch (Exception e) {
+            log.error("Invalid Patient Time of Day Property: " + timeProperty,
+                    e);
+        }
+        return time;
+    }
 
-	public Integer getMaxQueryResults() {
+    public Integer getMaxQueryResults() {
         String maxResultsProperty = contextService.getAdministrationService().getGlobalProperty(
                 MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS);
-		if (maxResultsProperty != null) {
-			return Integer.parseInt(maxResultsProperty);
-		}
-		log.error("Max Query Results Property not found");
-		return null;
-	}
+        if (maxResultsProperty != null) {
+            return Integer.parseInt(maxResultsProperty);
+        }
+        log.error("Max Query Results Property not found");
+        return null;
+    }
 
-	public Date determinePreferredMessageDate(Person person, Date messageDate,
-			Date currentDate, boolean checkInFuture) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(messageDate);
+    public Date determinePreferredMessageDate(Person person, Date messageDate,
+                                              Date currentDate, boolean checkInFuture) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(messageDate);
 
-		Date time = getPersonMessageTimeOfDay(person);
-		if (time == null) {
-			time = getDefaultPatientTimeOfDay();
-		}
-		if (time != null) {
-			Calendar timeCalendar = Calendar.getInstance();
-			timeCalendar.setTime(time);
-			calendar.set(Calendar.HOUR_OF_DAY, timeCalendar
-					.get(Calendar.HOUR_OF_DAY));
-			calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
-		}
-		calendar.set(Calendar.SECOND, 0);
+        Date time = getPersonMessageTimeOfDay(person);
+        if (time == null) {
+            time = getDefaultPatientTimeOfDay();
+        }
+        if (time != null) {
+            Calendar timeCalendar = Calendar.getInstance();
+            timeCalendar.setTime(time);
+            calendar.set(Calendar.HOUR_OF_DAY, timeCalendar
+                    .get(Calendar.HOUR_OF_DAY));
+            calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+        }
+        calendar.set(Calendar.SECOND, 0);
 
-		DayOfWeek day = getPersonMessageDayOfWeek(person);
-		if (day == null) {
-			day = getDefaultPatientDayOfWeek();
-		}
-		if (day != null) {
-			calendar.set(Calendar.DAY_OF_WEEK, day.getCalendarValue());
-			if (checkInFuture && calendar.getTime().before(currentDate)) {
-				// Add a week if date in past after setting the day of week
-				calendar.add(Calendar.DATE, 7);
-			}
-		}
+        DayOfWeek day = getPersonMessageDayOfWeek(person);
+        if (day == null) {
+            day = getDefaultPatientDayOfWeek();
+        }
+        if (day != null) {
+            calendar.set(Calendar.DAY_OF_WEEK, day.getCalendarValue());
+            if (checkInFuture && calendar.getTime().before(currentDate)) {
+                // Add a week if date in past after setting the day of week
+                calendar.add(Calendar.DATE, 7);
+            }
+        }
 
-		return calendar.getTime();
-	}
+        return calendar.getTime();
+    }
 
-	Date adjustTime(Date date, Date time) {
-		if (date == null || time == null) {
-			return date;
-		}
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
+    Date adjustTime(Date date, Date time) {
+        if (date == null || time == null) {
+            return date;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
 
-		Calendar timeCalendar = Calendar.getInstance();
-		timeCalendar.setTime(time);
-		calendar.set(Calendar.HOUR_OF_DAY, timeCalendar
-				.get(Calendar.HOUR_OF_DAY));
-		calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
-		calendar.set(Calendar.SECOND, 0);
-		if (calendar.getTime().before(date)) {
-			// Add a day if before original date
-			// after setting the time of day
-			calendar.add(Calendar.DATE, 1);
-		}
-		return calendar.getTime();
-	}
+        Calendar timeCalendar = Calendar.getInstance();
+        timeCalendar.setTime(time);
+        calendar.set(Calendar.HOUR_OF_DAY, timeCalendar
+                .get(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+        calendar.set(Calendar.SECOND, 0);
+        if (calendar.getTime().before(date)) {
+            // Add a day if before original date
+            // after setting the time of day
+            calendar.add(Calendar.DATE, 1);
+        }
+        return calendar.getTime();
+    }
 
-	Date adjustForBlackout(Date date) {
-		if (date == null) {
-			return date;
-		}
-		MotechService motechService = contextService.getMotechService();
-		Blackout blackout = motechService.getBlackoutSettings();
-		if (blackout == null) {
-			return date;
-		}
+    Date adjustForBlackout(Date date) {
+        if (date == null) {
+            return date;
+        }
+        Blackout blackout = motechService().getBlackoutSettings();
+        if (blackout == null) {
+            return date;
+        }
 
-		Calendar blackoutCalendar = Calendar.getInstance();
-		blackoutCalendar.setTime(date);
+        Calendar blackoutCalendar = Calendar.getInstance();
+        blackoutCalendar.setTime(date);
 
-		Calendar timeCalendar = Calendar.getInstance();
+        Calendar timeCalendar = Calendar.getInstance();
 
-		timeCalendar.setTime(blackout.getStartTime());
-		blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
-				.get(Calendar.HOUR_OF_DAY));
-		blackoutCalendar
-				.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
-		blackoutCalendar
-				.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
-		if (date.before(blackoutCalendar.getTime())) {
-			// Remove a day if blackout start date before the message date
-			blackoutCalendar.add(Calendar.DATE, -1);
-		}
-		Date blackoutStart = blackoutCalendar.getTime();
+        timeCalendar.setTime(blackout.getStartTime());
+        blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
+                .get(Calendar.HOUR_OF_DAY));
+        blackoutCalendar
+                .set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+        blackoutCalendar
+                .set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
+        if (date.before(blackoutCalendar.getTime())) {
+            // Remove a day if blackout start date before the message date
+            blackoutCalendar.add(Calendar.DATE, -1);
+        }
+        Date blackoutStart = blackoutCalendar.getTime();
 
-		timeCalendar.setTime(blackout.getEndTime());
-		blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
-				.get(Calendar.HOUR_OF_DAY));
-		blackoutCalendar
-				.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
-		blackoutCalendar
-				.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
-		if (blackoutCalendar.getTime().before(blackoutStart)) {
-			// Add a day if blackout end date before start date
-			// after setting time
-			blackoutCalendar.add(Calendar.DATE, 1);
-		}
-		Date blackoutEnd = blackoutCalendar.getTime();
+        timeCalendar.setTime(blackout.getEndTime());
+        blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
+                .get(Calendar.HOUR_OF_DAY));
+        blackoutCalendar
+                .set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+        blackoutCalendar
+                .set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
+        if (blackoutCalendar.getTime().before(blackoutStart)) {
+            // Add a day if blackout end date before start date
+            // after setting time
+            blackoutCalendar.add(Calendar.DATE, 1);
+        }
+        Date blackoutEnd = blackoutCalendar.getTime();
 
-		if (date.after(blackoutStart) && date.before(blackoutEnd)) {
-			return blackoutEnd;
-		}
-		return date;
-	}
+        if (date.after(blackoutStart) && date.before(blackoutEnd)) {
+            return blackoutEnd;
+        }
+        return date;
+    }
 
-	boolean isDuringBlackout(Date date) {
-		if (date == null) {
-			// If date is missing, checks if current date is during blackout
-			date = new Date();
-		}
-		MotechService motechService = contextService.getMotechService();
-		Blackout blackout = motechService.getBlackoutSettings();
-		if (blackout == null) {
-			return false;
-		}
+    boolean isDuringBlackout(Date date) {
+        if (date == null) {
+            // If date is missing, checks if current date is during blackout
+            date = new Date();
+        }
+        Blackout blackout = motechService().getBlackoutSettings();
+        if (blackout == null) {
+            return false;
+        }
 
-		Calendar blackoutCalendar = Calendar.getInstance();
-		blackoutCalendar.setTime(date);
+        Calendar blackoutCalendar = Calendar.getInstance();
+        blackoutCalendar.setTime(date);
 
-		Calendar timeCalendar = Calendar.getInstance();
+        Calendar timeCalendar = Calendar.getInstance();
 
-		timeCalendar.setTime(blackout.getStartTime());
-		blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
-				.get(Calendar.HOUR_OF_DAY));
-		blackoutCalendar
-				.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
-		blackoutCalendar
-				.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
-		if (date.before(blackoutCalendar.getTime())) {
-			// Remove a day if blackout start date before the message date
-			blackoutCalendar.add(Calendar.DATE, -1);
-		}
-		Date blackoutStart = blackoutCalendar.getTime();
+        timeCalendar.setTime(blackout.getStartTime());
+        blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
+                .get(Calendar.HOUR_OF_DAY));
+        blackoutCalendar
+                .set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+        blackoutCalendar
+                .set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
+        if (date.before(blackoutCalendar.getTime())) {
+            // Remove a day if blackout start date before the message date
+            blackoutCalendar.add(Calendar.DATE, -1);
+        }
+        Date blackoutStart = blackoutCalendar.getTime();
 
-		timeCalendar.setTime(blackout.getEndTime());
-		blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
-				.get(Calendar.HOUR_OF_DAY));
-		blackoutCalendar
-				.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
-		blackoutCalendar
-				.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
-		if (blackoutCalendar.getTime().before(blackoutStart)) {
-			// Add a day if blackout end date before start date
-			// after setting time
-			blackoutCalendar.add(Calendar.DATE, 1);
-		}
-		Date blackoutEnd = blackoutCalendar.getTime();
+        timeCalendar.setTime(blackout.getEndTime());
+        blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
+                .get(Calendar.HOUR_OF_DAY));
+        blackoutCalendar
+                .set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+        blackoutCalendar
+                .set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
+        if (blackoutCalendar.getTime().before(blackoutStart)) {
+            // Add a day if blackout end date before start date
+            // after setting time
+            blackoutCalendar.add(Calendar.DATE, 1);
+        }
+        Date blackoutEnd = blackoutCalendar.getTime();
 
         return date.after(blackoutStart) && date.before(blackoutEnd);
     }
 
-	public Integer getMotherMotechId(Patient patient) {
-		Relationship motherRelation = relationshipService.getMotherRelationship(patient);
-		if (motherRelation != null) {
-			Person mother = motherRelation.getPersonA();
-			return getMotechId(mother.getPersonId());
-		}
-		return null;
-	}
+    public Integer getMotherMotechId(Patient patient) {
+        Relationship motherRelation = relationshipService.getMotherRelationship(patient);
+        if (motherRelation != null) {
+            Person mother = motherRelation.getPersonA();
+            return getMotechId(mother.getPersonId());
+        }
+        return null;
+    }
 
-	public Community saveCommunity(Community community) {
-		if (community.getCommunityId() == null) {
+    public Community saveCommunity(Community community) {
+        if (community.getCommunityId() == null) {
             community.setCommunityId(identifierGenerator.generateCommunityId());
-		}
+        }
 
-		return contextService.getMotechService().saveCommunity(community);
-	}
+        return motechService().saveCommunity(community);
+    }
 
-	public Facility saveNewFacility(Facility facility) {
+    public Facility saveNewFacility(Facility facility) {
         facility.setFacilityId(identifierGenerator.generateFacilityId());
-		return contextService.getMotechService().saveFacility(facility);
-	}
+        return motechService().saveFacility(facility);
+    }
 
     public void setIdentifierGenerator(IdentifierGenerator identifierGenerator) {
         this.identifierGenerator = identifierGenerator;
     }
 
     public Integer getMotechId(Integer patientId) {
-		PatientService patientService = contextService.getPatientService();
-		Patient patient = patientService.getPatient(patientId);
-		if (patient == null) {
-			return null;
-		}
-		PatientIdentifier motechPatientId = patient
-				.getPatientIdentifier(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
-		Integer motechId = null;
-		if (motechPatientId != null) {
-			try {
-				motechId = Integer.parseInt(motechPatientId.getIdentifier());
-			} catch (Exception e) {
-				log.error("Unable to parse Motech ID: "
-						+ motechPatientId.getIdentifier() + ", for Patient ID:"
-						+ patientId, e);
-			}
-		}
-		return motechId;
-	}
+        Patient patient = patientService.getPatient(patientId);
+        if (patient == null) {
+            return null;
+        }
+        PatientIdentifier motechPatientId = patient
+                .getPatientIdentifier(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
+        Integer motechId = null;
+        if (motechPatientId != null) {
+            try {
+                motechId = Integer.parseInt(motechPatientId.getIdentifier());
+            } catch (Exception e) {
+                log.error("Unable to parse Motech ID: "
+                        + motechPatientId.getIdentifier() + ", for Patient ID:"
+                        + patientId, e);
+            }
+        }
+        return motechId;
+    }
 
-	public Location getGhanaLocation() {
-		return contextService.getLocationService().getLocation(
+    public Location getGhanaLocation() {
+        return locationService.getLocation(
                 MotechConstants.LOCATION_GHANA);
-	}
+    }
 
-	public String getTroubledPhoneProperty() {
-		return contextService.getAdministrationService().getGlobalProperty(
-				MotechConstants.GLOBAL_PROPERTY_TROUBLED_PHONE);
-	}
+    public String getTroubledPhoneProperty() {
+        return administrationService.getGlobalProperty(
+                MotechConstants.GLOBAL_PROPERTY_TROUBLED_PHONE);
+    }
 
-	public String getPatientCareRemindersProperty() {
-		return contextService.getAdministrationService().getGlobalProperty(
-				MotechConstants.GLOBAL_PROPERTY_CARE_REMINDERS);
-	}
+    public String getPatientCareRemindersProperty() {
+        return administrationService.getGlobalProperty(
+                MotechConstants.GLOBAL_PROPERTY_CARE_REMINDERS);
+    }
 
-	public String getPatientDayOfWeekProperty() {
-		return contextService.getAdministrationService().getGlobalProperty(
-				MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK);
-	}
+    public String getPatientDayOfWeekProperty() {
+        return administrationService.getGlobalProperty(
+                MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK);
+    }
 
-	public String getPatientTimeOfDayProperty() {
-		return contextService.getAdministrationService().getGlobalProperty(
-				MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY);
-	}
+    public String getPatientTimeOfDayProperty() {
+        return administrationService.getGlobalProperty(
+                MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY);
+    }
 
     /* Factored out methods end */
 
-	public Facility getFacilityById(Integer facilityId) {
-		return contextService.getMotechService().getFacilityById(facilityId);
-	}
+    public Facility getFacilityById(Integer facilityId) {
+        return motechService().getFacilityById(facilityId);
+    }
 
-	public Community getCommunityById(Integer communityId) {
-		return contextService.getMotechService().getCommunityById(communityId);
-	}
+    public Community getCommunityById(Integer communityId) {
+        return motechService().getCommunityById(communityId);
+    }
 
-	public Community getCommunityByPatient(Patient patient) {
-		return contextService.getMotechService().getCommunityByPatient(patient);
-	}
+    public Community getCommunityByPatient(Patient patient) {
+        return motechService().getCommunityByPatient(patient);
+    }
 
-	public List<String> getStaffTypes() {
-		return staffTypes;
-	}
+    public List<String> getStaffTypes() {
+        return staffTypes;
+    }
 
-	public void setStaffTypes(List<String> staffTypes) {
-		this.staffTypes = staffTypes;
-	}
+    public void setStaffTypes(List<String> staffTypes) {
+        this.staffTypes = staffTypes;
+    }
 
-	public boolean isValidMotechIdCheckDigit(Integer motechId) {
-		if (motechId == null) {
-			return false;
-		}
-		String motechIdString = motechId.toString();
-		MotechIdVerhoeffValidator validator = new MotechIdVerhoeffValidator();
-		boolean isValid = false;
-		try {
-			isValid = validator.isValid(motechIdString);
-		} catch (Exception ignored) {
-		}
-		return isValid;
-	}
+    public boolean isValidMotechIdCheckDigit(Integer motechId) {
+        if (motechId == null) {
+            return false;
+        }
+        String motechIdString = motechId.toString();
+        MotechIdVerhoeffValidator validator = new MotechIdVerhoeffValidator();
+        boolean isValid = false;
+        try {
+            isValid = validator.isValid(motechIdString);
+        } catch (Exception ignored) {
+        }
+        return isValid;
+    }
 
-	public boolean isValidIdCheckDigit(Integer idWithCheckDigit) {
-		if (idWithCheckDigit == null) {
-			return false;
-		}
-		String idWithCheckDigitString = idWithCheckDigit.toString();
-		VerhoeffValidator validator = new VerhoeffValidator();
-		boolean isValid = false;
-		try {
-			isValid = validator.isValid(idWithCheckDigitString);
-		} catch (Exception ignored) {
-		}
-		return isValid;
-	}
+    public boolean isValidIdCheckDigit(Integer idWithCheckDigit) {
+        if (idWithCheckDigit == null) {
+            return false;
+        }
+        String idWithCheckDigitString = idWithCheckDigit.toString();
+        VerhoeffValidator validator = new VerhoeffValidator();
+        boolean isValid = false;
+        try {
+            isValid = validator.isValid(idWithCheckDigitString);
+        } catch (Exception ignored) {
+        }
+        return isValid;
+    }
 
     public void setRelationshipService(RelationshipService relationshipService) {
         this.relationshipService = relationshipService;
+    }
+
+    public void setPatientService(PatientService patientService) {
+        this.patientService = patientService;
+    }
+
+    public void setPersonService(PersonService personService) {
+        this.personService = personService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public void setAuthenticationService(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
+
+    public void setConceptService(ConceptService conceptService) {
+        this.conceptService = conceptService;
+    }
+
+    public void setLocationService(LocationService locationService) {
+        this.locationService = locationService;
+    }
+
+    public void setObsService(ObsService obsService) {
+        this.obsService = obsService;
+    }
+
+    public void setEncounterService(EncounterService encounterService) {
+        this.encounterService = encounterService;
+    }
+
+    public void setSchedulerService(SchedulerService schedulerService) {
+        this.schedulerService = schedulerService;
+    }
+
+    public void setAdministrationService(AdministrationService administrationService) {
+        this.administrationService = administrationService;
+    }
+
+    private MotechService motechService(){
+        return contextService.getMotechService();
     }
 }

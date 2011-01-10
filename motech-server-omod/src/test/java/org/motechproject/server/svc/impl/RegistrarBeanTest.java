@@ -77,6 +77,7 @@ public class RegistrarBeanTest {
     MotechService motechService;
     IdentifierSourceService idService;
     RelationshipService relationshipService;
+    AuthenticationService authenticationService;
 
     SequentialIdentifierGenerator staffIdGenerator;
 
@@ -183,6 +184,8 @@ public class RegistrarBeanTest {
         motechService = createMock(MotechService.class);
         idService = createMock(IdentifierSourceService.class);
         relationshipService = createMock(RelationshipService.class);
+        identifierGenerator = createMock(IdentifierGenerator.class);
+        authenticationService = createMock(AuthenticationService.class);
 
         ghanaLocation = new Location(1);
         ghanaLocation.setName(MotechConstants.LOCATION_GHANA);
@@ -411,10 +414,15 @@ public class RegistrarBeanTest {
         regBeanImpl = new RegistrarBeanImpl();
         regBeanImpl.setContextService(contextService);
         regBeanImpl.setRelationshipService(relationshipService);
-        identifierGenerator = createMock(IdentifierGenerator.class);
         regBeanImpl.setIdentifierGenerator(identifierGenerator);
-
-
+        regBeanImpl.setLocationService(locationService);
+        regBeanImpl.setPersonService(personService);
+        regBeanImpl.setUserService(userService);
+        regBeanImpl.setPatientService(patientService);
+        regBeanImpl.setEncounterService(encounterService);
+        regBeanImpl.setObsService(obsService);
+        regBeanImpl.setConceptService(conceptService);
+        regBeanImpl.setAuthenticationService(authenticationService);
     }
 
     @After
@@ -739,18 +747,15 @@ public class RegistrarBeanTest {
         Capture<MessageProgramEnrollment> enrollment2Cap = new Capture<MessageProgramEnrollment>();
         Capture<Encounter> registrationEncounterCap = new Capture<Encounter>();
 
-        expect(contextService.getPatientService()).andReturn(patientService)
-                .atLeastOnce();
-        expect(contextService.getPersonService()).andReturn(personService)
-                .atLeastOnce();
-        expect(contextService.getLocationService()).andReturn(locationService)
-                .atLeastOnce();
-        expect(contextService.getMotechService()).andReturn(motechService)
-                .atLeastOnce();
-        expect(contextService.getEncounterService())
-                .andReturn(encounterService).atLeastOnce();
 
-        expect(contextService.getAuthenticatedUser()).andReturn(new User());
+        expect(
+                contextService.getPatientService()).andReturn(patientService).atLeastOnce();
+        expect(
+                contextService.getMotechService()).andReturn(motechService).atLeastOnce();
+        expect(
+                contextService.getEncounterService()).andReturn(encounterService).atLeastOnce();
+        expect(
+                authenticationService.getAuthenticatedUser()).andReturn(new User());
         expect(
                 patientService
                         .getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
@@ -835,7 +840,7 @@ public class RegistrarBeanTest {
 
         replay(contextService, patientService, motechService, personService,
                 locationService, userService, encounterService, obsService,
-                conceptService, idService);
+                conceptService, idService, authenticationService);
 
         regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
                 RegistrantType.CHILD_UNDER_FIVE, firstName, middleName,
@@ -846,7 +851,7 @@ public class RegistrarBeanTest {
 
         verify(contextService, patientService, motechService, personService,
                 locationService, userService, encounterService, obsService,
-                conceptService, idService);
+                conceptService, idService, authenticationService);
 
         Patient capturedPatient = patientCap.getValue();
         assertEquals(prefName, capturedPatient.getGivenName());
@@ -972,21 +977,19 @@ public class RegistrarBeanTest {
         Capture<Obs> refDateObsCap = new Capture<Obs>();
         Capture<Encounter> registrationEncounterCap = new Capture<Encounter>();
 
-        expect(contextService.getPersonService()).andReturn(personService)
+        expect(
+                contextService.getPatientService()).
+                andReturn(patientService).atLeastOnce();
+        expect(
+                contextService.getMotechService()).andReturn(motechService)
                 .atLeastOnce();
-        expect(contextService.getPatientService()).andReturn(patientService)
+        expect(
+                contextService.getConceptService()).andReturn(conceptService)
                 .atLeastOnce();
-        expect(contextService.getLocationService()).andReturn(locationService)
+        expect(
+                contextService.getEncounterService()).andReturn(encounterService)
                 .atLeastOnce();
-        expect(contextService.getMotechService()).andReturn(motechService)
-                .atLeastOnce();
-        expect(contextService.getObsService()).andReturn(obsService);
-        expect(contextService.getConceptService()).andReturn(conceptService)
-                .atLeastOnce();
-        expect(contextService.getEncounterService())
-                .andReturn(encounterService).atLeastOnce();
 
-        expect(contextService.getAuthenticatedUser()).andReturn(new User());
         expect(
                 patientService
                         .getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
@@ -1199,17 +1202,10 @@ public class RegistrarBeanTest {
         Capture<MessageProgramEnrollment> enrollment2Cap = new Capture<MessageProgramEnrollment>();
         Capture<Message> enrollment1MessageCap = new Capture<Message>();
 
-        expect(contextService.getPatientService()).andReturn(patientService)
-                .atLeastOnce();
-        expect(contextService.getPersonService()).andReturn(personService)
-                .atLeastOnce();
         expect(contextService.getMotechService()).andReturn(motechService)
                 .atLeastOnce();
         expect(contextService.getConceptService()).andReturn(conceptService)
                 .atLeastOnce();
-        expect(contextService.getObsService()).andReturn(obsService)
-                .atLeastOnce();
-
         expect(
                 personService
                         .getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
@@ -1262,7 +1258,7 @@ public class RegistrarBeanTest {
         Concept question = new Concept(10);
         expect(conceptService.getConcept(eq(MotechConstants.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT))).andReturn(question).times(2);
 
-        expect(motechService.getActivePregnancies(anyInt(), EasyMock.<Concept>anyObject(),EasyMock.<Concept>anyObject())).andReturn(pregnancies);
+        expect(motechService.getActivePregnancies(anyInt(), EasyMock.<Concept>anyObject(), EasyMock.<Concept>anyObject())).andReturn(pregnancies);
 
         expect(personService.getPerson(patientId)).andReturn(patient);
 
@@ -1272,24 +1268,24 @@ public class RegistrarBeanTest {
         encounter.setEncounterDatetime(new Date());
         encounter.setLocation(new Location(1));
         obs.setEncounter(encounter);
-        expect(obsService.getObservations(Arrays.asList((Person)patient), null, Arrays.asList(question),
+        expect(obsService.getObservations(Arrays.asList((Person) patient), null, Arrays.asList(question),
                 null, null, null, null, null, pregnancyObs.getId(), null, null, false)).andReturn(Arrays.asList(obs));
 
         expect(obsService.saveObs(EasyMock.<Obs>anyObject(), EasyMock.<String>anyObject())).andReturn(new Obs());
 
         expect(obsService.voidObs(EasyMock.<Obs>anyObject(), EasyMock.<String>anyObject())).andReturn(new Obs());
 
-        expect(motechService.getActiveMessageProgramEnrollments(anyInt(), EasyMock.<String>anyObject(),anyInt(),
+        expect(motechService.getActiveMessageProgramEnrollments(anyInt(), EasyMock.<String>anyObject(), anyInt(),
                 anyLong(), anyLong(), anyInt())).andReturn(new ArrayList<MessageProgramEnrollment>());
 
-        expect(relationshipService.saveOrUpdateMotherRelationship(mother,patient,false)).andReturn(null);
+        expect(relationshipService.saveOrUpdateMotherRelationship(mother, patient, false)).andReturn(null);
 
-        replay(contextService, patientService, personService, motechService, conceptService , obsService , relationshipService );
+        replay(contextService, patientService, personService, motechService, conceptService, obsService, relationshipService);
 
         regBean.editPatient(staff, date, patient, mother, phone, phoneType, nhis, date,
                 date, stopEnrollment);
 
-        verify(contextService, patientService, personService, motechService, conceptService , obsService , relationshipService );
+        verify(contextService, patientService, personService, motechService, conceptService, obsService, relationshipService);
 
         Patient capturedPatient = patientCap.getValue();
         assertEquals(phone.toString(), capturedPatient.getAttribute(
@@ -1358,13 +1354,8 @@ public class RegistrarBeanTest {
 
         Capture<Patient> patientCap = new Capture<Patient>();
 
-        expect(contextService.getPatientService()).andReturn(patientService)
-                .atLeastOnce();
-        expect(contextService.getPersonService()).andReturn(personService)
-                .atLeastOnce();
         expect(contextService.getMotechService()).andReturn(motechService)
                 .atLeastOnce();
-
         expect(
                 personService
                         .getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_INSURED))
