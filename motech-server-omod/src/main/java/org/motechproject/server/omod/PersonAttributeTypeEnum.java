@@ -1,6 +1,7 @@
 package org.motechproject.server.omod;
 
 import org.openmrs.PersonAttributeType;
+import org.openmrs.api.PersonService;
 
 public enum PersonAttributeTypeEnum {
     PERSON_ATTRIBUTE_INSURED("Insured"),
@@ -21,7 +22,7 @@ public enum PersonAttributeTypeEnum {
         this.attributeName = attributeName;
     }
     
-    public PersonAttributeType getAttributeType(ContextService contextService){
-        return contextService.getPersonService().getPersonAttributeTypeByName(attributeName);
+    public PersonAttributeType getAttributeType(PersonService personService){
+        return personService.getPersonAttributeTypeByName(attributeName);
     }
 }

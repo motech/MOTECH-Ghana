@@ -84,8 +84,8 @@ public final class MotechConstants {
 	public static final String CONCEPT_CAUSE_OF_DEATH = "CAUSE OF DEATH";
 	public static final String CONCEPT_SERIAL_NUMBER = "SERIAL NUMBER";
 	public static final String CONCEPT_NEW_CASE = "NEW CASE";
-    public static final String PATIENT_NEW_CASE = "NEW PATIENT";
 	public static final String CONCEPT_REFERRED = "REFERRED";
+    public static final String IDGEN_SEQ_ID_GEN_STAFF_ID = "MoTeCH Staff ID Generator";
 	public static final String CONCEPT_PRIMARY_DIAGNOSIS = "PRIMARY DIAGNOSIS ";
 	public static final String CONCEPT_SECONDARY_DIAGNOSIS = "SECONDARY DIAGNOSIS";
 	public static final String CONCEPT_NEXT_ANC_DATE = "NEXT ANC DATE";
@@ -105,12 +105,7 @@ public final class MotechConstants {
 	public static final String GLOBAL_PROPERTY_DAY_OF_WEEK = "motechmodule.patient_message_delivery_day_of_week";
 	public static final String GLOBAL_PROPERTY_TIME_OF_DAY = "motechmodule.patient_message_delivery_time_of_day";
 	public static final String GLOBAL_PROPERTY_MAX_QUERY_RESULTS = "motechmodule.max_query_results";
-	public static final String IDGEN_SEQ_ID_GEN_MOTECH_ID = "MoTeCH ID Generator";
-	public static final String IDGEN_SEQ_ID_GEN_STAFF_ID = "MoTeCH Staff ID Generator";
-	public static final String IDGEN_SEQ_ID_GEN_FACILITY_ID = "MoTeCH Facility ID Generator";
-	public static final String IDGEN_SEQ_ID_GEN_COMMUNITY_ID = "MoTeCH Community ID Generator";
 	public static final String IDGEN_SEQ_ID_GEN_MOTECH_ID_GEN_COMMENT = "AUTO GENERATED";
-	public static final String IDGEN_SEQ_ID_GEN_MOTECH_ID_MANUAL_COMMENT = "MANUAL ENTRY";
 	public static final String TIME_FORMAT_DELIVERY_TIME = "HH:mm";
 	public static final String PHONE_REGEX_PATTERN = "^0[0-9]{9}$";
 	public static final int MAX_STRING_LENGTH_OPENMRS = 50;

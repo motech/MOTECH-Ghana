@@ -40,6 +40,15 @@ public class WebStaff {
 	String phone;
 	String type;
 
+    public WebStaff(){}
+
+    public WebStaff(String firstName, String lastName, String phone, String type){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.type = type;
+    }
+
 	public String getFirstName() {
 		return firstName;
 	}

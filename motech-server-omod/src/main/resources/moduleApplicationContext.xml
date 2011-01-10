@@ -60,7 +60,15 @@
 	<import resource="classpath*:programs/*.xml" />
 	<import resource="classpath*:services/*.xml" />
 	<import resource="classpath*:registrar-bean.xml" />
-	
+
+    <bean id="identiferGenerator" class="org.motechproject.server.omod.IndentifierGeneratorImpl"/>
+
+    <bean id="motechUserRepository" class="org.motechproject.server.omod.MotechUserRepository">
+        <constructor-arg ref="identiferGenerator"/>
+        <property name="userService" ref="userService"/>
+        <property name="personService" ref="personService"/>
+    </bean>
+    
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
 

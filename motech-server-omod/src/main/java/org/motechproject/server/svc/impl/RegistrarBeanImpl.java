@@ -42,6 +42,7 @@ import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.*;
 import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.omod.*;
+import org.motechproject.server.omod.web.model.WebStaff;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
@@ -54,13 +55,9 @@ import org.motechproject.ws.mobile.MessageService;
 import org.openmrs.*;
 import org.openmrs.Patient;
 import org.openmrs.api.*;
-import org.openmrs.module.idgen.IdentifierSource;
-import org.openmrs.module.idgen.LogEntry;
-import org.openmrs.module.idgen.SequentialIdentifierGenerator;
-import org.openmrs.module.idgen.service.IdentifierSourceService;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.TaskDefinition;
-import org.openmrs.util.OpenmrsConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
@@ -78,12 +75,22 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     public MessageService mobileService;
     private RelationshipService relationshipService;
 
+    @Autowired
+    private IdentifierGenerator identifierGenerator;
+
 
     private Map<String, MessageProgram> messagePrograms;
     private List<String> staffTypes;
 
+    @Autowired
+    private MotechUserRepository motechUserRepository;
+
     public void setContextService(ContextService contextService) {
         this.contextService = contextService;
+    }
+
+    public void setMotechUserRepository(MotechUserRepository motechUserRepository){
+        this.motechUserRepository = motechUserRepository;
     }
 
     public void setMobileService(MessageService mobileService) {
@@ -100,30 +107,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public User registerStaff(String firstName, String lastName, String phone,
                               String staffType) {
-
         UserService userService = contextService.getUserService();
-
-        User staff = new User();
-
-        // Set staff id to generated id check digit
-        staff.setSystemId(generateStaffId());
-
-        staff.setGender(MotechConstants.GENDER_UNKNOWN_OPENMRS);
-
-        PersonName name = new PersonName(firstName, null, lastName);
-        staff.addName(name);
-
-        if (phone != null) {
-            PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService);
-            staff.addAttribute(new PersonAttribute(phoneNumberAttrType, phone));
-        }
-
-        // No privileges given to staff user
-        Role role = userService.getRole(OpenmrsConstants.PROVIDER_ROLE);
-        staff.addRole(role);
-
-        // Generate random password for new staff user
-        return userService.saveUser(staff, generatePassword(8));
+        return userService.saveUser(motechUserRepository.newUser(new WebStaff(firstName, lastName, phone, staffType)), generatePassword(8));
     }
 
 
@@ -384,10 +369,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         String motechIdString;
         if (motechId == null) {
-            motechIdString = generateMotechId();
+            motechIdString = identifierGenerator.generateMotechId();
         } else {
             motechIdString = motechId.toString();
-            excludeIdForGenerator(staff, motechIdString);
+            identifierGenerator.excludeIdForGenerator(staff, motechIdString);
         }
 
         patient.addIdentifier(new PatientIdentifier(motechIdString,
@@ -444,61 +429,61 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         List<PersonAttribute> attrs = new ArrayList<PersonAttribute>();
 
         if (phoneNumber != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService.getPersonService()),
                     phoneNumber));
         }
 
         if (phoneType != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_TYPE.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_TYPE.getAttributeType(contextService.getPersonService()),
                     phoneType.name()));
         }
 
         if (mediaType != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_MEDIA_TYPE.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_MEDIA_TYPE.getAttributeType(contextService.getPersonService()),
                     mediaType.name()));
         }
 
         if (language != null) {
             attrs
-                    .add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_LANGUAGE.getAttributeType(contextService),
+                    .add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_LANGUAGE.getAttributeType(contextService.getPersonService()),
                             language));
         }
 
         if (dayOfWeek != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_DELIVERY_DAY.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_DELIVERY_DAY.getAttributeType(contextService.getPersonService()),
                     dayOfWeek.name()));
         }
 
         if (timeOfDay != null) {
             SimpleDateFormat formatter = new SimpleDateFormat(
                     MotechConstants.TIME_FORMAT_DELIVERY_TIME);
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_DELIVERY_TIME.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_DELIVERY_TIME.getAttributeType(contextService.getPersonService()),
                     formatter.format(timeOfDay)));
         }
 
         if (howLearned != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_HOW_LEARNED.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_HOW_LEARNED.getAttributeType(contextService.getPersonService()),
                     howLearned.name()));
         }
 
         if (interestReason != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_INTEREST_REASON.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_INTEREST_REASON.getAttributeType(contextService.getPersonService()),
                     interestReason.name()));
         }
 
         if (insured != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_INSURED.getAttributeType(contextService), insured
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_INSURED.getAttributeType(contextService.getPersonService()), insured
                     .toString()));
         }
 
         if (nhis != null) {
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(contextService), nhis));
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(contextService.getPersonService()), nhis));
         }
 
         if (nhisExpDate != null) {
             SimpleDateFormat formatter = new SimpleDateFormat(
                     MotechConstants.DATE_FORMAT);
-            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_EXP_DATE.getAttributeType(contextService),
+            attrs.add(new PersonAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_EXP_DATE.getAttributeType(contextService.getPersonService()),
                     formatter.format(nhisExpDate)));
         }
 
@@ -1982,7 +1967,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         MotechService motechService = contextService.getMotechService();
         UserService userService = contextService.getUserService();
 
-        PersonAttributeType phoneAttributeType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService);
+        PersonAttributeType phoneAttributeType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService.getPersonService());
         List<Integer> matchingUsers = motechService
                 .getUserIdsByPersonAttribute(phoneAttributeType, phoneNumber);
         if (matchingUsers.size() > 0) {
@@ -2026,8 +2011,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         MotechService motechService = contextService.getMotechService();
 
-        PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService);
-        PersonAttributeType nhisAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(contextService);
+        PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService.getPersonService());
+        PersonAttributeType nhisAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(contextService.getPersonService());
         PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
         Integer maxResults = getMaxQueryResults();
 
@@ -2043,8 +2028,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         MotechService motechService = contextService.getMotechService();
 
-        PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService);
-        PersonAttributeType nhisAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(contextService);
+        PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(contextService.getPersonService());
+        PersonAttributeType nhisAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(contextService.getPersonService());
         PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
         Integer maxResults = getMaxQueryResults();
 
@@ -2646,7 +2631,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 null, null, earliest, latest);
         for (Obs obs : observations) {
             Double value = obs.getValueNumeric();
-            if (value != null && value.intValue() >= doseNumber.intValue()) {
+            if (value != null && value.intValue() >= doseNumber) {
                 return obs.getObsId();
             }
         }
@@ -3084,105 +3069,7 @@ private ScheduledMessage createCareScheduledMessage(Integer recipientId,
 
 	/* MessageSchedulerImpl methods end */
 
-	private String generateMotechId() {
-		PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
-		return generateId(MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID,
-				motechIdType);
-	}
-
-	private String generateStaffId() {
-		PatientIdentifierType staffIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_STAFF_ID.getIdentifierType(contextService);
-		return generateId(MotechConstants.IDGEN_SEQ_ID_GEN_STAFF_ID,
-				staffIdType);
-	}
-
-	private String generateCommunityId() {
-		PatientIdentifierType communityIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_COMMUNITY_ID.getIdentifierType(contextService);
-		return generateId(MotechConstants.IDGEN_SEQ_ID_GEN_COMMUNITY_ID,
-				communityIdType);
-	}
-
-	private String generateFacilityId() {
-		PatientIdentifierType facilityIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_FACILITY_ID.getIdentifierType(contextService);
-		return generateId(MotechConstants.IDGEN_SEQ_ID_GEN_FACILITY_ID,
-				facilityIdType);
-	}
-
-	private String generateId(String generatorName,
-			PatientIdentifierType identifierType) {
-		String id = null;
-		if (generatorName == null || identifierType == null) {
-			log.error("Unable to generate ID using " + generatorName + " for "
-					+ identifierType);
-			return null;
-		}
-		try {
-			IdentifierSourceService idSourceService = contextService
-					.getIdentifierSourceService();
-
-			SequentialIdentifierGenerator idGenerator = getSeqIdGenerator(
-					generatorName, identifierType);
-			id = idSourceService.generateIdentifier(idGenerator,
-					MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID_GEN_COMMENT);
-
-		} catch (Exception e) {
-			log.error("Error generating " + identifierType + " using "
-					+ generatorName + " in Idgen module", e);
-		}
-		return id;
-	}
-
-	private void excludeIdForGenerator(User staff, String motechId) {
-		PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
-		try {
-			IdentifierSourceService idSourceService = contextService
-					.getIdentifierSourceService();
-
-			SequentialIdentifierGenerator idGenerator = getSeqIdGenerator(
-					MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID, motechIdType);
-
-			// Persisted only if match for source and id doesn't already exist
-			LogEntry newLog = new LogEntry();
-			newLog.setSource(idGenerator);
-			newLog.setIdentifier(motechId);
-			newLog.setDateGenerated(new Date());
-			newLog.setGeneratedBy(staff);
-			newLog
-					.setComment(MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID_MANUAL_COMMENT);
-			idSourceService.saveLogEntry(newLog);
-
-		} catch (Exception e) {
-			log.error("Error verifying Motech Id in Log of Idgen module", e);
-		}
-	}
-
-	private SequentialIdentifierGenerator getSeqIdGenerator(String name,
-			PatientIdentifierType identifierType) {
-
-		SequentialIdentifierGenerator idGenerator = null;
-		try {
-			IdentifierSourceService idSourceService = contextService
-					.getIdentifierSourceService();
-
-			List<IdentifierSource> idSources = idSourceService
-					.getAllIdentifierSources(false);
-
-			for (IdentifierSource idSource : idSources) {
-				if (idSource instanceof SequentialIdentifierGenerator
-						&& idSource.getName().equals(name)
-						&& idSource.getIdentifierType().equals(identifierType)) {
-					idGenerator = (SequentialIdentifierGenerator) idSource;
-					break;
-				}
-			}
-		} catch (Exception e) {
-			log.error("Error retrieving " + name + " for " + identifierType
-					+ " in Idgen module", e);
-		}
-		return idGenerator;
-	}
-
-	/* SaveObsAdvice method */
+    /* SaveObsAdvice method */
 	public void updateMessageProgramState(Integer personId, String conceptName) {
 
 		// Only determine message program state for active enrolled programs
@@ -3988,16 +3875,20 @@ private ScheduledMessage createCareScheduledMessage(Integer recipientId,
 
 	public Community saveCommunity(Community community) {
 		if (community.getCommunityId() == null) {
-			community.setCommunityId(Integer.parseInt(generateCommunityId()));
+            community.setCommunityId(identifierGenerator.generateCommunityId());
 		}
 
 		return contextService.getMotechService().saveCommunity(community);
 	}
 
 	public Facility saveNewFacility(Facility facility) {
-		facility.setFacilityId(Integer.parseInt(generateFacilityId()));
+        facility.setFacilityId(identifierGenerator.generateFacilityId());
 		return contextService.getMotechService().saveFacility(facility);
 	}
+
+    public void setIdentifierGenerator(IdentifierGenerator identifierGenerator) {
+        this.identifierGenerator = identifierGenerator;
+    }
 
     public Integer getMotechId(Integer patientId) {
 		PatientService patientService = contextService.getPatientService();
@@ -4022,7 +3913,7 @@ private ScheduledMessage createCareScheduledMessage(Integer recipientId,
 
 	public Location getGhanaLocation() {
 		return contextService.getLocationService().getLocation(
-				MotechConstants.LOCATION_GHANA);
+                MotechConstants.LOCATION_GHANA);
 	}
 
 	public String getTroubledPhoneProperty() {
