@@ -100,10 +100,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         this.contextService = contextService;
     }
 
-    public void setMotechUserRepository(MotechUserRepository motechUserRepository) {
-        this.motechUserRepository = motechUserRepository;
-    }
-
     public void setMobileService(MessageService mobileService) {
         this.mobileService = mobileService;
     }

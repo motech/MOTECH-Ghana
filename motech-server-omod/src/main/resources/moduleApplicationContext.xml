@@ -65,8 +65,8 @@
 
     <bean id="motechUserRepository" class="org.motechproject.server.omod.MotechUserRepository">
         <constructor-arg ref="identiferGenerator"/>
-        <property name="userService" ref="userService"/>
-        <property name="personService" ref="personService"/>
+        <constructor-arg ref="userService"/>
+        <constructor-arg ref="personService"/>
     </bean>
     
 	<bean

@@ -26,9 +26,7 @@ public class MotechUserRepositoryTest {
         when(personService.getPersonAttributeTypeByName(anyString())).thenReturn(Matchers.<PersonAttributeType>anyObject());
         when(userService.getRole("Provider")).thenReturn(role);
 
-        MotechUserRepository motechUserRepository = new MotechUserRepository(identifierGenerator);
-        motechUserRepository.setUserService(userService);
-        motechUserRepository.setPersonService(personService);
+        MotechUserRepository motechUserRepository = new MotechUserRepository(identifierGenerator, userService, personService);
         User user = motechUserRepository.newUser(new WebStaff("Jenny", "Jones ", "1001", "CHO"));
 
         verify(identifierGenerator).generateStaffId();

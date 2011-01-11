@@ -15,8 +15,10 @@ public class MotechUserRepository {
 
     private PersonService personService;
 
-    public MotechUserRepository(IdentifierGenerator identifierGenerator){
+    public MotechUserRepository(IdentifierGenerator identifierGenerator, UserService userService, PersonService personService){
         this.identifierGenerator = identifierGenerator;
+        this.userService = userService;
+        this.personService = personService;
     }
 
     public User newUser(WebStaff webStaff){
@@ -37,11 +39,4 @@ public class MotechUserRepository {
         return user;
     }
 
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    public void setPersonService(PersonService personService){
-        this.personService = personService;
-    }
 }
