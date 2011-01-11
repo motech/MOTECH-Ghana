@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.util.MotechConstants;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.User;
+import org.openmrs.api.PatientService;
 import org.openmrs.module.idgen.IdentifierSource;
 import org.openmrs.module.idgen.LogEntry;
 import org.openmrs.module.idgen.SequentialIdentifierGenerator;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
+
+import static org.motechproject.server.omod.PatientIdentifierTypeEnum.*;
 
 public class IndentifierGeneratorImpl implements IdentifierGenerator{
 
@@ -24,6 +27,8 @@ public class IndentifierGeneratorImpl implements IdentifierGenerator{
 
     @Autowired
     private ContextService contextService;
+
+    private PatientService patientService;
 
     private static Log log = LogFactory.getLog(IndentifierGeneratorImpl.class);
 
@@ -52,7 +57,7 @@ public class IndentifierGeneratorImpl implements IdentifierGenerator{
     }
 
     public void excludeIdForGenerator(User staff, String motechId) {
-        PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
+        PatientIdentifierType motechIdType = getPatientIdentifierTypeFor(PATIENT_IDENTIFIER_MOTECH_ID);
         try {
             IdentifierSourceService idSourceService = contextService
                     .getIdentifierSourceService();
@@ -103,22 +108,30 @@ public class IndentifierGeneratorImpl implements IdentifierGenerator{
 
     public Integer generateFacilityId() {
         return Integer.valueOf(generateId(IDGEN_SEQ_ID_GEN_FACILITY_ID,
-                PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_FACILITY_ID.getIdentifierType(contextService)));
+                getPatientIdentifierTypeFor(PATIENT_IDENTIFIER_FACILITY_ID)));
     }
 
     public Integer generateCommunityId() {
         return Integer.valueOf(generateId(IDGEN_SEQ_ID_GEN_COMMUNITY_ID,
-                PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_COMMUNITY_ID.getIdentifierType(contextService)
+                getPatientIdentifierTypeFor(PATIENT_IDENTIFIER_COMMUNITY_ID)
 ));     }
 
     public String generateStaffId() {
         return generateId(IDGEN_SEQ_ID_GEN_STAFF_ID,
-                PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_STAFF_ID.getIdentifierType(contextService));
+               getPatientIdentifierTypeFor(PATIENT_IDENTIFIER_STAFF_ID));
     }
 
     public String generateMotechId() {
         return generateId(IDGEN_SEQ_ID_GEN_MOTECH_ID,
-                PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService));
+                getPatientIdentifierTypeFor(PATIENT_IDENTIFIER_MOTECH_ID));
     }
 
+    private PatientIdentifierType getPatientIdentifierTypeFor(PatientIdentifierTypeEnum type){
+        return type.getIdentifierType(patientService);
+    }
+
+
+    public void setPatientService(PatientService patientService) {
+        this.patientService = patientService ;
+    }
 }

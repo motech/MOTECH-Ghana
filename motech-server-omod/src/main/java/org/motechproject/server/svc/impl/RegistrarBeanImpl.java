@@ -63,6 +63,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static org.motechproject.server.omod.PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID;
+
 /**
  * An implementation of the RegistrarBean interface, implemented using a mix of
  * OpenMRS and module defined services.
@@ -373,7 +375,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
 
         patient.addIdentifier(new PatientIdentifier(motechIdString,
-                PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService), getGhanaLocation()));
+                getPatientIdentifierTypeForMotechId(), getGhanaLocation()));
 
         patient.addName(new PersonName(firstName, middleName, lastName));
 
@@ -1937,17 +1939,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public List<Patient> getAllPatients() {
         List<PatientIdentifierType> motechPatientIdType = new ArrayList<PatientIdentifierType>();
-        motechPatientIdType.add(PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService));
+        motechPatientIdType.add(getPatientIdentifierTypeForMotechId());
         return patientService.getPatients(null, null, motechPatientIdType,
                 false);
     }
+
 
     public List<Patient> getPatients(String firstName, String lastName,
                                      String preferredName, Date birthDate, Integer communityId,
                                      String phoneNumber, String nhisNumber, String motechId) {
         PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(personService);
         PersonAttributeType nhisAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(personService);
-        PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
+        PatientIdentifierType motechIdType = getPatientIdentifierTypeForMotechId();
         Integer maxResults = getMaxQueryResults();
 
         return motechService().getPatients(firstName, lastName, preferredName,
@@ -1961,7 +1964,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                               String motechId) {
         PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(personService);
         PersonAttributeType nhisAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(personService);
-        PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
+        PatientIdentifierType motechIdType = getPatientIdentifierTypeForMotechId();
         Integer maxResults = getMaxQueryResults();
 
         return motechService().getDuplicatePatients(firstName, lastName,
@@ -3354,7 +3357,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public Patient getPatientByMotechId(String motechId) {
-        PatientIdentifierType motechIdType = PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(contextService);
+        PatientIdentifierType motechIdType = getPatientIdentifierTypeForMotechId();
         List<PatientIdentifierType> idTypes = new ArrayList<PatientIdentifierType>();
         idTypes.add(motechIdType);
 
@@ -3844,7 +3847,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         this.administrationService = administrationService;
     }
 
-    private MotechService motechService(){
+    private MotechService motechService() {
         return contextService.getMotechService();
     }
+
+    private PatientIdentifierType getPatientIdentifierTypeForMotechId() {
+        return PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(patientService);
+    }
+
 }

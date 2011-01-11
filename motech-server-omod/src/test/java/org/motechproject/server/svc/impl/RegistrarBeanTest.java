@@ -749,8 +749,6 @@ public class RegistrarBeanTest {
 
 
         expect(
-                contextService.getPatientService()).andReturn(patientService).atLeastOnce();
-        expect(
                 contextService.getMotechService()).andReturn(motechService).atLeastOnce();
         expect(
                 contextService.getEncounterService()).andReturn(encounterService).atLeastOnce();
@@ -977,9 +975,6 @@ public class RegistrarBeanTest {
         Capture<Obs> refDateObsCap = new Capture<Obs>();
         Capture<Encounter> registrationEncounterCap = new Capture<Encounter>();
 
-        expect(
-                contextService.getPatientService()).
-                andReturn(patientService).atLeastOnce();
         expect(
                 contextService.getMotechService()).andReturn(motechService)
                 .atLeastOnce();

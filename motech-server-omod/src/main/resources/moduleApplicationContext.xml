@@ -34,14 +34,15 @@
 
 -->
 
-	<!-- Beans to add to the current Application context definition -->
+<!-- Beans to add to the current Application context definition -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ws="http://jax-ws.dev.java.net/spring/core"
-	xmlns:wss="http://jax-ws.dev.java.net/spring/servlet" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ws="http://jax-ws.dev.java.net/spring/core"
+       xmlns:wss="http://jax-ws.dev.java.net/spring/servlet"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd
@@ -54,131 +55,134 @@
            http://jax-ws.dev.java.net/spring/servlet
            http://jax-ws.dev.java.net/spring/servlet.xsd">
 
-	<tx:annotation-driven />
+    <tx:annotation-driven/>
 
-	<import resource="classpath*:common-program-beans.xml" />
-	<import resource="classpath*:programs/*.xml" />
-	<import resource="classpath*:services/*.xml" />
-	<import resource="classpath*:registrar-bean.xml" />
+    <import resource="classpath*:common-program-beans.xml"/>
+    <import resource="classpath*:programs/*.xml"/>
+    <import resource="classpath*:services/*.xml"/>
+    <import resource="classpath*:registrar-bean.xml"/>
 
-    <bean id="identiferGenerator" class="org.motechproject.server.omod.IndentifierGeneratorImpl"/>
+    <bean id="identiferGenerator" class="org.motechproject.server.omod.IndentifierGeneratorImpl">
+        <property name="patientService" ref="patientService"/>
+    </bean>
 
     <bean id="motechUserRepository" class="org.motechproject.server.omod.MotechUserRepository">
         <constructor-arg ref="identiferGenerator"/>
         <constructor-arg ref="userService"/>
         <constructor-arg ref="personService"/>
     </bean>
-    
-	<bean
-		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
 
-	<!-- Controllers -->
-	<context:component-scan base-package="org.motechproject.server.omod.web.controller" />
-    <bean id="webCommunityValidator" class="org.motechproject.server.omod.web.validator.WebCommunityValidator" />
+    <bean
+            class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
 
-	<bean id="txSyncManWrapper" class="org.motechproject.server.omod.sdsched.TxSyncManWrapperImpl" />
+    <!-- Controllers -->
+    <context:component-scan base-package="org.motechproject.server.omod.web.controller"/>
+    <bean id="webCommunityValidator" class="org.motechproject.server.omod.web.validator.WebCommunityValidator"/>
 
-	<bean id="dummyScheduleAdjuster" class="org.motechproject.server.omod.sdsched.DummyScheduleAdjuster" />
-	
-	<bean id="careScheduleAdjuster" class="org.motechproject.server.omod.sdsched.ExpectedCareScheduleAdjuster">
-		<property name="registrarBean" ref="registrarBeanProxy" />
-		<property name="schedules">
-			<list>
-				<ref bean="childBCGSchedule" />
-				<ref bean="childPNCSchedule" />
-				<ref bean="childIPTiSchedule" />
-				<ref bean="childOPVSchedule" />
-				<ref bean="childPentaSchedule" />
-				<ref bean="childVitaASchedule" />
-				<ref bean="childMeaslesSchedule" />
-				<ref bean="childYellowFeverSchedule" />
-				<ref bean="pregnancyTetanusSchedule" />
-				<ref bean="pregnancyIPTSchedule" />
-				<ref bean="pregnancyPNCSchedule" />
-				<ref bean="pregnancyANCSchedule" />
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="scheduleMaintService"
-		class="org.motechproject.server.omod.sdsched.ScheduleMaintServiceImpl">
-		<property name="syncManWrapper" ref="txSyncManWrapper" />
-		<property name="scheduleAdjuster" ref="careScheduleAdjuster" />
-	</bean>
+    <bean id="txSyncManWrapper" class="org.motechproject.server.omod.sdsched.TxSyncManWrapperImpl"/>
 
-	<!-- Service -->
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list>
-				<value>org.motechproject.server.omod.MotechService</value>
-				<bean
-					class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-					<property name="transactionManager">
-						<ref bean="transactionManager" />
-					</property>
-					<property name="target">
-						<bean class="org.motechproject.server.omod.impl.MotechServiceImpl">
-							<property name="motechDAO">
-								<bean class="org.motechproject.server.model.db.hibernate.HibernateMotechDAO">
-									<property name="sessionFactory">
-										<ref bean="sessionFactory" />
-									</property>
-								</bean>
-							</property>
-							<property name="registrarBean" ref="registrarBeanProxy" />
-							<property name="openmrsBean" ref="registrarBeanProxy" />
-							<property name="scheduleMaintService" ref="scheduleMaintService" />
-						</bean>
-					</property>
-					<property name="preInterceptors">
-						<list>
-							<ref bean="authorizationInterceptor" />
-						</list>
-					</property>
-					<property name="transactionAttributeSource">
-						<bean
-							class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
-					</property>
-				</bean>
-			</list>
-		</property>
-	</bean>
+    <bean id="dummyScheduleAdjuster" class="org.motechproject.server.omod.sdsched.DummyScheduleAdjuster"/>
 
-	<bean parent="patientServiceTarget">
-		<property name="identifierValidators">
-			<map>
-				<entry>
-					<key>
-						<value>org.motechproject.server.omod.MotechIdVerhoeffValidator</value>
-					</key>
-					<bean class="org.motechproject.server.omod.MotechIdVerhoeffValidator"/>
-				</entry>
-			</map>
-		</property>
-	</bean>
+    <bean id="careScheduleAdjuster" class="org.motechproject.server.omod.sdsched.ExpectedCareScheduleAdjuster">
+        <property name="registrarBean" ref="registrarBeanProxy"/>
+        <property name="schedules">
+            <list>
+                <ref bean="childBCGSchedule"/>
+                <ref bean="childPNCSchedule"/>
+                <ref bean="childIPTiSchedule"/>
+                <ref bean="childOPVSchedule"/>
+                <ref bean="childPentaSchedule"/>
+                <ref bean="childVitaASchedule"/>
+                <ref bean="childMeaslesSchedule"/>
+                <ref bean="childYellowFeverSchedule"/>
+                <ref bean="pregnancyTetanusSchedule"/>
+                <ref bean="pregnancyIPTSchedule"/>
+                <ref bean="pregnancyPNCSchedule"/>
+                <ref bean="pregnancyANCSchedule"/>
+            </list>
+        </property>
+    </bean>
 
-	<!-- Web Services Section -->
-	<wss:binding url="/ws/RegistrarService" service="#registrarservice" /> <!-- MUST start with /ws/ -->
-	<ws:service id="registrarservice" bean="#registrarWebService" />
+    <bean id="scheduleMaintService"
+          class="org.motechproject.server.omod.sdsched.ScheduleMaintServiceImpl">
+        <property name="syncManWrapper" ref="txSyncManWrapper"/>
+        <property name="scheduleAdjuster" ref="careScheduleAdjuster"/>
+    </bean>
 
-	<bean id="webserviceModelConverter" class="org.motechproject.server.ws.WebServiceModelConverterImpl">
-		<property name="registrarBean" ref="registrarBeanProxy" />
-	</bean>
+    <!-- Service -->
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list>
+                <value>org.motechproject.server.omod.MotechService</value>
+                <bean
+                        class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+                    <property name="transactionManager">
+                        <ref bean="transactionManager"/>
+                    </property>
+                    <property name="target">
+                        <bean class="org.motechproject.server.omod.impl.MotechServiceImpl">
+                            <property name="motechDAO">
+                                <bean class="org.motechproject.server.model.db.hibernate.HibernateMotechDAO">
+                                    <property name="sessionFactory">
+                                        <ref bean="sessionFactory"/>
+                                    </property>
+                                </bean>
+                            </property>
+                            <property name="registrarBean" ref="registrarBeanProxy"/>
+                            <property name="openmrsBean" ref="registrarBeanProxy"/>
+                            <property name="scheduleMaintService" ref="scheduleMaintService"/>
+                        </bean>
+                    </property>
+                    <property name="preInterceptors">
+                        <list>
+                            <ref bean="authorizationInterceptor"/>
+                        </list>
+                    </property>
+                    <property name="transactionAttributeSource">
+                        <bean
+                                class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
 
-	<bean id="registrarWebService" class="org.motechproject.server.ws.RegistrarWebService">
-		<property name="registrarBean" ref="registrarBeanProxy" />
-		<property name="openmrsBean" ref="registrarBeanProxy" />
-		<property name="modelConverter" ref="webserviceModelConverter" />
-		<property name="messageBean" ref="messageSourceBean" />
-	</bean>
+    <bean parent="patientServiceTarget">
+        <property name="identifierValidators">
+            <map>
+                <entry>
+                    <key>
+                        <value>org.motechproject.server.omod.MotechIdVerhoeffValidator</value>
+                    </key>
+                    <bean class="org.motechproject.server.omod.MotechIdVerhoeffValidator"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
 
-	<bean id="messageSourceBean" class="org.motechproject.server.svc.impl.MessageSourceBeanImpl">
-		<!-- From OpenMRS Application Spring Context -->
-		<property name="messageSource" ref="mutableResourceBundleMessageSource" />
-	</bean>
-	
-	<bean id="webModelConverter" class="org.motechproject.server.omod.web.model.WebModelConverterImpl">
-		<property name="registrarBean" ref="registrarBeanProxy" />
-	</bean>
+    <!-- Web Services Section -->
+    <wss:binding url="/ws/RegistrarService" service="#registrarservice"/>
+    <!-- MUST start with /ws/ -->
+    <ws:service id="registrarservice" bean="#registrarWebService"/>
+
+    <bean id="webserviceModelConverter" class="org.motechproject.server.ws.WebServiceModelConverterImpl">
+        <property name="registrarBean" ref="registrarBeanProxy"/>
+    </bean>
+
+    <bean id="registrarWebService" class="org.motechproject.server.ws.RegistrarWebService">
+        <property name="registrarBean" ref="registrarBeanProxy"/>
+        <property name="openmrsBean" ref="registrarBeanProxy"/>
+        <property name="modelConverter" ref="webserviceModelConverter"/>
+        <property name="messageBean" ref="messageSourceBean"/>
+    </bean>
+
+    <bean id="messageSourceBean" class="org.motechproject.server.svc.impl.MessageSourceBeanImpl">
+        <!-- From OpenMRS Application Spring Context -->
+        <property name="messageSource" ref="mutableResourceBundleMessageSource"/>
+    </bean>
+
+    <bean id="webModelConverter" class="org.motechproject.server.omod.web.model.WebModelConverterImpl">
+        <property name="registrarBean" ref="registrarBeanProxy"/>
+    </bean>
 
 </beans>

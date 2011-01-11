@@ -1,6 +1,7 @@
 package org.motechproject.server.omod;
 
 import org.openmrs.PatientIdentifierType;
+import org.openmrs.api.PatientService;
 
 public enum PatientIdentifierTypeEnum {
 
@@ -15,7 +16,7 @@ public enum PatientIdentifierTypeEnum {
         this.identifierName = s;
     }
 
-    public PatientIdentifierType getIdentifierType(ContextService contextService) {
-        return contextService.getPatientService().getPatientIdentifierTypeByName(identifierName);
+    public  PatientIdentifierType getIdentifierType(PatientService patientService){
+        return patientService.getPatientIdentifierTypeByName(identifierName);
     }
 }
