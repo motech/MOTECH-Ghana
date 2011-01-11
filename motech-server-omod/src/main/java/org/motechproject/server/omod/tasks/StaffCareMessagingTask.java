@@ -33,29 +33,25 @@
 
 package org.motechproject.server.omod.tasks;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.impl.ContextServiceImpl;
 import org.motechproject.server.util.MotechConstants;
 import org.openmrs.scheduler.tasks.AbstractTask;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class StaffCareMessagingTask extends AbstractTask {
 
 	private static Log log = LogFactory.getLog(StaffCareMessagingTask.class);
 
+    @Autowired
 	private ContextService contextService;
 
 	public StaffCareMessagingTask() {
-		contextService = new ContextServiceImpl();
-	}
-
-	public void setContextService(ContextService contextService) {
-		this.contextService = contextService;
 	}
 
 	@Override

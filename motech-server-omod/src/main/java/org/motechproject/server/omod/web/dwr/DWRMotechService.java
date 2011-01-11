@@ -33,30 +33,30 @@
 
 package org.motechproject.server.omod.web.dwr;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.omod.web.model.WebModelConverter;
+import org.motechproject.server.omod.web.model.WebModelConverterImpl;
+import org.motechproject.server.omod.web.model.WebPatient;
+import org.openmrs.Patient;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.impl.ContextServiceImpl;
-import org.motechproject.server.omod.web.model.WebModelConverter;
-import org.motechproject.server.omod.web.model.WebModelConverterImpl;
-import org.motechproject.server.omod.web.model.WebPatient;
-import org.openmrs.Patient;
-
 public class DWRMotechService {
 
 	private static Log log = LogFactory.getLog(DWRMotechService.class);
 
+    @Autowired
 	private ContextService contextService;
 	private WebModelConverter webModelConverter;
 
 	public DWRMotechService() {
-		contextService = new ContextServiceImpl();
 		WebModelConverterImpl webModelConverterImpl = new WebModelConverterImpl();
 		webModelConverterImpl.setRegistrarBean(contextService
 				.getRegistrarBean());

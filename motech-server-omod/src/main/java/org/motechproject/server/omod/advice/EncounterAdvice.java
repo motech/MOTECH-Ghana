@@ -38,11 +38,11 @@ import java.lang.reflect.Method;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.impl.ContextServiceImpl;
 import org.motechproject.server.omod.sdsched.ScheduleMaintService;
 import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.springframework.aop.AfterReturningAdvice;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
@@ -53,14 +53,10 @@ public class EncounterAdvice implements AfterReturningAdvice {
 
 	private static Log log = LogFactory.getLog(ObsAdvice.class);
 
+    @Autowired
 	private ContextService contextService;
 
 	public EncounterAdvice() {
-		contextService = new ContextServiceImpl();
-	}
-
-	public void setContextService(ContextService contextService) {
-		this.contextService = contextService;
 	}
 
 	/**
