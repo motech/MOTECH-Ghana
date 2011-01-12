@@ -1,7 +1,6 @@
 package org.motechproject.server.omod;
 
 import org.openmrs.Concept;
-import org.openmrs.api.ConceptService;
 
 public enum ConceptEnum {
 
@@ -94,7 +93,7 @@ public enum ConceptEnum {
         this.conceptName = s;
     }
 
-    public Concept getConcept(ConceptService conceptService){
-        return conceptService.getConcept(conceptName);
+    public Concept getConcept(ContextService contextService){
+        return contextService.getConceptService().getConcept(conceptName);
     }
 }
