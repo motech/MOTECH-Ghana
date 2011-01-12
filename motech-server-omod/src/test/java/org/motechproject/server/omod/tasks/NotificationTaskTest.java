@@ -33,15 +33,37 @@
 
 package org.motechproject.server.omod.tasks;
 
-import org.junit.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.motechproject.server.messaging.impl.MessageSchedulerImpl;
-import org.motechproject.server.model.*;
+import org.motechproject.server.model.Message;
+import org.motechproject.server.model.MessageDefinition;
+import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.MessageStatus;
+import org.motechproject.server.model.MessageType;
+import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
-import org.motechproject.ws.*;
+import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DayOfWeek;
+import org.motechproject.ws.Gender;
+import org.motechproject.ws.HowLearned;
+import org.motechproject.ws.InterestReason;
+import org.motechproject.ws.MediaType;
+import org.motechproject.ws.RegistrantType;
+import org.motechproject.ws.RegistrationMode;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
@@ -49,23 +71,12 @@ import org.openmrs.api.context.Context;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.SkipBaseSetup;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 	static MotechModuleActivator activator;
 
-    @Autowired
-    private NotificationTask notificationTask;
-
-    @BeforeClass
+	@BeforeClass
 	public static void setUpClass() throws Exception {
 		activator = new MotechModuleActivator();
 	}
@@ -202,10 +213,11 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 			Context.closeSession();
 		}
 
+		NotificationTask task = new NotificationTask();
 		TaskDefinition taskDef = new TaskDefinition();
 		taskDef.setRepeatInterval(30L);
-		notificationTask.initialize(taskDef);
-		notificationTask.execute();
+		task.initialize(taskDef);
+		task.execute();
 
 		try {
 			Context.openSession();

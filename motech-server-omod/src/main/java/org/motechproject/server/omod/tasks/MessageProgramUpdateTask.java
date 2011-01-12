@@ -36,19 +36,23 @@ package org.motechproject.server.omod.tasks;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.omod.impl.ContextServiceImpl;
 import org.motechproject.server.util.MotechConstants;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.scheduler.tasks.AbstractTask;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class MessageProgramUpdateTask extends AbstractTask {
 
 	private static Log log = LogFactory.getLog(MessageProgramUpdateTask.class);
 
-    @Autowired
 	private ContextService contextService;
 
 	public MessageProgramUpdateTask() {
+		contextService = new ContextServiceImpl();
+	}
+
+	public void setContextService(ContextService contextService) {
+		this.contextService = contextService;
 	}
 
 	/**

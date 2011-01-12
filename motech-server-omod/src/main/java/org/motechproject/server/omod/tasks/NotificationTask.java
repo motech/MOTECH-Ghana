@@ -33,14 +33,14 @@
 
 package org.motechproject.server.omod.tasks;
 
+import java.util.Date;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.omod.impl.ContextServiceImpl;
 import org.motechproject.server.util.MotechConstants;
 import org.openmrs.scheduler.tasks.AbstractTask;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Date;
 
 /**
  * Defines a task implementation that OpenMRS can execute using the built-in
@@ -53,10 +53,14 @@ public class NotificationTask extends AbstractTask {
 
 	private static Log log = LogFactory.getLog(NotificationTask.class);
 
-    @Autowired
 	private ContextService contextService;
 
 	public NotificationTask() {
+		contextService = new ContextServiceImpl();
+	}
+
+	public void setContextService(ContextService contextService) {
+		this.contextService = contextService;
 	}
 
 	/**

@@ -33,16 +33,40 @@
 
 package org.motechproject.server.omod.tasks;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.*;
-import org.motechproject.server.model.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.motechproject.server.model.Message;
+import org.motechproject.server.model.MessageDefinition;
+import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.MessageStatus;
+import org.motechproject.server.model.MessageType;
+import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
-import org.motechproject.ws.*;
+import org.motechproject.ws.ContactNumberType;
+import org.motechproject.ws.DayOfWeek;
+import org.motechproject.ws.Gender;
+import org.motechproject.ws.HowLearned;
+import org.motechproject.ws.InterestReason;
+import org.motechproject.ws.MediaType;
+import org.motechproject.ws.RegistrantType;
+import org.motechproject.ws.RegistrationMode;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
@@ -50,13 +74,6 @@ import org.openmrs.api.context.Context;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.SkipBaseSetup;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * BaseModuleContextSensitiveTest loads both the OpenMRS core and module spring
@@ -70,10 +87,7 @@ public class MessageProgramUpdateTaskTest extends
 
 	Log log = LogFactory.getLog(MessageProgramUpdateTaskTest.class);
 
-    @Autowired
-    private MessageProgramUpdateTask messageProgramUpdateTask;
-
-    @BeforeClass
+	@BeforeClass
 	public static void setUpClass() throws Exception {
 		activator = new MotechModuleActivator();
 	}
@@ -115,9 +129,10 @@ public class MessageProgramUpdateTaskTest extends
 	@SkipBaseSetup
 	public void testMessageProgramUpdate() throws InterruptedException {
 
+		MessageProgramUpdateTask task = new MessageProgramUpdateTask();
 		TaskDefinition definition = new TaskDefinition();
 		definition.setProperty(MotechConstants.TASK_PROPERTY_BATCH_SIZE, "10");
-		messageProgramUpdateTask.initialize(definition);
+		task.initialize(definition);
 
 		Integer patientId = null;
 
@@ -175,7 +190,7 @@ public class MessageProgramUpdateTaskTest extends
 			Context.closeSession();
 		}
 
-		messageProgramUpdateTask.execute();
+		task.execute();
 
 		try {
 			Context.openSession();
@@ -232,7 +247,7 @@ public class MessageProgramUpdateTaskTest extends
 			Context.closeSession();
 		}
 
-		messageProgramUpdateTask.execute();
+		task.execute();
 
 		try {
 			Context.openSession();

@@ -66,8 +66,6 @@
         <property name="patientService" ref="patientService"/>
     </bean>
 
-    <bean id="notificationTask" class="org.motechproject.server.omod.tasks.NotificationTask"/>
-    <bean id="messageProgramUpdateTask" class="org.motechproject.server.omod.tasks.MessageProgramUpdateTask"/>
     <bean id="motechUserRepository" class="org.motechproject.server.omod.MotechUserRepository">
         <constructor-arg ref="identiferGenerator"/>
         <constructor-arg ref="userService"/>
