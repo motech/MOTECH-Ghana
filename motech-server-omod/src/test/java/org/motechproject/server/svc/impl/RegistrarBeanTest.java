@@ -751,8 +751,6 @@ public class RegistrarBeanTest {
         expect(
                 contextService.getMotechService()).andReturn(motechService).atLeastOnce();
         expect(
-                contextService.getEncounterService()).andReturn(encounterService).atLeastOnce();
-        expect(
                 authenticationService.getAuthenticatedUser()).andReturn(new User());
         expect(
                 patientService
@@ -978,13 +976,7 @@ public class RegistrarBeanTest {
         expect(
                 contextService.getMotechService()).andReturn(motechService)
                 .atLeastOnce();
-        expect(
-                contextService.getConceptService()).andReturn(conceptService)
-                .atLeastOnce();
-        expect(
-                contextService.getEncounterService()).andReturn(encounterService)
-                .atLeastOnce();
-
+       
         expect(
                 patientService
                         .getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
@@ -1198,8 +1190,6 @@ public class RegistrarBeanTest {
         Capture<Message> enrollment1MessageCap = new Capture<Message>();
 
         expect(contextService.getMotechService()).andReturn(motechService)
-                .atLeastOnce();
-        expect(contextService.getConceptService()).andReturn(conceptService)
                 .atLeastOnce();
         expect(
                 personService

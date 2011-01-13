@@ -1,7 +1,7 @@
 package org.motechproject.server.omod;
 
-import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
+import org.openmrs.api.EncounterService;
 
 public enum EncounterTypeEnum {
     
@@ -27,7 +27,7 @@ public enum EncounterTypeEnum {
         this.encounterTypeName = s;
     }
 
-    public EncounterType getEncounterType(ContextService contextService){
-        return contextService.getEncounterService().getEncounterType(encounterTypeName);
+   public EncounterType getEncounterType(EncounterService encounterService){
+        return encounterService.getEncounterType(encounterTypeName);
     }
 }
