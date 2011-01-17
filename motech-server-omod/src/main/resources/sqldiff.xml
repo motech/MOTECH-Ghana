@@ -1339,4 +1339,67 @@
         </sql>
     </diff>
 
+    <diff>
+        <version>1.0</version>
+        <author>ThoughtWorks</author>
+        <date>January 17 2010</date>
+        <description>
+            Adding support for content throughtout the first year of life of a baby.
+        </description>
+        <sql>
+            INSERT INTO `motechmodule_messagedefinition`
+            (`message_key`,`public_id`,`message_type`) VALUES 
+            ('child.week.5.a',322,'INFORMATIONAL'),('child.week.5.b',322,'INFORMATIONAL'),('child.week.5.c',322,'INFORMATIONAL'),
+            ('child.week.6.a',323,'INFORMATIONAL'),('child.week.6.b',323,'INFORMATIONAL'),('child.week.6.c',323,'INFORMATIONAL'),
+            ('child.week.7.a',324,'INFORMATIONAL'),('child.week.7.b',324,'INFORMATIONAL'),('child.week.7.c',324,'INFORMATIONAL'),
+            ('child.week.8.a',325,'INFORMATIONAL'),('child.week.8.b',325,'INFORMATIONAL'),('child.week.8.c',325,'INFORMATIONAL'),
+            ('child.week.9.a',326,'INFORMATIONAL'),('child.week.9.b',326,'INFORMATIONAL'),('child.week.9.c',326,'INFORMATIONAL'),
+            ('child.week.10.a',327,'INFORMATIONAL'),('child.week.10.b',327,'INFORMATIONAL'),('child.week.10.c',327,'INFORMATIONAL'),
+            ('child.week.11.a',328,'INFORMATIONAL'),('child.week.11.b',328,'INFORMATIONAL'),('child.week.11.c',328,'INFORMATIONAL'),
+            ('child.week.12.a',329,'INFORMATIONAL'),('child.week.12.b',329,'INFORMATIONAL'),('child.week.12.c',329,'INFORMATIONAL'),
+            ('child.week.13.a',330,'INFORMATIONAL'),('child.week.13.b',330,'INFORMATIONAL'),('child.week.13.c',330,'INFORMATIONAL'),
+            ('child.week.14.a',331,'INFORMATIONAL'),('child.week.14.b',331,'INFORMATIONAL'),('child.week.14.c',331,'INFORMATIONAL'),
+            ('child.week.15.a',332,'INFORMATIONAL'),('child.week.15.b',332,'INFORMATIONAL'),('child.week.15.c',332,'INFORMATIONAL'),
+            ('child.week.16.a',333,'INFORMATIONAL'),('child.week.16.b',333,'INFORMATIONAL'),('child.week.16.c',333,'INFORMATIONAL'),
+            ('child.week.17.a',334,'INFORMATIONAL'),('child.week.17.b',334,'INFORMATIONAL'),('child.week.17.c',334,'INFORMATIONAL'),
+            ('child.week.18.a',335,'INFORMATIONAL'),('child.week.18.b',335,'INFORMATIONAL'),('child.week.18.c',335,'INFORMATIONAL'),
+            ('child.week.19.a',336,'INFORMATIONAL'),('child.week.19.b',336,'INFORMATIONAL'),('child.week.19.c',336,'INFORMATIONAL'),
+            ('child.week.20.a',337,'INFORMATIONAL'),('child.week.20.b',337,'INFORMATIONAL'),('child.week.20.c',337,'INFORMATIONAL'),
+            ('child.week.21.a',338,'INFORMATIONAL'),('child.week.21.b',338,'INFORMATIONAL'),('child.week.21.c',338,'INFORMATIONAL'),
+            ('child.week.22.a',339,'INFORMATIONAL'),('child.week.22.b',339,'INFORMATIONAL'),('child.week.22.c',339,'INFORMATIONAL'),
+            ('child.week.23.a',340,'INFORMATIONAL'),('child.week.23.b',340,'INFORMATIONAL'),('child.week.23.c',340,'INFORMATIONAL'),
+            ('child.week.24.a',341,'INFORMATIONAL'),('child.week.24.b',341,'INFORMATIONAL'),('child.week.24.c',341,'INFORMATIONAL'),
+            ('child.week.25.a',342,'INFORMATIONAL'),('child.week.25.b',342,'INFORMATIONAL'),('child.week.25.c',342,'INFORMATIONAL'),
+            ('child.week.26.a',343,'INFORMATIONAL'),('child.week.26.b',343,'INFORMATIONAL'),('child.week.26.c',343,'INFORMATIONAL'),
+            ('child.week.27.a',344,'INFORMATIONAL'),('child.week.27.b',344,'INFORMATIONAL'),('child.week.27.c',344,'INFORMATIONAL'),
+            ('child.week.28.a',345,'INFORMATIONAL'),('child.week.28.b',345,'INFORMATIONAL'),('child.week.28.c',345,'INFORMATIONAL'),
+            ('child.week.29.a',346,'INFORMATIONAL'),('child.week.29.b',346,'INFORMATIONAL'),('child.week.29.c',346,'INFORMATIONAL'),
+            ('child.week.30.a',347,'INFORMATIONAL'),('child.week.30.b',347,'INFORMATIONAL'),('child.week.30.c',347,'INFORMATIONAL'),
+            ('child.week.31.a',348,'INFORMATIONAL'),('child.week.31.b',348,'INFORMATIONAL'),('child.week.31.c',348,'INFORMATIONAL'),
+            ('child.week.32.a',349,'INFORMATIONAL'),('child.week.32.b',349,'INFORMATIONAL'),('child.week.32.c',349,'INFORMATIONAL'),
+            ('child.week.33.a',350,'INFORMATIONAL'),('child.week.33.b',350,'INFORMATIONAL'),('child.week.33.c',350,'INFORMATIONAL'),
+            ('child.week.34.a',351,'INFORMATIONAL'),('child.week.34.b',351,'INFORMATIONAL'),('child.week.34.c',351,'INFORMATIONAL'),
+            ('child.week.35.a',352,'INFORMATIONAL'),('child.week.35.b',352,'INFORMATIONAL'),('child.week.35.c',352,'INFORMATIONAL'),
+            ('child.week.36.a',353,'INFORMATIONAL'),('child.week.36.b',353,'INFORMATIONAL'),('child.week.36.c',353,'INFORMATIONAL'),
+            ('child.week.37.a',354,'INFORMATIONAL'),('child.week.37.b',354,'INFORMATIONAL'),('child.week.37.c',354,'INFORMATIONAL'),
+            ('child.week.38.a',355,'INFORMATIONAL'),('child.week.38.b',355,'INFORMATIONAL'),('child.week.38.c',355,'INFORMATIONAL'),
+            ('child.week.39.a',356,'INFORMATIONAL'),('child.week.39.b',356,'INFORMATIONAL'),('child.week.39.c',356,'INFORMATIONAL'),
+            ('child.week.40.a',357,'INFORMATIONAL'),('child.week.40.b',357,'INFORMATIONAL'),('child.week.40.c',357,'INFORMATIONAL'),
+            ('child.week.41.a',358,'INFORMATIONAL'),('child.week.41.b',358,'INFORMATIONAL'),('child.week.41.c',358,'INFORMATIONAL'),
+            ('child.week.42.a',359,'INFORMATIONAL'),('child.week.42.b',359,'INFORMATIONAL'),('child.week.42.c',359,'INFORMATIONAL'),
+            ('child.week.43.a',360,'INFORMATIONAL'),('child.week.43.b',360,'INFORMATIONAL'),('child.week.43.c',360,'INFORMATIONAL'),
+            ('child.week.44.a',361,'INFORMATIONAL'),('child.week.44.b',361,'INFORMATIONAL'),('child.week.44.c',361,'INFORMATIONAL'),
+            ('child.week.45.a',362,'INFORMATIONAL'),('child.week.45.b',362,'INFORMATIONAL'),('child.week.45.c',362,'INFORMATIONAL'),
+            ('child.week.46.a',363,'INFORMATIONAL'),('child.week.46.b',363,'INFORMATIONAL'),('child.week.46.c',363,'INFORMATIONAL'),
+            ('child.week.47.a',364,'INFORMATIONAL'),('child.week.47.b',364,'INFORMATIONAL'),('child.week.47.c',364,'INFORMATIONAL'),
+            ('child.week.48.a',365,'INFORMATIONAL'),('child.week.48.b',365,'INFORMATIONAL'),('child.week.48.c',365,'INFORMATIONAL'),
+            ('child.week.49.a',366,'INFORMATIONAL'),('child.week.49.b',366,'INFORMATIONAL'),('child.week.49.c',366,'INFORMATIONAL'),
+            ('child.week.50.a',367,'INFORMATIONAL'),('child.week.50.b',367,'INFORMATIONAL'),('child.week.50.c',367,'INFORMATIONAL'),
+            ('child.week.51.a',368,'INFORMATIONAL'),('child.week.51.b',368,'INFORMATIONAL'),('child.week.51.c',368,'INFORMATIONAL'),
+            ('child.week.52.a',369,'INFORMATIONAL'),('child.week.52.b',369,'INFORMATIONAL'),('child.week.52.c',369,'INFORMATIONAL'),
+            ('child.week.53.a',370,'INFORMATIONAL'),('child.week.53.b',370,'INFORMATIONAL'),('child.week.53.c',370,'INFORMATIONAL'),
+            ('child.week.54.a',371,'INFORMATIONAL'),('child.week.54.b',372,'INFORMATIONAL'),('child.week.54.c',373,'INFORMATIONAL');
+        </sql>
+    </diff>
+
 </sqldiff>
