@@ -1430,9 +1430,7 @@
             ('child.week.49.a',454,'INFORMATIONAL'),('child.week.49.b',455,'INFORMATIONAL'),('child.week.49.c',456,'INFORMATIONAL'),
             ('child.week.50.a',457,'INFORMATIONAL'),('child.week.50.b',458,'INFORMATIONAL'),('child.week.50.c',459,'INFORMATIONAL'),
             ('child.week.51.a',460,'INFORMATIONAL'),('child.week.51.b',461,'INFORMATIONAL'),('child.week.51.c',462,'INFORMATIONAL'),
-            ('child.week.52.a',463,'INFORMATIONAL'),('child.week.52.b',464,'INFORMATIONAL'),('child.week.52.c',465,'INFORMATIONAL'),
-            ('child.week.53.a',466,'INFORMATIONAL'),('child.week.53.b',467,'INFORMATIONAL'),('child.week.53.c',468,'INFORMATIONAL'),
-            ('child.week.54.a',469,'INFORMATIONAL'),('child.week.54.b',470,'INFORMATIONAL'),('child.week.54.c',471,'INFORMATIONAL');
+            ('child.week.52.a',463,'INFORMATIONAL'),('child.week.52.b',464,'INFORMATIONAL'),('child.week.52.c',465,'INFORMATIONAL');
         </sql>
     </diff>
 
