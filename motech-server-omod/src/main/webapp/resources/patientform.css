@@ -37,3 +37,6 @@ legend {
 td.labelcolumn {
   width: 325px;
 }
+.hideme{
+    display:none;
+}
