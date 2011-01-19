@@ -110,10 +110,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         this.messagePrograms = messagePrograms;
     }
 
-    public MessageProgram getMessageProgram(String programName) {
-        return messagePrograms.get(programName);
-    }
-
     public User registerStaff(String firstName, String lastName, String phone,
                               String staffType) {
         return userService.saveUser(motechUserRepository.newUser(new WebStaff(firstName, lastName, phone, staffType)), generatePassword(8));
@@ -2912,34 +2908,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     /* SaveObsAdvice method */
 
-    public void updateMessageProgramState(Integer personId, String conceptName) {
-
-        // Only determine message program state for active enrolled programs
-        // concerned with an observed concept and matching the concept of this
-        // obs
-
-        List<MessageProgramEnrollment> patientActiveEnrollments = motechService()
-                .getActiveMessageProgramEnrollments(personId, null, null, null,
-                        null, null);
-
-        Date currentDate = new Date();
-
-        for (MessageProgramEnrollment enrollment : patientActiveEnrollments) {
-            MessageProgram program = this.getMessageProgram(enrollment
-                    .getProgram());
-
-            if (program.getConceptName() != null) {
-                if (program.getConceptName().equals(conceptName)) {
-                    log
-                            .debug("Save Obs - Obs matches Program concept, update Program: "
-                                    + enrollment.getProgram());
-
-                    program.determineState(enrollment, currentDate);
-                }
-            }
-        }
-    }
-
     /* MessageProgramUpdateTask method */
 
     public TaskDefinition updateAllMessageProgramsState(Integer batchSize,
@@ -2956,7 +2924,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         Date currentDate = new Date();
 
         for (MessageProgramEnrollment enrollment : activeEnrollments) {
-            MessageProgram program = this.getMessageProgram(enrollment
+            MessageProgram program = messagePrograms.get(enrollment
                     .getProgram());
 
             log.debug("MessageProgram Update - Update State: enrollment: "
@@ -3442,7 +3410,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return maxFailures != null && troubledPhone != null && troubledPhone.getSendFailures() >= maxFailures;
     }
 
-    public Integer getMaxPhoneNumberFailures() {
+    private Integer getMaxPhoneNumberFailures() {
         String troubledPhoneProperty = getTroubledPhoneProperty();
         if (troubledPhoneProperty != null) {
             return Integer.parseInt(troubledPhoneProperty);

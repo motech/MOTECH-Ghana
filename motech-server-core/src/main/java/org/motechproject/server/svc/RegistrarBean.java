@@ -390,10 +390,6 @@ public interface RegistrarBean {
 
 	public Integer getMaxPatientCareReminders();
 
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PATIENTS,
-			OpenmrsConstants.PRIV_VIEW_CONCEPTS })
-	public void updateMessageProgramState(Integer personId, String conceptName);
-
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
 			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES,
 			OpenmrsConstants.PRIV_VIEW_PATIENTS,

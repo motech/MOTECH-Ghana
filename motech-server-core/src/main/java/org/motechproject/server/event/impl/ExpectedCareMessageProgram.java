@@ -96,14 +96,11 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 		ScheduledMessagePredicate scheduledMessagePredicate = new ScheduledMessagePredicate();
 
 		for (ExpectedCareMessageDetails careDetails : careMessageDetails) {
-			String careGroup = careDetails.getName();
-			String upcomingKey = careDetails.getUpcomingMessageKey();
-			String overdueKey = careDetails.getOverdueMessageKey();
 
-			// Set predicates for care details
-			expectedEncounterPredicate.setGroup(careGroup);
-			expectedObsPredicate.setGroup(careGroup);
-			scheduledMessagePredicate.resetKeys(upcomingKey, overdueKey);
+            // Set predicates for care details
+			expectedEncounterPredicate.setGroup(careDetails.getName());
+			expectedObsPredicate.setGroup(careDetails.getName());
+			scheduledMessagePredicate.resetKeys(careDetails.getUpcomingMessageKey(), careDetails.getOverdueMessageKey());
 
 			// Get scheduled messages for care, removing from enrollment list
 			List<ScheduledMessage> careScheduledMessages = getScheduledMessages(
