@@ -42,6 +42,7 @@
 <openmrs:htmlInclude file="/dwr/util.js" />
 <openmrs:htmlInclude file="/dwr/interface/DWRMotechService.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/find_duplicates.js" />
+<openmrs:htmlInclude file="/moduleResources/motechmodule/patient_form_events.js" />
 
 <%@ include file="/WEB-INF/view/module/motechmodule/dynamic-dropdowns-script.jsp"%>
 
@@ -78,7 +79,7 @@
  	<tr>
 		<td class="labelcolumn"><label for="registrantType">Type of Patient:</label></td>
 		<td>
-			<form:select path="registrantType">
+			<form:select path="registrantType" onchange="onPatientTypeSelection()">
 				<form:option value="" label="Select Value" />
 				<form:option value="PREGNANT_MOTHER" label="Pregnant mother" />
 				<form:option value="CHILD_UNDER_FIVE" label="Child (age less than 5)" />
@@ -197,7 +198,7 @@
 	</tr>
 </table>
 </fieldset>
-<fieldset><legend>Pregnancy Registration</legend>
+<fieldset id="pregnancyRegistration" ><legend>Pregnancy Registration</legend>
 <table>
 	<tr>
 		<td class="labelcolumn"><label for="dueDate">Expected Delivery Date (DD/MM/YYYY):</label></td>
@@ -243,7 +244,7 @@
 	<tr>
 		<td class="labelcolumn"><label for="phoneType">Phone Ownership:</label></td>
 		<td>
-			<form:select path="phoneType">
+			<form:select path="phoneType" onchange="removeTextOptionIfPhoneOwnershipIsPublic()">
 				<form:option value="" label="Select Value" />
 				<form:option value="PERSONAL" label="Personal phone" />
 				<form:option value="HOUSEHOLD" label="Owned by household" />
@@ -255,7 +256,7 @@
 	<tr>
 		<td class="labelcolumn"><label for="mediaType">Message Format:</label></td>
 		<td>
-			<form:select path="mediaType">
+			<form:select path="mediaType" onchange="onMediaTypeSelection()">
 				<form:option value="" label="Select Value" />
 				<form:option value="TEXT" label="Text" />
 				<form:option value="VOICE" label="Voice" />
