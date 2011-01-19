@@ -333,7 +333,7 @@ public class HibernateMotechDAO implements MotechDAO {
 		if (maxResults != null) {
 			criteria.setMaxResults(maxResults);
 		}
-		return (List<MessageProgramEnrollment>) criteria.list();
+		return (List<MessageProgramEnrollment>) criteria.addOrder(Order.asc("id")).list();
 	}
 
 	public GeneralOutpatientEncounter saveGeneralOutpatientEncounter(
