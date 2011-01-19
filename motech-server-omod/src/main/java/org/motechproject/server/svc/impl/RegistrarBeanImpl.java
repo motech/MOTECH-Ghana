@@ -267,7 +267,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			if (enroll == null && consent == null) {
 				List<MessageProgramEnrollment> enrollments = motechService
 						.getActiveMessageProgramEnrollments(mother
-								.getPatientId(), null, null, null, null, null);
+								.getPatientId(), null, null, null, null);
 				if (enrollments != null && !enrollments.isEmpty()) {
 					enroll = true;
 					consent = true;
@@ -2326,7 +2326,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		// Update enrollments using duedate Obs to reference new duedate Obs
 		List<MessageProgramEnrollment> enrollments = motechService
 				.getActiveMessageProgramEnrollments(null, null,
-						existingDueDateObsId, null, null, null);
+						existingDueDateObsId, null, null);
 		for (MessageProgramEnrollment enrollment : enrollments) {
 			enrollment.setObsId(newDueDateObs.getObsId());
 			motechService.saveMessageProgramEnrollment(enrollment);
@@ -3275,7 +3275,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		List<MessageProgramEnrollment> patientActiveEnrollments = motechService
 				.getActiveMessageProgramEnrollments(personId, null, null, null,
-						null, null);
+                        null);
 
 		Date currentDate = new Date();
 
@@ -3297,19 +3297,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 	/* MessageProgramUpdateTask method */
 	public TaskDefinition updateAllMessageProgramsState(Integer batchSize,
-			Long batchPreviousId, Long batchMaxId) {
+			Long batchPreviousId) {
 
 		MotechService motechService = contextService.getMotechService();
 		SchedulerService schedulerService = contextService
 				.getSchedulerService();
 
-		if (batchMaxId == null) {
-			batchMaxId = motechService.getMaxMessageProgramEnrollmentId();
-		}
-
 		List<MessageProgramEnrollment> activeEnrollments = motechService
 				.getActiveMessageProgramEnrollments(null, null, null,
-						batchPreviousId, batchMaxId, batchSize);
+						batchPreviousId, batchSize);
 
 		Date currentDate = new Date();
 
@@ -3323,15 +3319,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			program.determineState(enrollment, currentDate);
 
 			batchPreviousId = enrollment.getId();
-			if (batchPreviousId >= batchMaxId) {
-				log.info("Completed updating all enrollments up to max: "
-						+ batchMaxId);
-				batchMaxId = null;
-				batchPreviousId = null;
-				break;
-			}
 		}
 
+        if(activeEnrollments.size() < batchSize){
+            batchPreviousId = null;
+        }
 		// Update task properties
 		TaskDefinition task = schedulerService
 				.getTaskByName(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE);
@@ -3343,12 +3335,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			} else {
 				properties
 						.remove(MotechConstants.TASK_PROPERTY_BATCH_PREVIOUS_ID);
-			}
-			if (batchMaxId != null) {
-				properties.put(MotechConstants.TASK_PROPERTY_BATCH_MAX_ID,
-						batchMaxId.toString());
-			} else {
-				properties.remove(MotechConstants.TASK_PROPERTY_BATCH_MAX_ID);
 			}
 			schedulerService.saveTask(task);
 		}
@@ -3630,7 +3616,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		List<MessageProgramEnrollment> enrollments = motechService
 				.getActiveMessageProgramEnrollments(patient.getPatientId(),
-						null, null, null, null, null);
+						null, null, null, null);
 
 		List<String> enrollmentNames = new ArrayList<String>();
 		for (MessageProgramEnrollment enrollment : enrollments) {
@@ -3645,7 +3631,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		List<MessageProgramEnrollment> enrollments = motechService
 				.getActiveMessageProgramEnrollments(personId, program, obsId,
-						null, null, null);
+						null, null);
 		if (enrollments.size() == 0) {
 			MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
 			enrollment.setPersonId(personId);
@@ -3673,7 +3659,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		List<MessageProgramEnrollment> enrollments = motechService
 				.getActiveMessageProgramEnrollments(personId, program, obsId,
-						null, null, null);
+						null, null);
 		for (MessageProgramEnrollment enrollment : enrollments) {
 			removeMessageProgramEnrollment(enrollment);
 		}
@@ -3684,7 +3670,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 		List<MessageProgramEnrollment> enrollments = motechService
 				.getActiveMessageProgramEnrollments(personId, null, null, null,
-						null, null);
+                        null);
 
 		for (MessageProgramEnrollment enrollment : enrollments) {
 			removeMessageProgramEnrollment(enrollment);

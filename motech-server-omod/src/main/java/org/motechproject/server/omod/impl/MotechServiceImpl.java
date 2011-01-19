@@ -125,14 +125,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	}
 
 	public List<MessageProgramEnrollment> getActiveMessageProgramEnrollments(
-			Integer personId, String program, Integer obsId,
-			Long minExclusiveId, Long maxInclusiveId, Integer maxResults) {
+            Integer personId, String program, Integer obsId,
+            Long minExclusiveId, Integer maxResults) {
 		return motechDAO.getActiveMessageProgramEnrollments(personId, program,
-				obsId, minExclusiveId, maxInclusiveId, maxResults);
-	}
-
-	public Long getMaxMessageProgramEnrollmentId() {
-		return motechDAO.getMaxMessageProgramEnrollmentId();
+				obsId, minExclusiveId, maxResults);
 	}
 
 	public List<ScheduledMessage> getAllScheduledMessages() {

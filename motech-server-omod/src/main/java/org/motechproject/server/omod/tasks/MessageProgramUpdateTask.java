@@ -101,8 +101,7 @@ public class MessageProgramUpdateTask extends AbstractTask {
 		try {
 			contextService.openSession();
 			TaskDefinition updatedTask = contextService.getRegistrarBean()
-					.updateAllMessageProgramsState(batchSize, batchPreviousId,
-							batchMaxId);
+					.updateAllMessageProgramsState(batchSize, batchPreviousId);
 
 			if (updatedTask != null) {
 				// Updates this running task to use newly stored properties
