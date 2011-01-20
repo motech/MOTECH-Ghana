@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuite hostname="Rupesh" tests="1" failures="0" timestamp="19 Jan 2011 13:35:22 GMT" time="0.047" errors="0">
-  <testcase name="test" time="0.032" classname="reg_new_patient_test"/>
+  <testcase name="test" time="0.032" classname="Tests.RegNewPatientTest"/>
 </testsuite>
