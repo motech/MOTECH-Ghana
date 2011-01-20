@@ -1,5 +1,6 @@
 function onPatientTypeSelection() {
     hidePregnancyRegistrationIfPatientIsNotPregnantMother();
+    setGenderAsFemaleIfPatientIsPregnantMother();
     hideMothersMotechIdFieldIfPatientIsNotChild();
 }
 
@@ -8,7 +9,11 @@ function onMediaTypeSelection() {
 }
 
 function onPhoneOwnershipSelection() {
-    removeTextOptionIfPhoneOwnershipIsPublic();
+    setVoiceOptionIfPhoneOwnershipIsPublic();
+}
+
+function setGenderAsFemaleIfPatientIsPregnantMother() {
+    hideOptionAndSetBusinessDefault($('#sex'), "MALE", "FEMALE", isPatientPregnantMother)
 }
 
 function hidePregnancyRegistrationIfPatientIsNotPregnantMother() {
@@ -18,6 +23,7 @@ function hidePregnancyRegistrationIfPatientIsNotPregnantMother() {
     }
     show($('#pregnancyRegistration'));
 }
+
 function hideMothersMotechIdFieldIfPatientIsNotChild() {
     var parentRow = $('#motherMotechId').parents('tr');
     if (!isPatientChildUnderFive()) {
@@ -26,7 +32,6 @@ function hideMothersMotechIdFieldIfPatientIsNotChild() {
     }
     show(parentRow);
 }
-
 function hideDayOfWeekAndTimeOfDayFieldsIfMessageFormatSelectedIsText() {
     var dayOfWeekRow = $('#dayOfWeek').parents('tr');
     var timeOfDayRow = $('#timeOfDay').parents('tr');
@@ -38,18 +43,20 @@ function hideDayOfWeekAndTimeOfDayFieldsIfMessageFormatSelectedIsText() {
     show(dayOfWeekRow, timeOfDayRow);
 }
 
-function removeTextOptionIfPhoneOwnershipIsPublic() {
-    var mediaType = $('#mediaType');
-    var mediaTypeOptions = mediaType.children();
-    var textOption = getOptionWithValue(mediaTypeOptions, "TEXT");
-    if (isPublicPhone()) {
-        hide(textOption);
-        var voiceOption = getOptionWithValue(mediaTypeOptions, "VOICE");
-        mediaType.val("VOICE");
+function setVoiceOptionIfPhoneOwnershipIsPublic() {
+    hideOptionAndSetBusinessDefault($('#mediaType'), "TEXT", "VOICE", isPublicPhone);
+}
+
+function hideOptionAndSetBusinessDefault(comboBox, valueToHide, valueToSet, predicate) {
+    var options = $(comboBox).children();
+    var optionToHide = getOptionWithValue(options, valueToHide);
+    if (predicate()) {
+        hide(optionToHide);
+        comboBox.val(valueToSet);
         return;
     }
-    show(textOption)
-    mediaType.val("");
+    show(optionToHide);
+    comboBox.val("");
 }
 
 function getOptionWithValue(options, val) {

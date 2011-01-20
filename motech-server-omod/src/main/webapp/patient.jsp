@@ -244,7 +244,7 @@
 	<tr>
 		<td class="labelcolumn"><label for="phoneType">Phone Ownership:</label></td>
 		<td>
-			<form:select path="phoneType" onchange="removeTextOptionIfPhoneOwnershipIsPublic()">
+			<form:select path="phoneType" onchange="setVoiceOptionIfPhoneOwnershipIsPublic()">
 				<form:option value="" label="Select Value" />
 				<form:option value="PERSONAL" label="Personal phone" />
 				<form:option value="HOUSEHOLD" label="Owned by household" />
