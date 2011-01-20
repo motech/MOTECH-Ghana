@@ -166,7 +166,7 @@ public class MessageProgramUpdateTaskTest extends
 
 			List<MessageProgramEnrollment> enrollments = Context.getService(
 					MotechService.class).getActiveMessageProgramEnrollments(
-					patientId, null, null, null, null, null);
+					patientId, null, null, null, null);
 			assertEquals(1, enrollments.size());
 			assertEquals("Weekly Info Pregnancy Message Program", enrollments
 					.get(0).getProgram());
@@ -235,7 +235,7 @@ public class MessageProgramUpdateTaskTest extends
 			// Change obs referenced by enrollment to new obs
 			List<MessageProgramEnrollment> enrollments = Context.getService(
 					MotechService.class).getActiveMessageProgramEnrollments(
-					patient.getPatientId(), null, null, null, null, null);
+					patient.getPatientId(), null, null, null, null);
 			assertEquals(1, enrollments.size());
 			MessageProgramEnrollment infoEnrollment = enrollments.get(0);
 

@@ -810,7 +810,7 @@ public class RegistrarBeanTest {
         expect(
                 motechService.getActiveMessageProgramEnrollments(child
                         .getPatientId(), pregnancyProgramName, null, null,
-                        null, null)).andReturn(
+                        null)).andReturn(
                 new ArrayList<MessageProgramEnrollment>());
         expect(
                 motechService
@@ -818,7 +818,7 @@ public class RegistrarBeanTest {
                 .andReturn(new MessageProgramEnrollment());
         expect(
                 motechService.getActiveMessageProgramEnrollments(child
-                        .getPatientId(), careProgramName, null, null, null,
+                        .getPatientId(), careProgramName, null, null,
                         null)).andReturn(
                 new ArrayList<MessageProgramEnrollment>());
         expect(
@@ -1042,7 +1042,7 @@ public class RegistrarBeanTest {
         expect(
                 motechService.getActiveMessageProgramEnrollments(patient
                         .getPatientId(), pregnancyProgramName, null, null,
-                        null, null)).andReturn(
+                        null)).andReturn(
                 new ArrayList<MessageProgramEnrollment>());
         expect(
                 motechService
@@ -1050,7 +1050,7 @@ public class RegistrarBeanTest {
                 .andReturn(new MessageProgramEnrollment());
         expect(
                 motechService.getActiveMessageProgramEnrollments(patient
-                        .getPatientId(), careProgramName, null, null, null,
+                        .getPatientId(), careProgramName, null, null,
                         null)).andReturn(
                 new ArrayList<MessageProgramEnrollment>());
         expect(
@@ -1212,7 +1212,7 @@ public class RegistrarBeanTest {
 
         expect(
                 motechService.getActiveMessageProgramEnrollments(patientId,
-                        null, null, null, null, null)).andReturn(enrollments);
+                        null, null, null, null)).andReturn(enrollments);
         expect(
                 motechService.getMessages(enrollment1,
                         MessageStatus.SHOULD_ATTEMPT)).andReturn(
@@ -1261,7 +1261,7 @@ public class RegistrarBeanTest {
         expect(obsService.voidObs(EasyMock.<Obs>anyObject(), EasyMock.<String>anyObject())).andReturn(new Obs());
 
         expect(motechService.getActiveMessageProgramEnrollments(anyInt(), EasyMock.<String>anyObject(), anyInt(),
-                anyLong(), anyLong(), anyInt())).andReturn(new ArrayList<MessageProgramEnrollment>());
+                anyLong(), anyInt())).andReturn(new ArrayList<MessageProgramEnrollment>());
 
         expect(relationshipService.saveOrUpdateMotherRelationship(mother, patient, false)).andReturn(null);
 
@@ -1383,7 +1383,7 @@ public class RegistrarBeanTest {
         expect(motechService.getCommunityByPatient(patient)).andReturn(null);
         expect(
                 motechService.getActiveMessageProgramEnrollments(patientId,
-                        null, null, null, null, null)).andReturn(
+                        null, null, null, null)).andReturn(
                 new ArrayList<MessageProgramEnrollment>());
 
         expect(patientService.savePatient(capture(patientCap))).andReturn(

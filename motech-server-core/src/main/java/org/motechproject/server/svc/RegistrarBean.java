@@ -413,7 +413,7 @@ public interface RegistrarBean {
 			OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
 			OpenmrsConstants.PRIV_MANAGE_SCHEDULER })
 	public TaskDefinition updateAllMessageProgramsState(Integer batchSize,
-			Long batchPreviousId, Long batchMaxId);
+                                                        Long batchPreviousId);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PATIENTS,
 			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES,

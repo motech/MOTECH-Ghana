@@ -86,23 +86,11 @@ public class MessageProgramUpdateTask extends AbstractTask {
 			}
 		}
 
-		Long batchMaxId = null;
-		String batchMaxProperty = taskDefinition
-				.getProperty(MotechConstants.TASK_PROPERTY_BATCH_MAX_ID);
-		if (batchMaxProperty != null) {
-			try {
-				batchMaxId = Long.valueOf(batchMaxProperty);
-			} catch (NumberFormatException e) {
-				log.error("Invalid Long batch maximum id value", e);
-			}
-		}
-
 		// Session required for Task to get RegistrarBean through Context
 		try {
 			contextService.openSession();
 			TaskDefinition updatedTask = contextService.getRegistrarBean()
-					.updateAllMessageProgramsState(batchSize, batchPreviousId,
-							batchMaxId);
+					.updateAllMessageProgramsState(batchSize, batchPreviousId);
 
 			if (updatedTask != null) {
 				// Updates this running task to use newly stored properties
