@@ -1,0 +1,14 @@
+<testng-results>
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="47" started-at="2011-01-19T19:05:22Z" finished-at="2011-01-19T19:05:22Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="47" started-at="2011-01-19T19:05:22Z" finished-at="2011-01-19T19:05:22Z">
+      <class name="reg_new_patient_test">
+        <test-method status="PASS" signature="test()" name="test" duration-ms="32" started-at="2011-01-19T19:05:22Z" finished-at="2011-01-19T19:05:22Z">
+        </test-method>
+      </class>
+    </test>
+  </suite>
+</testng-results>
