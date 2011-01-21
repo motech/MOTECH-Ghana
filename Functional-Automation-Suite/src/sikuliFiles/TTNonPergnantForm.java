@@ -2,39 +2,36 @@ package sikuliFiles;
 import java.text.ParseException;
 import org.sikuli.script.FindFailed;
 
-public class TT_Non_Pergnant_Form extends SikuliBaseClass{
-	
-	String btn_right = "img/btn_right.png"; 
-	String btn_down_arrow = "img/btn_down_arrow.png";
-	String btn_enter = "img/btn_enter.png";	
-    public void Fill_TT_Non_Pregnant_Form(String staff_id, String facility_id,String date,String Motech_id, TT_values str) throws ParseException
+public class TTNonPergnantForm extends SikuliBaseClass{
+
+    public void Fill_TT_Non_Pregnant_Form(String staffId, String facilityId,String date,String motechId, TTValues str) throws ParseException
 	{ 
       try {
 	     // selecting the TT_Non_pregnant form
-    	  select_form(FormName.TT_NON_PREGNANT);
+    	  selectForm(FormName.TT_NON_PREGNANT);
           
          //Entering values in TT_Non_Pregnant form 
          //1. filling the staff id
-          input_textbox(staff_id);
+          inputTextbox(staffId);
          
           //2. Filling the facility_id 
-          input_textbox(facility_id);
+          inputTextbox(facilityId);
           
          //3. Filling the date of visit as current date 
-          select_date(string_to_date_convertor(date));  
+          selectDate(stringToDateConvertor(date));
           
          //4.  Filling the motech id 
-          input_textbox(Motech_id);
+          inputTextbox(motechId);
           
          // 5. Filling the TT value as TT1
           
-          select_TT_values(str);
+          selectTTValues(str);
                    
           //6. Saving the form
-          save_mform();
+          saveMform();
           
           //7. Moving to Main Menu and uploading the form
-          travese_to_main_menu_and_upload_form();
+          traverseToMainMenuAndUploadForm();
        
 	} catch (FindFailed e) {
 		// TODO Auto-generated catch block
