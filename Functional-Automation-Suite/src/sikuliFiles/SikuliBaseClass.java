@@ -52,9 +52,9 @@ String btnWindows = "img/btnWindows.png" ;
 		// Login into the Motech app
 	    mobileScreen.click(btnRight,0);
 	    mobileScreen.find(loginScreen);
-	    mobileScreen.type(null,"motech",0);
+	    mobileScreen.paste(null,"motech");
 	    mobileScreen.click(btnDownArrow,0);
-	    mobileScreen.type(null,"ghs",0);
+	    mobileScreen.paste(null,"ghs");
 		mobileScreen.click(btnRight,0);
 	    mobileScreen.exists(mainMenuScreen);
 	    
@@ -63,19 +63,6 @@ String btnWindows = "img/btnWindows.png" ;
 	     mobileScreen.click(btnEnter,0);
 	     
 	     //Connection setting 
-	     
-	     for (int i=0;i<70;i++)
-	     {
-	    	 mobileScreen.click(btnBackspace, 0);
-	     }
-	     mobileScreen.type(null,"http://localhost:8080/motech-mobile-webapp/formdownload",0);
-	     mobileScreen.click(btnDownArrow,0);
-	     
-	     for (int i=0;i<70;i++)
-	     {
-	    	 mobileScreen.click(btnBackspace, 0);
-	     }
-	     mobileScreen.type(null,"http://localhost:8080/motech-mobile-webapp/formupload",0);
 	     mobileScreen.click(btnRight,0);
 	     mobileScreen.find(expectedConnectionSetting);
 	    
@@ -93,8 +80,9 @@ String btnWindows = "img/btnWindows.png" ;
 	}
 	
 	public void inputTextbox(String str) throws FindFailed{
+        System.out.println(str);
 		mobileScreen.click(btnEnter,0);
-        mobileScreen.type(null,str,0);
+        mobileScreen.paste(mobileScreen,str);
         mobileScreen.click(btnRight,0);
 	}
 	
@@ -229,7 +217,7 @@ String btnWindows = "img/btnWindows.png" ;
          default: System.out.println("Given TT values does not exist");break;
 	                     
 	     }
-   }
+    }
 	public void selectRegMode(regModeValues str) throws FindFailed{
 	     regModeValues reg = str ;
 
@@ -240,7 +228,7 @@ String btnWindows = "img/btnWindows.png" ;
              mobileScreen.click(btnRight,0);break;
          default: System.out.println("Given Reg_mode value does not exist");break; 
 	     }
-  }
+    }
 	public void selectDOBType(DOBTypes str) throws FindFailed{
 	     DOBTypes dobType = str ;
 	    
@@ -352,5 +340,49 @@ String btnWindows = "img/btnWindows.png" ;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		java.util.Date d = sdf.parse(date);
 		return d;
+	}
+    public void loginConnectAndDownloadFormOutdated() throws FindFailed {
+
+		// Login into the Motech app
+	    mobileScreen.click(btnRight,0);
+	    mobileScreen.find(loginScreen);
+	    mobileScreen.type(null,"motech",0);
+	    mobileScreen.click(btnDownArrow,0);
+	    mobileScreen.type(null,"ghs",0);
+		mobileScreen.click(btnRight,0);
+	    mobileScreen.exists(mainMenuScreen);
+
+		// Down load Nurse Data EntryStudy
+	     mobileScreen.click(btnUpArrow,0);
+	     mobileScreen.click(btnEnter,0);
+
+	     //Connection setting
+
+	     for (int i=0;i<70;i++)
+	     {
+	    	 mobileScreen.click(btnBackspace, 0);
+	     }
+	     mobileScreen.type(null,"http://localhost:8080/motech-mobile-webapp/formdownload",0);
+	     mobileScreen.click(btnDownArrow,0);
+
+	     for (int i=0;i<70;i++)
+	     {
+	    	 mobileScreen.click(btnBackspace, 0);
+	     }
+	     mobileScreen.type(null,"http://localhost:8080/motech-mobile-webapp/formupload",0);
+	     mobileScreen.click(btnRight,0);
+	     mobileScreen.find(expectedConnectionSetting);
+
+	     mobileScreen.click(btnRight,0);
+
+	     // Selecting Nurse Data Entry Study and Form
+	     mobileScreen.wait(selectStudyScreen,20000);
+
+        // mobileScreen.find(selectStudyScreen);
+         mobileScreen.click(btnRight,0);
+         mobileScreen.click(btnDownArrow,0);
+         mobileScreen.click(btnRight,0);
+
+         mobileScreen.wait(imgNurseDataEntryFormScreen,5000);
 	}
 }

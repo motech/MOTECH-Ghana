@@ -4,7 +4,7 @@ import java.text.ParseException;
 
 public class CareHistoryForm extends SikuliBaseClass{
 	
-	public void care_history_form_with_itp_value(String staff_id,String facility_id,String date,String Motech_id,IPTValues ipt, String last_ipt_date )throws ParseException {
+	public void careHistoryFormWithItpValue(String staff_id, String facility_id, String date, String Motech_id, IPTValues ipt, String last_ipt_date)throws ParseException {
 		try {
 			// selecting form 
 			selectForm(FormName.CARE_HISTORY);
