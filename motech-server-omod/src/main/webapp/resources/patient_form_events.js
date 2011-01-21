@@ -13,7 +13,7 @@ function onPhoneOwnershipSelection() {
 }
 
 function setGenderAsFemaleIfPatientIsPregnantMother() {
-    hideOptionAndSetBusinessDefault($('#sex'), "MALE", "FEMALE", isPatientPregnantMother)
+    hideOptionAndSetBusinessDefault($('#sex'),"FEMALE", isPatientPregnantMother)
 }
 
 function hidePregnancyRegistrationIfPatientIsNotPregnantMother() {
@@ -44,19 +44,17 @@ function hideDayOfWeekAndTimeOfDayFieldsIfMessageFormatSelectedIsText() {
 }
 
 function setVoiceOptionIfPhoneOwnershipIsPublic() {
-    hideOptionAndSetBusinessDefault($('#mediaType'), "TEXT", "VOICE", isPublicPhone);
+    hideOptionAndSetBusinessDefault($('#mediaType'),"VOICE", isPublicPhone);
 }
 
-function hideOptionAndSetBusinessDefault(comboBox, valueToHide, valueToSet, predicate) {
-    var options = $(comboBox).children();
-    var optionToHide = getOptionWithValue(options, valueToHide);
+function hideOptionAndSetBusinessDefault(comboBox,valueToSet, predicate) {
     if (predicate()) {
-        hide(optionToHide);
-        comboBox.val(valueToSet);
+        $(comboBox).val(valueToSet);
+        $(comboBox).attr('disabled', 'disabled');
         return;
     }
-    show(optionToHide);
     comboBox.val("");
+    $(comboBox).removeAttr('disabled');
 }
 
 function getOptionWithValue(options, val) {
