@@ -41,6 +41,7 @@
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css" />
 
 <openmrs:htmlInclude file="/dwr/util.js" />
+<openmrs:htmlInclude file="/moduleResources/motechmodule/patient_form_events.js" />
 <%@ include file="/WEB-INF/view/module/motechmodule/dynamic-dropdowns-script.jsp"%>
 
 <meta name="heading" content="Edit Patient" />
@@ -201,7 +202,7 @@
 	<tr>
 		<td class="labelcolumn"><label for="phoneType">Phone Ownership:</label></td>
 		<td>
-			<form:select path="phoneType">
+			<form:select path="phoneType" onchange="onPhoneOwnershipSelection()">
 				<form:option value="" label="Select Value" />
 				<form:option value="PERSONAL" label="Personal phone" />
 				<form:option value="HOUSEHOLD" label="Owned by household" />
@@ -213,7 +214,7 @@
 	<tr>
 		<td class="labelcolumn"><label for="mediaType">Message Format:</label></td>
 		<td>
-			<form:select path="mediaType">
+			<form:select path="mediaType" onchange="onMediaTypeSelection()">
 				<form:option value="" label="Select Value" />
 				<form:option value="TEXT" label="Text" />
 				<form:option value="VOICE" label="Voice" />
