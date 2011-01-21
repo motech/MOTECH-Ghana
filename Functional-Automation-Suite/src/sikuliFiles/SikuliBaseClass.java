@@ -80,12 +80,17 @@ String btnWindows = "img/btnWindows.png" ;
 	}
 	
 	public void inputTextbox(String str) throws FindFailed{
-        System.out.println(str);
-		mobileScreen.click(btnEnter,0);
+        mobileScreen.click(btnEnter,0);
         mobileScreen.paste(mobileScreen,str);
         mobileScreen.click(btnRight,0);
 	}
-	
+
+    public void inputStaffId(String str) throws FindFailed{
+        mobileScreen.click(btnEnter,0);
+        mobileScreen.type(mobileScreen,str,0);
+        mobileScreen.click(btnRight,0);
+	}
+
 	
 	public void saveMform()throws FindFailed{
 		mobileScreen.click(btnRight,0);

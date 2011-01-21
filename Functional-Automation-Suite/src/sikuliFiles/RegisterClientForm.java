@@ -21,7 +21,7 @@ public class RegisterClientForm extends SikuliBaseClass {
          //1.Entering the staff id 
           inputTextbox(staffId);
          //2. Filling the facilityId
-          inputTextbox(facilityId);
+          inputStaffId(facilityId);
          
          //3. Registration date  
          selectDate(stringToDateConvertor(regDate));

@@ -11,7 +11,7 @@ public class CareHistoryForm extends SikuliBaseClass{
 			
 			 //Entering values in TT_Non_Pregnant form 
 	         //1. filling the staff id
-	          inputTextbox(staff_id);
+	          inputStaffId(staff_id);
 	         
 	          //2. Filling the facility_id 
 	          inputTextbox(facility_id);
