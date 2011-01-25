@@ -8,7 +8,7 @@ public class TTNonPregnantForm extends SikuliBaseClass{
 	{ 
       try {
 	     // selecting the TT_Non_pregnant form
-    	  selectForm(FormName.TT_NON_PREGNANT);
+         selectForm(FormName.TT_NON_PREGNANT);
           
          //Entering values in TT_Non_Pregnant form 
          //1. filling the staff id

@@ -11,7 +11,7 @@ public class RegisterClientForm extends SikuliBaseClass {
 
 	 String registerClientScreen = "expected_img/imgRegisterClientScreen.png";
 	  
-	public void registerNonInsuredClient(String staffId, String facilityId, String regDate, String regPhoneNo, clientTypes clientType, String firstName, String middleName, String lastName, String preferredName, String DOB, DOBTypes DOBType) throws ParseException{
+	public void registerNonInsuredPregnantMother(String staffId, String facilityId, String regDate, String regPhoneNo, clientTypes clientType, String firstName, String middleName, String lastName, String preferredName, String DOB, DOBTypes DOBType) throws ParseException{
 				 		
       try{  
     	  // selecting the Register-client form
@@ -63,7 +63,8 @@ public class RegisterClientForm extends SikuliBaseClass {
         selectSubDistrictKND(SubDistrictKND.CENTRAL_EAST);
         
         // 16. Filling the community as Abempingu A
-        inputRadioButton(1);
+        mobileScreen.click(btnEnter,0);
+        inputRadioButton(2);
         mobileScreen.click(btn_right,0);
         
         //17. Filling the Address
@@ -71,23 +72,20 @@ public class RegisterClientForm extends SikuliBaseClass {
                 
         //18. Filling the contact phone No
         inputTextbox("0123456789");
-        
-        //19. Filling expected Delivery date as 9 month hence the registration date
-        
-         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		 java.util.Date d = sdf.parse(regDate);
-		 Calendar cal=Calendar.getInstance();
-	     cal.setTime(d);
-	     cal.add(Calendar.MONTH, 9);
-		 System.out.println(cal.getTime());
-		 selectDate(cal.getTime());
-               
+
+        //19. Filling EDD as current Date
+        Calendar cal=Calendar.getInstance();
+        cal.add(Calendar.DATE,1);
+	    selectDate(cal.getTime());
+
          //20. Delivery Date confirmed by CHW
+         mobileScreen.click(btnEnter,0);
 		 inputRadioButton(1);
 		 mobileScreen.click(btn_right,0);
         
         //21. Join mobile midwife as no
-		 inputRadioButton(2);
+		 mobileScreen.click(btnEnter,0);
+         inputRadioButton(2);
 		 mobileScreen.click(btn_right,0);
 		 
 		//22. Saving the form
@@ -104,4 +102,15 @@ public class RegisterClientForm extends SikuliBaseClass {
          
 }
 
+/*
+//19. Filling expected Delivery date as 9 month hence the registration date
+
+         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		 java.util.Date d = sdf.parse(regDate);
+		 Calendar cal=Calendar.getInstance();
+	     cal.setTime(d);
+	     cal.add(Calendar.MONTH, 9);
+		 System.out.println(cal.getTime());
+		 selectDate(cal.getTime());
+*/
 

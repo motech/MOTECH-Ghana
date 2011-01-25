@@ -6,7 +6,9 @@ public class CareHistoryForm extends SikuliBaseClass{
 	
 	public void careHistoryFormWithItpValue(String staff_id, String facility_id, String date, String Motech_id, IPTValues ipt, String last_ipt_date)throws ParseException {
 		try {
-			// selecting form 
+			// selecting form
+            String loginScreen = "expected_img/imgLoginScreen.png";
+            imgExist(loginScreen,2.00);
 			selectForm(FormName.CARE_HISTORY);
 			
 			 //Entering values in TT_Non_Pregnant form 
