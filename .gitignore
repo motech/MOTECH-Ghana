@@ -11,5 +11,5 @@ maven-eclipse.xml
 *.class
 out/
 Error_log/
-
+test-output/
 
