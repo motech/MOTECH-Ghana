@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import org.testng.*;
 import WebdriverFiles.RegisterStaff;
 import sikuliFiles.SikuliBaseClass;
-import sikuliFiles.TTNonPergnantForm;
+import sikuliFiles.TTNonPregnantForm;
 
 import java.text.ParseException;
 
@@ -20,7 +20,7 @@ public class RegisterStaffAndFillTTNonPregnantForm {
 			WebElement strStaffId = regStaff.createNewStaff();
 			Assert.assertTrue(strStaffId.getText().contains("Added user: Name ="));
 			String staffId = regStaff.extractStaffId(strStaffId);
-            TTNonPergnantForm obj1 = new TTNonPergnantForm();
+            TTNonPregnantForm obj1 = new TTNonPregnantForm();
             String facilityId = "11117";
             String date = "10/12/2010";
             String motechId ="1234568";

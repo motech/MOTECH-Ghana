@@ -21,7 +21,7 @@ public class RegNewPatientTest {
 	String lastName ="1";
 	String preferredName = "preferred";
 	String DOB ="1/1/1994";
-    obj.registerNonInsuredClient(staffId, facilityId, regDate, regPhoneNo, clientTypes.PREGNANT_MOTHER, firstName, middleName, lastName, preferredName, DOB, DOBTypes.EXACT_DOB);
+    obj.registerNonInsuredPregnantMother(staffId, facilityId, regDate, regPhoneNo, clientTypes.PREGNANT_MOTHER, firstName, middleName, lastName, preferredName, DOB, DOBTypes.EXACT_DOB);
 		
 	}
 

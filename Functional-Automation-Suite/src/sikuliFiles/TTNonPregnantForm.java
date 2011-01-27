@@ -2,17 +2,17 @@ package sikuliFiles;
 import java.text.ParseException;
 import org.sikuli.script.FindFailed;
 
-public class TTNonPergnantForm extends SikuliBaseClass{
+public class TTNonPregnantForm extends SikuliBaseClass{
 
     public void Fill_TT_Non_Pregnant_Form(String staffId, String facilityId,String date,String motechId, TTValues str) throws ParseException
 	{ 
       try {
 	     // selecting the TT_Non_pregnant form
-    	  selectForm(FormName.TT_NON_PREGNANT);
+         selectForm(FormName.TT_NON_PREGNANT);
           
          //Entering values in TT_Non_Pregnant form 
          //1. filling the staff id
-          inputTextbox(staffId);
+          inputStaffId(staffId);
          
           //2. Filling the facility_id 
           inputTextbox(facilityId);
@@ -24,7 +24,6 @@ public class TTNonPergnantForm extends SikuliBaseClass{
           inputTextbox(motechId);
           
          // 5. Filling the TT value as TT1
-          
           selectTTValues(str);
                    
           //6. Saving the form

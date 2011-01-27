@@ -1,12 +1,22 @@
 package sikuliFiles;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.ObjectUtils;
+import org.junit.Test;
 import org.sikuli.script.FindFailed;
+
+import java.awt.*;
+import java.io.*;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.sikuli.script.Match;
 import org.sikuli.script.Screen;
-import java.util.Calendar;
+import org.sikuli.script.ScreenImage;
+import org.testng.reporters.ExitCodeListener;
+import sun.util.resources.CalendarData_el;
 
+import java.util.Calendar;
 
 
 public class SikuliBaseClass {
@@ -51,36 +61,22 @@ String btnWindows = "img/btnWindows.png" ;
 		
 		// Login into the Motech app
 	    mobileScreen.click(btnRight,0);
-	    mobileScreen.find(loginScreen);
-	    mobileScreen.type(null,"motech",0);
-	    mobileScreen.click(btnDownArrow,0);
-	    mobileScreen.type(null,"ghs",0);
-		mobileScreen.click(btnRight,0);
-	    mobileScreen.exists(mainMenuScreen);
-	    
+        if (imgExist(loginScreen,5.00)){
+            mobileScreen.type(null,"motech",0);
+            mobileScreen.click(btnDownArrow,0);
+            mobileScreen.type(null,"ghs",0);
+            mobileScreen.click(btnRight,0);
+        }
 		// Down load Nurse Data EntryStudy 
-	     mobileScreen.click(btnUpArrow,0);
-	     mobileScreen.click(btnEnter,0);
-	     
+	    if (imgExist(mainMenuScreen,5.00)){
+            mobileScreen.click(btnUpArrow,0);
+            mobileScreen.click(btnEnter,0);
+            mobileScreen.click(btnRight,0);
+        }
 	     //Connection setting 
-	     
-	     for (int i=0;i<70;i++)
-	     {
-	    	 mobileScreen.click(btnBackspace, 0);
-	     }
-	     mobileScreen.type(null,"http://localhost:8080/motech-mobile-webapp/formdownload",0);
-	     mobileScreen.click(btnDownArrow,0);
-	     
-	     for (int i=0;i<70;i++)
-	     {
-	    	 mobileScreen.click(btnBackspace, 0);
-	     }
-	     mobileScreen.type(null,"http://localhost:8080/motech-mobile-webapp/formupload",0);
-	     mobileScreen.click(btnRight,0);
-	     mobileScreen.find(expectedConnectionSetting);
-	    
-	     mobileScreen.click(btnRight,0);
-	     
+	    if(imgExist(expectedConnectionSetting,5.00)){
+	        mobileScreen.click(btnRight,0);
+        }
 	     // Selecting Nurse Data Entry Study and Form
 	     mobileScreen.wait(selectStudyScreen,20000);
 	     
@@ -88,16 +84,21 @@ String btnWindows = "img/btnWindows.png" ;
          mobileScreen.click(btnRight,0);
          mobileScreen.click(btnDownArrow,0);
          mobileScreen.click(btnRight,0);
-        
          mobileScreen.wait(imgNurseDataEntryFormScreen,5000);
 	}
 	
 	public void inputTextbox(String str) throws FindFailed{
-		mobileScreen.click(btnEnter,0);
-        mobileScreen.type(null,str,0);
+        mobileScreen.click(btnEnter,0);
+        mobileScreen.paste(mobileScreen,str);
         mobileScreen.click(btnRight,0);
 	}
-	
+
+    public void inputStaffId(String str) throws FindFailed{
+        mobileScreen.click(btnEnter,0);
+        mobileScreen.type(mobileScreen,str,0);
+        mobileScreen.click(btnRight,0);
+	}
+
 	
 	public void saveMform()throws FindFailed{
 		mobileScreen.click(btnRight,0);
@@ -119,15 +120,16 @@ String btnWindows = "img/btnWindows.png" ;
          
          // 8. Uploading the form
          mobileScreen.click(btnRight,0);
-         mobileScreen.find(imgSuccessfullyUploadedDataMessage);
-         mobileScreen.click(btnRight,0);
+         if(imgExist(imgSuccessfullyUploadedDataMessage,5.00)){
+           mobileScreen.click(btnRight,0);
+         }
 	}
+
 	public void selectDate(Date date)throws FindFailed, ParseException{
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		java.util.Date td = sdf.parse(sdf.format(Calendar.getInstance().getTime()));
-		System.out.println(td);
-	    @SuppressWarnings("deprecation")
+		@SuppressWarnings("deprecation")
 		int y =  date.getYear()-td.getYear();
 		@SuppressWarnings("deprecation")
 		int m =  date.getMonth()- td.getMonth();
@@ -229,7 +231,7 @@ String btnWindows = "img/btnWindows.png" ;
          default: System.out.println("Given TT values does not exist");break;
 	                     
 	     }
-   }
+    }
 	public void selectRegMode(regModeValues str) throws FindFailed{
 	     regModeValues reg = str ;
 
@@ -240,7 +242,7 @@ String btnWindows = "img/btnWindows.png" ;
              mobileScreen.click(btnRight,0);break;
          default: System.out.println("Given Reg_mode value does not exist");break; 
 	     }
-  }
+    }
 	public void selectDOBType(DOBTypes str) throws FindFailed{
 	     DOBTypes dobType = str ;
 	    
@@ -286,10 +288,10 @@ String btnWindows = "img/btnWindows.png" ;
          case Vit_A: mobileScreen.click(btnEnter,0);inputRadioButton(3); mobileScreen.click(btnRight,0);break;
          case IPTi: mobileScreen.click(btnEnter,0);inputRadioButton(4); mobileScreen.click(btnRight,0);break;
          case BCG: mobileScreen.click(btnEnter,0);inputRadioButton(5); mobileScreen.click(btnRight,0);break;
-         case OPV: mobileScreen.click(btnEnter,0);inputRadioButton(5); mobileScreen.click(btnRight,0);break;
-         case PENTA: mobileScreen.click(btnEnter,0);inputRadioButton(5); mobileScreen.click(btnRight,0);break;
-         case MEASLES: mobileScreen.click(btnEnter,0);inputRadioButton(5); mobileScreen.click(btnRight,0);break;
-         case YF: mobileScreen.click(btnEnter,0);inputRadioButton(5); mobileScreen.click(btnRight,0);break;
+         case OPV: mobileScreen.click(btnEnter,0);inputRadioButton(6); mobileScreen.click(btnRight,0);break;
+         case PENTA: mobileScreen.click(btnEnter,0);inputRadioButton(7); mobileScreen.click(btnRight,0);break;
+         case MEASLES: mobileScreen.click(btnEnter,0);inputRadioButton(8); mobileScreen.click(btnRight,0);break;
+         case YF: mobileScreen.click(btnEnter,0);inputRadioButton(9); mobileScreen.click(btnRight,0);break;
          default: System.out.println("Given Add_History values does not exist");break; 
 	   }
     }
@@ -326,15 +328,15 @@ String btnWindows = "img/btnWindows.png" ;
              mobileScreen.click(btnRight,0);break;
 	     case CENTRAL_NORTH: mobileScreen.click(btnEnter,0);inputRadioButton(2);
              mobileScreen.click(btnRight,0);break;
-	     case CENTRAL_NAVRONGO: mobileScreen.click(btnEnter,0);inputRadioButton(2);
+	     case CENTRAL_NAVRONGO: mobileScreen.click(btnEnter,0);inputRadioButton(3);
              mobileScreen.click(btnRight,0);break;
-	     case CENTRAL_NORTH_EAST: mobileScreen.click(btnEnter,0);inputRadioButton(2);
+	     case CENTRAL_NORTH_EAST: mobileScreen.click(btnEnter,0);inputRadioButton(4);
              mobileScreen.click(btnRight,0);break;
-	     case CENTRAL_SOUTH: mobileScreen.click(btnEnter,0);inputRadioButton(2);
+	     case CENTRAL_SOUTH: mobileScreen.click(btnEnter,0);inputRadioButton(5);
              mobileScreen.click(btnRight,0);break;
-	     case CENTRAL_WEST: mobileScreen.click(btnEnter,0);inputRadioButton(2);
+	     case CENTRAL_WEST: mobileScreen.click(btnEnter,0);inputRadioButton(6);
              mobileScreen.click(btnRight,0);break;
-         default: System.out.println("Given subdistrict does not exist");break; 
+         default: System.out.println("Given sub-district does not exist");break;
 	     }
 	}
 	
@@ -353,4 +355,81 @@ String btnWindows = "img/btnWindows.png" ;
 		java.util.Date d = sdf.parse(date);
 		return d;
 	}
+
+    public boolean imgExist(String str, Double sec){
+        if (mobileScreen.exists(str,sec)!= null)
+        {System.out.println(str + "was Found");
+        return true;}
+        else
+        {System.out.println(str + "was Not Found");
+         ScreenImage errorImg = screen.capture(mobileScreen);
+         logger(errorImg);
+         return false;
+        }
+    }
+
+    public void logger(ScreenImage errorImg){
+        try {
+             System.out.println(errorImg.getFilename());
+             String str = errorImg.getFilename();
+             copyFile(str);
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    public void copyFile(String str) throws IOException {
+        File inputFile = new File(str);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
+        String date = sdf.format(Calendar.getInstance().getTime());
+        File outputFile = new File("C:\\Users\\rupeshd\\MOTECH\\Functional-Automation-Suite\\Error_log\\Error"+date+".png");
+        FileUtils.copyFile(inputFile,outputFile);
+    }
+
 }
+
+/*public void loginConnectAndDownloadFormOutdated() throws FindFailed {
+
+		// Login into the Motech app
+	    mobileScreen.click(btnRight,0);
+	    mobileScreen.find(loginScreen);
+	    mobileScreen.type(null,"motech",0);
+	    mobileScreen.click(btnDownArrow,0);
+	    mobileScreen.type(null,"ghs",0);
+		mobileScreen.click(btnRight,0);
+	    mobileScreen.exists(mainMenuScreen);
+
+		// Down load Nurse Data EntryStudy
+	     mobileScreen.click(btnUpArrow,0);
+	     mobileScreen.click(btnEnter,0);
+
+	     //Connection setting
+
+	     for (int i=0;i<70;i++)
+	     {
+	    	 mobileScreen.click(btnBackspace, 0);
+	     }
+	     mobileScreen.type(null,"http://localhost:8080/motech-mobile-webapp/formdownload",0);
+	     mobileScreen.click(btnDownArrow,0);
+
+	     for (int i=0;i<70;i++)
+	     {
+	    	 mobileScreen.click(btnBackspace, 0);
+	     }
+	     mobileScreen.type(null,"http://localhost:8080/motech-mobile-webapp/formupload",0);
+	     mobileScreen.click(btnRight,0);
+	     mobileScreen.find(expectedConnectionSetting);
+
+	     mobileScreen.click(btnRight,0);
+
+	     // Selecting Nurse Data Entry Study and Form
+	     mobileScreen.wait(selectStudyScreen,20000);
+
+        // mobileScreen.find(selectStudyScreen);
+         mobileScreen.click(btnRight,0);
+         mobileScreen.click(btnDownArrow,0);
+         mobileScreen.click(btnRight,0);
+         mobileScreen.wait(imgNurseDataEntryFormScreen,5000);
+	}
+	*/
