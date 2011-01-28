@@ -1,19 +1,34 @@
 function onPatientTypeSelection() {
-    hidePregnancyRegistrationIfPatientIsNotPregnantMother();
-    setGenderAsFemaleIfPatientIsPregnantMother();
-    hideMothersMotechIdFieldIfPatientIsNotChild();
+    if (hasNonEmptySelection($j('#registrantType'))) {
+        hidePregnancyRegistrationIfPatientIsNotPregnantMother();
+        setGenderAsFemaleIfPatientIsPregnantMother();
+        hideMothersMotechIdFieldIfPatientIsNotChild();
+    }
 }
 
 function onMediaTypeSelection() {
-    hideDayOfWeekAndTimeOfDayFieldsIfMessageFormatSelectedIsText();
+    if (hasNonEmptySelection($j('#mediaType'))) {
+        hideDayOfWeekAndTimeOfDayFieldsIfMessageFormatSelectedIsText();
+    }
 }
 
 function onPhoneOwnershipSelection() {
-    setVoiceOptionIfPhoneOwnershipIsPublic();
+    if (hasNonEmptySelection($j('#phoneType'))) {
+        setVoiceOptionIfPhoneOwnershipIsPublic();
+    }
 }
 
 function setGenderAsFemaleIfPatientIsPregnantMother() {
-    hideOptionAndSetBusinessDefault($j('#sex'), "FEMALE", "MALE", isPatientPregnantMother)
+    var gender = $j('#sex');
+    if (isPatientPregnantMother()) {
+        gender.val("FEMALE");
+        var male = getOptionWithValue(gender.children(), "MALE");
+        $j(male).remove();
+    } else {
+        if (!optionExists(gender, "MALE")) {
+            gender.append('<option value="MALE">Male</option>');
+        }
+    }
 }
 
 function hidePregnancyRegistrationIfPatientIsNotPregnantMother() {
@@ -44,20 +59,39 @@ function hideDayOfWeekAndTimeOfDayFieldsIfMessageFormatSelectedIsText() {
 }
 
 function setVoiceOptionIfPhoneOwnershipIsPublic() {
-    hideOptionAndSetBusinessDefault($j('#mediaType'), "VOICE", "TEXT", isPublicPhone);
+    var media = $j('#mediaType');
+    if (isPublicPhone()) {
+        media.val("VOICE");
+        var textOption = getOptionWithValue(media.children(), "TEXT");
+        $j(textOption).remove();
+    } else {
+        if (!optionExists(media, "TEXT")) {
+            media.append('<option value="TEXT">Text</option>');
+        }
+    }
 }
 
-function hideOptionAndSetBusinessDefault(comboBox, valueToSet, valueToRemove, predicate) {
-    var optionToSelect = getOptionWithValue($j(comboBox).children(), valueToSet);
-    var optionToRemove = getOptionWithValue($j(comboBox).children(), valueToRemove);
-    if (predicate()) {
-        $j(optionToSelect).attr('selected', 'selected');
-        $j(optionToRemove).hide();
+function toggleOptions(comboBox, optionToSet, optionToToggle, shouldSetNewValue) {
+    if (shouldSetNewValue()) {
+        $j(comboBox).val($j(optionToSet).val());
+        var optionToRemove = getOptionWithValue($j(comboBox).children(), $j(optionToToggle).val());
+        $j(optionToRemove).remove();
     } else {
-        comboBox.val("");
-        $j(optionToSelect).removeAttr('selected');
-        $j(optionToRemove).show();
+        if (!optionExists(comboBox, $j(optionToToggle).val())) {
+            var options = $j(comboBox).attr('options');
+            options[options.length] = new Option($j(optionToToggle).text(), $j(optionToToggle).val(), true, true);
+        }
     }
+}
+
+function optionExists(comboBox, value) {
+    var found = false;
+    $j(comboBox).children().each(function(index, ele) {
+        if ($j(ele).val() == value) {
+            found = true;
+        }
+    });
+    return found;
 }
 
 function getOptionWithValue(options, val) {
@@ -95,6 +129,10 @@ function isPatientChildUnderFive() {
 
 function isSelectedMediaTypeText() {
     return $j('#mediaType').val() == "TEXT";
+}
+
+function hasNonEmptySelection(comboBox) {
+    return $j(comboBox).val() != "";
 }
 
 

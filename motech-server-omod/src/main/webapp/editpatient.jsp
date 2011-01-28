@@ -44,7 +44,6 @@
 <script type="text/javascript">
     var $j = jQuery.noConflict();
     $j(document).ready(function() {
-        onPatientTypeSelection();
         onPhoneOwnershipSelection();
         onMediaTypeSelection();
     });
