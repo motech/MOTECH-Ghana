@@ -243,6 +243,11 @@ public class PatientController extends BasePatientController {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "enroll",
 				"motechmodule.enroll.required");
 
+        if(patient.getBirthDate() != null){
+            if(patient.getBirthDate().after(Calendar.getInstance().getTime())){
+                errors.rejectValue("birthDate", "motechmodule.birthdate.future");
+            }
+        }
 		if (Boolean.TRUE.equals(patient.getEnroll())) {
 			if (!Boolean.TRUE.equals(patient.getConsent())) {
 				errors.rejectValue("consent", "motechmodule.consent.required");
