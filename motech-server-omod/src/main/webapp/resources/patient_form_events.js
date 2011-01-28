@@ -20,15 +20,10 @@ function onPhoneOwnershipSelection() {
 
 function setGenderAsFemaleIfPatientIsPregnantMother() {
     var gender = $j('#sex');
-    if (isPatientPregnantMother()) {
-        gender.val("FEMALE");
-        var male = getOptionWithValue(gender.children(), "MALE");
-        $j(male).remove();
-    } else {
-        if (!optionExists(gender, "MALE")) {
-            gender.append('<option value="MALE">Male</option>');
-        }
-    }
+    var female = new Option("Female", "FEMALE");
+    var male = new Option("Male", "MALE");
+    male.html = '<option value="MALE">Male</option>';
+    toggleOptions(gender, female, male, isPatientPregnantMother);
 }
 
 function hidePregnancyRegistrationIfPatientIsNotPregnantMother() {
@@ -60,15 +55,11 @@ function hideDayOfWeekAndTimeOfDayFieldsIfMessageFormatSelectedIsText() {
 
 function setVoiceOptionIfPhoneOwnershipIsPublic() {
     var media = $j('#mediaType');
-    if (isPublicPhone()) {
-        media.val("VOICE");
-        var textOption = getOptionWithValue(media.children(), "TEXT");
-        $j(textOption).remove();
-    } else {
-        if (!optionExists(media, "TEXT")) {
-            media.append('<option value="TEXT">Text</option>');
-        }
-    }
+    var voiceOption = new Option("Voice", "VOICE");
+    var textOption = new Option("Text", "TEXT");
+    textOption.html = '<option value="TEXT">Text</option>';
+    toggleOptions(media, voiceOption, textOption, isPublicPhone);
+    onMediaTypeSelection();
 }
 
 function toggleOptions(comboBox, optionToSet, optionToToggle, shouldSetNewValue) {
@@ -78,8 +69,7 @@ function toggleOptions(comboBox, optionToSet, optionToToggle, shouldSetNewValue)
         $j(optionToRemove).remove();
     } else {
         if (!optionExists(comboBox, $j(optionToToggle).val())) {
-            var options = $j(comboBox).attr('options');
-            options[options.length] = new Option($j(optionToToggle).text(), $j(optionToToggle).val(), true, true);
+            comboBox.append(optionToToggle.html);
         }
     }
 }
