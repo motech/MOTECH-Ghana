@@ -1,10 +1,7 @@
 package sikuliFiles;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.ObjectUtils;
-import org.junit.Test;
 import org.sikuli.script.FindFailed;
 
-import java.awt.*;
 import java.io.*;
 import java.io.IOException;
 import java.text.ParseException;
@@ -13,8 +10,6 @@ import java.util.Date;
 import org.sikuli.script.Match;
 import org.sikuli.script.Screen;
 import org.sikuli.script.ScreenImage;
-import org.testng.reporters.ExitCodeListener;
-import sun.util.resources.CalendarData_el;
 
 import java.util.Calendar;
 
@@ -62,7 +57,7 @@ String btnWindows = "img/btnWindows.png" ;
 		// Login into the Motech app
 	    mobileScreen.click(btnRight,0);
         if (imgExist(loginScreen,5.00)){
-            mobileScreen.type(null,"motech",0);
+            mobileScreen.paste(null,"motech");
             mobileScreen.click(btnDownArrow,0);
             mobileScreen.type(null,"ghs",0);
             mobileScreen.click(btnRight,0);
@@ -183,13 +178,14 @@ String btnWindows = "img/btnWindows.png" ;
 	public enum regModeValues {PRE_PRINTED_ID,AUTOGENRATED_ID};
 	public enum clientTypes {PREGNANT_MOTHER,CHILD_UNDER_5,OTHER};
 	public enum DOBTypes {ESTIMATED_DOB,EXACT_DOB};
-	public enum District {KND, KNW};
-	public enum SubDistrictKND {CENTRAL_EAST,CENTRAL_NAVRONGO,CENTRAL_NORTH,CENTRAL_NORTH_EAST,CENTRAL_SOUTH,CENTRAL_WEST};
-	public enum SubDistrictKNW {NAVIO,KATIU_NAKONG,KAYORO,CHIANA,KANDIGA_KUGURU,SIRIGU,PAGA_CENTRAL,MIRIGU};
+	public enum district {KND, KNW};
+	public enum subDistrictKND {CENTRAL_EAST,CENTRAL_NAVRONGO,CENTRAL_NORTH,CENTRAL_NORTH_EAST,CENTRAL_SOUTH,CENTRAL_WEST};
+	public enum subDistrictKNW {NAVIO,KATIU_NAKONG,KAYORO,CHIANA,KANDIGA_KUGURU,SIRIGU,PAGA_CENTRAL,MIRIGU};
 	public enum insuredType {YES,NO};
 	public enum addHistoryValues {IPT,TT,Vit_A,IPTi,BCG,OPV,PENTA,MEASLES,YF};
 	public enum IPTValues {IPT1,IPT2,IPT3};
-	
+	public enum clientGender{MALE,FEMALE};
+
 	public void selectForm(FormName str) throws FindFailed{
 	     FormName form = str;
 
@@ -254,15 +250,15 @@ String btnWindows = "img/btnWindows.png" ;
          default: System.out.println("Given DOB type value does not exist");break; 
 	     }
 	}	
-	public void selectDistrict(District str) throws FindFailed{
-	     District dist = str ;
+	public void selectDistrict(district str) throws FindFailed{
+	     district dist = str ;
 	    
 	     switch (dist){
 	     case KND: mobileScreen.click(btnEnter,0);inputRadioButton(1);
              mobileScreen.click(btnRight,0);break;
 	     case KNW: mobileScreen.click(btnEnter,0);inputRadioButton(2);
              mobileScreen.click(btnRight,0);break;
-         default: System.out.println("Given District value does not exist");break; 
+         default: System.out.println("Given district value does not exist");break;
 	     }
 	}
 	public void selectTypeOfPatient(clientTypes str) throws FindFailed{
@@ -320,8 +316,8 @@ String btnWindows = "img/btnWindows.png" ;
          default: System.out.println("Given Insured type does not exist");break;
 	     }
 	}
-	public void selectSubDistrictKND(SubDistrictKND str) throws FindFailed{
-	     SubDistrictKND subDir = str ;
+	public void selectSubDistrictKND(subDistrictKND str) throws FindFailed{
+	     subDistrictKND subDir = str ;
 	    
 	     switch (subDir){
 	     case CENTRAL_EAST: mobileScreen.click(btnEnter,0);inputRadioButton(1);
@@ -339,7 +335,18 @@ String btnWindows = "img/btnWindows.png" ;
          default: System.out.println("Given sub-district does not exist");break;
 	     }
 	}
-	
+
+	public void selectGender(clientGender str) throws FindFailed{
+	     clientGender gender = str ;
+
+	     switch (gender){
+	     case MALE: mobileScreen.click(btnEnter,0);inputRadioButton(1);
+             mobileScreen.click(btnRight,0);break;
+	     case FEMALE: mobileScreen.click(btnEnter,0);inputRadioButton(2);
+             mobileScreen.click(btnRight,0);break;
+         default: System.out.println("Given Gender type does not exist");break;
+	     }
+	}
 	
 	public void inputRadioButton(int n)throws FindFailed{
 		 for (int i= 1;i<n;i++)

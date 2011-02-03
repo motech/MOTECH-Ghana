@@ -9,9 +9,15 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 
 public class WebDriverBaseClass {
 	
-	public static WebDriver driver;
-	
-	public WebDriverBaseClass(){
-	driver = new FirefoxDriver();
-	};
+	private static WebDriver driver;
+    
+	private WebDriverBaseClass(){
+	}
+
+    public static WebDriver getInstance(){
+        if(driver == null){
+           driver = new FirefoxDriver(); 
+        }
+        return driver;
+    }
 }
