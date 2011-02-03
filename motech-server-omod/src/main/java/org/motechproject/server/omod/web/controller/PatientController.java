@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import flexjson.JSONSerializer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.Community;
@@ -72,7 +73,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
-@RequestMapping("/module/motechmodule/patient")
 @SessionAttributes("patient")
 public class PatientController extends BasePatientController {
 
@@ -140,7 +140,7 @@ public class PatientController extends BasePatientController {
 		return contextService.getMotechService().getAllCommunities(false);
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/module/motechmodule/patient", method = RequestMethod.GET)
 	public void viewForm(@RequestParam(required = false) Integer id,
 			ModelMap model) {
 
@@ -162,7 +162,7 @@ public class PatientController extends BasePatientController {
 		return webPatient;
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "/module/motechmodule/patient", method = RequestMethod.POST)
 	public String submitForm(@ModelAttribute("patient") WebPatient patient,
 			Errors errors, ModelMap model, SessionStatus status) {
 
@@ -355,6 +355,19 @@ public class PatientController extends BasePatientController {
 		return "/module/motechmodule/patient";
 	}
 
+    @RequestMapping(value = "/module/motechmodule/patient/getMotherInfo.form", method = RequestMethod.GET)
+    public String getMoteherInformation(@RequestParam(required = true) String motechId,
+            ModelMap model) {
+        Patient patient = openmrsBean.getPatientByMotechId(motechId);
+        WebPatient webPatient = new WebPatient();
+        if(patient != null){
+            webModelConverter.patientToWeb(patient, webPatient);
+        }
+        String jsonData = new JSONSerializer().serialize(webPatient);
+        model.addAttribute("patient", jsonData);
+        return "/module/motechmodule/mother_data";
+    }
+    
 	void validateTextLength(Errors errors, String fieldname, String fieldValue,
 			int lengthLimit) {
 

@@ -35,6 +35,7 @@ package org.motechproject.server.omod.web.model;
 
 import java.util.Date;
 
+import flexjson.JSON;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.Gender;
@@ -93,6 +94,7 @@ public class WebPatient {
 		this.id = id;
 	}
 
+    @JSON(include = false)
 	public RegistrationMode getRegistrationMode() {
 		return registrationMode;
 	}
@@ -101,6 +103,7 @@ public class WebPatient {
 		this.registrationMode = registrationMode;
 	}
 
+    @JSON(include = false)
 	public RegistrantType getRegistrantType() {
 		return registrantType;
 	}
@@ -117,6 +120,7 @@ public class WebPatient {
 		this.motechId = motechId;
 	}
 
+    @JSON(include = false)
 	public String getFirstName() {
 		return firstName;
 	}
@@ -125,6 +129,7 @@ public class WebPatient {
 		this.firstName = firstName;
 	}
 
+    @JSON(include = false)
 	public String getMiddleName() {
 		return middleName;
 	}
@@ -141,6 +146,7 @@ public class WebPatient {
 		this.lastName = lastName;
 	}
 
+    @JSON(include = false)
 	public String getPrefName() {
 		return prefName;
 	}
@@ -149,6 +155,7 @@ public class WebPatient {
 		this.prefName = prefName;
 	}
 
+    @JSON(include = false)
 	public Date getBirthDate() {
 		return birthDate;
 	}
@@ -157,9 +164,11 @@ public class WebPatient {
 		this.birthDate = birthDate;
 	}
 
+    @JSON(include = false)
 	public Boolean getBirthDateEst() {
 		return birthDateEst;
 	}
+
 
 	public void setBirthDateEst(Boolean birthDateEst) {
 		this.birthDateEst = birthDateEst;
@@ -189,6 +198,7 @@ public class WebPatient {
 		this.insured = insured;
 	}
 
+    @JSON(include = false)
 	public String getNhis() {
 		return nhis;
 	}
@@ -197,6 +207,7 @@ public class WebPatient {
 		this.nhis = nhis;
 	}
 
+    @JSON(include = false)
 	public Date getNhisExpDate() {
 		return nhisExpDate;
 	}
@@ -245,6 +256,7 @@ public class WebPatient {
 		this.address = address;
 	}
 
+    @JSON(include = false)
 	public Date getDueDate() {
 		return dueDate;
 	}
@@ -253,6 +265,7 @@ public class WebPatient {
 		this.dueDate = dueDate;
 	}
 
+    @JSON(include = false)
 	public Boolean getDueDateConfirmed() {
 		return dueDateConfirmed;
 	}
@@ -261,6 +274,7 @@ public class WebPatient {
 		this.dueDateConfirmed = dueDateConfirmed;
 	}
 
+    @JSON(include = false)
 	public Integer getGravida() {
 		return gravida;
 	}
@@ -269,6 +283,7 @@ public class WebPatient {
 		this.gravida = gravida;
 	}
 
+    @JSON(include = false)
 	public Integer getParity() {
 		return parity;
 	}

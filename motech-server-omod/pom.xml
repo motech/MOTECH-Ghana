@@ -194,7 +194,11 @@
             <artifactId>mockito-all</artifactId>
             <scope>test</scope>
         </dependency>
-	</dependencies>
+        <dependency>
+            <groupId>net.sf.flexjson</groupId>
+            <artifactId>flexjson</artifactId>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<resources>
