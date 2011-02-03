@@ -2,70 +2,49 @@ $j(document).ready(function(){
     $j('#motherMotechId').blur(function(data){
         var motech_id = $j('#motherMotechId').val();
         $j.getJSON("/openmrs/module/motechmodule/patient/getMotherInfo.form",{'motechId': motech_id}, function(data){
-            if(data.lastName != null) {
-                $j('#lastName').val(data.lastName);
-                findDuplicates();
+            set_val_to_html($j('#lastName'), data.lastName, findDuplicates());
+            set_val_to_html($j('#region'), data.region, regionDistrictUpdated);
+            set_val_to_html($j('#district'), data.district, regionDistrictUpdated);
+            set_val_to_html($j("#communityId"), data.communityId, findDuplicates);
+            set_val_to_html($j('#address'), data.address);
+            if (data.consent) {
+                set_val_to_html($j('#consent1'), data.consent.toString());
             }
-            if(data.region != null){
-                $j('#region').val(data.region);
-                regionDistrictUpdated();
+            set_val_to_html($j('#phoneNumber'), data.phoneNumber);
+            set_val_to_html($j('#phoneType'), data.phoneType, onPhoneOwnershipSelection);
+            set_val_to_html($j('#mediaType'), data.mediaType, onMediaTypeSelection);
+            set_val_to_html($j('#language'), data.language);
+            set_val_to_html($j('#dayOfWeek'), data.dayOfWeek);
+            if (data.timeOfDay) {
+                var formatted_date = getFormattedTime(data.timeOfDay);
+                set_val_to_html($j('#timeOfDay'), formatted_date);
             }
-            if(data.district != null){
-                $j('#district').val(data.district);
-                regionDistrictUpdated()
-            }
-            if(data.communityId != null){
-                $j("#communityId").val(data.communityId);
-                findDuplicates();
-            }
-            if(data.address != null){
-                $j('#address').val(data.address);
-            }
-            if(data.enroll != null){
-                $j('#enroll').val(data.enroll.toString());
-            }
-            if(data.consent != null){
-                $j('#consent1').val(data.consent.toString());
-            }
-            if(data.phoneNumber != null){
-                $j('#phoneNumber').val(data.phoneNumber);
-            }
-            if(data.phoneType != null){
-                $j('#phoneType').val(data.phoneType);
-                onPhoneOwnershipSelection();
-            }
-            if(data.mediaType != null){
-                $j('#mediaType').val(data.mediaType);
-                onMediaTypeSelection();
-            }
-            if(data.language != null){
-                $j('#language').val(data.language);
-            }
-            if(data.dayOfWeek != null){
-                $j('#dayOfWeek').val(data.dayOfWeek);
-            }
-            if(data.timeOfDay != null){
-                var date = new Date(data.timeOfDay);
-                var hour = date.getHours().toString();
-                var minutes = date.getMinutes().toString();
-                if(date.getHours() < 10){
-                    hour = "0" + hour;
-                }
-                if(date.getMinutes() < 10){
-                    minutes = "0" + minutes;
-                }
-                var formatted_date = hour + ":" + minutes;
-                $j('#timeOfDay').val(formatted_date);
-            }
-            if(data.interestReason != null){
-                $j('#interestReason').val(data.interestReason);
-            }
-            if(data.howLearned != null){
-                $j('#howLearned').val(data.howLearned);
-            }
-            if(data.messagesStartWeek != null){
-                $j('#messagesStartWeek').val(data.messagesStartWeek);
-            }
+            set_val_to_html($j('#interestReason'), data.interestReason);
+            set_val_to_html($j('#howLearned'), data.howLearned);
+            set_val_to_html($j('#messagesStartWeek'), data.messagesStartWeek);
         });
     });
 });
+
+function set_val_to_html(target,value,handler){
+    if(value){
+        target.val(value);
+        if(handler){
+            handler();
+        }
+    }
+}
+
+function getFormattedTime(timeInMillisecs) {
+    var date = new Date(timeInMillisecs);
+    var hour = date.getHours().toString();
+    var minutes = date.getMinutes().toString();
+    if (date.getHours() < 10) {
+        hour = "0" + hour;
+    }
+    if (date.getMinutes() < 10) {
+        minutes = "0" + minutes;
+    }
+    var formatted_date = hour + ":" + minutes;
+    return formatted_date;
+}
