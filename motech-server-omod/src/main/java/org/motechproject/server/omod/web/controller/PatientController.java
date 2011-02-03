@@ -39,6 +39,7 @@ import java.util.Date;
 import java.util.List;
 
 import flexjson.JSONSerializer;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.Community;
@@ -360,7 +361,7 @@ public class PatientController extends BasePatientController {
             ModelMap model) {
         Patient patient = openmrsBean.getPatientByMotechId(motechId);
         WebPatient webPatient = new WebPatient();
-        if(patient != null){
+        if((patient != null) && (!StringUtils.isBlank(motechId))){
             webModelConverter.patientToWeb(patient, webPatient);
         }
         String jsonData = new JSONSerializer().serialize(webPatient);
