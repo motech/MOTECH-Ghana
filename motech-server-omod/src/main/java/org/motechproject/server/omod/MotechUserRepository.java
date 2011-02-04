@@ -22,16 +22,16 @@ public class MotechUserRepository {
     }
 
     public User newUser(WebStaff webStaff){
-        User user = new User();
+        User user = new User(new Person());
         user.setSystemId(identifierGenerator.generateStaffId());
-        user.setGender(MotechConstants.GENDER_UNKNOWN_OPENMRS);
+        user.getPerson().setGender(MotechConstants.GENDER_UNKNOWN_OPENMRS);
         PersonName name = new PersonName(webStaff.getFirstName(), null, webStaff.getLastName());
         user.addName(name);
 
         if (webStaff.getPhone() != null) {
             PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.
                     getAttributeType(personService);
-            user.addAttribute(new PersonAttribute(phoneNumberAttrType, webStaff.getPhone()));
+            user.getPerson().addAttribute(new PersonAttribute(phoneNumberAttrType, webStaff.getPhone()));
         }
 
         Role role = userService.getRole(OpenmrsConstants.PROVIDER_ROLE);

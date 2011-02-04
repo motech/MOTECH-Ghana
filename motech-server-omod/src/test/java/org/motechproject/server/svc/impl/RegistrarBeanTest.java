@@ -751,7 +751,7 @@ public class RegistrarBeanTest {
         expect(
                 contextService.getMotechService()).andReturn(motechService).atLeastOnce();
         expect(
-                authenticationService.getAuthenticatedUser()).andReturn(new User());
+                authenticationService.getAuthenticatedUser()).andReturn(new User(new Person()));
         expect(
                 patientService
                         .getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
@@ -976,6 +976,9 @@ public class RegistrarBeanTest {
         expect(
                 contextService.getMotechService()).andReturn(motechService)
                 .atLeastOnce();
+        expect(
+                authenticationService.getAuthenticatedUser()).andReturn(new User(new Person()));
+
        
         expect(
                 patientService
@@ -1068,7 +1071,7 @@ public class RegistrarBeanTest {
 
         replay(contextService, patientService, motechService, personService,
                 locationService, userService, encounterService, obsService,
-                conceptService, idService);
+                conceptService, idService, authenticationService);
 
         regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
                 RegistrantType.OTHER, firstName, middleName, lastName,
@@ -1079,7 +1082,7 @@ public class RegistrarBeanTest {
 
         verify(contextService, patientService, motechService, personService,
                 locationService, userService, encounterService, obsService,
-                conceptService, idService);
+                conceptService, idService, authenticationService);
 
         Patient capturedPatient = patientCap.getValue();
         assertEquals(motechId.toString(), capturedPatient.getPatientIdentifier(

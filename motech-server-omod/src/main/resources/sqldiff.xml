@@ -671,23 +671,23 @@
         <sql>
             INSERT INTO
             scheduler_task_config
-            (name,description,schedulable_class,start_time,repeat_interval,start_on_startup,started,created_by,date_created)
+            (name,description,schedulable_class,start_time,repeat_interval,start_on_startup,started,created_by,date_created, uuid)
             VALUES
             ('Immediate Notification Task','Task to send out immediate SMS notifications',
             'org.motechproject.server.omod.tasks.NotificationTask',
-            '2010-08-17 06:29:20', 300, 1, 0, 1, NOW()),
+            '2010-08-17 06:29:20', 300, 1, 0, 1, NOW(), uuid()),
             ('Daily Notification Task','Task to send out SMS notifications for next day',
             'org.motechproject.server.omod.tasks.NotificationTask',
-            '2010-08-17 23:00:00', 86400, 1, 0, 1, NOW()),
+            '2010-08-17 23:00:00', 86400, 1, 0, 1, NOW(), uuid()),
             ('MessageProgram Update Task','Task to update message program state for patients',
             'org.motechproject.server.omod.tasks.MessageProgramUpdateTask',
-            '2010-08-17 06:31:40', 180, 1, 0, 1, NOW()),
+            '2010-08-17 06:31:40', 180, 1, 0, 1, NOW(), uuid()),
             ('Daily Nurse Care Messaging Task','Task to send out staff SMS care messages for day',
             'org.motechproject.server.omod.tasks.StaffCareMessagingTask',
-            '2010-08-17 23:20:00', 86400, 0, 0, 1, NOW()),
+            '2010-08-17 23:20:00', 86400, 0, 0, 1, NOW(), uuid()),
             ('Weekly Nurse Care Messaging Task','Task to send out staff SMS care messages for week',
             'org.motechproject.server.omod.tasks.StaffCareMessagingTask',
-            '2010-08-15 23:40:00', 604800, 0, 0, 1, NOW());
+            '2010-08-15 23:40:00', 604800, 0, 0, 1, NOW(), uuid());
 
             INSERT INTO
             scheduler_task_config_property

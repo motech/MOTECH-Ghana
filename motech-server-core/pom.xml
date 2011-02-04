@@ -31,7 +31,7 @@
 			<artifactId>hibernate</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>openmrs</groupId>
+			<groupId>org.openmrs.api</groupId>
 			<artifactId>openmrs-api</artifactId>
 		</dependency>
 		<dependency>
@@ -65,7 +65,12 @@
 			<artifactId>simple-xml</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

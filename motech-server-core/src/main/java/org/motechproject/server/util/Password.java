@@ -11,15 +11,22 @@ public class Password {
 			'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
 			'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
 			'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
-			'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8',
-			'9', '0' };
+			'W', 'X', 'Y', 'Z'};
+
+    private static char[] PASSDIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
+			'9', '0'};
 
 	public String create(){
         StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < length ; i++) {
+		for (int i = 0; i < length - 2 ; i++) {
 			int charIndex = (int) (Math.random() * PASSCHARS.length);
 			sb.append(PASSCHARS[charIndex]);
 		}
+
+        for(int j = 0; j < 2; j++){
+            int charIndex = (int) (Math.random() * PASSDIGITS.length);
+            sb.append(PASSDIGITS[charIndex]);
+        }
 		return sb.toString();
     }
 }
