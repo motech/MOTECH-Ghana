@@ -160,10 +160,11 @@
         </property>
     </bean>
 
-    <!-- Web Services Section -->
-    <wss:binding url="/ws/RegistrarService" service="#registrarservice"/>
-    <!-- MUST start with /ws/ -->
-    <ws:service id="registrarservice" bean="#registrarWebService"/>
+    <wss:binding url="/ws/RegistrarService">
+        <wss:service>
+            <ws:service bean="#registrarWebService"/>
+        </wss:service>
+    </wss:binding>
 
     <bean id="webserviceModelConverter" class="org.motechproject.server.ws.WebServiceModelConverterImpl">
         <property name="registrarBean" ref="registrarBeanProxy"/>

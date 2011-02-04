@@ -33,7 +33,6 @@
 
 --%>
 
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <openmrs:require privilege="Duplicate Patients" otherwise="/login.htm" redirect="/module/motechmodule/demo.htm"/>
 <%@ include file="/WEB-INF/template/header.jsp" %>
