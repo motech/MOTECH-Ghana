@@ -31,10 +31,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-        <groupId>org.seleniumhq.selenium</groupId>
-        <artifactId>selenium-server</artifactId>
-        <version>2.0b1</version>
-    </dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-server</artifactId>
+            <version>2.0b1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -43,6 +43,131 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <trimStackTrace>false</trimStackTrace>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>unit-tests</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>integration-tests</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Never skip running the tests when the integration-test phase is invoked -->
+                            <skip>false</skip>
+                            <includes>
+                                <!-- Include integration tests within integration-test phase. -->
+                                <include>**/*Test.java</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-openmrs-omod-webapp</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <echo message="${catalina.home}"/>
+                                <echo message="${motech.omod.location}"/>
+                                <delete dir="${catalina.home}\webapps\motech-mobile-webapp"
+                                        failonerror="false"></delete>
+                                <delete file="${catalina.home}\webapps\motech-mobile-webapp.war"
+                                        failonerror="false"></delete>
+                                <delete file="${motech.omod.deploy.location}"
+                                        failonerror="false"></delete>
+                                <copy file="${motech.mobile.webapp.location}"
+                                      tofile="${catalina.home}\webapps\motech-mobile-webapp.war"/>
+                                <copy file="${motech.omod.location}"
+                                      tofile="${motech.omod.deploy.location}"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>start-tomcat</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                            <!--<goal>deployer-deploy</goal>-->
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop-tomcat</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <!--<goal>deployer-undeploy</goal>-->
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- Container configuration -->
+                    <wait>false</wait>
+                    <container>
+                        <containerId>tomcat6x</containerId>
+                        <type>installed</type>
+                        <home>${catalina.home}</home>
+                        <!--<timeout>300000</timeout>-->
+                    </container>
+                    <configuration>
+                        <type>existing</type>
+                        <home>${catalina.home}</home>
+                        <properties>
+                            <cargo.servlet.port>${catalina.port}</cargo.servlet.port>
+                            <cargo.remote.username>${catalina.admin}</cargo.remote.username>
+                            <cargo.remote.password>${catalina.password}</cargo.remote.password>
+                            <cargo.tomcat.manager.url>${catalina.manager.url}</cargo.tomcat.manager.url>
+                        </properties>
+                    </configuration>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>cargo.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
