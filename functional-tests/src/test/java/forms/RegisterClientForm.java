@@ -92,6 +92,7 @@ public class RegisterClientForm extends SikuliBase {
          
          //23. Moving to Main Menu and uploading the form
          traverseToMainMenuAndUploadForm();
+         closeMobileApp();
         
          
       } catch (FindFailed e) {

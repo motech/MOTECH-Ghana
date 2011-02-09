@@ -35,6 +35,8 @@ String successfullySavedMessage = "resources/expected_img/imgSuccessfullySavedMe
 String imgPreUploadDataMessage = "resources/expected_img/imgPreUploadDataMessage.png";
 String imgSuccessfullyUploadedDataMessage = "resources/expected_img/imgSuccessfullyUploadedMessageSingleForm.png";
 String btnWindows = "resources/img/run.png" ;
+String btnCloseMobile = "resources/img/btnCloseMobile.png";
+
     private TestConfiguration testConfiguration;
 
     public SikuliBase(){
@@ -58,6 +60,10 @@ String btnWindows = "resources/img/run.png" ;
 		// Login into the Motech app
 	    mobileScreen.click(btnRight,0);
         if (imgExist(loginScreen,5.00)){
+
+            for (int i = 0; i<6;i++){
+              mobileScreen.click(btnBackspace,0);
+            }
             mobileScreen.paste(null,"motech");
             mobileScreen.click(btnDownArrow,0);
             mobileScreen.type(null,"ghs",0);
@@ -70,9 +76,9 @@ String btnWindows = "resources/img/run.png" ;
             mobileScreen.click(btnRight,0);
         }
 	     //Connection setting 
-	    if(imgExist(expectedConnectionSetting,5.00)){
+	    //if(imgExist(expectedConnectionSetting,5.00)){
 	        mobileScreen.click(btnRight,0);
-        }
+        //}
 	     // Selecting Nurse Data Entry Study and Form
 	     mobileScreen.wait(selectStudyScreen,20000);
 	     
@@ -120,6 +126,10 @@ String btnWindows = "resources/img/run.png" ;
            mobileScreen.click(btnRight,0);
          }
 	}
+
+    public void closeMobileApp()throws FindFailed{
+        mobileScreen.click(btnCloseMobile, 0);
+    }
 
 	public void selectDate(Date date)throws FindFailed, ParseException{
 		

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench version="2.0">
+<workbenchAdvisor/>
+<window height="768" width="1024" x="30" y="30">
+<fastViewData fastViewLocation="1024"/>
+<perspectiveBar/>
+<coolbarLayout locked="0">
+<coolItem id="group.file" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.workbench.file" itemType="typeToolBarContribution" x="80" y="22"/>
+<coolItem id="additions" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.workbench.navigate" itemType="typeToolBarContribution" x="99" y="22"/>
+<coolItem id="group.editor" itemType="typeGroupMarker"/>
+<coolItem id="group.help" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.workbench.help" itemType="typeToolBarContribution" x="-1" y="-1"/>
+</coolbarLayout>
+<page focus="true" label="&lt;Unknown Label&gt; - BIRT Report Designer">
+<editors>
+<editorArea activeWorkbook="DefaultEditorWorkbook">
+<info part="DefaultEditorWorkbook">
+<folder appearance="1" expanded="2">
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+</editorArea>
+</editors>
+<views>
+<view id="org.eclipse.birt.report.designer.ui.attributes.AttributeView" partName="Property Editor">
+<viewState/>
+</view>
+<view id="org.eclipse.birt.report.designer.ui.lib.explorer.view" partName="Resource Explorer"/>
+<view id="org.eclipse.birt.report.designer.ui.views.data.DataView" partName="Data Explorer"/>
+<view id="org.eclipse.gef.ui.palette_view" partName="Palette">
+<viewState/>
+</view>
+<view id="org.eclipse.ui.views.ContentOutline" partName="Outline">
+<viewState/>
+</view>
+</views>
+<perspectives activePart="org.eclipse.gef.ui.palette_view" activePerspective="org.eclipse.birt.report.designer.ui.ReportRCPPerspective">
+<perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
+<descriptor class="org.eclipse.birt.report.designer.ui.ReportRCPPerspective" id="org.eclipse.birt.report.designer.ui.ReportRCPPerspective" label="BIRT Report Designer"/>
+<alwaysOnActionSet id="org.eclipse.ui.cheatsheets.actionSet"/>
+<show_view_action id="org.eclipse.ui.views.ContentOutline"/>
+<show_view_action id="org.eclipse.gef.ui.palette_view"/>
+<show_view_action id="org.eclipse.birt.report.designer.ui.attributes.AttributeView"/>
+<show_view_action id="org.eclipse.birt.report.designer.ui.views.data.DataView"/>
+<show_view_action id="org.eclipse.birt.report.designer.ui.lib.explorer.view"/>
+<show_view_action id="org.eclipse.ui.views.PropertySheet"/>
+<new_wizard_action id="org.eclipse.birt.report.designer.ui.rcp.wizards.NewReportWizard"/>
+<new_wizard_action id="org.eclipse.birt.report.designer.ui.rcp.wizards.NewTemplateWizard"/>
+<new_wizard_action id="org.eclipse.birt.report.designer.ui.rcp.wizards.NewLibraryWizard"/>
+<perspective_action id="org.eclipse.birt.report.designer.ui.ReportRCPPerspective"/>
+<hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
+<view id="org.eclipse.gef.ui.palette_view"/>
+<view id="org.eclipse.birt.report.designer.ui.views.data.DataView"/>
+<view id="org.eclipse.birt.report.designer.ui.lib.explorer.view"/>
+<view id="org.eclipse.ui.views.ContentOutline"/>
+<view id="org.eclipse.birt.report.designer.ui.attributes.AttributeView"/>
+<fastViewBars/>
+<layout>
+<mainWindow>
+<info folder="true" part="topLeft">
+<folder activePageID="org.eclipse.gef.ui.palette_view" appearance="2" expanded="2">
+<page content="org.eclipse.gef.ui.palette_view" label="Palette"/>
+<page content="org.eclipse.birt.report.designer.ui.views.data.DataView" label="Data Explorer"/>
+<page content="org.eclipse.birt.report.designer.ui.lib.explorer.view" label="Resource Explorer"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+<part id="1"/>
+<part id="2"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="stickyFolderRight" ratio="0.749499" ratioLeft="748" ratioRight="250" relationship="2" relative="topLeft">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
+<page content="org.eclipse.ui.cheatsheets.views.CheatSheetView" label="LabelNotFound"/>
+</folder>
+</info>
+<info part="org.eclipse.ui.editorss" ratio="0.25951904" ratioLeft="259" ratioRight="739" relationship="2" relative="topLeft"/>
+<info folder="true" part="bootomRight" ratio="0.6588785" ratioLeft="423" ratioRight="219" relationship="4" relative="org.eclipse.ui.editorss">
+<folder activePageID="org.eclipse.birt.report.designer.ui.attributes.AttributeView" appearance="2" expanded="2">
+<page content="org.eclipse.birt.report.designer.ui.attributes.AttributeView" label="Property Editor"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="bottomLeft" ratio="0.5" ratioLeft="321" ratioRight="321" relationship="4" relative="topLeft">
+<folder activePageID="org.eclipse.ui.views.ContentOutline" appearance="2" expanded="2">
+<page content="org.eclipse.ui.views.ContentOutline" label="Outline"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+</presentation>
+</folder>
+</info>
+</mainWindow>
+</layout>
+</perspective>
+</perspectives>
+<workingSets/>
+<navigationHistory/>
+</page>
+<workbenchWindowAdvisor/>
+<actionBarAdvisor/>
+<trimLayout>
+<trimArea IMemento.internal.id="128">
+<trimItem IMemento.internal.id="org.eclipse.ui.internal.WorkbenchWindow.topBar"/>
+</trimArea>
+<trimArea IMemento.internal.id="1024">
+<trimItem IMemento.internal.id="org.eclipse.jface.action.StatusLineManager"/>
+</trimArea>
+</trimLayout>
+</window>
+<mruList/>
+</workbench>

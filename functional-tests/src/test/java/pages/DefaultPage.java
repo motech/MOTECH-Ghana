@@ -1,7 +1,7 @@
 package pages;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import  org.openqa.selenium.ie.InternetExplorerDriver;
 
 
 public class DefaultPage {
@@ -13,7 +13,7 @@ public class DefaultPage {
 
     public static WebDriver getInstance() {
         if (driver == null) {
-            driver = new FirefoxDriver();
+            driver = new InternetExplorerDriver();
         }
         return driver;
     }

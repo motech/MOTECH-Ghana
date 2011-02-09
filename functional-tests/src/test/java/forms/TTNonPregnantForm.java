@@ -31,6 +31,7 @@ public class TTNonPregnantForm extends SikuliBase {
           
           //7. Moving to Main Menu and uploading the form
           traverseToMainMenuAndUploadForm();
+          closeMobileApp();
        
 	} catch (FindFailed e) {
 		// TODO Auto-generated catch block
