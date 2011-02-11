@@ -1,10 +1,8 @@
 package flows;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
-import pages.HomePageLinksEnum;
-import pages.MoTeCHDashBoardPage;
-import pages.OpenMRSLoginPage;
-import pages.RegisterPatientPage;
+import pages.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,12 +13,18 @@ import pages.RegisterPatientPage;
  */
 public class RegisterMotherViaUIAndSearch {
   @Test
-  public void registerMotherViaUIAndSearch(){
+  public void registerMotherViaUIAndSearch() {
       OpenMRSLoginPage loginPage = new OpenMRSLoginPage();
       loginPage.getOpenMRSDashBoard();
       MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
       moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
       RegisterPatientPage regPatientPage = new RegisterPatientPage();
-      regPatientPage.RegisterMotherClient("Mom","middle","preferred","last","01/01/1980");
+      String lastName = regPatientPage.RegisterMotherClient();
+      ViewDataPage viewDataPage = new ViewDataPage();
+      String patientID = viewDataPage.returnPatientId(lastName);
+      Assert.assertNotNull(patientID,"Patient ID is null");
+      moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.SEARCH);
+      SearchPage searchPage = new SearchPage();
+      Assert.assertTrue(searchPage.searchClientByID(patientID,lastName),"Patient Search failed");
     }
 }

@@ -21,8 +21,9 @@ public enum HomePageLinksEnum {
         this.url = url;
     }
 
-    public void navigate(WebDriver driver){
-        driver.navigate().to(this.url);
+    public void navigate(WebDriver driver)  {
+       driver.navigate().to(this.url);
     }
-
 }
+
+
