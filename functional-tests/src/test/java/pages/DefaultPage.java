@@ -2,6 +2,8 @@ package pages;
 
 import org.openqa.selenium.WebDriver;
 import  org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 
 public class DefaultPage {
@@ -13,7 +15,7 @@ public class DefaultPage {
 
     public static WebDriver getInstance() {
         if (driver == null) {
-            driver = new InternetExplorerDriver();
+            driver = new FirefoxDriver();
         }
         return driver;
     }

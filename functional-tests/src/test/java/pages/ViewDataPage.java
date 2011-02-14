@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ViewDataPage {
@@ -59,6 +60,23 @@ public class ViewDataPage {
             }
         }
         return motechID;
+    }
+
+    public String returnPatientId(HashMap<String,String> hm){
+       List<WebElement> patient_row = driver.findElements(By.xpath("//div[@id='content']/div[5]/table/tbody/tr"));
+       String motechID = null;
+       System.out.println("HAshmap lastName" + hm.get("lastName"));
+       System.out.println("HAshmap firstName" + hm.get("firstName"));
+       for (Integer i = 2; i < patient_row.size(); i++) {
+            String lastNameTemp = driver.findElement(By.xpath("//div[@id='content']/div[5]/table/tbody/tr[" + i + "]/td[3]")).getText().trim();
+            if (hm.get("lastName").trim().equals(lastNameTemp)) {
+               String firstNameTemp = driver.findElement(By.xpath("//div[@id='content']/div[5]/table/tbody/tr[" + i + "]/td[2]")).getText().trim();
+               if(hm.get("firstName").trim().equals(firstNameTemp)){
+                  motechID = driver.findElement(By.xpath("//div[@id='content']/div[5]/table/tbody/tr[" + i + "]/td[4]")).getText().trim();
+               }
+            }
+       }
+       return motechID;
     }
 
 

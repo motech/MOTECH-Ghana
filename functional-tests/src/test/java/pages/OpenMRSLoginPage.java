@@ -14,9 +14,10 @@ public class OpenMRSLoginPage {
 
     public void getOpenMRSDashBoard() {
         driver.get("http://localhost:8080/openmrs/module/motechmodule/index.htm");
-        WebElement userName = driver.findElement(By.id("username"));
+        WebElement userName = driver.findElement(By.id("username"));;
         WebElement password = driver.findElement(By.id("password"));
         WebElement login = driver.findElement(By.xpath("//input[@value = 'Log In']"));
+      
         userName.sendKeys("admin");
         password.sendKeys("Openmr5tw");
         login.click();
