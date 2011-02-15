@@ -42,7 +42,7 @@ public class RegisterMotherViaUIAndSearch {
       String lastName = regPatientPage.RegisterOtherClient();
       ViewDataPage viewDataPage = new ViewDataPage();
       String patientID = viewDataPage.returnPatientId(lastName);
-      Assert.assertNotNull(patientID,"Patient ID is null");
+      Assert.assertNotNull(patientID,"Other Patient ID is null");
       moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.SEARCH);
       SearchPage searchPage = new SearchPage();
       Assert.assertTrue(searchPage.searchClientByID(patientID,lastName),"Patient Search failed");

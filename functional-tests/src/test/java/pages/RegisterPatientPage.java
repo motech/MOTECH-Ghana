@@ -84,7 +84,7 @@ public class RegisterPatientPage {
         selectOption("birthDateEst", "Yes");
         selectOption("sex","Male");
         selectOption("insured", "Yes");
-        inputNHISField.sendKeys("0000000");
+        inputNHISField.sendKeys(getCurrentDate());
         inputNHISExpiryDate.sendKeys("01/01/2015");
         selectOption("region", "Upper East");
         selectOption("district", "Kassena-Nankana West");
