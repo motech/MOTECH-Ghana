@@ -72,7 +72,7 @@ public class RegisterClientForm extends SikuliBase {
         //18. Filling the contact phone No
         inputTextbox("0123456789");
 
-        //19. Filling EDD as current Date
+        //19. Filling EDD as tomorrow's Date
         Calendar cal=Calendar.getInstance();
         cal.add(Calendar.DATE,1);
 	    selectDate(cal.getTime());
