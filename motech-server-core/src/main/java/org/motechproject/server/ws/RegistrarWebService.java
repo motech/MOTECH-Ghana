@@ -526,7 +526,10 @@ public class RegistrarWebService implements RegistrarService {
             @WebParam(name = "timeOfDay") Date timeOfDay,
             @WebParam(name = "reason") InterestReason reason,
             @WebParam(name = "howLearned") HowLearned howLearned,
-            @WebParam(name = "messagesStartWeek") Integer messagesStartWeek)
+            @WebParam(name = "messagesStartWeek") Integer messagesStartWeek,
+            @WebParam(name = "cwcRegNumber") String cwcRegNumber,
+            @WebParam(name = "cwcRegDateToday") Boolean cwcRegToday,
+            @WebParam(name = "cwcRegDate") Date cwcRegDate)
             throws ValidationException {
 
         ValidationErrors errors = new ValidationErrors();
@@ -577,6 +580,10 @@ public class RegistrarWebService implements RegistrarService {
                 expDeliveryDate, deliveryDateConfirmed, enroll, consent,
                 ownership, format, language, dayOfWeek, timeOfDay, reason,
                 howLearned, messagesStartWeek);
+
+        registrarBean.registerCWCChild(staff, facility.getLocation(),cwcRegDate,
+                patient, cwcRegNumber, enroll, consent, ownership, phoneNumber,
+                format, language, dayOfWeek, timeOfDay, howLearned);
 
         return modelConverter.patientToWebService(patient, true);
     }
