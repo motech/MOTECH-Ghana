@@ -1101,6 +1101,10 @@ public class RegistrarServiceTest{
 		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
 		HowLearned how = HowLearned.GHS_NURSE;
         String cwcRegNumber="1234";
+        String ancRegNumber="1234";
+        double height = 23;
+        int gravida = 20;
+        int parity = 3;
 
 		User staff = new User(1);
 		Location facilityLocation = new Location(1);
@@ -1144,7 +1148,8 @@ public class RegistrarServiceTest{
 				prefName, date, estBirthDate, gender, insured, nhis, date,
 				motherMotechId, communityId, address, phone, date,
 				delivDateConf, enroll, consent, phoneType, format, language,
-				day, date, reason, how, messageWeek, cwcRegNumber, true, date);
+				day, date, reason, how, messageWeek, cwcRegNumber, true, date,
+                ancRegNumber, true, date, height, gravida, parity);
 
 		verify(registrarBean, openmrsBean, modelConverter);
 
@@ -1161,6 +1166,7 @@ public class RegistrarServiceTest{
 		Integer messageWeek = 5;
 		String phone = "15555555";
         String cwcRegNumber="1234";
+        String ancRegNumber="1234";
 		Integer community = 11111;
 		Date date = new Date();
 		RegistrationMode mode = RegistrationMode.USE_PREPRINTED_ID;
@@ -1170,6 +1176,9 @@ public class RegistrarServiceTest{
 		DayOfWeek day = DayOfWeek.MONDAY;
 		InterestReason reason = InterestReason.RECENTLY_DELIVERED;
 		HowLearned how = HowLearned.GHS_NURSE;
+        double height = 23;
+        int gravida = 20;
+        int parity = 3;
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.YEAR, -6);
@@ -1202,7 +1211,8 @@ public class RegistrarServiceTest{
 					childBirthDate, estBirthDate, gender, insured, nhis, date,
 					motherMotechId, community, address, phone, date,
 					delivDateConf, enroll, consent, phoneType, format,
-					language, day, date, reason, how, messageWeek, cwcRegNumber, true, date);
+					language, day, date, reason, how, messageWeek, cwcRegNumber, true, date,
+                    ancRegNumber, true, date, height, gravida, parity);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Register Patient request", e.getMessage());

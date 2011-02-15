@@ -529,7 +529,13 @@ public class RegistrarWebService implements RegistrarService {
             @WebParam(name = "messagesStartWeek") Integer messagesStartWeek,
             @WebParam(name = "cwcRegNumber") String cwcRegNumber,
             @WebParam(name = "cwcRegDateToday") Boolean cwcRegToday,
-            @WebParam(name = "cwcRegDate") Date cwcRegDate)
+            @WebParam(name = "cwcRegDate") Date cwcRegDate,
+            @WebParam(name = "ancRegNumber") String ancRegNumber,
+            @WebParam(name = "ancRegDateToday") Boolean ancRegToday,
+            @WebParam(name = "ancRegDate") Date ancRegDate,
+			@WebParam(name = "height") Double height,
+			@WebParam(name = "gravida") Integer gravida,
+			@WebParam(name = "parity") Integer parity)
             throws ValidationException {
 
         ValidationErrors errors = new ValidationErrors();
@@ -584,6 +590,10 @@ public class RegistrarWebService implements RegistrarService {
         registrarBean.registerCWCChild(staff, facility.getLocation(),cwcRegDate,
                 patient, cwcRegNumber, enroll, consent, ownership, phoneNumber,
                 format, language, dayOfWeek, timeOfDay, howLearned);
+        registrarBean.registerANCMother(staff, facility.getLocation(), date,
+                patient, ancRegNumber, expDeliveryDate, height, gravida,
+                parity, enroll, consent, ownership, phoneNumber, format,
+                language, dayOfWeek, timeOfDay, howLearned);
 
         return modelConverter.patientToWebService(patient, true);
     }
