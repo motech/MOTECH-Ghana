@@ -15,7 +15,7 @@ import pages.OpenMRSLoginPage;
  * Time: 12:41 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ManageFacilityTests {
+public class ManageFacilityPageTests {
 
     @Test
     public void AddCommunityTest(){
