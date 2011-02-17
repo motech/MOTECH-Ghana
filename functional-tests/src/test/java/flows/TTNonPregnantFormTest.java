@@ -20,9 +20,7 @@ public class TTNonPregnantFormTest {
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_STAFF);
         RegisterStaffPage regStaff = new RegisterStaffPage() ;
-        WebElement strStaffId = regStaff.createNewStaff();
-        Assert.assertTrue(strStaffId.getText().contains("Added user: Name ="));
-        String staffId = regStaff.extractStaffId(strStaffId);
+        String staffId = regStaff.createNewStaff();
         TTNonPregnantForm obj1 = new TTNonPregnantForm();
         String facilityId = "11117";
         String date = "10/12/2010";

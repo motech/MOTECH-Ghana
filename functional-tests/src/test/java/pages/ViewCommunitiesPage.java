@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
+import util.UtilityClass;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -34,7 +34,7 @@ public class ViewCommunitiesPage {
         inputCommunityName = driver.findElement(By.id("name"));
         selectFacilityName = driver.findElement(By.id("facilityId"));
         btnSubmit = driver.findElement(By.xpath("//input[@type ='submit']"));
-        String communityName = "Facility-"+ getCurrentDate();
+        String communityName = "Facility-"+ UtilityClass.getInstance().getCurrentDate();
 
         inputCommunityName.sendKeys(communityName);
         selectFacilityName.findElement(By.xpath("//option[contains(text(),'"+ facilityName+"')]")).setSelected();
@@ -53,9 +53,5 @@ public class ViewCommunitiesPage {
             return false;
         }
     }
-    public String getCurrentDate(){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
-        String date = sdf.format(Calendar.getInstance().getTime());
-        return date;
-    }
+
 }

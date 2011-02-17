@@ -57,6 +57,8 @@ public class ViewDataPage {
             String temp = driver.findElement(By.xpath("//div[@id='content']/div[5]/table/tbody/tr[" + i + "]/td[3]")).getText().trim();
             if (lastName.trim().equals(temp)) {
                 motechID = driver.findElement(By.xpath("//div[@id='content']/div[5]/table/tbody/tr[" + i + "]/td[4]")).getText().trim();
+                System.out.println("Motech ID is "+motechID);
+                return motechID;
             }
         }
         return motechID;

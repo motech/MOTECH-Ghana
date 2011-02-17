@@ -1,6 +1,8 @@
 package util;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Properties;
 
 public class TestConfiguration {
@@ -29,4 +31,6 @@ public class TestConfiguration {
     public String midletLocation() {
         return value(MIDLET_LOCATION);
     }
+
+
 }

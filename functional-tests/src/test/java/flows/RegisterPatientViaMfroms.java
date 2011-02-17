@@ -80,9 +80,7 @@ public class RegisterPatientViaMfroms {
             MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
             moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_STAFF);
             RegisterStaffPage regStaff = new RegisterStaffPage() ;
-			WebElement strStaffId = regStaff.createNewStaff();
-			Assert.assertTrue(strStaffId.getText().contains("Added user: Name ="));
-			String staffId = regStaff.extractStaffId(strStaffId);
+			String staffId = regStaff.createNewStaff();
             RegisterClientForm obj = new RegisterClientForm();
             obj.registerNonInsuredPregnantMother(staffId, facilityId, regDate, regPhoneNo, SikuliBase.clientTypes.PREGNANT_MOTHER, firstName, middleName, lastName, preferredName, DOB, SikuliBase.DOBTypes.EXACT_DOB);
             moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.VIEW_DATA);
