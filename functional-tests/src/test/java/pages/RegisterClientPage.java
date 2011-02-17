@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class RegisterPatientPage {
+public class RegisterClientPage {
     private WebDriver driver;
     public WebElement inputFirstName;
     WebElement inputMiddleName;
@@ -26,7 +26,7 @@ public class RegisterPatientPage {
     WebElement inputNHISExpiryDate;
     WebElement inputMotherMotechID;
 
-    public RegisterPatientPage() {
+    public RegisterClientPage() {
         driver = DefaultPage.getInstance();
         inputFirstName = driver.findElement(By.id("firstName"));
         inputMiddleName = driver.findElement(By.id("middleName"));

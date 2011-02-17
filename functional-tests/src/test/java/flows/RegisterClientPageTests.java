@@ -14,7 +14,7 @@ import java.util.HashMap;
  * Time: 2:27 PM
  * To change this template use File | Settings | File Templates.
  */
-public class RegisterMotherViaUIAndSearch {
+public class RegisterClientPageTests {
 
   @Test
   public void registerMotherViaUIAndSearch() {
@@ -22,7 +22,7 @@ public class RegisterMotherViaUIAndSearch {
       loginPage.getOpenMRSDashBoard();
       MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
       moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
-      RegisterPatientPage regPatientPage = new RegisterPatientPage();
+      RegisterClientPage regPatientPage = new RegisterClientPage();
       String lastName = regPatientPage.RegisterMotherClient();
       ViewDataPage viewDataPage = new ViewDataPage();
       String patientID = viewDataPage.returnPatientId(lastName);
@@ -38,7 +38,7 @@ public class RegisterMotherViaUIAndSearch {
       loginPage.getOpenMRSDashBoard();
       MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
       moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
-      RegisterPatientPage regPatientPage = new RegisterPatientPage();
+      RegisterClientPage regPatientPage = new RegisterClientPage();
       String lastName = regPatientPage.RegisterOtherClient();
       ViewDataPage viewDataPage = new ViewDataPage();
       String patientID = viewDataPage.returnPatientId(lastName);
@@ -56,7 +56,7 @@ public class RegisterMotherViaUIAndSearch {
         loginPage.getOpenMRSDashBoard();
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
-        RegisterPatientPage regPatientPage = new RegisterPatientPage();
+        RegisterClientPage regPatientPage = new RegisterClientPage();
         regPatientPage.RegisterChildClient(hm);
         ViewDataPage viewDataPage = new ViewDataPage();
         String patientID = viewDataPage.returnPatientId(hm);
