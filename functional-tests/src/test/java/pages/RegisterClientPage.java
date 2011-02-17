@@ -4,7 +4,8 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
+import util.TestConfiguration;
+import util.UtilityClass;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class RegisterClientPage {
     }
 
     public String RegisterMotherClient() {
-        String lastName = "Last-"+ getCurrentDate();
+        String lastName = "Last-"+ UtilityClass.getInstance().getCurrentDate();
         selectOption("registrationMode", "Auto-generate MoTeCH ID");
         selectOption("registrantType", "Pregnant mother");
         inputFirstName.sendKeys("Foo");
@@ -74,7 +75,7 @@ public class RegisterClientPage {
     }
 
     public String RegisterOtherClient(){
-        String lastName = "Last-"+ getCurrentDate();
+        String lastName = "Last-"+ UtilityClass.getInstance().getCurrentDate();
         selectOption("registrationMode", "Auto-generate MoTeCH ID");
         selectOption("registrantType", "Other");
         inputFirstName.sendKeys("Foo");
@@ -84,7 +85,7 @@ public class RegisterClientPage {
         selectOption("birthDateEst", "Yes");
         selectOption("sex","Male");
         selectOption("insured", "Yes");
-        inputNHISField.sendKeys(getCurrentDate());
+        inputNHISField.sendKeys(UtilityClass.getInstance().getCurrentDate());
         inputNHISExpiryDate.sendKeys("01/01/2015");
         selectOption("region", "Upper East");
         selectOption("district", "Kassena-Nankana West");
@@ -111,7 +112,7 @@ public class RegisterClientPage {
             consent = driver.findElement(By.id("consent1"));
             submitButton = driver.findElement(By.xpath("//input[@type='submit']"));
 
-            String firstNameValue = "Child-" + getCurrentDate();
+            String firstNameValue = "Child-" + UtilityClass.getInstance().getCurrentDate();
             inputFirstName.sendKeys(firstNameValue);
             inputMotherMotechID.sendKeys(motherID);
             inputDOB.sendKeys("01/01/2011");
@@ -121,6 +122,8 @@ public class RegisterClientPage {
             selectOption("enroll","Yes");
             consent.click();
             submitButton.click();
+            hm.put("lastName",lastName);
+            hm.put("firstName",firstNameValue);
         }
         else {
             System.out.println("Mother ID is null");
@@ -138,11 +141,7 @@ public class RegisterClientPage {
         }
     }
 
-    public String getCurrentDate(){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
-        String date = sdf.format(Calendar.getInstance().getTime());
-        return date;
-    }
+
 
     public void setDueDate(){
         // sets the due date nine month hence of the current date
