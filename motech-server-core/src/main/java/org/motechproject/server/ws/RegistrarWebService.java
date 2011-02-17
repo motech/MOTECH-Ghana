@@ -587,11 +587,13 @@ public class RegistrarWebService implements RegistrarService {
                 ownership, format, language, dayOfWeek, timeOfDay, reason,
                 howLearned, messagesStartWeek);
         if (cwcRegNumber != null) {
+            cwcRegDate = (cwcRegToday) ? new Date() : cwcRegDate;
             registrarBean.registerCWCChild(staff, facility.getLocation(), cwcRegDate,
                     patient, cwcRegNumber, enroll, consent, ownership, phoneNumber,
                     format, language, dayOfWeek, timeOfDay, howLearned);
         }
         if (ancRegNumber != null) {
+            ancRegDate = (ancRegToday) ? new Date() : ancRegDate;
             registrarBean.registerANCMother(staff, facility.getLocation(), date,
                     patient, ancRegNumber, expDeliveryDate, height, gravida,
                     parity, enroll, consent, ownership, phoneNumber, format,
