@@ -533,9 +533,9 @@ public class RegistrarWebService implements RegistrarService {
             @WebParam(name = "ancRegNumber") String ancRegNumber,
             @WebParam(name = "ancRegDateToday") Boolean ancRegToday,
             @WebParam(name = "ancRegDate") Date ancRegDate,
-			@WebParam(name = "height") Double height,
-			@WebParam(name = "gravida") Integer gravida,
-			@WebParam(name = "parity") Integer parity)
+            @WebParam(name = "height") Double height,
+            @WebParam(name = "gravida") Integer gravida,
+            @WebParam(name = "parity") Integer parity)
             throws ValidationException {
 
         ValidationErrors errors = new ValidationErrors();
@@ -586,14 +586,17 @@ public class RegistrarWebService implements RegistrarService {
                 expDeliveryDate, deliveryDateConfirmed, enroll, consent,
                 ownership, format, language, dayOfWeek, timeOfDay, reason,
                 howLearned, messagesStartWeek);
-
-        registrarBean.registerCWCChild(staff, facility.getLocation(),cwcRegDate,
-                patient, cwcRegNumber, enroll, consent, ownership, phoneNumber,
-                format, language, dayOfWeek, timeOfDay, howLearned);
-        registrarBean.registerANCMother(staff, facility.getLocation(), date,
-                patient, ancRegNumber, expDeliveryDate, height, gravida,
-                parity, enroll, consent, ownership, phoneNumber, format,
-                language, dayOfWeek, timeOfDay, howLearned);
+        if (cwcRegNumber != null) {
+            registrarBean.registerCWCChild(staff, facility.getLocation(), cwcRegDate,
+                    patient, cwcRegNumber, enroll, consent, ownership, phoneNumber,
+                    format, language, dayOfWeek, timeOfDay, howLearned);
+        }
+        if (ancRegNumber != null) {
+            registrarBean.registerANCMother(staff, facility.getLocation(), date,
+                    patient, ancRegNumber, expDeliveryDate, height, gravida,
+                    parity, enroll, consent, ownership, phoneNumber, format,
+                    language, dayOfWeek, timeOfDay, howLearned);
+        }
 
         return modelConverter.patientToWebService(patient, true);
     }
@@ -754,29 +757,29 @@ public class RegistrarWebService implements RegistrarService {
         Set<PersonName> patientNames = patient.getNames();
         if (patientNames != null) {
             for (PersonName personName : patientNames) {
-                if(firstName != null){
-                    if(!firstName.trim().equals(""))
+                if (firstName != null) {
+                    if (!firstName.trim().equals(""))
                         personName.setGivenName(firstName);
                 }
-                if(middleName != null){
-                    if(!middleName.trim().equals(""))
+                if (middleName != null) {
+                    if (!middleName.trim().equals(""))
                         personName.setMiddleName(middleName);
                 }
-                if(lastName != null){
-                    if(!lastName.trim().equals(""))
+                if (lastName != null) {
+                    if (!lastName.trim().equals(""))
                         personName.setFamilyName(lastName);
                 }
                 if (personName.isPreferred()) {
-                    if(preferredName != null){
-                        if(!preferredName.trim().equals(""))
+                    if (preferredName != null) {
+                        if (!preferredName.trim().equals(""))
                             personName.setGivenName(preferredName);
                     }
                 }
             }
         }
-		registrarBean.editPatient(staff, date, patient,mother, phoneNumber,
-				phoneOwnership, nhis, nhisExpires, expectedDeliveryDate, stopEnrollment);
-	}
+        registrarBean.editPatient(staff, date, patient, mother, phoneNumber,
+                phoneOwnership, nhis, nhisExpires, expectedDeliveryDate, stopEnrollment);
+    }
 
     @WebMethod
     public void recordGeneralVisit(@WebParam(name = "staffId") Integer staffId,
