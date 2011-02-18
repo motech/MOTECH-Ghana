@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -3389,10 +3390,19 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			}
 
 			// Send Defaulted Care Message
-			List<ExpectedEncounter> defaultedEncounters = getDefaultedExpectedEncounters(
-					facility, careGroups, startDate);
-			List<ExpectedObs> defaultedObs = getDefaultedExpectedObs(facility,
-					careGroups, startDate);
+			List<ExpectedEncounter> defaultedEncounters; 
+			List<ExpectedObs> defaultedObs;
+
+                        defaultedEncounters = filterRCTEncounters(getDefaultedExpectedEncounters(facility, 
+                                                                                                 careGroups, 
+                                                                                                 startDate));
+                        defaultedObs = filterRCTObs(getDefaultedExpectedObs(facility, 
+                                                                            careGroups, 
+                                                                            startDate));
+
+                        // Replace the above code when RCT filtering rules are
+                        // finalized and implemented.
+
 			if (!defaultedEncounters.isEmpty() || !defaultedObs.isEmpty()) {
 				Care[] defaultedCares = modelConverter
 						.defaultedToWebServiceCares(defaultedEncounters,
@@ -3403,10 +3413,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 			if (sendUpcoming) {
 				// Send Upcoming Care Messages
-				List<ExpectedEncounter> upcomingEncounters = getUpcomingExpectedEncounters(
-						facility, careGroups, startDate, endDate);
-				List<ExpectedObs> upcomingObs = getUpcomingExpectedObs(
-						facility, careGroups, startDate, endDate);
+                            List<ExpectedEncounter> upcomingEncounters;
+                            List<ExpectedObs> upcomingObs;
+                            upcomingEncounters = filterRCTEncounters(getUpcomingExpectedEncounters(facility, 
+                                                                                                   careGroups, 
+                                                                                                   startDate, 
+                                                                                                   endDate));
+                                                                     
+                            upcomingObs = filterRCTObs(getUpcomingExpectedObs(facility, 
+                                                                              careGroups, 
+                                                                              startDate, 
+                                                                              endDate));
+
 				if (!upcomingEncounters.isEmpty() || !upcomingObs.isEmpty()) {
 					Care[] upcomingCares = modelConverter
 							.upcomingToWebServiceCares(upcomingEncounters,
@@ -3418,6 +3436,61 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			}
 		}
 	}
+
+    // ========================================================================
+    //
+    // Filter out any defaulters that have registered after Jan 14th 
+    // (technically 2011-01-15 18:38:54).  Since patient id's increase we can 
+    // just look for patients with an id larger than the last allowed defaulter.
+    // This code is a hack, but it has to come out when we implement the 
+    // actual RCT filtering logic, soit has a clear end or life
+    //
+    // ========================================================================
+    public List<ExpectedEncounter> filterRCTEncounters(List<ExpectedEncounter> allDefaulters) {
+        List<ExpectedEncounter> defaultedEncounters = new ArrayList<ExpectedEncounter>();
+        Iterator<ExpectedEncounter> encIt = allDefaulters.iterator();
+
+        // Patient Id 5717 was the first patient to be 
+        // un-enrolled to keep them clean for the RCT.  
+        // Therefore we can only include patients that came
+        // before them, in other words those with a lower
+        // patient id
+        int maxId = 5717;
+        while( encIt.hasNext() ) {
+            ExpectedEncounter ee = encIt.next();
+            if( ee.getPatient() != null
+                && ee.getPatient().getPatientId() < maxId) 
+                defaultedEncounters.add(ee);
+        }
+
+        return defaultedEncounters;
+    }
+
+    public List<ExpectedObs> filterRCTObs(List<ExpectedObs> alldefaulters) {
+        List<ExpectedObs> defaultedObs = new ArrayList<ExpectedObs>();
+
+        Iterator<ExpectedObs> obsIt = alldefaulters.iterator();    
+
+        // Patient Id 5717 was the first patient to be 
+        // un-enrolled to keep them clean for the RCT.  
+        // Therefore we can only include patients that came
+        // before them, in other words those with a lower
+        // patient id
+        int maxId = 5717;
+        while( obsIt.hasNext() ) {
+            ExpectedObs eo = obsIt.next();
+            if( eo.getPatient() != null
+                && eo.getPatient().getPatientId() < maxId) 
+                defaultedObs.add(eo);
+        }
+
+        return defaultedObs;
+    }
+    // ========================================================================
+    //
+    // End RCT filtering non-sense
+    //
+    // ========================================================================
 
 	/* NotificationTask methods start */
 	public void sendMessages(Date startDate, Date endDate, boolean sendImmediate) {
