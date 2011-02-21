@@ -1,7 +1,7 @@
 $j(document).ready(function(){
     $j('#motherMotechId').blur(function(data){
         var motech_id = $j('#motherMotechId').val();
-        if(motech_id.trim() != ""){
+        if($j.trim(motech_id) != ""){
             $j.getJSON("/openmrs/module/motechmodule/patient/getMotherInfo.form",{'motechId': motech_id}, function(data){
                 if(data.lastName == null){
                     error_notifier($j('#motherMotechId'), "<span class = 'error'> Specified MoTeCH ID does not exist. </span>");
