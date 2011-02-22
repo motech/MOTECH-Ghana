@@ -445,4 +445,6 @@ public interface RegistrarBean {
 	Community saveCommunity(Community community);
 
 	Facility saveNewFacility(Facility facility);
+
+    public void stopEnrollmentFor(Integer patientId);
 }
