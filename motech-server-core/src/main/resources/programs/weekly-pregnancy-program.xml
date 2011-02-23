@@ -42,7 +42,7 @@
 	<bean id="weeklyPregnancyProgram" class="org.motechproject.server.event.impl.MessageProgramImpl">
 		<property name="name" value="Weekly Pregnancy Message Program" />
 		<property name="startState" ref="weeklyPregnancyState5" />
-		<property name="endState" ref="weeklyPregnancyState45" />
+		<property name="endState" ref="weeklyPregnancyState93" />
 	</bean>
 
 	<bean id="weeklyPregnancyState5" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
@@ -1405,8 +1405,1594 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState45" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
-		<property name="name" value="End Pregnancy State Week 45" />
+    <bean id="weeklyPregnancyState45" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+            <property name="name" value="Pregnancy State Week 45" />
+            <property name="timeValue" value="4" />
+            <property name="timePeriod" value="week" />
+            <property name="timeReference" value="enrollment_obs_datevalue" />
+            <property name="command">
+                <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                    <property name="messageKey" value="child.week.5" />
+                    <property name="messageKeyA" value="child.week.5.a" />
+                    <property name="messageKeyB" value="child.week.5.b" />
+                    <property name="messageKeyC" value="child.week.5.c" />
+                    <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                </bean>
+            </property>
+            <property name="program" ref="weeklyPregnancyProgram" />
+            <property name="timeBean" ref="timeBean" />
+            <property name="transitions">
+                <list>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                        <property name="timeValue" value="-2" />
+                        <property name="timePeriod" value="day" />
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState45" />
+                        <property name="nextState" ref="weeklyPregnancyState46" />
+                    </bean>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState45" />
+                        <property name="nextState" ref="weeklyPregnancyState45" />
+                    </bean>
+                </list>
+            </property>
+        </bean>
+    <bean id="weeklyPregnancyState46" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+            <property name="name" value="Pregnancy State Week 46" />
+            <property name="timeValue" value="4" />
+            <property name="timePeriod" value="week" />
+            <property name="timeReference" value="enrollment_obs_datevalue" />
+            <property name="command">
+                <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                    <property name="messageKey" value="child.week.6" />
+                    <property name="messageKeyA" value="child.week.6.a" />
+                    <property name="messageKeyB" value="child.week.6.b" />
+                    <property name="messageKeyC" value="child.week.6.c" />
+                    <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                </bean>
+            </property>
+            <property name="program" ref="weeklyPregnancyProgram" />
+            <property name="timeBean" ref="timeBean" />
+            <property name="transitions">
+                <list>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                        <property name="timeValue" value="-2" />
+                        <property name="timePeriod" value="day" />
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState46" />
+                        <property name="nextState" ref="weeklyPregnancyState47" />
+                    </bean>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState46" />
+                        <property name="nextState" ref="weeklyPregnancyState46" />
+                    </bean>
+                </list>
+            </property>
+        </bean>
+    <bean id="weeklyPregnancyState47" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+            <property name="name" value="Pregnancy State Week 47" />
+            <property name="timeValue" value="4" />
+            <property name="timePeriod" value="week" />
+            <property name="timeReference" value="enrollment_obs_datevalue" />
+            <property name="command">
+                <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                    <property name="messageKey" value="child.week.7" />
+                    <property name="messageKeyA" value="child.week.7.a" />
+                    <property name="messageKeyB" value="child.week.7.b" />
+                    <property name="messageKeyC" value="child.week.7.c" />
+                    <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                </bean>
+            </property>
+            <property name="program" ref="weeklyPregnancyProgram" />
+            <property name="timeBean" ref="timeBean" />
+            <property name="transitions">
+                <list>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                        <property name="timeValue" value="-2" />
+                        <property name="timePeriod" value="day" />
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState47" />
+                        <property name="nextState" ref="weeklyPregnancyState48" />
+                    </bean>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState47" />
+                        <property name="nextState" ref="weeklyPregnancyState47" />
+                    </bean>
+                </list>
+            </property>
+	</bean>
+    <bean id="weeklyPregnancyState48" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+            <property name="name" value="Pregnancy State Week 48" />
+            <property name="timeValue" value="4" />
+            <property name="timePeriod" value="week" />
+            <property name="timeReference" value="enrollment_obs_datevalue" />
+            <property name="command">
+                <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                    <property name="messageKey" value="child.week.8" />
+                    <property name="messageKeyA" value="child.week.8.a" />
+                    <property name="messageKeyB" value="child.week.8.b" />
+                    <property name="messageKeyC" value="child.week.8.c" />
+                    <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                </bean>
+            </property>
+            <property name="program" ref="weeklyPregnancyProgram" />
+            <property name="timeBean" ref="timeBean" />
+            <property name="transitions">
+                <list>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                        <property name="timeValue" value="-2" />
+                        <property name="timePeriod" value="day" />
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState48" />
+                        <property name="nextState" ref="weeklyPregnancyState49" />
+                    </bean>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState48" />
+                        <property name="nextState" ref="weeklyPregnancyState48" />
+                    </bean>
+                </list>
+            </property>
+        </bean>
+    <bean id="weeklyPregnancyState49" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+            <property name="name" value="Pregnancy State Week 49" />
+            <property name="timeValue" value="4" />
+            <property name="timePeriod" value="week" />
+            <property name="timeReference" value="enrollment_obs_datevalue" />
+            <property name="command">
+                <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                    <property name="messageKey" value="child.week.9" />
+                    <property name="messageKeyA" value="child.week.9.a" />
+                    <property name="messageKeyB" value="child.week.9.b" />
+                    <property name="messageKeyC" value="child.week.9.c" />
+                    <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                </bean>
+            </property>
+            <property name="program" ref="weeklyPregnancyProgram" />
+            <property name="timeBean" ref="timeBean" />
+            <property name="transitions">
+                <list>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                        <property name="timeValue" value="-2" />
+                        <property name="timePeriod" value="day" />
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState49" />
+                        <property name="nextState" ref="weeklyPregnancyState50" />
+                    </bean>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState49" />
+                        <property name="nextState" ref="weeklyPregnancyState49" />
+                    </bean>
+                </list>
+            </property>
+        </bean>
+    <bean id="weeklyPregnancyState50" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+            <property name="name" value="Pregnancy State Week 50" />
+            <property name="timeValue" value="4" />
+            <property name="timePeriod" value="week" />
+            <property name="timeReference" value="enrollment_obs_datevalue" />
+            <property name="command">
+                <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                    <property name="messageKey" value="child.week.10" />
+                    <property name="messageKeyA" value="child.week.10.a" />
+                    <property name="messageKeyB" value="child.week.10.b" />
+                    <property name="messageKeyC" value="child.week.10.c" />
+                    <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                </bean>
+            </property>
+            <property name="program" ref="weeklyPregnancyProgram" />
+            <property name="timeBean" ref="timeBean" />
+            <property name="transitions">
+                <list>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                        <property name="timeValue" value="-2" />
+                        <property name="timePeriod" value="day" />
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState50" />
+                        <property name="nextState" ref="weeklyPregnancyState51" />
+                    </bean>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState50" />
+                        <property name="nextState" ref="weeklyPregnancyState50" />
+                    </bean>
+                </list>
+            </property>
+        </bean>
+    <bean id="weeklyPregnancyState51" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+            <property name="name" value="Pregnancy State Week 51" />
+            <property name="timeValue" value="4" />
+            <property name="timePeriod" value="week" />
+            <property name="timeReference" value="enrollment_obs_datevalue" />
+            <property name="command">
+                <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                    <property name="messageKey" value="child.week.11" />
+                    <property name="messageKeyA" value="child.week.11.a" />
+                    <property name="messageKeyB" value="child.week.11.b" />
+                    <property name="messageKeyC" value="child.week.11.c" />
+                    <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                </bean>
+            </property>
+            <property name="program" ref="weeklyPregnancyProgram" />
+            <property name="timeBean" ref="timeBean" />
+            <property name="transitions">
+                <list>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                        <property name="timeValue" value="-2" />
+                        <property name="timePeriod" value="day" />
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState51" />
+                        <property name="nextState" ref="weeklyPregnancyState52" />
+                    </bean>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState51" />
+                        <property name="nextState" ref="weeklyPregnancyState51" />
+                    </bean>
+                </list>
+            </property>
+        </bean>
+    <bean id="weeklyPregnancyState52" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+            <property name="name" value="Pregnancy State Week 52" />
+            <property name="timeValue" value="4" />
+            <property name="timePeriod" value="week" />
+            <property name="timeReference" value="enrollment_obs_datevalue" />
+            <property name="command">
+                <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                    <property name="messageKey" value="child.week.12" />
+                    <property name="messageKeyA" value="child.week.12.a" />
+                    <property name="messageKeyB" value="child.week.12.b" />
+                    <property name="messageKeyC" value="child.week.12.c" />
+                    <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                </bean>
+            </property>
+            <property name="program" ref="weeklyPregnancyProgram" />
+            <property name="timeBean" ref="timeBean" />
+            <property name="transitions">
+                <list>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                        <property name="timeValue" value="-2" />
+                        <property name="timePeriod" value="day" />
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState52" />
+                        <property name="nextState" ref="weeklyPregnancyState53" />
+                    </bean>
+                    <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                        <property name="command" ref="nopCommand" />
+                        <property name="prevState" ref="weeklyPregnancyState52" />
+                        <property name="nextState" ref="weeklyPregnancyState52" />
+                    </bean>
+                </list>
+            </property>
+        </bean>
+<bean id="weeklyPregnancyState53" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="Pregnancy State Week 53" />
+		<property name="timeValue" value="4" />
+		<property name="timePeriod" value="week" />
+		<property name="timeReference" value="enrollment_obs_datevalue" />
+		<property name="command">
+			<bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+				<property name="messageKey" value="child.week.13" />
+				<property name="messageKeyA" value="child.week.13.a" />
+				<property name="messageKeyB" value="child.week.13.b" />
+				<property name="messageKeyC" value="child.week.13.c" />
+				<property name="messageScheduler" ref="userPrefmessageScheduler" />
+			</bean>
+		</property>
+		<property name="program" ref="weeklyPregnancyProgram" />
+		<property name="timeBean" ref="timeBean" />
+		<property name="transitions">
+			<list>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+					<property name="timeValue" value="-2" />
+					<property name="timePeriod" value="day" />
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="weeklyPregnancyState53" />
+					<property name="nextState" ref="weeklyPregnancyState54" />
+				</bean>
+				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+					<property name="command" ref="nopCommand" />
+					<property name="prevState" ref="weeklyPregnancyState53" />
+					<property name="nextState" ref="weeklyPregnancyState53" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+        <bean id="weeklyPregnancyState54" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 54" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.14" />
+                        <property name="messageKeyA" value="child.week.14.a" />
+                        <property name="messageKeyB" value="child.week.14.b" />
+                        <property name="messageKeyC" value="child.week.14.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState54" />
+                            <property name="nextState" ref="weeklyPregnancyState55" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState54" />
+                            <property name="nextState" ref="weeklyPregnancyState54" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState55" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 55" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.15" />
+                        <property name="messageKeyA" value="child.week.15.a" />
+                        <property name="messageKeyB" value="child.week.15.b" />
+                        <property name="messageKeyC" value="child.week.15.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState55" />
+                            <property name="nextState" ref="weeklyPregnancyState56" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState55" />
+                            <property name="nextState" ref="weeklyPregnancyState55" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState56" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 56" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.16" />
+                        <property name="messageKeyA" value="child.week.16.a" />
+                        <property name="messageKeyB" value="child.week.16.b" />
+                        <property name="messageKeyC" value="child.week.16.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState56" />
+                            <property name="nextState" ref="weeklyPregnancyState57" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState56" />
+                            <property name="nextState" ref="weeklyPregnancyState56" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState57" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 57" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.17" />
+                        <property name="messageKeyA" value="child.week.17.a" />
+                        <property name="messageKeyB" value="child.week.17.b" />
+                        <property name="messageKeyC" value="child.week.17.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState57" />
+                            <property name="nextState" ref="weeklyPregnancyState58" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState57" />
+                            <property name="nextState" ref="weeklyPregnancyState57" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState58" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 58" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.18" />
+                        <property name="messageKeyA" value="child.week.18.a" />
+                        <property name="messageKeyB" value="child.week.18.b" />
+                        <property name="messageKeyC" value="child.week.18.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState58" />
+                            <property name="nextState" ref="weeklyPregnancyState59" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState58" />
+                            <property name="nextState" ref="weeklyPregnancyState58" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState59" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 59" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.19" />
+                        <property name="messageKeyA" value="child.week.19.a" />
+                        <property name="messageKeyB" value="child.week.19.b" />
+                        <property name="messageKeyC" value="child.week.19.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState59" />
+                            <property name="nextState" ref="weeklyPregnancyState60" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState59" />
+                            <property name="nextState" ref="weeklyPregnancyState59" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState60" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 60" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.20" />
+                        <property name="messageKeyA" value="child.week.20.a" />
+                        <property name="messageKeyB" value="child.week.20.b" />
+                        <property name="messageKeyC" value="child.week.20.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState60" />
+                            <property name="nextState" ref="weeklyPregnancyState61" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState60" />
+                            <property name="nextState" ref="weeklyPregnancyState60" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState61" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 61" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.21" />
+                        <property name="messageKeyA" value="child.week.21.a" />
+                        <property name="messageKeyB" value="child.week.21.b" />
+                        <property name="messageKeyC" value="child.week.21.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState61" />
+                            <property name="nextState" ref="weeklyPregnancyState62" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState61" />
+                            <property name="nextState" ref="weeklyPregnancyState61" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState62" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 62" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.22" />
+                        <property name="messageKeyA" value="child.week.22.a" />
+                        <property name="messageKeyB" value="child.week.22.b" />
+                        <property name="messageKeyC" value="child.week.22.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState62" />
+                            <property name="nextState" ref="weeklyPregnancyState63" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState62" />
+                            <property name="nextState" ref="weeklyPregnancyState62" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState63" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 63" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.23" />
+                        <property name="messageKeyA" value="child.week.23.a" />
+                        <property name="messageKeyB" value="child.week.23.b" />
+                        <property name="messageKeyC" value="child.week.23.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState63" />
+                            <property name="nextState" ref="weeklyPregnancyState64" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState63" />
+                            <property name="nextState" ref="weeklyPregnancyState63" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState64" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 64" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.24" />
+                        <property name="messageKeyA" value="child.week.24.a" />
+                        <property name="messageKeyB" value="child.week.24.b" />
+                        <property name="messageKeyC" value="child.week.24.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState64" />
+                            <property name="nextState" ref="weeklyPregnancyState65" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState64" />
+                            <property name="nextState" ref="weeklyPregnancyState64" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState65" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 65" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.25" />
+                        <property name="messageKeyA" value="child.week.25.a" />
+                        <property name="messageKeyB" value="child.week.25.b" />
+                        <property name="messageKeyC" value="child.week.25.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState65" />
+                            <property name="nextState" ref="weeklyPregnancyState66" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState65" />
+                            <property name="nextState" ref="weeklyPregnancyState65" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState66" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 66" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.26" />
+                        <property name="messageKeyA" value="child.week.26.a" />
+                        <property name="messageKeyB" value="child.week.26.b" />
+                        <property name="messageKeyC" value="child.week.26.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState66" />
+                            <property name="nextState" ref="weeklyPregnancyState67" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState66" />
+                            <property name="nextState" ref="weeklyPregnancyState66" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState67" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 67" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.27" />
+                        <property name="messageKeyA" value="child.week.27.a" />
+                        <property name="messageKeyB" value="child.week.27.b" />
+                        <property name="messageKeyC" value="child.week.27.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState67" />
+                            <property name="nextState" ref="weeklyPregnancyState68" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState67" />
+                            <property name="nextState" ref="weeklyPregnancyState67" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState68" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 68" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.28" />
+                        <property name="messageKeyA" value="child.week.28.a" />
+                        <property name="messageKeyB" value="child.week.28.b" />
+                        <property name="messageKeyC" value="child.week.28.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState68" />
+                            <property name="nextState" ref="weeklyPregnancyState69" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState68" />
+                            <property name="nextState" ref="weeklyPregnancyState68" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState69" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 69" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.29" />
+                        <property name="messageKeyA" value="child.week.29.a" />
+                        <property name="messageKeyB" value="child.week.29.b" />
+                        <property name="messageKeyC" value="child.week.29.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState69" />
+                            <property name="nextState" ref="weeklyPregnancyState70" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState69" />
+                            <property name="nextState" ref="weeklyPregnancyState69" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState70" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 70" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.30" />
+                        <property name="messageKeyA" value="child.week.30.a" />
+                        <property name="messageKeyB" value="child.week.30.b" />
+                        <property name="messageKeyC" value="child.week.30.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState70" />
+                            <property name="nextState" ref="weeklyPregnancyState71" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState70" />
+                            <property name="nextState" ref="weeklyPregnancyState70" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState71" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 71" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.31" />
+                        <property name="messageKeyA" value="child.week.31.a" />
+                        <property name="messageKeyB" value="child.week.31.b" />
+                        <property name="messageKeyC" value="child.week.31.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState71" />
+                            <property name="nextState" ref="weeklyPregnancyState72" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState71" />
+                            <property name="nextState" ref="weeklyPregnancyState71" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState72" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 72" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.32" />
+                        <property name="messageKeyA" value="child.week.32.a" />
+                        <property name="messageKeyB" value="child.week.32.b" />
+                        <property name="messageKeyC" value="child.week.32.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState72" />
+                            <property name="nextState" ref="weeklyPregnancyState73" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState72" />
+                            <property name="nextState" ref="weeklyPregnancyState72" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState73" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 73" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.33" />
+                        <property name="messageKeyA" value="child.week.33.a" />
+                        <property name="messageKeyB" value="child.week.33.b" />
+                        <property name="messageKeyC" value="child.week.33.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState73" />
+                            <property name="nextState" ref="weeklyPregnancyState74" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState73" />
+                            <property name="nextState" ref="weeklyPregnancyState73" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState74" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 74" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.34" />
+                        <property name="messageKeyA" value="child.week.34.a" />
+                        <property name="messageKeyB" value="child.week.34.b" />
+                        <property name="messageKeyC" value="child.week.34.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState74" />
+                            <property name="nextState" ref="weeklyPregnancyState75" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState74" />
+                            <property name="nextState" ref="weeklyPregnancyState74" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState75" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 75" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.35" />
+                        <property name="messageKeyA" value="child.week.35.a" />
+                        <property name="messageKeyB" value="child.week.35.b" />
+                        <property name="messageKeyC" value="child.week.35.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState75" />
+                            <property name="nextState" ref="weeklyPregnancyState76" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState75" />
+                            <property name="nextState" ref="weeklyPregnancyState75" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState76" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 76" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.36" />
+                        <property name="messageKeyA" value="child.week.36.a" />
+                        <property name="messageKeyB" value="child.week.36.b" />
+                        <property name="messageKeyC" value="child.week.36.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState76" />
+                            <property name="nextState" ref="weeklyPregnancyState77" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState76" />
+                            <property name="nextState" ref="weeklyPregnancyState76" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState77" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 77" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.37" />
+                        <property name="messageKeyA" value="child.week.37.a" />
+                        <property name="messageKeyB" value="child.week.37.b" />
+                        <property name="messageKeyC" value="child.week.37.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState77" />
+                            <property name="nextState" ref="weeklyPregnancyState78" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState77" />
+                            <property name="nextState" ref="weeklyPregnancyState77" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState78" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 78" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.38" />
+                        <property name="messageKeyA" value="child.week.38.a" />
+                        <property name="messageKeyB" value="child.week.38.b" />
+                        <property name="messageKeyC" value="child.week.38.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState78" />
+                            <property name="nextState" ref="weeklyPregnancyState79" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState78" />
+                            <property name="nextState" ref="weeklyPregnancyState78" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState79" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 79" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.39" />
+                        <property name="messageKeyA" value="child.week.39.a" />
+                        <property name="messageKeyB" value="child.week.39.b" />
+                        <property name="messageKeyC" value="child.week.39.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState79" />
+                            <property name="nextState" ref="weeklyPregnancyState80" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState79" />
+                            <property name="nextState" ref="weeklyPregnancyState79" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState80" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 80" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.40" />
+                        <property name="messageKeyA" value="child.week.40.a" />
+                        <property name="messageKeyB" value="child.week.40.b" />
+                        <property name="messageKeyC" value="child.week.40.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState80" />
+                            <property name="nextState" ref="weeklyPregnancyState81" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState80" />
+                            <property name="nextState" ref="weeklyPregnancyState80" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState81" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 81" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.41" />
+                        <property name="messageKeyA" value="child.week.41.a" />
+                        <property name="messageKeyB" value="child.week.41.b" />
+                        <property name="messageKeyC" value="child.week.41.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState81" />
+                            <property name="nextState" ref="weeklyPregnancyState82" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState81" />
+                            <property name="nextState" ref="weeklyPregnancyState81" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState82" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 82" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.42" />
+                        <property name="messageKeyA" value="child.week.42.a" />
+                        <property name="messageKeyB" value="child.week.42.b" />
+                        <property name="messageKeyC" value="child.week.42.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState82" />
+                            <property name="nextState" ref="weeklyPregnancyState83" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState82" />
+                            <property name="nextState" ref="weeklyPregnancyState82" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState83" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 83" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.43" />
+                        <property name="messageKeyA" value="child.week.43.a" />
+                        <property name="messageKeyB" value="child.week.43.b" />
+                        <property name="messageKeyC" value="child.week.43.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState83" />
+                            <property name="nextState" ref="weeklyPregnancyState84" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState83" />
+                            <property name="nextState" ref="weeklyPregnancyState83" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState84" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 84" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.44" />
+                        <property name="messageKeyA" value="child.week.44.a" />
+                        <property name="messageKeyB" value="child.week.44.b" />
+                        <property name="messageKeyC" value="child.week.44.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState84" />
+                            <property name="nextState" ref="weeklyPregnancyState85" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState84" />
+                            <property name="nextState" ref="weeklyPregnancyState84" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState85" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 85" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.45" />
+                        <property name="messageKeyA" value="child.week.45.a" />
+                        <property name="messageKeyB" value="child.week.45.b" />
+                        <property name="messageKeyC" value="child.week.45.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState85" />
+                            <property name="nextState" ref="weeklyPregnancyState86" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState85" />
+                            <property name="nextState" ref="weeklyPregnancyState85" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState86" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 86" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.46" />
+                        <property name="messageKeyA" value="child.week.46.a" />
+                        <property name="messageKeyB" value="child.week.46.b" />
+                        <property name="messageKeyC" value="child.week.46.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState86" />
+                            <property name="nextState" ref="weeklyPregnancyState87" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState86" />
+                            <property name="nextState" ref="weeklyPregnancyState86" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState87" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 87" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.47" />
+                        <property name="messageKeyA" value="child.week.47.a" />
+                        <property name="messageKeyB" value="child.week.47.b" />
+                        <property name="messageKeyC" value="child.week.47.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState87" />
+                            <property name="nextState" ref="weeklyPregnancyState88" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState87" />
+                            <property name="nextState" ref="weeklyPregnancyState87" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState88" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 88" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.48" />
+                        <property name="messageKeyA" value="child.week.48.a" />
+                        <property name="messageKeyB" value="child.week.48.b" />
+                        <property name="messageKeyC" value="child.week.48.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState88" />
+                            <property name="nextState" ref="weeklyPregnancyState89" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState88" />
+                            <property name="nextState" ref="weeklyPregnancyState88" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState89" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 89" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.49" />
+                        <property name="messageKeyA" value="child.week.49.a" />
+                        <property name="messageKeyB" value="child.week.49.b" />
+                        <property name="messageKeyC" value="child.week.49.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState89" />
+                            <property name="nextState" ref="weeklyPregnancyState90" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState89" />
+                            <property name="nextState" ref="weeklyPregnancyState89" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState90" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 90" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.50" />
+                        <property name="messageKeyA" value="child.week.50.a" />
+                        <property name="messageKeyB" value="child.week.50.b" />
+                        <property name="messageKeyC" value="child.week.50.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState90" />
+                            <property name="nextState" ref="weeklyPregnancyState91" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState90" />
+                            <property name="nextState" ref="weeklyPregnancyState90" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState91" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 91" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.51" />
+                        <property name="messageKeyA" value="child.week.51.a" />
+                        <property name="messageKeyB" value="child.week.51.b" />
+                        <property name="messageKeyC" value="child.week.51.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState91" />
+                            <property name="nextState" ref="weeklyPregnancyState92" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState91" />
+                            <property name="nextState" ref="weeklyPregnancyState91" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        <bean id="weeklyPregnancyState92" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+                <property name="name" value="Pregnancy State Week 92" />
+                <property name="timeValue" value="4" />
+                <property name="timePeriod" value="week" />
+                <property name="timeReference" value="enrollment_obs_datevalue" />
+                <property name="command">
+                    <bean class="org.motechproject.server.event.impl.ScheduleMessageCommand">
+                        <property name="messageKey" value="child.week.52" />
+                        <property name="messageKeyA" value="child.week.52.a" />
+                        <property name="messageKeyB" value="child.week.52.b" />
+                        <property name="messageKeyC" value="child.week.52.c" />
+                        <property name="messageScheduler" ref="userPrefmessageScheduler" />
+                    </bean>
+                </property>
+                <property name="program" ref="weeklyPregnancyProgram" />
+                <property name="timeBean" ref="timeBean" />
+                <property name="transitions">
+                    <list>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionExpectedDateImpl">
+                            <property name="timeValue" value="-2" />
+                            <property name="timePeriod" value="day" />
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState92" />
+                            <property name="nextState" ref="weeklyPregnancyState93" />
+                        </bean>
+                        <bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+                            <property name="command" ref="nopCommand" />
+                            <property name="prevState" ref="weeklyPregnancyState92" />
+                            <property name="nextState" ref="weeklyPregnancyState92" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+
+
+	<bean id="weeklyPregnancyState93" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<property name="name" value="End Pregnancy State Week 93" />
 		<property name="timeValue" value="5" />
 		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="enrollment_obs_datevalue" />
@@ -1421,8 +3007,8 @@
 			<list>
 				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
 					<property name="command" ref="nopCommand" />
-					<property name="prevState" ref="weeklyPregnancyState45" />
-					<property name="nextState" ref="weeklyPregnancyState45" />
+					<property name="prevState" ref="weeklyPregnancyState93" />
+					<property name="nextState" ref="weeklyPregnancyState93" />
 				</bean>
 			</list>
 		</property>

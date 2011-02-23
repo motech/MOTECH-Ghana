@@ -354,7 +354,7 @@
                     <c:forEach var="i" begin="5" end="40">
                         <form:option value="${i}" label="Pregnancy week ${i}"/>
                     </c:forEach>
-                    <c:forEach var="i" begin="1" end="4">
+                    <c:forEach var="i" begin="1" end="10">
                         <form:option value="${i + 40}" label="Newborn week ${i}"/>
                     </c:forEach>
                 </form:select>
