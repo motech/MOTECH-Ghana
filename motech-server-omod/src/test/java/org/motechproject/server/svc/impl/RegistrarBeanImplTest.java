@@ -41,6 +41,7 @@ import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.MediaType;
+import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
@@ -760,5 +761,53 @@ public class RegistrarBeanImplTest extends TestCase {
 		Message message2 = attempts.get(1);
 		assertEquals(MessageStatus.SHOULD_ATTEMPT, message2.getAttemptStatus());
 		assertEquals(messageDate, message2.getAttemptDate());
+	}
+
+	public void testFilteringStaffCareMessages() {
+            Patient p1 = new Patient(5716);
+            Patient p2 = new Patient(5717);
+            Patient p3 = new Patient(5718);
+            
+            ExpectedObs obs1 = new ExpectedObs();
+            obs1.setPatient(p1);
+            
+            ExpectedObs obs2 = new ExpectedObs();
+            obs2.setPatient(p2);
+            
+            ExpectedObs obs3 = new ExpectedObs();
+            obs3.setPatient(p3);
+            
+            ExpectedEncounter enc1 = new ExpectedEncounter();
+            enc1.setPatient(p1);
+            
+            ExpectedEncounter enc2 = new ExpectedEncounter();
+            enc2.setPatient(p2);
+            
+            ExpectedEncounter enc3 = new ExpectedEncounter();
+            enc3.setPatient(p3);
+            
+            
+            List<ExpectedObs> expObs = new ArrayList<ExpectedObs>();
+            List<ExpectedEncounter> expEnc = new ArrayList<ExpectedEncounter>();
+            
+            expObs.add(obs1);
+            expObs.add(obs2);
+            expObs.add(obs3);
+            
+            expEnc.add(enc1);
+            expEnc.add(enc2);
+            expEnc.add(enc3);
+            
+            List<ExpectedObs> filteredObs = regBean.filterRCTObs(expObs);
+            List<ExpectedEncounter> filteredEnc = regBean.filterRCTEncounters(expEnc);
+            
+            assertEquals(1, filteredObs.size());
+            ExpectedObs obs = filteredObs.get(0);
+            assertEquals(p1.getPatientId(), obs.getPatient().getPatientId());
+            
+            assertEquals(1, filteredEnc.size());
+            ExpectedEncounter enc = filteredEnc.get(0);
+            assertEquals(p1.getPatientId(), enc.getPatient().getPatientId());
+            
 	}
 }
