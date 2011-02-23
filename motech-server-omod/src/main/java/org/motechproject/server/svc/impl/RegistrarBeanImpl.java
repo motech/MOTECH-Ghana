@@ -2962,15 +2962,19 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
     }
 
-    public void sendStaffCareMessages(Date startDate, Date endDate,
-                                      Date deliveryDate, Date deliveryTime, String[] careGroups,
-                                      boolean sendUpcoming, boolean avoidBlackout) {
+        public void sendStaffCareMessages(Date startDate, Date endDate,
+                                      Date deliveryDate, Date deliveryTime, 
+                                      String[] careGroups,
+                                      boolean sendUpcoming, 
+                                      boolean avoidBlackout) {
 
         if (avoidBlackout && isDuringBlackout(deliveryDate)) {
             log.debug("Cancelling nurse messages during blackout");
             return;
         }
+
         List<Facility> facilities = motechService().getAllFacilities();
+
         // All staff messages sent as SMS
         MediaType mediaType = MediaType.TEXT;
         // No corresponding message stored for staff care messages
@@ -2982,47 +2986,119 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         modelConverter.setRegistrarBean(this);
 
         for (Facility facility : facilities) {
-            String phoneNumber = facility.getPhoneNumber();
-            Location facilityLocation = facility.getLocation();
-            if (phoneNumber == null
-                    || facilityLocation == null
-                    || !MotechConstants.LOCATION_KASSENA_NANKANA_WEST
-                    .equals(facilityLocation.getCountyDistrict())) {
-                // Skip facilities without a phone number or
-                // not in KNDW district
-                continue;
-            }
+			String phoneNumber = facility.getPhoneNumber();
+			Location facilityLocation = facility.getLocation();
+			if (phoneNumber == null
+					|| facilityLocation == null
+					|| !MotechConstants.LOCATION_KASSENA_NANKANA_WEST
+							.equals(facilityLocation.getCountyDistrict())) {
+				// Skip facilities without a phone number or
+				// not in KNDW district
+				continue;
+			}
 
-            // Send Defaulted Care Message
-            List<ExpectedEncounter> defaultedEncounters = getDefaultedExpectedEncounters(
-                    facility, careGroups, startDate);
-            List<ExpectedObs> defaultedObs = getDefaultedExpectedObs(facility,
-                    careGroups, startDate);
-            if (!defaultedEncounters.isEmpty() || !defaultedObs.isEmpty()) {
-                Care[] defaultedCares = modelConverter
-                        .defaultedToWebServiceCares(defaultedEncounters,
-                                defaultedObs);
-                sendStaffDefaultedCareMessage(messageId, phoneNumber,
-                        mediaType, deliveryDate, null, defaultedCares);
-            }
+			// Send Defaulted Care Message
+			List<ExpectedEncounter> defaultedEncounters; 
+			List<ExpectedObs> defaultedObs;
 
-            if (sendUpcoming) {
-                // Send Upcoming Care Messages
-                List<ExpectedEncounter> upcomingEncounters = getUpcomingExpectedEncounters(
-                        facility, careGroups, startDate, endDate);
-                List<ExpectedObs> upcomingObs = getUpcomingExpectedObs(
-                        facility, careGroups, startDate, endDate);
-                if (!upcomingEncounters.isEmpty() || !upcomingObs.isEmpty()) {
-                    Care[] upcomingCares = modelConverter
-                            .upcomingToWebServiceCares(upcomingEncounters,
-                                    upcomingObs, true);
+            defaultedEncounters = filterRCTEncounters(getDefaultedExpectedEncounters(facility, 
+                                                                                     careGroups, 
+                                                                                     startDate));
+            defaultedObs = filterRCTObs(getDefaultedExpectedObs(facility, 
+                                                                careGroups, 
+                                                                startDate));
 
-                    sendStaffUpcomingCareMessage(messageId, phoneNumber,
-                            mediaType, deliveryDate, null, upcomingCares);
-                }
-            }
+            // Replace the above code when RCT filtering rules are
+            // finalized and implemented.
+
+			if (!defaultedEncounters.isEmpty() || !defaultedObs.isEmpty()) {
+				Care[] defaultedCares = modelConverter
+						.defaultedToWebServiceCares(defaultedEncounters,
+								defaultedObs);
+				sendStaffDefaultedCareMessage(messageId, phoneNumber,
+						mediaType, deliveryDate, null, defaultedCares);
+			}
+
+			if (sendUpcoming) {
+				// Send Upcoming Care Messages
+                List<ExpectedEncounter> upcomingEncounters;
+                List<ExpectedObs> upcomingObs;
+                upcomingEncounters = filterRCTEncounters(getUpcomingExpectedEncounters(facility, 
+                                                                                       careGroups, 
+                                                                                       startDate, 
+                                                                                       endDate));
+                                                                     
+                upcomingObs = filterRCTObs(getUpcomingExpectedObs(facility, 
+                                                                  careGroups, 
+                                                                  startDate, 
+                                                                  endDate));
+
+				if (!upcomingEncounters.isEmpty() || !upcomingObs.isEmpty()) {
+					Care[] upcomingCares = modelConverter
+							.upcomingToWebServiceCares(upcomingEncounters,
+									upcomingObs, true);
+
+					sendStaffUpcomingCareMessage(messageId, phoneNumber,
+							mediaType, deliveryDate, null, upcomingCares);
+				}
+			}
+		}
+	}
+
+    // ========================================================================
+    //
+    // Filter out any defaulters that have registered after Jan 14th 
+    // (technically 2011-01-15 18:38:54).  Since patient id's increase we can 
+    // just look for patients with an id larger than the last allowed defaulter.
+    // This code is a hack, but it has to come out when we implement the 
+    // actual RCT filtering logic, soit has a clear end or life
+    //
+    // ========================================================================
+    public List<ExpectedEncounter> filterRCTEncounters(List<ExpectedEncounter> allDefaulters) {
+        List<ExpectedEncounter> defaultedEncounters = new ArrayList<ExpectedEncounter>();
+        Iterator<ExpectedEncounter> encIt = allDefaulters.iterator();
+
+        // Patient Id 5717 was the first patient to be 
+        // un-enrolled to keep them clean for the RCT.  
+        // Therefore we can only include patients that came
+        // before them, in other words those with a lower
+        // patient id
+        int maxId = 5717;
+        while( encIt.hasNext() ) {
+            ExpectedEncounter ee = encIt.next();
+            if( ee.getPatient() != null
+                && ee.getPatient().getPatientId() < maxId) 
+                defaultedEncounters.add(ee);
         }
+
+        return defaultedEncounters;
     }
+
+    public List<ExpectedObs> filterRCTObs(List<ExpectedObs> alldefaulters) {
+        List<ExpectedObs> defaultedObs = new ArrayList<ExpectedObs>();
+
+        Iterator<ExpectedObs> obsIt = alldefaulters.iterator();    
+
+        // Patient Id 5717 was the first patient to be 
+        // un-enrolled to keep them clean for the RCT.  
+        // Therefore we can only include patients that came
+        // before them, in other words those with a lower
+        // patient id
+        int maxId = 5717;
+        while( obsIt.hasNext() ) {
+            ExpectedObs eo = obsIt.next();
+            if( eo.getPatient() != null
+                && eo.getPatient().getPatientId() < maxId) 
+                defaultedObs.add(eo);
+        }
+
+        return defaultedObs;
+    }
+    // ========================================================================
+    //
+    // End RCT filtering non-sense
+    //
+    // ========================================================================
 
     /* NotificationTask methods start */
 
