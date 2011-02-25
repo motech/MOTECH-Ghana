@@ -40,7 +40,7 @@
 
 <meta name="heading" content="Staff Registration" />
 <%@ include file="localHeader.jsp" %>
-<h2>Register a Staff Member</h2>
+<h2>Register/Edit a Staff Member</h2>
 <c:choose>
 	<c:when test="${not empty successMsg}">
 	<span style="color:green;">
@@ -49,11 +49,12 @@
 	</c:when>
 	<c:otherwise>
 	<div class="instructions">
-		This form allows you register a staff member.
+		This form allows you register/edit a staff member.
 	</div>
-	<form:form method="post" modelAttribute="staff">
+	<form:form method="post" modelAttribute="staff" action="/openmrs/module/motechmodule/staff.form">
 	<form:errors cssClass="error" />
 	<table>
+        <form:input path="staffId" cssStyle="display:none;"/>
 		<tr>
 			<td><form:label path="firstName">First Name:</form:label></td>
 			<td><form:input path="firstName" maxlength="50" /></td>

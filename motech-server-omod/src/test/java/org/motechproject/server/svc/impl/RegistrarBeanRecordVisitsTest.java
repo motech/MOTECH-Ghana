@@ -154,7 +154,7 @@ public class RegistrarBeanRecordVisitsTest extends
 			Date dueDate2 = calendar.getTime();
 
 			User staff = regService.registerStaff("Nurse", "Betty",
-					"7777777777", "CHO");
+					"7777777777", "CHO", null);
 
 			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
 					mother1Id, RegistrantType.PREGNANT_MOTHER,

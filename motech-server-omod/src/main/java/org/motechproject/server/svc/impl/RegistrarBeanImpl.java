@@ -111,8 +111,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public User registerStaff(String firstName, String lastName, String phone,
-                              String staffType) {
-        return userService.saveUser(motechUserRepository.newUser(new WebStaff(firstName, lastName, phone, staffType)), generatePassword(8));
+                              String staffType, String staffId) {
+        User staff = null;
+        if(staffId != null){
+            staff = motechUserRepository.updateUser(getStaffBySystemId(staffId), new WebStaff(firstName, lastName, phone, staffType));
+        }else{
+            staff = motechUserRepository.newUser(new WebStaff(firstName, lastName, phone, staffType));
+        }
+        return userService.saveUser(staff, generatePassword(8));
     }
 
 

@@ -15,13 +15,13 @@ public class MotechUserRepository {
 
     private PersonService personService;
 
-    public MotechUserRepository(IdentifierGenerator identifierGenerator, UserService userService, PersonService personService){
+    public MotechUserRepository(IdentifierGenerator identifierGenerator, UserService userService, PersonService personService) {
         this.identifierGenerator = identifierGenerator;
         this.userService = userService;
         this.personService = personService;
     }
 
-    public User newUser(WebStaff webStaff){
+    public User newUser(WebStaff webStaff) {
         User user = new User();
         user.setSystemId(identifierGenerator.generateStaffId());
         user.setGender(MotechConstants.GENDER_UNKNOWN_OPENMRS);
@@ -39,4 +39,11 @@ public class MotechUserRepository {
         return user;
     }
 
+
+    public User updateUser(User staff, WebStaff webStaff) {
+        staff.getPersonName().setGivenName(webStaff.getFirstName());
+        staff.getPersonName().setFamilyName(webStaff.getLastName());
+        staff.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeName()).setValue(webStaff.getPhone());
+        return staff;
+    }
 }

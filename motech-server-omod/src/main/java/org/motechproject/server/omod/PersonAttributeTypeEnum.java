@@ -25,4 +25,8 @@ public enum PersonAttributeTypeEnum {
     public PersonAttributeType getAttributeType(PersonService personService){
         return personService.getPersonAttributeTypeByName(attributeName);
     }
+
+    public String getAttributeName(){
+        return attributeName;
+    }
 }

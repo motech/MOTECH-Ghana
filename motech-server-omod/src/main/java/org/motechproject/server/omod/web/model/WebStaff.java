@@ -40,6 +40,8 @@ public class WebStaff {
 	String phone;
 	String type;
 
+    String staffId;
+
     public WebStaff(){}
 
     public WebStaff(String firstName, String lastName, String phone, String type){
@@ -49,7 +51,12 @@ public class WebStaff {
         this.type = type;
     }
 
-	public String getFirstName() {
+    public WebStaff(String givenName, String familyName, String phone, String type, String staffId) {
+        this(givenName, familyName, phone, type);
+        this.staffId = staffId;
+    }
+
+    public String getFirstName() {
 		return firstName;
 	}
 
@@ -80,5 +87,14 @@ public class WebStaff {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+    public String getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
+    }
+
 
 }
