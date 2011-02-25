@@ -515,8 +515,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         relationshipService.saveOrUpdateMotherRelationship(mother, patient, false);
 
         if (Boolean.TRUE.equals(stopEnrollment)) {
-            removeAllMessageProgramEnrollments(patient.getPatientId());
+            stopEnrollmentFor(patient.getPatientId());
         }
+    }
+
+    @Transactional
+    public void stopEnrollmentFor(Integer patientId) {
+        removeAllMessageProgramEnrollments(patientId);
     }
 
     @Transactional
@@ -1715,7 +1720,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
         if (opvDose != null) {
             Obs opvDoseObs = createNumericValueObs(date, concept(ConceptEnum.CONCEPT_ORAL_POLIO_VACCINATION_DOSE),
-                                        patient, facility, opvDose, encounter, null);
+                    patient, facility, opvDose, encounter, null);
             encounter.addObs(opvDoseObs);
         }
         if (pentaDose != null) {
@@ -2929,7 +2934,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
             batchPreviousId = enrollment.getId();
         }
-        if(activeEnrollments.size() < batchSize){
+        if (activeEnrollments.size() < batchSize) {
             batchPreviousId = null;
             log.info("Completed updating all enrollments");
         }
@@ -3884,11 +3889,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return PATIENT_IDENTIFIER_MOTECH_ID.getIdentifierType(patientService);
     }
 
-    private EncounterType getEncounterType(EncounterTypeEnum encounterType){
+    private EncounterType getEncounterType(EncounterTypeEnum encounterType) {
         return encounterType.getEncounterType(encounterService);
     }
 
-    private Concept concept(ConceptEnum conceptEnum){
-        return  conceptEnum.getConcept(conceptService);
+    private Concept concept(ConceptEnum conceptEnum) {
+        return conceptEnum.getConcept(conceptService);
     }
 }
