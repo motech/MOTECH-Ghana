@@ -12,4 +12,6 @@ public interface RctDAO {
     RCTPatient saveRCTPatient(RCTPatient rctPatient);
 
     Stratum updateStratum(Stratum object);
+
+    boolean isPatientRegisteredIntoRCT(Integer motechId);
 }

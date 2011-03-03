@@ -14,6 +14,8 @@ public class RCTPatient {
     private Date enrollmentDate;
     private User enrolledBy;
 
+    public RCTPatient() {}
+
     public RCTPatient(String studyId, Stratum stratum, ControlGroup controlGroup, User enrolledBy) {
         this.studyId = studyId;
         this.stratum = stratum;

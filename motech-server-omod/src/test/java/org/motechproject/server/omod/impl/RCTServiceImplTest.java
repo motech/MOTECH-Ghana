@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import java.util.Calendar;
 import java.util.Date;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
 
@@ -51,6 +53,12 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
         patient.setContactNumberType(ContactNumberType.PERSONAL);
         RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility());
         assertNotNull(confirmation);
+    }
+
+    @Test
+    public void shouldDetermineIfPatientIsRCT(){
+        assertTrue(service.isPatientRegisteredIntoRCT(1234567));
+        assertFalse(service.isPatientRegisteredIntoRCT(1234568));
     }
 
     private User user() {

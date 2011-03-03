@@ -33,6 +33,11 @@ public class RCTServiceImpl implements RCTService {
         return new RCTRegistrationConfirmation(patient, group);
     }
 
+    @Transactional(readOnly = true)
+    public boolean isPatientRegisteredIntoRCT(Integer motechId){
+      return  dao.isPatientRegisteredIntoRCT(motechId); 
+    }
+
     private void determineNextAssignment(Stratum stratum) {
         stratum.determineNextAssignment();
         dao.updateStratum(stratum);
