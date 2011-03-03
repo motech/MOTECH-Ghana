@@ -3,7 +3,7 @@
 <hibernate-mapping default-access="field" package="org.motechproject.server.model.rct">
 
     <class name="RCTPatient" table="motechmodule_rct_patient">
-        <id name="id" column="rct_patient_id">
+        <id name="id" type="long" column="rct_patient_id" access="field">
             <generator class="native"/>
         </id>
         <property name="studyId" type="string" column="study_id" unique="true"/>

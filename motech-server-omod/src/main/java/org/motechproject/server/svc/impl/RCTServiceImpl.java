@@ -1,5 +1,7 @@
 package org.motechproject.server.svc.impl;
 
+import org.joda.time.DateTime;
+import org.joda.time.Months;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.db.RctDAO;
 import org.motechproject.server.model.rct.PhoneOwnershipType;
@@ -12,13 +14,17 @@ import org.motechproject.ws.rct.ControlGroup;
 import org.motechproject.ws.rct.PregnancyTrimester;
 import org.motechproject.ws.rct.RCTRegistrationConfirmation;
 import org.openmrs.User;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 public class RCTServiceImpl implements RCTService {
 
     private RctDAO dao;
 
+    @Transactional
     public RCTRegistrationConfirmation register(Patient patient, User staff, Facility facility) {
-        PregnancyTrimester trimester = patient.getPregnancyTrimester();
+        PregnancyTrimester trimester = pregnancyTrimester(patient);
         ContactNumberType contactNumberType = patient.getContactNumberType();
         Stratum stratum = stratumFor(facility, PhoneOwnershipType.mapTo(contactNumberType), trimester);
         ControlGroup group = stratum.groupAssigned();
@@ -36,8 +42,20 @@ public class RCTServiceImpl implements RCTService {
         dao.saveRCTPatient(new RCTPatient(motechId,stratum,controlGroup,enrolledBy));
     }
 
-    public Stratum stratumFor(Facility facility, PhoneOwnershipType phoneOwnershipType, PregnancyTrimester trimester) {
+    private Stratum stratumFor(Facility facility, PhoneOwnershipType phoneOwnershipType, PregnancyTrimester trimester) {
         return dao.stratumWith(facility,phoneOwnershipType,trimester);
+    }
+
+    private PregnancyTrimester pregnancyTrimester(Patient patient) {
+        DateTime deliveryDate = new DateTime(patient.getEstimateDueDate().getTime());
+        DateTime today = new DateTime(new Date().getTime());
+        Months months = Months.monthsBetween(today,deliveryDate);
+        int monthsDiff = Math.abs(months.getMonths());
+
+        if(monthsDiff <= 3 )return PregnancyTrimester.THIRD;
+        if(monthsDiff <= 6) return PregnancyTrimester.SECOND;
+
+        return PregnancyTrimester.FIRST;
     }
 
     public void setDao(RctDAO dao) {

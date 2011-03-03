@@ -11,5 +11,4 @@ import org.openmrs.User;
 public interface RCTService {
 
     RCTRegistrationConfirmation register(Patient patient, User user, Facility facility);
-    Stratum stratumFor(Facility facility, PhoneOwnershipType phoneOwnershipType, PregnancyTrimester trimester);
 }

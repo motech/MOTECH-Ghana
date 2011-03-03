@@ -11,8 +11,6 @@ import org.motechproject.server.model.rct.RCTPatient;
 import org.motechproject.server.model.rct.Stratum;
 import org.motechproject.ws.rct.PregnancyTrimester;
 
-import java.io.Serializable;
-
 public class HibernateRctDAO implements RctDAO {
 
     private SessionFactory sessionFactory;
@@ -37,13 +35,13 @@ public class HibernateRctDAO implements RctDAO {
 
     public RCTPatient saveRCTPatient(RCTPatient patient) {
         Session session = sessionFactory.getCurrentSession();
-        session.save(patient);
+        session.saveOrUpdate(patient);
         return patient;
     }
 
     public Stratum updateStratum(Stratum stratum) {
         Session session = sessionFactory.getCurrentSession();
-        session.update(stratum);
+        session.saveOrUpdate(stratum);
         return stratum;
     }
 }

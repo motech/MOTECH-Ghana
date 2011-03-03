@@ -4,13 +4,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.rct.PhoneOwnershipType;
-import org.motechproject.server.model.rct.Stratum;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Patient;
-import org.motechproject.ws.rct.PregnancyTrimester;
 import org.motechproject.ws.rct.RCTRegistrationConfirmation;
 import org.openmrs.User;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
@@ -44,19 +41,13 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
     }
 
     @Test
-    public void shouldReturnQueriedStratum() {
-        Stratum stratum = service.stratumFor(facility(), PhoneOwnershipType.PERSONAL, PregnancyTrimester.SECOND);
-        assertNotNull(stratum);
-    }
-
-    @Test
     public void shouldRegisterRCTPatient() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH,2);
         Date deliveryDate = calendar.getTime();
         Patient patient = new Patient();
         patient.setMotechId("123654");
-        patient.setDeliveryDate(deliveryDate);
+        patient.setEstimateDueDate(deliveryDate);
         patient.setContactNumberType(ContactNumberType.PERSONAL);
         RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility());
         assertNotNull(confirmation);
