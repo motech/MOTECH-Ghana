@@ -1493,7 +1493,7 @@
             create table motechmodule_rct_stratum
             (
             stratum_id bigint(20) primary key,
-            facility_id int(11) not null,
+            facility_id bigint(11) not null,
             pregnancy_trimester varchar(10) not null,
             phone_ownership varchar(20) not null,
             size int not null,
