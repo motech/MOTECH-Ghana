@@ -1513,7 +1513,7 @@
 
             create table motechmodule_rct_patient
             (
-            rct_patient_id bigint(20) primary key,
+            rct_patient_id bigint(20) primary key AUTO_INCREMENT,
             study_id varchar(20) not null unique,
             stratum_id bigint(20) not null,
             assignment char not null,
