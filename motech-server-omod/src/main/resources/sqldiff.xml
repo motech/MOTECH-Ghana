@@ -1161,12 +1161,16 @@
 
             INSERT INTO `patient_identifier_type`
             (`name`,`description`,`validator`,`check_digit`,`creator`,`date_created`,`uuid`) VALUES
-            ('MoTeCH Id','Patient Id for MoTeCH system.','org.motechproject.server.omod.MotechIdVerhoeffValidator',1,1,now(),uuid()),
-            ('MoTeCH Staff Id','Staff Id for MoTeCH system.','org.motechproject.server.omod.VerhoeffValidator',1,1,now(),uuid()),
-            ('MoTeCH Facility Id','Facility Id for MoTeCH system.','org.motechproject.server.omod.VerhoeffValidator',1,1,now(),uuid());
+            ('MoTeCH Id','Patient Id for MoTeCH
+            system.','org.motechproject.server.omod.MotechIdVerhoeffValidator',1,1,now(),uuid()),
+            ('MoTeCH Staff Id','Staff Id for MoTeCH
+            system.','org.motechproject.server.omod.VerhoeffValidator',1,1,now(),uuid()),
+            ('MoTeCH Facility Id','Facility Id for MoTeCH
+            system.','org.motechproject.server.omod.VerhoeffValidator',1,1,now(),uuid());
 
             INSERT INTO `idgen_identifier_source` (`name`,`identifier_type`,`creator`,`date_created`,`uuid`) VALUES
-            ('MoTeCH ID Generator',(select patient_identifier_type_id from patient_identifier_type where name = 'MoTeCH Id'),1,now(),uuid()),
+            ('MoTeCH ID Generator',(select patient_identifier_type_id from patient_identifier_type where name = 'MoTeCH
+            Id'),1,now(),uuid()),
             ('MoTeCH Staff ID Generator',(select patient_identifier_type_id from patient_identifier_type where name =
             'MoTeCH Staff Id'),1,now(),uuid()),
             ('MoTeCH Facility ID Generator',(select patient_identifier_type_id from patient_identifier_type where name =
@@ -1175,8 +1179,10 @@
             INSERT INTO `idgen_seq_id_gen`
             (`id`,`next_sequence_value`,`base_character_set`,`first_identifier_base`,`length`) VALUES
             ((select id from idgen_identifier_source where name = 'MoTeCH ID Generator'),-1,'0123456789','123456',7),
-            ((select id from idgen_identifier_source where name = 'MoTeCH Staff ID Generator'),-1,'0123456789','46',NULL),
-            ((select id from idgen_identifier_source where name = 'MoTeCH Facility ID Generator'),-1,'0123456789','1311',NULL);
+            ((select id from idgen_identifier_source where name = 'MoTeCH Staff ID
+            Generator'),-1,'0123456789','46',NULL),
+            ((select id from idgen_identifier_source where name = 'MoTeCH Facility ID
+            Generator'),-1,'0123456789','1311',NULL);
         </sql>
     </diff>
 
@@ -1320,7 +1326,8 @@
         <sql>
             INSERT INTO `patient_identifier_type`
             (`name`,`description`,`validator`,`check_digit`,`creator`,`date_created`,`uuid`) VALUES
-            ('MoTeCH Community Id','Community Id for MoTeCH system.','org.motechproject.server.omod.VerhoeffValidator',1,1,now(),uuid());
+            ('MoTeCH Community Id','Community Id for MoTeCH
+            system.','org.motechproject.server.omod.VerhoeffValidator',1,1,now(),uuid());
 
             INSERT INTO `idgen_identifier_source` (`name`,`identifier_type`,`creator`,`date_created`,`uuid`) VALUES
             ('MoTeCH Community ID Generator',(select patient_identifier_type_id from patient_identifier_type where name
@@ -1328,7 +1335,8 @@
 
             INSERT INTO `idgen_seq_id_gen`
             (`id`,`next_sequence_value`,`base_character_set`,`first_identifier_base`,`length`) VALUES
-            ((select id from idgen_identifier_source where name = 'MoTeCH Community ID Generator'),-1,'0123456789','130000',NULL);
+            ((select id from idgen_identifier_source where name = 'MoTeCH Community ID
+            Generator'),-1,'0123456789','130000',NULL);
         </sql>
     </diff>
 
@@ -1471,6 +1479,50 @@
             ('child.week.50',511,'INFORMATIONAL'),
             ('child.week.51',512,'INFORMATIONAL'),
             ('child.week.52',513,'INFORMATIONAL');
+        </sql>
+    </diff>
+
+    <diff>
+        <version>1.1</version>
+        <author>ThoughtWorks</author>
+        <date>March 1 2011</date>
+        <description>
+            Creating RCT tables
+        </description>
+        <sql>
+            create table motechmodule_rct_stratum
+            (
+            stratum_id bigint(20) primary key,
+            facility_id int(11) not null,
+            pregnancy_trimester varchar(10) not null,
+            phone_ownership varchar(20) not null,
+            size int not null,
+            active tinyint not null ,
+            next_assignment int not null,
+            constraint fk_stratum_to_facility foreign key (facility_id) references motechmodule_facility (id)
+            ) ;
+
+            create table motechmodule_rct_assignment
+            (
+            assignment_id bigint(20) primary key,
+            stratum_id bigint(20) not null,
+            assignment_num int not null,
+            assignment char not null,
+            constraint fk_assignment_to_stratum foreign key (stratum_id) references  motechmodule_rct_stratum (stratum_id)
+            );
+
+            create table motechmodule_rct_patient
+            (
+            rct_patient_id bigint(20) primary key,
+            study_id varchar(20) not null unique,
+            stratum_id bigint(20) not null,
+            assignment char not null,
+            date_enrolled DATETIME not null,
+            enrolled_by int(11) not null,
+            constraint fk_patient_to_stratum foreign key (stratum_id) references  motechmodule_rct_stratum (stratum_id),
+            constraint fk_patient_to_user foreign key (enrolled_by) references users (user_id)
+            )
+            
         </sql>
     </diff>
 

@@ -33,10 +33,10 @@
 
 package org.motechproject.server.model;
 
+import org.openmrs.Location;
+
 import java.io.Serializable;
 import java.util.Set;
-
-import org.openmrs.Location;
 
 public class Facility implements Serializable {
 

@@ -1,0 +1,15 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field" package="org.motechproject.server.model.rct">
+
+    <class name="RCTPatient" table="motechmodule_rct_patient">
+        <id name="id" column="rct_patient_id">
+            <generator class="native"/>
+        </id>
+        <property name="studyId" type="string" column="study_id" unique="true"/>
+        <property name="controlGroup" type="org.motechproject.server.model.db.hibernate.rct.ControlGroupEnumType" column="assignment"/>
+        <many-to-one name="stratum" class="Stratum" column="stratum_id" not-null="true" />
+        <many-to-one name="enrolledBy" class="org.openmrs.User" column="enrolled_by" not-null="true" />
+        <property name="enrollmentDate" type="date" column="date_enrolled"/>
+    </class>
+</hibernate-mapping>

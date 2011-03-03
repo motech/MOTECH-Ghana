@@ -66,6 +66,21 @@
         </property>
     </bean>
 
+    <bean id="rctBeanProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <list>
+                <value>org.motechproject.server.svc.RCTService</value>
+            </list>
+        </property>
+        <property name="target" ref="rctService"/>
+        <property name="interceptorNames">
+            <list>
+                <idref bean="contextSessionAdvice"/>
+                <idref bean="authenticateAdvice"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="verbatimUserResolver" class="org.motechproject.server.omod.impl.VerbatimUserResolverImpl"/>
 
     <bean id="contextSessionAdvice" class="org.motechproject.server.omod.advice.ContextSessionAdvice">

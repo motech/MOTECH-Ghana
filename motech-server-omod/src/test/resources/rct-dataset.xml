@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+
+    <users user_id="1" system_id="107" creator="1" date_created="0002-11-30 00:00:00.0" voided="0"/>
+
+    <location name="Navio CHPS" location_id="2" creator="1" date_created="0002-11-30 00:00:00.0" retired="0"
+              uuid="161c3ed9-2aa8-11e0"/>
+
+
+
+    <motechmodule_facility id="1" facility_id="11117" location_id="2" phone_number="0123456789"/>
+    <motechmodule_facility id="2" facility_id="11118" location_id="2" phone_number="0123456790"/>
+
+
+    <motechmodule_rct_stratum stratum_id="1" facility_id="1" pregnancy_trimester="SECOND" phone_ownership="PERSONAL"
+                              size="4" active="true" next_assignment="1"/>
+
+    <motechmodule_rct_stratum stratum_id="2" facility_id="1" pregnancy_trimester="THIRD" phone_ownership="PERSONAL"
+                              size="2" active="true" next_assignment="1"/>
+
+    <motechmodule_rct_stratum stratum_id="3" facility_id="2" pregnancy_trimester="THIRD" phone_ownership="OTHER"
+                              size="1" active="true" next_assignment="1"/>
+
+
+    <motechmodule_rct_assignment assignment_id="1" stratum_id="1" assignment_num="1" assignment="T"/>
+    <motechmodule_rct_assignment assignment_id="2" stratum_id="1" assignment_num="2" assignment="C"/>
+    <motechmodule_rct_assignment assignment_id="3" stratum_id="1" assignment_num="3" assignment="C"/>
+    <motechmodule_rct_assignment assignment_id="4" stratum_id="1" assignment_num="4" assignment="C"/>
+
+    <motechmodule_rct_assignment assignment_id="5" stratum_id="2" assignment_num="1" assignment="C"/>
+    <motechmodule_rct_assignment assignment_id="6" stratum_id="2" assignment_num="2" assignment="T"/>
+
+    <motechmodule_rct_assignment assignment_id="7" stratum_id="3" assignment_num="1" assignment="T"/>
+
+
+</dataset>

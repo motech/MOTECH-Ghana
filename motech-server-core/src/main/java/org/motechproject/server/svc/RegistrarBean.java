@@ -447,4 +447,5 @@ public interface RegistrarBean {
 	Facility saveNewFacility(Facility facility);
 
     public void stopEnrollmentFor(Integer patientId);
+
 }

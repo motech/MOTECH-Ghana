@@ -1,0 +1,12 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field">
+
+    <class name="org.motechproject.server.model.rct.ControlGroupAssignment" table="motechmodule_rct_assignment">
+        <id name="id" column="assignment_id">
+            <generator class="native"/>
+        </id>
+        <property name="controlGroup" type="org.motechproject.server.model.db.hibernate.rct.ControlGroupEnumType" column="assignment"/>
+        <property name="assignmentNumber" type="integer" column="assignment_num"/>
+    </class>
+</hibernate-mapping>

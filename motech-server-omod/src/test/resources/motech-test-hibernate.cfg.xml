@@ -52,5 +52,8 @@
         <mapping resource="TroubledPhone.hbm.xml"/>
         <mapping resource="Facility.hbm.xml"/>
         <mapping resource="ExpectedObs.hbm.xml"/>
+        <mapping resource="Stratum.hbm.xml"/>
+        <mapping resource="ControlGroupAssignment.hbm.xml"/>
+        <mapping resource="RCTPatient.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

@@ -39,11 +39,10 @@ import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
-import org.motechproject.server.svc.BirthOutcomeChild;
-import org.motechproject.server.svc.MessageSourceBean;
-import org.motechproject.server.svc.OpenmrsBean;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.model.rct.RCTPatient;
+import org.motechproject.server.svc.*;
 import org.motechproject.ws.*;
+import org.motechproject.ws.rct.RCTRegistrationConfirmation;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationErrors;
 import org.motechproject.ws.server.ValidationException;
@@ -70,10 +69,13 @@ public class RegistrarWebService implements RegistrarService {
 
     Log log = LogFactory.getLog(RegistrarWebService.class);
 
+
+
     RegistrarBean registrarBean;
     OpenmrsBean openmrsBean;
     WebServiceModelConverter modelConverter;
     MessageSourceBean messageBean;
+    RCTService rctService;
 
     @WebMethod
     public void recordPatientHistory(
@@ -1204,6 +1206,30 @@ public class RegistrarWebService implements RegistrarService {
     @WebMethod(exclude = true)
     public void setMessageBean(MessageSourceBean messageBean) {
         this.messageBean = messageBean;
+    }
+
+    @WebMethod(exclude = true)
+    public void setRctService(RCTService rctService) {
+        this.rctService = rctService;
+    }
+
+    @WebMethod
+    public RCTRegistrationConfirmation registerForRCT(@WebParam(name = "staffId") Integer staffId,
+                                     @WebParam(name = "facilityId") Integer facilityId,
+                                     @WebParam(name = "motechId") Integer motechId) throws ValidationException {
+
+        ValidationErrors errors = new ValidationErrors();
+        User staff = validateStaffId(staffId, errors, "StaffID");
+        Facility facility = validateFacility(facilityId, errors, "FacilityID");
+
+        org.openmrs.Patient patient = validateMotechId(motechId, errors,
+                "MotechID", true);
+
+        if (errors.getErrors().size() > 0) {
+            throw new ValidationException("Errors in Patient Query request",
+                    errors);
+        }
+        return rctService.register(modelConverter.patientToWebService(patient, false), staff, facility);
     }
 
     private User validateStaffId(Integer staffId, ValidationErrors errors,

@@ -1,0 +1,23 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field" package="org.motechproject.server.model.rct">
+
+    <class name="Stratum" table="motechmodule_rct_stratum">
+        <id name="id" column="stratum_id">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="facility" class="org.motechproject.server.model.Facility" column="facility_id"
+                     not-null="true"/>
+        <property name="pregnancyTrimester" type="org.motechproject.server.model.db.hibernate.rct.PregnancyTrimesterEnumType"
+                  column="pregnancy_trimester"/>
+        <property name="phoneOwnership" type="org.motechproject.server.model.db.hibernate.rct.PhoneOwnershipEnumType"
+                  column="phone_ownership"/>
+        <property name="size" type="integer" column="size"/>
+        <property name="isActive" type="boolean" column="active"/>
+        <set name="assignments">
+            <key column="stratum_id" not-null="true"/>
+            <one-to-many class="ControlGroupAssignment"/>
+        </set>
+        <property name="nextAssignment" type="integer" column="next_assignment"/>
+    </class>
+</hibernate-mapping>

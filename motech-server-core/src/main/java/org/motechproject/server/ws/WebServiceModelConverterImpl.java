@@ -33,12 +33,6 @@
 
 package org.motechproject.server.ws;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
@@ -46,12 +40,11 @@ import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.Care;
+import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Patient;
-import org.openmrs.Encounter;
-import org.openmrs.Obs;
-import org.openmrs.PatientIdentifier;
-import org.openmrs.PersonAttribute;
-import org.openmrs.PersonName;
+import org.openmrs.*;
+
+import java.util.*;
 
 public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 
@@ -101,6 +94,12 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 					.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
 			if (phoneNumberAttr != null) {
 				wsPatient.setPhoneNumber(phoneNumberAttr.getValue());
+			}
+
+            PersonAttribute contactNumberType = patient
+					.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
+			if (phoneNumberAttr != null) {
+				wsPatient.setContactNumberType(ContactNumberType.valueOf(contactNumberType.getValue()));
 			}
 
 			wsPatient.setEstimateDueDate(registrarBean
