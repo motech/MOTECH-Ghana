@@ -35,9 +35,13 @@ package org.motechproject.server.omod.web.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motechproject.server.omod.PersonAttributeTypeEnum;
 import org.motechproject.server.omod.web.model.WebStaff;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
+import org.openmrs.PersonAttribute;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -47,87 +51,93 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/module/motechmodule/staff")
 public class StaffController {
 
-	protected final Log log = LogFactory.getLog(StaffController.class);
+    protected final Log log = LogFactory.getLog(StaffController.class);
 
-	@Autowired
-	@Qualifier("registrarBean")
-	private RegistrarBean registrarBean;
+    @Autowired
+    @Qualifier("registrarBean")
+    private RegistrarBean registrarBean;
 
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-		binder
-				.registerCustomEditor(String.class, new StringTrimmerEditor(
-						true));
-	}
+    @Autowired
+    @Qualifier("openmrsBean")
+    private OpenmrsBean openmrsBean;
 
-	@ModelAttribute("staff")
-	public WebStaff getWebStaff() {
-		WebStaff staff = new WebStaff();
-		return staff;
-	}
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder
+                .registerCustomEditor(String.class, new StringTrimmerEditor(
+                        true));
+    }
 
-	@RequestMapping(method = RequestMethod.GET)
-	public String viewStaffForm(ModelMap model) {
+    @ModelAttribute("staff")
+    public WebStaff getWebStaff() {
+        WebStaff staff = new WebStaff();
+        return staff;
+    }
 
-		model.addAttribute("staffTypes", registrarBean.getStaffTypes());
-		return "/module/motechmodule/staff";
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    public String viewStaffForm(@RequestParam(value = "staffId", required = false) String staffId, ModelMap model) {
+        if (staffId != null) {
+            User staff = openmrsBean.getStaffBySystemId(staffId);
+            PersonAttribute attribute = staff.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeName());
+            WebStaff webStaff = new WebStaff(staff.getPersonName().getGivenName(), staff.getPersonName().getFamilyName(), attribute.getValue(), "", staffId);
+            model.addAttribute("staff", webStaff);
+        }
+        model.addAttribute("staffTypes", registrarBean.getStaffTypes());
+        return "/module/motechmodule/staff";
+    }
 
-	@RequestMapping(method = RequestMethod.POST)
-	public String registerStaff(@ModelAttribute("staff") WebStaff staff,
-			Errors errors, ModelMap model) {
+    @RequestMapping(method = RequestMethod.POST)
+    public String registerStaff(@ModelAttribute("staff") WebStaff staff,
+                                Errors errors, ModelMap model) {
 
-		log.debug("Register Staff");
+        log.debug("Register Staff");
 
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName",
-				"motechmodule.firstName.required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName",
-				"motechmodule.lastName.required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "type",
-				"motechmodule.staffType.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName",
+                "motechmodule.firstName.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName",
+                "motechmodule.lastName.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "type",
+                "motechmodule.staffType.required");
 
-		validateTextLength(errors, "firstName", staff.getFirstName(),
-				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
-		validateTextLength(errors, "lastName", staff.getLastName(),
-				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
-		validateTextLength(errors, "phone", staff.getPhone(),
-				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+        validateTextLength(errors, "firstName", staff.getFirstName(),
+                MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+        validateTextLength(errors, "lastName", staff.getLastName(),
+                MotechConstants.MAX_STRING_LENGTH_OPENMRS);
+        validateTextLength(errors, "phone", staff.getPhone(),
+                MotechConstants.MAX_STRING_LENGTH_OPENMRS);
 
-		if (staff.getPhone() != null
-				&& !staff.getPhone().matches(
-						MotechConstants.PHONE_REGEX_PATTERN)) {
-			errors.rejectValue("phone", "motechmodule.phoneNumber.invalid");
-		}
+        if (staff.getPhone() != null
+                && !staff.getPhone().matches(
+                MotechConstants.PHONE_REGEX_PATTERN)) {
+            errors.rejectValue("phone", "motechmodule.phoneNumber.invalid");
+        }
 
-		if (!errors.hasErrors()) {
-			User user = registrarBean.registerStaff(staff.getFirstName(), staff
-					.getLastName(), staff.getPhone(), staff.getType());
+        if (!errors.hasErrors()) {
+            User user = registrarBean.registerStaff(staff.getFirstName(), staff
+                    .getLastName(), staff.getPhone(), staff.getType(), staff.getStaffId());
 
-			model.addAttribute("successMsg", "Added user: Name = "
-					+ user.getPersonName() + ", Staff ID = "
-					+ user.getSystemId());
-		}
-		model.addAttribute("staffTypes", registrarBean.getStaffTypes());
-		return "/module/motechmodule/staff";
-	}
+            model.addAttribute("successMsg", "Added user: Name = "
+                    + user.getPersonName() + ", Staff ID = "
+                    + user.getSystemId());
+        }
+        model.addAttribute("staffTypes", registrarBean.getStaffTypes());
+        return "/module/motechmodule/staff";
+    }
 
-	void validateTextLength(Errors errors, String fieldname, String fieldValue,
-			int lengthLimit) {
+    void validateTextLength(Errors errors, String fieldname, String fieldValue,
+                            int lengthLimit) {
 
-		if (fieldValue != null && fieldValue.length() > lengthLimit) {
-			errors.rejectValue(fieldname, "motechmodule.string.maxlength",
-					new Integer[] { lengthLimit },
-					"Specified text is longer than max characters.");
-		}
-	}
+        if (fieldValue != null && fieldValue.length() > lengthLimit) {
+            errors.rejectValue(fieldname, "motechmodule.string.maxlength",
+                    new Integer[]{lengthLimit},
+                    "Specified text is longer than max characters.");
+        }
+    }
 
 }

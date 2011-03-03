@@ -59,7 +59,7 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public User registerStaff(String firstName, String lastName, String phone,
-			String staffType);
+                              String staffType, String staffId);
 
 	@RunAsAdminUser
 	public Patient registerPatient(@RunAsUserParam User staff,
