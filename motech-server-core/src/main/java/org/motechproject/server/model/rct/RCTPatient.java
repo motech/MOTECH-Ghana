@@ -7,12 +7,14 @@ import java.util.Date;
 
 public class RCTPatient {
 
-    private Integer id;
-    private String studyId ;
+    private Long id;
+    private String studyId;
     private Stratum stratum;
-    private ControlGroup controlGroup ;
+    private ControlGroup controlGroup;
     private Date enrollmentDate;
-    private User enrolledBy ;
+    private User enrolledBy;
+
+    public RCTPatient() {}
 
     public RCTPatient(String studyId, Stratum stratum, ControlGroup controlGroup, User enrolledBy) {
         this.studyId = studyId;

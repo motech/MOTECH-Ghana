@@ -11,7 +11,7 @@ import org.motechproject.server.model.rct.RCTPatient;
 import org.motechproject.server.model.rct.Stratum;
 import org.motechproject.ws.rct.PregnancyTrimester;
 
-import java.io.Serializable;
+import java.util.List;
 
 public class HibernateRctDAO implements RctDAO {
 
@@ -37,13 +37,21 @@ public class HibernateRctDAO implements RctDAO {
 
     public RCTPatient saveRCTPatient(RCTPatient patient) {
         Session session = sessionFactory.getCurrentSession();
-        session.save(patient);
+        session.saveOrUpdate(patient);
         return patient;
     }
 
     public Stratum updateStratum(Stratum stratum) {
         Session session = sessionFactory.getCurrentSession();
-        session.update(stratum);
+        session.saveOrUpdate(stratum);
         return stratum;
+    }
+
+    public boolean isPatientRegisteredIntoRCT(Integer motechId) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(RCTPatient.class);
+        criteria.add(Restrictions.eq("studyId",motechId.toString()));
+        List list = criteria.list();
+        return list.size() == 1;
     }
 }

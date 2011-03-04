@@ -1508,22 +1508,22 @@
             stratum_id bigint(20) not null,
             assignment_num int not null,
             assignment char not null,
-            constraint fk_assignment_to_stratum foreign key (stratum_id) references  motechmodule_rct_stratum (stratum_id)
+            constraint fk_assignment_to_stratum foreign key (stratum_id) references motechmodule_rct_stratum
+            (stratum_id)
             );
 
             create table motechmodule_rct_patient
             (
-            rct_patient_id bigint(20) primary key,
+            rct_patient_id bigint(20) primary key AUTO_INCREMENT,
             study_id varchar(20) not null unique,
             stratum_id bigint(20) not null,
             assignment char not null,
             date_enrolled DATETIME not null,
             enrolled_by int(11) not null,
-            constraint fk_patient_to_stratum foreign key (stratum_id) references  motechmodule_rct_stratum (stratum_id),
+            constraint fk_patient_to_stratum foreign key (stratum_id) references motechmodule_rct_stratum (stratum_id),
             constraint fk_patient_to_user foreign key (enrolled_by) references users (user_id)
             )
-            
+
         </sql>
     </diff>
-
 </sqldiff>

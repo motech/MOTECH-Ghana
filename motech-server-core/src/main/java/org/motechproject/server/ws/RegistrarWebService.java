@@ -1223,6 +1223,7 @@ public class RegistrarWebService implements RegistrarService {
         ValidationErrors errors = new ValidationErrors();
         User staff = validateStaffId(staffId, errors, "StaffID");
         Facility facility = validateFacility(facilityId, errors, "FacilityID");
+        validateIfPatientAlredayRegisterdForRCT(motechId, errors , "motechId");
 
         org.openmrs.Patient patient = validateMotechId(motechId, errors,
                 "MotechID", true);
@@ -1233,6 +1234,12 @@ public class RegistrarWebService implements RegistrarService {
         }
         registrarBean.editPatient(staff, null, patient, null, regPhone, ownership, null, null, null, null);
         return rctService.register(modelConverter.patientToWebService(patient, false), staff, facility);
+    }
+
+    private void validateIfPatientAlredayRegisterdForRCT(Integer motechId, ValidationErrors errors , String fieldName) {
+        if(rctService.isPatientRegisteredIntoRCT(motechId)){
+            errors.add(messageBean.getMessage("motechmodule.rct.exists",fieldName));
+        }
     }
 
     private User validateStaffId(Integer staffId, ValidationErrors errors,
