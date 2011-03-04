@@ -1216,7 +1216,9 @@ public class RegistrarWebService implements RegistrarService {
     @WebMethod
     public RCTRegistrationConfirmation registerForRCT(@WebParam(name = "staffId") Integer staffId,
                                      @WebParam(name = "facilityId") Integer facilityId,
-                                     @WebParam(name = "motechId") Integer motechId) throws ValidationException {
+                                     @WebParam(name = "motechId") Integer motechId,
+                                     @WebParam(name = "ownership") ContactNumberType ownership,
+                                     @WebParam(name = "regPhone") String regPhone) throws ValidationException {
 
         ValidationErrors errors = new ValidationErrors();
         User staff = validateStaffId(staffId, errors, "StaffID");
@@ -1229,6 +1231,7 @@ public class RegistrarWebService implements RegistrarService {
             throw new ValidationException("Errors in Patient Query request",
                     errors);
         }
+        registrarBean.editPatient(staff, null, patient, null, regPhone, ownership, null, null, null, null);
         return rctService.register(modelConverter.patientToWebService(patient, false), staff, facility);
     }
 
