@@ -2,9 +2,9 @@ package org.motechproject.server.svc.impl;
 
 import org.joda.time.DateTime;
 import org.joda.time.Months;
-import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.db.RctDAO;
 import org.motechproject.server.model.rct.PhoneOwnershipType;
+import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.model.rct.RCTPatient;
 import org.motechproject.server.model.rct.Stratum;
 import org.motechproject.server.svc.RCTService;
@@ -23,10 +23,10 @@ public class RCTServiceImpl implements RCTService {
     private RctDAO dao;
 
     @Transactional
-    public RCTRegistrationConfirmation register(Patient patient, User staff, Facility facility) {
+    public RCTRegistrationConfirmation register(Patient patient, User staff, RCTFacility facility) {
         PregnancyTrimester trimester = pregnancyTrimester(patient);
         ContactNumberType contactNumberType = patient.getContactNumberType();
-        Stratum stratum = stratumFor(facility, PhoneOwnershipType.mapTo(contactNumberType), trimester);
+        Stratum stratum = stratumWith(facility, PhoneOwnershipType.mapTo(contactNumberType), trimester);
         ControlGroup group = stratum.groupAssigned();
         enrollPatientForRCT(patient.getMotechId(),stratum, group, staff);
         determineNextAssignment(stratum);
@@ -38,6 +38,11 @@ public class RCTServiceImpl implements RCTService {
       return  dao.isPatientRegisteredIntoRCT(motechId); 
     }
 
+    @Transactional(readOnly = true )
+    public RCTFacility getRCTFacilityById(Integer facilityId) {
+        return dao.getRCTFacility(facilityId);
+    }
+
     private void determineNextAssignment(Stratum stratum) {
         stratum.determineNextAssignment();
         dao.updateStratum(stratum);
@@ -47,7 +52,7 @@ public class RCTServiceImpl implements RCTService {
         dao.saveRCTPatient(new RCTPatient(motechId,stratum,controlGroup,enrolledBy));
     }
 
-    private Stratum stratumFor(Facility facility, PhoneOwnershipType phoneOwnershipType, PregnancyTrimester trimester) {
+    private Stratum stratumWith(RCTFacility facility, PhoneOwnershipType phoneOwnershipType, PregnancyTrimester trimester) {
         return dao.stratumWith(facility,phoneOwnershipType,trimester);
     }
 

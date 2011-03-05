@@ -3,7 +3,7 @@ package org.motechproject.server.omod.impl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.ws.ContactNumberType;
@@ -17,9 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
 
@@ -61,12 +59,18 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
         assertFalse(service.isPatientRegisteredIntoRCT(1234568));
     }
 
+    @Test
+    public void shouldDetermineIfFacilityIsCoveredInRCT(){
+        assertNotNull(service.getRCTFacilityById(11117));
+        assertNull(service.getRCTFacilityById(11119));
+    }
+
     private User user() {
         return contextService.getUserService().getUser(1);
     }
 
-    private Facility facility() {
-        return contextService.getRegistrarBean().getFacilityById(11117);
+    private RCTFacility facility() {
+        return service.getRCTFacilityById(11117);
     }
 
 }

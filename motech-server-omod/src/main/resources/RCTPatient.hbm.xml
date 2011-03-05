@@ -11,5 +11,6 @@
         <many-to-one name="stratum" class="Stratum" column="stratum_id" not-null="true" />
         <many-to-one name="enrolledBy" class="org.openmrs.User" column="enrolled_by" not-null="true" />
         <property name="enrollmentDate" type="date" column="date_enrolled"/>
+        <property name="enrolled" type="char" column="enrolled"/>
     </class>
 </hibernate-mapping>

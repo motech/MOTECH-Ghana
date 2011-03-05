@@ -11,14 +11,16 @@
     <motechmodule_facility id="1" facility_id="11117" location_id="2" phone_number="0123456789"/>
     <motechmodule_facility id="2" facility_id="11118" location_id="2" phone_number="0123456790"/>
 
+    <motechmodule_rct_facility rct_facility_id="1" facility_id="11117" active="1"/>
+    <motechmodule_rct_facility rct_facility_id="2" facility_id="11118" active="1"/>
 
-    <motechmodule_rct_stratum stratum_id="1" facility_id="1" pregnancy_trimester="SECOND" phone_ownership="PERSONAL"
+    <motechmodule_rct_stratum stratum_id="1" rct_facility_id="1" pregnancy_trimester="SECOND" phone_ownership="PERSONAL"
                               size="4" active="true" next_assignment="1"/>
 
-    <motechmodule_rct_stratum stratum_id="2" facility_id="1" pregnancy_trimester="THIRD" phone_ownership="PERSONAL"
+    <motechmodule_rct_stratum stratum_id="2" rct_facility_id="1" pregnancy_trimester="THIRD" phone_ownership="PERSONAL"
                               size="2" active="true" next_assignment="1"/>
 
-    <motechmodule_rct_stratum stratum_id="3" facility_id="2" pregnancy_trimester="THIRD" phone_ownership="OTHER"
+    <motechmodule_rct_stratum stratum_id="3" rct_facility_id="2" pregnancy_trimester="THIRD" phone_ownership="OTHER"
                               size="1" active="true" next_assignment="1"/>
 
 
@@ -33,7 +35,7 @@
     <motechmodule_rct_assignment assignment_id="7" stratum_id="3" assignment_num="1" assignment="T"/>
 
     <motechmodule_rct_patient rct_patient_id="1" study_id="1234567" stratum_id="1" assignment="T"
-                              date_enrolled="0002-11-30 00:00:00.0" enrolled_by="1"/>
+                              date_enrolled="0002-11-30 00:00:00.0" enrolled_by="1" enrolled="Y"/>
 
 
 </dataset>

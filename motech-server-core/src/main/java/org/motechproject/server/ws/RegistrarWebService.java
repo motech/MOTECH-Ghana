@@ -39,17 +39,15 @@ import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.rct.RCTPatient;
+import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.svc.*;
 import org.motechproject.ws.*;
+import org.motechproject.ws.Patient;
 import org.motechproject.ws.rct.RCTRegistrationConfirmation;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationErrors;
 import org.motechproject.ws.server.ValidationException;
-import org.openmrs.Encounter;
-import org.openmrs.Obs;
-import org.openmrs.PersonName;
-import org.openmrs.User;
+import org.openmrs.*;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -1222,7 +1220,8 @@ public class RegistrarWebService implements RegistrarService {
 
         ValidationErrors errors = new ValidationErrors();
         User staff = validateStaffId(staffId, errors, "StaffID");
-        Facility facility = validateFacility(facilityId, errors, "FacilityID");
+        validateFacility(facilityId, errors, "facilityId");
+        RCTFacility rctFacility = validateIfFacilityCoveredInRCT(facilityId, errors, "facilityId");
         validateIfPatientAlredayRegisterdForRCT(motechId, errors , "motechId");
 
         org.openmrs.Patient patient = validateMotechId(motechId, errors,
@@ -1232,8 +1231,12 @@ public class RegistrarWebService implements RegistrarService {
             throw new ValidationException("Errors in Patient Query request",
                     errors);
         }
+        updatePatientPhoneDetails(ownership, regPhone, staff, patient);
+        return rctService.register(modelConverter.patientToWebService(patient, false), staff, rctFacility);
+    }
+
+    private void updatePatientPhoneDetails(ContactNumberType ownership, String regPhone, User staff, org.openmrs.Patient patient) {
         registrarBean.editPatient(staff, null, patient, null, regPhone, ownership, null, null, null, null);
-        return rctService.register(modelConverter.patientToWebService(patient, false), staff, facility);
     }
 
     private void validateIfPatientAlredayRegisterdForRCT(Integer motechId, ValidationErrors errors , String fieldName) {
@@ -1301,6 +1304,16 @@ public class RegistrarWebService implements RegistrarService {
         Facility facility = registrarBean.getFacilityById(facilityId);
         if (facility == null) {
             errors.add(messageBean.getMessage("motechmodule.ws.notfound",
+                    fieldName));
+        }
+        return facility;
+    }
+
+    private RCTFacility validateIfFacilityCoveredInRCT(Integer facilityId,
+                                      ValidationErrors errors, String fieldName) {
+        RCTFacility facility = rctService.getRCTFacilityById(facilityId);
+        if (facility == null) {
+            errors.add(messageBean.getMessage("motechmodule.rct.not.covered",
                     fieldName));
         }
         return facility;

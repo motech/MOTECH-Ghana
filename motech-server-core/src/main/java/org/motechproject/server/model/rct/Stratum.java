@@ -1,6 +1,5 @@
 package org.motechproject.server.model.rct;
 
-import org.motechproject.server.model.Facility;
 import org.motechproject.ws.rct.ControlGroup;
 import org.motechproject.ws.rct.PregnancyTrimester;
 
@@ -9,13 +8,14 @@ import java.util.Set;
 public class Stratum {
 
     private Integer id;
-    private Facility facility;
+    private RCTFacility facility;
     private PregnancyTrimester pregnancyTrimester;
     private PhoneOwnershipType phoneOwnership;
     private Integer size;
     private Set<ControlGroupAssignment> assignments;
     private Integer nextAssignment;
     private Boolean isActive;
+    
 
     public boolean isActive() {
         return isActive;

@@ -13,6 +13,7 @@ public class RCTPatient {
     private ControlGroup controlGroup;
     private Date enrollmentDate;
     private User enrolledBy;
+    private Character enrolled;
 
     public RCTPatient() {}
 

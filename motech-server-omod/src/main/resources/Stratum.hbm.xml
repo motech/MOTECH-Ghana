@@ -6,9 +6,10 @@
         <id name="id" column="stratum_id">
             <generator class="native"/>
         </id>
-        <many-to-one name="facility" class="org.motechproject.server.model.Facility" column="facility_id"
+        <many-to-one name="facility" class="org.motechproject.server.model.rct.RCTFacility" column="rct_facility_id"
                      not-null="true"/>
-        <property name="pregnancyTrimester" type="org.motechproject.server.model.db.hibernate.rct.PregnancyTrimesterEnumType"
+        <property name="pregnancyTrimester"
+                  type="org.motechproject.server.model.db.hibernate.rct.PregnancyTrimesterEnumType"
                   column="pregnancy_trimester"/>
         <property name="phoneOwnership" type="org.motechproject.server.model.db.hibernate.rct.PhoneOwnershipEnumType"
                   column="phone_ownership"/>

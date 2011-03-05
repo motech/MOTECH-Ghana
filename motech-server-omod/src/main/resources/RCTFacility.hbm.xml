@@ -1,0 +1,11 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field" package="org.motechproject.server.model.rct">
+    <class name="RCTFacility" table="motechmodule_rct_facility">
+        <id name="id" type="long" column="rct_facility_id">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="facility" property-ref="facilityId" column="facility_id" unique="true"/>
+        <property name="active" type="boolean" column="active"/>
+    </class>
+</hibernate-mapping>

@@ -55,5 +55,6 @@
         <mapping resource="Stratum.hbm.xml"/>
         <mapping resource="ControlGroupAssignment.hbm.xml"/>
         <mapping resource="RCTPatient.hbm.xml"/>
+        <mapping resource="RCTFacility.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

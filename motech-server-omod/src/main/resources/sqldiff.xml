@@ -1490,21 +1490,30 @@
             Creating RCT tables
         </description>
         <sql>
+            create table motechmodule_rct_facility
+            (
+            rct_facility_id bigint(20) primary key AUTO_INCREMENT,
+            facility_id int(11) not null,
+            active tinyint not null default 1,
+            constraint fk_to_rct_facility foreign key (facility_id) references motechmodule_facility (facility_id)
+            );
+
             create table motechmodule_rct_stratum
             (
-            stratum_id bigint(20) primary key,
-            facility_id bigint(11) not null,
+            stratum_id bigint(20) primary key AUTO_INCREMENT,
+            rct_facility_id bigint(20) not null,
             pregnancy_trimester varchar(10) not null,
             phone_ownership varchar(20) not null,
             size int not null,
-            active tinyint not null ,
+            active tinyint not null default 1,
             next_assignment int not null,
-            constraint fk_stratum_to_facility foreign key (facility_id) references motechmodule_facility (id)
+            constraint fk_stratum_to_rct_facility foreign key (rct_facility_id) references motechmodule_rct_facility
+            (rct_facility_id)
             ) ;
 
             create table motechmodule_rct_assignment
             (
-            assignment_id bigint(20) primary key,
+            assignment_id bigint(20) primary key AUTO_INCREMENT,
             stratum_id bigint(20) not null,
             assignment_num int not null,
             assignment char not null,
@@ -1520,6 +1529,7 @@
             assignment char not null,
             date_enrolled DATETIME not null,
             enrolled_by int(11) not null,
+            enrolled char(1) not null default 'Y',
             constraint fk_patient_to_stratum foreign key (stratum_id) references motechmodule_rct_stratum (stratum_id),
             constraint fk_patient_to_user foreign key (enrolled_by) references users (user_id)
             )
