@@ -23,5 +23,6 @@ public class RCTPatient {
         this.controlGroup = controlGroup;
         this.enrolledBy = enrolledBy;
         this.enrollmentDate = new Date();
+        this.enrolled = 'Y';
     }
 }
