@@ -28,17 +28,17 @@ public class RCTServiceImpl implements RCTService {
         ContactNumberType contactNumberType = patient.getContactNumberType();
         Stratum stratum = stratumWith(facility, PhoneOwnershipType.mapTo(contactNumberType), trimester);
         ControlGroup group = stratum.groupAssigned();
-        enrollPatientForRCT(patient.getMotechId(),stratum, group, staff);
+        enrollPatientForRCT(patient.getMotechId(), stratum, group, staff);
         determineNextAssignment(stratum);
         return new RCTRegistrationConfirmation(patient, group);
     }
 
     @Transactional(readOnly = true)
-    public boolean isPatientRegisteredIntoRCT(Integer motechId){
-      return  dao.isPatientRegisteredIntoRCT(motechId); 
+    public boolean isPatientRegisteredIntoRCT(Integer motechId) {
+        return dao.isPatientRegisteredIntoRCT(motechId);
     }
 
-    @Transactional(readOnly = true )
+    @Transactional(readOnly = true)
     public RCTFacility getRCTFacilityById(Integer facilityId) {
         return dao.getRCTFacility(facilityId);
     }
@@ -49,21 +49,21 @@ public class RCTServiceImpl implements RCTService {
     }
 
     private void enrollPatientForRCT(String motechId, Stratum stratum, ControlGroup controlGroup, User enrolledBy) {
-        dao.saveRCTPatient(new RCTPatient(motechId,stratum,controlGroup,enrolledBy));
+        dao.saveRCTPatient(new RCTPatient(motechId, stratum, controlGroup, enrolledBy));
     }
 
     private Stratum stratumWith(RCTFacility facility, PhoneOwnershipType phoneOwnershipType, PregnancyTrimester trimester) {
-        return dao.stratumWith(facility,phoneOwnershipType,trimester);
+        return dao.stratumWith(facility, phoneOwnershipType, trimester);
     }
 
     private PregnancyTrimester pregnancyTrimester(Patient patient) {
         DateTime deliveryDate = new DateTime(patient.getEstimateDueDate().getTime());
         DateTime today = new DateTime(new Date().getTime());
-        Months months = Months.monthsBetween(today,deliveryDate);
+        Months months = Months.monthsBetween(today, deliveryDate);
         int monthsDiff = Math.abs(months.getMonths());
 
-        if(monthsDiff <= 3 )return PregnancyTrimester.THIRD;
-        if(monthsDiff <= 6) return PregnancyTrimester.SECOND;
+        if (monthsDiff <= 3) return PregnancyTrimester.THIRD;
+        if (monthsDiff <= 6) return PregnancyTrimester.SECOND;
 
         return PregnancyTrimester.FIRST;
     }

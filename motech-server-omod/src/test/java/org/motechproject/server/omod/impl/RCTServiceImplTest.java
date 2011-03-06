@@ -25,7 +25,7 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
 
 
     @Autowired
-    @Qualifier("rctService")
+    @Qualifier("rctBeanProxy")
     private RCTService service;
 
     @Autowired
