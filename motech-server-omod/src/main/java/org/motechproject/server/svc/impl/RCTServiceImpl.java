@@ -24,10 +24,14 @@ public class RCTServiceImpl implements RCTService {
     public RCTRegistrationConfirmation register(Patient patient, User staff, RCTFacility facility, PregnancyTrimester pregnancyTrimester) {
         ContactNumberType contactNumberType = patient.getContactNumberType();
         Stratum stratum = stratumWith(facility, PhoneOwnershipType.mapTo(contactNumberType), pregnancyTrimester);
-        ControlGroup group = stratum.groupAssigned();
-        enrollPatientForRCT(patient.getMotechId(), stratum, group, staff);
-        determineNextAssignment(stratum);
-        return new RCTRegistrationConfirmation(patient, group);
+        if (stratum != null) {
+            ControlGroup group = stratum.groupAssigned();
+            enrollPatientForRCT(patient.getMotechId(), stratum, group, staff);
+            determineNextAssignment(stratum);
+            return new RCTRegistrationConfirmation(patient, group);
+        }
+
+        return new RCTRegistrationConfirmation();
     }
 
     @Transactional(readOnly = true)
@@ -66,7 +70,7 @@ public class RCTServiceImpl implements RCTService {
     private Stratum stratumWith(RCTFacility facility, PhoneOwnershipType phoneOwnershipType, PregnancyTrimester trimester) {
         return dao.stratumWith(facility, phoneOwnershipType, trimester);
     }
-    
+
     public void setDao(RctDAO dao) {
         this.dao = dao;
     }

@@ -44,26 +44,43 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
     @Test
     public void shouldRegisterRCTPatient() {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH,2);
+        calendar.add(Calendar.MONTH, 2);
         Date deliveryDate = calendar.getTime();
         Patient patient = new Patient();
         patient.setMotechId("123654");
         patient.setEstimateDueDate(deliveryDate);
         patient.setContactNumberType(ContactNumberType.PERSONAL);
-        RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(), PregnancyTrimester.SECOND);
+        RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11117), PregnancyTrimester.SECOND);
         assertNotNull(confirmation);
+        assertTrue(confirmation.isValid());
+    }
+
+
+    @Test
+    public void shouldSendConfirmationWithError() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, 2);
+        Date deliveryDate = calendar.getTime();
+        Patient patient = new Patient();
+        patient.setMotechId("123654");
+        patient.setEstimateDueDate(deliveryDate);
+        patient.setContactNumberType(ContactNumberType.PERSONAL);
+        RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11119), PregnancyTrimester.SECOND);
+        assertNotNull(confirmation);
+        assertFalse(confirmation.isValid());
     }
 
     @Test
-    public void shouldDetermineIfPatientIsRCT(){
+    public void shouldDetermineIfPatientIsRCT() {
         assertTrue(service.isPatientRegisteredIntoRCT(1234567));
         assertFalse(service.isPatientRegisteredIntoRCT(1234568));
     }
 
     @Test
-    public void shouldDetermineIfFacilityIsCoveredInRCT(){
+    public void shouldDetermineIfFacilityIsCoveredInRCT() {
         assertNotNull(service.getRCTFacilityById(11117));
-        assertNull(service.getRCTFacilityById(11119));
+        assertNotNull(service.getRCTFacilityById(11118));
+        assertNull(service.getRCTFacilityById(11120));
     }
 
     @Test
@@ -86,8 +103,8 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
         return contextService.getUserService().getUser(1);
     }
 
-    private RCTFacility facility() {
-        return service.getRCTFacilityById(11117);
+    private RCTFacility facility(Integer id) {
+        return service.getRCTFacilityById(id);
     }
 
 }
