@@ -8,7 +8,6 @@ import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Patient;
-import org.motechproject.ws.rct.PregnancyTrimester;
 import org.motechproject.ws.rct.RCTRegistrationConfirmation;
 import org.openmrs.User;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
@@ -50,7 +49,7 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
         patient.setMotechId("123654");
         patient.setEstimateDueDate(deliveryDate);
         patient.setContactNumberType(ContactNumberType.PERSONAL);
-        RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11117), PregnancyTrimester.SECOND);
+        RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11117));
         assertNotNull(confirmation);
         assertTrue(confirmation.isValid());
     }
@@ -65,7 +64,7 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
         patient.setMotechId("123654");
         patient.setEstimateDueDate(deliveryDate);
         patient.setContactNumberType(ContactNumberType.PERSONAL);
-        RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11119), PregnancyTrimester.SECOND);
+        RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11119));
         assertNotNull(confirmation);
         assertFalse(confirmation.isValid());
     }

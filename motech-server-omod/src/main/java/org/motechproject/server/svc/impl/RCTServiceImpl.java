@@ -21,9 +21,9 @@ public class RCTServiceImpl implements RCTService {
     private RCTPatient rctPatient;
 
     @Transactional
-    public RCTRegistrationConfirmation register(Patient patient, User staff, RCTFacility facility, PregnancyTrimester pregnancyTrimester) {
+    public RCTRegistrationConfirmation register(Patient patient, User staff, RCTFacility facility) {
         ContactNumberType contactNumberType = patient.getContactNumberType();
-        Stratum stratum = stratumWith(facility, PhoneOwnershipType.mapTo(contactNumberType), pregnancyTrimester);
+        Stratum stratum = stratumWith(facility, PhoneOwnershipType.mapTo(contactNumberType), patient.pregnancyTrimester());
         if (stratum != null) {
             ControlGroup group = stratum.groupAssigned();
             enrollPatientForRCT(patient.getMotechId(), stratum, group, staff);

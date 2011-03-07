@@ -1226,12 +1226,15 @@ public class RegistrarWebService implements RegistrarService {
         RCTFacility rctFacility = validateIfFacilityCoveredInRCT(facilityId, errors, "facilityId");
         validateIfPatientAlredayRegisterdForRCT(motechId, errors, "motechId");
         org.openmrs.Patient patient = validateMotechId(motechId, errors,"MotechID", true);
+
         Patient wsPatient = modelConverter.patientToWebService(patient, false);
-        PregnancyTrimester pregnancyTrimester = validateIfPatientIsPregnant(wsPatient, errors, "motechId");
-        updatePatientPhoneDetails(ownership, regPhone, staff, patient);
-        RCTRegistrationConfirmation confirmation = rctService.register(wsPatient, staff, rctFacility, pregnancyTrimester);
-        validateRegistrationConfirmation(confirmation, errors);
+        wsPatient.setContactNumberType(ownership);
+        wsPatient.setPhoneNumber(regPhone);
+
         throwExceptionIfValidationFailed(errors);
+
+        updatePatientPhoneDetails(ownership, regPhone, staff, patient);
+        RCTRegistrationConfirmation confirmation = rctService.register(wsPatient, staff, rctFacility);
         return confirmation;
     }
 
