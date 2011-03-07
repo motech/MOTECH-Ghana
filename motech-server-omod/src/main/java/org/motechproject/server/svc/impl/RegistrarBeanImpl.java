@@ -3693,15 +3693,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return date.after(blackoutStart) && date.before(blackoutEnd);
     }
 
-    public Integer getMotherMotechId(Patient patient) {
-        Relationship motherRelation = relationshipService.getMotherRelationship(patient);
-        if (motherRelation != null) {
-            Person mother = motherRelation.getPersonA();
-            return getMotechId(mother.getPersonId());
-        }
-        return null;
-    }
-
     public Community saveCommunity(Community community) {
         if (community.getCommunityId() == null) {
             community.setCommunityId(identifierGenerator.generateCommunityId());
@@ -3717,26 +3708,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public void setIdentifierGenerator(IdentifierGenerator identifierGenerator) {
         this.identifierGenerator = identifierGenerator;
-    }
-
-    public Integer getMotechId(Integer patientId) {
-        Patient patient = patientService.getPatient(patientId);
-        if (patient == null) {
-            return null;
-        }
-        PatientIdentifier motechPatientId = patient
-                .getPatientIdentifier(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
-        Integer motechId = null;
-        if (motechPatientId != null) {
-            try {
-                motechId = Integer.parseInt(motechPatientId.getIdentifier());
-            } catch (Exception e) {
-                log.error("Unable to parse Motech ID: "
-                        + motechPatientId.getIdentifier() + ", for Patient ID:"
-                        + patientId, e);
-            }
-        }
-        return motechId;
     }
 
     private Location getGhanaLocation() {

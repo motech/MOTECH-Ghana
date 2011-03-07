@@ -41,6 +41,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.Community;
+import org.motechproject.server.omod.MotechPatient;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
@@ -102,7 +103,7 @@ public class WebModelConverterImpl implements WebModelConverter {
 			webPatient.setAddress(patientAddress.getAddress1());
 		}
 
-		Integer motherMotechId = registrarBean.getMotherMotechId(patient);
+		Integer motherMotechId = Integer.valueOf(new MotechPatient(patient).getMotechId());
 		webPatient.setMotherMotechId(motherMotechId);
 
 		Community community = registrarBean.getCommunityByPatient(patient);
