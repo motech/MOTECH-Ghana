@@ -25,4 +25,12 @@ public class RCTPatient {
         this.enrollmentDate = new Date();
         this.enrolled = 'Y';
     }
+
+    public Boolean isTreatment(){
+        return controlGroup.isTest();
+    }
+
+    public Boolean isControl(){
+        return !controlGroup.isTest();
+    }
 }

@@ -117,6 +117,7 @@
         <property name="locationService" ref="locationService"/>
         <property name="userService" ref="userService"/>
         <property name="schedulerService" ref="schedulerService"/>
+        <property name="rctService" ref="rctBeanProxy"/>
 
         <property name="staffTypes">
             <list>

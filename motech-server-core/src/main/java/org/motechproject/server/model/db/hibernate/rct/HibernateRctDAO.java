@@ -64,4 +64,11 @@ public class HibernateRctDAO implements RctDAO {
         List results = criteria.list();
         return results.size() > 0 ? (RCTFacility) results.get(0) : null;
     }
+
+    public RCTPatient getRCTPatient(Integer motechId) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        Criteria criteria = currentSession.createCriteria(RCTPatient.class);
+        criteria.add(Restrictions.eq("studyId", motechId.toString()));
+        return (RCTPatient) criteria.uniqueResult();
+    }
 }

@@ -17,4 +17,6 @@ public interface RctDAO {
     Boolean isPatientRegisteredIntoRCT(Integer motechId);
 
     RCTFacility getRCTFacility(Integer facilityId);
+
+    RCTPatient getRCTPatient(Integer motechId);
 }

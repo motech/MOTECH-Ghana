@@ -66,6 +66,22 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
         assertNull(service.getRCTFacilityById(11119));
     }
 
+    @Test
+    public void shouldReturnRCTPatientForPatientRegisteredInRCT(){
+        assertNotNull(service.getRCTPatient(1234567));
+    }
+
+    @Test
+    public void shouldReturnNullForPatientNotRegisteredInRCT(){
+        assertNull(service.getRCTPatient(1234568));
+    }
+
+    //TODO
+    @Test
+    public void shouldReturnTrueForControlGroupPatient(){
+        //assertTrue(service.isPatientRegisteredAndInControlGroup(1234567));
+    }
+
     private User user() {
         return contextService.getUserService().getUser(1);
     }

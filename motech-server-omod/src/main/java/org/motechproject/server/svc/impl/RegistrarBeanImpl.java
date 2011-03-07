@@ -45,6 +45,7 @@ import org.motechproject.server.omod.*;
 import org.motechproject.server.omod.web.model.WebStaff;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
+import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
@@ -86,6 +87,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     private EncounterService encounterService;
     private SchedulerService schedulerService;
     private AdministrationService administrationService;
+    private RCTService rctService;
 
     @Autowired
     private IdentifierGenerator identifierGenerator;
@@ -3007,12 +3009,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			List<ExpectedEncounter> defaultedEncounters; 
 			List<ExpectedObs> defaultedObs;
 
-            defaultedEncounters = filterRCTEncounters(getDefaultedExpectedEncounters(facility, 
+            defaultedEncounters = filterRCTEncounters(new ArrayList(getDefaultedExpectedEncounters(facility,
                                                                                      careGroups, 
-                                                                                     startDate));
-            defaultedObs = filterRCTObs(getDefaultedExpectedObs(facility, 
+                                                                                     startDate)));
+            defaultedObs = filterRCTObs(new ArrayList(getDefaultedExpectedObs(facility,
                                                                 careGroups, 
-                                                                startDate));
+                                                                startDate)));
 
             // Replace the above code when RCT filtering rules are
             // finalized and implemented.
@@ -3051,60 +3053,33 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 		}
 	}
 
-    // ========================================================================
-    //
-    // Filter out any defaulters that have registered after Jan 14th 
-    // (technically 2011-01-15 18:38:54).  Since patient id's increase we can 
-    // just look for patients with an id larger than the last allowed defaulter.
-    // This code is a hack, but it has to come out when we implement the 
-    // actual RCT filtering logic, soit has a clear end or life
-    //
-    // ========================================================================
     public List<ExpectedEncounter> filterRCTEncounters(List<ExpectedEncounter> allDefaulters) {
-        List<ExpectedEncounter> defaultedEncounters = new ArrayList<ExpectedEncounter>();
         Iterator<ExpectedEncounter> encIt = allDefaulters.iterator();
 
-        // Patient Id 5717 was the first patient to be 
-        // un-enrolled to keep them clean for the RCT.  
-        // Therefore we can only include patients that came
-        // before them, in other words those with a lower
-        // patient id
-        int maxId = 5717;
         while( encIt.hasNext() ) {
-            ExpectedEncounter ee = encIt.next();
-            if( ee.getPatient() != null
-                && ee.getPatient().getPatientId() < maxId) 
-                defaultedEncounters.add(ee);
+            ExpectedEncounter expectedEncounter = encIt.next();
+            if (expectedEncounter.getPatient() != null &&
+                    rctService.isPatientRegisteredAndInControlGroup(expectedEncounter.getPatient())) {
+                allDefaulters.remove(expectedEncounter);
+            }
         }
 
-        return defaultedEncounters;
+        return allDefaulters;
     }
 
-    public List<ExpectedObs> filterRCTObs(List<ExpectedObs> alldefaulters) {
-        List<ExpectedObs> defaultedObs = new ArrayList<ExpectedObs>();
+    public List<ExpectedObs> filterRCTObs(List<ExpectedObs> allDefaulters) {
+        Iterator<ExpectedObs> obsIt = allDefaulters.iterator();
 
-        Iterator<ExpectedObs> obsIt = alldefaulters.iterator();    
-
-        // Patient Id 5717 was the first patient to be 
-        // un-enrolled to keep them clean for the RCT.  
-        // Therefore we can only include patients that came
-        // before them, in other words those with a lower
-        // patient id
-        int maxId = 5717;
         while( obsIt.hasNext() ) {
-            ExpectedObs eo = obsIt.next();
-            if( eo.getPatient() != null
-                && eo.getPatient().getPatientId() < maxId) 
-                defaultedObs.add(eo);
-        }
+            ExpectedObs expectedObs = obsIt.next();
+            if(expectedObs.getPatient() != null &&
+                    rctService.isPatientRegisteredAndInControlGroup(expectedObs.getPatient())){
+                allDefaulters.remove(expectedObs);
+                }
+            }
 
-        return defaultedObs;
+        return allDefaulters;
     }
-    // ========================================================================
-    //
-    // End RCT filtering non-sense
-    //
-    // ========================================================================
 
     /* NotificationTask methods start */
 
@@ -3132,7 +3107,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
     }
 
-    public PatientMessage[] constructPatientMessages(List<Message> messages,
+    private PatientMessage[] constructPatientMessages(List<Message> messages,
                                                      boolean sendImmediate) {
         List<PatientMessage> patientMessages = new ArrayList<PatientMessage>();
 
@@ -3155,7 +3130,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 .size()]);
     }
 
-    public PatientMessage constructPatientMessage(Message message) {
+    private PatientMessage constructPatientMessage(Message message) {
         try {
 
             Long notificationType = message.getSchedule().getMessage()
@@ -3219,7 +3194,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return null;
     }
 
-    public boolean sendStaffMessage(String messageId,
+    private boolean sendStaffMessage(String messageId,
                                     NameValuePair[] personalInfo, String phoneNumber,
                                     String languageCode, MediaType mediaType, Long notificationType,
                                     Date messageStartDate, Date messageEndDate,
@@ -3238,7 +3213,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
     }
 
-    public boolean sendStaffDefaultedCareMessage(String messageId,
+    private boolean sendStaffDefaultedCareMessage(String messageId,
                                                  String phoneNumber, MediaType mediaType, Date messageStartDate,
                                                  Date messageEndDate, Care[] cares) {
 
@@ -3254,7 +3229,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
     }
 
-    public boolean sendStaffUpcomingCareMessage(String messageId,
+    private boolean sendStaffUpcomingCareMessage(String messageId,
                                                 String phoneNumber, MediaType mediaType, Date messageStartDate,
                                                 Date messageEndDate, Care[] cares) {
 
@@ -3880,6 +3855,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     public void setAdministrationService(AdministrationService administrationService) {
         this.administrationService = administrationService;
     }
+
+    public void setRctService(RCTService rctService) {
+        this.rctService = rctService;
+    }
+
 
     private MotechService motechService() {
         return contextService.getMotechService();
