@@ -47,7 +47,16 @@ public class ScheduledMessage {
 	List<Message> messageAttempts = new ArrayList<Message>();
 	String care;
 
-	public Long getId() {
+    public ScheduledMessage(){}
+    
+    public ScheduledMessage(Date messageDate, Integer recipientId, MessageDefinition messageDefinition, MessageProgramEnrollment enrollment) {
+        this.scheduledFor = messageDate;
+        this.recipientId = recipientId;
+        this.message = messageDefinition;
+        this.enrollment = enrollment;
+    }
+
+    public Long getId() {
 		return id;
 	}
 

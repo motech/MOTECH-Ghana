@@ -2812,12 +2812,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                         + ", date: " + messageDate);
             }
 
-            ScheduledMessage scheduledMessage = new ScheduledMessage();
-            scheduledMessage.setScheduledFor(messageDate);
-            scheduledMessage.setRecipientId(recipientId);
-            scheduledMessage.setMessage(messageDefinition);
-            scheduledMessage.setEnrollment(enrollment);
-
+            ScheduledMessage scheduledMessage = new ScheduledMessage(messageDate,recipientId, messageDefinition, enrollment);
             Message message = messageDefinition.createMessage(scheduledMessage);
             message.setAttemptDate(messageDate);
             scheduledMessage.getMessageAttempts().add(message);
@@ -2868,11 +2863,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                                         MessageDefinition messageDefinition,
                                                         MessageProgramEnrollment enrollment, Date messageDate, String care,
                                                         boolean userPreferenceBased, Date currentDate) {
-        ScheduledMessage scheduledMessage = new ScheduledMessage();
-        scheduledMessage.setScheduledFor(messageDate);
-        scheduledMessage.setRecipientId(recipientId);
-        scheduledMessage.setMessage(messageDefinition);
-        scheduledMessage.setEnrollment(enrollment);
+        ScheduledMessage scheduledMessage = new ScheduledMessage(messageDate, recipientId, messageDefinition, enrollment);
         // Set care field on scheduled message (not set on informational
         // messages)
         scheduledMessage.setCare(care);
