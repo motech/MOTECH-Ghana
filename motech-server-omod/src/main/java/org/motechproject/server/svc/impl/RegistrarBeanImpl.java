@@ -3163,6 +3163,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
                 Patient patient = patientService.getPatient(recipientId);
 
+                if(rctService.isPatientRegisteredAndInControlGroup(patient)){
+                    log.info("Not creating message because the recipent falls in the RCT Control group");
+                    return  null;
+                }
                 if (patient != null) {
                     ContactNumberType contactNumberType = getPersonPhoneType(person);
                     String motechId = patient.getPatientIdentifier(

@@ -50,8 +50,7 @@ public class RCTServiceImpl implements RCTService {
     }
 
     public Boolean isPatientRegisteredAndInControlGroup(org.openmrs.Patient patient) {
-        String motechId = (new MotechPatient(patient)).getMotechId();
-        rctPatient = this.getRCTPatient(Integer.getInteger(motechId));
+        rctPatient = this.getRCTPatient(Integer.valueOf(new MotechPatient(patient).getMotechId()));
         if(rctPatient == null){
             return false;
         }
