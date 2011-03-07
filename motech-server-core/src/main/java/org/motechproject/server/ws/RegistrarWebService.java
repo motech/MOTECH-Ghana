@@ -42,13 +42,15 @@ import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.svc.*;
 import org.motechproject.ws.*;
-import org.motechproject.ws.Patient;
 import org.motechproject.ws.rct.PregnancyTrimester;
 import org.motechproject.ws.rct.RCTRegistrationConfirmation;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationErrors;
 import org.motechproject.ws.server.ValidationException;
-import org.openmrs.*;
+import org.openmrs.Encounter;
+import org.openmrs.Obs;
+import org.openmrs.PersonName;
+import org.openmrs.User;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -69,14 +71,11 @@ public class RegistrarWebService implements RegistrarService {
     Log log = LogFactory.getLog(RegistrarWebService.class);
 
 
-
     RegistrarBean registrarBean;
     OpenmrsBean openmrsBean;
     WebServiceModelConverter modelConverter;
     MessageSourceBean messageBean;
     RCTService rctService;
-    private Patient patient;
-    private PregnancyTrimester pregnancyTrimester;
 
     @WebMethod
     public void recordPatientHistory(
@@ -1216,44 +1215,60 @@ public class RegistrarWebService implements RegistrarService {
 
     @WebMethod
     public RCTRegistrationConfirmation registerForRCT(@WebParam(name = "staffId") Integer staffId,
-                                     @WebParam(name = "facilityId") Integer facilityId,
-                                     @WebParam(name = "motechId") Integer motechId,
-                                     @WebParam(name = "ownership") ContactNumberType ownership,
-                                     @WebParam(name = "regPhone") String regPhone) throws ValidationException {
+                                                      @WebParam(name = "facilityId") Integer facilityId,
+                                                      @WebParam(name = "motechId") Integer motechId,
+                                                      @WebParam(name = "ownership") ContactNumberType ownership,
+                                                      @WebParam(name = "regPhone") String regPhone) throws ValidationException {
 
         ValidationErrors errors = new ValidationErrors();
         User staff = validateStaffId(staffId, errors, "StaffID");
         validateFacility(facilityId, errors, "facilityId");
         RCTFacility rctFacility = validateIfFacilityCoveredInRCT(facilityId, errors, "facilityId");
-        validateIfPatientAlredayRegisterdForRCT(motechId, errors , "motechId");
+        validateIfPatientAlredayRegisterdForRCT(motechId, errors, "motechId");
+        org.openmrs.Patient patient = validateMotechId(motechId, errors,"MotechID", true);
+        Patient wsPatient = modelConverter.patientToWebService(patient, false);
+        PregnancyTrimester pregnancyTrimester = validateIfPatientIsPregnant(wsPatient, errors, "motechId");
+        updatePatientPhoneDetails(ownership, regPhone, staff, patient);
+        RCTRegistrationConfirmation confirmation = rctService.register(wsPatient, staff, rctFacility, pregnancyTrimester);
+        validateRegistrationConfirmation(confirmation, errors);
+        throwExceptionIfValidationFailed(errors);
+        return confirmation;
+    }
 
-        org.openmrs.Patient patient = validateMotechId(motechId, errors,
-                "MotechID", true);
+    private void validateRegistrationConfirmation(RCTRegistrationConfirmation confirmation, ValidationErrors errors) {
+        if (!confirmation.isValid()) {
+            errors.add(messageBean.getMessage("motechmodule.rct.stratum.not.found", "error"));
+        }
+    }
 
-        this.patient = modelConverter.patientToWebService(patient, false);
-        pregnancyTrimester = this.patient.pregnancyTrimester();
-        validateIfPatientIsPregnant(errors, "motechId");
+    private void throwExceptionIfValidationFailed(ValidationErrors errors) throws ValidationException {
         if (errors.getErrors().size() > 0) {
             throw new ValidationException("Errors in Patient Query request",
                     errors);
         }
-        updatePatientPhoneDetails(ownership, regPhone, staff, patient);
-        return rctService.register(this.patient, staff, rctFacility, pregnancyTrimester);
     }
 
-    private void validateIfPatientIsPregnant(ValidationErrors errors, String fieldName) {
-        if((pregnancyTrimester == PregnancyTrimester.NONE) || (pregnancyTrimester == PregnancyTrimester.FIRST)){
-            errors.add(messageBean.getMessage("motechmodule.rct.notpregnant", fieldName));
+    private PregnancyTrimester validateIfPatientIsPregnant(Patient patient, ValidationErrors errors, String fieldName) {
+
+        if (patient.isPregnancyRegistered()) {
+            PregnancyTrimester trimester = patient.pregnancyTrimester();
+            if (patient.isInFirstWeekOfPregnancy()) {
+                errors.add(messageBean.getMessage("motechmodule.rct.first.trimester.pregnant", fieldName));
+            }
+            return trimester;
         }
+
+        errors.add(messageBean.getMessage("motechmodule.rct.pregnancy.not.registered", fieldName));
+        return PregnancyTrimester.NONE;
     }
 
     private void updatePatientPhoneDetails(ContactNumberType ownership, String regPhone, User staff, org.openmrs.Patient patient) {
         registrarBean.editPatient(staff, null, patient, null, regPhone, ownership, null, null, null, null);
     }
 
-    private void validateIfPatientAlredayRegisterdForRCT(Integer motechId, ValidationErrors errors , String fieldName) {
-        if(rctService.isPatientRegisteredIntoRCT(motechId)){
-            errors.add(messageBean.getMessage("motechmodule.rct.exists",fieldName));
+    private void validateIfPatientAlredayRegisterdForRCT(Integer motechId, ValidationErrors errors, String fieldName) {
+        if (rctService.isPatientRegisteredIntoRCT(motechId)) {
+            errors.add(messageBean.getMessage("motechmodule.rct.exists", fieldName));
         }
     }
 
@@ -1322,7 +1337,7 @@ public class RegistrarWebService implements RegistrarService {
     }
 
     private RCTFacility validateIfFacilityCoveredInRCT(Integer facilityId,
-                                      ValidationErrors errors, String fieldName) {
+                                                       ValidationErrors errors, String fieldName) {
         RCTFacility facility = rctService.getRCTFacilityById(facilityId);
         if (facility == null) {
             errors.add(messageBean.getMessage("motechmodule.rct.not.covered",

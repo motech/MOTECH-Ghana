@@ -1,7 +1,5 @@
 package org.motechproject.server.svc.impl;
 
-import org.joda.time.DateTime;
-import org.joda.time.Months;
 import org.motechproject.server.model.db.RctDAO;
 import org.motechproject.server.model.rct.PhoneOwnershipType;
 import org.motechproject.server.model.rct.RCTFacility;
@@ -16,8 +14,6 @@ import org.motechproject.ws.rct.RCTRegistrationConfirmation;
 import org.openmrs.User;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-
 public class RCTServiceImpl implements RCTService {
 
     private RctDAO dao;
@@ -26,10 +22,14 @@ public class RCTServiceImpl implements RCTService {
     public RCTRegistrationConfirmation register(Patient patient, User staff, RCTFacility facility, PregnancyTrimester pregnancyTrimester) {
         ContactNumberType contactNumberType = patient.getContactNumberType();
         Stratum stratum = stratumWith(facility, PhoneOwnershipType.mapTo(contactNumberType), pregnancyTrimester);
-        ControlGroup group = stratum.groupAssigned();
-        enrollPatientForRCT(patient.getMotechId(), stratum, group, staff);
-        determineNextAssignment(stratum);
-        return new RCTRegistrationConfirmation(patient, group);
+        if (stratum != null) {
+            ControlGroup group = stratum.groupAssigned();
+            enrollPatientForRCT(patient.getMotechId(), stratum, group, staff);
+            determineNextAssignment(stratum);
+            return new RCTRegistrationConfirmation(patient, group);
+        }
+
+        return new RCTRegistrationConfirmation();
     }
 
     @Transactional(readOnly = true)
@@ -54,7 +54,7 @@ public class RCTServiceImpl implements RCTService {
     private Stratum stratumWith(RCTFacility facility, PhoneOwnershipType phoneOwnershipType, PregnancyTrimester trimester) {
         return dao.stratumWith(facility, phoneOwnershipType, trimester);
     }
-    
+
     public void setDao(RctDAO dao) {
         this.dao = dao;
     }
