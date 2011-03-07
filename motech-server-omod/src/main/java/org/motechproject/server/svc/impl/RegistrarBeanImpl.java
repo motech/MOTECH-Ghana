@@ -3054,10 +3054,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
     public List<ExpectedEncounter> filterRCTEncounters(List<ExpectedEncounter> allDefaulters) {
-        Iterator<ExpectedEncounter> encIt = allDefaulters.iterator();
 
-        while( encIt.hasNext() ) {
-            ExpectedEncounter expectedEncounter = encIt.next();
+        for (ExpectedEncounter allDefaulter : allDefaulters) {
+            ExpectedEncounter expectedEncounter = allDefaulter;
             if (expectedEncounter.getPatient() != null &&
                     rctService.isPatientRegisteredAndInControlGroup(expectedEncounter.getPatient())) {
                 allDefaulters.remove(expectedEncounter);
@@ -3068,15 +3067,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public List<ExpectedObs> filterRCTObs(List<ExpectedObs> allDefaulters) {
-        Iterator<ExpectedObs> obsIt = allDefaulters.iterator();
 
-        while( obsIt.hasNext() ) {
-            ExpectedObs expectedObs = obsIt.next();
-            if(expectedObs.getPatient() != null &&
-                    rctService.isPatientRegisteredAndInControlGroup(expectedObs.getPatient())){
+        for (ExpectedObs allDefaulter : allDefaulters) {
+            ExpectedObs expectedObs = allDefaulter;
+            if (expectedObs.getPatient() != null &&
+                    rctService.isPatientRegisteredAndInControlGroup(expectedObs.getPatient())) {
                 allDefaulters.remove(expectedObs);
-                }
             }
+        }
 
         return allDefaulters;
     }
@@ -3164,7 +3162,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 Patient patient = patientService.getPatient(recipientId);
 
                 if(rctService.isPatientRegisteredAndInControlGroup(patient)){
-                    log.info("Not creating message because the recipent falls in the RCT Control group");
+                    log.info("Not creating message because the recipient falls in the RCT Control group");
                     return  null;
                 }
                 if (patient != null) {
