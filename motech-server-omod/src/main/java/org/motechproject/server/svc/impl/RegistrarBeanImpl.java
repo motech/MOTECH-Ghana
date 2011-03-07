@@ -3009,10 +3009,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			List<ExpectedEncounter> defaultedEncounters; 
 			List<ExpectedObs> defaultedObs;
 
-            defaultedEncounters = filterRCTEncounters(new ArrayList(getDefaultedExpectedEncounters(facility,
+            defaultedEncounters = filterRCTEncounters(new ArrayList<ExpectedEncounter>(getDefaultedExpectedEncounters(facility,
                                                                                      careGroups, 
                                                                                      startDate)));
-            defaultedObs = filterRCTObs(new ArrayList(getDefaultedExpectedObs(facility,
+            defaultedObs = filterRCTObs(new ArrayList<ExpectedObs>(getDefaultedExpectedObs(facility,
                                                                 careGroups, 
                                                                 startDate)));
 
