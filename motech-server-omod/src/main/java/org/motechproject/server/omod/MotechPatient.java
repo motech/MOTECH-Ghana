@@ -9,7 +9,7 @@ public class MotechPatient {
     private Patient patient;
 
     public MotechPatient(Patient patient){
-        patient = patient;
+        this.patient = patient;
     }
 
     public String getMotechId(){

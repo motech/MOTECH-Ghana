@@ -440,8 +440,6 @@ public interface RegistrarBean {
 
 	public boolean isValidIdCheckDigit(Integer idWithCheckDigit);
 
-	public Integer getMotherMotechId(Patient patient);
-
 	Community saveCommunity(Community community);
 
 	Facility saveNewFacility(Facility facility);

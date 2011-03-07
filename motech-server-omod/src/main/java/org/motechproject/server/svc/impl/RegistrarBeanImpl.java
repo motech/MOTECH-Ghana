@@ -3009,10 +3009,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			List<ExpectedEncounter> defaultedEncounters; 
 			List<ExpectedObs> defaultedObs;
 
-            defaultedEncounters = filterRCTEncounters(new ArrayList(getDefaultedExpectedEncounters(facility,
+            defaultedEncounters = filterRCTEncounters(new ArrayList<ExpectedEncounter>(getDefaultedExpectedEncounters(facility,
                                                                                      careGroups, 
                                                                                      startDate)));
-            defaultedObs = filterRCTObs(new ArrayList(getDefaultedExpectedObs(facility,
+            defaultedObs = filterRCTObs(new ArrayList<ExpectedObs>(getDefaultedExpectedObs(facility,
                                                                 careGroups, 
                                                                 startDate)));
 
@@ -3054,10 +3054,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 	}
 
     public List<ExpectedEncounter> filterRCTEncounters(List<ExpectedEncounter> allDefaulters) {
-        Iterator<ExpectedEncounter> encIt = allDefaulters.iterator();
 
-        while( encIt.hasNext() ) {
-            ExpectedEncounter expectedEncounter = encIt.next();
+        for (ExpectedEncounter allDefaulter : allDefaulters) {
+            ExpectedEncounter expectedEncounter = allDefaulter;
             if (expectedEncounter.getPatient() != null &&
                     rctService.isPatientRegisteredAndInControlGroup(expectedEncounter.getPatient())) {
                 allDefaulters.remove(expectedEncounter);
@@ -3068,15 +3067,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public List<ExpectedObs> filterRCTObs(List<ExpectedObs> allDefaulters) {
-        Iterator<ExpectedObs> obsIt = allDefaulters.iterator();
 
-        while( obsIt.hasNext() ) {
-            ExpectedObs expectedObs = obsIt.next();
-            if(expectedObs.getPatient() != null &&
-                    rctService.isPatientRegisteredAndInControlGroup(expectedObs.getPatient())){
+        for (ExpectedObs allDefaulter : allDefaulters) {
+            ExpectedObs expectedObs = allDefaulter;
+            if (expectedObs.getPatient() != null &&
+                    rctService.isPatientRegisteredAndInControlGroup(expectedObs.getPatient())) {
                 allDefaulters.remove(expectedObs);
-                }
             }
+        }
 
         return allDefaulters;
     }
@@ -3163,6 +3161,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
                 Patient patient = patientService.getPatient(recipientId);
 
+                if(rctService.isPatientRegisteredAndInControlGroup(patient)){
+                    log.info("Not creating message because the recipient falls in the RCT Control group");
+                    return  null;
+                }
                 if (patient != null) {
                     ContactNumberType contactNumberType = getPersonPhoneType(person);
                     String motechId = patient.getPatientIdentifier(
@@ -3295,14 +3297,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
     }
 
-    public Obs createNumericValueObs(Date date, Concept concept, Person person,
+    private Obs createNumericValueObs(Date date, Concept concept, Person person,
                                      Location location, Integer value, Encounter encounter, User creator) {
 
         return createNumericValueObs(date, concept, person, location,
                 (double) value, encounter, creator);
     }
 
-    public Obs createNumericValueObs(Date date, Concept concept, Person person,
+    private Obs createNumericValueObs(Date date, Concept concept, Person person,
                                      Location location, Double value, Encounter encounter, User creator) {
 
         Obs obs = createObs(date, concept, person, location, encounter, creator);
@@ -3310,7 +3312,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return obs;
     }
 
-    public Obs createBooleanValueObs(Date date, Concept concept, Person person,
+    private Obs createBooleanValueObs(Date date, Concept concept, Person person,
                                      Location location, Boolean value, Encounter encounter, User creator) {
 
         Double doubleValue;
@@ -3324,7 +3326,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 doubleValue, encounter, creator);
     }
 
-    public Obs createDateValueObs(Date date, Concept concept, Person person,
+    private Obs createDateValueObs(Date date, Concept concept, Person person,
                                   Location location, Date value, Encounter encounter, User creator) {
 
         Obs obs = createObs(date, concept, person, location, encounter, creator);
@@ -3332,7 +3334,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return obs;
     }
 
-    public Obs createConceptValueObs(Date date, Concept concept, Person person,
+    private Obs createConceptValueObs(Date date, Concept concept, Person person,
                                      Location location, Concept value, Encounter encounter, User creator) {
 
         Obs obs = createObs(date, concept, person, location, encounter, creator);
@@ -3340,7 +3342,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return obs;
     }
 
-    public Obs createTextValueObs(Date date, Concept concept, Person person,
+    private Obs createTextValueObs(Date date, Concept concept, Person person,
                                   Location location, String value, Encounter encounter, User creator) {
 
         Obs obs = createObs(date, concept, person, location, encounter, creator);
@@ -3348,7 +3350,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return obs;
     }
 
-    public Obs createObs(Date date, Concept concept, Person person,
+    private Obs createObs(Date date, Concept concept, Person person,
                          Location location, Encounter encounter, User creator) {
 
         Obs obs = new Obs();
@@ -3399,7 +3401,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return null;
     }
 
-    public String getPersonLanguageCode(Person person) {
+    private String getPersonLanguageCode(Person person) {
         PersonAttribute languageAttr = person
                 .getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE);
         if (languageAttr != null
@@ -3410,7 +3412,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return null;
     }
 
-    public ContactNumberType getPersonPhoneType(Person person) {
+    private ContactNumberType getPersonPhoneType(Person person) {
         PersonAttribute phoneTypeAttr = person
                 .getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
         if (phoneTypeAttr != null
@@ -3428,7 +3430,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return null;
     }
 
-    public MediaType getPersonMediaType(Person person) {
+    private MediaType getPersonMediaType(Person person) {
         PersonAttribute mediaTypeAttr = person
                 .getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
         if (mediaTypeAttr != null
@@ -3445,7 +3447,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return null;
     }
 
-    public boolean isPhoneTroubled(String phoneNumber) {
+    private boolean isPhoneTroubled(String phoneNumber) {
         TroubledPhone troubledPhone = contextService.getMotechService()
                 .getTroubledPhone(phoneNumber);
         Integer maxFailures = getMaxPhoneNumberFailures();
@@ -3470,7 +3472,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return null;
     }
 
-    public DayOfWeek getPersonMessageDayOfWeek(Person person) {
+    private DayOfWeek getPersonMessageDayOfWeek(Person person) {
         PersonAttribute dayAttr = person
                 .getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY);
         DayOfWeek day = null;
@@ -3488,7 +3490,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return day;
     }
 
-    public Date getPersonMessageTimeOfDay(Person person) {
+    private Date getPersonMessageTimeOfDay(Person person) {
         PersonAttribute timeAttr = person
                 .getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
         Date time = null;
@@ -3508,7 +3510,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return time;
     }
 
-    public DayOfWeek getDefaultPatientDayOfWeek() {
+    private DayOfWeek getDefaultPatientDayOfWeek() {
         String dayProperty = getPatientDayOfWeekProperty();
         DayOfWeek day = null;
         try {
@@ -3521,7 +3523,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return day;
     }
 
-    public Date getDefaultPatientTimeOfDay() {
+    private Date getDefaultPatientTimeOfDay() {
         String timeProperty = getPatientTimeOfDayProperty();
         SimpleDateFormat timeFormat = new SimpleDateFormat(
                 MotechConstants.TIME_FORMAT_DELIVERY_TIME);
@@ -3535,7 +3537,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return time;
     }
 
-    public Integer getMaxQueryResults() {
+    private Integer getMaxQueryResults() {
         String maxResultsProperty = contextService.getAdministrationService().getGlobalProperty(
                 MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS);
         if (maxResultsProperty != null) {
@@ -3691,15 +3693,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return date.after(blackoutStart) && date.before(blackoutEnd);
     }
 
-    public Integer getMotherMotechId(Patient patient) {
-        Relationship motherRelation = relationshipService.getMotherRelationship(patient);
-        if (motherRelation != null) {
-            Person mother = motherRelation.getPersonA();
-            return getMotechId(mother.getPersonId());
-        }
-        return null;
-    }
-
     public Community saveCommunity(Community community) {
         if (community.getCommunityId() == null) {
             community.setCommunityId(identifierGenerator.generateCommunityId());
@@ -3717,47 +3710,27 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         this.identifierGenerator = identifierGenerator;
     }
 
-    public Integer getMotechId(Integer patientId) {
-        Patient patient = patientService.getPatient(patientId);
-        if (patient == null) {
-            return null;
-        }
-        PatientIdentifier motechPatientId = patient
-                .getPatientIdentifier(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
-        Integer motechId = null;
-        if (motechPatientId != null) {
-            try {
-                motechId = Integer.parseInt(motechPatientId.getIdentifier());
-            } catch (Exception e) {
-                log.error("Unable to parse Motech ID: "
-                        + motechPatientId.getIdentifier() + ", for Patient ID:"
-                        + patientId, e);
-            }
-        }
-        return motechId;
-    }
-
-    public Location getGhanaLocation() {
+    private Location getGhanaLocation() {
         return locationService.getLocation(
                 MotechConstants.LOCATION_GHANA);
     }
 
-    public String getTroubledPhoneProperty() {
+    private String getTroubledPhoneProperty() {
         return administrationService.getGlobalProperty(
                 MotechConstants.GLOBAL_PROPERTY_TROUBLED_PHONE);
     }
 
-    public String getPatientCareRemindersProperty() {
+    private String getPatientCareRemindersProperty() {
         return administrationService.getGlobalProperty(
                 MotechConstants.GLOBAL_PROPERTY_CARE_REMINDERS);
     }
 
-    public String getPatientDayOfWeekProperty() {
+    private String getPatientDayOfWeekProperty() {
         return administrationService.getGlobalProperty(
                 MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK);
     }
 
-    public String getPatientTimeOfDayProperty() {
+    private String getPatientTimeOfDayProperty() {
         return administrationService.getGlobalProperty(
                 MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY);
     }
