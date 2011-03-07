@@ -27,10 +27,10 @@ public class RCTPatient {
     }
 
     public Boolean isTreatment(){
-        return controlGroup.isTest();
+        return controlGroup.isTreatment();
     }
 
     public Boolean isControl(){
-        return !controlGroup.isTest();
+        return !controlGroup.isTreatment();
     }
 }
