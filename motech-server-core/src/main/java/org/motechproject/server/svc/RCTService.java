@@ -11,7 +11,7 @@ import org.openmrs.User;
 public interface RCTService {
 
     @LogParameterIdentifiers
-    RCTRegistrationConfirmation register(Patient patient, User user, RCTFacility facility, PregnancyTrimester pregnancyTrimester);
+    RCTRegistrationConfirmation register(Patient patient, User user, RCTFacility facility);
 
     Boolean isPatientRegisteredIntoRCT(Integer motechId);
 
