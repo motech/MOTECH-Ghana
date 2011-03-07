@@ -43,6 +43,7 @@ import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.svc.*;
 import org.motechproject.ws.*;
 import org.motechproject.ws.Patient;
+import org.motechproject.ws.rct.PregnancyTrimester;
 import org.motechproject.ws.rct.RCTRegistrationConfirmation;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationErrors;
@@ -74,6 +75,8 @@ public class RegistrarWebService implements RegistrarService {
     WebServiceModelConverter modelConverter;
     MessageSourceBean messageBean;
     RCTService rctService;
+    private Patient patient;
+    private PregnancyTrimester pregnancyTrimester;
 
     @WebMethod
     public void recordPatientHistory(
@@ -1227,12 +1230,21 @@ public class RegistrarWebService implements RegistrarService {
         org.openmrs.Patient patient = validateMotechId(motechId, errors,
                 "MotechID", true);
 
+        this.patient = modelConverter.patientToWebService(patient, false);
+        pregnancyTrimester = this.patient.pregnancyTrimester();
+        validateIfPatientIsPregnant(errors, "motechId");
         if (errors.getErrors().size() > 0) {
             throw new ValidationException("Errors in Patient Query request",
                     errors);
         }
         updatePatientPhoneDetails(ownership, regPhone, staff, patient);
-        return rctService.register(modelConverter.patientToWebService(patient, false), staff, rctFacility);
+        return rctService.register(this.patient, staff, rctFacility, pregnancyTrimester);
+    }
+
+    private void validateIfPatientIsPregnant(ValidationErrors errors, String fieldName) {
+        if((pregnancyTrimester == PregnancyTrimester.NONE) || (pregnancyTrimester == PregnancyTrimester.FIRST)){
+            errors.add(messageBean.getMessage("motechmodule.rct.notpregnant", fieldName));
+        }
     }
 
     private void updatePatientPhoneDetails(ContactNumberType ownership, String regPhone, User staff, org.openmrs.Patient patient) {

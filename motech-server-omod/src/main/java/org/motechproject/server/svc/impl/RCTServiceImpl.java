@@ -23,10 +23,9 @@ public class RCTServiceImpl implements RCTService {
     private RctDAO dao;
 
     @Transactional
-    public RCTRegistrationConfirmation register(Patient patient, User staff, RCTFacility facility) {
-        PregnancyTrimester trimester = pregnancyTrimester(patient);
+    public RCTRegistrationConfirmation register(Patient patient, User staff, RCTFacility facility, PregnancyTrimester pregnancyTrimester) {
         ContactNumberType contactNumberType = patient.getContactNumberType();
-        Stratum stratum = stratumWith(facility, PhoneOwnershipType.mapTo(contactNumberType), trimester);
+        Stratum stratum = stratumWith(facility, PhoneOwnershipType.mapTo(contactNumberType), pregnancyTrimester);
         ControlGroup group = stratum.groupAssigned();
         enrollPatientForRCT(patient.getMotechId(), stratum, group, staff);
         determineNextAssignment(stratum);
@@ -55,19 +54,7 @@ public class RCTServiceImpl implements RCTService {
     private Stratum stratumWith(RCTFacility facility, PhoneOwnershipType phoneOwnershipType, PregnancyTrimester trimester) {
         return dao.stratumWith(facility, phoneOwnershipType, trimester);
     }
-
-    private PregnancyTrimester pregnancyTrimester(Patient patient) {
-        DateTime deliveryDate = new DateTime(patient.getEstimateDueDate().getTime());
-        DateTime today = new DateTime(new Date().getTime());
-        Months months = Months.monthsBetween(today, deliveryDate);
-        int monthsDiff = Math.abs(months.getMonths());
-
-        if (monthsDiff <= 3) return PregnancyTrimester.THIRD;
-        if (monthsDiff <= 6) return PregnancyTrimester.SECOND;
-
-        return PregnancyTrimester.FIRST;
-    }
-
+    
     public void setDao(RctDAO dao) {
         this.dao = dao;
     }
