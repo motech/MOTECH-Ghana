@@ -1,5 +1,7 @@
 package org.motechproject.server.model.rct;
 
+import org.motechproject.server.exception.RCTControlGroupNotFoundException;
+import org.motechproject.server.exception.RCTRegistrationException;
 import org.motechproject.ws.rct.ControlGroup;
 import org.motechproject.ws.rct.PregnancyTrimester;
 
@@ -25,14 +27,13 @@ public class Stratum {
         isActive = active;
     }
 
-    public ControlGroup groupAssigned() {
+    public ControlGroup groupAssigned() throws RCTRegistrationException {
         for (ControlGroupAssignment controlGroupAssignment : assignments) {
             if (controlGroupAssignment.hasAssignmentNumber(nextAssignment)) {
                 return controlGroupAssignment.group();
             }
         }
-        //TODO : Create a new runtime exception to handle RCT conditions
-        throw new RuntimeException("No group assignment found");
+        throw new RCTControlGroupNotFoundException("rct.no.control.group");
     }
 
     public void determineNextAssignment() {

@@ -3,6 +3,7 @@ package org.motechproject.server.omod.impl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.motechproject.server.exception.RCTRegistrationException;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.svc.RCTService;
@@ -41,7 +42,7 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
     }
 
     @Test
-    public void shouldRegisterRCTPatient() {
+    public void shouldRegisterRCTPatient() throws RCTRegistrationException {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 2);
         Date deliveryDate = calendar.getTime();
@@ -54,8 +55,8 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
     }
 
 
-    @Test
-    public void shouldSendEmptyConfirmation() {
+    @Test(expected = RCTRegistrationException.class)
+    public void shouldThrowExceptionWhenRegistrationFails() throws RCTRegistrationException {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 2);
         Date deliveryDate = calendar.getTime();

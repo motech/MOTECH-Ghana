@@ -1,6 +1,7 @@
 package org.motechproject.server.svc;
 
 import org.motechproject.server.annotation.LogParameterIdentifiers;
+import org.motechproject.server.exception.RCTRegistrationException;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.model.rct.RCTPatient;
 import org.motechproject.ws.Patient;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface RCTService {
 
     @LogParameterIdentifiers
-    RCTRegistrationConfirmation register(Patient patient, User user, RCTFacility facility);
+    RCTRegistrationConfirmation register(Patient patient, User user, RCTFacility facility) throws RCTRegistrationException;
 
     Boolean isPatientRegisteredIntoRCT(Integer motechId);
 

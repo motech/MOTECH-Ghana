@@ -1,12 +1,13 @@
 package org.motechproject.server.svc.impl;
 
+import org.motechproject.server.exception.RCTRegistrationException;
+import org.motechproject.server.exception.RCTStratumNotFoundException;
 import org.motechproject.server.model.db.RctDAO;
 import org.motechproject.server.model.rct.PhoneOwnershipType;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.model.rct.RCTPatient;
 import org.motechproject.server.model.rct.Stratum;
 import org.motechproject.server.omod.MotechPatient;
-import org.motechproject.server.omod.web.model.WebRCTPatient;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.Patient;
@@ -16,7 +17,6 @@ import org.motechproject.ws.rct.RCTRegistrationConfirmation;
 import org.openmrs.User;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RCTServiceImpl implements RCTService {
@@ -25,7 +25,7 @@ public class RCTServiceImpl implements RCTService {
     private RCTPatient rctPatient;
 
     @Transactional
-    public RCTRegistrationConfirmation register(Patient patient, User staff, RCTFacility facility) {
+    public RCTRegistrationConfirmation register(Patient patient, User staff, RCTFacility facility)throws RCTRegistrationException {
         ContactNumberType contactNumberType = patient.getContactNumberType();
         Stratum stratum = stratumWith(facility, PhoneOwnershipType.mapTo(contactNumberType), patient.pregnancyTrimester());
         if (stratum != null) {
@@ -34,9 +34,7 @@ public class RCTServiceImpl implements RCTService {
             determineNextAssignment(stratum);
             return new RCTRegistrationConfirmation(patient, group);
         }
-
-        RCTRegistrationConfirmation confirmation = new RCTRegistrationConfirmation();
-        return confirmation;
+        throw new RCTStratumNotFoundException("rct.no.stratum");
     }
 
     @Transactional(readOnly = true)

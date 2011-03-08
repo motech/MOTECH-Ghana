@@ -35,6 +35,7 @@ package org.motechproject.server.ws;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motechproject.server.exception.RCTRegistrationException;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
@@ -1236,19 +1237,20 @@ public class RegistrarWebService implements RegistrarService {
         throwExceptionIfValidationFailed(errors);
 
         updatePatientPhoneDetails(ownership, regPhone, staff, patient);
-        RCTRegistrationConfirmation confirmation = rctService.register(wsPatient, staff, rctFacility);
-
-        throwExceptionIfConfirmationIsEmpty(confirmation);
+        RCTRegistrationConfirmation confirmation = null;
+        try {
+            confirmation = rctService.register(wsPatient, staff, rctFacility);
+        } catch (RCTRegistrationException e) {
+            returnRegistrationError(e);
+        }
 
         return confirmation;
     }
 
-    private void throwExceptionIfConfirmationIsEmpty(RCTRegistrationConfirmation confirmation) throws ValidationException {
-        if (confirmation.isEmpty()) {
-            ValidationErrors registrationErrors = new ValidationErrors();
-            registrationErrors.add(messageBean.getMessage("motechmodule.rct.stratum.not.found","error"));
-            throw new ValidationException("Errors in Patient Query request", registrationErrors);
-        }
+    private void returnRegistrationError(RCTRegistrationException e) throws ValidationException {
+        ValidationErrors registrationErrors = new ValidationErrors();
+        registrationErrors.add(messageBean.getMessage(e.messageKey(), "error"));
+        throw new ValidationException("Errors in Patient Query request", registrationErrors);
     }
 
     private void throwExceptionIfValidationFailed(ValidationErrors errors) throws ValidationException {
