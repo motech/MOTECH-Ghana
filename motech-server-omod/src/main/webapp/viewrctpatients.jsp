@@ -44,8 +44,7 @@
 
 <h1>RCT Patients</h1>
 <c:if test="${not empty rctpatients}">
-    <div style="background: #8FABC7; padding: 2px; text-align: center; width: 300px;">Facility
-        - ${facility.location.   name}</div>
+    <div style="background: #8FABC7; padding: 2px; text-align: center; width: 300px;">RCT Patients</div>
     <table cellpadding="4" cellspacing="0">
         <tr>
             <th>
@@ -58,9 +57,16 @@
                 RCT Group
             </th>
             <th>
+                Staff ID
             </th>
             <th>
-                Enrolled by Staff ID
+                Staff Name
+            </th>
+            <th>
+                Facility ID
+            </th>
+            <th>
+                Facility Name
             </th>
         </tr>
         <c:forEach items="${rctpatients}" var="rctpatient">
@@ -72,7 +78,19 @@
                     ${rctpatient.studyId}
                 </td>
                 <td>
+                    ${rctpatient.controlGroup}
+                </td>
+                <td>
                     ${rctpatient.staffId}
+                </td>
+                <td>
+                    ${rctpatient.staffFirstName} ${rctpatient.staffLastName}
+                </td>
+                <td>
+                    ${rctpatient.facilityId}
+                </td>
+                <td>
+                    ${rctpatient.facilityName}
                 </td>
             </tr>
         </c:forEach>

@@ -1,5 +1,6 @@
 package org.motechproject.server.model.rct;
 
+import org.motechproject.server.model.Facility;
 import org.motechproject.ws.rct.ControlGroup;
 import org.openmrs.User;
 
@@ -56,5 +57,9 @@ public class RCTPatient {
 
     public Character getEnrolled() {
         return enrolled;
+    }
+
+    public Facility getFacility(){
+        return stratum.getRctFacility().getFacility();
     }
 }

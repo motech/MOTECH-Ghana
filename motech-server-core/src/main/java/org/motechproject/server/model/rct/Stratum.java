@@ -38,4 +38,8 @@ public class Stratum {
     public void determineNextAssignment() {
         nextAssignment = (nextAssignment.equals(size)) ? 1 : (nextAssignment + 1);
     }
+
+    public RCTFacility getRctFacility(){
+        return facility;
+    }
 }

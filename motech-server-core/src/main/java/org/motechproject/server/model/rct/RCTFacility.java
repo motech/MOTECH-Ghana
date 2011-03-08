@@ -7,4 +7,8 @@ public class RCTFacility {
     Long id ;
     Facility facility;
     Boolean active ;
+
+    public Facility getFacility(){
+        return facility;
+    }
 }

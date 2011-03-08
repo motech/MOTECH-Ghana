@@ -38,7 +38,8 @@ public class RCTPatientsController {
             Patient patientByMotechId = openmrsBean.getPatientByMotechId(rctPatient.getStudyId());
             WebRCTPatient webRCTPatient = new WebRCTPatient(patientByMotechId.getGivenName(), patientByMotechId.getFamilyName(),
                     rctPatient.getStudyId(), rctPatient.getEnrolledBy().getSystemId(), rctPatient.getEnrolledBy().getGivenName(),
-                    rctPatient.getEnrolledBy().getFamilyName());
+                    rctPatient.getEnrolledBy().getFamilyName(), rctPatient.getControlGroup(),
+                    rctPatient.getFacility().getLocation().getName(), rctPatient.getFacility().getFacilityId());
             webRCTPatients.add(webRCTPatient);
         }
         return webRCTPatients;
