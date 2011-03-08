@@ -42,6 +42,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.omod.MotechPatient;
+import org.motechproject.server.omod.impl.RelationshipServiceImpl;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
@@ -50,20 +51,16 @@ import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.HowLearned;
 import org.motechproject.ws.InterestReason;
 import org.motechproject.ws.MediaType;
-import org.openmrs.Location;
-import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
-import org.openmrs.PersonAddress;
-import org.openmrs.PersonAttribute;
-import org.openmrs.PersonName;
+import org.openmrs.*;
 
 public class WebModelConverterImpl implements WebModelConverter {
 
 	private final Log log = LogFactory.getLog(WebModelConverterImpl.class);
 
-	RegistrarBean registrarBean;
+	private RegistrarBean registrarBean;
+    private RelationshipServiceImpl relationshipService;
 
-	public void setRegistrarBean(RegistrarBean registrarBean) {
+    public void setRegistrarBean(RegistrarBean registrarBean) {
 		this.registrarBean = registrarBean;
 	}
 
@@ -103,7 +100,7 @@ public class WebModelConverterImpl implements WebModelConverter {
 			webPatient.setAddress(patientAddress.getAddress1());
 		}
 
-		Integer motherMotechId = Integer.valueOf(new MotechPatient(patient).getMotechId());
+		Integer motherMotechId = Integer.valueOf(new MotechPatient((Patient) getMother(patient)).getMotechId());
 		webPatient.setMotherMotechId(motherMotechId);
 
 		Community community = registrarBean.getCommunityByPatient(patient);
@@ -272,4 +269,15 @@ public class WebModelConverterImpl implements WebModelConverter {
 				.getPatientId()));
 	}
 
+    private Person getMother(Patient patient){
+        Relationship motherRelation = relationshipService.getMotherRelationship(patient);
+        if(motherRelation != null){
+            return motherRelation.getPersonA();
+        }
+        return null;
+    }
+
+    public void setRelationshipService(RelationshipServiceImpl relationshipService) {
+        this.relationshipService = relationshipService;
+    }
 }

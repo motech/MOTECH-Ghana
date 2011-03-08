@@ -184,6 +184,7 @@
 
     <bean id="webModelConverter" class="org.motechproject.server.omod.web.model.WebModelConverterImpl">
         <property name="registrarBean" ref="registrarBeanProxy"/>
+        <property name="relationshipService" ref="relationshipService"/>
     </bean>
 
     <bean id="rctDao" class="org.motechproject.server.model.db.hibernate.rct.HibernateRctDAO">
