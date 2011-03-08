@@ -1524,7 +1524,7 @@
             enrolled char(1) not null default 'Y',
             constraint fk_patient_to_stratum foreign key (stratum_id) references motechmodule_rct_stratum (stratum_id),
             constraint fk_patient_to_user foreign key (enrolled_by) references users (user_id)
-            )
+            );
 
         </sql>
     </diff>
