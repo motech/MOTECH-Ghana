@@ -31,7 +31,8 @@ public class RCTServiceImpl implements RCTService {
             return new RCTRegistrationConfirmation(patient, group);
         }
 
-        return new RCTRegistrationConfirmation();
+        RCTRegistrationConfirmation confirmation = new RCTRegistrationConfirmation();
+        return confirmation;
     }
 
     @Transactional(readOnly = true)

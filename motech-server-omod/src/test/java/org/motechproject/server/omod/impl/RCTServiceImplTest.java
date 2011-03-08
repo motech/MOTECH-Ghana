@@ -25,7 +25,7 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
 
 
     @Autowired
-    @Qualifier("rctBeanProxy")
+    @Qualifier("rctService")
     private RCTService service;
 
     @Autowired
@@ -50,13 +50,12 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
         patient.setEstimateDueDate(deliveryDate);
         patient.setContactNumberType(ContactNumberType.PERSONAL);
         RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11117));
-        assertNotNull(confirmation);
-        assertTrue(confirmation.isValid());
+        assertFalse(confirmation.isEmpty());
     }
 
 
     @Test
-    public void shouldSendConfirmationWithError() {
+    public void shouldSendEmptyConfirmation() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 2);
         Date deliveryDate = calendar.getTime();
@@ -65,8 +64,7 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
         patient.setEstimateDueDate(deliveryDate);
         patient.setContactNumberType(ContactNumberType.PERSONAL);
         RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11119));
-        assertNotNull(confirmation);
-        assertFalse(confirmation.isValid());
+        assertTrue(confirmation.isEmpty());
     }
 
     @Test
