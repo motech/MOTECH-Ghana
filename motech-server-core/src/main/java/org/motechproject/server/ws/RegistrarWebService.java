@@ -1225,22 +1225,29 @@ public class RegistrarWebService implements RegistrarService {
         validateFacility(facilityId, errors, "facilityId");
         RCTFacility rctFacility = validateIfFacilityCoveredInRCT(facilityId, errors, "facilityId");
         validateIfPatientAlredayRegisterdForRCT(motechId, errors, "motechId");
-        org.openmrs.Patient patient = validateMotechId(motechId, errors,"MotechID", true);
+        org.openmrs.Patient patient = validateMotechId(motechId, errors, "MotechID", true);
 
         Patient wsPatient = modelConverter.patientToWebService(patient, false);
         wsPatient.setContactNumberType(ownership);
         wsPatient.setPhoneNumber(regPhone);
 
+        validateIfPatientIsPregnantAndNotInFirstTrimester(wsPatient, errors, "trimester");
+
         throwExceptionIfValidationFailed(errors);
 
         updatePatientPhoneDetails(ownership, regPhone, staff, patient);
         RCTRegistrationConfirmation confirmation = rctService.register(wsPatient, staff, rctFacility);
+
+        throwExceptionIfConfirmationIsEmpty(confirmation);
+
         return confirmation;
     }
 
-    private void validateRegistrationConfirmation(RCTRegistrationConfirmation confirmation, ValidationErrors errors) {
-        if (!confirmation.isValid()) {
-            errors.add(messageBean.getMessage("motechmodule.rct.stratum.not.found", "error"));
+    private void throwExceptionIfConfirmationIsEmpty(RCTRegistrationConfirmation confirmation) throws ValidationException {
+        if (confirmation.isEmpty()) {
+            ValidationErrors registrationErrors = new ValidationErrors();
+            registrationErrors.add(messageBean.getMessage("motechmodule.rct.stratum.not.found","error"));
+            throw new ValidationException("Errors in Patient Query request", registrationErrors);
         }
     }
 
@@ -1251,7 +1258,7 @@ public class RegistrarWebService implements RegistrarService {
         }
     }
 
-    private PregnancyTrimester validateIfPatientIsPregnant(Patient patient, ValidationErrors errors, String fieldName) {
+    private PregnancyTrimester validateIfPatientIsPregnantAndNotInFirstTrimester(Patient patient, ValidationErrors errors, String fieldName) {
 
         if (patient.isPregnancyRegistered()) {
             PregnancyTrimester trimester = patient.pregnancyTrimester();
