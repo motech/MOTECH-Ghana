@@ -3153,7 +3153,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 Patient patient = patientService.getPatient(recipientId);
 
                 if(rctService.isPatientRegisteredAndInControlGroup(patient)){
-                    log.info("Not creating message because the recipient falls in the RCT Control group");
+                    String motechId = new MotechPatient(patient).getMotechId();
+                    log.info("Not creating message because the recipient falls in the RCT Control group. " +
+                            "Patient MoTeCH id: " + motechId + " Message ID:"+message.getPublicId());
                     return  null;
                 }
                 if (patient != null) {
