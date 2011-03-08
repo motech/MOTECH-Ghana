@@ -100,8 +100,11 @@ public class WebModelConverterImpl implements WebModelConverter {
 			webPatient.setAddress(patientAddress.getAddress1());
 		}
 
-		Integer motherMotechId = Integer.valueOf(new MotechPatient((Patient) getMother(patient)).getMotechId());
-		webPatient.setMotherMotechId(motherMotechId);
+
+        String motherMotechId = new MotechPatient((Patient) getMother(patient)).getMotechId();
+        if(motherMotechId != null){
+            webPatient.setMotherMotechId(Integer.valueOf(motherMotechId));
+        }
 
 		Community community = registrarBean.getCommunityByPatient(patient);
 		if (community != null) {

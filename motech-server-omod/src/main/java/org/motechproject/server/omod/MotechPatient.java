@@ -13,10 +13,12 @@ public class MotechPatient {
     }
 
     public String getMotechId(){
-        PatientIdentifier patientId = patient
-                .getPatientIdentifier(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
-        if (patientId != null) {
-            return patientId.getIdentifier();
+        if(patient != null){
+            PatientIdentifier patientId = patient
+                    .getPatientIdentifier(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
+            if (patientId != null) {
+                return patientId.getIdentifier();
+            }
         }
         return null;
     }
