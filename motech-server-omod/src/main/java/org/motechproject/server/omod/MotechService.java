@@ -37,6 +37,7 @@ import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.model.*;
 import org.motechproject.server.omod.sdsched.ScheduleMaintService;
 import org.motechproject.server.svc.OpenmrsBean;
+import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.*;
 import org.openmrs.api.OpenmrsService;
@@ -52,6 +53,8 @@ import java.util.List;
 public interface MotechService extends OpenmrsService {
 
 	RegistrarBean getRegistrarBean();
+
+    RCTService getRctService();
 
 	OpenmrsBean getOpenmrsBean();
 

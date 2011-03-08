@@ -151,7 +151,12 @@
         <name>Duplicate Patients</name>
         <description>Allows the admin to delete duplicate patients</description>
     </privilege>
-	
+
+    <privilege>
+        <name>View RCT Patients</name>
+        <description>Allows the admin to view patients related to RCT</description>
+    </privilege>
+
 	<globalProperty>
 		<property>motechmodule.troubled_phone_failures</property>
 		<defaultValue>4</defaultValue>

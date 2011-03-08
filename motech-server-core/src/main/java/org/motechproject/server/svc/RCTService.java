@@ -8,6 +8,8 @@ import org.motechproject.ws.rct.PregnancyTrimester;
 import org.motechproject.ws.rct.RCTRegistrationConfirmation;
 import org.openmrs.User;
 
+import java.util.List;
+
 public interface RCTService {
 
     @LogParameterIdentifiers
@@ -20,4 +22,6 @@ public interface RCTService {
     public RCTPatient getRCTPatient(Integer motechId);
 
     public Boolean isPatientRegisteredAndInControlGroup(org.openmrs.Patient patient);
+
+    public List<RCTPatient> getAllRCTPatients();
 }

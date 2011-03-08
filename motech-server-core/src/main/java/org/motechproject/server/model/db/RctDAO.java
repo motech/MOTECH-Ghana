@@ -7,6 +7,8 @@ import org.motechproject.server.model.rct.RCTPatient;
 import org.motechproject.server.model.rct.Stratum;
 import org.motechproject.ws.rct.PregnancyTrimester;
 
+import java.util.List;
+
 public interface RctDAO {
     Stratum stratumWith(RCTFacility facility, PhoneOwnershipType phoneOwnershipType, PregnancyTrimester trimester);
 
@@ -19,4 +21,6 @@ public interface RctDAO {
     RCTFacility getRCTFacility(Integer facilityId);
 
     RCTPatient getRCTPatient(Integer motechId);
+
+    List<RCTPatient> getAllRCTPatients();
 }

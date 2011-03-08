@@ -104,4 +104,11 @@
           </a>
         </li>
     </openmrs:hasPrivilege>
+    <openmrs:hasPrivilege privilege="View RCT Patients">
+		<li <c:if test='<%= request.getRequestURI().contains("viewrctpatients") %>'>class="active"</c:if>>
+			<a href="${pageContext.request.contextPath}/module/motechmodule/viewrctpatients.form">
+				<spring:message code="motechmodule.RCTPatients.view"/>
+			</a>
+		</li>
+	</openmrs:hasPrivilege>
 </ul>

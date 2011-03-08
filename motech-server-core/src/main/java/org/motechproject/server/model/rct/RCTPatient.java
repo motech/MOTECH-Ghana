@@ -33,4 +33,28 @@ public class RCTPatient {
     public Boolean isControl(){
         return !controlGroup.isTreatment();
     }
+
+    public String getStudyId() {
+        return studyId;
+    }
+
+    public Stratum getStratum() {
+        return stratum;
+    }
+    
+    public ControlGroup getControlGroup(){
+        return controlGroup;
+    }
+
+    public Date getEnrollmentDate() {
+        return enrollmentDate;
+    }
+
+    public User getEnrolledBy() {
+        return enrolledBy;
+    }
+
+    public Character getEnrolled() {
+        return enrolled;
+    }
 }

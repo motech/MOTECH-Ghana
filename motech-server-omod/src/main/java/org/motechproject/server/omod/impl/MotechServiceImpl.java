@@ -39,7 +39,9 @@ import org.motechproject.server.model.db.MotechDAO;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.sdsched.ScheduleMaintService;
 import org.motechproject.server.svc.OpenmrsBean;
+import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.svc.impl.RCTServiceImpl;
 import org.openmrs.*;
 import org.openmrs.api.impl.BaseOpenmrsService;
 
@@ -59,8 +61,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	private OpenmrsBean openmrsBean;
 
 	private ScheduleMaintService scheduleService;
+    
+    private RCTService rctService;
 
-	public MotechDAO getMotechDAO() {
+    public MotechDAO getMotechDAO() {
 		return motechDAO;
 	}
 
@@ -378,5 +382,13 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
     public void stopEnrollmentFor(Integer patientId) {
         registrarBean.stopEnrollmentFor(patientId);
+    }
+
+    public RCTService getRctService(){
+        return rctService;
+    }
+
+    public void setRctService(RCTService rctService) {
+        this.rctService = rctService;
     }
 }
