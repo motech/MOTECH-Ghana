@@ -36,6 +36,7 @@ package org.motechproject.server.ws;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.model.PatientUpdates;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
@@ -341,4 +342,11 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 
 		return wsPatient;
 	}
+
+    public Patient patientToWebService(org.openmrs.Patient patient, boolean minimal, PatientUpdates patientUpdates) {
+        Patient wsPatient = patientToWebService(patient, minimal);
+        wsPatient.setContactNumberType(patientUpdates.contactNumberType());
+        wsPatient.setPhoneNumber(patientUpdates.phoneNumber());
+        return wsPatient;
+    }
 }

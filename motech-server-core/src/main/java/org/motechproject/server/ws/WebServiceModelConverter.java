@@ -33,14 +33,15 @@
 
 package org.motechproject.server.ws;
 
-import java.util.List;
-
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.model.PatientUpdates;
 import org.motechproject.ws.Care;
 import org.motechproject.ws.Patient;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
+
+import java.util.List;
 
 public interface WebServiceModelConverter {
 
@@ -75,4 +76,6 @@ public interface WebServiceModelConverter {
 
 	Patient upcomingEncounterToWebServicePatient(
 			ExpectedEncounter upcomingEncounter);
+
+    Patient patientToWebService(org.openmrs.Patient patient, boolean minimal, PatientUpdates patientUpdates);
 }

@@ -1,6 +1,6 @@
 package org.motechproject.server.exception;
 
-public class RCTRegistrationException extends Exception{
+public class RCTRegistrationException extends RuntimeException{
 
     private String messageKey ;
 

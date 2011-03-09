@@ -1,7 +1,6 @@
 package org.motechproject.server.svc.impl;
 
 import org.motechproject.server.exception.RCTRegistrationException;
-import org.motechproject.server.exception.RCTStratumNotFoundException;
 import org.motechproject.server.model.db.RctDAO;
 import org.motechproject.server.model.rct.PhoneOwnershipType;
 import org.motechproject.server.model.rct.RCTFacility;
@@ -9,11 +8,9 @@ import org.motechproject.server.model.rct.RCTPatient;
 import org.motechproject.server.model.rct.Stratum;
 import org.motechproject.server.omod.MotechPatient;
 import org.motechproject.server.svc.RCTService;
-import org.motechproject.ws.ContactNumberType;
+import org.motechproject.server.util.RCTError;
 import org.motechproject.ws.Patient;
-import org.motechproject.ws.rct.ControlGroup;
-import org.motechproject.ws.rct.PregnancyTrimester;
-import org.motechproject.ws.rct.RCTRegistrationConfirmation;
+import org.motechproject.ws.rct.*;
 import org.openmrs.User;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,16 +22,30 @@ public class RCTServiceImpl implements RCTService {
     private RCTPatient rctPatient;
 
     @Transactional
-    public RCTRegistrationConfirmation register(Patient patient, User staff, RCTFacility facility)throws RCTRegistrationException {
-        ContactNumberType contactNumberType = patient.getContactNumberType();
-        Stratum stratum = stratumWith(facility, PhoneOwnershipType.mapTo(contactNumberType), patient.pregnancyTrimester());
+    public RCTRegistrationConfirmation register(Patient patient, User staff, RCTFacility facility) {
+
+        if (!patient.isPregnancyRegistered())
+            return failedRegistration(RCTError.PREGNANCY_NOT_REGISTERED);
+
+        if (patient.isInFirstTrimesterOfPregnancy())
+            return failedRegistration(RCTError.FIRST_TRIMESTER_PREGNANCY);
+
+        Stratum stratum = stratumWith(facility, PhoneOwnershipType.mapTo(patient.getContactNumberType()), patient.pregnancyTrimester());
         if (stratum != null) {
-            ControlGroup group = stratum.groupAssigned();
-            enrollPatientForRCT(patient.getMotechId(), stratum, group, staff);
-            determineNextAssignment(stratum);
-            return new RCTRegistrationConfirmation(patient, group);
+            return successfulRegistration(patient, staff, stratum);
         }
-        throw new RCTStratumNotFoundException("rct.no.stratum");
+        return failedRegistration(RCTError.RCT_STRATUM_NOT_FOUND);
+    }
+
+    private RCTRegistrationConfirmation failedRegistration(String error) {
+        return new RCTRegistrationConfirmation(new ErrorContent(error));
+    }
+
+    private RCTRegistrationConfirmation successfulRegistration(Patient patient, User staff, Stratum stratum) {
+        ControlGroup group = stratum.groupAssigned();
+        enrollPatientForRCT(patient.getMotechId(), stratum, group, staff);
+        determineNextAssignment(stratum);
+        return new RCTRegistrationConfirmation(new MessageContent(patient, group));
     }
 
     @Transactional(readOnly = true)
@@ -48,21 +59,29 @@ public class RCTServiceImpl implements RCTService {
     }
 
     @Transactional(readOnly = true)
-    public RCTPatient getRCTPatient(Integer motechId){
+    public RCTPatient getRCTPatient(Integer motechId) {
         return dao.getRCTPatient(motechId);
     }
 
+    @Transactional(readOnly = true)
     public Boolean isPatientRegisteredAndInControlGroup(org.openmrs.Patient patient) {
-        rctPatient = this.getRCTPatient(Integer.valueOf(new MotechPatient(patient).getMotechId()));
-        if(rctPatient == null){
+        rctPatient = getRCTPatient(Integer.valueOf(new MotechPatient(patient).getMotechId()));
+        if (rctPatient == null) {
             return false;
         }
         return rctPatient.isControl();
     }
 
+    @Transactional(readOnly = true)
     public List<RCTPatient> getAllRCTPatients() {
         List<RCTPatient> rctPatients = dao.getAllRCTPatients();
         return rctPatients;
+    }
+
+    private void validatePregnancy(Patient patient) throws RCTRegistrationException {
+        if (patient.isInFirstTrimesterOfPregnancy()) {
+            throw new RCTRegistrationException("motechmodule.pregnancy.invalid");
+        }
     }
 
     private void determineNextAssignment(Stratum stratum) {

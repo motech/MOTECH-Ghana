@@ -35,11 +35,7 @@ package org.motechproject.server.ws;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.exception.RCTRegistrationException;
-import org.motechproject.server.model.Community;
-import org.motechproject.server.model.ExpectedEncounter;
-import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.*;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.svc.*;
 import org.motechproject.ws.*;
@@ -1224,32 +1220,29 @@ public class RegistrarWebService implements RegistrarService {
         ValidationErrors errors = new ValidationErrors();
         User staff = validateStaffId(staffId, errors, "StaffID");
         validateFacility(facilityId, errors, "facilityId");
-        RCTFacility rctFacility = validateIfFacilityCoveredInRCT(facilityId, errors, "facilityId");
-        validateIfPatientAlredayRegisterdForRCT(motechId, errors, "motechId");
         org.openmrs.Patient patient = validateMotechId(motechId, errors, "MotechID", true);
-
-        Patient wsPatient = modelConverter.patientToWebService(patient, false);
-        wsPatient.setContactNumberType(ownership);
-        wsPatient.setPhoneNumber(regPhone);
-
-        validateIfPatientIsPregnantAndNotInFirstTrimester(wsPatient, errors, "trimester");
+        RCTFacility rctFacility = validateIfFacilityCoveredInRCT(facilityId, errors, "facilityId");
+        if (patient != null) {
+            validateIfPatientAlredayRegisterdForRCT(motechId, errors, "motechId");
+        }
 
         throwExceptionIfValidationFailed(errors);
 
+        Patient motechPatient = modelConverter.patientToWebService(patient, false, new PatientUpdates(regPhone, ownership));
+
         updatePatientPhoneDetails(ownership, regPhone, staff, patient);
-        RCTRegistrationConfirmation confirmation = null;
-        try {
-            confirmation = rctService.register(wsPatient, staff, rctFacility);
-        } catch (RCTRegistrationException e) {
-            returnRegistrationError(e);
+        RCTRegistrationConfirmation confirmation = rctService.register(motechPatient, staff, rctFacility);
+
+        if (confirmation.hasErrorContent()) {
+            returnRegistrationError(confirmation.content());
         }
 
         return confirmation;
     }
 
-    private void returnRegistrationError(RCTRegistrationException e) throws ValidationException {
+    private void returnRegistrationError(String error) throws ValidationException {
         ValidationErrors registrationErrors = new ValidationErrors();
-        registrationErrors.add(messageBean.getMessage(e.messageKey(), "error"));
+        registrationErrors.add(messageBean.getMessage(error, "error"));
         throw new ValidationException("Errors in Patient Query request", registrationErrors);
     }
 
@@ -1258,20 +1251,6 @@ public class RegistrarWebService implements RegistrarService {
             throw new ValidationException("Errors in Patient Query request",
                     errors);
         }
-    }
-
-    private PregnancyTrimester validateIfPatientIsPregnantAndNotInFirstTrimester(Patient patient, ValidationErrors errors, String fieldName) {
-
-        if (patient.isPregnancyRegistered()) {
-            PregnancyTrimester trimester = patient.pregnancyTrimester();
-            if (patient.isInFirstWeekOfPregnancy()) {
-                errors.add(messageBean.getMessage("motechmodule.rct.first.trimester.pregnant", fieldName));
-            }
-            return trimester;
-        }
-
-        errors.add(messageBean.getMessage("motechmodule.rct.pregnancy.not.registered", fieldName));
-        return PregnancyTrimester.NONE;
     }
 
     private void updatePatientPhoneDetails(ContactNumberType ownership, String regPhone, User staff, org.openmrs.Patient patient) {

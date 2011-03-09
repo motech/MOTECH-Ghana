@@ -3,7 +3,6 @@ package org.motechproject.server.omod.impl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.motechproject.server.exception.RCTRegistrationException;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.svc.RCTService;
@@ -42,7 +41,7 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
     }
 
     @Test
-    public void shouldRegisterRCTPatient() throws RCTRegistrationException {
+    public void shouldRegisterRCTPatient() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 2);
         Date deliveryDate = calendar.getTime();
@@ -51,12 +50,12 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
         patient.setEstimateDueDate(deliveryDate);
         patient.setContactNumberType(ContactNumberType.PERSONAL);
         RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11117));
-        assertNotNull(confirmation);
+        assertFalse(confirmation.hasErrorContent());
     }
 
 
-    @Test(expected = RCTRegistrationException.class)
-    public void shouldThrowExceptionWhenRegistrationFails() throws RCTRegistrationException {
+    @Test
+    public void shouldReturnConfirmationWithErrorWhenRegistrationFails() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 2);
         Date deliveryDate = calendar.getTime();
@@ -64,7 +63,8 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
         patient.setMotechId("123654");
         patient.setEstimateDueDate(deliveryDate);
         patient.setContactNumberType(ContactNumberType.PERSONAL);
-        service.register(patient, user(), facility(11119));
+        RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11119));
+        assertTrue(confirmation.hasErrorContent());
     }
 
     @Test
@@ -81,19 +81,13 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
     }
 
     @Test
-    public void shouldReturnRCTPatientForPatientRegisteredInRCT(){
+    public void shouldReturnRCTPatientForPatientRegisteredInRCT() {
         assertNotNull(service.getRCTPatient(1234567));
     }
 
     @Test
-    public void shouldReturnNullForPatientNotRegisteredInRCT(){
+    public void shouldReturnNullForPatientNotRegisteredInRCT() {
         assertNull(service.getRCTPatient(1234568));
-    }
-
-    //TODO
-    @Test
-    public void shouldReturnTrueForControlGroupPatient(){
-        //assertTrue(service.isPatientRegisteredAndInControlGroup(1234567));
     }
 
     private User user() {
