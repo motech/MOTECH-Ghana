@@ -1,6 +1,5 @@
 package org.motechproject.server.svc.impl;
 
-import org.motechproject.server.exception.RCTRegistrationException;
 import org.motechproject.server.model.db.RctDAO;
 import org.motechproject.server.model.rct.PhoneOwnershipType;
 import org.motechproject.server.model.rct.RCTFacility;
@@ -19,7 +18,6 @@ import java.util.List;
 public class RCTServiceImpl implements RCTService {
 
     private RctDAO dao;
-    private RCTPatient rctPatient;
 
     @Transactional
     public RCTRegistrationConfirmation register(Patient patient, User staff, RCTFacility facility) {
@@ -65,7 +63,7 @@ public class RCTServiceImpl implements RCTService {
 
     @Transactional(readOnly = true)
     public Boolean isPatientRegisteredAndInControlGroup(org.openmrs.Patient patient) {
-        rctPatient = getRCTPatient(Integer.valueOf(new MotechPatient(patient).getMotechId()));
+        RCTPatient rctPatient = getRCTPatient(Integer.valueOf(new MotechPatient(patient).getMotechId()));
         if (rctPatient == null) {
             return false;
         }
@@ -76,12 +74,6 @@ public class RCTServiceImpl implements RCTService {
     public List<RCTPatient> getAllRCTPatients() {
         List<RCTPatient> rctPatients = dao.getAllRCTPatients();
         return rctPatients;
-    }
-
-    private void validatePregnancy(Patient patient) throws RCTRegistrationException {
-        if (patient.isInFirstTrimesterOfPregnancy()) {
-            throw new RCTRegistrationException("motechmodule.pregnancy.invalid");
-        }
     }
 
     private void determineNextAssignment(Stratum stratum) {
