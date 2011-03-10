@@ -572,6 +572,8 @@ public class RegistrarWebService implements RegistrarService {
                         "DeliveryDateConfirmed"));
         }
 
+        validatePhoneNumber(phoneNumber, "phoneNumber", errors);
+
         if (errors.getErrors().size() > 0) {
             throw new ValidationException("Errors in Register Patient request",
                     errors);
@@ -600,6 +602,17 @@ public class RegistrarWebService implements RegistrarService {
         }
 
         return modelConverter.patientToWebService(patient, true);
+    }
+
+    private void validatePhoneNumber(String phoneNumber, String fieldName, ValidationErrors errors) {
+        if(phoneNumber != null){
+            if(!phoneNumber.trim().startsWith("0")){
+                errors.add(messageBean.getMessage("motechmodule.ws.numberShouldStartsWithZero", fieldName));
+            }
+            if(phoneNumber.trim().length() != 10){
+                errors.add(messageBean.getMessage("motechmodule.ws.numberShouldBeTenDigits", fieldName));
+            }
+        }
     }
 
     private org.openmrs.Patient validateMothersMotechId(Integer motherMotechId, ValidationErrors errors, RegistrantType registrantType) {
