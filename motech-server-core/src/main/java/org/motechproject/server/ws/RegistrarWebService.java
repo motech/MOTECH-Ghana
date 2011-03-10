@@ -1228,9 +1228,9 @@ public class RegistrarWebService implements RegistrarService {
 
         throwExceptionIfValidationFailed(errors);
 
-        Patient motechPatient = modelConverter.patientToWebService(patient, false, new PatientUpdates(regPhone, ownership));
-
         updatePatientPhoneDetails(ownership, regPhone, staff, patient);
+        Patient motechPatient = modelConverter.patientToWebService(patient, false);
+
         RCTRegistrationConfirmation confirmation = rctService.register(motechPatient, staff, rctFacility);
 
         if (confirmation.hasErrorContent()) {
