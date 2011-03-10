@@ -50,7 +50,7 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
         patient.setEstimateDueDate(deliveryDate);
         patient.setContactNumberType(ContactNumberType.PERSONAL);
         RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11117));
-        assertFalse(confirmation.hasErrorContent());
+        assertFalse(confirmation.getErrors());
     }
 
 
@@ -64,7 +64,7 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
         patient.setEstimateDueDate(deliveryDate);
         patient.setContactNumberType(ContactNumberType.PERSONAL);
         RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11119));
-        assertTrue(confirmation.hasErrorContent());
+        assertTrue(confirmation.getErrors());
     }
 
     @Test

@@ -1231,6 +1231,7 @@ public class RegistrarWebService implements RegistrarService {
                                                       @WebParam(name = "regPhone") String regPhone) throws ValidationException {
 
         ValidationErrors errors = new ValidationErrors();
+        validatePhoneNumber(regPhone, "regPhone", errors);
         User staff = validateStaffId(staffId, errors, "StaffID");
         validateFacility(facilityId, errors, "facilityId");
         org.openmrs.Patient patient = validateMotechId(motechId, errors, "MotechID", true);
@@ -1246,8 +1247,8 @@ public class RegistrarWebService implements RegistrarService {
 
         RCTRegistrationConfirmation confirmation = rctService.register(motechPatient, staff, rctFacility);
 
-        if (confirmation.hasErrorContent()) {
-            returnRegistrationError(confirmation.content());
+        if (confirmation.getErrors()) {
+            returnRegistrationError(confirmation.getText());
         }
 
         return confirmation;

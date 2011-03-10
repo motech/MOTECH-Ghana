@@ -36,14 +36,26 @@ public class RCTServiceImpl implements RCTService {
     }
 
     private RCTRegistrationConfirmation failedRegistration(String error) {
-        return new RCTRegistrationConfirmation(new ErrorContent(error));
+        return new RCTRegistrationConfirmation(error, true);
     }
 
     private RCTRegistrationConfirmation successfulRegistration(Patient patient, User staff, Stratum stratum) {
         ControlGroup group = stratum.groupAssigned();
         enrollPatientForRCT(patient.getMotechId(), stratum, group, staff);
         determineNextAssignment(stratum);
-        return new RCTRegistrationConfirmation(new MessageContent(patient, group));
+        return new RCTRegistrationConfirmation(constructSuccessMessage(patient, group), false);
+    }
+
+    private String constructSuccessMessage(Patient patient, ControlGroup controlGroup){
+        StringBuilder message = new StringBuilder();
+        if(null != patient){
+            message.append(patient.getPreferredName());
+            message.append(" With MoTeCH ID ");
+            message.append(patient.getMotechId());
+            message.append(" has been successfully registered as ");
+            message.append(controlGroup.value());
+        }
+        return message.toString();
     }
 
     @Transactional(readOnly = true)

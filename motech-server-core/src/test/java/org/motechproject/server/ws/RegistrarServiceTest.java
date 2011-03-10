@@ -1220,7 +1220,7 @@ public class RegistrarServiceTest{
 					.getFaultInfo());
 			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
-			assertEquals(6, errors.size());
+			assertEquals(8, errors.size());
 			String staffError = errors.get(0);
 			assertEquals("StaffID=not found", staffError);
 			String facilityError = errors.get(1);
