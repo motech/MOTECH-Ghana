@@ -3046,10 +3046,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public List<ExpectedEncounter> filterRCTEncounters(List<ExpectedEncounter> allDefaulters) {
 
+        int maxId = 5717;
         for (ExpectedEncounter allDefaulter : allDefaulters) {
             ExpectedEncounter expectedEncounter = allDefaulter;
             if (expectedEncounter.getPatient() != null &&
-                    rctService.isPatientRegisteredAndInControlGroup(expectedEncounter.getPatient())) {
+                    rctService.isPatientRegisteredAndInControlGroup(expectedEncounter.getPatient())
+                    && expectedEncounter.getPatient().getPatientId() > maxId) {
                 allDefaulters.remove(expectedEncounter);
             }
         }
@@ -3059,10 +3061,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public List<ExpectedObs> filterRCTObs(List<ExpectedObs> allDefaulters) {
 
+        int maxId = 5717;
         for (ExpectedObs allDefaulter : allDefaulters) {
             ExpectedObs expectedObs = allDefaulter;
             if (expectedObs.getPatient() != null &&
-                    rctService.isPatientRegisteredAndInControlGroup(expectedObs.getPatient())) {
+                    rctService.isPatientRegisteredAndInControlGroup(expectedObs.getPatient())
+                    && expectedObs.getPatient().getPatientId() > maxId) {
                 allDefaulters.remove(expectedObs);
             }
         }
