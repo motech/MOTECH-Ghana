@@ -6,7 +6,7 @@ public enum PhoneOwnershipType {
     PERSONAL,OTHER;
 
     public static PhoneOwnershipType mapTo(ContactNumberType contactNumberType) {
-        if(contactNumberType.equals(ContactNumberType.PERSONAL))return PERSONAL;
+        if(ContactNumberType.PERSONAL.equals(contactNumberType))return PERSONAL;
         return OTHER;
     }
 }
