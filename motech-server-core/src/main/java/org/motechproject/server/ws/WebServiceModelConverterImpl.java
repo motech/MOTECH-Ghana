@@ -99,7 +99,7 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 
             PersonAttribute contactNumberType = patient
 					.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
-			if (phoneNumberAttr != null) {
+			if (contactNumberType != null) {
 				wsPatient.setContactNumberType(ContactNumberType.valueOf(contactNumberType.getValue()));
 			}
 
