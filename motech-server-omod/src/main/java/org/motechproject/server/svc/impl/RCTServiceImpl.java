@@ -1,15 +1,14 @@
 package org.motechproject.server.svc.impl;
 
 import org.motechproject.server.model.db.RctDAO;
-import org.motechproject.server.model.rct.PhoneOwnershipType;
-import org.motechproject.server.model.rct.RCTFacility;
-import org.motechproject.server.model.rct.RCTPatient;
-import org.motechproject.server.model.rct.Stratum;
+import org.motechproject.server.model.rct.*;
 import org.motechproject.server.omod.MotechPatient;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.util.RCTError;
 import org.motechproject.ws.Patient;
-import org.motechproject.ws.rct.*;
+import org.motechproject.ws.rct.ControlGroup;
+import org.motechproject.ws.rct.PregnancyTrimester;
+import org.motechproject.ws.rct.RCTRegistrationConfirmation;
 import org.openmrs.User;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,19 +42,7 @@ public class RCTServiceImpl implements RCTService {
         ControlGroup group = stratum.groupAssigned();
         enrollPatientForRCT(patient.getMotechId(), stratum, group, staff);
         determineNextAssignment(stratum);
-        return new RCTRegistrationConfirmation(constructSuccessMessage(patient, group), false);
-    }
-
-    private String constructSuccessMessage(Patient patient, ControlGroup controlGroup){
-        StringBuilder message = new StringBuilder();
-        if(null != patient){
-            message.append(patient.getPreferredName());
-            message.append(" With MoTeCH ID ");
-            message.append(patient.getMotechId());
-            message.append(" has been successfully registered as ");
-            message.append(controlGroup.value());
-        }
-        return message.toString();
+        return new RCTRegistrationConfirmation(new ConfirmationMessageContent(patient,group).text(), false);
     }
 
     @Transactional(readOnly = true)
