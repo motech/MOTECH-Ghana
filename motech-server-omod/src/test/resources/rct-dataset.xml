@@ -11,10 +11,12 @@
     <motechmodule_facility id="1" facility_id="11117" location_id="2" phone_number="0123456789"/>
     <motechmodule_facility id="2" facility_id="11118" location_id="2" phone_number="0123456790"/>
     <motechmodule_facility id="3" facility_id="11119" location_id="2" phone_number="0123456791"/>
+    <motechmodule_facility id="4" facility_id="11120" location_id="2" phone_number="0123456792"/>
 
     <motechmodule_rct_facility rct_facility_id="1" facility_id="11117" active="1"/>
     <motechmodule_rct_facility rct_facility_id="2" facility_id="11118" active="1"/>
     <motechmodule_rct_facility rct_facility_id="3" facility_id="11119" active="1"/>
+    <motechmodule_rct_facility rct_facility_id="4" facility_id="11120" active="1"/>
 
     <motechmodule_rct_stratum stratum_id="1" rct_facility_id="1" pregnancy_trimester="SECOND" phone_ownership="PERSONAL"
                               size="4" active="true" next_assignment="1"/>
@@ -23,6 +25,9 @@
                               size="2" active="true" next_assignment="1"/>
 
     <motechmodule_rct_stratum stratum_id="3" rct_facility_id="2" pregnancy_trimester="THIRD" phone_ownership="OTHER"
+                              size="1" active="true" next_assignment="1"/>
+
+    <motechmodule_rct_stratum stratum_id="4" rct_facility_id="4" pregnancy_trimester="THIRD" phone_ownership="OTHER"
                               size="1" active="true" next_assignment="1"/>
 
 
