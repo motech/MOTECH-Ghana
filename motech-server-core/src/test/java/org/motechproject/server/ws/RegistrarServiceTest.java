@@ -1105,6 +1105,20 @@ public class RegistrarServiceTest{
         double height = 23;
         int gravida = 20;
         int parity = 3;
+        int lastIPT = 1;
+        Date lastIPTDate = new Date();
+        int lastTT = 1;
+        Date lastTTDate = new Date();
+        Date bcgDate = new Date();
+        int lastOPV = 1;
+        Date lastOPVDate = new Date();
+        int lastPenta = 1;
+        Date lastPentaDate = new Date();
+        Date measlesDate = new Date();
+        Date yellowFeverDate = new Date();
+        int lastIPTI = 1;
+        Date lastIPTIDate = new Date();
+        Date lastVitaminADate = new Date();
 
 		User staff = new User(1);
 		Location facilityLocation = new Location(1);
@@ -1144,12 +1158,15 @@ public class RegistrarServiceTest{
 		replay(registrarBean, openmrsBean, modelConverter);
 
 		Patient wsPatient = regWs.registerPatient(staffId, facilityId, date,
-				mode, motechId, type, firstName, middleName, lastName,
-				prefName, date, estBirthDate, gender, insured, nhis, date,
-				motherMotechId, communityId, address, phone, date,
-				delivDateConf, enroll, consent, phoneType, format, language,
-				day, date, reason, how, messageWeek, cwcRegNumber, true, date,
-                ancRegNumber, true, date, height, gravida, parity);
+                mode, motechId, type, firstName, middleName, lastName,
+                prefName, date, estBirthDate, gender, insured, nhis, date,
+                motherMotechId, communityId, address, phone, date,
+                delivDateConf, enroll, consent, phoneType, format, language,
+                day, date, reason, how, messageWeek, cwcRegNumber, true, date,
+                ancRegNumber, true, date, height, gravida, parity, lastIPT, lastIPTDate,
+                lastTT,lastTTDate,bcgDate,lastOPV,lastOPVDate,lastPenta,
+                lastPentaDate,measlesDate,yellowFeverDate,lastIPTI,lastIPTIDate,
+                lastVitaminADate);
 
 		verify(registrarBean, openmrsBean, modelConverter);
 
@@ -1179,6 +1196,20 @@ public class RegistrarServiceTest{
         double height = 23;
         int gravida = 20;
         int parity = 3;
+        int lastIPT = 1;
+        Date lastIPTDate = new Date();
+        int lastTT = 1;
+        Date lastTTDate = new Date();
+        Date bcgDate = new Date();
+        int lastOPV = 1;
+        Date lastOPVDate = new Date();
+        int lastPenta = 1;
+        Date lastPentaDate = new Date();
+        Date measlesDate = new Date();
+        Date yellowFeverDate = new Date();
+        int lastIPTI = 1;
+        Date lastIPTIDate = new Date();
+        Date lastVitaminADate = new Date();
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.YEAR, -6);
@@ -1212,7 +1243,10 @@ public class RegistrarServiceTest{
 					motherMotechId, community, address, phone, date,
 					delivDateConf, enroll, consent, phoneType, format,
 					language, day, date, reason, how, messageWeek, cwcRegNumber, true, date,
-                    ancRegNumber, true, date, height, gravida, parity);
+                    ancRegNumber, true, date, height, gravida, parity, lastIPT, lastIPTDate,
+                    lastTT,lastTTDate,bcgDate,lastOPV,lastOPVDate,lastPenta,
+                    lastPentaDate,measlesDate,yellowFeverDate,lastIPTI,lastIPTIDate,
+                    lastVitaminADate);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Register Patient request", e.getMessage());
