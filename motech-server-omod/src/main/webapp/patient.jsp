@@ -47,6 +47,7 @@
         onPatientTypeSelection();
         onPhoneOwnershipSelection();
         onMediaTypeSelection();
+        onInsuranceSelection();
     });
 </script>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css"/>
@@ -152,7 +153,7 @@
         <tr>
             <td class="labelcolumn"><label for="insured">Insured:</label></td>
             <td>
-                <form:select path="insured">
+                <form:select path="insured" onchange="onInsuranceSelection()">
                     <form:option value="" label="Select Value"/>
                     <form:option value="true" label="Yes"/>
                     <form:option value="false" label="No"/>
