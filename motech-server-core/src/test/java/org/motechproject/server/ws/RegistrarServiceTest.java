@@ -1119,6 +1119,7 @@ public class RegistrarServiceTest{
         int lastIPTI = 1;
         Date lastIPTIDate = new Date();
         Date lastVitaminADate = new Date();
+        int whyNoHistory = 1;
 
 		User staff = new User(1);
 		Location facilityLocation = new Location(1);
@@ -1166,7 +1167,7 @@ public class RegistrarServiceTest{
                 ancRegNumber, true, date, height, gravida, parity, lastIPT, lastIPTDate,
                 lastTT,lastTTDate,bcgDate,lastOPV,lastOPVDate,lastPenta,
                 lastPentaDate,measlesDate,yellowFeverDate,lastIPTI,lastIPTIDate,
-                lastVitaminADate);
+                lastVitaminADate, whyNoHistory);
 
 		verify(registrarBean, openmrsBean, modelConverter);
 
@@ -1210,6 +1211,7 @@ public class RegistrarServiceTest{
         int lastIPTI = 1;
         Date lastIPTIDate = new Date();
         Date lastVitaminADate = new Date();
+        int whyNoHistory = 1;
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.YEAR, -6);
@@ -1246,7 +1248,7 @@ public class RegistrarServiceTest{
                     ancRegNumber, true, date, height, gravida, parity, lastIPT, lastIPTDate,
                     lastTT,lastTTDate,bcgDate,lastOPV,lastOPVDate,lastPenta,
                     lastPentaDate,measlesDate,yellowFeverDate,lastIPTI,lastIPTIDate,
-                    lastVitaminADate);
+                    lastVitaminADate, whyNoHistory);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Register Patient request", e.getMessage());
