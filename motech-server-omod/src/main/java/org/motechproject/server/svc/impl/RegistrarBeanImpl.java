@@ -298,10 +298,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             }
             if (community != null
                     && community.getFacility() != null
-                    && community.getFacility().getLocation() != null
-                    && MotechConstants.LOCATION_KASSENA_NANKANA_WEST
-                    .equals(community.getFacility().getLocation()
-                            .getCountyDistrict())) {
+                    && community.getFacility().getLocation() != null) {
 
                 addMessageProgramEnrollment(patient.getPatientId(),
                         "Expected Care Message Program", null);
@@ -2988,11 +2985,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			String phoneNumber = facility.getPhoneNumber();
 			Location facilityLocation = facility.getLocation();
 			if (phoneNumber == null
-					|| facilityLocation == null
-					|| !MotechConstants.LOCATION_KASSENA_NANKANA_WEST
-							.equals(facilityLocation.getCountyDistrict())) {
-				// Skip facilities without a phone number or
-				// not in KNDW district
+					|| facilityLocation == null) {
 				continue;
 			}
 
