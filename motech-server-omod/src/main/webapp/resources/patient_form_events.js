@@ -151,34 +151,12 @@ function getParentRow(ele) {
 }
 
 function setEnglishAsLanguageIfMessageFormatSelectedIsText() {
-    var language = $j('#language');
+    var combo = new DynamicComboBox($j('#language'));
     if(isSelectedMediaTypeText()){
-        removeOptionsExceptWithValue(language.children('option'),'en');
+        combo.showOnly('en');
         return;
     }
-    removeAllOptions(language);
-    $j(language).append('<option value="">Select Value</option>');
-    $j(language).append('<option value="en">English</option>');
-    $j(language).append('<option value="kas">Kassim</option>');
-    $j(language).append('<option value="nan">Nankam</option>');
-}
-
-function  removeOptionsExceptWithValue(options, valueToRetain) {
-    $j(options).each(function(index, ele) {
-        if(valueToRetain != $j(ele).val()){
-            $j(ele).remove();
-        }
-    });
-}
-
-function removeAllOptions(combo){
-    $j(combo).empty();
-}
-
-function addOptionTo(combo, value, text) {
-    if (optionExists(combo, value))return;
-    var html = '<option value="' + value + '"' + ' label="' + text + '"/>';
-    $j(combo).append(html);
+    combo.revert();
 }
 
 

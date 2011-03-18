@@ -40,6 +40,7 @@
 <%@ include file="/WEB-INF/template/header.jsp" %>
 
 <openmrs:htmlInclude file="/scripts/jquery/jquery-1.3.2.min.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/dynamic_combo_box.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patient_form_events.js"/>
 <script type="text/javascript">
     var $j = jQuery.noConflict();
