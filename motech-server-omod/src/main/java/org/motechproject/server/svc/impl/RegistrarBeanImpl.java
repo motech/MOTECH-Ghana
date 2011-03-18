@@ -2569,8 +2569,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         // Expecting message date to already be preference adjusted
         // Determine dates for second and third messages
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(messageDate);
+        Calendar calendar = getCalendarWithDate(messageDate);
         calendar.add(Calendar.DATE, 2);
         Date messageDateB = calendar.getTime();
         calendar.add(Calendar.DATE, 2);
@@ -2746,7 +2745,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 // Check if current message date is valid for user
                 // preferences or blackout in case these have changed
                 if (userPreferenceBased) {
-                    attemptDate = determinePreferredMessageDate(recipient,
+                    attemptDate = findPreferredMessageDate(recipient,
                             attemptDate, currentDate, true);
                 } else {
                     attemptDate = adjustForBlackout(attemptDate);
@@ -2791,7 +2790,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                                   Date messageDate) {
         Person recipient = personService.getPerson(recipientId);
 
-        return determinePreferredMessageDate(recipient, messageDate, null,
+        return findPreferredMessageDate(recipient, messageDate, null,
                 false);
     }
 
@@ -2890,7 +2889,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                boolean userPreferenceBased, Date currentDate) {
         Date adjustedDate = verifyFutureDate(messageDate);
         if (userPreferenceBased) {
-            adjustedDate = determinePreferredMessageDate(person, adjustedDate,
+            adjustedDate = findPreferredMessageDate(person, adjustedDate,
                     currentDate, true);
         } else {
             adjustedDate = adjustForBlackout(adjustedDate);
@@ -2962,9 +2961,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
         public void sendStaffCareMessages(Date startDate, Date endDate,
-                                      Date deliveryDate, Date deliveryTime, 
+                                      Date deliveryDate, Date deliveryTime,
                                       String[] careGroups,
-                                      boolean sendUpcoming, 
+                                      boolean sendUpcoming,
                                       boolean avoidBlackout) {
 
         if (avoidBlackout && isDuringBlackout(deliveryDate)) {
@@ -2997,14 +2996,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 			}
 
 			// Send Defaulted Care Message
-			List<ExpectedEncounter> defaultedEncounters; 
+			List<ExpectedEncounter> defaultedEncounters;
 			List<ExpectedObs> defaultedObs;
 
             defaultedEncounters = filterRCTEncounters(new ArrayList<ExpectedEncounter>(getDefaultedExpectedEncounters(facility,
-                                                                                     careGroups, 
+                                                                                     careGroups,
                                                                                      startDate)));
             defaultedObs = filterRCTObs(new ArrayList<ExpectedObs>(getDefaultedExpectedObs(facility,
-                                                                careGroups, 
+                                                                careGroups,
                                                                 startDate)));
 
             // Replace the above code when RCT filtering rules are
@@ -3022,14 +3021,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 				// Send Upcoming Care Messages
                 List<ExpectedEncounter> upcomingEncounters;
                 List<ExpectedObs> upcomingObs;
-                upcomingEncounters = filterRCTEncounters(getUpcomingExpectedEncounters(facility, 
-                                                                                       careGroups, 
-                                                                                       startDate, 
+                upcomingEncounters = filterRCTEncounters(getUpcomingExpectedEncounters(facility,
+                                                                                       careGroups,
+                                                                                       startDate,
                                                                                        endDate));
-                                                                     
-                upcomingObs = filterRCTObs(getUpcomingExpectedObs(facility, 
-                                                                  careGroups, 
-                                                                  startDate, 
+
+                upcomingObs = filterRCTObs(getUpcomingExpectedObs(facility,
+                                                                  careGroups,
+                                                                  startDate,
                                                                   endDate));
 
 				if (!upcomingEncounters.isEmpty() || !upcomingObs.isEmpty()) {
@@ -3540,24 +3539,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return null;
     }
 
-    public Date determinePreferredMessageDate(Person person, Date messageDate,
-                                              Date currentDate, boolean checkInFuture) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(messageDate);
+    public Date findPreferredMessageDate(Person person, Date messageDate, Date currentDate, boolean checkInFuture) {
+        Calendar calendar = getCalendarWithDate(messageDate);
+        setTimeOfDay(person, calendar);
+        setDayOfTheWeek(person, currentDate, checkInFuture, calendar);
+        return calendar.getTime();
+    }
 
-        Date time = getPersonMessageTimeOfDay(person);
-        if (time == null) {
-            time = getDefaultPatientTimeOfDay();
-        }
-        if (time != null) {
-            Calendar timeCalendar = Calendar.getInstance();
-            timeCalendar.setTime(time);
-            calendar.set(Calendar.HOUR_OF_DAY, timeCalendar
-                    .get(Calendar.HOUR_OF_DAY));
-            calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
-        }
-        calendar.set(Calendar.SECOND, 0);
-
+    private void setDayOfTheWeek(Person person, Date currentDate, boolean checkInFuture, Calendar calendar) {
         DayOfWeek day = getPersonMessageDayOfWeek(person);
         if (day == null) {
             day = getDefaultPatientDayOfWeek();
@@ -3569,19 +3558,34 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 calendar.add(Calendar.DATE, 7);
             }
         }
+    }
 
-        return calendar.getTime();
+    private void setTimeOfDay(Person person, Calendar calendar) {
+        Date time = getPersonMessageTimeOfDay(person);
+        if (time == null) {
+            time = getDefaultPatientTimeOfDay();
+        }
+        if (time != null) {
+            Calendar timeCalendar = getCalendarWithDate(time);
+            calendar.set(Calendar.HOUR_OF_DAY, timeCalendar.get(Calendar.HOUR_OF_DAY));
+            calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+        }
+        calendar.set(Calendar.SECOND, 0);
+    }
+
+    private Calendar getCalendarWithDate(Date messageDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(messageDate);
+        return calendar;
     }
 
     Date adjustTime(Date date, Date time) {
         if (date == null || time == null) {
             return date;
         }
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+        Calendar calendar = getCalendarWithDate(date);
 
-        Calendar timeCalendar = Calendar.getInstance();
-        timeCalendar.setTime(time);
+        Calendar timeCalendar = getCalendarWithDate(time);
         calendar.set(Calendar.HOUR_OF_DAY, timeCalendar
                 .get(Calendar.HOUR_OF_DAY));
         calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
@@ -3603,12 +3607,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             return date;
         }
 
-        Calendar blackoutCalendar = Calendar.getInstance();
-        blackoutCalendar.setTime(date);
+        Calendar blackoutCalendar = getCalendarWithDate(date);
 
-        Calendar timeCalendar = Calendar.getInstance();
-
-        timeCalendar.setTime(blackout.getStartTime());
+        Calendar timeCalendar = getCalendarWithDate(blackout.getStartTime());
         blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
                 .get(Calendar.HOUR_OF_DAY));
         blackoutCalendar
@@ -3651,12 +3652,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             return false;
         }
 
-        Calendar blackoutCalendar = Calendar.getInstance();
-        blackoutCalendar.setTime(date);
+        Calendar blackoutCalendar = getCalendarWithDate(date);
 
-        Calendar timeCalendar = Calendar.getInstance();
-
-        timeCalendar.setTime(blackout.getStartTime());
+        Calendar timeCalendar = getCalendarWithDate(blackout.getStartTime());
         blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
                 .get(Calendar.HOUR_OF_DAY));
         blackoutCalendar
