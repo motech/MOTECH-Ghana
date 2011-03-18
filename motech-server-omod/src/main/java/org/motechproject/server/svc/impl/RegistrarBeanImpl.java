@@ -115,9 +115,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     public User registerStaff(String firstName, String lastName, String phone,
                               String staffType, String staffId) {
         User staff = null;
-        if(staffId != null){
+        if (staffId != null) {
             staff = motechUserRepository.updateUser(getStaffBySystemId(staffId), new WebStaff(firstName, lastName, phone, staffType));
-        }else{
+        } else {
             staff = motechUserRepository.newUser(new WebStaff(firstName, lastName, phone, staffType));
         }
         return userService.saveUser(staff, generatePassword(8));
@@ -2811,7 +2811,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                         + ", date: " + messageDate);
             }
 
-            ScheduledMessage scheduledMessage = new ScheduledMessage(messageDate,recipientId, messageDefinition, enrollment);
+            ScheduledMessage scheduledMessage = new ScheduledMessage(messageDate, recipientId, messageDefinition, enrollment);
             Message message = messageDefinition.createMessage(scheduledMessage);
             message.setAttemptDate(messageDate);
             scheduledMessage.getMessageAttempts().add(message);
@@ -2960,7 +2960,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
     }
 
-        public void sendStaffCareMessages(Date startDate, Date endDate,
+    public void sendStaffCareMessages(Date startDate, Date endDate,
                                       Date deliveryDate, Date deliveryTime,
                                       String[] careGroups,
                                       boolean sendUpcoming,
@@ -2984,64 +2984,64 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         modelConverter.setRegistrarBean(this);
 
         for (Facility facility : facilities) {
-			String phoneNumber = facility.getPhoneNumber();
-			Location facilityLocation = facility.getLocation();
-			if (phoneNumber == null
-					|| facilityLocation == null
-					|| !MotechConstants.LOCATION_KASSENA_NANKANA_WEST
-							.equals(facilityLocation.getCountyDistrict())) {
-				// Skip facilities without a phone number or
-				// not in KNDW district
-				continue;
-			}
+            String phoneNumber = facility.getPhoneNumber();
+            Location facilityLocation = facility.getLocation();
+            if (phoneNumber == null
+                    || facilityLocation == null
+                    || !MotechConstants.LOCATION_KASSENA_NANKANA_WEST
+                    .equals(facilityLocation.getCountyDistrict())) {
+                // Skip facilities without a phone number or
+                // not in KNDW district
+                continue;
+            }
 
-			// Send Defaulted Care Message
-			List<ExpectedEncounter> defaultedEncounters;
-			List<ExpectedObs> defaultedObs;
+            // Send Defaulted Care Message
+            List<ExpectedEncounter> defaultedEncounters;
+            List<ExpectedObs> defaultedObs;
 
             defaultedEncounters = filterRCTEncounters(new ArrayList<ExpectedEncounter>(getDefaultedExpectedEncounters(facility,
-                                                                                     careGroups,
-                                                                                     startDate)));
+                    careGroups,
+                    startDate)));
             defaultedObs = filterRCTObs(new ArrayList<ExpectedObs>(getDefaultedExpectedObs(facility,
-                                                                careGroups,
-                                                                startDate)));
+                    careGroups,
+                    startDate)));
 
             // Replace the above code when RCT filtering rules are
             // finalized and implemented.
 
-			if (!defaultedEncounters.isEmpty() || !defaultedObs.isEmpty()) {
-				Care[] defaultedCares = modelConverter
-						.defaultedToWebServiceCares(defaultedEncounters,
-								defaultedObs);
-				sendStaffDefaultedCareMessage(messageId, phoneNumber,
-						mediaType, deliveryDate, null, defaultedCares);
-			}
+            if (!defaultedEncounters.isEmpty() || !defaultedObs.isEmpty()) {
+                Care[] defaultedCares = modelConverter
+                        .defaultedToWebServiceCares(defaultedEncounters,
+                                defaultedObs);
+                sendStaffDefaultedCareMessage(messageId, phoneNumber,
+                        mediaType, deliveryDate, null, defaultedCares);
+            }
 
-			if (sendUpcoming) {
-				// Send Upcoming Care Messages
+            if (sendUpcoming) {
+                // Send Upcoming Care Messages
                 List<ExpectedEncounter> upcomingEncounters;
                 List<ExpectedObs> upcomingObs;
                 upcomingEncounters = filterRCTEncounters(getUpcomingExpectedEncounters(facility,
-                                                                                       careGroups,
-                                                                                       startDate,
-                                                                                       endDate));
+                        careGroups,
+                        startDate,
+                        endDate));
 
                 upcomingObs = filterRCTObs(getUpcomingExpectedObs(facility,
-                                                                  careGroups,
-                                                                  startDate,
-                                                                  endDate));
+                        careGroups,
+                        startDate,
+                        endDate));
 
-				if (!upcomingEncounters.isEmpty() || !upcomingObs.isEmpty()) {
-					Care[] upcomingCares = modelConverter
-							.upcomingToWebServiceCares(upcomingEncounters,
-									upcomingObs, true);
+                if (!upcomingEncounters.isEmpty() || !upcomingObs.isEmpty()) {
+                    Care[] upcomingCares = modelConverter
+                            .upcomingToWebServiceCares(upcomingEncounters,
+                                    upcomingObs, true);
 
-					sendStaffUpcomingCareMessage(messageId, phoneNumber,
-							mediaType, deliveryDate, null, upcomingCares);
-				}
-			}
-		}
-	}
+                    sendStaffUpcomingCareMessage(messageId, phoneNumber,
+                            mediaType, deliveryDate, null, upcomingCares);
+                }
+            }
+        }
+    }
 
     public List<ExpectedEncounter> filterRCTEncounters(List<ExpectedEncounter> allDefaulters) {
 
@@ -3096,7 +3096,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private PatientMessage[] constructPatientMessages(List<Message> messages,
-                                                     boolean sendImmediate) {
+                                                      boolean sendImmediate) {
         List<PatientMessage> patientMessages = new ArrayList<PatientMessage>();
 
         for (Message message : messages) {
@@ -3151,11 +3151,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
                 Patient patient = patientService.getPatient(recipientId);
 
-                if(rctService.isPatientRegisteredAndInControlGroup(patient)){
+                if (rctService.isPatientRegisteredAndInControlGroup(patient)) {
                     String motechId = new MotechPatient(patient).getMotechId();
                     log.info("Not creating message because the recipient falls in the RCT Control group. " +
-                            "Patient MoTeCH id: " + motechId + " Message ID:"+message.getPublicId());
-                    return  null;
+                            "Patient MoTeCH id: " + motechId + " Message ID:" + message.getPublicId());
+                    return null;
                 }
                 if (patient != null) {
                     ContactNumberType contactNumberType = getPersonPhoneType(person);
@@ -3189,10 +3189,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private boolean sendStaffMessage(String messageId,
-                                    NameValuePair[] personalInfo, String phoneNumber,
-                                    String languageCode, MediaType mediaType, Long notificationType,
-                                    Date messageStartDate, Date messageEndDate,
-                                    org.motechproject.ws.Patient[] patients) {
+                                     NameValuePair[] personalInfo, String phoneNumber,
+                                     String languageCode, MediaType mediaType, Long notificationType,
+                                     Date messageStartDate, Date messageEndDate,
+                                     org.motechproject.ws.Patient[] patients) {
 
         try {
             org.motechproject.ws.MessageStatus messageStatus = mobileService
@@ -3208,8 +3208,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private boolean sendStaffDefaultedCareMessage(String messageId,
-                                                 String phoneNumber, MediaType mediaType, Date messageStartDate,
-                                                 Date messageEndDate, Care[] cares) {
+                                                  String phoneNumber, MediaType mediaType, Date messageStartDate,
+                                                  Date messageEndDate, Care[] cares) {
 
         try {
             org.motechproject.ws.MessageStatus messageStatus = mobileService
@@ -3224,8 +3224,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private boolean sendStaffUpcomingCareMessage(String messageId,
-                                                String phoneNumber, MediaType mediaType, Date messageStartDate,
-                                                Date messageEndDate, Care[] cares) {
+                                                 String phoneNumber, MediaType mediaType, Date messageStartDate,
+                                                 Date messageEndDate, Care[] cares) {
 
         try {
             org.motechproject.ws.MessageStatus messageStatus = mobileService
@@ -3290,14 +3290,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private Obs createNumericValueObs(Date date, Concept concept, Person person,
-                                     Location location, Integer value, Encounter encounter, User creator) {
+                                      Location location, Integer value, Encounter encounter, User creator) {
 
         return createNumericValueObs(date, concept, person, location,
                 (double) value, encounter, creator);
     }
 
     private Obs createNumericValueObs(Date date, Concept concept, Person person,
-                                     Location location, Double value, Encounter encounter, User creator) {
+                                      Location location, Double value, Encounter encounter, User creator) {
 
         Obs obs = createObs(date, concept, person, location, encounter, creator);
         obs.setValueNumeric(value);
@@ -3305,7 +3305,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private Obs createBooleanValueObs(Date date, Concept concept, Person person,
-                                     Location location, Boolean value, Encounter encounter, User creator) {
+                                      Location location, Boolean value, Encounter encounter, User creator) {
 
         Double doubleValue;
         // Boolean currently stored as Numeric 1 or 0
@@ -3319,7 +3319,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private Obs createDateValueObs(Date date, Concept concept, Person person,
-                                  Location location, Date value, Encounter encounter, User creator) {
+                                   Location location, Date value, Encounter encounter, User creator) {
 
         Obs obs = createObs(date, concept, person, location, encounter, creator);
         obs.setValueDatetime(value);
@@ -3327,7 +3327,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private Obs createConceptValueObs(Date date, Concept concept, Person person,
-                                     Location location, Concept value, Encounter encounter, User creator) {
+                                      Location location, Concept value, Encounter encounter, User creator) {
 
         Obs obs = createObs(date, concept, person, location, encounter, creator);
         obs.setValueCoded(value);
@@ -3335,7 +3335,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private Obs createTextValueObs(Date date, Concept concept, Person person,
-                                  Location location, String value, Encounter encounter, User creator) {
+                                   Location location, String value, Encounter encounter, User creator) {
 
         Obs obs = createObs(date, concept, person, location, encounter, creator);
         obs.setValueText(value);
@@ -3343,7 +3343,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private Obs createObs(Date date, Concept concept, Person person,
-                         Location location, Encounter encounter, User creator) {
+                          Location location, Encounter encounter, User creator) {
 
         Obs obs = new Obs();
         obs.setObsDatetime(date);
@@ -3586,8 +3586,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         Calendar calendar = getCalendarWithDate(date);
 
         Calendar timeCalendar = getCalendarWithDate(time);
-        calendar.set(Calendar.HOUR_OF_DAY, timeCalendar
-                .get(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.HOUR_OF_DAY, timeCalendar.get(Calendar.HOUR_OF_DAY));
         calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
         calendar.set(Calendar.SECOND, 0);
         if (calendar.getTime().before(date)) {
@@ -3606,32 +3605,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         if (blackout == null) {
             return date;
         }
-
         Calendar blackoutCalendar = getCalendarWithDate(date);
 
-        Calendar timeCalendar = getCalendarWithDate(blackout.getStartTime());
-        blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
-                .get(Calendar.HOUR_OF_DAY));
-        blackoutCalendar
-                .set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
-        blackoutCalendar
-                .set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
-        if (date.before(blackoutCalendar.getTime())) {
-            // Remove a day if blackout start date before the message date
-            blackoutCalendar.add(Calendar.DATE, -1);
-        }
+        adjustForBlackoutStartDate(date, blackout, blackoutCalendar);
         Date blackoutStart = blackoutCalendar.getTime();
 
-        timeCalendar.setTime(blackout.getEndTime());
-        blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
-                .get(Calendar.HOUR_OF_DAY));
-        blackoutCalendar
-                .set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
-        blackoutCalendar
-                .set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
+        setBlackOutTime(blackout.getEndTime(), blackoutCalendar);
+
         if (blackoutCalendar.getTime().before(blackoutStart)) {
-            // Add a day if blackout end date before start date
-            // after setting time
+            // Add a day if blackout end date before start date after setting time
             blackoutCalendar.add(Calendar.DATE, 1);
         }
         Date blackoutEnd = blackoutCalendar.getTime();
@@ -3640,6 +3622,22 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             return blackoutEnd;
         }
         return date;
+    }
+
+    private void adjustForBlackoutStartDate(Date date, Blackout blackout, Calendar blackoutCalendar) {
+        setBlackOutTime(blackout.getStartTime(), blackoutCalendar);
+
+        if (date.before(blackoutCalendar.getTime())) {
+            // Remove a day if blackout start date before the message date
+            blackoutCalendar.add(Calendar.DATE, -1);
+        }
+    }
+
+    private void setBlackOutTime(Date blackoutTime, Calendar blackoutCalendar) {
+        Calendar timeCalendar = getCalendarWithDate(blackoutTime);
+        blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar.get(Calendar.HOUR_OF_DAY));
+        blackoutCalendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+        blackoutCalendar.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
     }
 
     boolean isDuringBlackout(Date date) {
@@ -3654,29 +3652,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         Calendar blackoutCalendar = getCalendarWithDate(date);
 
-        Calendar timeCalendar = getCalendarWithDate(blackout.getStartTime());
-        blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
-                .get(Calendar.HOUR_OF_DAY));
-        blackoutCalendar
-                .set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
-        blackoutCalendar
-                .set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
-        if (date.before(blackoutCalendar.getTime())) {
-            // Remove a day if blackout start date before the message date
-            blackoutCalendar.add(Calendar.DATE, -1);
-        }
+        adjustForBlackoutStartDate(date, blackout, blackoutCalendar);
         Date blackoutStart = blackoutCalendar.getTime();
+        setBlackOutTime(blackout.getEndTime(), blackoutCalendar);
 
-        timeCalendar.setTime(blackout.getEndTime());
-        blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar
-                .get(Calendar.HOUR_OF_DAY));
-        blackoutCalendar
-                .set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
-        blackoutCalendar
-                .set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
         if (blackoutCalendar.getTime().before(blackoutStart)) {
-            // Add a day if blackout end date before start date
-            // after setting time
+            // Add a day if blackout end date before start date after setting time
             blackoutCalendar.add(Calendar.DATE, 1);
         }
         Date blackoutEnd = blackoutCalendar.getTime();

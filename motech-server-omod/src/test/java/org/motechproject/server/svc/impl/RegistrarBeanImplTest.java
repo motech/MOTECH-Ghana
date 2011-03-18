@@ -136,7 +136,7 @@ public class RegistrarBeanImplTest extends TestCase {
         expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY)).andReturn(timeAsString);
         replay(contextService, adminService);
 
-        Date prefDate = registrarBean.findPreferredMessageDate(person,messageDate, messageDate, true);
+        Date prefDate = registrarBean.findPreferredMessageDate(person, messageDate, messageDate, true);
 
         verify(contextService, adminService);
 
@@ -150,25 +150,15 @@ public class RegistrarBeanImplTest extends TestCase {
         assertEquals(0, preferredCalendar.get(Calendar.SECOND));
     }
 
-    public void testDetermineNoPrefDate() {
+    public void testFindNoPreferenceDate() {
         Date messageDate = new Date();
-        Date currentDate = messageDate;
-
         Person person = new Person(1);
 
-        expect(
-                adminService
-                        .getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK))
-                .andReturn(null);
-        expect(
-                adminService
-                        .getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY))
-                .andReturn(null);
-
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK)).andReturn(null);
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY)).andReturn(null);
         replay(contextService, adminService);
 
-        Date prefDate = registrarBean.findPreferredMessageDate(person,
-                messageDate, currentDate, true);
+        Date prefDate = registrarBean.findPreferredMessageDate(person, messageDate, messageDate, true);
 
         verify(contextService, adminService);
 
@@ -176,13 +166,10 @@ public class RegistrarBeanImplTest extends TestCase {
         Calendar prefCal = getCalendar(prefDate);
 
         assertEquals(messageCal.get(Calendar.YEAR), prefCal.get(Calendar.YEAR));
-        assertEquals(messageCal.get(Calendar.MONTH), prefCal
-                .get(Calendar.MONTH));
+        assertEquals(messageCal.get(Calendar.MONTH), prefCal.get(Calendar.MONTH));
         assertEquals(messageCal.get(Calendar.DATE), prefCal.get(Calendar.DATE));
-        assertEquals(messageCal.get(Calendar.HOUR_OF_DAY), prefCal
-                .get(Calendar.HOUR_OF_DAY));
-        assertEquals(messageCal.get(Calendar.MINUTE), prefCal
-                .get(Calendar.MINUTE));
+        assertEquals(messageCal.get(Calendar.HOUR_OF_DAY), prefCal.get(Calendar.HOUR_OF_DAY));
+        assertEquals(messageCal.get(Calendar.MINUTE), prefCal.get(Calendar.MINUTE));
         assertEquals(0, prefCal.get(Calendar.SECOND));
     }
 
@@ -212,15 +199,11 @@ public class RegistrarBeanImplTest extends TestCase {
         assertEquals(calendar.get(Calendar.YEAR), prefCal.get(Calendar.YEAR));
         assertEquals(calendar.get(Calendar.MONTH), prefCal.get(Calendar.MONTH));
         assertEquals(calendar.get(Calendar.DATE), prefCal.get(Calendar.DATE));
-        assertFalse("Hour not updated",
-                calendar.get(Calendar.HOUR_OF_DAY) == prefCal
-                        .get(Calendar.HOUR_OF_DAY));
+        assertFalse("Hour not updated", calendar.get(Calendar.HOUR_OF_DAY) == prefCal.get(Calendar.HOUR_OF_DAY));
         assertEquals(hour, prefCal.get(Calendar.HOUR_OF_DAY));
-        assertFalse("Minute not updated",
-                calendar.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
+        assertFalse("Minute not updated", calendar.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
         assertEquals(minute, prefCal.get(Calendar.MINUTE));
-        assertFalse("Second not updated",
-                calendar.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
+        assertFalse("Second not updated", calendar.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
         assertEquals(second, prefCal.get(Calendar.SECOND));
     }
 
@@ -229,38 +212,24 @@ public class RegistrarBeanImplTest extends TestCase {
         calendar.set(Calendar.HOUR_OF_DAY, 2);
         calendar.set(Calendar.MINUTE, 13);
         calendar.set(Calendar.SECOND, 54);
+
         Date messageDate = calendar.getTime();
 
-        Time blackoutStart = Time.valueOf("22:00:00");
-        Time blackoutEnd = Time.valueOf("06:00:00");
-
-        int hour = 6;
-        int minute = 0;
-        int second = 0;
-
-        Blackout blackout = new Blackout(blackoutStart, blackoutEnd);
-
         expect(contextService.getMotechService()).andReturn(motechService);
-        expect(motechService.getBlackoutSettings()).andReturn(blackout);
-
+        expect(motechService.getBlackoutSettings()).andReturn(new Blackout(Time.valueOf("22:00:00"), Time.valueOf("06:00:00")));
         replay(contextService, adminService, motechService);
 
         Date prefDate = registrarBean.adjustForBlackout(messageDate);
-
         verify(contextService, adminService, motechService);
 
         Calendar prefCal = getCalendar(prefDate);
 
-        assertFalse("Hour not updated",
-                calendar.get(Calendar.HOUR_OF_DAY) == prefCal
-                        .get(Calendar.HOUR_OF_DAY));
-        assertEquals(hour, prefCal.get(Calendar.HOUR_OF_DAY));
-        assertFalse("Minute not updated",
-                calendar.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
-        assertEquals(minute, prefCal.get(Calendar.MINUTE));
-        assertFalse("Second not updated",
-                calendar.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
-        assertEquals(second, prefCal.get(Calendar.SECOND));
+        assertFalse("Hour not updated", calendar.get(Calendar.HOUR_OF_DAY) == prefCal.get(Calendar.HOUR_OF_DAY));
+        assertEquals(6, prefCal.get(Calendar.HOUR_OF_DAY));
+        assertFalse("Minute not updated", calendar.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
+        assertEquals(0, prefCal.get(Calendar.MINUTE));
+        assertFalse("Second not updated", calendar.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
+        assertEquals(0, prefCal.get(Calendar.SECOND));
     }
 
     public void testAdjustDateBlackoutPM() {
