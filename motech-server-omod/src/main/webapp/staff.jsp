@@ -43,7 +43,7 @@
 <h2>Register/Edit a Staff Member</h2>
 <c:choose>
 	<c:when test="${not empty successMsg}">
-	<span style="color:green;">
+	<span id="staff-detail" style="color:green;">
 		<spring:message text="${successMsg}" />
 	</span>
 	</c:when>
