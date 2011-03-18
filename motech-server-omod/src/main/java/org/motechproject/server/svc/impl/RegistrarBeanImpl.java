@@ -1419,7 +1419,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 // Send immediately if not during blackout,
                 // otherwise adjust time to after the blackout period
                 Date currentDate = new Date();
-                Date messageStartDate = adjustForBlackout(currentDate);
+                Date messageStartDate = adjustDateForBlackout(currentDate);
                 if (currentDate.equals(messageStartDate)) {
                     messageStartDate = null;
                 }
@@ -2748,7 +2748,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                     attemptDate = findPreferredMessageDate(recipient,
                             attemptDate, currentDate, true);
                 } else {
-                    attemptDate = adjustForBlackout(attemptDate);
+                    attemptDate = adjustDateForBlackout(attemptDate);
                 }
                 if (!attemptDate.equals(recentMessage.getAttemptDate())) {
                     // Recompute from original scheduled message date
@@ -2892,7 +2892,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             adjustedDate = findPreferredMessageDate(person, adjustedDate,
                     currentDate, true);
         } else {
-            adjustedDate = adjustForBlackout(adjustedDate);
+            adjustedDate = adjustDateForBlackout(adjustedDate);
         }
         return adjustedDate;
     }
@@ -2966,9 +2966,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                       boolean sendUpcoming,
                                       boolean avoidBlackout) {
 
-        if (avoidBlackout && isDuringBlackout(deliveryDate)) {
-            log.debug("Cancelling nurse messages during blackout");
-            return;
+        if (avoidBlackout) {
+            Date checkForDate = deliveryDate != null ? deliveryDate : new Date();
+            if (isMessageTimeWithinBlackoutPeriod(checkForDate)) {
+                log.debug("Cancelling nurse messages during blackout");
+                return;
+            }
         }
 
         List<Facility> facilities = motechService().getAllFacilities();
@@ -3597,7 +3600,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return calendar.getTime();
     }
 
-    Date adjustForBlackout(Date date) {
+    Date adjustDateForBlackout(Date date) {
         if (date == null) {
             return date;
         }
@@ -3607,7 +3610,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
         Calendar blackoutCalendar = getCalendarWithDate(date);
 
-        adjustForBlackoutStartDate(date, blackout, blackoutCalendar);
+        setBlackOutTime(blackout.getStartTime(), blackoutCalendar);
+
+        if (date.before(blackoutCalendar.getTime())) {
+            // Remove a day if blackout start date before the message date
+            blackoutCalendar.add(Calendar.DATE, -1);
+        }
         Date blackoutStart = blackoutCalendar.getTime();
 
         setBlackOutTime(blackout.getEndTime(), blackoutCalendar);
@@ -3624,15 +3632,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return date;
     }
 
-    private void adjustForBlackoutStartDate(Date date, Blackout blackout, Calendar blackoutCalendar) {
-        setBlackOutTime(blackout.getStartTime(), blackoutCalendar);
-
-        if (date.before(blackoutCalendar.getTime())) {
-            // Remove a day if blackout start date before the message date
-            blackoutCalendar.add(Calendar.DATE, -1);
-        }
-    }
-
     private void setBlackOutTime(Date blackoutTime, Calendar blackoutCalendar) {
         Calendar timeCalendar = getCalendarWithDate(blackoutTime);
         blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar.get(Calendar.HOUR_OF_DAY));
@@ -3640,19 +3639,21 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         blackoutCalendar.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
     }
 
-    boolean isDuringBlackout(Date date) {
-        if (date == null) {
-            // If date is missing, checks if current date is during blackout
-            date = new Date();
-        }
+    boolean isMessageTimeWithinBlackoutPeriod(Date date) {
         Blackout blackout = motechService().getBlackoutSettings();
+
         if (blackout == null) {
             return false;
         }
 
         Calendar blackoutCalendar = getCalendarWithDate(date);
 
-        adjustForBlackoutStartDate(date, blackout, blackoutCalendar);
+        setBlackOutTime(blackout.getStartTime(), blackoutCalendar);
+
+        if (date.before(blackoutCalendar.getTime())) {
+            // Remove a day if blackout start date before the message date
+            blackoutCalendar.add(Calendar.DATE, -1);
+        }
         Date blackoutStart = blackoutCalendar.getTime();
         setBlackOutTime(blackout.getEndTime(), blackoutCalendar);
 

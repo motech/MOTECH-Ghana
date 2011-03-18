@@ -174,10 +174,7 @@ public class RegistrarBeanImplTest extends TestCase {
     }
 
     public void testAdjustDateTime() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 14);
-        calendar.set(Calendar.MINUTE, 13);
-        calendar.set(Calendar.SECOND, 54);
+        Calendar calendar = getCalendarWithTime(14, 13, 54);
         Date messageDate = calendar.getTime();
 
         int hour = 15;
@@ -207,163 +204,113 @@ public class RegistrarBeanImplTest extends TestCase {
         assertEquals(second, prefCal.get(Calendar.SECOND));
     }
 
-    public void testAdjustDateBlackoutAM() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 2);
-        calendar.set(Calendar.MINUTE, 13);
-        calendar.set(Calendar.SECOND, 54);
-
-        Date messageDate = calendar.getTime();
+    public void testAdjustDateBlackoutInTheMorning() {
+        Calendar calendar = getCalendarWithTime(2, 13, 54);
+        Date morningMessageTime = calendar.getTime();
 
         expect(contextService.getMotechService()).andReturn(motechService);
         expect(motechService.getBlackoutSettings()).andReturn(new Blackout(Time.valueOf("22:00:00"), Time.valueOf("06:00:00")));
         replay(contextService, adminService, motechService);
 
-        Date prefDate = registrarBean.adjustForBlackout(messageDate);
+        Date preferredDate = registrarBean.adjustDateForBlackout(morningMessageTime);
         verify(contextService, adminService, motechService);
 
-        Calendar prefCal = getCalendar(prefDate);
+        Calendar preferredCalendar = getCalendar(preferredDate);
 
-        assertFalse("Hour not updated", calendar.get(Calendar.HOUR_OF_DAY) == prefCal.get(Calendar.HOUR_OF_DAY));
-        assertEquals(6, prefCal.get(Calendar.HOUR_OF_DAY));
-        assertFalse("Minute not updated", calendar.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
-        assertEquals(0, prefCal.get(Calendar.MINUTE));
-        assertFalse("Second not updated", calendar.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
-        assertEquals(0, prefCal.get(Calendar.SECOND));
+        assertFalse("Hour not updated", calendar.get(Calendar.HOUR_OF_DAY) == preferredCalendar.get(Calendar.HOUR_OF_DAY));
+        assertEquals(6, preferredCalendar.get(Calendar.HOUR_OF_DAY));
+        assertFalse("Minute not updated", calendar.get(Calendar.MINUTE) == preferredCalendar.get(Calendar.MINUTE));
+        assertEquals(0, preferredCalendar.get(Calendar.MINUTE));
+        assertFalse("Second not updated", calendar.get(Calendar.SECOND) == preferredCalendar.get(Calendar.SECOND));
+        assertEquals(0, preferredCalendar.get(Calendar.SECOND));
     }
 
-    public void testAdjustDateBlackoutPM() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 22);
-        calendar.set(Calendar.MINUTE, 13);
-        calendar.set(Calendar.SECOND, 54);
-        Date messageDate = calendar.getTime();
 
-        Time blackoutStart = Time.valueOf("22:00:00");
-        Time blackoutEnd = Time.valueOf("06:00:00");
-
-        int hour = 6;
-        int minute = 0;
-        int second = 0;
-
-        Blackout blackout = new Blackout(blackoutStart, blackoutEnd);
+    public void testAdjustDateBlackoutInTheNight() {
+        Calendar calendar = getCalendarWithTime(22, 13, 54);
+        Date eveningMessageTime = calendar.getTime();
+        Blackout blackout = new Blackout(Time.valueOf("22:00:00"), Time.valueOf("06:00:00"));
 
         expect(contextService.getMotechService()).andReturn(motechService);
         expect(motechService.getBlackoutSettings()).andReturn(blackout);
-
         replay(contextService, adminService, motechService);
 
-        Date prefDate = registrarBean.adjustForBlackout(messageDate);
+        Date prefDate = registrarBean.adjustDateForBlackout(eveningMessageTime);
 
         verify(contextService, adminService, motechService);
-
-        Calendar prefCal = getCalendar(prefDate);
-
-        assertFalse("Hour not updated",
-                calendar.get(Calendar.HOUR_OF_DAY) == prefCal
-                        .get(Calendar.HOUR_OF_DAY));
-        assertEquals(hour, prefCal.get(Calendar.HOUR_OF_DAY));
-        assertFalse("Minute not updated",
-                calendar.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
-        assertEquals(minute, prefCal.get(Calendar.MINUTE));
-        assertFalse("Second not updated",
-                calendar.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
-        assertEquals(second, prefCal.get(Calendar.SECOND));
+        Calendar preferredCalendar = getCalendar(prefDate);
+        assertFalse("Hour not updated", calendar.get(Calendar.HOUR_OF_DAY) == preferredCalendar.get(Calendar.HOUR_OF_DAY));
+        assertEquals(6, preferredCalendar.get(Calendar.HOUR_OF_DAY));
+        assertFalse("Minute not updated", calendar.get(Calendar.MINUTE) == preferredCalendar.get(Calendar.MINUTE));
+        assertEquals(0, preferredCalendar.get(Calendar.MINUTE));
+        assertFalse("Second not updated", calendar.get(Calendar.SECOND) == preferredCalendar.get(Calendar.SECOND));
+        assertEquals(0, preferredCalendar.get(Calendar.SECOND));
     }
 
-    public void testIsDuringBlackoutPM() {
+    private Calendar getCalendarWithTime(int hourOfTheDay, int minutes, int seconds) {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE, 13);
-        calendar.set(Calendar.SECOND, 54);
-        Date messageDate = calendar.getTime();
-
-        Time blackoutStart = Time.valueOf("23:00:00");
-        Time blackoutEnd = Time.valueOf("06:00:00");
-
-        Blackout blackout = new Blackout(blackoutStart, blackoutEnd);
-
-        expect(contextService.getMotechService()).andReturn(motechService);
-        expect(motechService.getBlackoutSettings()).andReturn(blackout);
-
-        replay(contextService, adminService, motechService);
-
-        boolean duringBlackout = registrarBean.isDuringBlackout(messageDate);
-
-        verify(contextService, adminService, motechService);
-
-        assertEquals(true, duringBlackout);
-
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfTheDay);
+        calendar.set(Calendar.MINUTE, minutes);
+        calendar.set(Calendar.SECOND, seconds);
+        return calendar;
     }
 
-    public void testIsDuringBlackoutAM() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 3);
-        calendar.set(Calendar.MINUTE, 13);
-        calendar.set(Calendar.SECOND, 54);
-        Date messageDate = calendar.getTime();
+    public void testShouldFindOutIfMessageTimeIsDuringBlackoutPeriod() {
+        Calendar calendar = getCalendarWithTime(23, 13, 54);
+        Date morningMessageTime = calendar.getTime();
+        calendar = getCalendarWithTime(3, 13, 54);
+        Date nightMessageTime = calendar.getTime();
+        calendar = getCalendarWithTime(19, 30, 30);
+        Date eveningMessageTime = calendar.getTime();
 
-        Time blackoutStart = Time.valueOf("23:00:00");
-        Time blackoutEnd = Time.valueOf("06:00:00");
+        Blackout blackout = new Blackout(Time.valueOf("23:00:00"), Time.valueOf("06:00:00"));
 
-        Blackout blackout = new Blackout(blackoutStart, blackoutEnd);
-
-        expect(contextService.getMotechService()).andReturn(motechService);
-        expect(motechService.getBlackoutSettings()).andReturn(blackout);
-
+        expect(contextService.getMotechService()).andReturn(motechService).times(3);
+        expect(motechService.getBlackoutSettings()).andReturn(blackout).times(3);
         replay(contextService, adminService, motechService);
 
-        boolean duringBlackout = registrarBean.isDuringBlackout(messageDate);
-
+        assertTrue(registrarBean.isMessageTimeWithinBlackoutPeriod(morningMessageTime));
+        assertTrue(registrarBean.isMessageTimeWithinBlackoutPeriod(nightMessageTime));
+        assertFalse(registrarBean.isMessageTimeWithinBlackoutPeriod(eveningMessageTime));
         verify(contextService, adminService, motechService);
-
-        assertEquals(true, duringBlackout);
 
     }
 
     public void testSchedulingInfoMessageWithExistingScheduled() {
-        String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
+        String messageKey = "message";
+        String messageKeyA = "message.a";
+        String messageKeyB = "message.b";
+        String messageKeyC = "message.c";
+
         Date currentDate = new Date();
         Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
         boolean userPreferenceBased = true;
 
         Integer personId = 1;
         Person person = new Person(personId);
-        PersonAttributeType mediaTypeAttr = new PersonAttributeType();
-        mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
-        person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
-                .toString()));
+        PersonAttributeType mediaTypeAttribute = new PersonAttributeType();
+        mediaTypeAttribute.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+        person.addAttribute(new PersonAttribute(mediaTypeAttribute, MediaType.VOICE.toString()));
 
         MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
         enrollment.setPersonId(personId);
 
-        MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
-                MessageType.INFORMATIONAL);
-
+        MessageDefinition messageDef = new MessageDefinition(messageKey, 1L, MessageType.INFORMATIONAL);
         List<Message> messagesToRemove = new ArrayList<Message>();
 
         List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
-        ScheduledMessage schedMessage = new ScheduledMessage();
-        existingMessages.add(schedMessage);
+        ScheduledMessage scheduledMessage = new ScheduledMessage();
+        existingMessages.add(scheduledMessage);
 
         Capture<ScheduledMessage> capturedScheduledMessage = new Capture<ScheduledMessage>();
 
-        expect(contextService.getMotechService()).andReturn(motechService)
-                .atLeastOnce();
+        expect(contextService.getMotechService()).andReturn(motechService).atLeastOnce();
         expect(personService.getPerson(personId)).andReturn(person);
-        expect(motechService.getMessageDefinition(messageKey)).andReturn(
-                messageDef);
-        expect(
-                motechService.getMessages(personId, enrollment, messageDef,
-                        messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
-                messagesToRemove);
-        expect(
-                motechService.getScheduledMessages(personId, messageDef,
-                        enrollment, messageDate)).andReturn(existingMessages);
-        expect(
-                motechService
-                        .saveScheduledMessage(capture(capturedScheduledMessage)))
-                .andReturn(new ScheduledMessage());
+        expect(motechService.getMessageDefinition(messageKey)).andReturn(messageDef);
+        expect(motechService.getMessages(personId, enrollment, messageDef,messageDate, MessageStatus.SHOULD_ATTEMPT)).
+                andReturn(messagesToRemove);
+        expect(motechService.getScheduledMessages(personId, messageDef,enrollment, messageDate)).andReturn(existingMessages);
+        expect(motechService.saveScheduledMessage(capture(capturedScheduledMessage))).andReturn(new ScheduledMessage());
 
         replay(contextService, adminService, motechService, personService);
 
@@ -373,8 +320,8 @@ public class RegistrarBeanImplTest extends TestCase {
 
         verify(contextService, adminService, motechService, personService);
 
-        ScheduledMessage scheduledMessage = capturedScheduledMessage.getValue();
-        List<Message> attempts = scheduledMessage.getMessageAttempts();
+        ScheduledMessage scheduledMsg = capturedScheduledMessage.getValue();
+        List<Message> attempts = scheduledMsg.getMessageAttempts();
         assertEquals(1, attempts.size());
         Message message = attempts.get(0);
         assertEquals(MessageStatus.SHOULD_ATTEMPT, message.getAttemptStatus());
