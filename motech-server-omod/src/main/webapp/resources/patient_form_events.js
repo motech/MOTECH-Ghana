@@ -18,6 +18,26 @@ function onPhoneOwnershipSelection() {
     }
 }
 
+function onInsuranceSelection() {
+    if (hasNonEmptySelection($j('#insured'))) {
+        hideInsuranceSectionIfNotInsured();
+    }
+}
+
+function hideInsuranceSectionIfNotInsured() {
+    var insuranceRow = getParentRow('#nhis');
+    var insuranceExpiryDateRow = getParentRow('#nhisExpDate');
+    if (insured()) {
+        show(insuranceRow, insuranceExpiryDateRow)
+        return;
+    }
+    hide(insuranceRow, insuranceExpiryDateRow);
+}
+
+function insured() {
+    return "true" == $j('#insured').val();
+}
+
 function setGenderAsFemaleIfPatientIsPregnantMother() {
     var gender = $j('#sex');
     var female = new Option("Female", "FEMALE");
@@ -123,6 +143,10 @@ function isSelectedMediaTypeText() {
 
 function hasNonEmptySelection(comboBox) {
     return $j(comboBox).val() != "";
+}
+
+function getParentRow(ele) {
+    return $j(ele).parents('tr');
 }
 
 

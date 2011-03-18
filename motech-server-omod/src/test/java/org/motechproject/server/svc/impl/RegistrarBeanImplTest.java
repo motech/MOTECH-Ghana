@@ -60,714 +60,667 @@ import static org.easymock.EasyMock.*;
 
 public class RegistrarBeanImplTest extends TestCase {
 
-	RegistrarBeanImpl regBean;
+    RegistrarBeanImpl registrarBean;
 
-	ContextService contextService;
-	AdministrationService adminService;
-	MotechService motechService;
-	PersonService personService;
+    ContextService contextService;
+    AdministrationService adminService;
+    MotechService motechService;
+    PersonService personService;
     RCTService rctService;
 
-	@Override
-	protected void setUp() throws Exception {
-		contextService = createMock(ContextService.class);
-		adminService = createMock(AdministrationService.class);
-		motechService = createMock(MotechService.class);
-		personService = createMock(PersonService.class);
+    @Override
+    protected void setUp() throws Exception {
+        contextService = createMock(ContextService.class);
+        adminService = createMock(AdministrationService.class);
+        motechService = createMock(MotechService.class);
+        personService = createMock(PersonService.class);
         rctService = createMock(RCTService.class);
 
-		regBean = new RegistrarBeanImpl();
-		regBean.setContextService(contextService);
-        regBean.setAdministrationService(adminService);
-        regBean.setPersonService(personService);
-        regBean.setRctService(rctService);
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		regBean = null;
-		contextService = null;
-		adminService = null;
-		motechService = null;
-		personService = null;
-	}
-
-	public void testDeterminePersonPrefDate() {
-		DayOfWeek day = DayOfWeek.MONDAY;
-		int hour = 9;
-		int minute = 0;
-		String timeAsString = "09:00";
-		Date messageDate = new Date();
-		Date currentDate = messageDate;
-
-		Person person = new Person(1);
-		PersonAttributeType dayType = new PersonAttributeType(1);
-		dayType.setName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY);
-		PersonAttributeType timeType = new PersonAttributeType(2);
-		timeType.setName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
-		person.addAttribute(new PersonAttribute(dayType, day.toString()));
-		person.addAttribute(new PersonAttribute(timeType, timeAsString));
-
-		Date prefDate = regBean.determinePreferredMessageDate(person,
-				messageDate, currentDate, true);
-
-		Calendar messageCal = Calendar.getInstance();
-		messageCal.setTime(messageDate);
-		Calendar prefCal = Calendar.getInstance();
-		prefCal.setTime(prefDate);
-
-		assertTrue(prefCal.after(messageCal));
-		assertEquals(day.getCalendarValue(), prefCal.get(Calendar.DAY_OF_WEEK));
-		assertEquals(hour, prefCal.get(Calendar.HOUR_OF_DAY));
-		assertEquals(minute, prefCal.get(Calendar.MINUTE));
-		assertEquals(0, prefCal.get(Calendar.SECOND));
-	}
-
-	public void testDetermineDefaultPrefDate() {
-		DayOfWeek day = DayOfWeek.MONDAY;
-		int hour = 9;
-		int minute = 0;
-		String timeAsString = "09:00";
-		Date messageDate = new Date();
-		Date currentDate = messageDate;
-
-		Person person = new Person(1);
-
-		expect(
-				adminService
-						.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK))
-				.andReturn(day.toString());
-		expect(
-				adminService
-						.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY))
-				.andReturn(timeAsString);
-
-		replay(contextService, adminService);
-
-		Date prefDate = regBean.determinePreferredMessageDate(person,
-				messageDate, currentDate, true);
-
-		verify(contextService, adminService);
-
-		Calendar messageCal = Calendar.getInstance();
-		messageCal.setTime(messageDate);
-		Calendar prefCal = Calendar.getInstance();
-		prefCal.setTime(prefDate);
-
-		assertTrue(prefCal.after(messageCal));
-		assertEquals(day.getCalendarValue(), prefCal.get(Calendar.DAY_OF_WEEK));
-		assertEquals(hour, prefCal.get(Calendar.HOUR_OF_DAY));
-		assertEquals(minute, prefCal.get(Calendar.MINUTE));
-		assertEquals(0, prefCal.get(Calendar.SECOND));
-	}
-
-	public void testDetermineNoPrefDate() {
-		Date messageDate = new Date();
-		Date currentDate = messageDate;
-
-		Person person = new Person(1);
-
-		expect(
-				adminService
-						.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK))
-				.andReturn(null);
-		expect(
-				adminService
-						.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY))
-				.andReturn(null);
-
-		replay(contextService, adminService);
-
-		Date prefDate = regBean.determinePreferredMessageDate(person,
-				messageDate, currentDate, true);
-
-		verify(contextService, adminService);
-
-		Calendar messageCal = Calendar.getInstance();
-		messageCal.setTime(messageDate);
-		Calendar prefCal = Calendar.getInstance();
-		prefCal.setTime(prefDate);
-
-		assertEquals(messageCal.get(Calendar.YEAR), prefCal.get(Calendar.YEAR));
-		assertEquals(messageCal.get(Calendar.MONTH), prefCal
-				.get(Calendar.MONTH));
-		assertEquals(messageCal.get(Calendar.DATE), prefCal.get(Calendar.DATE));
-		assertEquals(messageCal.get(Calendar.HOUR_OF_DAY), prefCal
-				.get(Calendar.HOUR_OF_DAY));
-		assertEquals(messageCal.get(Calendar.MINUTE), prefCal
-				.get(Calendar.MINUTE));
-		assertEquals(0, prefCal.get(Calendar.SECOND));
-	}
-
-	public void testAdjustDateTime() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, 14);
-		calendar.set(Calendar.MINUTE, 13);
-		calendar.set(Calendar.SECOND, 54);
-		Date messageDate = calendar.getTime();
-
-		int hour = 15;
-		int minute = 37;
-		int second = 0;
-
-		Calendar timeCalendar = Calendar.getInstance();
-		timeCalendar.set(Calendar.YEAR, 1986);
-		timeCalendar.set(Calendar.MONTH, 6);
-		timeCalendar.set(Calendar.DAY_OF_MONTH, 4);
-		timeCalendar.set(Calendar.HOUR_OF_DAY, hour);
-		timeCalendar.set(Calendar.MINUTE, minute);
-		timeCalendar.set(Calendar.SECOND, 34);
-
-		Date prefDate = regBean.adjustTime(messageDate, timeCalendar.getTime());
-
-		Calendar prefCal = Calendar.getInstance();
-		prefCal.setTime(prefDate);
-
-		assertEquals(calendar.get(Calendar.YEAR), prefCal.get(Calendar.YEAR));
-		assertEquals(calendar.get(Calendar.MONTH), prefCal.get(Calendar.MONTH));
-		assertEquals(calendar.get(Calendar.DATE), prefCal.get(Calendar.DATE));
-		assertFalse("Hour not updated",
-				calendar.get(Calendar.HOUR_OF_DAY) == prefCal
-						.get(Calendar.HOUR_OF_DAY));
-		assertEquals(hour, prefCal.get(Calendar.HOUR_OF_DAY));
-		assertFalse("Minute not updated",
-				calendar.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
-		assertEquals(minute, prefCal.get(Calendar.MINUTE));
-		assertFalse("Second not updated",
-				calendar.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
-		assertEquals(second, prefCal.get(Calendar.SECOND));
-	}
-
-	public void testAdjustDateBlackoutAM() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, 2);
-		calendar.set(Calendar.MINUTE, 13);
-		calendar.set(Calendar.SECOND, 54);
-		Date messageDate = calendar.getTime();
-
-		Time blackoutStart = Time.valueOf("22:00:00");
-		Time blackoutEnd = Time.valueOf("06:00:00");
-
-		int hour = 6;
-		int minute = 0;
-		int second = 0;
-
-		Blackout blackout = new Blackout(blackoutStart, blackoutEnd);
-
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getBlackoutSettings()).andReturn(blackout);
-
-		replay(contextService, adminService, motechService);
-
-		Date prefDate = regBean.adjustForBlackout(messageDate);
-
-		verify(contextService, adminService, motechService);
-
-		Calendar prefCal = Calendar.getInstance();
-		prefCal.setTime(prefDate);
-
-		assertFalse("Hour not updated",
-				calendar.get(Calendar.HOUR_OF_DAY) == prefCal
-						.get(Calendar.HOUR_OF_DAY));
-		assertEquals(hour, prefCal.get(Calendar.HOUR_OF_DAY));
-		assertFalse("Minute not updated",
-				calendar.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
-		assertEquals(minute, prefCal.get(Calendar.MINUTE));
-		assertFalse("Second not updated",
-				calendar.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
-		assertEquals(second, prefCal.get(Calendar.SECOND));
-	}
-
-	public void testAdjustDateBlackoutPM() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, 22);
-		calendar.set(Calendar.MINUTE, 13);
-		calendar.set(Calendar.SECOND, 54);
-		Date messageDate = calendar.getTime();
+        registrarBean = new RegistrarBeanImpl();
+        registrarBean.setContextService(contextService);
+        registrarBean.setAdministrationService(adminService);
+        registrarBean.setPersonService(personService);
+        registrarBean.setRctService(rctService);
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        registrarBean = null;
+        contextService = null;
+        adminService = null;
+        motechService = null;
+        personService = null;
+    }
+
+    public void testFindPersonPreferredMessageDate() {
+        DayOfWeek day = DayOfWeek.MONDAY;
+        String timeAsString = "09:00";
+        Date messageDate = new Date();
+        Person person = createPersonWithDateTimePreferences(day, timeAsString);
+        Date preferredDate = registrarBean.findPreferredMessageDate(person, messageDate, messageDate, true);
+        Calendar messageCalendar = getCalendar(messageDate);
+        Calendar preferenceCalendar = getCalendar(preferredDate);
+
+        assertTrue(preferenceCalendar.after(messageCalendar));
+        assertEquals(day.getCalendarValue(), preferenceCalendar.get(Calendar.DAY_OF_WEEK));
+        assertEquals(9, preferenceCalendar.get(Calendar.HOUR_OF_DAY));
+        assertEquals(0, preferenceCalendar.get(Calendar.MINUTE));
+        assertEquals(0, preferenceCalendar.get(Calendar.SECOND));
+    }
+
+    private Calendar getCalendar(Date messageDate) {
+        Calendar messageCalendar = Calendar.getInstance();
+        messageCalendar.setTime(messageDate);
+        return messageCalendar;
+    }
+
+    private Person createPersonWithDateTimePreferences(DayOfWeek day, String timeAsString) {
+        Person person = new Person(1);
+        PersonAttributeType dayType = new PersonAttributeType(1);
+        dayType.setName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY);
+        PersonAttributeType timeType = new PersonAttributeType(2);
+        timeType.setName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
+        person.addAttribute(new PersonAttribute(dayType, day.toString()));
+        person.addAttribute(new PersonAttribute(timeType, timeAsString));
+        return person;
+    }
+
+    public void testDetermineDefaultPrefDate() {
+        DayOfWeek day = DayOfWeek.MONDAY;
+        String timeAsString = "09:00";
+        Date messageDate = new Date();
+
+        Person person = new Person(1);
+
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK)).andReturn(day.toString());
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY)).andReturn(timeAsString);
+        replay(contextService, adminService);
+
+        Date prefDate = registrarBean.findPreferredMessageDate(person, messageDate, messageDate, true);
+
+        verify(contextService, adminService);
+
+        Calendar messageCalendar = getCalendar(messageDate);
+        Calendar preferredCalendar = getCalendar(prefDate);
+
+        assertTrue(preferredCalendar.after(messageCalendar));
+        assertEquals(day.getCalendarValue(), preferredCalendar.get(Calendar.DAY_OF_WEEK));
+        assertEquals(9, preferredCalendar.get(Calendar.HOUR_OF_DAY));
+        assertEquals(0, preferredCalendar.get(Calendar.MINUTE));
+        assertEquals(0, preferredCalendar.get(Calendar.SECOND));
+    }
+
+    public void testFindNoPreferenceDate() {
+        Date messageDate = new Date();
+        Person person = new Person(1);
+
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK)).andReturn(null);
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY)).andReturn(null);
+        replay(contextService, adminService);
+
+        Date prefDate = registrarBean.findPreferredMessageDate(person, messageDate, messageDate, true);
+
+        verify(contextService, adminService);
+
+        Calendar messageCal = getCalendar(messageDate);
+        Calendar prefCal = getCalendar(prefDate);
+
+        assertEquals(messageCal.get(Calendar.YEAR), prefCal.get(Calendar.YEAR));
+        assertEquals(messageCal.get(Calendar.MONTH), prefCal.get(Calendar.MONTH));
+        assertEquals(messageCal.get(Calendar.DATE), prefCal.get(Calendar.DATE));
+        assertEquals(messageCal.get(Calendar.HOUR_OF_DAY), prefCal.get(Calendar.HOUR_OF_DAY));
+        assertEquals(messageCal.get(Calendar.MINUTE), prefCal.get(Calendar.MINUTE));
+        assertEquals(0, prefCal.get(Calendar.SECOND));
+    }
+
+    public void testAdjustDateTime() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 14);
+        calendar.set(Calendar.MINUTE, 13);
+        calendar.set(Calendar.SECOND, 54);
+        Date messageDate = calendar.getTime();
+
+        int hour = 15;
+        int minute = 37;
+        int second = 0;
+
+        Calendar timeCalendar = Calendar.getInstance();
+        timeCalendar.set(Calendar.YEAR, 1986);
+        timeCalendar.set(Calendar.MONTH, 6);
+        timeCalendar.set(Calendar.DAY_OF_MONTH, 4);
+        timeCalendar.set(Calendar.HOUR_OF_DAY, hour);
+        timeCalendar.set(Calendar.MINUTE, minute);
+        timeCalendar.set(Calendar.SECOND, 34);
+
+        Date prefDate = registrarBean.adjustTime(messageDate, timeCalendar.getTime());
+
+        Calendar prefCal = getCalendar(prefDate);
 
-		Time blackoutStart = Time.valueOf("22:00:00");
-		Time blackoutEnd = Time.valueOf("06:00:00");
+        assertEquals(calendar.get(Calendar.YEAR), prefCal.get(Calendar.YEAR));
+        assertEquals(calendar.get(Calendar.MONTH), prefCal.get(Calendar.MONTH));
+        assertEquals(calendar.get(Calendar.DATE), prefCal.get(Calendar.DATE));
+        assertFalse("Hour not updated", calendar.get(Calendar.HOUR_OF_DAY) == prefCal.get(Calendar.HOUR_OF_DAY));
+        assertEquals(hour, prefCal.get(Calendar.HOUR_OF_DAY));
+        assertFalse("Minute not updated", calendar.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
+        assertEquals(minute, prefCal.get(Calendar.MINUTE));
+        assertFalse("Second not updated", calendar.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
+        assertEquals(second, prefCal.get(Calendar.SECOND));
+    }
 
-		int hour = 6;
-		int minute = 0;
-		int second = 0;
+    public void testAdjustDateBlackoutAM() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 2);
+        calendar.set(Calendar.MINUTE, 13);
+        calendar.set(Calendar.SECOND, 54);
 
-		Blackout blackout = new Blackout(blackoutStart, blackoutEnd);
+        Date messageDate = calendar.getTime();
 
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getBlackoutSettings()).andReturn(blackout);
+        expect(contextService.getMotechService()).andReturn(motechService);
+        expect(motechService.getBlackoutSettings()).andReturn(new Blackout(Time.valueOf("22:00:00"), Time.valueOf("06:00:00")));
+        replay(contextService, adminService, motechService);
 
-		replay(contextService, adminService, motechService);
+        Date prefDate = registrarBean.adjustForBlackout(messageDate);
+        verify(contextService, adminService, motechService);
 
-		Date prefDate = regBean.adjustForBlackout(messageDate);
+        Calendar prefCal = getCalendar(prefDate);
 
-		verify(contextService, adminService, motechService);
-
-		Calendar prefCal = Calendar.getInstance();
-		prefCal.setTime(prefDate);
-
-		assertFalse("Hour not updated",
-				calendar.get(Calendar.HOUR_OF_DAY) == prefCal
-						.get(Calendar.HOUR_OF_DAY));
-		assertEquals(hour, prefCal.get(Calendar.HOUR_OF_DAY));
-		assertFalse("Minute not updated",
-				calendar.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
-		assertEquals(minute, prefCal.get(Calendar.MINUTE));
-		assertFalse("Second not updated",
-				calendar.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
-		assertEquals(second, prefCal.get(Calendar.SECOND));
-	}
-
-	public void testIsDuringBlackoutPM() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, 23);
-		calendar.set(Calendar.MINUTE, 13);
-		calendar.set(Calendar.SECOND, 54);
-		Date messageDate = calendar.getTime();
-
-		Time blackoutStart = Time.valueOf("23:00:00");
-		Time blackoutEnd = Time.valueOf("06:00:00");
-
-		Blackout blackout = new Blackout(blackoutStart, blackoutEnd);
-
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getBlackoutSettings()).andReturn(blackout);
-
-		replay(contextService, adminService, motechService);
-
-		boolean duringBlackout = regBean.isDuringBlackout(messageDate);
-
-		verify(contextService, adminService, motechService);
-
-		assertEquals(true, duringBlackout);
-
-	}
-
-	public void testIsDuringBlackoutAM() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, 3);
-		calendar.set(Calendar.MINUTE, 13);
-		calendar.set(Calendar.SECOND, 54);
-		Date messageDate = calendar.getTime();
-
-		Time blackoutStart = Time.valueOf("23:00:00");
-		Time blackoutEnd = Time.valueOf("06:00:00");
-
-		Blackout blackout = new Blackout(blackoutStart, blackoutEnd);
-
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getBlackoutSettings()).andReturn(blackout);
-
-		replay(contextService, adminService, motechService);
-
-		boolean duringBlackout = regBean.isDuringBlackout(messageDate);
-
-		verify(contextService, adminService, motechService);
-
-		assertEquals(true, duringBlackout);
-
-	}
-
-	public void testSchedulingInfoMessageWithExistingScheduled() {
-		String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
-		Date currentDate = new Date();
-		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
-		boolean userPreferenceBased = true;
-
-		Integer personId = 1;
-		Person person = new Person(personId);
-		PersonAttributeType mediaTypeAttr = new PersonAttributeType();
-		mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
-		person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
-				.toString()));
-
-		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
-		enrollment.setPersonId(personId);
-
-		MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
-				MessageType.INFORMATIONAL);
-
-		List<Message> messagesToRemove = new ArrayList<Message>();
-
-		List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
-		ScheduledMessage schedMessage = new ScheduledMessage();
-		existingMessages.add(schedMessage);
-
-		Capture<ScheduledMessage> capturedScheduledMessage = new Capture<ScheduledMessage>();
-
-		expect(contextService.getMotechService()).andReturn(motechService)
-				.atLeastOnce();
-		expect(personService.getPerson(personId)).andReturn(person);
-		expect(motechService.getMessageDefinition(messageKey)).andReturn(
-				messageDef);
-		expect(
-				motechService.getMessages(personId, enrollment, messageDef,
-						messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
-				messagesToRemove);
-		expect(
-				motechService.getScheduledMessages(personId, messageDef,
-						enrollment, messageDate)).andReturn(existingMessages);
-		expect(
-				motechService
-						.saveScheduledMessage(capture(capturedScheduledMessage)))
-				.andReturn(new ScheduledMessage());
-
-		replay(contextService, adminService, motechService, personService);
-
-		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
-				messageKeyC, enrollment, messageDate, userPreferenceBased,
-				currentDate);
-
-		verify(contextService, adminService, motechService, personService);
-
-		ScheduledMessage scheduledMessage = capturedScheduledMessage.getValue();
-		List<Message> attempts = scheduledMessage.getMessageAttempts();
-		assertEquals(1, attempts.size());
-		Message message = attempts.get(0);
-		assertEquals(MessageStatus.SHOULD_ATTEMPT, message.getAttemptStatus());
-		assertEquals(messageDate, message.getAttemptDate());
-	}
-
-	public void testSchedulingInfoMessageWithExistingMatchingMessage() {
-		String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
-		Date currentDate = new Date();
-		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
-		boolean userPreferenceBased = true;
-
-		Integer personId = 1;
-		Person person = new Person(personId);
-		PersonAttributeType mediaTypeAttr = new PersonAttributeType();
-		mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
-		person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
-				.toString()));
-
-		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
-		enrollment.setPersonId(personId);
-
-		MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
-				MessageType.INFORMATIONAL);
-
-		List<Message> messagesToRemove = new ArrayList<Message>();
-
-		List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
-		ScheduledMessage schedMessage = new ScheduledMessage();
-		Message msg = messageDef.createMessage(schedMessage);
-		msg.setAttemptDate(new Timestamp(messageDate.getTime()));
-		schedMessage.getMessageAttempts().add(msg);
-		existingMessages.add(schedMessage);
-
-		expect(contextService.getMotechService()).andReturn(motechService)
-				.atLeastOnce();
-		expect(personService.getPerson(personId)).andReturn(person);
-		expect(motechService.getMessageDefinition(messageKey)).andReturn(
-				messageDef);
-		expect(
-				motechService.getMessages(personId, enrollment, messageDef,
-						messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
-				messagesToRemove);
-		expect(
-				motechService.getScheduledMessages(personId, messageDef,
-						enrollment, messageDate)).andReturn(existingMessages);
-
-		replay(contextService, adminService, motechService, personService);
-
-		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
-				messageKeyC, enrollment, messageDate, userPreferenceBased,
-				currentDate);
-
-		verify(contextService, adminService, motechService, personService);
-	}
-
-	public void testSchedulingInfoMessageWithExistingPendingMessage() {
-		String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
-		Date currentDate = new Date();
-		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
-		boolean userPreferenceBased = true;
-
-		Integer personId = 1;
-		Person person = new Person(personId);
-		PersonAttributeType mediaTypeAttr = new PersonAttributeType();
-		mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
-		person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
-				.toString()));
-
-		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
-		enrollment.setPersonId(personId);
-
-		MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
-				MessageType.INFORMATIONAL);
-
-		List<Message> messagesToRemove = new ArrayList<Message>();
-
-		List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
-		ScheduledMessage schedMessage = new ScheduledMessage();
-		Message msg = messageDef.createMessage(schedMessage);
-		msg.setAttemptDate(new Timestamp(messageDate.getTime()));
-		msg.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
-		schedMessage.getMessageAttempts().add(msg);
-		existingMessages.add(schedMessage);
-
-		expect(contextService.getMotechService()).andReturn(motechService)
-				.atLeastOnce();
-		expect(personService.getPerson(personId)).andReturn(person);
-		expect(motechService.getMessageDefinition(messageKey)).andReturn(
-				messageDef);
-		expect(
-				motechService.getMessages(personId, enrollment, messageDef,
-						messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
-				messagesToRemove);
-		expect(
-				motechService.getScheduledMessages(personId, messageDef,
-						enrollment, messageDate)).andReturn(existingMessages);
-
-		replay(contextService, adminService, motechService, personService);
-
-		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
-				messageKeyC, enrollment, messageDate, userPreferenceBased,
-				currentDate);
-
-		verify(contextService, adminService, motechService, personService);
-	}
-
-	public void testSchedulingInfoMessageWithExistingDeliveredMessage() {
-		String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
-		Date currentDate = new Date();
-		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
-		boolean userPreferenceBased = true;
-
-		Integer personId = 1;
-		Person person = new Person(personId);
-		PersonAttributeType mediaTypeAttr = new PersonAttributeType();
-		mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
-		person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
-				.toString()));
-
-		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
-		enrollment.setPersonId(personId);
-
-		MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
-				MessageType.INFORMATIONAL);
-
-		List<Message> messagesToRemove = new ArrayList<Message>();
-
-		List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
-		ScheduledMessage schedMessage = new ScheduledMessage();
-		Message msg = messageDef.createMessage(schedMessage);
-		msg.setAttemptDate(new Timestamp(messageDate.getTime()));
-		msg.setAttemptStatus(MessageStatus.DELIVERED);
-		schedMessage.getMessageAttempts().add(msg);
-		existingMessages.add(schedMessage);
-
-		expect(contextService.getMotechService()).andReturn(motechService)
-				.atLeastOnce();
-		expect(personService.getPerson(personId)).andReturn(person);
-		expect(motechService.getMessageDefinition(messageKey)).andReturn(
-				messageDef);
-		expect(
-				motechService.getMessages(personId, enrollment, messageDef,
-						messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
-				messagesToRemove);
-		expect(
-				motechService.getScheduledMessages(personId, messageDef,
-						enrollment, messageDate)).andReturn(existingMessages);
-
-		replay(contextService, adminService, motechService, personService);
-
-		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
-				messageKeyC, enrollment, messageDate, userPreferenceBased,
-				currentDate);
-
-		verify(contextService, adminService, motechService, personService);
-	}
-
-	public void testSchedulingInfoMessageWithExistingRejectedMessage() {
-		String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
-		Date currentDate = new Date();
-		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
-		boolean userPreferenceBased = true;
-
-		Integer personId = 1;
-		Person person = new Person(personId);
-		PersonAttributeType mediaTypeAttr = new PersonAttributeType();
-		mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
-		person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
-				.toString()));
-
-		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
-		enrollment.setPersonId(personId);
-
-		MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
-				MessageType.INFORMATIONAL);
-
-		List<Message> messagesToRemove = new ArrayList<Message>();
-
-		List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
-		ScheduledMessage schedMessage = new ScheduledMessage();
-		Message msg = messageDef.createMessage(schedMessage);
-		msg.setAttemptDate(new Timestamp(messageDate.getTime()));
-		msg.setAttemptStatus(MessageStatus.REJECTED);
-		schedMessage.getMessageAttempts().add(msg);
-		existingMessages.add(schedMessage);
-
-		expect(contextService.getMotechService()).andReturn(motechService)
-				.atLeastOnce();
-		expect(personService.getPerson(personId)).andReturn(person);
-		expect(motechService.getMessageDefinition(messageKey)).andReturn(
-				messageDef);
-		expect(
-				motechService.getMessages(personId, enrollment, messageDef,
-						messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
-				messagesToRemove);
-		expect(
-				motechService.getScheduledMessages(personId, messageDef,
-						enrollment, messageDate)).andReturn(existingMessages);
-
-		replay(contextService, adminService, motechService, personService);
-
-		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
-				messageKeyC, enrollment, messageDate, userPreferenceBased,
-				currentDate);
-
-		verify(contextService, adminService, motechService, personService);
-	}
-
-	public void testSchedulingInfoMessageWithExistingCancelledMessage() {
-		String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
-		Date currentDate = new Date();
-		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
-		boolean userPreferenceBased = true;
-
-		Integer personId = 1;
-		Person person = new Person(personId);
-		PersonAttributeType mediaTypeAttr = new PersonAttributeType();
-		mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
-		person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
-				.toString()));
-
-		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
-		enrollment.setPersonId(personId);
-
-		MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
-				MessageType.INFORMATIONAL);
-
-		List<Message> messagesToRemove = new ArrayList<Message>();
-
-		List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
-		ScheduledMessage schedMessage = new ScheduledMessage();
-		Message msg = messageDef.createMessage(schedMessage);
-		msg.setAttemptDate(new Timestamp(messageDate.getTime()));
-		msg.setAttemptStatus(MessageStatus.CANCELLED);
-		schedMessage.getMessageAttempts().add(msg);
-		existingMessages.add(schedMessage);
-
-		Capture<ScheduledMessage> capturedScheduledMessage = new Capture<ScheduledMessage>();
-
-		expect(contextService.getMotechService()).andReturn(motechService)
-				.atLeastOnce();
-		expect(personService.getPerson(personId)).andReturn(person);
-		expect(motechService.getMessageDefinition(messageKey)).andReturn(
-				messageDef);
-		expect(
-				motechService.getMessages(personId, enrollment, messageDef,
-						messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
-				messagesToRemove);
-		expect(
-				motechService.getScheduledMessages(personId, messageDef,
-						enrollment, messageDate)).andReturn(existingMessages);
-
-		expect(
-				motechService
-						.saveScheduledMessage(capture(capturedScheduledMessage)))
-				.andReturn(new ScheduledMessage());
-
-		replay(contextService, adminService, motechService, personService);
-
-		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
-				messageKeyC, enrollment, messageDate, userPreferenceBased,
-				currentDate);
-
-		verify(contextService, adminService, motechService, personService);
-
-		ScheduledMessage scheduledMessage = capturedScheduledMessage.getValue();
-		List<Message> attempts = scheduledMessage.getMessageAttempts();
-		assertEquals(2, attempts.size());
-		Message message1 = attempts.get(0);
-		assertEquals(MessageStatus.CANCELLED, message1.getAttemptStatus());
-		assertEquals(messageDate, message1.getAttemptDate());
-		Message message2 = attempts.get(1);
-		assertEquals(MessageStatus.SHOULD_ATTEMPT, message2.getAttemptStatus());
-		assertEquals(messageDate, message2.getAttemptDate());
-	}
-
-	public void testSchedulingInfoMessageWithExistingFailedMessage() {
-		String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
-		Date currentDate = new Date();
-		Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
-		boolean userPreferenceBased = true;
-
-		Integer personId = 1;
-		Person person = new Person(personId);
-		PersonAttributeType mediaTypeAttr = new PersonAttributeType();
-		mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
-		person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
-				.toString()));
-
-		MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
-		enrollment.setPersonId(personId);
-
-		MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
-				MessageType.INFORMATIONAL);
-
-		List<Message> messagesToRemove = new ArrayList<Message>();
-
-		List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
-		ScheduledMessage schedMessage = new ScheduledMessage();
-		Message msg = messageDef.createMessage(schedMessage);
-		msg.setAttemptDate(new Timestamp(messageDate.getTime()));
-		msg.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
-		schedMessage.getMessageAttempts().add(msg);
-		existingMessages.add(schedMessage);
-
-		Capture<ScheduledMessage> capturedScheduledMessage = new Capture<ScheduledMessage>();
-
-		expect(contextService.getMotechService()).andReturn(motechService)
-				.atLeastOnce();
-		expect(personService.getPerson(personId)).andReturn(person);
-		expect(motechService.getMessageDefinition(messageKey)).andReturn(
-				messageDef);
-		expect(
-				motechService.getMessages(personId, enrollment, messageDef,
-						messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
-				messagesToRemove);
-		expect(
-				motechService.getScheduledMessages(personId, messageDef,
-						enrollment, messageDate)).andReturn(existingMessages);
-
-		expect(
-				motechService
-						.saveScheduledMessage(capture(capturedScheduledMessage)))
-				.andReturn(new ScheduledMessage());
-
-		replay(contextService, adminService, motechService, personService);
-
-		regBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
-				messageKeyC, enrollment, messageDate, userPreferenceBased,
-				currentDate);
-
-		verify(contextService, adminService, motechService, personService);
-
-		ScheduledMessage scheduledMessage = capturedScheduledMessage.getValue();
-		List<Message> attempts = scheduledMessage.getMessageAttempts();
-		assertEquals(2, attempts.size());
-		Message message1 = attempts.get(0);
-		assertEquals(MessageStatus.ATTEMPT_FAIL, message1.getAttemptStatus());
-		assertEquals(messageDate, message1.getAttemptDate());
-		Message message2 = attempts.get(1);
-		assertEquals(MessageStatus.SHOULD_ATTEMPT, message2.getAttemptStatus());
-		assertEquals(messageDate, message2.getAttemptDate());
-	}
-
-	public void testFilteringStaffCareMessages() {
+        assertFalse("Hour not updated", calendar.get(Calendar.HOUR_OF_DAY) == prefCal.get(Calendar.HOUR_OF_DAY));
+        assertEquals(6, prefCal.get(Calendar.HOUR_OF_DAY));
+        assertFalse("Minute not updated", calendar.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
+        assertEquals(0, prefCal.get(Calendar.MINUTE));
+        assertFalse("Second not updated", calendar.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
+        assertEquals(0, prefCal.get(Calendar.SECOND));
+    }
+
+    public void testAdjustDateBlackoutPM() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 22);
+        calendar.set(Calendar.MINUTE, 13);
+        calendar.set(Calendar.SECOND, 54);
+        Date messageDate = calendar.getTime();
+
+        Time blackoutStart = Time.valueOf("22:00:00");
+        Time blackoutEnd = Time.valueOf("06:00:00");
+
+        int hour = 6;
+        int minute = 0;
+        int second = 0;
+
+        Blackout blackout = new Blackout(blackoutStart, blackoutEnd);
+
+        expect(contextService.getMotechService()).andReturn(motechService);
+        expect(motechService.getBlackoutSettings()).andReturn(blackout);
+
+        replay(contextService, adminService, motechService);
+
+        Date prefDate = registrarBean.adjustForBlackout(messageDate);
+
+        verify(contextService, adminService, motechService);
+
+        Calendar prefCal = getCalendar(prefDate);
+
+        assertFalse("Hour not updated",
+                calendar.get(Calendar.HOUR_OF_DAY) == prefCal
+                        .get(Calendar.HOUR_OF_DAY));
+        assertEquals(hour, prefCal.get(Calendar.HOUR_OF_DAY));
+        assertFalse("Minute not updated",
+                calendar.get(Calendar.MINUTE) == prefCal.get(Calendar.MINUTE));
+        assertEquals(minute, prefCal.get(Calendar.MINUTE));
+        assertFalse("Second not updated",
+                calendar.get(Calendar.SECOND) == prefCal.get(Calendar.SECOND));
+        assertEquals(second, prefCal.get(Calendar.SECOND));
+    }
+
+    public void testIsDuringBlackoutPM() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 13);
+        calendar.set(Calendar.SECOND, 54);
+        Date messageDate = calendar.getTime();
+
+        Time blackoutStart = Time.valueOf("23:00:00");
+        Time blackoutEnd = Time.valueOf("06:00:00");
+
+        Blackout blackout = new Blackout(blackoutStart, blackoutEnd);
+
+        expect(contextService.getMotechService()).andReturn(motechService);
+        expect(motechService.getBlackoutSettings()).andReturn(blackout);
+
+        replay(contextService, adminService, motechService);
+
+        boolean duringBlackout = registrarBean.isDuringBlackout(messageDate);
+
+        verify(contextService, adminService, motechService);
+
+        assertEquals(true, duringBlackout);
+
+    }
+
+    public void testIsDuringBlackoutAM() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 3);
+        calendar.set(Calendar.MINUTE, 13);
+        calendar.set(Calendar.SECOND, 54);
+        Date messageDate = calendar.getTime();
+
+        Time blackoutStart = Time.valueOf("23:00:00");
+        Time blackoutEnd = Time.valueOf("06:00:00");
+
+        Blackout blackout = new Blackout(blackoutStart, blackoutEnd);
+
+        expect(contextService.getMotechService()).andReturn(motechService);
+        expect(motechService.getBlackoutSettings()).andReturn(blackout);
+
+        replay(contextService, adminService, motechService);
+
+        boolean duringBlackout = registrarBean.isDuringBlackout(messageDate);
+
+        verify(contextService, adminService, motechService);
+
+        assertEquals(true, duringBlackout);
+
+    }
+
+    public void testSchedulingInfoMessageWithExistingScheduled() {
+        String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
+        Date currentDate = new Date();
+        Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
+        boolean userPreferenceBased = true;
+
+        Integer personId = 1;
+        Person person = new Person(personId);
+        PersonAttributeType mediaTypeAttr = new PersonAttributeType();
+        mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+        person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
+                .toString()));
+
+        MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+        enrollment.setPersonId(personId);
+
+        MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
+                MessageType.INFORMATIONAL);
+
+        List<Message> messagesToRemove = new ArrayList<Message>();
+
+        List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
+        ScheduledMessage schedMessage = new ScheduledMessage();
+        existingMessages.add(schedMessage);
+
+        Capture<ScheduledMessage> capturedScheduledMessage = new Capture<ScheduledMessage>();
+
+        expect(contextService.getMotechService()).andReturn(motechService)
+                .atLeastOnce();
+        expect(personService.getPerson(personId)).andReturn(person);
+        expect(motechService.getMessageDefinition(messageKey)).andReturn(
+                messageDef);
+        expect(
+                motechService.getMessages(personId, enrollment, messageDef,
+                        messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
+                messagesToRemove);
+        expect(
+                motechService.getScheduledMessages(personId, messageDef,
+                        enrollment, messageDate)).andReturn(existingMessages);
+        expect(
+                motechService
+                        .saveScheduledMessage(capture(capturedScheduledMessage)))
+                .andReturn(new ScheduledMessage());
+
+        replay(contextService, adminService, motechService, personService);
+
+        registrarBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
+                messageKeyC, enrollment, messageDate, userPreferenceBased,
+                currentDate);
+
+        verify(contextService, adminService, motechService, personService);
+
+        ScheduledMessage scheduledMessage = capturedScheduledMessage.getValue();
+        List<Message> attempts = scheduledMessage.getMessageAttempts();
+        assertEquals(1, attempts.size());
+        Message message = attempts.get(0);
+        assertEquals(MessageStatus.SHOULD_ATTEMPT, message.getAttemptStatus());
+        assertEquals(messageDate, message.getAttemptDate());
+    }
+
+    public void testSchedulingInfoMessageWithExistingMatchingMessage() {
+        String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
+        Date currentDate = new Date();
+        Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
+        boolean userPreferenceBased = true;
+
+        Integer personId = 1;
+        Person person = new Person(personId);
+        PersonAttributeType mediaTypeAttr = new PersonAttributeType();
+        mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+        person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
+                .toString()));
+
+        MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+        enrollment.setPersonId(personId);
+
+        MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
+                MessageType.INFORMATIONAL);
+
+        List<Message> messagesToRemove = new ArrayList<Message>();
+
+        List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
+        ScheduledMessage schedMessage = new ScheduledMessage();
+        Message msg = messageDef.createMessage(schedMessage);
+        msg.setAttemptDate(new Timestamp(messageDate.getTime()));
+        schedMessage.getMessageAttempts().add(msg);
+        existingMessages.add(schedMessage);
+
+        expect(contextService.getMotechService()).andReturn(motechService)
+                .atLeastOnce();
+        expect(personService.getPerson(personId)).andReturn(person);
+        expect(motechService.getMessageDefinition(messageKey)).andReturn(
+                messageDef);
+        expect(
+                motechService.getMessages(personId, enrollment, messageDef,
+                        messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
+                messagesToRemove);
+        expect(
+                motechService.getScheduledMessages(personId, messageDef,
+                        enrollment, messageDate)).andReturn(existingMessages);
+
+        replay(contextService, adminService, motechService, personService);
+
+        registrarBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
+                messageKeyC, enrollment, messageDate, userPreferenceBased,
+                currentDate);
+
+        verify(contextService, adminService, motechService, personService);
+    }
+
+    public void testSchedulingInfoMessageWithExistingPendingMessage() {
+        String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
+        Date currentDate = new Date();
+        Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
+        boolean userPreferenceBased = true;
+
+        Integer personId = 1;
+        Person person = new Person(personId);
+        PersonAttributeType mediaTypeAttr = new PersonAttributeType();
+        mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+        person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
+                .toString()));
+
+        MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+        enrollment.setPersonId(personId);
+
+        MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
+                MessageType.INFORMATIONAL);
+
+        List<Message> messagesToRemove = new ArrayList<Message>();
+
+        List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
+        ScheduledMessage schedMessage = new ScheduledMessage();
+        Message msg = messageDef.createMessage(schedMessage);
+        msg.setAttemptDate(new Timestamp(messageDate.getTime()));
+        msg.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
+        schedMessage.getMessageAttempts().add(msg);
+        existingMessages.add(schedMessage);
+
+        expect(contextService.getMotechService()).andReturn(motechService)
+                .atLeastOnce();
+        expect(personService.getPerson(personId)).andReturn(person);
+        expect(motechService.getMessageDefinition(messageKey)).andReturn(
+                messageDef);
+        expect(
+                motechService.getMessages(personId, enrollment, messageDef,
+                        messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
+                messagesToRemove);
+        expect(
+                motechService.getScheduledMessages(personId, messageDef,
+                        enrollment, messageDate)).andReturn(existingMessages);
+
+        replay(contextService, adminService, motechService, personService);
+
+        registrarBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
+                messageKeyC, enrollment, messageDate, userPreferenceBased,
+                currentDate);
+
+        verify(contextService, adminService, motechService, personService);
+    }
+
+    public void testSchedulingInfoMessageWithExistingDeliveredMessage() {
+        String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
+        Date currentDate = new Date();
+        Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
+        boolean userPreferenceBased = true;
+
+        Integer personId = 1;
+        Person person = new Person(personId);
+        PersonAttributeType mediaTypeAttr = new PersonAttributeType();
+        mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+        person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
+                .toString()));
+
+        MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+        enrollment.setPersonId(personId);
+
+        MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
+                MessageType.INFORMATIONAL);
+
+        List<Message> messagesToRemove = new ArrayList<Message>();
+
+        List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
+        ScheduledMessage schedMessage = new ScheduledMessage();
+        Message msg = messageDef.createMessage(schedMessage);
+        msg.setAttemptDate(new Timestamp(messageDate.getTime()));
+        msg.setAttemptStatus(MessageStatus.DELIVERED);
+        schedMessage.getMessageAttempts().add(msg);
+        existingMessages.add(schedMessage);
+
+        expect(contextService.getMotechService()).andReturn(motechService)
+                .atLeastOnce();
+        expect(personService.getPerson(personId)).andReturn(person);
+        expect(motechService.getMessageDefinition(messageKey)).andReturn(
+                messageDef);
+        expect(
+                motechService.getMessages(personId, enrollment, messageDef,
+                        messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
+                messagesToRemove);
+        expect(
+                motechService.getScheduledMessages(personId, messageDef,
+                        enrollment, messageDate)).andReturn(existingMessages);
+
+        replay(contextService, adminService, motechService, personService);
+
+        registrarBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
+                messageKeyC, enrollment, messageDate, userPreferenceBased,
+                currentDate);
+
+        verify(contextService, adminService, motechService, personService);
+    }
+
+    public void testSchedulingInfoMessageWithExistingRejectedMessage() {
+        String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
+        Date currentDate = new Date();
+        Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
+        boolean userPreferenceBased = true;
+
+        Integer personId = 1;
+        Person person = new Person(personId);
+        PersonAttributeType mediaTypeAttr = new PersonAttributeType();
+        mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+        person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
+                .toString()));
+
+        MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+        enrollment.setPersonId(personId);
+
+        MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
+                MessageType.INFORMATIONAL);
+
+        List<Message> messagesToRemove = new ArrayList<Message>();
+
+        List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
+        ScheduledMessage schedMessage = new ScheduledMessage();
+        Message msg = messageDef.createMessage(schedMessage);
+        msg.setAttemptDate(new Timestamp(messageDate.getTime()));
+        msg.setAttemptStatus(MessageStatus.REJECTED);
+        schedMessage.getMessageAttempts().add(msg);
+        existingMessages.add(schedMessage);
+
+        expect(contextService.getMotechService()).andReturn(motechService)
+                .atLeastOnce();
+        expect(personService.getPerson(personId)).andReturn(person);
+        expect(motechService.getMessageDefinition(messageKey)).andReturn(
+                messageDef);
+        expect(
+                motechService.getMessages(personId, enrollment, messageDef,
+                        messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
+                messagesToRemove);
+        expect(
+                motechService.getScheduledMessages(personId, messageDef,
+                        enrollment, messageDate)).andReturn(existingMessages);
+
+        replay(contextService, adminService, motechService, personService);
+
+        registrarBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
+                messageKeyC, enrollment, messageDate, userPreferenceBased,
+                currentDate);
+
+        verify(contextService, adminService, motechService, personService);
+    }
+
+    public void testSchedulingInfoMessageWithExistingCancelledMessage() {
+        String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
+        Date currentDate = new Date();
+        Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
+        boolean userPreferenceBased = true;
+
+        Integer personId = 1;
+        Person person = new Person(personId);
+        PersonAttributeType mediaTypeAttr = new PersonAttributeType();
+        mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+        person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
+                .toString()));
+
+        MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+        enrollment.setPersonId(personId);
+
+        MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
+                MessageType.INFORMATIONAL);
+
+        List<Message> messagesToRemove = new ArrayList<Message>();
+
+        List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
+        ScheduledMessage schedMessage = new ScheduledMessage();
+        Message msg = messageDef.createMessage(schedMessage);
+        msg.setAttemptDate(new Timestamp(messageDate.getTime()));
+        msg.setAttemptStatus(MessageStatus.CANCELLED);
+        schedMessage.getMessageAttempts().add(msg);
+        existingMessages.add(schedMessage);
+
+        Capture<ScheduledMessage> capturedScheduledMessage = new Capture<ScheduledMessage>();
+
+        expect(contextService.getMotechService()).andReturn(motechService)
+                .atLeastOnce();
+        expect(personService.getPerson(personId)).andReturn(person);
+        expect(motechService.getMessageDefinition(messageKey)).andReturn(
+                messageDef);
+        expect(
+                motechService.getMessages(personId, enrollment, messageDef,
+                        messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
+                messagesToRemove);
+        expect(
+                motechService.getScheduledMessages(personId, messageDef,
+                        enrollment, messageDate)).andReturn(existingMessages);
+
+        expect(
+                motechService
+                        .saveScheduledMessage(capture(capturedScheduledMessage)))
+                .andReturn(new ScheduledMessage());
+
+        replay(contextService, adminService, motechService, personService);
+
+        registrarBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
+                messageKeyC, enrollment, messageDate, userPreferenceBased,
+                currentDate);
+
+        verify(contextService, adminService, motechService, personService);
+
+        ScheduledMessage scheduledMessage = capturedScheduledMessage.getValue();
+        List<Message> attempts = scheduledMessage.getMessageAttempts();
+        assertEquals(2, attempts.size());
+        Message message1 = attempts.get(0);
+        assertEquals(MessageStatus.CANCELLED, message1.getAttemptStatus());
+        assertEquals(messageDate, message1.getAttemptDate());
+        Message message2 = attempts.get(1);
+        assertEquals(MessageStatus.SHOULD_ATTEMPT, message2.getAttemptStatus());
+        assertEquals(messageDate, message2.getAttemptDate());
+    }
+
+    public void testSchedulingInfoMessageWithExistingFailedMessage() {
+        String messageKey = "message", messageKeyA = "message.a", messageKeyB = "message.b", messageKeyC = "message.c";
+        Date currentDate = new Date();
+        Date messageDate = new Date(System.currentTimeMillis() + 5 * 1000);
+        boolean userPreferenceBased = true;
+
+        Integer personId = 1;
+        Person person = new Person(personId);
+        PersonAttributeType mediaTypeAttr = new PersonAttributeType();
+        mediaTypeAttr.setName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+        person.addAttribute(new PersonAttribute(mediaTypeAttr, MediaType.VOICE
+                .toString()));
+
+        MessageProgramEnrollment enrollment = new MessageProgramEnrollment();
+        enrollment.setPersonId(personId);
+
+        MessageDefinition messageDef = new MessageDefinition(messageKey, 1L,
+                MessageType.INFORMATIONAL);
+
+        List<Message> messagesToRemove = new ArrayList<Message>();
+
+        List<ScheduledMessage> existingMessages = new ArrayList<ScheduledMessage>();
+        ScheduledMessage schedMessage = new ScheduledMessage();
+        Message msg = messageDef.createMessage(schedMessage);
+        msg.setAttemptDate(new Timestamp(messageDate.getTime()));
+        msg.setAttemptStatus(MessageStatus.ATTEMPT_FAIL);
+        schedMessage.getMessageAttempts().add(msg);
+        existingMessages.add(schedMessage);
+
+        Capture<ScheduledMessage> capturedScheduledMessage = new Capture<ScheduledMessage>();
+
+        expect(contextService.getMotechService()).andReturn(motechService)
+                .atLeastOnce();
+        expect(personService.getPerson(personId)).andReturn(person);
+        expect(motechService.getMessageDefinition(messageKey)).andReturn(
+                messageDef);
+        expect(
+                motechService.getMessages(personId, enrollment, messageDef,
+                        messageDate, MessageStatus.SHOULD_ATTEMPT)).andReturn(
+                messagesToRemove);
+        expect(
+                motechService.getScheduledMessages(personId, messageDef,
+                        enrollment, messageDate)).andReturn(existingMessages);
+
+        expect(
+                motechService
+                        .saveScheduledMessage(capture(capturedScheduledMessage)))
+                .andReturn(new ScheduledMessage());
+
+        replay(contextService, adminService, motechService, personService);
+
+        registrarBean.scheduleInfoMessages(messageKey, messageKeyA, messageKeyB,
+                messageKeyC, enrollment, messageDate, userPreferenceBased,
+                currentDate);
+
+        verify(contextService, adminService, motechService, personService);
+
+        ScheduledMessage scheduledMessage = capturedScheduledMessage.getValue();
+        List<Message> attempts = scheduledMessage.getMessageAttempts();
+        assertEquals(2, attempts.size());
+        Message message1 = attempts.get(0);
+        assertEquals(MessageStatus.ATTEMPT_FAIL, message1.getAttemptStatus());
+        assertEquals(messageDate, message1.getAttemptDate());
+        Message message2 = attempts.get(1);
+        assertEquals(MessageStatus.SHOULD_ATTEMPT, message2.getAttemptStatus());
+        assertEquals(messageDate, message2.getAttemptDate());
+    }
+
+    public void testFilteringStaffCareMessages() {
         Patient p1 = new Patient(5716);
         Patient p2 = new Patient(5717);
         Patient p3 = new Patient(5718);
@@ -809,8 +762,8 @@ public class RegistrarBeanImplTest extends TestCase {
         expEnc.add(enc3);
 
         replay(rctService);
-        List<ExpectedObs> filteredObs = regBean.filterRCTObs(new ArrayList(expObs));
-        List<ExpectedEncounter> filteredEnc = regBean.filterRCTEncounters(new ArrayList(expEnc));
+        List<ExpectedObs> filteredObs = registrarBean.filterRCTObs(new ArrayList(expObs));
+        List<ExpectedEncounter> filteredEnc = registrarBean.filterRCTEncounters(new ArrayList(expEnc));
 
         verify(rctService);
 
