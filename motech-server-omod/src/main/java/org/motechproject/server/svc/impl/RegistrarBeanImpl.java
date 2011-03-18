@@ -2990,11 +2990,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             String phoneNumber = facility.getPhoneNumber();
             Location facilityLocation = facility.getLocation();
             if (phoneNumber == null
-                    || facilityLocation == null
-                    || !MotechConstants.LOCATION_KASSENA_NANKANA_WEST
-                    .equals(facilityLocation.getCountyDistrict())) {
-                // Skip facilities without a phone number or
-                // not in KNDW district
+                    || facilityLocation == null) {
                 continue;
             }
 
@@ -3610,12 +3606,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
         Calendar blackoutCalendar = getCalendarWithDate(date);
 
-        setBlackOutTime(blackout.getStartTime(), blackoutCalendar);
-
-        if (date.before(blackoutCalendar.getTime())) {
-            // Remove a day if blackout start date before the message date
-            blackoutCalendar.add(Calendar.DATE, -1);
-        }
+        adjustForBlackoutStartDate(date, blackout, blackoutCalendar);
         Date blackoutStart = blackoutCalendar.getTime();
 
         setBlackOutTime(blackout.getEndTime(), blackoutCalendar);
@@ -3632,6 +3623,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return date;
     }
 
+    private void adjustForBlackoutStartDate(Date date, Blackout blackout, Calendar blackoutCalendar) {
+        setBlackOutTime(blackout.getStartTime(), blackoutCalendar);
+
+        if (date.before(blackoutCalendar.getTime())) {
+            // Remove a day if blackout start date before the message date
+            blackoutCalendar.add(Calendar.DATE, -1);
+        }
+    }
+
     private void setBlackOutTime(Date blackoutTime, Calendar blackoutCalendar) {
         Calendar timeCalendar = getCalendarWithDate(blackoutTime);
         blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar.get(Calendar.HOUR_OF_DAY));
@@ -3641,19 +3641,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     boolean isMessageTimeWithinBlackoutPeriod(Date date) {
         Blackout blackout = motechService().getBlackoutSettings();
-
         if (blackout == null) {
             return false;
         }
 
         Calendar blackoutCalendar = getCalendarWithDate(date);
 
-        setBlackOutTime(blackout.getStartTime(), blackoutCalendar);
-
-        if (date.before(blackoutCalendar.getTime())) {
-            // Remove a day if blackout start date before the message date
-            blackoutCalendar.add(Calendar.DATE, -1);
-        }
+        adjustForBlackoutStartDate(date, blackout, blackoutCalendar);
         Date blackoutStart = blackoutCalendar.getTime();
         setBlackOutTime(blackout.getEndTime(), blackoutCalendar);
 
