@@ -39,7 +39,6 @@ import org.motechproject.server.model.*;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.svc.*;
 import org.motechproject.ws.*;
-import org.motechproject.ws.rct.PregnancyTrimester;
 import org.motechproject.ws.rct.RCTRegistrationConfirmation;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationErrors;
@@ -111,7 +110,7 @@ public class RegistrarWebService implements RegistrarService {
         registrarBean.recordPatientHistory(staff, facility.getLocation(), date,
                 patient, lastIPT, lastIPTDate, lastTT, lastTTDate, bcgDate,
                 lastOPV, lastOPVDate, lastPenta, lastPentaDate, measlesDate,
-                yellowFeverDate, lastIPTI, lastIPTIDate, lastVitaminADate);
+                yellowFeverDate, lastIPTI, lastIPTIDate, lastVitaminADate, null);
     }
 
     @WebMethod
@@ -619,7 +618,7 @@ public class RegistrarWebService implements RegistrarService {
         registrarBean.recordPatientHistory(staff, facility.getLocation(), date,
                 patient, lastIPT, lastIPTDate, lastTT, lastTTDate, bcgDate,
                 lastOPV, lastOPVDate, lastPenta, lastPentaDate, measlesDate,
-                yellowFeverDate, lastIPTI, lastIPTIDate, lastVitaminADate);
+                yellowFeverDate, lastIPTI, lastIPTIDate, lastVitaminADate, whyNoHistory);
 
         return modelConverter.patientToWebService(patient, true);
     }

@@ -393,7 +393,7 @@ public class RegistrarBeanRecordVisitsTest extends
 
 			regService.recordPatientHistory(staff, facilityLocation, date,
 					child1, 2, iptDate, 3, ttDate, bcgDate, 6, opvDate, 7,
-					pentaDate, measlesDate, yellowDate, 8, iptiDate, vitDate);
+					pentaDate, measlesDate, yellowDate, 8, iptiDate, vitDate, null);
 
 			assertEquals("No patient history added for Child 1", 3, Context
 					.getEncounterService().getEncountersByPatient(child1)

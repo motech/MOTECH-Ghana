@@ -144,11 +144,11 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public void recordPatientHistory(@RunAsUserParam User staff,
-			Location facility, Date date, Patient patient, Integer lastIPT,
-			Date lastIPTDate, Integer lastTT, Date lastTTDate, Date bcgDate,
-			Integer lastOPV, Date lastOPVDate, Integer lastPenta,
-			Date lastPentaDate, Date measlesDate, Date yellowFeverDate,
-			Integer lastIPTI, Date lastIPTIDate, Date lastVitaminADate);
+                                     Location facility, Date date, Patient patient, Integer lastIPT,
+                                     Date lastIPTDate, Integer lastTT, Date lastTTDate, Date bcgDate,
+                                     Integer lastOPV, Date lastOPVDate, Integer lastPenta,
+                                     Date lastPentaDate, Date measlesDate, Date yellowFeverDate,
+                                     Integer lastIPTI, Date lastIPTIDate, Date lastVitaminADate, Integer whyNoHistory);
 
 	@RunAsAdminUser
 	public void recordMotherANCVisit(@RunAsUserParam User staff,
