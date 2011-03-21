@@ -1,184 +1,164 @@
-function onPatientTypeSelection() {
-    if (hasNonEmptySelection($j('#registrantType'))) {
-        hidePregnancyRegistrationIfPatientIsNotPregnantMother();
-        setGenderAsFemaleIfPatientIsPregnantMother();
-        hideMothersMotechIdFieldIfPatientIsNotChild();
-    }
-}
+function PatientFormRegistrationEvents(isFirstTimeRegistration) {
 
-function onMediaTypeSelection() {
-    if (hasNonEmptySelection($j('#mediaType'))) {
-        hideDayOfWeekAndTimeOfDayFieldsIfMessageFormatSelectedIsText();
-        setEnglishAsLanguageIfMessageFormatSelectedIsText();
-    }
-}
+    var firstTimeRegistration = isFirstTimeRegistration;
+    var languages = new DynamicComboBox($j('#language'));
+    var gender = new DynamicComboBox($j('#sex'));
+    var media = new DynamicComboBox($j('#mediaType'));
 
-function onPhoneOwnershipSelection() {
-    if (hasNonEmptySelection($j('#phoneType'))) {
-        setVoiceOptionIfPhoneOwnershipIsPublic();
-    }
-}
-
-function onInsuranceSelection() {
-    if (hasNonEmptySelection($j('#insured'))) {
-        hideInsuranceSectionIfNotInsured();
-    }
-}
-
-function hideInsuranceSectionIfNotInsured() {
-    var insuranceRow = getParentRow('#nhis');
-    var insuranceExpiryDateRow = getParentRow('#nhisExpDate');
-    if (insured()) {
-        show(insuranceRow, insuranceExpiryDateRow)
-        return;
-    }
-    hide(insuranceRow, insuranceExpiryDateRow);
-}
-
-function insured() {
-    return "true" == $j('#insured').val();
-}
-
-function setGenderAsFemaleIfPatientIsPregnantMother() {
-    var gender = $j('#sex');
-    var female = new Option("Female", "FEMALE");
-    var male = new Option("Male", "MALE");
-    male.html = '<option value="MALE">Male</option>';
-    toggleOptions(gender, female, male, isPatientPregnantMother);
-}
-
-function hidePregnancyRegistrationIfPatientIsNotPregnantMother() {
-    if (!isPatientPregnantMother()) {
-        hide($j('#pregnancyRegistration'));
-        return;
-    }
-    show($j('#pregnancyRegistration'));
-}
-
-function hideMothersMotechIdFieldIfPatientIsNotChild() {
-    var parentRow = $j('#motherMotechId').parents('tr');
-    if (!isPatientChildUnderFive()) {
-        hide(parentRow);
-        return;
-    }
-    show(parentRow);
-}
-function hideDayOfWeekAndTimeOfDayFieldsIfMessageFormatSelectedIsText() {
-    var dayOfWeekRow = $j('#dayOfWeek').parents('tr');
-    var timeOfDayRow = $j('#timeOfDay').parents('tr');
-
-    if (isSelectedMediaTypeText()) {
-        hide(dayOfWeekRow, timeOfDayRow);
-        return;
-    }
-    show(dayOfWeekRow, timeOfDayRow);
-}
-
-function setVoiceOptionIfPhoneOwnershipIsPublic() {
-    var media = $j('#mediaType');
-    var voiceOption = new Option("Voice", "VOICE");
-    var textOption = new Option("Text", "TEXT");
-    textOption.html = '<option value="TEXT">Text</option>';
-    toggleOptions(media, voiceOption, textOption, isPublicPhone);
-    onMediaTypeSelection();
-}
-
-function toggleOptions(comboBox, optionToSet, optionToToggle, shouldSetNewValue) {
-    if (shouldSetNewValue()) {
-        $j(comboBox).val($j(optionToSet).val());
-        var optionToRemove = getOptionWithValue($j(comboBox).children(), $j(optionToToggle).val());
-        $j(optionToRemove).remove();
-    } else {
-        if (!optionExists(comboBox, $j(optionToToggle).val())) {
-            comboBox.append(optionToToggle.html);
+    var bindEventHandlers = function() {
+        if(firstTimeRegistration){
+            $j('#registrantType').change(patientTypeSelected);
         }
+        $j('#phoneType').change(phoneOwnershipSelected);
+        $j('#mediaType').change(mediaTypeSelected);
+        $j('#insured').change(insuranceSelected);
     }
-}
 
-function optionExists(comboBox, value) {
-    var found = false;
-    $j(comboBox).children().each(function(index, ele) {
-        if ($j(ele).val() == value) {
-            found = true;
+    var initialSettings = function() {
+        if(firstTimeRegistration){
+            patientTypeSelected();
         }
-    });
-    return found;
-}
+        phoneOwnershipSelected();
+        mediaTypeSelected();
+        insuranceSelected();
+    };
 
-function getOptionWithValue(options, val) {
-    var option;
-    options.each(function(index, ele) {
-        if ($j(ele).val() == val) {
-            option = $j(ele);
+    var patientTypeSelected = function() {
+        if (hasNonEmptySelection($j('#registrantType'))) {
+            hidePregnancyRegistrationIfPatientIsNotPregnantMother();
+            setGenderAsFemaleIfPatientIsPregnantMother();
+            hideMothersMotechIdFieldIfPatientIsNotChild();
         }
-    })
-    return option;
-}
-function hide() {
-    for (var i = 0; i < arguments.length; i++) {
-        $j(arguments[i]).hide();
-    }
-}
+    };
 
-function show() {
-    for (var i = 0; i < arguments.length; i++) {
-        $j(arguments[i]).show();
-    }
-}
-
-function isPublicPhone() {
-    return $j('#phoneType').val() == "PUBLIC";
-}
-
-function isPatientPregnantMother() {
-    return $j('#registrantType').val() == "PREGNANT_MOTHER";
-}
-
-function isPatientChildUnderFive() {
-    return $j('#registrantType').val() == "CHILD_UNDER_FIVE";
-}
-
-function isSelectedMediaTypeText() {
-    return $j('#mediaType').val() == "TEXT";
-}
-
-function hasNonEmptySelection(comboBox) {
-    return $j(comboBox).val() != "";
-}
-
-function getParentRow(ele) {
-    return $j(ele).parents('tr');
-}
-
-function setEnglishAsLanguageIfMessageFormatSelectedIsText() {
-    var language = $j('#language');
-    if(isSelectedMediaTypeText()){
-        removeOptionsExceptWithValue(language.children('option'),'en');
-        return;
-    }
-    removeAllOptions(language);
-    $j(language).append('<option value="">Select Value</option>');
-    $j(language).append('<option value="en">English</option>');
-    $j(language).append('<option value="kas">Kassim</option>');
-    $j(language).append('<option value="nan">Nankam</option>');
-}
-
-function  removeOptionsExceptWithValue(options, valueToRetain) {
-    $j(options).each(function(index, ele) {
-        if(valueToRetain != $j(ele).val()){
-            $j(ele).remove();
+    var mediaTypeSelected = function() {
+        if (hasNonEmptySelection($j('#mediaType'))) {
+            hideDayOfWeekAndTimeOfDayFieldsIfMessageFormatSelectedIsText();
+            setEnglishAsLanguageIfMessageFormatSelectedIsText();
         }
-    });
+    };
+
+    var phoneOwnershipSelected = function() {
+        if (hasNonEmptySelection($j('#phoneType'))) {
+            setVoiceOptionIfPhoneOwnershipIsPublic();
+        }
+    };
+
+    var insuranceSelected = function() {
+        if (hasNonEmptySelection($j('#insured'))) {
+            hideInsuranceSectionIfNotInsured();
+        }
+    };
+
+    var hideInsuranceSectionIfNotInsured = function() {
+        var insuranceRow = getParentRow('#nhis');
+        var insuranceExpiryDateRow = getParentRow('#nhisExpDate');
+        if (insured()) {
+            show(insuranceRow, insuranceExpiryDateRow)
+            return;
+        }
+        hide(insuranceRow, insuranceExpiryDateRow);
+    };
+
+    var insured = function() {
+        return "true" == $j('#insured').val();
+    };
+
+    var setGenderAsFemaleIfPatientIsPregnantMother = function() {
+        if (isPatientPregnantMother()) {
+            gender.showOnly('FEMALE');
+            return;
+        }
+        gender.revert();
+    };
+
+    var hidePregnancyRegistrationIfPatientIsNotPregnantMother = function() {
+        if (!isPatientPregnantMother()) {
+            hide($j('#pregnancyRegistration'));
+            return;
+        }
+        show($j('#pregnancyRegistration'));
+    };
+
+    var hideMothersMotechIdFieldIfPatientIsNotChild = function() {
+        var parentRow = $j('#motherMotechId').parents('tr');
+        if (!isPatientChildUnderFive()) {
+            hide(parentRow);
+            return;
+        }
+        show(parentRow);
+    };
+
+    var hideDayOfWeekAndTimeOfDayFieldsIfMessageFormatSelectedIsText = function() {
+        var dayOfWeekRow = $j('#dayOfWeek').parents('tr');
+        var timeOfDayRow = $j('#timeOfDay').parents('tr');
+
+        if (isSelectedMediaTypeText()) {
+            hide(dayOfWeekRow, timeOfDayRow);
+            return;
+        }
+        show(dayOfWeekRow, timeOfDayRow);
+    };
+
+    var setVoiceOptionIfPhoneOwnershipIsPublic = function() {
+        if (isPublicPhone()) {
+            media.showOnly('VOICE');
+            return;
+        }
+        media.revert();
+    };
+
+    var hide = function() {
+        for (var i = 0; i < arguments.length; i++) {
+            $j(arguments[i]).hide();
+        }
+    };
+
+    var show = function() {
+        for (var i = 0; i < arguments.length; i++) {
+            $j(arguments[i]).show();
+        }
+    };
+
+    var isPublicPhone = function() {
+        return $j('#phoneType').val() == "PUBLIC";
+    };
+
+    var isPatientPregnantMother = function() {
+        return $j('#registrantType').val() == "PREGNANT_MOTHER";
+    };
+
+    var isPatientChildUnderFive = function() {
+        return $j('#registrantType').val() == "CHILD_UNDER_FIVE";
+    };
+
+    var isSelectedMediaTypeText = function() {
+        return $j('#mediaType').val() == "TEXT";
+    };
+
+    var hasNonEmptySelection = function(comboBox) {
+        return $j(comboBox).val() != "";
+    };
+
+    var getParentRow = function(ele) {
+        return $j(ele).parents('tr');
+    };
+
+    var setEnglishAsLanguageIfMessageFormatSelectedIsText = function() {
+        if (isSelectedMediaTypeText()) {
+            languages.showOnly('en');
+            return;
+        }
+        languages.revert();
+    };
+
+    var bootstrap = function() {
+        bindEventHandlers();
+        initialSettings();
+    };
+
+    $j(bootstrap);
 }
 
-function removeAllOptions(combo){
-    $j(combo).empty();
-}
-
-function addOptionTo(combo, value, text) {
-    if (optionExists(combo, value))return;
-    var html = '<option value="' + value + '"' + ' label="' + text + '"/>';
-    $j(combo).append(html);
-}
 
 

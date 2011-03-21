@@ -40,14 +40,12 @@
 <%@ include file="/WEB-INF/template/header.jsp" %>
 
 <openmrs:htmlInclude file="/scripts/jquery/jquery-1.3.2.min.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/dynamic_combo_box.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patient_form_events.js"/>
 <script type="text/javascript">
     var $j = jQuery.noConflict();
     $j(document).ready(function() {
-        onPatientTypeSelection();
-        onPhoneOwnershipSelection();
-        onMediaTypeSelection();
-        onInsuranceSelection();
+        new PatientFormRegistrationEvents(true);
     });
 </script>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css"/>
@@ -94,7 +92,7 @@
         <tr>
             <td class="labelcolumn"><label for="registrantType">Type of Patient:</label></td>
             <td>
-                <form:select path="registrantType" onchange="onPatientTypeSelection()">
+                <form:select path="registrantType">
                     <form:option value="" label="Select Value"/>
                     <form:option value="PREGNANT_MOTHER" label="Pregnant mother"/>
                     <form:option value="CHILD_UNDER_FIVE" label="Child (age less than 5)"/>
@@ -153,7 +151,7 @@
         <tr>
             <td class="labelcolumn"><label for="insured">Insured:</label></td>
             <td>
-                <form:select path="insured" onchange="onInsuranceSelection()">
+                <form:select path="insured">
                     <form:option value="" label="Select Value"/>
                     <form:option value="true" label="Yes"/>
                     <form:option value="false" label="No"/>
@@ -262,7 +260,7 @@
         <tr>
             <td class="labelcolumn"><label for="phoneType">Phone Ownership:</label></td>
             <td>
-                <form:select path="phoneType" onchange="onPhoneOwnershipSelection()">
+                <form:select path="phoneType">
                     <form:option value="" label="Select Value"/>
                     <form:option value="PERSONAL" label="Personal phone"/>
                     <form:option value="HOUSEHOLD" label="Owned by household"/>
@@ -274,7 +272,7 @@
         <tr>
             <td class="labelcolumn"><label for="mediaType">Message Format:</label></td>
             <td>
-                <form:select path="mediaType" onchange="onMediaTypeSelection()">
+                <form:select path="mediaType">
                     <form:option value="" label="Select Value"/>
                     <form:option value="TEXT" label="Text"/>
                     <form:option value="VOICE" label="Voice"/>
