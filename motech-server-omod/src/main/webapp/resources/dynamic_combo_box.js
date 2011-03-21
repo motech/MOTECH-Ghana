@@ -12,7 +12,6 @@ function DynamicComboBox(combo) {
         var text = $j(option).text();
         var val = $j(option).val();
         var html = '<option value="' + val + '">' + text + "</option>";
-        alert(html);
         this.combo.append(html);
     };
 
@@ -23,7 +22,7 @@ function DynamicComboBox(combo) {
     this.revert = function() {
         this.empty();
         var that = this ;
-        this.originalOptions.each(function(index, option) {
+        that.originalOptions.each(function(index, option) {
            that.appendOption(option);
         });
     };
