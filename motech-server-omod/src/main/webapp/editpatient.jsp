@@ -45,7 +45,7 @@
 <script type="text/javascript">
     var $j = jQuery.noConflict();
     $j(document).ready(function() {
-         new PatientFormRegistrationEvents(false);
+         new PatientFormRegistrationEvents(true);
     });
 </script>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css"/>
