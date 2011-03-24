@@ -8,6 +8,14 @@ function DynamicComboBox(combo) {
         this.appendOption(option) ;
     };
 
+    this.removeOptionsWhen = function(predicate){
+       this.options().each(function(index,opt){
+           if(predicate(opt)){
+               $j(opt).remove();
+           }
+       });
+    };
+
     this.appendOption = function(option){
         var text = $j(option).text();
         var val = $j(option).val();
