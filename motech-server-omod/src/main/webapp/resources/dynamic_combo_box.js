@@ -10,12 +10,14 @@ function DynamicComboBox(combo) {
 
     this.removeOptionsWhen = function(predicate){
        this.options().each(function(index,opt){
-           if(predicate(opt)){
+           var val = $j(opt).val();
+           if(predicate(val)){
                $j(opt).remove();
            }
        });
     };
 
+    // combo.append(option) is not working across browsers
     this.appendOption = function(option){
         var text = $j(option).text();
         var val = $j(option).val();

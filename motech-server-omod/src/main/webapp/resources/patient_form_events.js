@@ -104,9 +104,12 @@ function PatientFormRegistrationEvents(editMode) {
         show(parentRow);
     };
 
-    var modifyWeekToBeginMessageIfPatientIsChild = function(){
-        if(isPatientChildUnderFive()){
-            weekToBeginMessages.removeOptionsWhen(function(val){return val < 41;});
+    var modifyWeekToBeginMessageIfPatientIsChild = function() {
+        if (isPatientChildUnderFive()) {
+            weekToBeginMessages.removeOptionsWhen(function(val) {
+                if (blankData(val))return false;
+                return val < 41;
+            });
             return;
         }
         weekToBeginMessages.revert();
@@ -177,6 +180,10 @@ function PatientFormRegistrationEvents(editMode) {
             return;
         }
         languages.revert();
+    };
+
+    var blankData =function(val) {
+        return val == "";
     };
 
     var bootstrap = function() {
