@@ -731,7 +731,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                      Date lastTTDate, Date bcgDate, Integer lastOPV, Date lastOPVDate,
                                      Integer lastPenta, Date lastPentaDate, Date measlesDate,
                                      Date yellowFeverDate, Integer lastIPTI, Date lastIPTIDate,
-                                     Date lastVitaminADate) {
+                                     Date lastVitaminADate, Integer whyNoHistory) {
 
         // Not associating historical data with any facility
         Location ghanaLocation = getGhanaLocation();
@@ -798,6 +798,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                     concept(ConceptEnum.CONCEPT_IMMUNIZATIONS_ORDERED), patient, ghanaLocation,
                     concept(ConceptEnum.CONCEPT_VITAMIN_A), historyEncounter, null);
             historyEncounter.addObs(vitaminAObs);
+        }
+        if(whyNoHistory != null){
+            Obs whyNoHistoryObs = createNumericValueObs(date,
+                    concept(ConceptEnum.CONCEPT_WHY_NO_HISTORY), patient, ghanaLocation, whyNoHistory,
+                    historyEncounter, null);
+            historyEncounter.addObs(whyNoHistoryObs);
         }
         if (!historyEncounter.getAllObs().isEmpty()) {
             encounterService.saveEncounter(historyEncounter);

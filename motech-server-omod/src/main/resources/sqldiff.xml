@@ -1419,4 +1419,35 @@
 
         </sql>
     </diff>
+    <diff>
+        <version>1.1</version>
+        <author>ThoughtWorks</author>
+        <date>March 21 2011</date>
+        <description>
+            Adding a new concept for why not history field.
+        </description>
+        <sql>
+            INSERT INTO concept
+            (concept_id,datatype_id,class_id,creator,date_created,uuid) VALUES
+            (6162,1,3,1,NOW(),UUID());
+
+            INSERT INTO concept_name
+            (concept_name_id,concept_id,name,locale,creator,date_created,uuid) VALUES
+            (6162,6162,'WHY NO HISTORY','en',1,NOW(),UUID());
+
+            INSERT INTO concept_name_tag_map
+            (concept_name_id,concept_name_tag_id) VALUES
+            (6162,4);
+
+            INSERT INTO concept_word
+            (concept_id,word,locale,concept_name_id) VALUES
+            (6162,'WHY','en',6162),
+            (6162,'NO','en', 6162),
+            (6162,'HISTORY','en',6162);
+
+            INSERT INTO concept_description
+            (concept_id,description,locale,creator,date_created,uuid) VALUES
+            (6162,'Question: "Why no history?"','en',1,NOW(),UUID());
+        </sql>
+    </diff>
 </sqldiff>

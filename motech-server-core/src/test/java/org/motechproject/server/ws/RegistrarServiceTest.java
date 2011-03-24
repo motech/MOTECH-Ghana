@@ -130,7 +130,7 @@ public class RegistrarServiceTest{
 				.andReturn(patient);
 		registrarBean.recordPatientHistory(staff, facilityLocation, date,
 				patient, lastIPT, date, lastTT, date, date, lastOPV, date,
-				lastPenta, date, date, date, lastIPTI, date, date);
+				lastPenta, date, date, date, lastIPTI, date, date, null);
 
 		replay(registrarBean, openmrsBean);
 
