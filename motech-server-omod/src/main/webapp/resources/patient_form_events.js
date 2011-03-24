@@ -4,7 +4,7 @@ function PatientFormRegistrationEvents(editMode) {
     var languages = new DynamicComboBox($j('#language'));
     var gender = new DynamicComboBox($j('#sex'));
     var media = new DynamicComboBox($j('#mediaType'));
-    var weekToBeginMessages = new DynamicComboBox("#messagesStartWeek");
+    var weekToBeginMessages = new DynamicComboBox($j("#messagesStartWeek"));
 
     var bindEventHandlers = function() {
         if (!inEditMode) {
@@ -106,10 +106,10 @@ function PatientFormRegistrationEvents(editMode) {
 
     var modifyWeekToBeginMessageIfPatientIsChild = function(){
         if(isPatientChildUnderFive()){
-            weekToBeginMessages.showOnlyWhen(function(){}){
-
-            }
+            weekToBeginMessages.removeOptionsWhen(function(val){return val < 41;});
+            return;
         }
+        weekToBeginMessages.revert();
     };
 
     var hideDayOfWeekAndTimeOfDayFieldsIfMessageFormatSelectedIsText = function() {
