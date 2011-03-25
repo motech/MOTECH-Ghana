@@ -10,46 +10,14 @@
 
 	<url>http://motech.rcg.usm.maine.edu/redmine/projects/show/motech</url>
 
-	<developers>
-		<developer>
-			<id>batkinson</id>
-			<name>Brent Atkinson</name>
-			<timezone>-5</timezone>
-			<email>batkinson@usm.maine.edu</email>
-		</developer>
-		<developer>
-			<id>mblanch</id>
-			<name>Matt Blanchette</name>
-			<email>matt.blanchette@gmail.com</email>
-		</developer>
-		<developer>
-			<id>rlarubbio</id>
-			<name>Rob LaRubbio</name>
-			<timezone>-8</timezone>
-			<email>rlarubbio@grameenfoundation.org</email>
-		</developer>
-	</developers>
-
 	<ciManagement>
 		<system>hudson</system>
 		<url>http://ci.motechproject.org/</url>
-		<notifiers>
-			<notifier>
-                                <type>mail</type> 
-                                <configuration> 
-                                  <recipients>batkinson@usm.maine.edu matt.blanchette@gmail.com rlarubbio@grameenfoundation.org awalji@grameenfoundation.org</recipients> 
-                                </configuration> 
-                                <sendOnError>true</sendOnError> 
-                                <sendOnFailure>true</sendOnFailure> 
-                                <sendOnSuccess>false</sendOnSuccess> 
-                                <sendOnWarning>false</sendOnWarning> 
-			</notifier>
-		</notifiers>
 	</ciManagement>
 
 	<issueManagement>
-		<system>redmine</system>
-		<url>http://motech.rcg.usm.maine.edu/redmine/projects/motech/issues</url>
+		<system>jira</system>
+		<url>http://pmo.applab.org/browse/MOGH</url>
 	</issueManagement>
 
 	<modules>
@@ -60,8 +28,8 @@
 	<repositories>
 		<repository>
 			<id>motech-repo</id>
-			<name>Motech Maven Repository</name>
-			<url>http://motech.rcg.usm.maine.edu/archiva/repository/all</url>
+			<name>Motech Maven Release Repository</name>
+			<url>http://nexus.motechproject.org/content/repositories/all</url>
 		</repository>
 	</repositories>
 
@@ -69,7 +37,7 @@
 	  <pluginRepository>
 	    <id>motech-repo</id>
 	    <name>Motech Maven Repository</name>
-	    <url>http://motech.rcg.usm.maine.edu/archiva/repository/all</url>
+		<url>http://nexus.motechproject.org/content/repositories/all</url>
 	    <snapshots>
 	      <enabled>true</enabled>
 	    </snapshots>
@@ -416,14 +384,14 @@
 			</activation>
 			<distributionManagement>
 				<repository>
-					<id>usm.motech.archiva</id>
+					<id>motech.nexus</id>
 					<name>Motech Releases Repository</name>
-					<url>http://motech.rcg.usm.maine.edu/archiva/repository/internal</url>
+                    <url>http://nexus.motechproject.org/content/repositories/releases</url>
 				</repository>
 				<snapshotRepository>
-					<id>usm.motech.archiva</id>
+					<id>motech.nexus</id>
 					<name>Motech Snapshots Repository</name>
-					<url>http://motech.rcg.usm.maine.edu/archiva/repository/snapshots</url>
+                    <url>http://nexus.motechproject.org/content/repositories/snapshots</url>
 				</snapshotRepository>
 			</distributionManagement>
 		</profile>
