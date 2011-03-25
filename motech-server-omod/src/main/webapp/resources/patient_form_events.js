@@ -1,25 +1,24 @@
-function PatientFormRegistrationEvents(editMode) {
+function PatientFormRegistrationEvents() {
 
-    var inEditMode = editMode;
     var languages = new DynamicComboBox($j('#language'));
     var gender = new DynamicComboBox($j('#sex'));
     var media = new DynamicComboBox($j('#mediaType'));
     var weekToBeginMessages = new DynamicComboBox($j("#messagesStartWeek"));
 
     var bindEventHandlers = function() {
-        if (!inEditMode) {
-            $j('#registrantType').change(patientTypeSelected);
-            $j('#registrationMode').change(registrationModeSelected);
-        }
-        $j('#phoneType').change(phoneOwnershipSelected);
-        $j('#mediaType').change(mediaTypeSelected);
-        $j('#insured').change(insuranceSelected);
+        bindToOnChangeIfElementExists($j('#registrantType'), patientTypeSelected);
+        bindToOnChangeIfElementExists($j('#registrationMode'), registrationModeSelected);
+        bindToOnChangeIfElementExists($j('#phoneType'), phoneOwnershipSelected);
+        bindToOnChangeIfElementExists($j('#mediaType'), mediaTypeSelected);
+        bindToOnChangeIfElementExists($j('#insured'), insuranceSelected);
     }
 
-    var setUpForEditMode = function() {
-        phoneOwnershipSelected();
-        mediaTypeSelected();
-        insuranceSelected();
+    //Invoke change handler as well to initialize
+    var bindToOnChangeIfElementExists = function(ele, changeHandler) {
+        if (elementExists(ele)) {
+            $j(ele).change(changeHandler);
+            changeHandler();
+        }
     };
 
     var registrationModeSelected = function() {
@@ -33,8 +32,18 @@ function PatientFormRegistrationEvents(editMode) {
             hidePregnancyRegistrationIfPatientIsNotPregnantMother();
             setGenderAsFemaleIfPatientIsPregnantMother();
             hideMothersMotechIdFieldIfPatientIsNotChild();
-            modifyWeekToBeginMessageIfPatientIsChild();
+            modifyWeekToBeginMessageAccordingToPatientType();
+            showReasonsForJoiningMotechOnlyIfPatientTypeIsOther();
         }
+    };
+
+    var showReasonsForJoiningMotechOnlyIfPatientTypeIsOther = function() {
+       var reasons =  getParentRow($j('#interestReason')) ;
+        if (isOtherPatient()) {
+           reasons.show();
+            return;
+        }
+        reasons.hide();
     };
 
     var mediaTypeSelected = function() {
@@ -104,7 +113,8 @@ function PatientFormRegistrationEvents(editMode) {
         show(parentRow);
     };
 
-    var modifyWeekToBeginMessageIfPatientIsChild = function() {
+    var modifyWeekToBeginMessageAccordingToPatientType = function() {
+        weekToBeginMessages.revert();
         if (isPatientChildUnderFive()) {
             weekToBeginMessages.removeOptionsWhen(function(val) {
                 if (blankData(val))return false;
@@ -112,6 +122,15 @@ function PatientFormRegistrationEvents(editMode) {
             });
             return;
         }
+
+        if (isPatientPregnantMother()) {
+            weekToBeginMessages.removeOptionsWhen(function(val) {
+                if (blankData(val))return false;
+                return val > 40;
+            });
+            return;
+        }
+
         weekToBeginMessages.revert();
     };
 
@@ -158,6 +177,10 @@ function PatientFormRegistrationEvents(editMode) {
         return $j('#registrantType').val() == "CHILD_UNDER_FIVE";
     };
 
+    var isOtherPatient = function() {
+        return $j('#registrantType').val() == "OTHER";
+    };
+
     var isSelectedMediaTypeText = function() {
         return $j('#mediaType').val() == "TEXT";
     };
@@ -182,13 +205,16 @@ function PatientFormRegistrationEvents(editMode) {
         languages.revert();
     };
 
-    var blankData =function(val) {
+    var blankData = function(val) {
         return val == "";
+    };
+
+    var elementExists = function(ele) {
+        return $j(ele).length > 0;
     };
 
     var bootstrap = function() {
         bindEventHandlers();
-        if (inEditMode)setUpForEditMode();
     };
 
     $j(bootstrap);

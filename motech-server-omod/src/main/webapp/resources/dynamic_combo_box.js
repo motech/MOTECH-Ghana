@@ -1,53 +1,60 @@
 function DynamicComboBox(combo) {
-    this.combo = $j(combo);
-    this.originalOptions = $j(combo).children('option').clone();
+    var combo = $j(combo);
+    var originalOptions = $j(combo).children('option').clone();
+    var modified = false;
 
     this.showOnly = function(value) {
         var option = this.optionWithValue(value);
-        this.empty();
-        this.appendOption(option) ;
+        empty();
+        this.appendOption(option);
     };
 
-    this.removeOptionsWhen = function(predicate){
-       this.options().each(function(index,opt){
-           var val = $j(opt).val();
-           if(predicate(val)){
-               $j(opt).remove();
-           }
-       });
+    this.removeOptionsWhen = function(predicate) {
+        this.options().each(function(index, opt) {
+            var val = $j(opt).val();
+            if (predicate(val)) {
+                $j(opt).remove();
+            }
+        });
+        modified = true ;
     };
 
     // combo.append(option) is not working across browsers
-    this.appendOption = function(option){
+    this.appendOption = function(option) {
         var text = $j(option).text();
         var val = $j(option).val();
         var html = '<option value="' + val + '">' + text + "</option>";
-        this.combo.append(html);
+        combo.append(html);
+        modified = true;
     };
 
-    this.empty = function(){
-        this.combo.empty();
+    var empty = function() {
+        combo.empty();
+        modified = true;
     };
 
     this.revert = function() {
-        this.empty();
-        var that = this ;
-        that.originalOptions.each(function(index, option) {
-           that.appendOption(option);
+        if (!modified)return;
+
+        empty();
+        var that = this;
+        originalOptions.each(function(index, option) {
+            that.appendOption(option);
         });
+        modified = false;
     };
 
     this.optionWithValue = function(val) {
-        var selected ;
+        var selected;
         this.options().each(function(index, option) {
             if ($j(option).val() == val) {
-                selected =  $j(option);
+                selected = $j(option);
             }
-        }) ;
+        });
         return selected;
     };
 
-    this.options = function(){
-        return this.combo.children('option');
+    this.options = function() {
+        return combo.children('option');
     };
 }
