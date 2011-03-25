@@ -34,8 +34,10 @@
 package org.motechproject.server.model;
 
 import org.openmrs.Location;
+import org.openmrs.Patient;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Facility implements Serializable {
@@ -47,6 +49,7 @@ public class Facility implements Serializable {
 	private Location location;
 	private String phoneNumber;
 	private Set<Community> communities;
+    private Set<Patient> patients = new HashSet<Patient>();
 
 	public Long getId() {
 		return id;

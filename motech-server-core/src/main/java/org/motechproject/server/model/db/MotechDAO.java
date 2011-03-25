@@ -33,31 +33,12 @@
 
 package org.motechproject.server.model.db;
 
+import org.motechproject.server.messaging.MessageDefDate;
+import org.motechproject.server.model.*;
+import org.openmrs.*;
+
 import java.util.Date;
 import java.util.List;
-
-import org.motechproject.server.messaging.MessageDefDate;
-import org.motechproject.server.model.Blackout;
-import org.motechproject.server.model.Community;
-import org.motechproject.server.model.ExpectedEncounter;
-import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.GeneralOutpatientEncounter;
-import org.motechproject.server.model.Message;
-import org.motechproject.server.model.MessageAttribute;
-import org.motechproject.server.model.MessageDefinition;
-import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.model.MessageStatus;
-import org.motechproject.server.model.ScheduledMessage;
-import org.motechproject.server.model.TroubledPhone;
-import org.openmrs.Concept;
-import org.openmrs.Encounter;
-import org.openmrs.EncounterType;
-import org.openmrs.Location;
-import org.openmrs.Obs;
-import org.openmrs.Patient;
-import org.openmrs.PatientIdentifierType;
-import org.openmrs.PersonAttributeType;
 
 /**
  * The interface definition for the motech server's data access requirements.
@@ -205,4 +186,6 @@ public interface MotechDAO {
     Location getLocationByName(String name);
 
     void deletePatientIdentifier(Integer patientId);
+
+    Facility facilityFor(Patient patient);
 }

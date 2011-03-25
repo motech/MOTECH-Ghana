@@ -41,7 +41,6 @@ import org.motechproject.server.omod.sdsched.ScheduleMaintService;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.svc.RegistrarBean;
-import org.motechproject.server.svc.impl.RCTServiceImpl;
 import org.openmrs.*;
 import org.openmrs.api.impl.BaseOpenmrsService;
 
@@ -382,6 +381,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
     public void stopEnrollmentFor(Integer patientId) {
         registrarBean.stopEnrollmentFor(patientId);
+    }
+
+    public Facility facilityFor(Patient patient) {
+        return motechDAO.facilityFor(patient);
     }
 
     public RCTService getRctService(){

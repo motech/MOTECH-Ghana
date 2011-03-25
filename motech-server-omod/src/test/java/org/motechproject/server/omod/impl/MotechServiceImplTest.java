@@ -36,19 +36,24 @@ package org.motechproject.server.omod.impl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.MotechService;
+import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class MotechServiceImplTest extends BaseModuleContextSensitiveTest {
 
     private static String DUPLICATE_PATIENTS = "duplicate-patients-dataset.xml";
-    
+    private static String PATIENT_FACILITY = "patient-facility-data.xml";
+
     @Before
     public void setUp() throws Exception {
         executeDataSet(DUPLICATE_PATIENTS);
+        executeDataSet(PATIENT_FACILITY);
     }
 
     @After
@@ -59,5 +64,14 @@ public class MotechServiceImplTest extends BaseModuleContextSensitiveTest {
     public void testGetAllDuplicatePatients() throws Exception {
         MotechService motechService = Context.getService(MotechService.class);
         assertEquals(2, motechService.getAllDuplicatePatients().size());
+    }
+
+    @Test
+    public void shouldGetFacilityForPatient() {
+        MotechService motechService = Context.getService(MotechService.class);
+        Patient patient = new org.openmrs.Patient();
+        patient.setId(1);
+        Facility facility = motechService.facilityFor(patient);
+        assertNotNull(facility);
     }
 }

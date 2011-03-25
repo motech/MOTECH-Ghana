@@ -255,4 +255,7 @@ public interface MotechService extends OpenmrsService {
 
     @Transactional
     void stopEnrollmentFor(Integer patientId);
+
+    @Transactional
+    Facility facilityFor(Patient patient);
 }
