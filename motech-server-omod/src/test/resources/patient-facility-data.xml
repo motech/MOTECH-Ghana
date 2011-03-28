@@ -3,6 +3,9 @@
 
     <users user_id="1" system_id="107" creator="1" date_created="0002-11-30 00:00:00.0" voided="0"/>
 
+    <location name="Navio CHPS" location_id="2" creator="1" date_created="0002-11-30 00:00:00.0" retired="0"
+              uuid="161c3ed9-2aa8-11e0"/>
+
     <person person_id="1" gender="" birthdate_estimated="0" dead="0" creator="1" date_created="2005-01-01 00:00:00.0"
             voided="0" uuid="338b81a0-af64-11de-870f-e5004d85b1e8"/>
     <person person_id="2" gender="M" birthdate="1941-05-01" birthdate_estimated="0" dead="0" creator="1"
@@ -16,6 +19,8 @@
     <patient patient_id="2" creator="1" date_created="2005-09-22 00:00:00.0" voided="0"/>
     <patient patient_id="3" creator="1" date_created="2005-09-22 00:00:00.0" voided="0"/>
     <patient patient_id="4" creator="1" date_created="2005-09-22 00:00:00.0" voided="0"/>
+
+
 
     <motechmodule_facility id="1" facility_id="11117" location_id="2" phone_number="0123456789"/>
     <motechmodule_facility id="2" facility_id="11118" location_id="2" phone_number="0123456790"/>

@@ -288,7 +288,7 @@ public class RegistrarWebService implements RegistrarService {
         }
 
         List<org.openmrs.Patient> childPatients = registrarBean
-                .recordPregnancyDelivery(staff, facility.getLocation(),
+                .recordPregnancyDelivery(staff, facility,
                         datetime, patient, mode, outcome, deliveryLocation,
                         deliveredBy, maleInvolved, complications, vvf,
                         maternalDeath, comments, outcomes);
@@ -594,7 +594,7 @@ public class RegistrarWebService implements RegistrarService {
         }
 
         org.openmrs.Patient patient = registrarBean.registerPatient(staff,
-                facility.getLocation(), date, registrationMode, motechId,
+                facility, date, registrationMode, motechId,
                 registrantType, firstName, middleName, lastName, preferredName,
                 dateOfBirth, estimatedBirthDate, sex, insured, nhis,
                 nhisExpires, mother, communityObj, address, phoneNumber,
@@ -1157,7 +1157,7 @@ public class RegistrarWebService implements RegistrarService {
         }
 
         List<org.openmrs.Patient> patients = registrarBean.getPatients(
-                firstName, lastName, preferredName, birthDate, null,
+                firstName, lastName, preferredName, birthDate, facilityId,
                 phoneNumber, nhis, null);
         return modelConverter.patientToWebService(patients, true);
     }

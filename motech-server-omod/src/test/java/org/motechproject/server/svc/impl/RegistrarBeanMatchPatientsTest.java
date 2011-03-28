@@ -33,34 +33,24 @@
 
 package org.motechproject.server.svc.impl;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Date;
-import java.util.List;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.motechproject.server.model.Community;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
-import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DayOfWeek;
-import org.motechproject.ws.Gender;
-import org.motechproject.ws.HowLearned;
-import org.motechproject.ws.InterestReason;
-import org.motechproject.ws.MediaType;
-import org.motechproject.ws.RegistrantType;
-import org.motechproject.ws.RegistrationMode;
+import org.motechproject.ws.*;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.PersonName;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.SkipBaseSetup;
+
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * BaseModuleContextSensitiveTest loads both the OpenMRS core and module spring
@@ -136,10 +126,12 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			Community community = regService.getCommunityById(communityId);
 
-			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+            Facility facility = regService.getFacilityById(1111);
+
+            regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
 					motechId, RegistrantType.PREGNANT_MOTHER, firstName,
 					middleName, lastName, prefName, date, false, Gender.FEMALE,
-					true, nhisNumber, date, null, community, "Address",
+					true, nhisNumber, date, null, community, facility, "Address",
 					phoneNumber, date, true, true, true,
 					ContactNumberType.PERSONAL, MediaType.TEXT, "language",
 					DayOfWeek.MONDAY, date, InterestReason.CURRENTLY_PREGNANT,
@@ -155,7 +147,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// Match on all (any)
 			matches = regService.getPatients(firstName, lastName, prefName,
-					date, communityId, phoneNumber, nhisNumber, motechId
+					date, facility.getFacilityId(), phoneNumber, nhisNumber, motechId
 							.toString());
 			assertEquals(1, matches.size());
 
@@ -181,12 +173,12 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// Match on first name, last name, and community (duplicate)
 			matches = regService.getDuplicatePatients(firstName, lastName,
-					null, null, communityId, null, null, null);
+					null, null, facility.getFacilityId(), null, null, null);
 			assertEquals(1, matches.size());
 
 			// Match on first name, last name, and community (any)
 			matches = regService.getPatients(firstName, lastName, null, null,
-					communityId, null, null, null);
+					facility.getFacilityId(), null, null, null);
 			assertEquals(1, matches.size());
 
 			// Match on first name, last name, and phone (duplicate)

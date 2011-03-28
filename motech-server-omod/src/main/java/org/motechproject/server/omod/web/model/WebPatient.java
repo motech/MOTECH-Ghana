@@ -33,351 +33,355 @@
 
 package org.motechproject.server.omod.web.model;
 
-import java.util.Date;
-
 import flexjson.JSON;
-import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DayOfWeek;
-import org.motechproject.ws.Gender;
-import org.motechproject.ws.HowLearned;
-import org.motechproject.ws.InterestReason;
-import org.motechproject.ws.MediaType;
-import org.motechproject.ws.RegistrantType;
-import org.motechproject.ws.RegistrationMode;
+import org.motechproject.ws.*;
+
+import java.util.Date;
 
 public class WebPatient {
 
-	private Integer id;
-	private RegistrationMode registrationMode;
-	private RegistrantType registrantType;
-	private Integer motechId;
-	private String firstName;
-	private String middleName;
-	private String lastName;
-	private String prefName;
-	private Date birthDate;
-	private Boolean birthDateEst;
-	private Gender sex;
-	private Integer motherMotechId;
-	private Boolean insured;
-	private String nhis;
-	private Date nhisExpDate;
-	private String region;
-	private String district;
-	private Integer communityId;
-	private String communityName;
-	private String address;
-	private Date dueDate;
-	private Boolean dueDateConfirmed;
-	private Integer gravida;
-	private Integer parity;
-	private Boolean enroll;
-	private Boolean consent;
-	private String phoneNumber;
-	private ContactNumberType phoneType;
-	private MediaType mediaType;
-	private String language;
-	private DayOfWeek dayOfWeek;
-	private Date timeOfDay;
-	private HowLearned howLearned;
-	private InterestReason interestReason;
-	private Integer messagesStartWeek;
+    private Integer id;
+    private RegistrationMode registrationMode;
+    private RegistrantType registrantType;
+    private Integer motechId;
+    private String firstName;
+    private String middleName;
+    private String lastName;
+    private String prefName;
+    private Date birthDate;
+    private Boolean birthDateEst;
+    private Gender sex;
+    private Integer motherMotechId;
+    private Boolean insured;
+    private String nhis;
+    private Date nhisExpDate;
+    private String region;
+    private String district;
+    private Integer communityId;
+    private String communityName;
+    private String address;
+    private Date dueDate;
+    private Boolean dueDateConfirmed;
+    private Integer gravida;
+    private Integer parity;
+    private Boolean enroll;
+    private Boolean consent;
+    private String phoneNumber;
+    private ContactNumberType phoneType;
+    private MediaType mediaType;
+    private String language;
+    private DayOfWeek dayOfWeek;
+    private Date timeOfDay;
+    private HowLearned howLearned;
+    private InterestReason interestReason;
+    private Integer messagesStartWeek;
 
-	public WebPatient() {
-	}
 
-	public Integer getId() {
-		return id;
-	}
+    private Integer facilityId;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public WebPatient() {
+    }
 
-    @JSON(include = false)
-	public RegistrationMode getRegistrationMode() {
-		return registrationMode;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setRegistrationMode(RegistrationMode registrationMode) {
-		this.registrationMode = registrationMode;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     @JSON(include = false)
-	public RegistrantType getRegistrantType() {
-		return registrantType;
-	}
+    public RegistrationMode getRegistrationMode() {
+        return registrationMode;
+    }
 
-	public void setRegistrantType(RegistrantType registrantType) {
-		this.registrantType = registrantType;
-	}
-
-	public Integer getMotechId() {
-		return motechId;
-	}
-
-	public void setMotechId(Integer motechId) {
-		this.motechId = motechId;
-	}
+    public void setRegistrationMode(RegistrationMode registrationMode) {
+        this.registrationMode = registrationMode;
+    }
 
     @JSON(include = false)
-	public String getFirstName() {
-		return firstName;
-	}
+    public RegistrantType getRegistrantType() {
+        return registrantType;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setRegistrantType(RegistrantType registrantType) {
+        this.registrantType = registrantType;
+    }
 
-    @JSON(include = false)
-	public String getMiddleName() {
-		return middleName;
-	}
+    public Integer getMotechId() {
+        return motechId;
+    }
 
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setMotechId(Integer motechId) {
+        this.motechId = motechId;
+    }
 
     @JSON(include = false)
-	public String getPrefName() {
-		return prefName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setPrefName(String prefName) {
-		this.prefName = prefName;
-	}
-
-    @JSON(include = false)
-	public Date getBirthDate() {
-		return birthDate;
-	}
-
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
     @JSON(include = false)
-	public Boolean getBirthDateEst() {
-		return birthDateEst;
-	}
+    public String getMiddleName() {
+        return middleName;
+    }
 
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
 
-	public void setBirthDateEst(Boolean birthDateEst) {
-		this.birthDateEst = birthDateEst;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public Gender getSex() {
-		return sex;
-	}
-
-	public void setSex(Gender sex) {
-		this.sex = sex;
-	}
-
-	public Integer getMotherMotechId() {
-		return motherMotechId;
-	}
-
-	public void setMotherMotechId(Integer motherMotechId) {
-		this.motherMotechId = motherMotechId;
-	}
-
-	public Boolean getInsured() {
-		return insured;
-	}
-
-	public void setInsured(Boolean insured) {
-		this.insured = insured;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     @JSON(include = false)
-	public String getNhis() {
-		return nhis;
-	}
+    public String getPrefName() {
+        return prefName;
+    }
 
-	public void setNhis(String nhis) {
-		this.nhis = nhis;
-	}
-
-    @JSON(include = false)
-	public Date getNhisExpDate() {
-		return nhisExpDate;
-	}
-
-	public void setNhisExpDate(Date nhisExpDate) {
-		this.nhisExpDate = nhisExpDate;
-	}
-
-	public String getRegion() {
-		return region;
-	}
-
-	public void setRegion(String region) {
-		this.region = region;
-	}
-
-	public String getDistrict() {
-		return district;
-	}
-
-	public void setDistrict(String district) {
-		this.district = district;
-	}
-
-	public Integer getCommunityId() {
-		return communityId;
-	}
-
-	public void setCommunityId(Integer communityId) {
-		this.communityId = communityId;
-	}
-
-	public String getCommunityName() {
-		return communityName;
-	}
-
-	public void setCommunityName(String communityName) {
-		this.communityName = communityName;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setPrefName(String prefName) {
+        this.prefName = prefName;
+    }
 
     @JSON(include = false)
-	public Date getDueDate() {
-		return dueDate;
-	}
+    public Date getBirthDate() {
+        return birthDate;
+    }
 
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
-	}
-
-    @JSON(include = false)
-	public Boolean getDueDateConfirmed() {
-		return dueDateConfirmed;
-	}
-
-	public void setDueDateConfirmed(Boolean dueDateConfirmed) {
-		this.dueDateConfirmed = dueDateConfirmed;
-	}
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
 
     @JSON(include = false)
-	public Integer getGravida() {
-		return gravida;
-	}
+    public Boolean getBirthDateEst() {
+        return birthDateEst;
+    }
 
-	public void setGravida(Integer gravida) {
-		this.gravida = gravida;
-	}
+
+    public void setBirthDateEst(Boolean birthDateEst) {
+        this.birthDateEst = birthDateEst;
+    }
+
+    public Gender getSex() {
+        return sex;
+    }
+
+    public void setSex(Gender sex) {
+        this.sex = sex;
+    }
+
+    public Integer getMotherMotechId() {
+        return motherMotechId;
+    }
+
+    public void setMotherMotechId(Integer motherMotechId) {
+        this.motherMotechId = motherMotechId;
+    }
+
+    public Boolean getInsured() {
+        return insured;
+    }
+
+    public void setInsured(Boolean insured) {
+        this.insured = insured;
+    }
 
     @JSON(include = false)
-	public Integer getParity() {
-		return parity;
-	}
+    public String getNhis() {
+        return nhis;
+    }
 
-	public void setParity(Integer parity) {
-		this.parity = parity;
-	}
+    public void setNhis(String nhis) {
+        this.nhis = nhis;
+    }
 
-	public Boolean getEnroll() {
-		return enroll;
-	}
+    @JSON(include = false)
+    public Date getNhisExpDate() {
+        return nhisExpDate;
+    }
 
-	public void setEnroll(Boolean enroll) {
-		this.enroll = enroll;
-	}
+    public void setNhisExpDate(Date nhisExpDate) {
+        this.nhisExpDate = nhisExpDate;
+    }
 
-	public Boolean getConsent() {
-		return consent;
-	}
+    public String getRegion() {
+        return region;
+    }
 
-	public void setConsent(Boolean consent) {
-		this.consent = consent;
-	}
+    public void setRegion(String region) {
+        this.region = region;
+    }
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    public String getDistrict() {
+        return district;
+    }
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    public void setDistrict(String district) {
+        this.district = district;
+    }
 
-	public ContactNumberType getPhoneType() {
-		return phoneType;
-	}
+    public Integer getCommunityId() {
+        return communityId;
+    }
 
-	public void setPhoneType(ContactNumberType phoneType) {
-		this.phoneType = phoneType;
-	}
+    public void setCommunityId(Integer communityId) {
+        this.communityId = communityId;
+    }
 
-	public MediaType getMediaType() {
-		return mediaType;
-	}
+    public String getCommunityName() {
+        return communityName;
+    }
 
-	public void setMediaType(MediaType mediaType) {
-		this.mediaType = mediaType;
-	}
+    public void setCommunityName(String communityName) {
+        this.communityName = communityName;
+    }
 
-	public String getLanguage() {
-		return language;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setLanguage(String language) {
-		this.language = language;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public DayOfWeek getDayOfWeek() {
-		return dayOfWeek;
-	}
+    @JSON(include = false)
+    public Date getDueDate() {
+        return dueDate;
+    }
 
-	public void setDayOfWeek(DayOfWeek dayOfWeek) {
-		this.dayOfWeek = dayOfWeek;
-	}
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
 
-	public Date getTimeOfDay() {
-		return timeOfDay;
-	}
+    @JSON(include = false)
+    public Boolean getDueDateConfirmed() {
+        return dueDateConfirmed;
+    }
 
-	public void setTimeOfDay(Date timeOfDay) {
-		this.timeOfDay = timeOfDay;
-	}
+    public void setDueDateConfirmed(Boolean dueDateConfirmed) {
+        this.dueDateConfirmed = dueDateConfirmed;
+    }
 
-	public HowLearned getHowLearned() {
-		return howLearned;
-	}
+    @JSON(include = false)
+    public Integer getGravida() {
+        return gravida;
+    }
 
-	public void setHowLearned(HowLearned howLearned) {
-		this.howLearned = howLearned;
-	}
+    public void setGravida(Integer gravida) {
+        this.gravida = gravida;
+    }
 
-	public InterestReason getInterestReason() {
-		return interestReason;
-	}
+    @JSON(include = false)
+    public Integer getParity() {
+        return parity;
+    }
 
-	public void setInterestReason(InterestReason interestReason) {
-		this.interestReason = interestReason;
-	}
+    public void setParity(Integer parity) {
+        this.parity = parity;
+    }
 
-	public Integer getMessagesStartWeek() {
-		return messagesStartWeek;
-	}
+    public Boolean getEnroll() {
+        return enroll;
+    }
 
-	public void setMessagesStartWeek(Integer messagesStartWeek) {
-		this.messagesStartWeek = messagesStartWeek;
-	}
+    public void setEnroll(Boolean enroll) {
+        this.enroll = enroll;
+    }
+
+    public Boolean getConsent() {
+        return consent;
+    }
+
+    public void setConsent(Boolean consent) {
+        this.consent = consent;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public ContactNumberType getPhoneType() {
+        return phoneType;
+    }
+
+    public void setPhoneType(ContactNumberType phoneType) {
+        this.phoneType = phoneType;
+    }
+
+    public MediaType getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(MediaType mediaType) {
+        this.mediaType = mediaType;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
+    public Date getTimeOfDay() {
+        return timeOfDay;
+    }
+
+    public void setTimeOfDay(Date timeOfDay) {
+        this.timeOfDay = timeOfDay;
+    }
+
+    public HowLearned getHowLearned() {
+        return howLearned;
+    }
+
+    public void setHowLearned(HowLearned howLearned) {
+        this.howLearned = howLearned;
+    }
+
+    public InterestReason getInterestReason() {
+        return interestReason;
+    }
+
+    public void setInterestReason(InterestReason interestReason) {
+        this.interestReason = interestReason;
+    }
+
+    public Integer getMessagesStartWeek() {
+        return messagesStartWeek;
+    }
+
+    public void setMessagesStartWeek(Integer messagesStartWeek) {
+        this.messagesStartWeek = messagesStartWeek;
+    }
+
+    public Integer getFacilityId() {
+        return facilityId;
+    }
+
+    public void setFacilityId(Integer facilityId) {
+        this.facilityId = facilityId;
+    }
 
 }

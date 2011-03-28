@@ -149,14 +149,14 @@ public interface MotechDAO {
 			Integer maxResults);
 
 	List<Patient> getPatients(String firstName, String lastName,
-			String preferredName, Date birthDate, Integer communityId,
+			String preferredName, Date birthDate, Integer facilityId,
 			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
 			String patientId, PatientIdentifierType patientIdType,
 			Integer maxResults);
 
 	List<Patient> getDuplicatePatients(String firstName, String lastName,
-			String preferredName, Date birthDate, Integer communityId,
+			String preferredName, Date birthDate, Integer facilityId,
 			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
 			String patientId, PatientIdentifierType patientIdType,

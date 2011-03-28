@@ -33,37 +33,15 @@
 
 package org.motechproject.server.omod.tasks;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.motechproject.server.messaging.impl.MessageSchedulerImpl;
-import org.motechproject.server.model.Message;
-import org.motechproject.server.model.MessageDefinition;
-import org.motechproject.server.model.MessageProgramEnrollment;
+import org.motechproject.server.model.*;
 import org.motechproject.server.model.MessageStatus;
-import org.motechproject.server.model.MessageType;
-import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
-import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DayOfWeek;
-import org.motechproject.ws.Gender;
-import org.motechproject.ws.HowLearned;
-import org.motechproject.ws.InterestReason;
-import org.motechproject.ws.MediaType;
-import org.motechproject.ws.RegistrantType;
-import org.motechproject.ws.RegistrationMode;
+import org.motechproject.ws.*;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifierType;
@@ -71,6 +49,13 @@ import org.openmrs.api.context.Context;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.SkipBaseSetup;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
@@ -121,27 +106,28 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 			Context.openSession();
 			Context.authenticate("admin", "test");
 
-			RegistrarBean regService = Context.getService(MotechService.class)
+			RegistrarBean registrarBean = Context.getService(MotechService.class)
 					.getRegistrarBean();
 
 			// Register Mother and Child
 			Date date = new Date();
 			Integer motherMotechId = 1234649;
-			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+            Facility facility = registrarBean.getFacilityById(11117);
+            registrarBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
 					motherMotechId, RegistrantType.PREGNANT_MOTHER,
 					"motherfirstName", "mothermiddleName", "motherlastName",
 					"motherprefName", date, false, Gender.FEMALE, true,
-					"mothernhis", date, null, null, "Address", "1111111111",
+					"mothernhis", date, null, null, facility, "Address", "1111111111",
 					date, true, true, true, ContactNumberType.PERSONAL,
 					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
 					InterestReason.CURRENTLY_PREGNANT, HowLearned.FRIEND, null);
 
 			Integer childMotechId = 1234654;
-			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+			registrarBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
 					childMotechId, RegistrantType.CHILD_UNDER_FIVE,
 					"childfirstName", "childmiddleName", "childlastName",
 					"childprefName", date, false, Gender.FEMALE, true,
-					"childnhis", date, null, null, "Address", "1111111111",
+					"childnhis", date, null, null, facility, "Address", "1111111111",
 					null, null, false, false, ContactNumberType.PERSONAL,
 					MediaType.TEXT, "language", DayOfWeek.MONDAY, date,
 					InterestReason.FAMILY_FRIEND_PREGNANT, HowLearned.FRIEND,
@@ -162,7 +148,7 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 
 			// Verify Mother's Pregnancy exists
 			Patient mother = motherMatchingPatients.get(0);
-			Obs pregnancyObs = regService.getActivePregnancy(mother
+			Obs pregnancyObs = registrarBean.getActivePregnancy(mother
 					.getPatientId());
 			assertNotNull("Pregnancy Obs does not exist", pregnancyObs);
 
@@ -205,7 +191,7 @@ public class NotificationTaskTest extends BaseModuleContextSensitiveTest {
 			Date scheduledMessageDate = new Date(
 					System.currentTimeMillis() + 5 * 1000);
 			MessageSchedulerImpl messageScheduler = new MessageSchedulerImpl();
-			messageScheduler.setRegistrarBean(regService);
+			messageScheduler.setRegistrarBean(registrarBean);
 			messageScheduler.scheduleMessages(messageKey, messageKeyA,
 					messageKeyB, messageKeyC, enrollment, scheduledMessageDate,
 					date);

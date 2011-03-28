@@ -63,7 +63,7 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public Patient registerPatient(@RunAsUserParam User staff,
-			Location facility, Date date, RegistrationMode registrationMode,
+			Facility facility, Date date, RegistrationMode registrationMode,
 			Integer motechId, RegistrantType registrantType, String firstName,
 			String middleName, String lastName, String preferredName,
 			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
@@ -76,16 +76,16 @@ public interface RegistrarBean {
 			Integer messagesStartWeek);
 
 	public Patient registerPatient(RegistrationMode registrationMode,
-			Integer motechId, RegistrantType registrantType, String firstName,
-			String middleName, String lastName, String preferredName,
-			Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
-			Boolean insured, String nhis, Date nhisExpires, Patient mother,
-			Community community, String address, String phoneNumber,
-			Date expDeliveryDate, Boolean deliveryDateConfirmed,
-			Boolean enroll, Boolean consent, ContactNumberType ownership,
-			MediaType format, String language, DayOfWeek dayOfWeek,
-			Date timeOfDay, InterestReason reason, HowLearned howLearned,
-			Integer messagesStartWeek);
+                                   Integer motechId, RegistrantType registrantType, String firstName,
+                                   String middleName, String lastName, String preferredName,
+                                   Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
+                                   Boolean insured, String nhis, Date nhisExpires, Patient mother,
+                                   Community community, Facility facility, String address, String phoneNumber,
+                                   Date expDeliveryDate, Boolean deliveryDateConfirmed,
+                                   Boolean enroll, Boolean consent, ContactNumberType ownership,
+                                   MediaType format, String language, DayOfWeek dayOfWeek,
+                                   Date timeOfDay, InterestReason reason, HowLearned howLearned,
+                                   Integer messagesStartWeek);
 
 	public void demoRegisterPatient(RegistrationMode registrationMode,
 			Integer motechId, String firstName, String middleName,
@@ -174,7 +174,7 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public List<Patient> recordPregnancyDelivery(@RunAsUserParam User staff,
-			Location facility, Date datetime, Patient patient, Integer mode,
+			Facility facility, Date datetime, Patient patient, Integer mode,
 			Integer outcome, Integer deliveryLocation, Integer deliveredBy,
 			Boolean maleInvolved, Integer[] complications, Integer vvf,
 			Boolean maternalDeath, String comments,
@@ -250,14 +250,14 @@ public interface RegistrarBean {
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
 			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES })
 	public List<Patient> getPatients(String firstName, String lastName,
-			String preferredName, Date birthDate, Integer communityId,
+			String preferredName, Date birthDate, Integer facilityId,
 			String phoneNumber, String nhisNumber, String motechId);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
 			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES })
 	public List<Patient> getDuplicatePatients(String firstName,
 			String lastName, String preferredName, Date birthDate,
-			Integer communityId, String phoneNumber, String nhisNumber,
+			Integer facilityId, String phoneNumber, String nhisNumber,
 			String motechId);
 
 	public List<Obs> getAllPregnancies();

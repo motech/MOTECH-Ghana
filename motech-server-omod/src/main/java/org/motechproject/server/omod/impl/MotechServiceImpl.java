@@ -312,24 +312,24 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 	}
 
 	public List<Patient> getPatients(String firstName, String lastName,
-			String preferredName, Date birthDate, Integer communityId,
+			String preferredName, Date birthDate, Integer facilityId,
 			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
 			String patientId, PatientIdentifierType patientIdType,
 			Integer maxResults) {
 		return motechDAO.getPatients(firstName, lastName, preferredName,
-				birthDate, communityId, phoneNumber, phoneNumberAttrType,
+				birthDate, facilityId, phoneNumber, phoneNumberAttrType,
 				nhisNumber, nhisAttrType, patientId, patientIdType, maxResults);
 	}
 
 	public List<Patient> getDuplicatePatients(String firstName,
 			String lastName, String preferredName, Date birthDate,
-			Integer communityId, String phoneNumber,
+			Integer facilityId, String phoneNumber,
 			PersonAttributeType phoneNumberAttrType, String nhisNumber,
 			PersonAttributeType nhisAttrType, String patientId,
 			PatientIdentifierType patientIdType, Integer maxResults) {
 		return motechDAO.getDuplicatePatients(firstName, lastName,
-				preferredName, birthDate, communityId, phoneNumber,
+				preferredName, birthDate, facilityId, phoneNumber,
 				phoneNumberAttrType, nhisNumber, nhisAttrType, patientId,
 				patientIdType, maxResults);
 	}

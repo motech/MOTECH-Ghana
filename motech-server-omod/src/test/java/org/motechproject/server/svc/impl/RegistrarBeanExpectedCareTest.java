@@ -33,18 +33,7 @@
 
 package org.motechproject.server.svc.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
@@ -61,6 +50,13 @@ import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.SkipBaseSetup;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * BaseModuleContextSensitiveTest loads both the OpenMRS core and module spring
@@ -142,7 +138,7 @@ public class RegistrarBeanExpectedCareTest extends
 					childId, RegistrantType.CHILD_UNDER_FIVE, "childfirstName",
 					"childmiddleName", "childlastName", "childprefName", date,
 					false, Gender.FEMALE, true, "nhis", date, null, community,
-					"Address", "1111111111", null, null, false, false, null,
+                    facility, "Address", "1111111111", null, null, false, false, null,
 					null, null, null, null, null, null, null);
 
 			Patient patient = openmrsService.getPatientByMotechId(childId

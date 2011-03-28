@@ -334,7 +334,7 @@ public class PatientController extends BasePatientController {
 							.getLastName(), patient.getPrefName(), patient
 							.getBirthDate(), patient.getBirthDateEst(), patient
 							.getSex(), patient.getInsured(), patient.getNhis(),
-					patient.getNhisExpDate(), mother, community, patient
+					patient.getNhisExpDate(), mother, community, null, patient
 							.getAddress(), patient.getPhoneNumber(), patient
 							.getDueDate(), patient.getDueDateConfirmed(),
 					patient.getEnroll(), patient.getConsent(), patient

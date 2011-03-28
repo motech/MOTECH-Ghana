@@ -33,40 +33,16 @@
 
 package org.motechproject.server.omod.tasks;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.motechproject.server.model.Message;
-import org.motechproject.server.model.MessageDefinition;
-import org.motechproject.server.model.MessageProgramEnrollment;
+import org.junit.*;
+import org.motechproject.server.model.*;
 import org.motechproject.server.model.MessageStatus;
-import org.motechproject.server.model.MessageType;
-import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
-import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DayOfWeek;
-import org.motechproject.ws.Gender;
-import org.motechproject.ws.HowLearned;
-import org.motechproject.ws.InterestReason;
-import org.motechproject.ws.MediaType;
-import org.motechproject.ws.RegistrantType;
-import org.motechproject.ws.RegistrationMode;
+import org.motechproject.ws.*;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
@@ -74,6 +50,12 @@ import org.openmrs.api.context.Context;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.SkipBaseSetup;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * BaseModuleContextSensitiveTest loads both the OpenMRS core and module spring
@@ -148,17 +130,18 @@ public class MessageProgramUpdateTaskTest extends
 			Calendar calendar = Calendar.getInstance();
 			calendar.add(Calendar.YEAR, -30);
 			Date birthdate = calendar.getTime();
-			regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+            Facility facility = regService.getFacilityById(11117);
+            regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
 					motechId, RegistrantType.OTHER, "firstName", "middleName",
 					"lastName", "prefName", birthdate, false, Gender.MALE,
-					true, "nhis", null, null, null, "Address", "1111111111",
+					true, "nhis", null, null, null, facility, "Address", "1111111111",
 					null, null, true, true, ContactNumberType.PERSONAL,
 					MediaType.VOICE, "language", DayOfWeek.MONDAY, date,
 					InterestReason.KNOW_MORE_PREGNANCY_CHILDBIRTH,
 					HowLearned.FRIEND, 5);
 
 			List<Patient> matchingPatients = regService.getPatients(
-					"firstName", "lastName", "prefName", birthdate, null,
+					"firstName", "lastName", "prefName", birthdate, facility.getFacilityId(),
 					"1111111111", "nhis", motechId.toString());
 			assertEquals(1, matchingPatients.size());
 			Patient patient = matchingPatients.get(0);
@@ -167,7 +150,7 @@ public class MessageProgramUpdateTaskTest extends
 			List<MessageProgramEnrollment> enrollments = Context.getService(
 					MotechService.class).getActiveMessageProgramEnrollments(
 					patientId, null, null, null, null);
-			assertEquals(1, enrollments.size());
+			assertEquals(2, enrollments.size());
 			assertEquals("Weekly Info Pregnancy Message Program", enrollments
 					.get(0).getProgram());
 			assertNotNull("Obs is not set on enrollment", enrollments.get(0)
@@ -236,7 +219,7 @@ public class MessageProgramUpdateTaskTest extends
 			List<MessageProgramEnrollment> enrollments = Context.getService(
 					MotechService.class).getActiveMessageProgramEnrollments(
 					patient.getPatientId(), null, null, null, null);
-			assertEquals(1, enrollments.size());
+			assertEquals(2, enrollments.size());
 			MessageProgramEnrollment infoEnrollment = enrollments.get(0);
 
 			infoEnrollment.setObsId(refDateObs.getObsId());

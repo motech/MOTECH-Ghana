@@ -582,7 +582,7 @@ public class RegistrarBeanTest {
         regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
                 RegistrantType.PREGNANT_MOTHER, firstName, middleName,
                 lastName, prefName, date, birthDateEst, gender, insured, nhis,
-                date, null, community, address, phoneNumber, date,
+                date, null, community, null, address, phoneNumber, date,
                 dueDateConfirmed, enroll, consent, phoneType, mediaType,
                 language, dayOfWeek, date, reason, howLearned, null);
 
@@ -757,7 +757,7 @@ public class RegistrarBeanTest {
                         .getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
                 .andReturn(motechIdType).atLeastOnce();
         expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
-                .andReturn(ghanaLocation).times(2);
+                .andReturn(ghanaLocation).times(1);
 
         expect(
                 personService
@@ -841,7 +841,7 @@ public class RegistrarBeanTest {
         regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
                 RegistrantType.CHILD_UNDER_FIVE, firstName, middleName,
                 lastName, prefName, birthDate, birthDateEst, gender, insured,
-                nhis, date, mother, community, address, phoneNumber, date,
+                nhis, date, mother, community, facility, address, phoneNumber, date,
                 dueDateConfirmed, enroll, consent, phoneType, mediaType,
                 language, dayOfWeek, date, reason, howLearned, null);
 
@@ -1073,7 +1073,7 @@ public class RegistrarBeanTest {
         regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
                 RegistrantType.OTHER, firstName, middleName, lastName,
                 prefName, date, birthDateEst, gender, insured, nhis, date,
-                null, community, address, phoneNumber, date, dueDateConfirmed,
+                null, community, facility, address, phoneNumber, date, dueDateConfirmed,
                 enroll, consent, phoneType, mediaType, language, dayOfWeek,
                 date, reason, howLearned, messagesStartWeek);
 
@@ -1104,7 +1104,7 @@ public class RegistrarBeanTest {
         assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
         assertEquals(GenderTypeConverter.toOpenMRSString(Gender.FEMALE),
                 capturedPatient.getGender());
-        assertEquals(1, community.getResidents().size());
+        assertTrue(facility.hasPatients(1));
         assertEquals(address, capturedPatient.getPersonAddress().getAddress1());
         assertEquals(phoneNumber.toString(), capturedPatient.getAttribute(
                 phoneAttributeType).getValue());

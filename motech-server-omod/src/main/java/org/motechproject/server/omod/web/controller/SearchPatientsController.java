@@ -154,7 +154,7 @@ public class SearchPatientsController {
 			List<Patient> matchingPatientsList = registrarBean.getPatients(
 					webPatient.getFirstName(), webPatient.getLastName(),
 					webPatient.getPrefName(), webPatient.getBirthDate(),
-					webPatient.getCommunityId(), webPatient.getPhoneNumber(),
+					webPatient.getFacilityId(), webPatient.getPhoneNumber(),
 					webPatient.getNhis(), motechIdString);
 
 			for (Patient patient : matchingPatientsList) {

@@ -205,7 +205,7 @@ public interface MotechService extends OpenmrsService {
 
 	@Transactional(readOnly = true)
 	List<Patient> getPatients(String firstName, String lastName,
-			String preferredName, Date birthDate, Integer communityId,
+			String preferredName, Date birthDate, Integer facilityId,
 			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
 			String patientId, PatientIdentifierType patientIdType,
@@ -213,7 +213,7 @@ public interface MotechService extends OpenmrsService {
 
 	@Transactional(readOnly = true)
 	List<Patient> getDuplicatePatients(String firstName, String lastName,
-			String preferredName, Date birthDate, Integer communityId,
+			String preferredName, Date birthDate, Integer facilityId,
 			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
 			String patientId, PatientIdentifierType patientIdType,

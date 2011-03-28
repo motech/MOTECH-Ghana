@@ -35,442 +35,826 @@
 -->
 
 <dataset>
-  <concept concept_id="6100" retired="0" datatype_id="1" class_id="11" is_set="0" creator="1" date_created="2010-06-30 16:07:23.0" uuid="afb47bdb-426b-40f3-b8dd-f7172b64dcb4"/>
-  <concept concept_id="6101" retired="0" datatype_id="1" class_id="3" is_set="0" creator="1" date_created="2010-06-30 16:07:23.0" uuid="c955674f-518a-4f31-b3fb-79cb7764234d"/>
-  <concept concept_id="6102" retired="0" datatype_id="1" class_id="3" is_set="0" creator="1" date_created="2010-06-30 16:07:23.0" uuid="d7fadad1-e55d-4ee8-9e5d-990b3934c16e"/>
-  <concept concept_id="6103" retired="0" datatype_id="3" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:23.0" uuid="2acd752e-6311-449e-bfbe-7ea0c506c010"/>
-  <concept concept_id="6104" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1" date_created="2010-06-30 16:07:23.0" uuid="bcd2ade4-c142-48f3-9680-803b14a69199"/>
-  <concept concept_id="6105" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1" date_created="2010-06-30 16:07:23.0" uuid="7baffc00-05dc-41f5-a5b5-0ce159678d87"/>
-  <concept concept_id="6106" retired="0" datatype_id="1" class_id="3" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="6faee024-4b2d-41bf-bd10-ec1532756b73"/>
-  <concept concept_id="6107" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="81deb1da-0097-4335-9381-aa25efd73186"/>
-  <concept concept_id="6108" retired="0" datatype_id="1" class_id="3" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="548880fc-7faa-4d74-b8aa-75a7f45ddbb2"/>
-  <concept concept_id="6109" retired="0" datatype_id="1" class_id="3" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="53abb9a0-11e5-41e8-bc28-c53600ece866"/>
-  <concept concept_id="6110" retired="0" datatype_id="4" class_id="3" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="3f97f5b0-99a1-4cce-b6b1-1abfe49480f0"/>
-  <concept concept_id="6111" retired="0" datatype_id="4" class_id="3" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="083661f6-374c-44f5-a0a5-85891ff327d0"/>
-  <concept concept_id="6112" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="5157a354-ff2c-47e8-b3c8-96f30eb69476"/>
-  <concept concept_id="6113" retired="0" datatype_id="8" class_id="11" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="30b3f852-d29a-442a-9e66-f43a298b8452"/>
-  <concept concept_id="6114" retired="0" datatype_id="3" class_id="11" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="4c74e215-638f-44a3-868e-a46093906916"/>
-  <concept concept_id="6115" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="b1816f17-9916-48c1-bb01-efc2d97357cb"/>
-  <concept concept_id="6116" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="220f8291-2e11-4956-bab6-e7ff33e931e4"/>
-  <concept concept_id="6117" retired="0" datatype_id="1" class_id="4" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="0e4e0b82-6f4f-480e-a421-b7689b1c5bdd"/>
-  <concept concept_id="6118" retired="0" datatype_id="1" class_id="4" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="6ef12843-2894-4454-97fd-a8e3b4cea78f"/>
-  <concept concept_id="6119" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="068d6f88-e2c4-4003-b459-f1eef9132c77"/>
-  <concept concept_id="6120" retired="0" datatype_id="1" class_id="11" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="db5c264f-cccd-4aee-ac3f-d3e07311dafe"/>
-  <concept concept_id="6121" retired="0" datatype_id="1" class_id="11" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="c3baae9e-92f3-4a28-b678-6edf05f68d04"/>
-  <concept concept_id="6122" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="5428c604-b5b4-4c79-85cd-d640304f3012"/>
-  <concept concept_id="6123" retired="0" datatype_id="3" class_id="5" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="eda13aea-b393-4830-907a-7ef33c0f24c3"/>
-  <concept concept_id="6124" retired="0" datatype_id="2" class_id="1" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" changed_by="1" date_changed="2010-06-30 16:07:26.0" uuid="0a47d549-4874-4e92-87fe-3989ecb029fc"/>
-  <concept concept_id="6125" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="94785a93-d146-4535-9833-98ba43d29277"/>
-  <concept concept_id="6126" retired="0" datatype_id="2" class_id="1" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" changed_by="1" date_changed="2010-06-30 16:07:26.0" uuid="44359f2d-002c-4da7-bc8a-1c4eafa98482"/>
-  <concept concept_id="6127" retired="0" datatype_id="2" class_id="1" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" changed_by="1" date_changed="2010-06-30 16:07:26.0" uuid="4b164081-1174-4c44-b52b-6b0f72da2a0e"/>
-  <concept concept_id="6128" retired="0" datatype_id="1" class_id="1" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="0fe31295-c326-48b2-a68f-f6f3eb16d434"/>
-  <concept concept_id="6129" retired="0" datatype_id="1" class_id="1" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="7f0396e2-c552-425c-9ce8-6c50dafc7d47"/>
-  <concept concept_id="6130" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="1b1c5897-f36d-4341-80d2-4659a46ea736"/>
-  <concept concept_id="6131" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="825f5dea-231c-4e30-a7d0-bb74e89374d5"/>
-  <concept concept_id="6132" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:24.0" uuid="0d131e10-c027-41a1-8683-ffcebb9c416e"/>
-  <concept concept_id="6133" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="fbcd8aa9-64db-464d-bb14-ba7b9907e7a9"/>
-  <concept concept_id="6134" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="b748686a-d761-420f-ae68-653e9700630b"/>
-  <concept concept_id="6135" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="bd16792c-0690-46e2-ac79-3acc78a5511a"/>
-  <concept concept_id="6136" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="65e4ef7a-a410-45ba-9f54-138c49492734"/>
-  <concept concept_id="6137" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="8bb88c42-f528-4a21-8095-57630447a7d4"/>
-  <concept concept_id="6138" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="810f6157-ff16-4b5f-b83a-8c76ed22e5b4"/>
-  <concept concept_id="6139" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="e17ff0ef-929b-4e78-8d1c-e59b64446efd"/>
-  <concept concept_id="6140" retired="0" datatype_id="2" class_id="1" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" changed_by="1" date_changed="2010-06-30 16:07:26.0" uuid="ead8f7b4-125c-4e17-a9c8-213ea41ec9db"/>
-  <concept concept_id="6141" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="19a322b7-cdea-4f49-9bbf-bb3d1e050fdb"/>
-  <concept concept_id="6142" retired="0" datatype_id="10" class_id="5" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="ee3ff949-032c-4c5c-9aa8-2b4be2dba043"/>
-  <concept concept_id="6143" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="74fd4c38-489e-459e-905a-0c2513e9a42c"/>
-  <concept concept_id="6144" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="d87a6cd5-09cf-4482-bb5b-7e32e8470c28"/>
-  <concept concept_id="6145" retired="0" datatype_id="1" class_id="2" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="399807be-30d2-491a-a438-0ae0c478c4fd"/>
-  <concept concept_id="6146" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="c770ee8a-31e8-47f4-acf7-bc6decf3b2f7"/>
-  <concept concept_id="6147" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="7c244197-dda9-4fe3-bd10-f9568c1a9f9b"/>
-  <concept concept_id="6148" retired="0" datatype_id="8" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="b102c1bf-ab7d-4926-9547-c5a1e431b80f"/>
-  <concept concept_id="6149" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="7558202e-ca50-424e-b6ce-22e99d0508f5"/>
-  <concept concept_id="6150" retired="0" datatype_id="3" class_id="11" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="a191191b-f778-47d3-a2f9-e16e9ffc99b3"/>
-  <concept concept_id="6151" retired="0" datatype_id="3" class_id="11" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="055c0904-4355-40d3-ab94-84a74f55843f"/>
-  <concept concept_id="6152" retired="0" datatype_id="1" class_id="11" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="770a767c-b5ac-4341-94fb-a84ddda93013"/>
-  <concept concept_id="6153" retired="0" datatype_id="1" class_id="11" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="50aead9b-b948-4599-ac4e-31081aeca950"/>
-  <concept concept_id="6154" retired="0" datatype_id="3" class_id="11" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="9bc60fb5-8c0f-4ba3-b472-d49e19034b33"/>
-  <concept concept_id="6155" retired="0" datatype_id="3" class_id="11" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="91a07450-5432-4f78-981f-b184aae3a7a4"/>
-  <concept concept_id="6156" retired="0" datatype_id="3" class_id="11" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="b3d1467e-422f-4cd4-bb60-a35c65cf8f91"/>
-  <concept concept_id="6157" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-06-30 16:07:25.0" uuid="bb0272f1-503c-4f16-8703-049d617de673"/>
-  <concept concept_id="6158" retired="0" datatype_id="10" class_id="5" is_set="0" creator="1" date_created="2010-10-04 12:34:44.0" uuid="3650a06d-02f7-463a-8374-9fb623c375aa"/>
-  <concept concept_id="6159" retired="0" datatype_id="4" class_id="11" is_set="0" creator="1" date_created="2010-10-04 12:34:44.0" uuid="d5c9489e-84e7-4454-9e78-287eded8e0da"/>
-  <concept concept_id="6161" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1" date_created="2010-12-20 12:34:44.0" uuid="d5c9489e-84e7-4454-9e78-287eded8e0d9"/>
-  <concept_answer concept_answer_id="1021" concept_id="984" answer_concept="5864" creator="1" date_created="2010-06-30 16:07:26.0" uuid="8a7c14e6-14c8-4e5b-983b-e8d429c3ae9d"/>
-  <concept_answer concept_answer_id="1023" concept_id="984" answer_concept="6111" creator="1" date_created="2010-06-30 16:07:26.0" uuid="e342b682-d37f-49f2-a14f-70de781f3941"/>
-  <concept_answer concept_answer_id="1024" concept_id="984" answer_concept="6110" creator="1" date_created="2010-06-30 16:07:26.0" uuid="612afd03-4df8-472e-96db-95b545d7d279"/>
-  <concept_answer concept_answer_id="1025" concept_id="6124" answer_concept="664" creator="1" date_created="2010-06-30 16:07:26.0" uuid="99e55c67-23c3-49e7-98d9-34eca59b8447"/>
-  <concept_answer concept_answer_id="1026" concept_id="6124" answer_concept="703" creator="1" date_created="2010-06-30 16:07:26.0" uuid="83d55067-3304-44fe-b5fc-5e14570775c1"/>
-  <concept_answer concept_answer_id="1027" concept_id="6126" answer_concept="664" creator="1" date_created="2010-06-30 16:07:26.0" uuid="7dbfd21e-03e3-4d9f-a41b-06fa850bc9b3"/>
-  <concept_answer concept_answer_id="1028" concept_id="6126" answer_concept="703" creator="1" date_created="2010-06-30 16:07:26.0" uuid="ed82e28e-9040-44ca-8a83-dea8e4ce3b8a"/>
-  <concept_answer concept_answer_id="1029" concept_id="6127" answer_concept="664" creator="1" date_created="2010-06-30 16:07:26.0" uuid="79c561a8-d558-4f5f-a64d-3444b7a8229e"/>
-  <concept_answer concept_answer_id="1030" concept_id="6127" answer_concept="703" creator="1" date_created="2010-06-30 16:07:26.0" uuid="cc5de9ce-8724-40f7-b2ec-cbf9a68cded2"/>
-  <concept_answer concept_answer_id="1031" concept_id="6140" answer_concept="1229" creator="1" date_created="2010-06-30 16:07:26.0" uuid="e380d220-965b-4542-957c-6a6af9e93cb2"/>
-  <concept_answer concept_answer_id="1032" concept_id="6140" answer_concept="1228" creator="1" date_created="2010-06-30 16:07:26.0" uuid="ea1e0d09-703a-4196-a562-3f94dfd0f824"/>
-  <concept_answer concept_answer_id="1033" concept_id="6126" answer_concept="6159" creator="1" date_created="2010-10-04 12:34:44.0" uuid="a1a3b9ff-3304-4f63-8e24-3408778b2463"/>
-  <concept_answer concept_answer_id="1034" concept_id="6127" answer_concept="6159" creator="1" date_created="2010-10-04 12:34:44.0" uuid="c924ee7f-7ac9-4069-bc5c-13cf47554a45"/>
-  <concept_description concept_description_id="6100" concept_id="6100" description="Visit Number" locale="en" creator="1" date_created="2010-06-30 16:07:23.0" uuid="aa9d5f10-6604-4863-b0bd-3f85ad4d1d65"/>
-  <concept_description concept_description_id="6101" concept_id="6101" description="Dose Number for Tetanus Toxoid Vaccination" locale="en" creator="1" date_created="2010-06-30 16:07:23.0" uuid="1b4734fc-0a1a-45b7-82e3-59445112dcac"/>
-  <concept_description concept_description_id="6102" concept_id="6102" description="Dose Number for Malaria Treatment" locale="en" creator="1" date_created="2010-06-30 16:07:23.0" uuid="4efce055-23e1-4357-ab83-b3524fb6a810"/>
-  <concept_description concept_description_id="6103" concept_id="6103" description="Question: &quot;What is the patient&apos;s text coded HIV test result?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:23.0" uuid="91b7a605-3a47-4815-83ad-e37b60e21529"/>
-  <concept_description concept_description_id="6104" concept_id="6104" description="Numeric coded pregnancy termination reason" locale="en" creator="1" date_created="2010-06-30 16:07:23.0" uuid="c71c4937-8789-4502-baea-4d28d3885090"/>
-  <concept_description concept_description_id="6105" concept_id="6105" description="Numeric coded pregnancy termination complication" locale="en" creator="1" date_created="2010-06-30 16:07:23.0" uuid="3d66b103-2fca-470a-a7a8-2fcd0da6c87e"/>
-  <concept_description concept_description_id="6106" concept_id="6106" description="Dose Number for infant Malaria treatment." locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="e5e1bb9e-4275-445a-9afb-bd4d8e90b144"/>
-  <concept_description concept_description_id="6107" concept_id="6107" description="Question on encounter form: &quot;Does the patient use insecticide-treated nets?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="b91e2ccd-bc0e-4fd2-a05e-742489479317"/>
-  <concept_description concept_description_id="6108" concept_id="6108" description="Dose Number for child Oral Polio vaccination." locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="456b55e6-b3e5-4a91-8a8b-001a1f791b61"/>
-  <concept_description concept_description_id="6109" concept_id="6109" description="Dose Number for child Penta vaccination." locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="49264518-cb21-49b8-bf25-cd20dd3a3ecf"/>
-  <concept_description concept_description_id="6110" concept_id="6110" description="Vaccination against Cerebro-Spinal Meningitis." locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="4aa27aaa-f12c-43dc-9d8f-c40a066faa32"/>
-  <concept_description concept_description_id="6111" concept_id="6111" description="Supplement for Vitamin A." locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="4d0f3b5a-644e-454e-bb0b-a47e536cc4a9"/>
-  <concept_description concept_description_id="6112" concept_id="6112" description="Question: &quot;Is the pregnancy due date confirmed by the CHW?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="2371c28c-2798-4146-ad66-9bf56ff68332"/>
-  <concept_description concept_description_id="6113" concept_id="6113" description="Reference Date for Message Program Enrollment" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="6864844a-5887-4442-824a-020eedc46a07"/>
-  <concept_description concept_description_id="6114" concept_id="6114" description="Patient register serial number" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="b63a6840-5964-4e2a-b027-0b1409992153"/>
-  <concept_description concept_description_id="6115" concept_id="6115" description="Question: &quot;Is this a new case?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="71005aeb-f6b4-44c9-ba7b-839d37097b56"/>
-  <concept_description concept_description_id="6116" concept_id="6116" description="Question: &quot;Was patient referred?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="b3b05ce9-33b0-4b5b-97a2-6dc99848eadc"/>
-  <concept_description concept_description_id="6117" concept_id="6117" description="Numeric coded primary diagnosis" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="3907cd04-cfd3-4591-8887-14b757581d1f"/>
-  <concept_description concept_description_id="6118" concept_id="6118" description="Numeric coded secondary diagnosis" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="ed5c2b7c-e0d8-492f-a328-ff88ff351dd0"/>
-  <concept_description concept_description_id="6119" concept_id="6119" description="Numeric coded mode of delivery" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="68f41f56-b7e1-428d-9c97-a6c6c01fedc5"/>
-  <concept_description concept_description_id="6120" concept_id="6120" description="Numeric coded place of delivery" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="e697b40d-2845-4d13-b421-55fa0aad8174"/>
-  <concept_description concept_description_id="6121" concept_id="6121" description="Numeric coded who performed delivery" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="ead10c95-4560-4541-86ac-f2607dca6022"/>
-  <concept_description concept_description_id="6122" concept_id="6122" description="Numeric coded outcome of delivery" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="61dbd669-2dd7-4b27-880d-1ed6b167aaf2"/>
-  <concept_description concept_description_id="6123" concept_id="6123" description="Text coded birth outcome" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="22418827-debc-4b67-8356-9836b48f1fc0"/>
-  <concept_description concept_description_id="6124" concept_id="6124" description="Rapid diagnostic test for malaria" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" changed_by="1" date_changed="2010-06-30 16:07:26.0" uuid="3cf9fde2-2b56-446f-85f3-4bf0c1354a41"/>
-  <concept_description concept_description_id="6125" concept_id="6125" description="Question on encounter form: &quot;Was the patient given treatment for syphilis?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="c6e3ad84-3308-4a85-bd9b-0b7f833ade06"/>
-  <concept_description concept_description_id="6126" concept_id="6126" description="Test for protein in urine" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" changed_by="1" date_changed="2010-06-30 16:07:26.0" uuid="884ded76-2d78-464a-8286-7c127d8390c9"/>
-  <concept_description concept_description_id="6127" concept_id="6127" description="Test for glucose in urine" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" changed_by="1" date_changed="2010-06-30 16:07:26.0" uuid="3adb23c7-1f19-402d-a24e-b20897eabab9"/>
-  <concept_description concept_description_id="6128" concept_id="6128" description="Fetal heart rate (in bpm)" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="3beaceda-7e2d-46f3-8d40-2a3f2c0fcfc2"/>
-  <concept_description concept_description_id="6129" concept_id="6129" description="Measurement of uterus (in cm)" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="a3af0ad3-f63a-4bf1-a831-a1c412c74774"/>
-  <concept_description concept_description_id="6130" concept_id="6130" description="Numeric coded value for Vesico Vaginal Fistula (VVF) repair" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="84ab9898-9956-48a1-80c3-338cbd97087e"/>
-  <concept_description concept_description_id="6131" concept_id="6131" description="Question on encounter form: &quot;Was dewormer given to patient?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="171c3ca5-7f6e-4212-aea0-0bd111026eba"/>
-  <concept_description concept_description_id="6132" concept_id="6132" description="Preventing Mother-to-Child Transmission (PMTCT) of HIV" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" uuid="7e0d796e-2ed4-477d-a015-7fd6b9614c8d"/>
-  <concept_description concept_description_id="6133" concept_id="6133" description="Question on encounter form: &quot;Was PMTCT HIV treatment given to patient?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="163101cd-d4a8-4a49-92e4-8d81f8947d0d"/>
-  <concept_description concept_description_id="6134" concept_id="6134" description="Question on encounter form: &quot;Was Artemisinin-based Combination Therapy (ACT) for Malaria given to patient?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="0aa2f150-68b1-4ed9-a2d2-f672a7bde4d1"/>
-  <concept_description concept_description_id="6135" concept_id="6135" description="Question on encounter form: &quot;Was counseling done before HIV test?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="c51b83b3-bc08-4a95-b9e3-888083161492"/>
-  <concept_description concept_description_id="6136" concept_id="6136" description="Question on encounter form: &quot;Was counseling done after HIV test?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="8e073a0a-1c97-476b-9518-d3dafddb3d2d"/>
-  <concept_description concept_description_id="6137" concept_id="6137" description="Numeric coded value for delivery or post-partum complication" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="d1f26cdd-3655-4715-a2fa-e07af9e867a7"/>
-  <concept_description concept_description_id="6138" concept_id="6138" description="Question on encounter form: &quot;Was family planning counseling done after abortion?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="36b79591-4f7e-44db-8527-397c3efc5a10"/>
-  <concept_description concept_description_id="6139" concept_id="6139" description="Question on encounter form: &quot;Did the patient accept family planning after abortion?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="c761b7e6-aa61-4421-9210-3895181b74bd"/>
-  <concept_description concept_description_id="6140" concept_id="6140" description="Intermittent Preventive Treatment (IPT) with Sulphadoxine-Pyrimethamine (SP)" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" changed_by="1" date_changed="2010-06-30 16:07:26.0" uuid="acedd630-1b29-4135-bf7f-8f805e098bb2"/>
-  <concept_description concept_description_id="6141" concept_id="6141" description="Numeric coded colour of post-partum vaginal discharge" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="150070bf-275e-42f1-b03b-1cc5b619b88a"/>
-  <concept_description concept_description_id="6142" concept_id="6142" description="Is amount of post-partum vaginal discharge in excess?" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="69f3afa8-620c-46f4-a4a5-0f5c1f5071ec"/>
-  <concept_description concept_description_id="6143" concept_id="6143" description="Circumference of Middle Upper Arm (MUAC) in cm" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="0fc08315-766b-4df9-a939-a5e4dfbd88d2"/>
-  <concept_description concept_description_id="6144" concept_id="6144" description="Question on encounter form: &quot;Death of patient during delivery or abortion procedure?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="86608ec1-1ceb-4237-9bc0-f36ede5c965c"/>
-  <concept_description concept_description_id="6145" concept_id="6145" description="Numeric coded procedure used to terminate pregnancy" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="bbf226d2-45e8-4acb-ba7c-563a18aa1bce"/>
-  <concept_description concept_description_id="6146" concept_id="6146" description="Question on encounter form: &quot;Is the condition of the umbilical cord normal?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="edd53e83-2c35-449b-8ccd-6e14dd85c56d"/>
-  <concept_description concept_description_id="6147" concept_id="6147" description="Question on encounter form: &quot;Is the condition of the baby good?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="b2acad40-b176-48ec-8cb9-9e7f9788b2f3"/>
-  <concept_description concept_description_id="6148" concept_id="6148" description="Question on encounter form: &quot;What is the date of the next antenatal care visit for the patient?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="42a0e42d-68dc-418f-9fbe-027fcade5bd4"/>
-  <concept_description concept_description_id="6149" concept_id="6149" description="Question on encounter form: &quot;Was the male household member involved in patient&apos;s care?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="0d4bf064-8320-4773-ac99-aaceb0b50cb5"/>
-  <concept_description concept_description_id="6150" concept_id="6150" description="Community details on the location of care" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="657a20b0-8b0c-463d-ba86-d0ca7cca554c"/>
-  <concept_description concept_description_id="6151" concept_id="6151" description="House details on the facility of care" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="0bd07ec2-1b0a-4efb-8759-b4d0eec41d51"/>
-  <concept_description concept_description_id="6152" concept_id="6152" description="Numeric coded location of ANC or PNC care" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="43a8bda1-df54-49f5-990d-515525221bde"/>
-  <concept_description concept_description_id="6153" concept_id="6153" description="Numeric coded location of CWC care" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="e6881af6-e455-4bbd-900e-e4e2a769cf07"/>
-  <concept_description concept_description_id="6154" concept_id="6154" description="Comments" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="5c8c6c0f-9ebe-4948-ad5c-5d111debd541"/>
-  <concept_description concept_description_id="6155" concept_id="6155" description="Ghana ANC Registration Number" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="0757f634-7940-46fc-9c1f-58a6476d438f"/>
-  <concept_description concept_description_id="6156" concept_id="6156" description="Ghana CWC Registration Number" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="04a49f98-80d1-41c3-b432-e8fa0df0a8c7"/>
-  <concept_description concept_description_id="6157" concept_id="6157" description="Question on encounter form: &quot;Is patient currently insured?&quot;" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" uuid="dfadec1d-fd92-4dcb-8ab8-7057dc36c53f"/>
-  <concept_description concept_description_id="6158" concept_id="6158" description="Is smell of post-partum vaginal discharge foul?" locale="en" creator="1" date_created="2010-10-04 12:34:44.0" uuid="b69b238b-fea9-4b80-844f-4d9e97f4622e"/>
-  <concept_description concept_description_id="6159" concept_id="6159" description="General finding of a trace positive result." locale="en" creator="1" date_created="2010-10-04 12:34:44.0" uuid="35c98215-20ba-4ce0-a5c2-be4c63998bc4"/>
-  <concept_description concept_description_id="6161" concept_id="6161" description="Question: &quot;Is this a new patient?&quot;" locale="en" creator="1" date_created="2010-12-20 12:34:44.0" uuid="35c98215-20ba-4ce0-a5c2-be4c63998bc9"/>
-  <concept_name concept_id="6100" name="VISIT NUMBER" locale="en" creator="1" date_created="2010-06-30 16:07:23.0" concept_name_id="6100" voided="0" uuid="2d21025c-3ebc-48e5-ba86-9fa451cc6316"/>
-  <concept_name concept_id="6101" name="TETANUS TOXOID DOSE" locale="en" creator="1" date_created="2010-06-30 16:07:23.0" concept_name_id="6101" voided="0" uuid="35e5afde-58b8-4eef-b94f-81f539f3f406"/>
-  <concept_name concept_id="6102" name="INTERMITTENT PREVENTATIVE TREATMENT DOSE" locale="en" creator="1" date_created="2010-06-30 16:07:23.0" concept_name_id="6102" voided="0" uuid="8cc20d23-4b12-4b87-bb61-15e288ad3872"/>
-  <concept_name concept_id="6103" name="HIV TEST RESULT" locale="en" creator="1" date_created="2010-06-30 16:07:23.0" concept_name_id="6103" voided="0" uuid="63e302e7-ee86-4557-bcad-ee35d82aeda5"/>
-  <concept_name concept_id="6104" name="TERMINATION TYPE" locale="en" creator="1" date_created="2010-06-30 16:07:23.0" concept_name_id="6104" voided="0" uuid="3b9d2f1d-c908-4317-9229-50e9818f4427"/>
-  <concept_name concept_id="6105" name="TERMINATION COMPLICATION" locale="en" creator="1" date_created="2010-06-30 16:07:23.0" concept_name_id="6105" voided="0" uuid="a4cfb084-ee6c-4219-98b0-b36e7014a60b"/>
-  <concept_name concept_id="6106" name="INTERMITTENT PREVENTATIVE TREATMENT INFANTS DOSE" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6106" voided="0" uuid="990aeefa-307b-4fea-8e89-75838c6eaed7"/>
-  <concept_name concept_id="6107" name="INSECTICIDE TREATED NET USAGE" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6107" voided="0" uuid="7921e6cc-4994-464b-9453-d74f6736b50b"/>
-  <concept_name concept_id="6108" name="ORAL POLIO VACCINATION DOSE" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6108" voided="0" uuid="7197a890-7ce4-403d-b658-940d4c12c25a"/>
-  <concept_name concept_id="6109" name="PENTA VACCINATION DOSE" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6109" voided="0" uuid="51e2a71f-a4f4-4cba-852d-62491be78c4e"/>
-  <concept_name concept_id="6110" name="CEREBRO-SPINAL MENINGITIS VACCINATION" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6110" voided="0" uuid="0f3bd0d2-9695-4d36-9925-4d5dff6c2537"/>
-  <concept_name concept_id="6111" name="VITAMIN A" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6111" voided="0" uuid="4bf09e82-e944-4500-ad01-a4a10e9e435f"/>
-  <concept_name concept_id="6112" name="DATE OF CONFINEMENT CONFIRMED" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6112" voided="0" uuid="14faef48-6b0a-41fd-83aa-25cc871185d2"/>
-  <concept_name concept_id="6113" name="MESSAGE PROGRAM ENROLLMENT REFERENCE DATE" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6113" voided="0" uuid="000ec8b9-269f-4386-b73f-1e3f82f661fb"/>
-  <concept_name concept_id="6114" name="SERIAL NUMBER" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6114" voided="0" uuid="ad353597-88c4-4f4f-a71c-edcce219a28b"/>
-  <concept_name concept_id="6115" name="NEW CASE" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6115" voided="0" uuid="2c54ce51-c76c-4c0d-b0c8-1cdcf035efe3"/>
-  <concept_name concept_id="6116" name="REFERRED" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6116" voided="0" uuid="631a8fbd-8c5e-497e-aff8-c932ac0ecd40"/>
-  <concept_name concept_id="6117" name="PRIMARY DIAGNOSIS " locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6117" voided="0" uuid="81ed50bb-7abd-42be-9ff7-d2b53eac3eff"/>
-  <concept_name concept_id="6118" name="SECONDARY DIAGNOSIS" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6118" voided="0" uuid="9f2ebeac-5c85-483a-b6ee-2272468d2911"/>
-  <concept_name concept_id="6119" name="DELIVERY MODE" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6119" voided="0" uuid="17aee48b-e4a6-4157-b725-06460be14e89"/>
-  <concept_name concept_id="6120" name="DELIVERY LOCATION" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6120" voided="0" uuid="47110e91-4a17-4d81-8c0f-dc17ce170941"/>
-  <concept_name concept_id="6121" name="DELIVERED BY" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6121" voided="0" uuid="24848acd-2b13-4c30-99f9-92cc9f4a9a3d"/>
-  <concept_name concept_id="6122" name="DELIVERY OUTCOME" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6122" voided="0" uuid="eef91e35-b880-4701-8ae7-657ec86c1f2b"/>
-  <concept_name concept_id="6123" name="BIRTH OUTCOME" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6123" voided="0" uuid="d6ac19d7-7897-485b-915e-3b85097af8bb"/>
-  <concept_name concept_id="6124" name="MALARIA RAPID TEST" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6124" voided="0" uuid="fc1bb5ae-117f-49c3-ade5-e128b000d96b"/>
-  <concept_name concept_id="6125" name="VDRL TREATMENT" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6125" voided="0" uuid="d092a076-ed6f-4c0e-95ce-c0cc5c0a06f3"/>
-  <concept_name concept_id="6126" name="URINE PROTEIN TEST" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6126" voided="0" uuid="46b9843b-ac93-4109-b801-c80f1281bc16"/>
-  <concept_name concept_id="6127" name="URINE GLUCOSE TEST" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6127" voided="0" uuid="1e7b8cdd-7ef8-4afa-b91d-6b457d42488d"/>
-  <concept_name concept_id="6128" name="FETAL HEART RATE" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6128" voided="0" uuid="dad23649-0f05-4bdd-bc40-abb13bb32e8a"/>
-  <concept_name concept_id="6129" name="FUNDAL HEIGHT" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6129" voided="0" uuid="78f6e987-f008-4682-8210-a86babe8fbd8"/>
-  <concept_name concept_id="6130" name="VVF REPAIR" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6130" voided="0" uuid="8749de33-a21c-4db1-87b3-37b90c9fe8a4"/>
-  <concept_name concept_id="6131" name="DEWORMER" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6131" voided="0" uuid="7d23fb61-a00c-493a-a048-15c5e732b9ed"/>
-  <concept_name concept_id="6132" name="PMTCT" locale="en" creator="1" date_created="2010-06-30 16:07:24.0" concept_name_id="6132" voided="0" uuid="701474ab-dd97-49de-8a6a-8b4306a07452"/>
-  <concept_name concept_id="6133" name="PMTCT TREATMENT" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6133" voided="0" uuid="ed9ba81e-3df5-40a2-8049-f68c4b580cb4"/>
-  <concept_name concept_id="6134" name="ACT TREATMENT" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6134" voided="0" uuid="6f2f43cd-8d09-4115-a970-7db10db8d8d3"/>
-  <concept_name concept_id="6135" name="HIV PRE-TEST COUNSELING" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6135" voided="0" uuid="1305bd56-3a4a-4cc0-bdb1-51cef864cb7d"/>
-  <concept_name concept_id="6136" name="HIV POST-TEST COUNSELING" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6136" voided="0" uuid="27f40db8-6e59-405f-beb0-4559484fab2f"/>
-  <concept_name concept_id="6137" name="DELIVERY COMPLICATION" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6137" voided="0" uuid="db6a3a3a-25fb-4409-861b-12e11f4ec31e"/>
-  <concept_name concept_id="6138" name="POST-ABORTION FP COUNSELING" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6138" voided="0" uuid="fb0edc65-a525-41be-9414-bcbf7c70f678"/>
-  <concept_name concept_id="6139" name="POST-ABORTION FP ACCEPTED" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6139" voided="0" uuid="bcc1c657-3613-41df-80b5-89f945e89215"/>
-  <concept_name concept_id="6140" name="IPT REACTION" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6140" voided="0" uuid="3312ca31-bf29-4297-bc4f-55c9b296da8a"/>
-  <concept_name concept_id="6141" name="LOCHIA COLOUR" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6141" voided="0" uuid="beb1efcb-0ce5-4654-9a96-4dc8009d013b"/>
-  <concept_name concept_id="6142" name="LOCHIA EXCESS AMOUNT" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6142" voided="0" uuid="215e36e0-383f-432f-93ce-5a79745f2d6c"/>
-  <concept_name concept_id="6143" name="MIDDLE UPPER ARM CIRCUMFERENCE" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6143" voided="0" uuid="c1afc5ab-1ed4-4f3a-94c0-c603f3b4c318"/>
-  <concept_name concept_id="6144" name="MATERNAL DEATH" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6144" voided="0" uuid="2859066b-9f3e-486d-b918-84aaa9b1e173"/>
-  <concept_name concept_id="6145" name="PREGNANCY, TERMINATION PROCEDURE" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6145" voided="0" uuid="02bbadcc-8fb8-4e99-b5c6-7a77263d05e7"/>
-  <concept_name concept_id="6146" name="CORD CONDITION " locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6146" voided="0" uuid="9776acac-9d30-4888-aaa5-b3899319326e"/>
-  <concept_name concept_id="6147" name="CONDITION OF BABY" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6147" voided="0" uuid="2f18abe8-ff0b-4187-9533-49da806b0e1f"/>
-  <concept_name concept_id="6148" name="NEXT ANC DATE" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6148" voided="0" uuid="8283ee7b-33ac-48fd-b0b1-6322cece86c0"/>
-  <concept_name concept_id="6149" name="MALE INVOLVEMENT" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6149" voided="0" uuid="bb7b190a-2e8d-4214-a575-840959e92bb0"/>
-  <concept_name concept_id="6150" name="COMMUNITY" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6150" voided="0" uuid="458fc144-66af-40b3-84f9-41761d69392e"/>
-  <concept_name concept_id="6151" name="HOUSE" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6151" voided="0" uuid="78aa5e09-be04-4ad7-814d-a1b851f19c48"/>
-  <concept_name concept_id="6152" name="ANC PNC LOCATION" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6152" voided="0" uuid="bc5d42fc-7cf5-46af-95bc-3f9f65c709fe"/>
-  <concept_name concept_id="6153" name="CWC LOCATION" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6153" voided="0" uuid="43fdad71-ff77-4d9b-a032-609c2140c5a6"/>
-  <concept_name concept_id="6154" name="COMMENTS" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6154" voided="0" uuid="61ef22c5-077b-4d8d-9a73-a33d82128c2e"/>
-  <concept_name concept_id="6155" name="ANC REGISTRATION NUMBER" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6155" voided="0" uuid="bfb951a6-1c81-49ef-ae64-1b7f047abad1"/>
-  <concept_name concept_id="6156" name="CWC REGISTRATION NUMBER" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6156" voided="0" uuid="e3652abe-515d-4a3e-81e0-0f2185bdbd83"/>
-  <concept_name concept_id="6157" name="INSURED" locale="en" creator="1" date_created="2010-06-30 16:07:25.0" concept_name_id="6157" voided="0" uuid="6b08a0bf-7901-4254-93cf-03287d2994a7"/>
-  <concept_name concept_id="6158" name="LOCHIA FOUL ODOUR" locale="en" creator="1" date_created="2010-10-04 12:34:44.0" concept_name_id="6158" voided="0" uuid="395caabc-36c4-4c01-83e3-c7bb2259821a"/>
-  <concept_name concept_id="6159" name="TRACE" locale="en" creator="1" date_created="2010-10-04 12:34:44.0" concept_name_id="6159" voided="0" uuid="cc13f783-f711-4578-9638-f3ea285a24f5"/>
-  <concept_name concept_id="6161" name="NEW PATIENT" locale="en" creator="1" date_created="2010-12-20 16:07:24.0" concept_name_id="6161" voided="0" uuid="2c54ce51-c76c-4c0d-b0c8-1cdcf035efe9"/>
-  <concept_name_tag_map concept_name_id="6100" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6101" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6102" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6103" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6104" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6105" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6106" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6107" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6108" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6109" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6110" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6111" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6112" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6113" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6114" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6115" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6116" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6117" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6118" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6119" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6120" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6121" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6122" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6123" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6124" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6125" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6126" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6127" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6128" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6129" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6130" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6131" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6132" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6133" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6134" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6135" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6136" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6137" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6138" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6139" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6140" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6141" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6142" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6143" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6144" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6145" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6146" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6147" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6148" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6149" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6150" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6151" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6152" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6153" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6154" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6155" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6156" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6157" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6158" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6159" concept_name_tag_id="4"/>
-  <concept_name_tag_map concept_name_id="6161" concept_name_tag_id="4"/>
-  <concept_word concept_word_id="6598" concept_id="6100" word="VISIT" locale="en" concept_name_id="6100"/>
-  <concept_word concept_word_id="6599" concept_id="6100" word="NUMBER" locale="en" concept_name_id="6100"/>
-  <concept_word concept_word_id="6600" concept_id="6101" word="TETANUS" locale="en" concept_name_id="6101"/>
-  <concept_word concept_word_id="6601" concept_id="6101" word="DOSE" locale="en" concept_name_id="6101"/>
-  <concept_word concept_word_id="6602" concept_id="6101" word="TOXOID" locale="en" concept_name_id="6101"/>
-  <concept_word concept_word_id="6603" concept_id="6102" word="TREATMENT" locale="en" concept_name_id="6102"/>
-  <concept_word concept_word_id="6604" concept_id="6102" word="PREVENTATIVE" locale="en" concept_name_id="6102"/>
-  <concept_word concept_word_id="6605" concept_id="6102" word="INTERMITTENT" locale="en" concept_name_id="6102"/>
-  <concept_word concept_word_id="6606" concept_id="6102" word="DOSE" locale="en" concept_name_id="6102"/>
-  <concept_word concept_word_id="6607" concept_id="6103" word="RESULT" locale="en" concept_name_id="6103"/>
-  <concept_word concept_word_id="6608" concept_id="6103" word="TEST" locale="en" concept_name_id="6103"/>
-  <concept_word concept_word_id="6609" concept_id="6103" word="HIV" locale="en" concept_name_id="6103"/>
-  <concept_word concept_word_id="6610" concept_id="6104" word="TYPE" locale="en" concept_name_id="6104"/>
-  <concept_word concept_word_id="6611" concept_id="6104" word="TERMINATION" locale="en" concept_name_id="6104"/>
-  <concept_word concept_word_id="6612" concept_id="6105" word="TERMINATION" locale="en" concept_name_id="6105"/>
-  <concept_word concept_word_id="6613" concept_id="6105" word="COMPLICATION" locale="en" concept_name_id="6105"/>
-  <concept_word concept_word_id="6614" concept_id="6106" word="INFANTS" locale="en" concept_name_id="6106"/>
-  <concept_word concept_word_id="6615" concept_id="6106" word="INTERMITTENT" locale="en" concept_name_id="6106"/>
-  <concept_word concept_word_id="6616" concept_id="6106" word="TREATMENT" locale="en" concept_name_id="6106"/>
-  <concept_word concept_word_id="6617" concept_id="6106" word="PREVENTATIVE" locale="en" concept_name_id="6106"/>
-  <concept_word concept_word_id="6618" concept_id="6107" word="NET" locale="en" concept_name_id="6107"/>
-  <concept_word concept_word_id="6619" concept_id="6107" word="USAGE" locale="en" concept_name_id="6107"/>
-  <concept_word concept_word_id="6620" concept_id="6107" word="TREATED" locale="en" concept_name_id="6107"/>
-  <concept_word concept_word_id="6621" concept_id="6107" word="INSECTICIDE" locale="en" concept_name_id="6107"/>
-  <concept_word concept_word_id="6622" concept_id="6108" word="VACCINATION" locale="en" concept_name_id="6108"/>
-  <concept_word concept_word_id="6623" concept_id="6108" word="DOSE" locale="en" concept_name_id="6108"/>
-  <concept_word concept_word_id="6624" concept_id="6108" word="POLIO" locale="en" concept_name_id="6108"/>
-  <concept_word concept_word_id="6625" concept_id="6108" word="ORAL" locale="en" concept_name_id="6108"/>
-  <concept_word concept_word_id="6626" concept_id="6109" word="VACCINATION" locale="en" concept_name_id="6109"/>
-  <concept_word concept_word_id="6627" concept_id="6109" word="PENTA" locale="en" concept_name_id="6109"/>
-  <concept_word concept_word_id="6628" concept_id="6109" word="DOSE" locale="en" concept_name_id="6109"/>
-  <concept_word concept_word_id="6629" concept_id="6110" word="CEREBRO" locale="en" concept_name_id="6110"/>
-  <concept_word concept_word_id="6630" concept_id="6110" word="SPINAL" locale="en" concept_name_id="6110"/>
-  <concept_word concept_word_id="6631" concept_id="6110" word="VACCINATION" locale="en" concept_name_id="6110"/>
-  <concept_word concept_word_id="6632" concept_id="6110" word="MENINGITIS" locale="en" concept_name_id="6110"/>
-  <concept_word concept_word_id="6633" concept_id="6111" word="VITAMIN" locale="en" concept_name_id="6111"/>
-  <concept_word concept_word_id="6634" concept_id="6112" word="CONFIRMED" locale="en" concept_name_id="6112"/>
-  <concept_word concept_word_id="6635" concept_id="6112" word="CONFINEMENT" locale="en" concept_name_id="6112"/>
-  <concept_word concept_word_id="6636" concept_id="6112" word="DATE" locale="en" concept_name_id="6112"/>
-  <concept_word concept_word_id="6637" concept_id="6113" word="MESSAGE" locale="en" concept_name_id="6113"/>
-  <concept_word concept_word_id="6638" concept_id="6113" word="REFERENCE" locale="en" concept_name_id="6113"/>
-  <concept_word concept_word_id="6639" concept_id="6113" word="PROGRAM" locale="en" concept_name_id="6113"/>
-  <concept_word concept_word_id="6640" concept_id="6113" word="ENROLLMENT" locale="en" concept_name_id="6113"/>
-  <concept_word concept_word_id="6641" concept_id="6113" word="DATE" locale="en" concept_name_id="6113"/>
-  <concept_word concept_word_id="6642" concept_id="6114" word="SERIAL" locale="en" concept_name_id="6114"/>
-  <concept_word concept_word_id="6643" concept_id="6114" word="NUMBER" locale="en" concept_name_id="6114"/>
-  <concept_word concept_word_id="6644" concept_id="6115" word="NEW" locale="en" concept_name_id="6115"/>
-  <concept_word concept_word_id="6645" concept_id="6115" word="CASE" locale="en" concept_name_id="6115"/>
-  <concept_word concept_word_id="6646" concept_id="6116" word="REFERRED" locale="en" concept_name_id="6116"/>
-  <concept_word concept_word_id="6647" concept_id="6117" word="DIAGNOSIS" locale="en" concept_name_id="6117"/>
-  <concept_word concept_word_id="6648" concept_id="6117" word="PRIMARY" locale="en" concept_name_id="6117"/>
-  <concept_word concept_word_id="6649" concept_id="6118" word="DIAGNOSIS" locale="en" concept_name_id="6118"/>
-  <concept_word concept_word_id="6650" concept_id="6118" word="SECONDARY" locale="en" concept_name_id="6118"/>
-  <concept_word concept_word_id="6651" concept_id="6119" word="DELIVERY" locale="en" concept_name_id="6119"/>
-  <concept_word concept_word_id="6652" concept_id="6119" word="MODE" locale="en" concept_name_id="6119"/>
-  <concept_word concept_word_id="6653" concept_id="6120" word="DELIVERY" locale="en" concept_name_id="6120"/>
-  <concept_word concept_word_id="6654" concept_id="6120" word="LOCATION" locale="en" concept_name_id="6120"/>
-  <concept_word concept_word_id="6655" concept_id="6121" word="DELIVERED" locale="en" concept_name_id="6121"/>
-  <concept_word concept_word_id="6656" concept_id="6122" word="OUTCOME" locale="en" concept_name_id="6122"/>
-  <concept_word concept_word_id="6657" concept_id="6122" word="DELIVERY" locale="en" concept_name_id="6122"/>
-  <concept_word concept_word_id="6658" concept_id="6123" word="OUTCOME" locale="en" concept_name_id="6123"/>
-  <concept_word concept_word_id="6659" concept_id="6123" word="BIRTH" locale="en" concept_name_id="6123"/>
-  <concept_word concept_word_id="6744" concept_id="6124" word="MALARIA" locale="en" concept_name_id="6124"/>
-  <concept_word concept_word_id="6745" concept_id="6124" word="TEST" locale="en" concept_name_id="6124"/>
-  <concept_word concept_word_id="6746" concept_id="6124" word="RAPID" locale="en" concept_name_id="6124"/>
-  <concept_word concept_word_id="6663" concept_id="6125" word="TREATMENT" locale="en" concept_name_id="6125"/>
-  <concept_word concept_word_id="6664" concept_id="6125" word="VDRL" locale="en" concept_name_id="6125"/>
-  <concept_word concept_word_id="6747" concept_id="6126" word="URINE" locale="en" concept_name_id="6126"/>
-  <concept_word concept_word_id="6748" concept_id="6126" word="TEST" locale="en" concept_name_id="6126"/>
-  <concept_word concept_word_id="6749" concept_id="6126" word="PROTEIN" locale="en" concept_name_id="6126"/>
-  <concept_word concept_word_id="6750" concept_id="6127" word="TEST" locale="en" concept_name_id="6127"/>
-  <concept_word concept_word_id="6751" concept_id="6127" word="GLUCOSE" locale="en" concept_name_id="6127"/>
-  <concept_word concept_word_id="6752" concept_id="6127" word="URINE" locale="en" concept_name_id="6127"/>
-  <concept_word concept_word_id="6671" concept_id="6128" word="HEART" locale="en" concept_name_id="6128"/>
-  <concept_word concept_word_id="6672" concept_id="6128" word="FETAL" locale="en" concept_name_id="6128"/>
-  <concept_word concept_word_id="6673" concept_id="6128" word="RATE" locale="en" concept_name_id="6128"/>
-  <concept_word concept_word_id="6674" concept_id="6129" word="HEIGHT" locale="en" concept_name_id="6129"/>
-  <concept_word concept_word_id="6675" concept_id="6129" word="FUNDAL" locale="en" concept_name_id="6129"/>
-  <concept_word concept_word_id="6676" concept_id="6130" word="REPAIR" locale="en" concept_name_id="6130"/>
-  <concept_word concept_word_id="6677" concept_id="6130" word="VVF" locale="en" concept_name_id="6130"/>
-  <concept_word concept_word_id="6678" concept_id="6131" word="DEWORMER" locale="en" concept_name_id="6131"/>
-  <concept_word concept_word_id="6679" concept_id="6132" word="PMTCT" locale="en" concept_name_id="6132"/>
-  <concept_word concept_word_id="6680" concept_id="6133" word="PMTCT" locale="en" concept_name_id="6133"/>
-  <concept_word concept_word_id="6681" concept_id="6133" word="TREATMENT" locale="en" concept_name_id="6133"/>
-  <concept_word concept_word_id="6682" concept_id="6134" word="TREATMENT" locale="en" concept_name_id="6134"/>
-  <concept_word concept_word_id="6683" concept_id="6134" word="ACT" locale="en" concept_name_id="6134"/>
-  <concept_word concept_word_id="6684" concept_id="6135" word="COUNSELING" locale="en" concept_name_id="6135"/>
-  <concept_word concept_word_id="6685" concept_id="6135" word="HIV" locale="en" concept_name_id="6135"/>
-  <concept_word concept_word_id="6686" concept_id="6135" word="TEST" locale="en" concept_name_id="6135"/>
-  <concept_word concept_word_id="6687" concept_id="6135" word="PRE" locale="en" concept_name_id="6135"/>
-  <concept_word concept_word_id="6688" concept_id="6136" word="COUNSELING" locale="en" concept_name_id="6136"/>
-  <concept_word concept_word_id="6689" concept_id="6136" word="POST" locale="en" concept_name_id="6136"/>
-  <concept_word concept_word_id="6690" concept_id="6136" word="HIV" locale="en" concept_name_id="6136"/>
-  <concept_word concept_word_id="6691" concept_id="6136" word="TEST" locale="en" concept_name_id="6136"/>
-  <concept_word concept_word_id="6692" concept_id="6137" word="DELIVERY" locale="en" concept_name_id="6137"/>
-  <concept_word concept_word_id="6693" concept_id="6137" word="COMPLICATION" locale="en" concept_name_id="6137"/>
-  <concept_word concept_word_id="6694" concept_id="6138" word="ABORTION" locale="en" concept_name_id="6138"/>
-  <concept_word concept_word_id="6695" concept_id="6138" word="FP" locale="en" concept_name_id="6138"/>
-  <concept_word concept_word_id="6696" concept_id="6138" word="POST" locale="en" concept_name_id="6138"/>
-  <concept_word concept_word_id="6697" concept_id="6138" word="COUNSELING" locale="en" concept_name_id="6138"/>
-  <concept_word concept_word_id="6698" concept_id="6139" word="ACCEPTED" locale="en" concept_name_id="6139"/>
-  <concept_word concept_word_id="6699" concept_id="6139" word="POST" locale="en" concept_name_id="6139"/>
-  <concept_word concept_word_id="6700" concept_id="6139" word="FP" locale="en" concept_name_id="6139"/>
-  <concept_word concept_word_id="6701" concept_id="6139" word="ABORTION" locale="en" concept_name_id="6139"/>
-  <concept_word concept_word_id="6753" concept_id="6140" word="REACTION" locale="en" concept_name_id="6140"/>
-  <concept_word concept_word_id="6754" concept_id="6140" word="IPT" locale="en" concept_name_id="6140"/>
-  <concept_word concept_word_id="6704" concept_id="6141" word="LOCHIA" locale="en" concept_name_id="6141"/>
-  <concept_word concept_word_id="6705" concept_id="6141" word="COLOUR" locale="en" concept_name_id="6141"/>
-  <concept_word concept_word_id="6706" concept_id="6142" word="LOCHIA" locale="en" concept_name_id="6142"/>
-  <concept_word concept_word_id="6707" concept_id="6142" word="EXCESS" locale="en" concept_name_id="6142"/>
-  <concept_word concept_word_id="6708" concept_id="6142" word="AMOUNT" locale="en" concept_name_id="6142"/>
-  <concept_word concept_word_id="6709" concept_id="6143" word="UPPER" locale="en" concept_name_id="6143"/>
-  <concept_word concept_word_id="6710" concept_id="6143" word="MIDDLE" locale="en" concept_name_id="6143"/>
-  <concept_word concept_word_id="6711" concept_id="6143" word="CIRCUMFERENCE" locale="en" concept_name_id="6143"/>
-  <concept_word concept_word_id="6712" concept_id="6143" word="ARM" locale="en" concept_name_id="6143"/>
-  <concept_word concept_word_id="6713" concept_id="6144" word="MATERNAL" locale="en" concept_name_id="6144"/>
-  <concept_word concept_word_id="6714" concept_id="6144" word="DEATH" locale="en" concept_name_id="6144"/>
-  <concept_word concept_word_id="6715" concept_id="6145" word="TERMINATION" locale="en" concept_name_id="6145"/>
-  <concept_word concept_word_id="6716" concept_id="6145" word="PROCEDURE" locale="en" concept_name_id="6145"/>
-  <concept_word concept_word_id="6717" concept_id="6145" word="PREGNANCY" locale="en" concept_name_id="6145"/>
-  <concept_word concept_word_id="6718" concept_id="6146" word="CONDITION" locale="en" concept_name_id="6146"/>
-  <concept_word concept_word_id="6719" concept_id="6146" word="CORD" locale="en" concept_name_id="6146"/>
-  <concept_word concept_word_id="6720" concept_id="6147" word="CONDITION" locale="en" concept_name_id="6147"/>
-  <concept_word concept_word_id="6721" concept_id="6147" word="BABY" locale="en" concept_name_id="6147"/>
-  <concept_word concept_word_id="6722" concept_id="6148" word="DATE" locale="en" concept_name_id="6148"/>
-  <concept_word concept_word_id="6723" concept_id="6148" word="NEXT" locale="en" concept_name_id="6148"/>
-  <concept_word concept_word_id="6724" concept_id="6148" word="ANC" locale="en" concept_name_id="6148"/>
-  <concept_word concept_word_id="6725" concept_id="6149" word="MALE" locale="en" concept_name_id="6149"/>
-  <concept_word concept_word_id="6726" concept_id="6149" word="INVOLVEMENT" locale="en" concept_name_id="6149"/>
-  <concept_word concept_word_id="6727" concept_id="6150" word="COMMUNITY" locale="en" concept_name_id="6150"/>
-  <concept_word concept_word_id="6728" concept_id="6151" word="HOUSE" locale="en" concept_name_id="6151"/>
-  <concept_word concept_word_id="6729" concept_id="6152" word="LOCATION" locale="en" concept_name_id="6152"/>
-  <concept_word concept_word_id="6730" concept_id="6152" word="ANC" locale="en" concept_name_id="6152"/>
-  <concept_word concept_word_id="6731" concept_id="6152" word="PNC" locale="en" concept_name_id="6152"/>
-  <concept_word concept_word_id="6732" concept_id="6153" word="CWC" locale="en" concept_name_id="6153"/>
-  <concept_word concept_word_id="6733" concept_id="6153" word="LOCATION" locale="en" concept_name_id="6153"/>
-  <concept_word concept_word_id="6734" concept_id="6154" word="COMMENTS" locale="en" concept_name_id="6154"/>
-  <concept_word concept_word_id="6735" concept_id="6155" word="ANC" locale="en" concept_name_id="6155"/>
-  <concept_word concept_word_id="6736" concept_id="6155" word="NUMBER" locale="en" concept_name_id="6155"/>
-  <concept_word concept_word_id="6737" concept_id="6155" word="REGISTRATION" locale="en" concept_name_id="6155"/>
-  <concept_word concept_word_id="6738" concept_id="6156" word="NUMBER" locale="en" concept_name_id="6156"/>
-  <concept_word concept_word_id="6739" concept_id="6156" word="REGISTRATION" locale="en" concept_name_id="6156"/>
-  <concept_word concept_word_id="6740" concept_id="6156" word="CWC" locale="en" concept_name_id="6156"/>
-  <concept_word concept_word_id="6741" concept_id="6157" word="INSURED" locale="en" concept_name_id="6157"/>
-  <concept_word concept_word_id="6742" concept_id="6158" word="ODOUR" locale="en" concept_name_id="6158"/>
-  <concept_word concept_word_id="6743" concept_id="6158" word="FOUL" locale="en" concept_name_id="6158"/>
-  <concept_word concept_word_id="6744" concept_id="6158" word="LOCHIA" locale="en" concept_name_id="6158"/>
-  <concept_word concept_word_id="6745" concept_id="6159" word="TRACE" locale="en" concept_name_id="6159"/>
-  <concept_word concept_word_id="6746" concept_id="6106" word="DOSE" locale="en" concept_name_id="6106"/>
-  <concept_word concept_word_id="6747" concept_id="6161" word="NEW" locale="en" concept_name_id="6161"/>
-  <concept_word concept_word_id="6748" concept_id="6161" word="PATIENT" locale="en" concept_name_id="6161"/>
-  <encounter_type encounter_type_id="5" name="ANCVISIT" description="Ghana Antenatal Care (ANC) Visit" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="b91328d5-5721-4eac-8576-89a35922e26f"/>
-  <encounter_type encounter_type_id="6" name="PREGREGVISIT" description="Ghana Pregnancy Registration Visit" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="235bf2ec-7f9e-4e4b-9372-f5a9506c9505"/>
-  <encounter_type encounter_type_id="7" name="PREGTERMVISIT" description="Ghana Pregnancy Termination Visit" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="9421e662-30a2-4ba9-8fb2-e81fed66992e"/>
-  <encounter_type encounter_type_id="8" name="PREGDELVISIT" description="Ghana Pregnancy Delivery Visit" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="5c763298-164e-49a1-9ce8-6ac1c084c204"/>
-  <encounter_type encounter_type_id="9" name="OUTPATIENTVISIT" description="Ghana Outpatient Visit" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="6e3ab568-5809-453e-9a0e-10b5dad82548"/>
-  <encounter_type encounter_type_id="10" name="TTVISIT" description="Ghana Tetanus outside Pregnancy Visit" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="820c9021-c287-47c1-bee2-49fbcdcb9572"/>
-  <encounter_type encounter_type_id="11" name="CWCVISIT" description="Ghana Child Immunization Visit" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="fbb85153-64e0-4f4a-9aa9-056eb5964262"/>
-  <encounter_type encounter_type_id="12" name="PNCMOTHERVISIT" description="Ghana Mother Postnatal Care (PNC) Visit" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="908754de-a1ba-4656-81e8-05c6bb3d4d05"/>
-  <encounter_type encounter_type_id="13" name="PNCCHILDVISIT" description="Ghana Child Postnatal Care (PNC) Visit" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="73bc13de-e783-482e-a361-35a82e300c11"/>
-  <encounter_type encounter_type_id="14" name="PREGDELNOTIFYVISIT" description="Ghana Pregnancy Delivery Notification" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="6719d503-de7d-4f78-aadc-4a60ee37e100"/>
-  <encounter_type encounter_type_id="15" name="ANCREGVISIT" description="Ghana Antental Care (ANC) Registration" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="feada9af-6676-4bf3-9d97-78d59c329dff"/>
-  <encounter_type encounter_type_id="16" name="CWCREGVISIT" description="Ghana Child Immunization Registration" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="f1332035-7e35-489e-908b-3d2dfbf2c19b"/>
-  <encounter_type encounter_type_id="17" name="BIRTHVISIT" description="Ghana Child Birth Visit" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="06eb0bcc-314f-46e8-a469-6641ea504f99"/>
-  <encounter_type encounter_type_id="18" name="PATIENTREGVISIT" description="Ghana Patient Registration Visit" creator="1" date_created="2010-06-30 16:07:23.0" retired="0" uuid="d060ad51-ce73-4c19-81d7-c371516f0b5d"/>
-  <encounter_type encounter_type_id="19" name="PATIENTHISTORY" description="Ghana Patient History" creator="1" date_created="2010-10-04 12:34:42.0" retired="0" uuid="5b53549e-eb24-4d77-8245-41445665da28"/>
-  <location location_id="65" name="Ghana" description="Republic of Ghana, Country, Root in hierarchy" country="Ghana" creator="1" date_created="2010-07-09 15:58:23.0" retired="0" uuid="d1e616ce-97ec-43ca-b739-2d5d1bff5bfc"/>
-  <patient_identifier_type patient_identifier_type_id="6" name="MoTeCH Id" description="Patient Id for MoTeCH system." check_digit="1" creator="1" date_created="2010-07-09 15:58:22.0" required="0" validator="org.motechproject.server.omod.MotechIdVerhoeffValidator" retired="0" uuid="5423629e-8b94-11df-9b9f-2eb1ed90087a"/>
-  <patient_identifier_type patient_identifier_type_id="7" name="MoTeCH Staff Id" description="Staff Id for MoTeCH system." check_digit="1" creator="1" date_created="2010-07-09 15:58:22.0" required="0" validator="org.motechproject.server.omod.VerhoeffValidator" retired="0" uuid="542365ce-8b94-11df-9b9f-2eb1ed90087a"/>
-  <patient_identifier_type patient_identifier_type_id="8" name="MoTeCH Facility Id" description="Facility Id for MoTeCH system." check_digit="1" creator="1" date_created="2010-07-09 15:58:22.0" required="0" validator="org.motechproject.server.omod.VerhoeffValidator" retired="0" uuid="5423676b-8b94-11df-9b9f-2eb1ed90087a"/>
-  <person_attribute_type person_attribute_type_id="8" name="Phone Number" description="A person&apos;s phone number." format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0" retired="0" uuid="5776412c-8c26-495d-883d-b16e62408e58"/>
-  <person_attribute_type person_attribute_type_id="9" name="NHIS Number" description="A person&apos;s NHIS number." format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0" retired="0" uuid="ad692638-ad5d-45b4-bf4e-06c0e3e607b2"/>
-  <person_attribute_type person_attribute_type_id="10" name="NHIS Expiration Date" description="A person&apos;s NHIS expiration date." format="org.openmrs.util.AttributableDate" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0" retired="0" uuid="fd17578b-19d3-412a-957d-2290bc921d71"/>
-  <person_attribute_type person_attribute_type_id="11" name="Language" description="A person&apos;s language preference for messages." format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0" retired="0" uuid="3f748bf9-0eae-442f-b38a-cddaf4a23d42"/>
-  <person_attribute_type person_attribute_type_id="12" name="Phone Type" description="A person&apos;s phone ownership type (PERSONAL, HOUSEHOLD, or PUBLIC)." format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0" retired="0" uuid="24f16e8b-2b30-4363-a7ef-453a6cf26aa0"/>
-  <person_attribute_type person_attribute_type_id="13" name="Media Type" description="A person&apos;s media type preference for messages." format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0" retired="0" uuid="11e10dc3-768b-4998-bb8c-6a4ac61b4966"/>
-  <person_attribute_type person_attribute_type_id="14" name="Delivery Day" description="A person&apos;s preferred delivery day (SUNDAY to SATURDAY)." format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0" retired="0" uuid="f343bb15-4739-40c6-b283-699ae08b0bb2"/>
-  <person_attribute_type person_attribute_type_id="15" name="Delivery Time" description="A person&apos;s preferred delivery time (HH:mm)." format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0" retired="0" uuid="0059b907-57df-4d85-acde-98dbbc713f3f"/>
-  <person_attribute_type person_attribute_type_id="16" name="Insured" description="Is person insured? (TRUE OR FALSE)" format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0" retired="0" uuid="62c85275-8e75-4bb4-a2db-40e876f4d860"/>
-  <person_attribute_type person_attribute_type_id="17" name="How learned of service" description="How person found out about services." format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0" retired="0" uuid="b55d030a-c8f8-4b4a-a087-07324c72e695"/>
-  <person_attribute_type person_attribute_type_id="18" name="Reason interested in service" description="Reason person is interested in services." format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0" retired="0" uuid="6f94c84c-a174-4129-8785-b72fbdaf2c62"/>
+    <concept concept_id="6100" retired="0" datatype_id="1" class_id="11" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:23.0" uuid="afb47bdb-426b-40f3-b8dd-f7172b64dcb4"/>
+    <concept concept_id="6101" retired="0" datatype_id="1" class_id="3" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:23.0" uuid="c955674f-518a-4f31-b3fb-79cb7764234d"/>
+    <concept concept_id="6102" retired="0" datatype_id="1" class_id="3" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:23.0" uuid="d7fadad1-e55d-4ee8-9e5d-990b3934c16e"/>
+    <concept concept_id="6103" retired="0" datatype_id="3" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:23.0" uuid="2acd752e-6311-449e-bfbe-7ea0c506c010"/>
+    <concept concept_id="6104" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:23.0" uuid="bcd2ade4-c142-48f3-9680-803b14a69199"/>
+    <concept concept_id="6105" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:23.0" uuid="7baffc00-05dc-41f5-a5b5-0ce159678d87"/>
+    <concept concept_id="6106" retired="0" datatype_id="1" class_id="3" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="6faee024-4b2d-41bf-bd10-ec1532756b73"/>
+    <concept concept_id="6107" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="81deb1da-0097-4335-9381-aa25efd73186"/>
+    <concept concept_id="6108" retired="0" datatype_id="1" class_id="3" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="548880fc-7faa-4d74-b8aa-75a7f45ddbb2"/>
+    <concept concept_id="6109" retired="0" datatype_id="1" class_id="3" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="53abb9a0-11e5-41e8-bc28-c53600ece866"/>
+    <concept concept_id="6110" retired="0" datatype_id="4" class_id="3" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="3f97f5b0-99a1-4cce-b6b1-1abfe49480f0"/>
+    <concept concept_id="6111" retired="0" datatype_id="4" class_id="3" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="083661f6-374c-44f5-a0a5-85891ff327d0"/>
+    <concept concept_id="6112" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="5157a354-ff2c-47e8-b3c8-96f30eb69476"/>
+    <concept concept_id="6113" retired="0" datatype_id="8" class_id="11" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="30b3f852-d29a-442a-9e66-f43a298b8452"/>
+    <concept concept_id="6114" retired="0" datatype_id="3" class_id="11" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="4c74e215-638f-44a3-868e-a46093906916"/>
+    <concept concept_id="6115" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="b1816f17-9916-48c1-bb01-efc2d97357cb"/>
+    <concept concept_id="6116" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="220f8291-2e11-4956-bab6-e7ff33e931e4"/>
+    <concept concept_id="6117" retired="0" datatype_id="1" class_id="4" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="0e4e0b82-6f4f-480e-a421-b7689b1c5bdd"/>
+    <concept concept_id="6118" retired="0" datatype_id="1" class_id="4" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="6ef12843-2894-4454-97fd-a8e3b4cea78f"/>
+    <concept concept_id="6119" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="068d6f88-e2c4-4003-b459-f1eef9132c77"/>
+    <concept concept_id="6120" retired="0" datatype_id="1" class_id="11" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="db5c264f-cccd-4aee-ac3f-d3e07311dafe"/>
+    <concept concept_id="6121" retired="0" datatype_id="1" class_id="11" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="c3baae9e-92f3-4a28-b678-6edf05f68d04"/>
+    <concept concept_id="6122" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="5428c604-b5b4-4c79-85cd-d640304f3012"/>
+    <concept concept_id="6123" retired="0" datatype_id="3" class_id="5" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="eda13aea-b393-4830-907a-7ef33c0f24c3"/>
+    <concept concept_id="6124" retired="0" datatype_id="2" class_id="1" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" changed_by="1" date_changed="2010-06-30 16:07:26.0"
+             uuid="0a47d549-4874-4e92-87fe-3989ecb029fc"/>
+    <concept concept_id="6125" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="94785a93-d146-4535-9833-98ba43d29277"/>
+    <concept concept_id="6126" retired="0" datatype_id="2" class_id="1" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" changed_by="1" date_changed="2010-06-30 16:07:26.0"
+             uuid="44359f2d-002c-4da7-bc8a-1c4eafa98482"/>
+    <concept concept_id="6127" retired="0" datatype_id="2" class_id="1" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" changed_by="1" date_changed="2010-06-30 16:07:26.0"
+             uuid="4b164081-1174-4c44-b52b-6b0f72da2a0e"/>
+    <concept concept_id="6128" retired="0" datatype_id="1" class_id="1" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="0fe31295-c326-48b2-a68f-f6f3eb16d434"/>
+    <concept concept_id="6129" retired="0" datatype_id="1" class_id="1" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="7f0396e2-c552-425c-9ce8-6c50dafc7d47"/>
+    <concept concept_id="6130" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="1b1c5897-f36d-4341-80d2-4659a46ea736"/>
+    <concept concept_id="6131" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="825f5dea-231c-4e30-a7d0-bb74e89374d5"/>
+    <concept concept_id="6132" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:24.0" uuid="0d131e10-c027-41a1-8683-ffcebb9c416e"/>
+    <concept concept_id="6133" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="fbcd8aa9-64db-464d-bb14-ba7b9907e7a9"/>
+    <concept concept_id="6134" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="b748686a-d761-420f-ae68-653e9700630b"/>
+    <concept concept_id="6135" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="bd16792c-0690-46e2-ac79-3acc78a5511a"/>
+    <concept concept_id="6136" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="65e4ef7a-a410-45ba-9f54-138c49492734"/>
+    <concept concept_id="6137" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="8bb88c42-f528-4a21-8095-57630447a7d4"/>
+    <concept concept_id="6138" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="810f6157-ff16-4b5f-b83a-8c76ed22e5b4"/>
+    <concept concept_id="6139" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="e17ff0ef-929b-4e78-8d1c-e59b64446efd"/>
+    <concept concept_id="6140" retired="0" datatype_id="2" class_id="1" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" changed_by="1" date_changed="2010-06-30 16:07:26.0"
+             uuid="ead8f7b4-125c-4e17-a9c8-213ea41ec9db"/>
+    <concept concept_id="6141" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="19a322b7-cdea-4f49-9bbf-bb3d1e050fdb"/>
+    <concept concept_id="6142" retired="0" datatype_id="10" class_id="5" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="ee3ff949-032c-4c5c-9aa8-2b4be2dba043"/>
+    <concept concept_id="6143" retired="0" datatype_id="1" class_id="5" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="74fd4c38-489e-459e-905a-0c2513e9a42c"/>
+    <concept concept_id="6144" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="d87a6cd5-09cf-4482-bb5b-7e32e8470c28"/>
+    <concept concept_id="6145" retired="0" datatype_id="1" class_id="2" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="399807be-30d2-491a-a438-0ae0c478c4fd"/>
+    <concept concept_id="6146" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="c770ee8a-31e8-47f4-acf7-bc6decf3b2f7"/>
+    <concept concept_id="6147" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="7c244197-dda9-4fe3-bd10-f9568c1a9f9b"/>
+    <concept concept_id="6148" retired="0" datatype_id="8" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="b102c1bf-ab7d-4926-9547-c5a1e431b80f"/>
+    <concept concept_id="6149" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="7558202e-ca50-424e-b6ce-22e99d0508f5"/>
+    <concept concept_id="6150" retired="0" datatype_id="3" class_id="11" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="a191191b-f778-47d3-a2f9-e16e9ffc99b3"/>
+    <concept concept_id="6151" retired="0" datatype_id="3" class_id="11" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="055c0904-4355-40d3-ab94-84a74f55843f"/>
+    <concept concept_id="6152" retired="0" datatype_id="1" class_id="11" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="770a767c-b5ac-4341-94fb-a84ddda93013"/>
+    <concept concept_id="6153" retired="0" datatype_id="1" class_id="11" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="50aead9b-b948-4599-ac4e-31081aeca950"/>
+    <concept concept_id="6154" retired="0" datatype_id="3" class_id="11" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="9bc60fb5-8c0f-4ba3-b472-d49e19034b33"/>
+    <concept concept_id="6155" retired="0" datatype_id="3" class_id="11" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="91a07450-5432-4f78-981f-b184aae3a7a4"/>
+    <concept concept_id="6156" retired="0" datatype_id="3" class_id="11" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="b3d1467e-422f-4cd4-bb60-a35c65cf8f91"/>
+    <concept concept_id="6157" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-06-30 16:07:25.0" uuid="bb0272f1-503c-4f16-8703-049d617de673"/>
+    <concept concept_id="6158" retired="0" datatype_id="10" class_id="5" is_set="0" creator="1"
+             date_created="2010-10-04 12:34:44.0" uuid="3650a06d-02f7-463a-8374-9fb623c375aa"/>
+    <concept concept_id="6159" retired="0" datatype_id="4" class_id="11" is_set="0" creator="1"
+             date_created="2010-10-04 12:34:44.0" uuid="d5c9489e-84e7-4454-9e78-287eded8e0da"/>
+    <concept concept_id="6161" retired="0" datatype_id="10" class_id="7" is_set="0" creator="1"
+             date_created="2010-12-20 12:34:44.0" uuid="d5c9489e-84e7-4454-9e78-287eded8e0d9"/>
+    <concept_answer concept_answer_id="1021" concept_id="984" answer_concept="5864" creator="1"
+                    date_created="2010-06-30 16:07:26.0" uuid="8a7c14e6-14c8-4e5b-983b-e8d429c3ae9d"/>
+    <concept_answer concept_answer_id="1023" concept_id="984" answer_concept="6111" creator="1"
+                    date_created="2010-06-30 16:07:26.0" uuid="e342b682-d37f-49f2-a14f-70de781f3941"/>
+    <concept_answer concept_answer_id="1024" concept_id="984" answer_concept="6110" creator="1"
+                    date_created="2010-06-30 16:07:26.0" uuid="612afd03-4df8-472e-96db-95b545d7d279"/>
+    <concept_answer concept_answer_id="1025" concept_id="6124" answer_concept="664" creator="1"
+                    date_created="2010-06-30 16:07:26.0" uuid="99e55c67-23c3-49e7-98d9-34eca59b8447"/>
+    <concept_answer concept_answer_id="1026" concept_id="6124" answer_concept="703" creator="1"
+                    date_created="2010-06-30 16:07:26.0" uuid="83d55067-3304-44fe-b5fc-5e14570775c1"/>
+    <concept_answer concept_answer_id="1027" concept_id="6126" answer_concept="664" creator="1"
+                    date_created="2010-06-30 16:07:26.0" uuid="7dbfd21e-03e3-4d9f-a41b-06fa850bc9b3"/>
+    <concept_answer concept_answer_id="1028" concept_id="6126" answer_concept="703" creator="1"
+                    date_created="2010-06-30 16:07:26.0" uuid="ed82e28e-9040-44ca-8a83-dea8e4ce3b8a"/>
+    <concept_answer concept_answer_id="1029" concept_id="6127" answer_concept="664" creator="1"
+                    date_created="2010-06-30 16:07:26.0" uuid="79c561a8-d558-4f5f-a64d-3444b7a8229e"/>
+    <concept_answer concept_answer_id="1030" concept_id="6127" answer_concept="703" creator="1"
+                    date_created="2010-06-30 16:07:26.0" uuid="cc5de9ce-8724-40f7-b2ec-cbf9a68cded2"/>
+    <concept_answer concept_answer_id="1031" concept_id="6140" answer_concept="1229" creator="1"
+                    date_created="2010-06-30 16:07:26.0" uuid="e380d220-965b-4542-957c-6a6af9e93cb2"/>
+    <concept_answer concept_answer_id="1032" concept_id="6140" answer_concept="1228" creator="1"
+                    date_created="2010-06-30 16:07:26.0" uuid="ea1e0d09-703a-4196-a562-3f94dfd0f824"/>
+    <concept_answer concept_answer_id="1033" concept_id="6126" answer_concept="6159" creator="1"
+                    date_created="2010-10-04 12:34:44.0" uuid="a1a3b9ff-3304-4f63-8e24-3408778b2463"/>
+    <concept_answer concept_answer_id="1034" concept_id="6127" answer_concept="6159" creator="1"
+                    date_created="2010-10-04 12:34:44.0" uuid="c924ee7f-7ac9-4069-bc5c-13cf47554a45"/>
+    <concept_description concept_description_id="6100" concept_id="6100" description="Visit Number" locale="en"
+                         creator="1" date_created="2010-06-30 16:07:23.0" uuid="aa9d5f10-6604-4863-b0bd-3f85ad4d1d65"/>
+    <concept_description concept_description_id="6101" concept_id="6101"
+                         description="Dose Number for Tetanus Toxoid Vaccination" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:23.0" uuid="1b4734fc-0a1a-45b7-82e3-59445112dcac"/>
+    <concept_description concept_description_id="6102" concept_id="6102" description="Dose Number for Malaria Treatment"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:23.0"
+                         uuid="4efce055-23e1-4357-ab83-b3524fb6a810"/>
+    <concept_description concept_description_id="6103" concept_id="6103"
+                         description="Question: &quot;What is the patient&apos;s text coded HIV test result?&quot;"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:23.0"
+                         uuid="91b7a605-3a47-4815-83ad-e37b60e21529"/>
+    <concept_description concept_description_id="6104" concept_id="6104"
+                         description="Numeric coded pregnancy termination reason" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:23.0" uuid="c71c4937-8789-4502-baea-4d28d3885090"/>
+    <concept_description concept_description_id="6105" concept_id="6105"
+                         description="Numeric coded pregnancy termination complication" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:23.0" uuid="3d66b103-2fca-470a-a7a8-2fcd0da6c87e"/>
+    <concept_description concept_description_id="6106" concept_id="6106"
+                         description="Dose Number for infant Malaria treatment." locale="en" creator="1"
+                         date_created="2010-06-30 16:07:24.0" uuid="e5e1bb9e-4275-445a-9afb-bd4d8e90b144"/>
+    <concept_description concept_description_id="6107" concept_id="6107"
+                         description="Question on encounter form: &quot;Does the patient use insecticide-treated nets?&quot;"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                         uuid="b91e2ccd-bc0e-4fd2-a05e-742489479317"/>
+    <concept_description concept_description_id="6108" concept_id="6108"
+                         description="Dose Number for child Oral Polio vaccination." locale="en" creator="1"
+                         date_created="2010-06-30 16:07:24.0" uuid="456b55e6-b3e5-4a91-8a8b-001a1f791b61"/>
+    <concept_description concept_description_id="6109" concept_id="6109"
+                         description="Dose Number for child Penta vaccination." locale="en" creator="1"
+                         date_created="2010-06-30 16:07:24.0" uuid="49264518-cb21-49b8-bf25-cd20dd3a3ecf"/>
+    <concept_description concept_description_id="6110" concept_id="6110"
+                         description="Vaccination against Cerebro-Spinal Meningitis." locale="en" creator="1"
+                         date_created="2010-06-30 16:07:24.0" uuid="4aa27aaa-f12c-43dc-9d8f-c40a066faa32"/>
+    <concept_description concept_description_id="6111" concept_id="6111" description="Supplement for Vitamin A."
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                         uuid="4d0f3b5a-644e-454e-bb0b-a47e536cc4a9"/>
+    <concept_description concept_description_id="6112" concept_id="6112"
+                         description="Question: &quot;Is the pregnancy due date confirmed by the CHW?&quot;" locale="en"
+                         creator="1" date_created="2010-06-30 16:07:24.0" uuid="2371c28c-2798-4146-ad66-9bf56ff68332"/>
+    <concept_description concept_description_id="6113" concept_id="6113"
+                         description="Reference Date for Message Program Enrollment" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:24.0" uuid="6864844a-5887-4442-824a-020eedc46a07"/>
+    <concept_description concept_description_id="6114" concept_id="6114" description="Patient register serial number"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                         uuid="b63a6840-5964-4e2a-b027-0b1409992153"/>
+    <concept_description concept_description_id="6115" concept_id="6115"
+                         description="Question: &quot;Is this a new case?&quot;" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:24.0" uuid="71005aeb-f6b4-44c9-ba7b-839d37097b56"/>
+    <concept_description concept_description_id="6116" concept_id="6116"
+                         description="Question: &quot;Was patient referred?&quot;" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:24.0" uuid="b3b05ce9-33b0-4b5b-97a2-6dc99848eadc"/>
+    <concept_description concept_description_id="6117" concept_id="6117" description="Numeric coded primary diagnosis"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                         uuid="3907cd04-cfd3-4591-8887-14b757581d1f"/>
+    <concept_description concept_description_id="6118" concept_id="6118" description="Numeric coded secondary diagnosis"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                         uuid="ed5c2b7c-e0d8-492f-a328-ff88ff351dd0"/>
+    <concept_description concept_description_id="6119" concept_id="6119" description="Numeric coded mode of delivery"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                         uuid="68f41f56-b7e1-428d-9c97-a6c6c01fedc5"/>
+    <concept_description concept_description_id="6120" concept_id="6120" description="Numeric coded place of delivery"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                         uuid="e697b40d-2845-4d13-b421-55fa0aad8174"/>
+    <concept_description concept_description_id="6121" concept_id="6121"
+                         description="Numeric coded who performed delivery" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:24.0" uuid="ead10c95-4560-4541-86ac-f2607dca6022"/>
+    <concept_description concept_description_id="6122" concept_id="6122" description="Numeric coded outcome of delivery"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                         uuid="61dbd669-2dd7-4b27-880d-1ed6b167aaf2"/>
+    <concept_description concept_description_id="6123" concept_id="6123" description="Text coded birth outcome"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                         uuid="22418827-debc-4b67-8356-9836b48f1fc0"/>
+    <concept_description concept_description_id="6124" concept_id="6124" description="Rapid diagnostic test for malaria"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0" changed_by="1"
+                         date_changed="2010-06-30 16:07:26.0" uuid="3cf9fde2-2b56-446f-85f3-4bf0c1354a41"/>
+    <concept_description concept_description_id="6125" concept_id="6125"
+                         description="Question on encounter form: &quot;Was the patient given treatment for syphilis?&quot;"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                         uuid="c6e3ad84-3308-4a85-bd9b-0b7f833ade06"/>
+    <concept_description concept_description_id="6126" concept_id="6126" description="Test for protein in urine"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0" changed_by="1"
+                         date_changed="2010-06-30 16:07:26.0" uuid="884ded76-2d78-464a-8286-7c127d8390c9"/>
+    <concept_description concept_description_id="6127" concept_id="6127" description="Test for glucose in urine"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0" changed_by="1"
+                         date_changed="2010-06-30 16:07:26.0" uuid="3adb23c7-1f19-402d-a24e-b20897eabab9"/>
+    <concept_description concept_description_id="6128" concept_id="6128" description="Fetal heart rate (in bpm)"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                         uuid="3beaceda-7e2d-46f3-8d40-2a3f2c0fcfc2"/>
+    <concept_description concept_description_id="6129" concept_id="6129" description="Measurement of uterus (in cm)"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                         uuid="a3af0ad3-f63a-4bf1-a831-a1c412c74774"/>
+    <concept_description concept_description_id="6130" concept_id="6130"
+                         description="Numeric coded value for Vesico Vaginal Fistula (VVF) repair" locale="en"
+                         creator="1" date_created="2010-06-30 16:07:24.0" uuid="84ab9898-9956-48a1-80c3-338cbd97087e"/>
+    <concept_description concept_description_id="6131" concept_id="6131"
+                         description="Question on encounter form: &quot;Was dewormer given to patient?&quot;"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                         uuid="171c3ca5-7f6e-4212-aea0-0bd111026eba"/>
+    <concept_description concept_description_id="6132" concept_id="6132"
+                         description="Preventing Mother-to-Child Transmission (PMTCT) of HIV" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:24.0" uuid="7e0d796e-2ed4-477d-a015-7fd6b9614c8d"/>
+    <concept_description concept_description_id="6133" concept_id="6133"
+                         description="Question on encounter form: &quot;Was PMTCT HIV treatment given to patient?&quot;"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                         uuid="163101cd-d4a8-4a49-92e4-8d81f8947d0d"/>
+    <concept_description concept_description_id="6134" concept_id="6134"
+                         description="Question on encounter form: &quot;Was Artemisinin-based Combination Therapy (ACT) for Malaria given to patient?&quot;"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                         uuid="0aa2f150-68b1-4ed9-a2d2-f672a7bde4d1"/>
+    <concept_description concept_description_id="6135" concept_id="6135"
+                         description="Question on encounter form: &quot;Was counseling done before HIV test?&quot;"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                         uuid="c51b83b3-bc08-4a95-b9e3-888083161492"/>
+    <concept_description concept_description_id="6136" concept_id="6136"
+                         description="Question on encounter form: &quot;Was counseling done after HIV test?&quot;"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                         uuid="8e073a0a-1c97-476b-9518-d3dafddb3d2d"/>
+    <concept_description concept_description_id="6137" concept_id="6137"
+                         description="Numeric coded value for delivery or post-partum complication" locale="en"
+                         creator="1" date_created="2010-06-30 16:07:25.0" uuid="d1f26cdd-3655-4715-a2fa-e07af9e867a7"/>
+    <concept_description concept_description_id="6138" concept_id="6138"
+                         description="Question on encounter form: &quot;Was family planning counseling done after abortion?&quot;"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                         uuid="36b79591-4f7e-44db-8527-397c3efc5a10"/>
+    <concept_description concept_description_id="6139" concept_id="6139"
+                         description="Question on encounter form: &quot;Did the patient accept family planning after abortion?&quot;"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                         uuid="c761b7e6-aa61-4421-9210-3895181b74bd"/>
+    <concept_description concept_description_id="6140" concept_id="6140"
+                         description="Intermittent Preventive Treatment (IPT) with Sulphadoxine-Pyrimethamine (SP)"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:25.0" changed_by="1"
+                         date_changed="2010-06-30 16:07:26.0" uuid="acedd630-1b29-4135-bf7f-8f805e098bb2"/>
+    <concept_description concept_description_id="6141" concept_id="6141"
+                         description="Numeric coded colour of post-partum vaginal discharge" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:25.0" uuid="150070bf-275e-42f1-b03b-1cc5b619b88a"/>
+    <concept_description concept_description_id="6142" concept_id="6142"
+                         description="Is amount of post-partum vaginal discharge in excess?" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:25.0" uuid="69f3afa8-620c-46f4-a4a5-0f5c1f5071ec"/>
+    <concept_description concept_description_id="6143" concept_id="6143"
+                         description="Circumference of Middle Upper Arm (MUAC) in cm" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:25.0" uuid="0fc08315-766b-4df9-a939-a5e4dfbd88d2"/>
+    <concept_description concept_description_id="6144" concept_id="6144"
+                         description="Question on encounter form: &quot;Death of patient during delivery or abortion procedure?&quot;"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                         uuid="86608ec1-1ceb-4237-9bc0-f36ede5c965c"/>
+    <concept_description concept_description_id="6145" concept_id="6145"
+                         description="Numeric coded procedure used to terminate pregnancy" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:25.0" uuid="bbf226d2-45e8-4acb-ba7c-563a18aa1bce"/>
+    <concept_description concept_description_id="6146" concept_id="6146"
+                         description="Question on encounter form: &quot;Is the condition of the umbilical cord normal?&quot;"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                         uuid="edd53e83-2c35-449b-8ccd-6e14dd85c56d"/>
+    <concept_description concept_description_id="6147" concept_id="6147"
+                         description="Question on encounter form: &quot;Is the condition of the baby good?&quot;"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                         uuid="b2acad40-b176-48ec-8cb9-9e7f9788b2f3"/>
+    <concept_description concept_description_id="6148" concept_id="6148"
+                         description="Question on encounter form: &quot;What is the date of the next antenatal care visit for the patient?&quot;"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                         uuid="42a0e42d-68dc-418f-9fbe-027fcade5bd4"/>
+    <concept_description concept_description_id="6149" concept_id="6149"
+                         description="Question on encounter form: &quot;Was the male household member involved in patient&apos;s care?&quot;"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                         uuid="0d4bf064-8320-4773-ac99-aaceb0b50cb5"/>
+    <concept_description concept_description_id="6150" concept_id="6150"
+                         description="Community details on the location of care" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:25.0" uuid="657a20b0-8b0c-463d-ba86-d0ca7cca554c"/>
+    <concept_description concept_description_id="6151" concept_id="6151"
+                         description="House details on the facility of care" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:25.0" uuid="0bd07ec2-1b0a-4efb-8759-b4d0eec41d51"/>
+    <concept_description concept_description_id="6152" concept_id="6152"
+                         description="Numeric coded location of ANC or PNC care" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:25.0" uuid="43a8bda1-df54-49f5-990d-515525221bde"/>
+    <concept_description concept_description_id="6153" concept_id="6153"
+                         description="Numeric coded location of CWC care" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:25.0" uuid="e6881af6-e455-4bbd-900e-e4e2a769cf07"/>
+    <concept_description concept_description_id="6154" concept_id="6154" description="Comments" locale="en" creator="1"
+                         date_created="2010-06-30 16:07:25.0" uuid="5c8c6c0f-9ebe-4948-ad5c-5d111debd541"/>
+    <concept_description concept_description_id="6155" concept_id="6155" description="Ghana ANC Registration Number"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                         uuid="0757f634-7940-46fc-9c1f-58a6476d438f"/>
+    <concept_description concept_description_id="6156" concept_id="6156" description="Ghana CWC Registration Number"
+                         locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                         uuid="04a49f98-80d1-41c3-b432-e8fa0df0a8c7"/>
+    <concept_description concept_description_id="6157" concept_id="6157"
+                         description="Question on encounter form: &quot;Is patient currently insured?&quot;" locale="en"
+                         creator="1" date_created="2010-06-30 16:07:25.0" uuid="dfadec1d-fd92-4dcb-8ab8-7057dc36c53f"/>
+    <concept_description concept_description_id="6158" concept_id="6158"
+                         description="Is smell of post-partum vaginal discharge foul?" locale="en" creator="1"
+                         date_created="2010-10-04 12:34:44.0" uuid="b69b238b-fea9-4b80-844f-4d9e97f4622e"/>
+    <concept_description concept_description_id="6159" concept_id="6159"
+                         description="General finding of a trace positive result." locale="en" creator="1"
+                         date_created="2010-10-04 12:34:44.0" uuid="35c98215-20ba-4ce0-a5c2-be4c63998bc4"/>
+    <concept_description concept_description_id="6161" concept_id="6161"
+                         description="Question: &quot;Is this a new patient?&quot;" locale="en" creator="1"
+                         date_created="2010-12-20 12:34:44.0" uuid="35c98215-20ba-4ce0-a5c2-be4c63998bc9"/>
+    <concept_name concept_id="6100" name="VISIT NUMBER" locale="en" creator="1" date_created="2010-06-30 16:07:23.0"
+                  concept_name_id="6100" voided="0" uuid="2d21025c-3ebc-48e5-ba86-9fa451cc6316"/>
+    <concept_name concept_id="6101" name="TETANUS TOXOID DOSE" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:23.0" concept_name_id="6101" voided="0"
+                  uuid="35e5afde-58b8-4eef-b94f-81f539f3f406"/>
+    <concept_name concept_id="6102" name="INTERMITTENT PREVENTATIVE TREATMENT DOSE" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:23.0" concept_name_id="6102" voided="0"
+                  uuid="8cc20d23-4b12-4b87-bb61-15e288ad3872"/>
+    <concept_name concept_id="6103" name="HIV TEST RESULT" locale="en" creator="1" date_created="2010-06-30 16:07:23.0"
+                  concept_name_id="6103" voided="0" uuid="63e302e7-ee86-4557-bcad-ee35d82aeda5"/>
+    <concept_name concept_id="6104" name="TERMINATION TYPE" locale="en" creator="1" date_created="2010-06-30 16:07:23.0"
+                  concept_name_id="6104" voided="0" uuid="3b9d2f1d-c908-4317-9229-50e9818f4427"/>
+    <concept_name concept_id="6105" name="TERMINATION COMPLICATION" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:23.0" concept_name_id="6105" voided="0"
+                  uuid="a4cfb084-ee6c-4219-98b0-b36e7014a60b"/>
+    <concept_name concept_id="6106" name="INTERMITTENT PREVENTATIVE TREATMENT INFANTS DOSE" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:24.0" concept_name_id="6106" voided="0"
+                  uuid="990aeefa-307b-4fea-8e89-75838c6eaed7"/>
+    <concept_name concept_id="6107" name="INSECTICIDE TREATED NET USAGE" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:24.0" concept_name_id="6107" voided="0"
+                  uuid="7921e6cc-4994-464b-9453-d74f6736b50b"/>
+    <concept_name concept_id="6108" name="ORAL POLIO VACCINATION DOSE" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:24.0" concept_name_id="6108" voided="0"
+                  uuid="7197a890-7ce4-403d-b658-940d4c12c25a"/>
+    <concept_name concept_id="6109" name="PENTA VACCINATION DOSE" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:24.0" concept_name_id="6109" voided="0"
+                  uuid="51e2a71f-a4f4-4cba-852d-62491be78c4e"/>
+    <concept_name concept_id="6110" name="CEREBRO-SPINAL MENINGITIS VACCINATION" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:24.0" concept_name_id="6110" voided="0"
+                  uuid="0f3bd0d2-9695-4d36-9925-4d5dff6c2537"/>
+    <concept_name concept_id="6111" name="VITAMIN A" locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                  concept_name_id="6111" voided="0" uuid="4bf09e82-e944-4500-ad01-a4a10e9e435f"/>
+    <concept_name concept_id="6112" name="DATE OF CONFINEMENT CONFIRMED" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:24.0" concept_name_id="6112" voided="0"
+                  uuid="14faef48-6b0a-41fd-83aa-25cc871185d2"/>
+    <concept_name concept_id="6113" name="MESSAGE PROGRAM ENROLLMENT REFERENCE DATE" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:24.0" concept_name_id="6113" voided="0"
+                  uuid="000ec8b9-269f-4386-b73f-1e3f82f661fb"/>
+    <concept_name concept_id="6114" name="SERIAL NUMBER" locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                  concept_name_id="6114" voided="0" uuid="ad353597-88c4-4f4f-a71c-edcce219a28b"/>
+    <concept_name concept_id="6115" name="NEW CASE" locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                  concept_name_id="6115" voided="0" uuid="2c54ce51-c76c-4c0d-b0c8-1cdcf035efe3"/>
+    <concept_name concept_id="6116" name="REFERRED" locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                  concept_name_id="6116" voided="0" uuid="631a8fbd-8c5e-497e-aff8-c932ac0ecd40"/>
+    <concept_name concept_id="6117" name="PRIMARY DIAGNOSIS " locale="en" creator="1"
+                  date_created="2010-06-30 16:07:24.0" concept_name_id="6117" voided="0"
+                  uuid="81ed50bb-7abd-42be-9ff7-d2b53eac3eff"/>
+    <concept_name concept_id="6118" name="SECONDARY DIAGNOSIS" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:24.0" concept_name_id="6118" voided="0"
+                  uuid="9f2ebeac-5c85-483a-b6ee-2272468d2911"/>
+    <concept_name concept_id="6119" name="DELIVERY MODE" locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                  concept_name_id="6119" voided="0" uuid="17aee48b-e4a6-4157-b725-06460be14e89"/>
+    <concept_name concept_id="6120" name="DELIVERY LOCATION" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:24.0" concept_name_id="6120" voided="0"
+                  uuid="47110e91-4a17-4d81-8c0f-dc17ce170941"/>
+    <concept_name concept_id="6121" name="DELIVERED BY" locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                  concept_name_id="6121" voided="0" uuid="24848acd-2b13-4c30-99f9-92cc9f4a9a3d"/>
+    <concept_name concept_id="6122" name="DELIVERY OUTCOME" locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                  concept_name_id="6122" voided="0" uuid="eef91e35-b880-4701-8ae7-657ec86c1f2b"/>
+    <concept_name concept_id="6123" name="BIRTH OUTCOME" locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                  concept_name_id="6123" voided="0" uuid="d6ac19d7-7897-485b-915e-3b85097af8bb"/>
+    <concept_name concept_id="6124" name="MALARIA RAPID TEST" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:24.0" concept_name_id="6124" voided="0"
+                  uuid="fc1bb5ae-117f-49c3-ade5-e128b000d96b"/>
+    <concept_name concept_id="6125" name="VDRL TREATMENT" locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                  concept_name_id="6125" voided="0" uuid="d092a076-ed6f-4c0e-95ce-c0cc5c0a06f3"/>
+    <concept_name concept_id="6126" name="URINE PROTEIN TEST" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:24.0" concept_name_id="6126" voided="0"
+                  uuid="46b9843b-ac93-4109-b801-c80f1281bc16"/>
+    <concept_name concept_id="6127" name="URINE GLUCOSE TEST" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:24.0" concept_name_id="6127" voided="0"
+                  uuid="1e7b8cdd-7ef8-4afa-b91d-6b457d42488d"/>
+    <concept_name concept_id="6128" name="FETAL HEART RATE" locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                  concept_name_id="6128" voided="0" uuid="dad23649-0f05-4bdd-bc40-abb13bb32e8a"/>
+    <concept_name concept_id="6129" name="FUNDAL HEIGHT" locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                  concept_name_id="6129" voided="0" uuid="78f6e987-f008-4682-8210-a86babe8fbd8"/>
+    <concept_name concept_id="6130" name="VVF REPAIR" locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                  concept_name_id="6130" voided="0" uuid="8749de33-a21c-4db1-87b3-37b90c9fe8a4"/>
+    <concept_name concept_id="6131" name="DEWORMER" locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                  concept_name_id="6131" voided="0" uuid="7d23fb61-a00c-493a-a048-15c5e732b9ed"/>
+    <concept_name concept_id="6132" name="PMTCT" locale="en" creator="1" date_created="2010-06-30 16:07:24.0"
+                  concept_name_id="6132" voided="0" uuid="701474ab-dd97-49de-8a6a-8b4306a07452"/>
+    <concept_name concept_id="6133" name="PMTCT TREATMENT" locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                  concept_name_id="6133" voided="0" uuid="ed9ba81e-3df5-40a2-8049-f68c4b580cb4"/>
+    <concept_name concept_id="6134" name="ACT TREATMENT" locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                  concept_name_id="6134" voided="0" uuid="6f2f43cd-8d09-4115-a970-7db10db8d8d3"/>
+    <concept_name concept_id="6135" name="HIV PRE-TEST COUNSELING" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:25.0" concept_name_id="6135" voided="0"
+                  uuid="1305bd56-3a4a-4cc0-bdb1-51cef864cb7d"/>
+    <concept_name concept_id="6136" name="HIV POST-TEST COUNSELING" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:25.0" concept_name_id="6136" voided="0"
+                  uuid="27f40db8-6e59-405f-beb0-4559484fab2f"/>
+    <concept_name concept_id="6137" name="DELIVERY COMPLICATION" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:25.0" concept_name_id="6137" voided="0"
+                  uuid="db6a3a3a-25fb-4409-861b-12e11f4ec31e"/>
+    <concept_name concept_id="6138" name="POST-ABORTION FP COUNSELING" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:25.0" concept_name_id="6138" voided="0"
+                  uuid="fb0edc65-a525-41be-9414-bcbf7c70f678"/>
+    <concept_name concept_id="6139" name="POST-ABORTION FP ACCEPTED" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:25.0" concept_name_id="6139" voided="0"
+                  uuid="bcc1c657-3613-41df-80b5-89f945e89215"/>
+    <concept_name concept_id="6140" name="IPT REACTION" locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                  concept_name_id="6140" voided="0" uuid="3312ca31-bf29-4297-bc4f-55c9b296da8a"/>
+    <concept_name concept_id="6141" name="LOCHIA COLOUR" locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                  concept_name_id="6141" voided="0" uuid="beb1efcb-0ce5-4654-9a96-4dc8009d013b"/>
+    <concept_name concept_id="6142" name="LOCHIA EXCESS AMOUNT" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:25.0" concept_name_id="6142" voided="0"
+                  uuid="215e36e0-383f-432f-93ce-5a79745f2d6c"/>
+    <concept_name concept_id="6143" name="MIDDLE UPPER ARM CIRCUMFERENCE" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:25.0" concept_name_id="6143" voided="0"
+                  uuid="c1afc5ab-1ed4-4f3a-94c0-c603f3b4c318"/>
+    <concept_name concept_id="6144" name="MATERNAL DEATH" locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                  concept_name_id="6144" voided="0" uuid="2859066b-9f3e-486d-b918-84aaa9b1e173"/>
+    <concept_name concept_id="6145" name="PREGNANCY, TERMINATION PROCEDURE" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:25.0" concept_name_id="6145" voided="0"
+                  uuid="02bbadcc-8fb8-4e99-b5c6-7a77263d05e7"/>
+    <concept_name concept_id="6146" name="CORD CONDITION " locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                  concept_name_id="6146" voided="0" uuid="9776acac-9d30-4888-aaa5-b3899319326e"/>
+    <concept_name concept_id="6147" name="CONDITION OF BABY" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:25.0" concept_name_id="6147" voided="0"
+                  uuid="2f18abe8-ff0b-4187-9533-49da806b0e1f"/>
+    <concept_name concept_id="6148" name="NEXT ANC DATE" locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                  concept_name_id="6148" voided="0" uuid="8283ee7b-33ac-48fd-b0b1-6322cece86c0"/>
+    <concept_name concept_id="6149" name="MALE INVOLVEMENT" locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                  concept_name_id="6149" voided="0" uuid="bb7b190a-2e8d-4214-a575-840959e92bb0"/>
+    <concept_name concept_id="6150" name="COMMUNITY" locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                  concept_name_id="6150" voided="0" uuid="458fc144-66af-40b3-84f9-41761d69392e"/>
+    <concept_name concept_id="6151" name="HOUSE" locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                  concept_name_id="6151" voided="0" uuid="78aa5e09-be04-4ad7-814d-a1b851f19c48"/>
+    <concept_name concept_id="6152" name="ANC PNC LOCATION" locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                  concept_name_id="6152" voided="0" uuid="bc5d42fc-7cf5-46af-95bc-3f9f65c709fe"/>
+    <concept_name concept_id="6153" name="CWC LOCATION" locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                  concept_name_id="6153" voided="0" uuid="43fdad71-ff77-4d9b-a032-609c2140c5a6"/>
+    <concept_name concept_id="6154" name="COMMENTS" locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                  concept_name_id="6154" voided="0" uuid="61ef22c5-077b-4d8d-9a73-a33d82128c2e"/>
+    <concept_name concept_id="6155" name="ANC REGISTRATION NUMBER" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:25.0" concept_name_id="6155" voided="0"
+                  uuid="bfb951a6-1c81-49ef-ae64-1b7f047abad1"/>
+    <concept_name concept_id="6156" name="CWC REGISTRATION NUMBER" locale="en" creator="1"
+                  date_created="2010-06-30 16:07:25.0" concept_name_id="6156" voided="0"
+                  uuid="e3652abe-515d-4a3e-81e0-0f2185bdbd83"/>
+    <concept_name concept_id="6157" name="INSURED" locale="en" creator="1" date_created="2010-06-30 16:07:25.0"
+                  concept_name_id="6157" voided="0" uuid="6b08a0bf-7901-4254-93cf-03287d2994a7"/>
+    <concept_name concept_id="6158" name="LOCHIA FOUL ODOUR" locale="en" creator="1"
+                  date_created="2010-10-04 12:34:44.0" concept_name_id="6158" voided="0"
+                  uuid="395caabc-36c4-4c01-83e3-c7bb2259821a"/>
+    <concept_name concept_id="6159" name="TRACE" locale="en" creator="1" date_created="2010-10-04 12:34:44.0"
+                  concept_name_id="6159" voided="0" uuid="cc13f783-f711-4578-9638-f3ea285a24f5"/>
+    <concept_name concept_id="6161" name="NEW PATIENT" locale="en" creator="1" date_created="2010-12-20 16:07:24.0"
+                  concept_name_id="6161" voided="0" uuid="2c54ce51-c76c-4c0d-b0c8-1cdcf035efe9"/>
+    <concept_name_tag_map concept_name_id="6100" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6101" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6102" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6103" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6104" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6105" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6106" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6107" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6108" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6109" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6110" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6111" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6112" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6113" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6114" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6115" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6116" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6117" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6118" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6119" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6120" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6121" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6122" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6123" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6124" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6125" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6126" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6127" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6128" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6129" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6130" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6131" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6132" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6133" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6134" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6135" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6136" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6137" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6138" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6139" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6140" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6141" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6142" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6143" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6144" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6145" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6146" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6147" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6148" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6149" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6150" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6151" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6152" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6153" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6154" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6155" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6156" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6157" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6158" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6159" concept_name_tag_id="4"/>
+    <concept_name_tag_map concept_name_id="6161" concept_name_tag_id="4"/>
+    <concept_word concept_word_id="6598" concept_id="6100" word="VISIT" locale="en" concept_name_id="6100"/>
+    <concept_word concept_word_id="6599" concept_id="6100" word="NUMBER" locale="en" concept_name_id="6100"/>
+    <concept_word concept_word_id="6600" concept_id="6101" word="TETANUS" locale="en" concept_name_id="6101"/>
+    <concept_word concept_word_id="6601" concept_id="6101" word="DOSE" locale="en" concept_name_id="6101"/>
+    <concept_word concept_word_id="6602" concept_id="6101" word="TOXOID" locale="en" concept_name_id="6101"/>
+    <concept_word concept_word_id="6603" concept_id="6102" word="TREATMENT" locale="en" concept_name_id="6102"/>
+    <concept_word concept_word_id="6604" concept_id="6102" word="PREVENTATIVE" locale="en" concept_name_id="6102"/>
+    <concept_word concept_word_id="6605" concept_id="6102" word="INTERMITTENT" locale="en" concept_name_id="6102"/>
+    <concept_word concept_word_id="6606" concept_id="6102" word="DOSE" locale="en" concept_name_id="6102"/>
+    <concept_word concept_word_id="6607" concept_id="6103" word="RESULT" locale="en" concept_name_id="6103"/>
+    <concept_word concept_word_id="6608" concept_id="6103" word="TEST" locale="en" concept_name_id="6103"/>
+    <concept_word concept_word_id="6609" concept_id="6103" word="HIV" locale="en" concept_name_id="6103"/>
+    <concept_word concept_word_id="6610" concept_id="6104" word="TYPE" locale="en" concept_name_id="6104"/>
+    <concept_word concept_word_id="6611" concept_id="6104" word="TERMINATION" locale="en" concept_name_id="6104"/>
+    <concept_word concept_word_id="6612" concept_id="6105" word="TERMINATION" locale="en" concept_name_id="6105"/>
+    <concept_word concept_word_id="6613" concept_id="6105" word="COMPLICATION" locale="en" concept_name_id="6105"/>
+    <concept_word concept_word_id="6614" concept_id="6106" word="INFANTS" locale="en" concept_name_id="6106"/>
+    <concept_word concept_word_id="6615" concept_id="6106" word="INTERMITTENT" locale="en" concept_name_id="6106"/>
+    <concept_word concept_word_id="6616" concept_id="6106" word="TREATMENT" locale="en" concept_name_id="6106"/>
+    <concept_word concept_word_id="6617" concept_id="6106" word="PREVENTATIVE" locale="en" concept_name_id="6106"/>
+    <concept_word concept_word_id="6618" concept_id="6107" word="NET" locale="en" concept_name_id="6107"/>
+    <concept_word concept_word_id="6619" concept_id="6107" word="USAGE" locale="en" concept_name_id="6107"/>
+    <concept_word concept_word_id="6620" concept_id="6107" word="TREATED" locale="en" concept_name_id="6107"/>
+    <concept_word concept_word_id="6621" concept_id="6107" word="INSECTICIDE" locale="en" concept_name_id="6107"/>
+    <concept_word concept_word_id="6622" concept_id="6108" word="VACCINATION" locale="en" concept_name_id="6108"/>
+    <concept_word concept_word_id="6623" concept_id="6108" word="DOSE" locale="en" concept_name_id="6108"/>
+    <concept_word concept_word_id="6624" concept_id="6108" word="POLIO" locale="en" concept_name_id="6108"/>
+    <concept_word concept_word_id="6625" concept_id="6108" word="ORAL" locale="en" concept_name_id="6108"/>
+    <concept_word concept_word_id="6626" concept_id="6109" word="VACCINATION" locale="en" concept_name_id="6109"/>
+    <concept_word concept_word_id="6627" concept_id="6109" word="PENTA" locale="en" concept_name_id="6109"/>
+    <concept_word concept_word_id="6628" concept_id="6109" word="DOSE" locale="en" concept_name_id="6109"/>
+    <concept_word concept_word_id="6629" concept_id="6110" word="CEREBRO" locale="en" concept_name_id="6110"/>
+    <concept_word concept_word_id="6630" concept_id="6110" word="SPINAL" locale="en" concept_name_id="6110"/>
+    <concept_word concept_word_id="6631" concept_id="6110" word="VACCINATION" locale="en" concept_name_id="6110"/>
+    <concept_word concept_word_id="6632" concept_id="6110" word="MENINGITIS" locale="en" concept_name_id="6110"/>
+    <concept_word concept_word_id="6633" concept_id="6111" word="VITAMIN" locale="en" concept_name_id="6111"/>
+    <concept_word concept_word_id="6634" concept_id="6112" word="CONFIRMED" locale="en" concept_name_id="6112"/>
+    <concept_word concept_word_id="6635" concept_id="6112" word="CONFINEMENT" locale="en" concept_name_id="6112"/>
+    <concept_word concept_word_id="6636" concept_id="6112" word="DATE" locale="en" concept_name_id="6112"/>
+    <concept_word concept_word_id="6637" concept_id="6113" word="MESSAGE" locale="en" concept_name_id="6113"/>
+    <concept_word concept_word_id="6638" concept_id="6113" word="REFERENCE" locale="en" concept_name_id="6113"/>
+    <concept_word concept_word_id="6639" concept_id="6113" word="PROGRAM" locale="en" concept_name_id="6113"/>
+    <concept_word concept_word_id="6640" concept_id="6113" word="ENROLLMENT" locale="en" concept_name_id="6113"/>
+    <concept_word concept_word_id="6641" concept_id="6113" word="DATE" locale="en" concept_name_id="6113"/>
+    <concept_word concept_word_id="6642" concept_id="6114" word="SERIAL" locale="en" concept_name_id="6114"/>
+    <concept_word concept_word_id="6643" concept_id="6114" word="NUMBER" locale="en" concept_name_id="6114"/>
+    <concept_word concept_word_id="6644" concept_id="6115" word="NEW" locale="en" concept_name_id="6115"/>
+    <concept_word concept_word_id="6645" concept_id="6115" word="CASE" locale="en" concept_name_id="6115"/>
+    <concept_word concept_word_id="6646" concept_id="6116" word="REFERRED" locale="en" concept_name_id="6116"/>
+    <concept_word concept_word_id="6647" concept_id="6117" word="DIAGNOSIS" locale="en" concept_name_id="6117"/>
+    <concept_word concept_word_id="6648" concept_id="6117" word="PRIMARY" locale="en" concept_name_id="6117"/>
+    <concept_word concept_word_id="6649" concept_id="6118" word="DIAGNOSIS" locale="en" concept_name_id="6118"/>
+    <concept_word concept_word_id="6650" concept_id="6118" word="SECONDARY" locale="en" concept_name_id="6118"/>
+    <concept_word concept_word_id="6651" concept_id="6119" word="DELIVERY" locale="en" concept_name_id="6119"/>
+    <concept_word concept_word_id="6652" concept_id="6119" word="MODE" locale="en" concept_name_id="6119"/>
+    <concept_word concept_word_id="6653" concept_id="6120" word="DELIVERY" locale="en" concept_name_id="6120"/>
+    <concept_word concept_word_id="6654" concept_id="6120" word="LOCATION" locale="en" concept_name_id="6120"/>
+    <concept_word concept_word_id="6655" concept_id="6121" word="DELIVERED" locale="en" concept_name_id="6121"/>
+    <concept_word concept_word_id="6656" concept_id="6122" word="OUTCOME" locale="en" concept_name_id="6122"/>
+    <concept_word concept_word_id="6657" concept_id="6122" word="DELIVERY" locale="en" concept_name_id="6122"/>
+    <concept_word concept_word_id="6658" concept_id="6123" word="OUTCOME" locale="en" concept_name_id="6123"/>
+    <concept_word concept_word_id="6659" concept_id="6123" word="BIRTH" locale="en" concept_name_id="6123"/>
+    <concept_word concept_word_id="6744" concept_id="6124" word="MALARIA" locale="en" concept_name_id="6124"/>
+    <concept_word concept_word_id="6745" concept_id="6124" word="TEST" locale="en" concept_name_id="6124"/>
+    <concept_word concept_word_id="6746" concept_id="6124" word="RAPID" locale="en" concept_name_id="6124"/>
+    <concept_word concept_word_id="6663" concept_id="6125" word="TREATMENT" locale="en" concept_name_id="6125"/>
+    <concept_word concept_word_id="6664" concept_id="6125" word="VDRL" locale="en" concept_name_id="6125"/>
+    <concept_word concept_word_id="6747" concept_id="6126" word="URINE" locale="en" concept_name_id="6126"/>
+    <concept_word concept_word_id="6748" concept_id="6126" word="TEST" locale="en" concept_name_id="6126"/>
+    <concept_word concept_word_id="6749" concept_id="6126" word="PROTEIN" locale="en" concept_name_id="6126"/>
+    <concept_word concept_word_id="6750" concept_id="6127" word="TEST" locale="en" concept_name_id="6127"/>
+    <concept_word concept_word_id="6751" concept_id="6127" word="GLUCOSE" locale="en" concept_name_id="6127"/>
+    <concept_word concept_word_id="6752" concept_id="6127" word="URINE" locale="en" concept_name_id="6127"/>
+    <concept_word concept_word_id="6671" concept_id="6128" word="HEART" locale="en" concept_name_id="6128"/>
+    <concept_word concept_word_id="6672" concept_id="6128" word="FETAL" locale="en" concept_name_id="6128"/>
+    <concept_word concept_word_id="6673" concept_id="6128" word="RATE" locale="en" concept_name_id="6128"/>
+    <concept_word concept_word_id="6674" concept_id="6129" word="HEIGHT" locale="en" concept_name_id="6129"/>
+    <concept_word concept_word_id="6675" concept_id="6129" word="FUNDAL" locale="en" concept_name_id="6129"/>
+    <concept_word concept_word_id="6676" concept_id="6130" word="REPAIR" locale="en" concept_name_id="6130"/>
+    <concept_word concept_word_id="6677" concept_id="6130" word="VVF" locale="en" concept_name_id="6130"/>
+    <concept_word concept_word_id="6678" concept_id="6131" word="DEWORMER" locale="en" concept_name_id="6131"/>
+    <concept_word concept_word_id="6679" concept_id="6132" word="PMTCT" locale="en" concept_name_id="6132"/>
+    <concept_word concept_word_id="6680" concept_id="6133" word="PMTCT" locale="en" concept_name_id="6133"/>
+    <concept_word concept_word_id="6681" concept_id="6133" word="TREATMENT" locale="en" concept_name_id="6133"/>
+    <concept_word concept_word_id="6682" concept_id="6134" word="TREATMENT" locale="en" concept_name_id="6134"/>
+    <concept_word concept_word_id="6683" concept_id="6134" word="ACT" locale="en" concept_name_id="6134"/>
+    <concept_word concept_word_id="6684" concept_id="6135" word="COUNSELING" locale="en" concept_name_id="6135"/>
+    <concept_word concept_word_id="6685" concept_id="6135" word="HIV" locale="en" concept_name_id="6135"/>
+    <concept_word concept_word_id="6686" concept_id="6135" word="TEST" locale="en" concept_name_id="6135"/>
+    <concept_word concept_word_id="6687" concept_id="6135" word="PRE" locale="en" concept_name_id="6135"/>
+    <concept_word concept_word_id="6688" concept_id="6136" word="COUNSELING" locale="en" concept_name_id="6136"/>
+    <concept_word concept_word_id="6689" concept_id="6136" word="POST" locale="en" concept_name_id="6136"/>
+    <concept_word concept_word_id="6690" concept_id="6136" word="HIV" locale="en" concept_name_id="6136"/>
+    <concept_word concept_word_id="6691" concept_id="6136" word="TEST" locale="en" concept_name_id="6136"/>
+    <concept_word concept_word_id="6692" concept_id="6137" word="DELIVERY" locale="en" concept_name_id="6137"/>
+    <concept_word concept_word_id="6693" concept_id="6137" word="COMPLICATION" locale="en" concept_name_id="6137"/>
+    <concept_word concept_word_id="6694" concept_id="6138" word="ABORTION" locale="en" concept_name_id="6138"/>
+    <concept_word concept_word_id="6695" concept_id="6138" word="FP" locale="en" concept_name_id="6138"/>
+    <concept_word concept_word_id="6696" concept_id="6138" word="POST" locale="en" concept_name_id="6138"/>
+    <concept_word concept_word_id="6697" concept_id="6138" word="COUNSELING" locale="en" concept_name_id="6138"/>
+    <concept_word concept_word_id="6698" concept_id="6139" word="ACCEPTED" locale="en" concept_name_id="6139"/>
+    <concept_word concept_word_id="6699" concept_id="6139" word="POST" locale="en" concept_name_id="6139"/>
+    <concept_word concept_word_id="6700" concept_id="6139" word="FP" locale="en" concept_name_id="6139"/>
+    <concept_word concept_word_id="6701" concept_id="6139" word="ABORTION" locale="en" concept_name_id="6139"/>
+    <concept_word concept_word_id="6753" concept_id="6140" word="REACTION" locale="en" concept_name_id="6140"/>
+    <concept_word concept_word_id="6754" concept_id="6140" word="IPT" locale="en" concept_name_id="6140"/>
+    <concept_word concept_word_id="6704" concept_id="6141" word="LOCHIA" locale="en" concept_name_id="6141"/>
+    <concept_word concept_word_id="6705" concept_id="6141" word="COLOUR" locale="en" concept_name_id="6141"/>
+    <concept_word concept_word_id="6706" concept_id="6142" word="LOCHIA" locale="en" concept_name_id="6142"/>
+    <concept_word concept_word_id="6707" concept_id="6142" word="EXCESS" locale="en" concept_name_id="6142"/>
+    <concept_word concept_word_id="6708" concept_id="6142" word="AMOUNT" locale="en" concept_name_id="6142"/>
+    <concept_word concept_word_id="6709" concept_id="6143" word="UPPER" locale="en" concept_name_id="6143"/>
+    <concept_word concept_word_id="6710" concept_id="6143" word="MIDDLE" locale="en" concept_name_id="6143"/>
+    <concept_word concept_word_id="6711" concept_id="6143" word="CIRCUMFERENCE" locale="en" concept_name_id="6143"/>
+    <concept_word concept_word_id="6712" concept_id="6143" word="ARM" locale="en" concept_name_id="6143"/>
+    <concept_word concept_word_id="6713" concept_id="6144" word="MATERNAL" locale="en" concept_name_id="6144"/>
+    <concept_word concept_word_id="6714" concept_id="6144" word="DEATH" locale="en" concept_name_id="6144"/>
+    <concept_word concept_word_id="6715" concept_id="6145" word="TERMINATION" locale="en" concept_name_id="6145"/>
+    <concept_word concept_word_id="6716" concept_id="6145" word="PROCEDURE" locale="en" concept_name_id="6145"/>
+    <concept_word concept_word_id="6717" concept_id="6145" word="PREGNANCY" locale="en" concept_name_id="6145"/>
+    <concept_word concept_word_id="6718" concept_id="6146" word="CONDITION" locale="en" concept_name_id="6146"/>
+    <concept_word concept_word_id="6719" concept_id="6146" word="CORD" locale="en" concept_name_id="6146"/>
+    <concept_word concept_word_id="6720" concept_id="6147" word="CONDITION" locale="en" concept_name_id="6147"/>
+    <concept_word concept_word_id="6721" concept_id="6147" word="BABY" locale="en" concept_name_id="6147"/>
+    <concept_word concept_word_id="6722" concept_id="6148" word="DATE" locale="en" concept_name_id="6148"/>
+    <concept_word concept_word_id="6723" concept_id="6148" word="NEXT" locale="en" concept_name_id="6148"/>
+    <concept_word concept_word_id="6724" concept_id="6148" word="ANC" locale="en" concept_name_id="6148"/>
+    <concept_word concept_word_id="6725" concept_id="6149" word="MALE" locale="en" concept_name_id="6149"/>
+    <concept_word concept_word_id="6726" concept_id="6149" word="INVOLVEMENT" locale="en" concept_name_id="6149"/>
+    <concept_word concept_word_id="6727" concept_id="6150" word="COMMUNITY" locale="en" concept_name_id="6150"/>
+    <concept_word concept_word_id="6728" concept_id="6151" word="HOUSE" locale="en" concept_name_id="6151"/>
+    <concept_word concept_word_id="6729" concept_id="6152" word="LOCATION" locale="en" concept_name_id="6152"/>
+    <concept_word concept_word_id="6730" concept_id="6152" word="ANC" locale="en" concept_name_id="6152"/>
+    <concept_word concept_word_id="6731" concept_id="6152" word="PNC" locale="en" concept_name_id="6152"/>
+    <concept_word concept_word_id="6732" concept_id="6153" word="CWC" locale="en" concept_name_id="6153"/>
+    <concept_word concept_word_id="6733" concept_id="6153" word="LOCATION" locale="en" concept_name_id="6153"/>
+    <concept_word concept_word_id="6734" concept_id="6154" word="COMMENTS" locale="en" concept_name_id="6154"/>
+    <concept_word concept_word_id="6735" concept_id="6155" word="ANC" locale="en" concept_name_id="6155"/>
+    <concept_word concept_word_id="6736" concept_id="6155" word="NUMBER" locale="en" concept_name_id="6155"/>
+    <concept_word concept_word_id="6737" concept_id="6155" word="REGISTRATION" locale="en" concept_name_id="6155"/>
+    <concept_word concept_word_id="6738" concept_id="6156" word="NUMBER" locale="en" concept_name_id="6156"/>
+    <concept_word concept_word_id="6739" concept_id="6156" word="REGISTRATION" locale="en" concept_name_id="6156"/>
+    <concept_word concept_word_id="6740" concept_id="6156" word="CWC" locale="en" concept_name_id="6156"/>
+    <concept_word concept_word_id="6741" concept_id="6157" word="INSURED" locale="en" concept_name_id="6157"/>
+    <concept_word concept_word_id="6742" concept_id="6158" word="ODOUR" locale="en" concept_name_id="6158"/>
+    <concept_word concept_word_id="6743" concept_id="6158" word="FOUL" locale="en" concept_name_id="6158"/>
+    <concept_word concept_word_id="6744" concept_id="6158" word="LOCHIA" locale="en" concept_name_id="6158"/>
+    <concept_word concept_word_id="6745" concept_id="6159" word="TRACE" locale="en" concept_name_id="6159"/>
+    <concept_word concept_word_id="6746" concept_id="6106" word="DOSE" locale="en" concept_name_id="6106"/>
+    <concept_word concept_word_id="6747" concept_id="6161" word="NEW" locale="en" concept_name_id="6161"/>
+    <concept_word concept_word_id="6748" concept_id="6161" word="PATIENT" locale="en" concept_name_id="6161"/>
+    <encounter_type encounter_type_id="5" name="ANCVISIT" description="Ghana Antenatal Care (ANC) Visit" creator="1"
+                    date_created="2010-06-30 16:07:23.0" retired="0" uuid="b91328d5-5721-4eac-8576-89a35922e26f"/>
+    <encounter_type encounter_type_id="6" name="PREGREGVISIT" description="Ghana Pregnancy Registration Visit"
+                    creator="1" date_created="2010-06-30 16:07:23.0" retired="0"
+                    uuid="235bf2ec-7f9e-4e4b-9372-f5a9506c9505"/>
+    <encounter_type encounter_type_id="7" name="PREGTERMVISIT" description="Ghana Pregnancy Termination Visit"
+                    creator="1" date_created="2010-06-30 16:07:23.0" retired="0"
+                    uuid="9421e662-30a2-4ba9-8fb2-e81fed66992e"/>
+    <encounter_type encounter_type_id="8" name="PREGDELVISIT" description="Ghana Pregnancy Delivery Visit" creator="1"
+                    date_created="2010-06-30 16:07:23.0" retired="0" uuid="5c763298-164e-49a1-9ce8-6ac1c084c204"/>
+    <encounter_type encounter_type_id="9" name="OUTPATIENTVISIT" description="Ghana Outpatient Visit" creator="1"
+                    date_created="2010-06-30 16:07:23.0" retired="0" uuid="6e3ab568-5809-453e-9a0e-10b5dad82548"/>
+    <encounter_type encounter_type_id="10" name="TTVISIT" description="Ghana Tetanus outside Pregnancy Visit"
+                    creator="1" date_created="2010-06-30 16:07:23.0" retired="0"
+                    uuid="820c9021-c287-47c1-bee2-49fbcdcb9572"/>
+    <encounter_type encounter_type_id="11" name="CWCVISIT" description="Ghana Child Immunization Visit" creator="1"
+                    date_created="2010-06-30 16:07:23.0" retired="0" uuid="fbb85153-64e0-4f4a-9aa9-056eb5964262"/>
+    <encounter_type encounter_type_id="12" name="PNCMOTHERVISIT" description="Ghana Mother Postnatal Care (PNC) Visit"
+                    creator="1" date_created="2010-06-30 16:07:23.0" retired="0"
+                    uuid="908754de-a1ba-4656-81e8-05c6bb3d4d05"/>
+    <encounter_type encounter_type_id="13" name="PNCCHILDVISIT" description="Ghana Child Postnatal Care (PNC) Visit"
+                    creator="1" date_created="2010-06-30 16:07:23.0" retired="0"
+                    uuid="73bc13de-e783-482e-a361-35a82e300c11"/>
+    <encounter_type encounter_type_id="14" name="PREGDELNOTIFYVISIT" description="Ghana Pregnancy Delivery Notification"
+                    creator="1" date_created="2010-06-30 16:07:23.0" retired="0"
+                    uuid="6719d503-de7d-4f78-aadc-4a60ee37e100"/>
+    <encounter_type encounter_type_id="15" name="ANCREGVISIT" description="Ghana Antental Care (ANC) Registration"
+                    creator="1" date_created="2010-06-30 16:07:23.0" retired="0"
+                    uuid="feada9af-6676-4bf3-9d97-78d59c329dff"/>
+    <encounter_type encounter_type_id="16" name="CWCREGVISIT" description="Ghana Child Immunization Registration"
+                    creator="1" date_created="2010-06-30 16:07:23.0" retired="0"
+                    uuid="f1332035-7e35-489e-908b-3d2dfbf2c19b"/>
+    <encounter_type encounter_type_id="17" name="BIRTHVISIT" description="Ghana Child Birth Visit" creator="1"
+                    date_created="2010-06-30 16:07:23.0" retired="0" uuid="06eb0bcc-314f-46e8-a469-6641ea504f99"/>
+    <encounter_type encounter_type_id="18" name="PATIENTREGVISIT" description="Ghana Patient Registration Visit"
+                    creator="1" date_created="2010-06-30 16:07:23.0" retired="0"
+                    uuid="d060ad51-ce73-4c19-81d7-c371516f0b5d"/>
+    <encounter_type encounter_type_id="19" name="PATIENTHISTORY" description="Ghana Patient History" creator="1"
+                    date_created="2010-10-04 12:34:42.0" retired="0" uuid="5b53549e-eb24-4d77-8245-41445665da28"/>
+    <location location_id="65" name="Ghana" description="Republic of Ghana, Country, Root in hierarchy" country="Ghana"
+              creator="1" date_created="2010-07-09 15:58:23.0" retired="0" uuid="d1e616ce-97ec-43ca-b739-2d5d1bff5bfc"/>
+    <patient_identifier_type patient_identifier_type_id="6" name="MoTeCH Id" description="Patient Id for MoTeCH system."
+                             check_digit="1" creator="1" date_created="2010-07-09 15:58:22.0" required="0"
+                             validator="org.motechproject.server.omod.MotechIdVerhoeffValidator" retired="0"
+                             uuid="5423629e-8b94-11df-9b9f-2eb1ed90087a"/>
+    <patient_identifier_type patient_identifier_type_id="7" name="MoTeCH Staff Id"
+                             description="Staff Id for MoTeCH system." check_digit="1" creator="1"
+                             date_created="2010-07-09 15:58:22.0" required="0"
+                             validator="org.motechproject.server.omod.VerhoeffValidator" retired="0"
+                             uuid="542365ce-8b94-11df-9b9f-2eb1ed90087a"/>
+    <patient_identifier_type patient_identifier_type_id="8" name="MoTeCH Facility Id"
+                             description="Facility Id for MoTeCH system." check_digit="1" creator="1"
+                             date_created="2010-07-09 15:58:22.0" required="0"
+                             validator="org.motechproject.server.omod.VerhoeffValidator" retired="0"
+                             uuid="5423676b-8b94-11df-9b9f-2eb1ed90087a"/>
+    <person_attribute_type person_attribute_type_id="8" name="Phone Number" description="A person&apos;s phone number."
+                           format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0"
+                           date_changed="2010-07-13 15:38:30.0" retired="0"
+                           uuid="5776412c-8c26-495d-883d-b16e62408e58"/>
+    <person_attribute_type person_attribute_type_id="9" name="NHIS Number" description="A person&apos;s NHIS number."
+                           format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0"
+                           date_changed="2010-07-13 15:38:30.0" retired="0"
+                           uuid="ad692638-ad5d-45b4-bf4e-06c0e3e607b2"/>
+    <person_attribute_type person_attribute_type_id="10" name="NHIS Expiration Date"
+                           description="A person&apos;s NHIS expiration date."
+                           format="org.openmrs.util.AttributableDate" searchable="0" creator="1"
+                           date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0" retired="0"
+                           uuid="fd17578b-19d3-412a-957d-2290bc921d71"/>
+    <person_attribute_type person_attribute_type_id="11" name="Language"
+                           description="A person&apos;s language preference for messages." format="java.lang.String"
+                           searchable="0" creator="1" date_created="2010-06-30 16:07:23.0"
+                           date_changed="2010-07-13 15:38:30.0" retired="0"
+                           uuid="3f748bf9-0eae-442f-b38a-cddaf4a23d42"/>
+    <person_attribute_type person_attribute_type_id="12" name="Phone Type"
+                           description="A person&apos;s phone ownership type (PERSONAL, HOUSEHOLD, or PUBLIC)."
+                           format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0"
+                           date_changed="2010-07-13 15:38:30.0" retired="0"
+                           uuid="24f16e8b-2b30-4363-a7ef-453a6cf26aa0"/>
+    <person_attribute_type person_attribute_type_id="13" name="Media Type"
+                           description="A person&apos;s media type preference for messages." format="java.lang.String"
+                           searchable="0" creator="1" date_created="2010-06-30 16:07:23.0"
+                           date_changed="2010-07-13 15:38:30.0" retired="0"
+                           uuid="11e10dc3-768b-4998-bb8c-6a4ac61b4966"/>
+    <person_attribute_type person_attribute_type_id="14" name="Delivery Day"
+                           description="A person&apos;s preferred delivery day (SUNDAY to SATURDAY)."
+                           format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0"
+                           date_changed="2010-07-13 15:38:30.0" retired="0"
+                           uuid="f343bb15-4739-40c6-b283-699ae08b0bb2"/>
+    <person_attribute_type person_attribute_type_id="15" name="Delivery Time"
+                           description="A person&apos;s preferred delivery time (HH:mm)." format="java.lang.String"
+                           searchable="0" creator="1" date_created="2010-06-30 16:07:23.0"
+                           date_changed="2010-07-13 15:38:30.0" retired="0"
+                           uuid="0059b907-57df-4d85-acde-98dbbc713f3f"/>
+    <person_attribute_type person_attribute_type_id="16" name="Insured" description="Is person insured? (TRUE OR FALSE)"
+                           format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0"
+                           date_changed="2010-07-13 15:38:30.0" retired="0"
+                           uuid="62c85275-8e75-4bb4-a2db-40e876f4d860"/>
+    <person_attribute_type person_attribute_type_id="17" name="How learned of service"
+                           description="How person found out about services." format="java.lang.String" searchable="0"
+                           creator="1" date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0"
+                           retired="0" uuid="b55d030a-c8f8-4b4a-a087-07324c72e695"/>
+    <person_attribute_type person_attribute_type_id="18" name="Reason interested in service"
+                           description="Reason person is interested in services." format="java.lang.String"
+                           searchable="0" creator="1" date_created="2010-06-30 16:07:23.0"
+                           date_changed="2010-07-13 15:38:30.0" retired="0"
+                           uuid="6f94c84c-a174-4129-8785-b72fbdaf2c62"/>
+
+    <location name="Navio CHPS" location_id="2" creator="1" date_created="0002-11-30 00:00:00.0" retired="0"
+              uuid="161c3ed9-2aa8-11e0"/>
+    <motechmodule_facility id="1" facility_id="11117" location_id="2" phone_number="0123456789"/>
+
 </dataset>

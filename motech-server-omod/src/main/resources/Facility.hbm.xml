@@ -50,7 +50,7 @@
 			<key column="facility_id" />
 			<one-to-many class="Community" />
 		</set>
-        <set name="patients" access="field" table="motechmodule_facility_patient">
+        <set name="patients" table="motechmodule_facility_patient">
 			<key column="facility_id" />
 			<many-to-many column="patient_id" class="org.openmrs.Patient"
 				unique="true" />

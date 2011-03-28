@@ -423,7 +423,7 @@ public class RegistrarServiceTest{
 				.andReturn(null);
 		expect(
 				registrarBean.recordPregnancyDelivery(eq(staff),
-						eq(facilityLocation), eq(date), eq(patient), eq(mode),
+						eq(facility), eq(date), eq(patient), eq(mode),
 						eq(outcome), eq(location), eq(deliveredBy),
 						eq(maleInvolved), aryEq(complications), eq(vvf),
 						eq(maternalDeath), eq(comments),
@@ -507,7 +507,7 @@ public class RegistrarServiceTest{
 				.andReturn(null);
 		expect(
 				registrarBean.recordPregnancyDelivery(eq(staff),
-						eq(facilityLocation), eq(date), eq(patient), eq(mode),
+						eq(facility), eq(date), eq(patient), eq(mode),
 						eq(outcome), eq(location), eq(deliveredBy),
 						eq(maleInvolved), aryEq(complications), eq(vvf),
 						eq(maternalDeath), eq(comments),
@@ -1146,7 +1146,7 @@ public class RegistrarServiceTest{
 		expect(openmrsBean.getPatientByMotechId(motherMotechId.toString()))
 				.andReturn(mother);
 		expect(
-				registrarBean.registerPatient(staff, facilityLocation, date,
+				registrarBean.registerPatient(staff, facility, date,
 						mode, motechId, type, firstName, middleName, lastName,
 						prefName, date, estBirthDate, gender, insured, nhis,
 						date, mother, comm, address, phone, date,
@@ -2285,7 +2285,7 @@ public class RegistrarServiceTest{
 				new Facility());
 		expect(
 				registrarBean.getPatients(firstName, lastName, prefName,
-						birthDate, null, phone, nhis, null))
+						birthDate, facilityId, phone, nhis, null))
 				.andReturn(patients);
 		expect(modelConverter.patientToWebService(patients, true)).andReturn(
 				result);
