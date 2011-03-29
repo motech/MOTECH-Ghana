@@ -195,6 +195,16 @@
             <td><form:errors path="district" cssClass="error"/></td>
         </tr>
         <tr>
+            <td class="labelcolumn"><label for="facility">Facility:</label></td>
+            <td>
+                <form:select path="facility">
+                    <form:option value="" label="Select Value"/>
+                    <form:options items="${facilities}" itemValue="facilityId" itemLabel="location.name"/>
+                </form:select>
+            </td>
+            <td><form:errors path="facility" cssClass="error"/></td>
+        </tr>
+        <tr>
             <td class="labelcolumn"><label for="communityId">Community:</label></td>
             <td>
                 <form:select path="communityId" onchange="findDuplicates()">

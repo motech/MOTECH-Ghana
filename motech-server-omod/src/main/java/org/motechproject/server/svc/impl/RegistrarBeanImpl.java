@@ -237,7 +237,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private void enrollPatientWithAttributes(Patient patient,
-                                             Community community, Boolean enroll, Boolean consent,
+                                             Boolean enroll, Boolean consent,
                                              ContactNumberType ownership, String phoneNumber, MediaType format,
                                              String language, DayOfWeek dayOfWeek, Date timeOfDay,
                                              InterestReason reason, HowLearned howLearned,
@@ -623,7 +623,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                     patient, expDeliveryDate, deliveryDateConfirmed);
         }
 
-        enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
+        enrollPatientWithAttributes(patient, enroll, consent, ownership,
                 phoneNumber, format, language, dayOfWeek, timeOfDay, reason,
                 howLearned, null, pregnancyDueDateObsId);
     }
@@ -683,7 +683,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                     patient, estDeliveryDate, null);
         }
 
-        enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
+        enrollPatientWithAttributes(patient, enroll, consent, ownership,
                 phoneNumber, format, language, dayOfWeek, timeOfDay, null,
                 howLearned, null, pregnancyDueDateObsId);
     }
@@ -854,7 +854,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             }
         }
 
-        enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
+        enrollPatientWithAttributes(patient, enroll, consent, ownership,
                 phoneNumber, format, language, dayOfWeek, timeOfDay, null,
                 howLearned, null, pregnancyDueDateObsId);
     }
@@ -866,7 +866,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                  MediaType format, String language, DayOfWeek dayOfWeek,
                                  Date timeOfDay, HowLearned howLearned) {
 
-        enrollPatientWithAttributes(patient, null, enroll, consent, ownership,
+        enrollPatientWithAttributes(patient, enroll, consent, ownership,
                 phoneNumber, format, language, dayOfWeek, timeOfDay, null,
                 howLearned, null, null);
 
@@ -1388,11 +1388,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     private void sendDeliveryNotification(Patient patient) {
         // Send message to phone number of facility serving patient's community
-        Community community = getCommunityByPatient(patient);
-        if (community != null && community.getFacility() != null) {
-            String phoneNumber = community.getFacility().getPhoneNumber();
-            if (phoneNumber != null) {
 
+        Facility facility = getFacilityByPatient(patient);
+        if (isNotNull(facility)) {
+            String phoneNumber = facility.getPhoneNumber();
+            if (phoneNumber != null) {
                 MessageDefinition messageDef = getMessageDefinition("pregnancy.notification");
                 if (messageDef == null) {
                     log.error("Pregnancy delivery notification message "
@@ -1425,6 +1425,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             }
         }
     }
+
 
     @Transactional
     public void recordMotherPNCVisit(User staff, Location facility,
@@ -3705,6 +3706,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return motechService().getCommunityByPatient(patient);
     }
 
+    public Facility getFacilityByPatient(Patient patient){
+        return motechService().facilityFor(patient);
+    }
+
     public List<String> getStaffTypes() {
         return staffTypes;
     }
@@ -3804,5 +3809,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     private Concept concept(ConceptEnum conceptEnum) {
         return conceptEnum.getConcept(conceptService);
+    }
+
+    private boolean isNotNull(Object object) {
+        return object != null;
     }
 }

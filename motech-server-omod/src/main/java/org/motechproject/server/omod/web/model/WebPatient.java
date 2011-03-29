@@ -77,7 +77,7 @@ public class WebPatient {
     private Integer messagesStartWeek;
 
 
-    private Integer facilityId;
+    private Integer facility;
 
     public WebPatient() {
     }
@@ -376,12 +376,11 @@ public class WebPatient {
         this.messagesStartWeek = messagesStartWeek;
     }
 
-    public Integer getFacilityId() {
-        return facilityId;
+    public Integer getFacility() {
+        return facility;
     }
 
-    public void setFacilityId(Integer facilityId) {
-        this.facilityId = facilityId;
+    public void setFacility(Integer facility) {
+        this.facility = facility;
     }
-
 }

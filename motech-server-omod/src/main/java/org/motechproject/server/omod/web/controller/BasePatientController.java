@@ -33,24 +33,22 @@
 
 package org.motechproject.server.omod.web.controller;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
-
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.FacilityComparator;
 import org.motechproject.server.omod.ContextService;
 import org.openmrs.Location;
 import org.springframework.ui.ModelMap;
+
+import java.util.*;
 
 public class BasePatientController {
 
 	ContextService contextService;
 	Comparator<Community> communityNameComparator;
+    private FacilityComparator facilityComparator = new FacilityComparator();
 
-	public BasePatientController() {
+    public BasePatientController() {
 		communityNameComparator = new Comparator<Community>() {
 			public int compare(Community c1, Community c2) {
 				return c1.getName().compareTo(c2.getName());
@@ -64,7 +62,8 @@ public class BasePatientController {
 
 		List<Facility> facilities = contextService.getMotechService()
 				.getAllFacilities();
-		for (Facility facility : facilities) {
+
+        for (Facility facility : facilities) {
 			Location location = facility.getLocation();
 			if (location != null) {
 				String region = location.getRegion();
@@ -84,9 +83,11 @@ public class BasePatientController {
 				districtMap.put(district, communities);
 			}
 		}
-
+        facilityComparator = new FacilityComparator();
+        Collections.sort(facilities, facilityComparator);
 		model.addAttribute("regionMap", regionMap);
 		model.addAttribute("districtMap", districtMap);
+		model.addAttribute("facilities", facilities);
 	}
 
 }

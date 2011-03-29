@@ -39,28 +39,77 @@ import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.impl.ContextServiceImpl;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebModelConverterImpl;
+import org.motechproject.server.omod.web.model.WebPatient;
+import org.openmrs.Patient;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class DWRMotechService {
 
-	private static Log log = LogFactory.getLog(DWRMotechService.class);
+    private static Log log = LogFactory.getLog(DWRMotechService.class);
 
-	private ContextService contextService;
-	private WebModelConverter webModelConverter;
+    private ContextService contextService;
+    private WebModelConverter webModelConverter;
 
-	public DWRMotechService() {
-		contextService = new ContextServiceImpl();
-		WebModelConverterImpl webModelConverterImpl = new WebModelConverterImpl();
-		webModelConverterImpl.setRegistrarBean(contextService
-				.getRegistrarBean());
-		webModelConverter = webModelConverterImpl;
-	}
+    public DWRMotechService() {
+        contextService = new ContextServiceImpl();
+        WebModelConverterImpl webModelConverterImpl = new WebModelConverterImpl();
+        webModelConverterImpl.setRegistrarBean(contextService
+                .getRegistrarBean());
+        webModelConverter = webModelConverterImpl;
+    }
 
-	public void setContextService(ContextService contextService) {
-		this.contextService = contextService;
-	}
+    public List<WebPatient> findMatchingPatients(String firstName, String lastName, String prefName, String birthDate,
+                                                 String facilityId, String phoneNumber, String nhisNumber,
+                                                 String motechId) {
+        if (log.isDebugEnabled()) {
+            log.debug("Get Matching Patients: " + firstName + ", " + lastName
+                    + ", " + prefName + ", " + birthDate + ", " + facilityId
+                    + ", " + phoneNumber + ", " + nhisNumber + ", " + motechId);
+        }
 
-	public void setWebModelConverter(WebModelConverter webModelConverter) {
-		this.webModelConverter = webModelConverter;
-	}
+        List<WebPatient> resultList = new ArrayList<WebPatient>();
+
+        String datePattern = "dd/MM/yyyy";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
+        dateFormat.setLenient(false);
+
+        Date parsedBirthDate = null;
+        try {
+            parsedBirthDate = dateFormat.parse(birthDate);
+        } catch (ParseException e) {
+        }
+
+        Integer parsedFacilityId = null;
+        try {
+            parsedFacilityId = Integer.parseInt(facilityId);
+        } catch (NumberFormatException e) {
+        }
+
+        List<Patient> matchingPatients = contextService.getRegistrarBean()
+                .getDuplicatePatients(firstName, lastName, prefName,
+                        parsedBirthDate, parsedFacilityId, phoneNumber,
+                        nhisNumber, motechId);
+
+        for (Patient patient : matchingPatients) {
+            WebPatient webPatient = new WebPatient();
+            webModelConverter.patientToWeb(patient, webPatient);
+            resultList.add(webPatient);
+        }
+        return resultList;
+    }
+
+
+    public void setContextService(ContextService contextService) {
+        this.contextService = contextService;
+    }
+
+    public void setWebModelConverter(WebModelConverter webModelConverter) {
+        this.webModelConverter = webModelConverter;
+    }
 
 }

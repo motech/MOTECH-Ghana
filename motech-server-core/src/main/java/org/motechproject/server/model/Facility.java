@@ -108,4 +108,8 @@ public class Facility implements Serializable {
     public boolean hasPatients(Integer numberOfPatients) {
         return patients.size() == numberOfPatients;
     }
+
+    public String name() {
+        return location.getName();
+    }
 }
