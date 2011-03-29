@@ -33,10 +33,6 @@
 
 package org.motechproject.server.omod.web.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,12 +42,13 @@ import org.motechproject.server.omod.impl.RelationshipServiceImpl;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
-import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DayOfWeek;
-import org.motechproject.ws.HowLearned;
-import org.motechproject.ws.InterestReason;
-import org.motechproject.ws.MediaType;
+import org.motechproject.ws.*;
 import org.openmrs.*;
+import org.openmrs.Patient;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class WebModelConverterImpl implements WebModelConverter {
 
@@ -100,8 +97,7 @@ public class WebModelConverterImpl implements WebModelConverter {
 			webPatient.setAddress(patientAddress.getAddress1());
 		}
 
-
-        String motherMotechId = new MotechPatient((Patient) getMother(patient)).getMotechId();
+        String motherMotechId = new MotechPatient(getMother(patient)).getMotechId();
         if(motherMotechId != null){
             webPatient.setMotherMotechId(Integer.valueOf(motherMotechId));
         }
@@ -272,10 +268,10 @@ public class WebModelConverterImpl implements WebModelConverter {
 				.getPatientId()));
 	}
 
-    private Person getMother(Patient patient){
+    private Patient getMother(Patient patient){
         Relationship motherRelation = relationshipService.getMotherRelationship(patient);
         if(motherRelation != null){
-            return motherRelation.getPersonA();
+            return (Patient) motherRelation.getPersonA();
         }
         return null;
     }

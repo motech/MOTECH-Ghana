@@ -216,6 +216,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         patient = patientService.savePatient(patient);
 
+
+        if (community != null) {
+            community.getResidents().add(patient);
+        }
         facility.addPatient(patient);
 
         if (mother != null) {
@@ -287,7 +291,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 addMessageProgramEnrollment(patient.getPatientId(),
                         infoMessageProgramName, referenceDateObsId);
             }
-            addMessageProgramEnrollment(patient.getPatientId(),"Expected Care Message Program", null);
+            addMessageProgramEnrollment(patient.getPatientId(), "Expected Care Message Program", null);
         }
     }
 
@@ -3706,7 +3710,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return motechService().getCommunityByPatient(patient);
     }
 
-    public Facility getFacilityByPatient(Patient patient){
+    public Facility getFacilityByPatient(Patient patient) {
         return motechService().facilityFor(patient);
     }
 

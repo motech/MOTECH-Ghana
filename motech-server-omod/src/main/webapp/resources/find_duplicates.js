@@ -40,16 +40,16 @@ function findDuplicates() {
 	var lastName = dwr.util.getValue('lastName');
 	var prefName = dwr.util.getValue('prefName');
 	var birthDate = dwr.util.getValue('birthDate');
-	var communityId = dwr.util.getValue('communityId');
+	var facilityId = dwr.util.getValue('facility');
 	var phoneNumber = dwr.util.getValue('phoneNumber');
 	var nhisNumber = dwr.util.getValue('nhis');
 	
 	if( motechId != '' || nhisNumber != '' || 
 			(((firstName != '' && lastName != '') || (prefName != '' && lastName != '')) && 
 			((birthDate != '' && birthDateRegex.test(birthDate)) || 
-			communityId != '' || phoneNumber != ''))) {
+			facilityId != '' || phoneNumber != ''))) {
 		DWRMotechService.findMatchingPatients(firstName, lastName, prefName,
-			birthDate, communityId, phoneNumber, nhisNumber, motechId,
+			birthDate, facilityId, phoneNumber, nhisNumber, motechId,
 			displayMatchesFunction);
 	}
 }
