@@ -3048,8 +3048,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         for (ExpectedEncounter allDefaulter : allDefaulters) {
             ExpectedEncounter expectedEncounter = allDefaulter;
-            if (expectedEncounter.getPatient() != null &&
-                    rctService.isPatientRegisteredAndInControlGroup(expectedEncounter.getPatient())) {
+            if ((expectedEncounter.getPatient() != null &&
+                    rctService.isPatientRegisteredAndInControlGroup(expectedEncounter.getPatient())) ||
+                    expectedEncounter.getPatient().getPatientId() > 5717) {
                 allDefaulters.remove(expectedEncounter);
             }
         }
@@ -3061,8 +3062,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         for (ExpectedObs allDefaulter : allDefaulters) {
             ExpectedObs expectedObs = allDefaulter;
-            if (expectedObs.getPatient() != null &&
-                    rctService.isPatientRegisteredAndInControlGroup(expectedObs.getPatient())) {
+            if ((expectedObs.getPatient() != null &&
+                    rctService.isPatientRegisteredAndInControlGroup(expectedObs.getPatient())) ||
+                    expectedObs.getPatient().getPatientId() > 5717) {
                 allDefaulters.remove(expectedObs);
             }
         }
