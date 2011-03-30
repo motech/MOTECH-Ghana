@@ -1,6 +1,5 @@
 package org.motechproject.server.model.rct;
 
-import org.motechproject.server.exception.RCTControlGroupNotFoundException;
 import org.motechproject.ws.rct.ControlGroup;
 import org.motechproject.ws.rct.PregnancyTrimester;
 
@@ -33,7 +32,7 @@ public class Stratum {
                 return controlGroupAssignment.group();
             }
         }
-        throw new RCTControlGroupNotFoundException();
+        return ControlGroup.NONE;
     }
 
     public void determineNextAssignment() {

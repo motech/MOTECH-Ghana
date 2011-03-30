@@ -9,4 +9,6 @@ public final class RCTError {
     public static final String RCT_STRATUM_NOT_FOUND = "motechmodule.rct.no.stratum";
 
     public static final String CONTROL_GROUP_NOT_FOUND = "motechmodule.rct.no.control.group";
+
+    public static final String RCT_CONTROL_GROUP_NOT_FOUND = "motechmodule.rct.no.control.group.found";
 }
