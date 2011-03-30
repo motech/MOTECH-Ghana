@@ -29,20 +29,27 @@ public class RCTServiceImpl implements RCTService {
 
         Stratum stratum = stratumWith(facility, PhoneOwnershipType.mapTo(patient.getContactNumberType()), patient.pregnancyTrimester());
         if (stratum != null) {
-            return successfulRegistration(patient, staff, stratum);
+            return assignControlGroup(patient, staff, stratum);
         }
         return failedRegistration(RCTError.RCT_STRATUM_NOT_FOUND);
     }
 
-    private RCTRegistrationConfirmation failedRegistration(String error) {
-        return new RCTRegistrationConfirmation(error, true);
+    private RCTRegistrationConfirmation assignControlGroup(Patient patient, User staff, Stratum stratum) {
+        ControlGroup group = stratum.groupAssigned();
+        if (group.isAssignable()) {
+            return successfulRegistration(patient, staff, stratum, group);
+        }
+        return failedRegistration(RCTError.RCT_CONTROL_GROUP_NOT_FOUND);
     }
 
-    private RCTRegistrationConfirmation successfulRegistration(Patient patient, User staff, Stratum stratum) {
-        ControlGroup group = stratum.groupAssigned();
+    private RCTRegistrationConfirmation successfulRegistration(Patient patient, User staff, Stratum stratum, ControlGroup group) {
         enrollPatientForRCT(patient.getMotechId(), stratum, group, staff);
         determineNextAssignment(stratum);
-        return new RCTRegistrationConfirmation(new ConfirmationMessageContent(patient,group).text(), false);
+        return new RCTRegistrationConfirmation(new ConfirmationMessageContent(patient, group).text(), false);
+    }
+
+    private RCTRegistrationConfirmation failedRegistration(String error) {
+        return new RCTRegistrationConfirmation(error, true);
     }
 
     @Transactional(readOnly = true)

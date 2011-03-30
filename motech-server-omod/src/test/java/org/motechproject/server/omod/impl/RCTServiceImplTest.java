@@ -3,7 +3,6 @@ package org.motechproject.server.omod.impl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.motechproject.server.exception.RCTControlGroupNotFoundException;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.svc.RCTService;
@@ -74,8 +73,7 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
         Patient patient = new Patient();
         assertFalse(patient.isPregnancyRegistered());
         RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11117));
-        assertTrue(confirmation.getErrors());
-        assertEquals(RCTError.PREGNANCY_NOT_REGISTERED, confirmation.getText());
+        assertFailedConfirmation(confirmation, RCTError.PREGNANCY_NOT_REGISTERED);
     }
 
     @Test
@@ -87,8 +85,7 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
         assertTrue(patient.isPregnancyRegistered());
         assertTrue(patient.isInFirstTrimesterOfPregnancy());
         RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11117));
-        assertTrue(confirmation.getErrors());
-        assertEquals(RCTError.FIRST_TRIMESTER_PREGNANCY, confirmation.getText());
+        assertFailedConfirmation(confirmation, RCTError.FIRST_TRIMESTER_PREGNANCY);
     }
 
     @Test
@@ -98,18 +95,18 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
         calendar.add(Calendar.MONTH, 2);
         patient.setEstimateDueDate(calendar.getTime());
         RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11119));
-        assertTrue(confirmation.getErrors());
-        assertEquals(RCTError.RCT_STRATUM_NOT_FOUND, confirmation.getText());
+        assertFailedConfirmation(confirmation, RCTError.RCT_STRATUM_NOT_FOUND);
     }
 
 
-    @Test(expected = RCTControlGroupNotFoundException.class)
-    public void shouldThrowRCTRegistrationExceptionWhenControlGroupsNotConfigured() {
+    @Test
+    public void shouldNotRegisterPatientWhenControlGroupsNotConfigured() {
         Patient patient = new Patient();
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 2);
         patient.setEstimateDueDate(calendar.getTime());
-        service.register(patient, user(), facility(11120));
+        RCTRegistrationConfirmation confirmation = service.register(patient, user(), facility(11120));
+        assertFailedConfirmation(confirmation, RCTError.RCT_CONTROL_GROUP_NOT_FOUND);
     }
 
     @Test
@@ -120,6 +117,11 @@ public class RCTServiceImplTest extends BaseModuleContextSensitiveTest {
     @Test
     public void shouldReturnNullForPatientNotRegisteredInRCT() {
         assertNull(service.getRCTPatient(1234568));
+    }
+
+    private void assertFailedConfirmation(RCTRegistrationConfirmation confirmation, String error) {
+        assertTrue(confirmation.getErrors());
+        assertEquals(error, confirmation.getText());
     }
 
     private User user() {
