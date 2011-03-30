@@ -814,11 +814,11 @@ public class RegistrarBeanImplTest extends TestCase {
 
         verify(rctService);
 
-        assertEquals(3, filteredObs.size());
+        assertEquals(2, filteredObs.size());
         ExpectedObs obs = filteredObs.get(0);
         assertEquals(p1.getPatientId(), obs.getPatient().getPatientId());
 
-        assertEquals(3, filteredEnc.size());
+        assertEquals(2, filteredEnc.size());
         ExpectedEncounter enc = filteredEnc.get(0);
         assertEquals(p1.getPatientId(), enc.getPatient().getPatientId());
 
