@@ -1468,12 +1468,22 @@
         <sql>
             create table motechmodule_facility_patient
             (
-                facility_id bigint(20) NOT NULL,
-                patient_id int(11) NOT NULL unique,
-                KEY patient_rel_facility (facility_id),
-                CONSTRAINT fk_fac_patient_map_to_facility FOREIGN KEY (facility_id) REFERENCES motechmodule_facility (id),
-                CONSTRAINT fk_fac_patient_map_to_patient FOREIGN KEY (patient_id) REFERENCES patient (patient_id)
+            facility_id bigint(20) NOT NULL,
+            patient_id int(11) NOT NULL unique,
+            KEY patient_rel_facility (facility_id),
+            CONSTRAINT fk_fac_patient_map_to_facility FOREIGN KEY (facility_id) REFERENCES motechmodule_facility (id),
+            CONSTRAINT fk_fac_patient_map_to_patient FOREIGN KEY (patient_id) REFERENCES patient (patient_id)
             );
+        </sql>
+    </diff>
+    <diff>
+        <version>1.3</version>
+        <author>ThoughtWorks</author>
+        <date>March 31 2011</date>
+        <description>Data migration from motechmodule_community_patient to motechmodule_facility_patient</description>
+        <sql>
+            insert into motechmodule_facility_patient
+            select c.facility_id,cp.patient_id from motechmodule_community_patient cp join motechmodule_community c on cp.community_id = c.id;
         </sql>
     </diff>
 </sqldiff>
