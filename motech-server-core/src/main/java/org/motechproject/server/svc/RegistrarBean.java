@@ -351,15 +351,6 @@ public interface RegistrarBean {
 
 	public Date getObsValue(Integer obsId);
 
-	public Integer getObsId(Integer personId, String conceptName,
-			String conceptValue, Date earliest, Date latest);
-
-	public Integer getObsId(Integer personId, String conceptName,
-			Integer doseNumber, Date earliest, Date latest);
-
-	public Integer getEncounterId(Integer patientId, String encounterType,
-			Date earliest, Date latest);
-
 	public void removeMessageProgramEnrollment(
 			MessageProgramEnrollment enrollment);
 

@@ -2483,47 +2483,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return result;
     }
 
-    public Integer getObsId(Integer personId, String conceptName,
-                            String conceptValue, Date earliest, Date latest) {
-        List<Obs> observations = getMatchingObs(personService
-                .getPerson(personId), conceptService.getConcept(conceptName),
-                conceptService.getConcept(conceptValue), null, earliest, latest);
-        if (observations.size() > 0) {
-            observations.get(0).getObsId();
-        }
-        return null;
-    }
-
-    public Integer getObsId(Integer personId, String conceptName,
-                            Integer doseNumber, Date earliest, Date latest) {
-        List<Obs> observations = getMatchingObs(personService
-                .getPerson(personId), conceptService.getConcept(conceptName),
-                null, null, earliest, latest);
-        for (Obs obs : observations) {
-            Double value = obs.getValueNumeric();
-            if (value != null && value.intValue() >= doseNumber) {
-                return obs.getObsId();
-            }
-        }
-        return null;
-    }
-
-    public Integer getEncounterId(Integer patientId, String encounterType,
-                                  Date earliest, Date latest) {
-        List<EncounterType> encounterTypes = new ArrayList<EncounterType>();
-        encounterTypes.add(encounterService.getEncounterType(encounterType));
-
-        List<Encounter> encounters = encounterService.getEncounters(
-                patientService.getPatient(patientId), null, earliest, latest,
-                null, encounterTypes, null, false);
-        if (encounters.size() > 0) {
-            return encounters.get(0).getEncounterId();
-        }
-        return null;
-    }
-
-    /* PatientObsService methods end */
-
     /* MessageSchedulerImpl methods start */
 
     public void scheduleInfoMessages(String messageKey, String messageKeyA,
