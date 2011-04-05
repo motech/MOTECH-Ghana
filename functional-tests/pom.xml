@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.motechproject.functional.tests</groupId>
     <artifactId>motech-functional-tests</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
     <name>Motech Functional Test</name>
     <description>The core library for the server-side of the MoTeCH project.</description>
