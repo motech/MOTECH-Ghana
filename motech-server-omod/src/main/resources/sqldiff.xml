@@ -1378,7 +1378,7 @@
         <author>ThoughtWorks</author>
         <date>March 1 2011</date>
         <description>
-            Creating RCT tables
+            Creating RCT tables and max dates for ANC defaulters
         </description>
         <sql>
             create table motechmodule_rct_facility
@@ -1425,6 +1425,11 @@
             constraint fk_patient_to_user foreign key (enrolled_by) references users (user_id)
             );
 
+            UPDATE motechmodule_expected_encounter
+               SET max_datetime = DATE_ADD(late_datetime, INTERVAL 2 WEEK)
+             WHERE encounter_type = 5
+               AND voided = 0
+               AND max_datetime is null;
         </sql>
     </diff>
     <diff>

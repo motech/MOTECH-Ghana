@@ -33,24 +33,20 @@
 
 package org.motechproject.server.event.impl;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.event.MessageProgram;
 import org.motechproject.server.event.MessageProgramState;
-import org.motechproject.server.model.ExpectedEncounter;
-import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.model.Message;
-import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.model.ScheduledMessage;
+import org.motechproject.server.model.*;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.time.TimePeriod;
 import org.openmrs.Patient;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 		MessageProgram {
@@ -68,26 +64,21 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 		// past
 		Date nextDate = calculateDate(currentDate, 1, TimePeriod.day);
 
-		Integer maxPatientReminders = registrarBean
-				.getMaxPatientCareReminders();
+		Integer maxPatientReminders = registrarBean.getMaxPatientCareReminders();
 
 		// Get patient from enrollment person Id
-		Patient patient = registrarBean
-				.getPatientById(enrollment.getPersonId());
+		Patient patient = registrarBean.getPatientById(enrollment.getPersonId());
 		if (patient == null) {
-			log.debug("Person of enrollment is not a patient: "
-					+ enrollment.getPersonId());
+			log.debug("Person of enrollment is not a patient: " + enrollment.getPersonId());
 			return null;
 		}
 
 		// Get all active expected care for patient (obs and encounter)
-		List<ExpectedEncounter> expectedEncounters = registrarBean
-				.getExpectedEncounters(patient);
-		List<ExpectedObs> expectedObservations = registrarBean
-				.getExpectedObs(patient);
+		List<ExpectedEncounter> expectedEncounters = registrarBean.getExpectedEncounters(patient);
+		List<ExpectedObs> expectedObservations = registrarBean.getExpectedObs(patient);
+
 		// Get all messages for enrollment (includes sent and not sent)
-		List<ScheduledMessage> scheduledMessages = registrarBean
-				.getScheduledMessages(enrollment);
+		List<ScheduledMessage> scheduledMessages = registrarBean.getScheduledMessages(enrollment);
 
 		// Create predicates for expected care (by group) and scheduled messages
 		// (by key)
@@ -103,15 +94,13 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 			scheduledMessagePredicate.resetKeys(careDetails.getUpcomingMessageKey(), careDetails.getOverdueMessageKey());
 
 			// Get scheduled messages for care, removing from enrollment list
-			List<ScheduledMessage> careScheduledMessages = getScheduledMessages(
-					scheduledMessages, scheduledMessagePredicate);
+			List<ScheduledMessage> careScheduledMessages = getScheduledMessages(scheduledMessages, scheduledMessagePredicate);
 			scheduledMessages.removeAll(careScheduledMessages);
 
 			// Get expected obs and encounters for care details
-			List<ExpectedEncounter> careExpectedEncounters = getExpectedEncounters(
-					expectedEncounters, expectedEncounterPredicate);
-			List<ExpectedObs> careExpectedObs = getExpectedObs(
-					expectedObservations, expectedObsPredicate);
+			List<ExpectedEncounter> careExpectedEncounters = getExpectedEncounters(expectedEncounters,
+                                                                                   expectedEncounterPredicate);
+			List<ExpectedObs> careExpectedObs = getExpectedObs(expectedObservations, expectedObsPredicate);
 
 			List<ScheduledMessage> verifiedScheduledMessages = new ArrayList<ScheduledMessage>();
 
@@ -123,9 +112,9 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 				String care = expectedEncounter.getName();
 
 				// Create new scheduled message or return existing matching
-				ScheduledMessage message = scheduleCareMessage(currentDate,
-						nextDate, dueDate, lateDate, careDetails, care,
-						enrollment, careScheduledMessages, maxPatientReminders);
+				ScheduledMessage message = scheduleCareMessage(currentDate, nextDate, dueDate, lateDate,
+                                                               careDetails, care, enrollment, careScheduledMessages,
+                                                               maxPatientReminders);
 				if (message != null) {
 					verifiedScheduledMessages.add(message);
 				}
@@ -136,9 +125,9 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 				String care = expectedObs.getName();
 
 				// Create new scheduled message or return existing matching
-				ScheduledMessage message = scheduleCareMessage(currentDate,
-						nextDate, dueDate, lateDate, careDetails, care,
-						enrollment, careScheduledMessages, maxPatientReminders);
+				ScheduledMessage message = scheduleCareMessage(currentDate, nextDate, dueDate, lateDate,
+                                                               careDetails, care, enrollment, careScheduledMessages,
+                                                               maxPatientReminders);
 				if (message != null) {
 					verifiedScheduledMessages.add(message);
 				}

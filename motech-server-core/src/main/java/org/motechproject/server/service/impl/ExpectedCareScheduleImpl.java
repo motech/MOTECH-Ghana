@@ -33,11 +33,6 @@
 
 package org.motechproject.server.service.impl;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.service.ExpectedCareEvent;
@@ -47,6 +42,11 @@ import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.time.TimePeriod;
 import org.openmrs.Patient;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 public class ExpectedCareScheduleImpl implements ExpectedCareSchedule {
 
 	private static Log log = LogFactory.getLog(ExpectedCareScheduleImpl.class);
@@ -55,6 +55,9 @@ public class ExpectedCareScheduleImpl implements ExpectedCareSchedule {
 
 	protected Integer lateValue;
 	protected TimePeriod latePeriod;
+
+    protected Integer maxValue;
+	protected TimePeriod maxPeriod;
 
 	protected List<ExpectedCareEvent> events = new ArrayList<ExpectedCareEvent>();
 	protected List<Requirement> requirements = new ArrayList<Requirement>();
@@ -166,13 +169,29 @@ public class ExpectedCareScheduleImpl implements ExpectedCareSchedule {
 		this.lateValue = lateValue;
 	}
 
-	public TimePeriod getLatePeriod() {
+    public TimePeriod getLatePeriod() {
 		return latePeriod;
 	}
 
 	public void setLatePeriod(TimePeriod latePeriod) {
 		this.latePeriod = latePeriod;
 	}
+
+    public Integer getMaxValue() {
+        return maxValue;
+    }
+
+    public void setMaxValue(Integer maxValue) {
+        this.maxValue = maxValue;
+    }
+
+    public TimePeriod getMaxPeriod() {
+        return maxPeriod;
+    }
+
+    public void setMaxPeriod(TimePeriod maxPeriod) {
+        this.maxPeriod = maxPeriod;
+    }
 
 	public List<ExpectedCareEvent> getEvents() {
 		return events;

@@ -33,32 +33,22 @@
 
 package org.motechproject.server.service;
 
-import static org.easymock.EasyMock.anyObject;
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import junit.framework.TestCase;
+import org.easymock.Capture;
+import org.motechproject.server.model.ExpectedEncounter;
+import org.motechproject.server.service.impl.ExpectedEncounterSchedule;
+import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.util.MotechConstants;
+import org.openmrs.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.TestCase;
-
-import org.easymock.Capture;
-import org.motechproject.server.model.ExpectedEncounter;
-import org.motechproject.server.service.impl.ExpectedEncounterSchedule;
-import org.motechproject.server.svc.RegistrarBean;
-import org.motechproject.server.util.MotechConstants;
-import org.openmrs.Concept;
-import org.openmrs.ConceptName;
-import org.openmrs.Encounter;
-import org.openmrs.Obs;
-import org.openmrs.Patient;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import static org.easymock.EasyMock.*;
 
 public class ANCScheduleTest extends TestCase {
 	ApplicationContext ctx;
@@ -161,6 +151,7 @@ public class ANCScheduleTest extends TestCase {
 		Capture<Date> minDateCapture = new Capture<Date>();
 		Capture<Date> dueDateCapture = new Capture<Date>();
 		Capture<Date> lateDateCapture = new Capture<Date>();
+        Capture<Date> maxDateCapture = new Capture<Date>();
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.MONTH, -1);
@@ -202,7 +193,7 @@ public class ANCScheduleTest extends TestCase {
 				registrarBean.createExpectedEncounter(eq(patient),
 						eq(ancSchedule.getEncounterTypeName()),
 						capture(minDateCapture), capture(dueDateCapture),
-						capture(lateDateCapture), eq((Date) null),
+						capture(lateDateCapture), capture(maxDateCapture),
 						eq(ancSchedule.getName()), eq(ancSchedule.getName())))
 				.andReturn(new ExpectedEncounter());
 
@@ -220,7 +211,10 @@ public class ANCScheduleTest extends TestCase {
 
 		Date capturedLateDate = lateDateCapture.getValue();
 		assertTrue(capturedLateDate.after(capturedDueDate));
-	}
+
+		Date capturedMaxDate = maxDateCapture.getValue();
+		assertTrue(capturedMaxDate.after(capturedDueDate));
+    }
 
 	public void testNotCreateExpectedAlreadyExists() {
 		Date date = new Date();
@@ -253,6 +247,9 @@ public class ANCScheduleTest extends TestCase {
 		calendar.add(Calendar.DATE, 7); // Expecting 1 week
 		Date lateDate = calendar.getTime();
 
+        calendar.add(Calendar.DATE, 14); // Max 2 weeks week
+        Date maxDate = calendar.getTime();
+
 		List<ExpectedEncounter> expectedEncounterList = new ArrayList<ExpectedEncounter>();
 		ExpectedEncounter expectedEncounter1 = new ExpectedEncounter();
 		expectedEncounter1.setName("ANC");
@@ -260,6 +257,7 @@ public class ANCScheduleTest extends TestCase {
 				.getEncounterDatetime());
 		expectedEncounter1.setDueEncounterDatetime(nextANC2);
 		expectedEncounter1.setLateEncounterDatetime(lateDate);
+        expectedEncounter1.setMaxEncounterDatetime(maxDate);
 		expectedEncounterList.add(expectedEncounter1);
 
 		Date pregnancyDate = new Date();

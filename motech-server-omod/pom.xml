@@ -247,12 +247,15 @@
             </plugins>
         </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.motech.openmrs.plugin</groupId>
-                <artifactId>maven-openmrs-plugin</artifactId>
-                <version>1.0-RC4</version>
-                <extensions>true</extensions>
-            </plugin>
+ 			<plugin>
+				<groupId>org.openmrs.maven.plugins</groupId>
+				<artifactId>maven-openmrs-plugin</artifactId>
+				<version>1.0.1</version>
+				<extensions>true</extensions>
+				<configuration>
+					<verifyOmod>false</verifyOmod>
+				</configuration>
+			</plugin>
         </plugins>
     </build>
 

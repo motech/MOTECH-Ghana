@@ -57,19 +57,15 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 		Date referenceDate = getReferenceDate(patient);
 		if (!validReferenceDate(referenceDate, date)) {
 			// Handle missing reference date as failed requirement
-			log.debug("Failed to meet reference date requisite: "
-					+ referenceDate + ", removing events for schedule");
+			log.debug("Failed to meet reference date requisite: " + referenceDate + ", removing events for schedule");
 
 			removeExpectedCare(patient);
 			return;
 		}
-		log.debug("Performing " + name + " schedule update: patient: "
-				+ patient.getPatientId());
+		log.debug("Performing " + name + " schedule update: patient: " + patient.getPatientId());
 
-		List<Obs> obsList = registrarBean.getObs(patient, conceptName,
-				valueConceptName, referenceDate);
-		List<ExpectedObs> expectedObsList = registrarBean.getExpectedObs(
-				patient, name);
+		List<Obs> obsList = registrarBean.getObs(patient, conceptName, valueConceptName, referenceDate);
+		List<ExpectedObs> expectedObsList = registrarBean.getExpectedObs(patient, name);
 
 		Date previousEventObsDate = null;
 		Integer largestDoseValue = getLargestDoseValue(obsList);
@@ -81,6 +77,7 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 			// Calculate dates for event
 			Date minDate = getMinDate(referenceDate, event);
 			Date dueDate = null;
+
 			// Use previous event's satisfying obs date as reference if
 			// specified, clear previous obs date after
 			if (Boolean.TRUE.equals(event.getDueReferencePrevious())) {
@@ -89,6 +86,7 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 			} else {
 				dueDate = getDueDate(referenceDate, event);
 			}
+
 			// Set due date to min date if calculated due date is before min
 			// date
 			if (dueDate != null && minDate != null && dueDate.before(minDate)) {
@@ -102,6 +100,7 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 			obsPredicate.setMaxDate(maxDate);
 			obsPredicate.setValue(event.getNumber());
 			Obs eventObs = getEventObs(obsList, obsPredicate);
+
 			// Store satisfying Obs date for possible reference in next event
 			if (eventObs != null) {
 				previousEventObsDate = eventObs.getObsDatetime();
@@ -109,8 +108,7 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 
 			// Find ExpectedObs previously created for event
 			expectedObsPredicate.setName(event.getName());
-			ExpectedObs expectedObs = getEventExpectedObs(expectedObsList,
-					expectedObsPredicate);
+			ExpectedObs expectedObs = getEventExpectedObs(expectedObsList, expectedObsPredicate);
 
 			boolean eventDoseBelowLargest = false;
 			if (largestDoseValue != null && event.getNumber() != null) {
@@ -173,13 +171,12 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 
 	@SuppressWarnings("unchecked")
 	protected Obs getEventObs(List<Obs> obsList, ObsPredicate obsPredicate) {
-		List<Obs> eventObs = (List<Obs>) CollectionUtils.select(obsList,
-				obsPredicate);
+		List<Obs> eventObs = (List<Obs>) CollectionUtils.select(obsList, obsPredicate);
 		if (!eventObs.isEmpty()) {
 			if (eventObs.size() > 1) {
-				log.debug("Multiple matches for delivered care : "
-						+ eventObs.size());
+				log.debug("Multiple matches for delivered care : " + eventObs.size());
 			}
+
 			// List is descending by date, remove match last in list
 			Obs obs = eventObs.get(eventObs.size() - 1);
 			obsList.remove(obs);
@@ -189,16 +186,15 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected ExpectedObs getEventExpectedObs(
-			List<ExpectedObs> expectedObsList,
-			ExpectedObsPredicate expectedObsPredicate) {
-		List<ExpectedObs> eventExpectedObs = (List<ExpectedObs>) CollectionUtils
-				.select(expectedObsList, expectedObsPredicate);
+	protected ExpectedObs getEventExpectedObs(List<ExpectedObs> expectedObsList,
+                                              ExpectedObsPredicate expectedObsPredicate) {
+		List<ExpectedObs> eventExpectedObs;
+        eventExpectedObs = (List<ExpectedObs>) CollectionUtils.select(expectedObsList, expectedObsPredicate);
 		if (!eventExpectedObs.isEmpty()) {
 			if (eventExpectedObs.size() > 1) {
-				log.debug("Multiple matches for expected care : "
-						+ eventExpectedObs.size());
+				log.debug("Multiple matches for expected care : " + eventExpectedObs.size());
 			}
+
 			// List is ascending by due date, remove first match
 			ExpectedObs expectedObs = eventExpectedObs.get(0);
 			expectedObsList.remove(expectedObs);
@@ -209,8 +205,7 @@ public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 
 	@Override
 	protected void removeExpectedCare(Patient patient) {
-		List<ExpectedObs> expectedObsList = registrarBean.getExpectedObs(
-				patient, name);
+		List<ExpectedObs> expectedObsList = registrarBean.getExpectedObs(patient, name);
 		removeExpectedObs(expectedObsList);
 	}
 
