@@ -135,6 +135,19 @@
         <property name="contextService" ref="contextService"/>
     </bean>
 
+    <bean id="messageProgramService" class="org.motechproject.server.omod.impl.MessageProgramServiceImpl">
+        <property name="factories">
+            <util:map>
+                <entry>
+                    <key>
+                        <value>Expected Care Message Program</value>
+                    </key>
+                    <ref bean="expectedCareMessageProgramFactory"/>
+                </entry>
+            </util:map>
+        </property>
+    </bean>
+
     <!-- To avoid circular reference, expectedCareProgram injects registrarBean -->
     <util:map id="messageProgramMap">
         <entry>
@@ -177,6 +190,11 @@
 
     <bean id="mobileClient" class="org.motechproject.server.ws.MessageServiceStub"/>
 
+    <bean id="expectedCareMessageProgramFactory" class="org.motechproject.server.svc.impl.ExpectedCareMessageProgramFactory">
+        <property name="registrarBean" ref="registrarBeanProxy"/>
+        <property name="messageProgramDAO" ref="messageProgramDAO"/>
+    </bean>
+
     <!-- Uncomment to enable using motech-mobile web service and comment out mobileClient bean in registrar-bean.xml
         <bean id="mobileClient"
             class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
@@ -189,5 +207,4 @@
             <property name="lookupServiceOnStartup" value="false" />
         </bean>
     -->
-
 </beans>

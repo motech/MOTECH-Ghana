@@ -1486,4 +1486,22 @@
             select c.facility_id,cp.patient_id from motechmodule_community_patient cp join motechmodule_community c on cp.community_id = c.id;
         </sql>
     </diff>
+    <diff>
+        <version>1.4</version>
+        <author>ThoughtWorks</author>
+        <date>April 8 2011</date>
+        <description>Create table script for ExpectedCareMessageProgram</description>
+        <sql>
+            create table motechmodule_expected_care_message_detail
+            (
+                expected_care_message_detail_id int(10) auto_increment primary key ,
+                name varchar(30),
+                upcoming_message_key varchar(20),
+                overdue_message_key varchar(20),
+                time_period varchar(10),
+                time_value int(10),
+                user_preference_based tinyint(1)
+            );
+        </sql>
+    </diff>
 </sqldiff>

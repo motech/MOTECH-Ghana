@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.motechproject.server.event.impl">
+    <class name="org.motechproject.server.model.ExpectedCareMessageDetails" table="motechmodule_expected_care_message_detail">
+        <id name="id" column="expected_care_message_detail_id">
+            <generator class="native"/>
+        </id>
+        <property name="name" type="string" column="name"/>
+        <property name="upcomingMessageKey" type="string" column="upcoming_message_key"/>
+        <property name="overdueMessageKey" type="string" column="overdue_message_key"/>
+        <property name="timeValue" type="integer" column="time_value"/>
+        <property name="timePeriod" type="org.motechproject.server.model.db.hibernate.TimePeriodEnumType" column="time_period"/>
+        <property name="userPreferenceBased" type="boolean" column="user_preference_based"/>
+    </class>
+</hibernate-mapping>

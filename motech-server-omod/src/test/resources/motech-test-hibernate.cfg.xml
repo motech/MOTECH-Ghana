@@ -40,7 +40,7 @@
 
 <hibernate-configuration>
     <session-factory>
-        <!--<property name="show_sql">true</property>-->
+        <property name="show_sql">true</property>
         <mapping resource="Message.hbm.xml"/>
         <mapping resource="ExpectedEncounter.hbm.xml"/>
         <mapping resource="MessageAttribute.hbm.xml"/>
@@ -57,5 +57,6 @@
         <mapping resource="ControlGroupAssignment.hbm.xml"/>
         <mapping resource="RCTPatient.hbm.xml"/>
         <mapping resource="RCTFacility.hbm.xml"/>
+        <mapping resource="ExpectedCareMessageDetails.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

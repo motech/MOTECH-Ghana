@@ -193,6 +193,10 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <bean id="messageProgramDAO" class="org.motechproject.server.model.db.hibernate.MessageProgramDAOImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
     <bean id="rctService" class="org.motechproject.server.svc.impl.RCTServiceImpl">
         <property name="dao" ref="rctDao"/>
     </bean>

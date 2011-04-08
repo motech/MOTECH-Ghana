@@ -33,30 +33,25 @@
 
 package org.motechproject.server.event.impl;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.event.MessageProgram;
 import org.motechproject.server.event.MessageProgramState;
-import org.motechproject.server.model.ExpectedEncounter;
-import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.model.Message;
-import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.model.ScheduledMessage;
+import org.motechproject.server.model.*;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.time.TimePeriod;
 import org.openmrs.Patient;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 		MessageProgram {
 
-	private static Log log = LogFactory
-			.getLog(ExpectedCareMessageProgram.class);
+	private static Log log = LogFactory.getLog(ExpectedCareMessageProgram.class);
 
 	private List<ExpectedCareMessageDetails> careMessageDetails = new ArrayList<ExpectedCareMessageDetails>();
 	private RegistrarBean registrarBean;
@@ -370,4 +365,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 		this.registrarBean = registrarBean;
 	}
 
+    public Boolean hasMessageCareDetails() {
+        return !careMessageDetails.isEmpty();
+    }
 }

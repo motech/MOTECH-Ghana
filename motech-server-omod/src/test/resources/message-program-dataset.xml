@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <motechmodule_expected_care_message_detail expected_care_message_detail_id="1" name="IPT" upcoming_message_key="ipt.upcoming"
+       overdue_message_key="ipt.overdue" time_period="week" time_value="1" user_preference_based="true"/>
+</dataset>
