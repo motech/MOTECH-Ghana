@@ -2931,8 +2931,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         // All staff messages sent as SMS
         MediaType mediaType = MediaType.TEXT;
+
         // No corresponding message stored for staff care messages
         String messageId = null;
+
         // Set the time on the delivery date if needed
         deliveryDate = adjustTime(deliveryDate, deliveryTime);
 
@@ -2940,10 +2942,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         modelConverter.setRegistrarBean(this);
 
         for (Facility facility : facilities) {
+
             String phoneNumber = facility.getPhoneNumber();
             Location facilityLocation = facility.getLocation();
-            if (phoneNumber == null
-                    || facilityLocation == null) {
+            if (phoneNumber == null || facilityLocation == null) {
                 continue;
             }
 
@@ -2952,21 +2954,34 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             List<ExpectedObs> defaultedObs;
 
             defaultedEncounters = filterRCTEncounters(new ArrayList<ExpectedEncounter>(getDefaultedExpectedEncounters(facility,
-                    careGroups,
-                    startDate)));
+                                                                                                                    careGroups,
+                                                                                                                    startDate)));
             defaultedObs = filterRCTObs(new ArrayList<ExpectedObs>(getDefaultedExpectedObs(facility,
-                    careGroups,
-                    startDate)));
+                                                                                        careGroups,
+                                                                                        startDate)));
 
             // Replace the above code when RCT filtering rules are
             // finalized and implemented.
-
             if (!defaultedEncounters.isEmpty() || !defaultedObs.isEmpty()) {
-                Care[] defaultedCares = modelConverter
-                        .defaultedToWebServiceCares(defaultedEncounters,
-                                defaultedObs);
+                Care[] defaultedCares = modelConverter.defaultedToWebServiceCares(defaultedEncounters,
+                                                                                  defaultedObs);
+
+                log.info("Sending defaulter message to " + facility.name() + " at " + phoneNumber);
                 sendStaffDefaultedCareMessage(messageId, phoneNumber,
-                        mediaType, deliveryDate, null, defaultedCares);
+                                              mediaType, deliveryDate, null, defaultedCares);
+            } else {
+                log.info("Sending 'no defaulters' message to " + facility.name() + " at " + phoneNumber);
+
+                try {
+                    org.motechproject.ws.MessageStatus messageStatus;
+                    messageStatus = mobileService.sendMessage(facility.name() + " has no defaulters for this week", phoneNumber);
+
+                    if (messageStatus == org.motechproject.ws.MessageStatus.FAILED) {
+                        log.error("Unable to message " + phoneNumber + " that they have no defaulters");
+                    }
+                } catch (Exception e) {
+                    log.error("Unable to message " + phoneNumber + " that they have no defaulters", e);
+                }
             }
 
             if (sendUpcoming) {
@@ -2974,22 +2989,35 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 List<ExpectedEncounter> upcomingEncounters;
                 List<ExpectedObs> upcomingObs;
                 upcomingEncounters = filterRCTEncounters(getUpcomingExpectedEncounters(facility,
-                        careGroups,
-                        startDate,
-                        endDate));
+                                                                                       careGroups,
+                                                                                       startDate,
+                                                                                       endDate));
 
                 upcomingObs = filterRCTObs(getUpcomingExpectedObs(facility,
-                        careGroups,
-                        startDate,
-                        endDate));
+                                                                  careGroups,
+                                                                  startDate,
+                                                                  endDate));
 
                 if (!upcomingEncounters.isEmpty() || !upcomingObs.isEmpty()) {
-                    Care[] upcomingCares = modelConverter
-                            .upcomingToWebServiceCares(upcomingEncounters,
-                                    upcomingObs, true);
+                    Care[] upcomingCares = modelConverter.upcomingToWebServiceCares(upcomingEncounters,
+                                                                                    upcomingObs, true);
 
+                    log.info("Sending upcoming care message to " + facility.name() + " at " + phoneNumber);
                     sendStaffUpcomingCareMessage(messageId, phoneNumber,
-                            mediaType, deliveryDate, null, upcomingCares);
+                                                 mediaType, deliveryDate, null, upcomingCares);
+                } else {
+                    log.info("Sending 'no upcoming care' message to " + facility.name() + " at " + phoneNumber);
+
+                    try {
+                        org.motechproject.ws.MessageStatus messageStatus;
+                        messageStatus = mobileService.sendMessage(facility.name() + " has no upcoming care for this week", phoneNumber);
+
+                        if (messageStatus == org.motechproject.ws.MessageStatus.FAILED) {
+                            log.error("Unable to message " + phoneNumber + " that they have no upcoming care");
+                        }
+                    } catch (Exception e) {
+                        log.error("Unable to message " + phoneNumber + " that they have no upcoming care", e);
+                    }
                 }
             }
         }
