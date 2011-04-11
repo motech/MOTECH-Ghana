@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.server.event.impl.ExpectedCareMessageProgram;
 import org.motechproject.server.model.MessageProgramType;
-import org.motechproject.server.omod.MessageProgramService;
+import org.motechproject.server.svc.MessageProgramService;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -2,7 +2,7 @@ package org.motechproject.server.omod.impl;
 
 import org.motechproject.server.event.MessageProgram;
 import org.motechproject.server.model.MessageProgramType;
-import org.motechproject.server.omod.MessageProgramService;
+import org.motechproject.server.svc.MessageProgramService;
 import org.motechproject.server.svc.MessageProgramFactory;
 
 import java.util.Map;

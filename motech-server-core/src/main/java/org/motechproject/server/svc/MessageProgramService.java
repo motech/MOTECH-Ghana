@@ -1,4 +1,4 @@
-package org.motechproject.server.omod;
+package org.motechproject.server.svc;
 
 import org.motechproject.server.event.MessageProgram;
 import org.motechproject.server.model.MessageProgramType;

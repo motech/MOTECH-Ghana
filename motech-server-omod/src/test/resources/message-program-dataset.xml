@@ -1,5 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-    <motechmodule_expected_care_message_detail expected_care_message_detail_id="1" name="IPT" upcoming_message_key="ipt.upcoming"
+    <motechmodule_expected_care_message_detail expected_care_message_detail_id="1" name="TT" upcoming_message_key="tt.upcoming"
+       overdue_message_key="tt.overdue" time_period="week" time_value="1" user_preference_based="true"/>
+     <motechmodule_expected_care_message_detail expected_care_message_detail_id="2" name="IPT" upcoming_message_key="ipt.upcoming"
        overdue_message_key="ipt.overdue" time_period="week" time_value="1" user_preference_based="true"/>
+     <motechmodule_expected_care_message_detail expected_care_message_detail_id="3" name="ANC" upcoming_message_key="anc.upcoming"
+       overdue_message_key="anc.overdue" time_period="week" time_value="1" user_preference_based="true"/>
+     <motechmodule_expected_care_message_detail expected_care_message_detail_id="4" name="PNC(mother)" upcoming_message_key="pnc.mother.upcoming"
+       overdue_message_key="pnc.mother.overdue" time_period="hour" time_value="24" user_preference_based="true"/>
+     <motechmodule_expected_care_message_detail expected_care_message_detail_id="5" name="PNC(baby)" upcoming_message_key="pnc.baby.upcoming"
+       overdue_message_key="pnc.baby.overdue" time_period="hour" time_value="24" user_preference_based="true"/>
+     <motechmodule_expected_care_message_detail expected_care_message_detail_id="6" name="BCG" upcoming_message_key="bcg.upcoming"
+       overdue_message_key="bcg.overdue" time_period="week" time_value="1" user_preference_based="true"/>
 </dataset>
