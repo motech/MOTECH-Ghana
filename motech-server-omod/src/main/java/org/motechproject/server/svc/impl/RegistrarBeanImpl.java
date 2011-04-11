@@ -42,6 +42,7 @@ import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.*;
 import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.omod.*;
+import org.motechproject.server.omod.impl.MessageProgramServiceImpl;
 import org.motechproject.server.omod.web.model.WebStaff;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
@@ -88,16 +89,18 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     private SchedulerService schedulerService;
     private AdministrationService administrationService;
     private RCTService rctService;
+    private MessageProgramServiceImpl messageProgramService;
 
     @Autowired
     private IdentifierGenerator identifierGenerator;
 
 
-    private Map<String, MessageProgram> messagePrograms;
     private List<String> staffTypes;
 
     @Autowired
     private MotechUserRepository motechUserRepository;
+
+
 
 
     public void setContextService(ContextService contextService) {
@@ -106,10 +109,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public void setMobileService(MessageService mobileService) {
         this.mobileService = mobileService;
-    }
-
-    public void setMessagePrograms(Map<String, MessageProgram> messagePrograms) {
-        this.messagePrograms = messagePrograms;
     }
 
     public User registerStaff(String firstName, String lastName, String phone,
@@ -2869,8 +2868,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         Date currentDate = new Date();
 
         for (MessageProgramEnrollment enrollment : activeEnrollments) {
-            MessageProgram program = messagePrograms.get(enrollment
-                    .getProgram());
+
+            MessageProgram program = messageProgramService.program(enrollment.getProgram());
 
             log.debug("MessageProgram Update - Update State: enrollment: "
                     + enrollment.getId());
@@ -3804,5 +3803,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     private boolean isNotNull(Object object) {
         return object != null;
+    }
+
+    public void setMessageProgramService(MessageProgramServiceImpl messageProgramService) {
+        this.messageProgramService = messageProgramService;
+    }
+
+    public MessageProgramServiceImpl getMessageProgramService() {
+        return messageProgramService;
     }
 }

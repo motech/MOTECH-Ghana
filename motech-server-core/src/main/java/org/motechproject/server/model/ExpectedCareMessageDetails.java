@@ -39,7 +39,7 @@ import java.util.Map;
 
 public class ExpectedCareMessageDetails {
 
-    private Integer id;
+    private Long id;
     private String name;
     private String upcomingMessageKey;
     private String overdueMessageKey;
@@ -76,7 +76,7 @@ public class ExpectedCareMessageDetails {
         return timeValue;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -108,7 +108,7 @@ public class ExpectedCareMessageDetails {
         this.careTimeMap = careTimeMap;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

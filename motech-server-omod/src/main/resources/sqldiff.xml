@@ -1482,11 +1482,11 @@
         <version>1.4</version>
         <author>ThoughtWorks</author>
         <date>April 8 2011</date>
-        <description>Create table script for ExpectedCareMessageProgram</description>
+        <description>Create table scripts for ExpectedCareMessageProgram</description>
         <sql>
             create table motechmodule_expected_care_message_detail
             (
-                expected_care_message_detail_id int(10) auto_increment primary key ,
+                expected_care_message_detail_id bigint(20) auto_increment primary key ,
                 name varchar(30),
                 upcoming_message_key varchar(20),
                 overdue_message_key varchar(20),
@@ -1494,6 +1494,47 @@
                 time_value int(10),
                 user_preference_based tinyint(1)
             );
+
+            insert into motechmodule_expected_care_message_detail(name,upcoming_message_key,overdue_message_key,time_period,time_value,user_preference_based)
+             values('TT','tt.upcoming','tt.overdue','week',1,1);
+            insert into motechmodule_expected_care_message_detail(name,upcoming_message_key,overdue_message_key,time_period,time_value,user_preference_based)
+             values('IPT','ipt.upcoming','ipt.overdue','week',1,1);
+            insert into motechmodule_expected_care_message_detail(name,upcoming_message_key,overdue_message_key,time_period,time_value,user_preference_based)
+             values('ANC','anc.upcoming','anc.overdue','week',1,1);
+            insert into motechmodule_expected_care_message_detail(name,upcoming_message_key,overdue_message_key,time_period,time_value,user_preference_based)
+             values('PNC(mother)','pnc.mother.upcoming','pnc.mother.overdue','hour',24,1);
+            insert into motechmodule_expected_care_message_detail(name,upcoming_message_key,overdue_message_key,time_period,time_value,user_preference_based)
+             values('PNC(baby)','pnc.baby.upcoming','pnc.baby.overdue','hour',24,1);
+            insert into motechmodule_expected_care_message_detail(name,upcoming_message_key,overdue_message_key,time_period,time_value,user_preference_based)
+             values('BCG','bcg.upcoming','bcg.overdue','week',1,1);
+            insert into motechmodule_expected_care_message_detail(name,upcoming_message_key,overdue_message_key,time_period,time_value,user_preference_based)
+             values('OPV','opv.upcoming','opv.overdue','week',1,1);
+            insert into motechmodule_expected_care_message_detail(name,upcoming_message_key,overdue_message_key,time_period,time_value,user_preference_based)
+             values('Penta','penta.upcoming','penta.overdue','week',1,1);
+            insert into motechmodule_expected_care_message_detail(name,upcoming_message_key,overdue_message_key,time_period,time_value,user_preference_based)
+             values('IPTI','ipti.upcoming','ipti.overdue','week',1,1);
+            insert into motechmodule_expected_care_message_detail(name,upcoming_message_key,overdue_message_key,time_period,time_value,user_preference_based)
+             values('YellowFever','yellowfever.upcoming','yellowfever.overdue','week',1,1);
+            insert into motechmodule_expected_care_message_detail(name,upcoming_message_key,overdue_message_key,time_period,time_value,user_preference_based)
+             values('Measles','measles.upcoming','measles.overdue','week',1,1);
+            insert into motechmodule_expected_care_message_detail(name,upcoming_message_key,overdue_message_key,time_period,time_value,user_preference_based)
+             values('VitaA','vitamina.upcoming','vitamina.overdue','week',1,1);
+
+            create table motechmodule_expected_care_message_detail_attribute
+            (
+               expected_care_message_detail_attribute_id bigint(20) auto_increment primary key,
+               expected_care_message_detail_id bigint(20),
+               attribute_name varchar(20) not null,
+               attribute_value_numeric int ,
+               CONSTRAINT fk_expected_care_message_attribute FOREIGN KEY (expected_care_message_detail_id) REFERENCES motechmodule_expected_care_message_detail(expected_care_message_detail_id)
+            );
+
+            insert into motechmodule_expected_care_message_detail_attribute(expected_care_message_detail_id,attribute_name,attribute_value_numeric) values((select expected_care_message_detail_id from motechmodule_expected_care_message_detail where name='PNC(mother)'),'PNC1',6 );
+            insert into motechmodule_expected_care_message_detail_attribute(expected_care_message_detail_id,attribute_name,attribute_value_numeric) values((select expected_care_message_detail_id from motechmodule_expected_care_message_detail where name='PNC(mother)'),'PNC2',24 );
+            insert into motechmodule_expected_care_message_detail_attribute(expected_care_message_detail_id,attribute_name,attribute_value_numeric) values((select expected_care_message_detail_id from motechmodule_expected_care_message_detail where name='PNC(mother)'),'PNC3',24);
+            insert into motechmodule_expected_care_message_detail_attribute(expected_care_message_detail_id,attribute_name,attribute_value_numeric) values((select expected_care_message_detail_id from motechmodule_expected_care_message_detail where name='PNC(baby)'),'PNC1',6 );
+            insert into motechmodule_expected_care_message_detail_attribute(expected_care_message_detail_id,attribute_name,attribute_value_numeric) values((select expected_care_message_detail_id from motechmodule_expected_care_message_detail where name='PNC(baby)'),'PNC2',24 );
+            insert into motechmodule_expected_care_message_detail_attribute(expected_care_message_detail_id,attribute_name,attribute_value_numeric) values((select expected_care_message_detail_id from motechmodule_expected_care_message_detail where name='PNC(baby)'),'PNC3',24);
         </sql>
     </diff>
 </sqldiff>

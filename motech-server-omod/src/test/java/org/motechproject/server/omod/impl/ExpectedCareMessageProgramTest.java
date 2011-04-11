@@ -44,7 +44,7 @@ public class ExpectedCareMessageProgramTest extends BaseModuleContextSensitiveTe
 
         executeDataSet("message-program-dataset.xml");
 
-        careProgram = (ExpectedCareMessageProgram) messageProgramService.program(MessageProgramType.ExpectedCare);
+        careProgram = (ExpectedCareMessageProgram) messageProgramService.program("Expected Care Message Program");
         registrarBean = EasyMock.createMock(RegistrarBean.class);
         careProgram.setRegistrarBean(registrarBean);
 

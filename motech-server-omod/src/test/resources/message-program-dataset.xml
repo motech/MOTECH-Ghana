@@ -12,4 +12,17 @@
        overdue_message_key="pnc.baby.overdue" time_period="hour" time_value="24" user_preference_based="true"/>
      <motechmodule_expected_care_message_detail expected_care_message_detail_id="6" name="BCG" upcoming_message_key="bcg.upcoming"
        overdue_message_key="bcg.overdue" time_period="week" time_value="1" user_preference_based="true"/>
+
+    <motechmodule_expected_care_message_detail_attribute expected_care_message_detail_id="4"
+                                                         attribute_name="PNC1" attribute_value_numeric="6"/>
+    <motechmodule_expected_care_message_detail_attribute expected_care_message_detail_id="4"
+                                                         attribute_name="PNC2" attribute_value_numeric="24"/>
+    <motechmodule_expected_care_message_detail_attribute expected_care_message_detail_id="4"
+                                                         attribute_name="PNC3" attribute_value_numeric="24"/>
+    <motechmodule_expected_care_message_detail_attribute expected_care_message_detail_id="5"
+                                                         attribute_name="PNC1" attribute_value_numeric="6"/>
+    <motechmodule_expected_care_message_detail_attribute expected_care_message_detail_id="5"
+                                                         attribute_name="PNC2" attribute_value_numeric="24"/>
+    <motechmodule_expected_care_message_detail_attribute expected_care_message_detail_id="5"
+                                                         attribute_name="PNC3" attribute_value_numeric="24"/>
 </dataset>

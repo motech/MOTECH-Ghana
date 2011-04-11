@@ -11,5 +11,10 @@
         <property name="timeValue" type="integer" column="time_value"/>
         <property name="timePeriod" type="org.motechproject.server.model.db.hibernate.TimePeriodEnumType" column="time_period"/>
         <property name="userPreferenceBased" type="boolean" column="user_preference_based"/>
+        <map name="careTimeMap" table="motechmodule_expected_care_message_detail_attribute">
+            <key column="expected_care_message_detail_id"/>
+            <index column="attribute_name" type="string"/>
+            <element column="attribute_value_numeric" type="integer"/>
+        </map>
     </class>
 </hibernate-mapping>
