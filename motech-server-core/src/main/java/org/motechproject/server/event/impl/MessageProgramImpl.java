@@ -33,8 +33,6 @@
 
 package org.motechproject.server.event.impl;
 
-import java.util.Date;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.event.MessageProgram;
@@ -42,6 +40,8 @@ import org.motechproject.server.event.MessageProgramState;
 import org.motechproject.server.event.MessageProgramStateTransition;
 import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.model.MessageProgramEnrollment;
+
+import java.util.Date;
 
 public class MessageProgramImpl extends BaseInterfaceImpl implements
 		MessageProgram {
@@ -85,11 +85,9 @@ public class MessageProgramImpl extends BaseInterfaceImpl implements
 		this.conceptValue = conceptValue;
 	}
 
-	public MessageProgramState determineState(
-			MessageProgramEnrollment enrollment, Date currentDate) {
+	public MessageProgramState determineState(MessageProgramEnrollment enrollment, Date currentDate) {
 		MessageProgramState state = startState;
-		MessageProgramStateTransition transition = state.getTransition(
-				enrollment, currentDate);
+		MessageProgramStateTransition transition = state.getTransition(enrollment, currentDate);
 		while (!transition.getNextState().equals(state)) {
 			state = transition.getNextState();
 			transition = state.getTransition(enrollment, currentDate);

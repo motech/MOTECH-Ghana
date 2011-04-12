@@ -40,7 +40,7 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean name="protoInputTransition" 
-		class="org.motechproject.server.event.impl.SMSInputDemoStateTransitionImpl" 
+		class="org.motechproject.server.event.impl.SMSInputDemoStateTransition"
 		abstract="true">
 		<property name="command" ref="nopCommand" />
 		<property name="terminating" value="false" />
@@ -54,7 +54,7 @@
 		<property name="endState" ref="inputDemoState6" />
 	</bean>
 
-	<bean id="inputDemoState1" class="org.motechproject.server.event.impl.MotechMessageProgramState">
+	<bean id="inputDemoState1" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 1" />
 		<property name="timeValue" value="1" />
 		<property name="timePeriod" value="minute" />
@@ -78,7 +78,7 @@
 					<property name="nextState" ref="inputDemoState6" />
 					<property name="terminating" value="true" />
 				</bean>
-				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+				<bean class="org.motechproject.server.event.impl.MotechMessageProgramStateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="inputDemoState1" />
 					<property name="nextState" ref="inputDemoState1" />
@@ -87,7 +87,7 @@
 		</property>
 	</bean>
 
-	<bean id="inputDemoState2" class="org.motechproject.server.event.impl.MotechMessageProgramState">
+	<bean id="inputDemoState2" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 2" />
 		<property name="timeValue" value="3" />
 		<property name="timePeriod" value="minute" />
@@ -111,7 +111,7 @@
 					<property name="nextState" ref="inputDemoState6" />
 					<property name="terminating" value="true" />
 				</bean>
-				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+				<bean class="org.motechproject.server.event.impl.MotechMessageProgramStateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="inputDemoState2" />
 					<property name="nextState" ref="inputDemoState2" />
@@ -120,7 +120,7 @@
 		</property>
 	</bean>
 
-	<bean id="inputDemoState3" class="org.motechproject.server.event.impl.MotechMessageProgramState">
+	<bean id="inputDemoState3" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 3" />
 		<property name="timeValue" value="5" />
 		<property name="timePeriod" value="minute" />
@@ -144,7 +144,7 @@
 					<property name="nextState" ref="inputDemoState6" />
 					<property name="terminating" value="true" />
 				</bean>
-				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+				<bean class="org.motechproject.server.event.impl.MotechMessageProgramStateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="inputDemoState3" />
 					<property name="nextState" ref="inputDemoState3" />
@@ -153,7 +153,7 @@
 		</property>
 	</bean>
 
-	<bean id="inputDemoState4" class="org.motechproject.server.event.impl.MotechMessageProgramState">
+	<bean id="inputDemoState4" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 4" />
 		<property name="timeValue" value="7" />
 		<property name="timePeriod" value="minute" />
@@ -177,7 +177,7 @@
 					<property name="nextState" ref="inputDemoState6" />
 					<property name="terminating" value="true" />
 				</bean>
-				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+				<bean class="org.motechproject.server.event.impl.MotechMessageProgramStateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="inputDemoState4" />
 					<property name="nextState" ref="inputDemoState4" />
@@ -186,7 +186,7 @@
 		</property>
 	</bean>
 
-	<bean id="inputDemoState5" class="org.motechproject.server.event.impl.MotechMessageProgramState">
+	<bean id="inputDemoState5" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 5" />
 		<property name="timeValue" value="9" />
 		<property name="timePeriod" value="minute" />
@@ -210,7 +210,7 @@
 					<property name="nextState" ref="inputDemoState6" />
 					<property name="terminating" value="true" />
 				</bean>
-				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+				<bean class="org.motechproject.server.event.impl.MotechMessageProgramStateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="inputDemoState5" />
 					<property name="nextState" ref="inputDemoState5" />
@@ -219,7 +219,7 @@
 		</property>
 	</bean>
 
-	<bean id="inputDemoState6" class="org.motechproject.server.event.impl.MotechMessageProgramState">
+	<bean id="inputDemoState6" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo Status - Stopped" />
 		<property name="timeValue" value="0" />
 		<property name="timePeriod" value="minute" />
@@ -233,7 +233,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
+				<bean class="org.motechproject.server.event.impl.MotechMessageProgramStateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="inputDemoState6" />
 					<property name="nextState" ref="inputDemoState6" />

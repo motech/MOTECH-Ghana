@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.motechproject.server.event.impl">
+    <class name="org.motechproject.server.model.MotechMessageProgramState" table="motechmodule_message_program_state">
+        <id name="id" type="long" column="motechmodule_message_program_state_id">
+            <generator class="native"/>
+        </id>
+        <property name="name" type="string" column="name"/>
+        <property name="timeValue" type="string" column="time_value"/>
+        <property name="timePeriod" type="org.motechproject.server.model.db.hibernate.TimePeriodEnumType" column="time_period"/>
+        <property name="timeReference" type="org.motechproject.server.model.db.hibernate.TimeReferenceEnumType" column="time_period"/>
+        <component name="command" class="org.motechproject.server.model.db.ProgramMessageKey">
+            <property name="messageKey" column="message_key" type="string"/>
+            <property name="messageKeyA" column="message_key_A" type="string"/>
+            <property name="messageKeyB" column="message_key_B" type="string"/>
+            <property name="messageKeyC" column="message_key_C" type="string"/>
+        </component>
+        <list name="transitions">
+            <key column="motechmodule_message_program_state_id"/>
+            <index column="priority"/>
+            <one-to-many class="MotechMessageProgramStateTransition"/>
+        </list>
+    </class>
+</hibernate-mapping>

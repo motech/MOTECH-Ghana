@@ -33,11 +33,11 @@
 
 package org.motechproject.server.event.impl;
 
-import java.util.Date;
-
 import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.messaging.MessageScheduler;
 import org.motechproject.server.model.MessageProgramEnrollment;
+
+import java.util.Date;
 
 public class ScheduleMessageCommand extends MessagesCommand {
 
@@ -46,6 +46,7 @@ public class ScheduleMessageCommand extends MessagesCommand {
 	String messageKeyB;
 	String messageKeyC;
 	MessageScheduler messageScheduler;
+
 
 	@Override
 	public void execute(MessageProgramEnrollment enrollment, Date actionDate,
