@@ -1406,7 +1406,7 @@
 	</bean>
 
 	<bean id="weeklyPregnancyState45" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
-		<property name="name" value="End Pregnancy State Week 93" />
+		<property name="name" value="End Pregnancy State Week 45" />
 		<property name="timeValue" value="5" />
 		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="enrollment_obs_datevalue" />
