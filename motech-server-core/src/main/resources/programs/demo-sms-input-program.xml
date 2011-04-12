@@ -54,7 +54,7 @@
 		<property name="endState" ref="inputDemoState6" />
 	</bean>
 
-	<bean id="inputDemoState1" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="inputDemoState1" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 1" />
 		<property name="timeValue" value="1" />
 		<property name="timePeriod" value="minute" />
@@ -87,7 +87,7 @@
 		</property>
 	</bean>
 
-	<bean id="inputDemoState2" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="inputDemoState2" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 2" />
 		<property name="timeValue" value="3" />
 		<property name="timePeriod" value="minute" />
@@ -120,7 +120,7 @@
 		</property>
 	</bean>
 
-	<bean id="inputDemoState3" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="inputDemoState3" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 3" />
 		<property name="timeValue" value="5" />
 		<property name="timePeriod" value="minute" />
@@ -153,7 +153,7 @@
 		</property>
 	</bean>
 
-	<bean id="inputDemoState4" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="inputDemoState4" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 4" />
 		<property name="timeValue" value="7" />
 		<property name="timePeriod" value="minute" />
@@ -186,7 +186,7 @@
 		</property>
 	</bean>
 
-	<bean id="inputDemoState5" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="inputDemoState5" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 5" />
 		<property name="timeValue" value="9" />
 		<property name="timePeriod" value="minute" />
@@ -219,7 +219,7 @@
 		</property>
 	</bean>
 
-	<bean id="inputDemoState6" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="inputDemoState6" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Input Demo Status - Stopped" />
 		<property name="timeValue" value="0" />
 		<property name="timePeriod" value="minute" />

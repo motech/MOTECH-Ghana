@@ -45,7 +45,7 @@
 		<property name="endState" ref="weeklyPregnancyState45" />
 	</bean>
 
-	<bean id="weeklyPregnancyState5" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState5" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 5" />
 		<property name="timeValue" value="-35" />
 		<property name="timePeriod" value="week" />
@@ -79,7 +79,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState6" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState6" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 6" />
 		<property name="timeValue" value="-34" />
 		<property name="timePeriod" value="week" />
@@ -113,7 +113,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState7" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState7" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 7" />
 		<property name="timeValue" value="-33" />
 		<property name="timePeriod" value="week" />
@@ -147,7 +147,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState8" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState8" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 8" />
 		<property name="timeValue" value="-32" />
 		<property name="timePeriod" value="week" />
@@ -181,7 +181,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState9" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState9" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 9" />
 		<property name="timeValue" value="-31" />
 		<property name="timePeriod" value="week" />
@@ -215,7 +215,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState10" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState10" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 10" />
 		<property name="timeValue" value="-30" />
 		<property name="timePeriod" value="week" />
@@ -249,7 +249,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState11" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState11" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 11" />
 		<property name="timeValue" value="-29" />
 		<property name="timePeriod" value="week" />
@@ -283,7 +283,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState12" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState12" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 12" />
 		<property name="timeValue" value="-28" />
 		<property name="timePeriod" value="week" />
@@ -317,7 +317,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState13" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState13" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 13" />
 		<property name="timeValue" value="-27" />
 		<property name="timePeriod" value="week" />
@@ -351,7 +351,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState14" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState14" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 14" />
 		<property name="timeValue" value="-26" />
 		<property name="timePeriod" value="week" />
@@ -385,7 +385,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState15" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState15" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 15" />
 		<property name="timeValue" value="-25" />
 		<property name="timePeriod" value="week" />
@@ -419,7 +419,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState16" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState16" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 16" />
 		<property name="timeValue" value="-24" />
 		<property name="timePeriod" value="week" />
@@ -453,7 +453,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState17" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState17" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 17" />
 		<property name="timeValue" value="-23" />
 		<property name="timePeriod" value="week" />
@@ -487,7 +487,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState18" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState18" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 18" />
 		<property name="timeValue" value="-22" />
 		<property name="timePeriod" value="week" />
@@ -521,7 +521,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState19" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState19" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 19" />
 		<property name="timeValue" value="-21" />
 		<property name="timePeriod" value="week" />
@@ -555,7 +555,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState20" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState20" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 20" />
 		<property name="timeValue" value="-20" />
 		<property name="timePeriod" value="week" />
@@ -589,7 +589,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState21" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState21" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 21" />
 		<property name="timeValue" value="-19" />
 		<property name="timePeriod" value="week" />
@@ -623,7 +623,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState22" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState22" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 22" />
 		<property name="timeValue" value="-18" />
 		<property name="timePeriod" value="week" />
@@ -657,7 +657,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState23" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState23" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 23" />
 		<property name="timeValue" value="-17" />
 		<property name="timePeriod" value="week" />
@@ -691,7 +691,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState24" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState24" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 24" />
 		<property name="timeValue" value="-16" />
 		<property name="timePeriod" value="week" />
@@ -725,7 +725,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState25" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState25" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 25" />
 		<property name="timeValue" value="-15" />
 		<property name="timePeriod" value="week" />
@@ -759,7 +759,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState26" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState26" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 26" />
 		<property name="timeValue" value="-14" />
 		<property name="timePeriod" value="week" />
@@ -793,7 +793,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState27" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState27" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 27" />
 		<property name="timeValue" value="-13" />
 		<property name="timePeriod" value="week" />
@@ -827,7 +827,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState28" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState28" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 28" />
 		<property name="timeValue" value="-12" />
 		<property name="timePeriod" value="week" />
@@ -861,7 +861,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState29" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState29" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 29" />
 		<property name="timeValue" value="-11" />
 		<property name="timePeriod" value="week" />
@@ -895,7 +895,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState30" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState30" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 30" />
 		<property name="timeValue" value="-10" />
 		<property name="timePeriod" value="week" />
@@ -929,7 +929,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState31" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState31" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 31" />
 		<property name="timeValue" value="-9" />
 		<property name="timePeriod" value="week" />
@@ -963,7 +963,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState32" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState32" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 32" />
 		<property name="timeValue" value="-8" />
 		<property name="timePeriod" value="week" />
@@ -997,7 +997,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState33" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState33" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 33" />
 		<property name="timeValue" value="-7" />
 		<property name="timePeriod" value="week" />
@@ -1031,7 +1031,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState34" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState34" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 34" />
 		<property name="timeValue" value="-6" />
 		<property name="timePeriod" value="week" />
@@ -1065,7 +1065,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState35" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState35" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 35" />
 		<property name="timeValue" value="-5" />
 		<property name="timePeriod" value="week" />
@@ -1099,7 +1099,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState36" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState36" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 36" />
 		<property name="timeValue" value="-4" />
 		<property name="timePeriod" value="week" />
@@ -1133,7 +1133,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState37" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState37" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 37" />
 		<property name="timeValue" value="-3" />
 		<property name="timePeriod" value="week" />
@@ -1167,7 +1167,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState38" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState38" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 38" />
 		<property name="timeValue" value="-2" />
 		<property name="timePeriod" value="week" />
@@ -1201,7 +1201,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState39" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState39" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 39" />
 		<property name="timeValue" value="-1" />
 		<property name="timePeriod" value="week" />
@@ -1235,7 +1235,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState40" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState40" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 40" />
 		<property name="timeValue" value="0" />
 		<property name="timePeriod" value="week" />
@@ -1269,7 +1269,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState41" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState41" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 41" />
 		<property name="timeValue" value="1" />
 		<property name="timePeriod" value="week" />
@@ -1303,7 +1303,7 @@
 		</property>
 	</bean>
 	
-		<bean id="weeklyPregnancyState42" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<bean id="weeklyPregnancyState42" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 42" />
 		<property name="timeValue" value="2" />
 		<property name="timePeriod" value="week" />
@@ -1337,7 +1337,7 @@
 		</property>
 	</bean>
 	
-		<bean id="weeklyPregnancyState43" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<bean id="weeklyPregnancyState43" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 43" />
 		<property name="timeValue" value="3" />
 		<property name="timePeriod" value="week" />
@@ -1371,7 +1371,7 @@
 		</property>
 	</bean>
 	
-		<bean id="weeklyPregnancyState44" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+		<bean id="weeklyPregnancyState44" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Pregnancy State Week 44" />
 		<property name="timeValue" value="4" />
 		<property name="timePeriod" value="week" />
@@ -1405,7 +1405,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyPregnancyState45" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyPregnancyState45" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="End Pregnancy State Week 45" />
 		<property name="timeValue" value="5" />
 		<property name="timePeriod" value="week" />

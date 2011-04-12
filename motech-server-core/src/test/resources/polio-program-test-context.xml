@@ -47,7 +47,7 @@
 		<property name="endState" ref="polioState5" />
 	</bean>
 
-	<bean id="polioState1" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="polioState1" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Wait State 1" />
 		<property name="timeValue" value="0" />
 		<property name="timePeriod" value="week" />
@@ -75,7 +75,7 @@
 		</property>
 	</bean>
 
-	<bean id="polioState2" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="polioState2" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Wait State 2" />
 		<property name="timeValue" value="6" />
 		<property name="timePeriod" value="week" />
@@ -103,7 +103,7 @@
 		</property>
 	</bean>
 
-	<bean id="polioState3" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="polioState3" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Wait State 3" />
 		<property name="timeValue" value="4" />
 		<property name="timePeriod" value="week" />
@@ -131,7 +131,7 @@
 		</property>
 	</bean>
 	
-	<bean id="polioState4" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="polioState4" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Wait State 4" />
 		<property name="timeValue" value="4" />
 		<property name="timePeriod" value="week" />
@@ -159,7 +159,7 @@
 		</property>
 	</bean>
 	
-	<bean id="polioState5" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="polioState5" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="End State 5" />
 		<property name="command" ref="nopCommand" />
 		<property name="program" ref="polioProgram" />

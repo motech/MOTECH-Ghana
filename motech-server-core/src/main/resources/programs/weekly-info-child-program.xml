@@ -45,7 +45,7 @@
 		<property name="endState" ref="weeklyInfoChildState5" />
 	</bean>
 
-	<bean id="weeklyInfoChildState1" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyInfoChildState1" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Child Info State Week 1" />
 		<property name="timeValue" value="1" />
 		<property name="timePeriod" value="week" />
@@ -79,7 +79,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyInfoChildState2" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyInfoChildState2" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Child Info State Week 2" />
 		<property name="timeValue" value="2" />
 		<property name="timePeriod" value="week" />
@@ -113,7 +113,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyInfoChildState3" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyInfoChildState3" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Child Info State Week 3" />
 		<property name="timeValue" value="3" />
 		<property name="timePeriod" value="week" />
@@ -147,7 +147,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyInfoChildState4" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyInfoChildState4" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="Child Info State Week 4" />
 		<property name="timeValue" value="4" />
 		<property name="timePeriod" value="week" />
@@ -181,7 +181,7 @@
 		</property>
 	</bean>
 
-	<bean id="weeklyInfoChildState5" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="weeklyInfoChildState5" class="org.motechproject.server.event.impl.MotechMessageProgramState">
 		<property name="name" value="End Child Info State Week 5" />
 		<property name="timeValue" value="5" />
 		<property name="timePeriod" value="week" />
