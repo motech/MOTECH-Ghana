@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.motechproject.server.event.impl">
+    <class name="org.motechproject.server.model.MotechMessageProgramStateTransition" table="motechmodule_message_program_state_transition"
+           discriminator-value="DEFAULT">
+        <id name="id" type="long" column="motechmodule_message_program_state_transition_id">
+            <generator class="native"/>
+        </id>
+        <discriminator column="TRANSITION_TYPE" type="string"/>
+        <property name="nextState" column="next_state"/>
+        <property name="prevState" column="prev_state"/>
+        <property name="timeValue" column="time_value"/>
+        <property name="timePeriod" column="time_period"/>
+        <subclass name="org.motechproject.server.model.ExpectedDateTransition" discriminator-value="DATE">
+        </subclass>
+        <subclass name="org.motechproject.server.model.ExpectedNumberTransition" discriminator-value="NUMBER">
+            <property name="expectedNumber" column="expected_number"/>
+        </subclass>
+    </class>
+</hibernate-mapping>

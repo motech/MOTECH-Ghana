@@ -33,25 +33,18 @@
 
 package org.motechproject.server.event;
 
-import static org.easymock.EasyMock.anyObject;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.getCurrentArguments;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.reset;
-import static org.easymock.EasyMock.verify;
-
-import java.util.Calendar;
-import java.util.Date;
-
 import junit.framework.TestCase;
-
 import org.easymock.IAnswer;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.DayOfWeek;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.Calendar;
+import java.util.Date;
+
+import static org.easymock.EasyMock.*;
 
 public class MessageProgramDateStateChangeTest extends TestCase {
 

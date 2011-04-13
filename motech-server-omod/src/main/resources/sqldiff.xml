@@ -1537,4 +1537,38 @@
             insert into motechmodule_expected_care_message_detail_attribute(expected_care_message_detail_id,attribute_name,attribute_value_numeric) values((select expected_care_message_detail_id from motechmodule_expected_care_message_detail where name='PNC(baby)'),'PNC3',24);
         </sql>
     </diff>
+    <diff>
+        <version>1.5</version>
+        <author>ThoughtWorks</author>
+        <date>April 13 2011</date>
+        <description>Create table scripts for Weekly Message Programs</description>
+        <sql>
+            create table motechmodule_message_program_state
+            (
+               motechmodule_message_program_state_id bigint(20) primary key auto_increment ,
+               name varchar(50),
+               time_value int(10),
+               time_period varchar(20),
+               time_reference varchar(20),
+               message_key varchar(30),
+               message_key_a varchar(30),
+               message_key_b varchar(30),
+               message_key_c varchar(30)
+            );
+
+            create table motechmodule_message_program_state_transition
+            (
+              motechmodule_message_program_state_transition_id bigint(20) primary key auto_increment,
+              transition_type varchar(20),
+              next_state bigint(20),
+              prev_state bigint(20),
+              time_value int(10),
+              time_period varchar(20),
+              expected_number int(20),
+              constraint fk_next_state foreign key(next_state) references motechmodule_message_program_state(motechmodule_message_program_state_id),
+              constraint fk_prev_state foreign key(prev_state) references motechmodule_message_program_state(motechmodule_message_program_state_id)
+            );
+
+        </sql>
+    </diff>
 </sqldiff>

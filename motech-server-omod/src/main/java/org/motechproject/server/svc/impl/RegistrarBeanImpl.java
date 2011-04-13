@@ -192,7 +192,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 language = getPersonLanguageCode(mother);
             }
             if (dayOfWeek == null) {
-                dayOfWeek = getPersonMessageDayOfWeek(mother);
+                dayOfWeek = getMessageDayOfWeek(mother);
             }
             if (timeOfDay == null) {
                 timeOfDay = getPersonMessageTimeOfDay(mother);
@@ -3450,15 +3450,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return null;
     }
 
-    private DayOfWeek getPersonMessageDayOfWeek(Person person) {
-        PersonAttribute dayAttr = person
-                .getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY);
+    private DayOfWeek getMessageDayOfWeek(Person person) {
+        PersonAttribute messageDeliveryDayChosen = person.getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_DAY);
         DayOfWeek day = null;
-        if (dayAttr != null && StringUtils.isNotEmpty(dayAttr.getValue())) {
+        if (messageDeliveryDayChosen != null && StringUtils.isNotEmpty(messageDeliveryDayChosen.getValue())) {
             try {
-                day = DayOfWeek.valueOf(dayAttr.getValue());
+                day = DayOfWeek.valueOf(messageDeliveryDayChosen.getValue());
             } catch (Exception e) {
-                log.error("Unable to parse day of week: " + dayAttr.getValue()
+                log.error("Unable to parse day of week: " + messageDeliveryDayChosen.getValue()
                         + ", for Person ID:" + person.getPersonId(), e);
             }
         } else {
@@ -3469,8 +3468,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private Date getPersonMessageTimeOfDay(Person person) {
-        PersonAttribute timeAttr = person
-                .getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
+        PersonAttribute timeAttr = person.getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME);
         Date time = null;
         if (timeAttr != null && StringUtils.isNotEmpty(timeAttr.getValue())) {
             SimpleDateFormat timeFormat = new SimpleDateFormat(
@@ -3533,14 +3531,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private void setDayOfTheWeek(Person person, Date currentDate, boolean checkInFuture, Calendar calendar) {
-        DayOfWeek day = getPersonMessageDayOfWeek(person);
+        DayOfWeek day = getMessageDayOfWeek(person);
         if (day == null) {
             day = getDefaultPatientDayOfWeek();
         }
         if (day != null) {
             calendar.set(Calendar.DAY_OF_WEEK, day.getCalendarValue());
             if (checkInFuture && calendar.getTime().before(currentDate)) {
-                // Add a week if date in past after setting the day of week
+               // Add a week if date in past after setting the day of week
                 calendar.add(Calendar.DATE, 7);
             }
         }
