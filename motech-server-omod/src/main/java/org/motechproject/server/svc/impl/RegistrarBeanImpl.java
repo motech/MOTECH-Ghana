@@ -2973,8 +2973,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                                                                   defaultedObs);
 
                 log.info("Sending defaulter message to " + facility.name() + " at " + phoneNumber);
-                sendStaffDefaultedCareMessage(messageId, phoneNumber,
-                                              mediaType, deliveryDate, null, defaultedCares);
+                sendStaffDefaultedCareMessage(messageId, phoneNumber, mediaType, deliveryDate,
+                                              null, defaultedCares, groupingStrategy);
             } else {
                 log.info("Sending 'no defaulters' message to " + facility.name() + " at " + phoneNumber);
 
@@ -3009,8 +3009,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                                                                     upcomingObs, true);
 
                     log.info("Sending upcoming care message to " + facility.name() + " at " + phoneNumber);
-                    sendStaffUpcomingCareMessage(messageId, phoneNumber,
-                                                 mediaType, deliveryDate, null, upcomingCares);
+                    sendStaffUpcomingCareMessage(messageId, phoneNumber, mediaType, deliveryDate,
+                                                 null, upcomingCares, groupingStrategy);
                 } else {
                     log.info("Sending 'no upcoming care' message to " + facility.name() + " at " + phoneNumber);
 
@@ -3193,14 +3193,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
     }
 
-    private boolean sendStaffDefaultedCareMessage(String messageId,
-                                                  String phoneNumber, MediaType mediaType, Date messageStartDate,
-                                                  Date messageEndDate, Care[] cares) {
+    private boolean sendStaffDefaultedCareMessage(String messageId, String phoneNumber, MediaType mediaType,
+                                                  Date messageStartDate, Date messageEndDate,
+                                                  Care[] cares, CareMessageGroupingStrategy groupingStrategy) {
 
         try {
-            org.motechproject.ws.MessageStatus messageStatus = mobileService
-                    .sendDefaulterMessage(messageId, phoneNumber, cares,
-                            mediaType, messageStartDate, messageEndDate);
+            org.motechproject.ws.MessageStatus messageStatus;
+            messageStatus = mobileService.sendDefaulterMessage(messageId, phoneNumber, cares, groupingStrategy,
+                                                               mediaType, messageStartDate, messageEndDate);
 
             return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
         } catch (Exception e) {
@@ -3209,14 +3209,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
     }
 
-    private boolean sendStaffUpcomingCareMessage(String messageId,
-                                                 String phoneNumber, MediaType mediaType, Date messageStartDate,
-                                                 Date messageEndDate, Care[] cares) {
+    private boolean sendStaffUpcomingCareMessage(String messageId, String phoneNumber, MediaType mediaType,
+                                                 Date messageStartDate, Date messageEndDate,
+                                                 Care[] cares, CareMessageGroupingStrategy groupingStrategy) {
 
         try {
-            org.motechproject.ws.MessageStatus messageStatus = mobileService
-                    .sendBulkCaresMessage(messageId, phoneNumber, cares,
-                            mediaType, messageStartDate, messageEndDate);
+            org.motechproject.ws.MessageStatus messageStatus;
+            messageStatus = mobileService.sendBulkCaresMessage(messageId, phoneNumber, cares, groupingStrategy,
+                                                               mediaType, messageStartDate, messageEndDate);
 
             return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
         } catch (Exception e) {

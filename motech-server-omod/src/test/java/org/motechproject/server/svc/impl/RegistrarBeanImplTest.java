@@ -35,11 +35,15 @@ package org.motechproject.server.svc.impl;
 
 import junit.framework.TestCase;
 import org.easymock.Capture;
+import org.easymock.internal.matchers.Captures;
+import org.mockito.Captor;
 import org.motechproject.server.model.*;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.util.MotechConstants;
+import org.motechproject.ws.Care;
+import org.motechproject.ws.CareMessageGroupingStrategy;
 import org.motechproject.ws.DayOfWeek;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.mobile.MessageService;
@@ -479,6 +483,71 @@ public class RegistrarBeanImplTest extends TestCase {
                 currentDate);
 
         verify(contextService, adminService, motechService, personService);
+    }
+
+    public void testSendStaffCareMessages_GroupByCommunity() {
+
+        Date forDate = new Date();
+        String careGroups[] = {"ANC", "TT", "IPT"};
+
+        Location location = new Location();
+        location.setName("Test Facility");
+        location.setCountyDistrict(MotechConstants.LOCATION_KASSENA_NANKANA);
+
+        Facility facility = new Facility();
+        facility.setLocation(location);
+        facility.setPhoneNumber("+1 555 123-1234");
+
+        List<Facility> facilities = new ArrayList<Facility>();
+        facilities.add(facility);
+
+
+        Patient p = new Patient(5716);
+        expect(rctService.isPatientRegisteredAndInControlGroup(p)).andReturn(false);
+
+        ExpectedEncounter enc = new ExpectedEncounter();
+        enc.setPatient(p);
+
+        List<ExpectedEncounter> encounters = new ArrayList<ExpectedEncounter>();
+        List<ExpectedObs> emptyObs = new ArrayList<ExpectedObs>();
+
+        encounters.add(enc);
+
+        // To Mock
+        expect(motechService.getCommunityByPatient(p)).andReturn(null);
+        expect(contextService.getMotechService()).andReturn(motechService).anyTimes();
+        expect(motechService.getAllFacilities()).andReturn(facilities);
+        expect(contextService.getAdministrationService()).andReturn(adminService).anyTimes();
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn("35").anyTimes();
+        expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
+                                                  null, forDate, forDate, 35)).andReturn(encounters);
+        expect(motechService.getExpectedObs(null, facility, careGroups, null,
+                                                  null, forDate, forDate, 35)).andReturn(emptyObs);
+
+        Capture<String> capturedMessageId = new Capture<String>();
+        Capture<String> capturedPhoneNumber = new Capture<String>();
+        Capture<Care[]> capturedCares = new Capture<Care[]>();
+        Capture<CareMessageGroupingStrategy> capturedStrategy = new Capture<CareMessageGroupingStrategy>();
+        Capture<MediaType> capturedMediaType = new Capture<MediaType>();
+        Capture<Date> capturedStartDate = new Capture<Date>();
+        Capture<Date> capturedEndDate = new Capture<Date>();
+
+        expect(mobileService.sendDefaulterMessage(capture(capturedMessageId), capture(capturedPhoneNumber),
+                                                  capture(capturedCares), capture(capturedStrategy),
+                                                  capture(capturedMediaType), capture(capturedStartDate),
+                                                  capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
+
+        replay(contextService, adminService, motechService, mobileService, rctService);
+
+        registrarBean.sendStaffCareMessages(forDate, forDate,
+                                            forDate, forDate,
+                                            careGroups,
+                                            false,
+                                            false);
+
+        verify(contextService, adminService, motechService, mobileService, rctService);
+
+        assertEquals(CareMessageGroupingStrategy.COMMUNITY, capturedStrategy.getValue());
     }
 
     public void testSendStaffCareMessages_NoDefaulters() {
