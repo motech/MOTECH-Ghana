@@ -166,7 +166,7 @@
                     <key>
                         <value>Demo Minute Message Program</value>
                     </key>
-                        <bean class="org.motechproject.server.svc.impl.WeeklyMessageProgramFactory">
+                        <bean class="org.motechproject.server.svc.impl.DemoMessageProgramFactory">
                             <property name="program" ref="demoMinuteProgram"/>
                         </bean>
                 </entry>
@@ -174,7 +174,7 @@
                     <key>
                         <value>Input Demo Message Program</value>
                     </key>
-                        <bean class="org.motechproject.server.svc.impl.WeeklyMessageProgramFactory">
+                        <bean class="org.motechproject.server.svc.impl.DemoMessageProgramFactory">
                             <property name="program" ref="inputDemoProgram"/>
                         </bean>
                 </entry>
