@@ -246,13 +246,14 @@ public class MessageServiceStub implements MessageService {
 	}
 
 	public MessageStatus sendDefaulterMessage(String messageId,
-			String workerNumber, Care[] cares, MediaType mediaType,
-			Date startDate, Date endDate) {
+			String workerNumber, Care[] cares, CareMessageGroupingStrategy groupingStrategy,
+            MediaType mediaType, Date startDate, Date endDate) {
 
 		log.info("Motech Mobile Web Service Message\n"
 				+ "---------------------------\n" + "<sendDefaulterMessage>\n"
 				+ "<messageId>" + messageId + "</messageId>\n" + "<careInfo>"
-				+ caresToXML(cares, true) + "</careInfo>\n" + "<workerNumber>"
+				+ caresToXML(cares, true) + "</careInfo>\n" + "<careMessageGrouping>"
+                + groupingStrategy + "</careMessageGrouping>\n" + "<workerNumber>"
 				+ workerNumber + "</workerNumber>\n" + "<mediaType>"
 				+ mediaType + "</mediaType>\n" + "<startDate>" + startDate
 				+ "</startDate>\n" + "<endDate>" + endDate + "</endDate>\n"
@@ -331,13 +332,14 @@ public class MessageServiceStub implements MessageService {
 	}
 
 	public MessageStatus sendBulkCaresMessage(String messageId,
-			String workerNumber, Care[] cares, MediaType mediaType,
-			Date startDate, Date endDate) {
+			String workerNumber, Care[] cares, CareMessageGroupingStrategy groupingStrategy,
+            MediaType mediaType, Date startDate, Date endDate) {
 
 		log.info("Motech Mobile Web Service Message\n"
 				+ "---------------------------\n" + "<sendBulkCaresMessage>\n"
 				+ "<messageId>" + messageId + "</messageId>\n" + "<careInfo>"
-				+ caresToXML(cares, true) + "</careInfo>\n" + "<workerNumber>"
+				+ caresToXML(cares, true) + "</careInfo>\n" + + "<careMessageGrouping>"
+                + groupingStrategy + "</careMessageGrouping>\n" + "<workerNumber>"
 				+ workerNumber + "</workerNumber>\n" + "<mediaType>"
 				+ mediaType + "</mediaType>\n" + "<startDate>" + startDate
 				+ "</startDate>\n" + "<endDate>" + endDate + "</endDate>\n"

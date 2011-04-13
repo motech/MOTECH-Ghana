@@ -2948,6 +2948,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 continue;
             }
 
+            CareMessageGroupingStrategy groupingStrategy = CareMessageGroupingStrategy.NONE;
+            if (MotechConstants.LOCATION_KASSENA_NANKANA.equals(facilityLocation.getCountyDistrict()) ||
+                    MotechConstants.LOCATION_KASSENA_NANKANA_WEST.equals(facilityLocation.getCountyDistrict())) {
+                groupingStrategy = CareMessageGroupingStrategy.COMMUNITY;
+
+            }
+
             // Send Defaulted Care Message
             List<ExpectedEncounter> defaultedEncounters;
             List<ExpectedObs> defaultedObs;
