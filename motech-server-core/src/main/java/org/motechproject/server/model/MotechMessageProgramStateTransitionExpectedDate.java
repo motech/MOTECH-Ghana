@@ -31,49 +31,15 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.server.event.impl;
-
-import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.svc.RegistrarBean;
+package org.motechproject.server.model;
 
 import java.util.Date;
 
-public class SMSInputDemoStateTransition extends
-		MotechMessageProgramStateTransitionExpectedDate {
+public class MotechMessageProgramStateTransitionExpectedDate extends MotechMessageProgramStateTransition {
 
-	RegistrarBean registrarBean;
-
-	boolean terminatingTransition = false;
-
-	public void setRegistrarBean(RegistrarBean registrarBean) {
-		this.registrarBean = registrarBean;
-	}
-
-	public void setTerminating(boolean terminating) {
-		this.terminatingTransition = terminating;
-	}
-
-	@Override
-	public boolean evaluate(MessageProgramEnrollment enrollment,
-			Date currentDate) {
-
-		if (!terminatingTransition) {
-			boolean trueBasedOnDate = super.evaluate(enrollment, currentDate);
-
-			Date terminatingObsDate = registrarBean.getLastObsCreationDate(
-					enrollment.getPersonId(), prevState.getProgram()
-							.getConceptName(), null);
-
-			boolean terminatingObservationExists = terminatingObsDate != null
-					&& enrollment.getStartDate().before(terminatingObsDate);
-
-			return trueBasedOnDate && !terminatingObservationExists;
-		} else {
-			Date terminatingObsDate = registrarBean.getLastObsCreationDate(
-					enrollment.getPersonId(), prevState.getProgram()
-							.getConceptName(), null);
-			return terminatingObsDate != null
-					&& enrollment.getStartDate().before(terminatingObsDate);
-		}
-	}
+    @Override
+    public Boolean evaluate(MessageProgramEnrollment enrollment, Date currentDate) {
+        return evaluateBasedOnDates(enrollment, currentDate);
+    }
+    
 }

@@ -31,22 +31,20 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.server.event.impl;
+package org.motechproject.server.model;
+
+import org.motechproject.server.svc.RegistrarBean;
 
 import java.util.Date;
 
-import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.svc.RegistrarBean;
-
-public class MotechMessageProgramStateTransitionExpectedNum extends
-        MotechMessageProgramStateTransition {
+public class MotechMessageProgramStateTransitionExpectedNum extends MotechMessageProgramStateTransition {
 
 	private RegistrarBean registrarBean;
 	private int expectedNumber;
 
 	@Override
-	public boolean evaluate(MessageProgramEnrollment enrollment,
-			Date currentDate) {
+	public Boolean evaluate(MessageProgramEnrollment enrollment,
+                         Date currentDate) {
 		String conceptName = prevState.getProgram().getConceptName();
 		String conceptValue = prevState.getProgram().getConceptValue();
 		int obsNum = registrarBean.getNumberOfObs(enrollment.getPersonId(),

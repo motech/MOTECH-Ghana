@@ -63,14 +63,14 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.event.impl.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoChildState1" />
 					<property name="nextState" ref="weeklyInfoChildState2" />
 				</bean>
-				<bean class="org.motechproject.server.event.impl.MotechMessageProgramStateTransition">
+				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoChildState1" />
 					<property name="nextState" ref="weeklyInfoChildState1" />
@@ -97,14 +97,14 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.event.impl.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoChildState2" />
 					<property name="nextState" ref="weeklyInfoChildState3" />
 				</bean>
-				<bean class="org.motechproject.server.event.impl.MotechMessageProgramStateTransition">
+				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoChildState2" />
 					<property name="nextState" ref="weeklyInfoChildState2" />
@@ -131,14 +131,14 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.event.impl.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoChildState3" />
 					<property name="nextState" ref="weeklyInfoChildState4" />
 				</bean>
-				<bean class="org.motechproject.server.event.impl.MotechMessageProgramStateTransition">
+				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoChildState3" />
 					<property name="nextState" ref="weeklyInfoChildState3" />
@@ -165,14 +165,14 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.event.impl.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoChildState4" />
 					<property name="nextState" ref="weeklyInfoChildState5" />
 				</bean>
-				<bean class="org.motechproject.server.event.impl.MotechMessageProgramStateTransition">
+				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoChildState4" />
 					<property name="nextState" ref="weeklyInfoChildState4" />
@@ -195,7 +195,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.event.impl.MotechMessageProgramStateTransition">
+				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoChildState5" />
 					<property name="nextState" ref="weeklyInfoChildState5" />

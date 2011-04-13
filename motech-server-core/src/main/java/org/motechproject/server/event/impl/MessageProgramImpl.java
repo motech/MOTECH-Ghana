@@ -37,7 +37,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.event.MessageProgram;
 import org.motechproject.server.event.MessageProgramState;
-import org.motechproject.server.event.MessageProgramStateTransition;
+import org.motechproject.server.model.MessageProgramStateTransition;
 import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.model.MessageProgramEnrollment;
 

@@ -18,7 +18,7 @@
         <list name="transitions">
             <key column="motechmodule_message_program_state_id"/>
             <index column="priority"/>
-            <one-to-many class="MotechMessageProgramStateTransition"/>
+            <one-to-many class="org.motechproject.server.model.MessageProgramStateTransition"/>
         </list>
     </class>
 </hibernate-mapping>

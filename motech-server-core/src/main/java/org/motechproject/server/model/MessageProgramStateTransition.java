@@ -31,50 +31,23 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.server.event.impl;
+package org.motechproject.server.model;
 
+import org.motechproject.server.event.BaseInterface;
 import org.motechproject.server.event.MessageProgramState;
-import org.motechproject.server.event.MessageProgramStateTransition;
 import org.motechproject.server.event.MessagesCommand;
-import org.motechproject.server.model.MessageProgramEnrollment;
+import org.motechproject.server.svc.RegistrarBean;
 
 import java.util.Date;
 
-public class MotechMessageProgramStateTransition extends BaseInterfaceImpl
-		implements MessageProgramStateTransition {
+public interface MessageProgramStateTransition extends BaseInterface {
 
-	protected MessageProgramState prevState;
-	protected MessageProgramState nextState;
-	protected MessagesCommand command;
+   MessageProgramState getPrevState();
 
-	public boolean evaluate(MessageProgramEnrollment enrollment,
-			Date currentDate) {
-		// Default Transition is always taken
-		return true;
-	}
+   MessageProgramState getNextState();
 
-	public MessageProgramState getPrevState() {
-		return prevState;
-	}
+   MessagesCommand getCommand();
 
-	public void setPrevState(MessageProgramState prevState) {
-		this.prevState = prevState;
-	}
-
-	public MessageProgramState getNextState() {
-		return nextState;
-	}
-
-	public void setNextState(MessageProgramState nextState) {
-		this.nextState = nextState;
-	}
-
-	public MessagesCommand getCommand() {
-		return command;
-	}
-
-	public void setCommand(MessagesCommand command) {
-		this.command = command;
-	}
+   Boolean evaluate(MessageProgramEnrollment enrollment, Date currentDate);
 
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.motechproject.server.event.impl">
+    <class name="org.motechproject.server.model.MessageProgramStateTransition" table="motechmodule_message_program_state_transition">
+        <id name="id" type="long" column="motechmodule_message_program_state_transition_id">
+            <generator class="native"/>
+        </id>
+        <discriminator column="TRANSITION_TYPE" type="string"/>
+        <subclass name="org.motechproject.server.model.MotechMessageProgramStateTransition" discriminator-value="CREDIT">
+        </subclass>
+    </class>
+</hibernate-mapping>

@@ -35,7 +35,6 @@ package org.motechproject.server.model;
 
 import org.motechproject.server.event.MessageProgram;
 import org.motechproject.server.event.MessageProgramState;
-import org.motechproject.server.event.MessageProgramStateTransition;
 import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.event.impl.BaseInterfaceImpl;
 import org.motechproject.server.time.TimeBean;
@@ -64,8 +63,7 @@ public class MotechMessageProgramState extends BaseInterfaceImpl implements
         transitions.add(transition);
     }
 
-    public MessageProgramStateTransition getTransition(
-            MessageProgramEnrollment enrollment, Date currentDate) {
+    public MessageProgramStateTransition getTransition(MessageProgramEnrollment enrollment, Date currentDate) {
         for (MessageProgramStateTransition transition : transitions) {
             if (transition.evaluate(enrollment, currentDate)) {
                 return transition;
