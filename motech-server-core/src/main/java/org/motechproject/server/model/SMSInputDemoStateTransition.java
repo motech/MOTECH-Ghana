@@ -39,8 +39,6 @@ import java.util.Date;
 
 public class SMSInputDemoStateTransition extends MotechMessageProgramStateTransition {
 
-    private RegistrarBean registrarBean;
-
     private boolean terminatingTransition = false;
 
     @Override
@@ -50,7 +48,7 @@ public class SMSInputDemoStateTransition extends MotechMessageProgramStateTransi
         if (!terminatingTransition) {
             boolean trueBasedOnDate = evaluateBasedOnDates(enrollment, currentDate);
 
-            Date terminatingObsDate = this.registrarBean.getLastObsCreationDate(
+            Date terminatingObsDate = registrarBean.getLastObsCreationDate(
                     enrollment.getPersonId(), prevState.getProgram()
                             .getConceptName(), null);
 
@@ -59,7 +57,7 @@ public class SMSInputDemoStateTransition extends MotechMessageProgramStateTransi
 
             return trueBasedOnDate && !terminatingObservationExists;
         } else {
-            Date terminatingObsDate = this.registrarBean.getLastObsCreationDate(
+            Date terminatingObsDate = registrarBean.getLastObsCreationDate(
                     enrollment.getPersonId(), prevState.getProgram()
                             .getConceptName(), null);
             return terminatingObsDate != null
@@ -67,12 +65,7 @@ public class SMSInputDemoStateTransition extends MotechMessageProgramStateTransi
         }
     }
 
-    public void setRegistrarBean(RegistrarBean registrarBean) {
-        this.registrarBean = registrarBean;
-    }
-
-
-    public void setTerminating(boolean terminating) {
+     public void setTerminating(boolean terminating) {
         this.terminatingTransition = terminating;
     }
 

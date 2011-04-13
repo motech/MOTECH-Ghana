@@ -52,8 +52,7 @@ public class MotechMessageProgramStateTransition extends BaseInterfaceImpl imple
     private Long id;
 
 
-    public Boolean evaluate(MessageProgramEnrollment enrollment,
-                            Date currentDate, RegistrarBean registrarBean) {
+    public Boolean evaluate(MessageProgramEnrollment enrollment,Date currentDate, RegistrarBean registrarBean) {
         // Default Transition is always taken
         return true;
     }

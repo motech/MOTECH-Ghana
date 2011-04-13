@@ -44,7 +44,6 @@
 		abstract="true">
 		<property name="command" ref="nopCommand" />
 		<property name="terminating" value="false" />
-		<property name="registrarBean" ref="registrarBean" />
 	</bean>
 	
 	<bean id="inputDemoProgram" class="org.motechproject.server.event.impl.MessageProgramImpl">
