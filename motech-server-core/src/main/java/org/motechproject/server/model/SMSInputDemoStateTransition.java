@@ -39,7 +39,7 @@ import java.util.Date;
 
 public class SMSInputDemoStateTransition extends MotechMessageProgramStateTransition {
 
-    private boolean terminatingTransition = false;
+    private Boolean terminatingTransition = false;
 
     @Override
     public Boolean evaluate(MessageProgramEnrollment enrollment,
@@ -65,8 +65,12 @@ public class SMSInputDemoStateTransition extends MotechMessageProgramStateTransi
         }
     }
 
-     public void setTerminating(boolean terminating) {
+     public void setTerminating(Boolean terminating) {
         this.terminatingTransition = terminating;
+    }
+
+     public Boolean getTerminatingTransition() {
+        return terminatingTransition;
     }
 
 }

@@ -37,31 +37,11 @@ import org.motechproject.server.svc.RegistrarBean;
 
 import java.util.Date;
 
-public class MotechMessageProgramStateTransitionExpectedNum extends MotechMessageProgramStateTransition {
+public class ExpectedDateTransition extends MotechMessageProgramStateTransition {
 
-	private int expectedNumber;
-
-	@Override
-	public Boolean evaluate(MessageProgramEnrollment enrollment,
-                         Date currentDate, RegistrarBean registrarBean) {
-		String conceptName = prevState.getProgram().getConceptName();
-		String conceptValue = prevState.getProgram().getConceptValue();
-		int obsNum = registrarBean.getNumberOfObs(enrollment.getPersonId(),
-				conceptName, conceptValue);
-
-		if (prevState.equals(nextState)) {
-			return obsNum == expectedNumber;
-		} else {
-			return obsNum >= expectedNumber;
-		}
-	}
-
-	public int getExpectedNumber() {
-		return expectedNumber;
-	}
-
-	public void setExpectedNumber(int expectedNumber) {
-		this.expectedNumber = expectedNumber;
-	}
-
+    @Override
+    public Boolean evaluate(MessageProgramEnrollment enrollment, Date currentDate, RegistrarBean registrarBean) {
+        return evaluateBasedOnDates(enrollment, currentDate);
+    }
+    
 }

@@ -39,7 +39,7 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="weeklyInfoPregnancyProgram" class="org.motechproject.server.event.impl.MessageProgramImpl">
+	<bean id="weeklyInfoPregnancyProgram" class="org.motechproject.server.event.impl.MotechMessageProgram">
 		<property name="name" value="Weekly Info Pregnancy Message Program" />
 		<property name="startState" ref="weeklyInfoPregnancyState5" />
 		<property name="endState" ref="weeklyInfoPregnancyState45" />
@@ -64,7 +64,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -98,7 +98,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -132,7 +132,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -166,7 +166,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -200,7 +200,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -234,7 +234,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -268,7 +268,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -302,7 +302,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -336,7 +336,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -370,7 +370,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -404,7 +404,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -438,7 +438,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -472,7 +472,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -506,7 +506,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -540,7 +540,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -574,7 +574,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -608,7 +608,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -642,7 +642,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -676,7 +676,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -710,7 +710,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -744,7 +744,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -778,7 +778,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -812,7 +812,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -846,7 +846,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -880,7 +880,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -914,7 +914,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -948,7 +948,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -982,7 +982,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -1016,7 +1016,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -1050,7 +1050,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -1084,7 +1084,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -1118,7 +1118,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -1152,7 +1152,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -1186,7 +1186,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -1220,7 +1220,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -1254,7 +1254,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -1288,7 +1288,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -1322,7 +1322,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -1356,7 +1356,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -1390,7 +1390,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />

@@ -41,68 +41,64 @@ import java.util.Date;
 
 public class ScheduleMessageCommand extends MessagesCommand {
 
-	String messageKey;
-	String messageKeyA;
-	String messageKeyB;
-	String messageKeyC;
-	MessageScheduler messageScheduler;
+    String messageKey;
+    String messageKeyA;
+    String messageKeyB;
+    String messageKeyC;
+    MessageScheduler messageScheduler;
 
 
-	@Override
-	public void execute(MessageProgramEnrollment enrollment, Date actionDate,
-			Date currentDate) {
-		if (actionDate == null) {
-			return;
-		}
-		messageScheduler.scheduleMessages(messageKey, messageKeyA, messageKeyB,
-				messageKeyC, enrollment, actionDate, currentDate);
-	}
+    @Override
+    public void execute(MessageProgramEnrollment enrollment, Date actionDate, Date currentDate) {
+        if (actionDate == null) {
+            return;
+        }
+        messageScheduler.scheduleMessages(messageKey, messageKeyA, messageKeyB, messageKeyC, enrollment, actionDate, currentDate);
+    }
 
-	@Override
-	public Date adjustActionDate(MessageProgramEnrollment enrollment,
-			Date actionDate, Date currentDate) {
-		return messageScheduler.adjustMessageDate(enrollment, actionDate,
-				currentDate);
-	}
+    @Override
+    public Date adjustActionDate(MessageProgramEnrollment enrollment, Date actionDate, Date currentDate) {
+        return messageScheduler.adjustMessageDate(enrollment, actionDate,currentDate);
+    }
 
-	public String getMessageKey() {
-		return messageKey;
-	}
+    public String getMessageKey() {
+        return messageKey;
+    }
 
-	public void setMessageKey(String messageKey) {
-		this.messageKey = messageKey;
-	}
+    public void setMessageKey(String messageKey) {
+        this.messageKey = messageKey;
+    }
 
-	public String getMessageKeyA() {
-		return messageKeyA;
-	}
+    public String getMessageKeyA() {
+        return messageKeyA;
+    }
 
-	public void setMessageKeyA(String messageKeyA) {
-		this.messageKeyA = messageKeyA;
-	}
+    public void setMessageKeyA(String messageKeyA) {
+        this.messageKeyA = messageKeyA;
+    }
 
-	public String getMessageKeyB() {
-		return messageKeyB;
-	}
+    public String getMessageKeyB() {
+        return messageKeyB;
+    }
 
-	public void setMessageKeyB(String messageKeyB) {
-		this.messageKeyB = messageKeyB;
-	}
+    public void setMessageKeyB(String messageKeyB) {
+        this.messageKeyB = messageKeyB;
+    }
 
-	public String getMessageKeyC() {
-		return messageKeyC;
-	}
+    public String getMessageKeyC() {
+        return messageKeyC;
+    }
 
-	public void setMessageKeyC(String messageKeyC) {
-		this.messageKeyC = messageKeyC;
-	}
+    public void setMessageKeyC(String messageKeyC) {
+        this.messageKeyC = messageKeyC;
+    }
 
-	public MessageScheduler getMessageScheduler() {
-		return messageScheduler;
-	}
+    public MessageScheduler getMessageScheduler() {
+        return messageScheduler;
+    }
 
-	public void setMessageScheduler(MessageScheduler messageScheduler) {
-		this.messageScheduler = messageScheduler;
-	}
+    public void setMessageScheduler(MessageScheduler messageScheduler) {
+        this.messageScheduler = messageScheduler;
+    }
 
 }

@@ -37,6 +37,7 @@ import org.motechproject.server.event.MessageProgram;
 import org.motechproject.server.event.MessageProgramState;
 import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.event.impl.BaseInterfaceImpl;
+import org.motechproject.server.model.db.ProgramMessageKey;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.time.TimeBean;
 import org.motechproject.server.time.TimePeriod;
@@ -46,8 +47,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MotechMessageProgramState extends BaseInterfaceImpl implements
-        MessageProgramState {
+public class MotechMessageProgramState extends BaseInterfaceImpl implements MessageProgramState {
 
     private List<MessageProgramStateTransition> transitions = new ArrayList<MessageProgramStateTransition>();
     private MessagesCommand command;
@@ -56,9 +56,10 @@ public class MotechMessageProgramState extends BaseInterfaceImpl implements
     private TimePeriod timePeriod;
     private TimeReference timeReference;
     private TimeBean timeBean;
-
-
     private Long id;
+    private ProgramMessageKey messageKey;
+
+
 
     public void addTransition(MessageProgramStateTransition transition) {
         transitions.add(transition);
@@ -136,8 +137,7 @@ public class MotechMessageProgramState extends BaseInterfaceImpl implements
         this.transitions = transitions;
     }
 
-    public Date getDateOfAction(MessageProgramEnrollment enrollment,
-                                Date currentDate) {
+    public Date getDateOfAction(MessageProgramEnrollment enrollment, Date currentDate) {
         Date actionDate = timeBean.determineTime(timePeriod, timeReference,
                 timeValue, null, enrollment, program.getConceptName(), program
                         .getConceptValue(), null, null);
@@ -151,6 +151,14 @@ public class MotechMessageProgramState extends BaseInterfaceImpl implements
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public ProgramMessageKey getMessageKey() {
+        return messageKey;
+    }
+
+    public void setMessageKey(ProgramMessageKey messageKey) {
+        this.messageKey = messageKey;
     }
 
 }

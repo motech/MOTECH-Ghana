@@ -39,7 +39,7 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="weeklyInfoChildProgram" class="org.motechproject.server.event.impl.MessageProgramImpl">
+	<bean id="weeklyInfoChildProgram" class="org.motechproject.server.event.impl.MotechMessageProgram">
 		<property name="name" value="Weekly Info Child Message Program" />
 		<property name="startState" ref="weeklyInfoChildState1" />
 		<property name="endState" ref="weeklyInfoChildState5" />
@@ -64,7 +64,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -98,7 +98,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -132,7 +132,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />
@@ -166,7 +166,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
 					<property name="command" ref="nopCommand" />

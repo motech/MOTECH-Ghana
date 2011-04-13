@@ -46,7 +46,7 @@
 		<property name="terminating" value="false" />
 	</bean>
 	
-	<bean id="inputDemoProgram" class="org.motechproject.server.event.impl.MessageProgramImpl">
+	<bean id="inputDemoProgram" class="org.motechproject.server.event.impl.MotechMessageProgram">
 		<property name="name" value="Input Demo Message Program" />
 		<property name="startState" ref="inputDemoState1" />
 		<property name="conceptName" value="TETANUS TOXOID DOSE" />

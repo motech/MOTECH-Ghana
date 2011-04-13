@@ -39,7 +39,7 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="polioProgram" class="org.motechproject.server.event.impl.MessageProgramImpl">
+	<bean id="polioProgram" class="org.motechproject.server.event.impl.MotechMessageProgram">
 		<property name="name" value="Polio" />
 		<property name="conceptName" value="IMMUNIZATIONS ORDERED" />
 		<property name="conceptValue" value="ORAL POLIO VACCINATION" />
@@ -58,13 +58,13 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedNum">
+				<bean class="org.motechproject.server.model.ExpectedNumberTransition">
 					<property name="expectedNumber" value="0" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState1" />
 					<property name="nextState" ref="polioState1" />
 				</bean>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedNum">
+				<bean class="org.motechproject.server.model.ExpectedNumberTransition">
 					<property name="expectedNumber" value="1" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState1" />
@@ -84,13 +84,13 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedNum">
+				<bean class="org.motechproject.server.model.ExpectedNumberTransition">
 					<property name="expectedNumber" value="1" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState2" />
 					<property name="nextState" ref="polioState2" />
 				</bean>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedNum">
+				<bean class="org.motechproject.server.model.ExpectedNumberTransition">
 					<property name="expectedNumber" value="2" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState2" />
@@ -110,13 +110,13 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedNum">
+				<bean class="org.motechproject.server.model.ExpectedNumberTransition">
 					<property name="expectedNumber" value="2" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState3" />
 					<property name="nextState" ref="polioState3" />
 				</bean>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedNum">
+				<bean class="org.motechproject.server.model.ExpectedNumberTransition">
 					<property name="expectedNumber" value="3" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState3" />
@@ -136,13 +136,13 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedNum">
+				<bean class="org.motechproject.server.model.ExpectedNumberTransition">
 					<property name="expectedNumber" value="3" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState4" />
 					<property name="nextState" ref="polioState4" />
 				</bean>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedNum">
+				<bean class="org.motechproject.server.model.ExpectedNumberTransition">
 					<property name="expectedNumber" value="4" />
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="polioState4" />

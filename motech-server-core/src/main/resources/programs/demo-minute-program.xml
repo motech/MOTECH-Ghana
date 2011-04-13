@@ -39,7 +39,7 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="demoMinuteProgram" class="org.motechproject.server.event.impl.MessageProgramImpl">
+	<bean id="demoMinuteProgram" class="org.motechproject.server.event.impl.MotechMessageProgram">
 		<property name="name" value="Demo Minute Message Program" />
 		<property name="startState" ref="demoMinuteState1" />
 		<property name="endState" ref="demoMinuteState7" />
@@ -61,7 +61,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="demoMinuteState1" />
 					<property name="nextState" ref="demoMinuteState2" />
@@ -90,7 +90,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="demoMinuteState2" />
 					<property name="nextState" ref="demoMinuteState3" />
@@ -119,7 +119,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="demoMinuteState3" />
 					<property name="nextState" ref="demoMinuteState4" />
@@ -148,7 +148,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="demoMinuteState4" />
 					<property name="nextState" ref="demoMinuteState5" />
@@ -177,7 +177,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="demoMinuteState5" />
 					<property name="nextState" ref="demoMinuteState6" />
@@ -206,7 +206,7 @@
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransitionExpectedDate">
+				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="demoMinuteState6" />
 					<property name="nextState" ref="demoMinuteState7" />

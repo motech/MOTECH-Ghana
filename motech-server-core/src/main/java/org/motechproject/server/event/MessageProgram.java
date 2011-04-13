@@ -34,7 +34,6 @@
 package org.motechproject.server.event;
 
 import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.svc.RegistrarBean;
 
 import java.util.Date;
 
@@ -42,8 +41,7 @@ public interface MessageProgram extends BaseInterface {
 
 	MessageProgramState determineState(MessageProgramEnrollment enrollment, Date currentDate);
 
-	MessageProgramState updateState(MessageProgramEnrollment enrollment,
-                                    Date currentDate);
+	MessageProgramState updateState(MessageProgramEnrollment enrollment, Date currentDate);
 
 	MessageProgramState getStartState();
 
