@@ -43,6 +43,7 @@
 		<property name="name" value="Weekly Info Pregnancy Message Program" />
 		<property name="startState" ref="weeklyInfoPregnancyState5" />
 		<property name="endState" ref="weeklyInfoPregnancyState45" />
+        <property name="registrarBean" ref="registrarBean"/>
 	</bean>
 
 	<bean id="weeklyInfoPregnancyState5" class="org.motechproject.server.model.MotechMessageProgramState">

@@ -52,6 +52,7 @@
 		<property name="startState" ref="inputDemoState1" />
 		<property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="endState" ref="inputDemoState6" />
+        <property name="registrarBean" ref="registrarBean"/>
 	</bean>
 
 	<bean id="inputDemoState1" class="org.motechproject.server.model.MotechMessageProgramState">

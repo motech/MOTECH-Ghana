@@ -36,6 +36,7 @@ package org.motechproject.server.model;
 import org.motechproject.server.event.MessageProgramState;
 import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.event.impl.BaseInterfaceImpl;
+import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.time.TimePeriod;
 
 import java.util.Calendar;
@@ -52,7 +53,7 @@ public class MotechMessageProgramStateTransition extends BaseInterfaceImpl imple
 
 
     public Boolean evaluate(MessageProgramEnrollment enrollment,
-                            Date currentDate) {
+                            Date currentDate, RegistrarBean registrarBean) {
         // Default Transition is always taken
         return true;
     }

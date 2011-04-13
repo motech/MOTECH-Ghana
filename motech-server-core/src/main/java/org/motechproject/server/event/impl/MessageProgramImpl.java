@@ -40,6 +40,7 @@ import org.motechproject.server.event.MessageProgramState;
 import org.motechproject.server.model.MessageProgramStateTransition;
 import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.model.MessageProgramEnrollment;
+import org.motechproject.server.svc.RegistrarBean;
 
 import java.util.Date;
 
@@ -52,6 +53,7 @@ public class MessageProgramImpl extends BaseInterfaceImpl implements
 	private MessageProgramState endState;
 	private String conceptName;
 	private String conceptValue;
+    private RegistrarBean registrarBean;
 
 	public MessageProgramState getStartState() {
 		return startState;
@@ -87,10 +89,10 @@ public class MessageProgramImpl extends BaseInterfaceImpl implements
 
 	public MessageProgramState determineState(MessageProgramEnrollment enrollment, Date currentDate) {
 		MessageProgramState state = startState;
-		MessageProgramStateTransition transition = state.getTransition(enrollment, currentDate);
+		MessageProgramStateTransition transition = state.getTransition(enrollment, currentDate, registrarBean);
 		while (!transition.getNextState().equals(state)) {
 			state = transition.getNextState();
-			transition = state.getTransition(enrollment, currentDate);
+			transition = state.getTransition(enrollment, currentDate, registrarBean);
 		}
 
 		if (log.isDebugEnabled()) {
@@ -107,19 +109,25 @@ public class MessageProgramImpl extends BaseInterfaceImpl implements
 		return state;
 	}
 
-	public MessageProgramState updateState(MessageProgramEnrollment enrollment,
-			Date currentDate) {
+	public MessageProgramState updateState(MessageProgramEnrollment enrollment, Date currentDate) {
 		MessageProgramState state = determineState(enrollment, currentDate);
 		if (state.equals(endState)) {
 			return state;
 		}
-		MessageProgramStateTransition transition = state.getTransition(
-				enrollment, currentDate);
+		MessageProgramStateTransition transition = state.getTransition(enrollment, currentDate, registrarBean);
 		Date actionDate = state.getDateOfAction(enrollment, currentDate);
 		transition.getCommand().execute(enrollment, actionDate, currentDate);
 		MessageProgramState newState = transition.getNextState();
 
 		return newState;
 	}
+
+    public RegistrarBean getRegistrarBean() {
+        return registrarBean;
+    }
+
+    public void setRegistrarBean(RegistrarBean registrarBean) {
+        this.registrarBean = registrarBean;
+    }
 
 }

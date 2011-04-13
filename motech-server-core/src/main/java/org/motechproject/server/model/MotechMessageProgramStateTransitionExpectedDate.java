@@ -33,12 +33,14 @@
 
 package org.motechproject.server.model;
 
+import org.motechproject.server.svc.RegistrarBean;
+
 import java.util.Date;
 
 public class MotechMessageProgramStateTransitionExpectedDate extends MotechMessageProgramStateTransition {
 
     @Override
-    public Boolean evaluate(MessageProgramEnrollment enrollment, Date currentDate) {
+    public Boolean evaluate(MessageProgramEnrollment enrollment, Date currentDate, RegistrarBean registrarBean) {
         return evaluateBasedOnDates(enrollment, currentDate);
     }
     

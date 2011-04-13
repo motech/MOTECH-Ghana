@@ -35,6 +35,7 @@ package org.motechproject.server.event;
 
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.model.MessageProgramStateTransition;
+import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.time.TimePeriod;
 import org.motechproject.server.time.TimeReference;
 
@@ -44,7 +45,7 @@ public interface MessageProgramState extends BaseInterface {
 
 	MessagesCommand getCommand();
 
-	MessageProgramStateTransition getTransition(MessageProgramEnrollment enrollment, Date currentDate);
+	MessageProgramStateTransition getTransition(MessageProgramEnrollment enrollment, Date currentDate, RegistrarBean registrarBean);
 
 	MessageProgram getProgram();
 
