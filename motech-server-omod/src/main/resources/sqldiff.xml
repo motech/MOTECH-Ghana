@@ -1569,6 +1569,7 @@
               time_value int(10),
               time_period varchar(20),
               expected_number int(20),
+              priority int(10),
               constraint fk_next_state foreign key(next_state) references motechmodule_message_program_state(motechmodule_message_program_state_id),
               constraint fk_prev_state foreign key(prev_state) references motechmodule_message_program_state(motechmodule_message_program_state_id)
             );

@@ -11,7 +11,6 @@
         <property name="conceptValue" column="concept_value"/>
         <property name="timePeriod" type="org.motechproject.server.model.db.hibernate.TimePeriodEnumType" column="time_period"/>
         <property name="timeReference" type="org.motechproject.server.model.db.hibernate.TimeReferenceEnumType" column="time_reference"/>
-        <many-to-one name="program" class="org.motechproject.server.model.MotechMessageProgram" column="motechmodule_message_program_id"/>
         <component name="messageKey" class="org.motechproject.server.model.db.ProgramMessageKey">
             <property name="messageKey" column="message_key" type="string"/>
             <property name="messageKeyA" column="message_key_a" type="string"/>
