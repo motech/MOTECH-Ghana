@@ -56,4 +56,8 @@ public interface MessageProgramState extends BaseInterface {
 	TimeReference getTimeReference();
 
 	Date getDateOfAction(MessageProgramEnrollment enrollment, Date currentDate);
+
+    String getConceptName();
+
+    String getConceptValue();
 }

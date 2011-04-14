@@ -39,7 +39,7 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="weeklyPregnancyProgram" class="org.motechproject.server.event.impl.MotechMessageProgram">
+	<bean id="weeklyPregnancyProgram" class="org.motechproject.server.model.MotechMessageProgram">
 		<property name="name" value="Weekly Pregnancy Message Program" />
 		<property name="startState" ref="weeklyPregnancyState5" />
 		<property name="endState" ref="weeklyPregnancyState45" />

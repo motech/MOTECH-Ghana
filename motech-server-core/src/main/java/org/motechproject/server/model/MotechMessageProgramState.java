@@ -58,6 +58,8 @@ public class MotechMessageProgramState extends BaseInterfaceImpl implements Mess
     private TimeBean timeBean;
     private Long id;
     private ProgramMessageKey messageKey;
+    private String conceptName ;
+    private String conceptValue;
 
 
 
@@ -72,6 +74,11 @@ public class MotechMessageProgramState extends BaseInterfaceImpl implements Mess
             }
         }
         return null;
+    }
+
+    public Date getDateOfAction(MessageProgramEnrollment enrollment, Date currentDate) {
+        Date actionDate = timeBean.determineTime(timePeriod, timeReference, timeValue, null, enrollment, conceptName, conceptValue , null, null);
+        return command.adjustActionDate(enrollment, actionDate, currentDate);
     }
 
     public MessagesCommand getCommand() {
@@ -137,14 +144,6 @@ public class MotechMessageProgramState extends BaseInterfaceImpl implements Mess
         this.transitions = transitions;
     }
 
-    public Date getDateOfAction(MessageProgramEnrollment enrollment, Date currentDate) {
-        Date actionDate = timeBean.determineTime(timePeriod, timeReference,
-                timeValue, null, enrollment, program.getConceptName(), program
-                        .getConceptValue(), null, null);
-
-        return command.adjustActionDate(enrollment, actionDate, currentDate);
-    }
-
     public Long getId() {
         return id;
     }
@@ -161,4 +160,19 @@ public class MotechMessageProgramState extends BaseInterfaceImpl implements Mess
         this.messageKey = messageKey;
     }
 
+    public String getConceptName() {
+        return conceptName;
+    }
+
+    public void setConceptName(String conceptName) {
+        this.conceptName = conceptName;
+    }
+
+    public String getConceptValue() {
+        return conceptValue;
+    }
+
+    public void setConceptValue(String conceptValue) {
+        this.conceptValue = conceptValue;
+    }
 }

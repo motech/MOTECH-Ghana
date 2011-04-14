@@ -39,7 +39,7 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="demoMinuteProgram" class="org.motechproject.server.event.impl.MotechMessageProgram">
+	<bean id="demoMinuteProgram" class="org.motechproject.server.model.MotechMessageProgram">
 		<property name="name" value="Demo Minute Message Program" />
 		<property name="startState" ref="demoMinuteState1" />
 		<property name="endState" ref="demoMinuteState7" />

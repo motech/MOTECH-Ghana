@@ -31,60 +31,49 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.server.event.impl;
+package org.motechproject.server.model;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.event.MessageProgram;
 import org.motechproject.server.event.MessageProgramState;
-import org.motechproject.server.model.MessageProgramStateTransition;
 import org.motechproject.server.event.MessagesCommand;
-import org.motechproject.server.model.MessageProgramEnrollment;
+import org.motechproject.server.event.impl.BaseInterfaceImpl;
 import org.motechproject.server.svc.RegistrarBean;
 
 import java.util.Date;
 
-public class MotechMessageProgram extends BaseInterfaceImpl implements
-		MessageProgram {
+public class MotechMessageProgram extends BaseInterfaceImpl implements MessageProgram {
 
 	private static Log log = LogFactory.getLog(MotechMessageProgram.class);
 
-	private MessageProgramState startState;
-	private MessageProgramState endState;
-	private String conceptName;
-	private String conceptValue;
+	private MotechMessageProgramState startState;
+	private MotechMessageProgramState endState;
     private RegistrarBean registrarBean;
+    private Long id;
 
-	public MessageProgramState getStartState() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public MotechMessageProgramState getStartState() {
 		return startState;
 	}
 
-	public void setStartState(MessageProgramState startState) {
+	public void setStartState(MotechMessageProgramState startState) {
 		this.startState = startState;
 	}
 
-	public MessageProgramState getEndState() {
+	public MotechMessageProgramState getEndState() {
 		return endState;
 	}
 
-	public void setEndState(MessageProgramState endState) {
+	public void setEndState(MotechMessageProgramState endState) {
 		this.endState = endState;
-	}
-
-	public String getConceptName() {
-		return conceptName;
-	}
-
-	public void setConceptName(String conceptName) {
-		this.conceptName = conceptName;
-	}
-
-	public String getConceptValue() {
-		return conceptValue;
-	}
-
-	public void setConceptValue(String conceptValue) {
-		this.conceptValue = conceptValue;
 	}
 
 	public MessageProgramState determineState(MessageProgramEnrollment enrollment, Date currentDate) {

@@ -1,0 +1,12 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field" package="org.motechproject.server.event.impl">
+    <class name="org.motechproject.server.model.MotechMessageProgram" table="motechmodule_message_program">
+        <id name="id" column="motechmodule_message_program_id">
+            <generator class="native"/>
+        </id>
+        <property name="name" column="name"/>
+        <many-to-one name="startState" class="org.motechproject.server.model.MotechMessageProgramState" column="start_state" unique="true"/>
+        <many-to-one name="endState" class="org.motechproject.server.model.MotechMessageProgramState" column="end_state" unique="true"/>
+    </class>
+</hibernate-mapping>

@@ -46,16 +46,16 @@
 		<property name="terminating" value="false" />
 	</bean>
 	
-	<bean id="inputDemoProgram" class="org.motechproject.server.event.impl.MotechMessageProgram">
+	<bean id="inputDemoProgram" class="org.motechproject.server.model.MotechMessageProgram">
 		<property name="name" value="Input Demo Message Program" />
 		<property name="startState" ref="inputDemoState1" />
-		<property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="endState" ref="inputDemoState6" />
         <property name="registrarBean" ref="registrarBean"/>
 	</bean>
 
 	<bean id="inputDemoState1" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 1" />
+        <property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="timeValue" value="1" />
 		<property name="timePeriod" value="minute" />
 		<property name="timeReference" value="enrollment_startdate" />
@@ -89,6 +89,7 @@
 
 	<bean id="inputDemoState2" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 2" />
+        <property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="timeValue" value="3" />
 		<property name="timePeriod" value="minute" />
 		<property name="timeReference" value="enrollment_startdate" />
@@ -122,6 +123,7 @@
 
 	<bean id="inputDemoState3" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 3" />
+        <property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="timeValue" value="5" />
 		<property name="timePeriod" value="minute" />
 		<property name="timeReference" value="enrollment_startdate" />
@@ -155,6 +157,7 @@
 
 	<bean id="inputDemoState4" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 4" />
+        <property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="timeValue" value="7" />
 		<property name="timePeriod" value="minute" />
 		<property name="timeReference" value="enrollment_startdate" />
@@ -188,6 +191,7 @@
 
 	<bean id="inputDemoState5" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 5" />
+        <property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="timeValue" value="9" />
 		<property name="timePeriod" value="minute" />
 		<property name="timeReference" value="enrollment_startdate" />
@@ -221,6 +225,7 @@
 
 	<bean id="inputDemoState6" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo Status - Stopped" />
+        <property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="timeValue" value="0" />
 		<property name="timePeriod" value="minute" />
 		<property name="timeReference" value="enrollment_startdate" />

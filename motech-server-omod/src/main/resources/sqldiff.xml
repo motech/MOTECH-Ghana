@@ -1546,14 +1546,18 @@
             create table motechmodule_message_program_state
             (
                motechmodule_message_program_state_id bigint(20) primary key auto_increment ,
+               state_order int(10),
                name varchar(50),
                time_value int(10),
                time_period varchar(20),
                time_reference varchar(20),
+               concept_name varchar(20),
+               concept_value varchar(30),
                message_key varchar(30),
                message_key_a varchar(30),
                message_key_b varchar(30),
-               message_key_c varchar(30)
+               message_key_c varchar(30),
+               motechmodule_message_program_id bigint(20)
             );
 
             create table motechmodule_message_program_state_transition
@@ -1567,6 +1571,16 @@
               expected_number int(20),
               constraint fk_next_state foreign key(next_state) references motechmodule_message_program_state(motechmodule_message_program_state_id),
               constraint fk_prev_state foreign key(prev_state) references motechmodule_message_program_state(motechmodule_message_program_state_id)
+            );
+
+            create table motechmodule_message_program
+            (
+              motechmodule_message_program_id bigint(20) primary key auto_increment ,
+              name varchar(30),
+              start_state bigint(20),
+              end_state bigint(20),
+              constraint fk_message_start_state foreign key (start_state) references motechmodule_message_program_state(motechmodule_message_program_state_id),
+              constraint fk_message_end_state foreign key (end_state) references motechmodule_message_program_state(motechmodule_message_program_state_id)
             );
 
         </sql>

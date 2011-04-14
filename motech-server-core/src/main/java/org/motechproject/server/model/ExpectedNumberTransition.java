@@ -44,8 +44,8 @@ public class ExpectedNumberTransition extends MotechMessageProgramStateTransitio
 	@Override
 	public Boolean evaluate(MessageProgramEnrollment enrollment,
                          Date currentDate, RegistrarBean registrarBean) {
-		String conceptName = prevState.getProgram().getConceptName();
-		String conceptValue = prevState.getProgram().getConceptValue();
+		String conceptName = prevState.getConceptName();
+		String conceptValue = prevState.getConceptValue();
 		int obsNum = registrarBean.getNumberOfObs(enrollment.getPersonId(),
 				conceptName, conceptValue);
 

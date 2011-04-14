@@ -326,14 +326,6 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
         return calendar.getTime();
     }
 
-    public String getConceptName() {
-        return null;
-    }
-
-    public String getConceptValue() {
-        return null;
-    }
-
     public MessageProgramState getEndState() {
         return null;
     }

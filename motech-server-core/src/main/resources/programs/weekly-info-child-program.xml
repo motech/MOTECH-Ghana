@@ -39,7 +39,7 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="weeklyInfoChildProgram" class="org.motechproject.server.event.impl.MotechMessageProgram">
+	<bean id="weeklyInfoChildProgram" class="org.motechproject.server.model.MotechMessageProgram">
 		<property name="name" value="Weekly Info Child Message Program" />
 		<property name="startState" ref="weeklyInfoChildState1" />
 		<property name="endState" ref="weeklyInfoChildState5" />

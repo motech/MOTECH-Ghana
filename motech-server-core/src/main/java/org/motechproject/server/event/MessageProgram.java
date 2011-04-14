@@ -47,7 +47,4 @@ public interface MessageProgram extends BaseInterface {
 
 	MessageProgramState getEndState();
 
-	String getConceptName();
-
-	String getConceptValue();
 }
