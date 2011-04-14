@@ -33,6 +33,17 @@
 
 package org.motechproject.server.time;
 
+import java.util.Calendar;
+
 public enum TimePeriod {
-	minute, hour, day, week, month, year
+	minute(Calendar.MINUTE), hour(Calendar.HOUR), day(Calendar.DATE), week(Calendar.DATE), month(Calendar.MONDAY), year(Calendar.YEAR);
+
+    private int calendarPeriod;
+    TimePeriod(int calendarPeriod) {
+        this.calendarPeriod = calendarPeriod;
+    }
+
+    public int getCalendarPeriod() {
+        return calendarPeriod;
+    }
 }

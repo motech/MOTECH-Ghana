@@ -52,7 +52,7 @@ public class MotechMessageProgramStateTransition extends BaseInterfaceImpl imple
     private Long id;
 
 
-    public Boolean evaluate(MessageProgramEnrollment enrollment,Date currentDate, RegistrarBean registrarBean) {
+    public Boolean evaluate(MessageProgramEnrollment enrollment, Date currentDate, RegistrarBean registrarBean) {
         // Default Transition is always taken
         return true;
     }
@@ -63,28 +63,11 @@ public class MotechMessageProgramStateTransition extends BaseInterfaceImpl imple
         }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-
-        switch (period) {
-            case minute:
-                calendar.add(Calendar.MINUTE, value);
-                break;
-            case hour:
-                calendar.add(Calendar.HOUR, value);
-                break;
-            case day:
-                calendar.add(Calendar.DATE, value);
-                break;
-            case week:
-// Add weeks as days
-                calendar.add(Calendar.DATE, value * 7);
-                break;
-            case month:
-                calendar.add(Calendar.MONTH, value);
-                break;
-            case year:
-                calendar.add(Calendar.YEAR, value);
-                break;
-        }
+        if (period.equals(TimePeriod.week))
+            calendar.add(period.getCalendarPeriod(), value * 7);
+        else
+            calendar.add(period.getCalendarPeriod(), value);
+        
         return calendar.getTime();
     }
 
