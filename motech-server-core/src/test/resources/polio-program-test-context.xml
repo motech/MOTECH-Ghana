@@ -54,7 +54,7 @@
 		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="patient_birthdate" />
 		<property name="command" ref="nopCommand" />
-		<property name="program" ref="polioProgram" />
+
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
@@ -82,7 +82,7 @@
 		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_date" />
 		<property name="command" ref="nopCommand" />
-		<property name="program" ref="polioProgram" />
+
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
@@ -110,7 +110,7 @@
 		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_date" />
 		<property name="command" ref="nopCommand" />
-		<property name="program" ref="polioProgram" />
+
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
@@ -138,7 +138,7 @@
 		<property name="timePeriod" value="week" />
 		<property name="timeReference" value="last_obs_date" />
 		<property name="command" ref="nopCommand" />
-		<property name="program" ref="polioProgram" />
+
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
@@ -163,7 +163,7 @@
         <property name="conceptName" value="IMMUNIZATIONS ORDERED" />
 		<property name="conceptValue" value="ORAL POLIO VACCINATION" />
 		<property name="command" ref="nopCommand" />
-		<property name="program" ref="polioProgram" />
+		
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>

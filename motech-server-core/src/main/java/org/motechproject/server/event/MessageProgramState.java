@@ -47,8 +47,6 @@ public interface MessageProgramState extends BaseInterface {
 
 	MessageProgramStateTransition getTransition(MessageProgramEnrollment enrollment, Date currentDate, RegistrarBean registrarBean);
 
-	MessageProgram getProgram();
-
 	Integer getTimeValue();
 
 	TimePeriod getTimePeriod();

@@ -42,17 +42,13 @@ public class ExpectedNumberTransition extends MotechMessageProgramStateTransitio
 	private Integer expectedNumber;
 
 	@Override
-	public Boolean evaluate(MessageProgramEnrollment enrollment,
-                         Date currentDate, RegistrarBean registrarBean) {
-		String conceptName = prevState.getConceptName();
-		String conceptValue = prevState.getConceptValue();
-		int obsNum = registrarBean.getNumberOfObs(enrollment.getPersonId(),
-				conceptName, conceptValue);
+	public Boolean evaluate(MessageProgramEnrollment enrollment, Date currentDate, RegistrarBean registrarBean) {
+        int observedNumber = registrarBean.getNumberOfObs(enrollment.getPersonId(), prevState.getConceptName(), prevState.getConceptValue());
 
 		if (prevState.equals(nextState)) {
-			return obsNum == expectedNumber;
+			return observedNumber == expectedNumber;
 		} else {
-			return obsNum >= expectedNumber;
+			return observedNumber >= expectedNumber;
 		}
 	}
 

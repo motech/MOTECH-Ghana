@@ -61,7 +61,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 
         // Calculate date 1 day in future to use for message dates calculated in
         // past
-        Date nextDate = calculateDate(currentDate, 1, TimePeriod.day);
+        Date nextDate = calculateDateBasedOnTimePeriodAndTimeValue(currentDate, 1, TimePeriod.day);
 
         Integer maxPatientReminders = registrarBean
                 .getMaxPatientCareReminders();
@@ -189,7 +189,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
     protected boolean isUpcoming(Date currentDate, Date expectedCareDate,
                                  ExpectedCareMessageDetails careDetails, String care) {
         // Upcoming care is considered twice the value for the care
-        Date endDate = calculateDate(currentDate, 2 * careDetails
+        Date endDate = calculateDateBasedOnTimePeriodAndTimeValue(currentDate, 2 * careDetails
                 .getTimeValue(care), careDetails.getTimePeriod());
         return currentDate.before(expectedCareDate)
                 && endDate.after(expectedCareDate);
@@ -207,7 +207,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 
         if (isUpcoming(currentDate, dueDate, careDetails, care)) {
             // Schedule reminder value/period before care due date
-            Date messageDate = calculateDate(dueDate, (-1 * careDetails
+            Date messageDate = calculateDateBasedOnTimePeriodAndTimeValue(dueDate, (-1 * careDetails
                     .getTimeValue(care)), careDetails.getTimePeriod());
 
             // Set predicate and get upcoming scheduled message if exists
@@ -237,7 +237,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 
         } else if (isOverdue(currentDate, lateDate)) {
             // Schedule reminder value/period after care late date
-            Date reminderDate = calculateDate(lateDate, careDetails
+            Date reminderDate = calculateDateBasedOnTimePeriodAndTimeValue(lateDate, careDetails
                     .getTimeValue(care), careDetails.getTimePeriod());
 
             // Set predicate and get previous reminder scheduled message if
@@ -276,10 +276,10 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
                 // Schedule reminder value/period after most recent reminder
                 // if number of previous reminders less than max property
                 if (attempts.size() < maxPatientReminders) {
-                    Date newReminderDate = calculateDate(previousReminderDate,
+                    Date newReminderDate = calculateDateBasedOnTimePeriodAndTimeValue(previousReminderDate,
                             careDetails.getTimeValue(care), careDetails
                                     .getTimePeriod());
-                    Date maxReminderDate = calculateDate(currentDate,
+                    Date maxReminderDate = calculateDateBasedOnTimePeriodAndTimeValue(currentDate,
                             careDetails.getTimeValue(care), careDetails
                                     .getTimePeriod());
 
@@ -295,34 +295,18 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
         return null;
     }
 
-    protected Date calculateDate(Date date, Integer value, TimePeriod period) {
+    protected Date calculateDateBasedOnTimePeriodAndTimeValue(Date date, Integer value, TimePeriod period) {
         if (date == null || value == null || period == null) {
             return null;
         }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
-        switch (period) {
-            case minute:
-                calendar.add(Calendar.MINUTE, value);
-                break;
-            case hour:
-                calendar.add(Calendar.HOUR, value);
-                break;
-            case day:
-                calendar.add(Calendar.DATE, value);
-                break;
-            case week:
-                // Add weeks as days
-                calendar.add(Calendar.DATE, value * 7);
-                break;
-            case month:
-                calendar.add(Calendar.MONTH, value);
-                break;
-            case year:
-                calendar.add(Calendar.YEAR, value);
-                break;
-        }
+        if (period.equals(TimePeriod.week))
+            calendar.add(period.getCalendarPeriod(), value * 7);
+        else
+            calendar.add(period.getCalendarPeriod(), value);
+
         return calendar.getTime();
     }
 

@@ -57,7 +57,7 @@
 				<property name="messageScheduler" ref="messageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="demoMinuteProgram" />
+
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
@@ -86,7 +86,7 @@
 				<property name="messageScheduler" ref="messageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="demoMinuteProgram" />
+
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
@@ -115,7 +115,7 @@
 				<property name="messageScheduler" ref="messageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="demoMinuteProgram" />
+
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
@@ -144,7 +144,7 @@
 				<property name="messageScheduler" ref="messageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="demoMinuteProgram" />
+
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
@@ -173,7 +173,7 @@
 				<property name="messageScheduler" ref="messageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="demoMinuteProgram" />
+
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
@@ -202,7 +202,7 @@
 				<property name="messageScheduler" ref="messageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="demoMinuteProgram" />
+
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
@@ -230,7 +230,7 @@
 				<property name="registrarBean" ref="registrarBean" />
 			</bean>
 		</property>
-		<property name="program" ref="demoMinuteProgram" />
+		
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>

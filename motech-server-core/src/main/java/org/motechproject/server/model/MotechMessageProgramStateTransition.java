@@ -57,8 +57,10 @@ public class MotechMessageProgramStateTransition extends BaseInterfaceImpl imple
         return true;
     }
 
-    protected Date calculateDate(Date date, Integer value, TimePeriod period) {
-        if (date == null || value == null || period == null) {
+    private Date calculateDateBasedOnTimePeriodAndTimeValue(Date date, Integer value, TimePeriod period) {
+        final boolean anyParameterNotAvailable = (date == null || value == null || period == null);
+
+        if (anyParameterNotAvailable) {
             return null;
         }
         Calendar calendar = Calendar.getInstance();
@@ -67,7 +69,6 @@ public class MotechMessageProgramStateTransition extends BaseInterfaceImpl imple
             calendar.add(period.getCalendarPeriod(), value * 7);
         else
             calendar.add(period.getCalendarPeriod(), value);
-        
         return calendar.getTime();
     }
 
@@ -76,7 +77,7 @@ public class MotechMessageProgramStateTransition extends BaseInterfaceImpl imple
             Date actionDate = nextState.getDateOfAction(enrollment, currentDate);
             return !isDateNull(actionDate) && isActionDateTodayOrInFuture(currentDate, actionDate);
         } else if (isTimeDetailDefined()) {
-            Date actionDate = calculateDate(nextState.getDateOfAction(enrollment, currentDate), timeValue, timePeriod);
+            Date actionDate = calculateDateBasedOnTimePeriodAndTimeValue(nextState.getDateOfAction(enrollment, currentDate), timeValue, timePeriod);
             return !isDateNull(actionDate) && isActionDateInPast(currentDate, actionDate);
         } else {
             Date actionDate = prevState.getDateOfAction(enrollment, currentDate);

@@ -33,7 +33,6 @@
 
 package org.motechproject.server.model;
 
-import org.motechproject.server.event.MessageProgram;
 import org.motechproject.server.event.MessageProgramState;
 import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.event.impl.BaseInterfaceImpl;
@@ -51,16 +50,14 @@ public class MotechMessageProgramState extends BaseInterfaceImpl implements Mess
 
     private List<MessageProgramStateTransition> transitions = new ArrayList<MessageProgramStateTransition>();
     private MessagesCommand command;
-    private MessageProgram program;
     private Integer timeValue;
     private TimePeriod timePeriod;
     private TimeReference timeReference;
     private TimeBean timeBean;
     private Long id;
     private ProgramMessageKey messageKey;
-    private String conceptName ;
+    private String conceptName;
     private String conceptValue;
-
 
 
     public void addTransition(MessageProgramStateTransition transition) {
@@ -77,7 +74,7 @@ public class MotechMessageProgramState extends BaseInterfaceImpl implements Mess
     }
 
     public Date getDateOfAction(MessageProgramEnrollment enrollment, Date currentDate) {
-        Date actionDate = timeBean.determineTime(timePeriod, timeReference, timeValue, null, enrollment, conceptName, conceptValue , null, null);
+        Date actionDate = timeBean.determineTime(timePeriod, timeReference, timeValue, null, enrollment, conceptName, conceptValue, null, null);
         return command.adjustActionDate(enrollment, actionDate, currentDate);
     }
 
@@ -87,14 +84,6 @@ public class MotechMessageProgramState extends BaseInterfaceImpl implements Mess
 
     public void setCommand(MessagesCommand command) {
         this.command = command;
-    }
-
-    public MessageProgram getProgram() {
-        return program;
-    }
-
-    public void setProgram(MessageProgram program) {
-        this.program = program;
     }
 
     public Integer getTimeValue() {
