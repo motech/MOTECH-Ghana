@@ -66,60 +66,62 @@ public class TimeBean {
                 personId = enrollment.getPersonId();
             }
 
+            boolean personIdDefined = (personId != null);
+            boolean enrollmentDefined = (enrollment != null);
+            boolean personIdAndConceptNameDefined = (personId != null && conceptName != null);
+            boolean currentDoseNumberDefined = (currentDoseNumber != null);
+            
             switch (timeReference) {
                 case patient_birthdate:
-                    if (personId != null) {
+                    if (personIdDefined) {
                         timeReferenceDate = registrarBean
                                 .getPatientBirthDate(personId);
                     }
                     break;
                 case last_obs_date:
-                    if (personId != null && conceptName != null
-                            && valueConceptName != null) {
+                    if (personIdAndConceptNameDefined && valueConceptName != null) {
                         timeReferenceDate = registrarBean.getLastObsDate(personId,
                                 conceptName, valueConceptName);
                     }
                     break;
                 case last_dose_obs_date:
-                    if (personId != null && conceptName != null
-                            && currentDoseNumber != null) {
+                    if (personIdAndConceptNameDefined && currentDoseNumberDefined) {
                         timeReferenceDate = registrarBean.getLastDoseObsDate(
                                 personId, conceptName, currentDoseNumber - 1);
                     }
                     break;
                 case last_dose_obs_date_current_pregnancy:
-                    if (personId != null && conceptName != null
-                            && currentDoseNumber != null) {
+                    if (personIdAndConceptNameDefined && currentDoseNumberDefined) {
                         timeReferenceDate = registrarBean
                                 .getLastDoseObsDateInActivePregnancy(personId,
                                         conceptName, currentDoseNumber - 1);
                     }
                     break;
                 case last_obs_datevalue:
-                    if (personId != null && conceptName != null) {
+                    if (personIdAndConceptNameDefined) {
                         timeReferenceDate = registrarBean.getLastObsValue(personId,
                                 conceptName);
                     }
                     break;
                 case current_pregnancy_duedate:
-                    if (personId != null) {
+                    if (personIdDefined) {
                         timeReferenceDate = registrarBean
                                 .getActivePregnancyDueDate(personId);
                     }
                     break;
                 case last_pregnancy_end_date:
-                    if (personId != null) {
+                    if (personIdDefined) {
                         timeReferenceDate = registrarBean
                                 .getLastPregnancyEndDate(personId);
                     }
                     break;
                 case enrollment_startdate:
-                    if (enrollment != null) {
+                    if (enrollmentDefined) {
                         timeReferenceDate = enrollment.getStartDate();
                     }
                     break;
                 case enrollment_obs_datevalue:
-                    if (enrollment != null) {
+                    if (enrollmentDefined) {
                         timeReferenceDate = registrarBean.getObsValue(enrollment
                                 .getObsId());
                     }
