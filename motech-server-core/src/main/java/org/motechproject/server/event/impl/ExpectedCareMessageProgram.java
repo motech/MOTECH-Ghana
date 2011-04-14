@@ -318,11 +318,6 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
         return null;
     }
 
-    public MessageProgramState updateState(MessageProgramEnrollment enrollment,
-                                           Date currentDate) {
-        return null;
-    }
-
     public List<ExpectedCareMessageDetails> getCareMessageDetails() {
         return careMessageDetails;
     }

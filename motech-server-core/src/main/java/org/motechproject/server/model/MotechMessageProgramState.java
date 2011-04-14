@@ -164,4 +164,6 @@ public class MotechMessageProgramState extends BaseInterfaceImpl implements Mess
     public void setConceptValue(String conceptValue) {
         this.conceptValue = conceptValue;
     }
+
+    
 }

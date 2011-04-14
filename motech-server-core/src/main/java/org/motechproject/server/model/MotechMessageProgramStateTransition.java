@@ -34,7 +34,6 @@
 package org.motechproject.server.model;
 
 import org.motechproject.server.event.MessageProgramState;
-import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.event.impl.BaseInterfaceImpl;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.time.TimePeriod;
@@ -46,7 +45,6 @@ public class MotechMessageProgramStateTransition extends BaseInterfaceImpl imple
 
     protected MessageProgramState prevState;
     protected MessageProgramState nextState;
-    protected MessagesCommand command;
     protected Integer timeValue;
     protected TimePeriod timePeriod;
     private Long id;
@@ -99,14 +97,6 @@ public class MotechMessageProgramStateTransition extends BaseInterfaceImpl imple
 
     public void setNextState(MessageProgramState nextState) {
         this.nextState = nextState;
-    }
-
-    public MessagesCommand getCommand() {
-        return command;
-    }
-
-    public void setCommand(MessagesCommand command) {
-        this.command = command;
     }
 
     public void setId(Long id) {

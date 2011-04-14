@@ -41,9 +41,7 @@ public interface MessageProgram extends BaseInterface {
 
 	MessageProgramState determineState(MessageProgramEnrollment enrollment, Date currentDate);
 
-	MessageProgramState updateState(MessageProgramEnrollment enrollment, Date currentDate);
-
-	MessageProgramState getStartState();
+    MessageProgramState getStartState();
 
 	MessageProgramState getEndState();
 

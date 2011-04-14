@@ -66,12 +66,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState5" />
 					<property name="nextState" ref="weeklyInfoPregnancyState6" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState5" />
 					<property name="nextState" ref="weeklyInfoPregnancyState5" />
 				</bean>
@@ -99,12 +97,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState6" />
 					<property name="nextState" ref="weeklyInfoPregnancyState7" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState6" />
 					<property name="nextState" ref="weeklyInfoPregnancyState6" />
 				</bean>
@@ -132,12 +128,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState7" />
 					<property name="nextState" ref="weeklyInfoPregnancyState8" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState7" />
 					<property name="nextState" ref="weeklyInfoPregnancyState7" />
 				</bean>
@@ -165,12 +159,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState8" />
 					<property name="nextState" ref="weeklyInfoPregnancyState9" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState8" />
 					<property name="nextState" ref="weeklyInfoPregnancyState8" />
 				</bean>
@@ -198,12 +190,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState9" />
 					<property name="nextState" ref="weeklyInfoPregnancyState10" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState9" />
 					<property name="nextState" ref="weeklyInfoPregnancyState9" />
 				</bean>
@@ -231,12 +221,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState10" />
 					<property name="nextState" ref="weeklyInfoPregnancyState11" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState10" />
 					<property name="nextState" ref="weeklyInfoPregnancyState10" />
 				</bean>
@@ -264,12 +252,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState11" />
 					<property name="nextState" ref="weeklyInfoPregnancyState12" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState11" />
 					<property name="nextState" ref="weeklyInfoPregnancyState11" />
 				</bean>
@@ -297,12 +283,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState12" />
 					<property name="nextState" ref="weeklyInfoPregnancyState13" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState12" />
 					<property name="nextState" ref="weeklyInfoPregnancyState12" />
 				</bean>
@@ -330,12 +314,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState13" />
 					<property name="nextState" ref="weeklyInfoPregnancyState14" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState13" />
 					<property name="nextState" ref="weeklyInfoPregnancyState13" />
 				</bean>
@@ -363,12 +345,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState14" />
 					<property name="nextState" ref="weeklyInfoPregnancyState15" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState14" />
 					<property name="nextState" ref="weeklyInfoPregnancyState14" />
 				</bean>
@@ -396,12 +376,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState15" />
 					<property name="nextState" ref="weeklyInfoPregnancyState16" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState15" />
 					<property name="nextState" ref="weeklyInfoPregnancyState15" />
 				</bean>
@@ -429,12 +407,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState16" />
 					<property name="nextState" ref="weeklyInfoPregnancyState17" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState16" />
 					<property name="nextState" ref="weeklyInfoPregnancyState16" />
 				</bean>
@@ -462,12 +438,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState17" />
 					<property name="nextState" ref="weeklyInfoPregnancyState18" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState17" />
 					<property name="nextState" ref="weeklyInfoPregnancyState17" />
 				</bean>
@@ -496,12 +470,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState18" />
 					<property name="nextState" ref="weeklyInfoPregnancyState19" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState18" />
 					<property name="nextState" ref="weeklyInfoPregnancyState18" />
 				</bean>
@@ -530,12 +502,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState19" />
 					<property name="nextState" ref="weeklyInfoPregnancyState20" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState19" />
 					<property name="nextState" ref="weeklyInfoPregnancyState19" />
 				</bean>
@@ -564,12 +534,10 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState20" />
 					<property name="nextState" ref="weeklyInfoPregnancyState21" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
 					<property name="prevState" ref="weeklyInfoPregnancyState20" />
 					<property name="nextState" ref="weeklyInfoPregnancyState20" />
 				</bean>
@@ -598,12 +566,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState21" />
 					<property name="nextState" ref="weeklyInfoPregnancyState22" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState21" />
 					<property name="nextState" ref="weeklyInfoPregnancyState21" />
 				</bean>
@@ -632,12 +600,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState22" />
 					<property name="nextState" ref="weeklyInfoPregnancyState23" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState22" />
 					<property name="nextState" ref="weeklyInfoPregnancyState22" />
 				</bean>
@@ -666,12 +634,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState23" />
 					<property name="nextState" ref="weeklyInfoPregnancyState24" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState23" />
 					<property name="nextState" ref="weeklyInfoPregnancyState23" />
 				</bean>
@@ -700,12 +668,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState24" />
 					<property name="nextState" ref="weeklyInfoPregnancyState25" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState24" />
 					<property name="nextState" ref="weeklyInfoPregnancyState24" />
 				</bean>
@@ -734,12 +702,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState25" />
 					<property name="nextState" ref="weeklyInfoPregnancyState26" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState25" />
 					<property name="nextState" ref="weeklyInfoPregnancyState25" />
 				</bean>
@@ -768,12 +736,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState26" />
 					<property name="nextState" ref="weeklyInfoPregnancyState27" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState26" />
 					<property name="nextState" ref="weeklyInfoPregnancyState26" />
 				</bean>
@@ -802,12 +770,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState27" />
 					<property name="nextState" ref="weeklyInfoPregnancyState28" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState27" />
 					<property name="nextState" ref="weeklyInfoPregnancyState27" />
 				</bean>
@@ -836,12 +804,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState28" />
 					<property name="nextState" ref="weeklyInfoPregnancyState29" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState28" />
 					<property name="nextState" ref="weeklyInfoPregnancyState28" />
 				</bean>
@@ -870,12 +838,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState29" />
 					<property name="nextState" ref="weeklyInfoPregnancyState30" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState29" />
 					<property name="nextState" ref="weeklyInfoPregnancyState29" />
 				</bean>
@@ -904,12 +872,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState30" />
 					<property name="nextState" ref="weeklyInfoPregnancyState31" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState30" />
 					<property name="nextState" ref="weeklyInfoPregnancyState30" />
 				</bean>
@@ -938,12 +906,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState31" />
 					<property name="nextState" ref="weeklyInfoPregnancyState32" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState31" />
 					<property name="nextState" ref="weeklyInfoPregnancyState31" />
 				</bean>
@@ -972,12 +940,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState32" />
 					<property name="nextState" ref="weeklyInfoPregnancyState33" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState32" />
 					<property name="nextState" ref="weeklyInfoPregnancyState32" />
 				</bean>
@@ -1006,12 +974,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState33" />
 					<property name="nextState" ref="weeklyInfoPregnancyState34" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState33" />
 					<property name="nextState" ref="weeklyInfoPregnancyState33" />
 				</bean>
@@ -1040,12 +1008,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState34" />
 					<property name="nextState" ref="weeklyInfoPregnancyState35" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState34" />
 					<property name="nextState" ref="weeklyInfoPregnancyState34" />
 				</bean>
@@ -1074,12 +1042,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState35" />
 					<property name="nextState" ref="weeklyInfoPregnancyState36" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState35" />
 					<property name="nextState" ref="weeklyInfoPregnancyState35" />
 				</bean>
@@ -1108,12 +1076,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState36" />
 					<property name="nextState" ref="weeklyInfoPregnancyState37" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState36" />
 					<property name="nextState" ref="weeklyInfoPregnancyState36" />
 				</bean>
@@ -1142,12 +1110,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState37" />
 					<property name="nextState" ref="weeklyInfoPregnancyState38" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState37" />
 					<property name="nextState" ref="weeklyInfoPregnancyState37" />
 				</bean>
@@ -1176,12 +1144,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState38" />
 					<property name="nextState" ref="weeklyInfoPregnancyState39" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState38" />
 					<property name="nextState" ref="weeklyInfoPregnancyState38" />
 				</bean>
@@ -1210,12 +1178,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState39" />
 					<property name="nextState" ref="weeklyInfoPregnancyState40" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState39" />
 					<property name="nextState" ref="weeklyInfoPregnancyState39" />
 				</bean>
@@ -1244,12 +1212,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState40" />
 					<property name="nextState" ref="weeklyInfoPregnancyState41" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState40" />
 					<property name="nextState" ref="weeklyInfoPregnancyState40" />
 				</bean>
@@ -1278,12 +1246,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState41" />
 					<property name="nextState" ref="weeklyInfoPregnancyState42" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState41" />
 					<property name="nextState" ref="weeklyInfoPregnancyState41" />
 				</bean>
@@ -1312,12 +1280,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState42" />
 					<property name="nextState" ref="weeklyInfoPregnancyState43" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState42" />
 					<property name="nextState" ref="weeklyInfoPregnancyState42" />
 				</bean>
@@ -1346,12 +1314,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState43" />
 					<property name="nextState" ref="weeklyInfoPregnancyState44" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState43" />
 					<property name="nextState" ref="weeklyInfoPregnancyState43" />
 				</bean>
@@ -1380,12 +1348,12 @@
 				<bean class="org.motechproject.server.model.ExpectedDateTransition">
 					<property name="timeValue" value="-2" />
 					<property name="timePeriod" value="day" />
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState44" />
 					<property name="nextState" ref="weeklyInfoPregnancyState45" />
 				</bean>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState44" />
 					<property name="nextState" ref="weeklyInfoPregnancyState44" />
 				</bean>
@@ -1408,7 +1376,7 @@
 		<property name="transitions">
 			<list>
 				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
-					<property name="command" ref="nopCommand" />
+
 					<property name="prevState" ref="weeklyInfoPregnancyState45" />
 					<property name="nextState" ref="weeklyInfoPregnancyState45" />
 				</bean>

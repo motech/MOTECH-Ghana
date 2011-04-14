@@ -46,8 +46,6 @@ public interface MessageProgramStateTransition extends BaseInterface {
 
    MessageProgramState getNextState();
 
-   MessagesCommand getCommand();
-
-   Boolean evaluate(MessageProgramEnrollment enrollment, Date currentDate, RegistrarBean registrarBean);
+    Boolean evaluate(MessageProgramEnrollment enrollment, Date currentDate, RegistrarBean registrarBean);
 
 }

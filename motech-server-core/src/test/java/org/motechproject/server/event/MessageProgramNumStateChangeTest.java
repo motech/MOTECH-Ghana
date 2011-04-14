@@ -35,6 +35,7 @@ package org.motechproject.server.event;
 
 import junit.framework.TestCase;
 import org.motechproject.server.model.MessageProgramEnrollment;
+import org.motechproject.server.model.MessageProgramStateTransition;
 import org.motechproject.server.svc.RegistrarBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -180,8 +181,7 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
         replay(registrarBean);
 
-        currentPatientState = polioProgram.determineState(enrollment,
-                new Date());
+        currentPatientState = polioProgram.determineState(enrollment,new Date());
 
         verify(registrarBean);
 
@@ -195,11 +195,11 @@ public class MessageProgramNumStateChangeTest extends TestCase {
                 .andReturn(3).atLeastOnce();
         expect(
                 registrarBean.getLastObsDate(patientId, polioConceptName, polioConceptValue))
-                .andReturn(new Date()).times(2);
+                .andReturn(new Date()).times(1);
 
         replay(registrarBean);
 
-        currentPatientState = polioProgram.updateState(enrollment, new Date());
+        currentPatientState = updateState(polioProgram,enrollment, new Date());
 
         verify(registrarBean);
 
@@ -231,11 +231,11 @@ public class MessageProgramNumStateChangeTest extends TestCase {
                 .andReturn(3).atLeastOnce();
         expect(
                 registrarBean.getLastObsDate(patientId, polioConceptName, polioConceptValue))
-                .andReturn(new Date()).times(2);
+                .andReturn(new Date()).times(1);
 
         replay(registrarBean);
 
-        currentPatientState = polioProgram.updateState(enrollment, new Date());
+        currentPatientState = updateState(polioProgram,enrollment, new Date());
 
         verify(registrarBean);
 
@@ -265,7 +265,7 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
         replay(registrarBean);
 
-        currentPatientState = polioProgram.updateState(enrollment, new Date());
+        currentPatientState = updateState(polioProgram,enrollment, new Date());
 
         verify(registrarBean);
 
@@ -273,5 +273,16 @@ public class MessageProgramNumStateChangeTest extends TestCase {
 
         reset(registrarBean);
     }
+
+    private MessageProgramState updateState(MessageProgram program,MessageProgramEnrollment enrollment, Date currentDate) {
+		MessageProgramState state = program.determineState(enrollment, currentDate);
+		if (state.equals(program.getEndState())) {
+			return state;
+		}
+		MessageProgramStateTransition transition = state.getTransition(enrollment, currentDate, registrarBean);
+		MessageProgramState newState = transition.getNextState();
+		return newState;
+	}
+
 
 }

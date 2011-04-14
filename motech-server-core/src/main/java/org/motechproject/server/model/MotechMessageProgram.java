@@ -98,19 +98,6 @@ public class MotechMessageProgram extends BaseInterfaceImpl implements MessagePr
 		return state;
 	}
 
-	public MessageProgramState updateState(MessageProgramEnrollment enrollment, Date currentDate) {
-		MessageProgramState state = determineState(enrollment, currentDate);
-		if (state.equals(endState)) {
-			return state;
-		}
-		MessageProgramStateTransition transition = state.getTransition(enrollment, currentDate, registrarBean);
-		Date actionDate = state.getDateOfAction(enrollment, currentDate);
-		transition.getCommand().execute(enrollment, actionDate, currentDate);
-		MessageProgramState newState = transition.getNextState();
-
-		return newState;
-	}
-
     public RegistrarBean getRegistrarBean() {
         return registrarBean;
     }
@@ -118,5 +105,18 @@ public class MotechMessageProgram extends BaseInterfaceImpl implements MessagePr
     public void setRegistrarBean(RegistrarBean registrarBean) {
         this.registrarBean = registrarBean;
     }
+
+    public MessageProgramState updateState(MessageProgramEnrollment enrollment, Date currentDate) {
+		MessageProgramState state = determineState(enrollment, currentDate);
+		if (state.equals(endState)) {
+			return state;
+		}
+		MessageProgramStateTransition transition = state.getTransition(enrollment, currentDate, registrarBean);
+		Date actionDate = state.getDateOfAction(enrollment, currentDate);
+//		new MessagesCommand().execute(enrollment, actionDate, currentDate);
+		MessageProgramState newState = transition.getNextState();
+
+		return newState;
+	}
 
 }
