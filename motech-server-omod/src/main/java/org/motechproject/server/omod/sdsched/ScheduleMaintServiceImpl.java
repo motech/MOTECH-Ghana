@@ -46,7 +46,7 @@ public class ScheduleMaintServiceImpl implements ScheduleMaintService {
 
 	private static Log log = LogFactory.getLog(ScheduleMaintServiceImpl.class);
 
-	public static String RESOURCE_NAME = "_DS_SCHEDULER_UTILS_RESOURCE";
+	public static final String RESOURCE_NAME = "_DS_SCHEDULER_UTILS_RESOURCE";
 
 	TxSyncManWrapper syncManWrapper;
 	ScheduleAdjuster scheduleAdjuster;

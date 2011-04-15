@@ -38,6 +38,8 @@ public final class MotechConstants {
 	/*
 	 * Values added and used by Motech
 	 */
+
+    private MotechConstants() {}
 	public static final String PERSON_ATTRIBUTE_PHONE_NUMBER = "Phone Number";
 	public static final String PERSON_ATTRIBUTE_NHIS_NUMBER = "NHIS Number";
 	public static final String PERSON_ATTRIBUTE_NHIS_EXP_DATE = "NHIS Expiration Date";

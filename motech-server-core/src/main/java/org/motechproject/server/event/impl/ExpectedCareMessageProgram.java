@@ -119,7 +119,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 
                 // Create new scheduled message or return existing matching
                 ScheduledMessage message = scheduleCareMessage(currentDate,
-                        nextDate, dueDate, lateDate, careDetails, care,
+                        dueDate, lateDate, careDetails, care,
                         enrollment, careScheduledMessages, maxPatientReminders, registrarBean);
                 if (message != null) {
                     verifiedScheduledMessages.add(message);
@@ -132,7 +132,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 
                 // Create new scheduled message or return existing matching
                 ScheduledMessage message = scheduleCareMessage(currentDate,
-                        nextDate, dueDate, lateDate, careDetails, care,
+                        dueDate, lateDate, careDetails, care,
                         enrollment, careScheduledMessages, maxPatientReminders, registrarBean);
                 if (message != null) {
                     verifiedScheduledMessages.add(message);
@@ -199,7 +199,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
         return currentDate.after(expectedCareDate);
     }
 
-    private ScheduledMessage scheduleCareMessage(Date currentDate, Date nextDate, Date dueDate, Date lateDate,
+    private ScheduledMessage scheduleCareMessage(Date currentDate, Date dueDate, Date lateDate,
                                                  ExpectedCareMessageDetails careDetails, String care,
                                                  MessageProgramEnrollment enrollment,
                                                  List<ScheduledMessage> careScheduledMessages,

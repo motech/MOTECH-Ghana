@@ -33,16 +33,15 @@
 
 package org.motechproject.server.omod.xml;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
 import com.thoughtworks.xstream.io.StreamException;
 import com.thoughtworks.xstream.io.xml.QNameMap;
 import com.thoughtworks.xstream.io.xml.StaxWriter;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyReplacer;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import java.util.HashSet;
+import java.util.Set;
 
 /*
  * Overridden startNode and setValue in StaxWriter to add CDATA to nodes names in cdataNodeNames Set.
@@ -69,7 +68,7 @@ public class LocationStaxWriter extends StaxWriter {
 				replacer, new HashSet<String>());
 	}
 
-	public void setCdataNodeNames(Set<String> cdataNodeNames) {
+	private void setCdataNodeNames(Set<String> cdataNodeNames) {
 		this.cdataNodeNames = cdataNodeNames;
 	}
 

@@ -76,8 +76,7 @@ public class StaffController {
 
     @ModelAttribute("staff")
     public WebStaff getWebStaff() {
-        WebStaff staff = new WebStaff();
-        return staff;
+        return new WebStaff();
     }
 
     @RequestMapping(method = RequestMethod.GET)

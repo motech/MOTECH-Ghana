@@ -33,16 +33,15 @@
 
 package org.motechproject.server.omod.xml;
 
-import java.io.Writer;
-import java.util.Set;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.StreamException;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyReplacer;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import java.io.Writer;
+import java.util.Set;
 
 /*
  * Custom XmlFrieldlyReplace for StaxDriver to prevent underscores replaced with double underscores.
@@ -62,7 +61,7 @@ public class LocationStaxDriver extends StaxDriver {
 		return cdataNodeNames;
 	}
 
-	public void setCdataNodeNames(Set<String> cdataNodeNames) {
+	private void setCdataNodeNames(Set<String> cdataNodeNames) {
 		this.cdataNodeNames = cdataNodeNames;
 	}
 

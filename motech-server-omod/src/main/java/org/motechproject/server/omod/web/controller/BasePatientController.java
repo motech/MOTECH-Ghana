@@ -46,7 +46,6 @@ public class BasePatientController {
 
 	ContextService contextService;
 	Comparator<Community> communityNameComparator;
-    private FacilityComparator facilityComparator = new FacilityComparator();
 
     public BasePatientController() {
 		communityNameComparator = new Comparator<Community>() {
@@ -83,7 +82,7 @@ public class BasePatientController {
 				districtMap.put(district, communities);
 			}
 		}
-        facilityComparator = new FacilityComparator();
+        FacilityComparator facilityComparator = new FacilityComparator();
         Collections.sort(facilities, facilityComparator);
 		model.addAttribute("regionMap", regionMap);
 		model.addAttribute("districtMap", districtMap);

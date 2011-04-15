@@ -256,8 +256,7 @@ public class HibernateMotechDAO implements MotechDAO {
 
     public TroubledPhone getTroubledPhone(Long id) {
         Session session = sessionFactory.getCurrentSession();
-        TroubledPhone tp = (TroubledPhone) session.get(TroubledPhone.class, id);
-        return tp;
+        return (TroubledPhone) session.get(TroubledPhone.class, id);
     }
 
     public void removeTroubledPhone(Long id) {

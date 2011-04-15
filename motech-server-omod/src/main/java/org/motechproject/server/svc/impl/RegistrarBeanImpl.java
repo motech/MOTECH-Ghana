@@ -76,7 +76,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     private static Log log = LogFactory.getLog(RegistrarBeanImpl.class);
 
     private ContextService contextService;
-    public MessageService mobileService;
+    private MessageService mobileService;
     private PatientService patientService;
     private PersonService personService;
     private RelationshipService relationshipService;

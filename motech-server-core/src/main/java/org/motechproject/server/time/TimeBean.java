@@ -70,49 +70,41 @@ public class TimeBean {
             boolean enrollmentDefined = (enrollment != null);
             boolean personIdAndConceptNameDefined = (personId != null && conceptName != null);
             boolean currentDoseNumberDefined = (currentDoseNumber != null);
-            
+
             switch (timeReference) {
                 case patient_birthdate:
                     if (personIdDefined) {
-                        timeReferenceDate = registrarBean
-                                .getPatientBirthDate(personId);
+                        timeReferenceDate = registrarBean.getPatientBirthDate(personId);
                     }
                     break;
                 case last_obs_date:
                     if (personIdAndConceptNameDefined && valueConceptName != null) {
-                        timeReferenceDate = registrarBean.getLastObsDate(personId,
-                                conceptName, valueConceptName);
+                        timeReferenceDate = registrarBean.getLastObsDate(personId, conceptName, valueConceptName);
                     }
                     break;
                 case last_dose_obs_date:
                     if (personIdAndConceptNameDefined && currentDoseNumberDefined) {
-                        timeReferenceDate = registrarBean.getLastDoseObsDate(
-                                personId, conceptName, currentDoseNumber - 1);
+                        timeReferenceDate = registrarBean.getLastDoseObsDate(personId, conceptName, currentDoseNumber - 1);
                     }
                     break;
                 case last_dose_obs_date_current_pregnancy:
                     if (personIdAndConceptNameDefined && currentDoseNumberDefined) {
-                        timeReferenceDate = registrarBean
-                                .getLastDoseObsDateInActivePregnancy(personId,
-                                        conceptName, currentDoseNumber - 1);
+                        timeReferenceDate = registrarBean.getLastDoseObsDateInActivePregnancy(personId, conceptName, currentDoseNumber - 1);
                     }
                     break;
                 case last_obs_datevalue:
                     if (personIdAndConceptNameDefined) {
-                        timeReferenceDate = registrarBean.getLastObsValue(personId,
-                                conceptName);
+                        timeReferenceDate = registrarBean.getLastObsValue(personId, conceptName);
                     }
                     break;
                 case current_pregnancy_duedate:
                     if (personIdDefined) {
-                        timeReferenceDate = registrarBean
-                                .getActivePregnancyDueDate(personId);
+                        timeReferenceDate = registrarBean.getActivePregnancyDueDate(personId);
                     }
                     break;
                 case last_pregnancy_end_date:
                     if (personIdDefined) {
-                        timeReferenceDate = registrarBean
-                                .getLastPregnancyEndDate(personId);
+                        timeReferenceDate = registrarBean.getLastPregnancyEndDate(personId);
                     }
                     break;
                 case enrollment_startdate:
@@ -122,8 +114,7 @@ public class TimeBean {
                     break;
                 case enrollment_obs_datevalue:
                     if (enrollmentDefined) {
-                        timeReferenceDate = registrarBean.getObsValue(enrollment
-                                .getObsId());
+                        timeReferenceDate = registrarBean.getObsValue(enrollment.getObsId());
                     }
                     break;
             }
