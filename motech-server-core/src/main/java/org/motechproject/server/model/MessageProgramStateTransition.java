@@ -35,7 +35,6 @@ package org.motechproject.server.model;
 
 import org.motechproject.server.event.BaseInterface;
 import org.motechproject.server.event.MessageProgramState;
-import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.svc.RegistrarBean;
 
 import java.util.Date;
