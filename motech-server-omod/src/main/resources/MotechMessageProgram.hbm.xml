@@ -1,6 +1,6 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<hibernate-mapping default-access="field" package="org.motechproject.server.event.impl">
+<hibernate-mapping default-access="field">
     <class name="org.motechproject.server.model.MotechMessageProgram" table="motechmodule_message_program">
         <id name="id" column="motechmodule_message_program_id">
             <generator class="native"/>

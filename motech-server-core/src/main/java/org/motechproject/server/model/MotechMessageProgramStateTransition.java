@@ -33,20 +33,20 @@
 
 package org.motechproject.server.model;
 
-import org.motechproject.server.event.impl.BaseInterfaceImpl;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.time.TimePeriod;
 
 import java.util.Calendar;
 import java.util.Date;
 
-public class MotechMessageProgramStateTransition extends BaseInterfaceImpl implements MessageProgramStateTransition {
+public class MotechMessageProgramStateTransition implements MessageProgramStateTransition {
 
     protected MotechMessageProgramState prevState;
     protected MotechMessageProgramState nextState;
     protected Integer timeValue;
     protected TimePeriod timePeriod;
     private Long id;
+    private String name;
 
 
     public Boolean evaluate(MessageProgramEnrollment enrollment, Date currentDate, RegistrarBean registrarBean) {
@@ -120,6 +120,19 @@ public class MotechMessageProgramStateTransition extends BaseInterfaceImpl imple
 
     public void setTimePeriod(TimePeriod timePeriod) {
         this.timePeriod = timePeriod;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean equals(Object object) {
+        MotechMessageProgramStateTransition otherBase = (MotechMessageProgramStateTransition) object;
+        return getName().equals(otherBase.getName());
     }
 
     private boolean isActionDateInPast(Date currentDate, Date calculatedActionDate) {

@@ -25,4 +25,22 @@
                                                          attribute_name="PNC2" attribute_value_numeric="24"/>
     <motechmodule_expected_care_message_detail_attribute expected_care_message_detail_id="5"
                                                          attribute_name="PNC3" attribute_value_numeric="24"/>
+
+    <motechmodule_message_program_state motechmodule_message_program_state_id="1" name="Pregnancy State Week 5" time_value="-35" time_period="week"
+            time_reference="enrollment_obs_datevalue" concept_name="" concept_value="" message_key="pregnancy.week.5"
+            message_key_a="pregnancy.week.5.a" message_key_b="pregnancy.week.5.b" message_key_c="pregnancy.week.5.c"/>
+
+    <motechmodule_message_program_state motechmodule_message_program_state_id="2" name="Pregnancy State Week 45" time_value="5" time_period="week"
+           time_reference="enrollment_obs_datevalue" concept_name="" concept_value="" />
+
+    <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="1" transition_type="DATE" next_state="2" prev_state="1"
+          parent_state="1"   time_value="-2" time_period="day" transition_index="0"/>
+
+     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="2" transition_type="DEFAULT" next_state="1" prev_state="1"
+         parent_state="1"   transition_index="1"/>
+
+    <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="3" transition_type="DEFAULT" next_state="2" prev_state="2"
+          parent_state="2"   transition_index="0"/>
+
+    <motechmodule_message_program motechmodule_message_program_id="1" name="Weekly Pregnancy Message Program" start_state="1" end_state="2"/>
 </dataset>

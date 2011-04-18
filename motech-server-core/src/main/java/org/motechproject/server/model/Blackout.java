@@ -78,4 +78,5 @@ public class Blackout {
 	public void setStartTime(Time startTime) {
 		this.startTime = startTime;
 	}
+
 }

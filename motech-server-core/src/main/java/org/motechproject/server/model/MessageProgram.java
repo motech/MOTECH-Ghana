@@ -34,18 +34,17 @@
 package org.motechproject.server.model;
 
 import org.motechproject.server.event.BaseInterface;
-import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.model.Blackout;
+import org.motechproject.server.model.MessageProgramEnrollment;
 
 import java.util.Date;
 
-public interface MessageProgramStateTransition extends BaseInterface {
+public interface MessageProgram extends BaseInterface {
 
-   MotechMessageProgramState getPrevState();
+	MessageProgramState determineState(MessageProgramEnrollment enrollment, Date currentDate);
 
-   MotechMessageProgramState getNextState();
+    MessageProgramState getStartState();
 
-  Boolean evaluate(MessageProgramEnrollment enrollment, Date currentDate, RegistrarBean registrarBean);
-
-  String getName();
+	MessageProgramState getEndState();
 
 }

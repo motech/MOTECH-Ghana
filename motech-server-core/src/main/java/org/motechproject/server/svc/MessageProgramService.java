@@ -1,7 +1,6 @@
 package org.motechproject.server.svc;
 
-import org.motechproject.server.event.MessageProgram;
-import org.motechproject.server.model.MessageProgramType;
+import org.motechproject.server.model.MessageProgram;
 
 public interface MessageProgramService {
     MessageProgram program(String programName);

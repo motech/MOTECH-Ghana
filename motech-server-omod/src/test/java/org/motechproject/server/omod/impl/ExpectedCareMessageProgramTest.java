@@ -5,7 +5,6 @@ import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.motechproject.server.event.MessageProgramState;
 import org.motechproject.server.event.impl.ExpectedCareMessageProgram;
 import org.motechproject.server.model.*;
 import org.motechproject.server.svc.MessageProgramService;

@@ -35,15 +35,12 @@ package org.motechproject.server.model;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.event.MessageProgram;
-import org.motechproject.server.event.MessageProgramState;
 import org.motechproject.server.event.MessagesCommand;
-import org.motechproject.server.event.impl.BaseInterfaceImpl;
 import org.motechproject.server.svc.RegistrarBean;
 
 import java.util.Date;
 
-public class MotechMessageProgram extends BaseInterfaceImpl implements MessageProgram {
+public class MotechMessageProgram implements MessageProgram {
 
     private static Log log = LogFactory.getLog(MotechMessageProgram.class);
 
@@ -51,6 +48,29 @@ public class MotechMessageProgram extends BaseInterfaceImpl implements MessagePr
     private MotechMessageProgramState endState;
     private RegistrarBean registrarBean;
     private Long id;
+    private String name;
+
+    public MessageProgramState determineState(MessageProgramEnrollment enrollment, Date currentDate) {
+        MessageProgramState state = startState;
+        MessageProgramStateTransition transition = state.getTransition(enrollment, currentDate, registrarBean);
+        while (!transition.getNextState().equals(state)) {
+            state = transition.getNextState();
+            transition = state.getTransition(enrollment, currentDate, registrarBean);
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Message Program determineState: enrollment id: "
+                    + enrollment.getId() + ", state: " + state.getName());
+        }
+
+        Date actionDate = state.getDateOfAction(enrollment, currentDate);
+
+        // Perform state action using date and enrollment
+        MessagesCommand command = state.getCommand();
+        command.execute(enrollment, actionDate, currentDate);
+
+        return state;
+    }
 
     public Long getId() {
         return id;
@@ -76,28 +96,6 @@ public class MotechMessageProgram extends BaseInterfaceImpl implements MessagePr
         this.endState = endState;
     }
 
-    public MessageProgramState determineState(MessageProgramEnrollment enrollment, Date currentDate) {
-        MessageProgramState state = startState;
-        MessageProgramStateTransition transition = state.getTransition(enrollment, currentDate, registrarBean);
-        while (!transition.getNextState().equals(state)) {
-            state = transition.getNextState();
-            transition = state.getTransition(enrollment, currentDate, registrarBean);
-        }
-
-        if (log.isDebugEnabled()) {
-            log.debug("Message Program determineState: enrollment id: "
-                    + enrollment.getId() + ", state: " + state.getName());
-        }
-
-        Date actionDate = state.getDateOfAction(enrollment, currentDate);
-
-        // Perform state action using date and enrollment
-        MessagesCommand command = state.getCommand();
-        command.execute(enrollment, actionDate, currentDate);
-
-        return state;
-    }
-
     public RegistrarBean getRegistrarBean() {
         return registrarBean;
     }
@@ -106,4 +104,16 @@ public class MotechMessageProgram extends BaseInterfaceImpl implements MessagePr
         this.registrarBean = registrarBean;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean equals(Object object) {
+		MotechMessageProgramState otherState = (MotechMessageProgramState) object;
+		return name.equals(otherState.getName());
+	}
 }

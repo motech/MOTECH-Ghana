@@ -1,6 +1,6 @@
 package org.motechproject.server.svc.impl;
 
-import org.motechproject.server.event.MessageProgram;
+import org.motechproject.server.model.MessageProgram;
 import org.motechproject.server.event.impl.ExpectedCareMessageProgram;
 import org.motechproject.server.model.ExpectedCareMessageDetails;
 import org.motechproject.server.model.db.hibernate.MessageProgramDAO;

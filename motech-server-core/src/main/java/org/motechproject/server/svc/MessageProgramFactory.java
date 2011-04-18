@@ -1,6 +1,6 @@
 package org.motechproject.server.svc;
 
-import org.motechproject.server.event.MessageProgram;
+import org.motechproject.server.model.MessageProgram;
 
 public interface MessageProgramFactory {
     MessageProgram program();

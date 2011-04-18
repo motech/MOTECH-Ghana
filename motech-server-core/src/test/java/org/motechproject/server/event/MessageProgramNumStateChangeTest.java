@@ -34,8 +34,7 @@
 package org.motechproject.server.event;
 
 import junit.framework.TestCase;
-import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.model.MessageProgramStateTransition;
+import org.motechproject.server.model.*;
 import org.motechproject.server.svc.RegistrarBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

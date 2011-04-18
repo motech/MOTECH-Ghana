@@ -33,20 +33,18 @@
 
 package org.motechproject.server.model;
 
-import org.motechproject.server.event.MessageProgramState;
 import org.motechproject.server.event.MessagesCommand;
-import org.motechproject.server.event.impl.BaseInterfaceImpl;
 import org.motechproject.server.model.db.ProgramMessageKey;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.time.TimeBean;
 import org.motechproject.server.time.TimePeriod;
 import org.motechproject.server.time.TimeReference;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
-public class MotechMessageProgramState extends BaseInterfaceImpl implements MessageProgramState {
+public class MotechMessageProgramState implements MessageProgramState {
 
     private List<MessageProgramStateTransition> transitions = new ArrayList<MessageProgramStateTransition>();
     private MessagesCommand command;
@@ -58,6 +56,7 @@ public class MotechMessageProgramState extends BaseInterfaceImpl implements Mess
     private ProgramMessageKey messageKey;
     private String conceptName;
     private String conceptValue;
+    private String name ;
 
 
     public void addTransition(MessageProgramStateTransition transition) {
@@ -165,5 +164,17 @@ public class MotechMessageProgramState extends BaseInterfaceImpl implements Mess
         this.conceptValue = conceptValue;
     }
 
-    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        MotechMessageProgramState otherState = (MotechMessageProgramState) object;
+        return name.equals(otherState.getName());
+    }
 }

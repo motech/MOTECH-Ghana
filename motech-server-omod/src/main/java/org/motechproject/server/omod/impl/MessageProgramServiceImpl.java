@@ -1,6 +1,6 @@
 package org.motechproject.server.omod.impl;
 
-import org.motechproject.server.event.MessageProgram;
+import org.motechproject.server.model.MessageProgram;
 import org.motechproject.server.svc.MessageProgramService;
 import org.motechproject.server.svc.MessageProgramFactory;
 

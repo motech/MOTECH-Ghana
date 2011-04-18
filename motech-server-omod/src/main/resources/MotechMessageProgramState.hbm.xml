@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="org.motechproject.server.event.impl">
+<hibernate-mapping default-access="field">
     <class name="org.motechproject.server.model.MotechMessageProgramState" table="motechmodule_message_program_state">
         <id name="id" type="long" column="motechmodule_message_program_state_id">
             <generator class="native"/>
@@ -17,9 +17,9 @@
             <property name="messageKeyB" column="message_key_b" type="string"/>
             <property name="messageKeyC" column="message_key_c" type="string"/>
         </component>
-        <list name="transitions">
-            <key column="motechmodule_message_program_state_id"/>
-            <index column="priority"/>
+        <list name="transitions" lazy="false">
+            <key column="parent_state"/>
+            <index column="transition_index"/>
             <one-to-many class="org.motechproject.server.model.MotechMessageProgramStateTransition"/>
         </list>
     </class>

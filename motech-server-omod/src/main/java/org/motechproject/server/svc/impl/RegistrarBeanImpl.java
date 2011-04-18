@@ -36,7 +36,7 @@ package org.motechproject.server.svc.impl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.event.MessageProgram;
+import org.motechproject.server.model.MessageProgram;
 import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.*;

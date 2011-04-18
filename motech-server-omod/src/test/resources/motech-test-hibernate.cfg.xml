@@ -58,5 +58,8 @@
         <mapping resource="RCTPatient.hbm.xml"/>
         <mapping resource="RCTFacility.hbm.xml"/>
         <mapping resource="ExpectedCareMessageDetails.hbm.xml"/>
+        <mapping resource="MotechMessageProgramState.hbm.xml"/>
+        <mapping resource="MotechMessageProgramStateTransition.hbm.xml"/>
+        <mapping resource="MotechMessageProgram.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

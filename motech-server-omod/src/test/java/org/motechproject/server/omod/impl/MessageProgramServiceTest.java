@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.server.event.impl.ExpectedCareMessageProgram;
 import org.motechproject.server.model.ExpectedCareMessageDetails;
+import org.motechproject.server.model.MotechMessageProgram;
+import org.motechproject.server.model.MotechMessageProgramState;
 import org.motechproject.server.svc.MessageProgramService;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,20 @@ public class MessageProgramServiceTest  extends BaseModuleContextSensitiveTest {
         ExpectedCareMessageDetails pncDetail = getPNCMessageDetail(program);
         assertNotNull(pncDetail);
         assertPostNatalConditionTimeMap(pncDetail);
+    }
+
+    @Test
+    public void shouldGetWeeklyPregnancyMessageProgram() {
+        MotechMessageProgram program = (MotechMessageProgram) messageProgramService.program("Weekly Pregnancy Message Program");
+        assertNotNull(program);
+        assertEquals("Weekly Pregnancy Message Program",program.getName());
+        MotechMessageProgramState startState = program.getStartState();
+        assertEquals("Pregnancy State Week 5", startState.getName());
+        assertEquals(2,startState.getTransitions().size());
+
+        MotechMessageProgramState endState = program.getEndState();
+        assertEquals("Pregnancy State Week 45", endState.getName());
+        assertEquals(1,endState.getTransitions().size());
     }
 
     private void assertPostNatalConditionTimeMap(ExpectedCareMessageDetails pncDetail) {
