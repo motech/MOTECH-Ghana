@@ -36,16 +36,27 @@ package org.motechproject.server.event.impl;
 import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.messaging.MessageScheduler;
 import org.motechproject.server.model.MessageProgramEnrollment;
+import org.motechproject.server.model.db.ProgramMessageKey;
 
 import java.util.Date;
 
 public class ScheduleMessageCommand extends MessagesCommand {
 
-    String messageKey;
-    String messageKeyA;
-    String messageKeyB;
-    String messageKeyC;
-    MessageScheduler messageScheduler;
+    private String messageKey;
+    private String messageKeyA;
+    private String messageKeyB;
+    private String messageKeyC;
+    private MessageScheduler messageScheduler;
+
+    public ScheduleMessageCommand(){}
+
+    public ScheduleMessageCommand(ProgramMessageKey programMessageKey, MessageScheduler messageScheduler) {
+        this.messageKey = programMessageKey.getMessageKey();
+        this.messageKeyA = programMessageKey.getMessageKeyA();
+        this.messageKeyB = programMessageKey.getMessageKeyB();
+        this.messageKeyC = programMessageKey.getMessageKeyC();
+        this.messageScheduler = messageScheduler ;
+    }
 
 
     @Override

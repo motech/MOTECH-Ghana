@@ -96,6 +96,7 @@ public class MessageProgramUpdateTaskTest extends
 
 		// Includes Motech data added in sqldiff
 		executeDataSet("motech-dataset.xml");
+        executeDataSet("message-program-dataset.xml");
 		
 		authenticate();
 

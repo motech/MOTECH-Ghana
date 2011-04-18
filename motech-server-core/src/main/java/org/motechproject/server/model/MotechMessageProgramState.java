@@ -34,15 +34,16 @@
 package org.motechproject.server.model;
 
 import org.motechproject.server.event.MessagesCommand;
+import org.motechproject.server.event.MotechBeanFactory;
 import org.motechproject.server.model.db.ProgramMessageKey;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.time.TimeBean;
 import org.motechproject.server.time.TimePeriod;
 import org.motechproject.server.time.TimeReference;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 
 public class MotechMessageProgramState implements MessageProgramState {
 
@@ -51,13 +52,13 @@ public class MotechMessageProgramState implements MessageProgramState {
     private Integer timeValue;
     private TimePeriod timePeriod;
     private TimeReference timeReference;
-    private TimeBean timeBean;
     private Long id;
     private ProgramMessageKey messageKey;
     private String conceptName;
     private String conceptValue;
-    private String name ;
-
+    private String name;
+    private TimeBean timeBean;
+    final private MotechBeanFactory beanFactory = new MotechBeanFactory();
 
     public void addTransition(MessageProgramStateTransition transition) {
         transitions.add(transition);
@@ -77,7 +78,17 @@ public class MotechMessageProgramState implements MessageProgramState {
         return command.adjustActionDate(enrollment, actionDate, currentDate);
     }
 
+    private TimeBean timeBean() {
+//        return timeBean != null ? timeBean : beanFactory.timeBean();
+        return timeBean;
+    }
+
+
+    // We know its a dirty hack , bear with us for sometime
     public MessagesCommand getCommand() {
+//        if(command == null) {
+//            command = beanFactory.createMessageCommandWith(messageKey);
+//        }
         return command;
     }
 
@@ -107,14 +118,6 @@ public class MotechMessageProgramState implements MessageProgramState {
 
     public void setTimeReference(TimeReference timeReference) {
         this.timeReference = timeReference;
-    }
-
-    public TimeBean getTimeBean() {
-        return timeBean;
-    }
-
-    public void setTimeBean(TimeBean timeBean) {
-        this.timeBean = timeBean;
     }
 
     public void setTime(int timeValue, TimePeriod timePeriod,
@@ -170,6 +173,10 @@ public class MotechMessageProgramState implements MessageProgramState {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setTimeBean(TimeBean timeBean) {
+        this.timeBean = timeBean;
     }
 
     @Override

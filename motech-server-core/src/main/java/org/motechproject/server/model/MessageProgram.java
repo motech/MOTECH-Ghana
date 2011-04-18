@@ -33,13 +33,11 @@
 
 package org.motechproject.server.model;
 
-import org.motechproject.server.event.BaseInterface;
-import org.motechproject.server.model.Blackout;
-import org.motechproject.server.model.MessageProgramEnrollment;
+import org.motechproject.server.svc.RegistrarBean;
 
 import java.util.Date;
 
-public interface MessageProgram extends BaseInterface {
+public interface MessageProgram {
 
 	MessageProgramState determineState(MessageProgramEnrollment enrollment, Date currentDate);
 
@@ -47,4 +45,7 @@ public interface MessageProgram extends BaseInterface {
 
 	MessageProgramState getEndState();
 
+    String getName();
+
+    void setRegistrarBean(RegistrarBean registrarBean);
 }

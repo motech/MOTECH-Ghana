@@ -1,29 +1,30 @@
 package org.motechproject.server.svc.impl;
 
+import org.motechproject.server.event.MotechBeanFactory;
 import org.motechproject.server.model.MessageProgram;
-import org.motechproject.server.event.MessagesCommand;
-import org.motechproject.server.model.MotechMessageProgram;
 import org.motechproject.server.model.db.hibernate.MessageProgramDAO;
 import org.motechproject.server.svc.MessageProgramFactory;
-import org.motechproject.server.time.TimeBean;
+import org.motechproject.server.svc.RegistrarBean;
 import org.springframework.transaction.annotation.Transactional;
 
 public class WeeklyMessageProgramFactory implements MessageProgramFactory {
 
-    private MessageProgram program;
-    private MessagesCommand command;
-    private TimeBean timeBean ;
-
     private MessageProgramDAO messageProgramDAO;
-
     private String name;
+    private MotechBeanFactory beanFactory = new MotechBeanFactory();
+    private RegistrarBean registrarBean ;
+
+
     @Transactional
     public MessageProgram program() {
-       return messageProgramDAO.weeklyProgram(name);
+        MessageProgram program = messageProgramDAO.weeklyProgram(name);
+        program.setRegistrarBean(registrarBean);
+        overrideEndStateCommand(program);
+        return program;
     }
 
-    public void setProgram(MotechMessageProgram program) {
-        this.program = program;
+    public String name() {
+      return name;
     }
 
     public void setName(String name) {
@@ -32,5 +33,13 @@ public class WeeklyMessageProgramFactory implements MessageProgramFactory {
 
     public void setMessageProgramDAO(MessageProgramDAO messageProgramDAO) {
         this.messageProgramDAO = messageProgramDAO;
+    }
+
+    private void overrideEndStateCommand(MessageProgram program) {
+        program.getEndState().setCommand(beanFactory.createRemoveCommand());
+    }
+
+    public void setRegistrarBean(RegistrarBean registrarBean) {
+        this.registrarBean = registrarBean;
     }
 }

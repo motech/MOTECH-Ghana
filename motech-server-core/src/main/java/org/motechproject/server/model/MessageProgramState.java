@@ -11,6 +11,8 @@ public interface MessageProgramState{
 
         MessagesCommand getCommand();
 
+        void setCommand(MessagesCommand command);
+
         MessageProgramStateTransition getTransition(MessageProgramEnrollment enrollment, Date currentDate, RegistrarBean registrarBean);
 
         Integer getTimeValue();

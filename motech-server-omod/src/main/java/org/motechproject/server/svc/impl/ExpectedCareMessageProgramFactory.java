@@ -14,6 +14,7 @@ public class ExpectedCareMessageProgramFactory implements MessageProgramFactory 
 
     MessageProgramDAO messageProgramDAO;
     RegistrarBean registrarBean ;
+    String name ;
 
     @Transactional
     public MessageProgram program() {
@@ -22,6 +23,15 @@ public class ExpectedCareMessageProgramFactory implements MessageProgramFactory 
         program.setCareMessageDetails(messageDetails());
         return program;
     }
+
+    public String name() {
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name ;
+    }
+
 
     public void setMessageProgramDAO(MessageProgramDAO messageProgramDAO) {
         this.messageProgramDAO = messageProgramDAO;

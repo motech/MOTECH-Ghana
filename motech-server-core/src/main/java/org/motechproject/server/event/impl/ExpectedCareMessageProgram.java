@@ -36,7 +36,6 @@ package org.motechproject.server.event.impl;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.model.MessageProgram;
 import org.motechproject.server.model.*;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.time.TimePeriod;
@@ -47,13 +46,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
-        MessageProgram {
+public class ExpectedCareMessageProgram implements MessageProgram {
 
     private static Log log = LogFactory.getLog(ExpectedCareMessageProgram.class);
 
     private List<ExpectedCareMessageDetails> careMessageDetails = new ArrayList<ExpectedCareMessageDetails>();
     private RegistrarBean registrarBean;
+    private String name;
 
     public MessageProgramState determineState(
             MessageProgramEnrollment enrollment, Date currentDate) {
@@ -337,5 +336,13 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 
     public void setRegistrarBean(RegistrarBean registrarBean) {
         this.registrarBean = registrarBean;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

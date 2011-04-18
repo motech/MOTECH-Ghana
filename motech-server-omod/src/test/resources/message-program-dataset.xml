@@ -1,17 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
     <motechmodule_expected_care_message_detail expected_care_message_detail_id="1" name="TT" upcoming_message_key="tt.upcoming"
-       overdue_message_key="tt.overdue" time_period="week" time_value="1" user_preference_based="true"/>
-     <motechmodule_expected_care_message_detail expected_care_message_detail_id="2" name="IPT" upcoming_message_key="ipt.upcoming"
-       overdue_message_key="ipt.overdue" time_period="week" time_value="1" user_preference_based="true"/>
-     <motechmodule_expected_care_message_detail expected_care_message_detail_id="3" name="ANC" upcoming_message_key="anc.upcoming"
-       overdue_message_key="anc.overdue" time_period="week" time_value="1" user_preference_based="true"/>
-     <motechmodule_expected_care_message_detail expected_care_message_detail_id="4" name="PNC(mother)" upcoming_message_key="pnc.mother.upcoming"
-       overdue_message_key="pnc.mother.overdue" time_period="hour" time_value="24" user_preference_based="true"/>
-     <motechmodule_expected_care_message_detail expected_care_message_detail_id="5" name="PNC(baby)" upcoming_message_key="pnc.baby.upcoming"
-       overdue_message_key="pnc.baby.overdue" time_period="hour" time_value="24" user_preference_based="true"/>
-     <motechmodule_expected_care_message_detail expected_care_message_detail_id="6" name="BCG" upcoming_message_key="bcg.upcoming"
-       overdue_message_key="bcg.overdue" time_period="week" time_value="1" user_preference_based="true"/>
+                                               overdue_message_key="tt.overdue" time_period="week" time_value="1" user_preference_based="true"/>
+    <motechmodule_expected_care_message_detail expected_care_message_detail_id="2" name="IPT" upcoming_message_key="ipt.upcoming"
+                                               overdue_message_key="ipt.overdue" time_period="week" time_value="1" user_preference_based="true"/>
+    <motechmodule_expected_care_message_detail expected_care_message_detail_id="3" name="ANC" upcoming_message_key="anc.upcoming"
+                                               overdue_message_key="anc.overdue" time_period="week" time_value="1" user_preference_based="true"/>
+    <motechmodule_expected_care_message_detail expected_care_message_detail_id="4" name="PNC(mother)" upcoming_message_key="pnc.mother.upcoming"
+                                               overdue_message_key="pnc.mother.overdue" time_period="hour" time_value="24"
+                                               user_preference_based="true"/>
+    <motechmodule_expected_care_message_detail expected_care_message_detail_id="5" name="PNC(baby)" upcoming_message_key="pnc.baby.upcoming"
+                                               overdue_message_key="pnc.baby.overdue" time_period="hour" time_value="24"
+                                               user_preference_based="true"/>
+    <motechmodule_expected_care_message_detail expected_care_message_detail_id="6" name="BCG" upcoming_message_key="bcg.upcoming"
+                                               overdue_message_key="bcg.overdue" time_period="week" time_value="1" user_preference_based="true"/>
 
     <motechmodule_expected_care_message_detail_attribute expected_care_message_detail_id="4"
                                                          attribute_name="PNC1" attribute_value_numeric="6"/>
@@ -27,20 +29,65 @@
                                                          attribute_name="PNC3" attribute_value_numeric="24"/>
 
     <motechmodule_message_program_state motechmodule_message_program_state_id="1" name="Pregnancy State Week 5" time_value="-35" time_period="week"
-            time_reference="enrollment_obs_datevalue" concept_name="" concept_value="" message_key="pregnancy.week.5"
-            message_key_a="pregnancy.week.5.a" message_key_b="pregnancy.week.5.b" message_key_c="pregnancy.week.5.c"/>
+                                        time_reference="enrollment_obs_datevalue" concept_name="" concept_value="" message_key="pregnancy.week.5"
+                                        message_key_a="pregnancy.week.5.a" message_key_b="pregnancy.week.5.b" message_key_c="pregnancy.week.5.c"/>
 
     <motechmodule_message_program_state motechmodule_message_program_state_id="2" name="Pregnancy State Week 45" time_value="5" time_period="week"
-           time_reference="enrollment_obs_datevalue" concept_name="" concept_value="" />
+                                        time_reference="enrollment_obs_datevalue" concept_name="" concept_value=""/>
 
-    <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="1" transition_type="DATE" next_state="2" prev_state="1"
-          parent_state="1"   time_value="-2" time_period="day" transition_index="0"/>
+    <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="1" transition_type="DATE" next_state="2"
+                                                   prev_state="1"
+                                                   parent_state="1" time_value="-2" time_period="day" transition_index="0"/>
 
-     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="2" transition_type="DEFAULT" next_state="1" prev_state="1"
-         parent_state="1"   transition_index="1"/>
+    <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="2" transition_type="DEFAULT" next_state="1"
+                                                   prev_state="1"
+                                                   parent_state="1" transition_index="1"/>
 
-    <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="3" transition_type="DEFAULT" next_state="2" prev_state="2"
-          parent_state="2"   transition_index="0"/>
+    <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="3" transition_type="DEFAULT" next_state="2"
+                                                   prev_state="2"
+                                                   parent_state="2" transition_index="0"/>
 
     <motechmodule_message_program motechmodule_message_program_id="1" name="Weekly Pregnancy Message Program" start_state="1" end_state="2"/>
+
+
+    <motechmodule_message_program_state motechmodule_message_program_state_id="3" name="Pregnancy State Week 5" time_value="5" time_period="week"
+                                        time_reference="enrollment_obs_datevalue" concept_name="" concept_value="" message_key="pregnancy.week.5"
+                                        message_key_a="pregnancy.week.5.a" message_key_b="pregnancy.week.5.b" message_key_c="pregnancy.week.5.c"/>
+
+    <motechmodule_message_program_state
+            motechmodule_message_program_state_id="4"
+            name="Pregnancy State Week 45"
+            time_value="5"
+            time_period="week"
+            time_reference="enrollment_obs_datevalue"
+            concept_name=""
+            concept_value=""/>
+
+    <motechmodule_message_program_state_transition
+            motechmodule_message_program_state_transition_id="4"
+            transition_type="DATE"
+            parent_state="3"
+            next_state="4"
+            prev_state="3"
+            time_value="-2"
+            time_period="day"
+            transition_index="0"/>
+
+    <motechmodule_message_program_state_transition
+            motechmodule_message_program_state_transition_id="5"
+            transition_type="DEFAULT"
+            next_state="3"
+            prev_state="3"
+            parent_state="3"
+            transition_index="1"/>
+
+    <motechmodule_message_program_state_transition
+            motechmodule_message_program_state_transition_id="6"
+            transition_type="DEFAULT"
+            parent_state="2"
+            next_state="4"
+            prev_state="4"
+            transition_index="0"/>
+
+    <motechmodule_message_program motechmodule_message_program_id="2" name="Weekly Info Pregnancy Message Program" start_state="3" end_state="4"/>
 </dataset>
