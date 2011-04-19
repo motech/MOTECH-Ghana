@@ -1549,15 +1549,14 @@
                name varchar(30),
                time_value int(10),
                time_period varchar(20),
-               time_reference varchar(20),
+               time_reference varchar(50),
                concept_name varchar(20),
                concept_value varchar(30),
                message_key varchar(30),
                message_key_a varchar(30),
                message_key_b varchar(30),
                message_key_c varchar(30),
-               next_state bigint(20),
-               constraint next_state foreign key (next_state) references motechmodule_message_program_state(motechmodule_message_program_state_id)
+               next_state bigint(20)
             );
 
             create table motechmodule_message_program_state_transition
