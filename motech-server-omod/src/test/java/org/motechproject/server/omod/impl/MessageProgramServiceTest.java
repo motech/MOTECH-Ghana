@@ -42,10 +42,13 @@ public class MessageProgramServiceTest  extends BaseModuleContextSensitiveTest {
         MotechMessageProgramState startState = program.getStartState();
         assertEquals("Pregnancy State Week 5", startState.getName());
         assertEquals(2,startState.getTransitions().size());
+        assertTrue(startState.hasNext());
 
         MotechMessageProgramState endState = program.getEndState();
+        assertEquals(startState.getNext(),endState);
         assertEquals("Pregnancy State Week 45", endState.getName());
         assertEquals(1,endState.getTransitions().size());
+        assertFalse(endState.hasNext());
     }
 
     private void assertPostNatalConditionTimeMap(ExpectedCareMessageDetails pncDetail) {

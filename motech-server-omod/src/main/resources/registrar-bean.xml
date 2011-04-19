@@ -141,17 +141,21 @@
                 <bean class="org.motechproject.server.svc.impl.WeeklyMessageProgramFactory">
                     <property name="name" value="Weekly Pregnancy Message Program"/>
                     <property name="messageProgramDAO" ref="messageProgramDAO"/>
-                    <property name="registrarBean" ref="registrarBeanProxy"/>
+                    <property name="registrarBean" ref="registrarBean"/>
+                    <property name="timeBean" ref="timeBean"/>
+                    <property name="messageScheduler" ref="userPrefmessageScheduler"/>
                 </bean>
                 <bean class="org.motechproject.server.svc.impl.WeeklyMessageProgramFactory">
                     <property name="name" value="Weekly Info Pregnancy Message Program"/>
                     <property name="messageProgramDAO" ref="messageProgramDAO"/>
-                    <property name="registrarBean" ref="registrarBeanProxy"/>
+                    <property name="registrarBean" ref="registrarBean"/>
+                    <property name="timeBean" ref="timeBean"/>
                 </bean>
                 <bean class="org.motechproject.server.svc.impl.WeeklyMessageProgramFactory">
                     <property name="name" value="Weekly Info Child Message Program"/>
                     <property name="messageProgramDAO" ref="messageProgramDAO"/>
-                    <property name="registrarBean" ref="registrarBeanProxy"/>
+                    <property name="registrarBean" ref="registrarBean"/>
+                    <property name="timeBean" ref="timeBean"/>
                 </bean>
                 <bean class="org.motechproject.server.svc.impl.DemoMessageProgramFactory">
                     <property name="program" ref="demoMinuteProgram"/>
@@ -162,7 +166,7 @@
                     <property name="name" value="Input Demo Message Program"/>
                 </bean>
                 <bean id="expectedCareMessageProgramFactory" class="org.motechproject.server.svc.impl.ExpectedCareMessageProgramFactory">
-                    <property name="registrarBean" ref="registrarBeanProxy"/>
+                    <property name="registrarBean" ref="registrarBean"/>
                     <property name="messageProgramDAO" ref="messageProgramDAO"/>
                     <property name="name" value="Expected Care Message Program"/>
                 </bean>

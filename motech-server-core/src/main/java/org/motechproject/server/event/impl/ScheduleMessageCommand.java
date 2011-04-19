@@ -58,7 +58,6 @@ public class ScheduleMessageCommand extends MessagesCommand {
         this.messageScheduler = messageScheduler ;
     }
 
-
     @Override
     public void execute(MessageProgramEnrollment enrollment, Date actionDate, Date currentDate) {
         if (actionDate == null) {

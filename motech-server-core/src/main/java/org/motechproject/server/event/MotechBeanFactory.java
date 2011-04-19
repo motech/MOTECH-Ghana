@@ -13,7 +13,7 @@ public class MotechBeanFactory {
     private ApplicationContext context;
 
     public MotechBeanFactory() {
-        context = new ClassPathXmlApplicationContext("classpath*:moduleApplicationContext.xml");
+        context = new ClassPathXmlApplicationContext(new String[]{"classpath*:moduleApplicationContext.xml", "classpath:applicationContext-service.xml"});
     }
 
     public MessagesCommand createMessageCommandWith(ProgramMessageKey messageKey){

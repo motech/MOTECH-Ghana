@@ -34,7 +34,6 @@
 package org.motechproject.server.model;
 
 import org.motechproject.server.event.MessagesCommand;
-import org.motechproject.server.event.MotechBeanFactory;
 import org.motechproject.server.model.db.ProgramMessageKey;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.time.TimeBean;
@@ -58,7 +57,7 @@ public class MotechMessageProgramState implements MessageProgramState {
     private String conceptValue;
     private String name;
     private TimeBean timeBean;
-    final private MotechBeanFactory beanFactory = new MotechBeanFactory();
+    private MotechMessageProgramState next ;
 
     public void addTransition(MessageProgramStateTransition transition) {
         transitions.add(transition);
@@ -78,17 +77,8 @@ public class MotechMessageProgramState implements MessageProgramState {
         return command.adjustActionDate(enrollment, actionDate, currentDate);
     }
 
-    private TimeBean timeBean() {
-//        return timeBean != null ? timeBean : beanFactory.timeBean();
-        return timeBean;
-    }
 
-
-    // We know its a dirty hack , bear with us for sometime
     public MessagesCommand getCommand() {
-//        if(command == null) {
-//            command = beanFactory.createMessageCommandWith(messageKey);
-//        }
         return command;
     }
 
@@ -96,24 +86,12 @@ public class MotechMessageProgramState implements MessageProgramState {
         this.command = command;
     }
 
-    public Integer getTimeValue() {
-        return timeValue;
-    }
-
     public void setTimeValue(Integer timeValue) {
         this.timeValue = timeValue;
     }
 
-    public TimePeriod getTimePeriod() {
-        return timePeriod;
-    }
-
     public void setTimePeriod(TimePeriod timePeriod) {
         this.timePeriod = timePeriod;
-    }
-
-    public TimeReference getTimeReference() {
-        return timeReference;
     }
 
     public void setTimeReference(TimeReference timeReference) {
@@ -177,6 +155,18 @@ public class MotechMessageProgramState implements MessageProgramState {
 
     public void setTimeBean(TimeBean timeBean) {
         this.timeBean = timeBean;
+    }
+
+    public MotechMessageProgramState getNext() {
+        return next;
+    }
+
+    public Boolean hasNext() {
+        return null != next ;
+    }
+
+    public void setNext(MotechMessageProgramState previous) {
+        this.next = previous;
     }
 
     @Override

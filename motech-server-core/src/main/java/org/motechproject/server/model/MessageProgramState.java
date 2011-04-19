@@ -1,31 +1,35 @@
 package org.motechproject.server.model;
 
 import org.motechproject.server.event.MessagesCommand;
+import org.motechproject.server.model.db.ProgramMessageKey;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.time.TimeBean;
 import org.motechproject.server.time.TimePeriod;
 import org.motechproject.server.time.TimeReference;
 
 import java.util.Date;
 
-public interface MessageProgramState{
+public interface MessageProgramState {
 
-        MessagesCommand getCommand();
+    MessagesCommand getCommand();
 
-        void setCommand(MessagesCommand command);
+    MessageProgramStateTransition getTransition(MessageProgramEnrollment enrollment, Date currentDate, RegistrarBean registrarBean);
 
-        MessageProgramStateTransition getTransition(MessageProgramEnrollment enrollment, Date currentDate, RegistrarBean registrarBean);
+    Date getDateOfAction(MessageProgramEnrollment enrollment, Date currentDate);
 
-        Integer getTimeValue();
+    String getConceptName();
 
-        TimePeriod getTimePeriod();
+    String getConceptValue();
 
-        TimeReference getTimeReference();
+    String getName();
 
-        Date getDateOfAction(MessageProgramEnrollment enrollment, Date currentDate);
+    MessageProgramState getNext();
 
-        String getConceptName();
+    Boolean hasNext();
 
-        String getConceptValue();
+    ProgramMessageKey getMessageKey();
 
-        String getName();
-    }
+    void setCommand(MessagesCommand command);
+
+    void setTimeBean(TimeBean timeBean);
+}

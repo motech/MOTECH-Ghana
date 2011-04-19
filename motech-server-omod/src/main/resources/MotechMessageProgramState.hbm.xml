@@ -22,5 +22,6 @@
             <index column="transition_index"/>
             <one-to-many class="org.motechproject.server.model.MotechMessageProgramStateTransition"/>
         </list>
+        <many-to-one name="next" column="next_state" class="org.motechproject.server.model.MotechMessageProgramState" unique="true"/>
     </class>
 </hibernate-mapping>

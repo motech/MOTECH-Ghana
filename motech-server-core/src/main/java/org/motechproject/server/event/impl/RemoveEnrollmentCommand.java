@@ -33,15 +33,21 @@
 
 package org.motechproject.server.event.impl;
 
-import java.util.Date;
-
 import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.model.MessageProgramEnrollment;
 import org.motechproject.server.svc.RegistrarBean;
 
+import java.util.Date;
+
 public class RemoveEnrollmentCommand extends MessagesCommand {
 
-	RegistrarBean registrarBean;
+	public RemoveEnrollmentCommand(){}
+
+    public RemoveEnrollmentCommand(RegistrarBean registrarBean){
+        this.registrarBean = registrarBean;
+    }
+
+    RegistrarBean registrarBean;
 
 	public RegistrarBean getRegistrarBean() {
 		return registrarBean;
