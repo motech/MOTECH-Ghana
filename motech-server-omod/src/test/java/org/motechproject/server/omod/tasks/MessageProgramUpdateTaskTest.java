@@ -108,7 +108,6 @@ public class MessageProgramUpdateTaskTest extends
 		activator.shutdown();
 	}
 
-	@Ignore
     @Test
 	@SkipBaseSetup
 	public void testMessageProgramUpdate() throws InterruptedException {

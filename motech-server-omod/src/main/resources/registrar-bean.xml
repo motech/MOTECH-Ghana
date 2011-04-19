@@ -150,12 +150,14 @@
                     <property name="messageProgramDAO" ref="messageProgramDAO"/>
                     <property name="registrarBean" ref="registrarBean"/>
                     <property name="timeBean" ref="timeBean"/>
+                    <property name="messageScheduler" ref="userPrefmessageScheduler"/>
                 </bean>
                 <bean class="org.motechproject.server.svc.impl.WeeklyMessageProgramFactory">
                     <property name="name" value="Weekly Info Child Message Program"/>
                     <property name="messageProgramDAO" ref="messageProgramDAO"/>
                     <property name="registrarBean" ref="registrarBean"/>
                     <property name="timeBean" ref="timeBean"/>
+                    <property name="messageScheduler" ref="userPrefmessageScheduler"/>
                 </bean>
                 <bean class="org.motechproject.server.svc.impl.DemoMessageProgramFactory">
                     <property name="program" ref="demoMinuteProgram"/>

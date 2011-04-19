@@ -48,7 +48,7 @@
             time_reference="enrollment_obs_datevalue"/>
 
     <motechmodule_message_program_state
-            motechmodule_message_program_state_id="3"
+            motechmodule_message_program_state_id="5"
             name="Pregnancy State Week 5"
             time_value="5"
             time_period="week"
@@ -59,13 +59,52 @@
             message_key_a="pregnancy.week.5.a"
             message_key_b="pregnancy.week.5.b"
             message_key_c="pregnancy.week.5.c"
-            next_state="4"/>
+            next_state="6"/>
+    <motechmodule_message_program_state
+            motechmodule_message_program_state_id="6"
+            name="Pregnancy State Week 6"
+            time_value="6"
+            time_period="week"
+            time_reference="enrollment_obs_datevalue"
+            concept_name=""
+            concept_value=""
+            message_key="pregnancy.week.6"
+            message_key_a="pregnancy.week.6.a"
+            message_key_b="pregnancy.week.6.b"
+            message_key_c="pregnancy.week.6.c"
+            next_state="7"/>
+    <motechmodule_message_program_state
+            motechmodule_message_program_state_id="7"
+            name="Pregnancy State Week 7"
+            time_value="7"
+            time_period="week"
+            time_reference="enrollment_obs_datevalue"
+            concept_name=""
+            concept_value=""
+            message_key="pregnancy.week.7"
+            message_key_a="pregnancy.week.7.a"
+            message_key_b="pregnancy.week.7.b"
+            message_key_c="pregnancy.week.7.c"
+            next_state="8"/>
+    <motechmodule_message_program_state
+            motechmodule_message_program_state_id="8"
+            name="Pregnancy State Week 8"
+            time_value="8"
+            time_period="week"
+            time_reference="enrollment_obs_datevalue"
+            concept_name=""
+            concept_value=""
+            message_key="pregnancy.week.8"
+            message_key_a="pregnancy.week.8.a"
+            message_key_b="pregnancy.week.8.b"
+            message_key_c="pregnancy.week.8.c"
+            next_state="9"/>
 
 
     <motechmodule_message_program_state
-            motechmodule_message_program_state_id="4"
-            name="Pregnancy State Week 45"
-            time_value="5"
+            motechmodule_message_program_state_id="9"
+            name="Pregnancy State Week 9"
+            time_value="9"
             time_period="week"
             time_reference="enrollment_obs_datevalue"
             concept_name=""
@@ -85,19 +124,43 @@
                                                    transition_index="0"/>
 
     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="4" transition_type="DATE"
-                                                   parent_state="3" prev_state="3" next_state="4"
+                                                   parent_state="5" prev_state="5" next_state="6"
                                                    time_value="-2" time_period="day" transition_index="0"/>
 
     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="5" transition_type="DEFAULT"
-                                                   parent_state="3" prev_state="3" next_state="3"
+                                                   parent_state="5" prev_state="5" next_state="5"
                                                    transition_index="1"/>
 
-    <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="6" transition_type="DEFAULT"
-                                                   parent_state="4" prev_state="4" next_state="4"
+    <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="6" transition_type="DATE"
+                                                   parent_state="6" prev_state="6" next_state="7"
+                                                   time_value="-2" time_period="day" transition_index="0"/>
+
+    <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="7" transition_type="DEFAULT"
+                                                   parent_state="6" prev_state="6" next_state="6"
+                                                   transition_index="1"/>
+
+    <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="8" transition_type="DATE"
+                                                   parent_state="7" prev_state="7" next_state="8"
+                                                   time_value="-2" time_period="day" transition_index="0"/>
+
+    <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="9" transition_type="DEFAULT"
+                                                   parent_state="7" prev_state="7" next_state="7"
+                                                   transition_index="1"/>
+
+    <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="10" transition_type="DATE"
+                                                   parent_state="8" prev_state="8" next_state="9"
+                                                   time_value="-2" time_period="day" transition_index="0"/>
+
+    <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="11" transition_type="DEFAULT"
+                                                   parent_state="8" prev_state="8" next_state="8"
+                                                   transition_index="1"/>
+
+    <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="12" transition_type="DEFAULT"
+                                                   parent_state="9" prev_state="9" next_state="9"
                                                    transition_index="0"/>
 
 
     <motechmodule_message_program motechmodule_message_program_id="1" name="Weekly Pregnancy Message Program" start_state="1" end_state="2"/>
 
-    <motechmodule_message_program motechmodule_message_program_id="2" name="Weekly Info Pregnancy Message Program" start_state="3" end_state="4"/>
+    <motechmodule_message_program motechmodule_message_program_id="2" name="Weekly Info Pregnancy Message Program" start_state="5" end_state="9"/>
 </dataset>
