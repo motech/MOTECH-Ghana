@@ -1872,9 +1872,9 @@
     </diff>
 
     <diff>
-        <version>1.7</version>
+        <version>1.8</version>
         <author>ThoughtWorks</author>
-        <date>April 20 2011</date>
+        <date>April 21 2011</date>
         <description>Configuration data for message program state transition</description>
         <sql>
             INSERT INTO motechmodule_message_program(motechmodule_message_program_id, name, start_state, end_state) VALUES(1, 'Weekly Info Child Message Program', 1, 5);
@@ -1882,4 +1882,205 @@
             INSERT INTO motechmodule_message_program(motechmodule_message_program_id, name, start_state, end_state) VALUES(3, 'Weekly Info Pregnancy Message Program', 83, 82);
         </sql>
     </diff>
+     <diff>
+        <version>1.9</version>
+        <author>ThoughtWorks</author>
+        <date>April 21 2011</date>
+        <description>more rows to motechmodule_messagedefinition</description>
+        <sql>
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (216,'child.week.5', 224, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (217,'child.week.6', 225, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (218,'child.week.7', 226, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (219,'child.week.8', 227, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (220,'child.week.9', 228, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (221,'child.week.10', 229, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (222,'child.week.11', 230, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (223,'child.week.12', 231, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (224,'child.week.13', 232, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (225,'child.week.14', 233, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (226,'child.week.15', 234, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (227,'child.week.16', 235, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (228,'child.week.17', 236, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (229,'child.week.18', 237, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (230,'child.week.19', 238, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (231,'child.week.20', 239, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (232,'child.week.21', 240, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (233,'child.week.22', 241, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (234,'child.week.23', 242, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (235,'child.week.24', 243, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (236,'child.week.25', 244, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (237,'child.week.26', 245, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (238,'child.week.27', 246, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (239,'child.week.28', 247, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (240,'child.week.29', 248, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (241,'child.week.30', 249, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (242,'child.week.31', 250, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (243,'child.week.32', 251, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (244,'child.week.33', 252, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (245,'child.week.34', 253, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (246,'child.week.35', 254, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (247,'child.week.36', 255, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (248,'child.week.37', 256, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (249,'child.week.38', 257, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (250,'child.week.39', 258, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (251,'child.week.40', 259, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (252,'child.week.41', 260, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (253,'child.week.42', 261, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (254,'child.week.43', 262, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (255,'child.week.44', 263, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (256,'child.week.45', 264, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (257,'child.week.46', 265, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (258,'child.week.47', 266, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (259,'child.week.48', 267, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (260,'child.week.49', 268, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (261,'child.week.50', 269, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (262,'child.week.51', 270, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (263,'child.week.52', 271, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (264,'child.week.5.a', 272, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (265,'child.week.5.b', 273, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (266,'child.week.5.c', 274, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (267,'child.week.6.a', 275, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (268,'child.week.6.b', 276, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (269,'child.week.6.c', 277, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (270,'child.week.7.a', 278, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (271,'child.week.7.b', 279, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (272,'child.week.7.c', 280, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (273,'child.week.8.a', 281, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (274,'child.week.8.b', 282, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (275,'child.week.8.c', 283, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (276,'child.week.9.a', 284, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (277,'child.week.9.b', 285, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (278,'child.week.9.c', 286, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (279,'child.week.10.a', 287, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (280,'child.week.10.b', 288, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (281,'child.week.10.c', 289, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (282,'child.week.11.a', 290, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (283,'child.week.11.b', 291, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (284,'child.week.11.c', 292, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (285,'child.week.12.a', 293, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (286,'child.week.12.b', 294, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (287,'child.week.12.c', 295, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (288,'child.week.13.a', 296, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (289,'child.week.13.b', 297, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (290,'child.week.13.c', 298, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (291,'child.week.14.a', 299, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (292,'child.week.14.b', 300, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (293,'child.week.14.c', 301, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (294,'child.week.15.a', 302, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (295,'child.week.15.b', 303, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (296,'child.week.15.c', 304, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (297,'child.week.16.a', 305, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (298,'child.week.16.b', 306, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (299,'child.week.16.c', 307, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (300,'child.week.17.a', 308, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (301,'child.week.17.b', 309, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (302,'child.week.17.c', 310, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (303,'child.week.18.a', 311, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (304,'child.week.18.b', 312, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (305,'child.week.18.c', 313, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (306,'child.week.19.a', 314, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (307,'child.week.19.b', 315, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (308,'child.week.19.c', 316, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (309,'child.week.20.a', 317, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (310,'child.week.20.b', 318, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (311,'child.week.20.c', 319, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (312,'child.week.21.a', 320, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (313,'child.week.21.b', 321, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (314,'child.week.21.c', 322, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (315,'child.week.22.a', 323, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (316,'child.week.22.b', 324, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (317,'child.week.22.c', 325, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (318,'child.week.23.a', 326, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (319,'child.week.23.b', 327, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (320,'child.week.23.c', 328, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (321,'child.week.24.a', 329, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (322,'child.week.24.b', 330, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (323,'child.week.24.c', 331, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (324,'child.week.25.a', 332, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (325,'child.week.25.b', 333, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (326,'child.week.25.c', 334, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (327,'child.week.26.a', 335, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (328,'child.week.26.b', 336, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (329,'child.week.26.c', 337, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (330,'child.week.27.a', 338, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (331,'child.week.27.b', 339, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (332,'child.week.27.c', 340, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (333,'child.week.28.a', 341, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (334,'child.week.28.b', 342, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (335,'child.week.28.c', 343, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (336,'child.week.29.a', 344, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (337,'child.week.29.b', 345, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (338,'child.week.29.c', 346, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (339,'child.week.30.a', 347, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (340,'child.week.30.b', 348, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (341,'child.week.30.c', 349, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (342,'child.week.31.a', 350, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (343,'child.week.31.b', 351, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (344,'child.week.31.c', 352, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (345,'child.week.32.a', 353, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (346,'child.week.32.b', 354, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (347,'child.week.32.c', 355, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (348,'child.week.33.a', 356, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (349,'child.week.33.b', 357, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (350,'child.week.33.c', 358, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (351,'child.week.34.a', 359, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (352,'child.week.34.b', 360, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (353,'child.week.34.c', 361, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (354,'child.week.35.a', 362, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (355,'child.week.35.b', 363, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (356,'child.week.35.c', 364, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (357,'child.week.36.a', 365, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (358,'child.week.36.b', 366, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (359,'child.week.36.c', 367, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (360,'child.week.37.a', 368, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (361,'child.week.37.b', 369, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (362,'child.week.37.c', 370, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (363,'child.week.38.a', 371, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (364,'child.week.38.b', 372, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (365,'child.week.38.c', 373, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (366,'child.week.39.a', 374, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (367,'child.week.39.b', 375, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (368,'child.week.39.c', 376, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (369,'child.week.40.a', 377, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (370,'child.week.40.b', 378, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (371,'child.week.40.c', 379, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (372,'child.week.41.a', 380, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (373,'child.week.41.b', 381, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (374,'child.week.41.c', 382, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (375,'child.week.42.a', 383, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (376,'child.week.42.b', 384, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (377,'child.week.42.c', 385, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (378,'child.week.43.a', 386, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (379,'child.week.43.b', 387, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (380,'child.week.43.c', 388, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (381,'child.week.44.a', 389, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (382,'child.week.44.b', 390, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (383,'child.week.44.c', 391, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (384,'child.week.45.a', 392, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (385,'child.week.45.b', 393, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (386,'child.week.45.c', 394, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (387,'child.week.46.a', 395, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (388,'child.week.46.b', 396, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (389,'child.week.46.c', 397, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (390,'child.week.47.a', 398, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (391,'child.week.47.b', 399, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (392,'child.week.47.c', 400, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (393,'child.week.48.a', 401, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (394,'child.week.48.b', 402, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (395,'child.week.48.c', 403, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (396,'child.week.49.a', 404, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (397,'child.week.49.b', 405, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (398,'child.week.49.c', 406, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (399,'child.week.50.a', 407, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (400,'child.week.50.b', 408, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (401,'child.week.50.c', 409, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (402,'child.week.51.a', 410, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (403,'child.week.51.b', 411, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (404,'child.week.51.c', 412, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (405,'child.week.52.a', 413, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (406,'child.week.52.b', 414, 'INFORMATIONAL');
+            INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (407,'child.week.52.c', 415, 'INFORMATIONAL');
+        </sql>
+    </diff>
+
 </sqldiff>
