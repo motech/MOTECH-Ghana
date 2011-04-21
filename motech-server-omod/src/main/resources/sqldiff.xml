@@ -1546,7 +1546,7 @@
             create table motechmodule_message_program_state
             (
                motechmodule_message_program_state_id bigint(20) primary key auto_increment ,
-               name varchar(30),
+               name varchar(40),
                time_value int(10),
                time_period varchar(20),
                time_reference varchar(50),
@@ -1563,7 +1563,7 @@
             (
               motechmodule_message_program_state_transition_id bigint(20) primary key auto_increment,
               transition_type varchar(20),
-              name varchar(30),
+              name varchar(40),
               next_state bigint(20),
               prev_state bigint(20),
               parent_state bigint(20),
@@ -1579,7 +1579,7 @@
             create table motechmodule_message_program
             (
               motechmodule_message_program_id bigint(20) primary key auto_increment ,
-              name varchar(30),
+              name varchar(40),
               start_state bigint(20),
               end_state bigint(20),
               constraint fk_message_start_state foreign key (start_state) references motechmodule_message_program_state(motechmodule_message_program_state_id),
@@ -1868,6 +1868,18 @@
             INSERT INTO motechmodule_message_program_state_transition(motechmodule_message_program_state_transition_id, transition_type, prev_state, parent_state, next_state, time_value, time_period, expected_number, transition_order) VALUES(169, 'DEFAULT', 86, 86, 86, null, null, null, 2);
             INSERT INTO motechmodule_message_program_state_transition(motechmodule_message_program_state_transition_id, transition_type, prev_state, parent_state, next_state, time_value, time_period, expected_number, transition_order) VALUES(170, 'DATE', 87, 87, 47, -2, 'day', null, 1);
             INSERT INTO motechmodule_message_program_state_transition(motechmodule_message_program_state_transition_id, transition_type, prev_state, parent_state, next_state, time_value, time_period, expected_number, transition_order) VALUES(171, 'DEFAULT', 87, 87, 87, null, null, null, 2);
+        </sql>
+    </diff>
+
+    <diff>
+        <version>1.7</version>
+        <author>ThoughtWorks</author>
+        <date>April 20 2011</date>
+        <description>Configuration data for message program state transition</description>
+        <sql>
+            INSERT INTO motechmodule_message_program(motechmodule_message_program_id, name, start_state, end_state) VALUES(1, 'Weekly Info Child Message Program', 1, 5);
+            INSERT INTO motechmodule_message_program(motechmodule_message_program_id, name, start_state, end_state) VALUES(2, 'Weekly Pregnancy Message Program', 42, 41);
+            INSERT INTO motechmodule_message_program(motechmodule_message_program_id, name, start_state, end_state) VALUES(3, 'Weekly Info Pregnancy Message Program', 83, 82);
         </sql>
     </diff>
 </sqldiff>
