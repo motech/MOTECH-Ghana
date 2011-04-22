@@ -194,6 +194,16 @@
             </td>
             <td><form:errors path="district" cssClass="error"/></td>
         </tr>
+         <tr>
+            <td class="labelcolumn"><label for="subdistrict">Sub District:</label></td>
+            <td>
+                <form:select path="district" onchange="regionDistrictUpdated()">
+                    <form:option value="" label="Select Value"/>
+                    <form:options items="${subdistricts}"/>
+                </form:select>
+            </td>
+            <td><form:errors path="district" cssClass="error"/></td>
+        </tr>
         <tr>
             <td class="labelcolumn"><label for="facility">Facility:</label></td>
             <td>

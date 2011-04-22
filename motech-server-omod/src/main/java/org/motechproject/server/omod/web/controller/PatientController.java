@@ -128,6 +128,7 @@ public class PatientController extends BasePatientController {
         return contextService.getMotechService().getAllDistricts();
     }
 
+
     @ModelAttribute("communities")
     public List<Community> getCommunities() {
         return contextService.getMotechService().getAllCommunities(false);
