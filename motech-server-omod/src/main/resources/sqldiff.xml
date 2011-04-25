@@ -1546,7 +1546,7 @@
             create table motechmodule_message_program_state
             (
                motechmodule_message_program_state_id bigint(20) primary key auto_increment ,
-               name varchar(40),
+               name varchar(50),
                time_value int(10),
                time_period varchar(20),
                time_reference varchar(50),
@@ -1578,7 +1578,7 @@
             create table motechmodule_message_program
             (
               motechmodule_message_program_id bigint(20) primary key auto_increment ,
-              name varchar(40),
+              name varchar(50),
               start_state bigint(20),
               end_state bigint(20),
               constraint fk_message_start_state foreign key (start_state) references motechmodule_message_program_state(motechmodule_message_program_state_id),
