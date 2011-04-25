@@ -42,10 +42,12 @@
 <openmrs:htmlInclude file="/scripts/jquery/jquery-1.3.2.min.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/dynamic_combo_box.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patient_form_events.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/country.js"/>
 <script type="text/javascript">
     var $j = jQuery.noConflict();
     $j(document).ready(function() {
         new PatientFormRegistrationEvents();
+        new Country(${country});
     });
 </script>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css"/>
@@ -177,9 +179,8 @@
         <tr>
             <td class="labelcolumn"><label for="region">Region:</label></td>
             <td>
-                <form:select path="region" onchange="regionDistrictUpdated()">
+                <form:select path="region">
                     <form:option value="" label="Select Value"/>
-                    <form:options items="${regions}"/>
                 </form:select>
             </td>
             <td><form:errors path="region" cssClass="error"/></td>
@@ -189,20 +190,18 @@
             <td>
                 <form:select path="district" onchange="regionDistrictUpdated()">
                     <form:option value="" label="Select Value"/>
-                    <form:options items="${districts}"/>
                 </form:select>
             </td>
             <td><form:errors path="district" cssClass="error"/></td>
         </tr>
          <tr>
-            <td class="labelcolumn"><label for="subdistrict">Sub District:</label></td>
+            <td class="labelcolumn"><label for="subDistrict">Sub District:</label></td>
             <td>
-                <form:select path="district" onchange="regionDistrictUpdated()">
+                <form:select path="subDistrict">
                     <form:option value="" label="Select Value"/>
-                    <form:options items="${subdistricts}"/>
                 </form:select>
             </td>
-            <td><form:errors path="district" cssClass="error"/></td>
+            <td><form:errors path="subDistrict" cssClass="error"/></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="facility">Facility:</label></td>
@@ -405,5 +404,6 @@
         <tbody id="matchingPatientsBody"/>
     </table>
 </div>
+<input id="country" type="hidden" value="${country}"/>
 
 <%@ include file="/WEB-INF/template/footer.jsp" %>

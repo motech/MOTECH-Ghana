@@ -14,13 +14,14 @@ public class Country extends MotechLocation {
         super(name,LocationType.COUNTRY);
     }
 
-    public void withFacilities(List<Facility> facilities) {
+    public Country withFacilities(List<Facility> facilities) {
         for (Facility facility : facilities) {
             Location location = facility.getLocation();
             Region region = addRegion(location.getRegion());
             region.addDistrict(new District(location.getCountyDistrict())).addSubDistrict(new SubDistrict(location.getStateProvince()));
             region.addHealthFacility(new HealthFacility(facility));
         }
+        return this;
     }
 
     private Region addRegion(String region) {
@@ -47,6 +48,6 @@ public class Country extends MotechLocation {
 
     @Override
     public String toString() {
-        return new JSONSerializer().prettyPrint(true).exclude("childLocations").serialize(this);
+        return new JSONSerializer().exclude("childLocations").serialize(this).replaceAll("\"","'");
     }
 }

@@ -57,6 +57,7 @@ public class WebPatient {
     private Date nhisExpDate;
     private String region;
     private String district;
+    private String subDistrict;
     private Integer communityId;
     private String communityName;
     private String address;
@@ -382,5 +383,13 @@ public class WebPatient {
 
     public void setFacility(Integer facility) {
         this.facility = facility;
+    }
+
+    public String getSubDistrict() {
+        return subDistrict;
+    }
+
+    public void setSubDistrict(String subDistrict) {
+        this.subDistrict = subDistrict;
     }
 }

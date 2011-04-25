@@ -1,18 +1,20 @@
 package org.motechproject.server.omod.web.model;
 
+import flexjson.JSON;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
 import org.openmrs.Location;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
-public class HealthFacility implements Serializable{
+public class HealthFacility implements Serializable {
     private String name;
     private String region;
     private String district;
     private Integer id;
-    private Set<Community> communities;
+    private Set<Community> communities = new HashSet<Community>();
 
     public HealthFacility(Facility facility) {
         Location location = facility.getLocation();
@@ -20,7 +22,7 @@ public class HealthFacility implements Serializable{
         this.name = location.getName();
         this.region = location.getRegion();
         this.district = location.getCountyDistrict();
-        this.communities = facility.getCommunities();
+        addBasicCommunityInformation(facility.getCommunities());
     }
 
     public String getName() {
@@ -39,7 +41,15 @@ public class HealthFacility implements Serializable{
         return id;
     }
 
+    @JSON
     public Set<Community> getCommunities() {
         return communities;
+    }
+
+    private void addBasicCommunityInformation(Set<Community> communities) {
+        if (communities == null) return;
+        for (Community community : communities) {
+            this.communities.add(community.basicInfo());
+        }
     }
 }

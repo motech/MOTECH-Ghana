@@ -37,6 +37,7 @@ import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.FacilityComparator;
 import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.omod.web.model.Country;
 import org.openmrs.Location;
 import org.springframework.ui.ModelMap;
 
@@ -87,6 +88,7 @@ public class BasePatientController {
 		model.addAttribute("regionMap", regionMap);
 		model.addAttribute("districtMap", districtMap);
 		model.addAttribute("facilities", facilities);
+        model.addAttribute("country",new Country("Ghana").withFacilities(facilities));
 	}
 
 }
