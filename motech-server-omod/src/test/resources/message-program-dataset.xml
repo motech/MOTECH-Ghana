@@ -112,52 +112,52 @@
 
     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="1" transition_type="DATE"
                                                    parent_state="1" prev_state="1" next_state="2"
-                                                   time_value="-2" time_period="day" transition_index="0"/>
+                                                   time_value="-2" time_period="day" transition_order="0"/>
 
 
     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="2" transition_type="DEFAULT"
                                                    parent_state="1" prev_state="1" next_state="1"
-                                                   transition_index="1"/>
+                                                   transition_order="1"/>
 
     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="3" transition_type="DEFAULT"
                                                    parent_state="2" prev_state="2" next_state="2"
-                                                   transition_index="0"/>
+                                                   transition_order="0"/>
 
     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="4" transition_type="DATE"
                                                    parent_state="5" prev_state="5" next_state="6"
-                                                   time_value="-2" time_period="day" transition_index="0"/>
+                                                   time_value="-2" time_period="day" transition_order="0"/>
 
     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="5" transition_type="DEFAULT"
                                                    parent_state="5" prev_state="5" next_state="5"
-                                                   transition_index="1"/>
+                                                   transition_order="1"/>
 
     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="6" transition_type="DATE"
                                                    parent_state="6" prev_state="6" next_state="7"
-                                                   time_value="-2" time_period="day" transition_index="0"/>
+                                                   time_value="-2" time_period="day" transition_order="0"/>
 
     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="7" transition_type="DEFAULT"
                                                    parent_state="6" prev_state="6" next_state="6"
-                                                   transition_index="1"/>
+                                                   transition_order="1"/>
 
     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="8" transition_type="DATE"
                                                    parent_state="7" prev_state="7" next_state="8"
-                                                   time_value="-2" time_period="day" transition_index="0"/>
+                                                   time_value="-2" time_period="day" transition_order="0"/>
 
     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="9" transition_type="DEFAULT"
                                                    parent_state="7" prev_state="7" next_state="7"
-                                                   transition_index="1"/>
+                                                   transition_order="1"/>
 
     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="10" transition_type="DATE"
                                                    parent_state="8" prev_state="8" next_state="9"
-                                                   time_value="-2" time_period="day" transition_index="0"/>
+                                                   time_value="-2" time_period="day" transition_order="0"/>
 
     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="11" transition_type="DEFAULT"
                                                    parent_state="8" prev_state="8" next_state="8"
-                                                   transition_index="1"/>
+                                                   transition_order="1"/>
 
     <motechmodule_message_program_state_transition motechmodule_message_program_state_transition_id="12" transition_type="DEFAULT"
                                                    parent_state="9" prev_state="9" next_state="9"
-                                                   transition_index="0"/>
+                                                   transition_order="0"/>
 
 
     <motechmodule_message_program motechmodule_message_program_id="1" name="Weekly Pregnancy Message Program" start_state="1" end_state="2"/>

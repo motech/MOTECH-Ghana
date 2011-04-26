@@ -19,7 +19,7 @@
         </component>
         <list name="transitions" lazy="false">
             <key column="parent_state"/>
-            <index column="transition_index"/>
+            <index column="transition_order"/>
             <one-to-many class="org.motechproject.server.model.MotechMessageProgramStateTransition"/>
         </list>
         <many-to-one name="next" column="next_state" class="org.motechproject.server.model.MotechMessageProgramState" unique="true"/>
