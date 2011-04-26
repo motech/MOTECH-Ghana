@@ -188,7 +188,7 @@
         <tr>
             <td class="labelcolumn"><label for="district">District:</label></td>
             <td>
-                <form:select path="district" onchange="regionDistrictUpdated()">
+                <form:select path="district">
                     <form:option value="" label="Select Value"/>
                 </form:select>
             </td>
@@ -208,7 +208,6 @@
             <td>
                 <form:select path="facility">
                     <form:option value="" label="Select Value"/>
-                    <form:options items="${facilities}" itemValue="facilityId" itemLabel="location.name"/>
                 </form:select>
             </td>
             <td><form:errors path="facility" cssClass="error"/></td>
@@ -218,7 +217,6 @@
             <td>
                 <form:select path="communityId" onchange="findDuplicates()">
                     <form:option value="" label="Select Value"/>
-                    <form:options items="${communities}" itemValue="communityId" itemLabel="name"/>
                 </form:select>
             </td>
             <td><form:errors path="communityId" cssClass="error"/></td>
