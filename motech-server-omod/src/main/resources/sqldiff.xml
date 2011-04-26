@@ -2232,4 +2232,13 @@
         </sql>
     </diff>
 
+     <diff>
+        <version>1.10</version>
+        <author>ThoughtWorks</author>
+        <date>April 26 2011</date>
+        <description>update child info program end state after adding more states to child info program</description>
+        <sql>
+           UPDATE motechmodule_message_program SET end_state=139 WHERE motechmodule_message_program_id = 1;
+        </sql>
+    </diff>
 </sqldiff>
