@@ -231,7 +231,9 @@ function Country(country, selectedLocation) {
     var populateRegions = function() {
         var that = this;
         $j(country.regions).each(function(index, region) {
-            regionDropDown.appendOption(new Option(region.name, region.name));
+            if (region.name != 'Field Agent') {
+                regionDropDown.appendOption(new Option(region.name, region.name));
+            }
         });
     };
 
