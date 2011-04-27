@@ -13,6 +13,7 @@ public class HealthFacility implements Serializable {
     private String name;
     private String region;
     private String district;
+    private String subDistrict;
     private Integer id;
     private Set<Community> communities = new HashSet<Community>();
 
@@ -22,6 +23,7 @@ public class HealthFacility implements Serializable {
         this.name = location.getName();
         this.region = location.getRegion();
         this.district = location.getCountyDistrict();
+        this.subDistrict = location.getStateProvince();
         addBasicCommunityInformation(facility.getCommunities());
     }
 
@@ -39,6 +41,10 @@ public class HealthFacility implements Serializable {
 
     public Integer getId() {
         return id;
+    }
+
+    public String getSubDistrict() {
+        return subDistrict;
     }
 
     @JSON
