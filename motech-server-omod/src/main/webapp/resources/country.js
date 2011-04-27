@@ -1,3 +1,40 @@
+function Location(selected) {
+    this.region = selected.region;
+    this.district = selected.district;
+    this.subDistrict = selected.subDistrict;
+    this.facilityId = selected.facilityId;
+    this.communityId = selected.communityId;
+
+    this.hasRegion = function() {
+        return hasNonEmptyValue(this.region);
+    };
+
+    this.hasDistrict = function() {
+        return hasNonEmptyValue(this.district);
+    };
+
+    this.hasSubDistrict = function() {
+        return hasNonEmptyValue(this.subDistrict);
+    };
+
+    this.hasFacility = function() {
+        return isANumberGreaterThanZero(this.facilityId);
+    };
+
+    this.hasCommunity = function() {
+        return isANumberGreaterThanZero(this.communityId);
+    };
+
+    var hasNonEmptyValue = function(value) {
+        return value && value.length > 0;
+    };
+
+    var isANumberGreaterThanZero = function(number) {
+        return !isNaN(number) && number > 0;
+    };
+}
+;
+
 function Facility(facility) {
     var facility = facility;
     this.hasSameLocation = function(region, district, subDistrict) {
@@ -16,8 +53,9 @@ function Facility(facility) {
     }
 }
 
-function Country(country) {
+function Country(country, selectedLocation) {
     var country = country;
+    var selectedLocation = selectedLocation;
     var regionDropDown = new DynamicComboBox($j('#region'));
     var districtDropDown = new DynamicComboBox($j('#district'));
     var subDistrictDropDown = new DynamicComboBox($j('#subDistrict'));
@@ -50,6 +88,7 @@ function Country(country) {
         toggleDistrictVisibility();
         toggleCommunityVisibility();
         facilitiesToBeShown();
+        $j('#testBox').val($j('#region').val());
     };
 
     var toggleCommunityVisibility = function() {
@@ -137,7 +176,7 @@ function Country(country) {
         $j(region.healthFacilities).each(function(index, facility) {
             var healthFacility = new Facility(facility);
             if (healthFacility.hasSameLocation(region, district, subDistrict)) {
-                facilityDropDown.appendOption(new Option(facility.name, facility.id));
+                facilityDropDown.appendOption(new Option(facility.name, facility.facilityId));
             }
         });
     };
@@ -147,7 +186,7 @@ function Country(country) {
         var facilityId = $j('#facility').val();
         var selectedFacility;
         $j(region.healthFacilities).each(function(index, facility) {
-            if (facilityId = facility.id) {
+            if (facilityId == facility.facilityId) {
                 selectedFacility = facility;
             }
         });
@@ -175,23 +214,54 @@ function Country(country) {
     };
 
     var bind = function() {
-        $j('#region').change(onRegionSelection);
-        $j('#district').change(onDistrictSelection);
-        $j('#subDistrict').change(onSubDistrictSelection);
-        $j('#facility').change(onFacilitySelection);
+        bindToOnChange($j('#region'), onRegionSelection);
+        bindToOnChange($j('#district'), onDistrictSelection);
+        bindToOnChange($j('#subDistrict'), onSubDistrictSelection);
+        bindToOnChange($j('#facility'), onFacilitySelection);
     };
 
-    var populateRegion = function() {
+    var hasNonEmptySelection = function(combo) {
+        return $j(combo).val().length > 0;
+    };
+
+    var bindToOnChange = function(ele, changeHandler) {
+        $j(ele).change(changeHandler);
+    };
+
+    var populateRegions = function() {
         var that = this;
         $j(country.regions).each(function(index, region) {
             regionDropDown.appendOption(new Option(region.name, region.name));
         });
     };
 
+    var initializeWithSelectedLocation = function() {
+        if (selectedLocation.hasRegion()) {
+            regionDropDown.setValue(selectedLocation.region);
+            onRegionSelection();
+        }
+        if (selectedLocation.hasDistrict()) {
+            districtDropDown.setValue(selectedLocation.district);
+            onDistrictSelection();
+        }
+        if (selectedLocation.hasSubDistrict()) {
+            subDistrictDropDown.setValue(selectedLocation.subDistrict);
+            onSubDistrictSelection();
+        }
+        if (selectedLocation.hasFacility()) {
+            facilityDropDown.setValue(selectedLocation.facilityId);
+            onFacilitySelection();
+        }
+        if (selectedLocation.hasCommunity()) {
+            communityDropDown.setValue(selectedLocation.communityId);
+        }
+    };
+
+
     var bootstrap = function() {
         bind();
-        populateRegion();
-
+        populateRegions();
+        initializeWithSelectedLocation();
     };
 
     $j(bootstrap);

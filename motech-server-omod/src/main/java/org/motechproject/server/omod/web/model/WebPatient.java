@@ -34,6 +34,7 @@
 package org.motechproject.server.omod.web.model;
 
 import flexjson.JSON;
+import org.apache.commons.lang.StringUtils;
 import org.motechproject.ws.*;
 
 import java.util.Date;
@@ -391,5 +392,25 @@ public class WebPatient {
 
     public void setSubDistrict(String subDistrict) {
         this.subDistrict = subDistrict;
+    }
+
+    public boolean hasRegion(){
+        return StringUtils.isNotBlank(region);
+    }
+
+    public boolean hasDistrict(){
+        return StringUtils.isNotBlank(region);
+    }
+
+    public boolean hasSubDistrict(){
+        return StringUtils.isNotBlank(region);
+    }
+
+    public boolean hasFacility(){
+        return StringUtils.isNotBlank(region);
+    }
+
+    public boolean hasCommunity(){
+        return StringUtils.isNotBlank(region);
     }
 }

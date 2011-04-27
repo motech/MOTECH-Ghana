@@ -6,20 +6,19 @@ import org.motechproject.server.model.Facility;
 import org.openmrs.Location;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class HealthFacility implements Serializable {
     private String name;
     private String region;
     private String district;
     private String subDistrict;
-    private Integer id;
-    private Set<Community> communities = new HashSet<Community>();
+    private Integer facilityId;
+    private List<Community> communities = new ArrayList<Community>();
 
     public HealthFacility(Facility facility) {
         Location location = facility.getLocation();
-        this.id = facility.getFacilityId();
+        this.facilityId = facility.getFacilityId();
         this.name = location.getName();
         this.region = location.getRegion();
         this.district = location.getCountyDistrict();
@@ -39,8 +38,8 @@ public class HealthFacility implements Serializable {
         return district;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getFacilityId() {
+        return facilityId;
     }
 
     public String getSubDistrict() {
@@ -48,7 +47,12 @@ public class HealthFacility implements Serializable {
     }
 
     @JSON
-    public Set<Community> getCommunities() {
+    public List<Community> getCommunities() {
+        Collections.sort(communities, new Comparator<Community>() {
+            public int compare(Community o1, Community o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
         return communities;
     }
 

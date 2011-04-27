@@ -277,8 +277,7 @@ public class EditPatientController extends BasePatientController {
 					webPatient.getMediaType(), webPatient.getLanguage(),
 					webPatient.getDayOfWeek(), webPatient.getTimeOfDay());
 
-			model.addAttribute("successMsg",
-					"motechmodule.Patient.edit.success");
+			model.addAttribute("successMsg", "motechmodule.Patient.edit.success");
 			status.setComplete();
 		}
 

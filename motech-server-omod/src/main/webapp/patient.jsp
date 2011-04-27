@@ -47,7 +47,8 @@
     var $j = jQuery.noConflict();
     $j(document).ready(function() {
         new PatientFormRegistrationEvents();
-        new Country(${country});
+        var selectedLocation = new Location(${selectedLocation});
+        new Country(${country},selectedLocation);
     });
 </script>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css"/>
@@ -56,8 +57,6 @@
 <openmrs:htmlInclude file="/dwr/interface/DWRMotechService.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/find_duplicates.js"/>
 
-
-<%@ include file="/WEB-INF/view/module/motechmodule/dynamic-dropdowns-script.jsp" %>
 
 <meta name="heading" content="Register Patient"/>
 <%@ include file="localHeader.jsp" %>
@@ -402,6 +401,5 @@
         <tbody id="matchingPatientsBody"/>
     </table>
 </div>
-<input id="country" type="hidden" value="${country}"/>
 
 <%@ include file="/WEB-INF/template/footer.jsp" %>

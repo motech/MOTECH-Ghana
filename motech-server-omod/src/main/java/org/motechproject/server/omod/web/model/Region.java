@@ -39,10 +39,10 @@ public class Region extends MotechLocation {
 
     @JSON
     public List<District> getDistricts(){
-        List<District> regions = new ArrayList<District>();
+        List<District> districts = new ArrayList<District>();
         for (MotechLocation motechLocation : getChildLocations()) {
-            regions.add((District) motechLocation);
+            districts.add((District) motechLocation);
         }
-        return  regions;
+        return  districts;
     }
 }

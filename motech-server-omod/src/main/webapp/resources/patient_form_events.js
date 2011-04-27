@@ -11,7 +11,7 @@ function PatientFormRegistrationEvents() {
         bindToOnChangeIfElementExists($j('#phoneType'), phoneOwnershipSelected);
         bindToOnChangeIfElementExists($j('#mediaType'), mediaTypeSelected);
         bindToOnChangeIfElementExists($j('#insured'), insuranceSelected);
-    }
+    };
 
     //Invoke change handler as well to initialize
     var bindToOnChangeIfElementExists = function(ele, changeHandler) {

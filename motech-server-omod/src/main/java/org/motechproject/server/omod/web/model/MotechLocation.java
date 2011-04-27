@@ -5,6 +5,8 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MotechLocation implements Serializable {
@@ -73,6 +75,16 @@ public class MotechLocation implements Serializable {
     }
 
     protected List<MotechLocation> getChildLocations() {
-        return childLocations;
+        return sort(childLocations);
     }
+
+    private List<MotechLocation> sort(List<MotechLocation> list) {
+        Collections.sort(list, new Comparator<MotechLocation>() {
+            public int compare(MotechLocation o1, MotechLocation o2) {
+                return o1.name.compareTo(o2.name);
+            }
+        });
+        return list;
+    }
+
 }

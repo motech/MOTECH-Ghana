@@ -41,6 +41,7 @@ import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechIdVerhoeffValidator;
+import org.motechproject.server.omod.web.model.PreferredLocation;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.OpenmrsBean;
@@ -80,6 +81,7 @@ public class PatientController extends BasePatientController {
     @Autowired
     @Qualifier("openmrsBean")
     private OpenmrsBean openmrsBean;
+    private static final String EMPTY = "";
 
     @Autowired
     public void setContextService(ContextService contextService) {
@@ -135,9 +137,8 @@ public class PatientController extends BasePatientController {
     }
 
     @RequestMapping(value = "/module/motechmodule/patient", method = RequestMethod.GET)
-    public void viewForm(@RequestParam(required = false) Integer id,
-                         ModelMap model) {
-
+    public void viewForm(@RequestParam(required = false) Integer id, ModelMap model) {
+        populateSelectedLocation(model, new WebPatient());
         populateJavascriptMaps(model);
     }
 
@@ -229,6 +230,8 @@ public class PatientController extends BasePatientController {
                 "motechmodule.region.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "district",
                 "motechmodule.district.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subDistrict",
+                "motechmodule.subDistrict.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "facility",
                 "motechmodule.facility.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "communityId",
@@ -355,9 +358,15 @@ public class PatientController extends BasePatientController {
             return "redirect:/module/motechmodule/viewdata.form";
         }
 
+        populateSelectedLocation(model, patient);
         populateJavascriptMaps(model);
 
         return "/module/motechmodule/patient";
+    }
+
+    private void populateSelectedLocation(ModelMap model, WebPatient patient) {
+        PreferredLocation location = new PreferredLocation(patient.getRegion(), patient.getDistrict(), patient.getSubDistrict(), patient.getFacility(), patient.getCommunityId());
+        model.addAttribute("selectedLocation",location);
     }
 
     @RequestMapping(value = "/module/motechmodule/patient/getMotherInfo.form", method = RequestMethod.GET)
