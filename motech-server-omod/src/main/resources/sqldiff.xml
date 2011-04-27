@@ -2241,4 +2241,14 @@
            UPDATE motechmodule_message_program SET end_state=139 WHERE motechmodule_message_program_id = 1;
         </sql>
     </diff>
+     <diff>
+        <version>1.11</version>
+        <author>ThoughtWorks</author>
+        <date>April 26 2011</date>
+        <description>amend transition order to start from zero</description>
+        <sql>
+         UPDATE motechmodule_message_program_state_transition SET transition_order=0 where transition_order=1;
+         UPDATE motechmodule_message_program_state_transition SET transition_order=1 where transition_order=2;
+        </sql>
+    </diff>
 </sqldiff>
