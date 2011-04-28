@@ -105,7 +105,7 @@ function Country(country, selectedLocation) {
         var districtRow = getParentRow('#district')
         var subDistrictRow = getParentRow('#subDistrict')
         var regionName = $j('#region').val();
-        if (regionName == 'Upper East' || regionName == 'Central') {
+        if (regionName == 'Upper East' || regionName == 'Central Region') {
             show(districtRow);
             show(subDistrictRow);
             return;

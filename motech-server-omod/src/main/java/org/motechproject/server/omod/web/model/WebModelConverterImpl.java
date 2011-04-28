@@ -37,6 +37,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.Community;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.MotechPatient;
 import org.motechproject.server.omod.impl.RelationshipServiceImpl;
 import org.motechproject.server.svc.RegistrarBean;
@@ -104,22 +105,20 @@ public class WebModelConverterImpl implements WebModelConverter {
             webPatient.setMotherMotechId(Integer.valueOf(motherMotechId));
         }
 
+
+        Facility facility = registrarBean.getFacilityByPatient(patient);
+        webPatient.setFacility(facility.getFacilityId());
+        webPatient.setRegion(facility.getLocation().getRegion());
+        webPatient.setDistrict(facility.getLocation().getCountyDistrict());
+        webPatient.setSubDistrict(facility.getLocation().getStateProvince());
+
         Community community = registrarBean.getCommunityByPatient(patient);
         if (community != null) {
             webPatient.setCommunityId(community.getCommunityId());
             webPatient.setCommunityName(community.getName());
-
-            if (community.getFacility() != null
-                    && community.getFacility().getLocation() != null) {
-                Location facilityLocation = community.getFacility()
-                        .getLocation();
-                webPatient.setRegion(facilityLocation.getRegion());
-                webPatient.setDistrict(facilityLocation.getCountyDistrict());
-            }
         }
 
-        String[] enrollments = registrarBean
-                .getActiveMessageProgramEnrollmentNames(patient);
+        String[] enrollments = registrarBean.getActiveMessageProgramEnrollmentNames(patient);
         if (enrollments != null && enrollments.length > 0) {
             webPatient.setEnroll(true);
             webPatient.setConsent(true);
@@ -128,8 +127,7 @@ public class WebModelConverterImpl implements WebModelConverter {
             webPatient.setConsent(false);
         }
 
-        PersonAttribute phoneNumberAttr = patient
-                .getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
+        PersonAttribute phoneNumberAttr = patient.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
         if (phoneNumberAttr != null
                 && StringUtils.isNotEmpty(phoneNumberAttr.getValue())) {
             webPatient.setPhoneNumber(phoneNumberAttr.getValue());

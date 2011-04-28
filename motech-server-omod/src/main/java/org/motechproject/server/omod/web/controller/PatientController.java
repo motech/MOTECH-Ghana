@@ -41,7 +41,6 @@ import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechIdVerhoeffValidator;
-import org.motechproject.server.omod.web.model.PreferredLocation;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.OpenmrsBean;
@@ -138,8 +137,7 @@ public class PatientController extends BasePatientController {
 
     @RequestMapping(value = "/module/motechmodule/patient", method = RequestMethod.GET)
     public void viewForm(@RequestParam(required = false) Integer id, ModelMap model) {
-        populateSelectedLocation(model, new WebPatient());
-        populateJavascriptMaps(model);
+        populateJavascriptMaps(model,new WebPatient());
     }
 
     @ModelAttribute("patient")
@@ -357,16 +355,9 @@ public class PatientController extends BasePatientController {
 
             return "redirect:/module/motechmodule/viewdata.form";
         }
-
-        populateSelectedLocation(model, patient);
-        populateJavascriptMaps(model);
+        populateJavascriptMaps(model, patient);
 
         return "/module/motechmodule/patient";
-    }
-
-    private void populateSelectedLocation(ModelMap model, WebPatient patient) {
-        PreferredLocation location = new PreferredLocation(patient.getRegion(), patient.getDistrict(), patient.getSubDistrict(), patient.getFacility(), patient.getCommunityId());
-        model.addAttribute("selectedLocation",location);
     }
 
     @RequestMapping(value = "/module/motechmodule/patient/getMotherInfo.form", method = RequestMethod.GET)

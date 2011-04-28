@@ -49,8 +49,6 @@ public class Facility implements Serializable {
     private Location location;
     private String phoneNumber;
     private Set<Community> communities;
-
-
     private Set<Patient> patients = new HashSet<Patient>();
 
     public Long getId() {

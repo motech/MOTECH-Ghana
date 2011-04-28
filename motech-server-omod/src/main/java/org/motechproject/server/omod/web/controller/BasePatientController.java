@@ -38,6 +38,8 @@ import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.FacilityComparator;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.Country;
+import org.motechproject.server.omod.web.model.PreferredLocation;
+import org.motechproject.server.omod.web.model.WebPatient;
 import org.openmrs.Location;
 import org.springframework.ui.ModelMap;
 
@@ -56,7 +58,7 @@ public class BasePatientController {
 		};
 	}
 
-	void populateJavascriptMaps(ModelMap model) {
+	protected  void populateJavascriptMaps(ModelMap model, WebPatient patient) {
 		Map<String, TreeSet<String>> regionMap = new HashMap<String, TreeSet<String>>();
 		Map<String, TreeSet<Community>> districtMap = new HashMap<String, TreeSet<Community>>();
 
@@ -89,6 +91,7 @@ public class BasePatientController {
 		model.addAttribute("districtMap", districtMap);
 		model.addAttribute("facilities", facilities);
         model.addAttribute("country",new Country("Ghana").withFacilities(facilities));
+        model.addAttribute("selectedLocation", new PreferredLocation(patient.getRegion(), patient.getDistrict(), patient.getSubDistrict(), patient.getFacility(), patient.getCommunityId()));
 	}
 
 }

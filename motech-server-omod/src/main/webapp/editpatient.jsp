@@ -42,16 +42,17 @@
 <openmrs:htmlInclude file="/scripts/jquery/jquery-1.3.2.min.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/dynamic_combo_box.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patient_form_events.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/country.js"/>
 <script type="text/javascript">
     var $j = jQuery.noConflict();
     $j(document).ready(function() {
-         new PatientFormRegistrationEvents();
+        new PatientFormRegistrationEvents();
+        var selectedLocation = new Location(${selectedLocation});
+        new Country(${country}, selectedLocation);
     });
 </script>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css"/>
 <openmrs:htmlInclude file="/dwr/util.js"/>
-
-<%@ include file="/WEB-INF/view/module/motechmodule/dynamic-dropdowns-script.jsp" %>
 
 <meta name="heading" content="Edit Patient"/>
 <%@ include file="localHeader.jsp" %>
@@ -144,9 +145,8 @@
         <tr>
             <td class="labelcolumn"><label for="region">Region:</label></td>
             <td>
-                <form:select path="region" onchange="regionDistrictUpdated()">
+                <form:select path="region">
                     <form:option value="" label="Select Value"/>
-                    <form:options items="${regions}"/>
                 </form:select>
             </td>
             <td><form:errors path="region" cssClass="error"/></td>
@@ -154,19 +154,35 @@
         <tr>
             <td class="labelcolumn"><label for="district">District:</label></td>
             <td>
-                <form:select path="district" onchange="regionDistrictUpdated()">
+                <form:select path="district">
                     <form:option value="" label="Select Value"/>
-                    <form:options items="${districts}"/>
                 </form:select>
             </td>
             <td><form:errors path="district" cssClass="error"/></td>
+        </tr>
+        <tr>
+            <td class="labelcolumn"><label for="subDistrict">Sub District:</label></td>
+            <td>
+                <form:select path="subDistrict">
+                    <form:option value="" label="Select Value"/>
+                </form:select>
+            </td>
+            <td><form:errors path="subDistrict" cssClass="error"/></td>
+        </tr>
+        <tr>
+            <td class="labelcolumn"><label for="facility">Facility:</label></td>
+            <td>
+                <form:select path="facility">
+                    <form:option value="" label="Select Value"/>
+                </form:select>
+            </td>
+            <td><form:errors path="facility" cssClass="error"/></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="communityId">Community:</label></td>
             <td>
                 <form:select path="communityId">
                     <form:option value="" label="Select Value"/>
-                    <form:options items="${communities}" itemValue="communityId" itemLabel="name"/>
                 </form:select>
             </td>
             <td><form:errors path="communityId" cssClass="error"/></td>

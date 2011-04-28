@@ -437,4 +437,5 @@ public interface RegistrarBean {
 
     public void stopEnrollmentFor(Integer patientId);
 
+    Facility getFacilityByPatient(Patient patient);
 }
