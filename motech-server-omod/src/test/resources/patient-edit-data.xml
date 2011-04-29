@@ -16,4 +16,9 @@
 
     <motechmodule_facility_patient facility_id="1" patient_id="100"/>
 
+    <motechmodule_community id="1" community_id="11111" name="Badonu" facility_id="1" retired="false"/>
+    <motechmodule_community id="2" community_id="11112" name="Sakaa" facility_id="1" retired="false"/>
+
+    <motechmodule_community_patient community_id="1" patient_id="100"/>
+
 </dataset>

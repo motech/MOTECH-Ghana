@@ -1380,7 +1380,6 @@ public class RegistrarBeanTest {
 
         expect(motechService.getCommunityByPatient(patient)).andReturn(
                 oldCommunity);
-        expect(motechService.getCommunityByPatient(patient)).andReturn(null);
         expect(
                 motechService.getActiveMessageProgramEnrollments(patientId,
                         null, null, null, null)).andReturn(

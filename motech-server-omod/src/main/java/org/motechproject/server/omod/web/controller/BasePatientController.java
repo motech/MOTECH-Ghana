@@ -94,4 +94,7 @@ public class BasePatientController {
         model.addAttribute("selectedLocation", new PreferredLocation(patient.getRegion(), patient.getDistrict(), patient.getSubDistrict(), patient.getFacility(), patient.getCommunityId()));
 	}
 
+    protected boolean regionIsUpperEast(WebPatient webPatient) {
+        return webPatient.hasRegion("Upper East");
+    }
 }

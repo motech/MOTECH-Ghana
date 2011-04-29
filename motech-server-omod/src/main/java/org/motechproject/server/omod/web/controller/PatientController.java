@@ -63,7 +63,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @SessionAttributes("patient")
@@ -121,7 +120,7 @@ public class PatientController extends BasePatientController {
 
     @RequestMapping(value = "/module/motechmodule/patient", method = RequestMethod.GET)
     public void viewForm(@RequestParam(required = false) Integer id, ModelMap model) {
-        populateJavascriptMaps(model,new WebPatient());
+        populateJavascriptMaps(model, new WebPatient());
     }
 
     @ModelAttribute("patient")
@@ -208,16 +207,11 @@ public class PatientController extends BasePatientController {
                 "motechmodule.sex.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "insured",
                 "motechmodule.insured.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "region",
-                "motechmodule.region.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "district",
-                "motechmodule.district.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subDistrict",
-                "motechmodule.subDistrict.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "facility",
                 "motechmodule.facility.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "communityId",
-                "motechmodule.communityId.required");
+        if (regionIsUpperEast(patient)) {
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "communityId", "motechmodule.communityId.required");
+        }
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address",
                 "motechmodule.address.required");
 

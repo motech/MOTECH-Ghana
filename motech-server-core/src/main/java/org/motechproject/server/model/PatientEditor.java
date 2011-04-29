@@ -20,7 +20,21 @@ public class PatientEditor {
         return this;
     }
 
-    public Patient done(){
+    public PatientEditor removeFrom(Community oldCommunity) {
+        if (oldCommunity != null) {
+            oldCommunity.remove(patient);
+        }
+        return this;
+    }
+
+    public PatientEditor addTo(Community newCommunity) {
+        if (newCommunity != null) {
+            newCommunity.add(patient);
+        }
+        return this;
+    }
+
+    public Patient done() {
         return patient;
     }
 }

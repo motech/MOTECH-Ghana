@@ -113,4 +113,16 @@ public class Community implements Serializable {
         community.setName(name);
         return  community;
     }
+
+    public boolean hasResident(Patient patient) {
+        return residents.contains(patient);
+    }
+
+    public boolean remove(Patient patient) {
+        return residents.remove(patient);
+    }
+
+    public boolean add(Patient patient) {
+        return residents.add(patient);
+    }
 }

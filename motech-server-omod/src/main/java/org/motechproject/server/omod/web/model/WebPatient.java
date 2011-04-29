@@ -413,4 +413,8 @@ public class WebPatient {
     public boolean hasCommunity(){
         return StringUtils.isNotBlank(region);
     }
+
+    public boolean hasRegion(String regionName) {
+        return regionName.equals(region);
+    }
 }

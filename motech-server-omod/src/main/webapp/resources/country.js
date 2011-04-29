@@ -81,6 +81,7 @@ function Country(country, selectedLocation) {
 
     var onRegionSelection = function() {
         districtDropDown.revert();
+        subDistrictDropDown.revert();
         var districts = districtsInSelectedRegion();
         districts.each(function(index, district) {
             districtDropDown.appendOption(new Option(district.name, district.name));
@@ -169,6 +170,7 @@ function Country(country, selectedLocation) {
 
     var facilitiesToBeShown = function() {
         facilityDropDown.revert();
+        communityDropDown.revert();
         var region = getSelectedRegion();
         var district = getSelectedDistrict();
         var subDistrict = getSelectedSubDistrict();

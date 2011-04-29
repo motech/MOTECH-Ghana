@@ -564,31 +564,20 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         relationshipService.saveOrUpdateMotherRelationship(mother, patient, true);
 
+        PatientEditor editor = new PatientEditor(patient);
         Facility currentFacility = getFacilityByPatient(patient);
-        if(!currentFacility.equals(facility)){
-            patient = new PatientEditor(patient).removeFrom(currentFacility).addTo(facility).done();
-        }
 
+        if(!currentFacility.equals(facility)){
+            patient = editor.removeFrom(currentFacility).addTo(facility).done();
+        }
 
         Community currentCommunity = getCommunityByPatient(patient);
-        if (currentCommunity != null
-                && currentCommunity.getCommunityId() != null
-                && community != null
-                && community.getCommunityId() != null
-                && !currentCommunity.getCommunityId().equals(
-                community.getCommunityId())) {
-            currentCommunity.getResidents().remove(patient);
-        }
-        
 
-        // Query flushes session
-        // Only add if no Community currently associated
-        if (community != null && getCommunityByPatient(patient) == null) {
-            community.getResidents().add(patient);
-            currentCommunity = community;
-        }
+        boolean bothCommunitiesExistAndAreSame = community != null && currentCommunity != null && currentCommunity.equals(community);
 
-        
+        if(!bothCommunitiesExistAndAreSame){
+            patient = editor.removeFrom(currentCommunity).addTo(community).done();
+        }
 
         setPatientAttributes(patient, phoneNumber, ownership, format, language,
                 dayOfWeek, timeOfDay, null, null, insured, nhis, nhisExpires);

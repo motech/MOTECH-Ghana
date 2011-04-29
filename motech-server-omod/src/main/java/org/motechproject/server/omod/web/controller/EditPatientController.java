@@ -160,14 +160,13 @@ public class EditPatientController extends BasePatientController {
                 "motechmodule.sex.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "insured",
                 "motechmodule.insured.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "region",
-                "motechmodule.region.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "district",
-                "motechmodule.district.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "facility",
                 "motechmodule.facility.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "communityId",
-                "motechmodule.communityId.required");
+
+        if(regionIsUpperEast(webPatient)){
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "communityId","motechmodule.communityId.required");
+        }
+        
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address",
                 "motechmodule.address.required");
 
@@ -266,9 +265,7 @@ public class EditPatientController extends BasePatientController {
         populateJavascriptMaps(model, webPatient);
     }
 
-    void validateTextLength(Errors errors, String fieldname, String fieldValue,
-                            int lengthLimit) {
-
+    void validateTextLength(Errors errors, String fieldname, String fieldValue,int lengthLimit) {
         if (fieldValue != null && fieldValue.length() > lengthLimit) {
             errors.rejectValue(fieldname, "motechmodule.string.maxlength",
                     new Integer[]{lengthLimit},
