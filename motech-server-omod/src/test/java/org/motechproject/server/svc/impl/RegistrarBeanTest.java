@@ -1389,6 +1389,10 @@ public class RegistrarBeanTest {
         expect(patientService.savePatient(capture(patientCap))).andReturn(
                 patient);
 
+        Facility facility = new Facility();
+        facility.setFacilityId(11117);
+        expect(motechService.facilityFor(patient)).andReturn(facility);
+
         replay(contextService, patientService, motechService, personService,
                 locationService, userService, encounterService, obsService,
                 conceptService);
@@ -1396,7 +1400,7 @@ public class RegistrarBeanTest {
         regBean.editPatient(patient, firstName, middleName, lastName, prefName,
                 date, birthDateEst, sex, insured, nhis, date, newMother,
                 community, address, phoneNumber, dueDate, enroll, consent,
-                phoneType, mediaType, language, dayOfWeek, date);
+                phoneType, mediaType, language, dayOfWeek, date, facility);
 
         verify(contextService, patientService, motechService, personService,
                 locationService, userService, encounterService, obsService,

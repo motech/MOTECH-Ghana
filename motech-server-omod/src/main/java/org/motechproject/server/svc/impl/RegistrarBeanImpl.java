@@ -519,7 +519,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                             Community community, String address, String phoneNumber,
                             Date expDeliveryDate, Boolean enroll, Boolean consent,
                             ContactNumberType ownership, MediaType format, String language,
-                            DayOfWeek dayOfWeek, Date timeOfDay) {
+                            DayOfWeek dayOfWeek, Date timeOfDay, Facility facility) {
 
 
         patient.setBirthdate(dateOfBirth);
@@ -564,6 +564,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         relationshipService.saveOrUpdateMotherRelationship(mother, patient, true);
 
+        Facility currentFacility = getFacilityByPatient(patient);
+        if(!currentFacility.equals(facility)){
+            patient = new PatientEditor(patient).removeFrom(currentFacility).addTo(facility).done();
+        }
+
+
         Community currentCommunity = getCommunityByPatient(patient);
         if (currentCommunity != null
                 && currentCommunity.getCommunityId() != null
@@ -573,12 +579,16 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 community.getCommunityId())) {
             currentCommunity.getResidents().remove(patient);
         }
+        
+
         // Query flushes session
         // Only add if no Community currently associated
         if (community != null && getCommunityByPatient(patient) == null) {
             community.getResidents().add(patient);
             currentCommunity = community;
         }
+
+        
 
         setPatientAttributes(patient, phoneNumber, ownership, format, language,
                 dayOfWeek, timeOfDay, null, null, insured, nhis, nhisExpires);

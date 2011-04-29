@@ -110,4 +110,12 @@ public class Facility implements Serializable {
     public String name() {
         return location.getName();
     }
+
+    public boolean hasPatients(Patient patient) {
+        return patients.contains(patient);
+    }
+
+    public boolean remove(Patient patient) {
+        return patients.remove(patient);
+    }
 }

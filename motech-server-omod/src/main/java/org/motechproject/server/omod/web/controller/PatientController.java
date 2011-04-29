@@ -119,22 +119,6 @@ public class PatientController extends BasePatientController {
                         true));
     }
 
-    @ModelAttribute("regions")
-    public List<String> getRegions() {
-        return contextService.getMotechService().getAllRegions();
-    }
-
-    @ModelAttribute("districts")
-    public List<String> getDistricts() {
-        return contextService.getMotechService().getAllDistricts();
-    }
-
-
-    @ModelAttribute("communities")
-    public List<Community> getCommunities() {
-        return contextService.getMotechService().getAllCommunities(false);
-    }
-
     @RequestMapping(value = "/module/motechmodule/patient", method = RequestMethod.GET)
     public void viewForm(@RequestParam(required = false) Integer id, ModelMap model) {
         populateJavascriptMaps(model,new WebPatient());

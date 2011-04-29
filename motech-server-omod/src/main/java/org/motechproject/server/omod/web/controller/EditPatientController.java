@@ -36,6 +36,7 @@ package org.motechproject.server.omod.web.controller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.Community;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
@@ -59,7 +60,6 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/module/motechmodule/editpatient")
@@ -115,21 +115,6 @@ public class EditPatientController extends BasePatientController {
                         true));
     }
 
-    @ModelAttribute("regions")
-    public List<String> getRegions() {
-        return contextService.getMotechService().getAllRegions();
-    }
-
-    @ModelAttribute("districts")
-    public List<String> getDistricts() {
-        return contextService.getMotechService().getAllDistricts();
-    }
-
-    @ModelAttribute("communities")
-    public List<Community> getCommunities() {
-        return contextService.getMotechService().getAllCommunities(true);
-    }
-
     @ModelAttribute("patient")
     public WebPatient getWebPatient(@RequestParam(required = false) Integer id) {
         WebPatient result = new WebPatient();
@@ -179,6 +164,8 @@ public class EditPatientController extends BasePatientController {
                 "motechmodule.region.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "district",
                 "motechmodule.district.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "facility",
+                "motechmodule.facility.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "communityId",
                 "motechmodule.communityId.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address",
@@ -214,6 +201,7 @@ public class EditPatientController extends BasePatientController {
             }
         }
 
+
         Community community = null;
         if (webPatient.getCommunityId() != null) {
             community = registrarBean.getCommunityById(webPatient
@@ -223,6 +211,8 @@ public class EditPatientController extends BasePatientController {
                         "motechmodule.communityId.notexist");
             }
         }
+
+        Facility facility = registrarBean.getFacilityById(webPatient.getFacility());
 
         Patient mother = null;
         if (webPatient.getMotherMotechId() != null) {
@@ -267,7 +257,7 @@ public class EditPatientController extends BasePatientController {
                     webPatient.getDueDate(), webPatient.getEnroll(), webPatient
                             .getConsent(), webPatient.getPhoneType(),
                     webPatient.getMediaType(), webPatient.getLanguage(),
-                    webPatient.getDayOfWeek(), webPatient.getTimeOfDay());
+                    webPatient.getDayOfWeek(), webPatient.getTimeOfDay(),facility );
 
             model.addAttribute("successMsg", "motechmodule.Patient.edit.success");
             status.setComplete();

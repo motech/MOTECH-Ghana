@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <users user_id="10" system_id="107" creator="10" date_created="0002-11-30 00:00:00.0" voided="0"/>
+
+    <location name="Navio CHPS" location_id="1" creator="10" date_created="0002-11-30 00:00:00.0" retired="0" uuid="161c3ed9-2aa8-11e0"/>
+    <location name="Chiana CHPS" location_id="2" creator="10" date_created="0002-11-30 00:00:00.0" retired="0" uuid="161c3ed9-2aa8-11e1"/>
+
+    <motechmodule_facility id="1" facility_id="11117" location_id="1" phone_number="0123456789"/>
+    <motechmodule_facility id="2" facility_id="11118" location_id="2" phone_number="0123456790"/>
+
+    <person person_id="100" gender="MALE" birthdate_estimated="0" dead="0" creator="10" date_created="2005-01-01 00:00:00.0"
+            voided="0" uuid="338b81a0-af64-11de-870f-e5004d85b1e8"/>
+
+
+    <patient patient_id="100" creator="10" date_created="2005-09-22 00:00:00.0" voided="0"/>
+
+    <motechmodule_facility_patient facility_id="1" patient_id="100"/>
+
+</dataset>
