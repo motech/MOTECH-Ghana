@@ -33,29 +33,37 @@
 
 package org.motechproject.server.omod.web.model;
 
+import org.apache.commons.lang.StringUtils;
 import org.motechproject.server.model.Facility;
+import org.motechproject.server.util.MotechConstants;
 import org.openmrs.Location;
+import org.springframework.validation.Errors;
 
 import java.util.Date;
 
 public class WebFacility {
+    public static final String BLANK_NAME = "motechmodule.name.blank";
+    public static final String BLANK_COUNTRY = "motechmodule.country.blank";
+    public static final String BLANK_REGION = "motechmodule.region.blank";
+    public static final String BLANK_DISTRICT = "motechmodule.district.blank";
+    public static final String BLANK_PROVINCE = "motechmodule.province.blank";
+
+    public static final String NAME = "name";
+    public static final String COUNTRY = "country";
+    public static final String REGION = "region";
+    public static final String DISTRICT = "countyDistrict";
+    public static final String PROVINCE = "stateProvince";
+    public static final String INVALID_PHONE_NUMBER = "motechmodule.phoneNumber.invalid";
+    public static final String PHONE_NUMBER = "phoneNumber";
 
     private String phoneNumber;
-
     private String country;
-
     private String region;
-
     private String countyDistrict;
-
     private String stateProvince;
-
     private String neighborhoodCell;
-
     private String name;
-
     private Location location;
-    
     private Facility facility;
 
     public WebFacility(){
@@ -130,7 +138,6 @@ public class WebFacility {
 
         facility.setPhoneNumber(this.phoneNumber);
         facility.setLocation(location);
-
         return facility;
     }
 }
