@@ -55,7 +55,11 @@ public class FacilityController {
     @Autowired
 	private ContextService contextService;
 
-	@ModelAttribute("facilities")
+    public FacilityController(ContextService contextService) {
+        this.contextService = contextService;
+    }
+
+    @ModelAttribute("facilities")
 	public List<Facility> getFacilities() {
 		return contextService.getMotechService().getAllFacilities();
 	}
