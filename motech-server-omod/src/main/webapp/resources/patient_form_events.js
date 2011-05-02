@@ -11,6 +11,7 @@ function PatientFormRegistrationEvents() {
         bindToOnChangeIfElementExists($j('#phoneType'), phoneOwnershipSelected);
         bindToOnChangeIfElementExists($j('#mediaType'), mediaTypeSelected);
         bindToOnChangeIfElementExists($j('#insured'), insuranceSelected);
+        bindToOnChangeIfElementExists($j('#enroll'), mobileMidwifeEnrollmentOptionSelected);
     };
 
     //Invoke change handler as well to initialize
@@ -19,6 +20,15 @@ function PatientFormRegistrationEvents() {
             $j(ele).change(changeHandler);
             changeHandler();
         }
+    };
+
+    var mobileMidwifeEnrollmentOptionSelected = function() {
+        var dataCollectionSection = $j('#mobileMidwifeInformation');
+        if (!wantsToEnroll()) {
+            hide(dataCollectionSection);
+            return;
+        }
+        show(dataCollectionSection);
     };
 
     var registrationModeSelected = function() {
@@ -38,9 +48,9 @@ function PatientFormRegistrationEvents() {
     };
 
     var showReasonsForJoiningMotechOnlyIfPatientTypeIsOther = function() {
-       var reasons =  getParentRow($j('#interestReason')) ;
+        var reasons = getParentRow($j('#interestReason'));
         if (isOtherPatient()) {
-           reasons.show();
+            reasons.show();
             return;
         }
         reasons.hide();
@@ -164,6 +174,10 @@ function PatientFormRegistrationEvents() {
             $j(arguments[i]).show();
         }
     };
+
+    var wantsToEnroll = function() {
+        return $j('#enroll').val() == "true";
+    }
 
     var isPublicPhone = function() {
         return $j('#phoneType').val() == "PUBLIC";
