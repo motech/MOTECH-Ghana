@@ -67,6 +67,31 @@ public class FacilityController {
 
     @RequestMapping(value = "/module/motechmodule/addfacility.form", method = RequestMethod.GET)
     public String viewAddFacilityForm(ModelMap modelMap){
+        populateLocation(modelMap);
+        modelMap.addAttribute("facility", new WebFacility());
+        return "/module/motechmodule/addfacility";
+    }
+
+    @RequestMapping(value = "/module/motechmodule/addfacility.form", method = RequestMethod.POST)
+    public String submitAddFacility(@ModelAttribute("facility") WebFacility facility, Errors errors,ModelMap modelMap, SessionStatus status){
+        if(contextService.getMotechService().getLocationByName(facility.getName()) != null){
+            errors.rejectValue("name","motechmodule.Facility.duplicate.location");
+        }
+        if(errors.hasErrors()){
+            populateLocation(modelMap);
+            return "/module/motechmodule/addfacility";
+        }
+        contextService.getLocationService().saveLocation(facility.getFacility().getLocation());
+        contextService.getRegistrarBean().saveNewFacility(facility.getFacility());
+        return "redirect:/module/motechmodule/facility.form";
+    }
+
+    @ModelAttribute("locations")
+    public List<Location> getLocations(){
+        return contextService.getLocationService().getAllLocations(false);
+    }
+
+    private void populateLocation(ModelMap modelMap) {
         List<Location> locations = contextService.getLocationService().getAllLocations();
         Set<String> countries = new TreeSet<String>();
         Map<String, TreeSet<String>> regions = new HashMap<String, TreeSet<String>>();
@@ -81,30 +106,7 @@ public class FacilityController {
         modelMap.addAttribute("countries",countries);
         modelMap.addAttribute("regions",regions);
         modelMap.addAttribute("districts",districts);
-        modelMap.addAttribute("provinces",provinces);
-        modelMap.addAttribute("facility", new WebFacility());
-        return "/module/motechmodule/addfacility";
-    }
-
-    @RequestMapping(value = "/module/motechmodule/addfacility.form", method = RequestMethod.POST)
-    public String submitAddFacility(@ModelAttribute("facility") WebFacility facility, Errors errors,ModelMap modelMap, SessionStatus status){
-        if(facility.getName().isEmpty()){
-            errors.rejectValue("name", "motechmodule.name.blank");
-        }
-        if(contextService.getMotechService().getLocationByName(facility.getName()) != null){
-            errors.rejectValue("name","motechmodule.Facility.duplicate.location");
-        }
-        if(errors.hasErrors()){
-            return "/module/motechmodule/addfacility";
-        }
-        contextService.getLocationService().saveLocation(facility.getFacility().getLocation());
-        contextService.getRegistrarBean().saveNewFacility(facility.getFacility());
-        return "redirect:/module/motechmodule/facility.form";
-    }
-
-    @ModelAttribute("locations")
-    public List<Location> getLocations(){
-        return contextService.getLocationService().getAllLocations(false);
+        modelMap.addAttribute("provinces", provinces);
     }
 
     private void populate(Map<String, TreeSet<String>> map, String key, String value) {

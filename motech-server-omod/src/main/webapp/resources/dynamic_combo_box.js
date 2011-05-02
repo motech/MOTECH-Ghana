@@ -65,4 +65,12 @@ function DynamicComboBox(combo) {
     this.setValue = function(value){
         $j(combo).val(value);
     };
+
+    this.disable = function(){
+        $j(combo).attr('disabled','disabled');
+    };
+
+    this.enable = function(){
+        $j(combo).attr('disabled','');
+    };
 }

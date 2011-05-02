@@ -106,8 +106,10 @@
         <td><form:label path="name">Name:</form:label></td>
         <td><form:input path="name" maxlength="50"/> </td>
         <td>
-        <span id="name_err" class="error">
-        <spring:message code="motechmodule.name.blank"/>
+        <span id="name_err" class="error" title="err_span">
+            <spring:message code="motechmodule.name.blank"/>
+        </span>
+        <form:errors path="name" cssClass="error"/>
         </td>
     </tr>
     <tr>
@@ -118,8 +120,9 @@
             </form:select>
         </td>
         <td>
-        <span id="country_err" class="error">
-        <spring:message code="motechmodule.country.blank"/>
+        <span id="country_err" class="error" title="err_span">
+            <spring:message code="motechmodule.country.blank"/>
+        </span>
         </td>
     </tr>
     <tr>
@@ -130,8 +133,9 @@
             </form:select>
         </td>
         <td>
-        <span id="region_err" class="error">
-        <spring:message code="motechmodule.region.blank"/>
+        <span id="region_err" class="error" title="err_span">
+            <spring:message code="motechmodule.region.blank"/>
+        </span>
         </td>
     </tr>
     <tr>
@@ -142,8 +146,9 @@
             </form:select>
         </td>
         <td>
-        <span id="countyDistrict_err" class="error">
-        <spring:message code="motechmodule.district.blank"/>
+        <span id="countyDistrict_err" class="error" title="err_span">
+            <spring:message code="motechmodule.district.blank"/>
+        </span>
         </td>
     </tr>
     <tr>
@@ -154,7 +159,7 @@
             </form:select>
         </td>
         <td>
-        <span id="stateProvince_err" class="error">
+        <span id="stateProvince_err" class="error" title="err_span">
         <spring:message code="motechmodule.province.blank"/>
         </td>
     </tr>
@@ -162,8 +167,9 @@
 		<td><form:label path="phoneNumber">Phone Number:</form:label></td>
 		<td><form:input path="phoneNumber" maxlength="50"/></td>
 		<td>
-		<span id="phoneNumber_err" class="error">
-		<spring:message code="motechmodule.phoneNumber.invalid"/>
+		<span id="phoneNumber_err" class="error" title="err_span">
+		    <spring:message code="motechmodule.phoneNumber.invalid"/>
+		</span>
 		</td>
 	</tr>
 	<tr>

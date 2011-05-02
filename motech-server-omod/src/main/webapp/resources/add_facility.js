@@ -8,8 +8,12 @@ function addFacility(){
     var provincesDropDown = new DynamicComboBox($j('#stateProvince'));
 
     var onLoad = function(){
+        regionsDropDown.disable();
+        districtsDropDown.disable();
+        provincesDropDown.disable();
+        $j("#phoneNumber").val('');
         $j("#location_data").hide();
-        $j("span.error").addClass('hideError');
+        $j('span[title="err_span"]').addClass('hideError');
         $j("#countries_data").children("li").each(function(){
             var item = $j(this).html();
             if(item == '')return;
@@ -26,18 +30,32 @@ function addFacility(){
 
     var onSubmit = function(e){
 	    $j("span.error").addClass('hideError');
-        verify("#name_err",$j("#name").val(), e);
-        verify("#country_err",$j("#country").val(), e);
-        verify("#region_err",$j("#region").val(), e);
-        verify("#countyDistrict_err",$j("#countyDistrict").val(), e);
-        verify("#stateProvince_err",$j("#stateProvince").val(), e);
+        verify("#name_err",$j("#name"), e);
+        verify("#country_err",$j("#country"), e);
+        verify("#region_err",$j("#region"), e);
+        verify("#countyDistrict_err",$j("#countyDistrict"), e);
+        verify("#stateProvince_err",$j("#stateProvince"), e);
+        verifyPhone("#phoneNumber_err",$j("#phoneNumber"), e);
     };
 
-    var verify = function(errorSpan, selectedValue, e){
+    var verify = function(errorSpan, selectElement, e){
+        if(selectElement.attr('disabled')){
+           return;
+        }
+        var selectedValue = $j.trim(selectElement.val());
         if(selectedValue == null || selectedValue == ''){		      
            $j(errorSpan).removeClass('hideError');
            e.preventDefault();
         }
+    };
+
+    var verifyPhone = function(errorSpan,selectElement,e){
+       var selectedValue = selectElement.val();
+       if(/^0[0-9]{9}$/i.test(selectedValue)){
+          return;
+       }
+       $j(errorSpan).removeClass('hideError');
+       e.preventDefault();
     };
 
     var handleChange = function(option, data, dropDown){
@@ -46,7 +64,10 @@ function addFacility(){
 
        var selector = 'li[title="'+val+'"]';
        var items = $j(data).children(selector).children('ul').children('li');
-
+       if(items.length == 0){
+            return;
+       }
+       dropDown.enable();
        items.each(function(){
            var item = $j(this).html();
            if(item == '') return;

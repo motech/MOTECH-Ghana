@@ -140,21 +140,4 @@ public class WebFacility {
         facility.setLocation(location);
         return facility;
     }
-
-    public Errors validate(Errors errors){
-        validate(NAME, name, errors, BLANK_NAME);
-        validate(COUNTRY, country, errors, BLANK_COUNTRY);
-        validate(REGION, region, errors, BLANK_REGION);
-        validate(DISTRICT, countyDistrict, errors, BLANK_DISTRICT);
-        validate(PROVINCE, stateProvince, errors, BLANK_PROVINCE);
-        if (phoneNumber == null	|| !phoneNumber.matches(MotechConstants.PHONE_REGEX_PATTERN)) {
-			errors.rejectValue(PHONE_NUMBER, INVALID_PHONE_NUMBER);
-		}
-        return errors;
-    }
-
-    private void validate(String param, String value, Errors errors, String message) {
-        if (StringUtils.isBlank(value))
-            errors.rejectValue(param, message);
-    }
 }
