@@ -44,23 +44,55 @@
 <openmrs:htmlInclude file="/moduleResources/motechmodule/jquery-autocomplete/jquery.autocomplete.css" />
 <openmrs:htmlInclude file="/moduleResources/motechmodule/jquery-autocomplete/lib/jquery.bgiframe.min.js" />
 <openmrs:htmlInclude file="/moduleResources/motechmodule/jquery-autocomplete/jquery.autocomplete.min.js" />
-
-<script type="text/javascript">
-	var $j = jQuery.noConflict();
-    $j(document).ready(function(){
-        $j.getJSON("/openmrs/module/motechmodule/jsonfacilitydata.form", function(data){
-            $j('#country').autocomplete(data.country);
-            $j('#region').autocomplete(data.regions);
-            $j('#countyDistrict').autocomplete(data.districts);
-            $j('#stateProvince').autocomplete(data.provinces);
-        });
-
-
-    });
-</script>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/dynamic_combo_box.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/add_facility.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/add_facility.css"/>
 
 <meta name="heading" content="Add Facility" />
 <%@ include file="localHeader.jsp" %>
+
+<div id="location_data">
+<ul id="countries_data">
+   <c:forEach items="${countries}" var="country">
+   <li>${country}</li>
+   </c:forEach>
+</ul>
+<ul id="regions_data">
+   <c:forEach items="${regions}" var="country">
+   <li title="${country.key}">
+        <ul>
+            <c:forEach items="${country.value}" var="region">
+             <li>${region}</li>
+            </c:forEach>
+        </ul>
+   </li>
+   </c:forEach>
+</ul>
+<ul id="districts_data">
+   <c:forEach items="${districts}" var="region">
+   <li title="${region.key}">
+        <ul>
+            <c:forEach items="${region.value}" var="district">
+             <li>${district}</li>
+            </c:forEach>
+        </ul>
+   </li>
+   </c:forEach>
+</ul>
+<ul id="provinces_data">
+   <c:forEach items="${provinces}" var="district">
+   <li title="${district.key}">
+        <ul>
+            <c:forEach items="${district.value}" var="province">
+             <li>${province}</li>
+            </c:forEach>
+        </ul>
+   </li>
+   </c:forEach>
+</ul>
+</div>
+
+
 <h2>Add a New Facility</h2>
 <div class="instructions">
 	Add facility and click submit to save.
@@ -73,35 +105,69 @@
     <tr>
         <td><form:label path="name">Name:</form:label></td>
         <td><form:input path="name" maxlength="50"/> </td>
-        <td><form:errors path="name" cssClass="error"/> </td>
+        <td>
+        <span id="name_err" class="error">
+        <spring:message code="motechmodule.name.blank"/>
+        </td>
     </tr>
     <tr>
         <td><form:label path="country">Country:</form:label></td>
-        <td><form:input path="country" maxlength="50"/></td>
-        <td><form:errors path="country" cssClass="error"/> </td>
+        <td>
+            <form:select path="country">
+               <form:option value="" label="Select Value"/>
+            </form:select>
+        </td>
+        <td>
+        <span id="country_err" class="error">
+        <spring:message code="motechmodule.country.blank"/>
+        </td>
     </tr>
     <tr>
         <td><form:label path="region">Region:</form:label></td>
-        <td><form:input path="region" maxlength="50"/> </td>
-        <td><form:errors cssClass="error"/> </td>
+        <td>
+            <form:select path="region">
+               <form:option value="" label="Select Value"/>
+            </form:select>
+        </td>
+        <td>
+        <span id="region_err" class="error">
+        <spring:message code="motechmodule.region.blank"/>
+        </td>
     </tr>
     <tr>
         <td><form:label path="countyDistrict">District:</form:label></td>
-        <td><form:input path="countyDistrict" maxlength="50"/> </td>
-        <td><form:errors cssClass="error"/></td>
+        <td>
+            <form:select path="countyDistrict">
+               <form:option value="" label="Select Value"/>
+            </form:select>
+        </td>
+        <td>
+        <span id="countyDistrict_err" class="error">
+        <spring:message code="motechmodule.district.blank"/>
+        </td>
     </tr>
     <tr>
         <td><form:label path="stateProvince">Sub-District:</form:label></td>
-        <td><form:input path="stateProvince" maxlength="50"/> </td>
-        <td><form:errors cssClass="error"/> </td>
+        <td>
+            <form:select path="stateProvince">
+               <form:option value="" label="Select Value"/>
+            </form:select>
+        </td>
+        <td>
+        <span id="stateProvince_err" class="error">
+        <spring:message code="motechmodule.province.blank"/>
+        </td>
     </tr>
 	<tr>
 		<td><form:label path="phoneNumber">Phone Number:</form:label></td>
 		<td><form:input path="phoneNumber" maxlength="50"/></td>
-		<td><form:errors path="phoneNumber" cssClass="error" /></td>
+		<td>
+		<span id="phoneNumber_err" class="error">
+		<spring:message code="motechmodule.phoneNumber.invalid"/>
+		</td>
 	</tr>
 	<tr>
-		<td colspan="2"><input type="submit" /></td>
+		<td colspan="2"><input type="submit" id="submit_facility"/></td>
 	</tr>
 </table>
 </fieldset>
