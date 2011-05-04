@@ -387,6 +387,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
         return motechDAO.facilityFor(patient);
     }
 
+    public List<MessageLanguage> getAllLanguages() {
+        return motechDAO.getMessageLanguages();
+    }
+
     public RCTService getRctService(){
         return rctService;
     }

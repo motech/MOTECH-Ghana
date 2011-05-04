@@ -188,4 +188,6 @@ public interface MotechDAO {
     void deletePatientIdentifier(Integer patientId);
 
     Facility facilityFor(Patient patient);
+
+    List<MessageLanguage> getMessageLanguages();
 }

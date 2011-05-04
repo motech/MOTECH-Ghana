@@ -36,7 +36,9 @@ package org.motechproject.server.omod.web.controller;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.FacilityComparator;
+import org.motechproject.server.model.MessageLanguage;
 import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.web.model.Country;
 import org.motechproject.server.omod.web.model.PreferredLocation;
 import org.motechproject.server.omod.web.model.WebPatient;
@@ -62,8 +64,9 @@ public class BasePatientController {
 		Map<String, TreeSet<String>> regionMap = new HashMap<String, TreeSet<String>>();
 		Map<String, TreeSet<Community>> districtMap = new HashMap<String, TreeSet<Community>>();
 
-		List<Facility> facilities = contextService.getMotechService()
-				.getAllFacilities();
+        MotechService motechService = contextService.getMotechService();
+        List<Facility> facilities = motechService.getAllFacilities();
+        List<MessageLanguage> languages = motechService.getAllLanguages();
 
         for (Facility facility : facilities) {
 			Location location = facility.getLocation();
@@ -78,8 +81,7 @@ public class BasePatientController {
 				regionMap.put(region, districts);
 				TreeSet<Community> communities = districtMap.get(district);
 				if (communities == null) {
-					communities = new TreeSet<Community>(
-							communityNameComparator);
+					communities = new TreeSet<Community>(communityNameComparator);
 				}
 				communities.addAll(facility.getCommunities());
 				districtMap.put(district, communities);
@@ -87,6 +89,8 @@ public class BasePatientController {
 		}
         FacilityComparator facilityComparator = new FacilityComparator();
         Collections.sort(facilities, facilityComparator);
+
+		model.addAttribute("languages", languages);
 		model.addAttribute("regionMap", regionMap);
 		model.addAttribute("districtMap", districtMap);
 		model.addAttribute("facilities", facilities);

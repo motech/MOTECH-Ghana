@@ -36,6 +36,7 @@ package org.motechproject.server.omod.web.controller;
 import junit.framework.TestCase;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.MessageLanguage;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
@@ -210,6 +211,7 @@ public class EditPatientControllerTest extends TestCase {
 
         expect(contextService.getMotechService()).andReturn(motechService);
         expect(motechService.getAllFacilities()).andReturn(new ArrayList<Facility>());
+        expect(motechService.getAllLanguages()).andReturn(new ArrayList<MessageLanguage>());
 
         replay(registrarBean, status, contextService, motechService, openmrsBean);
 

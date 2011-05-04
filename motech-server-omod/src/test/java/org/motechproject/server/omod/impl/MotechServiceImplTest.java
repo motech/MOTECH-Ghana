@@ -37,13 +37,21 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.MessageLanguage;
+import org.motechproject.server.model.db.MotechDAO;
 import org.motechproject.server.omod.MotechService;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class MotechServiceImplTest extends BaseModuleContextSensitiveTest {
 
@@ -73,5 +81,18 @@ public class MotechServiceImplTest extends BaseModuleContextSensitiveTest {
         patient.setId(1);
         Facility facility = motechService.facilityFor(patient);
         assertNotNull(facility);
+    }
+
+    @Test
+    public void shouldFetchAllLanguages() {
+        MotechServiceImpl motechService = new MotechServiceImpl();
+        MotechDAO motechDAO = mock(MotechDAO.class);
+        motechService.setMotechDAO(motechDAO);
+
+        List<MessageLanguage> languages = new ArrayList<MessageLanguage>();
+        when(motechDAO.getMessageLanguages()).thenReturn(languages);
+
+        assertEquals(languages, motechService.getAllLanguages());
+        verify(motechDAO).getMessageLanguages();
     }
 }
