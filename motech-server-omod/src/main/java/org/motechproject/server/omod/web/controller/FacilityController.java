@@ -55,6 +55,9 @@ public class FacilityController {
     @Autowired
 	private ContextService contextService;
 
+    public FacilityController() {
+    }
+
     public FacilityController(ContextService contextService) {
         this.contextService = contextService;
     }
