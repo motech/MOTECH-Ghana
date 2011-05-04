@@ -258,4 +258,7 @@ public interface MotechService extends OpenmrsService {
 
     @Transactional
     Facility facilityFor(Patient patient);
+
+    @Transactional(readOnly = true)
+    List<MessageLanguage> getAllLanguages();
 }

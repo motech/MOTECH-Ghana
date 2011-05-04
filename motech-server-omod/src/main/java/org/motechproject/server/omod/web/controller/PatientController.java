@@ -298,7 +298,7 @@ public class PatientController extends BasePatientController {
     }
 
     @RequestMapping(value = "/module/motechmodule/patient/getMotherInfo.form", method = RequestMethod.GET)
-    public String getMoteherInformation(@RequestParam(required = true) String motechId,
+    public String getMotherInformation(@RequestParam(required = true) String motechId,
                                         ModelMap model) {
         Patient patient = openmrsBean.getPatientByMotechId(motechId);
         WebPatient webPatient = new WebPatient();

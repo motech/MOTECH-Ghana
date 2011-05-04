@@ -64,8 +64,7 @@ public class HibernateMotechDAO implements MotechDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Integer> getUsersByPersonAttribute(
-            Integer personAttributeTypeId, String personAttributeValue) {
+    public List<Integer> getUsersByPersonAttribute(Integer personAttributeTypeId, String personAttributeValue) {
         Session session = sessionFactory.getCurrentSession();
         return (List<Integer>) session
                 .createSQLQuery(
@@ -77,8 +76,7 @@ public class HibernateMotechDAO implements MotechDAO {
                         personAttributeValue).list();
     }
 
-    public ScheduledMessage saveScheduledMessage(
-            ScheduledMessage scheduledMessage) {
+    public ScheduledMessage saveScheduledMessage(ScheduledMessage scheduledMessage) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(scheduledMessage);
         return scheduledMessage;
@@ -90,15 +88,13 @@ public class HibernateMotechDAO implements MotechDAO {
         return message;
     }
 
-    public MessageDefinition saveMessageDefinition(
-            MessageDefinition messageDefinition) {
+    public MessageDefinition saveMessageDefinition(MessageDefinition messageDefinition) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(messageDefinition);
         return messageDefinition;
     }
 
-    public MessageAttribute saveMessageAttribute(
-            MessageAttribute messageAttribute) {
+    public MessageAttribute saveMessageAttribute(MessageAttribute messageAttribute) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(messageAttribute);
         return messageAttribute;
@@ -113,8 +109,7 @@ public class HibernateMotechDAO implements MotechDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public List<ScheduledMessage> getScheduledMessages(Date startDate,
-                                                       Date endDate) {
+    public List<ScheduledMessage> getScheduledMessages(Date startDate, Date endDate) {
         Session session = sessionFactory.getCurrentSession();
         return (List<ScheduledMessage>) session.createCriteria(
                 ScheduledMessage.class).add(
@@ -223,6 +218,12 @@ public class HibernateMotechDAO implements MotechDAO {
         Session session = sessionFactory.getCurrentSession();
         return (List<MessageDefinition>) session.createCriteria(
                 MessageDefinition.class).list();
+    }
+
+    public List<MessageLanguage> getMessageLanguages() {
+        Session session = sessionFactory.getCurrentSession();
+        return (List<MessageLanguage>) session.createCriteria(
+                MessageLanguage.class).list();
     }
 
     public MessageDefinition getMessageDefinition(String messageKey) {
@@ -438,11 +439,11 @@ public class HibernateMotechDAO implements MotechDAO {
             criteria
                     .add(Restrictions
                             .sqlRestriction(
-                            "exists (select f.id from motechmodule_facility f "
-                                    + "inner join motechmodule_facility_patient fp "
-                                    + "on f.id = fp.facility_id "
-                                    + "where f.facility_id = ? and fp.patient_id = {alias}.person_id)",
-                            facility.getFacilityId(), Hibernate.INTEGER));
+                                    "exists (select f.id from motechmodule_facility f "
+                                            + "inner join motechmodule_facility_patient fp "
+                                            + "on f.id = fp.facility_id "
+                                            + "where f.facility_id = ? and fp.patient_id = {alias}.person_id)",
+                                    facility.getFacilityId(), Hibernate.INTEGER));
         }
 
         criteria.addOrder(Order.asc("o.valueDatetime"));
@@ -472,11 +473,11 @@ public class HibernateMotechDAO implements MotechDAO {
             criteria
                     .add(Restrictions
                             .sqlRestriction(
-                            "exists (select f.id from motechmodule_facility f "
-                                    + "inner join motechmodule_facility_patient fp "
-                                    + "on f.id = fp.facility_id "
-                                    + "where f.facility_id = ? and fp.patient_id = {alias}.patient_id)",
-                            facility.getFacilityId(), Hibernate.INTEGER));
+                                    "exists (select f.id from motechmodule_facility f "
+                                            + "inner join motechmodule_facility_patient fp "
+                                            + "on f.id = fp.facility_id "
+                                            + "where f.facility_id = ? and fp.patient_id = {alias}.patient_id)",
+                                    facility.getFacilityId(), Hibernate.INTEGER));
         }
         criteria.addOrder(Order.asc("e.encounterDatetime"));
         if (maxResults != null) {
@@ -520,11 +521,11 @@ public class HibernateMotechDAO implements MotechDAO {
             criteria
                     .add(Restrictions
                             .sqlRestriction(
-                            "exists (select f.id from motechmodule_facility f "
-                                    + "inner join motechmodule_facility_patient fp "
-                                    + "on f.id = fp.facility_id "
-                                    + "where f.facility_id = ? and fp.patient_id = {alias}.patient_id)",
-                            facility.getFacilityId(), Hibernate.INTEGER));
+                                    "exists (select f.id from motechmodule_facility f "
+                                            + "inner join motechmodule_facility_patient fp "
+                                            + "on f.id = fp.facility_id "
+                                            + "where f.facility_id = ? and fp.patient_id = {alias}.patient_id)",
+                                    facility.getFacilityId(), Hibernate.INTEGER));
         }
         criteria.add(Restrictions.eq("voided", false));
         criteria.addOrder(Order.asc("dueObsDatetime"));
@@ -578,11 +579,11 @@ public class HibernateMotechDAO implements MotechDAO {
             criteria
                     .add(Restrictions
                             .sqlRestriction(
-                            "exists (select f.id from motechmodule_facility f "
-                                    + "inner join motechmodule_facility_patient fp "
-                                    + "on f.id = fp.facility_id "
-                                    + "where f.facility_id = ? and fp.patient_id = {alias}.patient_id)",
-                            facility.getFacilityId(), Hibernate.INTEGER));
+                                    "exists (select f.id from motechmodule_facility f "
+                                            + "inner join motechmodule_facility_patient fp "
+                                            + "on f.id = fp.facility_id "
+                                            + "where f.facility_id = ? and fp.patient_id = {alias}.patient_id)",
+                                    facility.getFacilityId(), Hibernate.INTEGER));
         }
         criteria.add(Restrictions.eq("voided", false));
         criteria.addOrder(Order.asc("dueEncounterDatetime"));
@@ -632,11 +633,11 @@ public class HibernateMotechDAO implements MotechDAO {
         otherCriterion
                 .add(Restrictions
                         .sqlRestriction(
-                        "exists (select f.id from motechmodule_facility f "
-                                + "inner join motechmodule_facility_patient fp "
-                                + "on f.id = fp.facility_id "
-                                + "where f.facility_id = ? and fp.patient_id = {alias}.patient_id)",
-                        facilityId, Hibernate.INTEGER));
+                                "exists (select f.id from motechmodule_facility f "
+                                        + "inner join motechmodule_facility_patient fp "
+                                        + "on f.id = fp.facility_id "
+                                        + "where f.facility_id = ? and fp.patient_id = {alias}.patient_id)",
+                                facilityId, Hibernate.INTEGER));
         otherCriterion.add(phoneCriterion);
 
         // Get Patients by PatientId or NHIS or
@@ -681,7 +682,7 @@ public class HibernateMotechDAO implements MotechDAO {
         if (patientId != null && patientIdType != null) {
             criteria.add(Restrictions
                     .and(Restrictions.eq("id.identifierType", patientIdType),
-                    Restrictions.eq("id.identifier", patientId)));
+                            Restrictions.eq("id.identifier", patientId)));
         }
 
         Criterion firstNameCriterion = Restrictions.like("name.givenName",
@@ -710,11 +711,11 @@ public class HibernateMotechDAO implements MotechDAO {
             criteria
                     .add(Restrictions
                             .sqlRestriction(
-                            "exists (select f.id from motechmodule_facility f "
-                                    + "inner join motechmodule_facility_patient fp "
-                                    + "on f.id = fp.facility_id "
-                                    + "where f.facility_id = ? and fp.patient_id = {alias}.patient_id)",
-                            facilityId, Hibernate.INTEGER));
+                                    "exists (select f.id from motechmodule_facility f "
+                                            + "inner join motechmodule_facility_patient fp "
+                                            + "on f.id = fp.facility_id "
+                                            + "where f.facility_id = ? and fp.patient_id = {alias}.patient_id)",
+                                    facilityId, Hibernate.INTEGER));
         }
 
         if (nhisNumber != null && nhisAttrType != null) {
