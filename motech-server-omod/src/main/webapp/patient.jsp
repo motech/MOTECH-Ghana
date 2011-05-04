@@ -59,7 +59,8 @@
                 );
         var midwifeValidator = new MidwifeDataValidator($j('#mobileMidwifeInformation'),$j('#consent1'),
                                                         new PhoneDetailsValidator($j('#phoneNumber'),$j('#phoneType')),
-                                                        new MediaTypeValidator($j('#mediaType'),$j('#language'),$j('#dayOfWeek'),$j('#timeOfDay')));
+                                                        new MediaTypeValidator($j('#mediaType'),$j('#language'),$j('#dayOfWeek'),$j('#timeOfDay')),
+                                                        new EnrollmentValidator($j('#registrantType'),$j('#interestReason'),$j('#messagesStartWeek'),$j('#howLearned')));
 
         new Validators($j('#patient')).add(generalFieldsValidator).add(midwifeValidator);
     });
@@ -288,7 +289,7 @@
             <td class="labelcolumn"><label for="consent">Registrant has heard consent text and has consented to terms of
                 enrollment:</label></td>
             <td><form:checkbox path="consent"/></td>
-            <td><form:errors path="consent" cssClass="error"/></td>
+            <td class="hideme"><span for="content" class="error"><spring:message code="motechmodule.consent.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="phoneNumber">Phone Number:</label></td>
@@ -318,7 +319,6 @@
                 </form:select>
             </td>
             <td class="hideme"><span for="mediaType" class="error"><spring:message code="motechmodule.mediaType.required"/></span></td>
-            <td><form:errors path="mediaType" cssClass="error"/></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="language">Language for Messages:</label></td>
@@ -331,7 +331,6 @@
                 </form:select>
             </td>
             <td class="hideme"><span for="language" class="error"><spring:message code="motechmodule.language.required"/></span></td>
-            <td><form:errors path="language" cssClass="error"/></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="dayOfWeek">Day of week to receive messages:</label></td>
@@ -348,13 +347,11 @@
                 </form:select>
             </td>
             <td class="hideme"><span for="dayOfWeek" class="error"><spring:message code="motechmodule.dayOfWeek.required"/></span></td>
-            <td><form:errors path="dayOfWeek" cssClass="error"/></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="timeOfDay">Time of day to receive messages (HH:MM):</label></td>
             <td><form:input path="timeOfDay"/></td>
             <td class="hideme"><span for="timeOfDay" class="error"><spring:message code="motechmodule.timeOfDay.required"/></span></td>
-            <td><form:errors path="timeOfDay" cssClass="error"/></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="interestReason">Reason for interest in Mobile Midwife:</label></td>

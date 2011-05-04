@@ -2,7 +2,7 @@ RequiredField = function(ele) {
     var element = ele;
 
     this.validate = function(evaluate) {
-        var hasData = evaluate ? evaluate(element): hasValidData(element);
+        var hasData = evaluate ? evaluate(element) : hasValidData(element);
         var parentCell = getParentCell(element);
         var errorMessageCell = parentCell.siblings('.hideme');
         if (!hasData) {
@@ -13,8 +13,8 @@ RequiredField = function(ele) {
         return true;
     };
 
-    var hasValidData = function(ele){
-       return $j(ele).val().length > 0 ;
+    var hasValidData = function(ele) {
+        return $j(ele).val().length > 0;
     };
 
     var getParentCell = function(ele) {
@@ -98,12 +98,13 @@ MediaTypeValidator = function(mediaType, language, dayOfWeek, timeOfDay) {
 
 };
 
-MidwifeDataValidator = function(midWifeSection, consent, phoneDetailsValidator, mediaTypeValidator) {
+MidwifeDataValidator = function(midWifeSection, consent, phoneDetailsValidator, mediaTypeValidator , enrollmentValidator) {
 
     var midWifeDataSection = midWifeSection;
     var consent = consent;
     var phoneDetailsValidator = phoneDetailsValidator;
     var mediaTypeValidator = mediaTypeValidator;
+    var enrollmentValidator = enrollmentValidator;
 
 
     this.validate = function() {
@@ -111,7 +112,8 @@ MidwifeDataValidator = function(midWifeSection, consent, phoneDetailsValidator, 
             var consentGiven = new RequiredField(consent).validate(isChecked);
             var phoneDetailsGiven = phoneDetailsValidator.validate();
             var messageDetailsGiven = mediaTypeValidator.validate();
-            var hasValidData = consentGiven && phoneDetailsGiven && messageDetailsGiven;
+            var enrollmentDataGiven = enrollmentValidator.validate();
+            var hasValidData = consentGiven && phoneDetailsGiven && messageDetailsGiven && enrollmentDataGiven;
             alert('mm field validator ' + hasValidData);
             return hasValidData;
         }
@@ -119,9 +121,27 @@ MidwifeDataValidator = function(midWifeSection, consent, phoneDetailsValidator, 
     };
 
     var isChecked = function(ele) {
-        return ele.is(":checked") ;
+        return ele.is(":checked");
     };
 
+};
+
+EnrollmentValidator = function(patientType, reason, startWeek, howLearnt) {
+    var patientType = patientType;
+    var reason = reason;
+    var startWeek = startWeek;
+    var howLearnt = howLearnt;
+
+    this.validate = function() {
+        var reasonAndWeekSelected = true;
+        if (patientType.val() == 'OTHER') {
+            var selectedReason = new RequiredField(reason).validate();
+            var selectedStartWeek = new RequiredField(startWeek).validate();
+            reasonAndWeekSelected = selectedReason && selectedStartWeek;
+        }
+        var howLearntSelected = new RequiredField(howLearnt).validate();
+        return reasonAndWeekSelected && howLearnt;
+    };
 };
 
 Validators = function(form) {

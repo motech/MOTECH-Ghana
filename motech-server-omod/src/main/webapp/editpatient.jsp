@@ -50,12 +50,18 @@
         new PatientFormRegistrationEvents();
         var selectedLocation = new Location(${selectedLocation});
         new Country(${country}, selectedLocation);
-        new RequiredFieldValidator($j('#patient')).addAll(
-                $j('#firstName'), $j('#lastName')
+        var generalFieldsValidator = new RequiredFieldValidator();
+        generalFieldsValidator.addAll(
+                $j('#registrationMode'), $j('#motechId'), $j('#registrantType'), $j('#firstName'), $j('#lastName')
                 , $j('#birthDate'), $j('#birthDateEst'), $j('#sex'), $j('#insured'), $j('#region')
                 , $j('#district'), $j('#subDistrict'), $j('#facility'), $j('#communityId'), $j('#address')
                 , $j('#dueDate'), $j('#dueDateConfirmed'), $j('#enroll')
                 );
+        var midwifeValidator = new MidwifeDataValidator($j('#mobileMidwifeInformation'), $j('#consent1'),
+                new PhoneDetailsValidator($j('#phoneNumber'), $j('#phoneType')),
+                new MediaTypeValidator($j('#mediaType'), $j('#language'), $j('#dayOfWeek'), $j('#timeOfDay')));
+
+        new Validators($j('#patient')).add(generalFieldsValidator).add(midwifeValidator);
     });
 </script>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css"/>
@@ -245,11 +251,12 @@
             <td class="labelcolumn"><label for="consent">Registrant has heard consent text and has consented to terms of
                 enrollment:</label></td>
             <td><form:checkbox path="consent"/></td>
-            <td><form:errors path="consent" cssClass="error"/></td>
+            <td class="hideme"><span for="content" class="error"><spring:message code="motechmodule.consent.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="phoneNumber">Phone Number:</label></td>
             <td><form:input path="phoneNumber" maxlength="50"/></td>
+            <td class="hideme"><span for="phoneNumber" class="error"><spring:message code="motechmodule.phoneNumber.required"/></span></td>
             <td><form:errors path="phoneNumber" cssClass="error"/></td>
         </tr>
         <tr>
@@ -262,6 +269,7 @@
                     <form:option value="PUBLIC" label="Public phone"/>
                 </form:select>
             </td>
+            <td class="hideme"><span for="phoneType" class="error"><spring:message code="motechmodule.phoneType.required"/></span></td>
             <td><form:errors path="phoneType" cssClass="error"/></td>
         </tr>
         <tr>
@@ -273,7 +281,7 @@
                     <form:option value="VOICE" label="Voice"/>
                 </form:select>
             </td>
-            <td><form:errors path="mediaType" cssClass="error"/></td>
+            <td class="hideme"><span for="mediaType" class="error"><spring:message code="motechmodule.mediaType.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="language">Language for Messages:</label></td>
@@ -281,11 +289,11 @@
                 <form:select path="language">
                     <form:option value="" label="Select Value"/>
                     <c:forEach items="${languages}" var="language">
-                       <form:option value="${language.code}" label="${language.name}"/>
+                        <form:option value="${language.code}" label="${language.name}"/>
                     </c:forEach>
                 </form:select>
             </td>
-            <td><form:errors path="language" cssClass="error"/></td>
+            <td class="hideme"><span for="language" class="error"><spring:message code="motechmodule.language.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="dayOfWeek">Day of week to receive messages:</label></td>
@@ -301,12 +309,12 @@
                     <form:option value="SUNDAY" label="Sunday"/>
                 </form:select>
             </td>
-            <td><form:errors path="dayOfWeek" cssClass="error"/></td>
+            <td class="hideme"><span for="dayOfWeek" class="error"><spring:message code="motechmodule.dayOfWeek.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="timeOfDay">Time of day to receive messages (HH:MM):</label></td>
             <td><form:input path="timeOfDay"/></td>
-            <td><form:errors path="timeOfDay" cssClass="error"/></td>
+            <td class="hideme"><span for="timeOfDay" class="error"><spring:message code="motechmodule.timeOfDay.required"/></span></td>
         </tr>
     </table>
 </fieldset>

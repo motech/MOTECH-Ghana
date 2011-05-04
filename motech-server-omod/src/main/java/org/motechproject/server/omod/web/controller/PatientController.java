@@ -183,20 +183,7 @@ public class PatientController extends BasePatientController {
                 }
             }
         }
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName",
-                "motechmodule.firstName.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName",
-                "motechmodule.lastName.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birthDate",
-                "motechmodule.birthDate.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birthDateEst",
-                "motechmodule.birthDateEst.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "sex",
-                "motechmodule.sex.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "insured",
-                "motechmodule.insured.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "facility",
-                "motechmodule.facility.required");
+        
         if (regionIsUpperEast(patient)) {
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "communityId", "motechmodule.communityId.required");
         }
