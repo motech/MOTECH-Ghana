@@ -43,12 +43,19 @@
 <openmrs:htmlInclude file="/moduleResources/motechmodule/dynamic_combo_box.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patient_form_events.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/country.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/validator.js"/>
 <script type="text/javascript">
     var $j = jQuery.noConflict();
     $j(document).ready(function() {
         new PatientFormRegistrationEvents();
         var selectedLocation = new Location(${selectedLocation});
         new Country(${country}, selectedLocation);
+        new RequiredFieldValidator($j('#patient')).addAll(
+                $j('#firstName'), $j('#lastName')
+                , $j('#birthDate'), $j('#birthDateEst'), $j('#sex'), $j('#insured'), $j('#region')
+                , $j('#district'), $j('#subDistrict'), $j('#facility'), $j('#communityId'), $j('#address')
+                , $j('#dueDate'), $j('#dueDateConfirmed'), $j('#enroll')
+                );
     });
 </script>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css"/>
@@ -72,7 +79,7 @@
         <tr>
             <td class="labelcolumn"><label for="firstName">First Name:</label></td>
             <td><form:input path="firstName" maxlength="50"/></td>
-            <td><form:errors path="firstName" cssClass="error"/></td>
+            <td class="hideme"><span for="firstName" class="error"><spring:message code="motechmodule.firstName.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="middleName">Middle Name:</label></td>
@@ -82,7 +89,7 @@
         <tr>
             <td class="labelcolumn"><label for="lastName">Last Name:</label></td>
             <td><form:input path="lastName" maxlength="50"/></td>
-            <td><form:errors path="lastName" cssClass="error"/></td>
+            <td class="hideme"><span for="lastName" class="error"><spring:message code="motechmodule.lastName.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="prefName">Preferred Name:</label></td>
@@ -92,6 +99,7 @@
         <tr>
             <td class="labelcolumn"><label for="birthDate">Date of Birth (DD/MM/YYYY):</label></td>
             <td><form:input path="birthDate"/></td>
+            <td class="hideme"><span for="birthDate" class="error"><spring:message code="motechmodule.birthDate.required"/></span></td>
             <td><form:errors path="birthDate" cssClass="error"/></td>
         </tr>
         <tr>
@@ -103,7 +111,7 @@
                     <form:option value="false" label="No"/>
                 </form:select>
             </td>
-            <td><form:errors path="birthDateEst" cssClass="error"/></td>
+            <td class="hideme"><span for="birthDateEst" class="error"><spring:message code="motechmodule.birthDateEst.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="sex">Sex:</label></td>
@@ -114,7 +122,7 @@
                     <form:option value="MALE" label="Male"/>
                 </form:select>
             </td>
-            <td><form:errors path="sex" cssClass="error"/></td>
+            <td class="hideme"><span for="sex" class="error"><spring:message code="motechmodule.sex.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="insured">Insured:</label></td>
@@ -125,7 +133,7 @@
                     <form:option value="false" label="No"/>
                 </form:select>
             </td>
-            <td><form:errors path="insured" cssClass="error"/></td>
+            <td class="hideme"><span for="insured" class="error"><spring:message code="motechmodule.insured.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="nhis">NHIS Number:</label></td>
@@ -149,7 +157,7 @@
                     <form:option value="" label="Select Value"/>
                 </form:select>
             </td>
-            <td><form:errors path="region" cssClass="error"/></td>
+            <td class="hideme"><span for="region" class="error"><spring:message code="motechmodule.region.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="district">District:</label></td>
@@ -158,7 +166,7 @@
                     <form:option value="" label="Select Value"/>
                 </form:select>
             </td>
-            <td><form:errors path="district" cssClass="error"/></td>
+            <td class="hideme"><span for="district" class="error"><spring:message code="motechmodule.district.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="subDistrict">Sub District:</label></td>
@@ -167,7 +175,7 @@
                     <form:option value="" label="Select Value"/>
                 </form:select>
             </td>
-            <td><form:errors path="subDistrict" cssClass="error"/></td>
+            <td class="hideme"><span for="subDistrict" class="error"><spring:message code="motechmodule.subDistrict.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="facility">Facility:</label></td>
@@ -176,7 +184,7 @@
                     <form:option value="" label="Select Value"/>
                 </form:select>
             </td>
-            <td><form:errors path="facility" cssClass="error"/></td>
+            <td class="hideme"><span for="facility" class="error"><spring:message code="motechmodule.facility.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="communityId">Community:</label></td>
@@ -185,12 +193,13 @@
                     <form:option value="" label="Select Value"/>
                 </form:select>
             </td>
+            <td class="hideme"><span for="communityId" class="error"><spring:message code="motechmodule.communityId.required"/></span></td>
             <td><form:errors path="communityId" cssClass="error"/></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="address">Address/household:</label></td>
             <td><form:input path="address" maxlength="50"/></td>
-            <td><form:errors path="address" cssClass="error"/></td>
+            <td class="hideme"><span for="address" class="error"><spring:message code="motechmodule.address.required"/></span></td>
         </tr>
     </table>
 </fieldset>
@@ -200,12 +209,26 @@
         <tr>
             <td class="labelcolumn"><label for="dueDate">Expected Delivery Date (DD/MM/YYYY):</label></td>
             <td><form:input path="dueDate"/></td>
+            <td class="hideme"><span for="dueDate" class="error"><spring:message code="motechmodule.dueDate.required"/></span></td>
             <td><form:errors path="dueDate" cssClass="error"/></td>
         </tr>
     </table>
 </fieldset>
 <fieldset>
     <legend>Enrollment Information</legend>
+    <table id="mobileMidwifeInformation">
+        <tr>
+            <td class="labelcolumn"><label for="enroll">Enrolled in Mobile Midwife:</label></td>
+            <td>
+                <form:select path="enroll">
+                    <form:option value="" label="Select Value"/>
+                    <form:option value="true" label="Yes"/>
+                    <form:option value="false" label="No"/>
+                </form:select>
+            </td>
+            <td class="hideme"><span for="enroll" class="error"><spring:message code="motechmodule.enroll.required"/></span></td>
+        </tr>
+    </table>
     <table>
         <tr>
             <td class="labelcolumn"><label for="enroll">Enrolled in Mobile Midwife:</label></td>
@@ -216,7 +239,7 @@
                     <form:option value="false" label="No"/>
                 </form:select>
             </td>
-            <td><form:errors path="enroll" cssClass="error"/></td>
+            <td class="hideme"><span for="enroll" class="error"><spring:message code="motechmodule.enroll.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="consent">Registrant has heard consent text and has consented to terms of

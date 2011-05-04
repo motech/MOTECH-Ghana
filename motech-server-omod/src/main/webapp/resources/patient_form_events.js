@@ -1,3 +1,4 @@
+
 function PatientFormRegistrationEvents() {
 
     var languages = new DynamicComboBox($j('#language'));
