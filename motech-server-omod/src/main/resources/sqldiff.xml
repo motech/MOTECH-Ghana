@@ -2026,7 +2026,7 @@
         <date>April 21 2011</date>
         <description>Configuration data for message program state transition</description>
         <sql>
-            INSERT INTO motechmodule_message_program(motechmodule_message_program_id, name, start_state, end_state) VALUES(1, 'Weekly Info Child Message Program', 88, 92);
+            INSERT INTO motechmodule_message_program(motechmodule_message_program_id, name, start_state, end_state) VALUES(1, 'Weekly Info Child Message Program', 88, 139);
             INSERT INTO motechmodule_message_program(motechmodule_message_program_id, name, start_state, end_state) VALUES(2, 'Weekly Pregnancy Message Program', 42, 41);
             INSERT INTO motechmodule_message_program(motechmodule_message_program_id, name, start_state, end_state) VALUES(3, 'Weekly Info Pregnancy Message Program', 83, 82);
         </sql>
@@ -2231,18 +2231,8 @@
             INSERT INTO motechmodule_messagedefinition(motechmodule_messagedefinition_id, message_key, public_id, message_type) VALUES (407,'child.week.52.c', 415, 'INFORMATIONAL');
         </sql>
     </diff>
-
      <diff>
         <version>1.10</version>
-        <author>ThoughtWorks</author>
-        <date>April 26 2011</date>
-        <description>update child info program end state after adding more states to child info program</description>
-        <sql>
-           UPDATE motechmodule_message_program SET end_state=139 WHERE motechmodule_message_program_id = 1;
-        </sql>
-    </diff>
-     <diff>
-        <version>1.11</version>
         <author>ThoughtWorks</author>
         <date>April 26 2011</date>
         <description>amend transition order to start from zero</description>
@@ -2251,15 +2241,13 @@
          UPDATE motechmodule_message_program_state_transition SET transition_order=1 where transition_order=2;
         </sql>
     </diff>
-
      <diff>
-        <version>1.12</version>
+        <version>1.11</version>
         <author>ThoughtWorks</author>
         <date>April 29 2011</date>
         <description>add childweek52 message keys to state transition</description>
         <sql>
          UPDATE motechmodule_message_program_state SET message_key = 'child.week.52', message_key_a = 'child.week.52.a', message_key_b = 'child.week.52.b', message_key_c = 'child.week.52.c' where  motechmodule_message_program_state_id = 139;
         </sql>
-    </diff>
-
+    </diff>     
 </sqldiff>
