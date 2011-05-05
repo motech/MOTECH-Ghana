@@ -45,7 +45,6 @@ import org.apache.commons.logging.LogFactory;
 public class ScheduleMaintServiceImpl implements ScheduleMaintService {
 
 	private static Log log = LogFactory.getLog(ScheduleMaintServiceImpl.class);
-
 	public static final String RESOURCE_NAME = "_DS_SCHEDULER_UTILS_RESOURCE";
 
 	TxSyncManWrapper syncManWrapper;
@@ -68,8 +67,7 @@ public class ScheduleMaintServiceImpl implements ScheduleMaintService {
 	private AffectedPatients getAffectedPatients() {
 		AffectedPatients patients = null;
 		try {
-			patients = (AffectedPatients) syncManWrapper
-					.getResource(RESOURCE_NAME);
+			patients = (AffectedPatients) syncManWrapper.getResource(RESOURCE_NAME);
 		} catch (ClassCastException e) {
 			log.debug("Cannot cast affected patients", e);
 			clearAffectedPatients();
@@ -101,8 +99,7 @@ public class ScheduleMaintServiceImpl implements ScheduleMaintService {
 	}
 
 	public void requestSynch() {
-		if (!syncManWrapper
-				.containsSynchronization(ScheduleMaintSynchronization.class)) {
+		if (!syncManWrapper.containsSynchronization(ScheduleMaintSynchronization.class)) {
 			ScheduleMaintSynchronization schedSync = new ScheduleMaintSynchronization();
 			schedSync.setSchedService(this);
 			syncManWrapper.registerSynchronization(schedSync);
