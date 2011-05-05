@@ -57,11 +57,11 @@
                 , $j('#district'), $j('#subDistrict'), $j('#facility'), $j('#communityId'), $j('#address')
                 , $j('#dueDate'), $j('#dueDateConfirmed'), $j('#enroll')
                 );
-        var midwifeValidator = new MidwifeDataValidator($j('#mobileMidwifeInformation'), $j('#consent1'),
-                new PhoneDetailsValidator($j('#phoneNumber'), $j('#phoneType')),
-                new MediaTypeValidator($j('#mediaType'), $j('#language'), $j('#dayOfWeek'), $j('#timeOfDay')));
-
-        new Validators($j('#patient')).add(generalFieldsValidator).add(midwifeValidator);
+        var midwifeValidator = new MidwifeDataValidator($j('#mobileMidwifeInformation'), $j('#consent1'))
+                .add(new PhoneDetailsValidator($j('#phoneNumber'), $j('#phoneType')))
+                .add(new MediaTypeValidator($j('#mediaType'), $j('#language'), $j('#dayOfWeek'), $j('#timeOfDay')));
+        var communityValidator = new CommunityValidator($j('#communityId'), $j('#region'));
+        new Validators($j('#patient')).add(generalFieldsValidator).add(communityValidator).add(midwifeValidator);
     });
 </script>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css"/>
@@ -222,19 +222,6 @@
 </fieldset>
 <fieldset>
     <legend>Enrollment Information</legend>
-    <table id="mobileMidwifeInformation">
-        <tr>
-            <td class="labelcolumn"><label for="enroll">Enrolled in Mobile Midwife:</label></td>
-            <td>
-                <form:select path="enroll">
-                    <form:option value="" label="Select Value"/>
-                    <form:option value="true" label="Yes"/>
-                    <form:option value="false" label="No"/>
-                </form:select>
-            </td>
-            <td class="hideme"><span for="enroll" class="error"><spring:message code="motechmodule.enroll.required"/></span></td>
-        </tr>
-    </table>
     <table>
         <tr>
             <td class="labelcolumn"><label for="enroll">Enrolled in Mobile Midwife:</label></td>
@@ -247,6 +234,8 @@
             </td>
             <td class="hideme"><span for="enroll" class="error"><spring:message code="motechmodule.enroll.required"/></span></td>
         </tr>
+    </table>
+    <table id="mobileMidwifeInformation">
         <tr>
             <td class="labelcolumn"><label for="consent">Registrant has heard consent text and has consented to terms of
                 enrollment:</label></td>

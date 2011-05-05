@@ -2,18 +2,27 @@ RequiredField = function(ele) {
     var element = ele;
 
     this.validate = function(evaluate) {
-        var hasData = evaluate ? evaluate(element) : hasValidData(element);
-        var parentCell = getParentCell(element);
-        var errorMessageCell = parentCell.siblings('.hideme');
-        if (!hasData) {
-            errorMessageCell.show();
-            return false;
+        if (isVisible()) {
+            var hasData = evaluate ? evaluate(element) : isNotBlank(element);
+            var errorMessageCell = getErrorMessageCell();
+            if (!hasData) {
+                errorMessageCell.show();
+                return false;
+            }
         }
-        errorMessageCell.hide();
         return true;
     };
 
-    var hasValidData = function(ele) {
+    var isVisible = function() {
+        return $j(ele).is(":visible");
+    }
+
+    var getErrorMessageCell = function() {
+        var parentCell = getParentCell(element);
+        return parentCell.siblings('.hideme');
+    };
+
+    var isNotBlank = function(ele) {
         return $j(ele).val().length > 0;
     };
 
@@ -22,10 +31,22 @@ RequiredField = function(ele) {
     };
 };
 
+CommunityValidator = function(community, region) {
+    var community = community;
+    var region = region;
+
+    this.validate = function() {
+        if (region.val() == 'Upper East') {
+            return new RequiredField(community).validate();
+        }
+        return true;
+    };
+
+};
+
 RequiredFieldValidator = function(patientForm) {
-    var form = patientForm;
     var elementsToValidate = new Array();
-    var hasValidData = true;
+
     var index = 0;
 
     this.add = function(element) {
@@ -42,13 +63,13 @@ RequiredFieldValidator = function(patientForm) {
     };
 
     this.validate = function() {
+        var isDataValid = true;
         $j(elementsToValidate).each(function(index, element) {
             if (isVisible(element)) {
-                hasValidData = new RequiredField(element).validate() && hasValidData;
+                isDataValid = new RequiredField(element).validate() && isDataValid;
             }
         });
-        alert('required field validator ' + hasValidData);
-        return hasValidData;
+        return isDataValid;
     };
 
     var isVisible = function(ele) {
@@ -93,29 +114,32 @@ MediaTypeValidator = function(mediaType, language, dayOfWeek, timeOfDay) {
             return languageSpecified && dayOfWeekSpecified
                     && timeOfDaySpecified;
         }
+        return true;
 
     };
 
 };
 
-MidwifeDataValidator = function(midWifeSection, consent, phoneDetailsValidator, mediaTypeValidator , enrollmentValidator) {
+MidwifeDataValidator = function(midWifeSection, consent) {
 
     var midWifeDataSection = midWifeSection;
     var consent = consent;
-    var phoneDetailsValidator = phoneDetailsValidator;
-    var mediaTypeValidator = mediaTypeValidator;
-    var enrollmentValidator = enrollmentValidator;
+    var validators = new Array();
+
+    this.add = function(validator) {
+        validators[validators.length] = validator;
+        return this;
+    };
 
 
     this.validate = function() {
         if (midWifeDataSection.is(":visible")) {
             var consentGiven = new RequiredField(consent).validate(isChecked);
-            var phoneDetailsGiven = phoneDetailsValidator.validate();
-            var messageDetailsGiven = mediaTypeValidator.validate();
-            var enrollmentDataGiven = enrollmentValidator.validate();
-            var hasValidData = consentGiven && phoneDetailsGiven && messageDetailsGiven && enrollmentDataGiven;
-            alert('mm field validator ' + hasValidData);
-            return hasValidData;
+            var isDataValid = true;
+            $j(validators).each(function(index, validator) {
+                isDataValid = validator.validate() && isDataValid;
+            });
+            return consentGiven && isDataValid;
         }
         return true;
     };
@@ -131,6 +155,7 @@ EnrollmentValidator = function(patientType, reason, startWeek, howLearnt) {
     var reason = reason;
     var startWeek = startWeek;
     var howLearnt = howLearnt;
+
 
     this.validate = function() {
         var reasonAndWeekSelected = true;
@@ -148,7 +173,6 @@ Validators = function(form) {
 
     var form = form;
     var validators = new Array();
-    var hasValidData = true;
 
     this.add = function(validator) {
         validators[validators.length] = validator;
@@ -156,10 +180,18 @@ Validators = function(form) {
     };
 
     var validate = function() {
+        removePreviousErrors();
+        var isValid = true;
         $j(validators).each(function(index, validator) {
-            hasValidData = validator.validate() && hasValidData;
+            isValid = validator.validate() && isValid;
         });
-        return hasValidData;
+        return isValid;
+    };
+
+    var removePreviousErrors = function() {
+        $j(form).find('.hideme').each(function(index, ele) {
+            $j(ele).hide();
+        });
     };
 
     var onSubmit = function() {
