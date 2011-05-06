@@ -148,59 +148,6 @@ public class EditPatientController extends BasePatientController {
             errors.reject("motechmodule.id.required");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName",
-                "motechmodule.firstName.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName",
-                "motechmodule.lastName.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birthDate",
-                "motechmodule.birthDate.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birthDateEst",
-                "motechmodule.birthDateEst.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "sex",
-                "motechmodule.sex.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "insured",
-                "motechmodule.insured.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "facility",
-                "motechmodule.facility.required");
-
-        if(regionIsUpperEast(webPatient)){
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "communityId","motechmodule.communityId.required");
-        }
-        
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address",
-                "motechmodule.address.required");
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "enroll",
-                "motechmodule.enroll.required");
-
-        if (Boolean.TRUE.equals(webPatient.getEnroll())) {
-            if (!Boolean.TRUE.equals(webPatient.getConsent())) {
-                errors.rejectValue("consent", "motechmodule.consent.required");
-            }
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phoneType",
-                    "motechmodule.phoneType.required");
-            if (webPatient.getPhoneType() == ContactNumberType.PERSONAL
-                    || webPatient.getPhoneType() == ContactNumberType.HOUSEHOLD) {
-                ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-                        "phoneNumber", "motechmodule.phoneNumber.required");
-            }
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mediaType",
-                    "motechmodule.mediaType.required");
-            if (webPatient.getPhoneType() == ContactNumberType.PUBLIC
-                    && webPatient.getMediaType() != null
-                    && webPatient.getMediaType() != MediaType.VOICE) {
-                errors.rejectValue("mediaType", "motechmodule.mediaType.voice");
-            }
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language",
-                    "motechmodule.language.required");
-            if (webPatient.getMediaType() == MediaType.TEXT
-                    && webPatient.getLanguage() != null
-                    && !webPatient.getLanguage().equals("en")) {
-                errors.rejectValue("language", "motechmodule.language.english");
-            }
-        }
-
-
         Community community = null;
         if (webPatient.getCommunityId() != null) {
             community = registrarBean.getCommunityById(webPatient
@@ -229,21 +176,6 @@ public class EditPatientController extends BasePatientController {
             errors.rejectValue("phoneNumber",
                     "motechmodule.phoneNumber.invalid");
         }
-
-        validateTextLength(errors, "firstName", webPatient.getFirstName(),
-                MotechConstants.MAX_STRING_LENGTH_OPENMRS);
-        validateTextLength(errors, "middleName", webPatient.getMiddleName(),
-                MotechConstants.MAX_STRING_LENGTH_OPENMRS);
-        validateTextLength(errors, "lastName", webPatient.getLastName(),
-                MotechConstants.MAX_STRING_LENGTH_OPENMRS);
-        validateTextLength(errors, "prefName", webPatient.getPrefName(),
-                MotechConstants.MAX_STRING_LENGTH_OPENMRS);
-        validateTextLength(errors, "nhis", webPatient.getNhis(),
-                MotechConstants.MAX_STRING_LENGTH_OPENMRS);
-        validateTextLength(errors, "address", webPatient.getAddress(),
-                MotechConstants.MAX_STRING_LENGTH_OPENMRS);
-        validateTextLength(errors, "phoneNumber", webPatient.getPhoneNumber(),
-                MotechConstants.MAX_STRING_LENGTH_OPENMRS);
 
         if (!errors.hasErrors()) {
             registrarBean.editPatient(patient, webPatient.getFirstName(),

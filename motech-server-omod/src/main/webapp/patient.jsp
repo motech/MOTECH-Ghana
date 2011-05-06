@@ -54,15 +54,16 @@
         generalFieldsValidator.addAll(
                 $j('#registrationMode'), $j('#motechId'), $j('#registrantType'), $j('#firstName'), $j('#lastName')
                 , $j('#birthDate'), $j('#birthDateEst'), $j('#sex'), $j('#insured'), $j('#region')
-                , $j('#district'), $j('#subDistrict'), $j('#facility'), $j('#communityId'), $j('#address')
+                , $j('#district'), $j('#subDistrict'), $j('#facility'), $j('#address')
                 , $j('#dueDate'), $j('#dueDateConfirmed'), $j('#enroll')
                 );
-        var midwifeValidator = new MidwifeDataValidator($j('#mobileMidwifeInformation'),$j('#consent1'),
-                                                        new PhoneDetailsValidator($j('#phoneNumber'),$j('#phoneType')),
-                                                        new MediaTypeValidator($j('#mediaType'),$j('#language'),$j('#dayOfWeek'),$j('#timeOfDay')),
-                                                        new EnrollmentValidator($j('#registrantType'),$j('#interestReason'),$j('#messagesStartWeek'),$j('#howLearned')));
+        var midwifeValidator = new MidwifeDataValidator($j('#mobileMidwifeInformation'), $j('#consent1'))
+                .add(new PhoneDetailsValidator($j('#phoneNumber'), $j('#phoneType')))
+                .add(new MediaTypeValidator($j('#mediaType'), $j('#language'), $j('#dayOfWeek'), $j('#timeOfDay')))
+                .add(new EnrollmentValidator($j('#registrantType'), $j('#interestReason'), $j('#messagesStartWeek'), $j('#howLearned')));
 
-        new Validators($j('#patient')).add(generalFieldsValidator).add(midwifeValidator);
+        var communityValidator = new CommunityValidator($j('#communityId'), $j('#region'));
+        new Validators($j('#patient')).add(generalFieldsValidator).add(communityValidator).add(midwifeValidator);
     });
 </script>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css"/>
@@ -326,7 +327,7 @@
                 <form:select path="language">
                     <form:option value="" label="Select Value"/>
                     <c:forEach items="${languages}" var="language">
-                       <form:option value="${language.code}" label="${language.name}"/>
+                        <form:option value="${language.code}" label="${language.name}"/>
                     </c:forEach>
                 </form:select>
             </td>
@@ -400,7 +401,8 @@
                     </c:forEach>
                 </form:select>
             </td>
-            <td class="hideme"><span for="messagesStartWeek" class="error"><spring:message code="motechmodule.messagesStartWeek.required"/></span></td>
+            <td class="hideme"><span for="messagesStartWeek" class="error"><spring:message code="motechmodule.messagesStartWeek.required"/></span>
+            </td>
             <td><form:errors path="messagesStartWeek" cssClass="error"/></td>
         </tr>
     </table>
