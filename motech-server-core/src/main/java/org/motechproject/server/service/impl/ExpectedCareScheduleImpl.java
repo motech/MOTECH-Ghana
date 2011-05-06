@@ -48,153 +48,144 @@ import org.motechproject.server.time.TimePeriod;
 import org.openmrs.Patient;
 
 public class ExpectedCareScheduleImpl implements ExpectedCareSchedule {
+    private static Log log = LogFactory.getLog(ExpectedCareScheduleImpl.class);
+    protected String name;
+    protected Integer lateValue;
+    protected TimePeriod latePeriod;
+    protected RegistrarBean registrarBean;
+    protected List<ExpectedCareEvent> events = new ArrayList<ExpectedCareEvent>();
+    protected List<Requirement> requirements = new ArrayList<Requirement>();
 
-	private static Log log = LogFactory.getLog(ExpectedCareScheduleImpl.class);
+    public void updateSchedule(Patient patient, Date date) {
+        log.debug("Evaluating schedule: " + name + ", patient: " + patient.getPatientId());
+        if (meetsRequirements(patient, date)) {
+            performScheduleUpdate(patient, date);
+        } else {
+            log.debug("Failed to meet requisites, removing events for schedule");
+            removeExpectedCare(patient);
+        }
+    }
 
-	protected String name;
+    public boolean meetsRequirements(Patient patient, Date date) {
+        for (Requirement requirement : requirements) {
+            if (!requirement.meetsRequirement(patient, date)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	protected Integer lateValue;
-	protected TimePeriod latePeriod;
+    protected void performScheduleUpdate(Patient patient, Date date) {
+    }
 
-	protected List<ExpectedCareEvent> events = new ArrayList<ExpectedCareEvent>();
-	protected List<Requirement> requirements = new ArrayList<Requirement>();
+    protected void removeExpectedCare(Patient patient) {
+    }
 
-	protected RegistrarBean registrarBean;
+    protected Date getReferenceDate(Patient patient) {
+        return patient.getBirthdate();
+    }
 
-	public void updateSchedule(Patient patient, Date date) {
-		log.debug("Evaluating schedule: " + name + ", patient: "
-				+ patient.getPatientId());
+    protected boolean validReferenceDate(Date referenceDate, Date currentDate) {
+        return referenceDate != null;
+    }
 
-		if (meetsRequirements(patient, date)) {
-			performScheduleUpdate(patient, date);
-		} else {
-			log
-					.debug("Failed to meet requisites, removing events for schedule");
+    protected Date getMinDate(Date date, ExpectedCareEvent event) {
+        return calculateDate(date, event.getMinValue(), event.getMinPeriod());
+    }
 
-			removeExpectedCare(patient);
-		}
-	}
+    protected Date getDueDate(Date date, ExpectedCareEvent event) {
+        return calculateDate(date, event.getDueValue(), event.getDuePeriod());
+    }
 
-	public boolean meetsRequirements(Patient patient, Date date) {
-		for (Requirement requirement : requirements) {
-			if (!requirement.meetsRequirement(patient, date)) {
-				return false;
-			}
-		}
-		return true;
-	}
+    protected Date getLateDate(Date date, ExpectedCareEvent event) {
+        if (event.getLateValue() != null && event.getLatePeriod() != null) {
+            return calculateDate(date, event.getLateValue(), event
+                    .getLatePeriod());
+        } else {
+            return calculateDate(date, lateValue, latePeriod);
+        }
+    }
 
-	protected void performScheduleUpdate(Patient patient, Date date) {
-	}
+    protected Date getMaxDate(Date date, ExpectedCareEvent event) {
+        return calculateDate(date, event.getMaxValue(), event.getMaxPeriod());
+    }
 
-	protected void removeExpectedCare(Patient patient) {
-	}
+    protected Date calculateDate(Date date, Integer value, TimePeriod period) {
+        if (date == null || value == null || period == null) {
+            return null;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
 
-	protected Date getReferenceDate(Patient patient) {
-		return patient.getBirthdate();
-	}
+        switch (period) {
+            case minute:
+                calendar.add(Calendar.MINUTE, value);
+                break;
+            case hour:
+                calendar.add(Calendar.HOUR, value);
+                break;
+            case day:
+                calendar.add(Calendar.DATE, value);
+                break;
+            case week:
+                // Add weeks as days
+                calendar.add(Calendar.DATE, value * 7);
+                break;
+            case month:
+                calendar.add(Calendar.MONTH, value);
+                break;
+            case year:
+                calendar.add(Calendar.YEAR, value);
+                break;
+        }
+        return calendar.getTime();
+    }
 
-	protected boolean validReferenceDate(Date referenceDate, Date currentDate) {
-		return referenceDate != null;
-	}
+    public String getName() {
+        return name;
+    }
 
-	protected Date getMinDate(Date date, ExpectedCareEvent event) {
-		return calculateDate(date, event.getMinValue(), event.getMinPeriod());
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	protected Date getDueDate(Date date, ExpectedCareEvent event) {
-		return calculateDate(date, event.getDueValue(), event.getDuePeriod());
-	}
+    public Integer getLateValue() {
+        return lateValue;
+    }
 
-	protected Date getLateDate(Date date, ExpectedCareEvent event) {
-		if (event.getLateValue() != null && event.getLatePeriod() != null) {
-			return calculateDate(date, event.getLateValue(), event
-					.getLatePeriod());
-		} else {
-			return calculateDate(date, lateValue, latePeriod);
-		}
-	}
+    public void setLateValue(Integer lateValue) {
+        this.lateValue = lateValue;
+    }
 
-	protected Date getMaxDate(Date date, ExpectedCareEvent event) {
-		return calculateDate(date, event.getMaxValue(), event.getMaxPeriod());
-	}
+    public TimePeriod getLatePeriod() {
+        return latePeriod;
+    }
 
-	protected Date calculateDate(Date date, Integer value, TimePeriod period) {
-		if (date == null || value == null || period == null) {
-			return null;
-		}
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
+    public void setLatePeriod(TimePeriod latePeriod) {
+        this.latePeriod = latePeriod;
+    }
 
-		switch (period) {
-		case minute:
-			calendar.add(Calendar.MINUTE, value);
-			break;
-		case hour:
-			calendar.add(Calendar.HOUR, value);
-			break;
-		case day:
-			calendar.add(Calendar.DATE, value);
-			break;
-		case week:
-			// Add weeks as days
-			calendar.add(Calendar.DATE, value * 7);
-			break;
-		case month:
-			calendar.add(Calendar.MONTH, value);
-			break;
-		case year:
-			calendar.add(Calendar.YEAR, value);
-			break;
-		}
-		return calendar.getTime();
-	}
+    public List<ExpectedCareEvent> getEvents() {
+        return events;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setEvents(List<ExpectedCareEvent> events) {
+        this.events = events;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public List<Requirement> getRequirements() {
+        return requirements;
+    }
 
-	public Integer getLateValue() {
-		return lateValue;
-	}
+    public void setRequirements(List<Requirement> requirements) {
+        this.requirements = requirements;
+    }
 
-	public void setLateValue(Integer lateValue) {
-		this.lateValue = lateValue;
-	}
+    public RegistrarBean getRegistrarBean() {
+        return registrarBean;
+    }
 
-	public TimePeriod getLatePeriod() {
-		return latePeriod;
-	}
-
-	public void setLatePeriod(TimePeriod latePeriod) {
-		this.latePeriod = latePeriod;
-	}
-
-	public List<ExpectedCareEvent> getEvents() {
-		return events;
-	}
-
-	public void setEvents(List<ExpectedCareEvent> events) {
-		this.events = events;
-	}
-
-	public List<Requirement> getRequirements() {
-		return requirements;
-	}
-
-	public void setRequirements(List<Requirement> requirements) {
-		this.requirements = requirements;
-	}
-
-	public RegistrarBean getRegistrarBean() {
-		return registrarBean;
-	}
-
-	public void setRegistrarBean(RegistrarBean registrarBean) {
-		this.registrarBean = registrarBean;
-	}
+    public void setRegistrarBean(RegistrarBean registrarBean) {
+        this.registrarBean = registrarBean;
+    }
 }

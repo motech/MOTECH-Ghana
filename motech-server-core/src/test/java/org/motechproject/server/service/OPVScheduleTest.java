@@ -95,7 +95,7 @@ public class OPVScheduleTest extends TestCase {
 
 		Patient patient = new Patient();
 		patient.setBirthdate(calendar.getTime());
-
+        patient.setDateCreated(calendar.getTime());
 		Capture<Date> minDateCapture = new Capture<Date>();
 		Capture<Date> dueDateCapture = new Capture<Date>();
 		Capture<Date> lateDateCapture = new Capture<Date>();
@@ -118,6 +118,8 @@ public class OPVScheduleTest extends TestCase {
 						capture(lateDateCapture), capture(maxDateCapture),
 						eq(opv1Event.getName()), eq(opvSchedule.getName())))
 				.andReturn(new ExpectedObs());
+        calendar.set(2010,03,10);
+        expect(registrarBean.getChildRegistrationDate()).andReturn(calendar.getTime());
 
 		replay(registrarBean);
 
@@ -143,6 +145,7 @@ public class OPVScheduleTest extends TestCase {
 
 		Patient patient = new Patient();
 		patient.setBirthdate(calendar.getTime());
+        patient.setDateCreated(calendar.getTime());
 
 		Capture<ExpectedObs> expectedObs0Capture = new Capture<ExpectedObs>();
 		Capture<ExpectedObs> expectedObs1Capture = new Capture<ExpectedObs>();
@@ -167,7 +170,8 @@ public class OPVScheduleTest extends TestCase {
 				.andReturn(new ExpectedObs());
 		expect(registrarBean.saveExpectedObs(capture(expectedObs1Capture)))
 				.andReturn(new ExpectedObs());
-
+        calendar.set(2010,03,10);
+        expect(registrarBean.getChildRegistrationDate()).andReturn(calendar.getTime());
 		replay(registrarBean);
 
 		opvSchedule.updateSchedule(patient, date);

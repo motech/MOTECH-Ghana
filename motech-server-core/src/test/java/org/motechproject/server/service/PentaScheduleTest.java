@@ -98,6 +98,7 @@ public class PentaScheduleTest extends TestCase {
 
 		Patient patient = new Patient();
 		patient.setBirthdate(calendar.getTime());
+        patient.setDateCreated(calendar.getTime());
 
 		Capture<Date> minDateCapture = new Capture<Date>();
 		Capture<Date> dueDateCapture = new Capture<Date>();
@@ -113,7 +114,7 @@ public class PentaScheduleTest extends TestCase {
 								.getBirthdate())).andReturn(obsList);
 		expect(registrarBean.getExpectedObs(patient, pentaSchedule.getName()))
 				.andReturn(expectedObsList);
-		expect(
+        expect(
 				registrarBean.createExpectedObs(eq(patient), eq(pentaSchedule
 						.getConceptName()), eq(pentaSchedule
 						.getValueConceptName()), eq(penta1Event.getNumber()),
@@ -121,6 +122,8 @@ public class PentaScheduleTest extends TestCase {
 						capture(lateDateCapture), capture(maxDateCapture),
 						eq(penta1Event.getName()), eq(pentaSchedule.getName())))
 				.andReturn(new ExpectedObs());
+        calendar.set(2010,03,10);
+        expect(registrarBean.getChildRegistrationDate()).andReturn(calendar.getTime());
 
 		replay(registrarBean);
 
@@ -145,6 +148,7 @@ public class PentaScheduleTest extends TestCase {
 
 		Patient patient = new Patient();
 		patient.setBirthdate(calendar.getTime());
+        patient.setDateCreated(calendar.getTime());
 
 		Capture<ExpectedObs> expectedObsCapture = new Capture<ExpectedObs>();
 
@@ -163,7 +167,8 @@ public class PentaScheduleTest extends TestCase {
 				.andReturn(expectedObsList);
 		expect(registrarBean.saveExpectedObs(capture(expectedObsCapture)))
 				.andReturn(new ExpectedObs());
-
+        calendar.set(2010,03,10);
+        expect(registrarBean.getChildRegistrationDate()).andReturn(calendar.getTime());
 		replay(registrarBean);
 
 		pentaSchedule.updateSchedule(patient, date);
@@ -188,6 +193,7 @@ public class PentaScheduleTest extends TestCase {
 
 		Patient patient = new Patient();
 		patient.setBirthdate(calendar.getTime());
+        patient.setDateCreated(calendar.getTime());
 
 		Capture<Date> minDateCapture = new Capture<Date>();
 		Capture<Date> dueDateCapture = new Capture<Date>();
@@ -222,7 +228,8 @@ public class PentaScheduleTest extends TestCase {
 						capture(lateDateCapture), capture(maxDateCapture),
 						eq(penta2Event.getName()), eq(pentaSchedule.getName())))
 				.andReturn(new ExpectedObs());
-
+        calendar.set(2010,03,10);
+        expect(registrarBean.getChildRegistrationDate()).andReturn(calendar.getTime());
 		replay(registrarBean);
 
 		pentaSchedule.updateSchedule(patient, date);
@@ -251,6 +258,7 @@ public class PentaScheduleTest extends TestCase {
 
 		Patient patient = new Patient();
 		patient.setBirthdate(calendar.getTime());
+        patient.setDateCreated(calendar.getTime());
 
 		Capture<ExpectedObs> expectedObsCapture = new Capture<ExpectedObs>();
 
@@ -289,6 +297,7 @@ public class PentaScheduleTest extends TestCase {
 
 		Patient patient = new Patient();
 		patient.setBirthdate(calendar.getTime());
+        patient.setDateCreated(calendar.getTime());
 
 		List<Obs> obsList = new ArrayList<Obs>();
 		Obs obs = new Obs();
@@ -299,7 +308,6 @@ public class PentaScheduleTest extends TestCase {
 
 		expect(registrarBean.getExpectedObs(patient, pentaSchedule.getName()))
 				.andReturn(expectedObsList);
-
 		replay(registrarBean);
 
 		pentaSchedule.updateSchedule(patient, date);

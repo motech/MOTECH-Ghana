@@ -526,6 +526,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         removeAllMessageProgramEnrollments(patientId);
     }
 
+    public Date getChildRegistrationDate() {
+        MotechConfiguration configuration = motechService().getConfigurationFor("child.patient.registration.date");
+        return configuration.asDate();
+    }
+
     @Transactional
     public void editPatient(Patient patient, String firstName,
                             String middleName, String lastName, String preferredName,
@@ -2337,7 +2342,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         return getLastObsCreationDate(personService.getPerson(personId),
                 conceptService.getConcept(conceptName), conceptService
-                        .getConcept(conceptValue));
+                .getConcept(conceptValue));
     }
 
     public Date getLastObsDate(Integer personId, String conceptName,
@@ -2352,7 +2357,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                    Integer doseNumber) {
         List<Obs> matchingObs = obsService.getObservationsByPersonAndConcept(
                 personService.getPerson(personId), conceptService
-                        .getConcept(conceptName));
+                .getConcept(conceptName));
         for (Obs obs : matchingObs) {
             Double value = obs.getValueNumeric();
             if (value != null && doseNumber == value.intValue()) {

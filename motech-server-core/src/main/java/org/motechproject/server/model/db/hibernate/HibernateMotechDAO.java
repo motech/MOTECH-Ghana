@@ -50,19 +50,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.motechproject.server.messaging.MessageDefDate;
-import org.motechproject.server.model.Blackout;
-import org.motechproject.server.model.Community;
-import org.motechproject.server.model.ExpectedEncounter;
-import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.GeneralOutpatientEncounter;
-import org.motechproject.server.model.Message;
-import org.motechproject.server.model.MessageAttribute;
-import org.motechproject.server.model.MessageDefinition;
-import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.model.MessageStatus;
-import org.motechproject.server.model.ScheduledMessage;
-import org.motechproject.server.model.TroubledPhone;
+import org.motechproject.server.model.*;
 import org.motechproject.server.model.db.MotechDAO;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
@@ -884,5 +872,11 @@ public class HibernateMotechDAO implements MotechDAO {
 
     public void deletePatientIdentifier(Integer patientId) {
         sessionFactory.getCurrentSession().createQuery("delete from "+ PatientIdentifier.class.getName() + " pi where pi.patient.patientId = " + patientId);
+    }
+
+    public MotechConfiguration getConfiguration(String name){
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(MotechConfiguration.class)
+                .add(Restrictions.eq("name", name));
+        return (MotechConfiguration) criteria.uniqueResult();
     }
 }

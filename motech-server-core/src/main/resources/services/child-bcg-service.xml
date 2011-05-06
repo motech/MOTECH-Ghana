@@ -52,6 +52,9 @@
 					<property name="maxValue" value="1" />
 					<property name="maxPeriod" value="year" />
 				</bean>
+                <bean class="org.motechproject.server.service.impl.RegistrationRequirement">
+                    <property name="registrarBean" ref="registrarBean" />
+                </bean>
 			</list>
 		</property>
 		<property name="events">

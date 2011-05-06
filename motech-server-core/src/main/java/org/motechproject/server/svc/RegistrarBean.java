@@ -446,4 +446,5 @@ public interface RegistrarBean {
 
     public void stopEnrollmentFor(Integer patientId);
 
+    public Date getChildRegistrationDate();
 }

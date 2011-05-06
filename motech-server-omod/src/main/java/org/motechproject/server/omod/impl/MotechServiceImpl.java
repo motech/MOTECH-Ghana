@@ -51,8 +51,7 @@ import java.util.List;
 /**
  * An implementation of the MotechService interface using OpenMRS.
  */
-public class MotechServiceImpl extends BaseOpenmrsService implements
-		MotechService {
+public class MotechServiceImpl extends BaseOpenmrsService implements MotechService {
 
 	private MotechDAO motechDAO;
 
@@ -382,6 +381,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
     public void stopEnrollmentFor(Integer patientId) {
         registrarBean.stopEnrollmentFor(patientId);
+    }
+
+    public MotechConfiguration getConfigurationFor(String name) {
+        return motechDAO.getConfiguration(name);
     }
 
     public RCTService getRctService(){
