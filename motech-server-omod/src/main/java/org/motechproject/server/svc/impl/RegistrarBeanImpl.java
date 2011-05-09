@@ -3704,6 +3704,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return motechService().facilityFor(patient);
     }
 
+    public Date getChildRegistrationDate() {
+        return motechService().getConfigurationFor("valid.child.registration.date").asDate();
+    }
+
     public List<String> getStaffTypes() {
         return staffTypes;
     }

@@ -391,6 +391,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
         return motechDAO.getMessageLanguages();
     }
 
+    public MotechConfiguration getConfigurationFor(String name) {
+        return motechDAO.getConfiguration(name);
+    }
+
     public RCTService getRctService(){
         return rctService;
     }

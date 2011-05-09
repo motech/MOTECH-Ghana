@@ -190,4 +190,6 @@ public interface MotechDAO {
     Facility facilityFor(Patient patient);
 
     List<MessageLanguage> getMessageLanguages();
+
+    MotechConfiguration getConfiguration(String name);
 }

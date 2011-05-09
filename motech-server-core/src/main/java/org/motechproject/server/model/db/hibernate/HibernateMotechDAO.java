@@ -864,4 +864,10 @@ public class HibernateMotechDAO implements MotechDAO {
                         + " f where :patient in elements(f.patients)")
                 .setEntity("patient", patient).uniqueResult();
     }
+
+    public MotechConfiguration getConfiguration(String name){
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(MotechConfiguration.class)
+                .add(Restrictions.eq("name", name));
+        return (MotechConfiguration) criteria.uniqueResult();
+    }
 }
