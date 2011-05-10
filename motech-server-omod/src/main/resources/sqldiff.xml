@@ -2282,8 +2282,6 @@
          INSERT INTO motechmodule_message_language VALUES(5,'sen','Senya');
         </sql>
     </diff>
-
-
     <diff>
         <version>2.4</version>
         <author>ThoughtWorks</author>
@@ -2300,6 +2298,7 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
            INSERT INTO  motechmodule_configuration VALUES(1,'valid.child.registration.date','19-04-2011','Child patients registered after this date have proper care histories');
        </sql>
+    </diff>
      <diff>
         <version>2.5</version>
         <author>ThoughtWorks</author>
