@@ -159,15 +159,55 @@
             </form:select>
         </td>
         <td>
-        <span id="stateProvince_err" class="error" title="err_span">
+        <span id="stateProvince_err" class="error" title="err_span"/>
         <spring:message code="motechmodule.province.blank"/>
         </td>
     </tr>
 	<tr>
 		<td><form:label path="phoneNumber">Phone Number:</form:label></td>
 		<td><form:input path="phoneNumber" maxlength="50"/></td>
+        <td><a id="addPhone1">Add Additional Phone Number</a></td>
 		<td>
 		<span id="phoneNumber_err" class="error" title="err_span">
+		    <spring:message code="motechmodule.phoneNumber.invalid"/>
+		</span>
+		</td>
+	</tr>
+    <tr id="additional-phone1">
+		<td><form:label path="additionalPhoneNumber1">Additional Phone Number1:</form:label></td>
+		<td><form:input path="additionalPhoneNumber1" maxlength="50"/></td>
+         <td><a id="addPhone2">Add Additional Phone Number</a></td>
+		<td>
+		<span id="additional_phoneNumber1_err" class="error" title="err_span">
+		    <spring:message code="motechmodule.phoneNumber.invalid"/>
+		</span>
+		</td>
+	</tr>
+     <tr id="additional-phone2">
+		<td><form:label path="additionalPhoneNumber2">Additional Phone Number2:</form:label></td>
+		<td><form:input path="additionalPhoneNumber2" maxlength="50"/></td>
+          <td><a id="addPhone3">Add Additional Phone Number</a></td>
+		<td>
+		<span id="additional_phoneNumber2_err" class="error" title="err_span">
+		    <spring:message code="motechmodule.phoneNumber.invalid"/>
+		</span>
+		</td>
+	</tr>
+    <tr id="additional-phone3">
+		<td><form:label path="additionalPhoneNumber3">Additional Phone Number3:</form:label></td>
+		<td><form:input path="additionalPhoneNumber3" maxlength="50"/></td>
+         <td><a id="addPhone4">Add Additional Phone Number</a></td>
+		<td>
+		<span id="additional_phoneNumber3_err" class="error" title="err_span">
+		    <spring:message code="motechmodule.phoneNumber.invalid"/>
+		</span>
+		</td>
+	</tr>
+     <tr id="additional-phone4">
+		<td><form:label path="additionalPhoneNumber4">Additional Phone Number4:</form:label></td>
+		<td><form:input path="additionalPhoneNumber4" maxlength="50"/></td>
+		<td>
+		<span id="additional_phoneNumber4_err" class="error" title="err_span">
 		    <spring:message code="motechmodule.phoneNumber.invalid"/>
 		</span>
 		</td>

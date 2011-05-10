@@ -2283,6 +2283,7 @@
         </sql>
     </diff>
 
+
     <diff>
         <version>2.4</version>
         <author>ThoughtWorks</author>
@@ -2298,6 +2299,17 @@
             UNIQUE(`name`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
            INSERT INTO  motechmodule_configuration VALUES(1,'valid.child.registration.date','19-04-2011','Child patients registered after this date have proper care histories');
+       </sql>
+     <diff>
+        <version>2.5</version>
+        <author>ThoughtWorks</author>
+        <date>May 04 2011</date>
+        <description>add motechmodule_message_language table with preset language options</description>
+        <sql>
+            ALTER TABLE motechmodule_facility ADD COLUMN additional_phone_number1 varchar(50);
+            ALTER TABLE motechmodule_facility ADD COLUMN additional_phone_number2 varchar(50);
+            ALTER TABLE motechmodule_facility ADD COLUMN additional_phone_number3 varchar(50);
+            ALTER TABLE motechmodule_facility ADD COLUMN additional_phone_number4 varchar(50);
         </sql>
     </diff>
 
