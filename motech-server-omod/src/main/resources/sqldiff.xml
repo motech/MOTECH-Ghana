@@ -1695,13 +1695,13 @@
         <sql>
             CREATE TABLE IF NOT EXISTS `motechmodule_configuration` (
             `id` bigint NOT NULL auto_increment,
-            `name` varchar(500) NOT NULL,
+            `name` varchar(250) NOT NULL,
             `value` varchar(500) NOT NULL,
             `description` varchar(500) NOT NULL,
             PRIMARY KEY (`motechmodule_configuration_id`),
             UNIQUE(`name`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+            INSERT INTO  motechmodule_configuration VALUES(1,'valid.child.registration.date','19-04-2011','Child patients registered after this date have proper care histories');
         </sql>
     </diff>
 </sqldiff>

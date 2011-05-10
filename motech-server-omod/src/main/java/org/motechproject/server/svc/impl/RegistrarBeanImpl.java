@@ -74,6 +74,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     private static Log log = LogFactory.getLog(RegistrarBeanImpl.class);
 
+
     private ContextService contextService;
     public MessageService mobileService;
     private PatientService patientService;
@@ -527,7 +528,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public Date getChildRegistrationDate() {
-        MotechConfiguration configuration = motechService().getConfigurationFor("child.patient.registration.date");
+        MotechConfiguration configuration = motechService().getConfigurationFor(MotechConstants.VALID_CHILD_REGISTRATION_DATE);
         return configuration.asDate();
     }
 
