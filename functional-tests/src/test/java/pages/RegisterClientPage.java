@@ -74,6 +74,37 @@ public class RegisterClientPage {
         return lastName;
     }
 
+    //This is a temporary function to facilitate data entry for RCT.
+    public String RegisterMotherClientForRCTDataEntry(String dueDate , String phoneType) {
+        String lastName = "Last-"+ UtilityClass.getInstance().getCurrentDate();
+        selectOption("registrationMode", "Auto-generate MoTeCH ID");
+        selectOption("registrantType", "Pregnant mother");
+        inputFirstName.sendKeys("Foo");
+        inputMiddleName.sendKeys("middle");
+        inputLastName.sendKeys(lastName);
+        inputPreferredName.sendKeys("preferred");
+        inputDOB.sendKeys("01/01/1980");
+        selectOption("birthDateEst", "Yes");
+        selectOption("insured", "No");
+        selectOption("region", "Upper East");
+        selectOption("district", "Kassena-Nankana West");
+        selectOption("communityId", "Abulu");
+        inputAddress.sendKeys("Address");
+        setDueDate();
+        selectOption("dueDateConfirmed","Yes");
+        selectOption("enroll","Yes");
+        consent.click();
+        phoneNumber.sendKeys("0123456789");
+        selectOption("phoneType","Personal phone");
+        selectOption("mediaType","Text");
+        selectOption("language","English");
+        selectOption("interestReason","Currently pregnant");
+        selectOption("howLearned","GHS Nurse");
+        selectOption("messagesStartWeek","Pregnancy week 5");
+        submitButton.click();
+        return lastName;
+    }
+
     public String RegisterOtherClient(){
         String lastName = "Last-"+ UtilityClass.getInstance().getCurrentDate();
         selectOption("registrationMode", "Auto-generate MoTeCH ID");

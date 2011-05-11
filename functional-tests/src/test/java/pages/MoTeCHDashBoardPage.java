@@ -12,6 +12,6 @@ public class MoTeCHDashBoardPage {
 
     public void navigateToPage(HomePageLinksEnum page) {
         page.navigate(driver);
-        }
-
     }
+
+}

@@ -1,6 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.motechproject.functional.tests</groupId>
     <artifactId>motech-functional-tests</artifactId>
@@ -8,7 +7,6 @@
     <packaging>jar</packaging>
     <name>Motech Functional Test</name>
     <description>The core library for the server-side of the MoTeCH project.</description>
-
     <dependencies>
         <dependency>
             <groupId>org.testng</groupId>
@@ -35,6 +33,11 @@
             <artifactId>selenium-server</artifactId>
             <version>2.0b1</version>
         </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>5.14.7</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -47,35 +50,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.7.2</version>
                 <configuration>
-                    <skip>true</skip>
-                    <trimStackTrace>false</trimStackTrace>
+                    <groups>smoke</groups>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>unit-tests</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <configuration>
-                            <skip>true</skip>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>integration-tests</id>
+                        <id>integration-test</id>
                         <phase>integration-test</phase>
                         <goals>
                             <goal>test</goal>
                         </goals>
-                        <configuration>
-                            <!-- Never skip running the tests when the integration-test phase is invoked -->
-                            <skip>false</skip>
-                            <includes>
-                                <!-- Include integration tests within integration-test phase. -->
-                                <include>**/*Test.java</include>
-                            </includes>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -108,7 +93,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
@@ -118,20 +102,17 @@
                         <phase>pre-integration-test</phase>
                         <goals>
                             <goal>start</goal>
-                            <!--<goal>deployer-deploy</goal>-->
                         </goals>
                     </execution>
                     <execution>
                         <id>stop-tomcat</id>
                         <phase>post-integration-test</phase>
                         <goals>
-                            <!--<goal>deployer-undeploy</goal>-->
                             <goal>stop</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <!-- Container configuration -->
                     <wait>false</wait>
                     <container>
                         <containerId>tomcat6x</containerId>
