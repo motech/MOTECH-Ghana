@@ -192,4 +192,6 @@ public interface MotechDAO {
     List<MessageLanguage> getMessageLanguages();
 
     MotechConfiguration getConfiguration(String name);
+
+    Facility getUnknownFacility();
 }

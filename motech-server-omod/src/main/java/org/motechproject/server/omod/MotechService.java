@@ -264,4 +264,7 @@ public interface MotechService extends OpenmrsService {
 
     @Transactional(readOnly = true)
     MotechConfiguration getConfigurationFor(String name);
+
+    @Transactional(readOnly = true)
+    Facility unknownFacility();
 }

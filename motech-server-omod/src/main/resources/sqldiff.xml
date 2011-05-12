@@ -2299,16 +2299,25 @@
            INSERT INTO  motechmodule_configuration VALUES(1,'valid.child.registration.date','19-04-2011','Child patients registered after this date have proper care histories');
        </sql>
     </diff>
-     <diff>
+    <diff>
         <version>2.5</version>
         <author>ThoughtWorks</author>
-        <date>May 04 2011</date>
+        <date>May 11 2011</date>
         <description>add motechmodule_message_language table with preset language options</description>
         <sql>
             ALTER TABLE motechmodule_facility ADD COLUMN additional_phone_number1 varchar(50);
             ALTER TABLE motechmodule_facility ADD COLUMN additional_phone_number2 varchar(50);
             ALTER TABLE motechmodule_facility ADD COLUMN additional_phone_number3 varchar(50);
             ALTER TABLE motechmodule_facility ADD COLUMN additional_phone_number4 varchar(50);
+        </sql>
+    </diff>
+    <diff>
+        <version>2.6</version>
+        <author>ThoughtWorks</author>
+        <date>May 12 2011</date>
+        <description>Added Unknown facility</description>
+        <sql>
+            insert into motechmodule_facility(facility_id,location_id) values(99999,1);
         </sql>
     </diff>
 

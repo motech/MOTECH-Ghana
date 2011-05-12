@@ -42,6 +42,7 @@ import org.hibernate.criterion.Order;
 import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.model.*;
 import org.motechproject.server.model.db.MotechDAO;
+import org.motechproject.server.util.MotechConstants;
 import org.openmrs.*;
 
 import java.util.Date;
@@ -52,6 +53,7 @@ import java.util.List;
  * using the hibernate object relational mapping library.
  */
 public class HibernateMotechDAO implements MotechDAO {
+
 
     private SessionFactory sessionFactory;
 
@@ -869,5 +871,11 @@ public class HibernateMotechDAO implements MotechDAO {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(MotechConfiguration.class)
                 .add(Restrictions.eq("name", name));
         return (MotechConfiguration) criteria.uniqueResult();
+    }
+
+    public Facility getUnknownFacility() {
+       Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Facility.class)
+                .add(Restrictions.eq("facilityId", MotechConstants.UNKNOWN_FACILITY_ID));
+        return (Facility) criteria.uniqueResult();
     }
 }

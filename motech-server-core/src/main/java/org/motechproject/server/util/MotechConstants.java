@@ -111,7 +111,7 @@ public final class MotechConstants {
 	public static final String TIME_FORMAT_DELIVERY_TIME = "HH:mm";
 	public static final String PHONE_REGEX_PATTERN = "^0[0-9]{9}$";
 	public static final int MAX_STRING_LENGTH_OPENMRS = 50;
-
+    public static final String UNKNOWN_FACILITY_ID = "99999";
 	/*
 	 * Values already existing in OpenMRS, used by Motech
 	 */

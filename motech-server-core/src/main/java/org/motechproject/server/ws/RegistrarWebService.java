@@ -532,7 +532,7 @@ public class RegistrarWebService implements RegistrarService {
             @WebParam(name = "cwcRegDateToday") Boolean cwcRegToday,
             @WebParam(name = "cwcRegDate") Date cwcRegDate,
             @WebParam(name = "ancRegNumber") String ancRegNumber,
-            @WebParam(name = "ancRegDateToday") Boolean ancRegToday,
+            @WebParam(name = "ancRegDateToday") String ancRegToday,
             @WebParam(name = "ancRegDate") Date ancRegDate,
             @WebParam(name = "height") Double height,
             @WebParam(name = "gravida") Integer gravida,
@@ -558,7 +558,6 @@ public class RegistrarWebService implements RegistrarService {
 
         User staff = validateStaffId(staffId, errors, "StaffID");
         Facility facility = validateFacility(facilityId, errors, "FacilityID");
-
         Community communityObj = validateCommunity(community, errors, "Community");
 
         if (registrationMode == RegistrationMode.USE_PREPRINTED_ID) {
@@ -610,13 +609,12 @@ public class RegistrarWebService implements RegistrarService {
                     patient, cwcRegNumber, enroll, consent, ownership, phoneNumber,
                     format, language, dayOfWeek, timeOfDay, howLearned);
         }
-        if (ancRegNumber != null) {
-            ancRegDate = (ancRegToday) ? new Date() : ancRegDate;
-            registrarBean.registerANCMother(staff, facility.getLocation(), date,
-                    patient, ancRegNumber, expDeliveryDate, height, gravida,
-                    parity, enroll, consent, ownership, phoneNumber, format,
-                    language, dayOfWeek, timeOfDay, howLearned);
-        }
+        ancRegDate = decideANCRegistrationDate(ancRegToday, ancRegDate);
+        Facility ancFacility = decideFacility(facilityId, errors, ancRegToday);
+        registrarBean.registerANCMother(staff, ancFacility.getLocation(), date,
+                patient, ancRegNumber, expDeliveryDate, height, gravida,
+                parity, enroll, consent, ownership, phoneNumber, format,
+                language, dayOfWeek, timeOfDay, howLearned);
 
         registrarBean.recordPatientHistory(staff, facility.getLocation(), date,
                 patient, lastIPT, lastIPTDate, lastTT, lastTTDate, bcgDate,
@@ -624,6 +622,17 @@ public class RegistrarWebService implements RegistrarService {
                 yellowFeverDate, lastIPTI, lastIPTIDate, lastVitaminADate, whyNoHistory);
 
         return modelConverter.patientToWebService(patient, true);
+    }
+
+    private Facility decideFacility(Integer facilityId, ValidationErrors errors, String ancRegToday) {
+        if (ANCRegisterOption.IN_THE_PAST_IN_OTHER_FACILITY.isSameAs(ancRegToday)) {
+            return registrarBean.getUnknownFacility();
+        }
+        return validateFacility(facilityId, errors, "FacilityID");
+    }
+
+    private Date decideANCRegistrationDate(String ancRegToday, Date ancRegDate) {
+        return ANCRegisterOption.TODAY.isSameAs(ancRegToday) ? new Date() : ancRegDate;
     }
 
     private void validatePhoneNumber(String phoneNumber, String fieldName, ValidationErrors errors) {

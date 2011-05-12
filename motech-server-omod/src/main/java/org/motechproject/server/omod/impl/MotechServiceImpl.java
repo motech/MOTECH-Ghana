@@ -395,6 +395,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
         return motechDAO.getConfiguration(name);
     }
 
+    public Facility unknownFacility() {
+        return motechDAO.getUnknownFacility();
+    }
+
     public RCTService getRctService(){
         return rctService;
     }
