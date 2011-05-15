@@ -40,22 +40,22 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean name="protoInputTransition" 
-		class="org.motechproject.server.event.impl.SMSInputDemoStateTransitionImpl" 
+		class="org.motechproject.server.model.SMSInputDemoStateTransition"
 		abstract="true">
-		<property name="command" ref="nopCommand" />
+
 		<property name="terminating" value="false" />
-		<property name="registrarBean" ref="registrarBean" />
 	</bean>
 	
-	<bean id="inputDemoProgram" class="org.motechproject.server.event.impl.MessageProgramImpl">
+	<bean id="inputDemoProgram" class="org.motechproject.server.model.MotechMessageProgram">
 		<property name="name" value="Input Demo Message Program" />
 		<property name="startState" ref="inputDemoState1" />
-		<property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="endState" ref="inputDemoState6" />
+        <property name="registrarBean" ref="registrarBean"/>
 	</bean>
 
-	<bean id="inputDemoState1" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="inputDemoState1" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 1" />
+        <property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="timeValue" value="1" />
 		<property name="timePeriod" value="minute" />
 		<property name="timeReference" value="enrollment_startdate" />
@@ -65,7 +65,7 @@
 				<property name="messageScheduler" ref="messageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="inputDemoProgram" />
+
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
@@ -78,8 +78,8 @@
 					<property name="nextState" ref="inputDemoState6" />
 					<property name="terminating" value="true" />
 				</bean>
-				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
-					<property name="command" ref="nopCommand" />
+				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
+
 					<property name="prevState" ref="inputDemoState1" />
 					<property name="nextState" ref="inputDemoState1" />
 				</bean>
@@ -87,8 +87,9 @@
 		</property>
 	</bean>
 
-	<bean id="inputDemoState2" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="inputDemoState2" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 2" />
+        <property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="timeValue" value="3" />
 		<property name="timePeriod" value="minute" />
 		<property name="timeReference" value="enrollment_startdate" />
@@ -98,7 +99,7 @@
 				<property name="messageScheduler" ref="messageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="inputDemoProgram" />
+
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
@@ -111,8 +112,8 @@
 					<property name="nextState" ref="inputDemoState6" />
 					<property name="terminating" value="true" />
 				</bean>
-				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
-					<property name="command" ref="nopCommand" />
+				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
+
 					<property name="prevState" ref="inputDemoState2" />
 					<property name="nextState" ref="inputDemoState2" />
 				</bean>
@@ -120,8 +121,9 @@
 		</property>
 	</bean>
 
-	<bean id="inputDemoState3" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="inputDemoState3" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 3" />
+        <property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="timeValue" value="5" />
 		<property name="timePeriod" value="minute" />
 		<property name="timeReference" value="enrollment_startdate" />
@@ -131,7 +133,7 @@
 				<property name="messageScheduler" ref="messageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="inputDemoProgram" />
+
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
@@ -144,8 +146,8 @@
 					<property name="nextState" ref="inputDemoState6" />
 					<property name="terminating" value="true" />
 				</bean>
-				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
-					<property name="command" ref="nopCommand" />
+				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
+
 					<property name="prevState" ref="inputDemoState3" />
 					<property name="nextState" ref="inputDemoState3" />
 				</bean>
@@ -153,8 +155,9 @@
 		</property>
 	</bean>
 
-	<bean id="inputDemoState4" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="inputDemoState4" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 4" />
+        <property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="timeValue" value="7" />
 		<property name="timePeriod" value="minute" />
 		<property name="timeReference" value="enrollment_startdate" />
@@ -164,7 +167,7 @@
 				<property name="messageScheduler" ref="messageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="inputDemoProgram" />
+
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
@@ -177,8 +180,8 @@
 					<property name="nextState" ref="inputDemoState6" />
 					<property name="terminating" value="true" />
 				</bean>
-				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
-					<property name="command" ref="nopCommand" />
+				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
+
 					<property name="prevState" ref="inputDemoState4" />
 					<property name="nextState" ref="inputDemoState4" />
 				</bean>
@@ -186,8 +189,9 @@
 		</property>
 	</bean>
 
-	<bean id="inputDemoState5" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="inputDemoState5" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo - Message 5" />
+        <property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="timeValue" value="9" />
 		<property name="timePeriod" value="minute" />
 		<property name="timeReference" value="enrollment_startdate" />
@@ -197,7 +201,7 @@
 				<property name="messageScheduler" ref="messageScheduler" />
 			</bean>
 		</property>
-		<property name="program" ref="inputDemoProgram" />
+
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
@@ -210,8 +214,8 @@
 					<property name="nextState" ref="inputDemoState6" />
 					<property name="terminating" value="true" />
 				</bean>
-				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
-					<property name="command" ref="nopCommand" />
+				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
+
 					<property name="prevState" ref="inputDemoState5" />
 					<property name="nextState" ref="inputDemoState5" />
 				</bean>
@@ -219,8 +223,9 @@
 		</property>
 	</bean>
 
-	<bean id="inputDemoState6" class="org.motechproject.server.event.impl.MessageProgramStateImpl">
+	<bean id="inputDemoState6" class="org.motechproject.server.model.MotechMessageProgramState">
 		<property name="name" value="Input Demo Status - Stopped" />
+        <property name="conceptName" value="TETANUS TOXOID DOSE" />
 		<property name="timeValue" value="0" />
 		<property name="timePeriod" value="minute" />
 		<property name="timeReference" value="enrollment_startdate" />
@@ -229,12 +234,11 @@
 				<property name="registrarBean" ref="registrarBean" />
 			</bean>
 		</property>
-		<property name="program" ref="inputDemoProgram" />
 		<property name="timeBean" ref="timeBean" />
 		<property name="transitions">
 			<list>
-				<bean class="org.motechproject.server.event.impl.MessageProgramStateTransitionImpl">
-					<property name="command" ref="nopCommand" />
+				<bean class="org.motechproject.server.model.MotechMessageProgramStateTransition">
+
 					<property name="prevState" ref="inputDemoState6" />
 					<property name="nextState" ref="inputDemoState6" />
 				</bean>

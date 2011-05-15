@@ -218,7 +218,6 @@ public class PregnancyController {
 					pregnancy.getLanguage(), pregnancy.getDayOfWeek(),
 					pregnancy.getTimeOfDay(), pregnancy.getInterestReason(),
 					pregnancy.getHowLearned());
-			;
 			model.addAttribute("successMsg",
 					"motechmodule.Pregnancy.register.success");
 

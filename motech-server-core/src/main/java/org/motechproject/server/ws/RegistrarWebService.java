@@ -35,7 +35,10 @@ package org.motechproject.server.ws;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.model.*;
+import org.motechproject.server.model.Community;
+import org.motechproject.server.model.ExpectedEncounter;
+import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.svc.*;
 import org.motechproject.ws.*;
@@ -529,7 +532,7 @@ public class RegistrarWebService implements RegistrarService {
             @WebParam(name = "cwcRegDateToday") Boolean cwcRegToday,
             @WebParam(name = "cwcRegDate") Date cwcRegDate,
             @WebParam(name = "ancRegNumber") String ancRegNumber,
-            @WebParam(name = "ancRegDateToday") Boolean ancRegToday,
+            @WebParam(name = "ancRegDateToday") String ancRegToday,
             @WebParam(name = "ancRegDate") Date ancRegDate,
             @WebParam(name = "height") Double height,
             @WebParam(name = "gravida") Integer gravida,
@@ -555,8 +558,7 @@ public class RegistrarWebService implements RegistrarService {
 
         User staff = validateStaffId(staffId, errors, "StaffID");
         Facility facility = validateFacility(facilityId, errors, "FacilityID");
-        Community communityObj = validateCommunity(community, errors,
-                "Community");
+        Community communityObj = validateCommunity(community, errors, "Community");
 
         if (registrationMode == RegistrationMode.USE_PREPRINTED_ID) {
             validateMotechId(motechId, errors, "MotechID", false);
@@ -607,13 +609,12 @@ public class RegistrarWebService implements RegistrarService {
                     patient, cwcRegNumber, enroll, consent, ownership, phoneNumber,
                     format, language, dayOfWeek, timeOfDay, howLearned);
         }
-        if (ancRegNumber != null) {
-            ancRegDate = (ancRegToday) ? new Date() : ancRegDate;
-            registrarBean.registerANCMother(staff, facility.getLocation(), date,
-                    patient, ancRegNumber, expDeliveryDate, height, gravida,
-                    parity, enroll, consent, ownership, phoneNumber, format,
-                    language, dayOfWeek, timeOfDay, howLearned);
-        }
+        ancRegDate = decideANCRegistrationDate(ancRegToday, ancRegDate);
+        Facility ancFacility = decideFacility(facilityId, errors, ancRegToday);
+        registrarBean.registerANCMother(staff, ancFacility.getLocation(), date,
+                patient, ancRegNumber, expDeliveryDate, height, gravida,
+                parity, enroll, consent, ownership, phoneNumber, format,
+                language, dayOfWeek, timeOfDay, howLearned);
 
         registrarBean.recordPatientHistory(staff, facility.getLocation(), date,
                 patient, lastIPT, lastIPTDate, lastTT, lastTTDate, bcgDate,
@@ -623,12 +624,23 @@ public class RegistrarWebService implements RegistrarService {
         return modelConverter.patientToWebService(patient, true);
     }
 
+    private Facility decideFacility(Integer facilityId, ValidationErrors errors, String ancRegToday) {
+        if (ANCRegisterOption.IN_THE_PAST_IN_OTHER_FACILITY.isSameAs(ancRegToday)) {
+            return registrarBean.getUnknownFacility();
+        }
+        return validateFacility(facilityId, errors, "FacilityID");
+    }
+
+    private Date decideANCRegistrationDate(String ancRegToday, Date ancRegDate) {
+        return ANCRegisterOption.TODAY.isSameAs(ancRegToday) ? new Date() : ancRegDate;
+    }
+
     private void validatePhoneNumber(String phoneNumber, String fieldName, ValidationErrors errors) {
-        if(phoneNumber != null){
-            if(!phoneNumber.trim().startsWith("0")){
+        if (phoneNumber != null) {
+            if (!phoneNumber.trim().startsWith("0")) {
                 errors.add(messageBean.getMessage("motechmodule.ws.numberShouldStartsWithZero", fieldName));
             }
-            if(phoneNumber.trim().length() != 10){
+            if (phoneNumber.trim().length() != 10) {
                 errors.add(messageBean.getMessage("motechmodule.ws.numberShouldBeTenDigits", fieldName));
             }
         }
@@ -1373,17 +1385,15 @@ public class RegistrarWebService implements RegistrarService {
     private Community validateCommunity(Integer communityId,
                                         ValidationErrors errors, String fieldName) {
         if (communityId == null) {
-            errors.add(messageBean.getMessage("motechmodule.ws.missing",
-                    fieldName));
+//            errors.add(messageBean.getMessage("motechmodule.ws.missing",fieldName));
             return null;
         }
+
         Community community = registrarBean.getCommunityById(communityId);
         if (community == null) {
-            errors.add(messageBean.getMessage("motechmodule.ws.notfound",
-                    fieldName));
+            errors.add(messageBean.getMessage("motechmodule.ws.notfound", fieldName));
         } else if (Boolean.TRUE.equals(community.getRetired())) {
-            errors.add(messageBean.getMessage("motechmodule.ws.invalid",
-                    fieldName));
+            errors.add(messageBean.getMessage("motechmodule.ws.invalid", fieldName));
         }
         return community;
     }

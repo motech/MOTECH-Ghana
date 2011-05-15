@@ -368,9 +368,9 @@
 	</build>
 
 	<scm>
-	  <url>https://github.com/motech/MOTECH</url>
-	  <connection>scm:git:ssh://git@github.com/motech/MOTECH.git</connection>
-	  <developerConnection>scm:git:ssh://git@github.com/motech/MOTECH.git</developerConnection>
+	  <url>https://github.com/motech/MOTECH-Ghana</url>
+	  <connection>scm:git:ssh://git@github.com/motech/MOTECH-Ghana.git</connection>
+	  <developerConnection>scm:git:ssh://git@github.com/motech/MOTECH-Ghana.git</developerConnection>
 	</scm>
 
 	<profiles>

@@ -50,7 +50,7 @@ public interface MotechDAO {
 
 	ScheduledMessage saveScheduledMessage(ScheduledMessage scheduledMessage);
 
-	Message saveMessage(Message Message);
+	Message saveMessage(Message message);
 
 	MessageDefinition saveMessageDefinition(MessageDefinition messageDefinition);
 
@@ -188,4 +188,10 @@ public interface MotechDAO {
     void deletePatientIdentifier(Integer patientId);
 
     Facility facilityFor(Patient patient);
+
+    List<MessageLanguage> getMessageLanguages();
+
+    MotechConfiguration getConfiguration(String name);
+
+    Facility getUnknownFacility();
 }

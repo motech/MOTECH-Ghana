@@ -35,7 +35,7 @@ package org.motechproject.server.ws;
 
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.model.PatientUpdates;
+import org.motechproject.server.model.PatientContactUpdates;
 import org.motechproject.ws.Care;
 import org.motechproject.ws.Patient;
 import org.openmrs.Encounter;
@@ -77,5 +77,5 @@ public interface WebServiceModelConverter {
 	Patient upcomingEncounterToWebServicePatient(
 			ExpectedEncounter upcomingEncounter);
 
-    Patient patientToWebService(org.openmrs.Patient patient, boolean minimal, PatientUpdates patientUpdates);
+    Patient patientToWebService(org.openmrs.Patient patient, boolean minimal, PatientContactUpdates patientContactUpdates);
 }

@@ -140,10 +140,8 @@ public class DemoPatientController extends BasePatientController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public void viewForm(@RequestParam(required = false) Integer id,
-			ModelMap model) {
-
-		populateJavascriptMaps(model);
+	public void viewForm(@RequestParam(required = false) Integer id,ModelMap model) {
+		populateJavascriptMaps(model,new WebPatient());
 	}
 
 	@ModelAttribute("patient")
@@ -322,7 +320,7 @@ public class DemoPatientController extends BasePatientController {
 			return "redirect:/module/motechmodule/demo-success.htm";
 		}
 
-		populateJavascriptMaps(model);
+		populateJavascriptMaps(model,patient);
 
 		return "/module/motechmodule/demo-patient";
 	}

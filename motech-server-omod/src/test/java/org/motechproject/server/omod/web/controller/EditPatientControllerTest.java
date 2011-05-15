@@ -33,20 +33,10 @@
 
 package org.motechproject.server.omod.web.controller;
 
-import static org.easymock.EasyMock.anyObject;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-import java.util.Date;
-
 import junit.framework.TestCase;
-
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.MessageLanguage;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
@@ -64,201 +54,171 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.support.SessionStatus;
 
+import java.util.ArrayList;
+import java.util.Date;
+
+import static org.easymock.EasyMock.*;
+
 public class EditPatientControllerTest extends TestCase {
 
-	RegistrarBean registrarBean;
-	EditPatientController controller;
-	ContextService contextService;
-	MotechService motechService;
-	WebModelConverter webModelConverter;
-	SessionStatus status;
-	PatientService patientService;
-	OpenmrsBean openmrsBean;
+    RegistrarBean registrarBean;
+    EditPatientController controller;
+    ContextService contextService;
+    MotechService motechService;
+    WebModelConverter webModelConverter;
+    SessionStatus status;
+    PatientService patientService;
+    OpenmrsBean openmrsBean;
 
-	@Override
-	protected void setUp() {
-		registrarBean = createMock(RegistrarBean.class);
-		openmrsBean = createMock(OpenmrsBean.class);
-		contextService = createMock(ContextService.class);
-		webModelConverter = createMock(WebModelConverter.class);
-		controller = new EditPatientController();
-		controller.setRegistrarBean(registrarBean);
-		controller.setOpenmrsBean(openmrsBean);
-		controller.setContextService(contextService);
-		controller.setWebModelConverter(webModelConverter);
-		motechService = createMock(MotechService.class);
+    @Override
+    protected void setUp() {
+        registrarBean = createMock(RegistrarBean.class);
+        openmrsBean = createMock(OpenmrsBean.class);
+        contextService = createMock(ContextService.class);
+        webModelConverter = createMock(WebModelConverter.class);
+        controller = new EditPatientController();
+        controller.setRegistrarBean(registrarBean);
+        controller.setOpenmrsBean(openmrsBean);
+        controller.setContextService(contextService);
+        controller.setWebModelConverter(webModelConverter);
+        motechService = createMock(MotechService.class);
 
-		patientService = createMock(PatientService.class);
-		status = createMock(SessionStatus.class);
-	}
+        patientService = createMock(PatientService.class);
+        status = createMock(SessionStatus.class);
+    }
 
-	@Override
-	protected void tearDown() {
-		controller = null;
-		registrarBean = null;
-		openmrsBean = null;
-		patientService = null;
-		contextService = null;
-		motechService = null;
-		status = null;
-	}
+    @Override
+    protected void tearDown() {
+        controller = null;
+        registrarBean = null;
+        openmrsBean = null;
+        patientService = null;
+        contextService = null;
+        motechService = null;
+        status = null;
+    }
 
-	public void testGetRegions() {
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getAllRegions())
-				.andReturn(new ArrayList<String>());
+    public void testGetWebPatientMissingId() {
+        Integer patientId = null;
 
-		replay(contextService, motechService);
+        replay(registrarBean, patientService);
 
-		controller.getRegions();
+        WebPatient webPatient = controller.getWebPatient(patientId);
 
-		verify(contextService, motechService);
-	}
+        verify(registrarBean, patientService);
 
-	public void testGetDistricts() {
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getAllDistricts()).andReturn(
-				new ArrayList<String>());
+        assertNull("Patient is not new for null id", webPatient.getId());
+    }
 
-		replay(contextService, motechService);
+    public void testGetWebPatientInvalidId() {
+        Integer patientId = 1;
+        Patient patient = null;
 
-		controller.getDistricts();
+        expect(contextService.getPatientService()).andReturn(patientService);
+        expect(patientService.getPatient(patientId)).andReturn(patient);
 
-		verify(contextService, motechService);
-	}
+        replay(registrarBean, contextService, patientService);
 
-	public void testGetCommunities() {
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getAllCommunities(true)).andReturn(
-				new ArrayList<Community>());
+        WebPatient webPatient = controller.getWebPatient(patientId);
 
-		replay(contextService, motechService);
+        verify(registrarBean, contextService, patientService);
 
-		controller.getCommunities();
+        assertNull("Patient is not new for invalid id", webPatient.getId());
+    }
 
-		verify(contextService, motechService);
-	}
+    public void testGetWebPatientValidId() {
+        Integer patientId = 1;
+        Patient patient = new Patient(patientId);
 
-	public void testGetWebPatientMissingId() {
-		Integer patientId = null;
+        expect(contextService.getPatientService()).andReturn(patientService);
+        expect(patientService.getPatient(patientId)).andReturn(patient);
+        webModelConverter.patientToWeb(eq(patient), (WebPatient) anyObject());
 
-		replay(registrarBean, patientService);
+        replay(registrarBean, contextService, patientService, webModelConverter);
 
-		WebPatient webPatient = controller.getWebPatient(patientId);
+        WebPatient webPatient = controller.getWebPatient(patientId);
 
-		verify(registrarBean, patientService);
+        verify(registrarBean, contextService, patientService, webModelConverter);
 
-		assertNull("Patient is not new for null id", webPatient.getId());
-	}
+        assertNotNull(webPatient);
+    }
 
-	public void testGetWebPatientInvalidId() {
-		Integer patientId = 1;
-		Patient patient = null;
+    public void testEditPatient() {
+        Integer patientId = 1, communityId = 11112, motherId = 2;
+        String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
+        String region = "Region", district = "District", address = "Address", nhis = "1234DEF";
+        String phoneNumber = "0123456789";
+        Boolean birthDateEst = true, enroll = true, consent = true, insured = true;
+        Date date = new Date();
+        Gender sex = Gender.FEMALE;
+        ContactNumberType phoneType = ContactNumberType.PERSONAL;
+        MediaType mediaType = MediaType.TEXT;
+        String language = "en";
+        DayOfWeek dayOfWeek = DayOfWeek.FRIDAY;
 
-		expect(contextService.getPatientService()).andReturn(patientService);
-		expect(patientService.getPatient(patientId)).andReturn(patient);
+        WebPatient patient = new WebPatient();
+        patient.setId(patientId);
+        patient.setFirstName(firstName);
+        patient.setMiddleName(middleName);
+        patient.setLastName(lastName);
+        patient.setPrefName(prefName);
+        patient.setBirthDate(date);
+        patient.setBirthDateEst(birthDateEst);
+        patient.setSex(sex);
+        patient.setInsured(insured);
+        patient.setNhis(nhis);
+        patient.setNhisExpDate(date);
+        patient.setMotherMotechId(motherId);
+        patient.setRegion(region);
+        patient.setDistrict(district);
+        patient.setCommunityId(communityId);
+        patient.setAddress(address);
+        patient.setPhoneNumber(phoneNumber);
+        patient.setPhoneType(phoneType);
+        patient.setMediaType(mediaType);
+        patient.setLanguage(language);
+        patient.setDueDate(date);
+        patient.setEnroll(enroll);
+        patient.setConsent(consent);
+        patient.setDayOfWeek(dayOfWeek);
+        patient.setTimeOfDay(date);
+        patient.setFacility(11117);
 
-		replay(registrarBean, contextService, patientService);
+        Errors errors = new BeanPropertyBindingResult(patient, "patient");
+        ModelMap model = new ModelMap();
 
-		WebPatient webPatient = controller.getWebPatient(patientId);
+        Patient openmrsPatient = new Patient(1);
+        Patient motherPatient = new Patient(2);
+        Community community = new Community();
 
-		verify(registrarBean, contextService, patientService);
+        expect(registrarBean.getPatientById(patientId)).andReturn(
+                openmrsPatient);
+        expect(openmrsBean.getPatientByMotechId(motherId.toString()))
+                .andReturn(motherPatient);
+        expect(registrarBean.getCommunityById(communityId))
+                .andReturn(community);
+        Facility facility = new Facility();
+        facility.setFacilityId(11117);
+        expect(registrarBean.getFacilityById(facility.getFacilityId())).andReturn(facility);
 
-		assertNull("Patient is not new for invalid id", webPatient.getId());
-	}
+        registrarBean.editPatient(openmrsPatient, firstName, middleName,
+                lastName, prefName, date, birthDateEst, sex, insured, nhis,
+                date, motherPatient, community, address, phoneNumber, date,
+                enroll, consent, phoneType, mediaType, language, dayOfWeek,
+                date, facility);
 
-	public void testGetWebPatientValidId() {
-		Integer patientId = 1;
-		Patient patient = new Patient(patientId);
+        status.setComplete();
 
-		expect(contextService.getPatientService()).andReturn(patientService);
-		expect(patientService.getPatient(patientId)).andReturn(patient);
-		webModelConverter.patientToWeb(eq(patient), (WebPatient) anyObject());
+        expect(contextService.getMotechService()).andReturn(motechService);
+        expect(motechService.getAllFacilities()).andReturn(new ArrayList<Facility>());
+        expect(motechService.getAllLanguages()).andReturn(new ArrayList<MessageLanguage>());
 
-		replay(registrarBean, contextService, patientService, webModelConverter);
+        replay(registrarBean, status, contextService, motechService, openmrsBean);
 
-		WebPatient webPatient = controller.getWebPatient(patientId);
+        controller.submitForm(patient, errors, model, status);
 
-		verify(registrarBean, contextService, patientService, webModelConverter);
+        verify(registrarBean, status, contextService, motechService,openmrsBean);
 
-		assertNotNull(webPatient);
-	}
-
-	public void testEditPatient() {
-		Integer patientId = 1, communityId = 11112, motherId = 2;
-		String firstName = "FirstName", middleName = "MiddleName", lastName = "LastName", prefName = "PrefName";
-		String region = "Region", district = "District", address = "Address", nhis = "1234DEF";
-		String phoneNumber = "0123456789";
-		Boolean birthDateEst = true, enroll = true, consent = true, insured = true;
-		Date date = new Date();
-		Gender sex = Gender.FEMALE;
-		ContactNumberType phoneType = ContactNumberType.PERSONAL;
-		MediaType mediaType = MediaType.TEXT;
-		String language = "en";
-		DayOfWeek dayOfWeek = DayOfWeek.FRIDAY;
-
-		WebPatient patient = new WebPatient();
-		patient.setId(patientId);
-		patient.setFirstName(firstName);
-		patient.setMiddleName(middleName);
-		patient.setLastName(lastName);
-		patient.setPrefName(prefName);
-		patient.setBirthDate(date);
-		patient.setBirthDateEst(birthDateEst);
-		patient.setSex(sex);
-		patient.setInsured(insured);
-		patient.setNhis(nhis);
-		patient.setNhisExpDate(date);
-		patient.setMotherMotechId(motherId);
-		patient.setRegion(region);
-		patient.setDistrict(district);
-		patient.setCommunityId(communityId);
-		patient.setAddress(address);
-		patient.setPhoneNumber(phoneNumber);
-		patient.setPhoneType(phoneType);
-		patient.setMediaType(mediaType);
-		patient.setLanguage(language);
-		patient.setDueDate(date);
-		patient.setEnroll(enroll);
-		patient.setConsent(consent);
-		patient.setDayOfWeek(dayOfWeek);
-		patient.setTimeOfDay(date);
-
-		Errors errors = new BeanPropertyBindingResult(patient, "patient");
-		ModelMap model = new ModelMap();
-
-		Patient openmrsPatient = new Patient(1);
-		Patient motherPatient = new Patient(2);
-		Community community = new Community();
-
-		expect(registrarBean.getPatientById(patientId)).andReturn(
-				openmrsPatient);
-		expect(openmrsBean.getPatientByMotechId(motherId.toString()))
-				.andReturn(motherPatient);
-		expect(registrarBean.getCommunityById(communityId))
-				.andReturn(community);
-
-		registrarBean.editPatient(openmrsPatient, firstName, middleName,
-				lastName, prefName, date, birthDateEst, sex, insured, nhis,
-				date, motherPatient, community, address, phoneNumber, date,
-				enroll, consent, phoneType, mediaType, language, dayOfWeek,
-				date);
-
-		status.setComplete();
-
-		expect(contextService.getMotechService()).andReturn(motechService);
-		expect(motechService.getAllFacilities()).andReturn(
-				new ArrayList<Facility>());
-
-		replay(registrarBean, status, contextService, motechService,
-				openmrsBean);
-
-		controller.submitForm(patient, errors, model, status);
-
-		verify(registrarBean, status, contextService, motechService,
-				openmrsBean);
-
-		assertTrue("Missing success message in model", model
-				.containsAttribute("successMsg"));
-	}
+        assertTrue("Missing success message in model", model.containsAttribute("successMsg"));
+    }
 }

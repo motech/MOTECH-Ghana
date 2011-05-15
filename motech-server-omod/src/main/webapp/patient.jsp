@@ -42,10 +42,28 @@
 <openmrs:htmlInclude file="/scripts/jquery/jquery-1.3.2.min.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/dynamic_combo_box.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patient_form_events.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/country.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/validator.js"/>
 <script type="text/javascript">
     var $j = jQuery.noConflict();
     $j(document).ready(function() {
         new PatientFormRegistrationEvents();
+        var selectedLocation = new Location(${selectedLocation});
+        new Country(${country}, selectedLocation);
+        var generalFieldsValidator = new RequiredFieldValidator();
+        generalFieldsValidator.addAll(
+                $j('#registrationMode'), $j('#motechId'), $j('#registrantType'), $j('#firstName'), $j('#lastName')
+                , $j('#birthDate'), $j('#birthDateEst'), $j('#sex'), $j('#insured'), $j('#region')
+                , $j('#district'), $j('#subDistrict'), $j('#facility'), $j('#address')
+                , $j('#dueDate'), $j('#dueDateConfirmed'), $j('#enroll')
+                );
+        var midwifeValidator = new MidwifeDataValidator($j('#mobileMidwifeInformation'), $j('#consent1'))
+                .add(new PhoneDetailsValidator($j('#phoneNumber'), $j('#phoneType')))
+                .add(new MediaTypeValidator($j('#mediaType'), $j('#language'), $j('#dayOfWeek'), $j('#timeOfDay')))
+                .add(new EnrollmentValidator($j('#registrantType'), $j('#interestReason'), $j('#messagesStartWeek'), $j('#howLearned')));
+
+        var communityValidator = new CommunityValidator($j('#communityId'), $j('#region'));
+        new Validators($j('#patient')).add(generalFieldsValidator).add(communityValidator).add(midwifeValidator);
     });
 </script>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css"/>
@@ -54,8 +72,6 @@
 <openmrs:htmlInclude file="/dwr/interface/DWRMotechService.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/find_duplicates.js"/>
 
-
-<%@ include file="/WEB-INF/view/module/motechmodule/dynamic-dropdowns-script.jsp" %>
 
 <meta name="heading" content="Register Patient"/>
 <%@ include file="localHeader.jsp" %>
@@ -82,11 +98,13 @@
                     <form:option value="AUTO_GENERATE_ID" label="Auto-generate MoTeCH ID"/>
                 </form:select>
             </td>
+            <td class="hideme"><span for="registrationMode" class="error"><spring:message code="motechmodule.registrationMode.required"/></span></td>
             <td><form:errors path="registrationMode" cssClass="error"/></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="motechId">MoTeCH ID:</label></td>
             <td><form:input path="motechId" onchange="findDuplicates()"/></td>
+            <td class="hideme"><span for="motechId" class="error"><spring:message code="motechmodule.motechId.required"/></span></td>
             <td><form:errors path="motechId" cssClass="error"/></td>
         </tr>
         <tr>
@@ -99,12 +117,13 @@
                     <form:option value="OTHER" label="Other"/>
                 </form:select>
             </td>
+            <td class="hideme"><span for="registrantType" class="error"><spring:message code="motechmodule.registrantType.required"/></span></td>
             <td><form:errors path="registrantType" cssClass="error"/></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="firstName">First Name:</label></td>
             <td><form:input path="firstName" onchange="findDuplicates()" maxlength="50"/></td>
-            <td><form:errors path="firstName" cssClass="error"/></td>
+            <td class="hideme"><span for="firstName" class="error"><spring:message code="motechmodule.firstName.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="middleName">Middle Name:</label></td>
@@ -114,7 +133,7 @@
         <tr>
             <td class="labelcolumn"><label for="lastName">Last Name:</label></td>
             <td><form:input path="lastName" onchange="findDuplicates()" maxlength="50"/></td>
-            <td><form:errors path="lastName" cssClass="error"/></td>
+            <td class="hideme"><span for="lastName" class="error"><spring:message code="motechmodule.lastName.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="prefName">Preferred Name:</label></td>
@@ -124,6 +143,7 @@
         <tr>
             <td class="labelcolumn"><label for="birthDate">Date of Birth (DD/MM/YYYY):</label></td>
             <td><form:input path="birthDate" onchange="findDuplicates()"/></td>
+            <td class="hideme"><span for="birthDate" class="error"><spring:message code="motechmodule.birthDate.required"/></span></td>
             <td><form:errors path="birthDate" cssClass="error"/></td>
         </tr>
         <tr>
@@ -135,7 +155,7 @@
                     <form:option value="false" label="No"/>
                 </form:select>
             </td>
-            <td><form:errors path="birthDateEst" cssClass="error"/></td>
+            <td class="hideme"><span for="birthDateEst" class="error"><spring:message code="motechmodule.birthDateEst.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="sex">Sex:</label></td>
@@ -146,7 +166,7 @@
                     <form:option value="MALE" label="Male"/>
                 </form:select>
             </td>
-            <td><form:errors path="sex" cssClass="error"/></td>
+            <td class="hideme"><span for="sex" class="error"><spring:message code="motechmodule.sex.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="insured">Insured:</label></td>
@@ -157,7 +177,7 @@
                     <form:option value="false" label="No"/>
                 </form:select>
             </td>
-            <td><form:errors path="insured" cssClass="error"/></td>
+            <td class="hideme"><span for="insured" class="error"><spring:message code="motechmodule.insured.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="nhis">NHIS Number:</label></td>
@@ -177,47 +197,53 @@
         <tr>
             <td class="labelcolumn"><label for="region">Region:</label></td>
             <td>
-                <form:select path="region" onchange="regionDistrictUpdated()">
+                <form:select path="region">
                     <form:option value="" label="Select Value"/>
-                    <form:options items="${regions}"/>
                 </form:select>
             </td>
-            <td><form:errors path="region" cssClass="error"/></td>
+            <td class="hideme"><span for="region" class="error"><spring:message code="motechmodule.region.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="district">District:</label></td>
             <td>
-                <form:select path="district" onchange="regionDistrictUpdated()">
+                <form:select path="district">
                     <form:option value="" label="Select Value"/>
-                    <form:options items="${districts}"/>
                 </form:select>
             </td>
-            <td><form:errors path="district" cssClass="error"/></td>
+            <td class="hideme"><span for="district" class="error"><spring:message code="motechmodule.district.required"/></span></td>
+        </tr>
+        <tr>
+            <td class="labelcolumn"><label for="subDistrict">Sub District:</label></td>
+            <td>
+                <form:select path="subDistrict">
+                    <form:option value="" label="Select Value"/>
+                </form:select>
+            </td>
+            <td class="hideme"><span for="subDistrict" class="error"><spring:message code="motechmodule.subDistrict.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="facility">Facility:</label></td>
             <td>
                 <form:select path="facility">
                     <form:option value="" label="Select Value"/>
-                    <form:options items="${facilities}" itemValue="facilityId" itemLabel="location.name"/>
                 </form:select>
             </td>
-            <td><form:errors path="facility" cssClass="error"/></td>
+            <td class="hideme"><span for="facility" class="error"><spring:message code="motechmodule.facility.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="communityId">Community:</label></td>
             <td>
                 <form:select path="communityId" onchange="findDuplicates()">
                     <form:option value="" label="Select Value"/>
-                    <form:options items="${communities}" itemValue="communityId" itemLabel="name"/>
                 </form:select>
             </td>
+            <td class="hideme"><span for="communityId" class="error"><spring:message code="motechmodule.communityId.required"/></span></td>
             <td><form:errors path="communityId" cssClass="error"/></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="address">Address/household:</label></td>
             <td><form:input path="address" maxlength="50"/></td>
-            <td><form:errors path="address" cssClass="error"/></td>
+            <td class="hideme"><span for="address" class="error"><spring:message code="motechmodule.address.required"/></span></td>
         </tr>
     </table>
 </fieldset>
@@ -227,6 +253,7 @@
         <tr>
             <td class="labelcolumn"><label for="dueDate">Expected Delivery Date (DD/MM/YYYY):</label></td>
             <td><form:input path="dueDate"/></td>
+            <td class="hideme"><span for="dueDate" class="error"><spring:message code="motechmodule.dueDate.required"/></span></td>
             <td><form:errors path="dueDate" cssClass="error"/></td>
         </tr>
         <tr>
@@ -238,6 +265,7 @@
                     <form:option value="false" label="No"/>
                 </form:select>
             </td>
+            <td class="hideme"><span for="dueDateConfirmed" class="error"><spring:message code="motechmodule.dueDateConfirmed.required"/></span></td>
             <td><form:errors path="dueDateConfirmed" cssClass="error"/></td>
         </tr>
     </table>
@@ -254,17 +282,20 @@
                     <form:option value="false" label="No"/>
                 </form:select>
             </td>
-            <td><form:errors path="enroll" cssClass="error"/></td>
+            <td class="hideme"><span for="enroll" class="error"><spring:message code="motechmodule.enroll.required"/></span></td>
         </tr>
+    </table>
+    <table id="mobileMidwifeInformation">
         <tr>
             <td class="labelcolumn"><label for="consent">Registrant has heard consent text and has consented to terms of
                 enrollment:</label></td>
             <td><form:checkbox path="consent"/></td>
-            <td><form:errors path="consent" cssClass="error"/></td>
+            <td class="hideme"><span for="content" class="error"><spring:message code="motechmodule.consent.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="phoneNumber">Phone Number:</label></td>
             <td><form:input path="phoneNumber" onchange="findDuplicates()" maxlength="50"/></td>
+            <td class="hideme"><span for="phoneNumber" class="error"><spring:message code="motechmodule.phoneNumber.required"/></span></td>
             <td><form:errors path="phoneNumber" cssClass="error"/></td>
         </tr>
         <tr>
@@ -277,7 +308,7 @@
                     <form:option value="PUBLIC" label="Public phone"/>
                 </form:select>
             </td>
-            <td><form:errors path="phoneType" cssClass="error"/></td>
+            <td class="hideme"><span for="phoneType" class="error"><spring:message code="motechmodule.phoneType.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="mediaType">Message Format:</label></td>
@@ -288,19 +319,19 @@
                     <form:option value="VOICE" label="Voice"/>
                 </form:select>
             </td>
-            <td><form:errors path="mediaType" cssClass="error"/></td>
+            <td class="hideme"><span for="mediaType" class="error"><spring:message code="motechmodule.mediaType.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="language">Language for Messages:</label></td>
             <td>
                 <form:select path="language">
                     <form:option value="" label="Select Value"/>
-                    <form:option value="en" label="English"/>
-                    <form:option value="kas" label="Kassim"/>
-                    <form:option value="nan" label="Nankam"/>
+                    <c:forEach items="${languages}" var="language">
+                        <form:option value="${language.code}" label="${language.name}"/>
+                    </c:forEach>
                 </form:select>
             </td>
-            <td><form:errors path="language" cssClass="error"/></td>
+            <td class="hideme"><span for="language" class="error"><spring:message code="motechmodule.language.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="dayOfWeek">Day of week to receive messages:</label></td>
@@ -316,12 +347,12 @@
                     <form:option value="SUNDAY" label="Sunday"/>
                 </form:select>
             </td>
-            <td><form:errors path="dayOfWeek" cssClass="error"/></td>
+            <td class="hideme"><span for="dayOfWeek" class="error"><spring:message code="motechmodule.dayOfWeek.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="timeOfDay">Time of day to receive messages (HH:MM):</label></td>
             <td><form:input path="timeOfDay"/></td>
-            <td><form:errors path="timeOfDay" cssClass="error"/></td>
+            <td class="hideme"><span for="timeOfDay" class="error"><spring:message code="motechmodule.timeOfDay.required"/></span></td>
         </tr>
         <tr>
             <td class="labelcolumn"><label for="interestReason">Reason for interest in Mobile Midwife:</label></td>
@@ -339,6 +370,7 @@
                     <form:option value="WORK_WITH_WOMEN_NEWBORNS" label="I work with pregnant women and/or new borns"/>
                 </form:select>
             </td>
+            <td class="hideme"><span for="interestReason" class="error"><spring:message code="motechmodule.interestReason.required"/></span></td>
             <td><form:errors path="interestReason" cssClass="error"/></td>
         </tr>
         <tr>
@@ -353,6 +385,7 @@
                     <form:option value="RADIO" label="Radio"/>
                 </form:select>
             </td>
+            <td class="hideme"><span for="howLearned" class="error"><spring:message code="motechmodule.howLearned.required"/></span></td>
             <td><form:errors path="howLearned" cssClass="error"/></td>
         </tr>
         <tr>
@@ -367,6 +400,8 @@
                         <form:option value="${i + 40}" label="Newborn week ${i}"/>
                     </c:forEach>
                 </form:select>
+            </td>
+            <td class="hideme"><span for="messagesStartWeek" class="error"><spring:message code="motechmodule.messagesStartWeek.required"/></span>
             </td>
             <td><form:errors path="messagesStartWeek" cssClass="error"/></td>
         </tr>
@@ -395,5 +430,6 @@
         <tbody id="matchingPatientsBody"/>
     </table>
 </div>
+
 
 <%@ include file="/WEB-INF/template/footer.jsp" %>

@@ -92,6 +92,7 @@ public class BCGScheduleTest extends TestCase {
 
 		Patient patient = new Patient();
 		patient.setBirthdate(calendar.getTime());
+        patient.setDateCreated(calendar.getTime());
 
 		Capture<Date> minDateCapture = new Capture<Date>();
 		Capture<Date> dueDateCapture = new Capture<Date>();
@@ -115,6 +116,8 @@ public class BCGScheduleTest extends TestCase {
 						capture(lateDateCapture), capture(maxDateCapture),
 						eq(bcgEvent.getName()), eq(bcgSchedule.getName())))
 				.andReturn(new ExpectedObs());
+        calendar.set(2010,03,10);
+        expect(registrarBean.getChildRegistrationDate()).andReturn(calendar.getTime());
 
 		replay(registrarBean);
 
@@ -146,6 +149,7 @@ public class BCGScheduleTest extends TestCase {
 
 		Patient patient = new Patient();
 		patient.setBirthdate(calendar.getTime());
+        patient.setDateCreated(calendar.getTime());
 
 		Capture<ExpectedObs> expectedObsCapture = new Capture<ExpectedObs>();
 
@@ -164,7 +168,8 @@ public class BCGScheduleTest extends TestCase {
 				.andReturn(expectedObsList);
 		expect(registrarBean.saveExpectedObs(capture(expectedObsCapture)))
 				.andReturn(new ExpectedObs());
-
+        calendar.set(2010,03,10);
+        expect(registrarBean.getChildRegistrationDate()).andReturn(calendar.getTime());
 		replay(registrarBean);
 
 		bcgSchedule.updateSchedule(patient, date);
@@ -193,6 +198,7 @@ public class BCGScheduleTest extends TestCase {
 
 		Patient patient = new Patient();
 		patient.setBirthdate(calendar.getTime());
+        patient.setDateCreated(calendar.getTime());
 
 		Capture<ExpectedObs> expectedObsCapture = new Capture<ExpectedObs>();
 
@@ -214,7 +220,8 @@ public class BCGScheduleTest extends TestCase {
 				.andReturn(expectedObsList);
 		expect(registrarBean.saveExpectedObs(capture(expectedObsCapture)))
 				.andReturn(new ExpectedObs());
-
+        calendar.set(2010,03,10);
+        expect(registrarBean.getChildRegistrationDate()).andReturn(calendar.getTime());
 		replay(registrarBean);
 
 		bcgSchedule.updateSchedule(patient, date);

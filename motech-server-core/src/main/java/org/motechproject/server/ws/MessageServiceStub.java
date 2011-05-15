@@ -37,13 +37,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.ws.Care;
-import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.MediaType;
-import org.motechproject.ws.MessageStatus;
-import org.motechproject.ws.NameValuePair;
-import org.motechproject.ws.Patient;
-import org.motechproject.ws.PatientMessage;
+import org.motechproject.ws.*;
 import org.motechproject.ws.mobile.MessageService;
 
 /**
@@ -246,13 +240,14 @@ public class MessageServiceStub implements MessageService {
 	}
 
 	public MessageStatus sendDefaulterMessage(String messageId,
-			String workerNumber, Care[] cares, MediaType mediaType,
-			Date startDate, Date endDate) {
+			String workerNumber, Care[] cares, CareMessageGroupingStrategy groupingStrategy,
+            MediaType mediaType, Date startDate, Date endDate) {
 
 		log.info("Motech Mobile Web Service Message\n"
 				+ "---------------------------\n" + "<sendDefaulterMessage>\n"
 				+ "<messageId>" + messageId + "</messageId>\n" + "<careInfo>"
-				+ caresToXML(cares, true) + "</careInfo>\n" + "<workerNumber>"
+				+ caresToXML(cares, true) + "</careInfo>\n" + "<careMessageGrouping>"
+                + groupingStrategy + "</careMessageGrouping>\n" + "<workerNumber>"
 				+ workerNumber + "</workerNumber>\n" + "<mediaType>"
 				+ mediaType + "</mediaType>\n" + "<startDate>" + startDate
 				+ "</startDate>\n" + "<endDate>" + endDate + "</endDate>\n"
@@ -331,13 +326,14 @@ public class MessageServiceStub implements MessageService {
 	}
 
 	public MessageStatus sendBulkCaresMessage(String messageId,
-			String workerNumber, Care[] cares, MediaType mediaType,
-			Date startDate, Date endDate) {
+			String workerNumber, Care[] cares, CareMessageGroupingStrategy groupingStrategy,
+            MediaType mediaType, Date startDate, Date endDate) {
 
 		log.info("Motech Mobile Web Service Message\n"
 				+ "---------------------------\n" + "<sendBulkCaresMessage>\n"
 				+ "<messageId>" + messageId + "</messageId>\n" + "<careInfo>"
-				+ caresToXML(cares, true) + "</careInfo>\n" + "<workerNumber>"
+				+ caresToXML(cares, true) + "</careInfo>\n" + "<careMessageGrouping>"
+                + groupingStrategy + "</careMessageGrouping>\n" + "<workerNumber>"
 				+ workerNumber + "</workerNumber>\n" + "<mediaType>"
 				+ mediaType + "</mediaType>\n" + "<startDate>" + startDate
 				+ "</startDate>\n" + "<endDate>" + endDate + "</endDate>\n"

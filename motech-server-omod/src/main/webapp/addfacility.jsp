@@ -44,23 +44,55 @@
 <openmrs:htmlInclude file="/moduleResources/motechmodule/jquery-autocomplete/jquery.autocomplete.css" />
 <openmrs:htmlInclude file="/moduleResources/motechmodule/jquery-autocomplete/lib/jquery.bgiframe.min.js" />
 <openmrs:htmlInclude file="/moduleResources/motechmodule/jquery-autocomplete/jquery.autocomplete.min.js" />
-
-<script type="text/javascript">
-	var $j = jQuery.noConflict();
-    $j(document).ready(function(){
-        $j.getJSON("/openmrs/module/motechmodule/jsonfacilitydata.form", function(data){
-            $j('#country').autocomplete(data.country);
-            $j('#region').autocomplete(data.regions);
-            $j('#countyDistrict').autocomplete(data.districts);
-            $j('#stateProvince').autocomplete(data.provinces);
-        });
-
-
-    });
-</script>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/dynamic_combo_box.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/add_facility.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/add_facility.css"/>
 
 <meta name="heading" content="Add Facility" />
 <%@ include file="localHeader.jsp" %>
+
+<div id="location_data">
+<ul id="countries_data">
+   <c:forEach items="${countries}" var="country">
+   <li>${country}</li>
+   </c:forEach>
+</ul>
+<ul id="regions_data">
+   <c:forEach items="${regions}" var="country">
+   <li title="${country.key}">
+        <ul>
+            <c:forEach items="${country.value}" var="region">
+             <li>${region}</li>
+            </c:forEach>
+        </ul>
+   </li>
+   </c:forEach>
+</ul>
+<ul id="districts_data">
+   <c:forEach items="${districts}" var="region">
+   <li title="${region.key}">
+        <ul>
+            <c:forEach items="${region.value}" var="district">
+             <li>${district}</li>
+            </c:forEach>
+        </ul>
+   </li>
+   </c:forEach>
+</ul>
+<ul id="provinces_data">
+   <c:forEach items="${provinces}" var="district">
+   <li title="${district.key}">
+        <ul>
+            <c:forEach items="${district.value}" var="province">
+             <li>${province}</li>
+            </c:forEach>
+        </ul>
+   </li>
+   </c:forEach>
+</ul>
+</div>
+
+
 <h2>Add a New Facility</h2>
 <div class="instructions">
 	Add facility and click submit to save.
@@ -73,35 +105,115 @@
     <tr>
         <td><form:label path="name">Name:</form:label></td>
         <td><form:input path="name" maxlength="50"/> </td>
-        <td><form:errors path="name" cssClass="error"/> </td>
+        <td>
+        <span id="name_err" class="error" title="err_span">
+            <spring:message code="motechmodule.name.blank"/>
+        </span>
+        <form:errors path="name" cssClass="error"/>
+        </td>
     </tr>
     <tr>
         <td><form:label path="country">Country:</form:label></td>
-        <td><form:input path="country" maxlength="50"/></td>
-        <td><form:errors path="country" cssClass="error"/> </td>
+        <td>
+            <form:select path="country">
+               <form:option value="" label="Select Value"/>
+            </form:select>
+        </td>
+        <td>
+        <span id="country_err" class="error" title="err_span">
+            <spring:message code="motechmodule.country.blank"/>
+        </span>
+        </td>
     </tr>
     <tr>
         <td><form:label path="region">Region:</form:label></td>
-        <td><form:input path="region" maxlength="50"/> </td>
-        <td><form:errors cssClass="error"/> </td>
+        <td>
+            <form:select path="region">
+               <form:option value="" label="Select Value"/>
+            </form:select>
+        </td>
+        <td>
+        <span id="region_err" class="error" title="err_span">
+            <spring:message code="motechmodule.region.blank"/>
+        </span>
+        </td>
     </tr>
     <tr>
         <td><form:label path="countyDistrict">District:</form:label></td>
-        <td><form:input path="countyDistrict" maxlength="50"/> </td>
-        <td><form:errors cssClass="error"/></td>
+        <td>
+            <form:select path="countyDistrict">
+               <form:option value="" label="Select Value"/>
+            </form:select>
+        </td>
+        <td>
+        <span id="countyDistrict_err" class="error" title="err_span">
+            <spring:message code="motechmodule.district.blank"/>
+        </span>
+        </td>
     </tr>
     <tr>
         <td><form:label path="stateProvince">Sub-District:</form:label></td>
-        <td><form:input path="stateProvince" maxlength="50"/> </td>
-        <td><form:errors cssClass="error"/> </td>
+        <td>
+            <form:select path="stateProvince">
+               <form:option value="" label="Select Value"/>
+            </form:select>
+        </td>
+        <td>
+        <span id="stateProvince_err" class="error" title="err_span"/>
+        <spring:message code="motechmodule.province.blank"/>
+        </td>
     </tr>
 	<tr>
 		<td><form:label path="phoneNumber">Phone Number:</form:label></td>
 		<td><form:input path="phoneNumber" maxlength="50"/></td>
-		<td><form:errors path="phoneNumber" cssClass="error" /></td>
+        <td><a id="addPhone1">Add Additional Phone Number</a></td>
+		<td>
+		<span id="phoneNumber_err" class="error" title="err_span">
+		    <spring:message code="motechmodule.phoneNumber.invalid"/>
+		</span>
+		</td>
+	</tr>
+    <tr id="additional-phone1">
+		<td><form:label path="additionalPhoneNumber1">Additional Phone Number1:</form:label></td>
+		<td><form:input path="additionalPhoneNumber1" maxlength="50"/></td>
+         <td><a id="addPhone2">Add Additional Phone Number</a></td>
+		<td>
+		<span id="additional_phoneNumber1_err" class="error" title="err_span">
+		    <spring:message code="motechmodule.phoneNumber.invalid"/>
+		</span>
+		</td>
+	</tr>
+     <tr id="additional-phone2">
+		<td><form:label path="additionalPhoneNumber2">Additional Phone Number2:</form:label></td>
+		<td><form:input path="additionalPhoneNumber2" maxlength="50"/></td>
+          <td><a id="addPhone3">Add Additional Phone Number</a></td>
+		<td>
+		<span id="additional_phoneNumber2_err" class="error" title="err_span">
+		    <spring:message code="motechmodule.phoneNumber.invalid"/>
+		</span>
+		</td>
+	</tr>
+    <tr id="additional-phone3">
+		<td><form:label path="additionalPhoneNumber3">Additional Phone Number3:</form:label></td>
+		<td><form:input path="additionalPhoneNumber3" maxlength="50"/></td>
+         <td><a id="addPhone4">Add Additional Phone Number</a></td>
+		<td>
+		<span id="additional_phoneNumber3_err" class="error" title="err_span">
+		    <spring:message code="motechmodule.phoneNumber.invalid"/>
+		</span>
+		</td>
+	</tr>
+     <tr id="additional-phone4">
+		<td><form:label path="additionalPhoneNumber4">Additional Phone Number4:</form:label></td>
+		<td><form:input path="additionalPhoneNumber4" maxlength="50"/></td>
+		<td>
+		<span id="additional_phoneNumber4_err" class="error" title="err_span">
+		    <spring:message code="motechmodule.phoneNumber.invalid"/>
+		</span>
+		</td>
 	</tr>
 	<tr>
-		<td colspan="2"><input type="submit" /></td>
+		<td colspan="2"><input type="submit" id="submit_facility"/></td>
 	</tr>
 </table>
 </fieldset>

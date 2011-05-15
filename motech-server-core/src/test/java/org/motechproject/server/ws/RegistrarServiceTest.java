@@ -1164,7 +1164,7 @@ public class RegistrarServiceTest{
                 motherMotechId, communityId, address, phone, date,
                 delivDateConf, enroll, consent, phoneType, format, language,
                 day, date, reason, how, messageWeek, cwcRegNumber, true, date,
-                ancRegNumber, true, date, height, gravida, parity, lastIPT, lastIPTDate,
+                ancRegNumber, "0", date, height, gravida, parity, lastIPT, lastIPTDate,
                 lastTT,lastTTDate,bcgDate,lastOPV,lastOPVDate,lastPenta,
                 lastPentaDate,measlesDate,yellowFeverDate,lastIPTI,lastIPTIDate,
                 lastVitaminADate, whyNoHistory);
@@ -1245,7 +1245,7 @@ public class RegistrarServiceTest{
 					motherMotechId, community, address, phone, date,
 					delivDateConf, enroll, consent, phoneType, format,
 					language, day, date, reason, how, messageWeek, cwcRegNumber, true, date,
-                    ancRegNumber, true, date, height, gravida, parity, lastIPT, lastIPTDate,
+                    ancRegNumber, "0", date, height, gravida, parity, lastIPT, lastIPTDate,
                     lastTT,lastTTDate,bcgDate,lastOPV,lastOPVDate,lastPenta,
                     lastPentaDate,measlesDate,yellowFeverDate,lastIPTI,lastIPTIDate,
                     lastVitaminADate, whyNoHistory);

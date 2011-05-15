@@ -78,8 +78,7 @@ public class RCTServiceImpl implements RCTService {
 
     @Transactional(readOnly = true)
     public List<RCTPatient> getAllRCTPatients() {
-        List<RCTPatient> rctPatients = dao.getAllRCTPatients();
-        return rctPatients;
+        return dao.getAllRCTPatients();
     }
 
     private void determineNextAssignment(Stratum stratum) {

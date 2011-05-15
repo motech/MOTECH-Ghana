@@ -387,6 +387,18 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
         return motechDAO.facilityFor(patient);
     }
 
+    public List<MessageLanguage> getAllLanguages() {
+        return motechDAO.getMessageLanguages();
+    }
+
+    public MotechConfiguration getConfigurationFor(String name) {
+        return motechDAO.getConfiguration(name);
+    }
+
+    public Facility unknownFacility() {
+        return motechDAO.getUnknownFacility();
+    }
+
     public RCTService getRctService(){
         return rctService;
     }

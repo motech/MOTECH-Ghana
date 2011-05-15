@@ -107,7 +107,6 @@
         <property name="mobileService" ref="mobileClient"/>
         <property name="authenticationService" ref="authenticationService"/>
         <property name="relationshipService" ref="relationshipService"/>
-        <property name="messagePrograms" ref="messageProgramMap"/>
         <property name="patientService" ref="patientService"/>
         <property name="personService" ref="personService"/>
         <property name="administrationService" ref="adminService"/>
@@ -118,6 +117,7 @@
         <property name="userService" ref="userService"/>
         <property name="schedulerService" ref="schedulerService"/>
         <property name="rctService" ref="rctBeanProxy"/>
+        <property name="messageProgramService" ref="messageProgramService"/>
 
         <property name="staffTypes">
             <list>
@@ -135,49 +135,51 @@
         <property name="contextService" ref="contextService"/>
     </bean>
 
-    <!-- To avoid circular reference, expectedCareProgram injects registrarBean -->
-    <util:map id="messageProgramMap">
-        <entry>
-            <key>
-                <value>Weekly Pregnancy Message Program</value>
-            </key>
-            <ref bean="weeklyPregnancyProgram"/>
-        </entry>
-        <entry>
-            <key>
-                <value>Weekly Info Pregnancy Message Program</value>
-            </key>
-            <ref bean="weeklyInfoPregnancyProgram"/>
-        </entry>
-        <entry>
-            <key>
-                <value>Weekly Info Child Message Program</value>
-            </key>
-            <ref bean="weeklyInfoChildProgram"/>
-        </entry>
-        <entry>
-            <key>
-                <value>Demo Minute Message Program</value>
-            </key>
-            <ref bean="demoMinuteProgram"/>
-        </entry>
-        <entry>
-            <key>
-                <value>Input Demo Message Program</value>
-            </key>
-            <ref bean="inputDemoProgram"/>
-        </entry>
-        <entry>
-            <key>
-                <value>Expected Care Message Program</value>
-            </key>
-            <ref bean="expectedCareProgram"/>
-        </entry>
-    </util:map>
+    <bean id="messageProgramService" class="org.motechproject.server.omod.impl.MessageProgramServiceImpl">
+        <property name="messageFactories">
+            <list>
+                <bean class="org.motechproject.server.svc.impl.WeeklyMessageProgramFactory">
+                    <property name="name" value="Weekly Pregnancy Message Program"/>
+                    <property name="messageProgramDAO" ref="messageProgramDAO"/>
+                    <property name="registrarBean" ref="registrarBean"/>
+                    <property name="timeBean" ref="timeBean"/>
+                    <property name="messageScheduler" ref="userPrefmessageScheduler"/>
+                </bean>
+                <bean class="org.motechproject.server.svc.impl.WeeklyMessageProgramFactory">
+                    <property name="name" value="Weekly Info Pregnancy Message Program"/>
+                    <property name="messageProgramDAO" ref="messageProgramDAO"/>
+                    <property name="registrarBean" ref="registrarBean"/>
+                    <property name="timeBean" ref="timeBean"/>
+                    <property name="messageScheduler" ref="userPrefmessageScheduler"/>
+                </bean>
+                <bean class="org.motechproject.server.svc.impl.WeeklyMessageProgramFactory">
+                    <property name="name" value="Weekly Info Child Message Program"/>
+                    <property name="messageProgramDAO" ref="messageProgramDAO"/>
+                    <property name="registrarBean" ref="registrarBean"/>
+                    <property name="timeBean" ref="timeBean"/>
+                    <property name="messageScheduler" ref="userPrefmessageScheduler"/>
+                </bean>
+                <bean class="org.motechproject.server.svc.impl.DemoMessageProgramFactory">
+                    <property name="program" ref="demoMinuteProgram"/>
+                    <property name="name" value="Demo Minute Message Program"/>
+                </bean>
+                <bean class="org.motechproject.server.svc.impl.DemoMessageProgramFactory">
+                    <property name="program" ref="inputDemoProgram"/>
+                    <property name="name" value="Input Demo Message Program"/>
+                </bean>
+                <bean id="expectedCareMessageProgramFactory" class="org.motechproject.server.svc.impl.ExpectedCareMessageProgramFactory">
+                    <property name="registrarBean" ref="registrarBean"/>
+                    <property name="messageProgramDAO" ref="messageProgramDAO"/>
+                    <property name="name" value="Expected Care Message Program"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
 
-    <bean id="mobileClient" class="org.motechproject.server.ws.MessageServiceStub"/>
+    <!--<bean id="mobileClient" class="org.motechproject.server.ws.MessageServiceStub"/>-->
 
-    <!-- Uncomment to enable using motech-mobile web service and comment out mobileClient bean in registrar-bean.xml
+
+    <!-- Uncomment to enable using motech-mobile web service and comment out mobileClient bean in registrar-bean.xml-->
         <bean id="mobileClient"
             class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
             <property name="serviceInterface" value="org.motechproject.ws.mobile.MessageService" />
@@ -188,6 +190,4 @@
             <property name="portName" value="MessageServiceImplPort" />
             <property name="lookupServiceOnStartup" value="false" />
         </bean>
-    -->
-
 </beans>

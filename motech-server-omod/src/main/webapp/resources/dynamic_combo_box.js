@@ -19,6 +19,10 @@ function DynamicComboBox(combo) {
         modified = true ;
     };
 
+    this.currentValue = function(){
+      return $j(combo).val();  
+    };
+
     // combo.append(option) is not working across browsers
     this.appendOption = function(option) {
         var text = $j(option).text();
@@ -56,5 +60,17 @@ function DynamicComboBox(combo) {
 
     this.options = function() {
         return combo.children('option');
+    };
+
+    this.setValue = function(value){
+        $j(combo).val(value);
+    };
+
+    this.disable = function(){
+        $j(combo).attr('disabled','disabled');
+    };
+
+    this.enable = function(){
+        $j(combo).attr('disabled','');
     };
 }

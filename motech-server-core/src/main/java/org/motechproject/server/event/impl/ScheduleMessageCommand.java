@@ -33,75 +33,82 @@
 
 package org.motechproject.server.event.impl;
 
-import java.util.Date;
-
 import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.messaging.MessageScheduler;
 import org.motechproject.server.model.MessageProgramEnrollment;
+import org.motechproject.server.model.db.ProgramMessageKey;
+
+import java.util.Date;
 
 public class ScheduleMessageCommand extends MessagesCommand {
 
-	String messageKey;
-	String messageKeyA;
-	String messageKeyB;
-	String messageKeyC;
-	MessageScheduler messageScheduler;
+    private String messageKey;
+    private String messageKeyA;
+    private String messageKeyB;
+    private String messageKeyC;
+    private MessageScheduler messageScheduler;
 
-	@Override
-	public void execute(MessageProgramEnrollment enrollment, Date actionDate,
-			Date currentDate) {
-		if (actionDate == null) {
-			return;
-		}
-		messageScheduler.scheduleMessages(messageKey, messageKeyA, messageKeyB,
-				messageKeyC, enrollment, actionDate, currentDate);
-	}
+    public ScheduleMessageCommand(){}
 
-	@Override
-	public Date adjustActionDate(MessageProgramEnrollment enrollment,
-			Date actionDate, Date currentDate) {
-		return messageScheduler.adjustMessageDate(enrollment, actionDate,
-				currentDate);
-	}
+    public ScheduleMessageCommand(ProgramMessageKey programMessageKey, MessageScheduler messageScheduler) {
+        this.messageKey = programMessageKey.getMessageKey();
+        this.messageKeyA = programMessageKey.getMessageKeyA();
+        this.messageKeyB = programMessageKey.getMessageKeyB();
+        this.messageKeyC = programMessageKey.getMessageKeyC();
+        this.messageScheduler = messageScheduler ;
+    }
 
-	public String getMessageKey() {
-		return messageKey;
-	}
+    @Override
+    public void execute(MessageProgramEnrollment enrollment, Date actionDate, Date currentDate) {
+        if (actionDate == null) {
+            return;
+        }
+        messageScheduler.scheduleMessages(messageKey, messageKeyA, messageKeyB, messageKeyC, enrollment, actionDate, currentDate);
+    }
 
-	public void setMessageKey(String messageKey) {
-		this.messageKey = messageKey;
-	}
+    @Override
+    public Date adjustActionDate(MessageProgramEnrollment enrollment, Date actionDate, Date currentDate) {
+        return messageScheduler.adjustMessageDate(enrollment, actionDate,currentDate);
+    }
 
-	public String getMessageKeyA() {
-		return messageKeyA;
-	}
+    public String getMessageKey() {
+        return messageKey;
+    }
 
-	public void setMessageKeyA(String messageKeyA) {
-		this.messageKeyA = messageKeyA;
-	}
+    public void setMessageKey(String messageKey) {
+        this.messageKey = messageKey;
+    }
 
-	public String getMessageKeyB() {
-		return messageKeyB;
-	}
+    public String getMessageKeyA() {
+        return messageKeyA;
+    }
 
-	public void setMessageKeyB(String messageKeyB) {
-		this.messageKeyB = messageKeyB;
-	}
+    public void setMessageKeyA(String messageKeyA) {
+        this.messageKeyA = messageKeyA;
+    }
 
-	public String getMessageKeyC() {
-		return messageKeyC;
-	}
+    public String getMessageKeyB() {
+        return messageKeyB;
+    }
 
-	public void setMessageKeyC(String messageKeyC) {
-		this.messageKeyC = messageKeyC;
-	}
+    public void setMessageKeyB(String messageKeyB) {
+        this.messageKeyB = messageKeyB;
+    }
 
-	public MessageScheduler getMessageScheduler() {
-		return messageScheduler;
-	}
+    public String getMessageKeyC() {
+        return messageKeyC;
+    }
 
-	public void setMessageScheduler(MessageScheduler messageScheduler) {
-		this.messageScheduler = messageScheduler;
-	}
+    public void setMessageKeyC(String messageKeyC) {
+        this.messageKeyC = messageKeyC;
+    }
+
+    public MessageScheduler getMessageScheduler() {
+        return messageScheduler;
+    }
+
+    public void setMessageScheduler(MessageScheduler messageScheduler) {
+        this.messageScheduler = messageScheduler;
+    }
 
 }

@@ -33,11 +33,11 @@
 
 package org.motechproject.server.model;
 
+import org.openmrs.Patient;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.openmrs.Patient;
 
 public class Community implements Serializable {
 
@@ -106,4 +106,23 @@ public class Community implements Serializable {
 	public void setRetired(Boolean retired) {
 		this.retired = retired;
 	}
+
+    public Community basicInfo(){
+        Community community = new Community();
+        community.setCommunityId(communityId);
+        community.setName(name);
+        return  community;
+    }
+
+    public boolean hasResident(Patient patient) {
+        return residents.contains(patient);
+    }
+
+    public boolean remove(Patient patient) {
+        return residents.remove(patient);
+    }
+
+    public boolean add(Patient patient) {
+        return residents.add(patient);
+    }
 }

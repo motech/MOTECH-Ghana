@@ -94,8 +94,7 @@ public class MotechIdVerhoeffValidator extends VerhoeffValidator {
 							+ VERHOEFF_UNDECORATED_ID_LENGTH + " digits long.");
 
 		int checkDigit = getCheckDigit(undecoratedIdentifier);
-		String result = undecoratedIdentifier + checkDigit;
-		return result;
+        return undecoratedIdentifier + checkDigit;
 	}
 
 }

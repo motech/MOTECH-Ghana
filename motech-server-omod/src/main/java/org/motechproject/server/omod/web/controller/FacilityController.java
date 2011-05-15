@@ -33,9 +33,7 @@
 
 package org.motechproject.server.omod.web.controller;
 
-import java.util.HashSet;
-import java.util.List;
-
+import org.apache.commons.lang.StringUtils;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.web.model.WebFacility;
@@ -49,13 +47,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 
+import java.util.*;
+
 @Controller
 public class FacilityController {
 
-	@Autowired
+    @Autowired
 	private ContextService contextService;
 
-	@ModelAttribute("facilities")
+    public FacilityController() {
+    }
+
+    public FacilityController(ContextService contextService) {
+        this.contextService = contextService;
+    }
+
+    @ModelAttribute("facilities")
 	public List<Facility> getFacilities() {
 		return contextService.getMotechService().getAllFacilities();
 	}
@@ -67,19 +74,18 @@ public class FacilityController {
 
     @RequestMapping(value = "/module/motechmodule/addfacility.form", method = RequestMethod.GET)
     public String viewAddFacilityForm(ModelMap modelMap){
+        populateLocation(modelMap);
         modelMap.addAttribute("facility", new WebFacility());
         return "/module/motechmodule/addfacility";
     }
 
     @RequestMapping(value = "/module/motechmodule/addfacility.form", method = RequestMethod.POST)
     public String submitAddFacility(@ModelAttribute("facility") WebFacility facility, Errors errors,ModelMap modelMap, SessionStatus status){
-        if(facility.getName().isEmpty()){
-            errors.rejectValue("name", "motechmodule.name.blank");
-        }
         if(contextService.getMotechService().getLocationByName(facility.getName()) != null){
             errors.rejectValue("name","motechmodule.Facility.duplicate.location");
         }
         if(errors.hasErrors()){
+            populateLocation(modelMap);
             return "/module/motechmodule/addfacility";
         }
         contextService.getLocationService().saveLocation(facility.getFacility().getLocation());
@@ -92,23 +98,32 @@ public class FacilityController {
         return contextService.getLocationService().getAllLocations(false);
     }
 
-    @RequestMapping(value = "/module/motechmodule/jsonfacilitydata.form", method = RequestMethod.GET)
-    public String getJSON(ModelMap modelMap){
-        List<Location> locationList = contextService.getLocationService().getAllLocations();
-        HashSet<String> countries = new HashSet<String>();
-        HashSet<String> regions = new HashSet<String>();
-        HashSet<String> districts = new HashSet<String>();
-        HashSet<String> provinces = new HashSet<String>();
-        for (Location list : locationList){
-            countries.add("\"" + list.getCountry() + "\"");
-            regions.add("\"" + list.getRegion() + "\"");
-            districts.add("\"" + list.getCountyDistrict() + "\"");
-            provinces.add("\"" + list.getStateProvince() + "\"");
+    private void populateLocation(ModelMap modelMap) {
+        List<Location> locations = contextService.getLocationService().getAllLocations();
+        Set<String> countries = new TreeSet<String>();
+        Map<String, TreeSet<String>> regions = new HashMap<String, TreeSet<String>>();
+        Map<String, TreeSet<String>> districts = new HashMap<String, TreeSet<String>>();
+        Map<String, TreeSet<String>> provinces = new HashMap<String, TreeSet<String>>();
+        for (Location location : locations) {
+            countries.add(location.getCountry());
+            populate(regions, location.getCountry(), location.getRegion());
+            populate(districts, location.getRegion(), location.getCountyDistrict());
+            populate(provinces, location.getCountyDistrict(), location.getStateProvince());
         }
-        modelMap.addAttribute("countries", countries.toString());
-        modelMap.addAttribute("regions", regions.toString());
-        modelMap.addAttribute("districts", districts.toString());
-        modelMap.addAttribute("provinces", provinces.toString());
-        return "/module/motechmodule/json_data_facilities";
+        modelMap.addAttribute("countries",countries);
+        modelMap.addAttribute("regions",regions);
+        modelMap.addAttribute("districts",districts);
+        modelMap.addAttribute("provinces", provinces);
+    }
+
+    private void populate(Map<String, TreeSet<String>> map, String key, String value) {
+        if (StringUtils.isBlank(key) || StringUtils.isBlank(value)) return;
+        if (map.containsKey(key)) {
+            map.get(key).add(value);
+            return;
+        }
+        TreeSet<String> values = new TreeSet<String>();
+        values.add(value);
+        map.put(key, values);
     }
 }

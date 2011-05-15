@@ -1,6 +1,9 @@
 package org.motechproject.server.util;
 
 public final class RCTError {
+    private RCTError() {
+        
+    }
 
     public static final String PREGNANCY_NOT_REGISTERED = "motechmodule.rct.pregnancy.not.registered";
 

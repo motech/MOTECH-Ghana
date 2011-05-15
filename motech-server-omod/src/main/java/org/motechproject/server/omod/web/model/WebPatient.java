@@ -34,6 +34,7 @@
 package org.motechproject.server.omod.web.model;
 
 import flexjson.JSON;
+import org.apache.commons.lang.StringUtils;
 import org.motechproject.ws.*;
 
 import java.util.Date;
@@ -57,6 +58,7 @@ public class WebPatient {
     private Date nhisExpDate;
     private String region;
     private String district;
+    private String subDistrict;
     private Integer communityId;
     private String communityName;
     private String address;
@@ -382,5 +384,37 @@ public class WebPatient {
 
     public void setFacility(Integer facility) {
         this.facility = facility;
+    }
+
+    public String getSubDistrict() {
+        return subDistrict;
+    }
+
+    public void setSubDistrict(String subDistrict) {
+        this.subDistrict = subDistrict;
+    }
+
+    public boolean hasRegion(){
+        return StringUtils.isNotBlank(region);
+    }
+
+    public boolean hasDistrict(){
+        return StringUtils.isNotBlank(region);
+    }
+
+    public boolean hasSubDistrict(){
+        return StringUtils.isNotBlank(region);
+    }
+
+    public boolean hasFacility(){
+        return StringUtils.isNotBlank(region);
+    }
+
+    public boolean hasCommunity(){
+        return StringUtils.isNotBlank(region);
+    }
+
+    public boolean hasRegion(String regionName) {
+        return regionName.equals(region);
     }
 }

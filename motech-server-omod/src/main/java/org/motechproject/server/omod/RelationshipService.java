@@ -38,7 +38,7 @@ import org.openmrs.Relationship;
 
 public interface RelationshipService {
 
-    public Relationship saveOrUpdateMotherRelationship(Person mother, Person Child, Boolean canVoidRelationship);
+    public Relationship saveOrUpdateMotherRelationship(Person mother, Person child, Boolean canVoidRelationship);
 
     public Relationship createMotherChildRelationship(Person mother, Person child);
 

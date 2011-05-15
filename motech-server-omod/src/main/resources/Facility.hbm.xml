@@ -46,6 +46,14 @@
 			column="location_id" not-null="true" />
 		<property name="phoneNumber" type="string" column="phone_number"
 			length="50" />
+        <property name="additionalPhoneNumber1" type="string" column="additional_phone_number1"
+			length="50" />
+        <property name="additionalPhoneNumber2" type="string" column="additional_phone_number2"
+			length="50" />
+        <property name="additionalPhoneNumber3" type="string" column="additional_phone_number3"
+			length="50" />
+         <property name="additionalPhoneNumber4" type="string" column="additional_phone_number4"
+			length="50" />
 		<set name="communities" order-by="name" inverse="true">
 			<key column="facility_id" />
 			<one-to-many class="Community" />

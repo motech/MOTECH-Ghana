@@ -42,7 +42,12 @@ import org.motechproject.ws.Gender;
  */
 public class GenderTypeConverter {
 
+
 	private static Log log = LogFactory.getLog(GenderTypeConverter.class);
+
+    private GenderTypeConverter() {
+        
+    }
 
 	public static String toOpenMRSString(Gender gender) {
 		if (gender == null) {

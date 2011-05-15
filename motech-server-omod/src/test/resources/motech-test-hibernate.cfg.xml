@@ -57,5 +57,10 @@
         <mapping resource="ControlGroupAssignment.hbm.xml"/>
         <mapping resource="RCTPatient.hbm.xml"/>
         <mapping resource="RCTFacility.hbm.xml"/>
+        <mapping resource="ExpectedCareMessageDetails.hbm.xml"/>
+        <mapping resource="MotechMessageProgramState.hbm.xml"/>
+        <mapping resource="MotechMessageProgramStateTransition.hbm.xml"/>
+        <mapping resource="MotechMessageProgram.hbm.xml"/>
+        <mapping resource="MessageLanguage.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

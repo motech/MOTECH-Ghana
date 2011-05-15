@@ -19,11 +19,11 @@ import static org.motechproject.server.omod.PatientIdentifierTypeEnum.*;
 
 public class IndentifierGeneratorImpl implements IdentifierGenerator{
 
-    private final String IDGEN_SEQ_ID_GEN_MOTECH_ID_MANUAL_COMMENT = "MANUAL ENTRY";
-    private final String IDGEN_SEQ_ID_GEN_MOTECH_ID = "MoTeCH ID Generator";
-    private final String IDGEN_SEQ_ID_GEN_COMMUNITY_ID = "MoTeCH Community ID Generator";
-    private final String IDGEN_SEQ_ID_GEN_STAFF_ID = "MoTeCH Staff ID Generator";
-    private final String IDGEN_SEQ_ID_GEN_FACILITY_ID = "MoTeCH Facility ID Generator";
+    private static final String IDGEN_SEQ_ID_GEN_MOTECH_ID_MANUAL_COMMENT = "MANUAL ENTRY";
+    private static final String IDGEN_SEQ_ID_GEN_MOTECH_ID = "MoTeCH ID Generator";
+    private static final String IDGEN_SEQ_ID_GEN_COMMUNITY_ID = "MoTeCH Community ID Generator";
+    private static final String IDGEN_SEQ_ID_GEN_STAFF_ID = "MoTeCH Staff ID Generator";
+    private static final String IDGEN_SEQ_ID_GEN_FACILITY_ID = "MoTeCH Facility ID Generator";
 
     @Autowired
     private ContextService contextService;

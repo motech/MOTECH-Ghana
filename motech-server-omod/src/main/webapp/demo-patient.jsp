@@ -231,9 +231,9 @@
 		<td>
 			<form:select path="language">
 				<form:option value="" label="Select Value" />
-				<form:option value="en" label="English" />
-				<form:option value="kas" label="Kassim" />
-				<form:option value="nan" label="Nankam" />
+				<c:forEach items="${languages}" var="language">
+                       <form:option value="${language.code}" label="${language.name}"/>
+                </c:forEach>
 			</form:select>
 		</td>
 		<td><form:errors path="language" cssClass="error" /></td>

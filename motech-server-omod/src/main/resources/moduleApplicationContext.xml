@@ -186,9 +186,14 @@
     <bean id="webModelConverter" class="org.motechproject.server.omod.web.model.WebModelConverterImpl">
         <property name="registrarBean" ref="registrarBeanProxy"/>
         <property name="relationshipService" ref="relationshipService"/>
+        <property name="patientService" ref="patientService"/>
     </bean>
 
     <bean id="rctDao" class="org.motechproject.server.model.db.hibernate.rct.HibernateRctDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="messageProgramDAO" class="org.motechproject.server.model.db.hibernate.MessageProgramDAOImpl">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 

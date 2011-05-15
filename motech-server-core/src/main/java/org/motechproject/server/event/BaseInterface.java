@@ -37,6 +37,4 @@ public interface BaseInterface {
 
 	String getName();
 
-	String getDescription();
-
 }
