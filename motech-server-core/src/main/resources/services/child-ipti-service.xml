@@ -43,7 +43,9 @@
 		<property name="name" value="IPTI" />
 		<property name="conceptName" value="INTERMITTENT PREVENTATIVE TREATMENT INFANTS DOSE" />
 		<property name="lateValue" value="1" />
-		<property name="latePeriod" value="week" />		
+		<property name="latePeriod" value="week" />
+        <property name="maxValue" value="2" />
+		<property name="maxPeriod" value="week" />
 		<property name="registrarBean" ref="registrarBean" />
 		<property name="requirements">
 			<list>
