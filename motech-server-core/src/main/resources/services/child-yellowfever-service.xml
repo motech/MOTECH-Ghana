@@ -63,9 +63,7 @@
 					<property name="dueValue" value="9" />
 					<property name="duePeriod" value="month" />
 					<property name="lateValue" value="4" />
-					<property name="latePeriod" value="week" />				
-                    <property name="maxValue" value="5" />
-                    <property name="maxPeriod" value="week" />
+					<property name="latePeriod" value="week" />
 				</bean>
 			</list>
 		</property>

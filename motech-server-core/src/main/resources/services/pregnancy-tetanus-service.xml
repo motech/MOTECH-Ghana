@@ -64,8 +64,7 @@
 					<property name="duePeriod" value="year" />					
 					<property name="lateValue" value="0" />
 					<property name="latePeriod" value="week" />	
-                    <property name="maxValue" value="1" />
-                    <property name="maxPeriod" value="week" />
+
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="TT2" />
@@ -74,9 +73,7 @@
 					<property name="duePeriod" value="week" />
 					<property name="dueReferencePrevious" value="true" />	
 					<property name="lateValue" value="1" />
-					<property name="latePeriod" value="week" />			
-                    <property name="maxValue" value="2" />
-                    <property name="maxPeriod" value="week" />
+					<property name="latePeriod" value="week" />
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="TT3" />
@@ -85,9 +82,7 @@
 					<property name="duePeriod" value="month" />
 					<property name="dueReferencePrevious" value="true" />	
 					<property name="lateValue" value="10" />
-					<property name="latePeriod" value="day" />				
-                    <property name="maxValue" value="17" />
-                    <property name="maxPeriod" value="day" />
+					<property name="latePeriod" value="day" />
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="TT4" />
@@ -96,9 +91,7 @@
 					<property name="duePeriod" value="year" />
 					<property name="dueReferencePrevious" value="true" />	
 					<property name="lateValue" value="10" />
-					<property name="latePeriod" value="day" />			
-                    <property name="maxValue" value="17" />
-                    <property name="maxPeriod" value="day" />
+					<property name="latePeriod" value="day" />
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="TT5" />
@@ -107,9 +100,7 @@
 					<property name="duePeriod" value="year" />
 					<property name="dueReferencePrevious" value="true" />	
 					<property name="lateValue" value="5" />
-					<property name="latePeriod" value="day" />		
-                    <property name="maxValue" value="12" />
-                    <property name="maxPeriod" value="day" />
+					<property name="latePeriod" value="day" />
 				</bean>
 			</list>
 		</property>
