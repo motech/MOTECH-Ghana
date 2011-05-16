@@ -33,6 +33,8 @@
 
 package org.motechproject.server.model;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.model.db.ProgramMessageKey;
 import org.motechproject.server.svc.RegistrarBean;
@@ -59,11 +61,14 @@ public class MotechMessageProgramState implements MessageProgramState {
     private TimeBean timeBean;
     private MotechMessageProgramState next ;
 
+    private static Log log = LogFactory.getLog("motech.scheduler");
+
     public void addTransition(MessageProgramStateTransition transition) {
         transitions.add(transition);
     }
 
     public MessageProgramStateTransition getTransition(MessageProgramEnrollment enrollment, Date currentDate, RegistrarBean registrarBean) {
+        log.debug("Getting transitions for " + enrollment.getProgram() + " with transitions size " + transitions.size());
         for (MessageProgramStateTransition transition : transitions) {
             if (transition.evaluate(enrollment, currentDate, registrarBean)) {
                 return transition;

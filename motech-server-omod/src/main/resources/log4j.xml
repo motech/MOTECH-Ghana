@@ -63,6 +63,16 @@
         </layout>
     </appender>
 
+    
+    <appender name="SCHEDULER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/motech-scheduler.log"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%d %-5p [%c] %m%n"/>
+        </layout>
+    </appender>
+
      <appender name="HIBERNATE-LOGFILE" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="File" value="${catalina.base}/logs/hibernate.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
@@ -93,6 +103,11 @@
         <appender-ref ref="RCT-LOGFILE"/>
     </logger>
 
+     <logger name="motech.scheduler">
+        <level value="DEBUG"/>
+        <appender-ref ref="SCHEDULER"/>
+    </logger>
+
     
      <!--Enable this to view the sql statements that hibernate generates-->
      <!--<logger name="org.hibernate.SQL">-->
@@ -110,6 +125,7 @@
 
     <root>
         <level value="ERROR"/>
+        <appender-ref ref="MOTECH-SERVER-LOGFILE"/>
         <appender-ref ref="CONSOLE"/>
     </root>
 
