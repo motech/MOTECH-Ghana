@@ -118,7 +118,7 @@ public class ExpectedCareScheduleImpl implements ExpectedCareSchedule {
 	}
 
 	protected Date getMaxDate(Date date, ExpectedCareEvent event) {
-		if (event.getLateValue() != null && event.getLatePeriod() != null) {
+		if (event.getMaxValue() != null && event.getMaxPeriod() != null) {
 			return calculateDate(date, event.getMaxValue(), event.getMaxPeriod());
 		} else {
 			return calculateDate(date, maxValue, maxPeriod);

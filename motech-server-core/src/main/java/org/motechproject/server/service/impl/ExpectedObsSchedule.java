@@ -33,9 +33,6 @@
 
 package org.motechproject.server.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,6 +40,9 @@ import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.service.ExpectedCareEvent;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+
+import java.util.Date;
+import java.util.List;
 
 public class ExpectedObsSchedule extends ExpectedCareScheduleImpl {
 
