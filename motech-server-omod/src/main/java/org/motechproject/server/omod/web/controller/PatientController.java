@@ -230,8 +230,6 @@ public class PatientController extends BasePatientController {
 				"motechmodule.birthDateEst.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "sex",
 				"motechmodule.sex.required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "insured",
-				"motechmodule.insured.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "region",
 				"motechmodule.region.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "district",
@@ -319,8 +317,6 @@ public class PatientController extends BasePatientController {
 		validateTextLength(errors, "lastName", patient.getLastName(),
 				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
 		validateTextLength(errors, "prefName", patient.getPrefName(),
-				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
-		validateTextLength(errors, "nhis", patient.getNhis(),
 				MotechConstants.MAX_STRING_LENGTH_OPENMRS);
 		validateTextLength(errors, "address", patient.getAddress(),
 				MotechConstants.MAX_STRING_LENGTH_OPENMRS);

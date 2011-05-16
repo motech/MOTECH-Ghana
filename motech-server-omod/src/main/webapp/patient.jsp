@@ -149,7 +149,7 @@
             </td>
             <td><form:errors path="sex" cssClass="error"/></td>
         </tr>
-        <tr>
+        <tr class="hideme">
             <td class="labelcolumn"><label for="insured">Insured:</label></td>
             <td>
                 <form:select path="insured">
@@ -160,12 +160,12 @@
             </td>
             <td><form:errors path="insured" cssClass="error"/></td>
         </tr>
-        <tr>
+        <tr class="hideme">
             <td class="labelcolumn"><label for="nhis">NHIS Number:</label></td>
             <td><form:input path="nhis" onchange="findDuplicates()" maxlength="50"/></td>
             <td><form:errors path="nhis" cssClass="error"/></td>
         </tr>
-        <tr>
+        <tr class="hideme">
             <td class="labelcolumn"><label for="nhisExpDate">NHIS Expiration Date (DD/MM/YYYY):</label></td>
             <td><form:input path="nhisExpDate"/></td>
             <td><form:errors path="nhisExpDate" cssClass="error"/></td>
@@ -265,7 +265,7 @@
                     <form:option value="" label="Select Value"/>
                     <form:option value="PERSONAL" label="Personal phone"/>
                     <form:option value="HOUSEHOLD" label="Owned by household"/>
-                    <form:option value="PUBLIC" label="Public phone"/>
+                    <form:option value="PUBLIC" label="Public phone" disabled="true"/>
                 </form:select>
             </td>
             <td><form:errors path="phoneType" cssClass="error"/></td>
@@ -276,7 +276,7 @@
                 <form:select path="mediaType" onchange="onMediaTypeSelection()">
                     <form:option value="" label="Select Value"/>
                     <form:option value="TEXT" label="Text"/>
-                    <form:option value="VOICE" label="Voice"/>
+                    <form:option value="VOICE" label="Voice" disabled="true"/>
                 </form:select>
             </td>
             <td><form:errors path="mediaType" cssClass="error"/></td>
@@ -287,13 +287,12 @@
                 <form:select path="language">
                     <form:option value="" label="Select Value"/>
                     <form:option value="en" label="English"/>
-                    <form:option value="kas" label="Kassim"/>
-                    <form:option value="nan" label="Nankam"/>
+                    <form:option value="hindi" label="Hindi" disabled="true"/>
                 </form:select>
             </td>
             <td><form:errors path="language" cssClass="error"/></td>
         </tr>
-        <tr>
+        <tr class="hideme">
             <td class="labelcolumn"><label for="dayOfWeek">Day of week to receive messages:</label></td>
             <td>
                 <form:select path="dayOfWeek">
@@ -309,7 +308,7 @@
             </td>
             <td><form:errors path="dayOfWeek" cssClass="error"/></td>
         </tr>
-        <tr>
+        <tr class="hideme">
             <td class="labelcolumn"><label for="timeOfDay">Time of day to receive messages (HH:MM):</label></td>
             <td><form:input path="timeOfDay"/></td>
             <td><form:errors path="timeOfDay" cssClass="error"/></td>
@@ -337,8 +336,7 @@
             <td>
                 <form:select path="howLearned">
                     <form:option value="" label="Select Value"/>
-                    <form:option value="GHS_NURSE" label="GHS Nurse"/>
-                    <form:option value="MOTECH_FIELD_AGENT" label="MoTeCH field agent"/>
+                    <form:option value="GHS_NURSE" label="Nurse"/>
                     <form:option value="FRIEND" label="Friend"/>
                     <form:option value="POSTERS_ADS" label="Posters/ads"/>
                     <form:option value="RADIO" label="Radio"/>
