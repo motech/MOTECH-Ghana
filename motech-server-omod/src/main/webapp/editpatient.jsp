@@ -55,13 +55,19 @@
                 $j('#registrationMode'), $j('#motechId'), $j('#registrantType'), $j('#firstName'), $j('#lastName')
                 , $j('#birthDate'), $j('#birthDateEst'), $j('#sex'), $j('#insured'), $j('#region')
                 , $j('#district'), $j('#subDistrict'), $j('#facility'), $j('#communityId'), $j('#address')
-                , $j('#dueDate'), $j('#dueDateConfirmed'), $j('#enroll')
+                , $j('#dueDateConfirmed'), $j('#enroll')
                 );
         var midwifeValidator = new MidwifeDataValidator($j('#mobileMidwifeInformation'), $j('#consent1'))
                 .add(new PhoneDetailsValidator($j('#phoneNumber'), $j('#phoneType')))
                 .add(new MediaTypeValidator($j('#mediaType'), $j('#language'), $j('#dayOfWeek'), $j('#timeOfDay')));
         var communityValidator = new CommunityValidator($j('#communityId'), $j('#region'));
         new Validators($j('#patient')).add(generalFieldsValidator).add(communityValidator).add(midwifeValidator);
+        
+        if(!($j('#dueDate').val()))
+            $j('#pregnancy-information').hide();
+        else
+            generalFieldsValidator.add($j('#dueDate'));
+
     });
 </script>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css"/>
@@ -209,7 +215,7 @@
         </tr>
     </table>
 </fieldset>
-<fieldset>
+<fieldset id="pregnancy-information">
     <legend>Pregnancy Information</legend>
     <table>
         <tr>
