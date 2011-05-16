@@ -440,4 +440,6 @@ public interface RegistrarBean {
     Facility getFacilityByPatient(Patient patient);
 
     public Date getChildRegistrationDate();
+
+    Facility getUnknownFacility();
 }

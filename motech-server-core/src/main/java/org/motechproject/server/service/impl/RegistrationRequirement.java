@@ -11,9 +11,7 @@ public class RegistrationRequirement implements Requirement {
 
     public boolean meetsRequirement(Patient patient, Date date) {
         Date childRegistrationDate = registrarBean.getChildRegistrationDate();
-        Date dateCreated = patient.getDateCreated();
-        boolean result = childRegistrationDate.before(dateCreated);
-        return result;
+        return childRegistrationDate.before(patient.getDateCreated());
     }
 
     public RegistrarBean getRegistrarBean() {
