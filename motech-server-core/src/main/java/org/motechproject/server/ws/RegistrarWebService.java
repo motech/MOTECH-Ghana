@@ -611,7 +611,7 @@ public class RegistrarWebService implements RegistrarService {
         }
         ancRegDate = decideANCRegistrationDate(ancRegToday, ancRegDate);
         Facility ancFacility = decideFacility(facilityId, errors, ancRegToday);
-        registrarBean.registerANCMother(staff, ancFacility.getLocation(), date,
+        registrarBean.registerANCMother(staff, ancFacility.getLocation(), ancRegDate,
                 patient, ancRegNumber, expDeliveryDate, height, gravida,
                 parity, enroll, consent, ownership, phoneNumber, format,
                 language, dayOfWeek, timeOfDay, howLearned);
