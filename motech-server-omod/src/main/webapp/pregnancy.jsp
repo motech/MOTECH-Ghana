@@ -38,7 +38,14 @@
 <openmrs:require privilege="Register MoTeCH Pregnancy" otherwise="/login.htm" redirect="/module/motechmodule/pregnancy.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
-<openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css" />
+<style type="text/css">
+legend {
+  font-weight: bold;
+}
+td.labelcolumn {
+  width: 325px;
+}
+</style>
 
 <meta name="heading" content="Pregnancy Registration" />
 <%@ include file="localHeader.jsp" %>
