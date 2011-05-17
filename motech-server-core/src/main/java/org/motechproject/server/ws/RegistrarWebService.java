@@ -595,7 +595,7 @@ public class RegistrarWebService implements RegistrarService {
         }
         if (ancRegNumber != null) {
             ancRegDate = (ancRegToday) ? new Date() : ancRegDate;
-            registrarBean.registerANCMother(staff, facility.getLocation(), date,
+            registrarBean.registerANCMother(staff, facility.getLocation(), ancRegDate,
                     patient, ancRegNumber, expDeliveryDate, height, gravida,
                     parity, enroll, consent, ownership, phoneNumber, format,
                     language, dayOfWeek, timeOfDay, howLearned);
