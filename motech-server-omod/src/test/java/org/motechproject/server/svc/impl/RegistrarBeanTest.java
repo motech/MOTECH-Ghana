@@ -78,6 +78,7 @@ public class RegistrarBeanTest {
     IdentifierSourceService idService;
     RelationshipService relationshipService;
     AuthenticationService authenticationService;
+    AdministrationService adminService ;
 
     SequentialIdentifierGenerator staffIdGenerator;
 
@@ -186,6 +187,7 @@ public class RegistrarBeanTest {
         relationshipService = createMock(RelationshipService.class);
         identifierGenerator = createMock(IdentifierGenerator.class);
         authenticationService = createMock(AuthenticationService.class);
+        adminService = createMock(AdministrationService.class);
 
         ghanaLocation = new Location(1);
         ghanaLocation.setName(MotechConstants.LOCATION_GHANA);
@@ -423,6 +425,7 @@ public class RegistrarBeanTest {
         regBeanImpl.setObsService(obsService);
         regBeanImpl.setConceptService(conceptService);
         regBeanImpl.setAuthenticationService(authenticationService);
+        regBeanImpl.setAdministrationService(adminService);
     }
 
     @After
@@ -733,7 +736,7 @@ public class RegistrarBeanTest {
         Patient child = new Patient(1);
         child.setBirthdate(birthDate);
         Patient mother = new Patient(2);
-        Location ghanaLocation = new Location(1);
+        Location defaultLocation = new Location(1);
         Community community = new Community();
         Facility facility = new Facility();
         Location facilityLocation = new Location(2);
@@ -756,8 +759,10 @@ public class RegistrarBeanTest {
                 patientService
                         .getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
                 .andReturn(motechIdType).atLeastOnce();
-        expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
-                .andReturn(ghanaLocation).times(2);
+
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_DEFAULT_LOCATION)).andReturn(MotechConstants.LOCATION_BIHAR).times(2);
+
+        expect(locationService.getLocation(MotechConstants.LOCATION_BIHAR)).andReturn(defaultLocation).times(2);
 
         expect(
                 personService
@@ -836,7 +841,7 @@ public class RegistrarBeanTest {
 
         replay(contextService, patientService, motechService, personService,
                 locationService, userService, encounterService, obsService,
-                conceptService, idService, authenticationService);
+                conceptService, idService, authenticationService,adminService);
 
         regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
                 RegistrantType.CHILD_UNDER_FIVE, firstName, middleName,
@@ -847,7 +852,7 @@ public class RegistrarBeanTest {
 
         verify(contextService, patientService, motechService, personService,
                 locationService, userService, encounterService, obsService,
-                conceptService, idService, authenticationService);
+                conceptService, idService, authenticationService,adminService);
 
         Patient capturedPatient = patientCap.getValue();
         assertEquals(prefName, capturedPatient.getGivenName());
@@ -958,7 +963,7 @@ public class RegistrarBeanTest {
         String careProgramName = "Expected Care Message Program";
 
         Patient patient = new Patient(2);
-        Location ghanaLocation = new Location(1);
+        Location defaultLocation = new Location(1);
         Community community = new Community();
         Facility facility = new Facility();
         Location facilityLocation = new Location(2);
@@ -1030,8 +1035,10 @@ public class RegistrarBeanTest {
         expect(patientService.savePatient(capture(patientCap))).andReturn(
                 patient);
 
-        expect(locationService.getLocation(MotechConstants.LOCATION_GHANA))
-                .andReturn(ghanaLocation).atLeastOnce();
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_DEFAULT_LOCATION)).andReturn(MotechConstants.LOCATION_BIHAR).atLeastOnce();
+
+        expect(locationService.getLocation(MotechConstants.LOCATION_BIHAR)).andReturn(defaultLocation).atLeastOnce();
+
         expect(
                 conceptService
                         .getConcept(MotechConstants.CONCEPT_ENROLLMENT_REFERENCE_DATE))
@@ -1068,7 +1075,7 @@ public class RegistrarBeanTest {
 
         replay(contextService, patientService, motechService, personService,
                 locationService, userService, encounterService, obsService,
-                conceptService, idService);
+                conceptService, idService,adminService);
 
         regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId,
                 RegistrantType.OTHER, firstName, middleName, lastName,
@@ -1079,7 +1086,7 @@ public class RegistrarBeanTest {
 
         verify(contextService, patientService, motechService, personService,
                 locationService, userService, encounterService, obsService,
-                conceptService, idService);
+                conceptService, idService,adminService);
 
         Patient capturedPatient = patientCap.getValue();
         assertEquals(motechId.toString(), capturedPatient.getPatientIdentifier(
@@ -1150,7 +1157,7 @@ public class RegistrarBeanTest {
 
         Obs refDateObs = refDateObsCap.getValue();
         assertEquals(patient.getPatientId(), refDateObs.getPersonId());
-        assertEquals(ghanaLocation, refDateObs.getLocation());
+        assertEquals(defaultLocation, refDateObs.getLocation());
         assertEquals(refDateConcept, refDateObs.getConcept());
         assertNotNull("Enrollment reference date value is null", refDateObs
                 .getValueDatetime());

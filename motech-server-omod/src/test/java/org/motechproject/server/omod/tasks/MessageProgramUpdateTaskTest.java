@@ -33,40 +33,16 @@
 
 package org.motechproject.server.omod.tasks;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.motechproject.server.model.Message;
-import org.motechproject.server.model.MessageDefinition;
-import org.motechproject.server.model.MessageProgramEnrollment;
+import org.junit.*;
+import org.motechproject.server.model.*;
 import org.motechproject.server.model.MessageStatus;
-import org.motechproject.server.model.MessageType;
-import org.motechproject.server.model.ScheduledMessage;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
-import org.motechproject.ws.ContactNumberType;
-import org.motechproject.ws.DayOfWeek;
-import org.motechproject.ws.Gender;
-import org.motechproject.ws.HowLearned;
-import org.motechproject.ws.InterestReason;
-import org.motechproject.ws.MediaType;
-import org.motechproject.ws.RegistrantType;
-import org.motechproject.ws.RegistrationMode;
+import org.motechproject.ws.*;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
@@ -75,13 +51,18 @@ import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.SkipBaseSetup;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
 /**
  * BaseModuleContextSensitiveTest loads both the OpenMRS core and module spring
  * contexts and hibernate mappings, providing the OpenMRS Context for both
  * OpenMRS core and module services.
  */
-public class MessageProgramUpdateTaskTest extends
-		BaseModuleContextSensitiveTest {
+public class MessageProgramUpdateTaskTest extends BaseModuleContextSensitiveTest {
 
 	static MotechModuleActivator activator;
 

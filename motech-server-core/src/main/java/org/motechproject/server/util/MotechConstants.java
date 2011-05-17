@@ -124,4 +124,11 @@ public final class MotechConstants {
 	public static final String CONCEPT_GRAVIDA = "GRAVIDA";
 	public static final String CONCEPT_PARITY = "PARITY";
 	public static final String RELATIONSHIP_TYPE_PARENT_CHILD = "Parent/Child";
+
+    /*
+      Constants added for Bihar
+     */
+
+    public static final String GLOBAL_PROPERTY_DEFAULT_LOCATION = "default_location";
+    public static final String LOCATION_BIHAR = "Bihar";
 }

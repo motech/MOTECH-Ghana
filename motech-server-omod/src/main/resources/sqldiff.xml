@@ -1679,4 +1679,16 @@
             insert into motechmodule_rct_assignment values(340,104,60,'T');
         </sql>
     </diff>
+     <diff>
+        <version>1.2</version>
+        <author>ThoughtWorks</author>
+        <date>May 17 2011</date>
+        <description>
+            Changes for Bihar demo
+        </description>
+        <sql>
+            insert into location (name,country,region,county_district,state_province,uuid,creator,description) values ('Bihar','India','Bihar','Bihar','Bihar',uuid(),1,'Bihar,State in India');
+            insert into global_property (property,property_value,description,uuid) values ('default_location','Bihar','Default location for MoTeCH installation',uuid());
+        </sql>
+      </diff>
 </sqldiff>

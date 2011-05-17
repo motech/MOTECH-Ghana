@@ -152,7 +152,7 @@ public class PatientController extends BasePatientController {
 	public WebPatient getWebPatient(@RequestParam(required = false) Integer id) {
 		WebPatient webPatient = new WebPatient();
 		// Set default region for new patients
-		webPatient.setRegion(MotechConstants.LOCATION_UPPER_EAST);
+		webPatient.setRegion(MotechConstants.LOCATION_BIHAR);
 		if (id != null) {
 			Patient patient = contextService.getPatientService().getPatient(id);
 

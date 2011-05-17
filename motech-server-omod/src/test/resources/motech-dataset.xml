@@ -473,4 +473,8 @@
   <person_attribute_type person_attribute_type_id="16" name="Insured" description="Is person insured? (TRUE OR FALSE)" format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0" retired="0" uuid="62c85275-8e75-4bb4-a2db-40e876f4d860"/>
   <person_attribute_type person_attribute_type_id="17" name="How learned of service" description="How person found out about services." format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0" retired="0" uuid="b55d030a-c8f8-4b4a-a087-07324c72e695"/>
   <person_attribute_type person_attribute_type_id="18" name="Reason interested in service" description="Reason person is interested in services." format="java.lang.String" searchable="0" creator="1" date_created="2010-06-30 16:07:23.0" date_changed="2010-07-13 15:38:30.0" retired="0" uuid="6f94c84c-a174-4129-8785-b72fbdaf2c62"/>
+
+  <location name="Bihar" country="India" region="Biahr" county_district="Bihar" state_province="Bihar" uuid="a-1-23-bc-wedg-fg12378-90-p" creator="1" date_created="2010-07-09 15:58:23.0" retired="0"/>
+  <global_property property="default_location" property_value="Bihar" uuid="a-1-23-bc-wedg-fg12378-90-p-1"/>
+
 </dataset>

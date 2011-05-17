@@ -141,7 +141,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                    Date timeOfDay, InterestReason reason, HowLearned howLearned,
                                    Integer messagesStartWeek) {
 
-        Location facility = getGhanaLocation();
+        Location facility = getDefaultLocation();
         User staff = authenticationService.getAuthenticatedUser();
         Date date = new Date();
 
@@ -298,10 +298,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             }
             if (community != null
                     && community.getFacility() != null
-                    && community.getFacility().getLocation() != null
-                    && MotechConstants.LOCATION_KASSENA_NANKANA_WEST
-                    .equals(community.getFacility().getLocation()
-                            .getCountyDistrict())) {
+                    && community.getFacility().getLocation() != null ) {
 
                 addMessageProgramEnrollment(patient.getPatientId(),
                         "Expected Care Message Program", null);
@@ -311,7 +308,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     private Integer storeMessagesWeekObs(Patient patient,
                                          Integer messagesStartWeek) {
-        Location ghanaLocation = getGhanaLocation();
+        Location ghanaLocation = getDefaultLocation();
         Date currentDate = new Date();
 
         Calendar calendar = Calendar.getInstance();
@@ -379,7 +376,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
 
         patient.addIdentifier(new PatientIdentifier(motechIdString,
-                getPatientIdentifierTypeForMotechId(), getGhanaLocation()));
+                getPatientIdentifierTypeForMotechId(), getDefaultLocation()));
 
         patient.addName(new PersonName(firstName, middleName, lastName));
 
@@ -632,7 +629,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         Integer pregnancyDueDateObsId = checkExistingPregnancy(patient);
 
-        Location facility = getGhanaLocation();
+        Location facility = getDefaultLocation();
         User staff = authenticationService.getAuthenticatedUser();
         Date date = new Date();
 
@@ -734,7 +731,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                      Date lastVitaminADate) {
 
         // Not associating historical data with any facility
-        Location ghanaLocation = getGhanaLocation();
+        Location ghanaLocation = getDefaultLocation();
 
         Encounter historyEncounter = new Encounter();
         historyEncounter.setEncounterType(getEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_PATIENTHISTORY));
@@ -2987,12 +2984,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         for (Facility facility : facilities) {
             String phoneNumber = facility.getPhoneNumber();
             Location facilityLocation = facility.getLocation();
-            if (phoneNumber == null
-                    || facilityLocation == null
-                    || !MotechConstants.LOCATION_KASSENA_NANKANA_WEST
-                    .equals(facilityLocation.getCountyDistrict())) {
-                // Skip facilities without a phone number or
-                // not in KNDW district
+            if (phoneNumber == null || facilityLocation == null ) {
                 continue;
             }
 
@@ -3705,9 +3697,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         this.identifierGenerator = identifierGenerator;
     }
 
-    private Location getGhanaLocation() {
-        return locationService.getLocation(
-                MotechConstants.LOCATION_GHANA);
+    private Location getDefaultLocation() {
+        String defaultLocation = administrationService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_DEFAULT_LOCATION);
+        return locationService.getLocation(defaultLocation);
     }
 
     private String getTroubledPhoneProperty() {
