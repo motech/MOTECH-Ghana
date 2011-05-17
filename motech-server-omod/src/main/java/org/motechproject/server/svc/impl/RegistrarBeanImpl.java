@@ -42,7 +42,9 @@ import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.*;
 import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.omod.*;
+import org.motechproject.server.omod.factory.DistrictFactory;
 import org.motechproject.server.omod.impl.MessageProgramServiceImpl;
+import org.motechproject.server.omod.web.model.District;
 import org.motechproject.server.omod.web.model.WebStaff;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
@@ -100,7 +102,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     @Autowired
     private MotechUserRepository motechUserRepository;
 
-
+    private final DistrictFactory DISTRICT_FACTORY = new DistrictFactory();
 
 
     public void setContextService(ContextService contextService) {
@@ -2947,12 +2949,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 continue;
             }
 
-            CareMessageGroupingStrategy groupingStrategy = CareMessageGroupingStrategy.NONE;
-            if (MotechConstants.LOCATION_KASSENA_NANKANA.equals(facilityLocation.getCountyDistrict()) ||
-                    MotechConstants.LOCATION_KASSENA_NANKANA_WEST.equals(facilityLocation.getCountyDistrict())) {
-                groupingStrategy = CareMessageGroupingStrategy.COMMUNITY;
-
-            }
+            CareMessageGroupingStrategy groupingStrategy = getDistrict(facilityLocation).getCareMessageGroupingStrategy();
 
             // Send Defaulted Care Message
             List<ExpectedEncounter> defaultedEncounters;
@@ -3026,6 +3023,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 }
             }
         }
+    }
+
+    private District getDistrict(Location facilityLocation) {
+        return DISTRICT_FACTORY.getDistrictWithName(facilityLocation.getCountyDistrict());
     }
 
     public List<ExpectedEncounter> filterRCTEncounters(List<ExpectedEncounter> allDefaulters) {

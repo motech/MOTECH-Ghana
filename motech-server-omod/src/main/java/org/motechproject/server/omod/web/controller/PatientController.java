@@ -46,7 +46,7 @@ import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
-import org.motechproject.ws.*;
+import org.motechproject.ws.RegistrantType;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -55,7 +55,6 @@ import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -122,7 +121,6 @@ public class PatientController extends BasePatientController {
     public WebPatient getWebPatient(@RequestParam(required = false) Integer id) {
         WebPatient webPatient = new WebPatient();
         // Set default region for new patients
-        webPatient.setRegion(MotechConstants.LOCATION_UPPER_EAST);
         if (id != null) {
             Patient patient = contextService.getPatientService().getPatient(id);
             if (patient != null) {

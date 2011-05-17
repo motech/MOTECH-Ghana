@@ -43,6 +43,8 @@ import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.*;
 import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.omod.*;
+import org.motechproject.server.omod.web.model.KassenaNankana;
+import org.motechproject.server.omod.web.model.KassenaNankanaWest;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
@@ -169,6 +171,8 @@ public class RegistrarBeanTest {
     RelationshipType parentChildRelationshipType;
     IdentifierGenerator identifierGenerator;
     private RegistrarBeanImpl regBeanImpl;
+    private static final String KASSENA_NANKANA_WEST = new KassenaNankanaWest().toString();
+    private static final String KASSENA_NANKANA = new KassenaNankana().toString();
 
     @Before
     public void setUp() throws Exception {
@@ -468,7 +472,7 @@ public class RegistrarBeanTest {
         Facility facility = new Facility();
         Location facilityLocation = new Location(2);
         facilityLocation
-                .setCountyDistrict(MotechConstants.LOCATION_KASSENA_NANKANA);
+                .setCountyDistrict(KASSENA_NANKANA);
         facility.setLocation(facilityLocation);
         community.setFacility(facility);
 
@@ -738,7 +742,7 @@ public class RegistrarBeanTest {
         Facility facility = new Facility();
         Location facilityLocation = new Location(2);
         facilityLocation
-                .setCountyDistrict(MotechConstants.LOCATION_KASSENA_NANKANA_WEST);
+                .setCountyDistrict(KASSENA_NANKANA_WEST);
         facility.setLocation(facilityLocation);
         community.setFacility(facility);
 
@@ -963,7 +967,7 @@ public class RegistrarBeanTest {
         Facility facility = new Facility();
         Location facilityLocation = new Location(2);
         facilityLocation
-                .setCountyDistrict(MotechConstants.LOCATION_KASSENA_NANKANA_WEST);
+                .setCountyDistrict(KASSENA_NANKANA_WEST);
         facility.setLocation(facilityLocation);
         community.setFacility(facility);
 

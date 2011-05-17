@@ -35,11 +35,10 @@ package org.motechproject.server.svc.impl;
 
 import junit.framework.TestCase;
 import org.easymock.Capture;
-import org.easymock.internal.matchers.Captures;
-import org.mockito.Captor;
 import org.motechproject.server.model.*;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.omod.web.model.KassenaNankana;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.Care;
@@ -492,7 +491,7 @@ public class RegistrarBeanImplTest extends TestCase {
 
         Location location = new Location();
         location.setName("Test Facility");
-        location.setCountyDistrict(MotechConstants.LOCATION_KASSENA_NANKANA);
+        location.setCountyDistrict(new KassenaNankana().toString());
 
         Facility facility = new Facility();
         facility.setLocation(location);

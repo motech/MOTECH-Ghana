@@ -54,9 +54,6 @@ public final class MotechConstants {
 	public static final String PATIENT_IDENTIFIER_MOTECH_ID = "MoTeCH Id";
 	public static final String PATIENT_IDENTIFIER_STAFF_ID = "MoTeCH Staff Id";
 	public static final String LOCATION_GHANA = "Ghana";
-	public static final String LOCATION_UPPER_EAST = "Upper East";
-	public static final String LOCATION_KASSENA_NANKANA = "Kassena-Nankana";
-	public static final String LOCATION_KASSENA_NANKANA_WEST = "Kassena-Nankana West";
 	public static final String ENCOUNTER_TYPE_ANCVISIT = "ANCVISIT";
 	public static final String ENCOUNTER_TYPE_PREGREGVISIT = "PREGREGVISIT";
 	public static final String ENCOUNTER_TYPE_PREGTERMVISIT = "PREGTERMVISIT";
@@ -101,7 +98,6 @@ public final class MotechConstants {
 	public static final String TASK_PROPERTY_AVOID_BLACKOUT = "avoidBlackout";
 	public static final String TASK_PROPERTY_BATCH_SIZE = "batchSize";
 	public static final String TASK_PROPERTY_BATCH_PREVIOUS_ID = "batchPreviousId";
-	public static final String TASK_PROPERTY_BATCH_MAX_ID = "batchMaxId";
 	public static final String GLOBAL_PROPERTY_TROUBLED_PHONE = "motechmodule.troubled_phone_failures";
 	public static final String GLOBAL_PROPERTY_CARE_REMINDERS = "motechmodule.patient_care_reminders";
 	public static final String GLOBAL_PROPERTY_DAY_OF_WEEK = "motechmodule.patient_message_delivery_day_of_week";

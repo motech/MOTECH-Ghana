@@ -1,6 +1,7 @@
 package org.motechproject.server.omod.web.model;
 
 import flexjson.JSON;
+import org.motechproject.ws.CareMessageGroupingStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,5 +24,9 @@ public class District extends MotechLocation {
             subDistricts.add((SubDistrict) motechLocation);
         }
         return subDistricts;
+    }
+
+    public CareMessageGroupingStrategy getCareMessageGroupingStrategy() {
+        return CareMessageGroupingStrategy.NONE;
     }
 }
