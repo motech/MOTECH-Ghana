@@ -104,7 +104,7 @@
     </logger>
 
      <logger name="motech.scheduler">
-        <level value="DEBUG"/>
+        <level value="INFO"/>
         <appender-ref ref="SCHEDULER"/>
     </logger>
 
