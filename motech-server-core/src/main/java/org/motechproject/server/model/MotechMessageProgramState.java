@@ -68,7 +68,7 @@ public class MotechMessageProgramState implements MessageProgramState {
     }
 
     public MessageProgramStateTransition getTransition(MessageProgramEnrollment enrollment, Date currentDate, RegistrarBean registrarBean) {
-        log.debug("Getting transitions for " + enrollment.getProgram() + " with transitions size " + transitions.size());
+        log.debug("Getting transitions for " + enrollment.getProgram() + " state id = " + id + " with transitions size " + transitions.size());
         for (MessageProgramStateTransition transition : transitions) {
             if (transition.evaluate(enrollment, currentDate, registrarBean)) {
                 return transition;
