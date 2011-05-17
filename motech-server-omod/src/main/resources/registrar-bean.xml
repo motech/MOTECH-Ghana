@@ -175,9 +175,9 @@
         </entry>
     </util:map>
 
-    <bean id="mobileClient" class="org.motechproject.server.ws.MessageServiceStub"/>
+    <!--<bean id="mobileClient" class="org.motechproject.server.ws.MessageServiceStub"/>-->
 
-    <!-- Uncomment to enable using motech-mobile web service and comment out mobileClient bean in registrar-bean.xml
+    <!-- Uncomment to enable using motech-mobile web service and comment out mobileClient bean in registrar-bean.xml  -->
         <bean id="mobileClient"
             class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
             <property name="serviceInterface" value="org.motechproject.ws.mobile.MessageService" />
@@ -188,6 +188,5 @@
             <property name="portName" value="MessageServiceImplPort" />
             <property name="lookupServiceOnStartup" value="false" />
         </bean>
-    -->
 
 </beans>
