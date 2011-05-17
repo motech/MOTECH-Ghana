@@ -38,7 +38,14 @@
 <openmrs:require privilege="Register MoTeCH Patient" otherwise="/login.htm" redirect="/module/motechmodule/demo-patient.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
-<openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css" />
+<style type="text/css">
+legend {
+  font-weight: bold;
+}
+td.labelcolumn {
+  width: 325px;
+}
+</style>
 <openmrs:htmlInclude file="/dwr/util.js" />
 <openmrs:htmlInclude file="/dwr/interface/DWRMotechService.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/find_duplicates.js" />

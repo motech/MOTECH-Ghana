@@ -2334,4 +2334,15 @@
                AND max_datetime is null;
         </sql>
     </diff>
+	
+	<diff>
+        <version>2.8</version>
+        <author>ThoughtWorks</author>
+        <date>May 17 2011</date>
+        <description>Corrected transition-order</description>
+        <sql>
+            update motechmodule_message_program_state_transition set transition_order = 0 where motechmodule_message_program_state_transition_id = 274
+        </sql>
+    </diff>
+	
 </sqldiff>

@@ -66,7 +66,17 @@
         new Validators($j('#patient')).add(generalFieldsValidator).add(communityValidator).add(midwifeValidator);
     });
 </script>
-<openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css"/>
+<style type="text/css">
+legend {
+  font-weight: bold;
+}
+td.labelcolumn {
+  width: 325px;
+}
+.hideme{
+    display:none;
+}
+</style>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/mother_details.js"/>
 <openmrs:htmlInclude file="/dwr/util.js"/>
 <openmrs:htmlInclude file="/dwr/interface/DWRMotechService.js"/>

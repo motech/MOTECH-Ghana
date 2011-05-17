@@ -70,7 +70,19 @@
 
     });
 </script>
-<openmrs:htmlInclude file="/moduleResources/motechmodule/patientform.css"/>
+
+<style type="text/css">
+legend {
+  font-weight: bold;
+}
+td.labelcolumn {
+  width: 325px;
+}
+.hideme{
+    display:none;
+}
+</style>
+
 <openmrs:htmlInclude file="/dwr/util.js"/>
 
 <meta name="heading" content="Edit Patient"/>
