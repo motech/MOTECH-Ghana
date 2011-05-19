@@ -603,18 +603,20 @@ public class RegistrarWebService implements RegistrarService {
                 expDeliveryDate, deliveryDateConfirmed, enroll, consent,
                 ownership, format, language, dayOfWeek, timeOfDay, reason,
                 howLearned, messagesStartWeek);
-        if (cwcRegNumber != null) {
+        if (registrantType == RegistrantType.CHILD_UNDER_FIVE) {
             cwcRegDate = (cwcRegToday) ? new Date() : cwcRegDate;
             registrarBean.registerCWCChild(staff, facility.getLocation(), cwcRegDate,
                     patient, cwcRegNumber, enroll, consent, ownership, phoneNumber,
                     format, language, dayOfWeek, timeOfDay, howLearned);
         }
-        ancRegDate = decideANCRegistrationDate(ancRegToday, ancRegDate);
-        Facility ancFacility = decideFacility(facilityId, errors, ancRegToday);
-        registrarBean.registerANCMother(staff, ancFacility.getLocation(), ancRegDate,
-                patient, ancRegNumber, expDeliveryDate, height, gravida,
-                parity, enroll, consent, ownership, phoneNumber, format,
-                language, dayOfWeek, timeOfDay, howLearned);
+		if (registrantType == RegistrantType.PREGNANT_MOTHER) {
+			ancRegDate = decideANCRegistrationDate(ancRegToday, ancRegDate);
+			Facility ancFacility = decideFacility(facilityId, errors, ancRegToday);
+			registrarBean.registerANCMother(staff, ancFacility.getLocation(), ancRegDate,
+					patient, ancRegNumber, expDeliveryDate, height, gravida,
+					parity, enroll, consent, ownership, phoneNumber, format,
+					language, dayOfWeek, timeOfDay, howLearned);
+		}
 
         registrarBean.recordPatientHistory(staff, facility.getLocation(), date,
                 patient, lastIPT, lastIPTDate, lastTT, lastTTDate, bcgDate,
