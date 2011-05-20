@@ -33,24 +33,20 @@
 
 package org.motechproject.server.event.impl;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.event.MessageProgram;
 import org.motechproject.server.event.MessageProgramState;
-import org.motechproject.server.model.ExpectedEncounter;
-import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.model.Message;
-import org.motechproject.server.model.MessageProgramEnrollment;
-import org.motechproject.server.model.ScheduledMessage;
+import org.motechproject.server.model.*;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.time.TimePeriod;
 import org.openmrs.Patient;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 		MessageProgram {
@@ -81,13 +77,10 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 		}
 
 		// Get all active expected care for patient (obs and encounter)
-		List<ExpectedEncounter> expectedEncounters = registrarBean
-				.getExpectedEncounters(patient);
-		List<ExpectedObs> expectedObservations = registrarBean
-				.getExpectedObs(patient);
+		List<ExpectedEncounter> expectedEncounters = registrarBean.getExpectedEncounters(patient);
+		List<ExpectedObs> expectedObservations = registrarBean.getExpectedObs(patient);
 		// Get all messages for enrollment (includes sent and not sent)
-		List<ScheduledMessage> scheduledMessages = registrarBean
-				.getScheduledMessages(enrollment);
+		List<ScheduledMessage> scheduledMessages = registrarBean.getScheduledMessages(enrollment);
 
 		// Create predicates for expected care (by group) and scheduled messages
 		// (by key)

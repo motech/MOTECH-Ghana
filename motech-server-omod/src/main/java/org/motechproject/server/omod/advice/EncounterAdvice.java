@@ -33,8 +33,6 @@
 
 package org.motechproject.server.omod.advice;
 
-import java.lang.reflect.Method;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.ContextService;
@@ -44,6 +42,8 @@ import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import java.lang.reflect.Method;
 
 /**
  * An OpenMRS AOP interceptor that enables us to perform various tasks upon an
@@ -88,6 +88,7 @@ public class EncounterAdvice implements AfterReturningAdvice {
 				schedService.requestSynch();
 			} else {
 				// FIXME: Remove this when advice can exec in tx
+                log.debug("Updating encounter schedule for " + patient.getId());
 				schedService.updateSchedule(patient.getId());
 			}
 		}

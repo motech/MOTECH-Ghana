@@ -606,9 +606,6 @@ public class RegistrarWebService implements RegistrarService {
 
     private void validatePhoneNumber(String phoneNumber, String fieldName, ValidationErrors errors) {
         if(phoneNumber != null){
-            if(!phoneNumber.trim().startsWith("0")){
-                errors.add(messageBean.getMessage("motechmodule.ws.numberShouldStartsWithZero", fieldName));
-            }
             if(phoneNumber.trim().length() != 10){
                 errors.add(messageBean.getMessage("motechmodule.ws.numberShouldBeTenDigits", fieldName));
             }
