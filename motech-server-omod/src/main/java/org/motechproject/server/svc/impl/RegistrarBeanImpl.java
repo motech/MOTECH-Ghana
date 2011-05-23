@@ -3512,8 +3512,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     private Date getDefaultPatientTimeOfDay() {
         String timeProperty = getPatientTimeOfDayProperty();
-        SimpleDateFormat timeFormat = new SimpleDateFormat(
-                MotechConstants.TIME_FORMAT_DELIVERY_TIME);
+        SimpleDateFormat timeFormat = new SimpleDateFormat(MotechConstants.TIME_FORMAT_DELIVERY_TIME);
         Date time = null;
         try {
             time = timeFormat.parse(timeProperty);
@@ -3713,13 +3712,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private String getPatientDayOfWeekProperty() {
-        return administrationService.getGlobalProperty(
-                MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK);
+        return administrationService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_DAY_OF_WEEK);
     }
 
     private String getPatientTimeOfDayProperty() {
-        return administrationService.getGlobalProperty(
-                MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY);
+        return administrationService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_TIME_OF_DAY);
     }
 
     /* Factored out methods end */

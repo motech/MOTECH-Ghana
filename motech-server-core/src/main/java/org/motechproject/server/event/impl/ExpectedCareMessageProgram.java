@@ -64,8 +64,7 @@ public class ExpectedCareMessageProgram extends BaseInterfaceImpl implements
 		// past
 		Date nextDate = calculateDate(currentDate, 1, TimePeriod.day);
 
-		Integer maxPatientReminders = registrarBean
-				.getMaxPatientCareReminders();
+		Integer maxPatientReminders = registrarBean.getMaxPatientCareReminders();
 
 		// Get patient from enrollment person Id
 		Patient patient = registrarBean

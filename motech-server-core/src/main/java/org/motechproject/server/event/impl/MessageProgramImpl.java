@@ -33,8 +33,6 @@
 
 package org.motechproject.server.event.impl;
 
-import java.util.Date;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.event.MessageProgram;
@@ -42,6 +40,8 @@ import org.motechproject.server.event.MessageProgramState;
 import org.motechproject.server.event.MessageProgramStateTransition;
 import org.motechproject.server.event.MessagesCommand;
 import org.motechproject.server.model.MessageProgramEnrollment;
+
+import java.util.Date;
 
 public class MessageProgramImpl extends BaseInterfaceImpl implements
 		MessageProgram {
@@ -101,6 +101,8 @@ public class MessageProgramImpl extends BaseInterfaceImpl implements
 		}
 
 		Date actionDate = state.getDateOfAction(enrollment, currentDate);
+
+        log.debug("For enrollmentId :" + enrollment.getId() + " action date is " + actionDate);
 
 		// Perform state action using date and enrollment
 		MessagesCommand command = state.getCommand();
