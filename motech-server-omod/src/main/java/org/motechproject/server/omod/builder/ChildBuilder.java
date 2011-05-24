@@ -13,7 +13,6 @@ import org.openmrs.api.LocationService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +21,11 @@ class ChildBuilder extends PatientBuilder{
     private static Log log = LogFactory.getLog(ChildBuilder.class);
 
     private List<PersonAttributeTypeEnum> attributesInheritedFromParent;
+    private final PatientBuilder patientBuilder;
 
-    ChildBuilder(PersonService personService, MotechService motechService, IdentifierGenerator idGenerator, PatientService patientService, LocationService locationService) {
+    ChildBuilder(PersonService personService, MotechService motechService, IdentifierGenerator idGenerator, PatientService patientService, LocationService locationService, PatientBuilder patientBuilder) {
         super(personService, motechService, idGenerator, RegistrantType.CHILD_UNDER_FIVE, patientService, locationService);
+        this.patientBuilder = patientBuilder;
         attributesInheritedFromParent = new ArrayList<PersonAttributeTypeEnum>(){
             {
                 add(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER);
@@ -37,37 +38,37 @@ class ChildBuilder extends PatientBuilder{
         };
     }
 
-    public Patient build() {
-          setName(getFirstName(), getMiddleName(), selectLastName());
-          setAddress1(selectAddress1());
-          setCommunity(selectCommunity());
-          handleInheritedAttributes();
-          return buildPatient();
-    }
-
     private void handleInheritedAttributes() {
         for (PersonAttributeTypeEnum attributeType : attributesInheritedFromParent) {
-            if (!isAttributePresent(attributeType.getAttributeName())) {
-                String parentAttribute = parent.getAttribute(attributeType.getAttributeName()).getValue();
+            if (!patientBuilder.isAttributePresent(attributeType.getAttributeName())) {
+                String parentAttribute = patientBuilder.getParent().getAttribute(attributeType.getAttributeName()).getValue();
                 try {
                     addAttribute(attributeType, parentAttribute, "toString");
                 } catch (Exception e){
-                     log.error("Unexpected Exception when creating attribute");
+                    log.error("Unexpected Exception when creating attribute");
                 }
             }
         }
     }
 
     private Community selectCommunity() {
-        return (getCommunity()!=null)? getCommunity(): getMothechService().getCommunityByPatient(getParent());
+        return (patientBuilder.getCommunity()!=null)? patientBuilder.getCommunity(): patientBuilder.getMothechService().getCommunityByPatient(getParent());
     }
 
 
     private String selectAddress1() {
-        return (getAddress1()!=null)? getAddress1() : getParent().getPersonAddress().getAddress1();
+        return (patientBuilder.getAddress1()!=null)? patientBuilder.getAddress1() : patientBuilder.getParent().getPersonAddress().getAddress1();
     }
 
     private String selectLastName() {
-        return (getLastName()!=null)? getLastName() : getParent().getFamilyName();
+        return (patientBuilder.getLastName()!=null)? patientBuilder.getLastName() : patientBuilder.getParent().getFamilyName();
+    }
+
+    public Patient buildChild() {
+        setName(patientBuilder.getFirstName(), patientBuilder.getMiddleName(), selectLastName());
+        setAddress1(selectAddress1());
+        setCommunity(selectCommunity());
+        handleInheritedAttributes();
+        return buildPatient();
     }
 }

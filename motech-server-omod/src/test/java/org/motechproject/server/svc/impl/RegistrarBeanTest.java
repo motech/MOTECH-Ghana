@@ -853,6 +853,7 @@ public class RegistrarBeanTest {
         String motherLanguage = "motherLanguage";
 
 
+
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, -2);
         Date birthDate = calendar.getTime();
@@ -872,6 +873,7 @@ public class RegistrarBeanTest {
         when(mother.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE)).thenReturn(new PersonAttribute(phoneTypeAttributeType, ContactNumberType.PUBLIC.name()));
         when(mother.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE)).thenReturn(new PersonAttribute(mediaTypeAttributeType, MediaType.TEXT.name()));
         when(mother.getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE)).thenReturn(new PersonAttribute(languageAttributeType, motherLanguage));
+        when(mother.getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME)).thenReturn(new PersonAttribute(deliveryTimeAttributeType, new SimpleDateFormat(MotechConstants.TIME_FORMAT_DELIVERY_TIME).format(date)));
 
 
 
@@ -900,6 +902,7 @@ public class RegistrarBeanTest {
         expect(personService.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE)).andReturn(languageAttributeType);
         expect(personService.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME)).andReturn(deliveryTimeAttributeType);
 
+
         expect(motechService.getActiveMessageProgramEnrollments(mother.getPatientId(), null, null, null,null)).andReturn(new ArrayList<MessageProgramEnrollment>(){
             {
                 add(new MessageProgramEnrollment());
@@ -926,7 +929,7 @@ public class RegistrarBeanTest {
         regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId, RegistrantType.CHILD_UNDER_FIVE,
                                 firstName, middleName, null, prefName, birthDate, birthDateEst, gender, insured,
                                 null, date, mother, null, facility, null, null, date, dueDateConfirmed,
-                                null, null, null, null, null, null, date, null, null, null);
+                                null, null, null, null, null, null, null, null, null, null);
 
         verify(contextService, patientService, motechService, personService, locationService, userService,
                encounterService, obsService, conceptService, idService, authenticationService);
@@ -950,6 +953,7 @@ public class RegistrarBeanTest {
         int expectedMonth = nhisExpCal.get(Calendar.MONTH);
         int expectedDay = nhisExpCal.get(Calendar.DAY_OF_MONTH);
 
+        Date timeOfDayDate = (new SimpleDateFormat(MotechConstants.TIME_FORMAT_DELIVERY_TIME)).parse(capturedPatient.getAttribute(deliveryTimeAttributeType).getValue());
         nhisExpCal.setTime(nhisExpDate);
         assertEquals(expectedYear, nhisExpCal.get(Calendar.YEAR));
         assertEquals(expectedMonth, nhisExpCal.get(Calendar.MONTH));
@@ -959,12 +963,12 @@ public class RegistrarBeanTest {
         assertEquals(motherPhoneType, capturedPatient.getAttribute(phoneTypeAttributeType).getValue());
         assertEquals(motherMediaType, capturedPatient.getAttribute(mediaTypeAttributeType).getValue());
         assertEquals(motherLanguage, capturedPatient.getAttribute(languageAttributeType).getValue());
+        assertEquals(new SimpleDateFormat(MotechConstants.TIME_FORMAT_DELIVERY_TIME).format(date), capturedPatient.getAttribute(deliveryTimeAttributeType).getValue());
 
         Calendar timeOfDayCal = Calendar.getInstance();
         timeOfDayCal.setTime(date);
         int hour = timeOfDayCal.get(Calendar.HOUR_OF_DAY);
         int min = timeOfDayCal.get(Calendar.MINUTE);
-        Date timeOfDayDate = (new SimpleDateFormat(MotechConstants.TIME_FORMAT_DELIVERY_TIME)).parse(capturedPatient.getAttribute(deliveryTimeAttributeType).getValue());
         timeOfDayCal.setTime(timeOfDayDate);
         assertEquals(hour, timeOfDayCal.get(Calendar.HOUR_OF_DAY));
         assertEquals(min, timeOfDayCal.get(Calendar.MINUTE));

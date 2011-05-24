@@ -42,6 +42,7 @@ import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.*;
 import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.omod.*;
+import org.motechproject.server.omod.builder.PatientBuilder;
 import org.motechproject.server.omod.factory.DistrictFactory;
 import org.motechproject.server.omod.impl.MessageProgramServiceImpl;
 import org.motechproject.server.omod.web.model.District;
@@ -64,6 +65,7 @@ import org.openmrs.scheduler.TaskDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -213,7 +215,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         Patient patient = createPatient(staff, motechId, firstName, middleName,
                 lastName, preferredName, dateOfBirth, estimatedBirthDate, sex,
                 insured, nhis, nhisExpires, address, phoneNumber, ownership,
-                format, language, dayOfWeek, timeOfDay, howLearned, reason);
+                format, language, dayOfWeek, timeOfDay, howLearned, reason, registrantType);
 
         patient = patientService.savePatient(patient);
 
@@ -330,7 +332,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         Patient patient = createPatient(staff, motechId, firstName, middleName,
                 lastName, preferredName, dateOfBirth, estimatedBirthDate, sex,
                 insured, nhis, nhisExpires, address, phoneNumber, ownership,
-                format, language, dayOfWeek, timeOfDay, howLearned, reason);
+                format, language, dayOfWeek, timeOfDay, howLearned, reason, RegistrantType.OTHER);
 
         patient = patientService.savePatient(patient);
 
@@ -353,45 +355,37 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                   Boolean insured, String nhis, Date nhisExpDate, String address,
                                   String phoneNumber, ContactNumberType phoneType,
                                   MediaType mediaType, String language, DayOfWeek dayOfWeek,
-                                  Date timeOfDay, HowLearned howLearned, InterestReason interestReason) {
+                                  Date timeOfDay, HowLearned howLearned, InterestReason interestReason, RegistrantType registrantType) {
 
-        Patient patient = new Patient();
+        PatientBuilder patientBuilder = new PatientBuilder(personService, motechService(), identifierGenerator, registrantType, patientService, locationService);
+        SimpleDateFormat timeFormatter = new SimpleDateFormat(MotechConstants.TIME_FORMAT_DELIVERY_TIME);
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(MotechConstants.DATE_FORMAT);
 
-        String motechIdString;
-        if (motechId == null) {
-            motechIdString = identifierGenerator.generateMotechId();
-        } else {
-            motechIdString = motechId.toString();
-            identifierGenerator.excludeIdForGenerator(staff, motechIdString);
+        patientBuilder.setMotechId(motechId).setName(firstName,middleName, lastName)
+                      .setPreferredName(prefName).setGender(sex).setBirthDate(birthDate)
+                      .setBirthDateEstimated(birthDateEst).setAddress1(address);
+
+        try {
+            patientBuilder.addAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER, phoneNumber, "toString");
+            patientBuilder.addAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_TYPE, phoneType, "name");
+            patientBuilder.addAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_MEDIA_TYPE, mediaType, "name");
+            patientBuilder.addAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_LANGUAGE, language, "toString");
+            patientBuilder.addAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_DELIVERY_DAY, dayOfWeek, "name");
+            patientBuilder.addAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_DELIVERY_TIME, timeOfDay, timeFormatter, "format");
+            patientBuilder.addAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_HOW_LEARNED, howLearned, "name");
+            patientBuilder.addAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_INTEREST_REASON, interestReason, "name");
+            patientBuilder.addAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_INSURED, insured, "toString");
+            patientBuilder.addAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER, nhis, "toString");
+            patientBuilder.addAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_EXP_DATE, nhisExpDate, dateFormatter, "format");
+        } catch (NoSuchMethodException e) {
+            log.error("Value Method not found on the invocation target");
+        } catch (InvocationTargetException e) {
+            log.error("Invalid invocation target set for the value method");
+        } catch (IllegalAccessException e) {
+            log.error("Value method is not accessible on the invocation target");
         }
 
-        patient.addIdentifier(new PatientIdentifier(motechIdString,
-                getPatientIdentifierTypeForMotechId(), getGhanaLocation()));
-
-        patient.addName(new PersonName(firstName, middleName, lastName));
-
-        if (prefName != null) {
-            PersonName preferredPersonName = new PersonName(prefName,
-                    middleName, lastName);
-            preferredPersonName.setPreferred(true);
-            patient.addName(preferredPersonName);
-        }
-
-        patient.setGender(GenderTypeConverter.toOpenMRSString(sex));
-        patient.setBirthdate(birthDate);
-        patient.setBirthdateEstimated(birthDateEst);
-
-        if (address != null) {
-            PersonAddress personAddress = new PersonAddress();
-            personAddress.setAddress1(address);
-            patient.addAddress(personAddress);
-        }
-
-        setPatientAttributes(patient, phoneNumber, phoneType, mediaType,
-                language, dayOfWeek, timeOfDay, howLearned, interestReason,
-                insured, nhis, nhisExpDate);
-
-        return patient;
+        return patientBuilder.build();
     }
 
     private void recordPatientRegistration(User staff, Location facility,

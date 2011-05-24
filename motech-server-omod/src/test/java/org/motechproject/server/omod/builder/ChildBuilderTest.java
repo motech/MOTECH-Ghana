@@ -9,18 +9,14 @@ import org.motechproject.server.omod.PersonAttributeTypeEnum;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;
 import org.motechproject.ws.MediaType;
+import org.motechproject.ws.RegistrantType;
 import org.openmrs.*;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 
-import java.awt.*;
-
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ChildBuilderTest {
     private PatientBuilder builder;
@@ -33,7 +29,7 @@ public class ChildBuilderTest {
     private LocationService locationService = mock(LocationService.class);
 
     public ChildBuilderTest() {
-        builder = new ChildBuilder(personService, motechService,idGenerator,patientService, locationService);
+        builder = new PatientBuilder(personService, motechService,idGenerator, RegistrantType.CHILD_UNDER_FIVE, patientService, locationService);
         expectedPatient = new Patient();
         initializeParent();
         builder.setParent(mother);

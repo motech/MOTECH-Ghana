@@ -119,7 +119,7 @@ public class PatientBuilder {
 
     public Patient build() {
         if (registrantType == RegistrantType.CHILD_UNDER_FIVE) {
-            return buildChild(parent);
+            return buildChild();
         } else {
             return buildPatient();
         }
@@ -204,11 +204,13 @@ public class PatientBuilder {
         return locationService.getLocation(MotechConstants.LOCATION_GHANA);
     }
 
-    private Patient buildChild(Patient parent) {
+    private Patient buildChild() {
         if (parent == null) {
             return buildPatient();
         } else {
-            return new ChildBuilder(personService, motechService, idGenerator, patientService, locationService).build();
+            final ChildBuilder childBuilder = new ChildBuilder(personService, motechService, idGenerator, patientService, locationService, this);
+            childBuilder.setParent(parent);
+            return childBuilder.buildChild();
         }
     }
 
