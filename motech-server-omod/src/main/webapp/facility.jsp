@@ -66,13 +66,9 @@
 				<c:param name="facilityId" value="${facility.facilityId}" />
 			</c:url>
 			<tr>
-				<td>${facility.facilityId}</td>
-				<td>${facility.location.name}</td>
-				<td>${facility.phoneNumber}</td>	
-				<td>${facility.additionalPhoneNumber1}</td>
-				<td>${facility.additionalPhoneNumber2}</td>
-				<td>${facility.additionalPhoneNumber3}</td>
-				<td>${facility.additionalPhoneNumber4}</td>
+                <td>${facility.facilityId}</td>
+                <td>${facility.location.name}</td>
+                <td>${facility.phoneNumber}</td>
                 <td><a href="${editUrl}">Edit</a></td>
 			</tr>
 		</c:forEach>
