@@ -159,7 +159,7 @@
             </form:select>
         </td>
         <td>
-        <span id="stateProvince_err" class="error" title="err_span">
+        <span id="stateProvince_err" class="error" title="err_span"/>
         <spring:message code="motechmodule.province.blank"/>
         </td>
     </tr>
