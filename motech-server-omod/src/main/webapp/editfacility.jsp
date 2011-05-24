@@ -67,27 +67,6 @@
 		<td><form:input path="phoneNumber" maxlength="50"/></td>
 		<td><form:errors path="phoneNumber" cssClass="error" /></td>
 	</tr>
-    <tr>
-		<td><form:label path="additionalPhoneNumber1">Additional Phone Number1:</form:label></td>
-		<td><form:input path="additionalPhoneNumber1" maxlength="50"/></td>
-		<td><form:errors path="additionalPhoneNumber1" cssClass="error" /></td>
-	</tr>
-     <tr>
-		<td><form:label path="additionalPhoneNumber2">Additional Phone Number2:</form:label></td>
-		<td><form:input path="additionalPhoneNumber2" maxlength="50"/></td>
-		<td><form:errors path="additionalPhoneNumber2" cssClass="error" /></td>
-	</tr>
-     <tr>
-		<td><form:label path="additionalPhoneNumber3">Additional Phone Number3:</form:label></td>
-		<td><form:input path="additionalPhoneNumber3" maxlength="50"/></td>
-		<td><form:errors path="additionalPhoneNumber3" cssClass="error" /></td>
-	</tr>
-     <tr>
-		<td><form:label path="additionalPhoneNumber4">Additional Phone Number4:</form:label></td>
-		<td><form:input path="additionalPhoneNumber4" maxlength="50"/></td>
-		<td><form:errors path="additionalPhoneNumber4" cssClass="error" /></td>
-	</tr>
-
 	<tr>
 		<td colspan="2"><input type="submit" /></td>
 	</tr>

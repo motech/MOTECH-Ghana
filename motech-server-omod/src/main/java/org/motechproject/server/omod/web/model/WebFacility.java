@@ -33,8 +33,11 @@
 
 package org.motechproject.server.omod.web.model;
 
+import org.apache.commons.lang.StringUtils;
 import org.motechproject.server.model.Facility;
+import org.motechproject.server.util.MotechConstants;
 import org.openmrs.Location;
+import org.springframework.validation.Errors;
 
 import java.util.Date;
 
@@ -54,10 +57,6 @@ public class WebFacility {
     public static final String PHONE_NUMBER = "phoneNumber";
 
     private String phoneNumber;
-    private String additionalPhoneNumber1;
-    private String additionalPhoneNumber2;
-    private String additionalPhoneNumber3;
-    private String additionalPhoneNumber4;
     private String country;
     private String region;
     private String countyDistrict;
@@ -66,7 +65,6 @@ public class WebFacility {
     private String name;
     private Location location;
     private Facility facility;
-
 
     public WebFacility(){
         this.location = new Location();
@@ -139,43 +137,7 @@ public class WebFacility {
         location.setDateCreated(new Date());
 
         facility.setPhoneNumber(this.phoneNumber);
-        facility.setAdditionalPhoneNumber1(additionalPhoneNumber1);
-        facility.setAdditionalPhoneNumber2(additionalPhoneNumber2);
-        facility.setAdditionalPhoneNumber3(additionalPhoneNumber3);
-        facility.setAdditionalPhoneNumber4(additionalPhoneNumber4);
         facility.setLocation(location);
         return facility;
-    }
-
-    public String getAdditionalPhoneNumber1() {
-        return additionalPhoneNumber1;
-    }
-
-    public void setAdditionalPhoneNumber1(String additionalPhoneNumber1) {
-        this.additionalPhoneNumber1 = additionalPhoneNumber1;
-    }
-
-    public String getAdditionalPhoneNumber2() {
-        return additionalPhoneNumber2;
-    }
-
-    public void setAdditionalPhoneNumber2(String additionalPhoneNumber2) {
-        this.additionalPhoneNumber2 = additionalPhoneNumber2;
-    }
-
-    public String getAdditionalPhoneNumber3() {
-        return additionalPhoneNumber3;
-    }
-
-    public void setAdditionalPhoneNumber3(String additionalPhoneNumber3) {
-        this.additionalPhoneNumber3 = additionalPhoneNumber3;
-    }
-
-    public String getAdditionalPhoneNumber4() {
-        return additionalPhoneNumber4;
-    }
-
-    public void setAdditionalPhoneNumber4(String additionalPhoneNumber4) {
-        this.additionalPhoneNumber4 = additionalPhoneNumber4;
     }
 }

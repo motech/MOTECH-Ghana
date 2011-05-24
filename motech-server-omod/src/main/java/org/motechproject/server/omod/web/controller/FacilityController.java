@@ -33,6 +33,8 @@
 
 package org.motechproject.server.omod.web.controller;
 
+import java.util.*;
+
 import org.apache.commons.lang.StringUtils;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.ContextService;
@@ -46,8 +48,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
-
-import java.util.*;
 
 @Controller
 public class FacilityController {

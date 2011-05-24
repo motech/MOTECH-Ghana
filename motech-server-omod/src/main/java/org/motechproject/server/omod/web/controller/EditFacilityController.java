@@ -33,6 +33,8 @@
 
 package org.motechproject.server.omod.web.controller;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.Community;
@@ -43,100 +45,66 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-
-import java.util.List;
 
 @Controller
 @SessionAttributes("facility")
 public class EditFacilityController {
 
-    private Log log = LogFactory.getLog(EditFacilityController.class);
+	private Log log = LogFactory.getLog(EditFacilityController.class);
 
-    private ContextService contextService;
+	private ContextService contextService;
 
-    @Autowired
-    public void setContextService(ContextService contextService) {
-        this.contextService = contextService;
-    }
+	@Autowired
+	public void setContextService(ContextService contextService) {
+		this.contextService = contextService;
+	}
 
-    @ModelAttribute("communities")
-    public List<Community> getCommunities() {
-        return contextService.getMotechService().getAllCommunities(true);
-    }
+	@ModelAttribute("communities")
+	public List<Community> getCommunities() {
+		return contextService.getMotechService().getAllCommunities(true);
+	}
 
-    @ModelAttribute("facility")
-    public Facility getFacility(
-            @RequestParam(required = true) Integer facilityId) {
-        Facility facility = new Facility();
-        if (facilityId != null) {
-            facility = contextService.getMotechService().getFacilityById(
-                    facilityId);
-        }
-        return facility;
-    }
+	@ModelAttribute("facility")
+	public Facility getFacility(
+			@RequestParam(required = true) Integer facilityId) {
+		Facility facility = new Facility();
+		if (facilityId != null) {
+			facility = contextService.getMotechService().getFacilityById(
+					facilityId);
+		}
+		return facility;
+	}
 
-    @RequestMapping(value = "/module/motechmodule/editfacility", method = RequestMethod.GET)
-    public String viewFacilityForm(
-            @RequestParam(required = true) Integer facilityId) {
-        return "/module/motechmodule/editfacility";
-    }
+	@RequestMapping(value = "/module/motechmodule/editfacility", method = RequestMethod.GET)
+	public String viewFacilityForm(
+			@RequestParam(required = true) Integer facilityId) {
+		return "/module/motechmodule/editfacility";
+	}
 
-    @RequestMapping(value = "/module/motechmodule/editfacility", method = RequestMethod.POST)
-    public String saveFacility(Facility facility, Errors errors,
-                               ModelMap model, SessionStatus status) {
+	@RequestMapping(value = "/module/motechmodule/editfacility", method = RequestMethod.POST)
+	public String saveFacility(Facility facility, Errors errors,
+			ModelMap model, SessionStatus status) {
 
-        log.debug("Saving Facility");
+		log.debug("Saving Facility");
 
-        if (facility.getPhoneNumber() != null
-                && !facility.getPhoneNumber().matches(
-                MotechConstants.PHONE_REGEX_PATTERN)) {
-            errors.rejectValue("phoneNumber",
-                    "motechmodule.phoneNumber.invalid");
-        }
+		if (facility.getPhoneNumber() != null
+				&& !facility.getPhoneNumber().matches(
+						MotechConstants.PHONE_REGEX_PATTERN)) {
+			errors.rejectValue("phoneNumber",
+					"motechmodule.phoneNumber.invalid");
+		}
 
-        validateAdditionalPhoneNumbers(facility, errors);
-
-        if (!errors.hasErrors()) {
-            contextService.getMotechService().saveFacility(facility);
-            status.setComplete();
-            return "redirect:/module/motechmodule/facility.form";
-        }
-        return "/module/motechmodule/editfacility";
-    }
-
-    private void validateAdditionalPhoneNumbers(Facility facility, Errors errors) {
-
-        if (!isBlank(facility.getAdditionalPhoneNumber1()) && !facility.getAdditionalPhoneNumber1().matches(MotechConstants.PHONE_REGEX_PATTERN)) {
-            errors.rejectValue("additionalPhoneNumber1",
-                    "motechmodule.phoneNumber.invalid");
-        }
-
-        if (!isBlank(facility.getAdditionalPhoneNumber2()) && !facility.getAdditionalPhoneNumber2().matches(MotechConstants.PHONE_REGEX_PATTERN)) {
-            errors.rejectValue("additionalPhoneNumber2",
-                    "motechmodule.phoneNumber.invalid");
-        }
-
-        if (!isBlank(facility.getAdditionalPhoneNumber3()) && !facility.getAdditionalPhoneNumber3().matches(MotechConstants.PHONE_REGEX_PATTERN)) {
-            errors.rejectValue("additionalPhoneNumber3",
-                    "motechmodule.phoneNumber.invalid");
-        }
-        if (!isBlank(facility.getAdditionalPhoneNumber4()) && !facility.getAdditionalPhoneNumber4().matches(MotechConstants.PHONE_REGEX_PATTERN)) {
-            errors.rejectValue("additionalPhoneNumber4",
-                    "motechmodule.phoneNumber.invalid");
-        }
-    }
-
-    boolean isBlank(String input) {
-        if (input == null)
-            return true;
-        if (input == "")
-            return true;
-        if (input.trim() == "")
-            return true;
-        return false;
-    }
-
-
+		if (!errors.hasErrors()) {
+			contextService.getMotechService().saveFacility(facility);
+			status.setComplete();
+			return "redirect:/module/motechmodule/facility.form";
+		}
+		return "/module/motechmodule/editfacility";
+	}
 }
