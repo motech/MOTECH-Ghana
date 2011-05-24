@@ -1,6 +1,5 @@
 package org.motechproject.server.omod.builder;
 
-import org.motechproject.server.model.Community;
 import org.motechproject.server.omod.IdentifierGenerator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.PersonAttributeTypeEnum;
@@ -39,10 +38,10 @@ public class PatientBuilder {
     private final LocationService locationService;
     List<PersonAttribute> personAttributes;
     protected Patient parent;
-    private Community community;
     private Integer motechId;
 
-    public PatientBuilder(PersonService personService, MotechService motechService, IdentifierGenerator idGenerator, RegistrantType registrantType, PatientService patientService, LocationService locationService) {
+    public PatientBuilder(PersonService personService, MotechService motechService, IdentifierGenerator idGenerator,
+                          RegistrantType registrantType, PatientService patientService, LocationService locationService) {
         this.personService = personService;
         this.idGenerator = idGenerator;
         this.registrantType = registrantType;
@@ -112,10 +111,7 @@ public class PatientBuilder {
         return this;
     }
 
-    public PatientBuilder setCommunity(Community community) {
-        this.community = community;
-        return this;
-    }
+
 
     public Patient build() {
         if (registrantType == RegistrantType.CHILD_UNDER_FIVE) {
@@ -136,7 +132,6 @@ public class PatientBuilder {
         patient.setBirthdate(birthDate);
         patient.setBirthdateEstimated(birthDateEstimated);
 
-        addCommunityToPatient(patient);
         addAttributesToPatient(patient);
         return patient;
     }
@@ -161,9 +156,7 @@ public class PatientBuilder {
         return motechService;
     }
 
-    Community getCommunity() {
-        return community;
-    }
+
 
     Patient getParent() {
         return parent;
@@ -177,11 +170,7 @@ public class PatientBuilder {
         return false;
     }
 
-    private void addCommunityToPatient(Patient patient) {
-        if (community != null) {
-            community.add(patient);
-        }
-    }
+
 
     private PatientBuilder setPatientId(Patient patient) {
         String motechIdString = null;

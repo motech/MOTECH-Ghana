@@ -16,15 +16,12 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import static junit.framework.Assert.*;
-import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.motechproject.server.omod.PatientIdentifierTypeEnum.PATIENT_IDENTIFIER_MOTECH_ID;
 
 
 public class PatientBuilderTest {
@@ -36,7 +33,6 @@ public class PatientBuilderTest {
     private IdentifierGenerator idGenerator = mock(IdentifierGenerator.class);
     private PatientService patientService = mock(PatientService.class);
     private LocationService locationService = mock(LocationService.class);
-
 
 
     public PatientBuilderTest() {
@@ -183,17 +179,7 @@ public class PatientBuilderTest {
 
     }
 
-    @Test
-    public void shouldAddPatientToCommunity() {
 
-        Community community = mock(Community.class);
-
-        builder.setCommunity(community);
-        Patient patient = builder.build();
-
-        verify(community).add(patient);
-
-    }
 
     @Test
     public void shouldNotAddPatientToCommunityWhenCommunityIsNotSet() {

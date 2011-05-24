@@ -2,7 +2,6 @@ package org.motechproject.server.omod.builder;
 
 
 import org.junit.Test;
-import org.motechproject.server.model.Community;
 import org.motechproject.server.omod.IdentifierGenerator;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.PersonAttributeTypeEnum;
@@ -16,7 +15,8 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 
 import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ChildBuilderTest {
     private PatientBuilder builder;
@@ -85,17 +85,7 @@ public class ChildBuilderTest {
         assertEquals(expectedPatient.getPersonAddress().getAddress1(), child.getPersonAddress().getAddress1());
     }
 
-    @Test
-    public void shouldUseMotherCommunityWhenCommunityNotSpecified(){
 
-        Community motherCommunity = mock(Community.class);
-        builder.setCommunity(null);
-        when(motechService.getCommunityByPatient(mother)).thenReturn(motherCommunity);
-
-        Patient child = builder.build();
-
-        verify(motherCommunity).add(child);
-    }
 
 
     @Test

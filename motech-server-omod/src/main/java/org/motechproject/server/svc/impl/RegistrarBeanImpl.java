@@ -36,7 +36,6 @@ package org.motechproject.server.svc.impl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.model.MessageProgram;
 import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.messaging.MessageNotFoundException;
 import org.motechproject.server.model.*;
@@ -107,6 +106,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     private final DistrictFactory DISTRICT_FACTORY = new DistrictFactory();
 
 
+
     public void setContextService(ContextService contextService) {
         this.contextService = contextService;
     }
@@ -169,78 +169,64 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                    DayOfWeek dayOfWeek, Date timeOfDay, InterestReason reason,
                                    HowLearned howLearned, Integer messagesStartWeek) {
 
-        // Inherit values from Mother's record including
-        // last name, address, messaging preferences and enrollment
-        if (mother != null) {
-            PersonName personName = mother.getPersonName();
-            if (lastName == null && personName != null) {
-                lastName = personName.getFamilyName();
-            }
-            PersonAddress personAddress = mother.getPersonAddress();
-            if (address == null && personAddress != null) {
-                address = personAddress.getAddress1();
-            }
-            if (community == null) {
-                community = getCommunityByPatient(mother);
-            }
-            if (phoneNumber == null) {
-                phoneNumber = getPersonPhoneNumber(mother);
-            }
-            if (ownership == null) {
-                ownership = getPersonPhoneType(mother);
-            }
-            if (format == null) {
-                format = getPersonMediaType(mother);
-            }
-            if (language == null) {
-                language = getPersonLanguageCode(mother);
-            }
-            if (dayOfWeek == null) {
-                dayOfWeek = getMessageDayOfWeek(mother);
-            }
-            if (timeOfDay == null) {
-                timeOfDay = getPersonMessageTimeOfDay(mother);
-            }
-            if (enroll == null && consent == null) {
-                List<MessageProgramEnrollment> enrollments = motechService()
-                        .getActiveMessageProgramEnrollments(mother
-                                .getPatientId(), null, null, null, null);
-                if (enrollments != null && !enrollments.isEmpty()) {
-                    enroll = true;
-                    consent = true;
-                }
-            }
-        }
-
         Patient patient = createPatient(staff, motechId, firstName, middleName,
                 lastName, preferredName, dateOfBirth, estimatedBirthDate, sex,
                 insured, nhis, nhisExpires, address, phoneNumber, ownership,
-                format, language, dayOfWeek, timeOfDay, howLearned, reason, registrantType);
+                format, language, dayOfWeek, timeOfDay, howLearned, reason, registrantType, mother);
 
         patient = patientService.savePatient(patient);
 
+        if(isChildWithMother(registrantType, mother)){
+            childRegistrationPostProcessing(staff, patient, mother, facility, community, enroll, consent, messagesStartWeek, date);
+        }else if(registrantType == RegistrantType.PREGNANT_MOTHER){
+            motherRegistrationPostProcessing(staff, patient, facility, community, enroll, consent, messagesStartWeek, date, expDeliveryDate, deliveryDateConfirmed);
+        }else{
+            patientRegistrationPostProcessing(staff, patient, facility, community, enroll, consent, messagesStartWeek, null, date);
+        }
 
-        if (community != null) {
+        return patient;
+    }
+
+    private boolean isChildWithMother(RegistrantType registrantType, Patient mother) {
+        return registrantType == RegistrantType.CHILD_UNDER_FIVE && mother!=null;
+    }
+
+    private void childRegistrationPostProcessing(User staff, Patient child, Patient mother, Facility facility, Community community,
+                                                 Boolean enroll, Boolean consent,Integer messagesStartWeek,
+                                                 Date date) {
+        if (community == null) {
+            community = getCommunityByPatient(mother);
+        }
+        if (enroll == null && consent == null) {
+            List<MessageProgramEnrollment> enrollments = motechService().getActiveMessageProgramEnrollments(mother.getPatientId(), null, null, null, null);
+            if (enrollments != null && !enrollments.isEmpty()) {
+                enroll = true;
+                consent = true;
+            }
+        }
+        if(mother != null){
+         relationshipService.createMotherChildRelationship(mother, child);
+        }
+        patientRegistrationPostProcessing(staff, child, facility, community, enroll, consent, messagesStartWeek, null, date);
+    }
+
+    private void motherRegistrationPostProcessing(User staff, Patient mother, Facility facility, Community community,
+                                                     Boolean enroll, Boolean consent,Integer messagesStartWeek,Date date, Date expDeliveryDate,
+                                                     Boolean deliveryDateConfirmed) {
+
+        Integer pregnancyDueDateObsId = registerPregnancy(staff, facility.getLocation(), date, mother, expDeliveryDate, deliveryDateConfirmed);
+        patientRegistrationPostProcessing(staff, mother, facility, community, enroll, consent, messagesStartWeek, pregnancyDueDateObsId, date);
+    }
+
+    private void patientRegistrationPostProcessing(User staff, Patient patient, Facility facility, Community community,
+                                                   Boolean enroll, Boolean consent,Integer messagesStartWeek, Integer pregnancyDueDateObsId,
+                                                   Date date){
+        if(community != null){
             community.getResidents().add(patient);
         }
         facility.addPatient(patient);
-
-        if (mother != null) {
-            relationshipService.createMotherChildRelationship(mother, patient);
-        }
-
-        Integer pregnancyDueDateObsId = null;
-        if (registrantType == RegistrantType.PREGNANT_MOTHER) {
-            pregnancyDueDateObsId = registerPregnancy(staff, facility.getLocation(), date,
-                    patient, expDeliveryDate, deliveryDateConfirmed);
-        }
-
-        enrollPatient(patient, enroll, consent, messagesStartWeek,
-                pregnancyDueDateObsId);
-
+        enrollPatient(patient, enroll, consent, messagesStartWeek, pregnancyDueDateObsId);
         recordPatientRegistration(staff, facility.getLocation(), date, patient);
-
-        return patient;
     }
 
     private void enrollPatientWithAttributes(Patient patient,
@@ -332,7 +318,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         Patient patient = createPatient(staff, motechId, firstName, middleName,
                 lastName, preferredName, dateOfBirth, estimatedBirthDate, sex,
                 insured, nhis, nhisExpires, address, phoneNumber, ownership,
-                format, language, dayOfWeek, timeOfDay, howLearned, reason, RegistrantType.OTHER);
+                format, language, dayOfWeek, timeOfDay, howLearned, reason, RegistrantType.OTHER, null);
 
         patient = patientService.savePatient(patient);
 
@@ -355,7 +341,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                   Boolean insured, String nhis, Date nhisExpDate, String address,
                                   String phoneNumber, ContactNumberType phoneType,
                                   MediaType mediaType, String language, DayOfWeek dayOfWeek,
-                                  Date timeOfDay, HowLearned howLearned, InterestReason interestReason, RegistrantType registrantType) {
+                                  Date timeOfDay, HowLearned howLearned, InterestReason interestReason, RegistrantType registrantType, Patient mother) {
 
         PatientBuilder patientBuilder = new PatientBuilder(personService, motechService(), identifierGenerator, registrantType, patientService, locationService);
         SimpleDateFormat timeFormatter = new SimpleDateFormat(MotechConstants.TIME_FORMAT_DELIVERY_TIME);
@@ -363,7 +349,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         patientBuilder.setMotechId(motechId).setName(firstName,middleName, lastName)
                       .setPreferredName(prefName).setGender(sex).setBirthDate(birthDate)
-                      .setBirthDateEstimated(birthDateEst).setAddress1(address);
+                      .setBirthDateEstimated(birthDateEst).setAddress1(address).setParent(mother);
 
         try {
             patientBuilder.addAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER, phoneNumber, "toString");

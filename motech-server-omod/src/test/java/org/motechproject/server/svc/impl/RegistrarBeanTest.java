@@ -865,15 +865,15 @@ public class RegistrarBeanTest {
         child.setBirthdate(birthDate);
 
         Patient mother = Mockito.mock(Patient.class);
-        when(mother.getPersonName()).thenReturn(new PersonName("", "", motherLastName));
+        when(mother.getFamilyName()).thenReturn(motherLastName);
         motherAddress.setAddress1("mother Address");
         when(mother.getPersonAddress()).thenReturn(motherAddress);
         when(motherCommunity.getResidents()).thenReturn(mockResidents);
-        when(mother.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER)).thenReturn(new PersonAttribute(phoneAttributeType, motherPhoneNumber));
-        when(mother.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE)).thenReturn(new PersonAttribute(phoneTypeAttributeType, ContactNumberType.PUBLIC.name()));
-        when(mother.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE)).thenReturn(new PersonAttribute(mediaTypeAttributeType, MediaType.TEXT.name()));
-        when(mother.getAttribute(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE)).thenReturn(new PersonAttribute(languageAttributeType, motherLanguage));
-        when(mother.getAttribute(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME)).thenReturn(new PersonAttribute(deliveryTimeAttributeType, new SimpleDateFormat(MotechConstants.TIME_FORMAT_DELIVERY_TIME).format(date)));
+        when(mother.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeName())).thenReturn(new PersonAttribute(phoneAttributeType, motherPhoneNumber));
+        when(mother.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_TYPE.getAttributeName())).thenReturn(new PersonAttribute(phoneTypeAttributeType, ContactNumberType.PUBLIC.name()));
+        when(mother.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_MEDIA_TYPE.getAttributeName())).thenReturn(new PersonAttribute(mediaTypeAttributeType, MediaType.TEXT.name()));
+        when(mother.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_LANGUAGE.getAttributeName())).thenReturn(new PersonAttribute(languageAttributeType, motherLanguage));
+        when(mother.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_DELIVERY_TIME.getAttributeName())).thenReturn(new PersonAttribute(deliveryTimeAttributeType, new SimpleDateFormat(MotechConstants.TIME_FORMAT_DELIVERY_TIME).format(date)));
 
 
 
@@ -901,7 +901,6 @@ public class RegistrarBeanTest {
         expect(personService.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE)).andReturn(mediaTypeAttributeType);
         expect(personService.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE)).andReturn(languageAttributeType);
         expect(personService.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME)).andReturn(deliveryTimeAttributeType);
-
 
         expect(motechService.getActiveMessageProgramEnrollments(mother.getPatientId(), null, null, null,null)).andReturn(new ArrayList<MessageProgramEnrollment>(){
             {
