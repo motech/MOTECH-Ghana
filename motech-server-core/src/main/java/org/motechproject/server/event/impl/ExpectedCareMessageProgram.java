@@ -74,13 +74,10 @@ public class ExpectedCareMessageProgram implements MessageProgram {
         }
 
         // Get all active expected care for patient (obs and encounter)
-        List<ExpectedEncounter> expectedEncounters = registrarBean
-                .getExpectedEncounters(patient);
-        List<ExpectedObs> expectedObservations = registrarBean
-                .getExpectedObs(patient);
+        List<ExpectedEncounter> expectedEncounters = registrarBean.getExpectedEncounters(patient);
+        List<ExpectedObs> expectedObservations = registrarBean.getExpectedObs(patient);
         // Get all messages for enrollment (includes sent and not sent)
-        List<ScheduledMessage> scheduledMessages = registrarBean
-                .getScheduledMessages(enrollment);
+        List<ScheduledMessage> scheduledMessages = registrarBean.getScheduledMessages(enrollment);
 
         // Create predicates for expected care (by group) and scheduled messages
         // (by key)
