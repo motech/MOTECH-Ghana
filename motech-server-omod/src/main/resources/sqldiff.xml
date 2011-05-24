@@ -2344,5 +2344,15 @@
             update motechmodule_message_program_state_transition set transition_order = 0 where motechmodule_message_program_state_transition_id = 274
         </sql>
     </diff>
-	
+
+	<diff>
+        <version>2.9</version>
+        <author>ThoughtWorks</author>
+        <date>May 24 2011</date>
+        <description>Dropping Senya language for May 30 Prod release</description>
+        <sql>
+            delete from motechmodule_message_language where name = 'Senya';
+        </sql>
+    </diff>
+
 </sqldiff>
