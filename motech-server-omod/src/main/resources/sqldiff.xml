@@ -2354,5 +2354,13 @@
             delete from motechmodule_message_language where name = 'Senya';
         </sql>
     </diff>
+    <diff>
+        <version>3.0</version>
+        <author>ThoughtWorks</author>
+        <date>May 25 2011</date>
+        <sql>
+            UPDATE motechmodule_message_program_state_transition SET next_state = parent_state WHERE transition_type = 'DEFAULT'
+        </sql>
+    </diff>
 
 </sqldiff>
