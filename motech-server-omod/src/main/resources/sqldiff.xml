@@ -2386,4 +2386,207 @@
         </sql>
     </diff>
 
+    <diff>
+        <version>3.2</version>
+        <author>ThoughtWorks</author>
+        <date>May 26 2011</date>
+		<description>Porting Central Region Facilities from PROD</description>
+        <sql>
+            INSERT INTO location (location_id, name, country, region, state_province, county_district, date_created, uuid, creator)
+            SELECT 34,'Gonum CHPS','Ghana','Upper East','Mirigu','Kassena-Nankana West' ,NOW(),UUID(),1
+            FROM location
+            WHERE NOT EXISTS (select * from location where name='Gonum CHPS')
+            AND location_id = 1;
+
+            INSERT INTO location (location_id, name, country, region, state_province, county_district, date_created, uuid, creator)
+            SELECT 35,'Okwampa CHPS','Ghana','Central Region','Bawjiase','Awutu Senya' ,NOW(),UUID(),1
+            FROM location
+            WHERE NOT EXISTS (select * from location where name='Okwampa CHPS')
+            AND location_id = 1;
+
+            INSERT INTO location (location_id, name, country, region, state_province, county_district, date_created, uuid, creator)
+            SELECT 36,'Akrabong CHPS','Ghana','Central Region','Bontrase','Awutu Senya' ,NOW(),UUID(),1
+            FROM location
+            WHERE NOT EXISTS (select * from location where name='Akrabong CHPS')
+            AND location_id = 1;
+
+            INSERT INTO location (location_id, name, country, region, state_province, county_district, date_created, uuid, creator)
+            SELECT 37,'TawiaKwe CHPS','Ghana','Central Region','Bawjiase','Awutu Senya' ,NOW(),UUID(),1
+            FROM location
+            WHERE NOT EXISTS (select * from location where name='TawiaKwe CHPS')
+            AND location_id = 1;
+
+            INSERT INTO location (location_id, name, country, region, state_province, county_district, date_created, uuid, creator)
+            SELECT 38,'Ahentia CHPS','Ghana','Central Region','Awutu','Awutu Senya' ,NOW(),UUID(),1
+            FROM location
+            WHERE NOT EXISTS (select * from location where name='Ahentia CHPS')
+            AND location_id = 1;
+
+            INSERT INTO location (location_id, name, country, region, state_province, county_district, date_created, uuid, creator)
+            SELECT 39,'Adawunkwao CHPS','Ghana','Central Region','Bawjiase','Awutu Senya' ,NOW(),UUID(),1
+            FROM location
+            WHERE NOT EXISTS (select * from location where name='Adawunkwao CHPS')
+            AND location_id = 1;
+
+            INSERT INTO location (location_id, name, country, region, state_province, county_district, date_created, uuid, creator)
+            SELECT 40,'Awutu HC','Ghana','Central Region','Awutu','Awutu Senya' ,NOW(),UUID(),1
+            FROM location
+            WHERE NOT EXISTS (select * from location where name='Awutu HC')
+            AND location_id = 1;
+
+            INSERT INTO location (location_id, name, country, region, state_province, county_district, date_created, uuid, creator)
+            SELECT 41,'Bontrase HC','Ghana','Central Region','Bontrase','Awutu Senya' ,NOW(),UUID(),1
+            FROM location
+            WHERE NOT EXISTS (select * from location where name='Bontrase HC')
+            AND location_id = 1;
+
+            INSERT INTO location (location_id, name, country, region, state_province, county_district, date_created, uuid, creator)
+            SELECT 42,'Senya HC','Ghana','Central Region','Senya','Awutu Senya' ,NOW(),UUID(),1
+            FROM location
+            WHERE NOT EXISTS (select * from location where name='Senya HC')
+            AND location_id = 1;
+
+            INSERT INTO location (location_id, name, country, region, state_province, county_district, date_created, uuid, creator)
+            SELECT 43,'Opeikuma CHPS','Ghana','Central Region','Kasoa','Awutu Senya' ,NOW(),UUID(),1
+            FROM location
+            WHERE NOT EXISTS (select * from location where name='Opeikuma CHPS')
+            AND location_id = 1;
+
+            INSERT INTO location (location_id, name, country, region, state_province, county_district, date_created, uuid, creator)
+            SELECT 44,'Papaase CHPS','Ghana','Central Region','Kasoa','Awutu Senya' ,NOW(),UUID(),1
+            FROM location
+            WHERE NOT EXISTS (select * from location where name='Papaase CHPS')
+            AND location_id = 1;
+
+            INSERT INTO location (location_id, name, country, region, state_province, county_district, date_created, uuid, creator)
+            SELECT 45,'Mayanda CHPS','Ghana','Central Region','Bawjiase','Awutu Senya' ,NOW(),UUID(),1
+            FROM location
+            WHERE NOT EXISTS (select * from location where name='Mayanda CHPS')
+            AND location_id = 1;
+
+            INSERT INTO location (location_id, name, country, region, state_province, county_district, date_created, uuid, creator)
+            SELECT 46,'Ofadaa CHPS','Ghana','Central Region','Bawjiase','Awutu Senya' ,NOW(),UUID(),1
+            FROM location
+            WHERE NOT EXISTS (select * from location where name='Ofadaa CHPS')
+            AND location_id = 1;
+
+            INSERT INTO location (location_id, name, country, region, state_province, county_district, date_created, uuid, creator)
+            SELECT 47,'Bawjiase HC','Ghana','Central Region','Bawjiase','Awutu Senya' ,NOW(),UUID(),1
+            FROM location
+            WHERE NOT EXISTS (select * from location where name='Bawjiase HC')
+            AND location_id = 1;
+
+            insert into motechmodule_facility (id, facility_id, location_id, phone_number)
+            SELECT 34,13119,34,0547952068
+            FROM motechmodule_facility
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=34)
+            AND id=1;
+
+            insert into motechmodule_facility (id, facility_id, location_id, phone_number)
+            SELECT 35,13126,35,0243780877
+            FROM motechmodule_facility
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=35)
+            AND id=1;
+
+            insert into motechmodule_facility (id, facility_id, location_id, phone_number)
+            SELECT 36,13135,36,0242511233
+            FROM motechmodule_facility
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=36)
+            AND id=1;
+
+            insert into motechmodule_facility (id, facility_id, location_id, phone_number)
+            SELECT 37,13142,37,0266409711
+            FROM motechmodule_facility
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=37)
+            AND id=1;
+
+            insert into motechmodule_facility (id, facility_id, location_id, phone_number)
+            SELECT 38,13157,38,0546522757
+            FROM motechmodule_facility
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=38)
+            AND id=1;
+
+            insert into motechmodule_facility (id, facility_id, location_id, phone_number)
+            SELECT 39,13161,39,0245316977
+            FROM motechmodule_facility
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=39)
+            AND id=1;
+
+            insert into motechmodule_facility (id, facility_id, location_id, phone_number)
+            SELECT 40,13174,40,0244592889
+            FROM motechmodule_facility
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=40)
+            AND id=1;
+
+            insert into motechmodule_facility (id, facility_id, location_id, phone_number)
+            SELECT 41,13188,41,0244569654
+            FROM motechmodule_facility
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=41)
+            AND id=1;
+
+            insert into motechmodule_facility (id, facility_id, location_id, phone_number)
+            SELECT 42,13190,42,0208623304
+            FROM motechmodule_facility
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=42)
+            AND id=1;
+
+            insert into motechmodule_facility (id, facility_id, location_id, phone_number)
+            SELECT 43,13208,43,0208350038
+            FROM motechmodule_facility
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=43)
+            AND id=1;
+
+            insert into motechmodule_facility (id, facility_id, location_id, phone_number)
+            SELECT 44,13212,44,0207211620
+            FROM motechmodule_facility
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=44)
+            AND id=1;
+
+            insert into motechmodule_facility (id, facility_id, location_id, phone_number)
+            SELECT 45,13220,45,0249449640
+            FROM motechmodule_facility
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=45)
+            AND id=1;
+
+            insert into motechmodule_facility (id, facility_id, location_id, phone_number)
+            SELECT 46,13231,46,0209426461
+            FROM motechmodule_facility
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=46)
+            AND id=1;
+
+            insert into motechmodule_facility (id, facility_id, location_id, phone_number)
+            SELECT 47,13249,47,null
+            FROM motechmodule_facility
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=47)
+            AND id=1;
+        </sql>
+    </diff>
+
+    <diff>
+        <version>3.3</version>
+        <author>ThoughtWorks</author>
+        <date>May 26 2011</date>
+		<description>Adding new facilities for new regions</description>
+        <sql>
+            insert into location (location_id, name, country, region,date_created,uuid,creator) values(48,'Ashanti','Ghana','Ashanti',NOW(),UUID(),1);
+            insert into location (location_id, name, country, region,date_created,uuid,creator) values(49,'Brong Ahafo','Ghana','Brong Ahafo',NOW(),UUID(),1);
+            insert into location (location_id, name, country, region,date_created,uuid,creator) values(50,'Eastern','Ghana','Eastern',NOW(),UUID(),1);
+            insert into location (location_id, name, country, region,date_created,uuid,creator) values(51,'Greater Accra','Ghana','Greater Accra',NOW(),UUID(),1);
+            insert into location (location_id, name, country, region,date_created,uuid,creator) values(52,'Northern','Ghana','Northern',NOW(),UUID(),1);
+            insert into location (location_id, name, country, region,date_created,uuid,creator) values(53,'Upper West','Ghana','Upper West',NOW(),UUID(),1);
+            insert into location (location_id, name, country, region,date_created,uuid,creator) values(54,'Western','Ghana','Western',NOW(),UUID(),1);
+            insert into location (location_id, name, country, region,date_created,uuid,creator) values(55,'Volta','Ghana','Volta',NOW(),UUID(),1);
+
+
+            insert into motechmodule_facility(id, facility_id, location_id) values (48,13254,48);
+            insert into motechmodule_facility(id, facility_id, location_id) values (49,13265,49);
+            insert into motechmodule_facility(id, facility_id, location_id) values (50,13277,50);
+            insert into motechmodule_facility(id, facility_id, location_id) values (51,13283,51);
+            insert into motechmodule_facility(id, facility_id, location_id) values (52,13296,52);
+            insert into motechmodule_facility(id, facility_id, location_id) values (53,13306,53);
+            insert into motechmodule_facility(id, facility_id, location_id) values (54,13310,54);
+            insert into motechmodule_facility(id, facility_id, location_id) values (55,13323,55);
+        </sql>
+    </diff>
+
 </sqldiff>
