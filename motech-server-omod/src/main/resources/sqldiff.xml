@@ -2749,7 +2749,7 @@
 			INSERT INTO motechmodule_message_program_state_transition(motechmodule_message_program_state_transition_id, transition_type, prev_state, parent_state, next_state, time_value, time_period, expected_number, transition_order) VALUES(375, 'DEFAULT', 189, 189, 189, null, null, null, 1);
 
 			
-			UPDATE motechmodule_message_program_state_transition SET next_state = parent_state WHERE transition_type = 'DEFAULT'
+			UPDATE motechmodule_message_program_state_transition SET next_state = parent_state WHERE transition_type = 'DEFAULT';
 			UPDATE motechmodule_message_program_state_transition SET next_state = 142 where motechmodule_message_program_state_transition_id = 159;			
 			
         </sql>
