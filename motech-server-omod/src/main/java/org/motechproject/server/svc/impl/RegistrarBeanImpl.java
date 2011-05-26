@@ -105,7 +105,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     private final DistrictFactory DISTRICT_FACTORY = new DistrictFactory();
 
 
-
     public void setContextService(ContextService contextService) {
         this.contextService = contextService;
     }
@@ -175,11 +174,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         patient = patientService.savePatient(patient);
 
-        if(isChildWithMother(registrantType, mother)){
+        if (isChildWithMother(registrantType, mother)) {
             childRegistrationPostProcessing(staff, patient, mother, facility, community, enroll, consent, messagesStartWeek, date);
-        }else if(registrantType == RegistrantType.PREGNANT_MOTHER){
+        } else if (registrantType == RegistrantType.PREGNANT_MOTHER) {
             motherRegistrationPostProcessing(staff, patient, facility, community, enroll, consent, messagesStartWeek, date, expDeliveryDate, deliveryDateConfirmed);
-        }else{
+        } else {
             patientRegistrationPostProcessing(staff, patient, facility, community, enroll, consent, messagesStartWeek, null, date);
         }
 
@@ -187,11 +186,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private boolean isChildWithMother(RegistrantType registrantType, Patient mother) {
-        return registrantType == RegistrantType.CHILD_UNDER_FIVE && mother!=null;
+        return registrantType == RegistrantType.CHILD_UNDER_FIVE && mother != null;
     }
 
     private void childRegistrationPostProcessing(User staff, Patient child, Patient mother, Facility facility, Community community,
-                                                 Boolean enroll, Boolean consent,Integer messagesStartWeek,
+                                                 Boolean enroll, Boolean consent, Integer messagesStartWeek,
                                                  Date date) {
         if (community == null) {
             community = getCommunityByPatient(mother);
@@ -203,24 +202,24 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 consent = true;
             }
         }
-        if(mother != null){
-         relationshipService.createMotherChildRelationship(mother, child);
+        if (mother != null) {
+            relationshipService.createMotherChildRelationship(mother, child);
         }
         patientRegistrationPostProcessing(staff, child, facility, community, enroll, consent, messagesStartWeek, null, date);
     }
 
     private void motherRegistrationPostProcessing(User staff, Patient mother, Facility facility, Community community,
-                                                     Boolean enroll, Boolean consent,Integer messagesStartWeek,Date date, Date expDeliveryDate,
-                                                     Boolean deliveryDateConfirmed) {
+                                                  Boolean enroll, Boolean consent, Integer messagesStartWeek, Date date, Date expDeliveryDate,
+                                                  Boolean deliveryDateConfirmed) {
 
         Integer pregnancyDueDateObsId = registerPregnancy(staff, facility.getLocation(), date, mother, expDeliveryDate, deliveryDateConfirmed);
         patientRegistrationPostProcessing(staff, mother, facility, community, enroll, consent, messagesStartWeek, pregnancyDueDateObsId, date);
     }
 
     private void patientRegistrationPostProcessing(User staff, Patient patient, Facility facility, Community community,
-                                                   Boolean enroll, Boolean consent,Integer messagesStartWeek, Integer pregnancyDueDateObsId,
-                                                   Date date){
-        if(community != null){
+                                                   Boolean enroll, Boolean consent, Integer messagesStartWeek, Integer pregnancyDueDateObsId,
+                                                   Date date) {
+        if (community != null) {
             community.getResidents().add(patient);
         }
         facility.addPatient(patient);
@@ -346,9 +345,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         SimpleDateFormat timeFormatter = new SimpleDateFormat(MotechConstants.TIME_FORMAT_DELIVERY_TIME);
         SimpleDateFormat dateFormatter = new SimpleDateFormat(MotechConstants.DATE_FORMAT);
 
-        patientBuilder.setMotechId(motechId).setName(firstName,middleName, lastName)
-                      .setPreferredName(prefName).setGender(sex).setBirthDate(birthDate)
-                      .setBirthDateEstimated(birthDateEst).setAddress1(address).setParent(mother);
+        patientBuilder.setMotechId(motechId).setName(firstName, middleName, lastName)
+                .setPreferredName(prefName).setGender(sex).setBirthDate(birthDate)
+                .setBirthDateEstimated(birthDateEst).setAddress1(address).setParent(mother);
 
         try {
             patientBuilder.addAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER, phoneNumber, "toString");
@@ -548,7 +547,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         PatientEditor editor = new PatientEditor(patient);
         Facility currentFacility = getFacilityByPatient(patient);
 
-        if(!currentFacility.equals(facility)){
+        if (!currentFacility.equals(facility)) {
             patient = editor.removeFrom(currentFacility).addTo(facility).done();
         }
 
@@ -556,7 +555,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         boolean bothCommunitiesExistAndAreSame = community != null && currentCommunity != null && currentCommunity.equals(community);
 
-        if(!bothCommunitiesExistAndAreSame){
+        if (!bothCommunitiesExistAndAreSame) {
             patient = editor.removeFrom(currentCommunity).addTo(community).done();
         }
 
@@ -2983,28 +2982,37 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public List<ExpectedEncounter> filterRCTEncounters(List<ExpectedEncounter> allDefaulters) {
-
+        List<ExpectedEncounter> toBeRemoved = new ArrayList<ExpectedEncounter>();
         for (ExpectedEncounter allDefaulter : allDefaulters) {
             ExpectedEncounter expectedEncounter = allDefaulter;
-            if (expectedEncounter.getPatient() != null &&
-                    rctService.isPatientRegisteredAndInControlGroup(expectedEncounter.getPatient())) {
-                allDefaulters.remove(expectedEncounter);
+            if (meetsFilteringCriteria(expectedEncounter.getPatient())) {
+                toBeRemoved.add(expectedEncounter);
             }
         }
-
+        allDefaulters.removeAll(toBeRemoved);
         return allDefaulters;
     }
 
-    public List<ExpectedObs> filterRCTObs(List<ExpectedObs> allDefaulters) {
+    private boolean meetsFilteringCriteria(Patient patient) {
+        if (patient == null) return true;
+        if(rctService.isPatientRegisteredAndInTreatmentGroup(patient)) return false ;
+        return isFromUpperEast(patient) && (patient.getId()) > 5717  ;
+    }
 
+    private Boolean isFromUpperEast(Patient patient) {
+        Facility facility = getFacilityByPatient(patient);
+        return facility != null && facility.isInRegion("Upper East");
+    }
+
+    public List<ExpectedObs> filterRCTObs(List<ExpectedObs> allDefaulters) {
+        List<ExpectedObs> toBeRemoved = new ArrayList<ExpectedObs>();
         for (ExpectedObs allDefaulter : allDefaulters) {
             ExpectedObs expectedObs = allDefaulter;
-            if (expectedObs.getPatient() != null &&
-                    rctService.isPatientRegisteredAndInControlGroup(expectedObs.getPatient())) {
-                allDefaulters.remove(expectedObs);
+            if (meetsFilteringCriteria(expectedObs.getPatient())) {
+                toBeRemoved.add(expectedObs);
             }
         }
-
+        allDefaulters.removeAll(toBeRemoved);
         return allDefaulters;
     }
 
@@ -3090,7 +3098,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
                 Patient patient = patientService.getPatient(recipientId);
 
-                if (rctService.isPatientRegisteredAndInControlGroup(patient)) {
+                if (rctService.isPatientRegisteredAndInTreatmentGroup(patient)) {
                     String motechId = new MotechPatient(patient).getMotechId();
                     log.info("Not creating message because the recipient falls in the RCT Control group. " +
                             "Patient MoTeCH id: " + motechId + " Message ID:" + message.getPublicId());
@@ -3153,7 +3161,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         try {
             org.motechproject.ws.MessageStatus messageStatus;
             messageStatus = mobileService.sendDefaulterMessage(null, phoneNumber, cares, groupingStrategy,
-                                                               MediaType.TEXT, messageStartDate, null);
+                    MediaType.TEXT, messageStartDate, null);
 
             return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
         } catch (Exception e) {
@@ -3169,7 +3177,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         try {
             org.motechproject.ws.MessageStatus messageStatus;
             messageStatus = mobileService.sendBulkCaresMessage(null, phoneNumber, cares, groupingStrategy,
-                                                               MediaType.TEXT, messageStartDate,null);
+                    MediaType.TEXT, messageStartDate, null);
 
             return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
         } catch (Exception e) {
@@ -3491,7 +3499,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         if (day != null) {
             calendar.set(Calendar.DAY_OF_WEEK, day.getCalendarValue());
             if (checkInFuture && calendar.getTime().before(currentDate)) {
-               // Add a week if date in past after setting the day of week
+                // Add a week if date in past after setting the day of week
                 calendar.add(Calendar.DATE, 7);
             }
         }

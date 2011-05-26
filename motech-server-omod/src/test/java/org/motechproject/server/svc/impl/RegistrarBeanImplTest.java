@@ -311,9 +311,9 @@ public class RegistrarBeanImplTest extends TestCase {
         expect(contextService.getMotechService()).andReturn(motechService).atLeastOnce();
         expect(personService.getPerson(personId)).andReturn(person);
         expect(motechService.getMessageDefinition(messageKey)).andReturn(messageDef);
-        expect(motechService.getMessages(personId, enrollment, messageDef,messageDate, MessageStatus.SHOULD_ATTEMPT)).
+        expect(motechService.getMessages(personId, enrollment, messageDef, messageDate, MessageStatus.SHOULD_ATTEMPT)).
                 andReturn(messagesToRemove);
-        expect(motechService.getScheduledMessages(personId, messageDef,enrollment, messageDate)).andReturn(existingMessages);
+        expect(motechService.getScheduledMessages(personId, messageDef, enrollment, messageDate)).andReturn(existingMessages);
         expect(motechService.saveScheduledMessage(capture(capturedScheduledMessage))).andReturn(new ScheduledMessage());
 
         replay(contextService, adminService, motechService, personService);
@@ -491,6 +491,7 @@ public class RegistrarBeanImplTest extends TestCase {
 
         Location location = new Location();
         location.setName("Test Facility");
+        location.setRegion("Upper East");
         location.setCountyDistrict(new KassenaNankana().toString());
 
         Facility facility = new Facility();
@@ -502,7 +503,7 @@ public class RegistrarBeanImplTest extends TestCase {
 
 
         Patient p = new Patient(5716);
-        expect(rctService.isPatientRegisteredAndInControlGroup(p)).andReturn(false);
+        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p)).andReturn(false);
 
         ExpectedEncounter enc = new ExpectedEncounter();
         enc.setPatient(p);
@@ -515,13 +516,14 @@ public class RegistrarBeanImplTest extends TestCase {
         // To Mock
         expect(motechService.getCommunityByPatient(p)).andReturn(null);
         expect(contextService.getMotechService()).andReturn(motechService).anyTimes();
+        expect(motechService.facilityFor(p)).andReturn(facility);
         expect(motechService.getAllFacilities()).andReturn(facilities);
         expect(contextService.getAdministrationService()).andReturn(adminService).anyTimes();
         expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn("35").anyTimes();
         expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
-                                                  null, forDate, forDate, 35)).andReturn(encounters);
+                null, forDate, forDate, 35)).andReturn(encounters);
         expect(motechService.getExpectedObs(null, facility, careGroups, null,
-                                                  null, forDate, forDate, 35)).andReturn(emptyObs);
+                null, forDate, forDate, 35)).andReturn(emptyObs);
 
         Capture<String> capturedMessageId = new Capture<String>();
         Capture<String> capturedPhoneNumber = new Capture<String>();
@@ -532,17 +534,17 @@ public class RegistrarBeanImplTest extends TestCase {
         Capture<Date> capturedEndDate = new Capture<Date>();
 
         expect(mobileService.sendDefaulterMessage(capture(capturedMessageId), capture(capturedPhoneNumber),
-                                                  capture(capturedCares), capture(capturedStrategy),
-                                                  capture(capturedMediaType), capture(capturedStartDate),
-                                                  capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
+                capture(capturedCares), capture(capturedStrategy),
+                capture(capturedMediaType), capture(capturedStartDate),
+                capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
 
         replay(contextService, adminService, motechService, mobileService, rctService);
 
         registrarBean.sendStaffCareMessages(forDate, forDate,
-                                            forDate, forDate,
-                                            careGroups,
-                                            false,
-                                            false);
+                forDate, forDate,
+                careGroups,
+                false,
+                false);
 
         verify(contextService, adminService, motechService, mobileService, rctService);
 
@@ -573,9 +575,9 @@ public class RegistrarBeanImplTest extends TestCase {
         expect(contextService.getAdministrationService()).andReturn(adminService).anyTimes();
         expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn("35").anyTimes();
         expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
-                                                  null, forDate, forDate, 35)).andReturn(emptyEncounters);
+                null, forDate, forDate, 35)).andReturn(emptyEncounters);
         expect(motechService.getExpectedObs(null, facility, careGroups, null,
-                                                  null, forDate, forDate, 35)).andReturn(emptyObs);
+                null, forDate, forDate, 35)).andReturn(emptyObs);
 
         Capture<String> capturedMessage = new Capture<String>();
         Capture<String> capturedPhoneNumber = new Capture<String>();
@@ -585,10 +587,10 @@ public class RegistrarBeanImplTest extends TestCase {
         replay(contextService, adminService, motechService, mobileService);
 
         registrarBean.sendStaffCareMessages(forDate, forDate,
-                                            forDate, forDate,
-                                            careGroups,
-                                            false,
-                                            false);
+                forDate, forDate,
+                careGroups,
+                false,
+                false);
 
         verify(contextService, adminService, motechService, mobileService);
 
@@ -787,56 +789,89 @@ public class RegistrarBeanImplTest extends TestCase {
         Patient p1 = new Patient(5716);
         Patient p2 = new Patient(5717);
         Patient p3 = new Patient(5718);
-        expect(rctService.isPatientRegisteredAndInControlGroup(p1)).andReturn(false);
-        expect(rctService.isPatientRegisteredAndInControlGroup(p1)).andReturn(false);
-        expect(rctService.isPatientRegisteredAndInControlGroup(p2)).andReturn(false);
-        expect(rctService.isPatientRegisteredAndInControlGroup(p2)).andReturn(false);
-        expect(rctService.isPatientRegisteredAndInControlGroup(p3)).andReturn(false);
-        expect(rctService.isPatientRegisteredAndInControlGroup(p3)).andReturn(false);
+        Patient p4 = new Patient(5719);
+        Patient p5 = new Patient(5720);
+        Patient p6 = new Patient(5721);
+        Patient p7 = new Patient(5722);
 
-        ExpectedObs obs1 = new ExpectedObs();
-        obs1.setPatient(p1);
+        Facility facilityInUpperEast = getFacilityWithRegion("Upper East");
+        Facility facilityInCentral = getFacilityWithRegion("Central");
 
-        ExpectedObs obs2 = new ExpectedObs();
-        obs2.setPatient(p2);
+        expect(contextService.getMotechService()).andReturn(motechService).times(12);
+        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p1)).andReturn(false).times(2);
+        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p2)).andReturn(false).times(2);
+        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p3)).andReturn(false).times(2);
+        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p4)).andReturn(false).times(2);
+        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p5)).andReturn(true).times(2);
+        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p6)).andReturn(false).times(2);
+        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p7)).andReturn(false).times(2);
 
-        ExpectedObs obs3 = new ExpectedObs();
-        obs3.setPatient(p3);
-
-        ExpectedEncounter enc1 = new ExpectedEncounter();
-        enc1.setPatient(p1);
-
-        ExpectedEncounter enc2 = new ExpectedEncounter();
-        enc2.setPatient(p2);
-
-        ExpectedEncounter enc3 = new ExpectedEncounter();
-        enc3.setPatient(p3);
+        expect(motechService.facilityFor(p1)).andReturn(facilityInUpperEast).times(2);
+        expect(motechService.facilityFor(p2)).andReturn(facilityInUpperEast).times(2);
+        expect(motechService.facilityFor(p3)).andReturn(facilityInUpperEast).times(2);
+        expect(motechService.facilityFor(p4)).andReturn(facilityInUpperEast).times(2);
+        expect(motechService.facilityFor(p6)).andReturn(facilityInCentral).times(2);
+        expect(motechService.facilityFor(p7)).andReturn(facilityInUpperEast).times(2);
 
 
-        List<ExpectedObs> expObs = new ArrayList<ExpectedObs>();
-        List<ExpectedEncounter> expEnc = new ArrayList<ExpectedEncounter>();
+        List<ExpectedObs> expObs = expectedObservationsFor(p1,p2,p3,p4,p5,p6,p7);
+        List<ExpectedEncounter> expEnc = expectedEncountersFor(p1,p2,p3,p4,p5,p6,p7);
 
-        expObs.add(obs1);
-        expObs.add(obs2);
-        expObs.add(obs3);
-
-        expEnc.add(enc1);
-        expEnc.add(enc2);
-        expEnc.add(enc3);
-
-        replay(rctService);
+        replay(rctService, motechService, contextService);
         List<ExpectedObs> filteredObs = registrarBean.filterRCTObs(new ArrayList(expObs));
         List<ExpectedEncounter> filteredEnc = registrarBean.filterRCTEncounters(new ArrayList(expEnc));
 
-        verify(rctService);
+        verify(rctService, motechService, contextService);
 
-        assertEquals(3, filteredObs.size());
-        ExpectedObs obs = filteredObs.get(0);
-        assertEquals(p1.getPatientId(), obs.getPatient().getPatientId());
+        assertEquals(4, filteredObs.size());
+        ExpectedObs obs1 = filteredObs.get(0);
+        ExpectedObs obs2 = filteredObs.get(1);
+        ExpectedObs obs3 = filteredObs.get(2);
+        ExpectedObs obs4 = filteredObs.get(3);
+        assertEquals(p1.getPatientId(), obs1.getPatient().getPatientId());
+        assertEquals(p2.getPatientId(), obs2.getPatient().getPatientId());
+        assertEquals(p5.getPatientId(), obs3.getPatient().getPatientId());
+        assertEquals(p6.getPatientId(), obs4.getPatient().getPatientId());
 
-        assertEquals(3, filteredEnc.size());
-        ExpectedEncounter enc = filteredEnc.get(0);
-        assertEquals(p1.getPatientId(), enc.getPatient().getPatientId());
+        assertEquals(4, filteredEnc.size());
+        ExpectedEncounter enc1 = filteredEnc.get(0);
+        ExpectedEncounter enc2 = filteredEnc.get(1);
+        ExpectedEncounter enc3 = filteredEnc.get(2);
+        ExpectedEncounter enc4 = filteredEnc.get(3);
 
+        assertEquals(p1.getPatientId(), enc1.getPatient().getPatientId());
+        assertEquals(p2.getPatientId(), enc2.getPatient().getPatientId());
+        assertEquals(p5.getPatientId(), enc3.getPatient().getPatientId());
+        assertEquals(p6.getPatientId(), enc4.getPatient().getPatientId());
+
+    }
+
+    private List<ExpectedEncounter> expectedEncountersFor(Patient... patients){
+        List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
+        for (Patient patient : patients) {
+            ExpectedEncounter encounter = new ExpectedEncounter();
+            encounter.setPatient(patient);
+            expectedEncounters.add(encounter);
+        }
+        return expectedEncounters;
+    }
+
+    private List<ExpectedObs> expectedObservationsFor(Patient... patients){
+           List<ExpectedObs> expectedObservations = new ArrayList<ExpectedObs>();
+           for (Patient patient : patients) {
+               ExpectedObs obs = new ExpectedObs();
+               obs.setPatient(patient);
+               expectedObservations.add(obs);
+           }
+           return expectedObservations;
+       }
+
+
+    private Facility getFacilityWithRegion(String region) {
+        Facility facility = new Facility();
+        Location location = new Location();
+        location.setRegion(region);
+        facility.setLocation(location);
+        return facility;
     }
 }

@@ -20,7 +20,7 @@ public interface RCTService {
 
     public RCTPatient getRCTPatient(Integer motechId);
 
-    public Boolean isPatientRegisteredAndInControlGroup(org.openmrs.Patient patient);
+    public Boolean isPatientRegisteredAndInTreatmentGroup(org.openmrs.Patient patient);
 
     public List<RCTPatient> getAllRCTPatients();
 }
