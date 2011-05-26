@@ -2754,5 +2754,13 @@
 			
         </sql>
     </diff>
-
+    <diff>
+        <version>3.5</version>
+        <author>ThoughtWorks</author>
+        <date>May 26 2011</date>
+		<description>Correcting transitions that were preventing scheduling messages for children and when patient type was 'Other'</description>
+        <sql>
+			UPDATE motechmodule_message_program_state SET next_state = 82 WHERE motechmodule_message_program_state_id = 189;			
+        </sql>
+    </diff>
 </sqldiff>
