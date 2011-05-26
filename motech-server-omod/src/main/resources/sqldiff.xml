@@ -2358,8 +2358,31 @@
         <version>3.0</version>
         <author>ThoughtWorks</author>
         <date>May 25 2011</date>
+		<description>Correcting transitions that were preventing scheduling messages for children whose birth date were earlier than 4 weeks from current date</description>
         <sql>
             UPDATE motechmodule_message_program_state_transition SET next_state = parent_state WHERE transition_type = 'DEFAULT'
+        </sql>
+    </diff>
+    <diff>
+        <version>3.1</version>
+        <author>ThoughtWorks</author>
+        <date>May 26 2011</date>
+		<description>Scheduling 52nd week message for a child</description>
+        <sql>
+			INSERT INTO motechmodule_message_program_state(motechmodule_message_program_state_id, name, time_period, time_value, time_reference, concept_name, concept_value, message_key, message_key_a, message_key_b, message_key_c, next_state) 
+			VALUES(140, 'End Child Info State Week 52', 'week', 53, 'patient_birthdate', null, null, null, null, null, null, null);
+
+			UPDATE motechmodule_message_program_state SET name = 'Child Info State Week 52', next_state = 140 where  motechmodule_message_program_state_id = 139;
+
+			UPDATE motechmodule_message_program set end_state = 140 where end_state = 139;
+
+			INSERT INTO motechmodule_message_program_state_transition(motechmodule_message_program_state_transition_id, transition_type, prev_state, parent_state, next_state, time_value, time_period, expected_number, transition_order) 
+			VALUES(275, 'DATE', 139, 139,140, -2, 'day', null, 0);
+
+			update motechmodule_message_program_state_transition set transition_order = 1 where motechmodule_message_program_state_transition_id = 274;
+
+			INSERT INTO motechmodule_message_program_state_transition(motechmodule_message_program_state_transition_id, transition_type, prev_state, parent_state, next_state, time_value, time_period, expected_number, transition_order) 
+			VALUES(276, 'DEFAULT', 140, 140,140, null, null, null, 0);
         </sql>
     </diff>
 
