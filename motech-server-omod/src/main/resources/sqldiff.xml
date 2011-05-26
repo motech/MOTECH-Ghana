@@ -2746,7 +2746,7 @@
 			INSERT INTO motechmodule_message_program_state_transition(motechmodule_message_program_state_transition_id, transition_type, prev_state, parent_state, next_state, time_value, time_period, expected_number, transition_order) VALUES(372, 'DATE', 188, 188, 189, -2, 'day', null, 0);
 			INSERT INTO motechmodule_message_program_state_transition(motechmodule_message_program_state_transition_id, transition_type, prev_state, parent_state, next_state, time_value, time_period, expected_number, transition_order) VALUES(373, 'DEFAULT', 188, 188, 189, null, null, null, 1);
 			INSERT INTO motechmodule_message_program_state_transition(motechmodule_message_program_state_transition_id, transition_type, prev_state, parent_state, next_state, time_value, time_period, expected_number, transition_order) VALUES(374, 'DATE', 189, 189, 82, -2, 'day', null, 0);
-			INSERT INTO motechmodule_message_program_state_transition(motechmodule_message_program_state_transition_id, transition_type, prev_state, parent_state, next_state, time_value, time_period, expected_number, transition_order) VALUES(375, 'DEFAULT', 189, 189, 190, null, null, null, 1);
+			INSERT INTO motechmodule_message_program_state_transition(motechmodule_message_program_state_transition_id, transition_type, prev_state, parent_state, next_state, time_value, time_period, expected_number, transition_order) VALUES(375, 'DEFAULT', 189, 189, 189, null, null, null, 1);
 
 			
 			UPDATE motechmodule_message_program_state_transition SET next_state = parent_state WHERE transition_type = 'DEFAULT'
