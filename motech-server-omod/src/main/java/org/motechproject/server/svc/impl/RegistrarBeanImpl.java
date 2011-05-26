@@ -44,7 +44,6 @@ import org.motechproject.server.omod.*;
 import org.motechproject.server.omod.builder.PatientBuilder;
 import org.motechproject.server.omod.factory.DistrictFactory;
 import org.motechproject.server.omod.impl.MessageProgramServiceImpl;
-import org.motechproject.server.omod.web.model.District;
 import org.motechproject.server.omod.web.model.WebStaff;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
@@ -2897,116 +2896,90 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                       Date deliveryDate, Date deliveryTime,
                                       String[] careGroups,
                                       boolean sendUpcoming,
-                                      boolean avoidBlackout) {
+                                      boolean blackoutEnabled) {
 
-        if (avoidBlackout) {
-            Date checkForDate = deliveryDate != null ? deliveryDate : new Date();
-            if (isMessageTimeWithinBlackoutPeriod(checkForDate)) {
-                log.debug("Cancelling nurse messages during blackout");
-                return;
-            }
+        final boolean shouldBlackOut = blackoutEnabled && isMessageTimeWithinBlackoutPeriod(deliveryDate);
+        if (shouldBlackOut) {
+            log.debug("Cancelling nurse messages during blackout");
+            return;
         }
-
         List<Facility> facilities = motechService().getAllFacilities();
-
-        // All staff messages sent as SMS
-        MediaType mediaType = MediaType.TEXT;
-
-        // No corresponding message stored for staff care messages
-        String messageId = null;
-
-        // Set the time on the delivery date if needed
         deliveryDate = adjustTime(deliveryDate, deliveryTime);
-
-        WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
-        modelConverter.setRegistrarBean(this);
-
         for (Facility facility : facilities) {
-
-            String phoneNumber = facility.getPhoneNumber();
-            Location facilityLocation = facility.getLocation();
-            if (phoneNumber == null || facilityLocation == null) {
+            if (facilityPhoneNumberOrLocationAvailable(facility)) {
                 continue;
             }
-
-            CareMessageGroupingStrategy groupingStrategy = getDistrict(facilityLocation).getCareMessageGroupingStrategy();
-
-            // Send Defaulted Care Message
-            List<ExpectedEncounter> defaultedEncounters;
-            List<ExpectedObs> defaultedObs;
-
-            defaultedEncounters = filterRCTEncounters(new ArrayList<ExpectedEncounter>(getDefaultedExpectedEncounters(facility,
-                                                                                                                    careGroups,
-                                                                                                                    startDate)));
-            defaultedObs = filterRCTObs(new ArrayList<ExpectedObs>(getDefaultedExpectedObs(facility,
-                                                                                        careGroups,
-                                                                                        startDate)));
-
-            // Replace the above code when RCT filtering rules are
-            // finalized and implemented.
-            if (!defaultedEncounters.isEmpty() || !defaultedObs.isEmpty()) {
-                Care[] defaultedCares = modelConverter.defaultedToWebServiceCares(defaultedEncounters,
-                                                                                  defaultedObs);
-
-                log.info("Sending defaulter message to " + facility.name() + " at " + phoneNumber);
-                sendStaffDefaultedCareMessage(messageId, phoneNumber, mediaType, deliveryDate,
-                                              null, defaultedCares, groupingStrategy);
-            } else {
-                log.info("Sending 'no defaulters' message to " + facility.name() + " at " + phoneNumber);
-
-                try {
-                    org.motechproject.ws.MessageStatus messageStatus;
-                    messageStatus = mobileService.sendMessage(facility.name() + " has no defaulters for this week", phoneNumber);
-
-                    if (messageStatus == org.motechproject.ws.MessageStatus.FAILED) {
-                        log.error("Unable to message " + phoneNumber + " that they have no defaulters");
-                    }
-                } catch (Exception e) {
-                    log.error("Unable to message " + phoneNumber + " that they have no defaulters", e);
-                }
-            }
-
+            sendDefaulterMessages(startDate, deliveryDate, careGroups, facility);
             if (sendUpcoming) {
-                // Send Upcoming Care Messages
-                List<ExpectedEncounter> upcomingEncounters;
-                List<ExpectedObs> upcomingObs;
-                upcomingEncounters = filterRCTEncounters(getUpcomingExpectedEncounters(facility,
-                                                                                       careGroups,
-                                                                                       startDate,
-                                                                                       endDate));
-
-                upcomingObs = filterRCTObs(getUpcomingExpectedObs(facility,
-                                                                  careGroups,
-                                                                  startDate,
-                                                                  endDate));
-
-                if (!upcomingEncounters.isEmpty() || !upcomingObs.isEmpty()) {
-                    Care[] upcomingCares = modelConverter.upcomingToWebServiceCares(upcomingEncounters,
-                                                                                    upcomingObs, true);
-
-                    log.info("Sending upcoming care message to " + facility.name() + " at " + phoneNumber);
-                    sendStaffUpcomingCareMessage(messageId, phoneNumber, mediaType, deliveryDate,
-                                                 null, upcomingCares, groupingStrategy);
-                } else {
-                    log.info("Sending 'no upcoming care' message to " + facility.name() + " at " + phoneNumber);
-
-                    try {
-                        org.motechproject.ws.MessageStatus messageStatus;
-                        messageStatus = mobileService.sendMessage(facility.name() + " has no upcoming care for this week", phoneNumber);
-
-                        if (messageStatus == org.motechproject.ws.MessageStatus.FAILED) {
-                            log.error("Unable to message " + phoneNumber + " that they have no upcoming care");
-                        }
-                    } catch (Exception e) {
-                        log.error("Unable to message " + phoneNumber + " that they have no upcoming care", e);
-                    }
-                }
+                sendUpcomingMessages(startDate, endDate, deliveryDate, careGroups, facility);
             }
         }
     }
 
-    private District getDistrict(Location facilityLocation) {
-        return DISTRICT_FACTORY.getDistrictWithName(facilityLocation.getCountyDistrict());
+    private boolean facilityPhoneNumberOrLocationAvailable(Facility facility) {
+        return (facility.getPhoneNumber() == null) || (facility.getLocation() == null);
+    }
+
+    private void sendUpcomingMessages(Date startDate, Date endDate, Date deliveryDate, String[] careGroups, Facility facility) {
+        WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
+        modelConverter.setRegistrarBean(this);
+        List<ExpectedEncounter> upcomingEncounters = filterRCTEncounters(getUpcomingExpectedEncounters(facility, careGroups, startDate, endDate));
+        List<ExpectedObs> upcomingObs = filterRCTObs(getUpcomingExpectedObs(facility, careGroups, startDate, endDate));
+        final String facilityPhoneNumber = facility.getPhoneNumber();
+        final boolean upcomingEventsPresent = !(upcomingEncounters.isEmpty() && upcomingObs.isEmpty());
+        if (upcomingEventsPresent) {
+            Care[] upcomingCares = modelConverter.upcomingToWebServiceCares(upcomingEncounters, upcomingObs, true);
+            log.info("Sending upcoming care message to " + facility.name() + " at " + facilityPhoneNumber);
+            sendStaffUpcomingCareMessage(facilityPhoneNumber, deliveryDate, upcomingCares, getCareMessageGroupingStrategy(facility.getLocation()));
+        } else {
+            sendNoUpcomingCareMessage(facility, facilityPhoneNumber);
+        }
+    }
+
+    private void sendDefaulterMessages(Date startDate, Date deliveryDate, String[] careGroups, Facility facility) {
+        WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
+        modelConverter.setRegistrarBean(this);
+        List<ExpectedEncounter> defaultedEncounters = filterRCTEncounters(new ArrayList<ExpectedEncounter>(getDefaultedExpectedEncounters(facility, careGroups, startDate)));
+        List<ExpectedObs> defaultedObs = filterRCTObs(new ArrayList<ExpectedObs>(getDefaultedExpectedObs(facility, careGroups, startDate)));
+        final String facilityPhoneNumber = facility.getPhoneNumber();
+        //TODO: Replace the above code when RCT filtering rules are finalized and implemented.
+        final boolean defaultersPresent = !(defaultedEncounters.isEmpty() && defaultedObs.isEmpty());
+        if (defaultersPresent) {
+            Care[] defaultedCares = modelConverter.defaultedToWebServiceCares(defaultedEncounters, defaultedObs);
+            log.info("Sending defaulter message to " + facility.name() + " at " + facilityPhoneNumber);
+            sendStaffDefaultedCareMessage(facilityPhoneNumber, deliveryDate, defaultedCares, getCareMessageGroupingStrategy(facility.getLocation()));
+        } else {
+            sendNoDefaultersMessage(facility, facilityPhoneNumber);
+        }
+    }
+
+    private void sendNoUpcomingCareMessage(Facility facility, String phoneNumber) {
+        log.info("Sending 'no upcoming care' message to " + facility.name() + " at " + phoneNumber);
+        try {
+            org.motechproject.ws.MessageStatus messageStatus = mobileService.sendMessage(facility.name() + " has no upcoming care for this week", phoneNumber);
+            if (messageStatus == org.motechproject.ws.MessageStatus.FAILED) {
+                log.error("Unable to message " + phoneNumber + " that they have no upcoming care");
+            }
+        } catch (Exception e) {
+            log.error("Unable to message " + phoneNumber + " that they have no upcoming care", e);
+        }
+    }
+
+    private void sendNoDefaultersMessage(Facility facility, String phoneNumber) {
+        log.info("Sending 'no defaulters' message to " + facility.name() + " at " + phoneNumber);
+
+        try {
+            org.motechproject.ws.MessageStatus messageStatus = mobileService.sendMessage(facility.name() + " has no defaulters for this week", phoneNumber);
+            if (messageStatus == org.motechproject.ws.MessageStatus.FAILED) {
+                log.error("Unable to message " + phoneNumber + " that they have no defaulters");
+            }
+        } catch (Exception e) {
+            log.error("Unable to message " + phoneNumber + " that they have no defaulters", e);
+        }
+    }
+
+    private CareMessageGroupingStrategy getCareMessageGroupingStrategy(Location facilityLocation) {
+        return DISTRICT_FACTORY.getDistrictWithName(facilityLocation.getCountyDistrict()).getCareMessageGroupingStrategy();
     }
 
     public List<ExpectedEncounter> filterRCTEncounters(List<ExpectedEncounter> allDefaulters) {
@@ -3173,14 +3146,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
     }
 
-    private boolean sendStaffDefaultedCareMessage(String messageId, String phoneNumber, MediaType mediaType,
-                                                  Date messageStartDate, Date messageEndDate,
+    private boolean sendStaffDefaultedCareMessage(String phoneNumber,
+                                                  Date messageStartDate,
                                                   Care[] cares, CareMessageGroupingStrategy groupingStrategy) {
 
         try {
             org.motechproject.ws.MessageStatus messageStatus;
-            messageStatus = mobileService.sendDefaulterMessage(messageId, phoneNumber, cares, groupingStrategy,
-                                                               mediaType, messageStartDate, messageEndDate);
+            messageStatus = mobileService.sendDefaulterMessage(null, phoneNumber, cares, groupingStrategy,
+                                                               MediaType.TEXT, messageStartDate, null);
 
             return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
         } catch (Exception e) {
@@ -3189,14 +3162,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
     }
 
-    private boolean sendStaffUpcomingCareMessage(String messageId, String phoneNumber, MediaType mediaType,
-                                                 Date messageStartDate, Date messageEndDate,
+    private boolean sendStaffUpcomingCareMessage(String phoneNumber,
+                                                 Date messageStartDate,
                                                  Care[] cares, CareMessageGroupingStrategy groupingStrategy) {
 
         try {
             org.motechproject.ws.MessageStatus messageStatus;
-            messageStatus = mobileService.sendBulkCaresMessage(messageId, phoneNumber, cares, groupingStrategy,
-                                                               mediaType, messageStartDate, messageEndDate);
+            messageStatus = mobileService.sendBulkCaresMessage(null, phoneNumber, cares, groupingStrategy,
+                                                               MediaType.TEXT, messageStartDate,null);
 
             return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
         } catch (Exception e) {
@@ -3604,15 +3577,16 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         blackoutCalendar.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
     }
 
-    boolean isMessageTimeWithinBlackoutPeriod(Date date) {
+    boolean isMessageTimeWithinBlackoutPeriod(Date deliveryDate) {
+        Date checkForDate = (deliveryDate != null ? deliveryDate : new Date());
         Blackout blackout = motechService().getBlackoutSettings();
         if (blackout == null) {
             return false;
         }
 
-        Calendar blackoutCalendar = getCalendarWithDate(date);
+        Calendar blackoutCalendar = getCalendarWithDate(checkForDate);
 
-        adjustForBlackoutStartDate(date, blackout, blackoutCalendar);
+        adjustForBlackoutStartDate(checkForDate, blackout, blackoutCalendar);
         Date blackoutStart = blackoutCalendar.getTime();
         setBlackOutTime(blackout.getEndTime(), blackoutCalendar);
 
@@ -3622,7 +3596,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
         Date blackoutEnd = blackoutCalendar.getTime();
 
-        return date.after(blackoutStart) && date.before(blackoutEnd);
+        return checkForDate.after(blackoutStart) && checkForDate.before(blackoutEnd);
     }
 
     public Community saveCommunity(Community community) {
