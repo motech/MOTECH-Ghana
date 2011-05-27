@@ -118,4 +118,8 @@ public class Facility implements Serializable {
     public boolean remove(Patient patient) {
         return patients.remove(patient);
     }
+
+    public boolean isInRegion(String region) {
+        return location != null && location.getRegion().trim().equals(region);
+    }
 }

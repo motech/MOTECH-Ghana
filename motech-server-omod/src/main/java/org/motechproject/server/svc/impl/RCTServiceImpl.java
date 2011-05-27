@@ -68,12 +68,12 @@ public class RCTServiceImpl implements RCTService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean isPatientRegisteredAndInControlGroup(org.openmrs.Patient patient) {
+    public Boolean isPatientRegisteredAndInTreatmentGroup(org.openmrs.Patient patient) {
         RCTPatient rctPatient = getRCTPatient(Integer.valueOf(new MotechPatient(patient).getMotechId()));
         if (rctPatient == null) {
             return false;
         }
-        return rctPatient.isControl();
+        return rctPatient.isTreatment();
     }
 
     @Transactional(readOnly = true)
