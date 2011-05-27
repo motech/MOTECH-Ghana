@@ -98,7 +98,7 @@
         <level value="INFO"/>
     </logger>
 
-    <logger name="rct">
+    <logger name="${corePackage}.svc.impl.rct">
         <level value="INFO"/>
         <appender-ref ref="RCT-LOGFILE"/>
     </logger>

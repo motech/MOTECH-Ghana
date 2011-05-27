@@ -197,7 +197,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="rctService" class="org.motechproject.server.svc.impl.RCTServiceImpl">
+    <bean id="rctService" class="org.motechproject.server.svc.impl.rct.RCTServiceImpl">
         <property name="dao" ref="rctDao"/>
     </bean>
 

@@ -11,4 +11,8 @@ public class RCTFacility {
     public Facility getFacility(){
         return facility;
     }
+    
+    public Integer getFacilityId(){
+        return facility.getFacilityId();
+    }
 }

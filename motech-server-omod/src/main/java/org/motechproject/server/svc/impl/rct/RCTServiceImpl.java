@@ -1,5 +1,7 @@
-package org.motechproject.server.svc.impl;
+package org.motechproject.server.svc.impl.rct;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.db.RctDAO;
 import org.motechproject.server.model.rct.*;
 import org.motechproject.server.omod.MotechPatient;
@@ -16,10 +18,14 @@ import java.util.List;
 
 public class RCTServiceImpl implements RCTService {
 
+    private static Log log = LogFactory.getLog(RCTServiceImpl.class);
+
     private RctDAO dao;
 
     @Transactional
     public RCTRegistrationConfirmation register(Patient patient, User staff, RCTFacility facility) {
+
+        log.info("Starting RCT Registration for patient : " + patient.getMotechId() + " at facility Id : " + facility.getFacilityId() + " by staff : " + staff.getSystemId());
 
         if (!patient.isPregnancyRegistered())
             return failedRegistration(RCTError.PREGNANCY_NOT_REGISTERED);
