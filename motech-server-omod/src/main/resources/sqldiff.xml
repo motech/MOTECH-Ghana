@@ -2763,4 +2763,257 @@
 			UPDATE motechmodule_message_program_state SET next_state = 82 WHERE motechmodule_message_program_state_id = 189;			
         </sql>
     </diff>
+	
+	<diff>
+        <version>3.6</version>
+        <author>ThoughtWorks</author>
+        <date>May 27 2011</date>
+		<description>Adding the missing facilities from PROD</description>
+        <sql>
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300217,'Pinkwalakwaga',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Chiana HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300217)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300229,'Adognia',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Chiana HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300229)
+			AND id = 1;
+
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300238,'Chiana-Saboro',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Chiana HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300238)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300240,'Asunia',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Chiana HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300240)
+			AND id = 1;
+
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300255,'Kafania',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Chiana HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300255)
+			AND id = 1;
+
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300264,'Yidania',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Chiana HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300264)
+			AND id = 1;
+
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300272,'Adasong',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Chiana HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300272)
+			AND id = 1;
+
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300286 ,'Bembisi',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Kandiga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300286)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300293 ,'Longo',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Kandiga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300293)
+			AND id = 1;
+
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300303 ,'Azeaduma',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Kandiga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300303)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300319 ,'Azaasi',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Kandiga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300319)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300326 ,'Agandaa',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Kandiga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300326)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300335 ,'Anisore',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Kandiga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300335)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300342 ,'Nindongo',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Kandiga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300342)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300357 ,'Tindongo',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Kandiga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300357)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300361 ,'Nabango',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Kandiga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300361)
+			AND id = 1;
+
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300008 ,'Abillatae',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Sirigu HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300008)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300012 ,'Dazongo',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Sirigu HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300012)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300020 ,'Wugingo',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Sirigu HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300020)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300031 ,'Basengo',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Sirigu HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300031)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300049 ,'Tangasia',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Sirigu HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300049)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300054 ,'Tindongo',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Sirigu HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300054)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300065 ,'Gunwoko',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Sirigu HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300065)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300077 ,'Puwelingo',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Sirigu HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300077)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300083 ,'Azugzingo',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Sirigu HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300083)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300096 ,'Tutumbisi',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Sirigu HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300096)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300106 ,'Chania',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Paga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300106)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300110 ,'Border',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Paga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300110)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300123  ,'Gwaru',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Paga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300123) 
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300134 ,'Nania',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Paga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300134)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300147 ,'Zenga',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Paga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300147)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300152 ,'Kakungu',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Paga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300152)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300168 ,'Bisau',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Paga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300168)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300175 ,'Nyania',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Paga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300175)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300181 ,'Kanponga',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Paga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300181)
+			AND id = 1;
+
+			INSERT INTO motechmodule_community(community_id, name, facility_id) 
+			SELECT 1300199 ,'Babile',(select f.id from motechmodule_facility f inner join location l on f.location_id = l.location_id where l.name = 'Paga HC')
+			FROM motechmodule_community
+			WHERE NOT EXISTS (select * from motechmodule_community where community_id =1300199)
+			AND id = 1;						
+        </sql>
+    </diff>
+	
+	<diff>
+        <version>3.7</version>
+        <author>ThoughtWorks</author>
+        <date>May 27 2011</date>
+		<description>Adding 'Other' district to Central Region</description>
+        <sql>
+			INSERT INTO location (location_id, name, country, region, county_district, date_created, uuid, creator) 
+			SELECT 56,'Other','Ghana','Central Region','Other' ,NOW(),UUID(),1 
+			FROM location 
+			WHERE NOT EXISTS (select * from location where name='Other')
+			AND location_id = 1;
+
+			insert into motechmodule_facility (id, facility_id, location_id)
+			SELECT 56,13334,56 
+			FROM motechmodule_facility
+			WHERE NOT EXISTS (select * from motechmodule_facility where id=56)
+			AND id=1;
+        </sql>
+    </diff>
+	
+	
 </sqldiff>
