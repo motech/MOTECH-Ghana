@@ -3022,8 +3022,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             }
 
             if (!shouldAttemptMessages.isEmpty()) {
-                PatientMessage[] messages = constructPatientMessages(
-                        shouldAttemptMessages, sendImmediate);
+                PatientMessage[] messages = constructPatientMessages(shouldAttemptMessages, sendImmediate);
 
                 if (messages.length > 0) {
                     mobileService.sendPatientMessages(messages);
@@ -3046,22 +3045,19 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                     patientMessage.setEndDate(null);
                 }
                 patientMessages.add(patientMessage);
-
                 message.setAttemptStatus(MessageStatus.ATTEMPT_PENDING);
             } else {
                 message.setAttemptStatus(MessageStatus.REJECTED);
             }
             motechService().saveMessage(message);
         }
-        return patientMessages.toArray(new PatientMessage[patientMessages
-                .size()]);
+        return patientMessages.toArray(new PatientMessage[patientMessages.size()]);
     }
 
     private PatientMessage constructPatientMessage(Message message) {
         try {
 
-            Long notificationType = message.getSchedule().getMessage()
-                    .getPublicId();
+            Long notificationType = message.getSchedule().getMessage().getPublicId();
             Integer recipientId = message.getSchedule().getRecipientId();
             Person person = personService.getPerson(recipientId);
 
@@ -3070,14 +3066,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             // Cancel message if phone number is considered troubled
             if (isPhoneTroubled(phoneNumber)) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Attempt to send to Troubled Phone, Phone: "
-                            + phoneNumber + ", Notification: "
-                            + notificationType);
+                    log.debug("Attempt to send to Troubled Phone, Phone: "+ phoneNumber + ", Notification: "+ notificationType);
                 }
             } else {
                 if (log.isDebugEnabled()) {
-                    log.debug("Scheduled Message, Phone: " + phoneNumber
-                            + ", Notification: " + notificationType);
+                    log.debug("Scheduled Message, Phone: " + phoneNumber+ ", Notification: " + notificationType);
                 }
 
                 String messageId = message.getPublicId();
@@ -3362,16 +3355,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private MediaType getPersonMediaType(Person person) {
-        PersonAttribute mediaTypeAttr = person
-                .getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
-        if (mediaTypeAttr != null
-                && StringUtils.isNotEmpty(mediaTypeAttr.getValue())) {
+        PersonAttribute mediaTypeAttr = person.getAttribute(MotechConstants.PERSON_ATTRIBUTE_MEDIA_TYPE);
+        if (mediaTypeAttr != null && StringUtils.isNotEmpty(mediaTypeAttr.getValue())) {
             try {
                 return MediaType.valueOf(mediaTypeAttr.getValue());
             } catch (Exception e) {
-                log.error("Unable to parse media type: "
-                        + mediaTypeAttr.getValue() + ", for Person ID:"
-                        + person.getPersonId(), e);
+                log.error("Unable to parse media type: "+ mediaTypeAttr.getValue() + ", for Person ID:"+ person.getPersonId(), e);
             }
         }
         log.debug("No media type found for Person id: " + person.getPersonId());

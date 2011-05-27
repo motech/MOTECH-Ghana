@@ -33,12 +33,12 @@
 
 package org.motechproject.server.ws;
 
-import java.util.Date;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.ws.*;
 import org.motechproject.ws.mobile.MessageService;
+
+import java.util.Date;
 
 /**
  * A stub implementation of the motech mobile message interface. This enables us
@@ -104,10 +104,8 @@ public class MessageServiceStub implements MessageService {
 
 			StringBuilder personalInfoString = new StringBuilder();
 			for (NameValuePair pair : message.getPersonalInfo()) {
-				personalInfoString
-						.append("<name>" + pair.getName() + "</name>");
-				personalInfoString.append("<value>" + pair.getValue()
-						+ "</value>\n");
+				personalInfoString.append("<name>" + pair.getName() + "</name>");
+				personalInfoString.append("<value>" + pair.getValue()+ "</value>\n");
 			}
 
 			log.info("<patientMessage>\n" + "<messageId>"
