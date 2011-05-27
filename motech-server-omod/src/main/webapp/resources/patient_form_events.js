@@ -41,6 +41,7 @@ function PatientFormRegistrationEvents() {
     var patientTypeSelected = function() {
         if (hasNonEmptySelection($j('#registrantType'))) {
             hidePregnancyRegistrationIfPatientIsNotPregnantMother();
+            showWeekToBeginMessagesOnlyIfPatientTypeIsOther();
             setGenderAsFemaleIfPatientIsPregnantMother();
             hideMothersMotechIdFieldIfPatientIsNotChild();
             modifyWeekToBeginMessageAccordingToPatientType();
@@ -113,6 +114,14 @@ function PatientFormRegistrationEvents() {
             return;
         }
         show($j('#pregnancyRegistration'));
+    };    
+	
+	var showWeekToBeginMessagesOnlyIfPatientTypeIsOther = function() {
+        if (isPatientPregnantMother() || isPatientChildUnderFive()) {
+            hide(getParentRow($j('#messagesStartWeek')));
+            return;
+        }
+        show(getParentRow($j('#messagesStartWeek')));
     };
 
     var hideMothersMotechIdFieldIfPatientIsNotChild = function() {
@@ -125,23 +134,6 @@ function PatientFormRegistrationEvents() {
     };
 
     var modifyWeekToBeginMessageAccordingToPatientType = function() {
-        weekToBeginMessages.revert();
-        if (isPatientChildUnderFive()) {
-            weekToBeginMessages.removeOptionsWhen(function(val) {
-                if (blankData(val))return false;
-                return val < 41;
-            });
-            return;
-        }
-
-        if (isPatientPregnantMother()) {
-            weekToBeginMessages.removeOptionsWhen(function(val) {
-                if (blankData(val))return false;
-                return val > 40;
-            });
-            return;
-        }
-
         weekToBeginMessages.revert();
     };
 

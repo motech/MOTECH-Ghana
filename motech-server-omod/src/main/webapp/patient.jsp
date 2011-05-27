@@ -403,7 +403,7 @@ td.labelcolumn {
             <td>
                 <form:select path="messagesStartWeek">
                     <form:option value="" label="Select Value"/>
-                    <c:forEach var="i" begin="5" end="40">
+                    <c:forEach var="i" begin="5" end="44">
                         <form:option value="${i}" label="Pregnancy week ${i}"/>
                     </c:forEach>
                     <c:forEach var="i" begin="1" end="52">
