@@ -258,12 +258,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
             referenceDateObsId = pregnancyDueDateObsId;
 
-        } else if (patient.getAge() != null && patient.getAge() < 5) {
-            infoMessageProgramName = "Weekly Info Child Message Program";
-
-            // TODO: If mother specified, Remove mother's pregnancy message
-            // enrollment
-
         } else if (messagesStartWeek != null) {
             infoMessageProgramName = "Weekly Info Pregnancy Message Program";
 
@@ -271,6 +265,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 referenceDateObsId = storeMessagesWeekObs(patient,
                         messagesStartWeek);
             }
+
+        } else if (patient.getAge() != null && patient.getAge() < 5) {
+            infoMessageProgramName = "Weekly Info Child Message Program";
+
+            // TODO: If mother specified, Remove mother's pregnancy message
+            // enrollment
         }
 
         if (enrollPatient) {
