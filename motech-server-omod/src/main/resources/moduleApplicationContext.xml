@@ -61,6 +61,7 @@
     <import resource="classpath*:programs/*.xml"/>
     <import resource="classpath*:services/*.xml"/>
     <import resource="classpath*:registrar-bean.xml"/>
+    <import resource="classpath*:advisors.xml"/>
 
     <bean id="identiferGenerator" class="org.motechproject.server.omod.IndentifierGeneratorImpl">
         <property name="patientService" ref="patientService"/>
@@ -197,7 +198,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="rctService" class="org.motechproject.server.svc.impl.RCTServiceImpl">
+    <bean id="rctService" class="org.motechproject.server.svc.impl.rct.RCTServiceImpl">
         <property name="dao" ref="rctDao"/>
     </bean>
 

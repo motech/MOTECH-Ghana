@@ -30,6 +30,7 @@ public class RegisterClientPageTest {
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.SEARCH);
         SearchPage searchPage = new SearchPage();
         Assert.assertTrue(searchPage.searchClientByID(patientID,lastName),"Patient Search failed");
+        loginPage.close();
     }
 
     @Test

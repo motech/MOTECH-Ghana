@@ -33,8 +33,6 @@
 
 package org.motechproject.server.omod.advice;
 
-import java.lang.reflect.Method;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.ContextService;
@@ -45,13 +43,15 @@ import org.openmrs.Patient;
 import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import java.lang.reflect.Method;
+
 /**
  * An OpenMRS AOP interceptor that enables us to perform various tasks upon an
  * encounter being saved, whether that operation knows about it or not.
  */
 public class EncounterAdvice implements AfterReturningAdvice {
 
-    private static Log log = LogFactory.getLog(ObsAdvice.class);
+    private static Log log = LogFactory.getLog(EncounterAdvice.class);
 
     private ContextService contextService;
 
@@ -68,20 +68,17 @@ public class EncounterAdvice implements AfterReturningAdvice {
      *      java.lang.reflect.Method, java.lang.Object[], java.lang.Object)
      */
     public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
-        String methodName = method.getName();
-        if (methodName.equals("saveEncounter") || methodName.equals("voidEncounter")) {
-            log.debug("intercepting method invocation");
-            Encounter encounter = (Encounter) returnValue;
-            Patient patient = encounter.getPatient();
-            ScheduleMaintService scheduleService = contextService.getScheduleMaintService();
+        log.debug("intercepting method invocation: " + method.getName());
+        Encounter encounter = (Encounter) returnValue;
+        Patient patient = encounter.getPatient();
+        ScheduleMaintService scheduleService = contextService.getScheduleMaintService();
 
-            if (TransactionSynchronizationManager.isSynchronizationActive()) {
-                scheduleService.addAffectedPatient(patient.getId());
-                scheduleService.requestSynch();
-            } else {
-                // FIXME: Remove this when advice can exec in tx
-                scheduleService.updateSchedule(patient.getId());
-            }
+        if (TransactionSynchronizationManager.isSynchronizationActive()) {
+            scheduleService.addAffectedPatient(patient.getId());
+            scheduleService.requestSynch();
+        } else {
+            // FIXME: Remove this when advice can exec in tx
+            scheduleService.updateSchedule(patient.getId());
         }
     }
 

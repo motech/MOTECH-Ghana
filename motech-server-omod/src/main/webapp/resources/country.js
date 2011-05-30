@@ -143,7 +143,7 @@ function Country(country, selectedLocation) {
     };
 
     var toggleSubDistrictVisibility = function() {
-        var selectedDistrictName = $j('#subDistrict');
+        var selectedDistrictName = $j('#district').val();
         var subDistrictRow = getParentRow('#subDistrict');
         if (selectedDistrictName == 'Other') {
             hide(subDistrictRow);

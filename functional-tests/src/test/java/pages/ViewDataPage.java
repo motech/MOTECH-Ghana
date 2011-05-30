@@ -53,7 +53,7 @@ public class ViewDataPage {
     public String returnPatientId(String lastName) {
         List<WebElement> patient_row = driver.findElements(By.xpath("//div[@id='content']/div[5]/table/tbody/tr"));
         String motechID = null;
-        for (Integer i = 2; i < patient_row.size(); i++) {
+        for (Integer i = 2; i <= patient_row.size(); i++) {
             String temp = driver.findElement(By.xpath("//div[@id='content']/div[5]/table/tbody/tr[" + i + "]/td[3]")).getText().trim();
             if (lastName.trim().equals(temp)) {
                 motechID = driver.findElement(By.xpath("//div[@id='content']/div[5]/table/tbody/tr[" + i + "]/td[4]")).getText().trim();

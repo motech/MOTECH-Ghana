@@ -33,6 +33,7 @@
 
 package org.motechproject.server.omod.web.controller;
 
+import org.apache.commons.lang.StringUtils;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.FacilityComparator;
@@ -77,7 +78,7 @@ public class BasePatientController {
 				if (districts == null) {
 					districts = new TreeSet<String>();
 				}
-				districts.add(district);
+				if(StringUtils.isNotEmpty(district))districts.add(district);
 				regionMap.put(region, districts);
 				TreeSet<Community> communities = districtMap.get(district);
 				if (communities == null) {

@@ -1,0 +1,80 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="encounterAdvice" class="org.motechproject.server.omod.advice.EncounterAdvice"/>
+    <bean id="patientAdvice" class="org.motechproject.server.omod.advice.PatientAdvice"/>
+    <bean id="obsAdvice" class="org.motechproject.server.omod.advice.ObsAdvice"/>
+
+
+    <bean id="saveEncounterAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="mappedName" value="saveEncounter"/>
+        <property name="advice" ref="encounterAdvice"/>
+    </bean>
+    <bean id="voidEncounterAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="mappedName" value="voidEncounter"/>
+        <property name="advice" ref="encounterAdvice"/>
+    </bean>
+
+    <bean id="savePatientAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="mappedName" value="savePatient"/>
+        <property name="advice" ref="patientAdvice"/>
+    </bean>
+    <bean id="voidPatientAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="mappedName" value="voidPatient"/>
+        <property name="advice" ref="patientAdvice"/>
+    </bean>
+
+    <bean id="saveObsAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="mappedName" value="saveObs"/>
+        <property name="advice" ref="obsAdvice"/>
+    </bean>
+    <bean id="voidObsAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="mappedName" value="voidObs"/>
+        <property name="advice" ref="obsAdvice"/>
+    </bean>
+
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <value>encounterService</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>saveEncounterAdvisor</value>
+                <value>voidEncounterAdvisor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <value>patientService</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>savePatientAdvisor</value>
+                <value>voidPatientAdvisor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <value>obsService</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>saveObsAdvisor</value>
+                <value>voidObsAdvisor</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>
