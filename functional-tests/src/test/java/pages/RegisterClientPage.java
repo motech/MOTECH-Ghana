@@ -4,8 +4,8 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import util.TestConfiguration;
 import util.UtilityClass;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -41,7 +41,6 @@ public class RegisterClientPage {
         submitButton = driver.findElement(By.xpath("//input[@type='submit']"));
         inputNHISField = driver.findElement(By.id("nhis"));
         inputNHISExpiryDate = driver.findElement(By.id("nhisExpDate"));
-
     }
 
     public String RegisterMotherClient() {
@@ -57,7 +56,9 @@ public class RegisterClientPage {
         selectOption("insured", "No");
         selectOption("region", "Upper East");
         selectOption("district", "Kassena-Nankana West");
-        selectOption("communityId", "Abulu");
+        selectOption("subDistrict", "Chiana");
+        selectOption("facility", "Chiana HC");
+        selectOption("communityId", "Adasong");
         inputAddress.sendKeys("Address");
         setDueDate();
         selectOption("dueDateConfirmed","Yes");
