@@ -33,8 +33,6 @@
 
 package org.motechproject.server.omod.advice;
 
-import java.lang.reflect.Method;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.ContextService;
@@ -43,6 +41,8 @@ import org.motechproject.server.omod.sdsched.ScheduleMaintService;
 import org.openmrs.Patient;
 import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import java.lang.reflect.Method;
 
 /**
  * An OpenMRS AOP interceptor that enables us to perform various tasks upon a
@@ -67,7 +67,7 @@ public class PatientAdvice implements AfterReturningAdvice {
      *      java.lang.reflect.Method, java.lang.Object[], java.lang.Object)
      */
     public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
-        log.error("intercepting method invocation" + method.getName());
+        log.debug("intercepting method invocation" + method.getName());
         Patient patient = (Patient) returnValue;
         ScheduleMaintService schedService = contextService.getScheduleMaintService();
 
