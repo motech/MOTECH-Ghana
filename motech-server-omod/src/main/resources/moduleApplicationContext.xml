@@ -61,6 +61,7 @@
     <import resource="classpath*:programs/*.xml"/>
     <import resource="classpath*:services/*.xml"/>
     <import resource="classpath*:registrar-bean.xml"/>
+    <import resource="classpath*:advisors.xml"/>
 
     <bean id="identiferGenerator" class="org.motechproject.server.omod.IndentifierGeneratorImpl">
         <property name="patientService" ref="patientService"/>
@@ -200,30 +201,5 @@
     <bean id="rctService" class="org.motechproject.server.svc.impl.rct.RCTServiceImpl">
         <property name="dao" ref="rctDao"/>
     </bean>
-
-
-    <bean id="encounterAdvice" class="org.motechproject.server.omod.advice.EncounterAdvice"/>
-    <bean id="saveEncounterAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
-		<property name="mappedName" value="saveEncounter" />
-		<property name="advice" ref="encounterAdvice" />
-	</bean>
-    <bean id="voidEncounterAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
-		<property name="mappedName" value="voidEncounter" />
-		<property name="advice" ref="encounterAdvice" />
-	</bean>
-	<bean
-		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-		<property name="beanNames">
-			<list>
-				<value>encounterService</value>
-			</list>
-		</property>
-		<property name="interceptorNames">
-			<list>
-				<value>saveEncounterAdvisor</value>
-				<value>voidEncounterAdvisor</value>
-			</list>
-		</property>
-	</bean>
 
 </beans>

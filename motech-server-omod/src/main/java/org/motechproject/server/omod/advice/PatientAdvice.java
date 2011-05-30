@@ -50,45 +50,34 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  */
 public class PatientAdvice implements AfterReturningAdvice {
 
-	private static Log log = LogFactory.getLog(ObsAdvice.class);
+    private static Log log = LogFactory.getLog(PatientAdvice.class);
 
-	private ContextService contextService;
+    private ContextService contextService;
 
-	public PatientAdvice() {
-		contextService = new ContextServiceImpl();
-	}
+    public PatientAdvice() {
+        contextService = new ContextServiceImpl();
+    }
 
-	public void setContextService(ContextService contextService) {
-		this.contextService = contextService;
-	}
+    public void setContextService(ContextService contextService) {
+        this.contextService = contextService;
+    }
 
-	/**
-	 * @see org.springframework.aop.AfterReturningAdvice#afterReturning(java.lang.Object,
-	 *      java.lang.reflect.Method, java.lang.Object[], java.lang.Object)
-	 */
-	public void afterReturning(Object returnValue, Method method,
-			Object[] args, Object target) throws Throwable {
+    /**
+     * @see org.springframework.aop.AfterReturningAdvice#afterReturning(java.lang.Object,
+     *      java.lang.reflect.Method, java.lang.Object[], java.lang.Object)
+     */
+    public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
+        log.error("intercepting method invocation" + method.getName());
+        Patient patient = (Patient) returnValue;
+        ScheduleMaintService schedService = contextService.getScheduleMaintService();
 
-		String methodName = method.getName();
-
-		if (methodName.equals("savePatient")
-				|| methodName.equals("voidPatient")) {
-
-			log.debug("intercepting method invocation");
-
-			Patient patient = (Patient) returnValue;
-
-			ScheduleMaintService schedService = contextService
-					.getScheduleMaintService();
-
-			if (TransactionSynchronizationManager.isSynchronizationActive()) {
-				schedService.addAffectedPatient(patient.getId());
-				schedService.requestSynch();
-			} else {
-				// FIXME: Remove this when advice can exec in tx
-				schedService.updateSchedule(patient.getId());
-			}
-		}
-	}
+        if (TransactionSynchronizationManager.isSynchronizationActive()) {
+            schedService.addAffectedPatient(patient.getId());
+            schedService.requestSynch();
+        } else {
+            // FIXME: Remove this when advice can exec in tx
+            schedService.updateSchedule(patient.getId());
+        }
+    }
 
 }

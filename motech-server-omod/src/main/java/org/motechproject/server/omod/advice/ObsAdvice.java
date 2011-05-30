@@ -52,45 +52,35 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  */
 public class ObsAdvice implements AfterReturningAdvice {
 
-	private static Log log = LogFactory.getLog(ObsAdvice.class);
+    private static Log log = LogFactory.getLog(ObsAdvice.class);
 
-	private ContextService contextService;
+    private ContextService contextService;
 
-	public ObsAdvice() {
-		contextService = new ContextServiceImpl();
-	}
+    public ObsAdvice() {
+        contextService = new ContextServiceImpl();
+    }
 
-	public void setContextService(ContextService contextService) {
-		this.contextService = contextService;
-	}
+    public void setContextService(ContextService contextService) {
+        this.contextService = contextService;
+    }
 
-	/**
-	 * @see org.springframework.aop.AfterReturningAdvice#afterReturning(java.lang.Object,
-	 *      java.lang.reflect.Method, java.lang.Object[], java.lang.Object)
-	 */
-	public void afterReturning(Object returnValue, Method method,
-			Object[] args, Object target) throws Throwable {
+    /**
+     * @see org.springframework.aop.AfterReturningAdvice#afterReturning(java.lang.Object,
+     *      java.lang.reflect.Method, java.lang.Object[], java.lang.Object)
+     */
+    public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
+        log.error("intercepting method invocation: " + method.getName());
+        Obs obs = (Obs) returnValue;
+        Person person = obs.getPerson();
+        ScheduleMaintService schedService = contextService.getScheduleMaintService();
 
-		String methodName = method.getName();
-
-		if (methodName.equals("saveObs") || methodName.equals("voidObs")) {
-
-			log.debug("intercepting method invocation");
-
-			Obs obs = (Obs) returnValue;
-			Person person = obs.getPerson();
-
-			ScheduleMaintService schedService = contextService
-					.getScheduleMaintService();
-
-			if (TransactionSynchronizationManager.isSynchronizationActive()) {
-				schedService.addAffectedPatient(person.getId());
-				schedService.requestSynch();
-			} else {
-				// FIXME: Remove this when advice can exec in tx
-				schedService.updateSchedule(person.getId());
-			}
-		}
-	}
+        if (TransactionSynchronizationManager.isSynchronizationActive()) {
+            schedService.addAffectedPatient(person.getId());
+            schedService.requestSynch();
+        } else {
+            // FIXME: Remove this when advice can exec in tx
+            schedService.updateSchedule(person.getId());
+        }
+    }
 
 }
