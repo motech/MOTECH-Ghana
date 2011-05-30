@@ -77,10 +77,10 @@
 		<point>org.openmrs.api.ObsService</point>
 		<class>${modulePackage}.advice.ObsAdvice</class>
 	</advice>
-	<advice>
-		<point>org.openmrs.api.EncounterService</point>
-		<class>${modulePackage}.advice.EncounterAdvice</class>
-	</advice>
+	<!--<advice>-->
+		<!--<point>org.openmrs.api.EncounterService</point>-->
+		<!--<class>${modulePackage}.advice.EncounterAdvice</class>-->
+	<!--</advice>-->
 	<advice>
 		<point>org.openmrs.api.PatientService</point>
 		<class>${modulePackage}.advice.PatientAdvice</class>
