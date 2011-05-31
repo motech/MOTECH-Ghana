@@ -38,6 +38,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.MessageLanguage;
+import org.motechproject.server.model.MotechConfiguration;
 import org.motechproject.server.model.db.MotechDAO;
 import org.motechproject.server.omod.MotechService;
 import org.openmrs.Patient;
@@ -94,5 +95,13 @@ public class MotechServiceImplTest extends BaseModuleContextSensitiveTest {
 
         assertEquals(languages, motechService.getAllLanguages());
         verify(motechDAO).getMessageLanguages();
+    }
+
+    @Test
+    public void shouldFetchAllMotechConfiguration() {
+        MotechService motechService = Context.getService(MotechService.class);
+        MotechConfiguration motechConfiguration = motechService.getConfigurationFor("valid.child.registration.date");
+        assertNotNull(motechConfiguration);
+        assertNotNull(motechConfiguration.asDate());
     }
 }
