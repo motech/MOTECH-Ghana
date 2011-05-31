@@ -3025,7 +3025,7 @@
             scheduler_task_config_property
             (name,value,task_config_id) VALUES
             ('sendUpcoming', 'true',
-            (select task_config_id from scheduler_task_config where name = 'Weekly Nurse Care Messaging Task')),
+            (select task_config_id from scheduler_task_config where name = 'Weekly Nurse Care Messaging Task'));
         </sql>
     </diff>
 	
