@@ -3015,5 +3015,18 @@
         </sql>
     </diff>
 	
+	<diff>
+        <version>3.8</version>
+        <author>ThoughtWorks</author>
+        <date>May 31 2011</date>
+		<description>Sending upcoming care messages for 'Weekly Nurse Care Messaging Task'</description>
+        <sql>
+            INSERT INTO
+            scheduler_task_config_property
+            (name,value,task_config_id) VALUES
+            ('sendUpcoming', 'true',
+            (select task_config_id from scheduler_task_config where name = 'Weekly Nurse Care Messaging Task')),
+        </sql>
+    </diff>
 	
 </sqldiff>
