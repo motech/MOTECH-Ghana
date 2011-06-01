@@ -3044,5 +3044,37 @@
             WHERE name = 'careGroups' and task_config_id = (select task_config_id from scheduler_task_config where name = 'Weekly Nurse Care Messaging Task');
         </sql>
     </diff>
+	<diff>
+        <version>3.10</version>
+        <author>ThoughtWorks</author>
+        <date>June 1 2011</date>
+		<description>Moving 'EDD' to a new Weekly Nurse Care Messaging Task</description>
+        <sql>
+            DELETE FROM scheduler_task_config_property
+			WHERE name = 'sendUpcoming' and task_config_id = (select task_config_id from scheduler_task_config where name = 'Weekly Nurse Care Messaging Task');
+			
+			UPDATE scheduler_task_config_property
+            SET value = 'ANC,TT,IPT,BCG,OPV,Penta,YellowFever,Measles,IPTI,VitaA'
+            WHERE name = 'careGroups' and task_config_id = (select task_config_id from scheduler_task_config where name = 'Weekly Nurse Care Messaging Task');
+
+			INSERT INTO
+            scheduler_task_config
+            (name,description,schedulable_class,start_time,repeat_interval,start_on_startup,started,created_by,date_created)
+            VALUES
+            ('Weekly EDD Nurse Care Messaging Task','Task to send out staff EDD SMS care messages for week',
+            'org.motechproject.server.omod.tasks.StaffCareMessagingTask',
+            '2010-08-15 23:40:00', 604800, 0, 0, 1, NOW());
+			
+			INSERT INTO
+            scheduler_task_config_property
+            (name,value,task_config_id) VALUES
+            ('careGroups', 'EDD',
+            (select task_config_id from scheduler_task_config where name = 'Weekly EDD Nurse Care Messaging Task')),
+            ('deliveryTime', '08:00',
+            (select task_config_id from scheduler_task_config where name = 'Weekly EDD Nurse Care Messaging Task')),
+            ('sendUpcoming', 'true',
+            (select task_config_id from scheduler_task_config where name = 'Weekly EDD Nurse Care Messaging Task'));
+        </sql>
+    </diff>
 
 </sqldiff>
