@@ -3015,5 +3015,34 @@
         </sql>
     </diff>
 	
-	
+	<diff>
+        <version>3.8</version>
+        <author>ThoughtWorks</author>
+        <date>May 31 2011</date>
+		<description>Sending upcoming care messages for 'Weekly Nurse Care Messaging Task'</description>
+        <sql>
+            INSERT INTO
+            scheduler_task_config_property
+            (name,value,task_config_id) VALUES
+            ('sendUpcoming', 'true',
+            (select task_config_id from scheduler_task_config where name = 'Weekly Nurse Care Messaging Task'));
+        </sql>
+    </diff>
+
+	<diff>
+        <version>3.9</version>
+        <author>ThoughtWorks</author>
+        <date>June 1 2011</date>
+		<description>Adding 'DELIVERY' encounter_type and 'EDD' to the Weekly Alert care groups</description>
+        <sql>
+            INSERT INTO encounter_type
+            (name,description,creator,date_created,uuid) VALUES
+            ('DELIVERY','Ghana Expected Delivery Date (EDD) Notification',1,NOW(),UUID());
+
+            UPDATE scheduler_task_config_property
+            SET value = 'ANC,TT,IPT,BCG,OPV,Penta,YellowFever,Measles,IPTI,VitaA,EDD'
+            WHERE name = 'careGroups' and task_config_id = (select task_config_id from scheduler_task_config where name = 'Weekly Nurse Care Messaging Task');
+        </sql>
+    </diff>
+
 </sqldiff>

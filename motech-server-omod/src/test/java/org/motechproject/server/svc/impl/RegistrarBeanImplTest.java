@@ -551,6 +551,85 @@ public class RegistrarBeanImplTest extends TestCase {
         assertEquals(CareMessageGroupingStrategy.COMMUNITY, capturedStrategy.getValue());
     }
 
+    public void testShouldSendUpcomingCareMessageWhenThereAreUpcomingExpectedEncounters() {
+
+        Date forDate = new Date();
+        String careGroups[] = {"ANC", "TT", "IPT"};
+
+        Location location = new Location();
+        location.setName("Test Facility");
+        location.setCountyDistrict(new KassenaNankana().toString());
+        location.setRegion("Test Regiion");
+
+        Facility facility = new Facility();
+        facility.setLocation(location);
+        String facilityPhoneNumber = "+1 555 123-1234";
+        facility.setPhoneNumber(facilityPhoneNumber);
+
+        List<Facility> facilities = new ArrayList<Facility>();
+        facilities.add(facility);
+        facility.setLocation(location);
+        facility.setLocation(location);
+
+
+        Patient p = new Patient(5716);
+        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p)).andReturn(false).times(2);
+
+        ExpectedEncounter enc = new ExpectedEncounter();
+        enc.setPatient(p);
+
+        List<ExpectedEncounter> encounters = new ArrayList<ExpectedEncounter>();
+        List<ExpectedObs> emptyObs = new ArrayList<ExpectedObs>();
+
+        encounters.add(enc);
+
+        // To Mock
+        expect(motechService.getCommunityByPatient(p)).andReturn(null).times(2);
+        expect(contextService.getMotechService()).andReturn(motechService).anyTimes();
+        expect(motechService.getAllFacilities()).andReturn(facilities);
+        expect(motechService.facilityFor(p)).andReturn(facility).anyTimes();
+        expect(contextService.getAdministrationService()).andReturn(adminService).anyTimes();
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn("35").anyTimes();
+        expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
+                                                  null, forDate, forDate, 35)).andReturn(encounters);
+        expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
+                forDate, null, forDate, 35)).andReturn(encounters);
+        expect(motechService.getExpectedObs(null, facility, careGroups, null,
+                                                  null, forDate, forDate, 35)).andReturn(emptyObs);
+        expect(motechService.getExpectedObs(null, facility, careGroups, null,
+                                                  forDate, null, forDate, 35)).andReturn(emptyObs);
+
+        Capture<String> capturedMessageId = new Capture<String>();
+        Capture<String> capturedPhoneNumber = new Capture<String>();
+        Capture<Care[]> capturedCares = new Capture<Care[]>();
+        Capture<CareMessageGroupingStrategy> capturedStrategy = new Capture<CareMessageGroupingStrategy>();
+        Capture<MediaType> capturedMediaType = new Capture<MediaType>();
+        Capture<Date> capturedStartDate = new Capture<Date>();
+        Capture<Date> capturedEndDate = new Capture<Date>();
+
+        expect(mobileService.sendDefaulterMessage(capture(capturedMessageId), capture(capturedPhoneNumber),
+                capture(capturedCares), capture(capturedStrategy),
+                capture(capturedMediaType), capture(capturedStartDate),
+                capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
+
+        expect(mobileService.sendBulkCaresMessage(capture(capturedMessageId), capture(capturedPhoneNumber),
+                capture(capturedCares), capture(capturedStrategy),
+                capture(capturedMediaType), capture(capturedStartDate),
+                capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
+
+        replay(contextService, adminService, motechService, mobileService, rctService);
+
+        registrarBean.sendStaffCareMessages(forDate, forDate,
+                                            forDate, forDate,
+                                            careGroups,
+                                            true,
+                                            false);
+
+        verify(contextService, adminService, motechService, mobileService, rctService);
+
+        assertEquals(CareMessageGroupingStrategy.COMMUNITY, capturedStrategy.getValue());
+    }
+
     public void testSendStaffCareMessages_NoDefaulters() {
 
         Date forDate = new Date();
@@ -596,6 +675,72 @@ public class RegistrarBeanImplTest extends TestCase {
 
         assertEquals("Test Facility has no defaulters for this week", capturedMessage.getValue());
         assertEquals("+1 555 123-1234", capturedPhoneNumber.getValue());
+    }
+
+    public void testShouldSendDefaulterAlertsForAllDefaultsOnAnEncounter() {
+        int expectedNumberOfDefaultsOnAnEncounter = 50;
+        for(int i = 0; i< expectedNumberOfDefaultsOnAnEncounter;i++){
+            reset(rctService, contextService, adminService, motechService, mobileService);
+            testSendStaffCareMessages_GroupByCommunity();
+        }
+    }
+
+    public void testShouldSendNoUpcomingCareMessagesWhenThereAreNoUpcomingExpectedEncounters() {
+
+        Date forDate = new Date();
+        String careGroups[] = {"ANC", "TT", "IPT"};
+
+        Location location = new Location();
+        location.setName("Test Facility");
+
+        Facility facility = new Facility();
+        facility.setLocation(location);
+        facility.setPhoneNumber("+1 555 123-1234");
+
+        List<Facility> facilities = new ArrayList<Facility>();
+        facilities.add(facility);
+
+        List<ExpectedEncounter> emptyEncounters = new ArrayList<ExpectedEncounter>();
+        List<ExpectedObs> emptyObs = new ArrayList<ExpectedObs>();
+
+        // To Mock
+        expect(contextService.getMotechService()).andReturn(motechService).anyTimes();
+        expect(motechService.getAllFacilities()).andReturn(facilities);
+        expect(contextService.getAdministrationService()).andReturn(adminService).anyTimes();
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn("35").anyTimes();
+        expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
+                                                  null, forDate, forDate, 35)).andReturn(emptyEncounters);
+        expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
+                                                  forDate, null, forDate, 35)).andReturn(emptyEncounters);
+        expect(motechService.getExpectedObs(null, facility, careGroups, null,
+                                                  null, forDate, forDate, 35)).andReturn(emptyObs);
+        expect(motechService.getExpectedObs(null, facility, careGroups, null,
+                                                  forDate, null, forDate, 35)).andReturn(emptyObs);
+
+        Capture<String> capturedDefaulterMessage = new Capture<String>();
+        Capture<String> capturedDefaulterPhoneNumber = new Capture<String>();
+        Capture<String> capturedUpcomingCareMessage = new Capture<String>();
+        Capture<String> capturedUpcomingCarePhoneNumber = new Capture<String>();
+
+        expect(mobileService.sendMessage(capture(capturedDefaulterMessage), capture(capturedDefaulterPhoneNumber))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
+        expect(mobileService.sendMessage(capture(capturedUpcomingCareMessage), capture(capturedUpcomingCarePhoneNumber))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
+
+
+        replay(contextService, adminService, motechService, mobileService);
+
+        registrarBean.sendStaffCareMessages(forDate, forDate,
+                forDate, forDate,
+                careGroups,
+                true,
+                false);
+
+        verify(contextService, adminService, motechService, mobileService);
+
+        assertEquals("Test Facility has no defaulters for this week", capturedDefaulterMessage.getValue());
+        assertEquals("+1 555 123-1234", capturedDefaulterPhoneNumber.getValue());
+
+        assertEquals("Test Facility has no upcoming care for this week", capturedUpcomingCareMessage.getValue());
+        assertEquals("+1 555 123-1234", capturedUpcomingCarePhoneNumber.getValue());
     }
 
     public void testSchedulingInfoMessageWithExistingRejectedMessage() {
