@@ -3044,8 +3044,9 @@
             WHERE name = 'careGroups' and task_config_id = (select task_config_id from scheduler_task_config where name = 'Weekly Nurse Care Messaging Task');
         </sql>
     </diff>
+	
 	<diff>
-        <version>3.10</version>
+        <version>4.0</version>
         <author>ThoughtWorks</author>
         <date>June 1 2011</date>
 		<description>Moving 'EDD' to a new Weekly Nurse Care Messaging Task</description>
