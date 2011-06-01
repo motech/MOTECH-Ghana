@@ -4,11 +4,11 @@
     <parent>
         <groupId>org.motechproject</groupId>
         <artifactId>motech-server</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
     </parent>
     <groupId>org.motechproject</groupId>
     <artifactId>motech-server-omod</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
     <packaging>omod</packaging>
     <name>Motech OpenMRS Module</name>
     <description>
@@ -19,7 +19,7 @@
         <dependency>
             <groupId>org.motechproject</groupId>
             <artifactId>motech-server-core</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.motechproject</groupId>
