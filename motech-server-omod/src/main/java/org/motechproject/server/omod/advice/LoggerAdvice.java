@@ -14,7 +14,7 @@ public class LoggerAdvice implements MethodInterceptor {
             return invocation.proceed();
         } catch (Exception ex) {
             log.fatal("Exception while invoking " + invocation.getMethod().getName(), ex);
-            throw new RuntimeException(ex);
+            throw ex;
         }
     }
 }
