@@ -121,7 +121,7 @@ public class EDDScheduleTest extends TestCase {
         calendar.add(Calendar.DATE, 14);
         Date lateDate = calendar.getTime();
 
-        calendar.add(Calendar.DATE, 7);
+        calendar.add(Calendar.DATE, 21);
         Date maxDate = calendar.getTime();
 
         Date capturedMinDate = minDateCapture.getValue();
@@ -168,7 +168,7 @@ public class EDDScheduleTest extends TestCase {
         calendar.add(Calendar.DATE, 14);
         Date lateDate = calendar.getTime();
 
-        calendar.add(Calendar.DATE, 7);
+        calendar.add(Calendar.DATE, 21);
         Date maxDate = calendar.getTime();
 
         ExpectedEncounter enc = capturedEncounter.getValue();
