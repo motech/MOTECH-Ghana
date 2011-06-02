@@ -39,10 +39,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import junit.framework.TestCase;
 
@@ -50,6 +47,8 @@ import org.easymock.Capture;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.service.impl.ExpectedObsSchedule;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.util.MotechConstants;
+import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
@@ -122,8 +121,14 @@ public class PentaScheduleTest extends TestCase {
 						capture(lateDateCapture), capture(maxDateCapture),
 						eq(penta1Event.getName()), eq(pentaSchedule.getName())))
 				.andReturn(new ExpectedObs());
-        calendar.set(2010,03,10);
+
+        calendar.set(2010, 03, 10);
         expect(registrarBean.getChildRegistrationDate()).andReturn(calendar.getTime());
+
+        calendar.set(2011, 03, 10);
+        Encounter encounter = new Encounter();
+        encounter.setEncounterDatetime(calendar.getTime());
+        expect(registrarBean.getEncounters(patient, MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT, patient.getBirthdate())).andReturn(Arrays.asList(encounter));
 
 		replay(registrarBean);
 
@@ -167,8 +172,15 @@ public class PentaScheduleTest extends TestCase {
 				.andReturn(expectedObsList);
 		expect(registrarBean.saveExpectedObs(capture(expectedObsCapture)))
 				.andReturn(new ExpectedObs());
-        calendar.set(2010,03,10);
+
+        calendar.set(2010, 03, 10);
         expect(registrarBean.getChildRegistrationDate()).andReturn(calendar.getTime());
+
+        calendar.set(2011, 03, 10);
+        Encounter encounter = new Encounter();
+        encounter.setEncounterDatetime(calendar.getTime());
+        expect(registrarBean.getEncounters(patient, MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT, patient.getBirthdate())).andReturn(Arrays.asList(encounter));
+
 		replay(registrarBean);
 
 		pentaSchedule.updateSchedule(patient, date);
@@ -228,8 +240,15 @@ public class PentaScheduleTest extends TestCase {
 						capture(lateDateCapture), capture(maxDateCapture),
 						eq(penta2Event.getName()), eq(pentaSchedule.getName())))
 				.andReturn(new ExpectedObs());
-        calendar.set(2010,03,10);
+
+        calendar.set(2010, 03, 10);
         expect(registrarBean.getChildRegistrationDate()).andReturn(calendar.getTime());
+
+        calendar.set(2011, 03, 10);
+        Encounter encounter = new Encounter();
+        encounter.setEncounterDatetime(calendar.getTime());
+        expect(registrarBean.getEncounters(patient, MotechConstants.ENCOUNTER_TYPE_PATIENTREGVISIT, patient.getBirthdate())).andReturn(Arrays.asList(encounter));
+
 		replay(registrarBean);
 
 		pentaSchedule.updateSchedule(patient, date);
