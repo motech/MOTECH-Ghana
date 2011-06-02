@@ -316,7 +316,8 @@ public interface RegistrarBean {
 
 	public ExpectedObs saveExpectedObs(ExpectedObs expectedObs);
 
-	public List<Encounter> getEncounters(Patient patient,
+    @RunAsAdminUser
+    public List<Encounter> getEncounters(Patient patient,
 			String encounterTypeName, Date minDate);
 
 	public ExpectedEncounter createExpectedEncounter(Patient patient,
