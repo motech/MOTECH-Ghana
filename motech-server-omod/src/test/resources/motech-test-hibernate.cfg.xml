@@ -63,5 +63,8 @@
         <mapping resource="MotechMessageProgram.hbm.xml"/>
         <mapping resource="MessageLanguage.hbm.xml"/>
         <mapping resource="MotechConfiguration.hbm.xml"/>
+        <mapping resource="CareConfiguration.hbm.xml"/>
+        <mapping resource="DefaultedExpectedObsAlert.hbm.xml"/>
+        <mapping resource="DefaultedExpectedEncounterAlert.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

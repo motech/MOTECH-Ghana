@@ -400,6 +400,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
         return motechDAO.getUnknownFacility();
     }
 
+    public DefaultedExpectedEncounterAlert getDefaultedEncounterAlertFor(ExpectedEncounter expectedEncounter) {
+        return motechDAO.getDefaultedEncounterAlertFor(expectedEncounter);
+    }
+
     public RCTService getRctService(){
         return rctService;
     }

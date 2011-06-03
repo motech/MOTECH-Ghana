@@ -888,4 +888,10 @@ public class HibernateMotechDAO implements MotechDAO {
                 .add(Restrictions.eq("facilityId", MotechConstants.UNKNOWN_FACILITY_ID));
         return (Facility) criteria.uniqueResult();
     }
+
+    public DefaultedExpectedEncounterAlert getDefaultedEncounterAlertFor(ExpectedEncounter expectedEncounter) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DefaultedExpectedEncounterAlert.class);
+        criteria.add(Restrictions.eq("expectedEncounter", expectedEncounter));
+        return (DefaultedExpectedEncounterAlert) criteria.uniqueResult();
+    }
 }

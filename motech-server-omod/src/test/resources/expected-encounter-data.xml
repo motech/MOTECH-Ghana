@@ -1,0 +1,33 @@
+<dataset>
+
+    <users user_id="1" system_id="107" creator="1" date_created="0002-11-30 00:00:00" voided="0"/>
+
+
+    <person person_id="1" gender="" birthdate_estimated="0" dead="0" creator="1" date_created="2005-01-01 00:00:00"
+            voided="0" uuid="338b81a0-af64-11de-870f-e5004d85b1e8"/>
+
+    <patient patient_id="1" creator="1" date_created="2005-09-22 00:00:00" voided="0"/>
+
+    <concept concept_id="10" retired="0" datatype_id="1" class_id="1" is_set="0" creator="1" date_created="2004-01-01 00:00:00" version="0.1"
+             changed_by="1" date_changed="2006-06-09 00:00:00" uuid="32cdca00-af64-11de-870f-e5004d85b1e8"/>
+
+    <concept_datatype concept_datatype_id="1" name="Numeric" hl7_abbreviation="NM"
+                      description="Numeric value, including integer or float (e.g., creatinine, weight)" creator="1"
+                      date_created="2004-02-02 00:00:00" retired="0" uuid="330c59a7-af64-11de-870f-e5004d85b1e8"/>
+
+    <encounter_type encounter_type_id="1" name="ADULTINITIAL" description="Outpatient Adult Initial Visit" creator="1"
+                    date_created="2005-02-24 00:00:00" retired="0" uuid="336bb0a9-af64-11de-870f-e5004d85b1e8"/>
+
+
+    <motechmodule_expected_obs motechmodule_expected_obs_id="1" patient_id="1" concept_id="10" due_datetime="1992-03-01 00:00:00"
+                                  late_datetime="1992-03-01 00:00:00"
+                                  care_name="TT1" group_name="TT" voided="0"/>
+
+    <motechmodule_expected_encounter motechmodule_expected_encounter_id="1" patient_id="1" encounter_type="1" min_datetime="2011-06-20 00:00:00" due_datetime="2011-06-21 00:00:00"
+                                     late_datetime="2011-06-22 00:00:00" max_datetime="2011-07-13 00:00:00" encounter_id="1" care_name="ANC"
+                                     group_name="ANC" voided="0"/>
+
+    <motechmodule_care_configuration care_id="1" care_name="ANC" max_alerts="4"/>
+    <motechmodule_defaulted_expected_encounter_alert expected_encounter_alert_id="1" expected_encounter_id="1" care_id="1" alerts_sent="1"/>
+    <motechmodule_defaulted_expected_obs_alert expected_obs_alert_id="1" expected_obs_id="1" care_id="1" alerts_sent="1"/>
+</dataset>
