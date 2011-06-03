@@ -2010,8 +2010,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 toDate, null, fromDate, maxResults);
     }
 
-    private List<ExpectedEncounter> getDefaultedExpectedEncounters(
-            Facility facility, String[] groups, Date forDate) {
+    private List<ExpectedEncounter> getDefaultedExpectedEncounters(Facility facility, String[] groups, Date forDate) {
         Integer maxResults = getMaxQueryResults();
         return motechService().getExpectedEncounter(null, facility, groups, null,
                 null, forDate, forDate, maxResults);
@@ -2838,23 +2837,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return messageDate;
     }
 
-    public TaskDefinition updateAllMessageProgramsState(Integer batchSize,
-                                                        Long batchPreviousId) {
-        List<MessageProgramEnrollment> activeEnrollments = motechService()
-                .getActiveMessageProgramEnrollments(null, null, null,
-                        batchPreviousId, batchSize);
-
+    public TaskDefinition updateAllMessageProgramsState(Integer batchSize, Long batchPreviousId) {
+        List<MessageProgramEnrollment> activeEnrollments = motechService().getActiveMessageProgramEnrollments(null, null, null, batchPreviousId, batchSize);
         Date currentDate = new Date();
-
         for (MessageProgramEnrollment enrollment : activeEnrollments) {
-
             MessageProgram program = messageProgramService.program(enrollment.getProgram());
-
-            log.debug("MessageProgram Update - Update State: enrollment: "
-                    + enrollment.getId());
-
+            log.debug("MessageProgram Update - Update State: enrollment: " + enrollment.getId());
             program.determineState(enrollment, currentDate);
-
             batchPreviousId = enrollment.getId();
         }
         if (activeEnrollments.size() < batchSize) {
@@ -2863,16 +2852,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
 
         // Update task properties
-        TaskDefinition task = schedulerService
-                .getTaskByName(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE);
+        TaskDefinition task = schedulerService.getTaskByName(MotechConstants.TASK_MESSAGEPROGRAM_UPDATE);
         if (task != null) {
             Map<String, String> properties = task.getProperties();
             if (batchPreviousId != null) {
-                properties.put(MotechConstants.TASK_PROPERTY_BATCH_PREVIOUS_ID,
-                        batchPreviousId.toString());
+                properties.put(MotechConstants.TASK_PROPERTY_BATCH_PREVIOUS_ID, batchPreviousId.toString());
             } else {
-                properties
-                        .remove(MotechConstants.TASK_PROPERTY_BATCH_PREVIOUS_ID);
+                properties.remove(MotechConstants.TASK_PROPERTY_BATCH_PREVIOUS_ID);
             }
             schedulerService.saveTask(task);
         }
@@ -2881,10 +2867,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public void updateAllCareSchedules() {
         List<Patient> patients = patientService.getAllPatients();
-        log
-                .info("Updating care schedules for " + patients.size()
-                        + " patients");
-
+        log.info("Updating care schedules for " + patients.size() + " patients");
         for (Patient patient : patients) {
             // Adds patient to transaction synchronization using advice
             patientService.savePatient(patient);
@@ -2905,7 +2888,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         List<Facility> facilities = motechService().getAllFacilities();
         deliveryDate = adjustTime(deliveryDate, deliveryTime);
         for (Facility facility : facilities) {
-            if (facilityPhoneNumberOrLocationAvailable(facility)) {
+            if (facilityPhoneNumberOrLocationNotAvailable(facility)) {
                 continue;
             }
             sendDefaulterMessages(startDate, deliveryDate, careGroups, facility);
@@ -2915,7 +2898,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
     }
 
-    private boolean facilityPhoneNumberOrLocationAvailable(Facility facility) {
+    private boolean facilityPhoneNumberOrLocationNotAvailable(Facility facility) {
         return (facility.getPhoneNumber() == null) || (facility.getLocation() == null);
     }
 
@@ -2936,15 +2919,17 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private void sendDefaulterMessages(Date startDate, Date deliveryDate, String[] careGroups, Facility facility) {
-        WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
-        modelConverter.setRegistrarBean(this);
+
         List<ExpectedEncounter> defaultedEncounters = filterRCTEncounters(new ArrayList<ExpectedEncounter>(getDefaultedExpectedEncounters(facility, careGroups, startDate)));
-        List<ExpectedObs> defaultedObs = filterRCTObs(new ArrayList<ExpectedObs>(getDefaultedExpectedObs(facility, careGroups, startDate)));
+        List<ExpectedObs> defaultedObservations = filterRCTObs(new ArrayList<ExpectedObs>(getDefaultedExpectedObs(facility, careGroups, startDate)));
         final String facilityPhoneNumber = facility.getPhoneNumber();
+
         //TODO: Replace the above code when RCT filtering rules are finalized and implemented.
-        final boolean defaultersPresent = !(defaultedEncounters.isEmpty() && defaultedObs.isEmpty());
+        final boolean defaultersPresent = !(defaultedEncounters.isEmpty() && defaultedObservations.isEmpty());
         if (defaultersPresent) {
-            Care[] defaultedCares = modelConverter.defaultedToWebServiceCares(defaultedEncounters, defaultedObs);
+            WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
+            modelConverter.setRegistrarBean(this);
+            Care[] defaultedCares = modelConverter.defaultedToWebServiceCares(defaultedEncounters, defaultedObservations);
             log.info("Sending defaulter message to " + facility.name() + " at " + facilityPhoneNumber);
             sendStaffDefaultedCareMessage(facilityPhoneNumber, deliveryDate, defaultedCares, getCareMessageGroupingStrategy(facility.getLocation()));
         } else {
@@ -3153,9 +3138,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         try {
             org.motechproject.ws.MessageStatus messageStatus;
-            messageStatus = mobileService.sendDefaulterMessage(null, phoneNumber, cares, groupingStrategy,
-                    MediaType.TEXT, messageStartDate, null);
-
+            messageStatus = mobileService.sendDefaulterMessage(null, phoneNumber, cares, groupingStrategy, MediaType.TEXT, messageStartDate, null);
             return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
         } catch (Exception e) {
             log.error("Mobile WS staff defaulted care message failure", e);
