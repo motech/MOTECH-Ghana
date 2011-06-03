@@ -195,4 +195,6 @@ public interface MotechDAO {
     MotechConfiguration getConfiguration(String name);
 
     Facility getUnknownFacility();
+
+    DefaultedExpectedEncounterAlert getDefaultedEncounterAlertFor(ExpectedEncounter expectedEncounter);
 }

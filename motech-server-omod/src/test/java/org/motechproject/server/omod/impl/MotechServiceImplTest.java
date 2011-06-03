@@ -36,9 +36,7 @@ package org.motechproject.server.omod.impl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.MessageLanguage;
-import org.motechproject.server.model.MotechConfiguration;
+import org.motechproject.server.model.*;
 import org.motechproject.server.model.db.MotechDAO;
 import org.motechproject.server.omod.MotechService;
 import org.openmrs.Patient;
@@ -50,19 +48,19 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class MotechServiceImplTest extends BaseModuleContextSensitiveTest {
 
     private static String DUPLICATE_PATIENTS = "duplicate-patients-dataset.xml";
     private static String PATIENT_FACILITY = "patient-facility-data.xml";
+    private static String EXPECTED_ENCOUNTER_DATA = "expected-encounter-data.xml";
 
     @Before
     public void setUp() throws Exception {
         executeDataSet(DUPLICATE_PATIENTS);
         executeDataSet(PATIENT_FACILITY);
+        executeDataSet(EXPECTED_ENCOUNTER_DATA);
     }
 
     @After
@@ -104,4 +102,15 @@ public class MotechServiceImplTest extends BaseModuleContextSensitiveTest {
         assertNotNull(motechConfiguration);
         assertNotNull(motechConfiguration.asDate());
     }
+
+    @Test
+    public void shouldRetrieveExpectedEncounterAlert() {
+        MotechService motechService = Context.getService(MotechService.class);
+        ExpectedEncounter expectedEncounter = new ExpectedEncounter();
+        expectedEncounter.setId(1l);
+        DefaultedExpectedEncounterAlert alert = motechService.getDefaultedEncounterAlertFor(expectedEncounter);
+        assertNotNull(alert);
+        assertEquals(expectedEncounter.getId(), alert.getExpectedEncounter().getId());
+    }
+    
 }

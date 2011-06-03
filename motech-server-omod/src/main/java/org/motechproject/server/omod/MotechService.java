@@ -268,4 +268,7 @@ public interface MotechService extends OpenmrsService {
 
     @Transactional(readOnly = true)
     Facility unknownFacility();
+
+    @Transactional(readOnly = true)
+    DefaultedExpectedEncounterAlert getDefaultedEncounterAlertFor(ExpectedEncounter expectedEncounter);
 }

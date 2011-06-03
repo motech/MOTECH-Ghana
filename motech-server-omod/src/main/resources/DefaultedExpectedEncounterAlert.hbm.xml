@@ -1,0 +1,11 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.motechproject.server.model" default-access="field">
+	<class name="DefaultedExpectedEncounterAlert" table="motechmodule_defaulted_expected_encounter_alert">
+		<id name="id" column="expected_encounter_alert_id">
+			<generator class="native" />
+		</id>
+        <many-to-one name="expectedEncounter" unique="true" column="expected_encounter_id" />
+        <many-to-one name="careConfiguration" column="care_id" />
+		<property name="alertsSent" type="java.lang.Integer" column="alerts_sent" />
+	</class>
+</hibernate-mapping>

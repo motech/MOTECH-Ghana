@@ -3090,4 +3090,48 @@
         </sql>
     </diff>
 
+    <diff>
+        <version>4.2</version>
+        <author>Thoughtworks</author>
+        <date>June 3 2011</date>
+        <description>Table for persisting the number of alerts sent for expected encounter or observations</description>
+        <sql>
+
+            CREATE TABLE IF NOT EXISTS motechmodule_care_configuration
+            (
+              care_id bigint NOT NULL AUTO_INCREMENT primary key,
+              care_name varchar(50) not null,
+              max_alerts int(4) default 1,
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8;                         
+
+
+            CREATE TABLE IF NOT EXISTS motechmodule_defaulted_expected_encounter_alert
+            (
+             expected_encounter_alert_id bigint NOT NULL AUTO_INCREMENT primary key,
+             expected_encounter_id bigint not null,
+             alerts_sent int(4) default 0,
+             care_id bigint,
+             constraint fk_defaulted_expected_encounter FOREIGN KEY (expected_encounter_id) references motechmodule_expected_encounter(motechmodule_expected_encounter_id),
+             constraint fk_care_configuration_encounter FOREIGN KEY (care_id) references motechmodule_care_configuration(care_id)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+            CREATE TABLE IF NOT EXISTS motechmodule_defaulted_expected_obs_alert
+            (
+             expected_obs_alert_id bigint NOT NULL AUTO_INCREMENT primary key,
+             expected_obs_id bigint not null,
+             no_of_alerts_sent int(4) default 0,
+             constraint fk_defaulted_expected_obs FOREIGN KEY (expected_obs_id) references motechmodule_expected_obs(motechmodule_expected_obs_id),
+             constraint fk_care_configuration_obs FOREIGN KEY (care_id) references motechmodule_care_configuration(care_id)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+
+
+
+            
+        </sql>
+    </diff>
+
 </sqldiff>
