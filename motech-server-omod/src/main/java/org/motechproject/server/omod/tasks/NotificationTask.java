@@ -33,14 +33,14 @@
 
 package org.motechproject.server.omod.tasks;
 
-import java.util.Date;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.impl.ContextServiceImpl;
 import org.motechproject.server.util.MotechConstants;
 import org.openmrs.scheduler.tasks.AbstractTask;
+
+import java.util.Date;
 
 /**
  * Defines a task implementation that OpenMRS can execute using the built-in
@@ -69,7 +69,7 @@ public class NotificationTask extends AbstractTask {
 	@Override
 	public void execute() {
 		long start = System.currentTimeMillis();
-		log.debug("executing task");
+		log.info("executing task");
 
 		String timeOffsetString = this.taskDefinition
 				.getProperty(MotechConstants.TASK_PROPERTY_TIME_OFFSET);

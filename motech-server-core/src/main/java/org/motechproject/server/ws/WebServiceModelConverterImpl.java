@@ -55,71 +55,57 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 		this.registrarBean = registrarBean;
 	}
 
-	public Patient patientToWebService(org.openmrs.Patient patient,
-			boolean minimal) {
+	public Patient patientToWebService(org.openmrs.Patient patient, boolean minimal) {
 
 		if (patient == null) {
 			return null;
 		}
 
-		Patient wsPatient = new Patient();
+		Patient webServicePatient = new Patient();
 
-		wsPatient.setPreferredName(patient.getGivenName());
-		wsPatient.setLastName(patient.getFamilyName());
-		wsPatient.setBirthDate(patient.getBirthdate());
-		wsPatient.setSex(GenderTypeConverter
-				.valueOfOpenMRS(patient.getGender()));
+		webServicePatient.setPreferredName(patient.getGivenName());
+		webServicePatient.setLastName(patient.getFamilyName());
+		webServicePatient.setBirthDate(patient.getBirthdate());
+		webServicePatient.setSex(GenderTypeConverter.valueOfOpenMRS(patient.getGender()));
 
 		Community community = registrarBean.getCommunityByPatient(patient);
 		if (community != null) {
-			wsPatient.setCommunity(community.getName());
+			webServicePatient.setCommunity(community.getName());
 		}
 
-		PatientIdentifier patientId = patient
-				.getPatientIdentifier(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
+		PatientIdentifier patientId = patient.getPatientIdentifier(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
 		if (patientId != null) {
-			wsPatient.setMotechId(patientId.getIdentifier());
+			webServicePatient.setMotechId(patientId.getIdentifier());
 		}
 
 		if (!minimal) {
 			for (PersonName name : patient.getNames()) {
 				if (!name.isPreferred() && name.getGivenName() != null) {
-					wsPatient.setFirstName(name.getGivenName());
+					webServicePatient.setFirstName(name.getGivenName());
 					break;
 				}
 			}
-
-			wsPatient.setAge(patient.getAge());
-
-			PersonAttribute phoneNumberAttr = patient
-					.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
+			webServicePatient.setAge(patient.getAge());
+			PersonAttribute phoneNumberAttr = patient.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER);
 			if (phoneNumberAttr != null) {
-				wsPatient.setPhoneNumber(phoneNumberAttr.getValue());
+				webServicePatient.setPhoneNumber(phoneNumberAttr.getValue());
 			}
-
-            PersonAttribute contactNumberType = patient
-					.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
+            PersonAttribute contactNumberType = patient.getAttribute(MotechConstants.PERSON_ATTRIBUTE_PHONE_TYPE);
 			if (contactNumberType != null) {
-				wsPatient.setContactNumberType(ContactNumberType.valueOf(contactNumberType.getValue()));
+				webServicePatient.setContactNumberType(ContactNumberType.valueOf(contactNumberType.getValue()));
 			}
-
-			wsPatient.setEstimateDueDate(registrarBean
-					.getActivePregnancyDueDate(patient.getPatientId()));
+			webServicePatient.setEstimateDueDate(registrarBean.getActivePregnancyDueDate(patient.getPatientId()));
 		}
-
-		return wsPatient;
+		return webServicePatient;
 	}
 
-	public Patient[] patientToWebService(List<org.openmrs.Patient> patients,
-			boolean minimal) {
+	public Patient[] patientToWebService(List<org.openmrs.Patient> patients, boolean minimal) {
 
-		List<Patient> wsPatients = new ArrayList<Patient>();
-
+		List<Patient> webServicePatients = new ArrayList<Patient>();
 		for (org.openmrs.Patient patient : patients) {
-			wsPatients.add(patientToWebService(patient, minimal));
+			webServicePatients.add(patientToWebService(patient, minimal));
 		}
-
-		return wsPatients.toArray(new Patient[wsPatients.size()]);
+		return webServicePatients.toArray(new Patient[webServicePatients.size()]);
 	}
 
 	public Patient[] deliveriesToWebServicePatients(List<Encounter> deliveries) {
@@ -276,17 +262,14 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 		return cares.toArray(new Care[cares.size()]);
 	}
 
-	public Care[] defaultedToWebServiceCares(
-			List<ExpectedEncounter> defaultedEncounters,
-			List<ExpectedObs> defaultedObs) {
+	public Care[] defaultedToWebServiceCares(List<ExpectedEncounter> defaultedEncounters, List<ExpectedObs> defaultedObs) {
 
-		List<Care> cares = new ArrayList<Care>();
+
 
 		Map<String, List<org.openmrs.Patient>> carePatientMap = new HashMap<String, List<org.openmrs.Patient>>();
 
 		for (ExpectedEncounter expectedEncounter : defaultedEncounters) {
-			List<org.openmrs.Patient> patients = carePatientMap
-					.get(expectedEncounter.getName());
+			List<org.openmrs.Patient> patients = carePatientMap.get(expectedEncounter.getName());
 			if (patients == null) {
 				patients = new ArrayList<org.openmrs.Patient>();
 			}
@@ -294,25 +277,23 @@ public class WebServiceModelConverterImpl implements WebServiceModelConverter {
 			carePatientMap.put(expectedEncounter.getName(), patients);
 		}
 		for (ExpectedObs expectedObs : defaultedObs) {
-			List<org.openmrs.Patient> patients = carePatientMap.get(expectedObs
-					.getName());
+			List<org.openmrs.Patient> patients = carePatientMap.get(expectedObs.getName());
 			if (patients == null) {
 				patients = new ArrayList<org.openmrs.Patient>();
 			}
 			patients.add(expectedObs.getPatient());
 			carePatientMap.put(expectedObs.getName(), patients);
 		}
+        List<Care> cares = new ArrayList<Care>();
 		for (Map.Entry<String, List<org.openmrs.Patient>> entry : carePatientMap
 				.entrySet()) {
-			Care care = new Care();
-			care.setName(entry.getKey());
-			Patient[] patients = patientToWebService(entry.getValue(), true);
+            Patient[] patients = patientToWebService(entry.getValue(), true);
+            Care care = new Care();
+            care.setName(entry.getKey());
 			care.setPatients(patients);
 			cares.add(care);
 		}
-
 		Collections.sort(cares, new CareDateComparator(true));
-
 		return cares.toArray(new Care[cares.size()]);
 	}
 

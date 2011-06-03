@@ -573,9 +573,7 @@ public class HibernateMotechDAO implements MotechDAO {
             criteria.add(Restrictions.le("lateEncounterDatetime", maxLateDate));
         }
         if (minMaxDate != null) {
-            criteria.add(Restrictions.or(Restrictions
-                    .isNull("maxEncounterDatetime"), Restrictions.gt(
-                    "maxEncounterDatetime", minMaxDate)));
+            criteria.add(Restrictions.or(Restrictions.isNull("maxEncounterDatetime"), Restrictions.gt("maxEncounterDatetime", minMaxDate)));
         }
         if (facility != null) {
             criteria

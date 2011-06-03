@@ -65,14 +65,12 @@ public class ExpectedCareScheduleImpl implements ExpectedCareSchedule {
     protected RegistrarBean registrarBean;
 
     public void updateSchedule(Patient patient, Date date) {
-        log.debug("Evaluating schedule: " + name + ", patient: "
-                + patient.getPatientId());
+        log.debug("Evaluating schedule: " + name + ", patient: " + patient.getPatientId());
 
         if (meetsRequirements(patient, date)) {
             performScheduleUpdate(patient, date);
         } else {
-            log
-                    .debug("Failed to meet requisites, removing events for schedule");
+            log.debug("Failed to meet requisites, removing events for schedule");
 
             removeExpectedCare(patient);
         }
