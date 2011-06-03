@@ -3078,4 +3078,16 @@
         </sql>
     </diff>
 
+	<diff>
+        <version>4.1</version>
+        <author>ThoughtWorks</author>
+        <date>June 1 2011</date>
+		<description>Sending alerts only for ANC,TT and IPT</description>
+        <sql>
+			UPDATE scheduler_task_config_property
+            SET value = 'ANC,TT,IPT'
+            WHERE name = 'careGroups' and task_config_id = (select task_config_id from scheduler_task_config where name = 'Weekly Nurse Care Messaging Task');
+        </sql>
+    </diff>
+
 </sqldiff>
