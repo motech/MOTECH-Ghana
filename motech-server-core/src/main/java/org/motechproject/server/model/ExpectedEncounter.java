@@ -33,11 +33,11 @@
 
 package org.motechproject.server.model;
 
-import java.util.Date;
-
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Patient;
+
+import java.util.Date;
 
 public class ExpectedEncounter {
 
@@ -141,7 +141,22 @@ public class ExpectedEncounter {
 		this.voided = voided;
 	}
 
-	@Override
+
+    @Override
+    public boolean equals(Object o) {
+
+        if(null == o) return false ;
+
+        ExpectedEncounter other = (ExpectedEncounter)o;
+        return id.equals(other.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
 	public String toString() {
 		return "Expected Encounter: [" + "id: " + id + ", type: "
 				+ (encounterType != null ? encounterType.getName() : "null")

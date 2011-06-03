@@ -50,8 +50,7 @@ import java.util.List;
 /**
  * An implementation of the MotechService interface using OpenMRS.
  */
-public class MotechServiceImpl extends BaseOpenmrsService implements
-		MotechService {
+public class MotechServiceImpl extends BaseOpenmrsService implements MotechService {
 
 	private MotechDAO motechDAO;
 
@@ -402,6 +401,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
     public DefaultedExpectedEncounterAlert getDefaultedEncounterAlertFor(ExpectedEncounter expectedEncounter) {
         return motechDAO.getDefaultedEncounterAlertFor(expectedEncounter);
+    }
+
+    public DefaultedExpectedObsAlert getDefaultedObsAlertFor(ExpectedObs expectedObs) {
+        return motechDAO.getDefaultedObsAlertFor(expectedObs);
     }
 
     public RCTService getRctService(){

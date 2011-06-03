@@ -6,4 +6,8 @@ public class DefaultedExpectedObsAlert {
     private ExpectedObs expectedObs;
     private CareConfiguration careConfiguration;
     private Integer alertsSent;
+
+    public Boolean isFor(ExpectedObs obs) {
+        return expectedObs.equals(obs);
+    }
 }

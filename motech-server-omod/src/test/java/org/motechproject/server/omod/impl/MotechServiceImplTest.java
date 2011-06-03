@@ -48,6 +48,7 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class MotechServiceImplTest extends BaseModuleContextSensitiveTest {
@@ -110,7 +111,17 @@ public class MotechServiceImplTest extends BaseModuleContextSensitiveTest {
         expectedEncounter.setId(1l);
         DefaultedExpectedEncounterAlert alert = motechService.getDefaultedEncounterAlertFor(expectedEncounter);
         assertNotNull(alert);
-        assertEquals(expectedEncounter.getId(), alert.getExpectedEncounter().getId());
+        assertTrue(alert.isFor(expectedEncounter));
     }
-    
+
+    @Test
+    public void shouldRetrieveExpectedObsAlert() {
+        MotechService motechService = Context.getService(MotechService.class);
+        ExpectedObs expectedObs = new ExpectedObs();
+        expectedObs.setId(1l);
+        DefaultedExpectedObsAlert alert = motechService.getDefaultedObsAlertFor(expectedObs);
+        assertNotNull(alert);
+        assertTrue(alert.isFor(expectedObs));
+    }
+
 }

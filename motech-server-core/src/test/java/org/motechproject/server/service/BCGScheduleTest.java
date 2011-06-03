@@ -33,16 +33,7 @@
 
 package org.motechproject.server.service;
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.*;
-
 import junit.framework.TestCase;
-
 import org.easymock.Capture;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.service.impl.ExpectedObsSchedule;
@@ -53,6 +44,10 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.*;
+
+import static org.easymock.EasyMock.*;
 
 public class BCGScheduleTest extends TestCase {
 
@@ -163,6 +158,7 @@ public class BCGScheduleTest extends TestCase {
 
 		List<ExpectedObs> expectedObsList = new ArrayList<ExpectedObs>();
 		ExpectedObs expectedObs = new ExpectedObs();
+        expectedObs.setId(1L);
 		expectedObs.setName(bcgEvent.getName());
 		expectedObsList.add(expectedObs);
 
@@ -222,6 +218,7 @@ public class BCGScheduleTest extends TestCase {
 
 		List<ExpectedObs> expectedObsList = new ArrayList<ExpectedObs>();
 		ExpectedObs expectedObs = new ExpectedObs();
+        expectedObs.setId(2L);
 		expectedObs.setName(bcgEvent.getName());
 		expectedObsList.add(expectedObs);
 
