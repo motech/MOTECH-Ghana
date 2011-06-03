@@ -1375,13 +1375,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         if (isNotNull(facility)) {
             String phoneNumber = facility.getPhoneNumber();
             if (phoneNumber != null) {
-                MessageDefinition messageDef = getMessageDefinition("pregnancy.notification");
-                if (messageDef == null) {
-                    log.error("Pregnancy delivery notification message "
-                            + "does not exist");
-                    return;
-                }
-
                 String messageId = null;
                 NameValuePair[] nameValues = new NameValuePair[0];
                 MediaType mediaType = MediaType.TEXT;
@@ -1400,6 +1393,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 org.motechproject.ws.Patient wsPatient = wsModelConverter
                         .patientToWebService(patient, true);
                 org.motechproject.ws.Patient[] wsPatients = new org.motechproject.ws.Patient[]{wsPatient};
+
+                MessageDefinition messageDef = wsPatient.getCommunity() == null ? getMessageDefinition("pregnancy.notification.for.patient.with.no.community") : getMessageDefinition("pregnancy.notification");
+                if (messageDef == null) {
+                    log.error("Pregnancy delivery notification message "
+                            + "does not exist");
+                    return;
+                }
 
                 sendStaffMessage(messageId, nameValues, phoneNumber,
                         languageCode, mediaType, messageDef.getPublicId(),

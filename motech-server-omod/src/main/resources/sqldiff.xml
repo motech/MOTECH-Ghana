@@ -3134,4 +3134,15 @@
         </sql>
     </diff>
 
+	<diff>
+        <version>4.2</version>
+        <author>ThoughtWorks</author>
+        <date>June 3 2011</date>
+		<description>Creating the pregnancy.notification message definition for patient who don't have the community specified</description>
+        <sql>
+            INSERT INTO `motechmodule_messagedefinition` (`message_key`,`public_id`,`message_type`)
+            VALUES ('pregnancy.notification.for.patient.with.no.community',416,'INFORMATIONAL');
+        </sql>
+    </diff>
+
 </sqldiff>
