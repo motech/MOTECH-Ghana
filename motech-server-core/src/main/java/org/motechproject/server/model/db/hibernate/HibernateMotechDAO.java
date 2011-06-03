@@ -666,6 +666,7 @@ public class HibernateMotechDAO implements MotechDAO {
                                      String preferredName, Date birthDate, Integer facilityId,
                                      String phoneNumber, PersonAttributeType phoneNumberAttrType,
                                      String nhisNumber, PersonAttributeType nhisAttrType,
+                                     Integer communityId,
                                      String patientId, PatientIdentifierType patientIdType,
                                      Integer maxResults) {
 
@@ -716,6 +717,17 @@ public class HibernateMotechDAO implements MotechDAO {
                                             + "on f.id = fp.facility_id "
                                             + "where f.facility_id = ? and fp.patient_id = {alias}.patient_id)",
                                     facilityId, Hibernate.INTEGER));
+        }
+
+        if (communityId != null) {
+            criteria
+                    .add(Restrictions
+                            .sqlRestriction(
+                                    "exists (select c.id from motechmodule_community c "
+                                            + "inner join motechmodule_community_patient cp "
+                                            + "on c.id = cp.community_id "
+                                            + "where c.community_id = ? and cp.patient_id = {alias}.patient_id)",
+                                    communityId, Hibernate.INTEGER));
         }
 
         if (nhisNumber != null && nhisAttrType != null) {

@@ -1927,7 +1927,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public List<Patient> getPatients(String firstName, String lastName,
                                      String preferredName, Date birthDate, Integer facilityId,
-                                     String phoneNumber, String nhisNumber, String motechId) {
+                                     String phoneNumber, String nhisNumber, Integer communityId, String motechId) {
         PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeType(personService);
         PersonAttributeType nhisAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_NHIS_NUMBER.getAttributeType(personService);
         PatientIdentifierType motechIdType = getPatientIdentifierTypeForMotechId();
@@ -1935,7 +1935,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         return motechService().getPatients(firstName, lastName, preferredName,
                 birthDate, facilityId, phoneNumber, phoneNumberAttrType,
-                nhisNumber, nhisAttrType, motechId, motechIdType, maxResults);
+                nhisNumber, nhisAttrType, communityId, motechId, motechIdType, maxResults);
     }
 
     public List<Patient> getDuplicatePatients(String firstName,

@@ -122,6 +122,7 @@ public class RegistrarBeanMatchPatientsTest extends
 			String phoneNumber = "1111111111";
 			String nhisNumber = "NHISNumber";
 			Integer communityId = 11111;
+			Integer invalidCommunityId = 99999;
 			Date date = new Date();
 
 			Community community = regService.getCommunityById(communityId);
@@ -147,7 +148,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// Match on all (any)
 			matches = regService.getPatients(firstName, lastName, prefName,
-					date, facility.getFacilityId(), phoneNumber, nhisNumber, motechId
+					date, facility.getFacilityId(), phoneNumber, nhisNumber, null, motechId
 							.toString());
 			assertEquals(1, matches.size());
 
@@ -157,8 +158,8 @@ public class RegistrarBeanMatchPatientsTest extends
 			assertEquals(1, matches.size());
 
 			// Match on NHIS number (any)
-			matches = regService.getPatients(null, null, null, null, null,
-					null, nhisNumber, null);
+			matches = regService.getPatients(null, null, null, null, null, null,
+					nhisNumber, null, null);
 			assertEquals(1, matches.size());
 
 			// Match on first name, last name, and birthdate (duplicate)
@@ -168,7 +169,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// Match on first name, last name, and birthdate (any)
 			matches = regService.getPatients(firstName, lastName, null, date,
-					null, null, null, null);
+					null, null, null, null, null);
 			assertEquals(1, matches.size());
 
 			// Match on first name, last name, and community (duplicate)
@@ -178,7 +179,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// Match on first name, last name, and community (any)
 			matches = regService.getPatients(firstName, lastName, null, null,
-					facility.getFacilityId(), null, null, null);
+					facility.getFacilityId(), null, null, null, null);
 			assertEquals(1, matches.size());
 
 			// Match on first name, last name, and phone (duplicate)
@@ -188,7 +189,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// Match on first name, last name, and phone (any)
 			matches = regService.getPatients(firstName, lastName, null, null,
-					null, phoneNumber, null, null);
+					null, phoneNumber, null, null, null);
 			assertEquals(1, matches.size());
 
 			// Match on MotechID (duplicate)
@@ -198,7 +199,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// Match on MotechID (any)
 			matches = regService.getPatients(null, null, null, null, null,
-					null, null, motechId.toString());
+					null, null, null, motechId.toString());
 			assertEquals(1, matches.size());
 
 			// No match on different NHIS number (duplicate)
@@ -208,7 +209,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// No match on different NHIS number (any)
 			matches = regService.getPatients(null, null, null, null, null,
-					null, "DifferentNHISValue", null);
+					null, "DifferentNHISValue", null, null);
 			assertEquals(0, matches.size());
 
 			// No match on last name, birthdate, and different first name
@@ -219,7 +220,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// No match on last name, birthdate, and different first name (any)
 			matches = regService.getPatients("DifferentFirstName", lastName,
-					null, date, null, null, null, null);
+					null, date, null, null, null, null, null);
 			assertEquals(0, matches.size());
 
 			// No match on first name, community, and different last name
@@ -231,7 +232,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// No match on first name, community, and different last name (any)
 			matches = regService.getPatients(firstName, "DifferentLastName",
-					null, null, communityId, null, null, null);
+					null, null, communityId, null, null, null, null);
 			assertEquals(0, matches.size());
 
 			// No match on first name, last name, and different phone number
@@ -243,7 +244,7 @@ public class RegistrarBeanMatchPatientsTest extends
 			// No match on first name, last name, and different phone number
 			// (any)
 			matches = regService.getPatients(firstName, lastName, null, null,
-					null, "4534656", null, null);
+					null, "4534656", null, null, null);
 			assertEquals(0, matches.size());
 
 			// No matches on empty (duplicate)
@@ -252,19 +253,29 @@ public class RegistrarBeanMatchPatientsTest extends
 			assertEquals(0, matches.size());
 
 			// Matches on empty, returns all patients (any)
-			matches = regService.getPatients(null, null, null, null, null,
+			matches = regService.getPatients(null, null, null, null, null, null,
 					null, null, null);
 			assertEquals(3, matches.size());
 
 			// Match on partial first name and partial last name (any)
 			matches = regService.getPatients("Fir", "Name", null, null, null,
-					null, null, null);
+					null, null, null, null);
 			assertEquals(1, matches.size());
 
 			// Match on partial pref name and partial last name (any)
 			matches = regService.getPatients(null, "stNa", "refNa", null, null,
-					null, null, null);
+					null, null, null, null);
 			assertEquals(1, matches.size());
+
+			// Match on communityId
+			matches = regService.getPatients(null, null, null, null, null,
+					null, null, communityId, null);
+			assertEquals(1, matches.size());
+
+			// No Match on communityId
+			matches = regService.getPatients(null, null, null, null, null,
+					null, null, invalidCommunityId, null);
+			assertEquals(0, matches.size());
 
 			Person person = new Person();
 			person.addName(new PersonName(firstName, null, lastName));
@@ -279,7 +290,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			// No match for Person on firstName, lastName, birthDate (any)
 			matches = regService.getPatients(firstName, lastName, null, date,
-					null, null, null, null);
+					null, null, null, null, null);
 			assertEquals(1, matches.size());
 
 		} finally {

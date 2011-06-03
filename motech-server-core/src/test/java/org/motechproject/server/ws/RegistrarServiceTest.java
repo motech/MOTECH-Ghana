@@ -2293,7 +2293,7 @@ public class RegistrarServiceTest{
 				new Facility());
 		expect(
 				registrarBean.getPatients(firstName, lastName, prefName,
-						birthDate, facilityId, phone, nhis, null))
+						birthDate, facilityId, phone, nhis, null, null))
 				.andReturn(patients);
 		expect(modelConverter.patientToWebService(patients, true)).andReturn(
 				result);
