@@ -155,7 +155,7 @@ public class SearchPatientsController {
 					webPatient.getFirstName(), webPatient.getLastName(),
 					webPatient.getPrefName(), webPatient.getBirthDate(),
 					webPatient.getFacility(), webPatient.getPhoneNumber(),
-					webPatient.getNhis(), motechIdString);
+					webPatient.getNhis(), webPatient.getCommunityId(), motechIdString);
 
 			for (Patient patient : matchingPatientsList) {
 				WebPatient newWebPatient = new WebPatient();

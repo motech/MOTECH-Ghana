@@ -208,6 +208,7 @@ public interface MotechService extends OpenmrsService {
                               String preferredName, Date birthDate, Integer facilityId,
                               String phoneNumber, PersonAttributeType phoneNumberAttrType,
                               String nhisNumber, PersonAttributeType nhisAttrType,
+                              Integer communityId,
                               String patientId, PatientIdentifierType patientIdType,
                               Integer maxResults);
 
