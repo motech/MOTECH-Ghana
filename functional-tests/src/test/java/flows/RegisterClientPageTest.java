@@ -33,7 +33,7 @@ public class RegisterClientPageTest {
         loginPage.close();
     }
 
-    @Test
+    @Test(groups = {"smoke"})
     public void registerOtherPatientViaUIAndSearch(){
         OpenMRSLoginPage loginPage = new OpenMRSLoginPage();
         loginPage.getOpenMRSDashBoard();
@@ -47,6 +47,7 @@ public class RegisterClientPageTest {
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.SEARCH);
         SearchPage searchPage = new SearchPage();
         Assert.assertTrue(searchPage.searchClientByID(patientID,lastName),"Patient Search failed");
+        loginPage.close();
     }
 
     @Test
@@ -65,5 +66,6 @@ public class RegisterClientPageTest {
         SearchPage searchPage = new SearchPage();
         String lastName = (String) hm.get("lastName");
         Assert.assertTrue(searchPage.searchClientByID(patientID,lastName),"Patient Search failed");
+        loginPage.close();
     };
 }

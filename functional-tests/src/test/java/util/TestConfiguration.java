@@ -1,8 +1,6 @@
 package util;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Properties;
 
 public class TestConfiguration {
@@ -11,6 +9,7 @@ public class TestConfiguration {
 
     private static TestConfiguration instance = new TestConfiguration();
     private String  MIDLET_LOCATION = "midlet.location";
+    private String ERROR_LOG_DIRECTORY = "logFile.location";
 
     public static TestConfiguration instance(){
         return instance;
@@ -30,6 +29,10 @@ public class TestConfiguration {
 
     public String midletLocation() {
         return value(MIDLET_LOCATION);
+    }
+
+    public String errorLogLocation(){
+        return value(ERROR_LOG_DIRECTORY);
     }
 
 

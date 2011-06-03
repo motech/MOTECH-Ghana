@@ -34,16 +34,15 @@ public class SikuliBase {
     String successfullySavedMessage = "resources/expected_img/imgSuccessfullySavedMessage.png";
     String imgPreUploadDataMessage = "resources/expected_img/imgPreUploadDataMessage.png";
     String imgSuccessfullyUploadedDataMessage = "resources/expected_img/imgSuccessfullyUploadedMessageSingleForm.png";
-    String btnWindows = "resources/img/run.png" ;
+    String btnWindows = "resources/img/btnWindows.png" ;
     String btnCloseMobile = "resources/img/btnCloseMobile.png";
-
     private TestConfiguration testConfiguration;
 
     public SikuliBase(){
-        testConfiguration = TestConfiguration.instance();
         screen = new Screen();
         try {
             screen.click(btnWindows, 0);
+            testConfiguration = TestConfiguration.instance();
             screen.type(null,testConfiguration.midletLocation()+"\n",0);
             screen.exists("resources/expected_img/imgExpectedBeforeLaunch.png", 3000);
             mobileScreen = screen.find("resources/expected_img/imgExpectedBeforeLaunch.png");
@@ -120,7 +119,7 @@ public class SikuliBase {
 
         // 8. Uploading the form
         mobileScreen.click(btnRight,0);
-        if(imgExist(imgSuccessfullyUploadedDataMessage,5.00)){
+        if(imgExist(imgSuccessfullyUploadedDataMessage,20.00)){
             mobileScreen.click(btnRight,0);
         }
     }
@@ -399,7 +398,7 @@ public class SikuliBase {
         File inputFile = new File(str);
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
         String date = sdf.format(Calendar.getInstance().getTime());
-        File outputFile = new File("C:\\Users\\rupeshd\\MOTECH\\Functional-Automation-Suite\\Error_log\\Error"+date+".png");
+        File outputFile = new File(testConfiguration.errorLogLocation()+date+".png");
         FileUtils.copyFile(inputFile,outputFile);
     }
 

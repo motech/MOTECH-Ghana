@@ -121,7 +121,9 @@ public class RegisterClientPage {
         inputNHISExpiryDate.sendKeys("01/01/2015");
         selectOption("region", "Upper East");
         selectOption("district", "Kassena-Nankana West");
-        selectOption("communityId", "Abulu");
+        selectOption("subDistrict", "Chiana");
+        selectOption("facility", "Chiana HC");
+        selectOption("communityId", "Adasong");
         inputAddress.sendKeys("Address");
         selectOption("enroll","No");
         submitButton.click();
