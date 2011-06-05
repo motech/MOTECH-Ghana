@@ -2,21 +2,22 @@ package org.motechproject.server.omod.filters;
 
 import org.motechproject.server.model.DefaultedExpectedObsAlert;
 import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExpectedObsMaxAlertsFilter implements Filter<ExpectedObs>{
+public class ExpectedObsMaxAlertsFilter implements Filter<ExpectedObs> {
 
-    private MotechService motechService;
+    private ContextService contextService;
 
-    public List<ExpectedObs> filter(List<ExpectedObs> expectedObservations) {
+    public List<ExpectedObs> on(List<ExpectedObs> expectedObservations) {
         List<ExpectedObs> toBeRemoved = new ArrayList<ExpectedObs>();
 
         for (ExpectedObs expectedObs : expectedObservations) {
-            DefaultedExpectedObsAlert alert = motechService.getDefaultedObsAlertFor(expectedObs);
-            if(alert != null && !alert.canBeSent()){
+            DefaultedExpectedObsAlert alert = motechService().getDefaultedObsAlertFor(expectedObs);
+            if (alert != null && !alert.canBeSent()) {
                 toBeRemoved.add(expectedObs);
             }
         }
@@ -24,10 +25,11 @@ public class ExpectedObsMaxAlertsFilter implements Filter<ExpectedObs>{
         return expectedObservations;
     }
 
-    
-    public void setMotechService(MotechService motechService) {
-        this.motechService = motechService ;
+    private MotechService motechService() {
+        return contextService.getMotechService();
     }
 
-
+    public void setContextService(ContextService contextService) {
+        this.contextService = contextService;
+    }
 }

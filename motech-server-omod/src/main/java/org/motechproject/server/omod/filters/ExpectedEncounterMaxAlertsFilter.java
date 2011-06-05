@@ -2,18 +2,19 @@ package org.motechproject.server.omod.filters;
 
 import org.motechproject.server.model.DefaultedExpectedEncounterAlert;
 import org.motechproject.server.model.ExpectedEncounter;
+import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExpectedEncounterMaxAlertsFilter implements Filter<ExpectedEncounter> {
-    private MotechService motechService;
+    private ContextService contextService;
 
-    public List<ExpectedEncounter> filter(List<ExpectedEncounter> expectedEncounters) {
+    public List<ExpectedEncounter> on(List<ExpectedEncounter> expectedEncounters) {
         List<ExpectedEncounter> toBeRemoved = new ArrayList<ExpectedEncounter>();
         for (ExpectedEncounter expectedEncounter : expectedEncounters) {
-            DefaultedExpectedEncounterAlert alert = motechService.getDefaultedEncounterAlertFor(expectedEncounter);
+            DefaultedExpectedEncounterAlert alert = motechService().getDefaultedEncounterAlertFor(expectedEncounter);
             if (alert != null && !alert.canBeSent()) {
                 toBeRemoved.add(expectedEncounter);
             }
@@ -22,7 +23,11 @@ public class ExpectedEncounterMaxAlertsFilter implements Filter<ExpectedEncounte
         return expectedEncounters;
     }
 
-    public void setMotechService(MotechService motechService) {
-        this.motechService = motechService;
+    private MotechService motechService() {
+        return contextService.getMotechService();
+    }
+
+    public void setContextService(ContextService contextService) {
+        this.contextService = contextService;
     }
 }

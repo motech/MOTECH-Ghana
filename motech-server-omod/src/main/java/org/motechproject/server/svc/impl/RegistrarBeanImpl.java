@@ -43,6 +43,8 @@ import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.omod.*;
 import org.motechproject.server.omod.builder.PatientBuilder;
 import org.motechproject.server.omod.factory.DistrictFactory;
+import org.motechproject.server.omod.filters.ExpectedEncounterFilterChain;
+import org.motechproject.server.omod.filters.ExpectedObsFilterChain;
 import org.motechproject.server.omod.impl.MessageProgramServiceImpl;
 import org.motechproject.server.omod.web.model.WebStaff;
 import org.motechproject.server.svc.BirthOutcomeChild;
@@ -98,6 +100,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
 
     private List<String> staffTypes;
+
+    @Autowired
+    private ExpectedEncounterFilterChain expectedEncountersFilter ;
+    @Autowired
+    private ExpectedObsFilterChain expectedObsFilter ;
 
     @Autowired
     private MotechUserRepository motechUserRepository;
@@ -2920,8 +2927,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     private void sendDefaulterMessages(Date startDate, Date deliveryDate, String[] careGroups, Facility facility) {
 
-        List<ExpectedEncounter> defaultedEncounters = filterRCTEncounters(new ArrayList<ExpectedEncounter>(getDefaultedExpectedEncounters(facility, careGroups, startDate)));
-        List<ExpectedObs> defaultedObservations = filterRCTObs(new ArrayList<ExpectedObs>(getDefaultedExpectedObs(facility, careGroups, startDate)));
+        List<ExpectedEncounter> defaultedEncounters = expectedEncountersFilter.doFilter(new ArrayList<ExpectedEncounter>(getDefaultedExpectedEncounters(facility, careGroups, startDate)));
+        List<ExpectedObs> defaultedObservations = expectedObsFilter.doFilter(new ArrayList<ExpectedObs>(getDefaultedExpectedObs(facility, careGroups, startDate)));
         final String facilityPhoneNumber = facility.getPhoneNumber();
 
         final boolean defaultersPresent = !(defaultedEncounters.isEmpty() && defaultedObservations.isEmpty());
@@ -3768,5 +3775,13 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public MessageProgramServiceImpl getMessageProgramService() {
         return messageProgramService;
+    }
+
+    public void setExpectedEncountersFilter(ExpectedEncounterFilterChain expectedEncountersFilter) {
+        this.expectedEncountersFilter = expectedEncountersFilter;
+    }
+
+    public void setExpectedObsFilter(ExpectedObsFilterChain expectedObsFilter) {
+        this.expectedObsFilter = expectedObsFilter;
     }
 }

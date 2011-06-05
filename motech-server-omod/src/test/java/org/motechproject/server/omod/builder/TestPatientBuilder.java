@@ -1,7 +1,9 @@
 package org.motechproject.server.omod.builder;
 
+import org.junit.Ignore;
 import org.openmrs.Patient;
 
+@Ignore
 public class TestPatientBuilder {
 
     private Integer id ;

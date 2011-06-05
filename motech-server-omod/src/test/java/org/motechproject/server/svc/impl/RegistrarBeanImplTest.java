@@ -38,6 +38,9 @@ import org.easymock.Capture;
 import org.motechproject.server.model.*;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.omod.filters.ExpectedEncounterFilterChain;
+import org.motechproject.server.omod.filters.ExpectedObsFilterChain;
+import org.motechproject.server.omod.filters.Filter;
 import org.motechproject.server.omod.web.model.KassenaNankana;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.util.MotechConstants;
@@ -85,6 +88,12 @@ public class RegistrarBeanImplTest extends TestCase {
         registrarBean.setPersonService(personService);
         registrarBean.setRctService(rctService);
         registrarBean.setMobileService(mobileService);
+        ExpectedEncounterFilterChain expectedEncounterFilterChain = new ExpectedEncounterFilterChain();
+        expectedEncounterFilterChain.setFilters(new ArrayList<Filter<ExpectedEncounter>>());
+        ExpectedObsFilterChain expectedObsFilterChain = new ExpectedObsFilterChain();
+        expectedObsFilterChain.setFilters(new ArrayList<Filter<ExpectedObs>>());
+        registrarBean.setExpectedEncountersFilter(expectedEncounterFilterChain);
+        registrarBean.setExpectedObsFilter(expectedObsFilterChain);
     }
 
     @Override
@@ -503,7 +512,6 @@ public class RegistrarBeanImplTest extends TestCase {
 
 
         Patient p = new Patient(5716);
-        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p)).andReturn(false);
 
         ExpectedEncounter enc = new ExpectedEncounter();
         enc.setPatient(p);
@@ -516,7 +524,6 @@ public class RegistrarBeanImplTest extends TestCase {
         // To Mock
         expect(motechService.getCommunityByPatient(p)).andReturn(null);
         expect(contextService.getMotechService()).andReturn(motechService).anyTimes();
-        expect(motechService.facilityFor(p)).andReturn(facility);
         expect(motechService.getAllFacilities()).andReturn(facilities);
         expect(contextService.getAdministrationService()).andReturn(adminService).anyTimes();
         expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn("35").anyTimes();
@@ -573,7 +580,7 @@ public class RegistrarBeanImplTest extends TestCase {
 
 
         Patient p = new Patient(5716);
-        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p)).andReturn(false).times(2);
+        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p)).andReturn(false).times(1);
 
         ExpectedEncounter enc = new ExpectedEncounter();
         enc.setPatient(p);
