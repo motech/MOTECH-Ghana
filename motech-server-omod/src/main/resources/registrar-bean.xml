@@ -119,7 +119,6 @@
         <property name="schedulerService" ref="schedulerService"/>
         <property name="rctService" ref="rctBeanProxy"/>
         <property name="messageProgramService" ref="messageProgramService"/>
-
         <property name="staffTypes">
             <list>
                 <value>CHO</value>
@@ -175,6 +174,37 @@
                 </bean>
             </list>
         </property>
+    </bean>
+
+    <bean id="expectedEncountersFilter" class="org.motechproject.server.omod.filters.ExpectedEncounterFilterChain">
+        <property name="filters">
+            <util:list>
+                <bean class="org.motechproject.server.omod.filters.ExpectedEncounterFilterForRCT">
+                    <property name="condition" ref="rctCondition"/>
+                </bean>
+                <bean class="org.motechproject.server.omod.filters.ExpectedEncounterMaxAlertsFilter">
+                    <property name="contextService" ref="contextService"/>
+                </bean>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="expectedObsFilter" class="org.motechproject.server.omod.filters.ExpectedObsFilterChain">
+        <property name="filters">
+            <util:list>
+                <bean class="org.motechproject.server.omod.filters.ExpectedObsFilterForRCT">
+                    <property name="condition" ref="rctCondition"/>
+                </bean>
+                <bean class="org.motechproject.server.omod.filters.ExpectedObsMaxAlertsFilter">
+                    <property name="contextService" ref="contextService"/>
+                </bean>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="rctCondition" class="org.motechproject.server.omod.filters.condition.RCTCondition">
+        <property name="contextService" ref="contextService"/>
+        <property name="rctService" ref="rctService"/>
     </bean>
 
     <!--<bean id="mobileClient" class="org.motechproject.server.ws.MessageServiceStub"/>-->

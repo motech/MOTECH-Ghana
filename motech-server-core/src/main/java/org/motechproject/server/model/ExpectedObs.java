@@ -39,7 +39,7 @@ import org.openmrs.Patient;
 
 import java.util.Date;
 
-public class ExpectedObs implements ExpectedEvent {
+public class ExpectedObs {
 
     private Long id;
     private Patient patient;

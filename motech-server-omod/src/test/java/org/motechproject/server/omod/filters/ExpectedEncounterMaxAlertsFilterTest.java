@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.motechproject.server.model.CareConfiguration;
 import org.motechproject.server.model.DefaultedExpectedEncounterAlert;
 import org.motechproject.server.model.ExpectedEncounter;
+import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 
 import java.util.ArrayList;
@@ -14,11 +15,13 @@ import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertTrue;
 
 public class ExpectedEncounterMaxAlertsFilterTest {
+
+    private ContextService contextService;
     private MotechService motechService;
 
-
     @Before
-    public void setUp(){
+    public void setUp() {
+        contextService = createMock(ContextService.class);
         motechService = createMock(MotechService.class);
     }
 
@@ -37,22 +40,23 @@ public class ExpectedEncounterMaxAlertsFilterTest {
         expectedEncounters.add(expEnc2);
         expectedEncounters.add(expEnc3);
 
-        CareConfiguration care1 = new CareConfiguration(1L,"ANC",3);
-        DefaultedExpectedEncounterAlert defaulterAlert1 = new DefaultedExpectedEncounterAlert(1L,expEnc1, care1,2);
-        DefaultedExpectedEncounterAlert defaulterAlert2 = new DefaultedExpectedEncounterAlert(2L,expEnc2,care1,3);
-        DefaultedExpectedEncounterAlert defaulterAlert3 = new DefaultedExpectedEncounterAlert(3L,expEnc3,care1,4);
+        CareConfiguration care1 = new CareConfiguration(1L, "ANC", 3);
+        DefaultedExpectedEncounterAlert defaulterAlert1 = new DefaultedExpectedEncounterAlert(1L, expEnc1, care1, 2);
+        DefaultedExpectedEncounterAlert defaulterAlert2 = new DefaultedExpectedEncounterAlert(2L, expEnc2, care1, 3);
+        DefaultedExpectedEncounterAlert defaulterAlert3 = new DefaultedExpectedEncounterAlert(3L, expEnc3, care1, 4);
 
+        expect(contextService.getMotechService()).andReturn(motechService).times(3);
         expect(motechService.getDefaultedEncounterAlertFor(expEnc1)).andReturn(defaulterAlert1);
         expect(motechService.getDefaultedEncounterAlertFor(expEnc2)).andReturn(defaulterAlert2);
         expect(motechService.getDefaultedEncounterAlertFor(expEnc3)).andReturn(defaulterAlert3);
 
-        replay(motechService);
+        replay(contextService, motechService);
 
         ExpectedEncounterMaxAlertsFilter filter = new ExpectedEncounterMaxAlertsFilter();
-        filter.setMotechService(motechService);
-        List<ExpectedEncounter> result = filter.filter(expectedEncounters);
+        filter.setContextService(contextService);
+        List<ExpectedEncounter> result = filter.on(expectedEncounters);
 
-        verify(motechService);
+        verify(contextService, motechService);
 
         assertTrue(result.size() == 1);
         assertTrue(result.contains(expEnc1));

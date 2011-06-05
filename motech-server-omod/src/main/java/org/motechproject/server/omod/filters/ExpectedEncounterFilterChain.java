@@ -10,8 +10,12 @@ public class ExpectedEncounterFilterChain implements FilterChain<ExpectedEncount
 
     public List<ExpectedEncounter> doFilter(List<ExpectedEncounter> collection) {
         for (Filter<ExpectedEncounter> filter : filters) {
-            filter.filter(collection);
+            filter.on(collection);
         }
         return collection;
+    }
+
+    public void setFilters(List<Filter<ExpectedEncounter>> filters) {
+        this.filters = filters;
     }
 }
