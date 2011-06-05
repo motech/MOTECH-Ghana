@@ -2924,7 +2924,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         List<ExpectedObs> defaultedObservations = filterRCTObs(new ArrayList<ExpectedObs>(getDefaultedExpectedObs(facility, careGroups, startDate)));
         final String facilityPhoneNumber = facility.getPhoneNumber();
 
-        //TODO: Replace the above code when RCT filtering rules are finalized and implemented.
         final boolean defaultersPresent = !(defaultedEncounters.isEmpty() && defaultedObservations.isEmpty());
         if (defaultersPresent) {
             WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
