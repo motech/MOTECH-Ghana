@@ -3172,4 +3172,14 @@
         </sql>
     </diff>
 
+    <diff>
+        <version>4.6</version>
+        <author>ThoughtWorks</author>
+        <date>June 6 2011</date>
+		<description>Changing column name</description>
+        <sql>
+            alter table motechmodule_defaulted_expected_obs_alert change no_of_alerts_sent alerts_sent int(4) default 0;
+        </sql>
+    </diff>
+
 </sqldiff>
