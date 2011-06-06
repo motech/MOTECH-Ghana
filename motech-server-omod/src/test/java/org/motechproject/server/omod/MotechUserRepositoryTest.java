@@ -40,4 +40,33 @@ public class MotechUserRepositoryTest {
         verify(userService).getRole("Provider");
         assertThat(user.getSystemId(), equalTo("27"));
     }
+
+    @Test
+    public void testNewUserWithoutPhoneNumber() throws Exception {
+        PersonService personService = mock(PersonService.class);
+        IdentifierGenerator identifierGenerator = mock(IdentifierGenerator.class);
+        UserService userService = mock(UserService.class);
+        Role role = mock(Role.class);
+        PersonAttributeType phoneNumberAttributeType = new PersonAttributeType();
+        phoneNumberAttributeType.setId(1);
+        PersonAttributeType staffTypeAttributeType = new PersonAttributeType();
+        staffTypeAttributeType.setId(2);
+
+        when(identifierGenerator.generateStaffId()).thenReturn("27");
+        when(personService.getPersonAttributeTypeByName(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeName())).thenReturn(phoneNumberAttributeType);
+        when(personService.getPersonAttributeTypeByName(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_STAFF_TYPE.getAttributeName())).thenReturn(staffTypeAttributeType);
+        when(userService.getRole("Provider")).thenReturn(role);
+
+        String emptyPhoneNumber = null;
+        MotechUserRepository motechUserRepository = new MotechUserRepository(identifierGenerator, userService, personService);
+        User user = motechUserRepository.newUser(new WebStaff("Jenny", "Jones ", emptyPhoneNumber, "CHO"));
+
+        verify(identifierGenerator).generateStaffId();
+        verify(personService).getPersonAttributeTypeByName("Phone Number");
+        verify(personService).getPersonAttributeTypeByName("Staff Type");
+        verify(userService).getRole("Provider");
+        assertThat(user.getSystemId(), equalTo("27"));
+        assertThat(user.getAttribute(1).getValue(), equalTo(""));
+        assertThat(user.getAttribute(2).getValue(), equalTo("CHO"));
+    }
 }
