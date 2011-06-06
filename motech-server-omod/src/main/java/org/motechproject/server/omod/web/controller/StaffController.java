@@ -86,21 +86,11 @@ public class StaffController {
             PersonAttribute phoneNumberAttr = staff.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeName());
             PersonAttribute staffTypeAttr = staff.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_STAFF_TYPE.getAttributeName());
 
-            String phoneNumber = initializeDefaults(phoneNumberAttr);
-            String staffType = initializeDefaults(staffTypeAttr);
-            WebStaff webStaff = new WebStaff(staff.getPersonName().getGivenName(), staff.getPersonName().getFamilyName(), phoneNumber, staffType, staffId);
+            WebStaff webStaff = new WebStaff(staff.getPersonName().getGivenName(), staff.getPersonName().getFamilyName(), phoneNumberAttr.getValue(), staffTypeAttr.getValue(), staffId);
             model.addAttribute("staff", webStaff);
         }
         model.addAttribute("staffTypes", registrarBean.getStaffTypes());
         return "/module/motechmodule/staff";
-    }
-
-    private String initializeDefaults(PersonAttribute personAttribute) {
-        String value = "";
-        if(personAttribute != null){
-            value = personAttribute.getValue();
-        }
-        return value;
     }
 
     @RequestMapping(method = RequestMethod.POST)

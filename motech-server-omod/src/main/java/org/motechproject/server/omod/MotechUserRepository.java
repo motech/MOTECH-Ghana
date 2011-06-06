@@ -29,7 +29,6 @@ public class MotechUserRepository {
         user.addName(name);
 
         createPhoneNumber(user, webStaff);
-
         createType(user, webStaff);
 
         Role role = userService.getRole(OpenmrsConstants.PROVIDER_ROLE);
@@ -40,38 +39,25 @@ public class MotechUserRepository {
     public User updateUser(User staff, WebStaff webStaff) {
         staff.getPersonName().setGivenName(webStaff.getFirstName());
         staff.getPersonName().setFamilyName(webStaff.getLastName());
-        if (webStaff.getPhone() != null) {
-            if (attributeExists(staff, PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER)) {
-                staff.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeName()).setValue(webStaff.getPhone());
-            } else {
-                createPhoneNumber(staff, webStaff);
-            }
-        }
-        if (webStaff.getType() != null) {
-            if (attributeExists(staff, PersonAttributeTypeEnum.PERSON_ATTRIBUTE_STAFF_TYPE)) {
-                staff.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_STAFF_TYPE.getAttributeName()).setValue(webStaff.getType());
-            } else {
-                createType(staff, webStaff);
-            }
-        }
+        String phoneValue = webStaff.getPhone() == null ? "" : webStaff.getPhone();
+        String typeValue = webStaff.getType() == null ? "" : webStaff.getType();
+        staff.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeName()).setValue(phoneValue);
+        staff.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_STAFF_TYPE.getAttributeName()).setValue(typeValue);
         return staff;
     }
 
-
-    private void createType(User user, WebStaff webStaff) {
-        if (webStaff.getType() != null) {
-            PersonAttributeType staffTypeAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_STAFF_TYPE.
-                    getAttributeType(personService);
-            user.addAttribute(new PersonAttribute(staffTypeAttrType, webStaff.getType()));
-        }
+    private void createPhoneNumber(User user, WebStaff webStaff) {
+        String phoneValue = webStaff.getPhone() == null ? "" : webStaff.getPhone();
+        PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.
+                getAttributeType(personService);
+        user.addAttribute(new PersonAttribute(phoneNumberAttrType, phoneValue));
     }
 
-    private void createPhoneNumber(User user, WebStaff webStaff) {
-        if (webStaff.getPhone() != null) {
-            PersonAttributeType phoneNumberAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.
-                    getAttributeType(personService);
-            user.addAttribute(new PersonAttribute(phoneNumberAttrType, webStaff.getPhone()));
-        }
+    private void createType(User user, WebStaff webStaff) {
+        String typeValue = webStaff.getType() == null ? "" : webStaff.getType();
+        PersonAttributeType staffTypeAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_STAFF_TYPE.
+                getAttributeType(personService);
+        user.addAttribute(new PersonAttribute(staffTypeAttrType, typeValue));
     }
 
     private boolean attributeExists(User staff, PersonAttributeTypeEnum personAttributeTypeEnum) {
