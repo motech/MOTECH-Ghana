@@ -43,8 +43,7 @@ import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.omod.*;
 import org.motechproject.server.omod.builder.PatientBuilder;
 import org.motechproject.server.omod.factory.DistrictFactory;
-import org.motechproject.server.omod.filters.ExpectedEncounterFilterChain;
-import org.motechproject.server.omod.filters.ExpectedObsFilterChain;
+import org.motechproject.server.omod.filters.FilterChain;
 import org.motechproject.server.omod.impl.MessageProgramServiceImpl;
 import org.motechproject.server.omod.web.model.WebStaff;
 import org.motechproject.server.svc.BirthOutcomeChild;
@@ -63,6 +62,7 @@ import org.openmrs.api.*;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.TaskDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
@@ -102,9 +102,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     private List<String> staffTypes;
 
     @Autowired
-    private ExpectedEncounterFilterChain expectedEncountersFilter;
+    @Qualifier("expectedEncountersFilter")
+    private FilterChain expectedEncountersFilter;
+
     @Autowired
-    private ExpectedObsFilterChain expectedObsFilter;
+    @Qualifier("expectedObsFilter")
+    private FilterChain expectedObsFilter;
 
     @Autowired
     private MotechUserRepository motechUserRepository;
@@ -2926,7 +2929,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     private void sendDefaulterMessages(Date startDate, Date deliveryDate, String[] careGroups, Facility facility) {
-
+        log.debug("Starting Sending of defaulter messages for " + facility.getLocation().getName());
         List<ExpectedEncounter> defaultedExpectedEncounters = getDefaultedExpectedEncounters(facility, careGroups, startDate);
         List<ExpectedObs> defaultedExpectedObs = getDefaultedExpectedObs(facility, careGroups, startDate);
 
@@ -3803,11 +3806,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         return messageProgramService;
     }
 
-    public void setExpectedEncountersFilter(ExpectedEncounterFilterChain expectedEncountersFilter) {
+    public void setExpectedEncountersFilter(FilterChain expectedEncountersFilter) {
         this.expectedEncountersFilter = expectedEncountersFilter;
     }
 
-    public void setExpectedObsFilter(ExpectedObsFilterChain expectedObsFilter) {
+    public void setExpectedObsFilter(FilterChain expectedObsFilter) {
         this.expectedObsFilter = expectedObsFilter;
     }
 }

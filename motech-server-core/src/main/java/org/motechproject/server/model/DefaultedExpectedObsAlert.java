@@ -26,7 +26,7 @@ public class DefaultedExpectedObsAlert {
     }
 
     public Boolean canBeSent() {
-        return careConfiguration.canAlertBeSent(alertsSent);
+        return null == careConfiguration ? true : careConfiguration.canAlertBeSent(alertsSent);
     }
 
     public void incrementCount() {
