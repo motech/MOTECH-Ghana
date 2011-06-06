@@ -3131,6 +3131,7 @@
              expected_obs_alert_id bigint NOT NULL AUTO_INCREMENT primary key,
              expected_obs_id bigint not null,
              no_of_alerts_sent int(4) default 0,
+             care_id bigint,
              constraint fk_defaulted_expected_obs FOREIGN KEY (expected_obs_id) references motechmodule_expected_obs(motechmodule_expected_obs_id),
              constraint fk_care_configuration_obs FOREIGN KEY (care_id) references motechmodule_care_configuration(care_id)
             )ENGINE=InnoDB DEFAULT CHARSET=utf8;
