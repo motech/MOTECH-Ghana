@@ -6,6 +6,7 @@ import org.openmrs.api.PersonService;
 public enum PersonAttributeTypeEnum {
     PERSON_ATTRIBUTE_INSURED("Insured"),
     PERSON_ATTRIBUTE_PHONE_NUMBER("Phone Number"),
+    PERSON_ATTRIBUTE_STAFF_TYPE("Staff Type"),
     PERSON_ATTRIBUTE_NHIS_NUMBER("NHIS Number"),
     PERSON_ATTRIBUTE_NHIS_EXP_DATE("NHIS Expiration Date"),
     PERSON_ATTRIBUTE_PHONE_TYPE("Phone Type"),

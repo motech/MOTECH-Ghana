@@ -3090,10 +3090,21 @@
         </sql>
     </diff>
 
-    <diff>
+	<diff>
         <version>4.2</version>
-        <author>Thoughtworks</author>
+        <author>ThoughtWorks</author>
         <date>June 3 2011</date>
+		<description>Creating the pregnancy.notification message definition for patient who don't have the community specified</description>
+        <sql>
+            INSERT INTO `motechmodule_messagedefinition` (`message_key`,`public_id`,`message_type`)
+            VALUES ('pregnancy.notification.for.patient.with.no.community',416,'INFORMATIONAL');
+        </sql>
+    </diff>
+
+    <diff>
+        <version>4.3</version>
+        <author>ThoughtWorks</author>
+        <date>June 6 2011</date>
         <description>Table for persisting the number of alerts sent for expected encounter or observations</description>
         <sql>
 
@@ -3102,7 +3113,7 @@
               care_id bigint NOT NULL AUTO_INCREMENT primary key,
               care_name varchar(50) not null,
               max_alerts int(4) default 1
-            )ENGINE=InnoDB DEFAULT CHARSET=utf8;                         
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
             CREATE TABLE IF NOT EXISTS motechmodule_defaulted_expected_encounter_alert
@@ -3124,23 +3135,11 @@
              constraint fk_care_configuration_obs FOREIGN KEY (care_id) references motechmodule_care_configuration(care_id)
             )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-        </sql>
-    </diff>
-
-	<diff>
-        <version>4.2</version>
-        <author>ThoughtWorks</author>
-        <date>June 3 2011</date>
-		<description>Creating the pregnancy.notification message definition for patient who don't have the community specified</description>
-        <sql>
-            INSERT INTO `motechmodule_messagedefinition` (`message_key`,`public_id`,`message_type`)
-            VALUES ('pregnancy.notification.for.patient.with.no.community',416,'INFORMATIONAL');
         </sql>
     </diff>
 
     <diff>
-        <version>4.3</version>
+        <version>4.4</version>
         <author>Thoughtworks</author>
         <date>June 6 2011</date>
         <description>Data for care configuration</description>
@@ -3157,6 +3156,18 @@
             insert into motechmodule_care_configuration(care_name,max_alerts) values('VitaA',3);
             insert into motechmodule_care_configuration(care_name,max_alerts) values('PNC(mother)',3);
             insert into motechmodule_care_configuration(care_name,max_alerts) values('PNC(baby)',3);
+        </sql>
+    </diff>
+
+	<diff>
+        <version>4.5</version>
+        <author>ThoughtWorks</author>
+        <date>June 6 2011</date>
+		<description>Creating 'Staff Type' person attribute</description>
+        <sql>
+            INSERT INTO person_attribute_type
+            (person_attribute_type_id,name,description,format,creator,date_created,uuid) VALUES
+            (19,'Staff Type','A person\'s staff type.','java.lang.String',1,NOW(),UUID());
         </sql>
     </diff>
 

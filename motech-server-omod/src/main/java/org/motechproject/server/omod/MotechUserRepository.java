@@ -34,6 +34,12 @@ public class MotechUserRepository {
             user.addAttribute(new PersonAttribute(phoneNumberAttrType, webStaff.getPhone()));
         }
 
+        if (webStaff.getType() != null) {
+            PersonAttributeType staffTypeAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_STAFF_TYPE.
+                    getAttributeType(personService);
+            user.addAttribute(new PersonAttribute(staffTypeAttrType, webStaff.getType()));
+        }
+
         Role role = userService.getRole(OpenmrsConstants.PROVIDER_ROLE);
         user.addRole(role);
         return user;
@@ -44,6 +50,7 @@ public class MotechUserRepository {
         staff.getPersonName().setGivenName(webStaff.getFirstName());
         staff.getPersonName().setFamilyName(webStaff.getLastName());
         staff.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeName()).setValue(webStaff.getPhone());
+        staff.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_STAFF_TYPE.getAttributeName()).setValue(webStaff.getType());
         return staff;
     }
 }
