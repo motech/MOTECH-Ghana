@@ -2,6 +2,7 @@ package org.motechproject.server.svc.impl;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.Facility;
@@ -77,6 +78,8 @@ public class RegistrarBeanDefaultAlertsTest {
     }
 
     @Test
+    @Ignore
+    //TODO : INCOMPLETE TEST
     public void defaulterAlertsTest() {
 
         List<Facility> facilities = facilities();
