@@ -2927,20 +2927,23 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     private void sendDefaulterMessages(Date startDate, Date deliveryDate, String[] careGroups, Facility facility) {
 
-        List<ExpectedEncounter> defaultedEncounters = expectedEncountersFilter.doFilter(new ArrayList<ExpectedEncounter>(getDefaultedExpectedEncounters(facility, careGroups, startDate)));
-        List<ExpectedObs> defaultedObservations = expectedObsFilter.doFilter(new ArrayList<ExpectedObs>(getDefaultedExpectedObs(facility, careGroups, startDate)));
+        List<ExpectedEncounter> defaultedExpectedEncounters = getDefaultedExpectedEncounters(facility, careGroups, startDate);
+        List<ExpectedObs> defaultedExpectedObs = getDefaultedExpectedObs(facility, careGroups, startDate);
+
+        List<ExpectedEncounter> filteredDefaultedEncounters = expectedEncountersFilter.doFilter(new ArrayList<ExpectedEncounter>(defaultedExpectedEncounters));
+        List<ExpectedObs> filteredDefaultedExpectedObs = expectedObsFilter.doFilter(new ArrayList<ExpectedObs>(defaultedExpectedObs));
         final String facilityPhoneNumber = facility.getPhoneNumber();
 
-        final boolean defaultersPresent = !(defaultedEncounters.isEmpty() && defaultedObservations.isEmpty());
+        final boolean defaultersPresent = !(filteredDefaultedEncounters.isEmpty() && filteredDefaultedExpectedObs.isEmpty());
         if (defaultersPresent) {
             WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
             modelConverter.setRegistrarBean(this);
-            Care[] defaultedCares = modelConverter.defaultedToWebServiceCares(defaultedEncounters, defaultedObservations);
+            Care[] defaultedCares = modelConverter.defaultedToWebServiceCares(filteredDefaultedEncounters, filteredDefaultedExpectedObs);
             log.info("Sending defaulter message to " + facility.name() + " at " + facilityPhoneNumber);
             boolean alertsSent = sendStaffDefaultedCareMessage(facilityPhoneNumber, deliveryDate, defaultedCares, getCareMessageGroupingStrategy(facility.getLocation()));
             if (alertsSent) {
-                incrementDefaultedEncountersAlertCount(defaultedEncounters);
-                incrementDefaultedObservationsAlertCount(defaultedObservations);
+                incrementDefaultedEncountersAlertCount(filteredDefaultedEncounters);
+                incrementDefaultedObservationsAlertCount(filteredDefaultedExpectedObs);
             }
         } else {
             sendNoDefaultersMessage(facility, facilityPhoneNumber);

@@ -35,6 +35,7 @@ package org.motechproject.server.svc.impl;
 
 import junit.framework.TestCase;
 import org.easymock.Capture;
+import org.easymock.EasyMock;
 import org.motechproject.server.model.*;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
@@ -493,7 +494,7 @@ public class RegistrarBeanImplTest extends TestCase {
         verify(contextService, adminService, motechService, personService);
     }
 
-    public void notTestSendStaffCareMessages_GroupByCommunity() {
+    public void testSendStaffCareMessagesGroupByCommunity() {
 
         Date forDate = new Date();
         String careGroups[] = {"ANC", "TT", "IPT"};
@@ -513,6 +514,7 @@ public class RegistrarBeanImplTest extends TestCase {
 
         Patient p = new Patient(5716);
 
+
         ExpectedEncounter enc = new ExpectedEncounter();
         enc.setPatient(p);
 
@@ -521,16 +523,21 @@ public class RegistrarBeanImplTest extends TestCase {
 
         encounters.add(enc);
 
+        final DefaultedExpectedEncounterAlert defaultedExpectedEncounterAlert = anyObject();
+
         // To Mock
         expect(motechService.getCommunityByPatient(p)).andReturn(null);
         expect(contextService.getMotechService()).andReturn(motechService).anyTimes();
-        expect(motechService.getAllFacilities()).andReturn(facilities);
-        expect(contextService.getAdministrationService()).andReturn(adminService).anyTimes();
+        expect(contextService.getAdministrationService()).andReturn(adminService).times(2);
+
         expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn("35").anyTimes();
-        expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
-                null, forDate, forDate, 35)).andReturn(encounters);
-        expect(motechService.getExpectedObs(null, facility, careGroups, null,
-                null, forDate, forDate, 35)).andReturn(emptyObs);
+        expect(motechService.getExpectedEncounter(null, facility, careGroups, null, null, forDate, forDate, 35)).andReturn(encounters);
+        expect(motechService.getExpectedObs(null, facility, careGroups, null, null, forDate, forDate, 35)).andReturn(emptyObs);
+
+        expect(motechService.getAllFacilities()).andReturn(facilities);
+        expect(motechService.getCareConfigurationFor(EasyMock.<String>anyObject())).andReturn(EasyMock.<CareConfiguration>anyObject());
+        expect(motechService.getDefaultedEncounterAlertFor(enc)).andReturn(defaultedExpectedEncounterAlert);
+
 
         Capture<String> capturedMessageId = new Capture<String>();
         Capture<String> capturedPhoneNumber = new Capture<String>();
@@ -540,10 +547,14 @@ public class RegistrarBeanImplTest extends TestCase {
         Capture<Date> capturedStartDate = new Capture<Date>();
         Capture<Date> capturedEndDate = new Capture<Date>();
 
+        
         expect(mobileService.sendDefaulterMessage(capture(capturedMessageId), capture(capturedPhoneNumber),
                 capture(capturedCares), capture(capturedStrategy),
                 capture(capturedMediaType), capture(capturedStartDate),
                 capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
+
+        motechService.saveorUpdateDefaultedEncounterAlert(EasyMock.<DefaultedExpectedEncounterAlert>anyObject());
+        expectLastCall().atLeastOnce();
 
         replay(contextService, adminService, motechService, mobileService, rctService);
 
@@ -558,7 +569,7 @@ public class RegistrarBeanImplTest extends TestCase {
         assertEquals(CareMessageGroupingStrategy.COMMUNITY, capturedStrategy.getValue());
     }
 
-    public void notTestShouldSendUpcomingCareMessageWhenThereAreUpcomingExpectedEncounters() {
+    public void testShouldSendUpcomingCareMessageWhenThereAreUpcomingExpectedEncounters() {
 
         Date forDate = new Date();
         String careGroups[] = {"ANC", "TT", "IPT"};
@@ -587,11 +598,12 @@ public class RegistrarBeanImplTest extends TestCase {
 
         List<ExpectedEncounter> encounters = new ArrayList<ExpectedEncounter>();
         List<ExpectedObs> emptyObs = new ArrayList<ExpectedObs>();
-
+        final DefaultedExpectedEncounterAlert defaultedExpectedEncounterAlert = anyObject();
         encounters.add(enc);
 
         // To Mock
-        expect(motechService.getCommunityByPatient(p)).andReturn(null).times(2);
+        expect(motechService.getCommunityByPatient(p)).andReturn(null);
+        expect(motechService.getCommunityByPatient(p)).andReturn(null);
         expect(contextService.getMotechService()).andReturn(motechService).anyTimes();
         expect(motechService.getAllFacilities()).andReturn(facilities);
         expect(motechService.facilityFor(p)).andReturn(facility).anyTimes();
@@ -606,6 +618,12 @@ public class RegistrarBeanImplTest extends TestCase {
         expect(motechService.getExpectedObs(null, facility, careGroups, null,
                 forDate, null, forDate, 35)).andReturn(emptyObs);
 
+        expect(motechService.getCareConfigurationFor(EasyMock.<String>anyObject())).andReturn(EasyMock.<CareConfiguration>anyObject());
+        expect(motechService.getDefaultedEncounterAlertFor(enc)).andReturn(defaultedExpectedEncounterAlert);
+
+
+
+
         Capture<String> capturedMessageId = new Capture<String>();
         Capture<String> capturedPhoneNumber = new Capture<String>();
         Capture<Care[]> capturedCares = new Capture<Care[]>();
@@ -614,15 +632,14 @@ public class RegistrarBeanImplTest extends TestCase {
         Capture<Date> capturedStartDate = new Capture<Date>();
         Capture<Date> capturedEndDate = new Capture<Date>();
 
-        expect(mobileService.sendDefaulterMessage(capture(capturedMessageId), capture(capturedPhoneNumber),
-                capture(capturedCares), capture(capturedStrategy),
-                capture(capturedMediaType), capture(capturedStartDate),
+        expect(mobileService.sendDefaulterMessage(capture(capturedMessageId), capture(capturedPhoneNumber), capture(capturedCares), capture(capturedStrategy), capture(capturedMediaType), capture(capturedStartDate),
                 capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
 
-        expect(mobileService.sendBulkCaresMessage(capture(capturedMessageId), capture(capturedPhoneNumber),
-                capture(capturedCares), capture(capturedStrategy),
-                capture(capturedMediaType), capture(capturedStartDate),
+        expect(mobileService.sendBulkCaresMessage(capture(capturedMessageId), capture(capturedPhoneNumber), capture(capturedCares), capture(capturedStrategy), capture(capturedMediaType), capture(capturedStartDate),
                 capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
+
+        motechService.saveorUpdateDefaultedEncounterAlert(EasyMock.<DefaultedExpectedEncounterAlert>anyObject());
+        expectLastCall().atLeastOnce();
 
         replay(contextService, adminService, motechService, mobileService, rctService);
 
@@ -684,11 +701,11 @@ public class RegistrarBeanImplTest extends TestCase {
         assertEquals("+1 555 123-1234", capturedPhoneNumber.getValue());
     }
 
-    public void notTestShouldSendDefaulterAlertsForAllDefaultsOnAnEncounter() {
+    public void testShouldSendDefaulterAlertsForAllDefaultsOnAnEncounter() {
         int expectedNumberOfDefaultsOnAnEncounter = 50;
         for (int i = 0; i < expectedNumberOfDefaultsOnAnEncounter; i++) {
             reset(rctService, contextService, adminService, motechService, mobileService);
-            notTestSendStaffCareMessages_GroupByCommunity();
+            testSendStaffCareMessagesGroupByCommunity();
         }
     }
 
