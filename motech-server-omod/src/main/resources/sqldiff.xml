@@ -3174,7 +3174,7 @@
             insert into motechmodule_care_configuration(care_name, max_alerts) values('IPTI3',3);
             insert into motechmodule_care_configuration(care_name, max_alerts) values('OPV0',3);
             insert into motechmodule_care_configuration(care_name, max_alerts) values('OPV1',3);
-            insert into motechmodule_care_configuration(care_name, max_alerts) values('OPV2',3)
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('OPV2',3);
             insert into motechmodule_care_configuration(care_name, max_alerts) values('OPV3',3);
             insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA1',3);
             insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA2',3);
