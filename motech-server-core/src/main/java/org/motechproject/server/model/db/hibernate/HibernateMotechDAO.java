@@ -900,4 +900,18 @@ public class HibernateMotechDAO implements MotechDAO {
         criteria.add(Restrictions.eq("expectedObs", expectedObs));
         return (DefaultedExpectedObsAlert) criteria.uniqueResult();
     }
+
+    public CareConfiguration getCareConfigurationFor(String careName) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(CareConfiguration.class);
+        criteria.add(Restrictions.eq("name",careName));
+        return (CareConfiguration) criteria.uniqueResult();
+    }
+
+    public void saveDefaultedEncounterAlert(DefaultedExpectedEncounterAlert encounterAlert) {
+        sessionFactory.getCurrentSession().saveOrUpdate(encounterAlert);
+    }
+
+    public void saveOrUpdateDefaultedObsAlert(DefaultedExpectedObsAlert obsAlert) {
+        sessionFactory.getCurrentSession().saveOrUpdate(obsAlert);
+    }
 }

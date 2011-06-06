@@ -102,9 +102,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     private List<String> staffTypes;
 
     @Autowired
-    private ExpectedEncounterFilterChain expectedEncountersFilter ;
+    private ExpectedEncounterFilterChain expectedEncountersFilter;
     @Autowired
-    private ExpectedObsFilterChain expectedObsFilter ;
+    private ExpectedObsFilterChain expectedObsFilter;
 
     @Autowired
     private MotechUserRepository motechUserRepository;
@@ -2937,10 +2937,44 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             modelConverter.setRegistrarBean(this);
             Care[] defaultedCares = modelConverter.defaultedToWebServiceCares(defaultedEncounters, defaultedObservations);
             log.info("Sending defaulter message to " + facility.name() + " at " + facilityPhoneNumber);
-            sendStaffDefaultedCareMessage(facilityPhoneNumber, deliveryDate, defaultedCares, getCareMessageGroupingStrategy(facility.getLocation()));
+            boolean alertsSent = sendStaffDefaultedCareMessage(facilityPhoneNumber, deliveryDate, defaultedCares, getCareMessageGroupingStrategy(facility.getLocation()));
+            if (alertsSent) {
+                incrementDefaultedEncountersAlertCount(defaultedEncounters);
+                incrementDefaultedObservationsAlertCount(defaultedObservations);
+            }
         } else {
             sendNoDefaultersMessage(facility, facilityPhoneNumber);
         }
+    }
+
+    private void incrementDefaultedObservationsAlertCount(List<ExpectedObs> defaultedObservations) {
+        for (ExpectedObs defaultedObs : defaultedObservations) {
+            DefaultedExpectedObsAlert alert = motechService().getDefaultedObsAlertFor(defaultedObs);
+            if (alert == null) {
+                DefaultedExpectedObsAlert obsAlert = new DefaultedExpectedObsAlert(defaultedObs, careConfigurationFor(defaultedObs.getName()), 1);
+                motechService().saveOrUpdateDefaultedObsAlert(obsAlert);
+                continue;
+            }
+            alert.incrementCount();
+            motechService().saveOrUpdateDefaultedObsAlert(alert);
+        }
+    }
+
+    private void incrementDefaultedEncountersAlertCount(List<ExpectedEncounter> defaultedEncounters) {
+        for (ExpectedEncounter defaultedEncounter : defaultedEncounters) {
+            DefaultedExpectedEncounterAlert alert = motechService().getDefaultedEncounterAlertFor(defaultedEncounter);
+            if (alert == null) {
+                DefaultedExpectedEncounterAlert encounterAlert = new DefaultedExpectedEncounterAlert(defaultedEncounter, careConfigurationFor(defaultedEncounter.getName()), 1);
+                motechService().saveorUpdateDefaultedEncounterAlert(encounterAlert);
+                continue;
+            }
+            alert.incrementCount();
+            motechService().saveorUpdateDefaultedEncounterAlert(alert);
+        }
+    }
+
+    private CareConfiguration careConfigurationFor(String careName) {
+        return motechService().getCareConfigurationFor(careName);
     }
 
     private void sendNoUpcomingCareMessage(Facility facility, String phoneNumber) {
@@ -2986,8 +3020,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     private boolean meetsFilteringCriteria(Patient patient) {
         if (patient == null) return true;
-        if(rctService.isPatientRegisteredAndInTreatmentGroup(patient)) return false ;
-        return isFromUpperEast(patient) && (patient.getId()) > 5717  ;
+        if (rctService.isPatientRegisteredAndInTreatmentGroup(patient)) return false;
+        return isFromUpperEast(patient) && (patient.getId()) > 5717;
     }
 
     private Boolean isFromUpperEast(Patient patient) {
@@ -3065,11 +3099,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             // Cancel message if phone number is considered troubled
             if (isPhoneTroubled(phoneNumber)) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Attempt to send to Troubled Phone, Phone: "+ phoneNumber + ", Notification: "+ notificationType);
+                    log.debug("Attempt to send to Troubled Phone, Phone: " + phoneNumber + ", Notification: " + notificationType);
                 }
             } else {
                 if (log.isDebugEnabled()) {
-                    log.debug("Scheduled Message, Phone: " + phoneNumber+ ", Notification: " + notificationType);
+                    log.debug("Scheduled Message, Phone: " + phoneNumber + ", Notification: " + notificationType);
                 }
 
                 String messageId = message.getPublicId();
@@ -3357,7 +3391,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             try {
                 return MediaType.valueOf(mediaTypeAttr.getValue());
             } catch (Exception e) {
-                log.error("Unable to parse media type: "+ mediaTypeAttr.getValue() + ", for Person ID:"+ person.getPersonId(), e);
+                log.error("Unable to parse media type: " + mediaTypeAttr.getValue() + ", for Person ID:" + person.getPersonId(), e);
             }
         }
         log.debug("No media type found for Person id: " + person.getPersonId());

@@ -199,4 +199,10 @@ public interface MotechDAO {
     DefaultedExpectedEncounterAlert getDefaultedEncounterAlertFor(ExpectedEncounter expectedEncounter);
 
     DefaultedExpectedObsAlert getDefaultedObsAlertFor(ExpectedObs expectedObs);
+
+    CareConfiguration getCareConfigurationFor(String careName);
+
+    void saveDefaultedEncounterAlert(DefaultedExpectedEncounterAlert encounterAlert);
+
+    void saveOrUpdateDefaultedObsAlert(DefaultedExpectedObsAlert obsAlert);
 }
