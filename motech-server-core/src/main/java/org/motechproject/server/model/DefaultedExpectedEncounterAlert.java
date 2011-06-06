@@ -26,7 +26,7 @@ public class DefaultedExpectedEncounterAlert {
     }
 
     public Boolean canBeSent() {
-        return careConfiguration.canAlertBeSent(alertsSent);
+        return careConfiguration == null ? true :careConfiguration.canAlertBeSent(alertsSent);
     }
 
     public void incrementCount() {

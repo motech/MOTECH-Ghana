@@ -84,13 +84,13 @@
 
 
     <logger name="${corePackage}">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="MOTECH-SERVER-LOGFILE"/>
     </logger>
 
 
     <logger name="${modulePackage}">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
     </logger>
 
 

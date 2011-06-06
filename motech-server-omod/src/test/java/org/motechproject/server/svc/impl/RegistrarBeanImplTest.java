@@ -494,7 +494,7 @@ public class RegistrarBeanImplTest extends TestCase {
         verify(contextService, adminService, motechService, personService);
     }
 
-    public void testSendStaffCareMessagesGroupByCommunity() {
+    public void testSendStaffCareMessages_GroupByCommunity() {
 
         Date forDate = new Date();
         String careGroups[] = {"ANC", "TT", "IPT"};
@@ -705,7 +705,7 @@ public class RegistrarBeanImplTest extends TestCase {
         int expectedNumberOfDefaultsOnAnEncounter = 50;
         for (int i = 0; i < expectedNumberOfDefaultsOnAnEncounter; i++) {
             reset(rctService, contextService, adminService, motechService, mobileService);
-            testSendStaffCareMessagesGroupByCommunity();
+            testSendStaffCareMessages_GroupByCommunity();
         }
     }
 

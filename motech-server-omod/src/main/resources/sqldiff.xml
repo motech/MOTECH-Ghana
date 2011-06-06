@@ -3130,7 +3130,7 @@
             (
              expected_obs_alert_id bigint NOT NULL AUTO_INCREMENT primary key,
              expected_obs_id bigint not null,
-             no_of_alerts_sent int(4) default 0,
+             alerts_sent int(4) default 0,
              care_id bigint,
              constraint fk_defaulted_expected_obs FOREIGN KEY (expected_obs_id) references motechmodule_expected_obs(motechmodule_expected_obs_id),
              constraint fk_care_configuration_obs FOREIGN KEY (care_id) references motechmodule_care_configuration(care_id)
@@ -3139,29 +3139,8 @@
         </sql>
     </diff>
 
-    <diff>
-        <version>4.4</version>
-        <author>Thoughtworks</author>
-        <date>June 6 2011</date>
-        <description>Data for care configuration</description>
-        <sql>
-            insert into motechmodule_care_configuration(care_name,max_alerts) values('ANC',3);
-            insert into motechmodule_care_configuration(care_name,max_alerts) values('TT',3);
-            insert into motechmodule_care_configuration(care_name,max_alerts) values('IPT',3);
-            insert into motechmodule_care_configuration(care_name,max_alerts) values('BCG',3);
-            insert into motechmodule_care_configuration(care_name,max_alerts) values('OPV',3);
-            insert into motechmodule_care_configuration(care_name,max_alerts) values('Penta',3);
-            insert into motechmodule_care_configuration(care_name,max_alerts) values('YellowFever',3);
-            insert into motechmodule_care_configuration(care_name,max_alerts) values('Measles',3);
-            insert into motechmodule_care_configuration(care_name,max_alerts) values('IPTI',3);
-            insert into motechmodule_care_configuration(care_name,max_alerts) values('VitaA',3);
-            insert into motechmodule_care_configuration(care_name,max_alerts) values('PNC(mother)',3);
-            insert into motechmodule_care_configuration(care_name,max_alerts) values('PNC(baby)',3);
-        </sql>
-    </diff>
-
 	<diff>
-        <version>4.5</version>
+        <version>4.4</version>
         <author>ThoughtWorks</author>
         <date>June 6 2011</date>
 		<description>Creating 'Staff Type' person attribute</description>
@@ -3173,12 +3152,45 @@
     </diff>
 
     <diff>
-        <version>4.6</version>
-        <author>ThoughtWorks</author>
+        <version>4.5</version>
+        <author>Thoughtworks</author>
         <date>June 6 2011</date>
-		<description>Changing column name</description>
+        <description>Data for care configuration</description>
         <sql>
-            alter table motechmodule_defaulted_expected_obs_alert change no_of_alerts_sent alerts_sent int(4) default 0;
+            insert into motechmodule_care_configuration(care_name,max_alerts) values('ANC',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('PNC1',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('PNC2',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('PNC3',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('IPT1',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('IPT2',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('IPT3',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('TT1',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('TT2',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('TT3',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('TT4',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('TT5',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('IPTI1',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('IPTI2',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('IPTI3',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('OPV0',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('OPV1',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('OPV2',3)
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('OPV3',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA1',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA2',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA3',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA4',3) ;
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA5',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA6',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA7',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA8',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA9',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('Measles',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('YellowFever',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('BCG',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('Penta1',3) ;
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('Penta3',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('Penta2',3);
         </sql>
     </diff>
 
