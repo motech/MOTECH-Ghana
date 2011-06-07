@@ -251,7 +251,7 @@ public interface RegistrarBean {
 			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES })
 	public List<Patient> getPatients(String firstName, String lastName,
 			String preferredName, Date birthDate, Integer facilityId,
-			String phoneNumber, String nhisNumber, String motechId);
+			String phoneNumber, String nhisNumber, Integer communityId, String motechId);
 
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
 			OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES })
@@ -316,7 +316,8 @@ public interface RegistrarBean {
 
 	public ExpectedObs saveExpectedObs(ExpectedObs expectedObs);
 
-	public List<Encounter> getEncounters(Patient patient,
+    @RunAsAdminUser
+    public List<Encounter> getEncounters(Patient patient,
 			String encounterTypeName, Date minDate);
 
 	public ExpectedEncounter createExpectedEncounter(Patient patient,

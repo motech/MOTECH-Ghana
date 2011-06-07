@@ -61,12 +61,10 @@ public class MessageProgramUpdateTask extends AbstractTask {
 	@Override
 	public void execute() {
 		long start = System.currentTimeMillis();
-		log
-				.debug("Message Program Task - Update Enrolled Programs for all Patients");
+		log.info("Message Program Task - Update Enrolled Programs for all Patients");
 
 		Integer batchSize = null;
-		String batchSizeProperty = taskDefinition
-				.getProperty(MotechConstants.TASK_PROPERTY_BATCH_SIZE);
+		String batchSizeProperty = taskDefinition.getProperty(MotechConstants.TASK_PROPERTY_BATCH_SIZE);
 		if (batchSizeProperty != null) {
 			try {
 				batchSize = Integer.valueOf(batchSizeProperty);
@@ -76,8 +74,7 @@ public class MessageProgramUpdateTask extends AbstractTask {
 		}
 
 		Long batchPreviousId = null;
-		String batchPreviousProperty = taskDefinition
-				.getProperty(MotechConstants.TASK_PROPERTY_BATCH_PREVIOUS_ID);
+		String batchPreviousProperty = taskDefinition.getProperty(MotechConstants.TASK_PROPERTY_BATCH_PREVIOUS_ID);
 		if (batchPreviousProperty != null) {
 			try {
 				batchPreviousId = Long.valueOf(batchPreviousProperty);

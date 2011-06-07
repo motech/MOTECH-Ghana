@@ -50,8 +50,7 @@ import java.util.List;
 /**
  * An implementation of the MotechService interface using OpenMRS.
  */
-public class MotechServiceImpl extends BaseOpenmrsService implements
-		MotechService {
+public class MotechServiceImpl extends BaseOpenmrsService implements MotechService {
 
 	private MotechDAO motechDAO;
 
@@ -315,11 +314,12 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 			String preferredName, Date birthDate, Integer facilityId,
 			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
+            Integer communityId,
 			String patientId, PatientIdentifierType patientIdType,
 			Integer maxResults) {
 		return motechDAO.getPatients(firstName, lastName, preferredName,
 				birthDate, facilityId, phoneNumber, phoneNumberAttrType,
-				nhisNumber, nhisAttrType, patientId, patientIdType, maxResults);
+				nhisNumber, nhisAttrType, communityId, patientId, patientIdType, maxResults);
 	}
 
 	public List<Patient> getDuplicatePatients(String firstName,
@@ -397,6 +397,26 @@ public class MotechServiceImpl extends BaseOpenmrsService implements
 
     public Facility unknownFacility() {
         return motechDAO.getUnknownFacility();
+    }
+
+    public DefaultedExpectedEncounterAlert getDefaultedEncounterAlertFor(ExpectedEncounter expectedEncounter) {
+        return motechDAO.getDefaultedEncounterAlertFor(expectedEncounter);
+    }
+
+    public DefaultedExpectedObsAlert getDefaultedObsAlertFor(ExpectedObs expectedObs) {
+        return motechDAO.getDefaultedObsAlertFor(expectedObs);
+    }
+
+    public CareConfiguration getCareConfigurationFor(String careName) {
+        return motechDAO.getCareConfigurationFor(careName);
+    }
+
+    public void saveorUpdateDefaultedEncounterAlert(DefaultedExpectedEncounterAlert encounterAlert) {
+        motechDAO.saveDefaultedEncounterAlert(encounterAlert);
+    }
+
+    public void saveOrUpdateDefaultedObsAlert(DefaultedExpectedObsAlert obsAlert) {
+        motechDAO.saveOrUpdateDefaultedObsAlert(obsAlert);
     }
 
     public RCTService getRctService(){

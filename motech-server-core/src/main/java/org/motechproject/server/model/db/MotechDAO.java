@@ -152,6 +152,7 @@ public interface MotechDAO {
 			String preferredName, Date birthDate, Integer facilityId,
 			String phoneNumber, PersonAttributeType phoneNumberAttrType,
 			String nhisNumber, PersonAttributeType nhisAttrType,
+            Integer communityId,
 			String patientId, PatientIdentifierType patientIdType,
 			Integer maxResults);
 
@@ -194,4 +195,14 @@ public interface MotechDAO {
     MotechConfiguration getConfiguration(String name);
 
     Facility getUnknownFacility();
+
+    DefaultedExpectedEncounterAlert getDefaultedEncounterAlertFor(ExpectedEncounter expectedEncounter);
+
+    DefaultedExpectedObsAlert getDefaultedObsAlertFor(ExpectedObs expectedObs);
+
+    CareConfiguration getCareConfigurationFor(String careName);
+
+    void saveDefaultedEncounterAlert(DefaultedExpectedEncounterAlert encounterAlert);
+
+    void saveOrUpdateDefaultedObsAlert(DefaultedExpectedObsAlert obsAlert);
 }

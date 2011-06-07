@@ -119,7 +119,6 @@
         <property name="schedulerService" ref="schedulerService"/>
         <property name="rctService" ref="rctBeanProxy"/>
         <property name="messageProgramService" ref="messageProgramService"/>
-
         <property name="staffTypes">
             <list>
                 <value>CHO</value>
@@ -177,18 +176,48 @@
         </property>
     </bean>
 
+    <bean id="expectedEncountersFilter" class="org.motechproject.server.omod.filters.ExpectedEncounterFilterChain">
+        <property name="filters">
+            <util:list>
+                <bean class="org.motechproject.server.omod.filters.ExpectedEncounterFilterForRCT">
+                    <property name="condition" ref="rctCondition"/>
+                </bean>
+                <bean class="org.motechproject.server.omod.filters.ExpectedEncounterMaxAlertsFilter">
+                    <property name="contextService" ref="contextService"/>
+                </bean>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="expectedObsFilter" class="org.motechproject.server.omod.filters.ExpectedObsFilterChain">
+        <property name="filters">
+            <util:list>
+                <bean class="org.motechproject.server.omod.filters.ExpectedObsFilterForRCT">
+                    <property name="condition" ref="rctCondition"/>
+                </bean>
+                <bean class="org.motechproject.server.omod.filters.ExpectedObsMaxAlertsFilter">
+                    <property name="contextService" ref="contextService"/>
+                </bean>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="rctCondition" class="org.motechproject.server.omod.filters.condition.RCTCondition">
+        <property name="contextService" ref="contextService"/>
+        <property name="rctService" ref="rctService"/>
+    </bean>
+
     <!--<bean id="mobileClient" class="org.motechproject.server.ws.MessageServiceStub"/>-->
 
 
     <!-- Uncomment to enable using motech-mobile web service and comment out mobileClient bean in registrar-bean.xml-->
-    <bean id="mobileClient"
-          class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
-        <property name="serviceInterface" value="org.motechproject.ws.mobile.MessageService"/>
-        <property name="wsdlDocumentUrl"
-                  value="http://localhost:8080/motech-mobile-webapp/webservices/messaging?wsdl"/>
-        <property name="namespaceUri" value="http://server.ws.motechproject.org/"/>
-        <property name="serviceName" value="MessageServiceImplService"/>
-        <property name="portName" value="MessageServiceImplPort"/>
-        <property name="lookupServiceOnStartup" value="false"/>
-    </bean>
+        <bean id="mobileClient"
+            class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
+            <property name="serviceInterface" value="org.motechproject.ws.mobile.MessageService" />
+            <property name="wsdlDocumentUrl"  value="http://localhost:8080/motech-mobile-webapp/webservices/messaging?wsdl" />
+            <property name="namespaceUri" value="http://server.ws.motechproject.org/" />
+            <property name="serviceName" value="MessageServiceImplService" />
+            <property name="portName" value="MessageServiceImplPort" />
+            <property name="lookupServiceOnStartup" value="false" />
+        </bean>
 </beans>

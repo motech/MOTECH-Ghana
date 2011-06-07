@@ -41,6 +41,7 @@ import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.svc.*;
+import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.*;
 import org.motechproject.ws.rct.RCTRegistrationConfirmation;
 import org.motechproject.ws.server.RegistrarService;
@@ -717,8 +718,8 @@ public class RegistrarWebService implements RegistrarService {
 
         User staff = validateStaffId(staffId, errors, "StaffID");
         Facility facility = validateFacility(facilityId, errors, "FacilityID");
-        org.openmrs.Patient patient = validateMotechId(motechId, errors,
-                "MotechID", true);
+        org.openmrs.Patient patient = validateMotechId(motechId, errors, "MotechID", true);
+        validatePatientForAPregnancyMother(patient, errors, "MotechID");
 
         if (errors.getErrors().size() > 0) {
             throw new ValidationException(
@@ -1172,7 +1173,7 @@ public class RegistrarWebService implements RegistrarService {
 
         List<org.openmrs.Patient> patients = registrarBean.getPatients(
                 firstName, lastName, preferredName, birthDate, facilityId,
-                phoneNumber, nhis, null);
+                phoneNumber, nhis, null, null);
         return modelConverter.patientToWebService(patients, true);
     }
 
@@ -1307,6 +1308,15 @@ public class RegistrarWebService implements RegistrarService {
     private void validateIfPatientAlredayRegisterdForRCT(Integer motechId, ValidationErrors errors, String fieldName) {
         if (rctService.isPatientRegisteredIntoRCT(motechId)) {
             errors.add(messageBean.getMessage("motechmodule.rct.exists", fieldName));
+        }
+    }
+
+    private void validatePatientForAPregnancyMother(org.openmrs.Patient patient, ValidationErrors errors, String fieldName) {
+        if (patient != null) {
+            List<Encounter> encounters = registrarBean.getEncounters(patient, MotechConstants.ENCOUNTER_TYPE_PREGREGVISIT, patient.getBirthdate());
+            if (encounters == null || encounters.isEmpty()) {
+                errors.add(messageBean.getMessage("motechmodule.ws.invalid.mother.motechId", fieldName));
+            }
         }
     }
 

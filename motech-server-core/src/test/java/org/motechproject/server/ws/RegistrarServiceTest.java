@@ -42,6 +42,7 @@ import org.motechproject.server.model.Facility;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.*;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationException;
@@ -1378,6 +1379,11 @@ public class RegistrarServiceTest{
 		DayOfWeek day = DayOfWeek.MONDAY;
 		HowLearned how = HowLearned.GHS_NURSE;
 
+        List<Encounter> encounterList = new ArrayList<Encounter>();
+        Encounter encounter1 = new Encounter();
+        encounter1.setEncounterDatetime(date);
+        encounterList.add(encounter1);
+
 		User staff = new User(1);
 		Location facilityLocation = new Location(1);
 		Facility facility = new Facility();
@@ -1393,6 +1399,8 @@ public class RegistrarServiceTest{
 				true);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
+        expect(registrarBean.getEncounters(patient, MotechConstants.ENCOUNTER_TYPE_PREGREGVISIT, patient.getBirthdate()))
+                .andReturn(encounterList);
 		registrarBean.registerANCMother(staff, facilityLocation, date, patient,
 				regNumber, date, height, gravida, parity, enroll, consent,
 				phoneType, phone, format, language, day, date, how);
@@ -2285,7 +2293,7 @@ public class RegistrarServiceTest{
 				new Facility());
 		expect(
 				registrarBean.getPatients(firstName, lastName, prefName,
-						birthDate, facilityId, phone, nhis, null))
+						birthDate, facilityId, phone, nhis, null, null))
 				.andReturn(patients);
 		expect(modelConverter.patientToWebService(patients, true)).andReturn(
 				result);

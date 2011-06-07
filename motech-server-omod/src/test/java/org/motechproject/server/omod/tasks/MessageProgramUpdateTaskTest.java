@@ -143,7 +143,7 @@ public class MessageProgramUpdateTaskTest extends
 
 			List<Patient> matchingPatients = regService.getPatients(
 					"firstName", "lastName", "prefName", birthdate, facility.getFacilityId(),
-					"1111111111", "nhis", motechId.toString());
+					"1111111111", "nhis", null, motechId.toString());
 			assertEquals(1, matchingPatients.size());
 			Patient patient = matchingPatients.get(0);
 			patientId = patient.getPatientId();

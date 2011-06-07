@@ -208,6 +208,7 @@ public interface MotechService extends OpenmrsService {
                               String preferredName, Date birthDate, Integer facilityId,
                               String phoneNumber, PersonAttributeType phoneNumberAttrType,
                               String nhisNumber, PersonAttributeType nhisAttrType,
+                              Integer communityId,
                               String patientId, PatientIdentifierType patientIdType,
                               Integer maxResults);
 
@@ -267,4 +268,19 @@ public interface MotechService extends OpenmrsService {
 
     @Transactional(readOnly = true)
     Facility unknownFacility();
+
+    @Transactional(readOnly = true)
+    DefaultedExpectedEncounterAlert getDefaultedEncounterAlertFor(ExpectedEncounter expectedEncounter);
+
+    @Transactional(readOnly = true)
+    DefaultedExpectedObsAlert getDefaultedObsAlertFor(ExpectedObs expectedObs);
+
+    @Transactional(readOnly = true)
+    CareConfiguration getCareConfigurationFor(String careName);
+
+    @Transactional
+    void saveorUpdateDefaultedEncounterAlert(DefaultedExpectedEncounterAlert encounterAlert);
+
+    @Transactional
+    void saveOrUpdateDefaultedObsAlert(DefaultedExpectedObsAlert obsAlert);
 }

@@ -3,7 +3,6 @@ package flows;
 import bsh.ParseException;
 import forms.RegisterClientForm;
 import forms.SikuliBase;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.*;
@@ -11,13 +10,6 @@ import pages.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-/**
- * Created by IntelliJ IDEA.
- * User: rupeshd
- * Date: 2/16/11
- * Time: 3:56 PM
- * To change this template use File | Settings | File Templates.
- */
 public class RegisterPatientViaMfroms {
 
     @Test

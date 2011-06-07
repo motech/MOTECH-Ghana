@@ -33,16 +33,7 @@
 
 package org.motechproject.server.service;
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.*;
-
 import junit.framework.TestCase;
-
 import org.easymock.Capture;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.service.impl.ExpectedObsSchedule;
@@ -53,6 +44,10 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.*;
+
+import static org.easymock.EasyMock.*;
 
 public class OPVScheduleTest extends TestCase {
 
@@ -158,9 +153,11 @@ public class OPVScheduleTest extends TestCase {
 
 		List<ExpectedObs> expectedObsList = new ArrayList<ExpectedObs>();
 		ExpectedObs expectedObs0 = new ExpectedObs();
+        expectedObs0.setId(100L);
 		expectedObs0.setName(opv0Event.getName());
 		expectedObsList.add(expectedObs0);
 		ExpectedObs expectedObs1 = new ExpectedObs();
+        expectedObs1.setId(101L);
 		expectedObs1.setName(opv1Event.getName());
 		expectedObsList.add(expectedObs1);
 

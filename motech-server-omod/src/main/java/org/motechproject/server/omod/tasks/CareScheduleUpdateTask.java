@@ -59,8 +59,7 @@ public class CareScheduleUpdateTask extends AbstractTask {
 	@Override
 	public void execute() {
 		long start = System.currentTimeMillis();
-		log
-				.debug("Care Schedule Task - Update Care Schedules for all Patients");
+		log.info("Care Schedule Task - Update Care Schedules for all Patients");
 
 		// Session required for Task to get RegistrarBean through Context
 		try {

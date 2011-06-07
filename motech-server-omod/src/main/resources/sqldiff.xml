@@ -3090,4 +3090,108 @@
         </sql>
     </diff>
 
+	<diff>
+        <version>4.2</version>
+        <author>ThoughtWorks</author>
+        <date>June 3 2011</date>
+		<description>Creating the pregnancy.notification message definition for patient who don't have the community specified</description>
+        <sql>
+            INSERT INTO `motechmodule_messagedefinition` (`message_key`,`public_id`,`message_type`)
+            VALUES ('pregnancy.notification.for.patient.with.no.community',416,'INFORMATIONAL');
+        </sql>
+    </diff>
+
+    <diff>
+        <version>4.3</version>
+        <author>ThoughtWorks</author>
+        <date>June 6 2011</date>
+        <description>Table for persisting the number of alerts sent for expected encounter or observations</description>
+        <sql>
+
+            CREATE TABLE IF NOT EXISTS motechmodule_care_configuration
+            (
+              care_id bigint NOT NULL AUTO_INCREMENT primary key,
+              care_name varchar(50) not null,
+              max_alerts int(4) default 1
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+            CREATE TABLE IF NOT EXISTS motechmodule_defaulted_expected_encounter_alert
+            (
+             expected_encounter_alert_id bigint NOT NULL AUTO_INCREMENT primary key,
+             expected_encounter_id bigint not null,
+             alerts_sent int(4) default 0,
+             care_id bigint,
+             constraint fk_defaulted_expected_encounter FOREIGN KEY (expected_encounter_id) references motechmodule_expected_encounter(motechmodule_expected_encounter_id),
+             constraint fk_care_configuration_encounter FOREIGN KEY (care_id) references motechmodule_care_configuration(care_id)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+            CREATE TABLE IF NOT EXISTS motechmodule_defaulted_expected_obs_alert
+            (
+             expected_obs_alert_id bigint NOT NULL AUTO_INCREMENT primary key,
+             expected_obs_id bigint not null,
+             alerts_sent int(4) default 0,
+             care_id bigint,
+             constraint fk_defaulted_expected_obs FOREIGN KEY (expected_obs_id) references motechmodule_expected_obs(motechmodule_expected_obs_id),
+             constraint fk_care_configuration_obs FOREIGN KEY (care_id) references motechmodule_care_configuration(care_id)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+        </sql>
+    </diff>
+
+	<diff>
+        <version>4.4</version>
+        <author>ThoughtWorks</author>
+        <date>June 6 2011</date>
+		<description>Creating 'Staff Type' person attribute</description>
+        <sql>
+            INSERT INTO person_attribute_type
+            (person_attribute_type_id,name,description,format,creator,date_created,uuid) VALUES
+            (19,'Staff Type','A person\'s staff type.','java.lang.String',1,NOW(),UUID());
+        </sql>
+    </diff>
+
+    <diff>
+        <version>4.5</version>
+        <author>Thoughtworks</author>
+        <date>June 6 2011</date>
+        <description>Data for care configuration</description>
+        <sql>
+            insert into motechmodule_care_configuration(care_name,max_alerts) values('ANC',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('PNC1',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('PNC2',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('PNC3',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('IPT1',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('IPT2',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('IPT3',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('TT1',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('TT2',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('TT3',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('TT4',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('TT5',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('IPTI1',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('IPTI2',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('IPTI3',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('OPV0',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('OPV1',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('OPV2',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('OPV3',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA1',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA2',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA3',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA4',3) ;
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA5',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA6',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA7',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA8',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('VitaA9',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('Measles',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('YellowFever',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('BCG',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('Penta1',3) ;
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('Penta3',3);
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('Penta2',3);
+        </sql>
+    </diff>
+
 </sqldiff>

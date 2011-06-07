@@ -83,12 +83,24 @@ public class StaffController {
     public String viewStaffForm(@RequestParam(value = "staffId", required = false) String staffId, ModelMap model) {
         if (staffId != null) {
             User staff = openmrsBean.getStaffBySystemId(staffId);
-            PersonAttribute attribute = staff.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeName());
-            WebStaff webStaff = new WebStaff(staff.getPersonName().getGivenName(), staff.getPersonName().getFamilyName(), attribute.getValue(), "", staffId);
+            PersonAttribute phoneNumberAttr = staff.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeName());
+            PersonAttribute staffTypeAttr = staff.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_STAFF_TYPE.getAttributeName());
+
+            String phoneNumber = initializeDefaults(phoneNumberAttr);
+            String staffType = initializeDefaults(staffTypeAttr);
+            WebStaff webStaff = new WebStaff(staff.getPersonName().getGivenName(), staff.getPersonName().getFamilyName(), phoneNumber, staffType, staffId);
             model.addAttribute("staff", webStaff);
         }
         model.addAttribute("staffTypes", registrarBean.getStaffTypes());
         return "/module/motechmodule/staff";
+    }
+
+    private String initializeDefaults(PersonAttribute personAttribute) {
+        String value = "";
+        if(personAttribute != null){
+            value = personAttribute.getValue();
+        }
+        return value;
     }
 
     @RequestMapping(method = RequestMethod.POST)
