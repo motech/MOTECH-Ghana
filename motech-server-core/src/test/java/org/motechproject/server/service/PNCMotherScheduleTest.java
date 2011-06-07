@@ -33,19 +33,7 @@
 
 package org.motechproject.server.service;
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.easymock.Capture;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.service.impl.ExpectedEncounterSchedule;
@@ -54,6 +42,13 @@ import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
 
 public class PNCMotherScheduleTest extends TestCase {
 	ApplicationContext ctx;
@@ -207,12 +202,17 @@ public class PNCMotherScheduleTest extends TestCase {
 
 		List<ExpectedEncounter> expectedEncounterList = new ArrayList<ExpectedEncounter>();
 		ExpectedEncounter expectedEncounter1 = new ExpectedEncounter();
+        expectedEncounter1.setId(1L);
 		expectedEncounter1.setName(pnc1Event.getName());
-		expectedEncounterList.add(expectedEncounter1);
-		ExpectedEncounter expectedEncounter2 = new ExpectedEncounter();
+        expectedEncounterList.add(expectedEncounter1);
+
+        ExpectedEncounter expectedEncounter2 = new ExpectedEncounter();
+        expectedEncounter2.setId(2L);
 		expectedEncounter2.setName(pnc2Event.getName());
 		expectedEncounterList.add(expectedEncounter2);
-		ExpectedEncounter expectedEncounter3 = new ExpectedEncounter();
+
+        ExpectedEncounter expectedEncounter3 = new ExpectedEncounter();
+        expectedEncounter3.setId(3L);
 		expectedEncounter3.setName(pnc3Event.getName());
 		expectedEncounterList.add(expectedEncounter3);
 

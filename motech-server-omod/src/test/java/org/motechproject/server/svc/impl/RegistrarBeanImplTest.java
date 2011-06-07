@@ -591,13 +591,13 @@ public class RegistrarBeanImplTest extends TestCase {
         expect(contextService.getAdministrationService()).andReturn(adminService).anyTimes();
         expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn("35").anyTimes();
         expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
-                                                  null, forDate, forDate, 35)).andReturn(encounters);
+                null, forDate, forDate, 35)).andReturn(encounters);
         expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
                 forDate, null, forDate, 35)).andReturn(encounters);
         expect(motechService.getExpectedObs(null, facility, careGroups, null,
-                                                  null, forDate, forDate, 35)).andReturn(emptyObs);
+                null, forDate, forDate, 35)).andReturn(emptyObs);
         expect(motechService.getExpectedObs(null, facility, careGroups, null,
-                                                  forDate, null, forDate, 35)).andReturn(emptyObs);
+                forDate, null, forDate, 35)).andReturn(emptyObs);
 
         Capture<String> capturedMessageId = new Capture<String>();
         Capture<String> capturedPhoneNumber = new Capture<String>();
@@ -620,10 +620,10 @@ public class RegistrarBeanImplTest extends TestCase {
         replay(contextService, adminService, motechService, mobileService, rctService);
 
         registrarBean.sendStaffCareMessages(forDate, forDate,
-                                            forDate, forDate,
-                                            careGroups,
-                                            true,
-                                            false);
+                forDate, forDate,
+                careGroups,
+                true,
+                false);
 
         verify(contextService, adminService, motechService, mobileService, rctService);
 
@@ -679,7 +679,7 @@ public class RegistrarBeanImplTest extends TestCase {
 
     public void testShouldSendDefaulterAlertsForAllDefaultsOnAnEncounter() {
         int expectedNumberOfDefaultsOnAnEncounter = 50;
-        for(int i = 0; i< expectedNumberOfDefaultsOnAnEncounter;i++){
+        for (int i = 0; i < expectedNumberOfDefaultsOnAnEncounter; i++) {
             reset(rctService, contextService, adminService, motechService, mobileService);
             testSendStaffCareMessages_GroupByCommunity();
         }
@@ -709,13 +709,13 @@ public class RegistrarBeanImplTest extends TestCase {
         expect(contextService.getAdministrationService()).andReturn(adminService).anyTimes();
         expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn("35").anyTimes();
         expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
-                                                  null, forDate, forDate, 35)).andReturn(emptyEncounters);
+                null, forDate, forDate, 35)).andReturn(emptyEncounters);
         expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
-                                                  forDate, null, forDate, 35)).andReturn(emptyEncounters);
+                forDate, null, forDate, 35)).andReturn(emptyEncounters);
         expect(motechService.getExpectedObs(null, facility, careGroups, null,
-                                                  null, forDate, forDate, 35)).andReturn(emptyObs);
+                null, forDate, forDate, 35)).andReturn(emptyObs);
         expect(motechService.getExpectedObs(null, facility, careGroups, null,
-                                                  forDate, null, forDate, 35)).andReturn(emptyObs);
+                forDate, null, forDate, 35)).andReturn(emptyObs);
 
         Capture<String> capturedDefaulterMessage = new Capture<String>();
         Capture<String> capturedDefaulterPhoneNumber = new Capture<String>();
@@ -959,8 +959,8 @@ public class RegistrarBeanImplTest extends TestCase {
         expect(motechService.facilityFor(p7)).andReturn(facilityInUpperEast).times(2);
 
 
-        List<ExpectedObs> expObs = expectedObservationsFor(p1,p2,p3,p4,p5,p6,p7);
-        List<ExpectedEncounter> expEnc = expectedEncountersFor(p1,p2,p3,p4,p5,p6,p7);
+        List<ExpectedObs> expObs = expectedObservationsFor(p1, p2, p3, p4, p5, p6, p7);
+        List<ExpectedEncounter> expEnc = expectedEncountersFor(p1, p2, p3, p4, p5, p6, p7);
 
         replay(rctService, motechService, contextService);
         List<ExpectedObs> filteredObs = registrarBean.filterRCTObs(new ArrayList(expObs));
@@ -991,25 +991,31 @@ public class RegistrarBeanImplTest extends TestCase {
 
     }
 
-    private List<ExpectedEncounter> expectedEncountersFor(Patient... patients){
+    private List<ExpectedEncounter> expectedEncountersFor(Patient... patients) {
         List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
+        Long id = 1L;
         for (Patient patient : patients) {
             ExpectedEncounter encounter = new ExpectedEncounter();
+            encounter.setId(id);
             encounter.setPatient(patient);
             expectedEncounters.add(encounter);
+            id++;
         }
         return expectedEncounters;
     }
 
-    private List<ExpectedObs> expectedObservationsFor(Patient... patients){
-           List<ExpectedObs> expectedObservations = new ArrayList<ExpectedObs>();
-           for (Patient patient : patients) {
-               ExpectedObs obs = new ExpectedObs();
-               obs.setPatient(patient);
-               expectedObservations.add(obs);
-           }
-           return expectedObservations;
-       }
+    private List<ExpectedObs> expectedObservationsFor(Patient... patients) {
+        List<ExpectedObs> expectedObservations = new ArrayList<ExpectedObs>();
+        Long id = 1L;
+        for (Patient patient : patients) {
+            ExpectedObs obs = new ExpectedObs();
+            obs.setId(id);
+            obs.setPatient(patient);
+            expectedObservations.add(obs);
+            id++;
+        }
+        return expectedObservations;
+    }
 
 
     private Facility getFacilityWithRegion(String region) {

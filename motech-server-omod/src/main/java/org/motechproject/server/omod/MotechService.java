@@ -271,4 +271,7 @@ public interface MotechService extends OpenmrsService {
 
     @Transactional(readOnly = true)
     DefaultedExpectedEncounterAlert getDefaultedEncounterAlertFor(ExpectedEncounter expectedEncounter);
+
+    @Transactional(readOnly = true)
+    DefaultedExpectedObsAlert getDefaultedObsAlertFor(ExpectedObs expectedObs);
 }

@@ -197,4 +197,6 @@ public interface MotechDAO {
     Facility getUnknownFacility();
 
     DefaultedExpectedEncounterAlert getDefaultedEncounterAlertFor(ExpectedEncounter expectedEncounter);
+
+    DefaultedExpectedObsAlert getDefaultedObsAlertFor(ExpectedObs expectedObs);
 }

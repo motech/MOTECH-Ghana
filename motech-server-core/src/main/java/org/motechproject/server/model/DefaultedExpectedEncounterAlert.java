@@ -7,7 +7,7 @@ public class DefaultedExpectedEncounterAlert {
     private CareConfiguration careConfiguration;
     private Integer alertsSent ;
 
-    public ExpectedEncounter getExpectedEncounter() {
-        return expectedEncounter;
+    public Boolean isFor(ExpectedEncounter expectedEncounter) {
+        return expectedEncounter.equals(expectedEncounter);
     }
 }
