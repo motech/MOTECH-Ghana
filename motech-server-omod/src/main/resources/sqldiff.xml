@@ -3101,7 +3101,7 @@
             (
               care_id bigint NOT NULL AUTO_INCREMENT primary key,
               care_name varchar(50) not null,
-              max_alerts int(4) default 1,
+              max_alerts int(4) default 1
             )ENGINE=InnoDB DEFAULT CHARSET=utf8;                         
 
 
@@ -3125,12 +3125,6 @@
             )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-
-
-
-
-
-            
         </sql>
     </diff>
 
@@ -3142,6 +3136,27 @@
         <sql>
             INSERT INTO `motechmodule_messagedefinition` (`message_key`,`public_id`,`message_type`)
             VALUES ('pregnancy.notification.for.patient.with.no.community',416,'INFORMATIONAL');
+        </sql>
+    </diff>
+
+    <diff>
+        <version>4.3</version>
+        <author>Thoughtworks</author>
+        <date>June 6 2011</date>
+        <description>Data for care configuration</description>
+        <sql>
+            insert into motechmodule_care_configuration(care_name,max_alerts) values('ANC',3);
+            insert into motechmodule_care_configuration(care_name,max_alerts) values('TT',3);
+            insert into motechmodule_care_configuration(care_name,max_alerts) values('IPT',3);
+            insert into motechmodule_care_configuration(care_name,max_alerts) values('BCG',3);
+            insert into motechmodule_care_configuration(care_name,max_alerts) values('OPV',3);
+            insert into motechmodule_care_configuration(care_name,max_alerts) values('Penta',3);
+            insert into motechmodule_care_configuration(care_name,max_alerts) values('YellowFever',3);
+            insert into motechmodule_care_configuration(care_name,max_alerts) values('Measles',3);
+            insert into motechmodule_care_configuration(care_name,max_alerts) values('IPTI',3);
+            insert into motechmodule_care_configuration(care_name,max_alerts) values('VitaA',3);
+            insert into motechmodule_care_configuration(care_name,max_alerts) values('PNC(mother)',3);
+            insert into motechmodule_care_configuration(care_name,max_alerts) values('PNC(baby)',3);
         </sql>
     </diff>
 

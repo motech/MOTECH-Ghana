@@ -11,7 +11,11 @@ public class DefaultedExpectedObsAlert {
     }
 
     public DefaultedExpectedObsAlert(Long id, ExpectedObs expectedObs, CareConfiguration careConfiguration, Integer alertsSent) {
+        this(expectedObs, careConfiguration, alertsSent);
         this.id = id;
+    }
+
+    public DefaultedExpectedObsAlert(ExpectedObs expectedObs, CareConfiguration careConfiguration, Integer alertsSent) {
         this.expectedObs = expectedObs;
         this.careConfiguration = careConfiguration;
         this.alertsSent = alertsSent;
@@ -23,5 +27,9 @@ public class DefaultedExpectedObsAlert {
 
     public Boolean canBeSent() {
         return careConfiguration.canAlertBeSent(alertsSent);
+    }
+
+    public void incrementCount() {
+        alertsSent = alertsSent + 1;
     }
 }

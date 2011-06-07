@@ -407,6 +407,18 @@ public class MotechServiceImpl extends BaseOpenmrsService implements MotechServi
         return motechDAO.getDefaultedObsAlertFor(expectedObs);
     }
 
+    public CareConfiguration getCareConfigurationFor(String careName) {
+        return motechDAO.getCareConfigurationFor(careName);
+    }
+
+    public void saveorUpdateDefaultedEncounterAlert(DefaultedExpectedEncounterAlert encounterAlert) {
+        motechDAO.saveDefaultedEncounterAlert(encounterAlert);
+    }
+
+    public void saveOrUpdateDefaultedObsAlert(DefaultedExpectedObsAlert obsAlert) {
+        motechDAO.saveOrUpdateDefaultedObsAlert(obsAlert);
+    }
+
     public RCTService getRctService(){
         return rctService;
     }

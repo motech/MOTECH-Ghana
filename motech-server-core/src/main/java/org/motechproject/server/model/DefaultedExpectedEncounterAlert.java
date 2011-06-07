@@ -2,16 +2,20 @@ package org.motechproject.server.model;
 
 public class DefaultedExpectedEncounterAlert {
 
-    private Long id ;
+    private Long id;
     private ExpectedEncounter expectedEncounter;
     private CareConfiguration careConfiguration;
-    private Integer alertsSent ;
+    private Integer alertsSent;
 
     public DefaultedExpectedEncounterAlert() {
     }
 
     public DefaultedExpectedEncounterAlert(Long id, ExpectedEncounter expectedEncounter, CareConfiguration careConfiguration, Integer alertsSent) {
+        this(expectedEncounter, careConfiguration, alertsSent);
         this.id = id;
+    }
+
+    public DefaultedExpectedEncounterAlert(ExpectedEncounter expectedEncounter, CareConfiguration careConfiguration, Integer alertsSent) {
         this.expectedEncounter = expectedEncounter;
         this.careConfiguration = careConfiguration;
         this.alertsSent = alertsSent;
@@ -23,5 +27,9 @@ public class DefaultedExpectedEncounterAlert {
 
     public Boolean canBeSent() {
         return careConfiguration.canAlertBeSent(alertsSent);
+    }
+
+    public void incrementCount() {
+        alertsSent = alertsSent + 1;
     }
 }
