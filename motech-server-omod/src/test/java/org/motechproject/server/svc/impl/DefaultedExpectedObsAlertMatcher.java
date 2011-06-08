@@ -2,8 +2,10 @@ package org.motechproject.server.svc.impl;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.easymock.IArgumentMatcher;
+import org.junit.Ignore;
 import org.motechproject.server.model.DefaultedExpectedObsAlert;
 
+@Ignore
 public class DefaultedExpectedObsAlertMatcher implements IArgumentMatcher{
 
     private DefaultedExpectedObsAlert expected;
