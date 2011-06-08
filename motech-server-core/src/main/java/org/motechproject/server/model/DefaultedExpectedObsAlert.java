@@ -5,20 +5,22 @@ public class DefaultedExpectedObsAlert {
     private Long id;
     private ExpectedObs expectedObs;
     private CareConfiguration careConfiguration;
-    private Integer alertsSent;
+    private Integer alertsDelivered;
+    private Integer alertAttempts;
 
     public DefaultedExpectedObsAlert() {
     }
 
-    public DefaultedExpectedObsAlert(Long id, ExpectedObs expectedObs, CareConfiguration careConfiguration, Integer alertsSent) {
-        this(expectedObs, careConfiguration, alertsSent);
+    public DefaultedExpectedObsAlert(Long id, ExpectedObs expectedObs, CareConfiguration careConfiguration, Integer alertsDelivered, Integer alertAttempts) {
+        this(expectedObs, careConfiguration, alertsDelivered, alertAttempts);
         this.id = id;
     }
 
-    public DefaultedExpectedObsAlert(ExpectedObs expectedObs, CareConfiguration careConfiguration, Integer alertsSent) {
+    public DefaultedExpectedObsAlert(ExpectedObs expectedObs, CareConfiguration careConfiguration, Integer alertsDelivered, Integer alertAttempts) {
         this.expectedObs = expectedObs;
         this.careConfiguration = careConfiguration;
-        this.alertsSent = alertsSent;
+        this.alertsDelivered = alertsDelivered;
+        this.alertAttempts = alertAttempts;
     }
 
     public Boolean isFor(ExpectedObs obs) {
@@ -26,10 +28,14 @@ public class DefaultedExpectedObsAlert {
     }
 
     public Boolean canBeSent() {
-        return null == careConfiguration ? true : careConfiguration.canAlertBeSent(alertsSent);
+        return null == careConfiguration ? true : careConfiguration.canAlertBeSent(alertsDelivered);
     }
 
-    public void incrementCount() {
-        alertsSent = alertsSent + 1;
+    public void delivered() {
+        alertsDelivered = alertsDelivered + 1;
+    }
+
+    public void attempted() {
+        alertAttempts = alertAttempts + 1;
     }
 }

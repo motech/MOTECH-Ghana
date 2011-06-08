@@ -3194,4 +3194,17 @@
         </sql>
     </diff>
 
+    <diff>
+        <version>4.6</version>
+        <author>ThoughtWorks</author>
+        <date>June 8 2011</date>
+		<description>Introducing column alerts_attempted and renaming existing column</description>
+        <sql>
+            alter TABLE motechmodule_defaulted_expected_encounter_alert add COLUMN alert_attempts int(4) default 0 ;
+            alter TABLE motechmodule_defaulted_expected_obs_alert add COLUMN alert_attempts int(4) default 0 ;
+            alter table motechmodule_defaulted_expected_encounter_alert change alerts_sent alerts_delivered int(4) default 0;
+            alter table motechmodule_defaulted_expected_obs_alert change alerts_sent alerts_delivered int(4) default 0;
+        </sql>
+    </diff>
+
 </sqldiff>

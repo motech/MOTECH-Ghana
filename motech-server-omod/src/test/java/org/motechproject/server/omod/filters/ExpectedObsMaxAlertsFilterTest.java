@@ -45,10 +45,10 @@ public class ExpectedObsMaxAlertsFilterTest {
         expectedObservations.add(expObs4);
 
         CareConfiguration care1 = new CareConfiguration(1L, "ANC", 3);
-        DefaultedExpectedObsAlert defaulterAlert1 = new DefaultedExpectedObsAlert(1L, expObs1, care1, 2);
-        DefaultedExpectedObsAlert defaulterAlert2 = new DefaultedExpectedObsAlert(2L, expObs2, care1, 3);
-        DefaultedExpectedObsAlert defaulterAlert3 = new DefaultedExpectedObsAlert(3L, expObs3, care1, 4);
-        DefaultedExpectedObsAlert defaulterAlert4 = new DefaultedExpectedObsAlert(4L, expObs3, care1, 0);
+        DefaultedExpectedObsAlert defaulterAlert1 = new DefaultedExpectedObsAlert(1L, expObs1, care1, 2, 1);
+        DefaultedExpectedObsAlert defaulterAlert2 = new DefaultedExpectedObsAlert(2L, expObs2, care1, 3, 1);
+        DefaultedExpectedObsAlert defaulterAlert3 = new DefaultedExpectedObsAlert(3L, expObs3, care1, 4, 1);
+        DefaultedExpectedObsAlert defaulterAlert4 = new DefaultedExpectedObsAlert(4L, expObs3, care1, 0, 1);
 
         expect(contextService.getMotechService()).andReturn(motechService).times(4);
         expect(motechService.getDefaultedObsAlertFor(expObs1)).andReturn(defaulterAlert1);

@@ -279,7 +279,7 @@ public interface MotechService extends OpenmrsService {
     CareConfiguration getCareConfigurationFor(String careName);
 
     @Transactional
-    void saveorUpdateDefaultedEncounterAlert(DefaultedExpectedEncounterAlert encounterAlert);
+    void saveOrUpdateDefaultedEncounterAlert(DefaultedExpectedEncounterAlert encounterAlert);
 
     @Transactional
     void saveOrUpdateDefaultedObsAlert(DefaultedExpectedObsAlert obsAlert);

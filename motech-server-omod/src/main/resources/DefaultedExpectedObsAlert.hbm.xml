@@ -6,6 +6,7 @@
 		</id>
         <many-to-one name="expectedObs" unique="true" column="expected_obs_id" />
         <many-to-one name="careConfiguration" column="care_id" />
-		<property name="alertsSent" type="java.lang.Integer" column="alerts_sent" />
+		<property name="alertsDelivered" type="java.lang.Integer" column="alerts_delivered" />
+        <property name="alertAttempts" type="java.lang.Integer" column="alert_attempts"/>
 	</class>
 </hibernate-mapping>

@@ -104,10 +104,10 @@ public class RegistrarBeanDefaulterAlertsTest {
         expect(motechService.getDefaultedObsAlertFor(obs)).andReturn(null);
         expect(motechService.getCareConfigurationFor("TT1")).andReturn(careConfigurationForTT1);
 
-        motechService.saveorUpdateDefaultedEncounterAlert(equalsExpectedEncounterAlert(new DefaultedExpectedEncounterAlert(enc, careConfigurationForANC, 1)));
+        motechService.saveOrUpdateDefaultedEncounterAlert(equalsExpectedEncounterAlert(new DefaultedExpectedEncounterAlert(enc, careConfigurationForANC, 1, 1)));
         expectLastCall();
 
-        motechService.saveOrUpdateDefaultedObsAlert(equalsExpectedObsAlert(new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 1)));
+        motechService.saveOrUpdateDefaultedObsAlert(equalsExpectedObsAlert(new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 1, 1)));
         expectLastCall();
 
         replay(contextService, motechService, administrationService, encounterFilter, obsFilter, messageService);
@@ -165,13 +165,77 @@ public class RegistrarBeanDefaulterAlertsTest {
                 EasyMock.<CareMessageGroupingStrategy>anyObject(), EasyMock.<MediaType>anyObject(), EasyMock.<Date>anyObject(), EasyMock.<Date>isNull()))
                 .andReturn(MessageStatus.DELIVERED);
 
-        expect(motechService.getDefaultedEncounterAlertFor(enc)).andReturn(new DefaultedExpectedEncounterAlert(enc, careConfigurationForANC, 1));
-        expect(motechService.getDefaultedObsAlertFor(obs)).andReturn((new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 2)));
+        expect(motechService.getDefaultedEncounterAlertFor(enc)).andReturn(new DefaultedExpectedEncounterAlert(enc, careConfigurationForANC, 1, 1));
+        expect(motechService.getDefaultedObsAlertFor(obs)).andReturn((new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 2, 1)));
 
-        motechService.saveorUpdateDefaultedEncounterAlert(equalsExpectedEncounterAlert(new DefaultedExpectedEncounterAlert(enc, careConfigurationForANC, 2)));
+        motechService.saveOrUpdateDefaultedEncounterAlert(equalsExpectedEncounterAlert(new DefaultedExpectedEncounterAlert(enc, careConfigurationForANC, 2, 2)));
         expectLastCall();
 
-        motechService.saveOrUpdateDefaultedObsAlert(equalsExpectedObsAlert(new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 3)));
+        motechService.saveOrUpdateDefaultedObsAlert(equalsExpectedObsAlert(new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 3, 2)));
+        expectLastCall();
+
+        replay(contextService, motechService, administrationService, encounterFilter, obsFilter, messageService);
+
+        registrarBean.sendStaffCareMessages(someDate, someDate, someDate, someDate, careGroups, false, true);
+
+        verify(contextService, motechService, administrationService, encounterFilter, obsFilter, messageService);
+
+    }
+
+
+     @Test
+    public void onlyAttemptCountShouldBeIncrementedIfAlertNotDelivered() {
+        String[] careGroups = new String[]{"ANC","TT1"};
+        List<Facility> facilities = facilitiesFor("Central Region");
+
+        Patient patient = new Patient(1);
+        ExpectedEncounter enc = new ExpectedEncounter();
+        enc.setId(1L);
+        enc.setPatient(patient);
+        enc.setName("ANC");
+        List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
+        expectedEncounters.add(enc);
+
+        ExpectedObs obs = new ExpectedObs();
+        obs.setId(1L);
+        obs.setPatient(patient);
+        obs.setName("TT1");
+        List<ExpectedObs> expectedObservations = new ArrayList<ExpectedObs>();
+        expectedObservations.add(obs);
+
+        WebServiceModelConverterImpl converter = new WebServiceModelConverterImpl();
+        converter.setRegistrarBean(registrarBean);
+
+        CareConfiguration careConfigurationForANC = new CareConfiguration(1L, "ANC", 3);
+        CareConfiguration careConfigurationForTT1 = new CareConfiguration(2L, "TT1", 3);
+
+        Date someDate = new Date();
+
+        Integer maxResults = 1;
+        expect(contextService.getMotechService()).andReturn(motechService).anyTimes();
+        expect(contextService.getAdministrationService()).andReturn(administrationService).times(2);
+        expect(motechService.getBlackoutSettings()).andReturn(null);
+        expect(motechService.getAllFacilities()).andReturn(facilities);
+        expect(administrationService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn(maxResults.toString()).times(2);
+        expect(motechService.getExpectedEncounter(null, facilities.get(0), careGroups, null, null, someDate, someDate, maxResults)).andReturn(expectedEncounters);
+        expect(motechService.getExpectedObs(null, facilities.get(0), careGroups, null, null, someDate, someDate, maxResults)).andReturn(expectedObservations);
+        expect(motechService.getCommunityByPatient(same(patient))).andReturn(null).times(2);
+
+        expect(encounterFilter.doFilter(expectedEncounters)).andReturn(expectedEncounters);
+        expect(obsFilter.doFilter(expectedObservations)).andReturn(expectedObservations);
+
+
+        expect(messageService.sendDefaulterMessage(EasyMock.<String>isNull(), eq("0123456789"), EasyMock.<Care[]>anyObject(),
+                EasyMock.<CareMessageGroupingStrategy>anyObject(), EasyMock.<MediaType>anyObject(), EasyMock.<Date>anyObject(), EasyMock.<Date>isNull()))
+                .andReturn(MessageStatus.FAILED);
+
+        expect(motechService.getDefaultedEncounterAlertFor(enc)).andReturn(new DefaultedExpectedEncounterAlert(enc, careConfigurationForANC, 1, 2));
+        expect(motechService.getDefaultedObsAlertFor(obs)).andReturn((new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 1, 1)));
+
+        motechService.saveOrUpdateDefaultedEncounterAlert(equalsExpectedEncounterAlert(new DefaultedExpectedEncounterAlert(enc, careConfigurationForANC, 1 , 3)));
+        expectLastCall();
+
+        motechService.saveOrUpdateDefaultedObsAlert(equalsExpectedObsAlert(new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 1, 2)));
         expectLastCall();
 
         replay(contextService, motechService, administrationService, encounterFilter, obsFilter, messageService);

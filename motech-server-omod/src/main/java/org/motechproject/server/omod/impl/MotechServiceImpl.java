@@ -411,7 +411,7 @@ public class MotechServiceImpl extends BaseOpenmrsService implements MotechServi
         return motechDAO.getCareConfigurationFor(careName);
     }
 
-    public void saveorUpdateDefaultedEncounterAlert(DefaultedExpectedEncounterAlert encounterAlert) {
+    public void saveOrUpdateDefaultedEncounterAlert(DefaultedExpectedEncounterAlert encounterAlert) {
         motechDAO.saveDefaultedEncounterAlert(encounterAlert);
     }
 

@@ -44,9 +44,9 @@
     <motechmodule_care_configuration care_id="1" care_name="ANC" max_alerts="2"/>
     <motechmodule_care_configuration care_id="2" care_name="TT" max_alerts="2"/>
 
-    <motechmodule_defaulted_expected_encounter_alert expected_encounter_alert_id="1" expected_encounter_id="1" care_id="1" alerts_sent="1"/>
-    <motechmodule_defaulted_expected_encounter_alert expected_encounter_alert_id="2" expected_encounter_id="2" care_id="1" alerts_sent="2"/>
-    <motechmodule_defaulted_expected_obs_alert expected_obs_alert_id="1" expected_obs_id="1" care_id="1" alerts_sent="1"/>
-    <motechmodule_defaulted_expected_obs_alert expected_obs_alert_id="2" expected_obs_id="2" care_id="2" alerts_sent="2"/>
+    <motechmodule_defaulted_expected_encounter_alert expected_encounter_alert_id="1" expected_encounter_id="1" care_id="1" alerts_delivered="1" alert_attempts="1"/>
+    <motechmodule_defaulted_expected_encounter_alert expected_encounter_alert_id="2" expected_encounter_id="2" care_id="1" alerts_delivered="2" alert_attempts="3"/>
+    <motechmodule_defaulted_expected_obs_alert expected_obs_alert_id="1" expected_obs_id="1" care_id="1" alerts_delivered="1" alert_attempts="2"/>
+    <motechmodule_defaulted_expected_obs_alert expected_obs_alert_id="2" expected_obs_id="2" care_id="2" alerts_delivered="2" alert_attempts="2"/>
 
 </dataset>

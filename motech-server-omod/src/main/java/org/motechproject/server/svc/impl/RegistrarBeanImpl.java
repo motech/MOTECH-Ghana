@@ -2943,39 +2943,39 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             modelConverter.setRegistrarBean(this);
             Care[] defaultedCares = modelConverter.defaultedToWebServiceCares(filteredDefaultedEncounters, filteredDefaultedExpectedObs);
             log.info("Sending defaulter message to " + facility.name() + " at " + facilityPhoneNumber);
-            boolean alertsSent = sendStaffDefaultedCareMessage(facilityPhoneNumber, deliveryDate, defaultedCares, getCareMessageGroupingStrategy(facility.getLocation()));
-            if (alertsSent) {
-                incrementDefaultedEncountersAlertCount(filteredDefaultedEncounters);
-                incrementDefaultedObservationsAlertCount(filteredDefaultedExpectedObs);
-            }
+            Boolean alertsSent = sendStaffDefaultedCareMessage(facilityPhoneNumber, deliveryDate, defaultedCares, getCareMessageGroupingStrategy(facility.getLocation()));
+            incrementDefaultedEncountersAlertCount(filteredDefaultedEncounters, alertsSent);
+            incrementDefaultedObservationsAlertCount(filteredDefaultedExpectedObs, alertsSent);
         } else {
             sendNoDefaultersMessage(facility, facilityPhoneNumber);
         }
     }
 
-    private void incrementDefaultedObservationsAlertCount(List<ExpectedObs> defaultedObservations) {
+    private void incrementDefaultedObservationsAlertCount(List<ExpectedObs> defaultedObservations, Boolean delivered) {
         for (ExpectedObs defaultedObs : defaultedObservations) {
             DefaultedExpectedObsAlert alert = motechService().getDefaultedObsAlertFor(defaultedObs);
             if (alert == null) {
-                DefaultedExpectedObsAlert obsAlert = new DefaultedExpectedObsAlert(defaultedObs, careConfigurationFor(defaultedObs.getName()), 1);
+                DefaultedExpectedObsAlert obsAlert = new DefaultedExpectedObsAlert(defaultedObs, careConfigurationFor(defaultedObs.getName()), 1, 1);
                 motechService().saveOrUpdateDefaultedObsAlert(obsAlert);
                 continue;
             }
-            alert.incrementCount();
+            alert.attempted();
+            if (delivered) alert.delivered();
             motechService().saveOrUpdateDefaultedObsAlert(alert);
         }
     }
 
-    private void incrementDefaultedEncountersAlertCount(List<ExpectedEncounter> defaultedEncounters) {
+    private void incrementDefaultedEncountersAlertCount(List<ExpectedEncounter> defaultedEncounters, Boolean delivered) {
         for (ExpectedEncounter defaultedEncounter : defaultedEncounters) {
             DefaultedExpectedEncounterAlert alert = motechService().getDefaultedEncounterAlertFor(defaultedEncounter);
             if (alert == null) {
-                DefaultedExpectedEncounterAlert encounterAlert = new DefaultedExpectedEncounterAlert(defaultedEncounter, careConfigurationFor(defaultedEncounter.getName()), 1);
-                motechService().saveorUpdateDefaultedEncounterAlert(encounterAlert);
+                DefaultedExpectedEncounterAlert encounterAlert = new DefaultedExpectedEncounterAlert(defaultedEncounter, careConfigurationFor(defaultedEncounter.getName()), 1, 1);
+                motechService().saveOrUpdateDefaultedEncounterAlert(encounterAlert);
                 continue;
             }
-            alert.incrementCount();
-            motechService().saveorUpdateDefaultedEncounterAlert(alert);
+            alert.attempted();
+            if (delivered) alert.delivered();
+            motechService().saveOrUpdateDefaultedEncounterAlert(alert);
         }
     }
 

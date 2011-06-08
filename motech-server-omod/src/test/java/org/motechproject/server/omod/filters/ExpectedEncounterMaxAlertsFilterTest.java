@@ -41,9 +41,9 @@ public class ExpectedEncounterMaxAlertsFilterTest {
         expectedEncounters.add(expEnc3);
 
         CareConfiguration care1 = new CareConfiguration(1L, "ANC", 3);
-        DefaultedExpectedEncounterAlert defaulterAlert1 = new DefaultedExpectedEncounterAlert(1L, expEnc1, care1, 2);
-        DefaultedExpectedEncounterAlert defaulterAlert2 = new DefaultedExpectedEncounterAlert(2L, expEnc2, care1, 3);
-        DefaultedExpectedEncounterAlert defaulterAlert3 = new DefaultedExpectedEncounterAlert(3L, expEnc3, care1, 4);
+        DefaultedExpectedEncounterAlert defaulterAlert1 = new DefaultedExpectedEncounterAlert(1L, expEnc1, care1, 2, 1);
+        DefaultedExpectedEncounterAlert defaulterAlert2 = new DefaultedExpectedEncounterAlert(2L, expEnc2, care1, 3, 1);
+        DefaultedExpectedEncounterAlert defaulterAlert3 = new DefaultedExpectedEncounterAlert(3L, expEnc3, care1, 4, 1);
 
         expect(contextService.getMotechService()).andReturn(motechService).times(3);
         expect(motechService.getDefaultedEncounterAlertFor(expEnc1)).andReturn(defaulterAlert1);

@@ -553,7 +553,7 @@ public class RegistrarBeanImplTest extends TestCase {
                 capture(capturedMediaType), capture(capturedStartDate),
                 capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
 
-        motechService.saveorUpdateDefaultedEncounterAlert(EasyMock.<DefaultedExpectedEncounterAlert>anyObject());
+        motechService.saveOrUpdateDefaultedEncounterAlert(EasyMock.<DefaultedExpectedEncounterAlert>anyObject());
         expectLastCall().atLeastOnce();
 
         replay(contextService, adminService, motechService, mobileService, rctService);
@@ -638,7 +638,7 @@ public class RegistrarBeanImplTest extends TestCase {
         expect(mobileService.sendBulkCaresMessage(capture(capturedMessageId), capture(capturedPhoneNumber), capture(capturedCares), capture(capturedStrategy), capture(capturedMediaType), capture(capturedStartDate),
                 capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
 
-        motechService.saveorUpdateDefaultedEncounterAlert(EasyMock.<DefaultedExpectedEncounterAlert>anyObject());
+        motechService.saveOrUpdateDefaultedEncounterAlert(EasyMock.<DefaultedExpectedEncounterAlert>anyObject());
         expectLastCall().atLeastOnce();
 
         replay(contextService, adminService, motechService, mobileService, rctService);
