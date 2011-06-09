@@ -43,6 +43,7 @@ import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.model.*;
 import org.motechproject.server.model.db.MotechDAO;
 import org.motechproject.server.util.MotechConstants;
+import org.motechproject.ws.Gender;
 import org.openmrs.*;
 
 import java.util.Date;
@@ -913,5 +914,21 @@ public class HibernateMotechDAO implements MotechDAO {
 
     public void saveOrUpdateDefaultedObsAlert(DefaultedExpectedObsAlert obsAlert) {
         sessionFactory.getCurrentSession().saveOrUpdate(obsAlert);
+    }
+
+    public List<GeneralOutpatientEncounter> getOutPatientVisitEntryBy(Integer facilityId, String serialNumber,
+                                                                      Gender sex, Date dob, Boolean newCase, Integer diagnosis) {
+
+
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(GeneralOutpatientEncounter.class);
+
+        criteria.add(Restrictions.eq("facilityId", facilityId))
+                .add(Restrictions.eq("serialNumber", serialNumber))
+                .add(Restrictions.eq("birthDate", dob))
+                .add(Restrictions.eq("newCase", newCase))
+                .add(Restrictions.eq("diagnosis", diagnosis))
+                .add(Restrictions.eq("sex", sex));
+
+        return criteria.list();
     }
 }

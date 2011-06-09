@@ -443,4 +443,6 @@ public interface RegistrarBean {
     public Date getChildRegistrationDate();
 
     Facility getUnknownFacility();
+
+    boolean isValidOutPatientVisitEntry(Integer facilityId, Date date, String serialNumber, Gender sex, Date dob, Boolean newCase, Integer diagnosis);
 }

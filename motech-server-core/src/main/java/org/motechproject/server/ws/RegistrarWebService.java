@@ -852,6 +852,7 @@ public class RegistrarWebService implements RegistrarService {
 
         validateStaffId(staffId, errors, "StaffID");
         validateFacility(facilityId, errors, "FacilityID");
+        validateDuplicateOPDVisitEntry(errors, facilityId, date, serialNumber, sex, dateOfBirth, newCase, diagnosis);
 
         if (errors.getErrors().size() > 0) {
             throw new ValidationException("Errors in General Visit request",
@@ -862,6 +863,13 @@ public class RegistrarWebService implements RegistrarService {
                 serialNumber, sex, dateOfBirth, insured, diagnosis,
                 secondDiagnosis, rdtGiven, rdtPositive, actTreated, newCase,
                 newPatient, referred, comments);
+    }
+
+    private void validateDuplicateOPDVisitEntry(ValidationErrors errors, Integer facilityId, Date visitDate, String serialNumber, Gender sex, Date dateOfBirth, Boolean newCase, Integer diagnosis) {
+          boolean valid = registrarBean.isValidOutPatientVisitEntry(facilityId, visitDate, serialNumber, sex, dateOfBirth, newCase, diagnosis);
+          if(!valid){
+             errors.add(messageBean.getMessage("motechmodule.ws.duplicate.opdVisitEntry", "OPDVistEntryForm"));
+          }
     }
 
     @WebMethod

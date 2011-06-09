@@ -33,6 +33,8 @@
 
 package org.motechproject.server.svc.impl;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -50,6 +52,7 @@ import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.util.DateUtil;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.server.util.Password;
@@ -1780,7 +1783,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     @Transactional
-    public void recordGeneralOutpatientVisit(Integer staffId,
+    public void  recordGeneralOutpatientVisit(Integer staffId,
                                              Integer facilityId, Date date, String serialNumber, Gender sex,
                                              Date dateOfBirth, Boolean insured, Integer diagnosis,
                                              Integer secondDiagnosis, Boolean rdtGiven, Boolean rdtPositive,
@@ -3691,6 +3694,25 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public Facility getUnknownFacility() {
         return motechService().unknownFacility();
+    }
+
+    public boolean isValidOutPatientVisitEntry(Integer facilityId, Date visitDate, String serialNumber, Gender sex, Date dob, Boolean newCase, Integer diagnosis) {
+        List<GeneralOutpatientEncounter> outPatientEncounters = motechService().getOutPatientVisitEntryBy(facilityId, serialNumber, sex, dob, newCase, diagnosis);
+        return hasNoDuplicateEncounter(outPatientEncounters, visitDate);
+    }
+
+    private boolean hasNoDuplicateEncounter(List<GeneralOutpatientEncounter> outPatientEncounters, final Date visitDate) {
+
+        if((null == outPatientEncounters) || (outPatientEncounters.isEmpty()))
+            return true;
+
+        boolean exists = CollectionUtils.exists(outPatientEncounters, new Predicate() {
+            public boolean evaluate(Object object) {
+                Date otherVisitDate = ((GeneralOutpatientEncounter) object).getDate();
+                return DateUtil.isSameMonth(visitDate, otherVisitDate) && DateUtil.isSameYear(visitDate, otherVisitDate);
+            }
+        });
+        return !exists;
     }
 
     public List<String> getStaffTypes() {

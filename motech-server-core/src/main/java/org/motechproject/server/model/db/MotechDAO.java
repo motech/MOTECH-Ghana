@@ -35,6 +35,7 @@ package org.motechproject.server.model.db;
 
 import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.model.*;
+import org.motechproject.ws.Gender;
 import org.openmrs.*;
 
 import java.util.Date;
@@ -205,4 +206,6 @@ public interface MotechDAO {
     void saveDefaultedEncounterAlert(DefaultedExpectedEncounterAlert encounterAlert);
 
     void saveOrUpdateDefaultedObsAlert(DefaultedExpectedObsAlert obsAlert);
+
+    List<GeneralOutpatientEncounter> getOutPatientVisitEntryBy(Integer facilityId, String serialNumber, Gender sex, Date dob, Boolean newCase, Integer diagnosis);
 }

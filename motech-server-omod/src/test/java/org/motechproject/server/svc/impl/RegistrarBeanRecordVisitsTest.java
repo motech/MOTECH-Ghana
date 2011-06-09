@@ -116,10 +116,10 @@ public class RegistrarBeanRecordVisitsTest extends
 
             MotechService motechService = Context
                     .getService(MotechService.class);
-            RegistrarBean regService = motechService.getRegistrarBean();
-            OpenmrsBean openmrsService = motechService.getOpenmrsBean();
+            RegistrarBean registrarBean = motechService.getRegistrarBean();
+            OpenmrsBean openmrsBean = motechService.getOpenmrsBean();
 
-            Facility facility = motechService.getFacilityById(1111);
+            Facility facility = motechService.getFacilityById(11117);
             Location facilityLocation = facility.getLocation();
             Community community = motechService.getCommunityById(11111);
 
@@ -135,10 +135,10 @@ public class RegistrarBeanRecordVisitsTest extends
             calendar.add(Calendar.DATE, -20);
             Date dueDate2 = calendar.getTime();
 
-            User staff = regService.registerStaff("Nurse", "Betty",
+            User staff = registrarBean.registerStaff("Nurse", "Betty",
                     "7777777777", "CHO", null);
 
-            regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+            registrarBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
                     mother1Id, RegistrantType.PREGNANT_MOTHER,
                     "Mother1FirstName", "Mother1MiddleName", "Mother1LastName",
                     "Mother1PrefName", date, false, Gender.FEMALE, true,
@@ -148,15 +148,15 @@ public class RegistrarBeanRecordVisitsTest extends
                     DayOfWeek.MONDAY, date, InterestReason.CURRENTLY_PREGNANT,
                     HowLearned.FRIEND, null);
 
-            Patient mother1 = openmrsService.getPatientByMotechId(mother1Id
+            Patient mother1 = openmrsBean.getPatientByMotechId(mother1Id
                     .toString());
             assertNotNull("Mother 1 not registered", mother1);
             assertEquals(
                     "Registration or Pregnancy visit not added for Mother 1",
                     2, Context.getEncounterService().getEncountersByPatient(
-                            mother1).size());
+                    mother1).size());
 
-            regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+            registrarBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
                     mother2Id, RegistrantType.PREGNANT_MOTHER,
                     "Mother2FirstName", "Mother2MiddleName", "Mother2LastName",
                     "Mother2PrefName", date, false, Gender.FEMALE, true,
@@ -166,15 +166,15 @@ public class RegistrarBeanRecordVisitsTest extends
                     DayOfWeek.MONDAY, date, InterestReason.CURRENTLY_PREGNANT,
                     HowLearned.FRIEND, null);
 
-            Patient mother2 = openmrsService.getPatientByMotechId(mother2Id
+            Patient mother2 = openmrsBean.getPatientByMotechId(mother2Id
                     .toString());
             assertNotNull("Mother 2 not registered", mother2);
             assertEquals(
                     "Registration or Pregnancy visit not added for Mother 2",
                     2, Context.getEncounterService().getEncountersByPatient(
-                            mother2).size());
+                    mother2).size());
 
-            regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+            registrarBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
                     child1Id, RegistrantType.CHILD_UNDER_FIVE,
                     "Child1FirstName", "Child1MiddleName", "Child1LastName",
                     "Child1PrefName", date, false, Gender.FEMALE, true,
@@ -184,7 +184,7 @@ public class RegistrarBeanRecordVisitsTest extends
                     InterestReason.FAMILY_FRIEND_PREGNANT, HowLearned.FRIEND,
                     null);
 
-            Patient child1 = openmrsService.getPatientByMotechId(child1Id
+            Patient child1 = openmrsBean.getPatientByMotechId(child1Id
                     .toString());
             assertNotNull("Child 1 not registered", child1);
             assertEquals("Registration visit not added for Child 1", 1, Context
@@ -195,14 +195,14 @@ public class RegistrarBeanRecordVisitsTest extends
                     .getPatientService().getAllPatients().size());
 
             // Query for Mother 1 upcoming pregnancy due date
-            List<Obs> upcomingDueDate = regService.getUpcomingPregnanciesDueDate(facility);
+            List<Obs> upcomingDueDate = registrarBean.getUpcomingPregnanciesDueDate(facility);
             assertEquals(1, upcomingDueDate.size());
             assertEquals(dueDate1, upcomingDueDate.get(0).getValueDatetime());
             assertEquals(mother1.getPatientId(), upcomingDueDate.get(0)
                     .getPerson().getPersonId());
 
             // Query for Mother 2 overdue pregnancy due date
-            List<Obs> overdueDueDate = regService.getOverduePregnanciesDueDate(facility);
+            List<Obs> overdueDueDate = registrarBean.getOverduePregnanciesDueDate(facility);
             assertEquals(1, overdueDueDate.size());
             assertEquals(dueDate2, overdueDueDate.get(0).getValueDatetime());
             assertEquals(mother2.getPatientId(), overdueDueDate.get(0)
@@ -213,7 +213,7 @@ public class RegistrarBeanRecordVisitsTest extends
             Date newDueDate = calendar.getTime();
 
             // ANC Visit for Mother 1
-            regService.recordMotherANCVisit(staff, facilityLocation, date,
+            registrarBean.recordMotherANCVisit(staff, facilityLocation, date,
                     mother1, 1, 1, "House", "Community", newDueDate, 1, 1, 1.0,
                     1, 1, false, true, 1.0, 1, 0, 56464, 1.0, false, false,
                     false, true, false, false, HIVResult.NO_TEST, false, false,
@@ -222,7 +222,7 @@ public class RegistrarBeanRecordVisitsTest extends
             assertEquals("ANC visit not added for Mother 1", 3, Context
                     .getEncounterService().getEncountersByPatient(mother1)
                     .size());
-            Date currentDueDate = regService.getActivePregnancyDueDate(mother1
+            Date currentDueDate = registrarBean.getActivePregnancyDueDate(mother1
                     .getPatientId());
             assertEquals("EDD not updated in ANC visit", newDueDate,
                     currentDueDate);
@@ -231,14 +231,14 @@ public class RegistrarBeanRecordVisitsTest extends
             newDueDate = calendar.getTime();
 
             // ANC Registration for Mother 1
-            regService.registerANCMother(staff, facilityLocation, date,
+            registrarBean.registerANCMother(staff, facilityLocation, date,
                     mother1, "ANC2", newDueDate, 45.2, 1, 0, false, false,
                     null, null, null, null, null, null, null);
 
             assertEquals("ANC registration not added for Mother 1", 4, Context
                     .getEncounterService().getEncountersByPatient(mother1)
                     .size());
-            currentDueDate = regService.getActivePregnancyDueDate(mother1
+            currentDueDate = registrarBean.getActivePregnancyDueDate(mother1
                     .getPatientId());
             assertEquals("EDD not updated in ANC registration", newDueDate,
                     currentDueDate);
@@ -251,14 +251,14 @@ public class RegistrarBeanRecordVisitsTest extends
             outcomes.add(new BirthOutcomeChild(BirthOutcome.FSB,
                     RegistrationMode.USE_PREPRINTED_ID, child3Id, Gender.MALE,
                     "Child3FirstName", 3.0));
-            List<Patient> childPatients = regService.recordPregnancyDelivery(
+            List<Patient> childPatients = registrarBean.recordPregnancyDelivery(
                     staff, facility, date, mother1, 1, 1, 1, 1, true,
                     new Integer[]{1, 2, 3}, 1, false, "Comments", outcomes);
 
             assertEquals("Pregnancy delivery not added for Mother 1", 5,
                     Context.getEncounterService().getEncountersByPatient(
                             mother1).size());
-            Obs mother1Pregnancy = regService.getActivePregnancy(mother1
+            Obs mother1Pregnancy = registrarBean.getActivePregnancy(mother1
                     .getPatientId());
             assertNull("Pregnancy is still active after delivery",
                     mother1Pregnancy);
@@ -272,25 +272,25 @@ public class RegistrarBeanRecordVisitsTest extends
                     .getPatientIdentifier().getIdentifier());
             assertEquals("Child2FirstName", registeredChild.getGivenName());
 
-            Patient child2 = openmrsService.getPatientByMotechId(child2Id
+            Patient child2 = openmrsBean.getPatientByMotechId(child2Id
                     .toString());
             assertNotNull("Child 2 not registered", child2);
             assertEquals("Birth or Registration visit not added for Child 2",
                     2, Context.getEncounterService().getEncountersByPatient(
                             child2).size());
-            String[] child2Enrollments = regService.getActiveMessageProgramEnrollmentNames(child2);
+            String[] child2Enrollments = registrarBean.getActiveMessageProgramEnrollmentNames(child2);
             assertNotNull("Enrollments do not exist for Child 2",
                     child2Enrollments);
             assertEquals(2, child2Enrollments.length);
 
             // Query for Delivery
-            List<Encounter> recentDeliveryEnc = regService
+            List<Encounter> recentDeliveryEnc = registrarBean
                     .getRecentDeliveries(facility);
             assertEquals(1, recentDeliveryEnc.size());
             assertEquals(mother1, recentDeliveryEnc.get(0).getPatient());
 
             // PNC Visit for Mother 2
-            regService.recordMotherPNCVisit(staff, facilityLocation, date,
+            registrarBean.recordMotherPNCVisit(staff, facilityLocation, date,
                     mother2, 1, 1, "House", "Community", false, true, true, 1,
                     1, false, false, 36.0, 100.0, "Comments");
 
@@ -299,7 +299,7 @@ public class RegistrarBeanRecordVisitsTest extends
                     .size());
 
             // General Visit for Mother 2
-            regService.recordOutpatientVisit(staff, facilityLocation, date,
+            registrarBean.recordOutpatientVisit(staff, facilityLocation, date,
                     mother2, "Mother2GeneralId", true, 1, 2, true, true, true,
                     false, true, false, "Comments");
 
@@ -308,14 +308,14 @@ public class RegistrarBeanRecordVisitsTest extends
                     .size());
 
             // Pregnancy Termination for Mother 2 (with maternal death)
-            regService.recordPregnancyTermination(staff, facilityLocation,
+            registrarBean.recordPregnancyTermination(staff, facilityLocation,
                     currentDueDate, mother2, 1, 1, new Integer[]{1, 2, 3},
                     true, false, false, false, "Comments");
 
             assertEquals("Pregnancy termination not added for Mother 2", 5,
                     Context.getEncounterService().getEncountersByPatient(
                             mother2).size());
-            Obs mother2Pregnancy = regService.getActivePregnancy(mother2
+            Obs mother2Pregnancy = registrarBean.getActivePregnancy(mother2
                     .getPatientId());
             assertNull("Pregnancy is still active after termination",
                     mother2Pregnancy);
@@ -323,7 +323,7 @@ public class RegistrarBeanRecordVisitsTest extends
                     .getAllPatients().size());
 
             // CWC Visit for Child 2
-            regService.recordChildCWCVisit(staff, facilityLocation, date,
+            registrarBean.recordChildCWCVisit(staff, facilityLocation, date,
                     child2, 1, "House", "Community", true, 1, 1, true, true,
                     true, 1, true, true, 25.0, 5.0, 35.0, true, "Comments");
 
@@ -332,7 +332,7 @@ public class RegistrarBeanRecordVisitsTest extends
                     .size());
 
             // PNC Visit for Child 2
-            regService.recordChildPNCVisit(staff, facilityLocation, date,
+            registrarBean.recordChildPNCVisit(staff, facilityLocation, date,
                     child2, 1, 1, "House", "Community", false, true, 7.0, 36.0,
                     true, true, 140, true, true, "Comments");
 
@@ -341,7 +341,7 @@ public class RegistrarBeanRecordVisitsTest extends
                     .size());
 
             // General Visit for Child 1
-            regService.recordOutpatientVisit(staff, facilityLocation, date,
+            registrarBean.recordOutpatientVisit(staff, facilityLocation, date,
                     child1, "Child1GeneralId", true, 4, 5, true, true, true,
                     false, false, false, "Comments");
 
@@ -370,7 +370,7 @@ public class RegistrarBeanRecordVisitsTest extends
             calendar.set(2003, 7, 17, 0, 0, 0); // Aug 17, 2003
             Date vitDate = calendar.getTime();
 
-            regService.recordPatientHistory(staff, facilityLocation, date,
+            registrarBean.recordPatientHistory(staff, facilityLocation, date,
                     child1, 2, iptDate, 3, ttDate, bcgDate, 6, opvDate, 7,
                     pentaDate, measlesDate, yellowDate, 8, iptiDate, vitDate, null);
 
@@ -379,7 +379,7 @@ public class RegistrarBeanRecordVisitsTest extends
                     .size());
 
             // Record Death of Child 1
-            regService.recordDeath(staff, facilityLocation, date, child1);
+            registrarBean.recordDeath(staff, facilityLocation, date, child1);
 
             assertEquals("Deceased child 1 not voided", 4, Context
                     .getPatientService().getAllPatients().size());

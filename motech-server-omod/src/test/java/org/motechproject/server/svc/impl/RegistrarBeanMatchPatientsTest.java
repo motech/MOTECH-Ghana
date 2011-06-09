@@ -127,7 +127,7 @@ public class RegistrarBeanMatchPatientsTest extends
 
 			Community community = regService.getCommunityById(communityId);
 
-            Facility facility = regService.getFacilityById(1111);
+            Facility facility = regService.getFacilityById(11117);
 
             regService.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
 					motechId, RegistrantType.PREGNANT_MOTHER, firstName,

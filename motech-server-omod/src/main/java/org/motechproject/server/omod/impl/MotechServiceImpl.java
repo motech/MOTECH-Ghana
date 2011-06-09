@@ -41,6 +41,7 @@ import org.motechproject.server.omod.sdsched.ScheduleMaintService;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.ws.Gender;
 import org.openmrs.*;
 import org.openmrs.api.impl.BaseOpenmrsService;
 
@@ -417,6 +418,10 @@ public class MotechServiceImpl extends BaseOpenmrsService implements MotechServi
 
     public void saveOrUpdateDefaultedObsAlert(DefaultedExpectedObsAlert obsAlert) {
         motechDAO.saveOrUpdateDefaultedObsAlert(obsAlert);
+    }
+
+    public List<GeneralOutpatientEncounter> getOutPatientVisitEntryBy(Integer facilityId, String serialNumber, Gender sex, Date dob, Boolean newCase, Integer diagnosis) {
+        return motechDAO.getOutPatientVisitEntryBy(facilityId, serialNumber, sex, dob, newCase, diagnosis);
     }
 
     public RCTService getRctService(){

@@ -34,11 +34,13 @@
 package org.motechproject.server.ws;
 
 import org.easymock.Capture;
+import org.easymock.EasyMock;
 import org.junit.*;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
+import org.motechproject.server.service.TetanusScheduleTest;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
@@ -52,8 +54,12 @@ import org.openmrs.Obs;
 import org.openmrs.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import sun.security.x509.SerialNumber;
 
+import javax.jws.WebParam;
+import javax.tools.JavaCompiler;
 import java.lang.reflect.Field;
+import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -1670,9 +1676,10 @@ public class RegistrarServiceTest{
 		expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
+        expect(registrarBean.isValidOutPatientVisitEntry(2, date, "Serial", Gender.MALE, date, true, 5)).andReturn(true);
 		registrarBean.recordGeneralOutpatientVisit(staffId, facilityId, date,
-				serial, gender, date, insured, diagnosis, secondDiagnosis,
-				rdtGiven, rdtPositive, actTreated, newCase, newPatient, referred, comments);
+                serial, gender, date, insured, diagnosis, secondDiagnosis,
+                rdtGiven, rdtPositive, actTreated, newCase, newPatient, referred, comments);
 
 		replay(registrarBean, openmrsBean);
 
@@ -1697,6 +1704,8 @@ public class RegistrarServiceTest{
 				null);
 		expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(null);
+        expect(registrarBean.isValidOutPatientVisitEntry(2, date, "Serial", Gender.MALE, date, true, 5)).andReturn(true);
+
 
 		replay(registrarBean, openmrsBean);
 
@@ -1720,6 +1729,98 @@ public class RegistrarServiceTest{
 
 		verify(registrarBean, openmrsBean);
 	}
+
+
+    @Test
+    public void validateForDuplicateOutpatientVisitEntry() {
+
+        Integer staffId = 1;
+        Integer facilityId = 2;
+        Date date = new Date();
+        String serialNumber = "01/2010";
+
+        Gender sex = Gender.MALE;
+        Date dob = new Date();
+        Boolean insured = false;
+        Integer diagnosis = 1;
+        Integer secondDiag = 2;
+        Boolean rdtGiven = false;
+        Boolean rdtPositive = false;
+        Boolean actTreated = false;
+        Boolean newCase = false;
+        Boolean newPatient = false;
+        Boolean referred = false;
+        String comments = "";
+
+        try {
+
+            expect(registrarBean.isValidIdCheckDigit(staffId)).andReturn(true);
+            expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn( new User(staffId));
+            expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
+            Facility facility = new Facility();
+            expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
+            expect(registrarBean.isValidOutPatientVisitEntry(facilityId, date, serialNumber, sex, dob, newCase, diagnosis)).andReturn(false);
+
+            replay(registrarBean, openmrsBean);
+
+            regWs.recordGeneralVisit(staffId, facilityId, date, serialNumber, sex, dob, insured, diagnosis, secondDiag, rdtGiven, rdtPositive, actTreated, newCase, newPatient, referred, comments);
+            fail("should have thrown ValidationException for duplicate opd visit entry");
+
+        } catch (ValidationException e) {
+
+            assertEquals("Errors in General Visit request", e.getMessage());
+			assertNotNull("Validation Exception FaultBean is Null", e.getFaultInfo());
+			List<String> errors = e.getFaultInfo().getErrors();
+			assertNotNull("Validation Errors is Null", errors);
+			assertEquals(1, errors.size());
+            assertEquals("Duplicate visit entry", errors.get(0));
+        }
+
+        verify(registrarBean, openmrsBean);
+    }
+
+    @Test
+    public void validateForDuplicateOutpatientVisitEntryShouldSaveValidEntry() {
+
+        Integer staffId = 1;
+        Integer facilityId = 2;
+        Date date = new Date();
+        String serialNumber = "01/2010";
+
+        Gender sex = Gender.MALE;
+        Date dob = new Date();
+        Boolean insured = false;
+        Integer diagnosis = 1;
+        Integer secondDiag = 2;
+        Boolean rdtGiven = false;
+        Boolean rdtPositive = false;
+        Boolean actTreated = false;
+        Boolean newCase = false;
+        Boolean newPatient = false;
+        Boolean referred = false;
+        String comments = "";
+
+        try {
+
+            expect(registrarBean.isValidIdCheckDigit(staffId)).andReturn(true);
+            expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn( new User(staffId));
+            expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
+            Facility facility = new Facility();
+            expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
+            expect(registrarBean.isValidOutPatientVisitEntry(facilityId, date, serialNumber, sex, dob, newCase, diagnosis)).andReturn(true);
+            registrarBean.recordGeneralOutpatientVisit(staffId, facilityId, date, serialNumber, sex, dob, insured, diagnosis, secondDiag, rdtGiven, rdtPositive, actTreated, newCase, newPatient, referred, comments);
+            expectLastCall();
+
+            replay(registrarBean, openmrsBean);
+
+            regWs.recordGeneralVisit(staffId, facilityId, date, serialNumber, sex, dob, insured, diagnosis, secondDiag, rdtGiven, rdtPositive, actTreated, newCase, newPatient, referred, comments);
+
+        } catch (ValidationException e) {
+            fail("should not throw the exception on valid entry");
+        }
+
+        verify(registrarBean, openmrsBean);
+    }
 
 	@Test
 	public void recordChildVisit() throws ValidationException {

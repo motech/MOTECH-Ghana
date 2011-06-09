@@ -34,9 +34,11 @@
 package org.motechproject.server.svc.impl;
 
 import junit.framework.TestCase;
+import org.apache.commons.lang.time.DateUtils;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.motechproject.server.model.*;
+import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.omod.ContextService;
 import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.omod.filters.ExpectedEncounterFilterChain;
@@ -45,21 +47,16 @@ import org.motechproject.server.omod.filters.Filter;
 import org.motechproject.server.omod.web.model.KassenaNankana;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.util.MotechConstants;
-import org.motechproject.ws.Care;
-import org.motechproject.ws.CareMessageGroupingStrategy;
-import org.motechproject.ws.DayOfWeek;
-import org.motechproject.ws.MediaType;
+import org.motechproject.ws.*;
 import org.motechproject.ws.mobile.MessageService;
 import org.openmrs.*;
+import org.openmrs.Patient;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.PersonService;
 
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.easymock.EasyMock.*;
 
@@ -953,6 +950,75 @@ public class RegistrarBeanImplTest extends TestCase {
         assertEquals(MessageStatus.SHOULD_ATTEMPT, message2.getAttemptStatus());
         assertEquals(messageDate, message2.getAttemptDate());
     }
+
+    public void testIsValidOutPatientVisitEntryShouldReturnTrueWhenAnEntryAlreadyDoesNotExists(){
+        Integer facilityId = 2;
+        Date date = new Date();
+        String serialNumber = "01/2010";
+
+        Gender sex = Gender.MALE;
+        Date dob = new Date();
+        Boolean insured = false;
+        Integer diagnosis = 1;
+        Boolean newCase = true;
+
+        expect(contextService.getMotechService()).andReturn(motechService);
+
+        expect(motechService.getOutPatientVisitEntryBy(facilityId, serialNumber, sex, dob, newCase, diagnosis)).andReturn(null);
+
+        replay(motechService, contextService);
+        assertTrue(registrarBean.isValidOutPatientVisitEntry(facilityId, date, serialNumber, sex, dob, newCase, diagnosis));
+    }
+
+    public void testIsValidOutPatientVisitEntryShouldReturnFalseWhenAnEntryAlreadyExists(){
+        Integer facilityId = 2;
+        Date visitDate = new Date();
+        String serialNumber = "01/2010";
+
+        Gender sex = Gender.MALE;
+        Date dob = new Date();
+        Integer diagnosis = 1;
+        Boolean newCase = true;
+
+
+        expect(contextService.getMotechService()).andReturn(motechService);
+
+        GeneralOutpatientEncounter generalOutpatientEncounter = new GeneralOutpatientEncounter();
+        generalOutpatientEncounter.setDate(new Date());
+
+        expect(motechService.getOutPatientVisitEntryBy(facilityId, serialNumber, sex, dob, newCase, diagnosis))
+                .andReturn(Arrays.asList(generalOutpatientEncounter));
+
+        replay(motechService, contextService);
+        assertFalse(registrarBean.isValidOutPatientVisitEntry(facilityId, visitDate, serialNumber, sex, dob, newCase, diagnosis));
+    }
+
+
+    public void testIsInvalid_IfTheOPDVisitEntryIsDuplicateInTheSameMonth() {
+
+        Integer facilityId = 2;
+        Date now = new Date();
+        String serialNumber = "01/2010";
+
+        Gender sex = Gender.MALE;
+        Date dob = new Date();
+        Integer diagnosis = 1;
+        Boolean newCase = true;
+        Date lastMonth = DateUtils.addMonths(now, -1);
+
+        GeneralOutpatientEncounter generalOutpatientEncounter = new GeneralOutpatientEncounter();
+        generalOutpatientEncounter.setDate(lastMonth);
+
+
+        expect(contextService.getMotechService()).andReturn(motechService);
+        expect(motechService.getOutPatientVisitEntryBy(facilityId, serialNumber, sex, dob, newCase, diagnosis)).andReturn(Arrays.asList(generalOutpatientEncounter));
+
+        replay(motechService, contextService);
+
+        assertTrue(registrarBean.isValidOutPatientVisitEntry(facilityId, now, serialNumber, sex, dob, newCase, diagnosis));
+        verify(motechService, contextService);
+    }
+
 
     public void testFilteringStaffCareMessages() {
         Patient p1 = new Patient(5716);

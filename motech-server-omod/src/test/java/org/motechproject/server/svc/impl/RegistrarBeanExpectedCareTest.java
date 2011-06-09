@@ -123,7 +123,7 @@ public class RegistrarBeanExpectedCareTest extends
 			OpenmrsBean openmrsService = motechService.getOpenmrsBean();
 
 			Integer communityId = 11111;
-			Integer facilityId = 1111;
+			Integer facilityId = 11117;
 
 			Community community = motechService.getCommunityById(communityId);
 			assertNotNull("Community in dataset is missing", community);

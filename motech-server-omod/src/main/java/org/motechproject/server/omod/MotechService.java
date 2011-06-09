@@ -39,6 +39,7 @@ import org.motechproject.server.omod.sdsched.ScheduleMaintService;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.ws.Gender;
 import org.openmrs.*;
 import org.openmrs.api.OpenmrsService;
 import org.springframework.transaction.annotation.Transactional;
@@ -283,4 +284,7 @@ public interface MotechService extends OpenmrsService {
 
     @Transactional
     void saveOrUpdateDefaultedObsAlert(DefaultedExpectedObsAlert obsAlert);
+
+    @Transactional
+    List<GeneralOutpatientEncounter> getOutPatientVisitEntryBy(Integer facilityId, String serialNumber, Gender sex, Date dob, Boolean newCase, Integer diagnosis);
 }
