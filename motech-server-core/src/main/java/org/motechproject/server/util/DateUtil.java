@@ -53,4 +53,10 @@ public class DateUtil {
         calendar.setTime(date);
         return calendar;
     }
+
+    public static Date dateFor(int day, int month, int year) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        return calendar.getTime();
+    }
 }

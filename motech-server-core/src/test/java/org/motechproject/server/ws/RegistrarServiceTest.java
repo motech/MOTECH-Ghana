@@ -34,16 +34,15 @@
 package org.motechproject.server.ws;
 
 import org.easymock.Capture;
-import org.easymock.EasyMock;
 import org.junit.*;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.Facility;
-import org.motechproject.server.service.TetanusScheduleTest;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.util.DateUtil;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.*;
 import org.motechproject.ws.server.RegistrarService;
@@ -54,12 +53,8 @@ import org.openmrs.Obs;
 import org.openmrs.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import sun.security.x509.SerialNumber;
 
-import javax.jws.WebParam;
-import javax.tools.JavaCompiler;
 import java.lang.reflect.Field;
-import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -1736,7 +1731,7 @@ public class RegistrarServiceTest{
 
         Integer staffId = 1;
         Integer facilityId = 2;
-        Date date = new Date();
+        Date visitDate = DateUtil.dateFor(12,6,2011);
         String serialNumber = "01/2010";
 
         Gender sex = Gender.MALE;
@@ -1759,11 +1754,11 @@ public class RegistrarServiceTest{
             expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
             Facility facility = new Facility();
             expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
-            expect(registrarBean.isValidOutPatientVisitEntry(facilityId, date, serialNumber, sex, dob, newCase, diagnosis)).andReturn(false);
+            expect(registrarBean.isValidOutPatientVisitEntry(facilityId, visitDate, serialNumber, sex, dob, newCase, diagnosis)).andReturn(false);
 
             replay(registrarBean, openmrsBean);
 
-            regWs.recordGeneralVisit(staffId, facilityId, date, serialNumber, sex, dob, insured, diagnosis, secondDiag, rdtGiven, rdtPositive, actTreated, newCase, newPatient, referred, comments);
+            regWs.recordGeneralVisit(staffId, facilityId, visitDate, serialNumber, sex, dob, insured, diagnosis, secondDiag, rdtGiven, rdtPositive, actTreated, newCase, newPatient, referred, comments);
             fail("should have thrown ValidationException for duplicate opd visit entry");
 
         } catch (ValidationException e) {
@@ -1784,7 +1779,7 @@ public class RegistrarServiceTest{
 
         Integer staffId = 1;
         Integer facilityId = 2;
-        Date date = new Date();
+        Date visitDate = DateUtil.dateFor(12,6,2011);
         String serialNumber = "01/2010";
 
         Gender sex = Gender.MALE;
@@ -1807,13 +1802,13 @@ public class RegistrarServiceTest{
             expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
             Facility facility = new Facility();
             expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
-            expect(registrarBean.isValidOutPatientVisitEntry(facilityId, date, serialNumber, sex, dob, newCase, diagnosis)).andReturn(true);
-            registrarBean.recordGeneralOutpatientVisit(staffId, facilityId, date, serialNumber, sex, dob, insured, diagnosis, secondDiag, rdtGiven, rdtPositive, actTreated, newCase, newPatient, referred, comments);
+            expect(registrarBean.isValidOutPatientVisitEntry(facilityId, visitDate, serialNumber, sex, dob, newCase, diagnosis)).andReturn(true);
+            registrarBean.recordGeneralOutpatientVisit(staffId, facilityId, visitDate, serialNumber, sex, dob, insured, diagnosis, secondDiag, rdtGiven, rdtPositive, actTreated, newCase, newPatient, referred, comments);
             expectLastCall();
 
             replay(registrarBean, openmrsBean);
 
-            regWs.recordGeneralVisit(staffId, facilityId, date, serialNumber, sex, dob, insured, diagnosis, secondDiag, rdtGiven, rdtPositive, actTreated, newCase, newPatient, referred, comments);
+            regWs.recordGeneralVisit(staffId, facilityId, visitDate, serialNumber, sex, dob, insured, diagnosis, secondDiag, rdtGiven, rdtPositive, actTreated, newCase, newPatient, referred, comments);
 
         } catch (ValidationException e) {
             fail("should not throw the exception on valid entry");

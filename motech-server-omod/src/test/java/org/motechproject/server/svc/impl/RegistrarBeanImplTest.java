@@ -46,6 +46,7 @@ import org.motechproject.server.omod.filters.ExpectedObsFilterChain;
 import org.motechproject.server.omod.filters.Filter;
 import org.motechproject.server.omod.web.model.KassenaNankana;
 import org.motechproject.server.svc.RCTService;
+import org.motechproject.server.util.DateUtil;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.*;
 import org.motechproject.ws.mobile.MessageService;
@@ -984,7 +985,7 @@ public class RegistrarBeanImplTest extends TestCase {
         expect(contextService.getMotechService()).andReturn(motechService);
 
         GeneralOutpatientEncounter generalOutpatientEncounter = new GeneralOutpatientEncounter();
-        generalOutpatientEncounter.setDate(new Date());
+        generalOutpatientEncounter.setDate(visitDate);
 
         expect(motechService.getOutPatientVisitEntryBy(facilityId, serialNumber, sex, dob, newCase, diagnosis))
                 .andReturn(Arrays.asList(generalOutpatientEncounter));
@@ -997,14 +998,15 @@ public class RegistrarBeanImplTest extends TestCase {
     public void testIsInvalid_IfTheOPDVisitEntryIsDuplicateInTheSameMonth() {
 
         Integer facilityId = 2;
-        Date now = new Date();
+        Date visitDate = DateUtil.dateFor(15, 6, 2011);
+
         String serialNumber = "01/2010";
 
         Gender sex = Gender.MALE;
         Date dob = new Date();
         Integer diagnosis = 1;
         Boolean newCase = true;
-        Date lastMonth = DateUtils.addMonths(now, -1);
+        Date lastMonth = DateUtils.addMonths(visitDate, -1);
 
         GeneralOutpatientEncounter generalOutpatientEncounter = new GeneralOutpatientEncounter();
         generalOutpatientEncounter.setDate(lastMonth);
@@ -1015,7 +1017,7 @@ public class RegistrarBeanImplTest extends TestCase {
 
         replay(motechService, contextService);
 
-        assertTrue(registrarBean.isValidOutPatientVisitEntry(facilityId, now, serialNumber, sex, dob, newCase, diagnosis));
+        assertTrue(registrarBean.isValidOutPatientVisitEntry(facilityId, visitDate, serialNumber, sex, dob, newCase, diagnosis));
         verify(motechService, contextService);
     }
 

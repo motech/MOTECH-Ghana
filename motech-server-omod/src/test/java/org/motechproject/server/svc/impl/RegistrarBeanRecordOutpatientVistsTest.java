@@ -41,6 +41,7 @@ import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.MessageSourceBean;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
+import org.motechproject.server.util.DateUtil;
 import org.motechproject.server.ws.RegistrarWebService;
 import org.motechproject.ws.Gender;
 import org.motechproject.ws.server.ValidationException;
@@ -55,11 +56,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
-/**
- * BaseModuleContextSensitiveTest loads both the OpenMRS core and module spring
- * contexts and hibernate mappings, providing the OpenMRS Context for both
- * OpenMRS core and module services.
- */
+
 public class RegistrarBeanRecordOutpatientVistsTest extends
         BaseModuleContextSensitiveTest {
 
@@ -84,7 +81,8 @@ public class RegistrarBeanRecordOutpatientVistsTest extends
         OpenmrsBean openmrsBean = Mockito.mock(RegistrarBeanImpl.class);
 
         int facilityId = 11117;
-        Date now = new Date();
+        Date vistDate = DateUtil.dateFor(15, 6, 2011);
+        Date dob = new Date();
 
         User staff = registrarBean.registerStaff("Nurse", "Betty", "7777777777", "CHO", null);
         staff.setSystemId("465");
@@ -109,7 +107,7 @@ public class RegistrarBeanRecordOutpatientVistsTest extends
         String serialNumber = "01/2011";
 
         try {
-            regService.recordGeneralVisit(Integer.parseInt(staff.getSystemId()), facilityId, now, serialNumber, sex, now, insured,
+            regService.recordGeneralVisit(Integer.parseInt(staff.getSystemId()), facilityId, vistDate, serialNumber, sex, dob, insured,
                     diagnosis, secondDiagnosis, rdtGiven, rdtPositive, actTreated, newCase, newPatient, referred, comments);
         } catch (ValidationException e) {
             fail("Should not throw validation exception when registering a valid outpatient visit");
@@ -117,8 +115,7 @@ public class RegistrarBeanRecordOutpatientVistsTest extends
 
         try {
 
-//            Date tomorrow = DateUtils.addDays(now, 1);
-            regService.recordGeneralVisit(Integer.parseInt(staff.getSystemId()), facilityId,  DateUtils.addDays(now, 1), serialNumber, sex, now, insured, diagnosis, secondDiagnosis, rdtGiven, rdtPositive, actTreated, newCase, newPatient, referred, comments);
+            regService.recordGeneralVisit(Integer.parseInt(staff.getSystemId()), facilityId,  DateUtils.addDays(vistDate, 1), serialNumber, sex, dob, insured, diagnosis, secondDiagnosis, rdtGiven, rdtPositive, actTreated, newCase, newPatient, referred, comments);
             fail("should throw validation exception when a duplicate entry is registered");
         } catch (ValidationException e) {
             String errorMessage = e.getFaultInfo().getErrors().get(0);
