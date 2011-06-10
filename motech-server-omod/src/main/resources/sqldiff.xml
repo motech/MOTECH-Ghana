@@ -2308,7 +2308,6 @@
             ALTER TABLE motechmodule_facility ADD COLUMN additional_phone_number1 varchar(50);
             ALTER TABLE motechmodule_facility ADD COLUMN additional_phone_number2 varchar(50);
             ALTER TABLE motechmodule_facility ADD COLUMN additional_phone_number3 varchar(50);
-            ALTER TABLE motechmodule_facility ADD COLUMN additional_phone_number4 varchar(50);
         </sql>
     </diff>
     <diff>

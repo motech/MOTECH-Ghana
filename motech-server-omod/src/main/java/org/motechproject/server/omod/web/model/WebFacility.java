@@ -33,11 +33,8 @@
 
 package org.motechproject.server.omod.web.model;
 
-import org.apache.commons.lang.StringUtils;
 import org.motechproject.server.model.Facility;
-import org.motechproject.server.util.MotechConstants;
 import org.openmrs.Location;
-import org.springframework.validation.Errors;
 
 import java.util.Date;
 
@@ -57,6 +54,9 @@ public class WebFacility {
     public static final String PHONE_NUMBER = "phoneNumber";
 
     private String phoneNumber;
+    private String additionalPhoneNumber1;
+    private String additionalPhoneNumber2;
+    private String additionalPhoneNumber3;
     private String country;
     private String region;
     private String countyDistrict;
@@ -66,7 +66,7 @@ public class WebFacility {
     private Location location;
     private Facility facility;
 
-    public WebFacility(){
+    public WebFacility() {
         this.location = new Location();
         this.facility = new Facility();
     }
@@ -127,7 +127,31 @@ public class WebFacility {
         this.name = name.trim();
     }
 
-    public Facility getFacility(){
+    public String getAdditionalPhoneNumber1() {
+        return additionalPhoneNumber1;
+    }
+
+    public void setAdditionalPhoneNumber1(String additionalPhoneNumber1) {
+        this.additionalPhoneNumber1 = additionalPhoneNumber1;
+    }
+
+    public String getAdditionalPhoneNumber2() {
+        return additionalPhoneNumber2;
+    }
+
+    public void setAdditionalPhoneNumber2(String additionalphoneNumber2) {
+        this.additionalPhoneNumber2 = additionalphoneNumber2;
+    }
+
+    public String getAdditionalPhoneNumber3() {
+        return additionalPhoneNumber3;
+    }
+
+    public void setAdditionalPhoneNumber3(String additionalPhoneNumber3) {
+        this.additionalPhoneNumber3 = additionalPhoneNumber3;
+    }
+
+    public Facility getFacility() {
         location.setCountry(this.country);
         location.setRegion(this.region);
         location.setStateProvince(this.stateProvince);
@@ -138,6 +162,9 @@ public class WebFacility {
 
         facility.setPhoneNumber(this.phoneNumber);
         facility.setLocation(location);
+        facility.setAdditionalPhoneNumber1(this.additionalPhoneNumber1);
+        facility.setAdditionalPhoneNumber2(this.additionalPhoneNumber2);
+        facility.setAdditionalPhoneNumber3(this.additionalPhoneNumber3);
         return facility;
     }
 }

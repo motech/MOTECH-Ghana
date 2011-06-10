@@ -32,26 +32,20 @@ public class IndentifierGeneratorImpl implements IdentifierGenerator{
 
     private static Log log = LogFactory.getLog(IndentifierGeneratorImpl.class);
 
-    private String generateId(String generatorName,
-                              PatientIdentifierType identifierType) {
+    private String generateId(String generatorName, PatientIdentifierType identifierType) {
         String id = null;
         if (generatorName == null || identifierType == null) {
-            log.error("Unable to generate ID using " + generatorName + " for "
-                    + identifierType);
+            log.error("Unable to generate ID using " + generatorName + " for " + identifierType);
             return null;
         }
         try {
-            IdentifierSourceService idSourceService = contextService
-                    .getIdentifierSourceService();
+            IdentifierSourceService idSourceService = contextService.getIdentifierSourceService();
 
-            SequentialIdentifierGenerator idGenerator = getSeqIdGenerator(
-                    generatorName, identifierType);
-            id = idSourceService.generateIdentifier(idGenerator,
-                    MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID_GEN_COMMENT);
+            SequentialIdentifierGenerator idGenerator = getSeqIdGenerator(generatorName, identifierType);
+            id = idSourceService.generateIdentifier(idGenerator, MotechConstants.IDGEN_SEQ_ID_GEN_MOTECH_ID_GEN_COMMENT);
 
         } catch (Exception e) {
-            log.error("Error generating " + identifierType + " using "
-                    + generatorName + " in Idgen module", e);
+            log.error("Error generating " + identifierType + " using " + generatorName + " in Idgen module", e);
         }
         return id;
     }

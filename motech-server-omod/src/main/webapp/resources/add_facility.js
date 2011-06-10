@@ -13,6 +13,9 @@ function addFacility(){
         provincesDropDown.disable();
         $j("#phoneNumber").val('');
         $j("#location_data").hide();
+        $j("#additionalPhoneNumber1-row").hide();
+        $j("#additionalPhoneNumber2-row").hide();
+        $j("#additionalPhoneNumber3-row").hide();
         $j('span[title="err_span"]').addClass('hideError');
         $j("#countries_data").children("li").each(function(){
             var item = $j(this).html();
@@ -26,7 +29,25 @@ function addFacility(){
         $j("#region").change(onRegionChange);
         $j("#countyDistrict").change(onDistrictChange);
         $j("#submit_facility").click(onSubmit);
+        $j("#additionalPhoneNumber1-link").click(enableAdditionalPhoneNumber1);
+        $j("#additionalPhoneNumber2-link").click(enableAdditionalPhoneNumber2);
+        $j("#additionalPhoneNumber3-link").click(enableAdditionalPhoneNumber3);
     };
+
+    var enableAdditionalPhoneNumber1 = function(e) {
+         $j("#additionalPhoneNumber1-link").hide();
+         $j("#additionalPhoneNumber1-row").show();
+    }
+
+    var enableAdditionalPhoneNumber2 = function(e) {
+         $j("#additionalPhoneNumber2-link").hide();
+         $j("#additionalPhoneNumber2-row").show();
+    }
+
+    var enableAdditionalPhoneNumber3 = function(e) {
+         $j("#additionalPhoneNumber3-link").hide();
+         $j("#additionalPhoneNumber3-row").show();
+    }
 
     var onSubmit = function(e){
 	    $j("span.error").addClass('hideError');
@@ -36,6 +57,9 @@ function addFacility(){
         verify("#countyDistrict_err",$j("#countyDistrict"), e);
         verify("#stateProvince_err",$j("#stateProvince"), e);
         verifyPhone("#phoneNumber_err",$j("#phoneNumber"), e);
+        verifyAdditionalPhone("#additional_phoneNumber1_err",$j("#additionalPhoneNumber1"), e);
+        verifyAdditionalPhone("#additional_phoneNumber2_err",$j("#additionalPhoneNumber2"), e);
+        verifyAdditionalPhone("#additional_phoneNumber3_err",$j("#additionalPhoneNumber3"), e);
     };
 
     var verify = function(errorSpan, selectElement, e){
@@ -56,6 +80,17 @@ function addFacility(){
        }
        $j(errorSpan).removeClass('hideError');
        e.preventDefault();
+    };
+
+     var verifyAdditionalPhone = function(errorSpan,selectElement,e){
+         if (selectElement.is(':visible')) {
+             var selectedValue = selectElement.val();
+             if (/^0[0-9]{9}$/i.test(selectedValue)) {
+                 return;
+             }
+             $j(errorSpan).removeClass('hideError');
+             e.preventDefault();
+         }
     };
 
     var handleChange = function(option, data, dropDown){

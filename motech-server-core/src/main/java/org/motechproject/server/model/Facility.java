@@ -48,6 +48,9 @@ public class Facility implements Serializable {
     private Integer facilityId;
     private Location location;
     private String phoneNumber;
+    private String additionalPhoneNumber1;
+    private String additionalPhoneNumber2;
+    private String additionalPhoneNumber3;
     private Set<Community> communities;
     private Set<Patient> patients = new HashSet<Patient>();
 
@@ -121,5 +124,29 @@ public class Facility implements Serializable {
 
     public boolean isInRegion(String region) {
         return location != null && location.getRegion().trim().equals(region);
+    }
+
+    public String getAdditionalPhoneNumber1() {
+        return additionalPhoneNumber1;
+    }
+
+    public void setAdditionalPhoneNumber1(String additionalPhoneNumber1) {
+        this.additionalPhoneNumber1 = additionalPhoneNumber1;
+    }
+
+    public String getAdditionalPhoneNumber2() {
+        return additionalPhoneNumber2;
+    }
+
+    public void setAdditionalPhoneNumber2(String additionalPhoneNumber2) {
+        this.additionalPhoneNumber2 = additionalPhoneNumber2;
+    }
+
+    public String getAdditionalPhoneNumber3() {
+        return additionalPhoneNumber3;
+    }
+
+    public void setAdditionalPhoneNumber3(String additionalPhoneNumber3) {
+        this.additionalPhoneNumber3 = additionalPhoneNumber3;
     }
 }
