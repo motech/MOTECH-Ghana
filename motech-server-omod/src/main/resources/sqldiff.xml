@@ -2479,85 +2479,85 @@
             insert into motechmodule_facility (id, facility_id, location_id, phone_number)
             SELECT 34,13119,34,0547952068
             FROM motechmodule_facility
-            WHERE NOT EXISTS (select * from motechmodule_facility where id=34)
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=34 or facility_id=13119 or location_id=34)
             AND id=1;
 
             insert into motechmodule_facility (id, facility_id, location_id, phone_number)
             SELECT 35,13126,35,0243780877
             FROM motechmodule_facility
-            WHERE NOT EXISTS (select * from motechmodule_facility where id=35)
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=35 or facility_id=13126 or location_id=35)
             AND id=1;
 
             insert into motechmodule_facility (id, facility_id, location_id, phone_number)
             SELECT 36,13135,36,0242511233
             FROM motechmodule_facility
-            WHERE NOT EXISTS (select * from motechmodule_facility where id=36)
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=36 or facility_id=13135 or location_id=36)
             AND id=1;
 
             insert into motechmodule_facility (id, facility_id, location_id, phone_number)
             SELECT 37,13142,37,0266409711
             FROM motechmodule_facility
-            WHERE NOT EXISTS (select * from motechmodule_facility where id=37)
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=37 or facility_id=13142 or location_id=37)
             AND id=1;
 
             insert into motechmodule_facility (id, facility_id, location_id, phone_number)
             SELECT 38,13157,38,0546522757
             FROM motechmodule_facility
-            WHERE NOT EXISTS (select * from motechmodule_facility where id=38)
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=38 or facility_id=13157 or location_id=38)
             AND id=1;
 
             insert into motechmodule_facility (id, facility_id, location_id, phone_number)
             SELECT 39,13161,39,0245316977
             FROM motechmodule_facility
-            WHERE NOT EXISTS (select * from motechmodule_facility where id=39)
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=39 or facility_id=13161 or location_id=39)
             AND id=1;
 
             insert into motechmodule_facility (id, facility_id, location_id, phone_number)
             SELECT 40,13174,40,0244592889
             FROM motechmodule_facility
-            WHERE NOT EXISTS (select * from motechmodule_facility where id=40)
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=40 or facility_id=13174 or location_id=40)
             AND id=1;
 
             insert into motechmodule_facility (id, facility_id, location_id, phone_number)
             SELECT 41,13188,41,0244569654
             FROM motechmodule_facility
-            WHERE NOT EXISTS (select * from motechmodule_facility where id=41)
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=41 or facility_id=13188 or location_id=41)
             AND id=1;
 
             insert into motechmodule_facility (id, facility_id, location_id, phone_number)
             SELECT 42,13190,42,0208623304
             FROM motechmodule_facility
-            WHERE NOT EXISTS (select * from motechmodule_facility where id=42)
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=42 or facility_id=13190 or location_id=42)
             AND id=1;
 
             insert into motechmodule_facility (id, facility_id, location_id, phone_number)
             SELECT 43,13208,43,0208350038
             FROM motechmodule_facility
-            WHERE NOT EXISTS (select * from motechmodule_facility where id=43)
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=43 or facility_id=13208 or location_id=43)
             AND id=1;
 
             insert into motechmodule_facility (id, facility_id, location_id, phone_number)
             SELECT 44,13212,44,0207211620
             FROM motechmodule_facility
-            WHERE NOT EXISTS (select * from motechmodule_facility where id=44)
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=44 or facility_id=13212 or location_id=44)
             AND id=1;
 
             insert into motechmodule_facility (id, facility_id, location_id, phone_number)
             SELECT 45,13220,45,0249449640
             FROM motechmodule_facility
-            WHERE NOT EXISTS (select * from motechmodule_facility where id=45)
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=45 or facility_id=13220 or location_id=45)
             AND id=1;
 
             insert into motechmodule_facility (id, facility_id, location_id, phone_number)
             SELECT 46,13231,46,0209426461
             FROM motechmodule_facility
-            WHERE NOT EXISTS (select * from motechmodule_facility where id=46)
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=46 or facility_id=13231 or location_id=46)
             AND id=1;
 
             insert into motechmodule_facility (id, facility_id, location_id, phone_number)
             SELECT 47,13249,47,null
             FROM motechmodule_facility
-            WHERE NOT EXISTS (select * from motechmodule_facility where id=47)
+            WHERE NOT EXISTS (select * from motechmodule_facility where id=47 or facility_id=13249 or location_id=47)
             AND id=1;
         </sql>
     </diff>
