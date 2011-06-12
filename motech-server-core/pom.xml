@@ -4,11 +4,11 @@
 	<parent>
 		<groupId>org.motechproject</groupId>
 		<artifactId>motech-server</artifactId>
-		<version>1.1.1-SNAPSHOT</version>
+		<version>1.1.1</version>
 	</parent>
 	<groupId>org.motechproject</groupId>
 	<artifactId>motech-server-core</artifactId>
-	<version>1.1.1-SNAPSHOT</version>
+	<version>1.1.1</version>
 	<packaging>jar</packaging>
 	<name>Motech Server Core</name>
 	<description>The core library for the server-side of the MoTeCH project.</description>
