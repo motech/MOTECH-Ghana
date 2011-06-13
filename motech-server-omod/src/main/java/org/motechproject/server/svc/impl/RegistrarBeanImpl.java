@@ -44,7 +44,6 @@ import org.motechproject.server.model.*;
 import org.motechproject.server.model.MessageStatus;
 import org.motechproject.server.omod.*;
 import org.motechproject.server.omod.builder.PatientBuilder;
-import org.motechproject.server.omod.factory.DistrictFactory;
 import org.motechproject.server.omod.filters.FilterChain;
 import org.motechproject.server.omod.impl.MessageProgramServiceImpl;
 import org.motechproject.server.omod.web.model.WebStaff;
@@ -114,8 +113,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     @Autowired
     private MotechUserRepository motechUserRepository;
-
-    private final DistrictFactory DISTRICT_FACTORY = new DistrictFactory();
 
 
     public void setContextService(ContextService contextService) {
@@ -1783,7 +1780,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     @Transactional
-    public void  recordGeneralOutpatientVisit(Integer staffId,
+    public void recordGeneralOutpatientVisit(Integer staffId,
                                              Integer facilityId, Date date, String serialNumber, Gender sex,
                                              Date dateOfBirth, Boolean insured, Integer diagnosis,
                                              Integer secondDiagnosis, Boolean rdtGiven, Boolean rdtPositive,
@@ -2009,32 +2006,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 currentDate, currentDate, maxResults);
     }
 
-    private List<ExpectedEncounter> getUpcomingExpectedEncounters(
-            Facility facility, String[] groups, Date fromDate, Date toDate) {
-        Integer maxResults = getMaxQueryResults();
-        return motechService().getExpectedEncounter(null, facility, groups, null,
-                toDate, null, fromDate, maxResults);
-    }
-
-    private List<ExpectedObs> getUpcomingExpectedObs(Facility facility,
-                                                     String[] groups, Date fromDate, Date toDate) {
-        Integer maxResults = getMaxQueryResults();
-        return motechService().getExpectedObs(null, facility, groups, null,
-                toDate, null, fromDate, maxResults);
-    }
-
-    private List<ExpectedEncounter> getDefaultedExpectedEncounters(Facility facility, String[] groups, Date forDate) {
-        Integer maxResults = getMaxQueryResults();
-        return motechService().getExpectedEncounter(null, facility, groups, null,
-                null, forDate, forDate, maxResults);
-    }
-
-    private List<ExpectedObs> getDefaultedExpectedObs(Facility facility,
-                                                      String[] groups, Date forDate) {
-        Integer maxResults = getMaxQueryResults();
-        return motechService().getExpectedObs(null, facility, groups, null, null,
-                forDate, forDate, maxResults);
-    }
 
     public List<ExpectedEncounter> getExpectedEncounters(Patient patient) {
         Date currentDate = new Date();
@@ -2892,128 +2863,12 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                       String[] careGroups,
                                       boolean sendUpcoming,
                                       boolean blackoutEnabled) {
-
-        final boolean shouldBlackOut = blackoutEnabled && isMessageTimeWithinBlackoutPeriod(deliveryDate);
-        if (shouldBlackOut) {
-            log.debug("Cancelling nurse messages during blackout");
-            return;
-        }
-        List<Facility> facilities = motechService().getAllFacilities();
-        deliveryDate = adjustTime(deliveryDate, deliveryTime);
-        for (Facility facility : facilities) {
-            if (facilityPhoneNumberOrLocationNotAvailable(facility)) {
-                continue;
-            }
-            sendDefaulterMessages(startDate, deliveryDate, careGroups, facility);
-            if (sendUpcoming) {
-                sendUpcomingMessages(startDate, endDate, deliveryDate, careGroups, facility);
-            }
-        }
+        StaffMessageSender staffMessageSender = new StaffMessageSender(this, contextService, mobileService, rctService);
+        staffMessageSender.setExpectedEncountersFilter(expectedEncountersFilter);
+        staffMessageSender.setExpectedObsFilter(expectedObsFilter);
+        staffMessageSender.sendStaffCareMessages(startDate, endDate, deliveryDate, deliveryTime, careGroups, sendUpcoming, blackoutEnabled);
     }
 
-    private boolean facilityPhoneNumberOrLocationNotAvailable(Facility facility) {
-        return (facility.getPhoneNumber() == null) || (facility.getLocation() == null);
-    }
-
-    private void sendUpcomingMessages(Date startDate, Date endDate, Date deliveryDate, String[] careGroups, Facility facility) {
-        WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
-        modelConverter.setRegistrarBean(this);
-        List<ExpectedEncounter> upcomingEncounters = filterRCTEncounters(getUpcomingExpectedEncounters(facility, careGroups, startDate, endDate));
-        List<ExpectedObs> upcomingObs = filterRCTObs(getUpcomingExpectedObs(facility, careGroups, startDate, endDate));
-        final String facilityPhoneNumber = facility.getPhoneNumber();
-        final boolean upcomingEventsPresent = !(upcomingEncounters.isEmpty() && upcomingObs.isEmpty());
-        if (upcomingEventsPresent) {
-            Care[] upcomingCares = modelConverter.upcomingToWebServiceCares(upcomingEncounters, upcomingObs, true);
-            log.info("Sending upcoming care message to " + facility.name() + " at " + facilityPhoneNumber);
-            sendStaffUpcomingCareMessage(facilityPhoneNumber, deliveryDate, upcomingCares, getCareMessageGroupingStrategy(facility.getLocation()));
-        } else {
-            sendNoUpcomingCareMessage(facility, facilityPhoneNumber);
-        }
-    }
-
-    private void sendDefaulterMessages(Date startDate, Date deliveryDate, String[] careGroups, Facility facility) {
-        log.debug("Starting Sending of defaulter messages for " + facility.getLocation().getName());
-        List<ExpectedEncounter> defaultedExpectedEncounters = getDefaultedExpectedEncounters(facility, careGroups, startDate);
-        List<ExpectedObs> defaultedExpectedObs = getDefaultedExpectedObs(facility, careGroups, startDate);
-
-        List<ExpectedEncounter> filteredDefaultedEncounters = expectedEncountersFilter.doFilter(new ArrayList<ExpectedEncounter>(defaultedExpectedEncounters));
-        List<ExpectedObs> filteredDefaultedExpectedObs = expectedObsFilter.doFilter(new ArrayList<ExpectedObs>(defaultedExpectedObs));
-        final String facilityPhoneNumber = facility.getPhoneNumber();
-
-        final boolean defaultersPresent = !(filteredDefaultedEncounters.isEmpty() && filteredDefaultedExpectedObs.isEmpty());
-        if (defaultersPresent) {
-            WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
-            modelConverter.setRegistrarBean(this);
-            Care[] defaultedCares = modelConverter.defaultedToWebServiceCares(filteredDefaultedEncounters, filteredDefaultedExpectedObs);
-            log.info("Sending defaulter message to " + facility.name() + " at " + facilityPhoneNumber);
-            Boolean alertsSent = sendStaffDefaultedCareMessage(facilityPhoneNumber, deliveryDate, defaultedCares, getCareMessageGroupingStrategy(facility.getLocation()));
-            incrementDefaultedEncountersAlertCount(filteredDefaultedEncounters, alertsSent);
-            incrementDefaultedObservationsAlertCount(filteredDefaultedExpectedObs, alertsSent);
-        } else {
-            sendNoDefaultersMessage(facility, facilityPhoneNumber);
-        }
-    }
-
-    private void incrementDefaultedObservationsAlertCount(List<ExpectedObs> defaultedObservations, Boolean delivered) {
-        for (ExpectedObs defaultedObs : defaultedObservations) {
-            DefaultedExpectedObsAlert alert = motechService().getDefaultedObsAlertFor(defaultedObs);
-            if (alert == null) {
-                DefaultedExpectedObsAlert obsAlert = new DefaultedExpectedObsAlert(defaultedObs, careConfigurationFor(defaultedObs.getName()), 1, 1);
-                motechService().saveOrUpdateDefaultedObsAlert(obsAlert);
-                continue;
-            }
-            alert.attempted();
-            if (delivered) alert.delivered();
-            motechService().saveOrUpdateDefaultedObsAlert(alert);
-        }
-    }
-
-    private void incrementDefaultedEncountersAlertCount(List<ExpectedEncounter> defaultedEncounters, Boolean delivered) {
-        for (ExpectedEncounter defaultedEncounter : defaultedEncounters) {
-            DefaultedExpectedEncounterAlert alert = motechService().getDefaultedEncounterAlertFor(defaultedEncounter);
-            if (alert == null) {
-                DefaultedExpectedEncounterAlert encounterAlert = new DefaultedExpectedEncounterAlert(defaultedEncounter, careConfigurationFor(defaultedEncounter.getName()), 1, 1);
-                motechService().saveOrUpdateDefaultedEncounterAlert(encounterAlert);
-                continue;
-            }
-            alert.attempted();
-            if (delivered) alert.delivered();
-            motechService().saveOrUpdateDefaultedEncounterAlert(alert);
-        }
-    }
-
-    private CareConfiguration careConfigurationFor(String careName) {
-        return motechService().getCareConfigurationFor(careName);
-    }
-
-    private void sendNoUpcomingCareMessage(Facility facility, String phoneNumber) {
-        log.info("Sending 'no upcoming care' message to " + facility.name() + " at " + phoneNumber);
-        try {
-            org.motechproject.ws.MessageStatus messageStatus = mobileService.sendMessage(facility.name() + " has no upcoming care for this week", phoneNumber);
-            if (messageStatus == org.motechproject.ws.MessageStatus.FAILED) {
-                log.error("Unable to message " + phoneNumber + " that they have no upcoming care");
-            }
-        } catch (Exception e) {
-            log.error("Unable to message " + phoneNumber + " that they have no upcoming care", e);
-        }
-    }
-
-    private void sendNoDefaultersMessage(Facility facility, String phoneNumber) {
-        log.info("Sending 'no defaulters' message to " + facility.name() + " at " + phoneNumber);
-
-        try {
-            org.motechproject.ws.MessageStatus messageStatus = mobileService.sendMessage(facility.name() + " has no defaulters for this week", phoneNumber);
-            if (messageStatus == org.motechproject.ws.MessageStatus.FAILED) {
-                log.error("Unable to message " + phoneNumber + " that they have no defaulters");
-            }
-        } catch (Exception e) {
-            log.error("Unable to message " + phoneNumber + " that they have no defaulters", e);
-        }
-    }
-
-    private CareMessageGroupingStrategy getCareMessageGroupingStrategy(Location facilityLocation) {
-        return DISTRICT_FACTORY.getDistrictWithName(facilityLocation.getCountyDistrict()).getCareMessageGroupingStrategy();
-    }
 
     public List<ExpectedEncounter> filterRCTEncounters(List<ExpectedEncounter> allDefaulters) {
         List<ExpectedEncounter> toBeRemoved = new ArrayList<ExpectedEncounter>();
@@ -3181,35 +3036,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
     }
 
-    private boolean sendStaffDefaultedCareMessage(String phoneNumber,
-                                                  Date messageStartDate,
-                                                  Care[] cares, CareMessageGroupingStrategy groupingStrategy) {
-
-        try {
-            org.motechproject.ws.MessageStatus messageStatus;
-            messageStatus = mobileService.sendDefaulterMessage(null, phoneNumber, cares, groupingStrategy, MediaType.TEXT, messageStartDate, null);
-            return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
-        } catch (Exception e) {
-            log.error("Mobile WS staff defaulted care message failure", e);
-            return false;
-        }
-    }
-
-    private boolean sendStaffUpcomingCareMessage(String phoneNumber,
-                                                 Date messageStartDate,
-                                                 Care[] cares, CareMessageGroupingStrategy groupingStrategy) {
-
-        try {
-            org.motechproject.ws.MessageStatus messageStatus;
-            messageStatus = mobileService.sendBulkCaresMessage(null, phoneNumber, cares, groupingStrategy,
-                    MediaType.TEXT, messageStartDate, null);
-
-            return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
-        } catch (Exception e) {
-            log.error("Mobile WS staff upcoming care message failure", e);
-            return false;
-        }
-    }
 
     /* NotificationTask methods end */
 
@@ -3703,7 +3529,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     private boolean hasNoDuplicateEncounter(List<GeneralOutpatientEncounter> outPatientEncounters, final Date visitDate) {
 
-        if((null == outPatientEncounters) || (outPatientEncounters.isEmpty()))
+        if ((null == outPatientEncounters) || (outPatientEncounters.isEmpty()))
             return true;
 
         boolean exists = CollectionUtils.exists(outPatientEncounters, new Predicate() {
