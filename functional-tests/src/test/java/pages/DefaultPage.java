@@ -15,7 +15,8 @@ public class DefaultPage {
 
     public static WebDriver getInstance() {
         if (driver == null) {
-            driver = new FirefoxDriver();
+           driver = new FirefoxDriver();
+          //  driver = new ChromeDriver();
         }
         return driver;
     }

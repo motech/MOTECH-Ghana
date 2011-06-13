@@ -8,8 +8,9 @@ public class TestConfiguration {
     private static Properties properties = new Properties();
 
     private static TestConfiguration instance = new TestConfiguration();
-    private String  MIDLET_LOCATION = "midlet.location";
+    private String MIDLET_LOCATION = "midlet.location";
     private String ERROR_LOG_DIRECTORY = "logFile.location";
+    private String PORT_NUMBER = "port.number";
 
     public static TestConfiguration instance(){
         return instance;
@@ -29,6 +30,10 @@ public class TestConfiguration {
 
     public String midletLocation() {
         return value(MIDLET_LOCATION);
+    }
+
+    public String portNumber(){
+        return value(PORT_NUMBER);
     }
 
     public String errorLogLocation(){

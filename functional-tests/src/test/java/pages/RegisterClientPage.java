@@ -44,13 +44,12 @@ public class RegisterClientPage {
     }
 
     public String RegisterMotherClient() {
-        String lastName = "Last-"+ UtilityClass.getInstance().getCurrentDate();
+        String firstName = "First-"+ UtilityClass.getInstance().getCurrentDate();
         selectOption("registrationMode", "Auto-generate MoTeCH ID");
         selectOption("registrantType", "Pregnant mother");
-        inputFirstName.sendKeys("Foo");
+        inputFirstName.sendKeys(firstName );
         inputMiddleName.sendKeys("middle");
-        inputLastName.sendKeys(lastName);
-        inputPreferredName.sendKeys("preferred");
+        inputLastName.sendKeys("Foo");
         inputDOB.sendKeys("01/01/1980");
         selectOption("birthDateEst", "Yes");
         selectOption("insured", "No");
@@ -72,7 +71,7 @@ public class RegisterClientPage {
         selectOption("howLearned","GHS Nurse");
         selectOption("messagesStartWeek","Pregnancy week 5");
         submitButton.click();
-        return lastName;
+        return firstName ;
     }
 
     //This is a temporary function to facilitate data entry for RCT.
@@ -107,12 +106,12 @@ public class RegisterClientPage {
     }
 
     public String RegisterOtherClient(){
-        String lastName = "Last-"+ UtilityClass.getInstance().getCurrentDate();
+        String firstName = "First-"+ UtilityClass.getInstance().getCurrentDate();
         selectOption("registrationMode", "Auto-generate MoTeCH ID");
         selectOption("registrantType", "Other");
-        inputFirstName.sendKeys("Foo");
+        inputFirstName.sendKeys(firstName);
         inputMiddleName.sendKeys("middle");
-        inputLastName.sendKeys(lastName);
+        inputLastName.sendKeys("foo");
         inputDOB.sendKeys("01/01/1980");
         selectOption("birthDateEst", "Yes");
         selectOption("sex","Male");
@@ -127,7 +126,7 @@ public class RegisterClientPage {
         inputAddress.sendKeys("Address");
         selectOption("enroll","No");
         submitButton.click();
-        return lastName;
+        return firstName;
     }
 
     public void RegisterChildClient(HashMap hm){
@@ -175,8 +174,6 @@ public class RegisterClientPage {
         }
     }
 
-
-
     public void setDueDate(){
         // sets the due date nine month hence of the current date
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -185,6 +182,8 @@ public class RegisterClientPage {
         String date = sdf.format(cal.getTime());
         EDD.sendKeys(date);
     }
+
+
 }
 
 

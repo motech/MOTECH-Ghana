@@ -18,11 +18,15 @@ public class SearchPage {
     WebElement inputMotechID;
     WebElement buttonSubmit;
     WebElement matchTable;
+    WebElement inputLastName;
+    WebElement inputFirstName;
 
     public SearchPage(){
         driver = DefaultPage.getInstance();
         inputMotechID = driver.findElement(By.id("motechId"));
         buttonSubmit =driver.findElement(By.xpath("//input[@type='submit']"));
+        inputLastName = driver.findElement(By.id("lastName"));
+        inputFirstName = driver.findElement(By.id("firstName"));
     }
 
     public boolean searchClientByID(String motechID,String lastName){
@@ -36,5 +40,19 @@ public class SearchPage {
            }
         }
         return false;
+    }
+
+    public boolean searchClientByFirstName(String firstName){
+        inputFirstName.sendKeys(firstName);
+        buttonSubmit.click();
+        matchTable = driver.findElement(By.xpath("//div[@id='content']/div[3]/table"));
+        List<WebElement> tdList= matchTable.findElements(By.tagName("td"));
+        for( WebElement td:tdList){
+           if (td.getText().trim().equals(firstName)){
+               return true;
+           }
+        }
+        return false;
+
     }
 }
