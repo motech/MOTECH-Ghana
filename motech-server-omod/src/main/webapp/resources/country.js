@@ -63,6 +63,22 @@ function Country(country, selectedLocation) {
     var communityDropDown = new DynamicComboBox($j('#communityId'));
     var NONE = { name : 'none'};
 
+    this.regionSelected = function(){
+      onRegionSelection();
+    };
+
+    this.districtSelected = function(){
+      onDistrictSelection();
+    };
+
+    this.subDistrictSelected = function(){
+      onSubDistrictSelection();
+    };
+
+    this.facilitySelected = function(){
+      onFacilitySelection();  
+    };
+
     var getSelectedRegion = function() {
         var selectedRegionName = $j('#region').val();
         var selectedRegion;

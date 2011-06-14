@@ -7,13 +7,21 @@ function PatientFormRegistrationEvents() {
     var weekToBeginMessages = new DynamicComboBox($j("#messagesStartWeek"));
 
     var bindEventHandlers = function() {
-        bindToOnChangeIfElementExists($j('#registrantType'), patientTypeSelected);
-        bindToOnChangeIfElementExists($j('#registrationMode'), registrationModeSelected);
-        bindToOnChangeIfElementExists($j('#phoneType'), phoneOwnershipSelected);
-        bindToOnChangeIfElementExists($j('#mediaType'), mediaTypeSelected);
-        bindToOnChangeIfElementExists($j('#insured'), insuranceSelected);
-        bindToOnChangeIfElementExists($j('#enroll'), mobileMidwifeEnrollmentOptionSelected);
+        bindToOnChangeIfElementExists($j('#registrantType'), onPatientTypeSelection);
+        bindToOnChangeIfElementExists($j('#registrationMode'), onRegistrationModeSelection);
+        bindToOnChangeIfElementExists($j('#phoneType'), onPhoneOwnershipSelection);
+        bindToOnChangeIfElementExists($j('#mediaType'), onMediaTypeSelection);
+        bindToOnChangeIfElementExists($j('#insured'), onInsuranceSelection);
+        bindToOnChangeIfElementExists($j('#enroll'), onMobileMidwifeInformationOptionSelection);
     };
+
+    this.phoneOwnershipSelected = function(){
+      onPhoneOwnershipSelection();  
+    };
+
+    this.mediaTypeSelected = function(){
+        onMediaTypeSelection();
+    }
 
     //Invoke change handler as well to initialize
     var bindToOnChangeIfElementExists = function(ele, changeHandler) {
@@ -23,7 +31,7 @@ function PatientFormRegistrationEvents() {
         }
     };
 
-    var mobileMidwifeEnrollmentOptionSelected = function() {
+    var onMobileMidwifeInformationOptionSelection = function() {
         var dataCollectionSection = $j('#mobileMidwifeInformation');
         if (!wantsToEnroll()) {
             hide(dataCollectionSection);
@@ -32,13 +40,13 @@ function PatientFormRegistrationEvents() {
         show(dataCollectionSection);
     };
 
-    var registrationModeSelected = function() {
+    var onRegistrationModeSelection = function() {
         if (hasNonEmptySelection($j('#registrationMode'))) {
             hideMotechIdInputIfAutoGenerationModeSelected();
         }
     };
 
-    var patientTypeSelected = function() {
+    var onPatientTypeSelection = function() {
         if (hasNonEmptySelection($j('#registrantType'))) {
             hidePregnancyRegistrationIfPatientIsNotPregnantMother();
             showWeekToBeginMessagesOnlyIfPatientTypeIsOther();
@@ -58,20 +66,20 @@ function PatientFormRegistrationEvents() {
         reasons.hide();
     };
 
-    var mediaTypeSelected = function() {
+    var onMediaTypeSelection = function() {
         if (hasNonEmptySelection($j('#mediaType'))) {
             hideDayOfWeekAndTimeOfDayFieldsIfMessageFormatSelectedIsText();
             setEnglishAsLanguageIfMessageFormatSelectedIsText();
         }
     };
 
-    var phoneOwnershipSelected = function() {
+    var onPhoneOwnershipSelection = function() {
         if (hasNonEmptySelection($j('#phoneType'))) {
             setVoiceOptionIfPhoneOwnershipIsPublic();
         }
     };
 
-    var insuranceSelected = function() {
+    var onInsuranceSelection = function() {
         if (hasNonEmptySelection($j('#insured'))) {
             hideInsuranceSectionIfNotInsured();
         }

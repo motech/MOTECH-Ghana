@@ -44,12 +44,13 @@
 <openmrs:htmlInclude file="/moduleResources/motechmodule/patient_form_events.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/country.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/validator.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/mother_details.js"/>
 <script type="text/javascript">
     var $j = jQuery.noConflict();
     $j(document).ready(function() {
-        new PatientFormRegistrationEvents();
+        var patientEvents =  new PatientFormRegistrationEvents();
         var selectedLocation = new Location(${selectedLocation});
-        new Country(${country}, selectedLocation);
+        var country = new Country(${country}, selectedLocation);
         var generalFieldsValidator = new RequiredFieldValidator();
         generalFieldsValidator.addAll(
                 $j('#registrationMode'), $j('#motechId'), $j('#registrantType'), $j('#firstName'), $j('#lastName')
@@ -64,6 +65,7 @@
 
         var communityValidator = new CommunityValidator($j('#communityId'), $j('#region'));
         new Validators($j('#patient')).add(generalFieldsValidator).add(communityValidator).add(midwifeValidator);
+        new MotherDetails(patientEvents,country);
     });
 </script>
 <style type="text/css">
@@ -77,7 +79,7 @@ td.labelcolumn {
     display:none;
 }
 </style>
-<openmrs:htmlInclude file="/moduleResources/motechmodule/mother_details.js"/>
+
 <openmrs:htmlInclude file="/dwr/util.js"/>
 <openmrs:htmlInclude file="/dwr/interface/DWRMotechService.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/find_duplicates.js"/>
