@@ -37,7 +37,7 @@ import org.junit.*;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
 import org.motechproject.server.omod.MotechModuleActivator;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;

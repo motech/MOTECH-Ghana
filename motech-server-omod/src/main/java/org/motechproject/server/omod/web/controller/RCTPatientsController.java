@@ -1,10 +1,9 @@
 package org.motechproject.server.omod.web.controller;
 
 import org.motechproject.server.model.rct.RCTPatient;
-import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.service.ContextService;
 import org.motechproject.server.omod.web.model.WebRCTPatient;
 import org.motechproject.server.svc.OpenmrsBean;
-import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

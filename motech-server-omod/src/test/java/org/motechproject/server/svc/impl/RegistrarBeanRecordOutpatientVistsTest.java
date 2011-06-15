@@ -37,7 +37,7 @@ import org.apache.commons.lang.time.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.svc.MessageSourceBean;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;

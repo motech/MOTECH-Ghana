@@ -35,7 +35,7 @@ package org.motechproject.server.omod.web.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.motechproject.server.model.Facility;
-import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.service.ContextService;
 import org.motechproject.server.omod.web.model.WebFacility;
 import org.openmrs.Location;
 import org.springframework.beans.factory.annotation.Autowired;

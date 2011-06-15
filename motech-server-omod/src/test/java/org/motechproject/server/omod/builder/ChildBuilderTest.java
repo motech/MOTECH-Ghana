@@ -3,7 +3,7 @@ package org.motechproject.server.omod.builder;
 
 import org.junit.Test;
 import org.motechproject.server.omod.IdentifierGenerator;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.omod.PersonAttributeTypeEnum;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;

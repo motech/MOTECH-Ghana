@@ -33,7 +33,7 @@
 
 package org.motechproject.server.omod.web.controller;
 
-import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.service.ContextService;
 import org.motechproject.server.omod.web.model.WebDuplicatePatients;
 import org.openmrs.Patient;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -35,6 +35,8 @@ package org.motechproject.server.omod.sdsched;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motechproject.server.service.AffectedPatients;
+import org.motechproject.server.service.ScheduleMaintService;
 
 /**
  * Implementation of {@link ScheduleMaintService}.

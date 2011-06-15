@@ -47,8 +47,8 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 import org.motechproject.server.model.Blackout;
 import org.motechproject.server.model.TroubledPhone;
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.ContextService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.springframework.ui.ModelMap;
 

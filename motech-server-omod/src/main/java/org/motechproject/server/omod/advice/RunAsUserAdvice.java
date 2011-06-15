@@ -40,7 +40,7 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.motechproject.server.annotation.RunAsUser;
 import org.motechproject.server.annotation.RunAsUserParam;
-import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.service.ContextService;
 import org.motechproject.server.omod.UserResolver;
 import org.openmrs.User;
 import org.openmrs.api.AdministrationService;

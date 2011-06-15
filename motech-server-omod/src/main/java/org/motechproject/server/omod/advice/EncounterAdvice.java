@@ -35,9 +35,9 @@ package org.motechproject.server.omod.advice;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.service.ContextService;
 import org.motechproject.server.omod.impl.ContextServiceImpl;
-import org.motechproject.server.omod.sdsched.ScheduleMaintService;
+import org.motechproject.server.service.ScheduleMaintService;
 import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.springframework.aop.AfterReturningAdvice;

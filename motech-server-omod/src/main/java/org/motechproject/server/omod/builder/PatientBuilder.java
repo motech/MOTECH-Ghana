@@ -1,7 +1,7 @@
 package org.motechproject.server.omod.builder;
 
 import org.motechproject.server.omod.IdentifierGenerator;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.omod.PersonAttributeTypeEnum;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;

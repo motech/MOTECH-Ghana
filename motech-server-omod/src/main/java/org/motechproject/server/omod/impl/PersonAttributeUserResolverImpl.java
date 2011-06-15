@@ -35,8 +35,8 @@ package org.motechproject.server.omod.impl;
 
 import java.util.List;
 
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.ContextService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.omod.UserResolver;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.User;

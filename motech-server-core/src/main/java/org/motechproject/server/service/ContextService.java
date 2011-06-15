@@ -31,9 +31,8 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.server.omod;
+package org.motechproject.server.service;
 
-import org.motechproject.server.omod.sdsched.ScheduleMaintService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.openmrs.User;
 import org.openmrs.api.AdministrationService;

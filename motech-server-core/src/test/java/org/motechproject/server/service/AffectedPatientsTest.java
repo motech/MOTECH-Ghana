@@ -31,64 +31,53 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.server.omod.sdsched;
+package org.motechproject.server.service;
 
+import junit.framework.TestCase;
+import org.motechproject.server.service.AffectedPatients;
 
 /**
- * Interface defining a service for performing operations required for
- * maintaining patient service delivery schedules.
+ * Tests the {@link AffectedPatients} class.
  * 
  * @author batkinson
  * 
  */
-public interface ScheduleMaintService {
+public class AffectedPatientsTest extends TestCase {
 
-	/**
-	 * Adds an affected patient identifier to the set touched by this
-	 * transaction. If no set is active, it adds the holder.
-	 * 
-	 * @param patientId
-	 *            patient id to add
-	 */
-	void addAffectedPatient(Integer patientId);
+	private AffectedPatients obj;
+	private Integer samplePatientId;
 
-	/**
-	 * Removes the specified patient identifier from the set of affected patient
-	 * ids for the transaction.
-	 * 
-	 * @param patientId
-	 *            the patient id to remove.
-	 */
-	void removeAffectedPatient(Integer patientId);
+	@Override
+	protected void setUp() throws Exception {
+		obj = new AffectedPatients();
+		samplePatientId = new Integer(3);
+	}
 
-	/**
-	 * Clears the affected patient set for the transaction.
-	 */
-	void clearAffectedPatients();
+	@Override
+	protected void tearDown() throws Exception {
+		obj = null;
+		samplePatientId = null;
+	}
 
-	/**
-	 * Returns the {@link AffectedPatients} object for the current transaction.
-	 * If there isn't one, if create is true one will be created and bound to
-	 * the transaction.
-	 * 
-	 * @param create
-	 *            whether to create a new AffectedPatients object if
-	 *            non-existent
-	 * @return the AffectedPatients object bound to the current transaction or
-	 *         null, if create is true, an object will always be returned
-	 */
+	public void testCreate() {
+		assertNotNull(obj.affectedIds);
+	}
 
-	AffectedPatients getAffectedPatients(boolean create);
+	public void testGetAffectedIds() {
+		assertNotNull(obj.getAffectedIds());
+		assertEquals(obj.affectedIds, obj.getAffectedIds());
+	}
 
-	/**
-	 * Flags transaction as requiring schedule adjustments.
-	 */
-	void requestSynch();
+	public void testAddPatientId() {
+		obj.getAffectedIds().add(samplePatientId);
+		assertTrue(obj.getAffectedIds().contains(samplePatientId));
+	}
 
-	/**
-	 * Adjusts the specified patients schedule to reflect their current status.
-	 * 
-	 * @param patientId
-	 */
-	void updateSchedule(Integer patientId);
+	public void testRemovePatientId() {
+		obj.affectedIds.add(samplePatientId);
+		assertTrue(obj.affectedIds.contains(samplePatientId));
+		obj.getAffectedIds().remove(samplePatientId);
+		assertFalse(obj.affectedIds.contains(samplePatientId));
+	}
+
 }

@@ -2,9 +2,9 @@ package org.motechproject.server.ws;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.omod.ConceptEnum;
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.ConceptEnum;
+import org.motechproject.server.service.ContextService;
+import org.motechproject.server.service.MotechService;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.api.PersonService;

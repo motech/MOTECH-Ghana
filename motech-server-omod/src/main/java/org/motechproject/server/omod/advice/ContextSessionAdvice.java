@@ -42,7 +42,7 @@ import org.motechproject.server.annotation.RunAsAdminUser;
 import org.motechproject.server.annotation.RunAsUser;
 import org.motechproject.server.annotation.RunWithContextSession;
 import org.motechproject.server.annotation.RunWithPrivileges;
-import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.service.ContextService;
 
 public class ContextSessionAdvice implements MethodInterceptor {
 

@@ -38,7 +38,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.server.model.*;
 import org.motechproject.server.model.db.MotechDAO;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.MotechService;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseModuleContextSensitiveTest;

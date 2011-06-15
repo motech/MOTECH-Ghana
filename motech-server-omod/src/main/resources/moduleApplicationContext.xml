@@ -112,7 +112,7 @@
     <bean parent="serviceContext">
         <property name="moduleService">
             <list>
-                <value>org.motechproject.server.omod.MotechService</value>
+                <value>org.motechproject.server.service.MotechService</value>
                 <bean
                         class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
                     <property name="transactionManager">

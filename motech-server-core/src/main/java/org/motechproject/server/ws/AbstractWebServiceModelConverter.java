@@ -1,8 +1,8 @@
 package org.motechproject.server.ws;
 
 import org.motechproject.server.model.Community;
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.ContextService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.ContactNumberType;

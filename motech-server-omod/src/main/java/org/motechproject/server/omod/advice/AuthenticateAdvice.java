@@ -39,7 +39,7 @@ import java.lang.reflect.Method;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.motechproject.server.annotation.RunAsAdminUser;
-import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.service.ContextService;
 import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.scheduler.SchedulerConstants;

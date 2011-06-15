@@ -1,7 +1,7 @@
 package org.motechproject.server.svc.impl;
 
 import org.motechproject.server.omod.AuthenticationService;
-import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.service.ContextService;
 import org.openmrs.User;
 
 public class AuthenticationServiceImpl implements AuthenticationService {

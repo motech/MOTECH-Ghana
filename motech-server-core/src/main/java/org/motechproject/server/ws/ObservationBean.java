@@ -1,6 +1,6 @@
 package org.motechproject.server.ws;
 
-import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.service.ContextService;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Person;

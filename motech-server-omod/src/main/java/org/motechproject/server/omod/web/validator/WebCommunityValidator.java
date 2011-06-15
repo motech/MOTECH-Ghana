@@ -33,8 +33,7 @@
 
 package org.motechproject.server.omod.web.validator;
 
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.ContextService;
 import org.motechproject.server.omod.web.model.WebCommunity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;

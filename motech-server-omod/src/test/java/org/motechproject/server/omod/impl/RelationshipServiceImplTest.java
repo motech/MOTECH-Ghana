@@ -36,7 +36,7 @@ package org.motechproject.server.omod.impl;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
-import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.service.ContextService;
 import org.openmrs.Person;
 import org.openmrs.Relationship;
 import org.openmrs.RelationshipType;
