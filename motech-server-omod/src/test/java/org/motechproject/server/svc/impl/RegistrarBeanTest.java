@@ -49,6 +49,8 @@ import org.motechproject.server.omod.web.model.KassenaNankanaWest;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
+import org.motechproject.server.ws.ObservationBean;
+import org.motechproject.server.ws.PregnancyObservationImpl;
 import org.motechproject.ws.*;
 import org.openmrs.*;
 import org.openmrs.Patient;
@@ -149,8 +151,6 @@ public class RegistrarBeanTest {
     Concept csmConcept;
     ConceptName deathCauseNameObj;
     Concept deathCauseConcept;
-    ConceptName maternalDeathCauseNameObj;
-    Concept maternalDeathCauseConcept;
     ConceptName serialNumberNameObj;
     Concept serialNumberConcept;
     ConceptName newCaseNameObj;
@@ -283,12 +283,12 @@ public class RegistrarBeanTest {
 
         immunizationConceptNameObj = new ConceptName(
                 MotechConstants.CONCEPT_IMMUNIZATIONS_ORDERED, Locale
-                        .getDefault());
+                .getDefault());
         immunizationConcept = new Concept(6);
 
         tetanusConceptNameObj = new ConceptName(
                 MotechConstants.CONCEPT_TETANUS_TOXOID_DOSE, Locale
-                        .getDefault());
+                .getDefault());
         tetanusConcept = new Concept(7);
 
         iptConceptNameObj = new ConceptName(
@@ -298,7 +298,7 @@ public class RegistrarBeanTest {
 
         itnConceptNameObj = new ConceptName(
                 MotechConstants.CONCEPT_INSECTICIDE_TREATED_NET_USAGE, Locale
-                        .getDefault());
+                .getDefault());
         itnConcept = new Concept(9);
 
         visitNumConceptNameObj = new ConceptName(
@@ -311,7 +311,7 @@ public class RegistrarBeanTest {
 
         dateConfConceptNameObj = new ConceptName(
                 MotechConstants.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT, Locale
-                        .getDefault());
+                .getDefault());
         dateConfConcept = new Concept(19);
 
         gravidaConceptNameObj = new ConceptName(
@@ -324,7 +324,7 @@ public class RegistrarBeanTest {
 
         dateConfConfirmedConceptNameObj = new ConceptName(
                 MotechConstants.CONCEPT_DATE_OF_CONFINEMENT_CONFIRMED, Locale
-                        .getDefault());
+                .getDefault());
         dateConfConfirmedConcept = new Concept(23);
 
         pregConceptNameObj = new ConceptName(MotechConstants.CONCEPT_PREGNANCY,
@@ -333,7 +333,7 @@ public class RegistrarBeanTest {
 
         refDateNameObj = new ConceptName(
                 MotechConstants.CONCEPT_ENROLLMENT_REFERENCE_DATE, Locale
-                        .getDefault());
+                .getDefault());
         refDateConcept = new Concept(25);
 
         hivTestNameObj = new ConceptName(
@@ -346,7 +346,7 @@ public class RegistrarBeanTest {
 
         terminationComplicationNameObj = new ConceptName(
                 MotechConstants.CONCEPT_TERMINATION_COMPLICATION, Locale
-                        .getDefault());
+                .getDefault());
         terminationComplicationConcept = new Concept(28);
 
         iptiNameObj = new ConceptName(
@@ -356,12 +356,12 @@ public class RegistrarBeanTest {
 
         opvDoseNameObj = new ConceptName(
                 MotechConstants.CONCEPT_ORAL_POLIO_VACCINATION_DOSE, Locale
-                        .getDefault());
+                .getDefault());
         opvDoseConcept = new Concept(30);
 
         pentaDoseNameObj = new ConceptName(
                 MotechConstants.CONCEPT_PENTA_VACCINATION_DOSE, Locale
-                        .getDefault());
+                .getDefault());
         pentaDoseConcept = new Concept(31);
 
         csmNameObj = new ConceptName(
@@ -391,7 +391,7 @@ public class RegistrarBeanTest {
 
         secondDiagnosisNameObj = new ConceptName(
                 MotechConstants.CONCEPT_SECONDARY_DIAGNOSIS, Locale
-                        .getDefault());
+                .getDefault());
         secondDiagnosisConcept = new Concept(39);
 
         deliveyModeNameObj = new ConceptName(
@@ -430,6 +430,15 @@ public class RegistrarBeanTest {
         regBeanImpl.setObsService(obsService);
         regBeanImpl.setConceptService(conceptService);
         regBeanImpl.setAuthenticationService(authenticationService);
+
+        PregnancyObservationImpl pregnancyObservation = new PregnancyObservationImpl();
+        pregnancyObservation.setContextService(contextService);
+        ObservationBean observationBean = new ObservationBean();
+        observationBean.setContextService(contextService);
+        pregnancyObservation.setObservationBean(observationBean);
+
+        regBeanImpl.setPregnancyObservation(pregnancyObservation);
+        regBeanImpl.setObservationBean(observationBean);
     }
 
     @After
@@ -853,7 +862,6 @@ public class RegistrarBeanTest {
         String motherLanguage = "motherLanguage";
 
 
-
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, -2);
         Date birthDate = calendar.getTime();
@@ -874,7 +882,6 @@ public class RegistrarBeanTest {
         when(mother.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_MEDIA_TYPE.getAttributeName())).thenReturn(new PersonAttribute(mediaTypeAttributeType, MediaType.TEXT.name()));
         when(mother.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_LANGUAGE.getAttributeName())).thenReturn(new PersonAttribute(languageAttributeType, motherLanguage));
         when(mother.getAttribute(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_DELIVERY_TIME.getAttributeName())).thenReturn(new PersonAttribute(deliveryTimeAttributeType, new SimpleDateFormat(MotechConstants.TIME_FORMAT_DELIVERY_TIME).format(date)));
-
 
 
         Location ghanaLocation = new Location(1);
@@ -902,7 +909,7 @@ public class RegistrarBeanTest {
         expect(personService.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_LANGUAGE)).andReturn(languageAttributeType);
         expect(personService.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_DELIVERY_TIME)).andReturn(deliveryTimeAttributeType);
 
-        expect(motechService.getActiveMessageProgramEnrollments(mother.getPatientId(), null, null, null,null)).andReturn(new ArrayList<MessageProgramEnrollment>(){
+        expect(motechService.getActiveMessageProgramEnrollments(mother.getPatientId(), null, null, null, null)).andReturn(new ArrayList<MessageProgramEnrollment>() {
             {
                 add(new MessageProgramEnrollment());
             }
@@ -910,11 +917,11 @@ public class RegistrarBeanTest {
         expect(motechService.getCommunityByPatient(mother)).andReturn(motherCommunity);
         setEncounterServiceExpectations(registrationEncounterCap);
 
-        expect(motechService.getActiveMessageProgramEnrollments(child.getId(), pregnancyProgramName, null, null,null)).andReturn(new ArrayList<MessageProgramEnrollment>(){
+        expect(motechService.getActiveMessageProgramEnrollments(child.getId(), pregnancyProgramName, null, null, null)).andReturn(new ArrayList<MessageProgramEnrollment>() {
 
         });
 
-        expect(motechService.getActiveMessageProgramEnrollments(child.getId(), careProgramName, null, null,null)).andReturn(new ArrayList<MessageProgramEnrollment>(){
+        expect(motechService.getActiveMessageProgramEnrollments(child.getId(), careProgramName, null, null, null)).andReturn(new ArrayList<MessageProgramEnrollment>() {
 
         });
 
@@ -926,19 +933,19 @@ public class RegistrarBeanTest {
                 encounterService, obsService, conceptService, idService, authenticationService);
 
         regBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID, motechId, RegistrantType.CHILD_UNDER_FIVE,
-                                firstName, middleName, null, prefName, birthDate, birthDateEst, gender, insured,
-                                null, date, mother, null, facility, null, null, date, dueDateConfirmed,
-                                null, null, null, null, null, null, null, null, null, null);
+                firstName, middleName, null, prefName, birthDate, birthDateEst, gender, insured,
+                null, date, mother, null, facility, null, null, date, dueDateConfirmed,
+                null, null, null, null, null, null, null, null, null, null);
 
         verify(contextService, patientService, motechService, personService, locationService, userService,
-               encounterService, obsService, conceptService, idService, authenticationService);
+                encounterService, obsService, conceptService, idService, authenticationService);
 
         Patient capturedPatient = patientCap.getValue();
 
         verifyPersonNames(firstName, middleName, prefName, capturedPatient.getNames().iterator());
         assertEquals(birthDate, capturedPatient.getBirthdate());
         assertEquals(birthDateEst, capturedPatient.getBirthdateEstimated());
-        assertEquals(GenderTypeConverter.toOpenMRSString(gender),capturedPatient.getGender());
+        assertEquals(GenderTypeConverter.toOpenMRSString(gender), capturedPatient.getGender());
         Mockito.verify(mockResidents).add(child);
         assertEquals(motherAddress.getAddress1(), capturedPatient.getPersonAddress().getAddress1());
 
@@ -1070,7 +1077,7 @@ public class RegistrarBeanTest {
         expect(
                 contextService.getMotechService()).andReturn(motechService)
                 .atLeastOnce();
-       
+
         expect(
                 patientService
                         .getPatientIdentifierTypeByName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID))
@@ -1219,11 +1226,15 @@ public class RegistrarBeanTest {
         Capture<MessageProgramEnrollment> enrollment2Cap = new Capture<MessageProgramEnrollment>();
         Capture<Message> enrollment1MessageCap = new Capture<Message>();
 
-        expect(contextService.getMotechService()).andReturn(motechService)
-                .atLeastOnce();
-        expect(
-                personService
-                        .getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
+//        regBean.se
+
+
+        expect(contextService.getMotechService()).andReturn(motechService).atLeastOnce();
+        expect(contextService.getConceptService()).andReturn(conceptService).atLeastOnce();
+        expect(contextService.getPersonService()).andReturn(personService).atLeastOnce();
+        expect(contextService.getObsService()).andReturn(obsService).atLeastOnce();
+
+        expect(personService.getPersonAttributeTypeByName(MotechConstants.PERSON_ATTRIBUTE_PHONE_NUMBER))
                 .andReturn(phoneAttributeType);
         expect(
                 personService
@@ -1291,8 +1302,7 @@ public class RegistrarBeanTest {
 
         replay(contextService, patientService, personService, motechService, conceptService, obsService, relationshipService);
 
-        regBean.editPatient(staff, date, patient, mother, phone, phoneType, nhis, date,
-                date, stopEnrollment);
+        regBean.editPatient(staff, date, patient, mother, phone, phoneType, nhis, date, date, stopEnrollment);
 
         verify(contextService, patientService, personService, motechService, conceptService, obsService, relationshipService);
 

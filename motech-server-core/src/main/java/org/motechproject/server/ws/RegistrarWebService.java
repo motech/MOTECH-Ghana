@@ -73,9 +73,10 @@ public class RegistrarWebService implements RegistrarService {
 
     RegistrarBean registrarBean;
     OpenmrsBean openmrsBean;
-    WebServiceModelConverter modelConverter;
+    WebServicePatientModelConverter patientModelConverter;
     MessageSourceBean messageBean;
     RCTService rctService;
+    WebServiceCareModelConverter careModelConverter;
 
     @WebMethod
     public void recordPatientHistory(
@@ -297,7 +298,7 @@ public class RegistrarWebService implements RegistrarService {
                         deliveredBy, maleInvolved, complications, vvf,
                         maternalDeath, comments, outcomes);
 
-        return modelConverter.patientToWebService(childPatients, true);
+        return patientModelConverter.patientToWebService(childPatients, true);
     }
 
     @WebMethod
@@ -624,7 +625,7 @@ public class RegistrarWebService implements RegistrarService {
                 lastOPV, lastOPVDate, lastPenta, lastPentaDate, measlesDate,
                 yellowFeverDate, lastIPTI, lastIPTIDate, lastVitaminADate, whyNoHistory);
 
-        return modelConverter.patientToWebService(patient, true);
+        return patientModelConverter.patientToWebService(patient, true);
     }
 
     private Facility decideFacility(Integer facilityId, ValidationErrors errors, String ancRegToday) {
@@ -966,7 +967,7 @@ public class RegistrarWebService implements RegistrarService {
         List<ExpectedObs> defaultedObs = registrarBean.getDefaultedExpectedObs(
                 facility, new String[]{"TT", "IPT"});
 
-        Care[] upcomingCares = modelConverter.defaultedToWebServiceCares(
+        Care[] upcomingCares = careModelConverter.defaultedToWebServiceCares(
                 defaultedEncounters, defaultedObs);
 
         return upcomingCares;
@@ -990,7 +991,7 @@ public class RegistrarWebService implements RegistrarService {
 
         List<ExpectedObs> defaultedObs = registrarBean.getDefaultedExpectedObs(
                 facility, new String[]{"TT"});
-        return modelConverter.defaultedObsToWebServiceCares(defaultedObs);
+        return careModelConverter.defaultedObsToWebServiceCares(defaultedObs);
     }
 
     @WebMethod
@@ -1012,7 +1013,7 @@ public class RegistrarWebService implements RegistrarService {
         List<ExpectedEncounter> defaultedEncounters = registrarBean
                 .getDefaultedExpectedEncounters(facility,
                         new String[]{"PNC(mother)"});
-        return modelConverter
+        return careModelConverter
                 .defaultedEncountersToWebServiceCares(defaultedEncounters);
     }
 
@@ -1035,7 +1036,7 @@ public class RegistrarWebService implements RegistrarService {
         List<ExpectedEncounter> defaultedEncounters = registrarBean
                 .getDefaultedExpectedEncounters(facility,
                         new String[]{"PNC(baby)"});
-        return modelConverter
+        return careModelConverter
                 .defaultedEncountersToWebServiceCares(defaultedEncounters);
     }
 
@@ -1058,7 +1059,7 @@ public class RegistrarWebService implements RegistrarService {
         List<ExpectedObs> defaultedObs = registrarBean.getDefaultedExpectedObs(
                 facility, new String[]{"OPV", "BCG", "Penta", "YellowFever",
                         "Measles", "VitaA", "IPTI"});
-        return modelConverter.defaultedObsToWebServiceCares(defaultedObs);
+        return careModelConverter.defaultedObsToWebServiceCares(defaultedObs);
     }
 
     @WebMethod
@@ -1079,7 +1080,7 @@ public class RegistrarWebService implements RegistrarService {
 
         List<Obs> dueDates = registrarBean
                 .getUpcomingPregnanciesDueDate(facility);
-        return modelConverter.dueDatesToWebServicePatients(dueDates);
+        return patientModelConverter.dueDatesToWebServicePatients(dueDates);
     }
 
     @WebMethod
@@ -1100,7 +1101,7 @@ public class RegistrarWebService implements RegistrarService {
 
         List<Encounter> deliveries = registrarBean
                 .getRecentDeliveries(facility);
-        return modelConverter.deliveriesToWebServicePatients(deliveries);
+        return patientModelConverter.deliveriesToWebServicePatients(deliveries);
     }
 
     @WebMethod
@@ -1121,7 +1122,7 @@ public class RegistrarWebService implements RegistrarService {
 
         List<Obs> dueDates = registrarBean
                 .getOverduePregnanciesDueDate(facility);
-        return modelConverter.dueDatesToWebServicePatients(dueDates);
+        return patientModelConverter.dueDatesToWebServicePatients(dueDates);
     }
 
     @WebMethod
@@ -1144,14 +1145,14 @@ public class RegistrarWebService implements RegistrarService {
                     "Errors in Upcoming Care Query request", errors);
         }
 
-        Patient wsPatient = modelConverter.patientToWebService(patient, true);
+        Patient wsPatient = patientModelConverter.patientToWebService(patient, true);
 
         List<ExpectedEncounter> upcomingEncounters = registrarBean
                 .getUpcomingExpectedEncounters(patient);
         List<ExpectedObs> upcomingObs = registrarBean
                 .getUpcomingExpectedObs(patient);
 
-        Care[] upcomingCares = modelConverter.upcomingToWebServiceCares(
+        Care[] upcomingCares = careModelConverter.upcomingToWebServiceCares(
                 upcomingEncounters, upcomingObs, false);
 
         wsPatient.setCares(upcomingCares);
@@ -1182,7 +1183,7 @@ public class RegistrarWebService implements RegistrarService {
         List<org.openmrs.Patient> patients = registrarBean.getPatients(
                 firstName, lastName, preferredName, birthDate, facilityId,
                 phoneNumber, nhis, null, null);
-        return modelConverter.patientToWebService(patients, true);
+        return patientModelConverter.patientToWebService(patients, true);
     }
 
     @WebMethod
@@ -1204,7 +1205,7 @@ public class RegistrarWebService implements RegistrarService {
                     errors);
         }
 
-        return modelConverter.patientToWebService(patient, false);
+        return patientModelConverter.patientToWebService(patient, false);
     }
 
     @WebMethod
@@ -1251,9 +1252,15 @@ public class RegistrarWebService implements RegistrarService {
     }
 
     @WebMethod(exclude = true)
-    public void setModelConverter(WebServiceModelConverter modelConverter) {
-        this.modelConverter = modelConverter;
+    public void setPatientModelConverter(WebServicePatientModelConverter patientModelConverter) {
+        this.patientModelConverter = patientModelConverter;
     }
+
+    @WebMethod(exclude = true)
+    public void setCareModelConverter(WebServiceCareModelConverter careModelConverter) {
+        this.careModelConverter = careModelConverter;
+    }
+
 
     @WebMethod(exclude = true)
     public void setMessageBean(MessageSourceBean messageBean) {
@@ -1285,7 +1292,7 @@ public class RegistrarWebService implements RegistrarService {
         throwExceptionIfValidationFailed(errors);
 
         updatePatientPhoneDetails(ownership, regPhone, staff, patient);
-        Patient motechPatient = modelConverter.patientToWebService(patient, false);
+        Patient motechPatient = patientModelConverter.patientToWebService(patient, false);
 
         RCTRegistrationConfirmation confirmation = rctService.register(motechPatient, staff, rctFacility);
 

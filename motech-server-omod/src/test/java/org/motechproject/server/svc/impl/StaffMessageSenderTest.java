@@ -12,7 +12,9 @@ import org.motechproject.server.omod.filters.ExpectedObsFilterChain;
 import org.motechproject.server.omod.filters.Filter;
 import org.motechproject.server.omod.web.model.KassenaNankana;
 import org.motechproject.server.svc.RCTService;
+import org.motechproject.server.util.DateUtil;
 import org.motechproject.server.util.MotechConstants;
+import org.motechproject.server.ws.WebServiceCareModelConverterImpl;
 import org.motechproject.ws.Care;
 import org.motechproject.ws.CareMessageGroupingStrategy;
 import org.motechproject.ws.MediaType;
@@ -21,11 +23,13 @@ import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.api.AdministrationService;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 import static org.easymock.EasyMock.*;
 
 
@@ -38,6 +42,7 @@ public class StaffMessageSenderTest {
     MotechService motechService;
     RCTService rctService;
     MessageService mobileService;
+    StaffMessageSender staffMessageSender;
 
     @Before
     public void setUp() throws Exception {
@@ -58,6 +63,14 @@ public class StaffMessageSenderTest {
         expectedObsFilterChain.setFilters(new ArrayList<Filter<ExpectedObs>>());
         registrarBean.setExpectedEncountersFilter(expectedEncounterFilterChain);
         registrarBean.setExpectedObsFilter(expectedObsFilterChain);
+        staffMessageSender = new StaffMessageSender(contextService, mobileService, rctService);
+        staffMessageSender.setExpectedEncountersFilter(expectedEncounterFilterChain);
+        staffMessageSender.setExpectedObsFilter(expectedObsFilterChain);
+
+        WebServiceCareModelConverterImpl careModelConverter = new WebServiceCareModelConverterImpl();
+        careModelConverter.setContextService(contextService);
+        staffMessageSender.setCareModelConverter(careModelConverter);
+
     }
 
     @Test
@@ -123,9 +136,11 @@ public class StaffMessageSenderTest {
         motechService.saveOrUpdateDefaultedEncounterAlert(EasyMock.<DefaultedExpectedEncounterAlert>anyObject());
         expectLastCall().atLeastOnce();
 
+
         replay(contextService, adminService, motechService, mobileService, rctService);
 
-        registrarBean.sendStaffCareMessages(forDate, forDate,
+
+        staffMessageSender.sendStaffCareMessages(forDate, forDate,
                 forDate, forDate,
                 careGroups,
                 false,
@@ -209,7 +224,7 @@ public class StaffMessageSenderTest {
 
         replay(contextService, adminService, motechService, mobileService, rctService);
 
-        registrarBean.sendStaffCareMessages(forDate, forDate,
+        staffMessageSender.sendStaffCareMessages(forDate, forDate,
                 forDate, forDate,
                 careGroups,
                 true,
@@ -256,7 +271,7 @@ public class StaffMessageSenderTest {
 
         replay(contextService, adminService, motechService, mobileService);
 
-        registrarBean.sendStaffCareMessages(forDate, forDate,
+        staffMessageSender.sendStaffCareMessages(forDate, forDate,
                 forDate, forDate,
                 careGroups,
                 false,
@@ -321,7 +336,7 @@ public class StaffMessageSenderTest {
 
         replay(contextService, adminService, motechService, mobileService);
 
-        registrarBean.sendStaffCareMessages(forDate, forDate,
+        staffMessageSender.sendStaffCareMessages(forDate, forDate,
                 forDate, forDate,
                 careGroups,
                 true,
@@ -335,4 +350,28 @@ public class StaffMessageSenderTest {
         assertEquals("Test Facility has no upcoming care for this week", capturedUpcomingCareMessage.getValue());
         assertEquals("+1 555 123-1234", capturedUpcomingCarePhoneNumber.getValue());
     }
+
+    @Test
+    public void testShouldFindOutIfMessageTimeIsDuringBlackoutPeriod() {
+        DateUtil dateUtil = new DateUtil();
+        Calendar calendar = dateUtil.getCalendarWithTime(23, 13, 54);
+        Date morningMessageTime = calendar.getTime();
+        calendar = dateUtil.getCalendarWithTime(3, 13, 54);
+        Date nightMessageTime = calendar.getTime();
+        calendar = dateUtil.getCalendarWithTime(19, 30, 30);
+        Date eveningMessageTime = calendar.getTime();
+
+        Blackout blackout = new Blackout(Time.valueOf("23:00:00"), Time.valueOf("06:00:00"));
+
+        expect(contextService.getMotechService()).andReturn(motechService).times(3);
+        expect(motechService.getBlackoutSettings()).andReturn(blackout).times(3);
+        replay(contextService, adminService, motechService);
+
+        assertTrue(staffMessageSender.isMessageTimeWithinBlackoutPeriod(morningMessageTime));
+        assertTrue(staffMessageSender.isMessageTimeWithinBlackoutPeriod(nightMessageTime));
+        assertFalse(staffMessageSender.isMessageTimeWithinBlackoutPeriod(eveningMessageTime));
+        verify(contextService, adminService, motechService);
+
+    }
+
 }

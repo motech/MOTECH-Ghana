@@ -41,13 +41,10 @@
        xmlns:wss="http://jax-ws.dev.java.net/spring/servlet"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd
-           http://www.springframework.org/schema/util
-           http://www.springframework.org/schema/util/spring-util-2.0.xsd
            http://www.springframework.org/schema/tx
            http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
            http://jax-ws.dev.java.net/spring/core
@@ -168,14 +165,18 @@
     <!-- MUST start with /ws/ -->
     <ws:service id="registrarservice" bean="#registrarWebService"/>
 
-    <bean id="webserviceModelConverter" class="org.motechproject.server.ws.WebServiceModelConverterImpl">
+    <bean id="patientModelConverter" class="org.motechproject.server.ws.WebServicePatientModelConverterImpl">
         <property name="registrarBean" ref="registrarBeanProxy"/>
+    </bean>
+
+    <bean id="careModelConverter" class="org.motechproject.server.ws.WebServiceCareModelConverterImpl">
     </bean>
 
     <bean id="registrarWebService" class="org.motechproject.server.ws.RegistrarWebService">
         <property name="registrarBean" ref="registrarBeanProxy"/>
         <property name="openmrsBean" ref="registrarBeanProxy"/>
-        <property name="modelConverter" ref="webserviceModelConverter"/>
+        <property name="patientModelConverter" ref="patientModelConverter"/>
+        <property name="careModelConverter" ref="careModelConverter"/>
         <property name="messageBean" ref="messageSourceBean"/>
         <property name="rctService" ref="rctBeanProxy"/>
     </bean>

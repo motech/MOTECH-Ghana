@@ -33,11 +33,6 @@
 
 package org.motechproject.server.ws;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -48,6 +43,8 @@ import junit.framework.TestCase;
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.omod.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.Care;
@@ -59,28 +56,36 @@ import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonAddress;
 import org.openmrs.PersonName;
 
-public class WebServiceModelConverterTest extends TestCase {
+import static org.easymock.EasyMock.*;
 
-	WebServiceModelConverter modelConverter;
-	RegistrarBean registrarBean;
-	PatientIdentifierType motechIdType;
+public class WebServicePatientModelConverterTest extends TestCase {
 
-	@Override
+    WebServiceCareModelConverterImpl careModelConverter;
+    PatientIdentifierType motechIdType;
+    private MotechService motechService;
+    private ContextService contextService;
+
+    @Override
 	protected void setUp() throws Exception {
-		WebServiceModelConverterImpl modelConverterImpl = new WebServiceModelConverterImpl();
-		registrarBean = createMock(RegistrarBean.class);
-		modelConverterImpl.setRegistrarBean(registrarBean);
-		modelConverter = modelConverterImpl;
+
+        motechService = createMock(MotechService.class);
+        contextService = createMock(ContextService.class);
+
+        careModelConverter = new WebServiceCareModelConverterImpl();
+        careModelConverter.setContextService(contextService);
 
 		motechIdType = new PatientIdentifierType();
 		motechIdType.setName(MotechConstants.PATIENT_IDENTIFIER_MOTECH_ID);
+
+        expect(contextService.getMotechService()).andReturn(motechService).atLeastOnce();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		registrarBean = null;
-		modelConverter = null;
 		motechIdType = null;
+        careModelConverter = null;
+
+        reset(motechService, contextService);
 	}
 
 	public void testDefaultedEncounters() {
@@ -147,16 +152,16 @@ public class WebServiceModelConverterTest extends TestCase {
 		defaultedEncounters.add(encounter2);
 		defaultedEncounters.add(encounter3);
 
-		expect(registrarBean.getCommunityByPatient(patient1)).andReturn(comm1);
-		expect(registrarBean.getCommunityByPatient(patient2)).andReturn(comm2);
-		expect(registrarBean.getCommunityByPatient(patient3)).andReturn(comm3);
+		expect(motechService.getCommunityByPatient(patient1)).andReturn(comm1);
+		expect(motechService.getCommunityByPatient(patient2)).andReturn(comm2);
+		expect(motechService.getCommunityByPatient(patient3)).andReturn(comm3);
 
-		replay(registrarBean);
+		replay(motechService, contextService);
 
-		Care[] cares = modelConverter
+		Care[] cares = careModelConverter
 				.defaultedEncountersToWebServiceCares(defaultedEncounters);
 
-		verify(registrarBean);
+		verify(motechService, contextService);
 
 		assertEquals(2, cares.length);
 
@@ -196,7 +201,7 @@ public class WebServiceModelConverterTest extends TestCase {
 	public void testDefaultedEncountersEmpty() {
 		List<ExpectedEncounter> defaultedEncounters = new ArrayList<ExpectedEncounter>();
 
-		Care[] cares = modelConverter
+		Care[] cares = careModelConverter
 				.defaultedEncountersToWebServiceCares(defaultedEncounters);
 
 		assertEquals(0, cares.length);
@@ -266,16 +271,16 @@ public class WebServiceModelConverterTest extends TestCase {
 		defaultedObs.add(obs2);
 		defaultedObs.add(obs3);
 
-		expect(registrarBean.getCommunityByPatient(patient1)).andReturn(comm1);
-		expect(registrarBean.getCommunityByPatient(patient2)).andReturn(comm2);
-		expect(registrarBean.getCommunityByPatient(patient3)).andReturn(comm3);
+		expect(motechService.getCommunityByPatient(patient1)).andReturn(comm1);
+		expect(motechService.getCommunityByPatient(patient2)).andReturn(comm2);
+		expect(motechService.getCommunityByPatient(patient3)).andReturn(comm3);
 
-		replay(registrarBean);
+		replay(motechService, contextService);
 
-		Care[] cares = modelConverter
+		Care[] cares = careModelConverter
 				.defaultedObsToWebServiceCares(defaultedObs);
 
-		verify(registrarBean);
+		verify(motechService, contextService);
 
 		assertEquals(2, cares.length);
 
@@ -315,7 +320,7 @@ public class WebServiceModelConverterTest extends TestCase {
 	public void testDefaultedObsEmpty() {
 		List<ExpectedObs> defaultedObs = new ArrayList<ExpectedObs>();
 
-		Care[] cares = modelConverter
+		Care[] cares = careModelConverter
 				.defaultedObsToWebServiceCares(defaultedObs);
 
 		assertEquals(0, cares.length);
@@ -400,19 +405,19 @@ public class WebServiceModelConverterTest extends TestCase {
 		defaultedObs.add(obs2);
 		defaultedObs.add(obs3);
 
-		expect(registrarBean.getCommunityByPatient(patient1)).andReturn(comm1)
+		expect(motechService.getCommunityByPatient(patient1)).andReturn(comm1)
 				.times(2);
-		expect(registrarBean.getCommunityByPatient(patient2)).andReturn(comm2)
+		expect(motechService.getCommunityByPatient(patient2)).andReturn(comm2)
 				.times(2);
-		expect(registrarBean.getCommunityByPatient(patient3)).andReturn(comm3)
+		expect(motechService.getCommunityByPatient(patient3)).andReturn(comm3)
 				.times(2);
 
-		replay(registrarBean);
+		replay(motechService, contextService);
 
-		Care[] cares = modelConverter.defaultedToWebServiceCares(
+		Care[] cares = careModelConverter.defaultedToWebServiceCares(
 				defaultedEncounters, defaultedObs);
 
-		verify(registrarBean);
+		verify(motechService, contextService);
 
 		assertEquals(4, cares.length);
 
@@ -508,7 +513,7 @@ public class WebServiceModelConverterTest extends TestCase {
 		upcomingEncounters.add(encounter2);
 		upcomingEncounters.add(encounter3);
 
-		Care[] cares = modelConverter
+		Care[] cares = careModelConverter
 				.upcomingEncountersToWebServiceCares(upcomingEncounters);
 
 		assertEquals(3, cares.length);
@@ -529,7 +534,7 @@ public class WebServiceModelConverterTest extends TestCase {
 	public void testUpcomingEncountersEmpty() {
 		List<ExpectedEncounter> upcomingEncounters = new ArrayList<ExpectedEncounter>();
 
-		Care[] cares = modelConverter
+		Care[] cares = careModelConverter
 				.upcomingEncountersToWebServiceCares(upcomingEncounters);
 
 		assertEquals(0, cares.length);
@@ -562,7 +567,7 @@ public class WebServiceModelConverterTest extends TestCase {
 		upcomingObs.add(obs2);
 		upcomingObs.add(obs3);
 
-		Care[] cares = modelConverter.upcomingObsToWebServiceCares(upcomingObs);
+		Care[] cares = careModelConverter.upcomingObsToWebServiceCares(upcomingObs);
 
 		assertEquals(3, cares.length);
 
@@ -582,7 +587,7 @@ public class WebServiceModelConverterTest extends TestCase {
 	public void testUpcomingObsEmpty() {
 		List<ExpectedObs> upcomingObs = new ArrayList<ExpectedObs>();
 
-		Care[] cares = modelConverter.upcomingObsToWebServiceCares(upcomingObs);
+		Care[] cares = careModelConverter.upcomingObsToWebServiceCares(upcomingObs);
 
 		assertEquals(0, cares.length);
 	}
@@ -640,7 +645,7 @@ public class WebServiceModelConverterTest extends TestCase {
 		upcomingObs.add(obs2);
 		upcomingObs.add(obs3);
 
-		Care[] cares = modelConverter.upcomingToWebServiceCares(
+		Care[] cares = careModelConverter.upcomingToWebServiceCares(
 				upcomingEncounters, upcomingObs, false);
 
 		assertEquals(6, cares.length);

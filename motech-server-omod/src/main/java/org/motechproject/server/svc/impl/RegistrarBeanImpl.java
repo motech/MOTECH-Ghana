@@ -55,7 +55,9 @@ import org.motechproject.server.util.DateUtil;
 import org.motechproject.server.util.GenderTypeConverter;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.server.util.Password;
-import org.motechproject.server.ws.WebServiceModelConverterImpl;
+import org.motechproject.server.ws.ObservationBean;
+import org.motechproject.server.ws.PregnancyObservation;
+import org.motechproject.server.ws.WebServicePatientModelConverterImpl;
 import org.motechproject.ws.*;
 import org.motechproject.ws.mobile.MessageService;
 import org.openmrs.*;
@@ -97,6 +99,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     private RCTService rctService;
     private MessageProgramServiceImpl messageProgramService;
 
+
     @Autowired
     private IdentifierGenerator identifierGenerator;
 
@@ -113,6 +116,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     @Autowired
     private MotechUserRepository motechUserRepository;
+
+    @Autowired
+    private StaffMessageSender staffMessageSender;
+
+    @Autowired
+    private PregnancyObservation pregnancyObservation;
+
+    @Autowired
+    private ObservationBean observationBean;
 
 
     public void setContextService(ContextService contextService) {
@@ -1398,7 +1410,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                     messageStartDate = null;
                 }
 
-                WebServiceModelConverterImpl wsModelConverter = new WebServiceModelConverterImpl();
+                WebServicePatientModelConverterImpl wsModelConverter = new WebServicePatientModelConverterImpl();
                 wsModelConverter.setRegistrarBean(this);
                 org.motechproject.ws.Patient wsPatient = wsModelConverter
                         .patientToWebService(patient, true);
@@ -2116,15 +2128,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public Obs getActivePregnancy(Integer patientId) {
-        List<Obs> pregnancies = motechService().getActivePregnancies(patientId,
-                concept(ConceptEnum.CONCEPT_PREGNANCY), concept(ConceptEnum.CONCEPT_PREGNANCY_STATUS));
-        if (pregnancies.isEmpty()) {
-            return null;
-        } else if (pregnancies.size() > 1) {
-            log.warn("More than 1 active pregnancy found for patient: "
-                    + patientId);
-        }
-        return pregnancies.get(0);
+        return pregnancyObservation.getActivePregnancy(patientId);
     }
 
     public List<ScheduledMessage> getAllScheduledMessages() {
@@ -2256,27 +2260,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     private List<Obs> getMatchingObs(Person person, Concept question,
                                      Concept answer, Integer obsGroupId, Date from, Date to) {
 
-        List<Concept> questions = null;
-        if (question != null) {
-            questions = new ArrayList<Concept>();
-            questions.add(question);
-        }
 
-        List<Concept> answers = null;
-        if (answer != null) {
-            answers = new ArrayList<Concept>();
-            answers.add(answer);
-        }
+        return observationBean.getMatchingObs(person, question, answer, obsGroupId, from,to);
 
-        List<Person> whom = new ArrayList<Person>();
-        whom.add(person);
 
-        // patients, encounters, questions, answers, persontype, locations,
-        // sort, max returned, group id, from date, to date, include voided
-        List<Obs> obsList = obsService.getObservations(whom, null, questions,
-                answers, null, null, null, null, obsGroupId, from, to, false);
-
-        return obsList;
     }
 
     public int getNumberOfObs(Integer personId, String conceptName,
@@ -2336,25 +2323,11 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public Obs getActivePregnancyDueDateObs(Integer patientId, Obs pregnancy) {
-        if (pregnancy != null) {
-            Integer pregnancyObsId = pregnancy.getObsId();
-            List<Obs> dueDateObsList = getMatchingObs(personService
-                    .getPerson(patientId), concept(ConceptEnum.CONCEPT_ESTIMATED_DATE_OF_CONFINEMENT), null,
-                    pregnancyObsId, null, null);
-            if (dueDateObsList.size() > 0) {
-                return dueDateObsList.get(0);
-            }
-        }
-        return null;
+        return pregnancyObservation.getActivePregnancyDueDateObs(patientId, pregnancy);        
     }
 
     public Date getActivePregnancyDueDate(Integer patientId) {
-        Obs pregnancy = getActivePregnancy(patientId);
-        Obs dueDateObs = getActivePregnancyDueDateObs(patientId, pregnancy);
-        if (dueDateObs != null) {
-            return dueDateObs.getValueDatetime();
-        }
-        return null;
+        return pregnancyObservation.getActivePregnancyDueDate(patientId);
     }
 
     public Date getLastPregnancyEndDate(Integer patientId) {
@@ -2863,9 +2836,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                       String[] careGroups,
                                       boolean sendUpcoming,
                                       boolean blackoutEnabled) {
-        StaffMessageSender staffMessageSender = new StaffMessageSender(this, contextService, mobileService, rctService);
-        staffMessageSender.setExpectedEncountersFilter(expectedEncountersFilter);
-        staffMessageSender.setExpectedObsFilter(expectedObsFilter);
         staffMessageSender.sendStaffCareMessages(startDate, endDate, deliveryDate, deliveryTime, careGroups, sendUpcoming, blackoutEnabled);
     }
 
@@ -3432,27 +3402,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         blackoutCalendar.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
     }
 
-    boolean isMessageTimeWithinBlackoutPeriod(Date deliveryDate) {
-        Date checkForDate = (deliveryDate != null ? deliveryDate : new Date());
-        Blackout blackout = motechService().getBlackoutSettings();
-        if (blackout == null) {
-            return false;
-        }
-
-        Calendar blackoutCalendar = getCalendarWithDate(checkForDate);
-
-        adjustForBlackoutStartDate(checkForDate, blackout, blackoutCalendar);
-        Date blackoutStart = blackoutCalendar.getTime();
-        setBlackOutTime(blackout.getEndTime(), blackoutCalendar);
-
-        if (blackoutCalendar.getTime().before(blackoutStart)) {
-            // Add a day if blackout end date before start date after setting time
-            blackoutCalendar.add(Calendar.DATE, 1);
-        }
-        Date blackoutEnd = blackoutCalendar.getTime();
-
-        return checkForDate.after(blackoutStart) && checkForDate.before(blackoutEnd);
-    }
 
     public Community saveCommunity(Community community) {
         if (community.getCommunityId() == null) {
@@ -3534,8 +3483,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         boolean exists = CollectionUtils.exists(outPatientEncounters, new Predicate() {
             public boolean evaluate(Object object) {
+                DateUtil dateUtil = new DateUtil();
                 Date otherVisitDate = ((GeneralOutpatientEncounter) object).getDate();
-                return DateUtil.isSameMonth(visitDate, otherVisitDate) && DateUtil.isSameYear(visitDate, otherVisitDate);
+                return dateUtil.isSameMonth(visitDate, otherVisitDate) && dateUtil.isSameYear(visitDate, otherVisitDate);
             }
         });
         return !exists;
@@ -3660,5 +3610,17 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public void setExpectedObsFilter(FilterChain expectedObsFilter) {
         this.expectedObsFilter = expectedObsFilter;
+    }
+
+    public void setStaffMessageSender(StaffMessageSender staffMessageSender) {
+        this.staffMessageSender = staffMessageSender;
+    }
+
+    public void setPregnancyObservation(PregnancyObservation pregnancyObservation) {
+        this.pregnancyObservation = pregnancyObservation;
+    }
+
+    public void setObservationBean(ObservationBean observationBean) {
+        this.observationBean = observationBean;
     }
 }

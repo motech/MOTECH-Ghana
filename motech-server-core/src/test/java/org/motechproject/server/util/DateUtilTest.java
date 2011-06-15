@@ -34,33 +34,53 @@ package org.motechproject.server.util;
 
 
 import org.apache.commons.lang.time.DateUtils;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Calendar;
 import java.util.Date;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class DateUtilTest {
 
+    private DateUtil dateUtil;
+
+    @Before
+    public void setUp() {
+        dateUtil = new DateUtil();
+    }
+
     @Test
     public void isSameMonth() {
-        assertTrue(DateUtil.isSameMonth(new Date(), new Date()));
+        assertTrue(dateUtil.isSameMonth(new Date(), new Date()));
     }
 
     @Test
     public void isNotSameMonth() {
-        assertFalse(DateUtil.isSameMonth(new Date(), DateUtils.addMonths(new Date(), -1)));
+        assertFalse(dateUtil.isSameMonth(new Date(), DateUtils.addMonths(new Date(), -1)));
     }
 
     @Test
     public void isSameYear() {
-        assertTrue(DateUtil.isSameYear(new Date(), new Date()));
+        assertTrue(dateUtil.isSameYear(new Date(), new Date()));
     }
 
     @Test
     public void isNotSameYear() {
-        assertFalse(DateUtil.isSameYear(new Date(), DateUtils.addYears(new Date(), -1)));
+        assertFalse(dateUtil.isSameYear(new Date(), DateUtils.addYears(new Date(), -1)));
+    }
+
+    @Test
+    public void shouldReturnCalendarWithGivenTime() {
+        Calendar calendar = dateUtil.getCalendarWithTime(10, 50, 20);
+        assertNotNull(calendar);
+        assertEquals(10, calendar.get(Calendar.HOUR_OF_DAY));
+        assertEquals(50, calendar.get(Calendar.MINUTE));
+        assertEquals(20, calendar.get(Calendar.SECOND));
     }
 
 }

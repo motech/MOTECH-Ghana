@@ -70,7 +70,8 @@ public class RegistrarServiceTest{
 	static RegistrarService regWs;
 	static RegistrarBean registrarBean;
 	static OpenmrsBean openmrsBean;
-	static WebServiceModelConverter modelConverter;
+	static WebServicePatientModelConverter patientModelConverter;
+	static WebServiceCareModelConverter careModelConverter;
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
@@ -79,13 +80,16 @@ public class RegistrarServiceTest{
 						.getResourceAsStream("/jul-test.properties"));
 		registrarBean = createMock(RegistrarBean.class);
 		openmrsBean = createMock(OpenmrsBean.class);
-		modelConverter = createMock(WebServiceModelConverter.class);
+		patientModelConverter = createMock(WebServicePatientModelConverter.class);
+        careModelConverter = createMock(WebServiceCareModelConverter.class);
 		ctx = new ClassPathXmlApplicationContext("test-context.xml");
-		RegistrarWebService regService = (RegistrarWebService) ctx
-				.getBean("registrarService");
+
+        RegistrarWebService regService = (RegistrarWebService) ctx.getBean("registrarService");
 		regService.setRegistrarBean(registrarBean);
 		regService.setOpenmrsBean(openmrsBean);
-		regService.setModelConverter(modelConverter);
+		regService.setPatientModelConverter(patientModelConverter);
+        regService.setCareModelConverter(careModelConverter);
+
 		regWs = (RegistrarService) ctx.getBean("registrarClient");
 	}
 
@@ -95,7 +99,8 @@ public class RegistrarServiceTest{
 		regWs = null;
 		registrarBean = null;
 		openmrsBean = null;
-		modelConverter = null;
+		patientModelConverter = null;
+        careModelConverter = null;
 		LogManager.getLogManager().readConfiguration();
 	}
 
@@ -105,7 +110,7 @@ public class RegistrarServiceTest{
 
 	@After
 	public void tearDown() throws Exception {
-		reset(registrarBean, modelConverter, openmrsBean);
+		reset(registrarBean, patientModelConverter, openmrsBean, careModelConverter);
 	}
 
 	@Test
@@ -430,7 +435,7 @@ public class RegistrarServiceTest{
 						eq(maleInvolved), aryEq(complications), eq(vvf),
 						eq(maternalDeath), eq(comments),
 						capture(outcomesCapture))).andReturn(childPatients);
-		expect(modelConverter.patientToWebService(childPatients, true))
+		expect(patientModelConverter.patientToWebService(childPatients, true))
 				.andReturn(new Patient[1]);
 
 		replay(registrarBean, openmrsBean);
@@ -514,7 +519,7 @@ public class RegistrarServiceTest{
 						eq(maleInvolved), aryEq(complications), eq(vvf),
 						eq(maternalDeath), eq(comments),
 						capture(outcomesCapture))).andReturn(childPatients);
-		expect(modelConverter.patientToWebService(childPatients, true))
+		expect(patientModelConverter.patientToWebService(childPatients, true))
 				.andReturn(new Patient[1]);
 
 		replay(registrarBean, openmrsBean);
@@ -1155,10 +1160,10 @@ public class RegistrarServiceTest{
 						delivDateConf, enroll, consent, phoneType, format,
 						language, day, date, reason, how, messageWeek))
 				.andReturn(createdPatient);
-		expect(modelConverter.patientToWebService(createdPatient, true))
+		expect(patientModelConverter.patientToWebService(createdPatient, true))
 				.andReturn(new Patient());
 
-		replay(registrarBean, openmrsBean, modelConverter);
+		replay(registrarBean, openmrsBean, patientModelConverter);
 
 		Patient wsPatient = regWs.registerPatient(staffId, facilityId, date,
                 mode, motechId, type, firstName, middleName, lastName,
@@ -1171,7 +1176,7 @@ public class RegistrarServiceTest{
                 lastPentaDate,measlesDate,yellowFeverDate,lastIPTI,lastIPTIDate,
                 lastVitaminADate, whyNoHistory);
 
-		verify(registrarBean, openmrsBean, modelConverter);
+		verify(registrarBean, openmrsBean, patientModelConverter);
 
 		assertNotNull("Patient is null", wsPatient);
 	}
@@ -1731,7 +1736,7 @@ public class RegistrarServiceTest{
 
         Integer staffId = 1;
         Integer facilityId = 2;
-        Date visitDate = DateUtil.dateFor(12,6,2011);
+        Date visitDate = new DateUtil().dateFor(12,6,2011);
         String serialNumber = "01/2010";
 
         Gender sex = Gender.MALE;
@@ -1779,7 +1784,7 @@ public class RegistrarServiceTest{
 
         Integer staffId = 1;
         Integer facilityId = 2;
-        Date visitDate = DateUtil.dateFor(12,6,2011);
+        Date visitDate = new DateUtil().dateFor(12,6,2011);
         String serialNumber = "01/2010";
 
         Gender sex = Gender.MALE;
@@ -2000,22 +2005,21 @@ public class RegistrarServiceTest{
 		expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 
-		expect(
-				registrarBean.getDefaultedExpectedEncounters(eq(facility),
+
+
+        expect(registrarBean.getDefaultedExpectedEncounters(eq(facility),
 						capture(encounterGroups)))
 				.andReturn(expectedEncounters);
-		expect(
-				registrarBean.getDefaultedExpectedObs(eq(facility),
+        expect(registrarBean.getDefaultedExpectedObs(eq(facility),
 						capture(obsGroups))).andReturn(expectedObs);
-		expect(
-				modelConverter.defaultedToWebServiceCares(expectedEncounters,
+		expect(careModelConverter.defaultedToWebServiceCares(expectedEncounters,
 						expectedObs)).andReturn(defaultedCares);
 
-		replay(registrarBean, modelConverter, openmrsBean);
+		replay(registrarBean, openmrsBean, careModelConverter);
 
 		Care[] cares = regWs.queryANCDefaulters(staffId, facilityId);
 
-		verify(registrarBean, modelConverter, openmrsBean);
+		verify(registrarBean, openmrsBean, careModelConverter);
 
 		assertEquals(1, encounterGroups.getValue().length);
 		assertEquals("ANC", encounterGroups.getValue()[0]);
@@ -2045,21 +2049,17 @@ public class RegistrarServiceTest{
 		Care[] obsCares = { obsCare };
 
 		expect(registrarBean.isValidIdCheckDigit(staffId)).andReturn(true);
-		expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn(
-				new User(1));
+		expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn(new User(1));
 		expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
-		expect(
-				registrarBean.getDefaultedExpectedObs(eq(facility),
-						capture(obsGroups))).andReturn(expectedObs);
-		expect(modelConverter.defaultedObsToWebServiceCares(expectedObs))
-				.andReturn(obsCares);
+		expect(registrarBean.getDefaultedExpectedObs(eq(facility),capture(obsGroups))).andReturn(expectedObs);
+		expect(careModelConverter.defaultedObsToWebServiceCares(expectedObs)).andReturn(obsCares);
 
-		replay(registrarBean, modelConverter, openmrsBean);
+		replay(registrarBean, careModelConverter, openmrsBean);
 
 		Care[] cares = regWs.queryTTDefaulters(staffId, facilityId);
 
-		verify(registrarBean, modelConverter, openmrsBean);
+		verify(registrarBean, careModelConverter, openmrsBean);
 
 		assertEquals(1, obsGroups.getValue().length);
 		assertEquals("TT", obsGroups.getValue()[0]);
@@ -2093,15 +2093,15 @@ public class RegistrarServiceTest{
 						capture(encounterGroups)))
 				.andReturn(expectedEncounters);
 		expect(
-				modelConverter
+				careModelConverter
 						.defaultedEncountersToWebServiceCares(expectedEncounters))
 				.andReturn(encounterCares);
 
-		replay(registrarBean, modelConverter, openmrsBean);
+		replay(registrarBean, careModelConverter, openmrsBean);
 
 		Care[] cares = regWs.queryMotherPNCDefaulters(staffId, facilityId);
 
-		verify(registrarBean, modelConverter, openmrsBean);
+		verify(registrarBean, careModelConverter, openmrsBean);
 
 		assertEquals(1, encounterGroups.getValue().length);
 		assertEquals("PNC(mother)", encounterGroups.getValue()[0]);
@@ -2135,15 +2135,15 @@ public class RegistrarServiceTest{
 						capture(encounterGroups)))
 				.andReturn(expectedEncounters);
 		expect(
-				modelConverter
+				careModelConverter
 						.defaultedEncountersToWebServiceCares(expectedEncounters))
 				.andReturn(encounterCares);
 
-		replay(registrarBean, modelConverter, openmrsBean);
+		replay(registrarBean, careModelConverter, openmrsBean);
 
 		Care[] cares = regWs.queryChildPNCDefaulters(staffId, facilityId);
 
-		verify(registrarBean, modelConverter, openmrsBean);
+		verify(registrarBean, careModelConverter, openmrsBean);
 
 		assertEquals(1, encounterGroups.getValue().length);
 		assertEquals("PNC(baby)", encounterGroups.getValue()[0]);
@@ -2175,14 +2175,14 @@ public class RegistrarServiceTest{
 		expect(
 				registrarBean.getDefaultedExpectedObs(eq(facility),
 						capture(obsGroups))).andReturn(expectedObs);
-		expect(modelConverter.defaultedObsToWebServiceCares(expectedObs))
+		expect(careModelConverter.defaultedObsToWebServiceCares(expectedObs))
 				.andReturn(obsCares);
 
-		replay(registrarBean, modelConverter, openmrsBean);
+		replay(registrarBean, careModelConverter, openmrsBean);
 
 		Care[] cares = regWs.queryCWCDefaulters(staffId, facilityId);
 
-		verify(registrarBean, modelConverter, openmrsBean);
+		verify(registrarBean, careModelConverter, openmrsBean);
 
 		assertEquals(7, obsGroups.getValue().length);
 		assertEquals("OPV", obsGroups.getValue()[0]);
@@ -2217,14 +2217,14 @@ public class RegistrarServiceTest{
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(registrarBean.getUpcomingPregnanciesDueDate(facility))
 				.andReturn(pregnancies);
-		expect(modelConverter.dueDatesToWebServicePatients(pregnancies))
+		expect(patientModelConverter.dueDatesToWebServicePatients(pregnancies))
 				.andReturn(result);
 
-		replay(registrarBean, modelConverter, openmrsBean);
+		replay(registrarBean, patientModelConverter, openmrsBean);
 
 		Patient[] patients = regWs.queryUpcomingDeliveries(staffId, facilityId);
 
-		verify(registrarBean, modelConverter, openmrsBean);
+		verify(registrarBean, patientModelConverter, openmrsBean);
 
 		assertNotNull("Patient result array is null", patients);
 		assertEquals(1, patients.length);
@@ -2249,14 +2249,14 @@ public class RegistrarServiceTest{
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(registrarBean.getRecentDeliveries(facility)).andReturn(
 				deliveries);
-		expect(modelConverter.deliveriesToWebServicePatients(deliveries))
+		expect(patientModelConverter.deliveriesToWebServicePatients(deliveries))
 				.andReturn(result);
 
-		replay(registrarBean, modelConverter, openmrsBean);
+		replay(registrarBean, patientModelConverter, openmrsBean);
 
 		Patient[] patients = regWs.queryRecentDeliveries(staffId, facilityId);
 
-		verify(registrarBean, modelConverter, openmrsBean);
+		verify(registrarBean, patientModelConverter, openmrsBean);
 
 		assertNotNull("Patient result array is null", patients);
 		assertEquals(1, patients.length);
@@ -2281,14 +2281,14 @@ public class RegistrarServiceTest{
 		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
 		expect(registrarBean.getOverduePregnanciesDueDate(facility)).andReturn(
 				pregnancies);
-		expect(modelConverter.dueDatesToWebServicePatients(pregnancies))
+		expect(patientModelConverter.dueDatesToWebServicePatients(pregnancies))
 				.andReturn(result);
 
-		replay(registrarBean, modelConverter, openmrsBean);
+		replay(registrarBean, patientModelConverter, openmrsBean);
 
 		Patient[] patients = regWs.queryOverdueDeliveries(staffId, facilityId);
 
-		verify(registrarBean, modelConverter, openmrsBean);
+		verify(registrarBean, patientModelConverter, openmrsBean);
 
 		assertNotNull("Patient result array is null", patients);
 		assertEquals(1, patients.length);
@@ -2334,7 +2334,7 @@ public class RegistrarServiceTest{
 				true);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		expect(modelConverter.patientToWebService(eq(patient), eq(true)))
+		expect(patientModelConverter.patientToWebService(eq(patient), eq(true)))
 				.andReturn(new Patient());
 
 		expect(registrarBean.getUpcomingExpectedEncounters(patient)).andReturn(
@@ -2342,15 +2342,16 @@ public class RegistrarServiceTest{
 		expect(registrarBean.getUpcomingExpectedObs(patient)).andReturn(
 				expectedObs);
 		expect(
-				modelConverter.upcomingToWebServiceCares(expectedEncounters,
+				careModelConverter.upcomingToWebServiceCares(expectedEncounters,
 						expectedObs, false)).andReturn(upcomingCares);
 
-		replay(registrarBean, modelConverter, openmrsBean);
+		replay(registrarBean, patientModelConverter, openmrsBean, careModelConverter);
 
 		Patient wsPatient = regWs.queryUpcomingCare(staffId, facilityId,
 				motechId);
 
-		verify(registrarBean, modelConverter, openmrsBean);
+		verify(registrarBean, patientModelConverter, openmrsBean, careModelConverter);
+		verify(registrarBean, patientModelConverter, openmrsBean, careModelConverter);
 
 		assertNotNull("Patient result is null", wsPatient);
 		Care[] cares = wsPatient.getCares();
@@ -2391,15 +2392,15 @@ public class RegistrarServiceTest{
 				registrarBean.getPatients(firstName, lastName, prefName,
 						birthDate, facilityId, phone, nhis, null, null))
 				.andReturn(patients);
-		expect(modelConverter.patientToWebService(patients, true)).andReturn(
+		expect(patientModelConverter.patientToWebService(patients, true)).andReturn(
 				result);
 
-		replay(registrarBean, modelConverter, openmrsBean);
+		replay(registrarBean, patientModelConverter, openmrsBean);
 
 		Patient[] wsPatients = regWs.queryMotechId(staffId, facilityId,
 				firstName, lastName, prefName, birthDate, nhis, phone);
 
-		verify(registrarBean, modelConverter, openmrsBean);
+		verify(registrarBean, patientModelConverter, openmrsBean);
 
 		assertNotNull("Patient result array is null", wsPatients);
 		assertEquals(1, wsPatients.length);
@@ -2421,14 +2422,14 @@ public class RegistrarServiceTest{
 				true);
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		expect(modelConverter.patientToWebService(eq(patient), eq(false)))
+		expect(patientModelConverter.patientToWebService(eq(patient), eq(false)))
 				.andReturn(new Patient());
 
-		replay(registrarBean, modelConverter, openmrsBean);
+		replay(registrarBean, patientModelConverter, openmrsBean);
 
 		regWs.queryPatient(staffId, facilityId, motechId);
 
-		verify(registrarBean, modelConverter, openmrsBean);
+		verify(registrarBean, patientModelConverter, openmrsBean);
 	}
 
 	@Test
@@ -2445,7 +2446,7 @@ public class RegistrarServiceTest{
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(null);
 
-		replay(registrarBean, modelConverter, openmrsBean);
+		replay(registrarBean, patientModelConverter, openmrsBean);
 
 		try {
 			regWs.queryPatient(staffId, facilityId, motechId);
@@ -2464,7 +2465,7 @@ public class RegistrarServiceTest{
 			assertEquals("MotechID=not found", motechidError);
 		}
 
-		verify(registrarBean, modelConverter, openmrsBean);
+		verify(registrarBean, patientModelConverter, openmrsBean);
 	}
 
 	@Test
@@ -2481,11 +2482,11 @@ public class RegistrarServiceTest{
 		expect(registrarBean.getActiveMessageProgramEnrollmentNames(patient))
 				.andReturn(enrollments);
 
-		replay(registrarBean, modelConverter, openmrsBean);
+		replay(registrarBean, patientModelConverter, openmrsBean);
 
 		String[] result = regWs.getPatientEnrollments(motechId);
 
-		verify(registrarBean, modelConverter, openmrsBean);
+		verify(registrarBean, patientModelConverter, openmrsBean);
 
 		assertArrayEquals(enrollments, result);
 	}
@@ -2500,7 +2501,7 @@ public class RegistrarServiceTest{
 		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(null);
 
-		replay(registrarBean, modelConverter, openmrsBean);
+		replay(registrarBean, patientModelConverter, openmrsBean);
 
 		try {
 			regWs.getPatientEnrollments(motechId);
@@ -2518,7 +2519,7 @@ public class RegistrarServiceTest{
 			assertEquals("MotechID=not found", error);
 		}
 
-		verify(registrarBean, modelConverter, openmrsBean);
+		verify(registrarBean, patientModelConverter, openmrsBean);
 	}
 
 	@Test

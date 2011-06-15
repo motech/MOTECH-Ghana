@@ -61,14 +61,15 @@ import static org.easymock.EasyMock.*;
 
 public class RegistrarBeanImplTest extends TestCase {
 
-    RegistrarBeanImpl registrarBean;
+    private RegistrarBeanImpl registrarBean;
 
-    ContextService contextService;
-    AdministrationService adminService;
-    MotechService motechService;
-    PersonService personService;
-    RCTService rctService;
-    MessageService mobileService;
+    private ContextService contextService;
+    private AdministrationService adminService;
+    private MotechService motechService;
+    private PersonService personService;
+    private RCTService rctService;
+    private MessageService mobileService;
+    private StaffMessageSender staffMessageSender;
 
     @Override
     protected void setUp() throws Exception {
@@ -78,13 +79,14 @@ public class RegistrarBeanImplTest extends TestCase {
         personService = createMock(PersonService.class);
         rctService = createMock(RCTService.class);
         mobileService = createMock(MessageService.class);
-
+        staffMessageSender = createMock(StaffMessageSender.class);
         registrarBean = new RegistrarBeanImpl();
         registrarBean.setContextService(contextService);
         registrarBean.setAdministrationService(adminService);
         registrarBean.setPersonService(personService);
         registrarBean.setRctService(rctService);
         registrarBean.setMobileService(mobileService);
+        registrarBean.setStaffMessageSender(staffMessageSender);
         ExpectedEncounterFilterChain expectedEncounterFilterChain = new ExpectedEncounterFilterChain();
         expectedEncounterFilterChain.setFilters(new ArrayList<Filter<ExpectedEncounter>>());
         ExpectedObsFilterChain expectedObsFilterChain = new ExpectedObsFilterChain();
@@ -100,6 +102,14 @@ public class RegistrarBeanImplTest extends TestCase {
         adminService = null;
         motechService = null;
         personService = null;
+    }
+
+    public void testsendStaffCareMessages() {
+        Date forDate = new Date();
+        String careGroups[] = {"ANC", "TT", "IPT"};
+        staffMessageSender.sendStaffCareMessages(forDate, forDate, forDate, forDate, careGroups, false, false);
+        expectLastCall();
+        registrarBean.sendStaffCareMessages(forDate, forDate, forDate, forDate, careGroups, false, false);
     }
 
     public void testFindPersonPreferredMessageDate() {
@@ -265,26 +275,7 @@ public class RegistrarBeanImplTest extends TestCase {
         return calendar;
     }
 
-    public void testShouldFindOutIfMessageTimeIsDuringBlackoutPeriod() {
-        Calendar calendar = getCalendarWithTime(23, 13, 54);
-        Date morningMessageTime = calendar.getTime();
-        calendar = getCalendarWithTime(3, 13, 54);
-        Date nightMessageTime = calendar.getTime();
-        calendar = getCalendarWithTime(19, 30, 30);
-        Date eveningMessageTime = calendar.getTime();
 
-        Blackout blackout = new Blackout(Time.valueOf("23:00:00"), Time.valueOf("06:00:00"));
-
-        expect(contextService.getMotechService()).andReturn(motechService).times(3);
-        expect(motechService.getBlackoutSettings()).andReturn(blackout).times(3);
-        replay(contextService, adminService, motechService);
-
-        assertTrue(registrarBean.isMessageTimeWithinBlackoutPeriod(morningMessageTime));
-        assertTrue(registrarBean.isMessageTimeWithinBlackoutPeriod(nightMessageTime));
-        assertFalse(registrarBean.isMessageTimeWithinBlackoutPeriod(eveningMessageTime));
-        verify(contextService, adminService, motechService);
-
-    }
 
     public void testSchedulingInfoMessageWithExistingScheduled() {
         String messageKey = "message";
@@ -724,7 +715,7 @@ public class RegistrarBeanImplTest extends TestCase {
     public void testIsInvalid_IfTheOPDVisitEntryIsDuplicateInTheSameMonth() {
 
         Integer facilityId = 2;
-        Date visitDate = DateUtil.dateFor(15, 6, 2011);
+        Date visitDate = new DateUtil().dateFor(15, 6, 2011);
 
         String serialNumber = "01/2010";
 

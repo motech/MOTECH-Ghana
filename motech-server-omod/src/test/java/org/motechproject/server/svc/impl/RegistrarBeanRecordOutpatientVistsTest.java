@@ -81,7 +81,7 @@ public class RegistrarBeanRecordOutpatientVistsTest extends
         OpenmrsBean openmrsBean = Mockito.mock(RegistrarBeanImpl.class);
 
         int facilityId = 11117;
-        Date vistDate = DateUtil.dateFor(15, 6, 2011);
+        Date vistDate = new DateUtil().dateFor(15, 6, 2011);
         Date dob = new Date();
 
         User staff = registrarBean.registerStaff("Nurse", "Betty", "7777777777", "CHO", null);

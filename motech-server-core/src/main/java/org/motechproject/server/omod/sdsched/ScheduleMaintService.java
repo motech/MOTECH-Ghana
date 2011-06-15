@@ -77,6 +77,7 @@ public interface ScheduleMaintService {
 	 * @return the AffectedPatients object bound to the current transaction or
 	 *         null, if create is true, an object will always be returned
 	 */
+
 	AffectedPatients getAffectedPatients(boolean create);
 
 	/**
