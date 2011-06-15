@@ -49,14 +49,14 @@ public class RegisterClientPageTest {
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
         RegisterClientPage regPatientPage = new RegisterClientPage();
-        String lastName = regPatientPage.RegisterOtherClient();
+        String firstName = regPatientPage.RegisterOtherClient();
         //ViewDataPage viewDataPage = new ViewDataPage();
         //String patientID = viewDataPage.returnPatientId(lastName);
         //Assert.assertNotNull(patientID,"Other Patient ID is null");
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.SEARCH);
         SearchPage searchPage = new SearchPage();
         // Assert.assertTrue(searchPage.searchClientByID(patientID, lastName), "Patient Search failed");
-        Assert.assertTrue(searchPage.searchClientByFirstName(lastName),"Patient Search failed");
+        Assert.assertTrue(searchPage.searchClientByFirstName(firstName),"Patient Search failed");
     }
 
     @Test
@@ -66,12 +66,12 @@ public class RegisterClientPageTest {
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
         RegisterClientPage regPatientPage = new RegisterClientPage();
         regPatientPage.RegisterChildClient(hm);
-        ViewDataPage viewDataPage = new ViewDataPage();
-        String patientID = viewDataPage.returnPatientId(hm);
-        Assert.assertNotNull(patientID,"Child Patient ID is null");
+       // ViewDataPage viewDataPage = new ViewDataPage();
+        //String patientID = viewDataPage.returnPatientId(hm);
+        //Assert.assertNotNull(patientID,"Child Patient ID is null");
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.SEARCH);
         SearchPage searchPage = new SearchPage();
-        String lastName = (String) hm.get("lastName");
-        Assert.assertTrue(searchPage.searchClientByID(patientID, lastName), "Patient Search failed");
+        String firstName = (String) hm.get("firstName");
+        Assert.assertTrue(searchPage.searchClientByFirstName(firstName), "Patient Search failed");
     };
 }

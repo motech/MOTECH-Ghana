@@ -55,4 +55,18 @@ public class SearchPage {
         return false;
 
     }
+
+    public String returnClientIdBySearchingUsingFirstName(String firstName){
+        inputFirstName.sendKeys(firstName);
+        buttonSubmit.click();
+        matchTable = driver.findElement(By.xpath("//div[@id='content']/div[3]/table"));
+        List<WebElement> tdList= matchTable.findElements(By.tagName("td"));
+        for(WebElement td:tdList){
+            if (td.getText().trim().equals(firstName)){
+                String MoTeCHid = driver.findElement(By.xpath("//div[@id='content']/div[3]/table/tbody/tr/td[1]")).toString();
+                return MoTeCHid;
+            }
+        }
+        return  null;
+    }
 }

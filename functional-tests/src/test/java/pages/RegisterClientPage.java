@@ -130,22 +130,18 @@ public class RegisterClientPage {
     }
 
     public void RegisterChildClient(HashMap hm){
-        String lastName = RegisterMotherClient();
-        ViewDataPage viewDataPage = new ViewDataPage();
-        String motherID = viewDataPage.returnPatientId(lastName);
+        String motherName = RegisterMotherClient();
+        SearchPage searchPage = new SearchPage();
+        String motherID = searchPage.returnClientIdBySearchingUsingFirstName(motherName);
         if (motherID != null){
             MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
             moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
             selectOption("registrationMode", "Auto-generate MoTeCH ID");
             selectOption("registrantType", "Child (age less than 5)");
 
-            inputFirstName = driver.findElement(By.id("firstName"));
             inputMotherMotechID = driver.findElement(By.id("motherMotechId"));
-            inputDOB = driver.findElement(By.id("birthDate"));
-            consent = driver.findElement(By.id("consent1"));
-            submitButton = driver.findElement(By.xpath("//input[@type='submit']"));
-
             String firstNameValue = "Child-" + UtilityClass.getInstance().getCurrentDate();
+
             inputFirstName.sendKeys(firstNameValue);
             inputMotherMotechID.sendKeys(motherID);
             inputDOB.sendKeys("01/01/2011");
@@ -155,7 +151,6 @@ public class RegisterClientPage {
             selectOption("enroll","Yes");
             consent.click();
             submitButton.click();
-            hm.put("lastName",lastName);
             hm.put("firstName",firstNameValue);
         }
         else {
