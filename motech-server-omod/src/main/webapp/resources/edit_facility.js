@@ -15,6 +15,7 @@ function editFacility() {
         } else {
             enableAdditionalPhoneNumber({data: {index: i}});
         }
+        $j("#additional_phoneNumber" + i+"_err").hide();
     }
 
     var bind = function() {
@@ -25,11 +26,20 @@ function editFacility() {
         $j("#additionalPhoneNumber1-del").bind('click', {index: 1}, disableAdditionalPhoneNumber);
         $j("#additionalPhoneNumber2-del").bind('click', {index: 2}, disableAdditionalPhoneNumber);
         $j("#additionalPhoneNumber3-del").bind('click', {index: 3}, disableAdditionalPhoneNumber);
+
+        $j("#submit_facility").click(onSubmit);
+    };
+
+    var onSubmit = function(e){
+        verifyAdditionalPhone("#additional_phoneNumber1_err", $j("#additionalPhoneNumber1"), e);
+        verifyAdditionalPhone("#additional_phoneNumber2_err", $j("#additionalPhoneNumber2"), e);
+        verifyAdditionalPhone("#additional_phoneNumber3_err", $j("#additionalPhoneNumber3"), e);
     };
 
     var enableAdditionalPhoneNumber = function(e) {
         var serialNumber = e.data.index;
         $j("#additionalPhoneNumber" + serialNumber + "-link").hide();
+        $j("#additional_phoneNumber" + serialNumber + "_err").hide();
         $j("#additionalPhoneNumber" + serialNumber + "-row").show();
     }
 
@@ -44,6 +54,7 @@ function editFacility() {
     var maintainSerialNumber = function(serialNumberOfDeletedPhoneNumber) {
         var visiblePhoneNumbers = $j(".additional-phone-number-row").filter(":visible");
         for (var i = serialNumberOfDeletedPhoneNumber - 1, j = i + 1; j < visiblePhoneNumbers.length; i++,j++) {
+            $j(visiblePhoneNumbers[i]).find(".error").hide();
             var nextValue = $j(visiblePhoneNumbers[j]).find(".additional-phone-number").val();
             $j(visiblePhoneNumbers[i]).find(".additional-phone-number").val(nextValue);
         }
@@ -56,6 +67,17 @@ function editFacility() {
         $j("#additionalPhoneNumber" + serialNumber + "-link").show();
         $j("#additionalPhoneNumber" + serialNumber + "-row").hide();
     }
+
+    var verifyAdditionalPhone = function(errorSpan, selectElement,e){
+         if (selectElement.is(':visible')) {
+             var selectedValue = selectElement.val();
+             if (/^0[0-9]{9}$/i.test(selectedValue)) {
+                 return;
+             }
+             $j(errorSpan).show();
+             e.preventDefault();
+         }
+    };
 
     var bootstrap = function() {
         onLoad();

@@ -120,15 +120,10 @@ public class EditFacilityController {
 	}
 
     private boolean isInValidPhoneNumber(String phoneNumber, boolean required) {
-        if(required){
-            return !(StringUtils.isNotEmpty(phoneNumber) && phoneNumber.matches(MotechConstants.PHONE_REGEX_PATTERN));
-        }else{
-            if(StringUtils.isNotEmpty(phoneNumber)){
-                return !phoneNumber.matches(MotechConstants.PHONE_REGEX_PATTERN);
-            }else{
-                return false;
-            }
+        if(required || StringUtils.isNotEmpty(phoneNumber)){
+            return !(phoneNumber.matches(MotechConstants.PHONE_REGEX_PATTERN));
         }
+        return false;
     }
 
 

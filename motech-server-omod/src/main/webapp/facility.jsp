@@ -68,10 +68,13 @@
 			<tr>
                 <td>${facility.facilityId}</td>
                 <td>${facility.location.name}</td>
-                <td>${facility.phoneNumber}</td>
-                <td>${facility.additionalPhoneNumber1}</td>
-                <td>${facility.additionalPhoneNumber2}</td>
-                <td>${facility.additionalPhoneNumber3}</td>
+                <td>
+                  <span style="padding-right: .3em">${facility.phoneNumber}</span>
+                  <span style="padding-right: .3em">${facility.additionalPhoneNumber1}</span>
+                  <span style="padding-right: .3em">${facility.additionalPhoneNumber2}</span>
+                  <span>${facility.additionalPhoneNumber3}</span>
+                </td>
+                <td></td>
                 <td><a href="${editUrl}">Edit</a></td>
 			</tr>
 		</c:forEach>
