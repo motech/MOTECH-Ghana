@@ -41,6 +41,9 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
 <meta name="heading" content="Edit Facility" />
+<openmrs:htmlInclude file="/scripts/jquery/jquery-1.3.2.min.js" />
+<openmrs:htmlInclude file="/moduleResources/motechmodule/edit_facility.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/edit_facility.css"/>
 <%@ include file="localHeader.jsp" %>
 <h2>Edit a Facility</h2>
 <div class="instructions">
@@ -65,7 +68,36 @@
 	<tr>
 		<td><form:label path="phoneNumber">Phone Number:</form:label></td>
 		<td><form:input path="phoneNumber" maxlength="50"/></td>
+        <td>
+            <a id="additionalPhoneNumber1-link" href="#" >Add additional Phone Number</a>
+        </td>
 		<td><form:errors path="phoneNumber" cssClass="error" /></td>
+	</tr>
+    <tr id="additionalPhoneNumber1-row" class="additional-phone-number-row" number="1">
+		<td><form:label path="additionalPhoneNumber1">Phone Number:</form:label></td>
+		<td><form:input path="additionalPhoneNumber1"  cssClass="additional-phone-number" maxlength="50"/></td>
+        <td>
+            <a id="additionalPhoneNumber1-del" class="delete-link" href="#">x</a>
+            <a id="additionalPhoneNumber2-link" href="#" >Add additional Phone Number</a>
+        </td>
+		<td><form:errors path="additionalPhoneNumber1" cssClass="error" /></td>
+	</tr>
+    <tr id="additionalPhoneNumber2-row" class="additional-phone-number-row">
+		<td><form:label path="additionalPhoneNumber2">Phone Number:</form:label></td>
+		<td><form:input path="additionalPhoneNumber2" cssClass="additional-phone-number" maxlength="50"/></td>
+        <td>
+            <a id="additionalPhoneNumber2-del" class="delete-link" href="#">x</a>
+            <a id="additionalPhoneNumber3-link" href="#" >Add additional Phone Number</a>
+        </td>
+		<td><form:errors path="additionalPhoneNumber2" cssClass="error" /></td>
+	</tr>
+    <tr id="additionalPhoneNumber3-row" class="additional-phone-number-row">
+		<td><form:label path="additionalPhoneNumber3">Phone Number:</form:label></td>
+		<td><form:input path="additionalPhoneNumber3" cssClass="additional-phone-number" maxlength="50"/></td>
+        <td>
+            <a id="additionalPhoneNumber3-del" href="#">x</a>
+        </td>
+		<td><form:errors path="additionalPhoneNumber3" cssClass="error" /></td>
 	</tr>
 	<tr>
 		<td colspan="2"><input type="submit" /></td>

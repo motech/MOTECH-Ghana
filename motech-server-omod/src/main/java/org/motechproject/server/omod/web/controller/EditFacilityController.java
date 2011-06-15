@@ -33,8 +33,7 @@
 
 package org.motechproject.server.omod.web.controller;
 
-import java.util.List;
-
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.Community;
@@ -44,13 +43,12 @@ import org.motechproject.server.util.MotechConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+
+import java.util.List;
 
 @Controller
 @SessionAttributes("facility")
@@ -93,10 +91,23 @@ public class EditFacilityController {
 
 		log.debug("Saving Facility");
 
-		if (facility.getPhoneNumber() != null
-				&& !facility.getPhoneNumber().matches(
-						MotechConstants.PHONE_REGEX_PATTERN)) {
+		if (isInValidPhoneNumber(facility.getPhoneNumber(), true)) {
 			errors.rejectValue("phoneNumber",
+					"motechmodule.phoneNumber.invalid");
+		}
+
+        if (isInValidPhoneNumber(facility.getAdditionalPhoneNumber1(), false)) {
+			errors.rejectValue("additionalPhoneNumber1",
+					"motechmodule.phoneNumber.invalid");
+		}
+
+        if (isInValidPhoneNumber(facility.getAdditionalPhoneNumber2(), false)) {
+			errors.rejectValue("additionalPhoneNumber2",
+					"motechmodule.phoneNumber.invalid");
+		}
+
+        if (isInValidPhoneNumber(facility.getAdditionalPhoneNumber3(), false)) {
+			errors.rejectValue("additionalPhoneNumber3",
 					"motechmodule.phoneNumber.invalid");
 		}
 
@@ -107,4 +118,18 @@ public class EditFacilityController {
 		}
 		return "/module/motechmodule/editfacility";
 	}
+
+    private boolean isInValidPhoneNumber(String phoneNumber, boolean required) {
+        if(required){
+            return !(StringUtils.isNotEmpty(phoneNumber) && phoneNumber.matches(MotechConstants.PHONE_REGEX_PATTERN));
+        }else{
+            if(StringUtils.isNotEmpty(phoneNumber)){
+                return !phoneNumber.matches(MotechConstants.PHONE_REGEX_PATTERN);
+            }else{
+                return false;
+            }
+        }
+    }
+
+
 }
