@@ -14,6 +14,8 @@ function MotherDetails(country,patientEvents) {
                 setElementValue($j('#lastName'), data.lastName, findDuplicates);
                 setElementValue($j('#region'), data.region, country.regionSelected);
                 setElementValue($j('#district'), data.district, country.districtSelected);
+                setElementValue($j('#subDistrict'), data.subDistrict, country.subDistrictSelected);
+                setElementValue($j('#facility'), data.facility, country.facilitySelected);
                 setElementValue($j("#communityId"), data.communityId, findDuplicates);
                 setElementValue($j('#address'), data.address);
                 if (data.consent) {

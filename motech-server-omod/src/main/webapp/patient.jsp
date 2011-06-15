@@ -65,7 +65,7 @@
 
         var communityValidator = new CommunityValidator($j('#communityId'), $j('#region'));
         new Validators($j('#patient')).add(generalFieldsValidator).add(communityValidator).add(midwifeValidator);
-        new MotherDetails(patientEvents,country);
+        new MotherDetails(country,patientEvents);
     });
 </script>
 <style type="text/css">

@@ -14,8 +14,8 @@ public enum HomePageLinksEnum {
     MANAGE_BLACKOUT("http://localhost:8080/openmrs/module/motechmodule/blackout.form"),
     VIEW_DATA("http://localhost:8080/openmrs/module/motechmodule/viewdata.form"),
     VIEW_COMMUNITIES("http://localhost:8080/openmrs/module/motechmodule/community.form"),
-    DUPLICATE_PATIENTS("http://localhost:8080/openmrs/module/motechmodule/duplicatepatients.form");
-
+    DUPLICATE_PATIENTS("http://localhost:8080/openmrs/module/motechmodule/duplicatepatients.form"),
+    ADD_FACILITY("http://localhost:8080/openmrs/module/motechmodule/addfacility.form");
     private String url;
 
     HomePageLinksEnum(String url){
