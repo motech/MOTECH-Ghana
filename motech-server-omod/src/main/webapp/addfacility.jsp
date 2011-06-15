@@ -178,7 +178,7 @@
 
 
     <tr id="additionalPhoneNumber1-row">
-		<td><form:label path="additionalPhoneNumber1">Additional Phone Number1:</form:label></td>
+		<td><form:label path="additionalPhoneNumber1">Phone Number:</form:label></td>
 		<td><form:input path="additionalPhoneNumber1" maxlength="50"/></td>
         <td>
             <a id="additionalPhoneNumber2-link" href="#" >Add additional Phone Number</a>
@@ -191,7 +191,7 @@
 	</tr>
 
     <tr id="additionalPhoneNumber2-row">
-		<td><form:label path="additionalPhoneNumber2">Additional Phone Number2:</form:label></td>
+		<td><form:label path="additionalPhoneNumber2">Phone Number:</form:label></td>
 		<td><form:input path="additionalPhoneNumber2" maxlength="50"/></td>
         <td>
             <a id="additionalPhoneNumber3-link" href="#" >Add additional Phone Number</a>
@@ -204,7 +204,7 @@
 	</tr>
 
     <tr id="additionalPhoneNumber3-row">
-		<td><form:label path="additionalPhoneNumber3">Additional Phone Number3:</form:label></td>
+		<td><form:label path="additionalPhoneNumber3">Phone Number:</form:label></td>
 		<td><form:input path="additionalPhoneNumber3" maxlength="50"/></td>
          <td></td>
 		<td>
