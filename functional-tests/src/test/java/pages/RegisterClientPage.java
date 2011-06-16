@@ -129,10 +129,11 @@ public class RegisterClientPage {
         return firstName;
     }
 
-    public void RegisterChildClient(HashMap hm){
+    public String RegisterChildClient(){
         String motherName = RegisterMotherClient();
         SearchPage searchPage = new SearchPage();
         String motherID = searchPage.returnClientIdBySearchingUsingFirstName(motherName);
+        System.out.println(motherID);
         if (motherID != null){
             MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
             moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
@@ -151,11 +152,13 @@ public class RegisterClientPage {
             selectOption("enroll","Yes");
             consent.click();
             submitButton.click();
-            hm.put("firstName",firstNameValue);
+            return firstNameValue;
         }
         else {
             System.out.println("Mother ID is null");
+            return null;
         }
+
     }
 
     public void selectOption(String ParentId, String optionValue) {

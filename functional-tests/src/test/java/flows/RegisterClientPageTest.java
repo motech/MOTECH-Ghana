@@ -59,19 +59,18 @@ public class RegisterClientPageTest {
         Assert.assertTrue(searchPage.searchClientByFirstName(firstName),"Patient Search failed");
     }
 
-    @Test
+    @Test(groups = {"smoke"})
     public void registerChildPatientViaUIAndSearch(){
-        HashMap hm = new HashMap();
+       
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
         RegisterClientPage regPatientPage = new RegisterClientPage();
-        regPatientPage.RegisterChildClient(hm);
+        String firstName = regPatientPage.RegisterChildClient();
        // ViewDataPage viewDataPage = new ViewDataPage();
         //String patientID = viewDataPage.returnPatientId(hm);
         //Assert.assertNotNull(patientID,"Child Patient ID is null");
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.SEARCH);
         SearchPage searchPage = new SearchPage();
-        String firstName = (String) hm.get("firstName");
         Assert.assertTrue(searchPage.searchClientByFirstName(firstName), "Patient Search failed");
     };
 }
