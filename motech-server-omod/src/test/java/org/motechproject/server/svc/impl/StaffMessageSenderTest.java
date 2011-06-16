@@ -374,4 +374,82 @@ public class StaffMessageSenderTest {
 
     }
 
+    @Test
+    public void testShouldSendDefaulterMessagesToAllPhoneNumbersOfAFacility() {
+        Date forDate = new Date();
+        String careGroups[] = {"ANC", "TT", "IPT"};
+
+        Location location = new Location();
+        location.setName("Test Facility");
+        location.setRegion("Upper East");
+        location.setCountyDistrict(new KassenaNankana().toString());
+
+        Facility facility = new Facility();
+        facility.setLocation(location);
+        facility.setPhoneNumber("+1 555 123-1234");
+        facility.setAdditionalPhoneNumber1("+ 2 555 123-1234");
+
+        List<Facility> facilities = new ArrayList<Facility>();
+        facilities.add(facility);
+
+
+        Patient p = new Patient(5716);
+
+
+        ExpectedEncounter enc = new ExpectedEncounter();
+        enc.setPatient(p);
+
+        List<ExpectedEncounter> encounters = new ArrayList<ExpectedEncounter>();
+        List<ExpectedObs> emptyObs = new ArrayList<ExpectedObs>();
+
+        encounters.add(enc);
+
+        final DefaultedExpectedEncounterAlert defaultedExpectedEncounterAlert = anyObject();
+
+        // To Mock
+        expect(motechService.getCommunityByPatient(p)).andReturn(null);
+        expect(contextService.getMotechService()).andReturn(motechService).anyTimes();
+        expect(contextService.getAdministrationService()).andReturn(adminService).times(2);
+
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn("35").anyTimes();
+        expect(motechService.getExpectedEncounter(null, facility, careGroups, null, null, forDate, forDate, 35)).andReturn(encounters);
+        expect(motechService.getExpectedObs(null, facility, careGroups, null, null, forDate, forDate, 35)).andReturn(emptyObs);
+
+        expect(motechService.getAllFacilities()).andReturn(facilities);
+        expect(motechService.getCareConfigurationFor(EasyMock.<String>anyObject())).andReturn(EasyMock.<CareConfiguration>anyObject());
+        expect(motechService.getDefaultedEncounterAlertFor(enc)).andReturn(defaultedExpectedEncounterAlert);
+
+
+        Capture<String> capturedMessageId = new Capture<String>();
+        Capture<String> capturedPhoneNumber = new Capture<String>();
+        Capture<Care[]> capturedCares = new Capture<Care[]>();
+        Capture<CareMessageGroupingStrategy> capturedStrategy = new Capture<CareMessageGroupingStrategy>();
+        Capture<MediaType> capturedMediaType = new Capture<MediaType>();
+        Capture<Date> capturedStartDate = new Capture<Date>();
+        Capture<Date> capturedEndDate = new Capture<Date>();
+
+
+        expect(mobileService.sendDefaulterMessage(capture(capturedMessageId), capture(capturedPhoneNumber),
+                capture(capturedCares), capture(capturedStrategy),
+                capture(capturedMediaType), capture(capturedStartDate),
+                capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED).times(2);
+
+        motechService.saveOrUpdateDefaultedEncounterAlert(EasyMock.<DefaultedExpectedEncounterAlert>anyObject());
+        expectLastCall().atLeastOnce();
+
+
+        replay(contextService, adminService, motechService, mobileService, rctService);
+
+
+        staffMessageSender.sendStaffCareMessages(forDate, forDate,
+                forDate, forDate,
+                careGroups,
+                false,
+                false);
+
+        verify(contextService, adminService, motechService, mobileService, rctService);
+
+        assertEquals(CareMessageGroupingStrategy.COMMUNITY, capturedStrategy.getValue());
+    }
+
 }

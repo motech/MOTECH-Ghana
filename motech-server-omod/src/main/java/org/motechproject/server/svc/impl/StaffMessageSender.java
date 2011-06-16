@@ -174,7 +174,7 @@ public class StaffMessageSender {
         if (defaultersPresent) {
             Care[] defaultedCares = careModelConverter.defaultedToWebServiceCares(filteredDefaultedEncounters, filteredDefaultedExpectedObs);
             log.info("Sending defaulter message to " + facility.name() + " at " + facilityPhoneNumber);
-            Boolean alertsSent = sendStaffDefaultedCareMessage(facilityPhoneNumber, deliveryDate, defaultedCares, getCareMessageGroupingStrategy(facility.getLocation()));
+            Boolean alertsSent = sendStaffDefaultedCareMessage(facility, deliveryDate, defaultedCares, getCareMessageGroupingStrategy(facility.getLocation()));
             incrementDefaultedEncountersAlertCount(filteredDefaultedEncounters, alertsSent);
             incrementDefaultedObservationsAlertCount(filteredDefaultedExpectedObs, alertsSent);
         } else {
@@ -316,14 +316,16 @@ public class StaffMessageSender {
         }
     }
 
-    private boolean sendStaffDefaultedCareMessage(String phoneNumber,
-                                                  Date messageStartDate,
+    private boolean sendStaffDefaultedCareMessage(Facility facility, Date messageStartDate,
                                                   Care[] cares, CareMessageGroupingStrategy groupingStrategy) {
-
         try {
             org.motechproject.ws.MessageStatus messageStatus;
-            messageStatus = mobileService.sendDefaulterMessage(null, phoneNumber, cares, groupingStrategy, MediaType.TEXT, messageStartDate, null);
-            return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
+            boolean  result = false;
+            for(String phoneNumber : facility.getAvailablePhoneNumbers()){
+                messageStatus = mobileService.sendDefaulterMessage(null, phoneNumber, cares, groupingStrategy, MediaType.TEXT, messageStartDate, null);
+                result |= messageStatus != org.motechproject.ws.MessageStatus.FAILED;
+            }
+            return result;
         } catch (Exception e) {
             log.error("Mobile WS staff defaulted care message failure", e);
             return false;
