@@ -1,6 +1,8 @@
 package org.motechproject.server.svc;
 
 import org.motechproject.server.annotation.LogParameterIdentifiers;
+import org.motechproject.server.model.ExpectedEncounter;
+import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.model.rct.RCTPatient;
 import org.motechproject.ws.Patient;
@@ -23,4 +25,10 @@ public interface RCTService {
     public Boolean isPatientRegisteredAndInTreatmentGroup(org.openmrs.Patient patient);
 
     public List<RCTPatient> getAllRCTPatients();
+
+    boolean meetsFilteringCriteria(org.openmrs.Patient patient);
+
+    List<ExpectedEncounter> filterRCTEncounters(List<ExpectedEncounter> allDefaulters);
+
+    List<ExpectedObs> filterRCTObs(List<ExpectedObs> allDefaulters);
 }

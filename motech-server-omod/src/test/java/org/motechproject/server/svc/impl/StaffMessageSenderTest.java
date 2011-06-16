@@ -174,7 +174,6 @@ public class StaffMessageSenderTest {
 
 
         Patient p = new Patient(5716);
-        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p)).andReturn(false).times(1);
 
         ExpectedEncounter enc = new ExpectedEncounter();
         enc.setPatient(p);
@@ -218,6 +217,13 @@ public class StaffMessageSenderTest {
 
         expect(mobileService.sendBulkCaresMessage(capture(capturedMessageId), capture(capturedPhoneNumber), capture(capturedCares), capture(capturedStrategy), capture(capturedMediaType), capture(capturedStartDate),
                 capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
+
+        Capture<List<ExpectedEncounter>> defaultedEncounters = new Capture<List<ExpectedEncounter>>();
+        expect(rctService.filterRCTEncounters(capture(defaultedEncounters))).andReturn(encounters);
+
+        Capture<List<ExpectedObs>> defaulteObs = new Capture<List<ExpectedObs>>();
+        expect(rctService.filterRCTObs(capture(defaulteObs))).andReturn(emptyObs);
+
 
         motechService.saveOrUpdateDefaultedEncounterAlert(EasyMock.<DefaultedExpectedEncounterAlert>anyObject());
         expectLastCall().atLeastOnce();
@@ -333,8 +339,13 @@ public class StaffMessageSenderTest {
         expect(mobileService.sendMessage(capture(capturedDefaulterMessage), capture(capturedDefaulterPhoneNumber))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
         expect(mobileService.sendMessage(capture(capturedUpcomingCareMessage), capture(capturedUpcomingCarePhoneNumber))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
 
+        Capture<List<ExpectedEncounter>> defaultedEncounters = new Capture<List<ExpectedEncounter>>();
+        expect(rctService.filterRCTEncounters(capture(defaultedEncounters))).andReturn(emptyEncounters);
 
-        replay(contextService, adminService, motechService, mobileService);
+        Capture<List<ExpectedObs>> defaulteObs = new Capture<List<ExpectedObs>>();
+        expect(rctService.filterRCTObs(capture(defaulteObs))).andReturn(emptyObs);
+
+        replay(contextService, adminService, motechService, mobileService, rctService);
 
         staffMessageSender.sendStaffCareMessages(forDate, forDate,
                 forDate, forDate,
@@ -342,7 +353,7 @@ public class StaffMessageSenderTest {
                 true,
                 false);
 
-        verify(contextService, adminService, motechService, mobileService);
+        verify(contextService, adminService, motechService, mobileService, rctService);
 
         assertEquals("Test Facility has no defaulters for this week", capturedDefaulterMessage.getValue());
         assertEquals("+1 555 123-1234", capturedDefaulterPhoneNumber.getValue());

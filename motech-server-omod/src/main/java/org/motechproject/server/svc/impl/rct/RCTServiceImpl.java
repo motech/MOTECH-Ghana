@@ -2,9 +2,13 @@ package org.motechproject.server.svc.impl.rct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motechproject.server.model.ExpectedEncounter;
+import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.db.RctDAO;
 import org.motechproject.server.model.rct.*;
 import org.motechproject.server.omod.MotechPatient;
+import org.motechproject.server.service.ContextService;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.util.RCTError;
 import org.motechproject.ws.Patient;
@@ -12,8 +16,10 @@ import org.motechproject.ws.rct.ControlGroup;
 import org.motechproject.ws.rct.PregnancyTrimester;
 import org.motechproject.ws.rct.RCTRegistrationConfirmation;
 import org.openmrs.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RCTServiceImpl implements RCTService {
@@ -21,6 +27,9 @@ public class RCTServiceImpl implements RCTService {
     private static Log log = LogFactory.getLog(RCTServiceImpl.class);
 
     private RctDAO dao;
+
+    @Autowired
+    private ContextService contextService;
 
     @Transactional
     public RCTRegistrationConfirmation register(Patient patient, User staff, RCTFacility facility) {
@@ -102,5 +111,44 @@ public class RCTServiceImpl implements RCTService {
 
     public void setDao(RctDAO dao) {
         this.dao = dao;
+    }
+
+    public boolean meetsFilteringCriteria(org.openmrs.Patient patient) {
+        if (patient == null) return true;
+        if (isPatientRegisteredAndInTreatmentGroup(patient)) return false;
+        return isFromUpperEast(patient) && (patient.getId()) > 5717;
+    }
+
+     private Boolean isFromUpperEast(org.openmrs.Patient patient) {
+        Facility facility = getFacilityByPatient(patient);
+        return facility != null && facility.isInRegion("Upper East");
+    }
+
+    private Facility getFacilityByPatient(org.openmrs.Patient patient) {
+        return contextService.getMotechService().facilityFor(patient);
+    }
+
+    public List<ExpectedEncounter> filterRCTEncounters(List<ExpectedEncounter> allDefaulters) {
+        List<ExpectedEncounter> toBeRemoved = new ArrayList<ExpectedEncounter>();
+        for (ExpectedEncounter allDefaulter : allDefaulters) {
+            ExpectedEncounter expectedEncounter = allDefaulter;
+            if (meetsFilteringCriteria(expectedEncounter.getPatient())) {
+                toBeRemoved.add(expectedEncounter);
+            }
+        }
+        allDefaulters.removeAll(toBeRemoved);
+        return allDefaulters;
+    }
+
+    public List<ExpectedObs> filterRCTObs(List<ExpectedObs> allDefaulters) {
+        List<ExpectedObs> toBeRemoved = new ArrayList<ExpectedObs>();
+        for (ExpectedObs allDefaulter : allDefaulters) {
+            ExpectedObs expectedObs = allDefaulter;
+            if (meetsFilteringCriteria(expectedObs.getPatient())) {
+                toBeRemoved.add(expectedObs);
+            }
+        }
+        allDefaulters.removeAll(toBeRemoved);
+        return allDefaulters;
     }
 }

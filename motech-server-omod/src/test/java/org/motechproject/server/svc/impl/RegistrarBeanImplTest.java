@@ -104,12 +104,14 @@ public class RegistrarBeanImplTest extends TestCase {
         personService = null;
     }
 
-    public void testsendStaffCareMessages() {
+    public void testSendStaffCareMessages() {
         Date forDate = new Date();
         String careGroups[] = {"ANC", "TT", "IPT"};
         staffMessageSender.sendStaffCareMessages(forDate, forDate, forDate, forDate, careGroups, false, false);
-        expectLastCall();
+        expectLastCall().atLeastOnce();
+        replay(staffMessageSender);
         registrarBean.sendStaffCareMessages(forDate, forDate, forDate, forDate, careGroups, false, false);
+        verify(staffMessageSender);
     }
 
     public void testFindPersonPreferredMessageDate() {
