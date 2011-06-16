@@ -34,14 +34,11 @@
 package org.motechproject.server.omod.web.controller;
 
 import org.apache.commons.lang.StringUtils;
-import org.motechproject.server.model.Community;
-import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.FacilityComparator;
-import org.motechproject.server.model.MessageLanguage;
+import org.motechproject.server.model.*;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.service.MotechService;
-import org.motechproject.server.omod.web.model.Country;
-import org.motechproject.server.omod.web.model.PreferredLocation;
+import org.motechproject.server.model.Country;
+import org.motechproject.server.model.PreferredLocation;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.openmrs.Location;
 import org.springframework.ui.ModelMap;

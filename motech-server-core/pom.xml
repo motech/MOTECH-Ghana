@@ -87,6 +87,10 @@
             <artifactId>spring-tx</artifactId>
             <version>3.0.2.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>net.sf.flexjson</groupId>
+            <artifactId>flexjson</artifactId>
+        </dependency>
     </dependencies>
 
 	<build>
