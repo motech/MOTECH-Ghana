@@ -50,7 +50,7 @@ import org.motechproject.server.omod.web.model.WebStaff;
 import org.motechproject.server.service.ConceptEnum;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.service.MotechService;
-import org.motechproject.server.service.StaffMessageSender;
+import org.motechproject.server.service.StaffMessageService;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RCTService;
@@ -122,7 +122,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     private MotechUserRepository motechUserRepository;
 
     @Autowired
-    private StaffMessageSender staffMessageSender;
+    private StaffMessageService staffMessageSender;
 
     @Autowired
     private PregnancyObservation pregnancyObservation;
@@ -3616,7 +3616,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         this.expectedObsFilter = expectedObsFilter;
     }
 
-    public void setStaffMessageSender(StaffMessageSender staffMessageSender) {
+    public void setStaffMessageSender(StaffMessageService staffMessageSender) {
         this.staffMessageSender = staffMessageSender;
     }
 

@@ -7,7 +7,7 @@ import org.motechproject.server.model.*;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.service.MotechService;
 import org.motechproject.server.filters.FilterChain;
-import org.motechproject.server.service.StaffMessageSender;
+import org.motechproject.server.service.StaffMessageService;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.server.ws.WebServiceCareModelConverterImpl;
 import org.motechproject.server.ws.WebServicePatientModelConverterImpl;
@@ -35,7 +35,7 @@ public class RegistrarBeanDefaulterAlertsTest {
     private FilterChain encounterFilter;
     private FilterChain obsFilter;
     private MessageService messageService;
-    private StaffMessageSender staffMessageSender;
+    private StaffMessageService staffMessageSender;
 
 
     @Before
@@ -52,7 +52,7 @@ public class RegistrarBeanDefaulterAlertsTest {
         WebServiceCareModelConverterImpl careModelConverter = new WebServiceCareModelConverterImpl();
         careModelConverter.setContextService(contextService);
 
-        staffMessageSender = new StaffMessageSender(contextService, messageService, null);
+        staffMessageSender = new StaffMessageService(contextService, messageService, null);
         staffMessageSender.setExpectedEncountersFilter(encounterFilter);
         staffMessageSender.setExpectedObsFilter(obsFilter);
         staffMessageSender.setCareModelConverter(careModelConverter);

@@ -42,7 +42,7 @@ import org.motechproject.server.service.MotechService;
 import org.motechproject.server.filters.ExpectedEncounterFilterChain;
 import org.motechproject.server.filters.ExpectedObsFilterChain;
 import org.motechproject.server.filters.Filter;
-import org.motechproject.server.service.StaffMessageSender;
+import org.motechproject.server.service.StaffMessageService;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.util.DateUtil;
 import org.motechproject.server.util.MotechConstants;
@@ -70,7 +70,7 @@ public class RegistrarBeanImplTest extends TestCase {
     private PersonService personService;
     private RCTService rctService;
     private MessageService mobileService;
-    private StaffMessageSender staffMessageSender;
+    private StaffMessageService staffMessageSender;
 
     @Override
     protected void setUp() throws Exception {
@@ -80,7 +80,7 @@ public class RegistrarBeanImplTest extends TestCase {
         personService = createMock(PersonService.class);
         rctService = createMock(RCTService.class);
         mobileService = createMock(MessageService.class);
-        staffMessageSender = createMock(StaffMessageSender.class);
+        staffMessageSender = createMock(StaffMessageService.class);
         registrarBean = new RegistrarBeanImpl();
         registrarBean.setContextService(contextService);
         registrarBean.setAdministrationService(adminService);

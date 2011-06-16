@@ -40,7 +40,7 @@ public class StaffMessageSenderTest {
     MotechService motechService;
     RCTService rctService;
     MessageService mobileService;
-    StaffMessageSender staffMessageSender;
+    StaffMessageService staffMessageSender;
 
     @Before
     public void setUp() throws Exception {
@@ -61,7 +61,7 @@ public class StaffMessageSenderTest {
         expectedObsFilterChain.setFilters(new ArrayList<Filter<ExpectedObs>>());
         registrarBean.setExpectedEncountersFilter(expectedEncounterFilterChain);
         registrarBean.setExpectedObsFilter(expectedObsFilterChain);
-        staffMessageSender = new StaffMessageSender(contextService, mobileService, rctService);
+        staffMessageSender = new StaffMessageService(contextService, mobileService, rctService);
         staffMessageSender.setExpectedEncountersFilter(expectedEncounterFilterChain);
         staffMessageSender.setExpectedObsFilter(expectedObsFilterChain);
 

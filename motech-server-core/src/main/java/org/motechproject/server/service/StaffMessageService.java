@@ -22,9 +22,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class StaffMessageSender {
+public class StaffMessageService {
 
-    private static Log log = LogFactory.getLog(StaffMessageSender.class);
+    private static Log log = LogFactory.getLog(StaffMessageService.class);
     @Autowired
     @Qualifier("expectedEncountersFilter")
     private FilterChain expectedEncountersFilter;
@@ -45,11 +45,11 @@ public class StaffMessageSender {
     @Autowired
     private WebServiceCareModelConverter careModelConverter;
 
-    public StaffMessageSender() {
+    public StaffMessageService() {
     }
 
 
-    public StaffMessageSender(
+    public StaffMessageService(
             ContextService contextService,
             MessageService mobileService,
             RCTService rctService) {
