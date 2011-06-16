@@ -4,6 +4,7 @@ var $j = jQuery.noConflict();
 function editFacility() {
 
     var onLoad = function() {
+        $j("#phoneNumber_err").hide();
         for (var i = 1; i <= 3; i++) {
             initializeAdditionalPhoneNumber(i);
         }
@@ -31,9 +32,10 @@ function editFacility() {
     };
 
     var onSubmit = function(e){
-        verifyAdditionalPhone("#additional_phoneNumber1_err", $j("#additionalPhoneNumber1"), e);
-        verifyAdditionalPhone("#additional_phoneNumber2_err", $j("#additionalPhoneNumber2"), e);
-        verifyAdditionalPhone("#additional_phoneNumber3_err", $j("#additionalPhoneNumber3"), e);
+        verifyPhoneNumber("#phoneNumber_err", $j("#phoneNumber"), e);
+        verifyPhoneNumber("#additional_phoneNumber1_err", $j("#additionalPhoneNumber1"), e);
+        verifyPhoneNumber("#additional_phoneNumber2_err", $j("#additionalPhoneNumber2"), e);
+        verifyPhoneNumber("#additional_phoneNumber3_err", $j("#additionalPhoneNumber3"), e);
     };
 
     var enableAdditionalPhoneNumber = function(e) {
@@ -68,7 +70,7 @@ function editFacility() {
         $j("#additionalPhoneNumber" + serialNumber + "-row").hide();
     }
 
-    var verifyAdditionalPhone = function(errorSpan, selectElement,e){
+    var verifyPhoneNumber = function(errorSpan, selectElement,e){
          if (selectElement.is(':visible')) {
              var selectedValue = selectElement.val();
              if (/^0[0-9]{9}$/i.test(selectedValue)) {

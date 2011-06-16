@@ -73,7 +73,12 @@
                 <td>
                     <a id="additionalPhoneNumber1-link" href="#">Add additional Phone Number</a>
                 </td>
-                <td><form:errors path="phoneNumber" cssClass="error"/></td>
+                <td>
+                    <form:errors path="phoneNumber" cssClass="error"/>
+                    <span id="phoneNumber_err" class="error" title="err_span">
+		              <spring:message code="motechmodule.phoneNumber.invalid"/>
+		            </span>
+                </td>
             </tr>
             <tr id="additionalPhoneNumber1-row" class="additional-phone-number-row" number="1">
                 <td><form:label path="additionalPhoneNumber1">Phone Number:</form:label></td>
