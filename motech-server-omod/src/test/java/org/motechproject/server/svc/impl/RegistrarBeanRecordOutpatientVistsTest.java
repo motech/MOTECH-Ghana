@@ -37,7 +37,7 @@ import org.apache.commons.lang.time.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.svc.MessageSourceBean;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
@@ -81,7 +81,7 @@ public class RegistrarBeanRecordOutpatientVistsTest extends
         OpenmrsBean openmrsBean = Mockito.mock(RegistrarBeanImpl.class);
 
         int facilityId = 11117;
-        Date vistDate = DateUtil.dateFor(15, 6, 2011);
+        Date vistDate = new DateUtil().dateFor(15, 6, 2011);
         Date dob = new Date();
 
         User staff = registrarBean.registerStaff("Nurse", "Betty", "7777777777", "CHO", null);

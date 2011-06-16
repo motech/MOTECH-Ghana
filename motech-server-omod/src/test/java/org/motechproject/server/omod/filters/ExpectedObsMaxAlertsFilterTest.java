@@ -5,8 +5,8 @@ import org.junit.Test;
 import org.motechproject.server.model.CareConfiguration;
 import org.motechproject.server.model.DefaultedExpectedObsAlert;
 import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.ContextService;
+import org.motechproject.server.service.MotechService;
 
 import java.util.ArrayList;
 import java.util.List;

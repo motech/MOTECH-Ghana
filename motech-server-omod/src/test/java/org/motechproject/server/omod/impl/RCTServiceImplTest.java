@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.server.model.rct.RCTFacility;
-import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.service.ContextService;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.util.RCTError;
 import org.motechproject.ws.ContactNumberType;

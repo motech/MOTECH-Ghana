@@ -35,8 +35,8 @@ package org.motechproject.server.omod.web.controller;
 
 import org.motechproject.server.model.Community;
 import org.motechproject.server.model.Facility;
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.ContextService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.omod.web.model.WebCommunity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

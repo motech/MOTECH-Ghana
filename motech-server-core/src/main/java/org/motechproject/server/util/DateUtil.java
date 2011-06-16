@@ -35,28 +35,36 @@ package org.motechproject.server.util;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateUtil {
-    public static boolean isSameMonth(Date date, Date otherDate) {
+public final class DateUtil {
+    public boolean isSameMonth(Date date, Date otherDate) {
         Calendar calendar = calendarFor(date);
         Calendar otherCalendar = calendarFor(otherDate);
         return calendar.get(Calendar.MONTH) == otherCalendar.get(Calendar.MONTH);
     }
 
-    public static boolean isSameYear(Date date, Date otherDate) {
+    public boolean isSameYear(Date date, Date otherDate) {
         Calendar calendar = calendarFor(date);
         Calendar otherCalendar = calendarFor(otherDate);
         return calendar.get(Calendar.YEAR) == otherCalendar.get(Calendar.YEAR);
     }
 
-    public static Calendar calendarFor(Date date) {
+    public Calendar calendarFor(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         return calendar;
     }
 
-    public static Date dateFor(int day, int month, int year) {
+    public Date dateFor(int day, int month, int year) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
         return calendar.getTime();
+    }
+
+    public Calendar getCalendarWithTime(int hourOfTheDay, int minutes, int seconds) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfTheDay);
+        calendar.set(Calendar.MINUTE, minutes);
+        calendar.set(Calendar.SECOND, seconds);
+        return calendar;
     }
 }

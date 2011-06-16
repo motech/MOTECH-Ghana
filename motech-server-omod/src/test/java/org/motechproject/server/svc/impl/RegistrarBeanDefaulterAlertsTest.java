@@ -4,11 +4,12 @@ import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.server.model.*;
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.ContextService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.omod.filters.FilterChain;
 import org.motechproject.server.util.MotechConstants;
-import org.motechproject.server.ws.WebServiceModelConverterImpl;
+import org.motechproject.server.ws.WebServiceCareModelConverterImpl;
+import org.motechproject.server.ws.WebServicePatientModelConverterImpl;
 import org.motechproject.ws.Care;
 import org.motechproject.ws.CareMessageGroupingStrategy;
 import org.motechproject.ws.MediaType;
@@ -33,6 +34,7 @@ public class RegistrarBeanDefaulterAlertsTest {
     private FilterChain encounterFilter;
     private FilterChain obsFilter;
     private MessageService messageService;
+    private StaffMessageSender staffMessageSender;
 
 
     @Before
@@ -46,16 +48,29 @@ public class RegistrarBeanDefaulterAlertsTest {
         obsFilter = createMock(FilterChain.class);
         messageService = createMock(MessageService.class);
 
+        WebServiceCareModelConverterImpl careModelConverter = new WebServiceCareModelConverterImpl();
+        careModelConverter.setContextService(contextService);
+
+        staffMessageSender = new StaffMessageSender(contextService, messageService, null);
+        staffMessageSender.setExpectedEncountersFilter(encounterFilter);
+        staffMessageSender.setExpectedObsFilter(obsFilter);
+        staffMessageSender.setCareModelConverter(careModelConverter);
+
+
         registrarBean.setContextService(contextService);
         registrarBean.setAdministrationService(administrationService);
         registrarBean.setExpectedEncountersFilter(encounterFilter);
         registrarBean.setExpectedObsFilter(obsFilter);
         registrarBean.setMobileService(messageService);
+        registrarBean.setStaffMessageSender(staffMessageSender);
     }
 
 
     @Test
     public void newDefaultersAlertsShouldBeCreatedForPatientsWhenNoneExists() {
+
+
+
         String[] careGroups = new String[]{"ANC","TT1"};
         List<Facility> facilities = facilitiesFor("Central Region");
 
@@ -74,7 +89,7 @@ public class RegistrarBeanDefaulterAlertsTest {
         List<ExpectedObs> expectedObservations = new ArrayList<ExpectedObs>();
         expectedObservations.add(obs);
 
-        WebServiceModelConverterImpl converter = new WebServiceModelConverterImpl();
+        WebServicePatientModelConverterImpl converter = new WebServicePatientModelConverterImpl();
         converter.setRegistrarBean(registrarBean);
 
         CareConfiguration careConfigurationForANC = new CareConfiguration(1L, "ANC", 3);
@@ -110,6 +125,11 @@ public class RegistrarBeanDefaulterAlertsTest {
         motechService.saveOrUpdateDefaultedObsAlert(equalsExpectedObsAlert(new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 1, 1)));
         expectLastCall();
 
+        WebServiceCareModelConverterImpl careModelConverter = new WebServiceCareModelConverterImpl();
+        careModelConverter.setContextService(contextService);
+
+        registrarBean.setStaffMessageSender(staffMessageSender);
+
         replay(contextService, motechService, administrationService, encounterFilter, obsFilter, messageService);
 
         registrarBean.sendStaffCareMessages(someDate, someDate, someDate, someDate, careGroups, false, true);
@@ -139,7 +159,7 @@ public class RegistrarBeanDefaulterAlertsTest {
         List<ExpectedObs> expectedObservations = new ArrayList<ExpectedObs>();
         expectedObservations.add(obs);
 
-        WebServiceModelConverterImpl converter = new WebServiceModelConverterImpl();
+        WebServicePatientModelConverterImpl converter = new WebServicePatientModelConverterImpl();
         converter.setRegistrarBean(registrarBean);
 
         CareConfiguration careConfigurationForANC = new CareConfiguration(1L, "ANC", 3);
@@ -203,7 +223,7 @@ public class RegistrarBeanDefaulterAlertsTest {
         List<ExpectedObs> expectedObservations = new ArrayList<ExpectedObs>();
         expectedObservations.add(obs);
 
-        WebServiceModelConverterImpl converter = new WebServiceModelConverterImpl();
+        WebServicePatientModelConverterImpl converter = new WebServicePatientModelConverterImpl();
         converter.setRegistrarBean(registrarBean);
 
         CareConfiguration careConfigurationForANC = new CareConfiguration(1L, "ANC", 3);

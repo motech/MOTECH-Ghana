@@ -33,12 +33,13 @@
 
 package org.motechproject.server.model;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Facility implements Serializable {
 
@@ -149,4 +150,16 @@ public class Facility implements Serializable {
     public void setAdditionalPhoneNumber3(String additionalPhoneNumber3) {
         this.additionalPhoneNumber3 = additionalPhoneNumber3;
     }
+
+    public List<String> getAvailablePhoneNumbers() {
+        List<String> phoneNumbers = Arrays.asList(phoneNumber, additionalPhoneNumber1, additionalPhoneNumber2, additionalPhoneNumber3);
+        phoneNumbers = new ArrayList<String>(phoneNumbers);
+        CollectionUtils.filter(phoneNumbers, new Predicate() {
+            public boolean evaluate(Object input) {
+                return input != null;
+            }
+        });
+        return phoneNumbers;
+    }
+
 }

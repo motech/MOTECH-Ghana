@@ -42,6 +42,7 @@ import static org.easymock.EasyMock.verify;
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
+import org.motechproject.server.service.AffectedPatients;
 import org.springframework.transaction.support.TransactionSynchronization;
 
 /**

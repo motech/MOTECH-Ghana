@@ -31,11 +31,10 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.server.omod;
+package org.motechproject.server.service;
 
 import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.model.*;
-import org.motechproject.server.omod.sdsched.ScheduleMaintService;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.svc.RegistrarBean;

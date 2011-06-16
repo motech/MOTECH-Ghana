@@ -4,7 +4,7 @@ package org.motechproject.server.omod.builder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.IdentifierGenerator;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.omod.PersonAttributeTypeEnum;
 import org.motechproject.ws.RegistrantType;
 import org.openmrs.Patient;

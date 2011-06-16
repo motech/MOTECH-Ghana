@@ -5,14 +5,16 @@ import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.server.model.*;
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.ContextService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.omod.filters.ExpectedEncounterFilterChain;
 import org.motechproject.server.omod.filters.ExpectedObsFilterChain;
 import org.motechproject.server.omod.filters.Filter;
 import org.motechproject.server.omod.web.model.KassenaNankana;
 import org.motechproject.server.svc.RCTService;
+import org.motechproject.server.util.DateUtil;
 import org.motechproject.server.util.MotechConstants;
+import org.motechproject.server.ws.WebServiceCareModelConverterImpl;
 import org.motechproject.ws.Care;
 import org.motechproject.ws.CareMessageGroupingStrategy;
 import org.motechproject.ws.MediaType;
@@ -21,11 +23,13 @@ import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.api.AdministrationService;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 import static org.easymock.EasyMock.*;
 
 
@@ -38,6 +42,7 @@ public class StaffMessageSenderTest {
     MotechService motechService;
     RCTService rctService;
     MessageService mobileService;
+    StaffMessageSender staffMessageSender;
 
     @Before
     public void setUp() throws Exception {
@@ -58,6 +63,14 @@ public class StaffMessageSenderTest {
         expectedObsFilterChain.setFilters(new ArrayList<Filter<ExpectedObs>>());
         registrarBean.setExpectedEncountersFilter(expectedEncounterFilterChain);
         registrarBean.setExpectedObsFilter(expectedObsFilterChain);
+        staffMessageSender = new StaffMessageSender(contextService, mobileService, rctService);
+        staffMessageSender.setExpectedEncountersFilter(expectedEncounterFilterChain);
+        staffMessageSender.setExpectedObsFilter(expectedObsFilterChain);
+
+        WebServiceCareModelConverterImpl careModelConverter = new WebServiceCareModelConverterImpl();
+        careModelConverter.setContextService(contextService);
+        staffMessageSender.setCareModelConverter(careModelConverter);
+
     }
 
     @Test
@@ -123,9 +136,11 @@ public class StaffMessageSenderTest {
         motechService.saveOrUpdateDefaultedEncounterAlert(EasyMock.<DefaultedExpectedEncounterAlert>anyObject());
         expectLastCall().atLeastOnce();
 
+
         replay(contextService, adminService, motechService, mobileService, rctService);
 
-        registrarBean.sendStaffCareMessages(forDate, forDate,
+
+        staffMessageSender.sendStaffCareMessages(forDate, forDate,
                 forDate, forDate,
                 careGroups,
                 false,
@@ -209,7 +224,7 @@ public class StaffMessageSenderTest {
 
         replay(contextService, adminService, motechService, mobileService, rctService);
 
-        registrarBean.sendStaffCareMessages(forDate, forDate,
+        staffMessageSender.sendStaffCareMessages(forDate, forDate,
                 forDate, forDate,
                 careGroups,
                 true,
@@ -256,7 +271,7 @@ public class StaffMessageSenderTest {
 
         replay(contextService, adminService, motechService, mobileService);
 
-        registrarBean.sendStaffCareMessages(forDate, forDate,
+        staffMessageSender.sendStaffCareMessages(forDate, forDate,
                 forDate, forDate,
                 careGroups,
                 false,
@@ -321,7 +336,7 @@ public class StaffMessageSenderTest {
 
         replay(contextService, adminService, motechService, mobileService);
 
-        registrarBean.sendStaffCareMessages(forDate, forDate,
+        staffMessageSender.sendStaffCareMessages(forDate, forDate,
                 forDate, forDate,
                 careGroups,
                 true,
@@ -335,4 +350,106 @@ public class StaffMessageSenderTest {
         assertEquals("Test Facility has no upcoming care for this week", capturedUpcomingCareMessage.getValue());
         assertEquals("+1 555 123-1234", capturedUpcomingCarePhoneNumber.getValue());
     }
+
+    @Test
+    public void testShouldFindOutIfMessageTimeIsDuringBlackoutPeriod() {
+        DateUtil dateUtil = new DateUtil();
+        Calendar calendar = dateUtil.getCalendarWithTime(23, 13, 54);
+        Date morningMessageTime = calendar.getTime();
+        calendar = dateUtil.getCalendarWithTime(3, 13, 54);
+        Date nightMessageTime = calendar.getTime();
+        calendar = dateUtil.getCalendarWithTime(19, 30, 30);
+        Date eveningMessageTime = calendar.getTime();
+
+        Blackout blackout = new Blackout(Time.valueOf("23:00:00"), Time.valueOf("06:00:00"));
+
+        expect(contextService.getMotechService()).andReturn(motechService).times(3);
+        expect(motechService.getBlackoutSettings()).andReturn(blackout).times(3);
+        replay(contextService, adminService, motechService);
+
+        assertTrue(staffMessageSender.isMessageTimeWithinBlackoutPeriod(morningMessageTime));
+        assertTrue(staffMessageSender.isMessageTimeWithinBlackoutPeriod(nightMessageTime));
+        assertFalse(staffMessageSender.isMessageTimeWithinBlackoutPeriod(eveningMessageTime));
+        verify(contextService, adminService, motechService);
+
+    }
+
+    @Test
+    public void testShouldSendDefaulterMessagesToAllPhoneNumbersOfAFacility() {
+        Date forDate = new Date();
+        String careGroups[] = {"ANC", "TT", "IPT"};
+
+        Location location = new Location();
+        location.setName("Test Facility");
+        location.setRegion("Upper East");
+        location.setCountyDistrict(new KassenaNankana().toString());
+
+        Facility facility = new Facility();
+        facility.setLocation(location);
+        facility.setPhoneNumber("+1 555 123-1234");
+        facility.setAdditionalPhoneNumber1("+ 2 555 123-1234");
+
+        List<Facility> facilities = new ArrayList<Facility>();
+        facilities.add(facility);
+
+
+        Patient p = new Patient(5716);
+
+
+        ExpectedEncounter enc = new ExpectedEncounter();
+        enc.setPatient(p);
+
+        List<ExpectedEncounter> encounters = new ArrayList<ExpectedEncounter>();
+        List<ExpectedObs> emptyObs = new ArrayList<ExpectedObs>();
+
+        encounters.add(enc);
+
+        final DefaultedExpectedEncounterAlert defaultedExpectedEncounterAlert = anyObject();
+
+        // To Mock
+        expect(motechService.getCommunityByPatient(p)).andReturn(null);
+        expect(contextService.getMotechService()).andReturn(motechService).anyTimes();
+        expect(contextService.getAdministrationService()).andReturn(adminService).times(2);
+
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn("35").anyTimes();
+        expect(motechService.getExpectedEncounter(null, facility, careGroups, null, null, forDate, forDate, 35)).andReturn(encounters);
+        expect(motechService.getExpectedObs(null, facility, careGroups, null, null, forDate, forDate, 35)).andReturn(emptyObs);
+
+        expect(motechService.getAllFacilities()).andReturn(facilities);
+        expect(motechService.getCareConfigurationFor(EasyMock.<String>anyObject())).andReturn(EasyMock.<CareConfiguration>anyObject());
+        expect(motechService.getDefaultedEncounterAlertFor(enc)).andReturn(defaultedExpectedEncounterAlert);
+
+
+        Capture<String> capturedMessageId = new Capture<String>();
+        Capture<String> capturedPhoneNumber = new Capture<String>();
+        Capture<Care[]> capturedCares = new Capture<Care[]>();
+        Capture<CareMessageGroupingStrategy> capturedStrategy = new Capture<CareMessageGroupingStrategy>();
+        Capture<MediaType> capturedMediaType = new Capture<MediaType>();
+        Capture<Date> capturedStartDate = new Capture<Date>();
+        Capture<Date> capturedEndDate = new Capture<Date>();
+
+
+        expect(mobileService.sendDefaulterMessage(capture(capturedMessageId), capture(capturedPhoneNumber),
+                capture(capturedCares), capture(capturedStrategy),
+                capture(capturedMediaType), capture(capturedStartDate),
+                capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED).times(2);
+
+        motechService.saveOrUpdateDefaultedEncounterAlert(EasyMock.<DefaultedExpectedEncounterAlert>anyObject());
+        expectLastCall().atLeastOnce();
+
+
+        replay(contextService, adminService, motechService, mobileService, rctService);
+
+
+        staffMessageSender.sendStaffCareMessages(forDate, forDate,
+                forDate, forDate,
+                careGroups,
+                false,
+                false);
+
+        verify(contextService, adminService, motechService, mobileService, rctService);
+
+        assertEquals(CareMessageGroupingStrategy.COMMUNITY, capturedStrategy.getValue());
+    }
+
 }

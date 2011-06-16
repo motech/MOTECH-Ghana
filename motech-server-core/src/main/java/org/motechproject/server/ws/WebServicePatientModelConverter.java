@@ -36,14 +36,13 @@ package org.motechproject.server.ws;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.model.PatientContactUpdates;
-import org.motechproject.ws.Care;
 import org.motechproject.ws.Patient;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
 
 import java.util.List;
 
-public interface WebServiceModelConverter {
+public interface WebServicePatientModelConverter {
 
 	Patient patientToWebService(org.openmrs.Patient patient, boolean minimal);
 
@@ -54,28 +53,11 @@ public interface WebServiceModelConverter {
 
 	Patient[] dueDatesToWebServicePatients(List<Obs> dueDates);
 
-	Care[] upcomingObsToWebServiceCares(List<ExpectedObs> upcomingObs);
-
-	Care[] upcomingEncountersToWebServiceCares(
-			List<ExpectedEncounter> upcomingEncounters);
-
-	Care[] upcomingToWebServiceCares(
-			List<ExpectedEncounter> upcomingEncounters,
-			List<ExpectedObs> upcomingObs, boolean includePatient);
-
-	Care[] defaultedObsToWebServiceCares(List<ExpectedObs> defaultedObs);
-
-	Care[] defaultedEncountersToWebServiceCares(
-			List<ExpectedEncounter> defaultedEncounters);
-
-	Care[] defaultedToWebServiceCares(
-			List<ExpectedEncounter> defaultedEncounters,
-			List<ExpectedObs> defaultedObs);
-
 	Patient upcomingObsToWebServicePatient(ExpectedObs upcomingObs);
 
 	Patient upcomingEncounterToWebServicePatient(
 			ExpectedEncounter upcomingEncounter);
 
     Patient patientToWebService(org.openmrs.Patient patient, boolean minimal, PatientContactUpdates patientContactUpdates);
+
 }

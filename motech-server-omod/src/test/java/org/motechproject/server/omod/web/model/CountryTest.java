@@ -32,7 +32,6 @@ public class CountryTest {
         assertNotNull(regionB);
         assertTrue(regionB.hasDistrict("b-d-1"));
         assertTrue(regionB.hasDistrict("b-d-2"));
-        System.out.println(country);
     }
 
     private Facility facilityFor(Location location){

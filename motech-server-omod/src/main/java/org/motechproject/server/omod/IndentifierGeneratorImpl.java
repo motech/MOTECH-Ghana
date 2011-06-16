@@ -2,6 +2,7 @@ package org.motechproject.server.omod;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.motechproject.server.service.ContextService;
 import org.motechproject.server.util.MotechConstants;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.User;

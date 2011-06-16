@@ -3,42 +3,58 @@ package org.motechproject.server.svc.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.*;
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.ContextService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.omod.factory.DistrictFactory;
 import org.motechproject.server.omod.filters.FilterChain;
 import org.motechproject.server.svc.RCTService;
+import org.motechproject.server.util.DateUtil;
 import org.motechproject.server.util.MotechConstants;
-import org.motechproject.server.ws.WebServiceModelConverterImpl;
+import org.motechproject.server.ws.WebServiceCareModelConverter;
 import org.motechproject.ws.Care;
 import org.motechproject.ws.CareMessageGroupingStrategy;
 import org.motechproject.ws.MediaType;
 import org.motechproject.ws.mobile.MessageService;
 import org.openmrs.Location;
 import org.openmrs.Patient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class StaffMessageSender {
 
     private static Log log = LogFactory.getLog(StaffMessageSender.class);
-    private RegistrarBeanImpl registrarBeanImpl;
+    @Autowired
+    @Qualifier("expectedEncountersFilter")
     private FilterChain expectedEncountersFilter;
+
+    @Autowired
+    @Qualifier("expectedObsFilter")
     private FilterChain expectedObsFilter;
+    @Autowired
     private ContextService contextService;
-    private MessageService mobileService;
+
+    @Autowired
+    @Qualifier("rctBeanProxy")
     private RCTService rctService;
+
+    private MessageService mobileService;
+
+    @Autowired
+    private WebServiceCareModelConverter careModelConverter;
+
 
     public StaffMessageSender() {
     }
 
-    public StaffMessageSender(RegistrarBeanImpl registrarBeanImpl,
-                              ContextService contextService,
-                              MessageService mobileService,
-                              RCTService rctService) {
-        this.registrarBeanImpl = registrarBeanImpl;
+    public StaffMessageSender(
+            ContextService contextService,
+            MessageService mobileService,
+            RCTService rctService) {
         this.contextService = contextService;
         this.mobileService = mobileService;
         this.rctService = rctService;
@@ -50,13 +66,13 @@ public class StaffMessageSender {
                                       boolean sendUpcoming,
                                       boolean blackoutEnabled) {
 
-        final boolean shouldBlackOut = blackoutEnabled && registrarBeanImpl.isMessageTimeWithinBlackoutPeriod(deliveryDate);
+        final boolean shouldBlackOut = blackoutEnabled && isMessageTimeWithinBlackoutPeriod(deliveryDate);
         if (shouldBlackOut) {
             log.debug("Cancelling nurse messages during blackout");
             return;
         }
         List<Facility> facilities = motechService().getAllFacilities();
-        deliveryDate = registrarBeanImpl.adjustTime(deliveryDate, deliveryTime);
+        deliveryDate = adjustTime(deliveryDate, deliveryTime);
         for (Facility facility : facilities) {
             if (facilityPhoneNumberOrLocationNotAvailable(facility)) {
                 continue;
@@ -68,6 +84,45 @@ public class StaffMessageSender {
         }
     }
 
+    private void setBlackOutTime(Date blackoutTime, Calendar blackoutCalendar) {
+        Calendar timeCalendar = new DateUtil().calendarFor(blackoutTime);
+        blackoutCalendar.set(Calendar.HOUR_OF_DAY, timeCalendar.get(Calendar.HOUR_OF_DAY));
+        blackoutCalendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+        blackoutCalendar.set(Calendar.SECOND, timeCalendar.get(Calendar.SECOND));
+    }
+
+    boolean isMessageTimeWithinBlackoutPeriod(Date deliveryDate) {
+        Date checkForDate = (deliveryDate != null ? deliveryDate : new Date());
+        Blackout blackout = motechService().getBlackoutSettings();
+        if (blackout == null) {
+            return false;
+        }
+
+        Calendar blackoutCalendar = new DateUtil().calendarFor(checkForDate);
+
+        adjustForBlackoutStartDate(checkForDate, blackout, blackoutCalendar);
+        Date blackoutStart = blackoutCalendar.getTime();
+        setBlackOutTime(blackout.getEndTime(), blackoutCalendar);
+
+        if (blackoutCalendar.getTime().before(blackoutStart)) {
+            // Add a day if blackout end date before start date after setting time
+            blackoutCalendar.add(Calendar.DATE, 1);
+        }
+        Date blackoutEnd = blackoutCalendar.getTime();
+
+        return checkForDate.after(blackoutStart) && checkForDate.before(blackoutEnd);
+    }
+
+    private void adjustForBlackoutStartDate(Date date, Blackout blackout, Calendar blackoutCalendar) {
+        setBlackOutTime(blackout.getStartTime(), blackoutCalendar);
+
+        if (date.before(blackoutCalendar.getTime())) {
+            // Remove a day if blackout start date before the message date
+            blackoutCalendar.add(Calendar.DATE, -1);
+        }
+    }
+
+
     private MotechService motechService() {
         return contextService.getMotechService();
     }
@@ -77,14 +132,12 @@ public class StaffMessageSender {
     }
 
     private void sendUpcomingMessages(Date startDate, Date endDate, Date deliveryDate, String[] careGroups, Facility facility) {
-        WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
-        modelConverter.setRegistrarBean(registrarBeanImpl);
         List<ExpectedEncounter> upcomingEncounters = filterRCTEncounters(getUpcomingExpectedEncounters(facility, careGroups, startDate, endDate));
         List<ExpectedObs> upcomingObs = filterRCTObs(getUpcomingExpectedObs(facility, careGroups, startDate, endDate));
         final String facilityPhoneNumber = facility.getPhoneNumber();
         final boolean upcomingEventsPresent = !(upcomingEncounters.isEmpty() && upcomingObs.isEmpty());
         if (upcomingEventsPresent) {
-            Care[] upcomingCares = modelConverter.upcomingToWebServiceCares(upcomingEncounters, upcomingObs, true);
+            Care[] upcomingCares = careModelConverter.upcomingToWebServiceCares(upcomingEncounters, upcomingObs, true);
             log.info("Sending upcoming care message to " + facility.name() + " at " + facilityPhoneNumber);
             sendStaffUpcomingCareMessage(facilityPhoneNumber, deliveryDate, upcomingCares, getCareMessageGroupingStrategy(facility.getLocation()));
         } else {
@@ -119,11 +172,9 @@ public class StaffMessageSender {
 
         final boolean defaultersPresent = !(filteredDefaultedEncounters.isEmpty() && filteredDefaultedExpectedObs.isEmpty());
         if (defaultersPresent) {
-            WebServiceModelConverterImpl modelConverter = new WebServiceModelConverterImpl();
-            modelConverter.setRegistrarBean(registrarBeanImpl);
-            Care[] defaultedCares = modelConverter.defaultedToWebServiceCares(filteredDefaultedEncounters, filteredDefaultedExpectedObs);
+            Care[] defaultedCares = careModelConverter.defaultedToWebServiceCares(filteredDefaultedEncounters, filteredDefaultedExpectedObs);
             log.info("Sending defaulter message to " + facility.name() + " at " + facilityPhoneNumber);
-            Boolean alertsSent = sendStaffDefaultedCareMessage(facilityPhoneNumber, deliveryDate, defaultedCares, getCareMessageGroupingStrategy(facility.getLocation()));
+            Boolean alertsSent = sendStaffDefaultedCareMessage(facility, deliveryDate, defaultedCares, getCareMessageGroupingStrategy(facility.getLocation()));
             incrementDefaultedEncountersAlertCount(filteredDefaultedEncounters, alertsSent);
             incrementDefaultedObservationsAlertCount(filteredDefaultedExpectedObs, alertsSent);
         } else {
@@ -265,14 +316,16 @@ public class StaffMessageSender {
         }
     }
 
-    private boolean sendStaffDefaultedCareMessage(String phoneNumber,
-                                                  Date messageStartDate,
+    private boolean sendStaffDefaultedCareMessage(Facility facility, Date messageStartDate,
                                                   Care[] cares, CareMessageGroupingStrategy groupingStrategy) {
-
         try {
             org.motechproject.ws.MessageStatus messageStatus;
-            messageStatus = mobileService.sendDefaulterMessage(null, phoneNumber, cares, groupingStrategy, MediaType.TEXT, messageStartDate, null);
-            return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
+            boolean  result = false;
+            for(String phoneNumber : facility.getAvailablePhoneNumbers()){
+                messageStatus = mobileService.sendDefaulterMessage(null, phoneNumber, cares, groupingStrategy, MediaType.TEXT, messageStartDate, null);
+                result |= messageStatus != org.motechproject.ws.MessageStatus.FAILED;
+            }
+            return result;
         } catch (Exception e) {
             log.error("Mobile WS staff defaulted care message failure", e);
             return false;
@@ -283,6 +336,27 @@ public class StaffMessageSender {
         return motechService().getCareConfigurationFor(careName);
     }
 
+    // copied from registrar bean to eliminate dependency on registrar bean.
+    // should be moved to appropriate abstraction later.
+     private Date adjustTime(Date date, Date time) {
+        if (date == null || time == null) {
+            return date;
+        }
+         DateUtil dateUtil = new DateUtil();
+        Calendar calendar = dateUtil.calendarFor(date);
+
+        Calendar timeCalendar = dateUtil.calendarFor(time);
+        calendar.set(Calendar.HOUR_OF_DAY, timeCalendar.get(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+        calendar.set(Calendar.SECOND, 0);
+        if (calendar.getTime().before(date)) {
+            // Add a day if before original date
+            // after setting the time of day
+            calendar.add(Calendar.DATE, 1);
+        }
+        return calendar.getTime();
+    }
+
 
     public void setExpectedEncountersFilter(FilterChain expectedEncountersFilter) {
         this.expectedEncountersFilter = expectedEncountersFilter;
@@ -291,5 +365,13 @@ public class StaffMessageSender {
 
     public void setExpectedObsFilter(FilterChain expectedObsFilter) {
         this.expectedObsFilter = expectedObsFilter;
+    }
+
+    public void setMobileService(MessageService mobileService) {
+        this.mobileService = mobileService;
+    }
+
+    public void setCareModelConverter(WebServiceCareModelConverter careModelConverter) {
+        this.careModelConverter = careModelConverter;
     }
 }

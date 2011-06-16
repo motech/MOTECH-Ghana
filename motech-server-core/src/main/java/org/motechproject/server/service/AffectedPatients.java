@@ -31,52 +31,29 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.server.omod.sdsched;
+package org.motechproject.server.service;
 
-import junit.framework.TestCase;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Tests the {@link AffectedPatients} class.
+ * An object intended to be bound as a transaction synchronization resource.
+ * This is where we do the bookkeeping on what patients need to be recomputed at
+ * the end of the transaction. The synchronization will use this to determine
+ * which patient schedules to compute.
  * 
  * @author batkinson
  * 
  */
-public class AffectedPatientsTest extends TestCase {
+public class AffectedPatients {
 
-	private AffectedPatients obj;
-	private Integer samplePatientId;
+	final Set<Integer> affectedIds;
 
-	@Override
-	protected void setUp() throws Exception {
-		obj = new AffectedPatients();
-		samplePatientId = new Integer(3);
+	public AffectedPatients() {
+		affectedIds = new HashSet<Integer>();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-		obj = null;
-		samplePatientId = null;
+	public Set<Integer> getAffectedIds() {
+		return affectedIds;
 	}
-
-	public void testCreate() {
-		assertNotNull(obj.affectedIds);
-	}
-
-	public void testGetAffectedIds() {
-		assertNotNull(obj.getAffectedIds());
-		assertEquals(obj.affectedIds, obj.getAffectedIds());
-	}
-
-	public void testAddPatientId() {
-		obj.getAffectedIds().add(samplePatientId);
-		assertTrue(obj.getAffectedIds().contains(samplePatientId));
-	}
-
-	public void testRemovePatientId() {
-		obj.affectedIds.add(samplePatientId);
-		assertTrue(obj.affectedIds.contains(samplePatientId));
-		obj.getAffectedIds().remove(samplePatientId);
-		assertFalse(obj.affectedIds.contains(samplePatientId));
-	}
-
 }

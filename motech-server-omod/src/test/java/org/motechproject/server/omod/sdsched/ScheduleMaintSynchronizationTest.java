@@ -40,6 +40,8 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import junit.framework.TestCase;
+import org.motechproject.server.service.AffectedPatients;
+import org.motechproject.server.service.ScheduleMaintService;
 
 /**
  * Tests the {@link ScheduleMaintSynchronization} class.

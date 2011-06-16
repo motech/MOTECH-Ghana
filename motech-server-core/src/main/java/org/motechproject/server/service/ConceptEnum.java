@@ -1,4 +1,4 @@
-package org.motechproject.server.omod;
+package org.motechproject.server.service;
 
 import org.openmrs.Concept;
 import org.openmrs.api.ConceptService;

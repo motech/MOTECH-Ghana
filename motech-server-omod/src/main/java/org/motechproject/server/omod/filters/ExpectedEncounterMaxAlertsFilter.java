@@ -2,8 +2,8 @@ package org.motechproject.server.omod.filters;
 
 import org.motechproject.server.model.DefaultedExpectedEncounterAlert;
 import org.motechproject.server.model.ExpectedEncounter;
-import org.motechproject.server.omod.ContextService;
-import org.motechproject.server.omod.MotechService;
+import org.motechproject.server.service.ContextService;
+import org.motechproject.server.service.MotechService;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -41,7 +41,7 @@ import java.util.List;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.motechproject.server.annotation.RunWithPrivileges;
-import org.motechproject.server.omod.ContextService;
+import org.motechproject.server.service.ContextService;
 
 public class ProxyPrivilegesAdvice implements MethodInterceptor {
 
