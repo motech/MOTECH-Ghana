@@ -1,9 +1,9 @@
 package org.motechproject.server.omod.web.model;
 
 import org.junit.Test;
-import org.motechproject.server.model.Country;
-import org.motechproject.server.model.Facility;
-import org.motechproject.server.model.Region;
+import org.motechproject.server.model.ghana.Facility;
+import org.motechproject.server.model.ghana.Country;
+import org.motechproject.server.model.ghana.Region;
 import org.openmrs.Location;
 
 import java.util.ArrayList;

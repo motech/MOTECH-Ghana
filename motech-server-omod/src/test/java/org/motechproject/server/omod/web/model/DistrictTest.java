@@ -1,9 +1,9 @@
 package org.motechproject.server.omod.web.model;
 
 import org.junit.Test;
-import org.motechproject.server.model.District;
-import org.motechproject.server.model.KassenaNankana;
-import org.motechproject.server.model.KassenaNankanaWest;
+import org.motechproject.server.model.ghana.KassenaNankanaWest;
+import org.motechproject.server.model.ghana.District;
+import org.motechproject.server.model.ghana.KassenaNankana;
 import org.motechproject.ws.CareMessageGroupingStrategy;
 
 import static org.junit.Assert.assertEquals;

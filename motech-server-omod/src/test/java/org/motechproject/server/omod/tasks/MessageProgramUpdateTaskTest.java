@@ -38,6 +38,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.*;
 import org.motechproject.server.model.*;
 import org.motechproject.server.model.MessageStatus;
+import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.service.MotechService;
 import org.motechproject.server.svc.RegistrarBean;

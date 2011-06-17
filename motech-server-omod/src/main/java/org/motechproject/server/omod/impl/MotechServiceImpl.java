@@ -36,6 +36,8 @@ package org.motechproject.server.omod.impl;
 import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.model.*;
 import org.motechproject.server.model.db.MotechDAO;
+import org.motechproject.server.model.ghana.Community;
+import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.service.MotechService;
 import org.motechproject.server.service.ScheduleMaintService;
 import org.motechproject.server.svc.OpenmrsBean;

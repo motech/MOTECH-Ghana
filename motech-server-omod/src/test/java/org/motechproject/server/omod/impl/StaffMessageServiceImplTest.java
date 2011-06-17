@@ -1,4 +1,4 @@
-package org.motechproject.server.service;
+package org.motechproject.server.omod.impl;
 
 import org.easymock.Capture;
 import org.easymock.EasyMock;
@@ -8,6 +8,10 @@ import org.motechproject.server.filters.ExpectedEncounterFilterChain;
 import org.motechproject.server.filters.ExpectedObsFilterChain;
 import org.motechproject.server.filters.Filter;
 import org.motechproject.server.model.*;
+import org.motechproject.server.model.ghana.Facility;
+import org.motechproject.server.model.ghana.KassenaNankana;
+import org.motechproject.server.service.ContextService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.svc.impl.RegistrarBeanImpl;
 import org.motechproject.server.util.DateUtil;
@@ -31,7 +35,7 @@ import static junit.framework.Assert.*;
 import static org.easymock.EasyMock.*;
 
 
-public class StaffMessageSenderTest {
+public class StaffMessageServiceImplTest {
 
     RegistrarBeanImpl registrarBean;
 
@@ -40,7 +44,7 @@ public class StaffMessageSenderTest {
     MotechService motechService;
     RCTService rctService;
     MessageService mobileService;
-    StaffMessageService staffMessageSender;
+    StaffMessageServiceImpl staffMessageServiceImpl;
 
     @Before
     public void setUp() throws Exception {
@@ -61,13 +65,13 @@ public class StaffMessageSenderTest {
         expectedObsFilterChain.setFilters(new ArrayList<Filter<ExpectedObs>>());
         registrarBean.setExpectedEncountersFilter(expectedEncounterFilterChain);
         registrarBean.setExpectedObsFilter(expectedObsFilterChain);
-        staffMessageSender = new StaffMessageService(contextService, mobileService, rctService);
-        staffMessageSender.setExpectedEncountersFilter(expectedEncounterFilterChain);
-        staffMessageSender.setExpectedObsFilter(expectedObsFilterChain);
+        staffMessageServiceImpl = new StaffMessageServiceImpl(contextService, mobileService, rctService);
+        staffMessageServiceImpl.setExpectedEncountersFilter(expectedEncounterFilterChain);
+        staffMessageServiceImpl.setExpectedObsFilter(expectedObsFilterChain);
 
         WebServiceCareModelConverterImpl careModelConverter = new WebServiceCareModelConverterImpl();
         careModelConverter.setContextService(contextService);
-        staffMessageSender.setCareModelConverter(careModelConverter);
+        staffMessageServiceImpl.setCareModelConverter(careModelConverter);
 
     }
 
@@ -138,7 +142,7 @@ public class StaffMessageSenderTest {
         replay(contextService, adminService, motechService, mobileService, rctService);
 
 
-        staffMessageSender.sendStaffCareMessages(forDate, forDate,
+        staffMessageServiceImpl.sendStaffCareMessages(forDate, forDate,
                 forDate, forDate,
                 careGroups,
                 false,
@@ -228,7 +232,7 @@ public class StaffMessageSenderTest {
 
         replay(contextService, adminService, motechService, mobileService, rctService);
 
-        staffMessageSender.sendStaffCareMessages(forDate, forDate,
+        staffMessageServiceImpl.sendStaffCareMessages(forDate, forDate,
                 forDate, forDate,
                 careGroups,
                 true,
@@ -275,7 +279,7 @@ public class StaffMessageSenderTest {
 
         replay(contextService, adminService, motechService, mobileService);
 
-        staffMessageSender.sendStaffCareMessages(forDate, forDate,
+        staffMessageServiceImpl.sendStaffCareMessages(forDate, forDate,
                 forDate, forDate,
                 careGroups,
                 false,
@@ -345,7 +349,7 @@ public class StaffMessageSenderTest {
 
         replay(contextService, adminService, motechService, mobileService, rctService);
 
-        staffMessageSender.sendStaffCareMessages(forDate, forDate,
+        staffMessageServiceImpl.sendStaffCareMessages(forDate, forDate,
                 forDate, forDate,
                 careGroups,
                 true,
@@ -376,9 +380,9 @@ public class StaffMessageSenderTest {
         expect(motechService.getBlackoutSettings()).andReturn(blackout).times(3);
         replay(contextService, adminService, motechService);
 
-        assertTrue(staffMessageSender.isMessageTimeWithinBlackoutPeriod(morningMessageTime));
-        assertTrue(staffMessageSender.isMessageTimeWithinBlackoutPeriod(nightMessageTime));
-        assertFalse(staffMessageSender.isMessageTimeWithinBlackoutPeriod(eveningMessageTime));
+        assertTrue(staffMessageServiceImpl.isMessageTimeWithinBlackoutPeriod(morningMessageTime));
+        assertTrue(staffMessageServiceImpl.isMessageTimeWithinBlackoutPeriod(nightMessageTime));
+        assertFalse(staffMessageServiceImpl.isMessageTimeWithinBlackoutPeriod(eveningMessageTime));
         verify(contextService, adminService, motechService);
 
     }
@@ -450,7 +454,7 @@ public class StaffMessageSenderTest {
         replay(contextService, adminService, motechService, mobileService, rctService);
 
 
-        staffMessageSender.sendStaffCareMessages(forDate, forDate,
+        staffMessageServiceImpl.sendStaffCareMessages(forDate, forDate,
                 forDate, forDate,
                 careGroups,
                 false,

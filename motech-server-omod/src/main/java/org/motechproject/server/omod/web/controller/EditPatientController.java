@@ -35,8 +35,8 @@ package org.motechproject.server.omod.web.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.model.Community;
-import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.ghana.Community;
+import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;

@@ -2,6 +2,10 @@ package org.motechproject.server.model;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
+import org.motechproject.server.model.ghana.District;
+import org.motechproject.server.model.ghana.HealthFacility;
+import org.motechproject.server.model.ghana.LocationType;
+import org.motechproject.server.model.ghana.SubDistrict;
 
 import java.io.Serializable;
 import java.util.ArrayList;

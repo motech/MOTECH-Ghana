@@ -1,6 +1,6 @@
 package org.motechproject.server.model.rct;
 
-import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.ws.rct.ControlGroup;
 import org.openmrs.User;
 

@@ -35,6 +35,8 @@ package org.motechproject.server.service;
 
 import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.model.*;
+import org.motechproject.server.model.ghana.Community;
+import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.svc.RegistrarBean;

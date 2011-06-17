@@ -35,7 +35,7 @@
 -->
 
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="${corePackage}.model">
+<hibernate-mapping package="${corePackage}.model.ghana">
 	<class name="Facility" table="motechmodule_facility">
 		<id name="id" type="long" column="id">
 			<generator class="native" />

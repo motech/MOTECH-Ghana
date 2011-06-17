@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.motechproject.server.builder.TestPatientBuilder;
 import org.motechproject.server.filters.condition.RCTCondition;
 import org.motechproject.server.model.ExpectedEncounter;
-import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.service.MotechService;
 import org.motechproject.server.svc.RCTService;

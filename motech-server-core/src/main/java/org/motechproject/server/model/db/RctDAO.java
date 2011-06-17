@@ -1,6 +1,5 @@
 package org.motechproject.server.model.db;
 
-import org.motechproject.server.model.Facility;
 import org.motechproject.server.model.rct.PhoneOwnershipType;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.model.rct.RCTPatient;

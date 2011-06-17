@@ -1,6 +1,6 @@
 package org.motechproject.server.ws;
 
-import org.motechproject.server.model.Community;
+import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.service.MotechService;
 import org.motechproject.server.util.GenderTypeConverter;

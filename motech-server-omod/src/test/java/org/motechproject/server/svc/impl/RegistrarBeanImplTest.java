@@ -37,6 +37,8 @@ import junit.framework.TestCase;
 import org.apache.commons.lang.time.DateUtils;
 import org.easymock.Capture;
 import org.motechproject.server.model.*;
+import org.motechproject.server.model.ghana.Facility;
+import org.motechproject.server.omod.impl.StaffMessageServiceImpl;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.service.MotechService;
 import org.motechproject.server.filters.ExpectedEncounterFilterChain;
@@ -80,7 +82,7 @@ public class RegistrarBeanImplTest extends TestCase {
         personService = createMock(PersonService.class);
         rctService = createMock(RCTService.class);
         mobileService = createMock(MessageService.class);
-        staffMessageSender = createMock(StaffMessageService.class);
+        staffMessageSender = createMock(StaffMessageServiceImpl.class);
         registrarBean = new RegistrarBeanImpl();
         registrarBean.setContextService(contextService);
         registrarBean.setAdministrationService(adminService);

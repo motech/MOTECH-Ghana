@@ -1,6 +1,8 @@
 package org.motechproject.server.model;
 
 import org.junit.Test;
+import org.motechproject.server.model.ghana.Facility;
+import org.motechproject.server.model.ghana.FacilityComparator;
 import org.openmrs.Location;
 
 import java.util.Collections;

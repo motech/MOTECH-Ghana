@@ -42,6 +42,8 @@ import org.hibernate.criterion.Order;
 import org.motechproject.server.messaging.MessageDefDate;
 import org.motechproject.server.model.*;
 import org.motechproject.server.model.db.MotechDAO;
+import org.motechproject.server.model.ghana.Community;
+import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.Gender;
 import org.openmrs.*;

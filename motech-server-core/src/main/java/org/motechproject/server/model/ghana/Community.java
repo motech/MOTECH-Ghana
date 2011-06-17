@@ -31,7 +31,7 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.server.model;
+package org.motechproject.server.model.ghana;
 
 import org.openmrs.Patient;
 

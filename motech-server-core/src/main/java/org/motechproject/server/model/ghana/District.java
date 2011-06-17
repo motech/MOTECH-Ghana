@@ -1,6 +1,7 @@
-package org.motechproject.server.model;
+package org.motechproject.server.model.ghana;
 
 import flexjson.JSON;
+import org.motechproject.server.model.MotechLocation;
 import org.motechproject.ws.CareMessageGroupingStrategy;
 
 import java.util.ArrayList;

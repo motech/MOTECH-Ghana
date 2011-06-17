@@ -33,7 +33,7 @@
 
 package org.motechproject.server.omod.web.model;
 
-import org.motechproject.server.model.Community;
+import org.motechproject.server.model.ghana.Community;
 
 public class WebCommunity {
 

@@ -35,10 +35,10 @@ package org.motechproject.server.ws;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.model.Community;
+import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.svc.*;
 import org.motechproject.server.util.MotechConstants;

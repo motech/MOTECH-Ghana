@@ -1,6 +1,7 @@
 package org.motechproject.server.model;
 
 import org.junit.Test;
+import org.motechproject.server.model.ghana.Facility;
 
 import static junit.framework.Assert.assertEquals;
 

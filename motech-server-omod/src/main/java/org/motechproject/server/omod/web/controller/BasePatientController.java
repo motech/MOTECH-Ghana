@@ -35,9 +35,12 @@ package org.motechproject.server.omod.web.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.motechproject.server.model.*;
+import org.motechproject.server.model.ghana.Community;
+import org.motechproject.server.model.ghana.Country;
+import org.motechproject.server.model.ghana.Facility;
+import org.motechproject.server.model.ghana.FacilityComparator;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.service.MotechService;
-import org.motechproject.server.model.Country;
 import org.motechproject.server.model.PreferredLocation;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.openmrs.Location;

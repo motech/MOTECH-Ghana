@@ -33,7 +33,7 @@
 
 package org.motechproject.server.omod.web.model;
 
-import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.ghana.Facility;
 import org.openmrs.Location;
 
 import java.util.Date;

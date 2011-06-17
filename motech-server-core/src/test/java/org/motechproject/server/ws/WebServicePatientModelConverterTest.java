@@ -40,7 +40,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.motechproject.server.model.Community;
+import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
 import org.motechproject.server.service.ContextService;

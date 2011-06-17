@@ -37,6 +37,8 @@ import org.motechproject.server.annotation.RunAsAdminUser;
 import org.motechproject.server.annotation.RunAsUserParam;
 import org.motechproject.server.annotation.RunWithPrivileges;
 import org.motechproject.server.model.*;
+import org.motechproject.server.model.ghana.Community;
+import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.ws.*;
 import org.openmrs.*;
 import org.openmrs.Patient;

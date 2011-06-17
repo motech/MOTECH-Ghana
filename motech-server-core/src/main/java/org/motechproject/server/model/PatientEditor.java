@@ -1,5 +1,7 @@
 package org.motechproject.server.model;
 
+import org.motechproject.server.model.ghana.Community;
+import org.motechproject.server.model.ghana.Facility;
 import org.openmrs.Patient;
 
 public class PatientEditor {

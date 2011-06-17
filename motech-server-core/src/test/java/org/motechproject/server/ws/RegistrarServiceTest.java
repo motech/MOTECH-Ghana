@@ -35,10 +35,10 @@ package org.motechproject.server.ws;
 
 import org.easymock.Capture;
 import org.junit.*;
-import org.motechproject.server.model.Community;
+import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
-import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;

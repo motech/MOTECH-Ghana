@@ -1,9 +1,9 @@
 package org.motechproject.server.factory;
 
 
-import org.motechproject.server.model.District;
-import org.motechproject.server.model.KassenaNankana;
-import org.motechproject.server.model.KassenaNankanaWest;
+import org.motechproject.server.model.ghana.KassenaNankanaWest;
+import org.motechproject.server.model.ghana.District;
+import org.motechproject.server.model.ghana.KassenaNankana;
 
 public class DistrictFactory {
     public District getDistrictWithName(String countyDistrict) {

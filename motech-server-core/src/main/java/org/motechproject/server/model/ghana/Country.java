@@ -1,7 +1,8 @@
-package org.motechproject.server.model;
+package org.motechproject.server.model.ghana;
 
 import flexjson.JSON;
 import flexjson.JSONSerializer;
+import org.motechproject.server.model.MotechLocation;
 import org.openmrs.Location;
 
 import java.util.ArrayList;

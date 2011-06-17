@@ -2,7 +2,7 @@ package org.motechproject.server.omod.web.controller;
 
 import org.junit.*;
 import org.mockito.Mock;
-import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.service.MotechService;
 import org.motechproject.server.omod.web.model.WebFacility;

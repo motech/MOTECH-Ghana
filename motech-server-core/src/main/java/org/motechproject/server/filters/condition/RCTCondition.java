@@ -1,6 +1,6 @@
 package org.motechproject.server.filters.condition;
 
-import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.svc.RCTService;
 import org.openmrs.Patient;

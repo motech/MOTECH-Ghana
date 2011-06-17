@@ -138,7 +138,7 @@
     <bean id="pregnancyObservation" class="org.motechproject.server.ws.PregnancyObservationImpl">
     </bean>
 
-    <bean id="staffMessageSender" class="org.motechproject.server.service.StaffMessageService">
+    <bean id="staffMessageSender" class="org.motechproject.server.omod.impl.StaffMessageServiceImpl">
        <property name="mobileService" ref="mobileClient"/>
     </bean>
 

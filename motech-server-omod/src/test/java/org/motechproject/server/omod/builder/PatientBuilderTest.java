@@ -2,7 +2,7 @@ package org.motechproject.server.omod.builder;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.junit.Test;
-import org.motechproject.server.model.Community;
+import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.omod.IdentifierGenerator;
 import org.motechproject.server.service.MotechService;
 import org.motechproject.server.omod.PersonAttributeTypeEnum;

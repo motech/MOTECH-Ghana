@@ -4,10 +4,11 @@ import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.server.model.*;
+import org.motechproject.server.model.ghana.Facility;
+import org.motechproject.server.omod.impl.StaffMessageServiceImpl;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.service.MotechService;
 import org.motechproject.server.filters.FilterChain;
-import org.motechproject.server.service.StaffMessageService;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.server.ws.WebServiceCareModelConverterImpl;
 import org.motechproject.server.ws.WebServicePatientModelConverterImpl;
@@ -35,7 +36,7 @@ public class RegistrarBeanDefaulterAlertsTest {
     private FilterChain encounterFilter;
     private FilterChain obsFilter;
     private MessageService messageService;
-    private StaffMessageService staffMessageSender;
+    private StaffMessageServiceImpl staffMessageServiceImpl;
 
 
     @Before
@@ -52,10 +53,10 @@ public class RegistrarBeanDefaulterAlertsTest {
         WebServiceCareModelConverterImpl careModelConverter = new WebServiceCareModelConverterImpl();
         careModelConverter.setContextService(contextService);
 
-        staffMessageSender = new StaffMessageService(contextService, messageService, null);
-        staffMessageSender.setExpectedEncountersFilter(encounterFilter);
-        staffMessageSender.setExpectedObsFilter(obsFilter);
-        staffMessageSender.setCareModelConverter(careModelConverter);
+        staffMessageServiceImpl = new StaffMessageServiceImpl(contextService, messageService, null);
+        staffMessageServiceImpl.setExpectedEncountersFilter(encounterFilter);
+        staffMessageServiceImpl.setExpectedObsFilter(obsFilter);
+        staffMessageServiceImpl.setCareModelConverter(careModelConverter);
 
 
         registrarBean.setContextService(contextService);
@@ -63,7 +64,7 @@ public class RegistrarBeanDefaulterAlertsTest {
         registrarBean.setExpectedEncountersFilter(encounterFilter);
         registrarBean.setExpectedObsFilter(obsFilter);
         registrarBean.setMobileService(messageService);
-        registrarBean.setStaffMessageSender(staffMessageSender);
+        registrarBean.setStaffMessageSender(staffMessageServiceImpl);
     }
 
 
@@ -129,7 +130,7 @@ public class RegistrarBeanDefaulterAlertsTest {
         WebServiceCareModelConverterImpl careModelConverter = new WebServiceCareModelConverterImpl();
         careModelConverter.setContextService(contextService);
 
-        registrarBean.setStaffMessageSender(staffMessageSender);
+        registrarBean.setStaffMessageSender(staffMessageServiceImpl);
 
         replay(contextService, motechService, administrationService, encounterFilter, obsFilter, messageService);
 

@@ -34,8 +34,8 @@
 package org.motechproject.server.svc.impl;
 
 import org.junit.*;
-import org.motechproject.server.model.Community;
-import org.motechproject.server.model.Facility;
+import org.motechproject.server.model.ghana.Community;
+import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.omod.MotechModuleActivator;
 import org.motechproject.server.service.MotechService;
 import org.motechproject.server.svc.RegistrarBean;
