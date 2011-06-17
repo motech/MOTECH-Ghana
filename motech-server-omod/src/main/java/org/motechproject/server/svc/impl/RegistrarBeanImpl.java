@@ -3487,7 +3487,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         boolean exists = CollectionUtils.exists(outPatientEncounters, new Predicate() {
             public boolean evaluate(Object object) {
                 DateUtil dateUtil = new DateUtil();
-                Date otherVisitDate = ((GeneralOutpatientEncounter) object).getDate();
+                Date otherVisitDate = ((GeneralOutpatientEncounter) object).getVisitDate();
                 return dateUtil.isSameMonth(visitDate, otherVisitDate) && dateUtil.isSameYear(visitDate, otherVisitDate);
             }
         });
