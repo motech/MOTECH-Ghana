@@ -13,13 +13,15 @@ import org.motechproject.server.model.ghana.KassenaNankana;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.service.MotechService;
 import org.motechproject.server.svc.RCTService;
+import org.motechproject.server.svc.impl.DefaultedExpectedEncounterAlertMatcher;
+import org.motechproject.server.svc.impl.DefaultedExpectedObsAlertMatcher;
 import org.motechproject.server.svc.impl.RegistrarBeanImpl;
 import org.motechproject.server.util.DateUtil;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.server.ws.WebServiceCareModelConverterImpl;
-import org.motechproject.ws.Care;
-import org.motechproject.ws.CareMessageGroupingStrategy;
-import org.motechproject.ws.MediaType;
+import org.motechproject.server.ws.WebServicePatientModelConverterImpl;
+import org.motechproject.ws.*;
+import org.motechproject.ws.MessageStatus;
 import org.motechproject.ws.mobile.MessageService;
 import org.openmrs.Location;
 import org.openmrs.Patient;
@@ -63,8 +65,6 @@ public class StaffMessageServiceImplTest {
         expectedEncounterFilterChain.setFilters(new ArrayList<Filter<ExpectedEncounter>>());
         ExpectedObsFilterChain expectedObsFilterChain = new ExpectedObsFilterChain();
         expectedObsFilterChain.setFilters(new ArrayList<Filter<ExpectedObs>>());
-        registrarBean.setExpectedEncountersFilter(expectedEncounterFilterChain);
-        registrarBean.setExpectedObsFilter(expectedObsFilterChain);
         staffMessageServiceImpl = new StaffMessageServiceImpl(contextService, mobileService, rctService);
         staffMessageServiceImpl.setExpectedEncountersFilter(expectedEncounterFilterChain);
         staffMessageServiceImpl.setExpectedObsFilter(expectedObsFilterChain);
@@ -72,6 +72,192 @@ public class StaffMessageServiceImplTest {
         WebServiceCareModelConverterImpl careModelConverter = new WebServiceCareModelConverterImpl();
         careModelConverter.setContextService(contextService);
         staffMessageServiceImpl.setCareModelConverter(careModelConverter);
+
+    }
+
+    @Test
+    public void defaultersAlertCountShouldBeIncreasedForExistingAlerts() {
+        String[] careGroups = new String[]{"ANC","TT1"};
+        List<Facility> facilities = facilitiesFor("Central Region");
+
+        Patient patient = new Patient(1);
+        ExpectedEncounter enc = new ExpectedEncounter();
+        enc.setId(1L);
+        enc.setPatient(patient);
+        enc.setName("ANC");
+        List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
+        expectedEncounters.add(enc);
+
+        ExpectedObs obs = new ExpectedObs();
+        obs.setId(1L);
+        obs.setPatient(patient);
+        obs.setName("TT1");
+        List<ExpectedObs> expectedObservations = new ArrayList<ExpectedObs>();
+        expectedObservations.add(obs);
+
+        WebServicePatientModelConverterImpl converter = new WebServicePatientModelConverterImpl();
+        converter.setRegistrarBean(registrarBean);
+
+        CareConfiguration careConfigurationForANC = new CareConfiguration(1L, "ANC", 3);
+        CareConfiguration careConfigurationForTT1 = new CareConfiguration(2L, "TT1", 3);
+
+        Date someDate = new Date();
+
+        Integer maxResults = 1;
+        expect(contextService.getMotechService()).andReturn(motechService).anyTimes();
+        expect(contextService.getAdministrationService()).andReturn(adminService).times(2);
+        expect(motechService.getBlackoutSettings()).andReturn(null);
+        expect(motechService.getAllFacilities()).andReturn(facilities);
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn(maxResults.toString()).times(2);
+        expect(motechService.getExpectedEncounter(null, facilities.get(0), careGroups, null, null, someDate, someDate, maxResults)).andReturn(expectedEncounters);
+        expect(motechService.getExpectedObs(null, facilities.get(0), careGroups, null, null, someDate, someDate, maxResults)).andReturn(expectedObservations);
+        expect(motechService.getCommunityByPatient(same(patient))).andReturn(null).times(2);
+
+
+        expect(mobileService.sendDefaulterMessage(EasyMock.<String>isNull(), eq("0123456789"), EasyMock.<Care[]>anyObject(),
+                EasyMock.<CareMessageGroupingStrategy>anyObject(), EasyMock.<MediaType>anyObject(), EasyMock.<Date>anyObject(), EasyMock.<Date>isNull()))
+                .andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
+
+        expect(motechService.getDefaultedEncounterAlertFor(enc)).andReturn(new DefaultedExpectedEncounterAlert(enc, careConfigurationForANC, 1, 1));
+        expect(motechService.getDefaultedObsAlertFor(obs)).andReturn((new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 2, 1)));
+
+        motechService.saveOrUpdateDefaultedEncounterAlert(equalsExpectedEncounterAlert(new DefaultedExpectedEncounterAlert(enc, careConfigurationForANC, 2, 2)));
+        expectLastCall();
+
+        motechService.saveOrUpdateDefaultedObsAlert(equalsExpectedObsAlert(new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 3, 2)));
+        expectLastCall();
+
+        replay(contextService, motechService, adminService, mobileService);
+
+        staffMessageServiceImpl.sendStaffCareMessages(someDate, someDate, someDate, someDate, careGroups, false, true);
+
+        verify(contextService, motechService, adminService,  mobileService);
+
+    }
+
+    @Test
+    public void onlyAttemptCountShouldBeIncrementedIfAlertNotDelivered() {
+        String[] careGroups = new String[]{"ANC","TT1"};
+        List<Facility> facilities = facilitiesFor("Central Region");
+
+        Patient patient = new Patient(1);
+        ExpectedEncounter enc = new ExpectedEncounter();
+        enc.setId(1L);
+        enc.setPatient(patient);
+        enc.setName("ANC");
+        List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
+        expectedEncounters.add(enc);
+
+        ExpectedObs obs = new ExpectedObs();
+        obs.setId(1L);
+        obs.setPatient(patient);
+        obs.setName("TT1");
+        List<ExpectedObs> expectedObservations = new ArrayList<ExpectedObs>();
+        expectedObservations.add(obs);
+
+        WebServicePatientModelConverterImpl converter = new WebServicePatientModelConverterImpl();
+        converter.setRegistrarBean(registrarBean);
+
+        CareConfiguration careConfigurationForANC = new CareConfiguration(1L, "ANC", 3);
+        CareConfiguration careConfigurationForTT1 = new CareConfiguration(2L, "TT1", 3);
+
+        Date someDate = new Date();
+
+        Integer maxResults = 1;
+        expect(contextService.getMotechService()).andReturn(motechService).anyTimes();
+        expect(contextService.getAdministrationService()).andReturn(adminService).times(2);
+        expect(motechService.getBlackoutSettings()).andReturn(null);
+        expect(motechService.getAllFacilities()).andReturn(facilities);
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn(maxResults.toString()).times(2);
+        expect(motechService.getExpectedEncounter(null, facilities.get(0), careGroups, null, null, someDate, someDate, maxResults)).andReturn(expectedEncounters);
+        expect(motechService.getExpectedObs(null, facilities.get(0), careGroups, null, null, someDate, someDate, maxResults)).andReturn(expectedObservations);
+        expect(motechService.getCommunityByPatient(same(patient))).andReturn(null).times(2);
+
+        expect(mobileService.sendDefaulterMessage(EasyMock.<String>isNull(), eq("0123456789"), EasyMock.<Care[]>anyObject(),
+                EasyMock.<CareMessageGroupingStrategy>anyObject(), EasyMock.<MediaType>anyObject(), EasyMock.<Date>anyObject(), EasyMock.<Date>isNull()))
+                .andReturn(MessageStatus.FAILED);
+
+        expect(motechService.getDefaultedEncounterAlertFor(enc)).andReturn(new DefaultedExpectedEncounterAlert(enc, careConfigurationForANC, 1, 2));
+        expect(motechService.getDefaultedObsAlertFor(obs)).andReturn((new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 1, 1)));
+
+        motechService.saveOrUpdateDefaultedEncounterAlert(equalsExpectedEncounterAlert(new DefaultedExpectedEncounterAlert(enc, careConfigurationForANC, 1 , 3)));
+        expectLastCall();
+
+        motechService.saveOrUpdateDefaultedObsAlert(equalsExpectedObsAlert(new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 1, 2)));
+        expectLastCall();
+
+        replay(contextService, motechService, adminService, mobileService);
+
+        staffMessageServiceImpl.sendStaffCareMessages(someDate, someDate, someDate, someDate, careGroups, false, true);
+
+        verify(contextService, motechService, adminService, mobileService);
+
+    }
+
+    @Test
+    public void newDefaultersAlertsShouldBeCreatedForPatientsWhenNoneExists() {
+
+
+
+        String[] careGroups = new String[]{"ANC","TT1"};
+        List<Facility> facilities = facilitiesFor("Central Region");
+
+        Patient patient = new Patient(1);
+        ExpectedEncounter enc = new ExpectedEncounter();
+        enc.setId(1L);
+        enc.setPatient(patient);
+        enc.setName("ANC");
+        List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
+        expectedEncounters.add(enc);
+
+        ExpectedObs obs = new ExpectedObs();
+        obs.setId(1L);
+        obs.setPatient(patient);
+        obs.setName("TT1");
+        List<ExpectedObs> expectedObservations = new ArrayList<ExpectedObs>();
+        expectedObservations.add(obs);
+
+        WebServicePatientModelConverterImpl converter = new WebServicePatientModelConverterImpl();
+        converter.setRegistrarBean(registrarBean);
+
+        CareConfiguration careConfigurationForANC = new CareConfiguration(1L, "ANC", 3);
+        CareConfiguration careConfigurationForTT1 = new CareConfiguration(2L, "TT1", 3);
+
+        Date someDate = new Date();
+
+        Integer maxResults = 1;
+        expect(contextService.getMotechService()).andReturn(motechService).anyTimes();
+        expect(contextService.getAdministrationService()).andReturn(adminService).times(2);
+        expect(motechService.getBlackoutSettings()).andReturn(null);
+        expect(motechService.getAllFacilities()).andReturn(facilities);
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn(maxResults.toString()).times(2);
+        expect(motechService.getExpectedEncounter(null, facilities.get(0), careGroups, null, null, someDate, someDate, maxResults)).andReturn(expectedEncounters);
+        expect(motechService.getExpectedObs(null, facilities.get(0), careGroups, null, null, someDate, someDate, maxResults)).andReturn(expectedObservations);
+        expect(motechService.getCommunityByPatient(same(patient))).andReturn(null).times(2);
+
+
+        expect(mobileService.sendDefaulterMessage(EasyMock.<String>isNull(), eq("0123456789"), EasyMock.<Care[]>anyObject(),
+                EasyMock.<CareMessageGroupingStrategy>anyObject(), EasyMock.<MediaType>anyObject(), EasyMock.<Date>anyObject(), EasyMock.<Date>isNull()))
+                .andReturn(MessageStatus.DELIVERED);
+        expect(motechService.getDefaultedEncounterAlertFor(enc)).andReturn(null);
+        expect(motechService.getCareConfigurationFor("ANC")).andReturn(careConfigurationForANC);
+        expect(motechService.getDefaultedObsAlertFor(obs)).andReturn(null);
+        expect(motechService.getCareConfigurationFor("TT1")).andReturn(careConfigurationForTT1);
+
+        motechService.saveOrUpdateDefaultedEncounterAlert(equalsExpectedEncounterAlert(new DefaultedExpectedEncounterAlert(enc, careConfigurationForANC, 1, 1)));
+        expectLastCall();
+
+        motechService.saveOrUpdateDefaultedObsAlert(equalsExpectedObsAlert(new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 1, 1)));
+        expectLastCall();
+
+        WebServiceCareModelConverterImpl careModelConverter = new WebServiceCareModelConverterImpl();
+        careModelConverter.setContextService(contextService);
+
+        replay(contextService, motechService, adminService, mobileService);
+
+        staffMessageServiceImpl.sendStaffCareMessages(someDate, someDate, someDate, someDate, careGroups, false, true);
+
+        verify(contextService, motechService, adminService,  mobileService);
 
     }
 
@@ -463,6 +649,30 @@ public class StaffMessageServiceImplTest {
         verify(contextService, adminService, motechService, mobileService, rctService);
 
         assertEquals(CareMessageGroupingStrategy.COMMUNITY, capturedStrategy.getValue());
+    }
+
+    private static DefaultedExpectedEncounterAlert equalsExpectedEncounterAlert(DefaultedExpectedEncounterAlert alert) {
+        reportMatcher(new DefaultedExpectedEncounterAlertMatcher(alert));
+        return alert;
+    }
+
+    private static DefaultedExpectedObsAlert equalsExpectedObsAlert(DefaultedExpectedObsAlert alert) {
+        reportMatcher(new DefaultedExpectedObsAlertMatcher(alert));
+        return alert;
+    }
+
+    private List<Facility> facilitiesFor(String... regions) {
+        List<Facility> facilities = new ArrayList<Facility>();
+        for (String region : regions) {
+            Facility facility = new Facility();
+            facility.setId(1L);
+            facility.setPhoneNumber("0123456789");
+            Location location = new Location();
+            location.setRegion(region);
+            facility.setLocation(location);
+            facilities.add(facility);
+        }
+        return facilities;
     }
 
 }

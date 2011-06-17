@@ -72,7 +72,6 @@ public class RegistrarBeanImplTest extends TestCase {
     private PersonService personService;
     private RCTService rctService;
     private MessageService mobileService;
-    private StaffMessageService staffMessageSender;
 
     @Override
     protected void setUp() throws Exception {
@@ -82,20 +81,16 @@ public class RegistrarBeanImplTest extends TestCase {
         personService = createMock(PersonService.class);
         rctService = createMock(RCTService.class);
         mobileService = createMock(MessageService.class);
-        staffMessageSender = createMock(StaffMessageServiceImpl.class);
         registrarBean = new RegistrarBeanImpl();
         registrarBean.setContextService(contextService);
         registrarBean.setAdministrationService(adminService);
         registrarBean.setPersonService(personService);
         registrarBean.setRctService(rctService);
         registrarBean.setMobileService(mobileService);
-        registrarBean.setStaffMessageSender(staffMessageSender);
         ExpectedEncounterFilterChain expectedEncounterFilterChain = new ExpectedEncounterFilterChain();
         expectedEncounterFilterChain.setFilters(new ArrayList<Filter<ExpectedEncounter>>());
         ExpectedObsFilterChain expectedObsFilterChain = new ExpectedObsFilterChain();
         expectedObsFilterChain.setFilters(new ArrayList<Filter<ExpectedObs>>());
-        registrarBean.setExpectedEncountersFilter(expectedEncounterFilterChain);
-        registrarBean.setExpectedObsFilter(expectedObsFilterChain);
     }
 
     @Override
@@ -105,16 +100,6 @@ public class RegistrarBeanImplTest extends TestCase {
         adminService = null;
         motechService = null;
         personService = null;
-    }
-
-    public void testSendStaffCareMessages() {
-        Date forDate = new Date();
-        String careGroups[] = {"ANC", "TT", "IPT"};
-        staffMessageSender.sendStaffCareMessages(forDate, forDate, forDate, forDate, careGroups, false, false);
-        expectLastCall().atLeastOnce();
-        replay(staffMessageSender);
-        registrarBean.sendStaffCareMessages(forDate, forDate, forDate, forDate, careGroups, false, false);
-        verify(staffMessageSender);
     }
 
     public void testFindPersonPreferredMessageDate() {

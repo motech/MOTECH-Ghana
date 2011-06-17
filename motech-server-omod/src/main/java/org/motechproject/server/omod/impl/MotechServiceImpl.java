@@ -40,6 +40,7 @@ import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.service.MotechService;
 import org.motechproject.server.service.ScheduleMaintService;
+import org.motechproject.server.service.StaffMessageService;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.svc.RegistrarBean;
@@ -65,6 +66,8 @@ public class MotechServiceImpl extends BaseOpenmrsService implements MotechServi
     
     private RCTService rctService;
 
+    private StaffMessageService staffMessageService;
+
     public MotechDAO getMotechDAO() {
 		return motechDAO;
 	}
@@ -85,7 +88,15 @@ public class MotechServiceImpl extends BaseOpenmrsService implements MotechServi
 		return openmrsBean;
 	}
 
-	public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+    public StaffMessageService getStaffMessageService() {
+        return staffMessageService;
+    }
+
+    public void setStaffMessageService(StaffMessageService staffMessageService) {
+        this.staffMessageService = staffMessageService;
+    }
+
+    public void setOpenmrsBean(OpenmrsBean openmrsBean) {
 		this.openmrsBean = openmrsBean;
 	}
 

@@ -60,6 +60,8 @@ public interface MotechService extends OpenmrsService {
 
     OpenmrsBean getOpenmrsBean();
 
+    StaffMessageService getStaffMessageService();
+
     ScheduleMaintService getScheduleMaintService();
 
     @Transactional

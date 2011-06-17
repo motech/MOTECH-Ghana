@@ -392,12 +392,6 @@ public interface RegistrarBean {
 			OpenmrsConstants.PRIV_VIEW_CONCEPTS, OpenmrsConstants.PRIV_VIEW_OBS })
 	public void sendMessages(Date startDate, Date endDate, boolean sendImmediate);
 
-	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_PERSON_ATTRIBUTE_TYPES,
-			OpenmrsConstants.PRIV_VIEW_USERS })
-	public void sendStaffCareMessages(Date startDate, Date endDate,
-                                   Date deliveryDate, Date deliveryTime, String[] careGroups,
-                                   boolean sendUpcoming, boolean avoidBlackout);
-
 	@RunWithPrivileges( { OpenmrsConstants.PRIV_VIEW_IDENTIFIER_TYPES,
 			OpenmrsConstants.PRIV_VIEW_PATIENTS,
 			OpenmrsConstants.PRIV_VIEW_CONCEPTS,

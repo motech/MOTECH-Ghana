@@ -100,4 +100,6 @@ public interface ContextService {
 	public ScheduleMaintService getScheduleMaintService();
 
 	public IdentifierSourceService getIdentifierSourceService();
+
+    public StaffMessageService getStaffMessageService();
 }

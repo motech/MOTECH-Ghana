@@ -131,6 +131,7 @@
                             <property name="openmrsBean" ref="registrarBeanProxy"/>
                             <property name="scheduleMaintService" ref="scheduleMaintService"/>
                             <property name="rctService" ref="rctBeanProxy"/>
+                            <property name="staffMessageService" ref="staffMessageServiceProxy"/>
                         </bean>
                     </property>
                     <property name="preInterceptors">

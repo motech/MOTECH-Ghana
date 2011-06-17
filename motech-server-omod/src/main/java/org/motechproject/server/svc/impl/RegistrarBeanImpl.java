@@ -46,10 +46,11 @@ import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.omod.*;
 import org.motechproject.server.omod.builder.PatientBuilder;
-import org.motechproject.server.filters.FilterChain;
 import org.motechproject.server.omod.impl.MessageProgramServiceImpl;
 import org.motechproject.server.omod.web.model.WebStaff;
-import org.motechproject.server.service.*;
+import org.motechproject.server.service.ConceptEnum;
+import org.motechproject.server.service.ContextService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RCTService;
@@ -69,7 +70,6 @@ import org.openmrs.api.*;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.TaskDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
@@ -110,18 +110,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     private List<String> staffTypes;
 
     @Autowired
-    @Qualifier("expectedEncountersFilter")
-    private FilterChain expectedEncountersFilter;
-
-    @Autowired
-    @Qualifier("expectedObsFilter")
-    private FilterChain expectedObsFilter;
-
-    @Autowired
     private MotechUserRepository motechUserRepository;
-
-    @Autowired
-    private StaffMessageService staffMessageSender;
 
     @Autowired
     private PregnancyObservation pregnancyObservation;
@@ -2834,14 +2823,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         }
     }
 
-    public void sendStaffCareMessages(Date startDate, Date endDate,
-                                      Date deliveryDate, Date deliveryTime,
-                                      String[] careGroups,
-                                      boolean sendUpcoming,
-                                      boolean blackoutEnabled) {
-        staffMessageSender.sendStaffCareMessages(startDate, endDate, deliveryDate, deliveryTime, careGroups, sendUpcoming, blackoutEnabled);
-    }
-
 
     public List<ExpectedEncounter> filterRCTEncounters(List<ExpectedEncounter> allDefaulters) {
         List<ExpectedEncounter> toBeRemoved = new ArrayList<ExpectedEncounter>();
@@ -3605,18 +3586,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public MessageProgramServiceImpl getMessageProgramService() {
         return messageProgramService;
-    }
-
-    public void setExpectedEncountersFilter(FilterChain expectedEncountersFilter) {
-        this.expectedEncountersFilter = expectedEncountersFilter;
-    }
-
-    public void setExpectedObsFilter(FilterChain expectedObsFilter) {
-        this.expectedObsFilter = expectedObsFilter;
-    }
-
-    public void setStaffMessageSender(StaffMessageService staffMessageSender) {
-        this.staffMessageSender = staffMessageSender;
     }
 
     public void setPregnancyObservation(PregnancyObservation pregnancyObservation) {
