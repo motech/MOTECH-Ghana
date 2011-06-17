@@ -631,7 +631,7 @@ public class StaffMessageServiceImplTest {
         expect(mobileService.sendDefaulterMessage(capture(capturedMessageId), capture(capturedPhoneNumber),
                 capture(capturedCares), capture(capturedStrategy),
                 capture(capturedMediaType), capture(capturedStartDate),
-                capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED).times(2);
+                capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED).times(1);
 
         motechService.saveOrUpdateDefaultedEncounterAlert(EasyMock.<DefaultedExpectedEncounterAlert>anyObject());
         expectLastCall().atLeastOnce();

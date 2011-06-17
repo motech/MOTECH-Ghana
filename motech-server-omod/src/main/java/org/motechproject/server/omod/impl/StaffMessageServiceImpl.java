@@ -1,5 +1,6 @@
 package org.motechproject.server.omod.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.*;
@@ -150,13 +151,10 @@ public class StaffMessageServiceImpl implements StaffMessageService {
                                                  Care[] cares, CareMessageGroupingStrategy groupingStrategy,
                                                  Facility facility) {
         try {
-            boolean result = false;
-            for (String phoneNumber : facility.getAvailablePhoneNumbers()) {
-                org.motechproject.ws.MessageStatus messageStatus;
-                messageStatus = mobileService.sendBulkCaresMessage(null, phoneNumber, cares, groupingStrategy, MediaType.TEXT, messageStartDate, null);
-                result |= messageStatus != org.motechproject.ws.MessageStatus.FAILED;
-            }
-            return result;
+            String facilityPhoneNumbers = StringUtils.join(facility.getAvailablePhoneNumbers(), ",");
+            org.motechproject.ws.MessageStatus messageStatus;
+            messageStatus = mobileService.sendBulkCaresMessage(null, facilityPhoneNumbers, cares, groupingStrategy, MediaType.TEXT, messageStartDate, null);
+            return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
         } catch (Exception e) {
             log.error("Mobile WS staff upcoming care message failure", e);
             return false;
@@ -164,15 +162,13 @@ public class StaffMessageServiceImpl implements StaffMessageService {
     }
 
     private void sendNoUpcomingCareMessage(Facility facility) {
-
-        for (String phoneNumber : facility.getAvailablePhoneNumbers()) {
-            log.info("Sending 'no upcoming care' message to " + facility.name() + " at " + phoneNumber);
-            try {
-                org.motechproject.ws.MessageStatus messageStatus = mobileService.sendMessage(facility.name() + " has no upcoming care for this week", phoneNumber);
-                handleUpcomingCareMessageResponse(phoneNumber, messageStatus);
-            } catch (Exception e) {
-                handleUpcomingCareMessageException(phoneNumber, e);
-            }
+        String facilityPhoneNumbers = StringUtils.join(facility.getAvailablePhoneNumbers(), ",");
+        log.info("Sending 'no upcoming care' message to " + facility.name() + " at " + facilityPhoneNumbers);
+        try {
+            org.motechproject.ws.MessageStatus messageStatus = mobileService.sendMessage(facility.name() + " has no upcoming care for this week", facilityPhoneNumbers);
+            handleUpcomingCareMessageResponse(facilityPhoneNumbers, messageStatus);
+        } catch (Exception e) {
+            handleUpcomingCareMessageException(facilityPhoneNumbers, e);
         }
     }
 
@@ -180,12 +176,9 @@ public class StaffMessageServiceImpl implements StaffMessageService {
                                                   Care[] cares, CareMessageGroupingStrategy groupingStrategy) {
         try {
             org.motechproject.ws.MessageStatus messageStatus;
-            boolean result = false;
-            for (String phoneNumber : facility.getAvailablePhoneNumbers()) {
-                messageStatus = mobileService.sendDefaulterMessage(null, phoneNumber, cares, groupingStrategy, MediaType.TEXT, messageStartDate, null);
-                result |= messageStatus != org.motechproject.ws.MessageStatus.FAILED;
-            }
-            return result;
+            String facilityPhoneNumbers = StringUtils.join(facility.getAvailablePhoneNumbers(), ",");
+            messageStatus = mobileService.sendDefaulterMessage(null, facilityPhoneNumbers, cares, groupingStrategy, MediaType.TEXT, messageStartDate, null);
+            return messageStatus != org.motechproject.ws.MessageStatus.FAILED;
         } catch (Exception e) {
             log.error("Mobile WS staff defaulted care message failure", e);
             return false;
@@ -193,18 +186,15 @@ public class StaffMessageServiceImpl implements StaffMessageService {
     }
 
     private void sendNoDefaultersMessage(Facility facility) {
-
-        for (String phoneNumber : facility.getAvailablePhoneNumbers()) {
-            log.info("Sending 'no defaulters' message to " + facility.name() + " at " + phoneNumber);
-            try {
-                org.motechproject.ws.MessageStatus messageStatus = mobileService.sendMessage(facility.name() + " has no defaulters for this week", phoneNumber);
-                if (messageStatus == org.motechproject.ws.MessageStatus.FAILED) {
-                    log.error("Unable to message " + phoneNumber + " that they have no defaulters");
-                }
-            } catch (Exception e) {
-                log.error("Unable to message " + phoneNumber + " that they have no defaulters", e);
+        String facilityPhoneNumbers = StringUtils.join(facility.getAvailablePhoneNumbers(), ",");
+        log.info("Sending 'no defaulters' message to " + facility.name() + " at " + facilityPhoneNumbers);
+        try {
+            org.motechproject.ws.MessageStatus messageStatus = mobileService.sendMessage(facility.name() + " has no defaulters for this week", facilityPhoneNumbers);
+            if (messageStatus == org.motechproject.ws.MessageStatus.FAILED) {
+                log.error("Unable to message " + facilityPhoneNumbers + " that they have no defaulters");
             }
-
+        } catch (Exception e) {
+            log.error("Unable to message " + facilityPhoneNumbers + " that they have no defaulters", e);
         }
     }
 
@@ -272,7 +262,6 @@ public class StaffMessageServiceImpl implements StaffMessageService {
     private CareConfiguration careConfigurationFor(String careName) {
         return motechService().getCareConfigurationFor(careName);
     }
-
 
 
     private Integer getMaxQueryResults() {

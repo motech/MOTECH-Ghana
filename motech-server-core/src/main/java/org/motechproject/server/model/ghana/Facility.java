@@ -35,6 +35,7 @@ package org.motechproject.server.model.ghana;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.StringUtils;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 
@@ -156,7 +157,10 @@ public class Facility implements Serializable {
         phoneNumbers = new ArrayList<String>(phoneNumbers);
         CollectionUtils.filter(phoneNumbers, new Predicate() {
             public boolean evaluate(Object input) {
-                return input != null;
+                if(input instanceof String){
+                    return StringUtils.isNotBlank((String)input);
+                }
+                return false;
             }
         });
         return phoneNumbers;
