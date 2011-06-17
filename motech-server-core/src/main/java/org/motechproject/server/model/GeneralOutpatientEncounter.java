@@ -33,14 +33,14 @@
 
 package org.motechproject.server.model;
 
-import java.util.Date;
-
 import org.motechproject.ws.Gender;
+
+import java.util.Date;
 
 public class GeneralOutpatientEncounter {
 
     private Long id;
-    private Date date;
+    private Date visitDate;
     private Integer staffId;
     private Integer facilityId;
     private String serialNumber;
@@ -56,17 +56,26 @@ public class GeneralOutpatientEncounter {
     private Boolean actTreated;
     private String comments;
     private Boolean newPatient;
+    private Date dateCreated;
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
     public GeneralOutpatientEncounter() {
     }
 
-    public GeneralOutpatientEncounter(Date date, Integer staffId,
+    public GeneralOutpatientEncounter(Date visitDate, Integer staffId,
                                       Integer facilityId, String serialNumber, Gender sex,
                                       Date birthDate, Boolean insured, Boolean newCase, Boolean newPatient,
                                       Integer diagnosis, Integer secondaryDiagnosis, Boolean referred,
                                       Boolean rdtGiven, Boolean rdtPositive, Boolean actTreated,
                                       String comments) {
-        this.date = date;
+        this.visitDate = visitDate;
         this.staffId = staffId;
         this.facilityId = facilityId;
         this.serialNumber = serialNumber;
@@ -92,12 +101,12 @@ public class GeneralOutpatientEncounter {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getVisitDate() {
+        return visitDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setVisitDate(Date visitDate) {
+        this.visitDate = visitDate;
     }
 
     public Integer getStaffId() {
@@ -222,7 +231,7 @@ public class GeneralOutpatientEncounter {
 
     @Override
     public String toString() {
-        return "General Outpatient Encounter: [date: " + date + ", staffID: "
+        return "General Outpatient Encounter: [date: " + visitDate + ", staffID: "
                 + staffId + ", facilityID: " + facilityId + ", serial: "
                 + serialNumber + ", sex: " + sex + ", birthdate: " + birthDate
                 + ", insured: " + insured + ", newcase: " + newCase + ", newpatient: " + newPatient

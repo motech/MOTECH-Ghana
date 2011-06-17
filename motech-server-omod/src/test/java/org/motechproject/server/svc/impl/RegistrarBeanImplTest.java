@@ -692,7 +692,7 @@ public class RegistrarBeanImplTest extends TestCase {
         expect(contextService.getMotechService()).andReturn(motechService);
 
         GeneralOutpatientEncounter generalOutpatientEncounter = new GeneralOutpatientEncounter();
-        generalOutpatientEncounter.setDate(visitDate);
+        generalOutpatientEncounter.setVisitDate(visitDate);
 
         expect(motechService.getOutPatientVisitEntryBy(facilityId, serialNumber, sex, dob, newCase, diagnosis))
                 .andReturn(Arrays.asList(generalOutpatientEncounter));
@@ -716,7 +716,7 @@ public class RegistrarBeanImplTest extends TestCase {
         Date lastMonth = DateUtils.addMonths(visitDate, -1);
 
         GeneralOutpatientEncounter generalOutpatientEncounter = new GeneralOutpatientEncounter();
-        generalOutpatientEncounter.setDate(lastMonth);
+        generalOutpatientEncounter.setVisitDate(lastMonth);
 
 
         expect(contextService.getMotechService()).andReturn(motechService);

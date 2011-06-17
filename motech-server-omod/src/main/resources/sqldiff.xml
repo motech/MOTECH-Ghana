@@ -3206,4 +3206,15 @@
         </sql>
     </diff>
 
+     <diff>
+        <version>4.7</version>
+        <author>ThoughtWorks</author>
+        <date>June 17 2011</date>
+		<description>Introducing date_created column in motechmodule_generaloutpatientencounter and renaming date cloumn to visit_date</description>
+        <sql>
+            alter table motechmodule_generaloutpatientencounter change date visit_date date not null;
+            alter table motechmodule_generaloutpatientencounter add column date_created timestamp default CURRENT_TIMESTAMP;
+        </sql>
+    </diff>
+
 </sqldiff>
