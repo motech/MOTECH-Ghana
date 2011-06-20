@@ -1,33 +1,26 @@
 package flows;
 
 import org.testng.Assert;
-import org.testng.annotations.AfterGroups;
-import org.testng.annotations.BeforeGroups;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pages.*;
 
 import java.util.HashMap;
 
 
-/**
- * Created by IntelliJ IDEA.
- * User: rupeshd
- * Date: 2/9/11
- * Time: 2:27 PM
- * To change this template use File | Settings | File Templates.
- */
 public class RegisterClientPageTest {
     private OpenMRSLoginPage loginPage;
 
-    @BeforeGroups(groups = {"smoke"})
+    //@BeforeGroups(groups = {"smoke"})
+    @BeforeTest
     public void setUp() {
         loginPage = new OpenMRSLoginPage();
         loginPage.getOpenMRSDashBoard();
     }
 
-    @AfterGroups(groups = {"smoke"})
+    //@AfterGroups(groups = {"smoke"})
+    @AfterTest
     public void tearDown() {
-        loginPage.close();
+       loginPage.close();
     }
 
     @Test(groups = {"smoke"})
@@ -50,12 +43,8 @@ public class RegisterClientPageTest {
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
         RegisterClientPage regPatientPage = new RegisterClientPage();
         String firstName = regPatientPage.RegisterOtherClient();
-        //ViewDataPage viewDataPage = new ViewDataPage();
-        //String patientID = viewDataPage.returnPatientId(lastName);
-        //Assert.assertNotNull(patientID,"Other Patient ID is null");
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.SEARCH);
         SearchPage searchPage = new SearchPage();
-        // Assert.assertTrue(searchPage.searchClientByID(patientID, lastName), "Patient Search failed");
         Assert.assertTrue(searchPage.searchClientByFirstName(firstName),"Patient Search failed");
     }
 
@@ -65,12 +54,14 @@ public class RegisterClientPageTest {
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
         RegisterClientPage regPatientPage = new RegisterClientPage();
-        String firstName = regPatientPage.RegisterChildClient();
-       // ViewDataPage viewDataPage = new ViewDataPage();
-        //String patientID = viewDataPage.returnPatientId(hm);
-        //Assert.assertNotNull(patientID,"Child Patient ID is null");
+        String motherName = regPatientPage.RegisterMotherClient();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.SEARCH);
         SearchPage searchPage = new SearchPage();
+        String motherID = searchPage.returnClientIdBySearchingUsingFirstName(motherName);
+        System.out.println(motherID);
+        moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
+        String firstName = regPatientPage.RegisterChildClient(motherID);
+        moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.SEARCH);
         Assert.assertTrue(searchPage.searchClientByFirstName(firstName), "Patient Search failed");
     };
 }

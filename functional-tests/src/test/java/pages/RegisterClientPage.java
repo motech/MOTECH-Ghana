@@ -8,7 +8,6 @@ import util.UtilityClass;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
 public class RegisterClientPage {
@@ -29,6 +28,9 @@ public class RegisterClientPage {
 
     public RegisterClientPage() {
         driver = DefaultPage.getInstance();
+    }
+
+    private void InitializeDefaultObjects(){
         inputFirstName = driver.findElement(By.id("firstName"));
         inputMiddleName = driver.findElement(By.id("middleName"));
         inputLastName = driver.findElement(By.id("lastName"));
@@ -44,6 +46,7 @@ public class RegisterClientPage {
     }
 
     public String RegisterMotherClient() {
+        InitializeDefaultObjects();
         String firstName = "First-"+ UtilityClass.getInstance().getCurrentDate();
         selectOption("registrationMode", "Auto-generate MoTeCH ID");
         selectOption("registrantType", "Pregnant mother");
@@ -76,6 +79,7 @@ public class RegisterClientPage {
 
     //This is a temporary function to facilitate data entry for RCT.
     public String RegisterMotherClientForRCTDataEntry(String dueDate , String phoneType) {
+        InitializeDefaultObjects();
         String lastName = "Last-"+ UtilityClass.getInstance().getCurrentDate();
         selectOption("registrationMode", "Auto-generate MoTeCH ID");
         selectOption("registrantType", "Pregnant mother");
@@ -106,6 +110,7 @@ public class RegisterClientPage {
     }
 
     public String RegisterOtherClient(){
+        InitializeDefaultObjects();
         String firstName = "First-"+ UtilityClass.getInstance().getCurrentDate();
         selectOption("registrationMode", "Auto-generate MoTeCH ID");
         selectOption("registrantType", "Other");
@@ -129,21 +134,14 @@ public class RegisterClientPage {
         return firstName;
     }
 
-    public String RegisterChildClient(){
-        String motherName = RegisterMotherClient();
-        SearchPage searchPage = new SearchPage();
-        String motherID = searchPage.returnClientIdBySearchingUsingFirstName(motherName);
-        System.out.println(motherID);
+    public String RegisterChildClient(String motherID){
+        InitializeDefaultObjects();
         if (motherID != null){
-            MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
-            moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
             selectOption("registrationMode", "Auto-generate MoTeCH ID");
             selectOption("registrantType", "Child (age less than 5)");
-
+            String firstName= "Child-" + UtilityClass.getInstance().getCurrentDate();
+            inputFirstName.sendKeys(firstName);
             inputMotherMotechID = driver.findElement(By.id("motherMotechId"));
-            String firstNameValue = "Child-" + UtilityClass.getInstance().getCurrentDate();
-
-            inputFirstName.sendKeys(firstNameValue);
             inputMotherMotechID.sendKeys(motherID);
             inputDOB.sendKeys("01/01/2011");
             selectOption("birthDateEst", "Yes");
@@ -152,7 +150,7 @@ public class RegisterClientPage {
             selectOption("enroll","Yes");
             consent.click();
             submitButton.click();
-            return firstNameValue;
+            return firstName;
         }
         else {
             System.out.println("Mother ID is null");

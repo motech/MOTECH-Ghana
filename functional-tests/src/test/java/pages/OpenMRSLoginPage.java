@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import util.TestConfiguration;
@@ -17,6 +18,8 @@ public class OpenMRSLoginPage {
     }
 
     public void getOpenMRSDashBoard() {
+        // Maximizing the Browser
+        ((JavascriptExecutor)driver).executeScript("if (window.screen){window.moveTo(0, 0);window.resizeTo(window.screen.availWidth,window.screen.availHeight);};");
         driver.get("http://localhost:"+portNumber+"/openmrs/module/motechmodule/index.htm");
         WebElement userName = driver.findElement(By.id("username"));;
         WebElement password = driver.findElement(By.id("password"));

@@ -23,6 +23,9 @@ public class SearchPage {
 
     public SearchPage(){
         driver = DefaultPage.getInstance();
+    }
+
+    private void InitializeDefaultObjects(){
         inputMotechID = driver.findElement(By.id("motechId"));
         buttonSubmit =driver.findElement(By.xpath("//input[@type='submit']"));
         inputLastName = driver.findElement(By.id("lastName"));
@@ -30,6 +33,7 @@ public class SearchPage {
     }
 
     public boolean searchClientByID(String motechID,String lastName){
+        InitializeDefaultObjects();
         inputMotechID.sendKeys(motechID);
         buttonSubmit.click();
         matchTable = driver.findElement(By.xpath("//div[@id='content']/div[3]/table"));
@@ -43,6 +47,7 @@ public class SearchPage {
     }
 
     public boolean searchClientByFirstName(String firstName){
+        InitializeDefaultObjects();
         inputFirstName.sendKeys(firstName);
         buttonSubmit.click();
         matchTable = driver.findElement(By.xpath("//div[@id='content']/div[3]/table"));
@@ -57,13 +62,14 @@ public class SearchPage {
     }
 
     public String returnClientIdBySearchingUsingFirstName(String firstName){
+        InitializeDefaultObjects();
         inputFirstName.sendKeys(firstName);
         buttonSubmit.click();
         matchTable = driver.findElement(By.xpath("//div[@id='content']/div[3]/table"));
         List<WebElement> tdList= matchTable.findElements(By.tagName("td"));
         for(WebElement td:tdList){
             if (td.getText().trim().equals(firstName)){
-                String MoTeCHid = driver.findElement(By.xpath("//div[@id='content']/div[3]/table/tbody/tr/td[1]")).toString();
+                String MoTeCHid = driver.findElement(By.xpath("//div[@id='content']/div[3]/table/tbody/tr/td[1]")).getText();
                 return MoTeCHid;
             }
         }
