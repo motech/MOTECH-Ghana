@@ -96,18 +96,27 @@
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
-    
-        <openmrs:hasPrivilege privilege="Duplicate Patients">
+
+     <openmrs:hasPrivilege privilege="Duplicate Patients">
         <li <c:if test='<%= request.getRequestURI().contains("duplicatepatients") %>'>class="active"</c:if>>
           <a href="${pageContext.request.contextPath}/module/motechmodule/duplicatepatients.form">
             <spring:message code="motechmodule.Tools.duplicatepatients"/>
           </a>
         </li>
     </openmrs:hasPrivilege>
+
     <openmrs:hasPrivilege privilege="View RCT Patients">
 		<li <c:if test='<%= request.getRequestURI().contains("viewrctpatients") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/module/motechmodule/viewrctpatients.form">
 				<spring:message code="motechmodule.RCTPatients.view"/>
+			</a>
+		</li>
+	</openmrs:hasPrivilege>
+
+    <openmrs:hasPrivilege privilege="Send SMS">
+		<li <c:if test='<%= request.getRequestURI().contains("sms") %>'>class="active"</c:if>>
+			<a href="${pageContext.request.contextPath}/module/motechmodule/sms.form">
+				<spring:message code="motechmodule.sms.view"/>
 			</a>
 		</li>
 	</openmrs:hasPrivilege>

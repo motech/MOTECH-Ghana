@@ -157,6 +157,11 @@
         <description>Allows the admin to view patients related to RCT</description>
     </privilege>
 
+    <privilege>
+        <name>Send SMS</name>
+        <description>Allows the staff to send SMS</description>
+    </privilege>
+
 	<globalProperty>
 		<property>motechmodule.troubled_phone_failures</property>
 		<defaultValue>4</defaultValue>
