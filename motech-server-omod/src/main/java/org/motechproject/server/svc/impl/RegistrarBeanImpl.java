@@ -70,6 +70,7 @@ import org.openmrs.api.*;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.TaskDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
@@ -113,6 +114,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     private MotechUserRepository motechUserRepository;
 
     @Autowired
+    @Qualifier("pregnancyObservation")
     private PregnancyObservation pregnancyObservation;
 
     @Autowired

@@ -11,6 +11,7 @@ import org.openmrs.PatientIdentifier;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonName;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class AbstractWebServiceModelConverter {
     private ContextService contextService;
 
     @Autowired
+    @Qualifier("pregnancyObservation")
     private PregnancyObservation pregnancyObservation;
 
 

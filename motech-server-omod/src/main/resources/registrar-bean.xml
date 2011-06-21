@@ -150,7 +150,22 @@
     </bean>
 
 
-    <bean id="pregnancyObservation" class="org.motechproject.server.ws.PregnancyObservationImpl">
+    <bean id="pregnancyObservationBean" class="org.motechproject.server.ws.PregnancyObservationImpl">
+    </bean>
+
+    <bean id="pregnancyObservation" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <list>
+                <value>org.motechproject.server.ws.PregnancyObservation</value>
+            </list>
+        </property>
+        <property name="target" ref="pregnancyObservationBean"/>
+        <property name="interceptorNames">
+            <list>
+                <idref bean="contextSessionAdvice"/>
+                <idref bean="proxyPrivilegesAdvice"/>
+            </list>
+        </property>
     </bean>
 
     <bean id="staffMessageSender" class="org.motechproject.server.omod.impl.StaffMessageServiceImpl">
