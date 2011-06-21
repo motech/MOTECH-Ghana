@@ -855,6 +855,9 @@ public class RegistrarWebService implements RegistrarService {
         validateFacility(facilityId, errors, "FacilityID");
         validateDuplicateOPDVisitEntry(errors, facilityId, date, serialNumber, sex, dateOfBirth, newCase, diagnosis);
 
+
+        validateDiagnosis(diagnosis, secondDiagnosis, errors);
+
         if (errors.getErrors().size() > 0) {
             throw new ValidationException("Errors in General Visit request",
                     errors);
@@ -898,6 +901,8 @@ public class RegistrarWebService implements RegistrarService {
         org.openmrs.Patient patient = validateMotechId(motechId, errors,
                 "MotechID", true);
 
+        validateDiagnosis(diagnosis, secondDiagnosis, errors);
+
         if (errors.getErrors().size() > 0) {
             throw new ValidationException(
                     "Errors in Record Child Visit request", errors);
@@ -934,6 +939,8 @@ public class RegistrarWebService implements RegistrarService {
         org.openmrs.Patient patient = validateMotechId(motechId, errors,
                 "MotechID", true);
 
+        validateDiagnosis(diagnosis, secondDiagnosis, errors);
+
         if (errors.getErrors().size() > 0) {
             throw new ValidationException(
                     "Errors in Record Mother Visit request", errors);
@@ -943,6 +950,12 @@ public class RegistrarWebService implements RegistrarService {
                 date, patient, serialNumber, insured, diagnosis,
                 secondDiagnosis, rdtGiven, rdtPositive, actTreated, newCase,
                 newPatient, referred, comments);
+    }
+
+    private void validateDiagnosis(Integer diagnosis, Integer secondDiagnosis, ValidationErrors errors) {
+        if(diagnosis == secondDiagnosis){
+              errors.add(messageBean.getMessage("motechmodule.ws.invalid.opdVisitEntry.secondDiagnosis", "OPDVistEntryForm"));
+        }
     }
 
     @WebMethod
