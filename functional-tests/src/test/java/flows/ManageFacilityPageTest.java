@@ -3,10 +3,7 @@ package flows;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import pages.HomePageLinksEnum;
-import pages.ManageFacilityPage;
-import pages.MoTeCHDashBoardPage;
-import pages.OpenMRSLoginPage;
+import pages.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,9 +19,10 @@ public class ManageFacilityPageTest {
         OpenMRSLoginPage loginPage = new OpenMRSLoginPage();
         loginPage.getOpenMRSDashBoard();
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
-        moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.MANAGE_FACILITIES);
+        moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.ADD_FACILITY);
+        AddFacilityPage addFacilityPage = new AddFacilityPage();
+        String facilityName = addFacilityPage.AddNewFacilityWithFourPhoneNumber();
         ManageFacilityPage manageFacilityPage = new ManageFacilityPage();
-        String facilityName = manageFacilityPage.AddNewFacility();
         Assert.assertNotNull(facilityName,"Facility Name is null.Facility is not created");
         Assert.assertTrue(manageFacilityPage.FindFacilityByName(facilityName), "Facility name not found");
    }
