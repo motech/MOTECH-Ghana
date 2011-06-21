@@ -19,7 +19,8 @@ public class ViewCommunitiesPageTest {
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.MANAGE_FACILITIES);
         ManageFacilityPage manageFacilityPage = new ManageFacilityPage();
-        String facilityName = manageFacilityPage.AddNewFacility();
+        AddFacilityPage addFacilityPage = new AddFacilityPage();
+        String facilityName = addFacilityPage.AddNewFacilityWithFourPhoneNumber();
         Assert.assertNotNull(facilityName, "Facility Name is null.Facility is not created");
         Assert.assertTrue(manageFacilityPage.FindFacilityByName(facilityName), "Facility name not found");
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.VIEW_COMMUNITIES);

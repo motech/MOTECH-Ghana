@@ -30,40 +30,13 @@ public class ManageFacilityPage {
 
     public ManageFacilityPage(){
         driver = DefaultPage.getInstance();
-        linkAddNewFacility = driver.findElement(By.linkText("Add a new Facility"));
     }
 
-    public String AddNewFacility(){
-
-        linkAddNewFacility.click();
-
-
-        String facilityName = "Facility-"+ getCurrentDate();
-        inputFacilityName = driver.findElement(By.id("name"));
-        inputCountryName = driver.findElement(By.id("country"));
-        inputRegionName = driver.findElement(By.id("region"));
-        inputDistrictName = driver.findElement(By.id("countyDistrict"));
-        inputSubDistrictName = driver.findElement(By.id("stateProvince"));
-        inputPhoneNumber = driver.findElement(By.id("phoneNumber"));
-        btnSubmit = driver.findElement(By.xpath("//input[@type='submit']"));
-
-
-        inputFacilityName.sendKeys(facilityName);
-        inputCountryName.sendKeys("Country");
-        inputRegionName.sendKeys("Region");
-        inputDistrictName.sendKeys("District");
-        inputSubDistrictName.sendKeys("Subdistrict");
-        inputPhoneNumber.sendKeys("0123456789");
-        btnSubmit.click();
-
-        return facilityName;
-
-    }
 
     public boolean FindFacilityByName(String facilityName){
 
        try {
-                driver.findElement(By.linkText(facilityName));
+                driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]"));
             return true;
 
         } catch (NoSuchElementException e) {
@@ -71,14 +44,6 @@ public class ManageFacilityPage {
         }
 
     }
-
-
-    public String getCurrentDate(){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
-        String date = sdf.format(Calendar.getInstance().getTime());
-        return date;
-    }
-
 
 
 }

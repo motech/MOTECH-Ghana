@@ -28,9 +28,9 @@ public class SMSControllerTest {
         SMSController controller = new SMSController();
         WebBulkMessage message = new WebBulkMessage();
         message.setRecipients("0123456788,0123456789");
-        message.setContent("Hello");
+        message.setContent("Hello World");
         controller.setMessageService(messageService);
-        expect(messageService.sendMessage("Hello", "0123456788,0123456789")).andReturn(MessageStatus.DELIVERED);
+        expect(messageService.sendMessage("Hello%2BWorld", "0123456788,0123456789")).andReturn(MessageStatus.DELIVERED);
 
         replay(messageService);
 
