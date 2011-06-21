@@ -1,5 +1,7 @@
 package org.motechproject.server.omod.web.model;
 
+import org.motechproject.server.omod.web.encoder.SpaceEncoder;
+
 public class WebBulkMessage {
 
     private String content;
@@ -29,4 +31,7 @@ public class WebBulkMessage {
         return recipients;
     }
 
+    public String content(SpaceEncoder spaceEncoder) {
+        return spaceEncoder.encode(content);
+    }
 }

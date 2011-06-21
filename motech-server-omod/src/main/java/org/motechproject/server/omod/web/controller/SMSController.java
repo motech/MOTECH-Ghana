@@ -1,5 +1,6 @@
 package org.motechproject.server.omod.web.controller;
 
+import org.motechproject.server.omod.web.encoder.SpaceEncoder;
 import org.motechproject.server.omod.web.model.WebBulkMessage;
 import org.motechproject.server.omod.web.model.WebResponse;
 import org.motechproject.ws.MessageStatus;
@@ -30,7 +31,7 @@ public class SMSController {
 
     @RequestMapping(value = VIEW, method = RequestMethod.POST)
     public ModelAndView send(@ModelAttribute WebBulkMessage bulkMessage) {
-        MessageStatus status = messageService.sendMessage(bulkMessage.content(), bulkMessage.recipients());
+        MessageStatus status = messageService.sendMessage(bulkMessage.content(new SpaceEncoder()), bulkMessage.recipients());
         ModelAndView modelAndView = new ModelAndView(VIEW);
         WebResponse response = createResponse(status,bulkMessage);
         modelAndView.addObject("response", response);
