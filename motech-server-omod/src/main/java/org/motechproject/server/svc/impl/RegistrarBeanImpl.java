@@ -1683,7 +1683,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     @Transactional
     public void recordChildCWCVisit(User staff, Location facility, Date date,
-                                    Patient patient, Integer cwcLocation, String house,
+                                    Patient patient, String serialNumber, Integer cwcLocation, String house,
                                     String community, Boolean bcg, Integer opvDose, Integer pentaDose,
                                     Boolean measles, Boolean yellowFever, Boolean csm,
                                     Integer iptiDose, Boolean vitaminA, Boolean dewormer,
@@ -1696,6 +1696,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         encounter.setPatient(patient);
         encounter.setLocation(facility);
         encounter.setProvider(staff);
+
+       addSerialNumberObservation(facility, date, patient, serialNumber, encounter);
 
         if (cwcLocation != null) {
             Obs cwcLocationObs = createNumericValueObs(date,

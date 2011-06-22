@@ -1007,34 +1007,35 @@ public class RegistrarServiceTest{
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String house = "House", community = "Community", comments = "Comments";
 		Integer location = 1, opvDose = 1, pentaDose = 1, iptiDose = 1;
-		Boolean bcg = true, yellowFever = true, csm = true, measles = true, vitaminA = true;
-		Boolean dewormer = false, maleInvolved = true;
-		Double weight = 25.2, muac = 5.1, height = 37.2;
-		Date date = new Date();
+        String serialNumber = "1/111";
+        Boolean bcg = true, yellowFever = true, csm = true, measles = true, vitaminA = true;
+        Boolean dewormer = false, maleInvolved = true;
+        Double weight = 25.2, muac = 5.1, height = 37.2;
+        Date date = new Date();
 
-		User staff = new User(1);
-		Location facilityLocation = new Location(1);
-		Facility facility = new Facility();
-		facility.setLocation(facilityLocation);
-		org.openmrs.Patient patient = new org.openmrs.Patient(2);
+        User staff = new User(1);
+        Location facilityLocation = new Location(1);
+        Facility facility = new Facility();
+        facility.setLocation(facilityLocation);
+        org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(registrarBean.isValidIdCheckDigit(staffId)).andReturn(true);
-		expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn(
+        expect(registrarBean.isValidIdCheckDigit(staffId)).andReturn(true);
+        expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn(
 				staff);
-		expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
-		expect(registrarBean.isValidMotechIdCheckDigit(motechId)).andReturn(
+        expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
+        expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
+        expect(registrarBean.isValidMotechIdCheckDigit(motechId)).andReturn(
 				true);
-		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+        expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordChildCWCVisit(staff, facilityLocation, date,
-				patient, location, house, community, bcg, opvDose, pentaDose,
+        registrarBean.recordChildCWCVisit(staff, facilityLocation, date,
+				patient, serialNumber, location, house, community, bcg, opvDose, pentaDose,
 				measles, yellowFever, csm, iptiDose, vitaminA, dewormer,
 				weight, muac, height, maleInvolved, comments);
 
-		replay(registrarBean, openmrsBean);
+        replay(registrarBean, openmrsBean);
 
-		regWs.recordChildCWCVisit(staffId, facilityId, date, motechId,
+        regWs.recordChildCWCVisit(staffId, facilityId, date, motechId, serialNumber,
 				location, house, community, bcg, opvDose, pentaDose, measles,
 				yellowFever, csm, iptiDose, vitaminA, dewormer, weight, muac,
 				height, maleInvolved, comments);
@@ -1046,30 +1047,31 @@ public class RegistrarServiceTest{
 	public void recordChildCWCVisitInvalidPatientId()
 			throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3;
-		String house = "House", community = "Community", comments = "Comments";
-		Integer location = 1, opvDose = 1, pentaDose = 1, iptiDose = 1;
-		Boolean bcg = true, yellowFever = true, csm = true, measles = true, vitaminA = true;
-		Boolean dewormer = false, maleInvolved = true;
-		Double weight = 25.2, muac = 5.1, height = 37.2;
-		Date date = new Date();
+        String serialNumber = "1/111";
+        String house = "House", community = "Community", comments = "Comments";
+        Integer location = 1, opvDose = 1, pentaDose = 1, iptiDose = 1;
+        Boolean bcg = true, yellowFever = true, csm = true, measles = true, vitaminA = true;
+        Boolean dewormer = false, maleInvolved = true;
+        Double weight = 25.2, muac = 5.1, height = 37.2;
+        Date date = new Date();
 
-		User staff = new User(1);
+        User staff = new User(1);
 
-		expect(registrarBean.isValidIdCheckDigit(staffId)).andReturn(true);
-		expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn(
+        expect(registrarBean.isValidIdCheckDigit(staffId)).andReturn(true);
+        expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn(
 				staff);
-		expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(
+        expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
+        expect(registrarBean.getFacilityById(facilityId)).andReturn(
 				new Facility());
-		expect(registrarBean.isValidMotechIdCheckDigit(motechId)).andReturn(
+        expect(registrarBean.isValidMotechIdCheckDigit(motechId)).andReturn(
 				true);
-		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+        expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(null);
 
-		replay(registrarBean, openmrsBean);
+        replay(registrarBean, openmrsBean);
 
-		try {
-			regWs.recordChildCWCVisit(staffId, facilityId, date, motechId,
+        try {
+            regWs.recordChildCWCVisit(staffId, facilityId, date, motechId,serialNumber,
 					location, house, community, bcg, opvDose, pentaDose,
 					measles, yellowFever, csm, iptiDose, vitaminA, dewormer,
 					weight, muac, height, maleInvolved, comments);

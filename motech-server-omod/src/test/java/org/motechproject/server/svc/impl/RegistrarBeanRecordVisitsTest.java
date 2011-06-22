@@ -326,7 +326,7 @@ public class RegistrarBeanRecordVisitsTest extends
 
             // CWC Visit for Child 2
             registrarBean.recordChildCWCVisit(staff, facilityLocation, date,
-                    child2, 1, "House", "Community", true, 1, 1, true, true,
+                    child2, serialNumber, 1, "House", "Community", true, 1, 1, true, true,
                     true, 1, true, true, 25.0, 5.0, 35.0, true, "Comments");
 
             assertEquals("CWC visit not added for Child 2", 3, Context
@@ -451,6 +451,51 @@ public class RegistrarBeanRecordVisitsTest extends
         registrarBean.recordMotherANCVisit(staff, facilityLocation, date, patient, serialNumber, visitNumber, ancLocation, house, community.getName(), date, bpSystolic, bpDiastolic, weight, ttDose, iptDose, iptReactive, itnUse, fht, fhr, urineTestProtein, urineTestGlucose, hemoglobin, vdrlReactive, vdrlTreatment, dewormer, maleInvolved, pmtct, preTestCounseled, null, postTestCounseled, pmtctTreatment, referred, date, "");
 
         Encounter encounter = registrarBean.getEncounters(patient, "ANCVISIT", yesterday).get(0);
+        assertTrue(isObsPresent(encounter.getObs(), "SERIAL NUMBER"));
+    }
+
+    @Test
+    public void testRecordCWCVisitShouldRecordSerialNumber() {
+
+
+        Context.openSession();
+        Context.authenticate("admin", "test");
+        MotechService motechService = Context.getService(MotechService.class);
+            RegistrarBean registrarBean = motechService.getRegistrarBean();
+        OpenmrsBean openmrsBean = motechService.getOpenmrsBean();
+        EncounterService encounterService = createMock(EncounterService.class);
+
+        Facility facility = motechService.getFacilityById(11117);
+        Location facilityLocation = facility.getLocation();
+        Community community = motechService.getCommunityById(11111);
+        String serialNumber = "1/111";
+        int visitNumber = 1;
+        double weight = 1.0;
+        int iptDose = 1;
+        boolean vitaminA = false;
+        boolean dewormer = false;
+
+        Date date = new DateUtil().dateFor(2, 1, 2011);
+        Date yesterday = new DateUtil().dateFor(1,1,2011);
+
+        registrarBean.registerPatient(RegistrationMode.USE_PREPRINTED_ID,
+                    1234575, RegistrantType.PREGNANT_MOTHER,
+                    "Mother1FirstName", "Mother1MiddleName", "Mother1LastName",
+                    "Mother1PrefName", date, false, Gender.FEMALE, true,
+                    "nhisNumber1", date, null, community, facility, "Address",
+                    "1111111111", date, true, true, true,
+                    ContactNumberType.PERSONAL, MediaType.TEXT, "language",
+                    DayOfWeek.MONDAY, date, InterestReason.CURRENTLY_PREGNANT,
+                    HowLearned.FRIEND, null);
+
+
+        staff = registrarBean.registerStaff("Nurse", "Betty", "7777777777", "CHO", null);
+
+        Patient patient = openmrsBean.getPatientByMotechId("1234575");
+
+        registrarBean.recordChildCWCVisit(staff, facilityLocation, date, patient, serialNumber, visitNumber, "", community.getName(), true, 1, 1, false, false, false, iptDose, vitaminA, dewormer, weight, 12.0, 123.0, false, "");
+
+        Encounter encounter = registrarBean.getEncounters(patient, "CWCVISIT", yesterday).get(0);
         assertTrue(isObsPresent(encounter.getObs(), "SERIAL NUMBER"));
     }
 

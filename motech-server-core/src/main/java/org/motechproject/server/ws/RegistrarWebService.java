@@ -460,6 +460,7 @@ public class RegistrarWebService implements RegistrarService {
             @WebParam(name = "facilityId") Integer facilityId,
             @WebParam(name = "date") Date date,
             @WebParam(name = "motechId") Integer motechId,
+            @WebParam(name = "serialNumber") String serialNumber,
             @WebParam(name = "cwcLocation") Integer cwcLocation,
             @WebParam(name = "house") String house,
             @WebParam(name = "community") String community,
@@ -492,7 +493,7 @@ public class RegistrarWebService implements RegistrarService {
         }
 
         registrarBean.recordChildCWCVisit(staff, facility.getLocation(), date,
-                patient, cwcLocation, house, community, bcg, opvDose,
+                patient, serialNumber, cwcLocation, house, community, bcg, opvDose,
                 pentaDose, measles, yellowFever, csm, iptiDose, vitaminA,
                 dewormer, weight, muac, height, maleInvolved, comments);
     }
