@@ -45,20 +45,15 @@ import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.DateUtil;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.*;
+import org.motechproject.ws.Patient;
 import org.motechproject.ws.server.RegistrarService;
 import org.motechproject.ws.server.ValidationException;
-import org.openmrs.Encounter;
-import org.openmrs.Location;
-import org.openmrs.Obs;
-import org.openmrs.User;
+import org.openmrs.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.logging.LogManager;
 
 import static org.easymock.EasyMock.*;
@@ -2554,4 +2549,30 @@ public class RegistrarServiceTest{
 		regWs.setRegistrarBean(null);
 		assertEquals(null, regBeanField.get(regWs));
 	}
+
+    @Test
+    public void shouldRetrieveStaffDetails() {
+
+        RegistrarWebService regWebService = new RegistrarWebService();
+        regWebService.setOpenmrsBean(openmrsBean);
+
+        User user = new User();
+        user.setSystemId("123");
+        PersonName name = new PersonName();
+        name.setGivenName("Jay");
+        name.setFamilyName("Jee");
+        HashSet<PersonName> names = new HashSet<PersonName>();
+        names.add(name);
+        user.addName(name);
+        expect(openmrsBean.getStaffBySystemId("123")).andReturn(user);
+
+        replay(openmrsBean);
+        MotechStaff staff = regWebService.getStaffDetails("123");
+        verify(openmrsBean);
+
+        assertEquals("123",staff.getStaffId());
+        assertEquals("Jay",staff.getFirstName());
+        assertEquals("Jee",staff.getFamilyName());
+
+    }
 }

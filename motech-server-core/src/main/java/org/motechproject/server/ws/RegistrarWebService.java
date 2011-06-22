@@ -1318,6 +1318,11 @@ public class RegistrarWebService implements RegistrarService {
         return confirmation;
     }
 
+    public MotechStaff getStaffDetails(String staffId) {
+        User staff = openmrsBean.getStaffBySystemId(staffId);
+        return staff == null ? new MotechStaff() : new MotechStaff(staff.getSystemId(),staff.getGivenName(),staff.getFamilyName());
+    }
+
     private void returnRegistrationError(String error) throws ValidationException {
         ValidationErrors registrationErrors = new ValidationErrors();
         registrationErrors.add(messageBean.getMessage(error, "error"));
