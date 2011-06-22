@@ -124,6 +124,7 @@ public class RegistrarWebService implements RegistrarService {
             @WebParam(name = "facilityId") Integer facilityId,
             @WebParam(name = "date") Date date,
             @WebParam(name = "motechId") Integer motechId,
+            @WebParam(name = "serialNumber") String serialNumber,
             @WebParam(name = "visitNumber") Integer visitNumber,
             @WebParam(name = "location") Integer location,
             @WebParam(name = "house") String house,
@@ -168,7 +169,7 @@ public class RegistrarWebService implements RegistrarService {
         }
 
         registrarBean.recordMotherANCVisit(staff, facility.getLocation(), date,
-                patient, visitNumber, location, house, community,
+                patient, serialNumber, visitNumber, location, house, community,
                 estDeliveryDate, bpSystolic, bpDiastolic, weight, ttDose,
                 iptDose, iptReactive, itnUse, fht, fhr, urineTestProtein,
                 urineTestGlucose, hemoglobin, vdrlReactive, vdrlTreatment,

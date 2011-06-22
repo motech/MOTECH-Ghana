@@ -154,17 +154,17 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public void recordMotherANCVisit(@RunAsUserParam User staff,
-			Location facility, Date date, Patient patient, Integer visitNumber,
-			Integer ancLocation, String house, String community,
-			Date estDeliveryDate, Integer bpSystolic, Integer bpDiastolic,
-			Double weight, Integer ttDose, Integer iptDose,
-			Boolean iptReactive, Boolean itnUse, Double fht, Integer fhr,
-			Integer urineTestProtein, Integer urineTestGlucose,
-			Double hemoglobin, Boolean vdrlReactive, Boolean vdrlTreatment,
-			Boolean dewormer, Boolean maleInvolved, Boolean pmtct,
-			Boolean preTestCounseled, HIVResult hivTestResult,
-			Boolean postTestCounseled, Boolean pmtctTreatment,
-			Boolean referred, Date nextANCDate, String comments);
+                                     Location facility, Date date, Patient patient, String serialNumber, Integer visitNumber,
+                                     Integer ancLocation, String house, String community,
+                                     Date estDeliveryDate, Integer bpSystolic, Integer bpDiastolic,
+                                     Double weight, Integer ttDose, Integer iptDose,
+                                     Boolean iptReactive, Boolean itnUse, Double fht, Integer fhr,
+                                     Integer urineTestProtein, Integer urineTestGlucose,
+                                     Double hemoglobin, Boolean vdrlReactive, Boolean vdrlTreatment,
+                                     Boolean dewormer, Boolean maleInvolved, Boolean pmtct,
+                                     Boolean preTestCounseled, HIVResult hivTestResult,
+                                     Boolean postTestCounseled, Boolean pmtctTreatment,
+                                     Boolean referred, Date nextANCDate, String comments);
 
 	@RunAsAdminUser
 	public void recordPregnancyTermination(@RunAsUserParam User staff,

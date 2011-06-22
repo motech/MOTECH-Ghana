@@ -886,7 +886,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     @Transactional
     public void recordMotherANCVisit(User staff, Location facility, Date date,
-                                     Patient patient, Integer visitNumber, Integer ancLocation,
+                                     Patient patient, String serialNumber, Integer visitNumber, Integer ancLocation,
                                      String house, String community, Date estDeliveryDate,
                                      Integer bpSystolic, Integer bpDiastolic, Double weight,
                                      Integer ttDose, Integer iptDose, Boolean iptReactive,
@@ -909,6 +909,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
             log.warn("Entered ANC visit for patient without active pregnancy, "
                     + "patient id=" + patient.getPatientId());
         }
+
+        addSerialNumberObservation(facility, date, patient, serialNumber, encounter);
 
         if (visitNumber != null) {
             Obs visitNumberObs = createNumericValueObs(date,
@@ -1122,6 +1124,15 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                         + "no active pregnancy due date found, patient id="
                         + patient.getPatientId());
             }
+        }
+    }
+
+    private void addSerialNumberObservation(Location facility, Date date, Patient patient, String serialNumber, Encounter encounter) {
+        if (serialNumber != null) {
+            Obs serialNumberObs = createTextValueObs(date,
+                    concept(ConceptEnum.CONCEPT_SERIAL_NUMBER), patient, facility, serialNumber,
+                    encounter, null);
+            encounter.addObs(serialNumberObs);
         }
     }
 
@@ -1819,12 +1830,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         encounter.setLocation(facility);
         encounter.setProvider(staff);
 
-        if (serialNumber != null) {
-            Obs serialNumberObs = createTextValueObs(date,
-                    concept(ConceptEnum.CONCEPT_SERIAL_NUMBER), patient, facility, serialNumber,
-                    encounter, null);
-            encounter.addObs(serialNumberObs);
-        }
+        addSerialNumberObservation(facility, date, patient, serialNumber, encounter);
+
         if (insured != null) {
             Obs insuredObs = createBooleanValueObs(date, concept(ConceptEnum.CONCEPT_INSURED),
                     patient, facility, insured, encounter, null);

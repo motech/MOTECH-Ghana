@@ -35,9 +35,9 @@ package org.motechproject.server.ws;
 
 import org.easymock.Capture;
 import org.junit.*;
-import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.svc.BirthOutcomeChild;
 import org.motechproject.server.svc.OpenmrsBean;
@@ -203,24 +203,25 @@ public class RegistrarServiceTest{
 		Boolean pmtct = false, preTest = false, postTest = false, pmtctTreatment = false, referred = false;
 		Date date = new Date();
 		HIVResult hivResult = HIVResult.NO_TEST;
+        String serialNumber = "1/111";
 
-		User staff = new User(1);
-		Location facilityLocation = new Location(1);
-		Facility facility = new Facility();
-		facility.setLocation(facilityLocation);
-		org.openmrs.Patient patient = new org.openmrs.Patient(2);
+        User staff = new User(1);
+        Location facilityLocation = new Location(1);
+        Facility facility = new Facility();
+        facility.setLocation(facilityLocation);
+        org.openmrs.Patient patient = new org.openmrs.Patient(2);
 
-		expect(registrarBean.isValidIdCheckDigit(staffId)).andReturn(true);
-		expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn(
+        expect(registrarBean.isValidIdCheckDigit(staffId)).andReturn(true);
+        expect(openmrsBean.getStaffBySystemId(staffId.toString())).andReturn(
 				staff);
-		expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
-		expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
-		expect(registrarBean.isValidMotechIdCheckDigit(motechId)).andReturn(
+        expect(registrarBean.isValidIdCheckDigit(facilityId)).andReturn(true);
+        expect(registrarBean.getFacilityById(facilityId)).andReturn(facility);
+        expect(registrarBean.isValidMotechIdCheckDigit(motechId)).andReturn(
 				true);
-		expect(openmrsBean.getPatientByMotechId(motechId.toString()))
+        expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
-		registrarBean.recordMotherANCVisit(staff, facilityLocation, date,
-				patient, visitNumber, location, house, community, date,
+        registrarBean.recordMotherANCVisit(staff, facilityLocation, date,
+				patient, serialNumber, visitNumber, location, house, community, date,
 				bpSystolic, bpDiastolic, weight, ttDose, iptDose, iptReactive,
 				itnUse, fht, fhr, urineProtein, urineGlucose, hemoglobin,
 				vdrlReactive, vdrlTreatment, dewormer, maleInvolved, pmtct,
@@ -229,7 +230,7 @@ public class RegistrarServiceTest{
 
 		replay(registrarBean, openmrsBean);
 
-		regWs.recordMotherANCVisit(staffId, facilityId, date, motechId,
+		regWs.recordMotherANCVisit(staffId, facilityId, date, motechId, serialNumber,
 				visitNumber, location, house, community, date, bpSystolic,
 				bpDiastolic, weight, ttDose, iptDose, iptReactive, itnUse, fht,
 				fhr, urineProtein, urineGlucose, hemoglobin, vdrlReactive,
@@ -269,7 +270,7 @@ public class RegistrarServiceTest{
 		replay(registrarBean, openmrsBean);
 
 		try {
-			regWs.recordMotherANCVisit(staffId, facilityId, date, motechId,
+			regWs.recordMotherANCVisit(staffId, facilityId, date, motechId, null,
 					visitNumber, location, house, community, date, bpSystolic,
 					bpDiastolic, weight, ttDose, iptDose, iptReactive, itnUse,
 					fht, fhr, urineProtein, urineGlucose, hemoglobin,

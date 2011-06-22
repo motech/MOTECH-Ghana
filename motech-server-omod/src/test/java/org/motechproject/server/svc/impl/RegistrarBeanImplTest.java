@@ -36,15 +36,13 @@ package org.motechproject.server.svc.impl;
 import junit.framework.TestCase;
 import org.apache.commons.lang.time.DateUtils;
 import org.easymock.Capture;
-import org.motechproject.server.model.*;
-import org.motechproject.server.model.ghana.Facility;
-import org.motechproject.server.omod.impl.StaffMessageServiceImpl;
-import org.motechproject.server.service.ContextService;
-import org.motechproject.server.service.MotechService;
 import org.motechproject.server.filters.ExpectedEncounterFilterChain;
 import org.motechproject.server.filters.ExpectedObsFilterChain;
 import org.motechproject.server.filters.Filter;
-import org.motechproject.server.service.StaffMessageService;
+import org.motechproject.server.model.*;
+import org.motechproject.server.model.ghana.Facility;
+import org.motechproject.server.service.ContextService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.util.DateUtil;
 import org.motechproject.server.util.MotechConstants;
@@ -73,12 +71,14 @@ public class RegistrarBeanImplTest extends TestCase {
     private RCTService rctService;
     private MessageService mobileService;
 
+
     @Override
     protected void setUp() throws Exception {
         contextService = createMock(ContextService.class);
         adminService = createMock(AdministrationService.class);
         motechService = createMock(MotechService.class);
         personService = createMock(PersonService.class);
+
         rctService = createMock(RCTService.class);
         mobileService = createMock(MessageService.class);
         registrarBean = new RegistrarBeanImpl();
@@ -181,7 +181,10 @@ public class RegistrarBeanImplTest extends TestCase {
         assertEquals(messageCal.get(Calendar.HOUR_OF_DAY), prefCal.get(Calendar.HOUR_OF_DAY));
         assertEquals(messageCal.get(Calendar.MINUTE), prefCal.get(Calendar.MINUTE));
         assertEquals(0, prefCal.get(Calendar.SECOND));
+
     }
+
+
 
     public void testAdjustDateTime() {
         Calendar calendar = getCalendarWithTime(14, 13, 54);
@@ -789,6 +792,8 @@ public class RegistrarBeanImplTest extends TestCase {
         assertEquals(p6.getPatientId(), enc4.getPatient().getPatientId());
 
     }
+
+
 
     private List<ExpectedEncounter> expectedEncountersFor(Patient... patients) {
         List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
