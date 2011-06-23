@@ -13,7 +13,7 @@ function addFacility() {
         provincesDropDown.disable();
         $j("#phoneNumber").val('');
         $j("#location_data").hide();
-        $j('span[title="err_span"]').addClass('hideError');
+        $j('span[title="err_span"]').hide();
         $j("#countries_data").children("li").each(function() {
             var item = $j(this).html();
             if (item == '')return;
@@ -36,8 +36,8 @@ function addFacility() {
         $j("#countyDistrict").change(onDistrictChange);
         $j("#submit_facility").click(onSubmit);
         $j("#additionalPhoneNumber1-link").bind('click', {index: 1}, enableAdditionalPhoneNumber);
-        $j("#additionalPhoneNumber2-link").bind('click', enableAdditionalPhoneNumber);
-        $j("#additionalPhoneNumber3-link").bind('click', enableAdditionalPhoneNumber);
+        $j("#additionalPhoneNumber2-link").bind('click', {index: 2}, enableAdditionalPhoneNumber);
+        $j("#additionalPhoneNumber3-link").bind('click', {index: 3}, enableAdditionalPhoneNumber);
 
         $j("#additionalPhoneNumber1-del").bind('click', {index: 1}, disableAdditionalPhoneNumber);
         $j("#additionalPhoneNumber2-del").bind('click', {index: 2}, disableAdditionalPhoneNumber);
@@ -55,7 +55,11 @@ function addFacility() {
     var maintainSerialNumber = function(serialNumberOfDeletedPhoneNumber) {
         var visiblePhoneNumbers = $j(".additional-phone-number-row").filter(":visible");
         for (var i = serialNumberOfDeletedPhoneNumber - 1, j = i + 1; j < visiblePhoneNumbers.length; i++,j++) {
-            $j(visiblePhoneNumbers[i]).find(".error").hide();
+            if ($j(visiblePhoneNumbers[j]).find(".error").is(":visible")){
+                $j(visiblePhoneNumbers[i]).find(".error").show();
+            } else {
+                $j(visiblePhoneNumbers[i]).find(".error").hide();
+            }
             var nextValue = $j(visiblePhoneNumbers[j]).find(".additional-phone-number").val();
             $j(visiblePhoneNumbers[i]).find(".additional-phone-number").val(nextValue);
         }
@@ -67,6 +71,7 @@ function addFacility() {
         $j("#additionalPhoneNumber" + serialNumber).val("");
         $j("#additionalPhoneNumber" + serialNumber + "-link").show();
         $j("#additionalPhoneNumber" + serialNumber + "-row").hide();
+        $j("#additional_phoneNumber" + serialNumber + "_error").hide();
     }
 
     var enableAdditionalPhoneNumber = function(e) {
@@ -77,7 +82,7 @@ function addFacility() {
     }
 
     var onSubmit = function(e) {
-        $j("span.error").addClass('hideError');
+        $j("span.error").hide();
         verify("#name_err", $j("#name"), e);
         verify("#country_err", $j("#country"), e);
         verify("#region_err", $j("#region"), e);
@@ -95,7 +100,7 @@ function addFacility() {
         }
         var selectedValue = $j.trim(selectElement.val());
         if (selectedValue == null || selectedValue == '') {
-            $j(errorSpan).removeClass('hideError');
+            $j(errorSpan).show();
             e.preventDefault();
         }
     };
@@ -105,7 +110,7 @@ function addFacility() {
         if (/^0[0-9]{9}$/i.test(selectedValue)) {
             return;
         }
-        $j(errorSpan).removeClass('hideError');
+        $j(errorSpan).show();
         e.preventDefault();
     };
 
@@ -115,7 +120,7 @@ function addFacility() {
             if (/^0[0-9]{9}$/i.test(selectedValue)) {
                 return;
             }
-            $j(errorSpan).removeClass('hideError');
+            $j(errorSpan).show();
             e.preventDefault();
         }
     };

@@ -47,7 +47,6 @@
 <openmrs:htmlInclude file="/moduleResources/motechmodule/jquery-autocomplete/jquery.autocomplete.min.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/dynamic_combo_box.js"/>
 <openmrs:htmlInclude file="/moduleResources/motechmodule/add_facility.js"/>
-<openmrs:htmlInclude file="/moduleResources/motechmodule/add_facility.css"/>
 
 <meta name="heading" content="Add Facility"/>
 <%@ include file="localHeader.jsp" %>
