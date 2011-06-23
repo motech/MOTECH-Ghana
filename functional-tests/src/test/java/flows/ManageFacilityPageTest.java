@@ -1,30 +1,40 @@
 package flows;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pages.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: rupeshd
- * Date: 2/15/11
- * Time: 12:41 PM
- * To change this template use File | Settings | File Templates.
- */
-public class ManageFacilityPageTest {
+public class ManageFacilityPageTest  {
 
-    @Test
-    public void ManageFacilityTest(){
+    private OpenMRSLoginPage loginPage;
+
+    @BeforeTest
+    public void SetUp(){
         OpenMRSLoginPage loginPage = new OpenMRSLoginPage();
         loginPage.getOpenMRSDashBoard();
+    }
+
+    @AfterTest
+    public void TearDown(){
+        loginPage.close();
+    }
+
+    @Test
+    public void EditFacilityTest(){
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.ADD_FACILITY);
         AddFacilityPage addFacilityPage = new AddFacilityPage();
-        String facilityName = addFacilityPage.AddNewFacilityWithFourPhoneNumber();
+        String facilityName = addFacilityPage.AddNewFacilityWithOnePhoneNumber();
         ManageFacilityPage manageFacilityPage = new ManageFacilityPage();
-        Assert.assertNotNull(facilityName,"Facility Name is null.Facility is not created");
-        Assert.assertTrue(manageFacilityPage.FindFacilityByName(facilityName), "Facility name not found");
+        Assert.assertTrue(manageFacilityPage.FindFacilityByName(facilityName), "Facility:"+facilityName+" name not found");
+        manageFacilityPage.NavigateToEditFacilityPage(facilityName);
+        EditFacilityPage editFacilityPage = new EditFacilityPage();
+        editFacilityPage.EditPhoneNumber("0234567891","0345678912","0456789123","0567891234");
+
 
    }
 }

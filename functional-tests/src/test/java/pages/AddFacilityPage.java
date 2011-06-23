@@ -23,7 +23,7 @@ public class AddFacilityPage {
 
     }
 
-    private void InitializeDefaultObjects(){
+private void InitializeDefaultObjects(){
         facilityName = driver.findElement(By.id("name"));
         country = driver.findElement(By.id("country"));
         region = driver.findElement(By.id("region"));

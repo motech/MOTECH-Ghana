@@ -45,5 +45,15 @@ public class ManageFacilityPage {
 
     }
 
+    psublic void FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber){}
+    public void FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber, String phoneNumber1){}
+    public void FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber, String phoneNumber1,String phoneNumber2){}
+    public void FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber, String phoneNumber1,String phoneNumber2, String phoneNumber3){}
+
+    public void NavigateToEditFacilityPage(String facilityName){
+        WebElement editLink =  driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//a"));
+        editLink.click();
+    }
+
 
 }

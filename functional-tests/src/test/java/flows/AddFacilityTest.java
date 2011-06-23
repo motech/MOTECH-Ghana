@@ -34,4 +34,5 @@ public class AddFacilityTest {
         Assert.assertTrue(manageFacilityPage.FindFacilityByName(facilityName),"Facility Not Found");
 
     }
+
 }
