@@ -10,15 +10,13 @@ import java.util.HashMap;
 public class RegisterClientPageTest {
     private OpenMRSLoginPage loginPage;
 
-    //@BeforeGroups(groups = {"smoke"})
-    @BeforeTest
+    @BeforeGroups(groups = {"smoke"})
     public void setUp() {
         loginPage = new OpenMRSLoginPage();
         loginPage.getOpenMRSDashBoard();
     }
 
-    //@AfterGroups(groups = {"smoke"})
-    @AfterTest
+    @AfterGroups(groups = {"smoke"})
     public void tearDown() {
        loginPage.close();
     }
