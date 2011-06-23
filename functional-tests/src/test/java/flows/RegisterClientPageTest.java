@@ -60,6 +60,6 @@ public class RegisterClientPageTest {
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
         String firstName = regPatientPage.RegisterChildClient(motherID);
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.SEARCH);
-        Assert.assertTrue(searchPage.searchClientByFirstName(firstName), "Patient Search failed");
+        Assert.assertTrue(searchPage.searchClientByFirstName(firstName), "Patient Search failed"+ firstName);
     };
 }

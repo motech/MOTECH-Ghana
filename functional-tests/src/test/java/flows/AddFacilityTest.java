@@ -1,9 +1,7 @@
 package flows;
 
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pages.*;
 
 
@@ -11,18 +9,21 @@ public class AddFacilityTest {
 
     private OpenMRSLoginPage loginPage;
 
-    @BeforeTest
+    //@BeforeTest
+    @BeforeGroups(groups = {"smoke"})
     public void SetUp(){
         loginPage = new OpenMRSLoginPage();
         loginPage.getOpenMRSDashBoard();
     }
-    @AfterTest
+
+    //@AfterTest
+    @AfterGroups(groups = {"smoke"})
     public void TearDown(){
-      // loginPage.close();
+      loginPage.close();
 
     }
 
-    @Test
+    @Test(groups = {"smoke"})
     public void AddFacilityWithMultiplePhoneNumber(){
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.ADD_FACILITY);

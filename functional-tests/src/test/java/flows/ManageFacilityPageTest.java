@@ -15,7 +15,7 @@ import pages.*;
 public class ManageFacilityPageTest {
 
     @Test
-    public void AddCommunityTest(){
+    public void ManageFacilityTest(){
         OpenMRSLoginPage loginPage = new OpenMRSLoginPage();
         loginPage.getOpenMRSDashBoard();
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
@@ -25,5 +25,6 @@ public class ManageFacilityPageTest {
         ManageFacilityPage manageFacilityPage = new ManageFacilityPage();
         Assert.assertNotNull(facilityName,"Facility Name is null.Facility is not created");
         Assert.assertTrue(manageFacilityPage.FindFacilityByName(facilityName), "Facility name not found");
+
    }
 }
