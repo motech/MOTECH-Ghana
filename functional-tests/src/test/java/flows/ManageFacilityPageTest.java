@@ -14,7 +14,7 @@ public class ManageFacilityPageTest  {
 
     @BeforeTest
     public void SetUp(){
-        OpenMRSLoginPage loginPage = new OpenMRSLoginPage();
+        loginPage = new OpenMRSLoginPage();
         loginPage.getOpenMRSDashBoard();
     }
 

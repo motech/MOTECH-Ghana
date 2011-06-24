@@ -45,7 +45,7 @@ public class ManageFacilityPage {
 
     }
 
-    psublic void FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber){}
+    public void FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber){}
     public void FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber, String phoneNumber1){}
     public void FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber, String phoneNumber1,String phoneNumber2){}
     public void FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber, String phoneNumber1,String phoneNumber2, String phoneNumber3){}
