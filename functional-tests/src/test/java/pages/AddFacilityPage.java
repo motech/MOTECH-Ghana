@@ -23,7 +23,7 @@ public class AddFacilityPage {
 
     }
 
-private void InitializeDefaultObjects(){
+    private void InitializeDefaultObjects(){
         facilityName = driver.findElement(By.id("name"));
         country = driver.findElement(By.id("country"));
         region = driver.findElement(By.id("region"));
@@ -34,32 +34,7 @@ private void InitializeDefaultObjects(){
 
     }
 
-    public String AddNewFacilityWithFourPhoneNumber(){
-         InitializeDefaultObjects();
-         String facility = "foo-" + UtilityClass.getInstance().getCurrentDate();
-         facilityName.sendKeys(facility);
-         selectOption("country","Ghana");
-         selectOption("region", "Upper East");
-         selectOption("countyDistrict","Kassena-Nankana");
-         selectOption("stateProvince","Central East");
-         primaryPhoneNumber.sendKeys("0123456789");
-         WebElement addAdditionalPhoneNumberLink = driver.findElement(By.linkText("Add additional Phone Number"));
-         addAdditionalPhoneNumberLink.click();
-         WebElement phoneNumber1 = driver.findElement(By.id("additionalPhoneNumber1"));
-         phoneNumber1.sendKeys("0234567891");
-         WebElement addAdditionalPhoneNumberLink1 = driver.findElement(By.linkText("Add additional Phone Number"));
-         addAdditionalPhoneNumberLink1.click();
-         WebElement phoneNumber2 = driver.findElement(By.id("additionalPhoneNumber2"));
-         phoneNumber2.sendKeys("0234567891");
-         WebElement addAdditionalPhoneNumberLink2 = driver.findElement(By.linkText("Add additional Phone Number"));
-         addAdditionalPhoneNumberLink2.click();
-         WebElement phoneNumber3 = driver.findElement(By.id("additionalPhoneNumber3"));
-         phoneNumber3.sendKeys("0234567891");
-         submit.click();
-         return facility;
-    }
-
-    public String AddNewFacilityWithOnePhoneNumber(){
+    public String AddFacility(String phoneNumber){
         InitializeDefaultObjects();
         String facility = "foo-" + UtilityClass.getInstance().getCurrentDate();
         facilityName.sendKeys(facility);
@@ -67,10 +42,83 @@ private void InitializeDefaultObjects(){
         selectOption("region", "Upper East");
         selectOption("countyDistrict","Kassena-Nankana");
         selectOption("stateProvince","Central East");
-        primaryPhoneNumber.sendKeys("0123456789");
+        primaryPhoneNumber.sendKeys(phoneNumber);
         submit.click();
         return facility;
     }
+
+    public String AddFacility(String phoneNumber, String phoneNumber1){
+        InitializeDefaultObjects();
+        String facility = "foo-" + UtilityClass.getInstance().getCurrentDate();
+        facilityName.sendKeys(facility);
+        selectOption("country","Ghana");
+        selectOption("region", "Upper East");
+        selectOption("countyDistrict","Kassena-Nankana");
+        selectOption("stateProvince","Central East");
+        primaryPhoneNumber.sendKeys(phoneNumber);
+
+        WebElement addAdditionalPhoneNumberLink = driver.findElement(By.linkText("Add additional Phone Number"));
+        addAdditionalPhoneNumberLink.click();
+        WebElement phoneNumber1Field = driver.findElement(By.id("additionalPhoneNumber1"));
+        phoneNumber1Field.sendKeys(phoneNumber1);
+
+        submit.click();
+        return facility;
+    }
+
+    public String AddFacility(String phoneNumber,String phoneNumber1, String phoneNumber2){
+        InitializeDefaultObjects();
+        String facility = "foo-" + UtilityClass.getInstance().getCurrentDate();
+        facilityName.sendKeys(facility);
+        selectOption("country","Ghana");
+        selectOption("region", "Upper East");
+        selectOption("countyDistrict","Kassena-Nankana");
+        selectOption("stateProvince","Central East");
+        primaryPhoneNumber.sendKeys(phoneNumber);
+
+        WebElement addAdditionalPhoneNumberLink = driver.findElement(By.linkText("Add additional Phone Number"));
+        addAdditionalPhoneNumberLink.click();
+        WebElement phoneNumber1Field = driver.findElement(By.id("additionalPhoneNumber1"));
+        phoneNumber1Field.sendKeys(phoneNumber1);
+
+        WebElement addAdditionalPhoneNumberLink1 = driver.findElement(By.linkText("Add additional Phone Number"));
+        addAdditionalPhoneNumberLink1.click();
+        WebElement phoneNumber2Field = driver.findElement(By.id("additionalPhoneNumber2"));
+        phoneNumber2Field.sendKeys(phoneNumber2);
+
+        submit.click();
+        return facility;
+    }
+    public String AddFacility(String phoneNumber,String phoneNumber1, String phoneNumber2,String phoneNumber3){
+
+        InitializeDefaultObjects();
+        String facility = "foo-" + UtilityClass.getInstance().getCurrentDate();
+        facilityName.sendKeys(facility);
+        selectOption("country","Ghana");
+        selectOption("region", "Upper East");
+        selectOption("countyDistrict","Kassena-Nankana");
+        selectOption("stateProvince","Central East");
+        primaryPhoneNumber.sendKeys(phoneNumber);
+
+        WebElement addAdditionalPhoneNumberLink = driver.findElement(By.linkText("Add additional Phone Number"));
+        addAdditionalPhoneNumberLink.click();
+        WebElement phoneNumber1Field = driver.findElement(By.id("additionalPhoneNumber1"));
+        phoneNumber1Field.sendKeys(phoneNumber1);
+
+        WebElement addAdditionalPhoneNumberLink1 = driver.findElement(By.linkText("Add additional Phone Number"));
+        addAdditionalPhoneNumberLink1.click();
+        WebElement phoneNumber2Field = driver.findElement(By.id("additionalPhoneNumber2"));
+        phoneNumber2Field.sendKeys(phoneNumber2);
+
+        WebElement addAdditionalPhoneNumberLink2 = driver.findElement(By.linkText("Add additional Phone Number"));
+        addAdditionalPhoneNumberLink2.click();
+        WebElement phoneNumber3Field = driver.findElement(By.id("additionalPhoneNumber3"));
+        phoneNumber3Field.sendKeys(phoneNumber3);
+
+        submit.click();
+        return facility;
+    }
+
 
     public void selectOption(String ParentId, String optionValue) {
         WebElement element = driver.findElement(By.id(ParentId));

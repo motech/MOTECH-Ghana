@@ -45,10 +45,52 @@ public class ManageFacilityPage {
 
     }
 
-    public void FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber){}
-    public void FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber, String phoneNumber1){}
-    public void FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber, String phoneNumber1,String phoneNumber2){}
-    public void FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber, String phoneNumber1,String phoneNumber2, String phoneNumber3){}
+    public boolean FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber){
+        if(driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]")).getText().equalsIgnoreCase(facilityName)){
+              if (driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[1]")).getText().equals(phoneNumber)){
+                  return true;
+              }
+        }
+
+        return false;
+    }
+
+    public boolean FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber, String phoneNumber1){
+       if(driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]")).getText().equalsIgnoreCase(facilityName)){
+              if (driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[1]")).getText().equals(phoneNumber)){
+                  if (driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[2]")).getText().equals(phoneNumber1)){
+                      return true;
+                  }
+              }
+       }
+       return false;
+    }
+    public boolean FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber, String phoneNumber1,String phoneNumber2){
+       if(driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]")).getText().equalsIgnoreCase(facilityName)){
+              if (driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[1]")).getText().equals(phoneNumber)){
+                  if (driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[2]")).getText().equals(phoneNumber1)){
+                     if(driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[3]")).getText().equals(phoneNumber2)){
+                         return true;
+                     }
+                  }
+              }
+       }
+       return false;
+    }
+    public boolean FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber, String phoneNumber1,String phoneNumber2, String phoneNumber3){
+       if(driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]")).getText().equalsIgnoreCase(facilityName)){
+          if (driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[1]")).getText().equals(phoneNumber)){
+              if (driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[2]")).getText().equals(phoneNumber1)){
+                 if(driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[3]")).getText().equals(phoneNumber2)){
+                     if(driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[4]")).getText().equals(phoneNumber3)){
+                        return true;
+                     }
+                 }
+              }
+          }
+   }
+       return false;
+    }
 
     public void NavigateToEditFacilityPage(String facilityName){
         WebElement editLink =  driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//a"));

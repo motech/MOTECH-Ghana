@@ -28,7 +28,7 @@ public class ManageFacilityPageTest  {
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.ADD_FACILITY);
         AddFacilityPage addFacilityPage = new AddFacilityPage();
-        String facilityName = addFacilityPage.AddNewFacilityWithOnePhoneNumber();
+        String facilityName = addFacilityPage.AddFacility("0111111111");
         ManageFacilityPage manageFacilityPage = new ManageFacilityPage();
         Assert.assertTrue(manageFacilityPage.FindFacilityByName(facilityName), "Facility:"+facilityName+" name not found");
         manageFacilityPage.NavigateToEditFacilityPage(facilityName);
