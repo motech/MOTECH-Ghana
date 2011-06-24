@@ -3217,4 +3217,19 @@
         </sql>
     </diff>
 
+    <diff>
+        <version>4.8</version>
+        <author>ThoughtWorks</author>
+        <date>June 24 2011</date>
+		<description>Implementing changes in #174</description>
+        <sql>
+            delete from a using motechmodule_community as a where name = 'Amutanga' and 0 = (select count(community_id) from motechmodule_community_patient b where b.community_id = a.id);
+            update motechmodule_community_patient set community_id = (select community_id from motechmodule_community where name = 'Nyangoligo') where 0 != (select count(*) from  motechmodule_community where name = 'Nyangoligo') and community_id = (select community_id from motechmodule_community where name = 'Nyangonligo');
+            update motechmodule_community set name = 'Nyangolingo' where name = 'Nyangoligo';
+            delete from a using motechmodule_community as a where a.name = 'Nyangonligo' and 0 = (select count(*) from  motechmodule_community_patient b  where b.community_id = a.id);
+            update motechmodule_community set name = 'Nyangolingo' where name = 'Nyangonligo';
+            update motechmodule_community set name = 'Bugsongo' where name = 'Busongo';
+        </sql>
+    </diff>
+
 </sqldiff>
