@@ -1318,7 +1318,8 @@ public class RegistrarWebService implements RegistrarService {
         return confirmation;
     }
 
-    public MotechStaff getStaffDetails(String staffId) {
+    @WebMethod
+    public MotechStaff getStaffDetails(@WebParam(name = "staffId") String staffId) {
         User staff = openmrsBean.getStaffBySystemId(staffId);
         return staff == null ? new MotechStaff() : new MotechStaff(staff.getSystemId(),staff.getGivenName(),staff.getFamilyName());
     }
