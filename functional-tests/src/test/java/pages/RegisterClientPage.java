@@ -150,7 +150,15 @@ public class RegisterClientPage {
             selectOption("enroll","Yes");
             consent.click();
             submitButton.click();
-            return firstName;
+            if (driver.getCurrentUrl().contains("/viewdata.form")){
+                return firstName;
+            }else
+            {
+                System.out.println("Child registration failed. Current Page url "+ driver.getCurrentUrl().toString());
+                return  null;
+            }
+                   
+
         }
         else {
             System.out.println("Mother ID is null");

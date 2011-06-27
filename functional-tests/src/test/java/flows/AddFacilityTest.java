@@ -9,15 +9,15 @@ public class AddFacilityTest {
 
     private OpenMRSLoginPage loginPage;
 
-    @BeforeTest
-    //@BeforeGroups(groups = {"smoke"})
+    //@BeforeTest
+    @BeforeGroups(groups = {"smoke"})
     public void SetUp(){
         loginPage = new OpenMRSLoginPage();
         loginPage.getOpenMRSDashBoard();
     }
 
-    @AfterTest
-    //@AfterGroups(groups = {"smoke"})
+    //@AfterTest
+    @AfterGroups(groups = {"smoke"})
     public void TearDown(){
       loginPage.close();
 
@@ -60,7 +60,7 @@ public class AddFacilityTest {
     }
 
 
-    @Test//(groups = {"smoke"})
+    @Test(groups = {"smoke"})
     public void AddFacilityWithFourPhoneNumber(){
        MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
        moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.ADD_FACILITY);
