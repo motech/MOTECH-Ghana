@@ -10,14 +10,14 @@ public class AddFacilityTest {
     private OpenMRSLoginPage loginPage;
 
     //@BeforeTest
-    @BeforeGroups(groups = {"smoke"})
+    //@BeforeGroups(groups = {"smoke"})
     public void SetUp(){
         loginPage = new OpenMRSLoginPage();
         loginPage.getOpenMRSDashBoard();
     }
 
     //@AfterTest
-    @AfterGroups(groups = {"smoke"})
+    //@AfterGroups(groups = {"smoke"})
     public void TearDown(){
       loginPage.close();
 

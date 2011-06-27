@@ -154,7 +154,7 @@
                         </goals>
                         <configuration>
                             <files>
-                                <file>D:\\Project\\Grammen\\MOTECH-Ghana\\functional-tests\\cargo.properties</file>
+                                <file>cargo.properties</file>
                             </files>
                         </configuration>
                     </execution>
