@@ -59,6 +59,7 @@
     <import resource="classpath*:services/*.xml"/>
     <import resource="classpath*:registrar-bean.xml"/>
     <import resource="classpath*:advisors.xml"/>
+    <import resource="classpath*:message-processor.xml"/>
 
     <bean id="identiferGenerator" class="org.motechproject.server.omod.IndentifierGeneratorImpl">
         <property name="patientService" ref="patientService"/>

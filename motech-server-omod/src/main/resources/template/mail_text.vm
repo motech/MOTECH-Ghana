@@ -1,0 +1,1 @@
+${staff.firstName} ${staff.lastName} with Staff id ${staff.staffId} reported the following issue: ${case.description}

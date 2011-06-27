@@ -1,0 +1,1 @@
+Support: Case reported by ${staff.firstName} ${staff.lastName} on ${case.dateRaisedOn}

@@ -3232,4 +3232,30 @@
         </sql>
     </diff>
 
+     <diff>
+        <version>4.9</version>
+        <author>ThoughtWorks</author>
+        <date>June 27 2011</date>
+		<description>Createing url_motechmodule</description>
+        <sql>
+            create table motechmodule_url
+            (
+               id int primary key auto_increment,
+               message_key varchar(20) not null unique key,
+               url varchar(50)
+            );
+        </sql>
+     </diff>
+
+    <diff>
+        <version>5.0</version>
+        <author>ThoughtWorks</author>
+        <date>June 28 2011</date>
+		<description>Adding values in global_property</description>
+        <sql>
+            insert into global_property values('motechmodule.support_case_mail_to','motechsupport@grameenfoundation.org','email id to which support cases are sent',UUID());
+            insert into global_property values('motechmodule.support_case_mail_from','no-reply@grameenfoundation.org','email id from which support cases are sent',UUID());
+        </sql>
+     </diff>
+
 </sqldiff>

@@ -33,6 +33,8 @@
 
 package org.motechproject.server.omod.web.model;
 
+import org.openmrs.User;
+
 public class WebStaff {
 
 	String firstName;
@@ -54,6 +56,14 @@ public class WebStaff {
     public WebStaff(String givenName, String familyName, String phone, String type, String staffId) {
         this(givenName, familyName, phone, type);
         this.staffId = staffId;
+    }
+
+    public WebStaff(User staff) {
+        if(staff != null){
+            firstName = staff.getGivenName();
+            lastName = staff.getFamilyName();
+            staffId = staff.getSystemId();
+        }
     }
 
     public String getFirstName() {

@@ -54,26 +54,27 @@
     </appender>
 
     <logger name="${modulePackage}">
-        <level value="DEBUG"/>
+        <level value="INFO"/>
     </logger>
 
     <logger name="${corePackage}">
-        <level value="DEBUG"/>
+        <level value="INFO"/>
     </logger>
 
 
     <!--  Enable this to view the sql statements that hibernate generates-->
     <logger name="org.hibernate.SQL">
-        <level value="DEBUG"/>
+        <level value="INFO"/>
     </logger>
 
     <logger name="org.hibernate.tool.hbm2ddl.SchemaExport">
         <level value="FATAL"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <root>
-        <level value="INFO"/>
-        <appender-ref ref="LOGFILE"/>
+        <level value="ERROR"/>
+        <appender-ref ref="CONSOLE"/>
     </root>
 
 </log4j:configuration>

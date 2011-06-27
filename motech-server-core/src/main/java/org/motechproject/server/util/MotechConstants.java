@@ -35,9 +35,10 @@ package org.motechproject.server.util;
 
 public final class MotechConstants {
 
-	/*
-	 * Values added and used by Motech
-	 */
+
+    /*
+      * Values added and used by Motech
+      */
 
     private MotechConstants() {}
 	public static final String PERSON_ATTRIBUTE_PHONE_NUMBER = "Phone Number";
@@ -122,4 +123,7 @@ public final class MotechConstants {
 	public static final String CONCEPT_GRAVIDA = "GRAVIDA";
 	public static final String CONCEPT_PARITY = "PARITY";
 	public static final String RELATIONSHIP_TYPE_PARENT_CHILD = "Parent/Child";
+
+    public static final String GLOBAL_PROPERTY_SUPPORT_CASE_MAIL_TO = "motechmodule.support_case_mail_to";
+    public static final String GLOBAL_PROPERTY_SUPPORT_CASE_MAIL_FROM = "motechmodule.support_case_mail_from";
 }

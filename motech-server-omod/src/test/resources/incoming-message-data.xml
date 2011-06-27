@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <motechmodule_url id="1" message_key="SUPPORT" url="/module/motechmodule/supportcase.form"/>
+</dataset>
