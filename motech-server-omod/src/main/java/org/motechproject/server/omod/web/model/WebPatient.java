@@ -35,6 +35,7 @@ package org.motechproject.server.omod.web.model;
 
 import flexjson.JSON;
 import org.apache.commons.lang.StringUtils;
+import org.motechproject.server.model.PreferredLocation;
 import org.motechproject.ws.*;
 
 import java.util.Date;
@@ -416,5 +417,9 @@ public class WebPatient {
 
     public boolean hasRegion(String regionName) {
         return regionName.equals(region);
+    }
+
+    public PreferredLocation getPreferredLocation() {
+        return new PreferredLocation(getRegion(), getDistrict(), getSubDistrict(), getFacility(), getCommunityId());
     }
 }

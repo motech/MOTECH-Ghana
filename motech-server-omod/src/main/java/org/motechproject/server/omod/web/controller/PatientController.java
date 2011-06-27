@@ -39,10 +39,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ghana.Facility;
-import org.motechproject.server.service.ContextService;
 import org.motechproject.server.omod.MotechIdVerhoeffValidator;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
+import org.motechproject.server.service.ContextService;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
@@ -114,7 +114,8 @@ public class PatientController extends BasePatientController {
 
     @RequestMapping(value = "/module/motechmodule/patient", method = RequestMethod.GET)
     public void viewForm(@RequestParam(required = false) Integer id, ModelMap model) {
-        populateJavascriptMaps(model, new WebPatient());
+        WebPatient patient = new WebPatient();
+        locationController.populateJavascriptMaps(model,patient.getPreferredLocation());
     }
 
     @ModelAttribute("patient")
@@ -231,7 +232,7 @@ public class PatientController extends BasePatientController {
 
             return "redirect:/module/motechmodule/viewdata.form";
         }
-        populateJavascriptMaps(model, patient);
+        locationController.populateJavascriptMaps(model,patient.getPreferredLocation());
 
         return "/module/motechmodule/patient";
     }

@@ -37,9 +37,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ghana.Facility;
-import org.motechproject.server.service.ContextService;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
+import org.motechproject.server.service.ContextService;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
@@ -126,7 +126,8 @@ public class EditPatientController extends BasePatientController {
 
     @RequestMapping(method = RequestMethod.GET)
     public void viewForm(@RequestParam(required = false) Integer id,ModelMap model) {
-        populateJavascriptMaps(model, (WebPatient) model.get("patient"));
+        WebPatient patient = (WebPatient) model.get("patient");
+        locationController.populateJavascriptMaps(model,patient.getPreferredLocation());
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -191,7 +192,7 @@ public class EditPatientController extends BasePatientController {
             status.setComplete();
         }
 
-        populateJavascriptMaps(model, webPatient);
+        locationController.populateJavascriptMaps(model, webPatient.getPreferredLocation());
     }
 
     void validateTextLength(Errors errors, String fieldname, String fieldValue,int lengthLimit) {

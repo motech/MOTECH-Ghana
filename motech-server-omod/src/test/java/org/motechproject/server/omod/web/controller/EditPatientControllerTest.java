@@ -36,11 +36,11 @@ package org.motechproject.server.omod.web.controller;
 import junit.framework.TestCase;
 import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ghana.Facility;
-import org.motechproject.server.model.MessageLanguage;
-import org.motechproject.server.service.ContextService;
-import org.motechproject.server.service.MotechService;
+import org.motechproject.server.omod.web.localization.LocationController;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
+import org.motechproject.server.service.ContextService;
+import org.motechproject.server.service.MotechService;
 import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.ws.ContactNumberType;
@@ -54,7 +54,6 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.support.SessionStatus;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import static org.easymock.EasyMock.*;
@@ -69,6 +68,7 @@ public class EditPatientControllerTest extends TestCase {
     SessionStatus status;
     PatientService patientService;
     OpenmrsBean openmrsBean;
+    LocationController locationController;
 
     @Override
     protected void setUp() {
@@ -76,9 +76,11 @@ public class EditPatientControllerTest extends TestCase {
         openmrsBean = createMock(OpenmrsBean.class);
         contextService = createMock(ContextService.class);
         webModelConverter = createMock(WebModelConverter.class);
+        locationController = createMock(LocationController.class);
         controller = new EditPatientController();
         controller.setRegistrarBean(registrarBean);
         controller.setOpenmrsBean(openmrsBean);
+        controller.setLocationController(locationController);
         controller.setContextService(contextService);
         controller.setWebModelConverter(webModelConverter);
         motechService = createMock(MotechService.class);
@@ -200,6 +202,8 @@ public class EditPatientControllerTest extends TestCase {
         Facility facility = new Facility();
         facility.setFacilityId(11117);
         expect(registrarBean.getFacilityById(facility.getFacilityId())).andReturn(facility);
+        locationController.populateJavascriptMaps(model,patient.getPreferredLocation());
+        expectLastCall();
 
         registrarBean.editPatient(openmrsPatient, firstName, middleName,
                 lastName, prefName, date, birthDateEst, sex, insured, nhis,
@@ -209,15 +213,11 @@ public class EditPatientControllerTest extends TestCase {
 
         status.setComplete();
 
-        expect(contextService.getMotechService()).andReturn(motechService);
-        expect(motechService.getAllFacilities()).andReturn(new ArrayList<Facility>());
-        expect(motechService.getAllLanguages()).andReturn(new ArrayList<MessageLanguage>());
-
-        replay(registrarBean, status, contextService, motechService, openmrsBean);
+        replay(registrarBean, status, contextService, motechService, openmrsBean, locationController);
 
         controller.submitForm(patient, errors, model, status);
 
-        verify(registrarBean, status, contextService, motechService,openmrsBean);
+        verify(registrarBean, status, contextService, motechService,openmrsBean, locationController);
 
         assertTrue("Missing success message in model", model.containsAttribute("successMsg"));
     }
