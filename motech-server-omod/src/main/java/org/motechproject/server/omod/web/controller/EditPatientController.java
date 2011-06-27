@@ -127,7 +127,7 @@ public class EditPatientController extends BasePatientController {
     @RequestMapping(method = RequestMethod.GET)
     public void viewForm(@RequestParam(required = false) Integer id,ModelMap model) {
         WebPatient patient = (WebPatient) model.get("patient");
-        locationController.populateJavascriptMaps(model,patient.getPreferredLocation());
+        JSONLocationSerializer.populateJavascriptMaps(model, patient.getPreferredLocation());
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -192,7 +192,7 @@ public class EditPatientController extends BasePatientController {
             status.setComplete();
         }
 
-        locationController.populateJavascriptMaps(model, webPatient.getPreferredLocation());
+        JSONLocationSerializer.populateJavascriptMaps(model, webPatient.getPreferredLocation());
     }
 
     void validateTextLength(Errors errors, String fieldname, String fieldValue,int lengthLimit) {

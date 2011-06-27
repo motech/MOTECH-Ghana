@@ -77,7 +77,7 @@
     <!-- Controllers -->
     <context:component-scan base-package="org.motechproject.server.omod.web.controller"/>
 
-    <bean id="locationController" class="org.motechproject.server.omod.web.localization.LocationController"/>
+    PP<bean id="JSONLocationSerializer" class="org.motechproject.server.omod.web.model.JSONLocationSerializer"/>
 
     <bean id="webCommunityValidator" class="org.motechproject.server.omod.web.validator.WebCommunityValidator"/>
 

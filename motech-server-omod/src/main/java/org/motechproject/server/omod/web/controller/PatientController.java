@@ -115,7 +115,7 @@ public class PatientController extends BasePatientController {
     @RequestMapping(value = "/module/motechmodule/patient", method = RequestMethod.GET)
     public void viewForm(@RequestParam(required = false) Integer id, ModelMap model) {
         WebPatient patient = new WebPatient();
-        locationController.populateJavascriptMaps(model,patient.getPreferredLocation());
+        JSONLocationSerializer.populateJavascriptMaps(model,patient.getPreferredLocation());
     }
 
     @ModelAttribute("patient")
@@ -232,7 +232,7 @@ public class PatientController extends BasePatientController {
 
             return "redirect:/module/motechmodule/viewdata.form";
         }
-        locationController.populateJavascriptMaps(model,patient.getPreferredLocation());
+        JSONLocationSerializer.populateJavascriptMaps(model, patient.getPreferredLocation());
 
         return "/module/motechmodule/patient";
     }

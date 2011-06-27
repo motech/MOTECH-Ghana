@@ -39,11 +39,6 @@ public class PreferredLocation {
     }
 
     @Override
-    public String toString() {
-       return new JSONSerializer().serialize(this);
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -51,21 +46,22 @@ public class PreferredLocation {
         PreferredLocation that = (PreferredLocation) o;
 
         if (communityId != null ? !communityId.equals(that.communityId) : that.communityId != null) return false;
-        if (district != null ? !district.equals(that.district) : that.district != null) return false;
         if (facilityId != null ? !facilityId.equals(that.facilityId) : that.facilityId != null) return false;
-        if (region != null ? !region.equals(that.region) : that.region != null) return false;
-        if (subDistrict != null ? !subDistrict.equals(that.subDistrict) : that.subDistrict != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = region != null ? region.hashCode() : 0;
-        result = 31 * result + (district != null ? district.hashCode() : 0);
-        result = 31 * result + (subDistrict != null ? subDistrict.hashCode() : 0);
-        result = 31 * result + (facilityId != null ? facilityId.hashCode() : 0);
+        int result = facilityId != null ? facilityId.hashCode() : 0;
         result = 31 * result + (communityId != null ? communityId.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+       return new JSONSerializer().serialize(this);
+    }
+
+
 }

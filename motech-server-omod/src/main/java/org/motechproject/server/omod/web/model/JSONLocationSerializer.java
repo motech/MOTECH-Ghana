@@ -31,79 +31,78 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.motechproject.server.omod.web.localization;
+package org.motechproject.server.omod.web.model;
 
 import org.apache.commons.lang.StringUtils;
-import org.motechproject.server.model.*;
+import org.motechproject.server.model.MessageLanguage;
+import org.motechproject.server.model.PreferredLocation;
 import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ghana.Country;
 import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.model.ghana.FacilityComparator;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.service.MotechService;
-import org.motechproject.server.model.PreferredLocation;
-import org.motechproject.server.omod.web.model.WebPatient;
 import org.openmrs.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 
 import java.util.*;
 
-public class LocationController {
+public class JSONLocationSerializer {
 
-	private ContextService contextService;
-	private Comparator<Community> communityNameComparator;
+    private ContextService contextService;
+    private Comparator<Community> communityNameComparator;
 
-    public LocationController() {
-		communityNameComparator = new Comparator<Community>() {
-			public int compare(Community c1, Community c2) {
-				return c1.getName().compareTo(c2.getName());
-			}
-		};
-	}
+    public JSONLocationSerializer() {
+        communityNameComparator = new Comparator<Community>() {
+            public int compare(Community c1, Community c2) {
+                return c1.getName().compareTo(c2.getName());
+            }
+        };
+    }
 
     @Autowired
-	public void setContextService(ContextService contextService) {
-		this.contextService = contextService;
-	}
+    public void setContextService(ContextService contextService) {
+        this.contextService = contextService;
+    }
 
-	public  void populateJavascriptMaps(ModelMap model, PreferredLocation preferredLocation) {
-		Map<String, TreeSet<String>> regionMap = new HashMap<String, TreeSet<String>>();
-		Map<String, TreeSet<Community>> districtMap = new HashMap<String, TreeSet<Community>>();
+    public void populateJavascriptMaps(ModelMap model, PreferredLocation preferredLocation) {
+        Map<String, TreeSet<String>> regionMap = new HashMap<String, TreeSet<String>>();
+        Map<String, TreeSet<Community>> districtMap = new HashMap<String, TreeSet<Community>>();
 
         MotechService motechService = contextService.getMotechService();
         List<Facility> facilities = motechService.getAllFacilities();
         List<MessageLanguage> languages = motechService.getAllLanguages();
 
         for (Facility facility : facilities) {
-			Location location = facility.getLocation();
-			if (location != null) {
-				String region = location.getRegion();
-				String district = location.getCountyDistrict();
-				TreeSet<String> districts = regionMap.get(region);
-				if (districts == null) {
-					districts = new TreeSet<String>();
-				}
-				if(StringUtils.isNotEmpty(district))districts.add(district);
-				regionMap.put(region, districts);
-				TreeSet<Community> communities = districtMap.get(district);
-				if (communities == null) {
-					communities = new TreeSet<Community>(communityNameComparator);
-				}
-				communities.addAll(facility.getCommunities());
-				districtMap.put(district, communities);
-			}
-		}
+            Location location = facility.getLocation();
+            if (location != null) {
+                String region = location.getRegion();
+                String district = location.getCountyDistrict();
+                TreeSet<String> districts = regionMap.get(region);
+                if (districts == null) {
+                    districts = new TreeSet<String>();
+                }
+                if (StringUtils.isNotEmpty(district)) districts.add(district);
+                regionMap.put(region, districts);
+                TreeSet<Community> communities = districtMap.get(district);
+                if (communities == null) {
+                    communities = new TreeSet<Community>(communityNameComparator);
+                }
+                communities.addAll(facility.getCommunities());
+                districtMap.put(district, communities);
+            }
+        }
         FacilityComparator facilityComparator = new FacilityComparator();
         Collections.sort(facilities, facilityComparator);
 
-		model.addAttribute("languages", languages);
-		model.addAttribute("regionMap", regionMap);
-		model.addAttribute("districtMap", districtMap);
-		model.addAttribute("facilities", facilities);
-        model.addAttribute("country",new Country("Ghana").withFacilities(facilities));
+        model.addAttribute("languages", languages);
+        model.addAttribute("regionMap", regionMap);
+        model.addAttribute("districtMap", districtMap);
+        model.addAttribute("facilities", facilities);
+        model.addAttribute("country", new Country("Ghana").withFacilities(facilities));
         model.addAttribute("selectedLocation", preferredLocation);
-	}
+    }
 
     protected boolean regionIsUpperEast(WebPatient webPatient) {
         return webPatient.hasRegion("Upper East");

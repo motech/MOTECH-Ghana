@@ -3,7 +3,7 @@ package org.motechproject.server.omod.web.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.server.model.ghana.Community;
-import org.motechproject.server.omod.web.localization.LocationController;
+import org.motechproject.server.omod.web.model.JSONLocationSerializer;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.service.MotechService;
 
@@ -25,11 +25,11 @@ public class DemoPatientControllerTest {
     public void testGetRegions() throws Exception {
         ContextService contextService = createMock(ContextService.class);
         MotechService motechService = createMock(MotechService.class);
-        LocationController locationController = new LocationController();
+        JSONLocationSerializer JSONLocationSerializer = new JSONLocationSerializer();
 
-        locationController.setContextService(contextService);
+        JSONLocationSerializer.setContextService(contextService);
         demoPatientController.setContextService(contextService);
-        demoPatientController.setLocationController(locationController);
+        demoPatientController.setJSONLocationSerializer(JSONLocationSerializer);
 
         expect(contextService.getMotechService()).andReturn(motechService);
         expect(motechService.getAllRegions()).andReturn(Collections.<String>emptyList()).once();
@@ -43,11 +43,11 @@ public class DemoPatientControllerTest {
     public void testGetDistricts() throws Exception {
         ContextService contextService = createMock(ContextService.class);
         MotechService motechService = createMock(MotechService.class);
-        LocationController locationController = new LocationController();
+        JSONLocationSerializer JSONLocationSerializer = new JSONLocationSerializer();
 
-        locationController.setContextService(contextService);
+        JSONLocationSerializer.setContextService(contextService);
         demoPatientController.setContextService(contextService);
-        demoPatientController.setLocationController(locationController);
+        demoPatientController.setJSONLocationSerializer(JSONLocationSerializer);
 
         expect(contextService.getMotechService()).andReturn(motechService);
         expect(motechService.getAllDistricts()).andReturn(Collections.<String>emptyList()).once();
@@ -62,11 +62,11 @@ public class DemoPatientControllerTest {
     public void testGetCommunities() throws Exception {
         ContextService contextService = createMock(ContextService.class);
         MotechService motechService = createMock(MotechService.class);
-        LocationController locationController = new LocationController();
+        JSONLocationSerializer JSONLocationSerializer = new JSONLocationSerializer();
 
-        locationController.setContextService(contextService);
+        JSONLocationSerializer.setContextService(contextService);
         demoPatientController.setContextService(contextService);
-        demoPatientController.setLocationController(locationController);
+        demoPatientController.setJSONLocationSerializer(JSONLocationSerializer);
 
         expect(contextService.getMotechService()).andReturn(motechService);
         expect(motechService.getAllCommunities(false)).andReturn(Collections.<Community>emptyList()).once();

@@ -115,23 +115,23 @@ public class DemoPatientController extends BasePatientController {
 
 	@ModelAttribute("regions")
 	public List<String> getRegions() {
-		return locationController.getAllRegions();
+		return JSONLocationSerializer.getAllRegions();
 	}
 
 	@ModelAttribute("districts")
 	public List<String> getDistricts() {
-		return locationController.getAllDistricts();
+		return JSONLocationSerializer.getAllDistricts();
 	}
 
 	@ModelAttribute("communities")
 	public List<Community> getCommunities() {
-		return locationController.getAllCommunities(false);
+		return JSONLocationSerializer.getAllCommunities(false);
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public void viewForm(@RequestParam(required = false) Integer id,ModelMap model) {
         WebPatient patient = new WebPatient();
-        locationController.populateJavascriptMaps(model,patient.getPreferredLocation());
+        JSONLocationSerializer.populateJavascriptMaps(model, patient.getPreferredLocation());
 	}
 
 	@ModelAttribute("patient")
@@ -310,7 +310,7 @@ public class DemoPatientController extends BasePatientController {
 			return "redirect:/module/motechmodule/demo-success.htm";
 		}
 
-		locationController.populateJavascriptMaps(model,patient.getPreferredLocation());
+		JSONLocationSerializer.populateJavascriptMaps(model, patient.getPreferredLocation());
 
 		return "/module/motechmodule/demo-patient";
 	}

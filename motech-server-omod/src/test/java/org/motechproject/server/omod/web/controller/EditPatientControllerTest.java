@@ -36,7 +36,7 @@ package org.motechproject.server.omod.web.controller;
 import junit.framework.TestCase;
 import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ghana.Facility;
-import org.motechproject.server.omod.web.localization.LocationController;
+import org.motechproject.server.omod.web.model.JSONLocationSerializer;
 import org.motechproject.server.omod.web.model.WebModelConverter;
 import org.motechproject.server.omod.web.model.WebPatient;
 import org.motechproject.server.service.ContextService;
@@ -68,7 +68,7 @@ public class EditPatientControllerTest extends TestCase {
     SessionStatus status;
     PatientService patientService;
     OpenmrsBean openmrsBean;
-    LocationController locationController;
+    JSONLocationSerializer JSONLocationSerializer;
 
     @Override
     protected void setUp() {
@@ -76,11 +76,11 @@ public class EditPatientControllerTest extends TestCase {
         openmrsBean = createMock(OpenmrsBean.class);
         contextService = createMock(ContextService.class);
         webModelConverter = createMock(WebModelConverter.class);
-        locationController = createMock(LocationController.class);
+        JSONLocationSerializer = createMock(JSONLocationSerializer.class);
         controller = new EditPatientController();
         controller.setRegistrarBean(registrarBean);
         controller.setOpenmrsBean(openmrsBean);
-        controller.setLocationController(locationController);
+        controller.setJSONLocationSerializer(JSONLocationSerializer);
         controller.setContextService(contextService);
         controller.setWebModelConverter(webModelConverter);
         motechService = createMock(MotechService.class);
@@ -202,7 +202,7 @@ public class EditPatientControllerTest extends TestCase {
         Facility facility = new Facility();
         facility.setFacilityId(11117);
         expect(registrarBean.getFacilityById(facility.getFacilityId())).andReturn(facility);
-        locationController.populateJavascriptMaps(model,patient.getPreferredLocation());
+        JSONLocationSerializer.populateJavascriptMaps(model,patient.getPreferredLocation());
         expectLastCall();
 
         registrarBean.editPatient(openmrsPatient, firstName, middleName,
@@ -213,11 +213,11 @@ public class EditPatientControllerTest extends TestCase {
 
         status.setComplete();
 
-        replay(registrarBean, status, contextService, motechService, openmrsBean, locationController);
+        replay(registrarBean, status, contextService, motechService, openmrsBean, JSONLocationSerializer);
 
         controller.submitForm(patient, errors, model, status);
 
-        verify(registrarBean, status, contextService, motechService,openmrsBean, locationController);
+        verify(registrarBean, status, contextService, motechService,openmrsBean, JSONLocationSerializer);
 
         assertTrue("Missing success message in model", model.containsAttribute("successMsg"));
     }
