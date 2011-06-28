@@ -25,9 +25,11 @@ public class RegisterClientPage {
     WebElement inputNHISField;
     WebElement inputNHISExpiryDate;
     WebElement inputMotherMotechID;
+    UtilityClass utilityClass;
 
     public RegisterClientPage() {
         driver = DefaultPage.getInstance();
+        utilityClass = new UtilityClass();
     }
 
     private void InitializeDefaultObjects(){
@@ -65,6 +67,7 @@ public class RegisterClientPage {
         setDueDate();
         selectOption("dueDateConfirmed","Yes");
         selectOption("enroll","Yes");
+        utilityClass.wait(1000);
         consent.click();
         phoneNumber.sendKeys("0123456789");
         selectOption("phoneType","Personal phone");
@@ -97,6 +100,7 @@ public class RegisterClientPage {
         setDueDate();
         selectOption("dueDateConfirmed","Yes");
         selectOption("enroll","Yes");
+        utilityClass.wait(1000);
         consent.click();
         phoneNumber.sendKeys("0123456789");
         selectOption("phoneType","Personal phone");
@@ -148,6 +152,7 @@ public class RegisterClientPage {
             selectOption("sex","Male");
             selectOption("insured", "No");
             selectOption("enroll","Yes");
+            utilityClass.wait(1000);
             consent.click();
             submitButton.click();
             if (driver.getCurrentUrl().contains("/viewdata.form")){

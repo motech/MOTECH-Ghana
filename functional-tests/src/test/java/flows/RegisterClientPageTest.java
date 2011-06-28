@@ -11,12 +11,13 @@ public class RegisterClientPageTest {
     private OpenMRSLoginPage loginPage;
 
     @BeforeGroups(groups = {"smoke"})
+   // @BeforeMethod
     public void setUp() {
         loginPage = new OpenMRSLoginPage();
         loginPage.getOpenMRSDashBoard();
     }
 
-    @AfterGroups(groups = {"smoke"})
+   @AfterGroups(groups = {"smoke"})
     public void tearDown() {
        loginPage.close();
     }

@@ -3,6 +3,7 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import util.UtilityClass;
 
 import java.util.List;
 
@@ -20,9 +21,11 @@ public class SearchPage {
     WebElement matchTable;
     WebElement inputLastName;
     WebElement inputFirstName;
+    UtilityClass utilityClass;
 
     public SearchPage(){
         driver = DefaultPage.getInstance();
+        utilityClass = new UtilityClass();
     }
 
     private void InitializeDefaultObjects(){
@@ -36,6 +39,7 @@ public class SearchPage {
         InitializeDefaultObjects();
         inputMotechID.sendKeys(motechID);
         buttonSubmit.click();
+        utilityClass.wait(1000);
         matchTable = driver.findElement(By.xpath("//div[@id='content']/div[3]/table"));
         List<WebElement> tdList= matchTable.findElements(By.tagName("td"));
         for( WebElement td:tdList){
@@ -50,6 +54,7 @@ public class SearchPage {
         InitializeDefaultObjects();
         inputFirstName.sendKeys(firstName);
         buttonSubmit.click();
+        utilityClass.wait(1000);
         matchTable = driver.findElement(By.xpath("//div[@id='content']/div[3]/table"));
         List<WebElement> tdList= matchTable.findElements(By.tagName("td"));
         for( WebElement td:tdList){
@@ -65,6 +70,7 @@ public class SearchPage {
         InitializeDefaultObjects();
         inputFirstName.sendKeys(firstName);
         buttonSubmit.click();
+        utilityClass.wait(1000);
         matchTable = driver.findElement(By.xpath("//div[@id='content']/div[3]/table"));
         List<WebElement> tdList= matchTable.findElements(By.tagName("td"));
         for(WebElement td:tdList){

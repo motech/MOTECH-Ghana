@@ -22,4 +22,12 @@ public class UtilityClass {
         String date = sdf.format(Calendar.getInstance().getTime());
         return date;
     }
+
+   public void wait(int time) {
+       try {
+           Thread.sleep(time);
+       } catch (InterruptedException e) {
+           e.printStackTrace();
+       }
+   }
 }
