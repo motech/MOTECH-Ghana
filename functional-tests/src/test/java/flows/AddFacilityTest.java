@@ -9,21 +9,7 @@ public class AddFacilityTest {
 
     private OpenMRSLoginPage loginPage;
 
-    //@BeforeTest
-    //@BeforeGroups(groups = {"smoke"})
-    public void SetUp(){
-        loginPage = new OpenMRSLoginPage();
-        loginPage.getOpenMRSDashBoard();
-    }
-
-    //@AfterTest
-    //@AfterGroups(groups = {"smoke"})
-    public void TearDown(){
-      loginPage.close();
-
-    }
-
-    @Test
+    @Test(groups = {"smoke"})
     public void AddFacilityWithOnePhoneNumber(){
           MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
           moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.ADD_FACILITY);
@@ -71,6 +57,5 @@ public class AddFacilityTest {
        Assert.assertTrue(manageFacilityPage.FindFacilityByName(facilityName),"Facility Not Found");
        Assert.assertTrue(manageFacilityPage.FindFacilityByNameAndPhoneNumber(facilityName,"0111111111","0222222222","0333333333","0444444444"),"Facility Details does not match");
     }
-
 
 }
