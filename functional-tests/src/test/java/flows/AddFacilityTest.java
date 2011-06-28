@@ -7,7 +7,7 @@ import pages.*;
 
 public class AddFacilityTest {
 
-    private OpenMRSLoginPage loginPage;
+    //private OpenMRSLoginPage loginPage;
 
     @Test(groups = {"smoke"})
     public void AddFacilityWithOnePhoneNumber(){
