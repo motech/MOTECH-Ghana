@@ -1,1 +1,1 @@
-<spring:message code="${response}"/>
+${response}    

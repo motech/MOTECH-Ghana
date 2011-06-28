@@ -10,8 +10,10 @@ import org.motechproject.server.omod.web.model.WebStaff;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.strategy.MessageContentExtractionStrategy;
 import org.motechproject.server.svc.MailingService;
+import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.util.MotechConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +45,10 @@ public class SupportCaseController {
     @Autowired
     private ContextService contextService;
 
+    @Autowired
+    @Qualifier("registrarBeanProxy")
+    private OpenmrsBean openmrsBean;
+
 
     @RequestMapping(value = "/module/motechmodule/supportcase", method = RequestMethod.GET)
     public ModelAndView mailToSupport(@ModelAttribute IncomingMessage incomingMessage) {
@@ -64,7 +70,7 @@ public class SupportCaseController {
     private ModelAndView sendSupportMail(IncomingMessage incomingMessage) {
         ModelAndView response = new ModelAndView(VIEW);
         SupportCase supportCase = (SupportCase) messageContentExtractionStrategy.extractFrom(incomingMessage);
-        WebStaff staff = new WebStaff(contextService.getUserService().getUserByUsername(supportCase.getRaisedBy()));
+        WebStaff staff = new WebStaff(openmrsBean.getStaffBySystemId(supportCase.getRaisedBy()));
         Map data = new HashMap();
         data.put("staff", staff);
         data.put("case", supportCase);
@@ -88,6 +94,10 @@ public class SupportCaseController {
 
     public void setContextService(ContextService contextService) {
         this.contextService = contextService;
+    }
+
+    public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+        this.openmrsBean = openmrsBean;
     }
 
     private String to() {

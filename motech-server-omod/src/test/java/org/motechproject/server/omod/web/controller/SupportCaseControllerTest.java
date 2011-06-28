@@ -10,11 +10,12 @@ import org.motechproject.server.omod.web.model.MailTemplate;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.strategy.SupportCaseExtractionStrategy;
 import org.motechproject.server.svc.MailingService;
+import org.motechproject.server.svc.OpenmrsBean;
+import org.motechproject.server.util.MailingConstants;
 import org.motechproject.server.util.MotechConstants;
 import org.openmrs.PersonName;
 import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
-import org.openmrs.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -36,7 +37,7 @@ public class SupportCaseControllerTest {
         IncomingMessage message = new IncomingMessage();
         ModelAndView modelAndView = controller.mailToSupport(message);
         assertEquals("/module/motechmodule/response", modelAndView.getViewName());
-        assertEquals("motechmodule.support.case.insufficient.info", modelAndView.getModelMap().get("response"));
+        assertEquals(MailingConstants.INSUFFICIENT_INFO_FOR_SUPPORT_CASE, modelAndView.getModelMap().get("response"));
     }
 
     @Test
@@ -44,10 +45,11 @@ public class SupportCaseControllerTest {
 
         MailingService mailingService = createMock(MailingService.class);
         ContextService contextService = createMock(ContextService.class);
-        UserService userService = createMock(UserService.class);
+        OpenmrsBean openmrsBean = createMock(OpenmrsBean.class);
         AdministrationService administrationService = createMock(AdministrationService.class);
 
         SupportCaseController controller = new SupportCaseController();
+        controller.setOpenmrsBean(openmrsBean);
         controller.setMailingService(mailingService);
         controller.setContextService(contextService);
         controller.setMessageContentExtractionStrategy(new SupportCaseExtractionStrategy());
@@ -66,10 +68,9 @@ public class SupportCaseControllerTest {
         PersonName name = new PersonName("Joyee", "J", "Jee");
         staff.addName(name);
 
-        expect(contextService.getUserService()).andReturn(userService);
         expect(contextService.getAdministrationService()).andReturn(administrationService).times(2);
 
-        expect(userService.getUserByUsername("465")).andReturn(staff);
+        expect(openmrsBean.getStaffBySystemId("465")).andReturn(staff);
 
         expect(administrationService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_SUPPORT_CASE_MAIL_TO)).andReturn("abc@abc.com");
         expect(administrationService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_SUPPORT_CASE_MAIL_FROM)).andReturn("xyz@xyz.com");
@@ -81,14 +82,14 @@ public class SupportCaseControllerTest {
         mailingService.send(equalsMessage(new Email("abc@abc.com", "xyz@xyz.com", mailSubject, mailText)));
         expectLastCall();
 
-        replay(userService, contextService, administrationService, mailingService);
+        replay(openmrsBean, contextService, administrationService, mailingService);
 
         ModelAndView modelAndView = controller.mailToSupport(message);
 
-        verify(userService, contextService, administrationService, mailingService);
+        verify(openmrsBean, contextService, administrationService, mailingService);
 
         assertEquals("/module/motechmodule/response", modelAndView.getViewName());
-        assertEquals("motechmodule.support.case.mail.acknowledgement", modelAndView.getModelMap().get("response"));
+        assertEquals(MailingConstants.SUPPORT_CASE_CREATION_ACKNOWLEDGEMENT, modelAndView.getModelMap().get("response"));
 
     }
 

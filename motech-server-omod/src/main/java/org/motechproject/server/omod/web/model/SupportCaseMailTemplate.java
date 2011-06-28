@@ -1,7 +1,6 @@
 package org.motechproject.server.omod.web.model;
 
 import org.apache.velocity.app.VelocityEngine;
-import org.motechproject.server.model.SupportCase;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import java.util.Map;
@@ -13,12 +12,12 @@ public class SupportCaseMailTemplate implements MailTemplate {
     private String template;
     private Map data;
     private String subjectTemplate;
-    private String bodyTemplate;
+    private String textTemplate;
     private static final String SPACE = " ";
 
-    public SupportCaseMailTemplate(String subjectTemplate, String bodyTemplate) {
+    public SupportCaseMailTemplate(String subjectTemplate, String textTemplate) {
         this.subjectTemplate = subjectTemplate;
-        this.bodyTemplate = bodyTemplate;
+        this.textTemplate = textTemplate;
     }
 
 
@@ -27,27 +26,11 @@ public class SupportCaseMailTemplate implements MailTemplate {
     }
 
     public String subject(Map data) {
-        SupportCase supportCase = (SupportCase) data.get("case");
-        WebStaff staff = (WebStaff) data.get("staff");
-        StringBuilder subject = new StringBuilder("Support: Case reported by ");
-        subject.append(staff.getFirstName()).append(SPACE)
-                .append(staff.getLastName()).append(SPACE)
-                .append("on").append(SPACE)
-                .append(supportCase.getDateRaisedOn());
-        return subject.toString();
+        return renderWith(subjectTemplate,data);
     }
 
     public String text(Map data) {
-        SupportCase supportCase = (SupportCase) data.get("case");
-        WebStaff staff = (WebStaff) data.get("staff");
-        StringBuilder text = new StringBuilder();
-        text.append(staff.getFirstName()).append(SPACE)
-                .append(staff.getLastName()).append(SPACE)
-                .append("with Staff id").append(SPACE)
-                .append(staff.getStaffId()).append(SPACE)
-                .append("reported the following issue:").append(SPACE)
-                .append(supportCase.getDescription());
-        return text.toString();
+        return renderWith(textTemplate,data);
     }
 
     private String renderWith(String template, Map data) {

@@ -22,18 +22,14 @@
     </bean>
 
     <bean id="mailTemplate" class="org.motechproject.server.omod.web.model.SupportCaseMailTemplate">
-        <constructor-arg index="0" type="java.lang.String" value="template/mail_subject.vm"></constructor-arg>
-        <constructor-arg index="1" type="java.lang.String" value="template/mail_body.vm"></constructor-arg>
+        <constructor-arg index="0" type="java.lang.String" value="mail_subject.vm"></constructor-arg>
+        <constructor-arg index="1" type="java.lang.String" value="mail_text.vm"></constructor-arg>
+        <property name="velocityEngine" ref="velocityEngine"/>
     </bean>
 
 
-    <!--<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">-->
-        <!--<property name="velocityProperties">-->
-            <!--<value>-->
-                <!--resource.loader=class-->
-                <!--class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader-->
-            <!--</value>-->
-        <!--</property>-->
-    <!--</bean>-->
+    <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+        <property name="resourceLoaderPath" value="classpath:org/motechproject/server/omod/web/template"/>
+    </bean>
 
 </beans>
