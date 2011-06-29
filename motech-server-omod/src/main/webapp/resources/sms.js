@@ -42,11 +42,11 @@ function Country(country) {
     var facilityRow = getParentRow('#facility');
 
     var populateRegions = function() {
-        var sno = 0;
+
         $j(country.regions).each(function(index, region) {
             if (region.name != 'Field Agent') {
                 regionDropDown.appendOption(new Option(region.name, region.name));
-                $j("#region").parent(".checkbox-list-wrapper").find(".checkbox-list-selector").append("<input type='checkbox' value='" + sno++ + "'/>");
+                $j("#region").parent(".checkbox-list-wrapper").find(".checkbox-list-selector").append("<input type='checkbox' value='" + region.name + "'/>");
             }
         });
         $j('#region').attr('size', country.regions.length);
@@ -76,13 +76,14 @@ function Country(country) {
         var regionNames = (regionName) ? [regionName] : [];
         var districtNames = (districtName) ? [districtName] : [];
         var subDistrictNames = (subDistrictName) ? [subDistrictName] : [];
+
         $j(country.regions).each(function(index, region) {
             $j(region.healthFacilities).each(function(index, facility) {
                 var healthFacility = new Facility(facility);
                 if (healthFacility.inLocation(regionNames, districtNames, subDistrictNames)) {
                     if (selected) {
                         facilityDropDown.appendOption(new Option(facility.name, facility.facilityId));
-                        $j("#facility").parent(".checkbox-list-wrapper").find(".checkbox-list-selector").append("<input type='checkbox' value='" + index + "'/>");
+                        $j("#facility").parent(".checkbox-list-wrapper").find(".checkbox-list-selector").append("<input type='checkbox' value='" + facility.facilityId + "'/>");
                     } else {
                         facilityDropDown.removeOptionsWhen(function(val) {
                             var optElement = $j("#facility").find("option[value='" + val + "']");
@@ -104,10 +105,11 @@ function Country(country) {
 
     var handleChange = function(selection, childElementsQueryFunction, selected, childList, locationType, cascadeFunction){
         var childElements = childElementsQueryFunction(selection);
+
         if (selected) {
             $j(childElements).each(function(index, child) {
                 childList.appendOption(new Option(child, child));
-                $j("#"+ locationType +"").parent(".checkbox-list-wrapper").find(".checkbox-list-selector").append("<input type='checkbox' value='" + index + "'/>");
+                $j("#"+ locationType +"").parent(".checkbox-list-wrapper").find(".checkbox-list-selector").append("<input type='checkbox' value='" + child + "'/>");
             });
         } else {
             childList.removeOptionsWhen(function(val) {
@@ -266,9 +268,9 @@ function Country(country) {
         var checkbox = elementClicked.filter('input')
         if (checkbox) {
             var selectList = elementClicked.closest('.checkbox-list-wrapper').find('.checkbox-list');
-            var options = $j(selectList).find('option');
             var selectedValue = (elementClicked.is(':checked')) ? 'selected' : '';
-            var option = options[elementClicked.attr('value')];
+            var checkboxValue = elementClicked.attr('value');
+            var option = $j(selectList).find('option[value="'+ checkboxValue +'"]');
             $j(option).attr('selected', selectedValue);
             if (checkbox.closest(".checkbox-list-wrapper").find("#region").length !== 0) {
                 onRegionChange($j(option).val(), checkbox.is(":checked"));
