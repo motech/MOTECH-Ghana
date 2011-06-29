@@ -120,4 +120,12 @@
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
+
+    <openmrs:hasPrivilege privilege="URL Map">
+		<li <c:if test='<%= request.getRequestURI().contains("urlmap") %>'>class="active"</c:if>>
+			<a href="${pageContext.request.contextPath}/module/motechmodule/urlmap.form">
+				<spring:message code="motechmodule.url.map"/>
+			</a>
+		</li>
+	</openmrs:hasPrivilege>
 </ul>

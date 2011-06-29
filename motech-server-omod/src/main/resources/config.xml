@@ -162,6 +162,11 @@
         <description>Allows the staff to send SMS</description>
     </privilege>
 
+    <privilege>
+        <name>URL Map</name>
+        <description>Allows the staff map URL for incoming message</description>
+    </privilege>
+
 	<globalProperty>
 		<property>motechmodule.troubled_phone_failures</property>
 		<defaultValue>4</defaultValue>

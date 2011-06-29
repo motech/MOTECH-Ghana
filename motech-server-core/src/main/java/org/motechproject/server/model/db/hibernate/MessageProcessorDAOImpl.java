@@ -7,6 +7,8 @@ import org.motechproject.server.model.MessageProcessorURL;
 import org.motechproject.server.model.db.MessageProcessorDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 public class MessageProcessorDAOImpl implements MessageProcessorDAO {
 
     @Autowired
@@ -17,5 +19,10 @@ public class MessageProcessorDAOImpl implements MessageProcessorDAO {
         criteria.add(Restrictions.eq("key",keyword));
         MessageProcessorURL result = (MessageProcessorURL) criteria.uniqueResult();
         return null != result ? result : new MessageProcessorURL();
+    }
+
+    public List<MessageProcessorURL> list() {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(MessageProcessorURL.class);
+        return criteria.list();
     }
 }

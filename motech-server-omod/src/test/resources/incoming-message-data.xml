@@ -1,4 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
     <motechmodule_url id="1" message_key="SUPPORT" url="/module/motechmodule/supportcase.form"/>
+    <motechmodule_url id="2" message_key="SEARCH" url="http://www.google.com"/>
 </dataset>

@@ -3236,7 +3236,7 @@
         <version>4.9</version>
         <author>ThoughtWorks</author>
         <date>June 27 2011</date>
-		<description>Createing url_motechmodule</description>
+		<description>Creating url_motechmodule</description>
         <sql>
             create table motechmodule_url
             (
@@ -3251,8 +3251,9 @@
         <version>5.0</version>
         <author>ThoughtWorks</author>
         <date>June 28 2011</date>
-		<description>Adding values in global_property</description>
+		<description>Adding values in motechmodule_url and global_property</description>
         <sql>
+            insert into motechmodule_url(message_key,url) values('SUPPORT','/module/motechmodule/supportcase.form');
             insert into global_property values('motechmodule.support_case_mail_to','motechsupport@grameenfoundation.org','email id to which support cases are sent',UUID());
             insert into global_property values('motechmodule.support_case_mail_from','no-reply@grameenfoundation.org','email id from which support cases are sent',UUID());
         </sql>
