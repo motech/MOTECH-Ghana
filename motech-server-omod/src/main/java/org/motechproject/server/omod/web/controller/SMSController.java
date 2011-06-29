@@ -1,5 +1,7 @@
 package org.motechproject.server.omod.web.controller;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.omod.web.encoder.SpaceEncoder;
 import org.motechproject.server.omod.web.model.JSONLocationSerializer;
 import org.motechproject.server.omod.web.model.WebBulkMessage;
@@ -22,6 +24,8 @@ import static org.apache.commons.lang.StringUtils.join;
 public class SMSController {
 
     private static final String VIEW = "/module/motechmodule/sms";
+
+    private static Log log = LogFactory.getLog(SMSController.class);
 
     @Autowired
     private JSONLocationSerializer locationSerializer;
@@ -51,12 +55,14 @@ public class SMSController {
 
         for (i = 0; i < (individualRecipients.length) / 10; i++) {
             String[] tenRecipients = Arrays.copyOfRange(individualRecipients, i  * 10 , (i  * 10) + 10);
-            statusOfAllBatches = sendMessageToAllRecipients(bulkMessage, statusOfAllBatches, tenRecipients);
+            statusOfAllBatches = sendMessageToAllRecipients(bulkMessage, tenRecipients);
+
         }
 
         int leftOutRecipientsStartingIndex = i * 10;
         String[] remainingRecipients = Arrays.copyOfRange(individualRecipients, leftOutRecipientsStartingIndex, individualRecipients.length);
-        statusOfAllBatches = sendMessageToAllRecipients(bulkMessage, statusOfAllBatches, remainingRecipients);
+        statusOfAllBatches = sendMessageToAllRecipients(bulkMessage, remainingRecipients);
+
 
         ModelAndView modelAndView = new ModelAndView(VIEW);
         bulkMessage.setRecipients(recipients);
@@ -69,10 +75,12 @@ public class SMSController {
         return modelAndView;
     }
 
-    private MessageStatus sendMessageToAllRecipients(WebBulkMessage bulkMessage, MessageStatus statusOfAllBatches, String[] tenRecipients) {
-        String tenRecipientsTogether = join(tenRecipients, ",");
-        bulkMessage.setRecipients(tenRecipientsTogether);
-        return messageService.sendMessage(bulkMessage.content(new SpaceEncoder()), bulkMessage.recipients());
+    private MessageStatus sendMessageToAllRecipients(WebBulkMessage bulkMessage, String[] tenRecipients) {
+        String recipientsTogether = join(tenRecipients, ",");
+        bulkMessage.setRecipients(recipientsTogether);
+        MessageStatus result =  messageService.sendMessage(bulkMessage.content(new SpaceEncoder()), bulkMessage.recipients());
+        log.info("Message to " + recipientsTogether  + " " + result.name());
+        return result;
     }
 
     private WebResponse createResponse(MessageStatus status, WebBulkMessage message) {
