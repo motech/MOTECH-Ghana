@@ -282,14 +282,35 @@ function Country(country) {
         }
     };
 
+    var validate = function(e){
+        if(!$j("#recipients").val()){
+            $j("#error-number-required").show();
+            e.preventDefault();
+        }
+        if(!$j("#content").val()){
+            $j("#error-message-required").show();
+            e.preventDefault();
+        }
+        if(!(/([0-9]*[,]?)*[0-9]$/i.test($j("#recipients").val()))){
+            $j("#error-number-invalid").show();
+            e.preventDefault();
+        }
+    };
+
+    var hideErrors = function(){
+        $j(".error").hide();
+    }
+
 
     var bind = function() {
         $j('.checkbox-list-selector').click(onCheckboxClicked);
+        $j("#submitMessage").click(validate);
     };
 
     var bootstrap = function() {
         bind();
         populateRegions();
+        hideErrors();
     };
 
     $j(bootstrap);

@@ -76,16 +76,19 @@
             <td>
                 <form:textarea path="recipients" rows='6' cols='60'></form:textarea>
             </td>
+            <td class="hideme"><span id="error-number-required" class="error"><spring:message code="motechmodule.phoneNumber.required"/></span></td>
+            <td class="hideme"><span id="error-number-invalid" class="error"><spring:message code="motechmodule.phoneNumber.commaSeparated"/></span></td>
         </tr>
         <tr>
             <td>Message</td>
             <td>
                 <form:textarea path="content" rows='6' cols='60'></form:textarea>
             </td>
+            <td class="hideme"><span id="error-message-required" class="error"><spring:message code="motechmodule.message.required"/></span></td>
         </tr>
         <tr>
             <td>&nbsp;</td>
-            <td><input type="submit" value="Send"/></td>
+            <td><input type="submit" id="submitMessage" value="Send"/></td>
         </tr>
     </table>
 </form:form>
