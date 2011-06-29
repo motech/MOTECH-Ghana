@@ -56,68 +56,20 @@ function Country(country) {
     };
 
     var onRegionChange = function(regionName, selected) {
-        var districtsInRegion = getDistrictsInRegion(regionName);
-        if (selected) {
-            $j(districtsInRegion).each(function(index, districtName) {
-                districtDropDown.appendOption(new Option(districtName, districtName));
-                $j("#district").parent(".checkbox-list-wrapper").find(".checkbox-list-selector").append("<input type='checkbox' value='" + index + "'/>");
-            });
-        } else {
-            districtDropDown.removeOptionsWhen(function(val) {
-                return removeOptionsPredicate(val, districtsInRegion, $j("#district"), onDistrictChange);
-            });
-        }
-        $j("#district").attr('size', $j("#district option").length);
+        handleChange(regionName, getDistrictsInRegion, selected, districtDropDown, "district", onDistrictChange);
         toggleDistrictVisibility();
         toggleSubDistrictVisibility();
         facilitiesToBeShown(regionName, null, null, selected);
     };
 
     var onDistrictChange = function(districtName, selected) {
-        var subDistrictsInDistrict = getSubDistrictsInDistrict(districtName);
-        if (selected) {
-            $j(subDistrictsInDistrict).each(function(index, subDistrictName) {
-                subDistrictDropDown.appendOption(new Option(subDistrictName, subDistrictName));
-                $j("#subDistrict").parent(".checkbox-list-wrapper").find(".checkbox-list-selector").append("<input type='checkbox' value='" + index + "'/>");
-            });
-        } else {
-            subDistrictDropDown.removeOptionsWhen(function(val) {
-                return removeOptionsPredicate(val, subDistrictsInDistrict, $j("#subDistrict"), onSubDistrictChange);
-            });
-        }
-        $j("#subDistrict").attr('size', $j("#subDistrict option").length);
+        handleChange(districtName, getSubDistrictsInDistrict, selected, subDistrictDropDown, "subDistrict", onSubDistrictChange);
         toggleSubDistrictVisibility();
         facilitiesToBeShown(null, districtName, null, selected);
     };
 
-    var removeOptionsPredicate = function(val, optionsToBeRemoved, listElement, cascadeFunction) {
-        var inArray = $j.inArray(val, optionsToBeRemoved);
-        if (inArray !== -1) {
-            cascadeFunction(val,false);
-            var optElement = listElement.find("option[value='" + val + "']");
-            var optIndex = listElement.find('option').index(optElement);
-            var selectorDiv = $j(optElement).closest('.checkbox-list-wrapper').find(".checkbox-list-selector");
-            var checkbox = $j(selectorDiv).find('input[type="checkbox"]')[optIndex];
-            $j(checkbox).remove();
-        }
-        return ( inArray !== -1);
-    };
-
     var onSubDistrictChange = function(subDistrictName, selected) {
         facilitiesToBeShown(null, null, subDistrictName, selected);
-    };
-
-    var updatePhoneNumbers = function() {
-        revertPhoneNumbers();
-        var phoneNumbers = [];
-        var selectedFacilities = getSelectedFacilities();
-        $j(selectedFacilities).each(function(index, selectedFacility) {
-            var facilityPhoneNumbers = getPhoneNumbers(selectedFacility);
-            if (facilityPhoneNumbers.length > 0) {
-                phoneNumbers.push(facilityPhoneNumbers.join(','));
-            }
-        });
-        $j('#recipients').val(phoneNumbers.join(','));
     };
 
     var facilitiesToBeShown = function(regionName, districtName, subDistrictName, selected) {
@@ -148,6 +100,47 @@ function Country(country) {
         $j('#facility').attr('size', $j("#facility option").length);
         toggleFacilityVisibility();
         updatePhoneNumbers();
+    };
+
+    var handleChange = function(selection, childElementsQueryFunction, selected, childList, locationType, cascadeFunction){
+        var childElements = childElementsQueryFunction(selection);
+        if (selected) {
+            $j(childElements).each(function(index, child) {
+                childList.appendOption(new Option(child, child));
+                $j("#"+ locationType +"").parent(".checkbox-list-wrapper").find(".checkbox-list-selector").append("<input type='checkbox' value='" + index + "'/>");
+            });
+        } else {
+            childList.removeOptionsWhen(function(val) {
+                return removeOptionsPredicate(val, childElements, $j("#"+ locationType +""), cascadeFunction);
+            });
+        }
+        $j("#"+ locationType +"").attr('size', $j("#"+ locationType +" option").length);
+    };
+
+    var removeOptionsPredicate = function(val, optionsToBeRemoved, listElement, cascadeFunction) {
+        var inArray = $j.inArray(val, optionsToBeRemoved);
+        if (inArray !== -1) {
+            cascadeFunction(val,false);
+            var optElement = listElement.find("option[value='" + val + "']");
+            var optIndex = listElement.find('option').index(optElement);
+            var selectorDiv = $j(optElement).closest('.checkbox-list-wrapper').find(".checkbox-list-selector");
+            var checkbox = $j(selectorDiv).find('input[type="checkbox"]')[optIndex];
+            $j(checkbox).remove();
+        }
+        return ( inArray !== -1);
+    };
+
+    var updatePhoneNumbers = function() {
+        revertPhoneNumbers();
+        var phoneNumbers = [];
+        var selectedFacilities = getSelectedFacilities();
+        $j(selectedFacilities).each(function(index, selectedFacility) {
+            var facilityPhoneNumbers = getPhoneNumbers(selectedFacility);
+            if (facilityPhoneNumbers.length > 0) {
+                phoneNumbers.push(facilityPhoneNumbers.join(','));
+            }
+        });
+        $j('#recipients').val(phoneNumbers.join(','));
     };
 
     var getDistrictsInRegion = function(regionName) {
