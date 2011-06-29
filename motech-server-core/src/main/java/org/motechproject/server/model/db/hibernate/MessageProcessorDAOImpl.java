@@ -25,11 +25,11 @@ public class MessageProcessorDAOImpl implements MessageProcessorDAO {
         return criteria.list();
     }
 
-    public void update(MessageProcessorURL messageProcessorURL) {
-        sessionFactory.getCurrentSession().update(messageProcessorURL);
+    public void update(Object obj) {
+        sessionFactory.getCurrentSession().update(obj);
     }
 
-    public void save(MessageProcessorURL messageProcessorURL) {
-        sessionFactory.getCurrentSession().save(messageProcessorURL);
+    public void save(Object obj) {
+        sessionFactory.getCurrentSession().save(obj);
     }
 }

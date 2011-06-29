@@ -34,6 +34,6 @@ public class SupportCaseMailTemplate implements MailTemplate {
     }
 
     private String renderWith(String template, Map data) {
-        return VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, template, data);
+        return VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, template, data).trim();
     }
 }

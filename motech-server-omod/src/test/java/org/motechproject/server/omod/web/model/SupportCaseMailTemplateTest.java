@@ -41,4 +41,20 @@ public class SupportCaseMailTemplateTest {
         assertEquals("Support: Case reported by Joe Jee on 2011-06-06 10:10:10", mailTemplate.subject(data));
         assertEquals("Joe Jee with Staff id 465 reported the following issue: Network Failure", mailTemplate.text(data));
     }
+
+    @Test
+    public void shouldCreateTemplateWhenStaffNotFound() throws ParseException {
+        Map data = new HashMap();
+
+        SupportCase supportCase = new SupportCase();
+        supportCase.setDateRaisedOn("2011-06-06 10:10:10");
+        supportCase.setDescription("Network Failure");
+
+        data.put("staff",null);
+        data.put("case",supportCase);
+
+
+        assertEquals("Support: Case reported by unknown staff on 2011-06-06 10:10:10", mailTemplate.subject(data));
+        assertEquals("Issue Reported : Network Failure", mailTemplate.text(data));
+    }
 }

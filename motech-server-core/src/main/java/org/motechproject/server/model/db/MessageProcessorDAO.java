@@ -9,7 +9,7 @@ public interface MessageProcessorDAO {
 
     public List<MessageProcessorURL> list();
 
-    public void update(MessageProcessorURL messageProcessorURL);
+    public void update(Object obj);
 
-    public void save(MessageProcessorURL messageProcessorURL);
+    public void save(Object obj);
 }

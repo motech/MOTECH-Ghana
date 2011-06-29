@@ -5,6 +5,7 @@ import org.motechproject.server.model.MessageProcessorURL;
 import org.motechproject.server.model.db.MessageProcessorDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -14,15 +15,24 @@ import java.io.UnsupportedEncodingException;
 public class IncomingMessageController {
 
     @Autowired
-    private MessageProcessorDAO messageProcessorDAO;
+    private MessageProcessorDAO dao;
     private static final String REDIRECT = "redirect:";
 
+    @Transactional
     @RequestMapping(value = "/module/motechmodule/incomingmessage",method = RequestMethod.GET)
     public String redirect(IncomingMessage incomingMessage) throws UnsupportedEncodingException {
-        MessageProcessorURL url = messageProcessorDAO.urlFor(incomingMessage.getKey());
+        log(incomingMessage);
+        MessageProcessorURL url = dao.urlFor(incomingMessage.getKey());
         return new StringBuilder().append(REDIRECT).append(url.toString())
                 .append(incomingMessage.requestParameters()).toString();
     }
 
-    
+
+    private void log(IncomingMessage incomingMessage) {
+        dao.save(incomingMessage);
+    }
+
+    public void setDao(MessageProcessorDAO dao) {
+        this.dao = dao;
+    }
 }

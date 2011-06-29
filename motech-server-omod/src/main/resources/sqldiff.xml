@@ -3259,4 +3259,22 @@
         </sql>
      </diff>
 
+    <diff>
+        <version>5.1</version>
+        <author>ThoughtWorks</author>
+        <date>June 29 2011</date>
+		<description>Table to log incoming message</description>
+        <sql>
+            create table motechmodule_incoming_message
+            (
+              id bigint primary key auto_increment,
+              message_key varchar(20),
+              message mediumtext,
+              code varchar(10),
+              phone_number varchar(20),
+              sent_on varchar(30)
+            );
+        </sql>
+     </diff>
+
 </sqldiff>

@@ -2,11 +2,14 @@ package org.motechproject.server.model;
 
 import org.apache.commons.lang.StringUtils;
 import org.motechproject.server.strategy.MessageContentExtractionStrategy;
+import org.motechproject.ws.RequestParameterBuilder;
 
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
+import java.net.URLEncoder;
 
 public class IncomingMessage {
+
+    private Long id;
     private String text;
     private String number;
     private String key;
@@ -62,29 +65,29 @@ public class IncomingMessage {
         return StringUtils.isNotBlank(value);
     }
 
-    public String extractDateWith(MessageContentExtractionStrategy strategy) throws ParseException, UnsupportedEncodingException {
+    public String extractDateWith(MessageContentExtractionStrategy strategy)  {
         return strategy.extractDateFrom(time);
     }
 
-    public String extractPhoneNumberWith(MessageContentExtractionStrategy strategy) throws UnsupportedEncodingException {
+    public String extractPhoneNumberWith(MessageContentExtractionStrategy strategy)  {
         return strategy.extractPhoneNumberFrom(number);
     }
 
-    public String extractSenderWith(MessageContentExtractionStrategy strategy) throws UnsupportedEncodingException {
+    public String extractSenderWith(MessageContentExtractionStrategy strategy)  {
         return strategy.extractSenderFrom(text);
     }
 
-    public String extractDescriptionWith(MessageContentExtractionStrategy strategy) throws UnsupportedEncodingException {
+    public String extractDescriptionWith(MessageContentExtractionStrategy strategy)  {
         return strategy.extractDescriptionFrom(text);
     }
 
     public String requestParameters() throws UnsupportedEncodingException {
-        StringBuilder builder = new StringBuilder("?");
-        builder.append("text=").append(text).append(AMP);
-        builder.append("key=").append(key).append(AMP);
-        builder.append("code=").append(code).append(AMP);
-        builder.append("number=").append(number).append(AMP);
-        builder.append("time=").append(time);
+        RequestParameterBuilder builder = new RequestParameterBuilder("?","UTF-8");
+        builder.append("text", text);
+        builder.append("number", number);
+        builder.append("key", key);
+        builder.append("time", time);
+        builder.append("code", code);
         return builder.toString();
     }
 

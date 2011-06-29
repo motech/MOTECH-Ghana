@@ -9,6 +9,9 @@ import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import static junit.framework.Assert.assertTrue;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
@@ -67,7 +70,13 @@ public class URLMapControllerTest extends BaseModuleContextSensitiveTest{
 
         verify(dao);
 
-        assertEquals("redirect:/module/motechmodule/urlmap",redirection1);
-        assertEquals("redirect:/module/motechmodule/urlmap",redirection2);
+        assertEquals("redirect:/module/motechmodule/urlmap.form",redirection1);
+        assertEquals("redirect:/module/motechmodule/urlmap.form",redirection2);
+    }
+
+    @Test
+    public void shouldTest() throws UnsupportedEncodingException {
+        String s = URLEncoder.encode("+23312345", "UTF-8");
+        System.out.println(s);
     }
 }

@@ -1,0 +1,15 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field" package="org.motechproject.server.model">
+
+    <class name="IncomingMessage" table="motechmodule_incoming_message">
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="code" type="java.lang.String" column="code"/>
+        <property name="key" type="java.lang.String" column="message_key"/>
+        <property name="number" type="java.lang.String" column="phone_number"/>
+        <property name="text" type="java.lang.String" column="message"/>
+        <property name="time" type="java.lang.String" column="sent_on"/>
+    </class>
+</hibernate-mapping>

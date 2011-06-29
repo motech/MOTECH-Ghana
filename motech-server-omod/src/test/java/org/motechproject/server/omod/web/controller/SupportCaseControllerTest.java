@@ -59,9 +59,9 @@ public class SupportCaseControllerTest {
 
         message.setKey("SUPPORT");
         message.setCode("1982");
-        message.setNumber("%2B233123456789");
-        message.setText("SUPPORT+465+Cannot+Upload+Forms");
-        message.setTime("2011-06-25+09:30:29");
+        message.setNumber("+233123456789");
+        message.setText("SUPPORT 465 Cannot Upload Forms");
+        message.setTime("2011-06-25 09:30:29");
 
         User staff = new User();
         staff.setSystemId("465");
