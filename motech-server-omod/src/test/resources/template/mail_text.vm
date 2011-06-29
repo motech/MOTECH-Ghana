@@ -1,4 +1,4 @@
-#if(${staff})
+#if(${staff.isKnown()})
     ${staff.firstName} ${staff.lastName} with Staff id ${staff.staffId} reported the following issue: ${case.description}
 #else
     Issue Reported : ${case.description}

@@ -1,4 +1,4 @@
-#if(${staff})
+#if(${staff.isKnown()})
     Support: Case reported by ${staff.firstName} ${staff.lastName} on ${case.dateRaisedOn}
 #else
     Support: Case reported by unknown staff on ${case.dateRaisedOn}

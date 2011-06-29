@@ -33,6 +33,7 @@
 
 package org.motechproject.server.omod.web.model;
 
+import org.apache.commons.lang.StringUtils;
 import org.openmrs.User;
 
 public class WebStaff {
@@ -106,5 +107,7 @@ public class WebStaff {
         this.staffId = staffId;
     }
 
-
+    public Boolean isKnown(){
+        return StringUtils.isNotBlank(firstName) && StringUtils.isNotBlank(lastName);
+    }
 }

@@ -50,7 +50,7 @@ public class SupportCaseMailTemplateTest {
         supportCase.setDateRaisedOn("2011-06-06 10:10:10");
         supportCase.setDescription("Network Failure");
 
-        data.put("staff",null);
+        data.put("staff",new WebStaff());
         data.put("case",supportCase);
 
 
