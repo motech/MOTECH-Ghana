@@ -17,12 +17,19 @@ public class MessageProcessorDAOImpl implements MessageProcessorDAO {
     public MessageProcessorURL urlFor(String keyword) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(MessageProcessorURL.class);
         criteria.add(Restrictions.eq("key",keyword));
-        MessageProcessorURL result = (MessageProcessorURL) criteria.uniqueResult();
-        return null != result ? result : new MessageProcessorURL();
+        return (MessageProcessorURL) criteria.uniqueResult();
     }
 
     public List<MessageProcessorURL> list() {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(MessageProcessorURL.class);
         return criteria.list();
+    }
+
+    public void update(MessageProcessorURL messageProcessorURL) {
+        sessionFactory.getCurrentSession().update(messageProcessorURL);
+    }
+
+    public void save(MessageProcessorURL messageProcessorURL) {
+        sessionFactory.getCurrentSession().save(messageProcessorURL);
     }
 }

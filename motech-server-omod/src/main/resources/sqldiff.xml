@@ -3242,7 +3242,7 @@
             (
                id int primary key auto_increment,
                message_key varchar(20) not null unique key,
-               url varchar(50)
+               url varchar(50) not null
             );
         </sql>
      </diff>

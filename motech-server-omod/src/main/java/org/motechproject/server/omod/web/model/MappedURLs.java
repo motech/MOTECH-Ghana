@@ -7,6 +7,8 @@ import java.util.List;
 
 public class MappedURLs {
 
+    public MappedURLs() {}
+
     private List<MessageProcessorURL> urls = new ArrayList<MessageProcessorURL>();
 
     public MappedURLs(List<MessageProcessorURL> messageProcessorURLs) {
@@ -19,5 +21,9 @@ public class MappedURLs {
 
     public List<MessageProcessorURL> getUrls() {
         return urls;
+    }
+
+    public void setUrls(List<MessageProcessorURL> urls) {
+        this.urls.addAll(urls);
     }
 }
