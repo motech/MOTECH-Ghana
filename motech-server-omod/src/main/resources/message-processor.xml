@@ -29,7 +29,7 @@
 
 
     <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
-        <property name="resourceLoaderPath" value="classpath:org/motechproject/server/omod/web/template"/>
+        <property name="resourceLoaderPath" value="classpath:org/motechproject/server/omod/web/model"/>
     </bean>
 
 </beans>
