@@ -64,16 +64,21 @@ public class SMSControllerTest {
 
     @Test
     public void shouldSendSMS() {
+
+        expect(contextService.getMotechService()).andReturn(motechService);
+        expect(motechService.getAllFacilities()).andReturn(Collections.<Facility>emptyList());
+        expect(motechService.getAllLanguages()).andReturn(Collections.<MessageLanguage>emptyList());
+
         WebBulkMessage message = new WebBulkMessage();
         message.setRecipients("0123456788,0123456789");
         message.setContent("Hello World");
         expect(messageService.sendMessage("Hello%2BWorld", "0123456788,0123456789")).andReturn(MessageStatus.DELIVERED);
 
-        replay(messageService);
+        replay(messageService, contextService, motechService);
 
         ModelAndView modelAndView = controller.send(message);
 
-        verify(messageService);
+        verify(messageService, contextService, motechService);
 
         assertEquals("/module/motechmodule/sms", modelAndView.getViewName());
         WebResponse response = (WebResponse) modelAndView.getModelMap().get("response");

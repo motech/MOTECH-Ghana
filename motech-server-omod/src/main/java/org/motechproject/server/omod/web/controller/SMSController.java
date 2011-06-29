@@ -44,7 +44,9 @@ public class SMSController {
         ModelAndView modelAndView = new ModelAndView(VIEW);
         WebResponse response = createResponse(status,bulkMessage);
         modelAndView.addObject("response", response);
+        bulkMessage.setRecipients("");
         modelAndView.addObject("bulkMessage", bulkMessage);
+        locationSerializer.populateJavascriptMaps(modelAndView.getModelMap());
 
         return modelAndView;
     }

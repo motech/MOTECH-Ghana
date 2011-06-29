@@ -26,6 +26,7 @@ function Facility(facility) {
     };
 }
 
+
 function Country(country) {
 
     var getParentRow = function(ele) {
@@ -63,15 +64,7 @@ function Country(country) {
             });
         } else {
             districtDropDown.removeOptionsWhen(function(val) {
-                var inArray = $j.inArray(val, districtsInRegion);
-                if (inArray !== -1) {
-                    var optElement = $j("#district").find("option[value='" + val + "']");
-                    var optIndex = $j("#district").find('option').index(optElement);
-                    var selectorDiv = $j(optElement).closest('.checkbox-list-wrapper').find(".checkbox-list-selector");
-                    var checkbox = $j(selectorDiv).find('input[type="checkbox"]')[optIndex];
-                    $j(checkbox).remove();
-                }
-                return ( inArray !== -1);
+                return removeOptionsPredicate(val, districtsInRegion, $j("#district"), onDistrictChange);
             });
         }
         $j("#district").attr('size', $j("#district option").length);
@@ -89,20 +82,25 @@ function Country(country) {
             });
         } else {
             subDistrictDropDown.removeOptionsWhen(function(val) {
-                var inArray = $j.inArray(val, subDistrictsInDistrict);
-                if (inArray !== -1) {
-                    var optElement = $j("#subDistrict").find("option[value='" + val + "']");
-                    var optIndex = $j("#subDistrict").find('option').index(optElement);
-                    var selectorDiv = $j(optElement).closest('.checkbox-list-wrapper').find(".checkbox-list-selector");
-                    var checkbox = $j(selectorDiv).find('input[type="checkbox"]')[optIndex];
-                    $j(checkbox).remove();
-                }
-                return ( inArray !== -1);
+                return removeOptionsPredicate(val, subDistrictsInDistrict, $j("#subDistrict"), onSubDistrictChange);
             });
         }
         $j("#subDistrict").attr('size', $j("#subDistrict option").length);
         toggleSubDistrictVisibility();
         facilitiesToBeShown(null, districtName, null, selected);
+    };
+
+    var removeOptionsPredicate = function(val, optionsToBeRemoved, listElement, cascadeFunction) {
+        var inArray = $j.inArray(val, optionsToBeRemoved);
+        if (inArray !== -1) {
+            cascadeFunction(val,false);
+            var optElement = listElement.find("option[value='" + val + "']");
+            var optIndex = listElement.find('option').index(optElement);
+            var selectorDiv = $j(optElement).closest('.checkbox-list-wrapper').find(".checkbox-list-selector");
+            var checkbox = $j(selectorDiv).find('input[type="checkbox"]')[optIndex];
+            $j(checkbox).remove();
+        }
+        return ( inArray !== -1);
     };
 
     var onSubDistrictChange = function(subDistrictName, selected) {
@@ -286,7 +284,7 @@ function Country(country) {
             } else if (checkbox.closest(".checkbox-list-wrapper").find("#subDistrict").length !== 0) {
                 onSubDistrictChange($j(option).val(), checkbox.is(":checked"));
             } else {
-               updatePhoneNumbers();
+                updatePhoneNumbers();
             }
         }
     };
