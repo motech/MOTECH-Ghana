@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Arrays;
+
+import static org.apache.commons.lang.StringUtils.join;
+
 @Controller
 public class SMSController {
 
@@ -40,9 +44,23 @@ public class SMSController {
 
     @RequestMapping(value = VIEW, method = RequestMethod.POST)
     public ModelAndView send(@ModelAttribute WebBulkMessage bulkMessage) {
-        MessageStatus status = messageService.sendMessage(bulkMessage.content(new SpaceEncoder()), bulkMessage.recipients());
+        String recipients = bulkMessage.getRecipients();
+        String[] individualRecipients = recipients.split(",");
+        MessageStatus statusOfAllBatches = MessageStatus.REJECTED;
+        int i = 0;
+
+        for (i = 0; i < (individualRecipients.length) / 10; i++) {
+            String[] tenRecipients = Arrays.copyOfRange(individualRecipients, i  * 10 , (i  * 10) + 10);
+            statusOfAllBatches = sendMessageToAllRecipients(bulkMessage, statusOfAllBatches, tenRecipients);
+        }
+
+        int leftOutRecipientsStartingIndex = i * 10;
+        String[] remainingRecipients = Arrays.copyOfRange(individualRecipients, leftOutRecipientsStartingIndex, individualRecipients.length);
+        statusOfAllBatches = sendMessageToAllRecipients(bulkMessage, statusOfAllBatches, remainingRecipients);
+
         ModelAndView modelAndView = new ModelAndView(VIEW);
-        WebResponse response = createResponse(status,bulkMessage);
+        bulkMessage.setRecipients(recipients);
+        WebResponse response = createResponse(statusOfAllBatches, bulkMessage);
         modelAndView.addObject("response", response);
         bulkMessage.setRecipients("");
         modelAndView.addObject("bulkMessage", bulkMessage);
@@ -51,7 +69,13 @@ public class SMSController {
         return modelAndView;
     }
 
-    private WebResponse createResponse(MessageStatus status,WebBulkMessage message) {
+    private MessageStatus sendMessageToAllRecipients(WebBulkMessage bulkMessage, MessageStatus statusOfAllBatches, String[] tenRecipients) {
+        String tenRecipientsTogether = join(tenRecipients, ",");
+        bulkMessage.setRecipients(tenRecipientsTogether);
+        return messageService.sendMessage(bulkMessage.content(new SpaceEncoder()), bulkMessage.recipients());
+    }
+
+    private WebResponse createResponse(MessageStatus status, WebBulkMessage message) {
 
         if (MessageStatus.REJECTED.equals(status)) {
             return new WebResponse("Message Delivery Failed");

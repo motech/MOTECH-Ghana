@@ -283,11 +283,12 @@ function Country(country) {
     };
 
     var validate = function(e){
+        hideErrors();
         if(!$j("#recipients").val()){
             $j("#error-number-required").show();
             e.preventDefault();
         }
-        if(!$j("#content").val()){
+        if(!$j("textarea[name='content']").val()){
             $j("#error-message-required").show();
             e.preventDefault();
         }

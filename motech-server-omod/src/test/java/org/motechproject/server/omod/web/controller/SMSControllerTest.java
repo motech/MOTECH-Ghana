@@ -85,4 +85,50 @@ public class SMSControllerTest {
         assertTrue(response.getSuccess());
         assertEquals("Message delivered successfully to 0123456788,0123456789", response.getText());
     }
+
+    @Test
+    public void shouldSendSeparateRequestsForEveryTenSMS() {
+        expect(contextService.getMotechService()).andReturn(motechService);
+        expect(motechService.getAllFacilities()).andReturn(Collections.<Facility>emptyList());
+        expect(motechService.getAllLanguages()).andReturn(Collections.<MessageLanguage>emptyList());
+
+        WebBulkMessage message = new WebBulkMessage();
+        message.setRecipients("0123456788,0123456789,0123456788,0123456789,0123456788,0123456789,0123456788,0123456789,0123456788,0123456789,0123456789");
+        message.setContent("Hello World");
+        expect(messageService.sendMessage("Hello%2BWorld", "0123456788,0123456789,0123456788,0123456789,0123456788,0123456789,0123456788,0123456789,0123456788,0123456789")).andReturn(MessageStatus.DELIVERED);
+        expect(messageService.sendMessage("Hello%2BWorld", "0123456789")).andReturn(MessageStatus.DELIVERED);
+
+        replay(messageService, contextService, motechService);
+
+        ModelAndView modelAndView = controller.send(message);
+
+        verify(messageService, contextService, motechService);
+
+        assertEquals("/module/motechmodule/sms", modelAndView.getViewName());
+        WebResponse response = (WebResponse) modelAndView.getModelMap().get("response");
+        assertTrue(response.getSuccess());
+    }
+
+    @Test
+    public void ifOneBatchFailsResultIsFailed() {
+       expect(contextService.getMotechService()).andReturn(motechService);
+        expect(motechService.getAllFacilities()).andReturn(Collections.<Facility>emptyList());
+        expect(motechService.getAllLanguages()).andReturn(Collections.<MessageLanguage>emptyList());
+
+        WebBulkMessage message = new WebBulkMessage();
+        message.setRecipients("0123456788,0123456789,0123456788,0123456789,0123456788,0123456789,0123456788,0123456789,0123456788,0123456789,0123456789");
+        message.setContent("Hello World");
+        expect(messageService.sendMessage("Hello%2BWorld", "0123456788,0123456789,0123456788,0123456789,0123456788,0123456789,0123456788,0123456789,0123456788,0123456789")).andReturn(MessageStatus.DELIVERED);
+        expect(messageService.sendMessage("Hello%2BWorld", "0123456789")).andReturn(MessageStatus.REJECTED);
+
+        replay(messageService, contextService, motechService);
+
+        ModelAndView modelAndView = controller.send(message);
+
+        verify(messageService, contextService, motechService);
+
+        assertEquals("/module/motechmodule/sms", modelAndView.getViewName());
+        WebResponse response = (WebResponse) modelAndView.getModelMap().get("response");
+        assertNull(response.getSuccess());
+    }
 }
