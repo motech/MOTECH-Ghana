@@ -1,6 +1,7 @@
 package org.motechproject.server.omod.web.controller;
 
 import org.motechproject.server.omod.web.encoder.SpaceEncoder;
+import org.motechproject.server.omod.web.model.JSONLocationSerializer;
 import org.motechproject.server.omod.web.model.WebBulkMessage;
 import org.motechproject.server.omod.web.model.WebResponse;
 import org.motechproject.ws.MessageStatus;
@@ -19,15 +20,23 @@ public class SMSController {
     private static final String VIEW = "/module/motechmodule/sms";
 
     @Autowired
+    private JSONLocationSerializer locationSerializer;
+
+    @Autowired
     @Qualifier("mobileClient")
     private MessageService messageService;
 
 
     @RequestMapping(value = VIEW, method = RequestMethod.GET)
     public ModelAndView render() {
-        return new ModelAndView(VIEW, "bulkMessage", new WebBulkMessage());
+        ModelAndView modelAndView = new ModelAndView(VIEW, "bulkMessage", new WebBulkMessage());
+        locationSerializer.populateJavascriptMaps(modelAndView.getModelMap());
+        return modelAndView;
     }
 
+    public void setLocationSerializer(JSONLocationSerializer locationSerializer) {
+        this.locationSerializer = locationSerializer;
+    }
 
     @RequestMapping(value = VIEW, method = RequestMethod.POST)
     public ModelAndView send(@ModelAttribute WebBulkMessage bulkMessage) {

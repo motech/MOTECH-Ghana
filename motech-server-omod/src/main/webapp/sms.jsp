@@ -4,8 +4,19 @@
                  redirect="/module/motechmodule/sms.form"/>
 <%@ include file="/WEB-INF/template/header.jsp" %>
 
+<openmrs:htmlInclude file="/scripts/jquery/jquery-1.3.2.min.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/dynamic_combo_box.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/sms.js"/>
+<openmrs:htmlInclude file="/moduleResources/motechmodule/sms.css"/>
 <meta name="heading" content="Send SMS"/>
 <%@ include file="localHeader.jsp" %>
+
+<script type="text/javascript">
+    var $j = jQuery.noConflict();
+    $j(document).ready(function() {
+        var country = new Country(${country});
+    });
+</script>
 
 <h3>Send SMS</h3>
 <c:if test="${response != null}">
@@ -16,6 +27,50 @@
 <form:form method="post" modelAttribute="bulkMessage">
 
     <table>
+        <tr>
+            <td class="labelcolumn"><label for="region">Region:</label></td>
+            <td>
+                <div class='checkbox-list-wrapper'>
+                    <div class='checkbox-list-selector inline-block'></div>
+                    <form:select path="region" multiple="multiple" disabled="true"
+                                 cssClass="checkbox-list inline-block">
+                    </form:select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="labelcolumn"><label for="district">District:</label></td>
+            <td>
+                <div class='checkbox-list-wrapper'>
+                    <div class='checkbox-list-selector inline-block'></div>
+                    <form:select path="district" multiple="multiple" disabled="true"
+                                 cssClass="checkbox-list inline-block">
+                    </form:select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="labelcolumn"><label for="subDistrict">Sub District:</label></td>
+            <td>
+                <div class='checkbox-list-wrapper'>
+                    <div class='checkbox-list-selector inline-block'></div>
+                    <form:select path="subDistrict" multiple="multiple" disabled="true"
+                                 cssClass="checkbox-list inline-block">
+                    </form:select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="labelcolumn"><label for="facility">Facility:</label></td>
+            <td>
+                <div class='checkbox-list-wrapper'>
+                    <div class='checkbox-list-selector inline-block'></div>
+                    <form:select path="facility" multiple="multiple" disabled="true"
+                                 cssClass="checkbox-list inline-block">
+                    </form:select>
+                </div>
+            </td>
+        </tr>
         <tr>
             <td>Phone Numbers</td>
             <td>

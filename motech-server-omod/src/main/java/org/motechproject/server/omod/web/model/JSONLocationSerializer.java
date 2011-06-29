@@ -66,7 +66,7 @@ public class JSONLocationSerializer {
         this.contextService = contextService;
     }
 
-    public void populateJavascriptMaps(ModelMap model, PreferredLocation preferredLocation) {
+    public void populateJavascriptMaps(ModelMap model) {
         Map<String, TreeSet<String>> regionMap = new HashMap<String, TreeSet<String>>();
         Map<String, TreeSet<Community>> districtMap = new HashMap<String, TreeSet<Community>>();
 
@@ -101,6 +101,11 @@ public class JSONLocationSerializer {
         model.addAttribute("districtMap", districtMap);
         model.addAttribute("facilities", facilities);
         model.addAttribute("country", new Country("Ghana").withFacilities(facilities));
+
+    }
+
+    public void populateJavascriptMaps(ModelMap model, PreferredLocation preferredLocation) {
+        populateJavascriptMaps(model);
         model.addAttribute("selectedLocation", preferredLocation);
     }
 

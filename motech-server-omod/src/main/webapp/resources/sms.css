@@ -1,0 +1,28 @@
+.checkbox-list{
+    border: none;
+    background-color: #FFFFFF;
+    width: 12em;
+    display: inline-block;
+}
+
+.checkbox-list-selector{
+    width: 1em;
+    display: inline-block;
+}
+
+.checkbox-list-wrapper{
+    width: 12.298em;
+    overflow-x: hidden;
+    border: solid 0.1em
+}
+
+.inline-block{
+    display: inline-block;
+    vertical-align: top
+}
+
+.checkbox-list-wrapper option{
+    height: 1.548em;
+    color: #000000
+}
+
