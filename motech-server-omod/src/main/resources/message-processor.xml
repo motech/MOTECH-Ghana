@@ -9,13 +9,13 @@
 
     <bean class="org.motechproject.server.model.db.hibernate.MessageProcessorDAOImpl"/>
 
-    <bean id="messenger" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="localhost"/>
-        <property name="port" value="25"/>
+    <bean id="mailSenderFactory" class="org.motechproject.server.factory.JavaMailSenderFactory">
+        <property name="administrationService" ref="adminService"/>
     </bean>
 
+
     <bean id="mailingService" class="org.motechproject.server.svc.impl.MailingServiceImpl">
-        <constructor-arg ref="messenger"/>
+        <constructor-arg ref="mailSenderFactory"/>
     </bean>
 
     <bean id="contentExtractionStrategy" class="org.motechproject.server.strategy.SupportCaseExtractionStrategy">

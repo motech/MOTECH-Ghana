@@ -3,6 +3,7 @@ package org.motechproject.server.svc.impl;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.easymock.IArgumentMatcher;
 import org.junit.Test;
+import org.motechproject.server.factory.MailSenderFactory;
 import org.motechproject.server.model.Email;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,16 +14,21 @@ public class MailingServiceImplTest {
 
     @Test
     public void shouldEmail() {
+        MailSenderFactory mailSenderFactory = createMock(MailSenderFactory.class);
         JavaMailSender sender = createMock(JavaMailSender.class);
+
+        expect(mailSenderFactory.mailSender()).andReturn(sender);
+
         sender.send(equalsMessage(expectedMessage()));
         expectLastCall();
+
         Email mail = new Email("abc@abc.com", "xyz@xyz.com", "Hi", "Hello World");
 
-        replay(sender);
+        replay(mailSenderFactory,sender);
 
-        new MailingServiceImpl(sender).send(mail);
+        new MailingServiceImpl(mailSenderFactory).send(mail);
 
-        verify(sender);
+        verify(mailSenderFactory,sender);
     }
 
     private SimpleMailMessage expectedMessage() {

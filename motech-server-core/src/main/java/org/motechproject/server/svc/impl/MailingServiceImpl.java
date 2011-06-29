@@ -1,16 +1,16 @@
 package org.motechproject.server.svc.impl;
 
+import org.motechproject.server.factory.MailSenderFactory;
 import org.motechproject.server.model.Email;
 import org.motechproject.server.svc.MailingService;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 
 public class MailingServiceImpl implements MailingService{
 
-    private JavaMailSender messenger;
+    private MailSenderFactory mailSenderFactory;
 
-    public MailingServiceImpl(JavaMailSender messenger) {
-        this.messenger = messenger;
+    public MailingServiceImpl(MailSenderFactory mailSenderFactory) {
+        this.mailSenderFactory = mailSenderFactory;
     }
 
     public void send(Email mail) {
@@ -19,6 +19,6 @@ public class MailingServiceImpl implements MailingService{
         mailMessage.setFrom(mail.from());
         mailMessage.setSubject(mail.subject());
         mailMessage.setText(mail.text());
-        messenger.send(mailMessage);
+        mailSenderFactory.mailSender().send(mailMessage);
     }
 }
