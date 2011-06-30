@@ -26,7 +26,7 @@
 <p></p>
 <form:form method="post" modelAttribute="bulkMessage">
 
-    <table class="inline-block">
+    <table class="layout inline-block">
         <tr>
             <td class="labelcolumn"><label for="region">Region:</label></td>
             <td>
@@ -78,14 +78,17 @@
                 <input type="hidden" id="facility-phone-numbers"/>
                 <form:textarea path="content" rows='6' cols='60'></form:textarea>
             </td>
-            <td class="hideme"><span id="error-message-required" class="error"><spring:message code="motechmodule.message.required"/></span></td>
+
+        </tr>
+        <tr>
+            <td></td><td class="hideme"><div id="error-message-required" class="error"><spring:message code="motechmodule.message.required"/></div></td>
         </tr>
         <tr>
             <td>&nbsp;</td>
             <td><input type="submit" id="submitMessage" value="Send"/></td>
         </tr>
     </table>
-    <table class="inline-block">
+    <table class="layout inline-block">
         <tr>
             <td>Phone Numbers</td>
 
@@ -94,7 +97,6 @@
             <td>
                 <form:textarea path="recipients" rows='6' cols='60'></form:textarea>
             </td>
-
         </tr>
         <tr>
             <td class="hideme">
