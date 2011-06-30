@@ -3279,7 +3279,7 @@
 		<description>Implementing changes in #174</description>
         <sql>
             delete from a using motechmodule_community as a where name = 'Amuntanga' and 0 = (select count(community_id) from motechmodule_community_patient b where b.community_id = a.id);
-            update motechmodule_community_patient set community_id = (select community_id from motechmodule_community where name = 'Nyangolingo') where  community_id = (select community_id from motechmodule_community where name = 'Nyangonlingo');
+            update motechmodule_community_patient set community_id = (select id from motechmodule_community where name = 'Nyangolingo') where  community_id = (select id from motechmodule_community where name = 'Nyangonlingo');
             delete from a using motechmodule_community as a where a.name = 'Nyangonlingo';
         </sql>
     </diff>
