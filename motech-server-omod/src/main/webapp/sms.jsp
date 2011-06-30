@@ -26,7 +26,7 @@
 <p></p>
 <form:form method="post" modelAttribute="bulkMessage">
 
-    <table>
+    <table class="inline-block">
         <tr>
             <td class="labelcolumn"><label for="region">Region:</label></td>
             <td>
@@ -71,14 +71,7 @@
                 </div>
             </td>
         </tr>
-        <tr>
-            <td>Phone Numbers</td>
-            <td>
-                <form:textarea path="recipients" rows='6' cols='60'></form:textarea>
-            </td>
-            <td class="hideme"><span id="error-number-required" class="error"><spring:message code="motechmodule.phoneNumber.required"/></span></td>
-            <td class="hideme"><span id="error-number-invalid" class="error"><spring:message code="motechmodule.phoneNumber.commaSeparated"/></span></td>
-        </tr>
+
         <tr>
             <td>Message</td>
             <td>
@@ -90,6 +83,24 @@
         <tr>
             <td>&nbsp;</td>
             <td><input type="submit" id="submitMessage" value="Send"/></td>
+        </tr>
+    </table>
+    <table class="inline-block">
+        <tr>
+            <td>Phone Numbers</td>
+
+        </tr>
+        <tr>
+            <td>
+                <form:textarea path="recipients" rows='6' cols='60'></form:textarea>
+            </td>
+
+        </tr>
+        <tr>
+            <td class="hideme">
+              <div id="error-number-required" class="error"><spring:message code="motechmodule.phoneNumber.required"/></div>
+              <div id="error-number-invalid" class="error"><spring:message code="motechmodule.phoneNumber.commaSeparated"/></div>
+            </td>
         </tr>
     </table>
 </form:form>
