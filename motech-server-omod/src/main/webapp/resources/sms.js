@@ -1,6 +1,5 @@
 function Facility(facility) {
     var facility = facility;
-
     this.inLocation = function(regions, districts, subDistricts) {
         if (regions.length > 0) {
             return inSame(regions, facility.region) && notAssignedToAny(facility.district) && notAssignedToAny(facility.subDistrict);
@@ -25,8 +24,6 @@ function Facility(facility) {
         return !(location && location.length > 0);
     };
 }
-
-
 function Country(country) {
 
     var getParentRow = function(ele) {
@@ -86,12 +83,15 @@ function Country(country) {
                         $j("#facility").parent(".checkbox-list-wrapper").find(".checkbox-list-selector").append("<input type='checkbox' value='" + facility.facilityId + "'/>");
                     } else {
                         facilityDropDown.removeOptionsWhen(function(val) {
-                            var optElement = $j("#facility").find("option[value='" + val + "']");
-                            var optIndex = $j("#facility").find('option').index(optElement);
-                            var selectorDiv = $j(optElement).closest('.checkbox-list-wrapper').find(".checkbox-list-selector");
-                            var checkbox = $j(selectorDiv).find('input[type="checkbox"]')[optIndex];
-                            $j(checkbox).remove();
-                            return true;
+                            if (val.toString() === facility.facilityId.toString()) {
+                                var optElement = $j("#facility").find("option[value='" + val + "']");
+                                var optIndex = $j("#facility").find('option').index(optElement);
+                                var selectorDiv = $j(optElement).closest('.checkbox-list-wrapper').find(".checkbox-list-selector");
+                                var checkbox = $j(selectorDiv).find('input[type="checkbox"]')[optIndex];
+                                $j(checkbox).remove();
+                                return true;
+                            }
+                            return false;
                         });
                     }
 
@@ -103,26 +103,26 @@ function Country(country) {
         updatePhoneNumbers();
     };
 
-    var handleChange = function(selection, childElementsQueryFunction, selected, childList, locationType, cascadeFunction){
+    var handleChange = function(selection, childElementsQueryFunction, selected, childList, locationType, cascadeFunction) {
         var childElements = childElementsQueryFunction(selection);
 
         if (selected) {
             $j(childElements).each(function(index, child) {
                 childList.appendOption(new Option(child, child));
-                $j("#"+ locationType +"").parent(".checkbox-list-wrapper").find(".checkbox-list-selector").append("<input type='checkbox' value='" + child + "'/>");
+                $j("#" + locationType + "").parent(".checkbox-list-wrapper").find(".checkbox-list-selector").append("<input type='checkbox' value='" + child + "'/>");
             });
         } else {
             childList.removeOptionsWhen(function(val) {
-                return removeOptionsPredicate(val, childElements, $j("#"+ locationType +""), cascadeFunction);
+                return removeOptionsPredicate(val, childElements, $j("#" + locationType + ""), cascadeFunction);
             });
         }
-        $j("#"+ locationType +"").attr('size', $j("#"+ locationType +" option").length);
+        $j("#" + locationType + "").attr('size', $j("#" + locationType + " option").length);
     };
 
     var removeOptionsPredicate = function(val, optionsToBeRemoved, listElement, cascadeFunction) {
         var inArray = $j.inArray(val, optionsToBeRemoved);
         if (inArray !== -1) {
-            cascadeFunction(val,false);
+            cascadeFunction(val, false);
             var optElement = listElement.find("option[value='" + val + "']");
             var optIndex = listElement.find('option').index(optElement);
             var selectorDiv = $j(optElement).closest('.checkbox-list-wrapper').find(".checkbox-list-selector");
@@ -142,7 +142,7 @@ function Country(country) {
                 phoneNumbers.push(facilityPhoneNumbers.join(','));
             }
         });
-        $j('#recipients').val(phoneNumbers.join(','));
+        setPhoneNumbers(phoneNumbers.join(','));
     };
 
     var getDistrictsInRegion = function(regionName) {
@@ -247,8 +247,45 @@ function Country(country) {
         }
     };
 
+    var setPhoneNumbers = function(phoneNumbers) {
+        if (!phoneNumbers) {
+            return;
+        }
+
+        $j('#facility-phone-numbers').val(phoneNumbers);
+        var currentVal = $j('#recipients').val();
+        currentVal = $j.trim(currentVal);
+        if (currentVal && !(/,$/.test(currentVal))) {
+            currentVal = currentVal + ',';
+        }
+
+        $j('#recipients').val(currentVal + phoneNumbers);
+    }
+
     var revertPhoneNumbers = function() {
-        $j('#recipients').val('');
+        var facilityPhoneNumbers = $j('#facility-phone-numbers').val();
+        var facilityPhoneNumbersAsArray = facilityPhoneNumbers.split(',');
+        var recipients = $j("#recipients").val();
+
+
+        $j(facilityPhoneNumbersAsArray).each(function(index, phoneNumer) {
+
+            var phoneNumberWithSpaces = new RegExp("[ ]*" + phoneNumer + "[ ]*");
+            var phoneNumberWithSpacesAndLeadingComma = new RegExp("[ ]*,[ ]*" + phoneNumer);
+            var phoneNumberWithSpacesAndTrailingComma = new RegExp(phoneNumer + "[ ]*,[ ]*");
+
+            if (recipients.search(phoneNumberWithSpacesAndTrailingComma) !== -1) {
+                recipients = recipients.replace(phoneNumberWithSpacesAndTrailingComma, '');
+                return;
+            }
+            if (recipients.search(phoneNumberWithSpacesAndLeadingComma) !== -1) {
+                recipients = recipients.replace(phoneNumberWithSpacesAndLeadingComma, '');
+                return
+            }
+            recipients = recipients.replace(phoneNumberWithSpaces, '');
+        });
+        $j('#facility-phone-numbers').val('');
+        $j("#recipients").val(recipients);
     };
 
     var hide = function(element) {
@@ -270,7 +307,7 @@ function Country(country) {
             var selectList = elementClicked.closest('.checkbox-list-wrapper').find('.checkbox-list');
             var selectedValue = (elementClicked.is(':checked')) ? 'selected' : '';
             var checkboxValue = elementClicked.attr('value');
-            var option = $j(selectList).find('option[value="'+ checkboxValue +'"]');
+            var option = $j(selectList).find('option[value="' + checkboxValue + '"]');
             $j(option).attr('selected', selectedValue);
             if (checkbox.closest(".checkbox-list-wrapper").find("#region").length !== 0) {
                 onRegionChange($j(option).val(), checkbox.is(":checked"));
@@ -284,23 +321,30 @@ function Country(country) {
         }
     };
 
-    var validate = function(e){
+    var validate = function(e) {
         hideErrors();
-        if(!$j("#recipients").val()){
+        if (!$j.trim($j("#recipients").val())) {
             $j("#error-number-required").show();
             e.preventDefault();
         }
-        if(!$j("textarea[name='content']").val()){
+        if (!$j.trim($j("textarea[name='content']").val())) {
             $j("#error-message-required").show();
             e.preventDefault();
         }
-        if(!(/([0-9]*[,]?)*[0-9]$/i.test($j("#recipients").val()))){
+
+        var recipients = $j.trim($j("#recipients").val()).split(',');
+
+        $j(recipients).each(function(index, value){
+           if (!(/^[0-9]+$/i.test(value))) {
             $j("#error-number-invalid").show();
             e.preventDefault();
         }
+        });
+
+
     };
 
-    var hideErrors = function(){
+    var hideErrors = function() {
         $j(".error").hide();
     }
 
