@@ -16,6 +16,7 @@ public enum HomePageLinksEnum {
     VIEW_COMMUNITIES("/openmrs/module/motechmodule/community.form"),
     DUPLICATE_PATIENTS("/openmrs/module/motechmodule/duplicatepatients.form"),
     ADD_FACILITY("/openmrs/module/motechmodule/addfacility.form");
+
     private String url;
 
     HomePageLinksEnum(String url){

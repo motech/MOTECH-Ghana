@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.python.modules.thread.thread;
 import util.TestConfiguration;
 
 public class OpenMRSLoginPage {
