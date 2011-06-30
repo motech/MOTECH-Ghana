@@ -3284,4 +3284,14 @@
         </sql>
     </diff>
 
+    <diff>
+        <version>5.3</version>
+        <author>Thoughtworks</author>
+        <date>June 30 2011</date>
+        <description>Adding default URL for #60</description>
+        <sql>
+            insert into motechmodule_url(message_key,url) values('DEFAULT','/module/motechmodule/supportcase.form');
+        </sql>
+    </diff>
+
 </sqldiff>

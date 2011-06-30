@@ -55,7 +55,7 @@ public class SupportCaseController {
         log.info("Received support case request " + incomingMessage);
         ModelAndView response = new ModelAndView(VIEW);
         try {
-            if (incomingMessage.hasInformation()) {
+            if (incomingMessage.hasSufficientInformation() && incomingMessage.isFor("SUPPORT")) {
                 return sendSupportMail(incomingMessage);
             }
             response.addObject(RESPONSE, INSUFFICIENT_INFO_FOR_SUPPORT_CASE);

@@ -41,6 +41,18 @@ public class SupportCaseControllerTest {
     }
 
     @Test
+    public void shouldSendErrorMessageBackIfKeyIsNotSupport() {
+        SupportCaseController controller = new SupportCaseController();
+        IncomingMessage message = new IncomingMessage();
+        message.setText("TEST 465 Hello");
+        message.setKey("TEST");
+        message.setCode("1982");
+        ModelAndView modelAndView = controller.mailToSupport(message);
+        assertEquals("/module/motechmodule/response", modelAndView.getViewName());
+        assertEquals(MailingConstants.INSUFFICIENT_INFO_FOR_SUPPORT_CASE, modelAndView.getModelMap().get("response"));
+    }
+
+    @Test
     public void shouldMailToSupport() {
 
         MailingService mailingService = createMock(MailingService.class);

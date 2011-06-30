@@ -16,8 +16,9 @@ public class MessageProcessorDAOImpl implements MessageProcessorDAO {
 
     public MessageProcessorURL urlFor(String keyword) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(MessageProcessorURL.class);
-        criteria.add(Restrictions.eq("key",keyword));
-        return (MessageProcessorURL) criteria.uniqueResult();
+        criteria.add(Restrictions.eq("key", keyword));
+        Object result = criteria.uniqueResult();
+        return result != null ? (MessageProcessorURL) result : null;
     }
 
     public List<MessageProcessorURL> list() {

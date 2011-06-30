@@ -5,7 +5,6 @@ import org.motechproject.server.strategy.MessageContentExtractionStrategy;
 import org.motechproject.ws.RequestParameterBuilder;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 public class IncomingMessage {
 
@@ -57,7 +56,7 @@ public class IncomingMessage {
         this.time = time;
     }
 
-    public Boolean hasInformation() {
+    public Boolean hasSufficientInformation() {
         return isNotBlank(key) && isNotBlank(text) && isNotBlank(code);
     }
 
@@ -94,5 +93,9 @@ public class IncomingMessage {
     @Override
     public String toString() {
         return "Issue { " + text + " } sent from " + number;
+    }
+
+    public Boolean isFor(String key) {
+        return key.equalsIgnoreCase(this.key);
     }
 }

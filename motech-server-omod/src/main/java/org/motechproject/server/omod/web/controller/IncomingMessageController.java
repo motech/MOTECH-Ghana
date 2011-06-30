@@ -22,9 +22,17 @@ public class IncomingMessageController {
     @RequestMapping(value = "/module/motechmodule/incomingmessage",method = RequestMethod.GET)
     public String redirect(IncomingMessage incomingMessage) throws UnsupportedEncodingException {
         log(incomingMessage);
-        MessageProcessorURL url = dao.urlFor(incomingMessage.getKey());
+        MessageProcessorURL url = processorURL(incomingMessage);
         return new StringBuilder().append(REDIRECT).append(url.toString())
                 .append(incomingMessage.requestParameters()).toString();
+    }
+
+    private MessageProcessorURL processorURL(IncomingMessage incomingMessage) {
+        MessageProcessorURL processorURL = dao.urlFor(incomingMessage.getKey());
+        if(processorURL == null){
+            processorURL = dao.urlFor("DEFAULT");
+        }
+        return processorURL;
     }
 
 

@@ -56,4 +56,33 @@ public class IncomingMessageControllerTest extends BaseModuleContextSensitiveTes
         assertEquals("redirect:/module/motechmodule/supportcase.form?text=Hi&number=%2B233123456789&key=SUPPORT&time=2011-03-03+10%3A10%3A10&code=1982",redirectedUrl);
     }
 
+    @Test
+    public void shouldRedirectToSupportIfUrlNotMapped() throws UnsupportedEncodingException {
+
+        MessageProcessorDAO dao = createMock(MessageProcessorDAO.class);
+        controller.setDao(dao);
+
+        IncomingMessage message = new IncomingMessage();
+        message.setKey("TEST");
+        message.setText("Hi");
+
+        dao.save(message);
+        expectLastCall();
+
+        expect(dao.urlFor("TEST"))
+                .andReturn(null);
+
+        expect(dao.urlFor("DEFAULT"))
+                .andReturn(new MessageProcessorURL("DEFAULT","/module/motechmodule/supportcase.form"));
+
+        replay(dao);
+
+        String redirectedUrl = controller.redirect(message);
+
+        verify(dao);
+
+        assertEquals("redirect:/module/motechmodule/supportcase.form?text=Hi&key=TEST",redirectedUrl);
+    }
+
+    
 }
