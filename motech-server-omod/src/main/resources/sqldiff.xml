@@ -3278,9 +3278,18 @@
         <date>June 24 2011</date>
 		<description>Implementing changes in #174</description>
         <sql>
-            delete from a using motechmodule_community as a where name = 'Amuntanga' and 0 = (select count(community_id) from motechmodule_community_patient b where b.community_id = a.id);
-            update motechmodule_community_patient set community_id = (select id from motechmodule_community where name = 'Nyangolingo') where  community_id = (select id from motechmodule_community where name = 'Nyangonlingo');
-            delete from a using motechmodule_community as a where a.name = 'Nyangonlingo';
+            delete from community using motechmodule_community as community where name = 'Amuntanga'
+            and not exists (select cp.patient_id from motechmodule_community_patient cp where cp.community_id = community.id);
+
+            update motechmodule_community_patient cp
+            set cp.community_id = (select id from motechmodule_community c where c.name = 'Nyangonlingo')
+            where cp.community_id = (select id from motechmodule_community c where c.name = 'Nyangoligo')
+            and exists (select id from motechmodule_community c where c.name = 'Nyangonlingo');
+
+            delete from community using motechmodule_community as community where community.name = 'Nyangoligo'
+            and not exists (select id from motechmodule_community_patient cp where cp.community_id = community.id);
+
+            update motechmodule_community set name = 'Nyangonligo' where name in ('Nyangonlingo','Nyangoligo');
         </sql>
     </diff>
 
