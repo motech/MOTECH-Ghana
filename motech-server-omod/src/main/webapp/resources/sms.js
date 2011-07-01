@@ -335,7 +335,7 @@ function Country(country) {
         var recipients = $j.trim($j("#recipients").val()).split(',');
 
         $j(recipients).each(function(index, value){
-           if (!(/^0[0-9]+$/i.test(value) && value.length < 11)) {
+           if (!(/^0[0-9]+$/i.test(value) && value.length === 10)) {
             $j("#error-number-invalid").show();
             e.preventDefault();
         }
