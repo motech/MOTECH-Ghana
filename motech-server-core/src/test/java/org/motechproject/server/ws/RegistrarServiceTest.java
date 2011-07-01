@@ -58,6 +58,7 @@ import java.util.logging.LogManager;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class RegistrarServiceTest{
 
@@ -1477,7 +1478,7 @@ public class RegistrarServiceTest{
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language", regNumber = "RegNumber";
 		Boolean enroll = true, consent = true;
-		String phone = "15555555";
+		String phone = "0123456789";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType format = MediaType.VOICE;
@@ -1517,7 +1518,7 @@ public class RegistrarServiceTest{
 		Integer staffId = 1, facilityId = 2, motechId = 3;
 		String language = "Language", regNumber = "RegNumber";
 		Boolean enroll = true, consent = true;
-		String phone = "15555555";
+		String phone = "123456789";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType format = MediaType.VOICE;
@@ -1550,12 +1551,16 @@ public class RegistrarServiceTest{
 					.getFaultInfo());
 			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
-			assertEquals(3, errors.size());
-			String staffError = errors.get(0);
+			assertEquals(5, errors.size());
+			String phoneNumberDoesNotStartWithZeroError = errors.get(0);
+            assertEquals("PhoneNumber=number should start with zero", phoneNumberDoesNotStartWithZeroError);
+            String phoneNumberLengthError = errors.get(1);
+            assertEquals("PhoneNumber=number should be 10 digits long", phoneNumberLengthError);
+			String staffError = errors.get(2);
 			assertEquals("StaffID=not found", staffError);
-			String facilityError = errors.get(1);
+			String facilityError = errors.get(3);
 			assertEquals("FacilityID=not found", facilityError);
-			String patientError = errors.get(2);
+			String patientError = errors.get(4);
 			assertEquals("MotechID=not found", patientError);
 		}
 
