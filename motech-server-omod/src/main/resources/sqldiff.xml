@@ -3279,7 +3279,7 @@
 		<description>Implementing changes in #174</description>
         <sql>
             delete from community using motechmodule_community as community where name = 'Amuntanga'
-            and not exists (select cp.patient_id from motechmodule_community_patient cp where cp.community_id = communtiy.id);
+            and not exists (select cp.patient_id from motechmodule_community_patient cp where cp.community_id = community.id);
 
             update motechmodule_community_patient cp
             set cp.community_id = (select id from motechmodule_community c where c.name = 'Nyangonlingo')
