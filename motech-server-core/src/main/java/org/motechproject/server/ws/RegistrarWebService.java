@@ -753,7 +753,7 @@ public class RegistrarWebService implements RegistrarService {
             throws ValidationException {
 
         ValidationErrors errors = new ValidationErrors();
-
+        validatePhoneNumber(phoneNumber,"PhoneNumber",errors);
         User staff = validateStaffId(staffId, errors, "StaffID");
         Facility facility = validateFacility(facilityId, errors, "FacilityID");
         org.openmrs.Patient patient = validateMotechId(motechId, errors,

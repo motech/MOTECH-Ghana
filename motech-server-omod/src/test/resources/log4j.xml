@@ -64,17 +64,17 @@
 
     <!--  Enable this to view the sql statements that hibernate generates-->
     <logger name="org.hibernate.SQL">
-        <level value="INFO"/>
+        <level value="ERROR"/>
     </logger>
 
     <logger name="org.hibernate.tool.hbm2ddl.SchemaExport">
         <level value="FATAL"/>
-        <appender-ref ref="CONSOLE"/>
+        <!--<appender-ref ref="CONSOLE"/>-->
     </logger>
 
     <root>
         <level value="ERROR"/>
-        <appender-ref ref="CONSOLE"/>
+        <!--<appender-ref ref="CONSOLE"/>-->
     </root>
 
 </log4j:configuration>
