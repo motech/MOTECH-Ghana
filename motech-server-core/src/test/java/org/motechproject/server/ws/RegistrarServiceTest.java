@@ -1377,7 +1377,7 @@ public class RegistrarServiceTest{
 		Boolean enroll = true, consent = true;
 		Integer gravida = 0, parity = 0;
 		Double height = 45.3;
-		String phone = "15555555";
+		String phone = "0155555555";
 		Date date = new Date();
 		ContactNumberType phoneType = ContactNumberType.PERSONAL;
 		MediaType format = MediaType.VOICE;
@@ -1461,12 +1461,16 @@ public class RegistrarServiceTest{
 					.getFaultInfo());
 			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
-			assertEquals(3, errors.size());
-			String staffError = errors.get(0);
+			assertEquals(5, errors.size());
+            String phoneNumberDoesNotStartWithZeroError = errors.get(0);
+            assertEquals("PhoneNumber=number should start with zero", phoneNumberDoesNotStartWithZeroError);
+            String phoneNumberLengthError = errors.get(1);
+            assertEquals("PhoneNumber=number should be 10 digits long", phoneNumberLengthError);
+			String staffError = errors.get(2);
 			assertEquals("StaffID=not found", staffError);
-			String facilityError = errors.get(1);
+			String facilityError = errors.get(3);
 			assertEquals("FacilityID=not found", facilityError);
-			String patientError = errors.get(2);
+			String patientError = errors.get(4);
 			assertEquals("MotechID=not found", patientError);
 		}
 
@@ -1570,7 +1574,7 @@ public class RegistrarServiceTest{
 	@Test
 	public void editPatient() throws ValidationException {
 		Integer staffId = 1, facilityId = 2, motechId = 3 , mothersMotechId = 4;
-		String phoneNumber = "2075557894";
+		String phoneNumber = "0207555789";
 		String nhis = "125";
         String firstName = "Martin";
         String middleName = "";
@@ -1615,7 +1619,7 @@ public class RegistrarServiceTest{
 	@Test
 	public void editPatientAllErrors() {
 		Integer staffId = 1, facilityId = 2, motechId = 3 , mothersMotechId = 4;
-		String phoneNumber = "2075557894";
+		String phoneNumber = "275557894";
 		String nhis = "125";
         String firstName = "Martin";
         String middleName = "";
@@ -1650,12 +1654,16 @@ public class RegistrarServiceTest{
 					.getFaultInfo());
 			List<String> errors = e.getFaultInfo().getErrors();
 			assertNotNull("Validation Errors is Null", errors);
-			assertEquals(3, errors.size());
-			String staffError = errors.get(0);
+			assertEquals(5, errors.size());
+            String phoneNumberDoesNotStartWithZeroError = errors.get(0);
+            assertEquals("PhoneNumber=number should start with zero", phoneNumberDoesNotStartWithZeroError);
+            String phoneNumberLengthError = errors.get(1);
+            assertEquals("PhoneNumber=number should be 10 digits long", phoneNumberLengthError);
+			String staffError = errors.get(2);
 			assertEquals("StaffID=not found", staffError);
-			String facilityError = errors.get(1);
+			String facilityError = errors.get(3);
 			assertEquals("FacilityID=not found", facilityError);
-			String patientError = errors.get(2);
+			String patientError = errors.get(4);
 			assertEquals("MotechID=not found", patientError);
 		}
 

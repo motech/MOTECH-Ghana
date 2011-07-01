@@ -592,7 +592,7 @@ public class RegistrarWebService implements RegistrarService {
                         "DeliveryDateConfirmed"));
         }
 
-        validatePhoneNumber(phoneNumber, "phoneNumber", errors);
+        validatePhoneNumber(phoneNumber, "PhoneNumber", errors);
 
         if (errors.getErrors().size() > 0) {
             throw new ValidationException("Errors in Register Patient request",
@@ -718,7 +718,7 @@ public class RegistrarWebService implements RegistrarService {
             throws ValidationException {
 
         ValidationErrors errors = new ValidationErrors();
-
+        validatePhoneNumber(phoneNumber,"PhoneNumber",errors);
         User staff = validateStaffId(staffId, errors, "StaffID");
         Facility facility = validateFacility(facilityId, errors, "FacilityID");
         org.openmrs.Patient patient = validateMotechId(motechId, errors, "MotechID", true);
@@ -789,7 +789,7 @@ public class RegistrarWebService implements RegistrarService {
             throws ValidationException {
 
         ValidationErrors errors = new ValidationErrors();
-
+        validatePhoneNumber(phoneNumber,"PhoneNumber",errors);
         User staff = validateStaffId(staffId, errors, "StaffID");
         validateFacility(facilityId, errors, "FacilityID");
         org.openmrs.Patient patient = validateMotechId(motechId, errors, "MotechID", true);
