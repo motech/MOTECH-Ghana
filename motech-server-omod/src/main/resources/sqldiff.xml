@@ -3303,4 +3303,14 @@
         </sql>
     </diff>
 
+    <diff>
+        <version>5.4</version>
+        <author>Thoughtworks</author>
+        <date>July 4 2011</date>
+        <description>Changing name of Fanti to Fante</description>
+        <sql>
+            update motechmodule_message_language set name = 'Fante' where name like 'Fanti';
+        </sql>
+    </diff>
+
 </sqldiff>
