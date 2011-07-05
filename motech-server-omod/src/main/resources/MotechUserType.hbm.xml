@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field" package="org.motechproject.server.model">
+    <class name="MotechUserType" table="motechmodule_user_type">
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <property name="type" type="java.lang.String" column="user_type"/>
+        <property name="description" type="java.lang.String" column="description"/>
+    </class>
+</hibernate-mapping>

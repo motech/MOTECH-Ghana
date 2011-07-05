@@ -21,4 +21,7 @@
 
     <motechmodule_community_patient community_id="1" patient_id="100"/>
 
+    <motechmodule_user_type id="1" user_type="CHO"/>
+    <motechmodule_user_type id="2" user_type="CHN"/>
+
 </dataset>

@@ -3487,7 +3487,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public List<String> getStaffTypes() {
-        return staffTypes;
+        return motechUserRepository.userTypes().all();
     }
 
     public void setStaffTypes(List<String> staffTypes) {

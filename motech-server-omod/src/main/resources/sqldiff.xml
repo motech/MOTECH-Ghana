@@ -3313,4 +3313,45 @@
         </sql>
     </diff>
 
+    <diff>
+        <version>5.4</version>
+        <author>Thoughtworks</author>
+        <date>July 5 2011</date>
+        <description>Creating a table for staff types</description>
+        <sql>
+           create table motechmodule_user_type
+            (
+               id int primary key auto_increment,
+               user_type varchar(50) not null,
+               description text
+            );
+        </sql>
+    </diff>
+
+    <diff>
+        <version>5.5</version>
+        <author>Thoughtworks</author>
+        <date>July 5 2011</date>
+        <description>Adding motech user types</description>
+        <sql>
+           insert into motechmodule_user_type(user_type,description) values('CHO','Community Health Operator');
+           insert into motechmodule_user_type(user_type,description) values('CHN','Community Health Nurse');
+           insert into motechmodule_user_type(user_type,description) values('Midwife','Takes care of deliveries');
+           insert into motechmodule_user_type(user_type,description) values('HEW','');
+           insert into motechmodule_user_type(user_type,description) values('CHV','Community Health Volunteer');
+           insert into motechmodule_user_type(user_type,description) values('HPO','Health Promotion Officer');
+           insert into motechmodule_user_type(user_type,description) values('Field Agent','MoTeCH Field Agent');
+        </sql>
+    </diff>
+
+    <!--<diff>-->
+        <!--<version>5.6</version>-->
+        <!--<author>Thoughtworks</author>-->
+        <!--<date>July 5 2011</date>-->
+        <!--<description>Adding user_type to users table</description>-->
+        <!--<sql>-->
+           <!--alter table users add column user_type varchar(20);-->
+        <!--</sql>-->
+    <!--</diff>-->
+
 </sqldiff>

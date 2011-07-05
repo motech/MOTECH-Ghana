@@ -67,5 +67,6 @@
         <mapping resource="DefaultedExpectedObsAlert.hbm.xml"/>
         <mapping resource="DefaultedExpectedEncounterAlert.hbm.xml"/>
         <mapping resource="MessageProcessorURL.hbm.xml"/>
+        <mapping resource="MotechUserType.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

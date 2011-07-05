@@ -1,5 +1,7 @@
 package org.motechproject.server.omod;
 
+import org.motechproject.server.model.MotechUserTypes;
+import org.motechproject.server.model.db.hibernate.MotechUsers;
 import org.motechproject.server.omod.web.model.WebStaff;
 import org.motechproject.server.util.MotechConstants;
 import org.openmrs.*;
@@ -15,10 +17,13 @@ public class MotechUserRepository {
 
     private PersonService personService;
 
-    public MotechUserRepository(IdentifierGenerator identifierGenerator, UserService userService, PersonService personService) {
+    private MotechUsers motechUsers;
+
+    public MotechUserRepository(IdentifierGenerator identifierGenerator, UserService userService, PersonService personService, MotechUsers motechUsers) {
         this.identifierGenerator = identifierGenerator;
         this.userService = userService;
         this.personService = personService;
+        this.motechUsers = motechUsers;
     }
 
     public User newUser(WebStaff webStaff) {
@@ -54,6 +59,10 @@ public class MotechUserRepository {
             createType(staff, typeValue);
         }
         return staff;
+    }
+
+    public MotechUserTypes userTypes() {
+        return motechUsers.types();
     }
 
     private void createPhoneNumber(User user, String phoneValue) {

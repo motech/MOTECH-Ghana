@@ -69,6 +69,7 @@
         <constructor-arg ref="identiferGenerator"/>
         <constructor-arg ref="userService"/>
         <constructor-arg ref="personService"/>
+        <constructor-arg ref="motechUsers"/>
     </bean>
 
     <bean
@@ -207,6 +208,10 @@
 
     <bean id="rctService" class="org.motechproject.server.svc.impl.rct.RCTServiceImpl">
         <property name="dao" ref="rctDao"/>
+    </bean>
+
+    <bean id="motechUsers" class="org.motechproject.server.model.db.hibernate.MotechUsers">
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
 </beans>
