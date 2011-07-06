@@ -3344,14 +3344,4 @@
         </sql>
     </diff>
 
-    <!--<diff>-->
-        <!--<version>5.6</version>-->
-        <!--<author>Thoughtworks</author>-->
-        <!--<date>July 5 2011</date>-->
-        <!--<description>Adding user_type to users table</description>-->
-        <!--<sql>-->
-           <!--alter table users add column user_type varchar(20);-->
-        <!--</sql>-->
-    <!--</diff>-->
-
 </sqldiff>

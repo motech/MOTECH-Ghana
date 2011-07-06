@@ -41,7 +41,6 @@ import org.motechproject.server.svc.OpenmrsBean;
 import org.motechproject.server.svc.RegistrarBean;
 import org.motechproject.server.util.MotechConstants;
 import org.openmrs.PersonAttribute;
-import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -52,6 +51,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+
+import static org.motechproject.server.omod.web.model.StaffRegistrationMode.EDIT;
+import static org.motechproject.server.omod.web.model.StaffRegistrationMode.NEW;
 
 @Controller
 @RequestMapping("/module/motechmodule/staff")
@@ -97,7 +99,7 @@ public class StaffController {
 
     private String initializeDefaults(PersonAttribute personAttribute) {
         String value = "";
-        if(personAttribute != null){
+        if (personAttribute != null) {
             value = personAttribute.getValue();
         }
         return value;
@@ -132,10 +134,7 @@ public class StaffController {
         if (!errors.hasErrors()) {
             User user = registrarBean.registerStaff(staff.getFirstName(), staff
                     .getLastName(), staff.getPhone(), staff.getType(), staff.getStaffId());
-
-            model.addAttribute("successMsg", "Added user: Name = "
-                    + user.getPersonName() + ", Staff ID = "
-                    + user.getSystemId());
+            model.addAttribute("successMsg", (staff.isNew() ? NEW : EDIT).message(user));
         }
         model.addAttribute("staffTypes", registrarBean.getStaffTypes());
         return "/module/motechmodule/staff";
@@ -151,4 +150,13 @@ public class StaffController {
         }
     }
 
+    public void setRegistrarBean(RegistrarBean registrarBean) {
+        this.registrarBean = registrarBean;
+    }
+
+    public void setOpenmrsBean(OpenmrsBean openmrsBean) {
+        this.openmrsBean = openmrsBean;
+    }
 }
+
+ 

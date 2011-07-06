@@ -108,8 +108,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     private IdentifierGenerator identifierGenerator;
 
 
-    private List<String> staffTypes;
-
     @Autowired
     private MotechUserRepository motechUserRepository;
 
@@ -3488,10 +3486,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public List<String> getStaffTypes() {
         return motechUserRepository.userTypes().all();
-    }
-
-    public void setStaffTypes(List<String> staffTypes) {
-        this.staffTypes = staffTypes;
     }
 
     public boolean isValidMotechIdCheckDigit(Integer motechId) {

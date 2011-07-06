@@ -134,16 +134,6 @@
         <property name="schedulerService" ref="schedulerService"/>
         <property name="rctService" ref="rctBeanProxy"/>
         <property name="messageProgramService" ref="messageProgramService"/>
-        <property name="staffTypes">
-            <list>
-                <value>CHO</value>
-                <value>CHN</value>
-                <value>Midwife</value>
-                <value>HEW</value>
-                <value>CHV</value>
-                <value>Field agent</value>
-            </list>
-        </property>
     </bean>
 
     <bean id="observationBean" class="org.motechproject.server.ws.ObservationBean">

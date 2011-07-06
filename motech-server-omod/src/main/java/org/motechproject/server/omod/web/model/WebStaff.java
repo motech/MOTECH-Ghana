@@ -38,16 +38,18 @@ import org.openmrs.User;
 
 public class WebStaff {
 
-	String firstName;
-	String lastName;
-	String phone;
-	String type;
+    String firstName;
+    String lastName;
+    String phone;
+    String type;
 
     String staffId;
+    private static final String SPACE = " ";
 
-    public WebStaff(){}
+    public WebStaff() {
+    }
 
-    public WebStaff(String firstName, String lastName, String phone, String type){
+    public WebStaff(String firstName, String lastName, String phone, String type) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -60,7 +62,7 @@ public class WebStaff {
     }
 
     public WebStaff(User staff) {
-        if(staff != null){
+        if (staff != null) {
             firstName = staff.getGivenName();
             lastName = staff.getFamilyName();
             staffId = staff.getSystemId();
@@ -68,36 +70,36 @@ public class WebStaff {
     }
 
     public String getFirstName() {
-		return firstName;
-	}
+        return firstName;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getStaffId() {
         return staffId;
@@ -107,7 +109,15 @@ public class WebStaff {
         this.staffId = staffId;
     }
 
-    public Boolean isKnown(){
+    public Boolean isKnown() {
         return StringUtils.isNotBlank(firstName) && StringUtils.isNotBlank(lastName);
+    }
+
+    public String getName() {
+        return firstName + SPACE + lastName;
+    }
+
+    public Boolean isNew(){
+        return StringUtils.isBlank(staffId);
     }
 }
