@@ -4,20 +4,19 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import pages.*;
 
-import java.util.HashMap;
-
 
 public class RegisterClientPageTest {
     private OpenMRSLoginPage loginPage;
 
-    @BeforeGroups(groups = {"smoke"})
-   // @BeforeMethod
+    //@BeforeGroups(groups = {"smoke"})
+//    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         loginPage = new OpenMRSLoginPage();
-        loginPage.getOpenMRSDashBoard();
+        loginPage.loginIntoOpenMRS("admin", "Openmr5tw");
     }
 
-   @AfterGroups(groups = {"smoke"})
+   //@AfterGroups(groups = {"smoke"})
+  //  @AfterMethod(alwaysRun = true)
     public void tearDown() {
        loginPage.close();
     }
@@ -27,10 +26,7 @@ public class RegisterClientPageTest {
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
         RegisterClientPage regPatientPage = new RegisterClientPage();
-        String firstName = regPatientPage.RegisterMotherClient();
-        //ViewDataPage viewDataPage = new ViewDataPage();
-        //String patientID = viewDataPage.returnPatientId(lastName);
-        //Assert.assertNotNull(patientID,"Patient ID is null");
+        String firstName = regPatientPage.registerMotherClient();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.SEARCH);
         SearchPage searchPage = new SearchPage();
         Assert.assertTrue(searchPage.searchClientByFirstName(firstName),"Patient Search failed");
@@ -41,7 +37,7 @@ public class RegisterClientPageTest {
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
         RegisterClientPage regPatientPage = new RegisterClientPage();
-        String firstName = regPatientPage.RegisterOtherClient();
+        String firstName = regPatientPage.registerOtherClient();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.SEARCH);
         SearchPage searchPage = new SearchPage();
         Assert.assertTrue(searchPage.searchClientByFirstName(firstName),"Patient Search failed");
@@ -53,13 +49,13 @@ public class RegisterClientPageTest {
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
         RegisterClientPage regPatientPage = new RegisterClientPage();
-        String motherName = regPatientPage.RegisterMotherClient();
+        String motherName = regPatientPage.registerMotherClient();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.SEARCH);
         SearchPage searchPage = new SearchPage();
         String motherID = searchPage.returnClientIdBySearchingUsingFirstName(motherName);
         System.out.println(motherID);
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
-        String firstName = regPatientPage.RegisterChildClient(motherID);
+        String firstName = regPatientPage.registerChildClient(motherID);
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.SEARCH);
         Assert.assertTrue(searchPage.searchClientByFirstName(firstName), "Patient Search failed"+ firstName);
     };

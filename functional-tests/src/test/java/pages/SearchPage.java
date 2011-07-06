@@ -1,7 +1,6 @@
 package pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import util.UtilityClass;
 
@@ -14,8 +13,8 @@ import java.util.List;
  * Time: 5:30 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SearchPage {
-    private WebDriver driver;
+public class SearchPage extends DefaultPage{
+
     WebElement inputMotechID;
     WebElement buttonSubmit;
     WebElement matchTable;
@@ -24,11 +23,10 @@ public class SearchPage {
     UtilityClass utilityClass;
 
     public SearchPage(){
-        driver = DefaultPage.getInstance();
         utilityClass = new UtilityClass();
     }
 
-    private void InitializeDefaultObjects(){
+    private void initializeDefaultObjects(){
         inputMotechID = driver.findElement(By.id("motechId"));
         buttonSubmit =driver.findElement(By.xpath("//input[@type='submit']"));
         inputLastName = driver.findElement(By.id("lastName"));
@@ -36,7 +34,7 @@ public class SearchPage {
     }
 
     public boolean searchClientByID(String motechID,String lastName){
-        InitializeDefaultObjects();
+        initializeDefaultObjects();
         inputMotechID.sendKeys(motechID);
         buttonSubmit.click();
         utilityClass.wait(1000);
@@ -50,8 +48,24 @@ public class SearchPage {
         return false;
     }
 
+    //TEMP Function to be deleted
+    public boolean searchClientByID(String motechID){
+        initializeDefaultObjects();
+        inputMotechID.sendKeys(motechID);
+        buttonSubmit.click();
+        utilityClass.wait(1000);
+       matchTable = driver.findElement(By.xpath("//div[@id='content']/div[3]/table"));
+        List<WebElement> tdList= matchTable.findElements(By.tagName("td"));
+        for( WebElement td:tdList){
+           if (td.getText().trim().equals(motechID)){
+               return true;
+           }
+        }
+        return false;
+    }
+
     public boolean searchClientByFirstName(String firstName){
-        InitializeDefaultObjects();
+        initializeDefaultObjects();
         inputFirstName.sendKeys(firstName);
         buttonSubmit.click();
         utilityClass.wait(1000);
@@ -67,7 +81,7 @@ public class SearchPage {
     }
 
     public String returnClientIdBySearchingUsingFirstName(String firstName){
-        InitializeDefaultObjects();
+        initializeDefaultObjects();
         inputFirstName.sendKeys(firstName);
         buttonSubmit.click();
         utilityClass.wait(1000);

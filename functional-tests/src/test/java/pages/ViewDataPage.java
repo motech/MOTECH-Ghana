@@ -1,20 +1,11 @@
 package pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
 import java.util.HashMap;
 import java.util.List;
 
-public class ViewDataPage {
-
-    private WebDriver driver;
-
-    public ViewDataPage(){
-        driver = DefaultPage.getInstance();
-
-    }
+public class ViewDataPage extends DefaultPage{
 
     public void getMostRecentlyRegisteredPatient() {
         //WebElement patientTable = driver.findElement(By.xpath("//div[@id='content']/div[5]/table"));

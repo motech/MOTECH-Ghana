@@ -15,9 +15,8 @@ import java.util.Calendar;
  * Time: 12:51 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ManageFacilityPage {
+public class ManageFacilityPage extends DefaultPage{
 
-    private WebDriver driver;
     WebElement inputFacilityName;
     WebElement inputCountryName;
     WebElement inputRegionName;
@@ -28,12 +27,7 @@ public class ManageFacilityPage {
 
     WebElement linkAddNewFacility;
 
-    public ManageFacilityPage(){
-        driver = DefaultPage.getInstance();
-    }
-
-
-    public boolean FindFacilityByName(String facilityName){
+    public boolean findFacilityByName(String facilityName){
 
        try {
                 driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]"));
@@ -45,7 +39,7 @@ public class ManageFacilityPage {
 
     }
 
-    public boolean FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber){
+    public boolean findFacilityByNameAndPhoneNumber(String facilityName, String phoneNumber){
         if(driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]")).getText().equalsIgnoreCase(facilityName)){
               if (driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[1]")).getText().equals(phoneNumber)){
                   return true;
@@ -55,7 +49,7 @@ public class ManageFacilityPage {
         return false;
     }
 
-    public boolean FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber, String phoneNumber1){
+    public boolean findFacilityByNameAndPhoneNumber(String facilityName, String phoneNumber, String phoneNumber1){
        if(driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]")).getText().equalsIgnoreCase(facilityName)){
               if (driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[1]")).getText().equals(phoneNumber)){
                   if (driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[2]")).getText().equals(phoneNumber1)){
@@ -65,7 +59,7 @@ public class ManageFacilityPage {
        }
        return false;
     }
-    public boolean FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber, String phoneNumber1,String phoneNumber2){
+    public boolean findFacilityByNameAndPhoneNumber(String facilityName, String phoneNumber, String phoneNumber1, String phoneNumber2){
        if(driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]")).getText().equalsIgnoreCase(facilityName)){
               if (driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[1]")).getText().equals(phoneNumber)){
                   if (driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[2]")).getText().equals(phoneNumber1)){
@@ -77,7 +71,7 @@ public class ManageFacilityPage {
        }
        return false;
     }
-    public boolean FindFacilityByNameAndPhoneNumber(String facilityName,String phoneNumber, String phoneNumber1,String phoneNumber2, String phoneNumber3){
+    public boolean findFacilityByNameAndPhoneNumber(String facilityName, String phoneNumber, String phoneNumber1, String phoneNumber2, String phoneNumber3){
        if(driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]")).getText().equalsIgnoreCase(facilityName)){
           if (driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[1]")).getText().equals(phoneNumber)){
               if (driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//span[2]")).getText().equals(phoneNumber1)){
@@ -92,7 +86,7 @@ public class ManageFacilityPage {
        return false;
     }
 
-    public void NavigateToEditFacilityPage(String facilityName){
+    public void navigateToEditFacilityPage(String facilityName){
         WebElement editLink =  driver.findElement(By.xpath("//td[contains(text(),'"+facilityName+"')]//..//a"));
         editLink.click();
     }

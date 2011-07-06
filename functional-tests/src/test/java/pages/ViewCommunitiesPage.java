@@ -15,20 +15,18 @@ import java.util.Calendar;
  * Time: 3:52 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ViewCommunitiesPage {
+public class ViewCommunitiesPage extends DefaultPage{
 
-    WebDriver driver;
     WebElement linkAddCommunity;
     WebElement inputCommunityName;
     WebElement selectFacilityName;
     WebElement btnSubmit;
 
     public ViewCommunitiesPage() {
-        driver = DefaultPage.getInstance();
         linkAddCommunity = driver.findElement(By.linkText("Add a new Community"));
     }
 
-    public String AddCommunity(String facilityName){
+    public String addCommunity(String facilityName){
         linkAddCommunity.click();
 
         inputCommunityName = driver.findElement(By.id("name"));
@@ -43,7 +41,7 @@ public class ViewCommunitiesPage {
         return communityName;
     }
 
-    public Boolean DoesCommunityNameExist(String communityName , String facilityName){
+    public Boolean doesCommunityNameExist(String communityName, String facilityName){
         String xpathForCommunityName = "//div[contains(text(),'"+facilityName+"')]/following-sibling::table[1]//a[contains(text(),'"+communityName+"')]";
         try {
                 driver.findElement(By.xpath(xpathForCommunityName));

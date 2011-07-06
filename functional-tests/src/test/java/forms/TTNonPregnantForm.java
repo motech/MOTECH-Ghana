@@ -4,7 +4,7 @@ import org.sikuli.script.FindFailed;
 
 public class TTNonPregnantForm extends SikuliBase {
 
-    public void Fill_TT_Non_Pregnant_Form(String staffId, String facilityId,String date,String motechId, TTValues str) throws ParseException
+    public void fillTTNonPregnantForm(String staffId, String facilityId, String date, String motechId, TTValues str) throws ParseException
 	{ 
       try {
 	     // selecting the TT_Non_pregnant form

@@ -1,31 +1,27 @@
 package pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class EditFacilityPage {
-    private WebDriver driver;
+public class EditFacilityPage extends DefaultPage{
+
     private WebElement primaryPhoneNumber;
     private WebElement submitButton;
-    public EditFacilityPage(){
-        driver = DefaultPage.getInstance();
-    }
 
-    private void InitializeDefaultObjects(){
+    private void initializeDefaultObjects(){
        primaryPhoneNumber = driver.findElement(By.id("phoneNumber"));
        submitButton = driver.findElement(By.id("submit_facility"));
     }
 
-    public void EditPhoneNumber(String phoneNumber1){
-        InitializeDefaultObjects();
+    public void editPhoneNumber(String phoneNumber1){
+        initializeDefaultObjects();
         primaryPhoneNumber.clear();
         primaryPhoneNumber.sendKeys(phoneNumber1);
         submitButton.click();
     }
 
-    public void EditPhoneNumber(String phoneNumber, String phoneNumber1){
-        InitializeDefaultObjects();
+    public void editPhoneNumber(String phoneNumber, String phoneNumber1){
+        initializeDefaultObjects();
         primaryPhoneNumber.clear();
         primaryPhoneNumber.sendKeys(phoneNumber);
 
@@ -37,8 +33,8 @@ public class EditFacilityPage {
         submitButton.click();
     }
 
-    public void EditPhoneNumber(String phoneNumber, String phoneNumber1, String phoneNumber2){
-        InitializeDefaultObjects();
+    public void editPhoneNumber(String phoneNumber, String phoneNumber1, String phoneNumber2){
+        initializeDefaultObjects();
         primaryPhoneNumber.clear();
         primaryPhoneNumber.sendKeys(phoneNumber);
 
@@ -55,8 +51,8 @@ public class EditFacilityPage {
         submitButton.click();
     }
 
-    public void EditPhoneNumber(String phoneNumber , String phoneNumber1, String phoneNumber2, String phoneNumber3){
-        InitializeDefaultObjects();
+    public void editPhoneNumber(String phoneNumber, String phoneNumber1, String phoneNumber2, String phoneNumber3){
+        initializeDefaultObjects();
         primaryPhoneNumber.clear();
         primaryPhoneNumber.sendKeys(phoneNumber);
 

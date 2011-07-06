@@ -17,7 +17,7 @@ public class TTNonPregnantFormTest {
 
        //1. Creating an Agent
         OpenMRSLoginPage loginPage = new OpenMRSLoginPage();
-        loginPage.getOpenMRSDashBoard();
+        loginPage.loginIntoOpenMRS("admin", "OpenMr5tw");
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_STAFF);
         RegisterStaffPage regStaff = new RegisterStaffPage() ;
@@ -26,7 +26,7 @@ public class TTNonPregnantFormTest {
         //2. Creating Other Patient
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_PATIENT);
         RegisterClientPage regPatientPage = new RegisterClientPage();
-        String lastName = regPatientPage.RegisterOtherClient();
+        String lastName = regPatientPage.registerOtherClient();
         ViewDataPage viewDataPage = new ViewDataPage();
         String patientID = viewDataPage.returnPatientId(lastName);
         Assert.assertNotNull(patientID, "Other Patient ID is null");
@@ -37,7 +37,7 @@ public class TTNonPregnantFormTest {
         String facilityId = "11117";
         String date = "10/12/2010";
         String motechId = "1234568";
-        ttNonPregnantForm.Fill_TT_Non_Pregnant_Form(staffId, facilityId, date, motechId, SikuliBase.TTValues.TT1);
+        ttNonPregnantForm.fillTTNonPregnantForm(staffId, facilityId, date, motechId, SikuliBase.TTValues.TT1);
 
     }
 }

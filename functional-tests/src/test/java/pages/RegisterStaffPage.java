@@ -11,16 +11,16 @@ import org.openqa.selenium.WebElement;
  * Time: 11:13 AM
  * To change this template use File | Settings | File Templates.
  */
-public class RegisterStaffPage {
-    WebDriver driver;
+public class RegisterStaffPage extends DefaultPage {
+
     WebElement inputFirstName;
     WebElement inputLastName;
     WebElement inputPhoneNumber;
     WebElement inputStaffTypeFieldAgent;
     WebElement btnSubmit;
     WebElement spanStaffId;
+
     public RegisterStaffPage(){
-        driver = DefaultPage.getInstance();
         inputFirstName = driver.findElement(By.id("firstName"));
         inputLastName = driver.findElement(By.id("lastName"));
         inputPhoneNumber = driver.findElement(By.id("phone"));

@@ -29,7 +29,7 @@ public class RegisterPatientViaMfroms {
         String motherMotechId = "1234568";
         obj.registerNonInsuredChild(staffId, facilityId, regDate, regPhoneNo, SikuliBase.clientTypes.CHILD_UNDER_5, firstName, middleName, lastName, preferredName, DOB, SikuliBase.DOBTypes.EXACT_DOB, SikuliBase.clientGender.MALE,motherMotechId );
         OpenMRSLoginPage loginPage = new OpenMRSLoginPage();
-        loginPage.getOpenMRSDashBoard();
+        loginPage.loginIntoOpenMRS("admin", "OpenMr5tw");
         MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
         moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.VIEW_DATA);
         ViewDataPage viewPage = new ViewDataPage();
@@ -68,7 +68,7 @@ public class RegisterPatientViaMfroms {
             String preferredName = "preferred";
             String DOB ="1/1/1998";
 			OpenMRSLoginPage loginPage = new OpenMRSLoginPage();
-            loginPage.getOpenMRSDashBoard();
+            loginPage.loginIntoOpenMRS("admin", "OpenMr5tw");
             MoTeCHDashBoardPage moTeCHDashBoardPage = new MoTeCHDashBoardPage();
             moTeCHDashBoardPage.navigateToPage(HomePageLinksEnum.REGISTER_STAFF);
             RegisterStaffPage regStaff = new RegisterStaffPage() ;

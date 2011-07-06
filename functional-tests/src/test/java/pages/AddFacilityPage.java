@@ -1,15 +1,13 @@
 package pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import util.UtilityClass;
 
 import java.util.List;
 
-public class AddFacilityPage {
+public class AddFacilityPage extends DefaultPage{
 
-    private WebDriver driver;
     WebElement facilityName;
     WebElement country;
     WebElement region;
@@ -18,12 +16,7 @@ public class AddFacilityPage {
     WebElement primaryPhoneNumber;
     WebElement submit;
 
-    public AddFacilityPage(){
-        driver = DefaultPage.getInstance();
-
-    }
-
-    private void InitializeDefaultObjects(){
+   private void initializeDefaultObjects(){
         facilityName = driver.findElement(By.id("name"));
         country = driver.findElement(By.id("country"));
         region = driver.findElement(By.id("region"));
@@ -34,8 +27,8 @@ public class AddFacilityPage {
 
     }
 
-    public String AddFacility(String phoneNumber){
-        InitializeDefaultObjects();
+    public String addFacility(String phoneNumber){
+        initializeDefaultObjects();
         String facility = "foo-" + UtilityClass.getInstance().getCurrentDate();
         facilityName.sendKeys(facility);
         selectOption("country","Ghana");
@@ -47,8 +40,8 @@ public class AddFacilityPage {
         return facility;
     }
 
-    public String AddFacility(String phoneNumber, String phoneNumber1){
-        InitializeDefaultObjects();
+    public String addFacility(String phoneNumber, String phoneNumber1){
+        initializeDefaultObjects();
         String facility = "foo-" + UtilityClass.getInstance().getCurrentDate();
         facilityName.sendKeys(facility);
         selectOption("country","Ghana");
@@ -66,8 +59,8 @@ public class AddFacilityPage {
         return facility;
     }
 
-    public String AddFacility(String phoneNumber,String phoneNumber1, String phoneNumber2){
-        InitializeDefaultObjects();
+    public String addFacility(String phoneNumber, String phoneNumber1, String phoneNumber2){
+        initializeDefaultObjects();
         String facility = "foo-" + UtilityClass.getInstance().getCurrentDate();
         facilityName.sendKeys(facility);
         selectOption("country","Ghana");
@@ -89,9 +82,9 @@ public class AddFacilityPage {
         submit.click();
         return facility;
     }
-    public String AddFacility(String phoneNumber,String phoneNumber1, String phoneNumber2,String phoneNumber3){
+    public String addFacility(String phoneNumber, String phoneNumber1, String phoneNumber2, String phoneNumber3){
 
-        InitializeDefaultObjects();
+        initializeDefaultObjects();
         String facility = "foo-" + UtilityClass.getInstance().getCurrentDate();
         facilityName.sendKeys(facility);
         selectOption("country","Ghana");

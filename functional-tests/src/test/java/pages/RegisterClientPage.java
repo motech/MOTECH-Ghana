@@ -2,7 +2,6 @@ package pages;
 
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import util.UtilityClass;
 
@@ -10,8 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-public class RegisterClientPage {
-    private WebDriver driver;
+public class RegisterClientPage extends DefaultPage{
+
     public WebElement inputFirstName;
     WebElement inputMiddleName;
     WebElement inputLastName;
@@ -28,11 +27,10 @@ public class RegisterClientPage {
     UtilityClass utilityClass;
 
     public RegisterClientPage() {
-        driver = DefaultPage.getInstance();
         utilityClass = new UtilityClass();
     }
 
-    private void InitializeDefaultObjects(){
+    private void initializeDefaultObjects(){
         inputFirstName = driver.findElement(By.id("firstName"));
         inputMiddleName = driver.findElement(By.id("middleName"));
         inputLastName = driver.findElement(By.id("lastName"));
@@ -47,8 +45,8 @@ public class RegisterClientPage {
         inputNHISExpiryDate = driver.findElement(By.id("nhisExpDate"));
     }
 
-    public String RegisterMotherClient() {
-        InitializeDefaultObjects();
+    public String registerMotherClient() {
+        initializeDefaultObjects();
         String firstName = "First-"+ UtilityClass.getInstance().getCurrentDate();
         selectOption("registrationMode", "Auto-generate MoTeCH ID");
         selectOption("registrantType", "Pregnant mother");
@@ -81,8 +79,8 @@ public class RegisterClientPage {
     }
 
     //This is a temporary function to facilitate data entry for RCT.
-    public String RegisterMotherClientForRCTDataEntry(String dueDate , String phoneType) {
-        InitializeDefaultObjects();
+    public String registerMotherClientForRCTDataEntry(String dueDate, String phoneType) {
+        initializeDefaultObjects();
         String lastName = "Last-"+ UtilityClass.getInstance().getCurrentDate();
         selectOption("registrationMode", "Auto-generate MoTeCH ID");
         selectOption("registrantType", "Pregnant mother");
@@ -113,8 +111,8 @@ public class RegisterClientPage {
         return lastName;
     }
 
-    public String RegisterOtherClient(){
-        InitializeDefaultObjects();
+    public String registerOtherClient(){
+        initializeDefaultObjects();
         String firstName = "First-"+ UtilityClass.getInstance().getCurrentDate();
         selectOption("registrationMode", "Auto-generate MoTeCH ID");
         selectOption("registrantType", "Other");
@@ -138,8 +136,8 @@ public class RegisterClientPage {
         return firstName;
     }
 
-    public String RegisterChildClient(String motherID){
-        InitializeDefaultObjects();
+    public String registerChildClient(String motherID){
+        initializeDefaultObjects();
         if (motherID != null){
             selectOption("registrationMode", "Auto-generate MoTeCH ID");
             selectOption("registrantType", "Child (age less than 5)");

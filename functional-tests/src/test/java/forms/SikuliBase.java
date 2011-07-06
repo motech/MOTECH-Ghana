@@ -42,7 +42,7 @@ public class SikuliBase {
         screen = new Screen();
         try {
             screen.click(btnWindows, 0);
-            testConfiguration = TestConfiguration.instance();
+            testConfiguration = new TestConfiguration();
             screen.type(null,testConfiguration.midletLocation()+"\n",0);
             screen.exists("resources/expected_img/imgExpectedBeforeLaunch.png", 3000);
             mobileScreen = screen.find("resources/expected_img/imgExpectedBeforeLaunch.png");
@@ -401,24 +401,4 @@ public class SikuliBase {
         File outputFile = new File(testConfiguration.errorLogLocation()+date+".png");
         FileUtils.copyFile(inputFile,outputFile);
     }
-
-
-
-    public enum Studies {
-        NURSE_DATA_ENTRY{
-
-           public void foo(){
-               
-           }
-
-        },NURSE_QUERY(){
-
-        },FIELD_AGENT_FORMS(){
-
-
-        };
-
-
-
-
-    }}
+}
