@@ -520,32 +520,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         patient.setBirthdateEstimated(estimatedBirthDate);
         patient.setGender(GenderTypeConverter.toOpenMRSString(sex));
 
-        Set<PersonName> patientNames = patient.getNames();
-        if (patientNames.isEmpty()) {
-            patient.addName(new PersonName(firstName, middleName, lastName));
-            if (preferredName != null) {
-                PersonName preferredPersonName = new PersonName(preferredName,
-                        middleName, lastName);
-                preferredPersonName.setPreferred(true);
-                patient.addName(preferredPersonName);
-            }
-        } else {
-            for (PersonName name : patient.getNames()) {
-                if (name.isPreferred()) {
-                    if (preferredName != null) {
-                        name.setGivenName(preferredName);
-                        name.setFamilyName(lastName);
-                        name.setMiddleName(middleName);
-                    } else {
-                        patient.removeName(name);
-                    }
-                } else {
-                    name.setGivenName(firstName);
-                    name.setMiddleName(middleName);
-                    name.setFamilyName(lastName);
-                }
-            }
-        }
 
         PersonAddress patientAddress = patient.getPersonAddress();
         if (patientAddress == null) {
@@ -575,6 +549,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         setPatientAttributes(patient, phoneNumber, ownership, format, language,
                 dayOfWeek, timeOfDay, null, null, insured, nhis, nhisExpires);
+
+        editor.editName(new PersonName(firstName,middleName,lastName));
+        editor.editPreferredName(new PersonName(preferredName,middleName,lastName));
 
         patientService.savePatient(patient);
 
