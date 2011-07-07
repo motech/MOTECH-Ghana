@@ -7,8 +7,10 @@
         </run>
     </groups>
      <classes>
-        <class name="fflows.RegisterClientPageTest"/>
-         <class name="R"
+        <class name="flows.RegisterClientPageTest"/>
+         <class name="R">
+
+         </class>
      </classes>
   </test>
 </suite>

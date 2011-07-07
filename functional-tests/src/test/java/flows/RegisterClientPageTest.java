@@ -8,14 +8,14 @@ import pages.*;
 public class RegisterClientPageTest {
     private OpenMRSLoginPage loginPage;
 
-    //@BeforeGroups(groups = {"smoke"})
+    @BeforeGroups(groups = {"smoke"})
 //    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         loginPage = new OpenMRSLoginPage();
         loginPage.loginIntoOpenMRS("admin", "Openmr5tw");
     }
 
-   //@AfterGroups(groups = {"smoke"})
+   @AfterGroups(groups = {"smoke"})
   //  @AfterMethod(alwaysRun = true)
     public void tearDown() {
        loginPage.close();
