@@ -140,7 +140,10 @@ td.labelcolumn {
         <tr>
             <td class="labelcolumn"><label for="sex">Sex:</label></td>
             <td>
-                <form:select path="sex">
+                <c:if test="${patient.isPregnant}">
+                   <form:hidden path="sex"/>
+                </c:if>
+                <form:select path="sex" disabled="${patient.isPregnant}">
                     <form:option value="" label="Select Value"/>
                     <form:option value="FEMALE" label="Female"/>
                     <form:option value="MALE" label="Male"/>

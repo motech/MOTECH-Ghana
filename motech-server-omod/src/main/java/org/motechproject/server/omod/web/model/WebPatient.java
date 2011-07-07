@@ -422,4 +422,8 @@ public class WebPatient {
     public PreferredLocation getPreferredLocation() {
         return new PreferredLocation(getRegion(), getDistrict(), getSubDistrict(), getFacility(), getCommunityId());
     }
+
+    public Boolean getIsPregnant() {
+        return dueDate != null ;
+    }
 }
