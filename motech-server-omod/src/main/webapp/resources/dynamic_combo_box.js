@@ -16,11 +16,11 @@ function DynamicComboBox(combo) {
                 $j(opt).remove();
             }
         });
-        modified = true ;
+        modified = true;
     };
 
-    this.currentValue = function(){
-      return $j(combo).val();  
+    this.currentValue = function() {
+        return $j(combo).val();
     };
 
     // combo.append(option) is not working across browsers
@@ -38,7 +38,7 @@ function DynamicComboBox(combo) {
     };
 
     this.revert = function() {
-        if (!modified)return;
+        if (!modified)return this;
 
         empty();
         var that = this;
@@ -46,6 +46,7 @@ function DynamicComboBox(combo) {
             that.appendOption(option);
         });
         modified = false;
+        return this;
     };
 
     this.optionWithValue = function(val) {
@@ -62,15 +63,47 @@ function DynamicComboBox(combo) {
         return combo.children('option');
     };
 
-    this.setValue = function(value){
+    this.setValue = function(value) {
         $j(combo).val(value);
     };
 
-    this.disable = function(){
-        $j(combo).attr('disabled','disabled');
+    this.enable = function() {
+        $j(combo).attr('disabled', '');
+        return this;
     };
 
-    this.enable = function(){
-        $j(combo).attr('disabled','');
+    this.disable = function() {
+        $j(combo).attr('disabled', 'disabled');
+        return this;
+    };
+
+    this.show = function() {
+        $j(combo).show();
+        showParentRow();
+        return this;
+    };
+
+    this.hide = function() {
+        $j(combo).hide();
+        hideParentRow();
+        return this;
+    };
+
+    var showParentRow = function() {
+        var row = parentRow();
+        if (row) {
+            row.show();
+        }
+    };
+
+    var hideParentRow = function() {
+        var row = parentRow();
+        if (row) {
+            row.hide();
+        }
+    };
+
+    var parentRow = function() {
+        return $j(combo).parents('tr');
     };
 }

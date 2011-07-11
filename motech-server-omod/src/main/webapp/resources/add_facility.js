@@ -8,9 +8,9 @@ function addFacility() {
     var provincesDropDown = new DynamicComboBox($j('#stateProvince'));
 
     var onLoad = function() {
-        regionsDropDown.disable();
-        districtsDropDown.disable();
-        provincesDropDown.disable();
+        regionsDropDown.hide();
+        districtsDropDown.hide();
+        provincesDropDown.hide();
         $j("#phoneNumber").val('');
         $j("#location_data").hide();
         $j('span[title="err_span"]').hide();
@@ -95,7 +95,7 @@ function addFacility() {
     };
 
     var verify = function(errorSpan, selectElement, e) {
-        if (selectElement.attr('disabled')) {
+        if (!$j(selectElement).is(":visible")) {
             return;
         }
         var selectedValue = $j.trim(selectElement.val());
@@ -134,7 +134,7 @@ function addFacility() {
         if (items.length == 0) {
             return;
         }
-        dropDown.enable();
+        dropDown.show();
         items.each(function() {
             var item = $j(this).html();
             if (item == '') return;
@@ -143,20 +143,20 @@ function addFacility() {
     };
 
     var onCountryChange = function() {
-        regionsDropDown.revert();
-        districtsDropDown.revert();
-        provincesDropDown.revert();
+        regionsDropDown.revert().hide();
+        districtsDropDown.revert().hide();
+        provincesDropDown.revert().hide();
         handleChange($j(this), 'ul#regions_data', regionsDropDown);
     };
 
     var onRegionChange = function() {
-        districtsDropDown.revert();
-        provincesDropDown.revert();
+        districtsDropDown.revert().hide();
+        provincesDropDown.revert().hide();
         handleChange($j(this), 'ul#districts_data', districtsDropDown);
     };
 
     var onDistrictChange = function(district) {
-        provincesDropDown.revert();
+        provincesDropDown.revert().hide();
         handleChange($j(this), 'ul#provinces_data', provincesDropDown);
     };
 
