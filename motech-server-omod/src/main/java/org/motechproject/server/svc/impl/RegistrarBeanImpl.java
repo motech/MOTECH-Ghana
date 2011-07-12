@@ -510,7 +510,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                             String middleName, String lastName, String preferredName,
                             Date dateOfBirth, Boolean estimatedBirthDate, Gender sex,
                             Boolean insured, String nhis, Date nhisExpires, Patient mother,
-                            Community community, String address, String phoneNumber,
+                            Community community, String addressLine1, String phoneNumber,
                             Date expDeliveryDate, Boolean enroll, Boolean consent,
                             ContactNumberType ownership, MediaType format, String language,
                             DayOfWeek dayOfWeek, Date timeOfDay, Facility facility) {
@@ -519,16 +519,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         patient.setBirthdate(dateOfBirth);
         patient.setBirthdateEstimated(estimatedBirthDate);
         patient.setGender(GenderTypeConverter.toOpenMRSString(sex));
-
-
-        PersonAddress patientAddress = patient.getPersonAddress();
-        if (patientAddress == null) {
-            patientAddress = new PersonAddress();
-            patientAddress.setAddress1(address);
-            patient.addAddress(patientAddress);
-        } else {
-            patientAddress.setAddress1(address);
-        }
 
         relationshipService.saveOrUpdateMotherRelationship(mother, patient, true);
 
@@ -544,7 +534,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         boolean bothCommunitiesExistAndAreSame = community != null && currentCommunity != null && currentCommunity.equals(community);
 
         if (!bothCommunitiesExistAndAreSame) {
-            patient = editor.removeFrom(currentCommunity).addTo(community).done();
+            editor.removeFrom(currentCommunity).addTo(community);
         }
 
         setPatientAttributes(patient, phoneNumber, ownership, format, language,
@@ -552,6 +542,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
         editor.editName(new PersonName(firstName,middleName,lastName));
         editor.editPreferredName(new PersonName(preferredName,middleName,lastName));
+
+        editor.editAddress(new PatientAddress().near(facility).in(community).at(addressLine1).build());
 
         patientService.savePatient(patient);
 

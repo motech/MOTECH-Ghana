@@ -1427,6 +1427,7 @@ public class RegistrarBeanTest {
 
         Facility facility = new Facility();
         facility.setFacilityId(11117);
+        facility.setLocation(new Location());
         expect(motechService.facilityFor(patient)).andReturn(facility);
 
         replay(contextService, patientService, motechService, personService,

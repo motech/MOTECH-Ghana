@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ghana.Facility;
 import org.openmrs.Patient;
+import org.openmrs.PersonAddress;
 import org.openmrs.PersonName;
 
 import java.util.Set;
@@ -84,5 +85,21 @@ public class PatientEditor {
         toName.setGivenName(fromName.getGivenName());
         toName.setMiddleName(fromName.getMiddleName());
         toName.setFamilyName(fromName.getFamilyName());
+    }
+
+    public PatientEditor editAddress(PersonAddress newAddress) {
+        if (patient.getPersonAddress() == null) {
+            patient.addAddress(newAddress);
+            return this;
+        }
+
+        PersonAddress oldAddress = patient.getPersonAddress();
+        if(!oldAddress.equalsContent(newAddress)){
+            oldAddress.setVoided(true);
+            oldAddress.setVoidReason("Address edited");
+            patient.addAddress(newAddress);
+        }
+
+        return this;
     }
 }
