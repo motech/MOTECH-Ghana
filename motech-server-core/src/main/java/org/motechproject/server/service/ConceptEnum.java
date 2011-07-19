@@ -95,11 +95,12 @@ public enum ConceptEnum {
         this.conceptName = conceptName;
     }
 
+    public String conceptName(){
+        return conceptName;
+    }
+
     public Concept getConcept(ConceptService conceptService){
         return conceptService.getConcept(conceptName);
     }
 
-    public Concept getConcept(ContextService contextService){
-        return contextService.getConceptService().getConcept(conceptName);
-    }
 }

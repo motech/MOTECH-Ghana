@@ -117,6 +117,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     @Autowired
     private ObservationBean observationBean;
+    private static final String SINGLE_SPACE = " ";
 
 
     public void setContextService(ContextService contextService) {
@@ -540,8 +541,8 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         setPatientAttributes(patient, phoneNumber, ownership, format, language,
                 dayOfWeek, timeOfDay, null, null, insured, nhis, nhisExpires);
 
-        editor.editName(new PersonName(firstName,middleName,lastName));
-        editor.editPreferredName(new PersonName(preferredName,middleName,lastName));
+        editor.editName(new PersonName(firstName, middleName, lastName));
+        editor.editPreferredName(new PersonName(preferredName, middleName, lastName));
 
         editor.editAddress(new PatientAddress().near(facility).in(community).at(addressLine1).build());
 
@@ -1649,11 +1650,10 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     @Transactional
-    public void recordChildCWCVisit(User staff, Location facility, Date date,
+    public void recordChildCWCVisit(User staff, Location location, Date date,
                                     Patient patient, String serialNumber, Integer cwcLocation, String house,
-                                    String community, Boolean bcg, Integer opvDose, Integer pentaDose,
-                                    Boolean measles, Boolean yellowFever, Boolean csm,
-                                    Integer iptiDose, Boolean vitaminA, Boolean dewormer,
+                                    String community, String immunizationsGiven,
+                                    Integer opvDose, Integer pentaDose,Integer iptiDose,
                                     Double weight, Double muac, Double height, Boolean maleInvolved,
                                     String comments) {
 
@@ -1661,104 +1661,75 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
         encounter.setEncounterType(getEncounterType(EncounterTypeEnum.ENCOUNTER_TYPE_CWCVISIT));
         encounter.setEncounterDatetime(date);
         encounter.setPatient(patient);
-        encounter.setLocation(facility);
+        encounter.setLocation(location);
         encounter.setProvider(staff);
 
-       addSerialNumberObservation(facility, date, patient, serialNumber, encounter);
+        addSerialNumberObservation(location, date, patient, serialNumber, encounter);
+
+        for (String key : immunizationsGiven.split(SINGLE_SPACE)) {
+            Immunizations immunization = Immunizations.enumFor(key);
+            if(immunization != null){
+                encounter.addObs(immunization.obsWith(date,patient,location,encounter,staff,conceptService));
+            }
+        }
 
         if (cwcLocation != null) {
             Obs cwcLocationObs = createNumericValueObs(date,
-                    concept(ConceptEnum.CONCEPT_CWC_LOCATION), patient, facility, cwcLocation,
+                    concept(ConceptEnum.CONCEPT_CWC_LOCATION), patient, location, cwcLocation,
                     encounter, null);
             encounter.addObs(cwcLocationObs);
         }
         if (house != null) {
             Obs houseObs = createTextValueObs(date, concept(ConceptEnum.CONCEPT_HOUSE), patient,
-                    facility, house, encounter, null);
+                    location, house, encounter, null);
             encounter.addObs(houseObs);
         }
         if (community != null) {
             Obs communityObs = createTextValueObs(date, concept(ConceptEnum.CONCEPT_COMMUNITY),
-                    patient, facility, community, encounter, null);
+                    patient, location, community, encounter, null);
             encounter.addObs(communityObs);
-        }
-        if (Boolean.TRUE.equals(bcg)) {
-            Obs bcgObs = createConceptValueObs(date,
-                    concept(ConceptEnum.CONCEPT_IMMUNIZATIONS_ORDERED), patient, facility,
-                    concept(ConceptEnum.CONCEPT_BCG_VACCINATION), encounter, null);
-            encounter.addObs(bcgObs);
         }
         if (opvDose != null) {
             Obs opvDoseObs = createNumericValueObs(date, concept(ConceptEnum.CONCEPT_ORAL_POLIO_VACCINATION_DOSE),
-                    patient, facility, opvDose, encounter, null);
+                    patient, location, opvDose, encounter, null);
             encounter.addObs(opvDoseObs);
         }
         if (pentaDose != null) {
             Obs pentaDoseObs = createNumericValueObs(date,
-                    concept(ConceptEnum.CONCEPT_PENTA_VACCINATION_DOSE), patient, facility, pentaDose,
+                    concept(ConceptEnum.CONCEPT_PENTA_VACCINATION_DOSE), patient, location, pentaDose,
                     encounter, null);
             encounter.addObs(pentaDoseObs);
-        }
-        if (Boolean.TRUE.equals(yellowFever)) {
-            Obs yellowFeverObs = createConceptValueObs(date,
-                    concept(ConceptEnum.CONCEPT_IMMUNIZATIONS_ORDERED), patient, facility,
-                    concept(ConceptEnum.CONCEPT_YELLOW_FEVER_VACCINATION), encounter, null);
-            encounter.addObs(yellowFeverObs);
-        }
-        if (Boolean.TRUE.equals(csm)) {
-            Obs csmObs = createConceptValueObs(date,
-                    concept(ConceptEnum.CONCEPT_IMMUNIZATIONS_ORDERED), patient, facility,
-                    concept(ConceptEnum.CONCEPT_CEREBRO_SPINAL_MENINGITIS_VACCINATION),
-                    encounter, null);
-            encounter.addObs(csmObs);
-        }
-        if (Boolean.TRUE.equals(measles)) {
-            Obs measlesObs = createConceptValueObs(date,
-                    concept(ConceptEnum.CONCEPT_IMMUNIZATIONS_ORDERED), patient, facility,
-                    concept(ConceptEnum.CONCEPT_MEASLES_VACCINATION), encounter, null);
-            encounter.addObs(measlesObs);
         }
         if (iptiDose != null) {
             Obs iptiObs = createNumericValueObs(date,
                     concept(ConceptEnum.CONCEPT_INTERMITTENT_PREVENTATIVE_TREATMENT_INFANTS_DOSE),
-                    patient, facility, iptiDose, encounter, null);
+                    patient, location, iptiDose, encounter, null);
             encounter.addObs(iptiObs);
-        }
-        if (Boolean.TRUE.equals(vitaminA)) {
-            Obs vitaminAObs = createConceptValueObs(date,
-                    concept(ConceptEnum.CONCEPT_IMMUNIZATIONS_ORDERED), patient, facility,
-                    concept(ConceptEnum.CONCEPT_VITAMIN_A), encounter, null);
-            encounter.addObs(vitaminAObs);
-        }
-        if (dewormer != null) {
-            Obs dewormerObs = createBooleanValueObs(date, concept(ConceptEnum.CONCEPT_DEWORMER),
-                    patient, facility, dewormer, encounter, null);
-            encounter.addObs(dewormerObs);
         }
         if (weight != null) {
             Obs weightObs = createNumericValueObs(date, concept(ConceptEnum.CONCEPT_WEIGHT),
-                    patient, facility, weight, encounter, null);
+                    patient, location, weight, encounter, null);
             encounter.addObs(weightObs);
         }
         if (muac != null) {
             Obs muacObs = createNumericValueObs(date, concept(ConceptEnum.CONCEPT_MIDDLE_UPPER_ARM_CIRCUMFERENCE),
-                    patient, facility, muac, encounter, null);
+                    patient, location, muac, encounter, null);
             encounter.addObs(muacObs);
         }
         if (height != null) {
             Obs heightObs = createNumericValueObs(date, concept(ConceptEnum.CONCEPT_HEIGHT),
-                    patient, facility, height, encounter, null);
+                    patient, location, height, encounter, null);
             encounter.addObs(heightObs);
         }
         if (maleInvolved != null) {
             Obs maleInvolvedObs = createBooleanValueObs(date,
-                    concept(ConceptEnum.CONCEPT_MALE_INVOLVEMENT), patient, facility,
+                    concept(ConceptEnum.CONCEPT_MALE_INVOLVEMENT), patient, location,
                     maleInvolved, encounter, null);
             encounter.addObs(maleInvolvedObs);
         }
         if (comments != null) {
             Obs commentsObs = createTextValueObs(date, concept(ConceptEnum.CONCEPT_COMMENTS),
-                    patient, facility, comments, encounter, null);
+                    patient, location, comments, encounter, null);
             encounter.addObs(commentsObs);
         }
 
@@ -2231,7 +2202,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                                      Concept answer, Integer obsGroupId, Date from, Date to) {
 
 
-        return observationBean.getMatchingObs(person, question, answer, obsGroupId, from,to);
+        return observationBean.getMatchingObs(person, question, answer, obsGroupId, from, to);
 
 
     }
@@ -2293,7 +2264,7 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
     public Obs getActivePregnancyDueDateObs(Integer patientId, Obs pregnancy) {
-        return pregnancyObservation.getActivePregnancyDueDateObs(patientId, pregnancy);        
+        return pregnancyObservation.getActivePregnancyDueDateObs(patientId, pregnancy);
     }
 
     public Date getActivePregnancyDueDate(Integer patientId) {

@@ -1025,15 +1025,15 @@ public class RegistrarServiceTest{
         expect(openmrsBean.getPatientByMotechId(motechId.toString()))
 				.andReturn(patient);
         registrarBean.recordChildCWCVisit(staff, facilityLocation, date,
-				patient, serialNumber, location, house, community, bcg, opvDose, pentaDose,
-				measles, yellowFever, csm, iptiDose, vitaminA, dewormer,
-				weight, muac, height, maleInvolved, comments);
+				patient, serialNumber, location, house, community, "bcg yellowfever", opvDose, pentaDose,
+                iptiDose,
+                weight, muac, height, maleInvolved, comments);
 
         replay(registrarBean, openmrsBean);
 
         regWs.recordChildCWCVisit(staffId, facilityId, date, motechId, serialNumber,
-				location, house, community, bcg, opvDose, pentaDose, measles,
-				yellowFever, csm, iptiDose, vitaminA, dewormer, weight, muac,
+				location, house, community, "bcg yellowfever", opvDose, pentaDose,
+				iptiDose, weight, muac,
 				height, maleInvolved, comments);
 
 		verify(registrarBean, openmrsBean);
@@ -1068,9 +1068,8 @@ public class RegistrarServiceTest{
 
         try {
             regWs.recordChildCWCVisit(staffId, facilityId, date, motechId,serialNumber,
-					location, house, community, bcg, opvDose, pentaDose,
-					measles, yellowFever, csm, iptiDose, vitaminA, dewormer,
-					weight, muac, height, maleInvolved, comments);
+					location, house, community, "bcg yellowfever", opvDose, pentaDose,
+					iptiDose, weight, muac, height, maleInvolved, comments);
 			fail("Expected ValidationException");
 		} catch (ValidationException e) {
 			assertEquals("Errors in Record Child CWC Visit request", e

@@ -326,8 +326,8 @@ public class RegistrarBeanRecordVisitsTest extends
 
             // CWC Visit for Child 2
             registrarBean.recordChildCWCVisit(staff, facilityLocation, date,
-                    child2, serialNumber, 1, "House", "Community", true, 1, 1, true, true,
-                    true, 1, true, true, 25.0, 5.0, 35.0, true, "Comments");
+                    child2, serialNumber, 1, "House", "Community", "bcg yellowfever", 1, 1,
+                    1, 25.0, 5.0, 35.0, true, "Comments");
 
             assertEquals("CWC visit not added for Child 2", 3, Context
                     .getEncounterService().getEncountersByPatient(child2)
@@ -493,7 +493,7 @@ public class RegistrarBeanRecordVisitsTest extends
 
         Patient patient = openmrsBean.getPatientByMotechId("1234575");
 
-        registrarBean.recordChildCWCVisit(staff, facilityLocation, date, patient, serialNumber, visitNumber, "", community.getName(), true, 1, 1, false, false, false, iptDose, vitaminA, dewormer, weight, 12.0, 123.0, false, "");
+        registrarBean.recordChildCWCVisit(staff, facilityLocation, date, patient, serialNumber, visitNumber, "", community.getName(), "bcg yellowfever", 1, 1, iptDose, weight, 12.0, 123.0, false, "");
 
         Encounter encounter = registrarBean.getEncounters(patient, "CWCVISIT", yesterday).get(0);
         assertTrue(isObsPresent(encounter.getObs(), "SERIAL NUMBER"));

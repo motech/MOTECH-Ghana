@@ -214,12 +214,12 @@ public interface RegistrarBean {
 
 	@RunAsAdminUser
 	public void recordChildCWCVisit(@RunAsUserParam User staff,
-                                    Location facility, Date date, Patient patient, String serialNumber, Integer cwcLocation,
-                                    String house, String community, Boolean bcg, Integer opvDose,
-                                    Integer pentaDose, Boolean measles, Boolean yellowFever,
-                                    Boolean csm, Integer iptiDose, Boolean vitaminA, Boolean dewormer,
-                                    Double weight, Double muac, Double height, Boolean maleInvolved,
-                                    String comments);
+                                 Location facility, Date date, Patient patient, String serialNumber, Integer cwcLocation,
+                                 String house, String community, String immunizations, Integer opvDose,
+                                 Integer pentaDose,
+                                 Integer iptiDose,
+                                 Double weight, Double muac, Double height, Boolean maleInvolved,
+                                 String comments);
 
 	public void recordGeneralOutpatientVisit(Integer staffId,
 			Integer facilityId, Date date, String serialNumber, Gender sex,

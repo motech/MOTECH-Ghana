@@ -35,9 +35,9 @@ package org.motechproject.server.ws;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.svc.*;
@@ -464,15 +464,10 @@ public class RegistrarWebService implements RegistrarService {
             @WebParam(name = "cwcLocation") Integer cwcLocation,
             @WebParam(name = "house") String house,
             @WebParam(name = "community") String community,
-            @WebParam(name = "bcg") Boolean bcg,
+            @WebParam(name = "immunizations") String immunizations,
             @WebParam(name = "opvDose") Integer opvDose,
             @WebParam(name = "pentaDose") Integer pentaDose,
-            @WebParam(name = "measles") Boolean measles,
-            @WebParam(name = "yellowFever") Boolean yellowFever,
-            @WebParam(name = "csm") Boolean csm,
             @WebParam(name = "iptiDose") Integer iptiDose,
-            @WebParam(name = "vitaminA") Boolean vitaminA,
-            @WebParam(name = "dewormer") Boolean dewormer,
             @WebParam(name = "weight") Double weight,
             @WebParam(name = "muac") Double muac,
             @WebParam(name = "height") Double height,
@@ -493,9 +488,9 @@ public class RegistrarWebService implements RegistrarService {
         }
 
         registrarBean.recordChildCWCVisit(staff, facility.getLocation(), date,
-                patient, serialNumber, cwcLocation, house, community, bcg, opvDose,
-                pentaDose, measles, yellowFever, csm, iptiDose, vitaminA,
-                dewormer, weight, muac, height, maleInvolved, comments);
+                patient, serialNumber, cwcLocation, house, community, immunizations, opvDose,
+                pentaDose, iptiDose,
+                weight, muac, height, maleInvolved, comments);
     }
 
     @WebMethod
@@ -613,14 +608,14 @@ public class RegistrarWebService implements RegistrarService {
                     patient, cwcRegNumber, enroll, consent, ownership, phoneNumber,
                     format, language, dayOfWeek, timeOfDay, howLearned);
         }
-		if (registrantType == RegistrantType.PREGNANT_MOTHER) {
-			ancRegDate = decideANCRegistrationDate(ancRegToday, ancRegDate);
-			Facility ancFacility = decideFacility(facilityId, errors, ancRegToday);
-			registrarBean.registerANCMother(staff, ancFacility.getLocation(), ancRegDate,
-					patient, ancRegNumber, expDeliveryDate, height, gravida,
-					parity, enroll, consent, ownership, phoneNumber, format,
-					language, dayOfWeek, timeOfDay, howLearned);
-		}
+        if (registrantType == RegistrantType.PREGNANT_MOTHER) {
+            ancRegDate = decideANCRegistrationDate(ancRegToday, ancRegDate);
+            Facility ancFacility = decideFacility(facilityId, errors, ancRegToday);
+            registrarBean.registerANCMother(staff, ancFacility.getLocation(), ancRegDate,
+                    patient, ancRegNumber, expDeliveryDate, height, gravida,
+                    parity, enroll, consent, ownership, phoneNumber, format,
+                    language, dayOfWeek, timeOfDay, howLearned);
+        }
 
         registrarBean.recordPatientHistory(staff, facility.getLocation(), date,
                 patient, lastIPT, lastIPTDate, lastTT, lastTTDate, bcgDate,
@@ -718,7 +713,7 @@ public class RegistrarWebService implements RegistrarService {
             throws ValidationException {
 
         ValidationErrors errors = new ValidationErrors();
-        validatePhoneNumber(phoneNumber,"PhoneNumber",errors);
+        validatePhoneNumber(phoneNumber, "PhoneNumber", errors);
         User staff = validateStaffId(staffId, errors, "StaffID");
         Facility facility = validateFacility(facilityId, errors, "FacilityID");
         org.openmrs.Patient patient = validateMotechId(motechId, errors, "MotechID", true);
@@ -753,7 +748,7 @@ public class RegistrarWebService implements RegistrarService {
             throws ValidationException {
 
         ValidationErrors errors = new ValidationErrors();
-        validatePhoneNumber(phoneNumber,"PhoneNumber",errors);
+        validatePhoneNumber(phoneNumber, "PhoneNumber", errors);
         User staff = validateStaffId(staffId, errors, "StaffID");
         Facility facility = validateFacility(facilityId, errors, "FacilityID");
         org.openmrs.Patient patient = validateMotechId(motechId, errors,
@@ -789,7 +784,7 @@ public class RegistrarWebService implements RegistrarService {
             throws ValidationException {
 
         ValidationErrors errors = new ValidationErrors();
-        validatePhoneNumber(phoneNumber,"PhoneNumber",errors);
+        validatePhoneNumber(phoneNumber, "PhoneNumber", errors);
         User staff = validateStaffId(staffId, errors, "StaffID");
         validateFacility(facilityId, errors, "FacilityID");
         org.openmrs.Patient patient = validateMotechId(motechId, errors, "MotechID", true);
@@ -872,10 +867,10 @@ public class RegistrarWebService implements RegistrarService {
     }
 
     private void validateDuplicateOPDVisitEntry(ValidationErrors errors, Integer facilityId, Date visitDate, String serialNumber, Gender sex, Date dateOfBirth, Boolean newCase, Integer diagnosis) {
-          boolean valid = registrarBean.isValidOutPatientVisitEntry(facilityId, visitDate, serialNumber, sex, dateOfBirth, newCase, diagnosis);
-          if(!valid){
-             errors.add(messageBean.getMessage("motechmodule.ws.duplicate.opdVisitEntry", "OPDVistEntryForm"));
-          }
+        boolean valid = registrarBean.isValidOutPatientVisitEntry(facilityId, visitDate, serialNumber, sex, dateOfBirth, newCase, diagnosis);
+        if (!valid) {
+            errors.add(messageBean.getMessage("motechmodule.ws.duplicate.opdVisitEntry", "OPDVistEntryForm"));
+        }
     }
 
     @WebMethod
@@ -955,8 +950,8 @@ public class RegistrarWebService implements RegistrarService {
     }
 
     private void validateDiagnosis(Integer diagnosis, Integer secondDiagnosis, ValidationErrors errors) {
-        if(diagnosis == secondDiagnosis){
-              errors.add(messageBean.getMessage("motechmodule.ws.invalid.opdVisitEntry.secondDiagnosis", "OPDVistEntryForm"));
+        if (diagnosis == secondDiagnosis) {
+            errors.add(messageBean.getMessage("motechmodule.ws.invalid.opdVisitEntry.secondDiagnosis", "OPDVistEntryForm"));
         }
     }
 
@@ -1321,7 +1316,7 @@ public class RegistrarWebService implements RegistrarService {
     @WebMethod
     public MotechStaff getStaffDetails(@WebParam(name = "staffId") String staffId) {
         User staff = openmrsBean.getStaffBySystemId(staffId);
-        return staff == null ? new MotechStaff() : new MotechStaff(staff.getSystemId(),staff.getGivenName(),staff.getFamilyName());
+        return staff == null ? new MotechStaff() : new MotechStaff(staff.getSystemId(), staff.getGivenName(), staff.getFamilyName());
     }
 
     private void returnRegistrationError(String error) throws ValidationException {
