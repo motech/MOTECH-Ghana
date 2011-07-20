@@ -16,7 +16,7 @@ public class DefaultedExpectedObsAlertMatcher implements IArgumentMatcher{
 
     public boolean matches(Object argument) {
         DefaultedExpectedObsAlert actual = (DefaultedExpectedObsAlert) argument;
-        return EqualsBuilder.reflectionEquals(expected, actual);
+        return expected.isSameAs(actual);
     }
 
     public void appendTo(StringBuffer buffer) {

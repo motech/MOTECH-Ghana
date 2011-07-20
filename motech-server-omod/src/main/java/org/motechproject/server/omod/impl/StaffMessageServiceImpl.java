@@ -3,9 +3,9 @@ package org.motechproject.server.omod.impl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.model.*;
 import org.motechproject.server.factory.DistrictFactory;
 import org.motechproject.server.filters.FilterChain;
+import org.motechproject.server.model.*;
 import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.service.MotechService;
@@ -202,7 +202,7 @@ public class StaffMessageServiceImpl implements StaffMessageService {
         for (ExpectedEncounter defaultedEncounter : defaultedEncounters) {
             DefaultedExpectedEncounterAlert alert = motechService().getDefaultedEncounterAlertFor(defaultedEncounter);
             if (alert == null) {
-                DefaultedExpectedEncounterAlert encounterAlert = new DefaultedExpectedEncounterAlert(defaultedEncounter, careConfigurationFor(defaultedEncounter.getName()), 1, 1);
+                DefaultedExpectedEncounterAlert encounterAlert = new DefaultedExpectedEncounterAlert(defaultedEncounter, careConfigurationFor(defaultedEncounter.getName()), delivered ? 1 : 0, 1);
                 motechService().saveOrUpdateDefaultedEncounterAlert(encounterAlert);
                 continue;
             }
@@ -216,7 +216,7 @@ public class StaffMessageServiceImpl implements StaffMessageService {
         for (ExpectedObs defaultedObs : defaultedObservations) {
             DefaultedExpectedObsAlert alert = motechService().getDefaultedObsAlertFor(defaultedObs);
             if (alert == null) {
-                DefaultedExpectedObsAlert obsAlert = new DefaultedExpectedObsAlert(defaultedObs, careConfigurationFor(defaultedObs.getName()), 1, 1);
+                DefaultedExpectedObsAlert obsAlert = new DefaultedExpectedObsAlert(defaultedObs, careConfigurationFor(defaultedObs.getName()), delivered ? 1 : 0, 1);
                 motechService().saveOrUpdateDefaultedObsAlert(obsAlert);
                 continue;
             }

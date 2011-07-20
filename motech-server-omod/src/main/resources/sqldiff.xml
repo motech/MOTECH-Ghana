@@ -3344,4 +3344,27 @@
         </sql>
     </diff>
 
+    <diff>
+        <version>5.6</version>
+        <author>Thoughtworks</author>
+        <date>July 20 2011</date>
+        <description>Adding last_updated column to alert tables</description>
+        <sql>
+            alter table motechmodule_defaulted_expected_encounter_alert add column last_attempted TIMESTAMP default 0;
+            alter table motechmodule_defaulted_expected_encounter_alert add column last_delivered TIMESTAMP;
+            alter table motechmodule_defaulted_expected_obs_alert add column last_attempted TIMESTAMP default 0;
+            alter table motechmodule_defaulted_expected_obs_alert add column last_delivered TIMESTAMP;
+        </sql>
+    </diff>
+
+    <diff>
+        <version>5.7</version>
+        <author>Thoughtworks</author>
+        <date>July 20 2011</date>
+        <description>Adding EDD care configuration</description>
+        <sql>
+            insert into motechmodule_care_configuration(care_name, max_alerts) values('EDD',3); 
+        </sql>
+    </diff>
+
 </sqldiff>

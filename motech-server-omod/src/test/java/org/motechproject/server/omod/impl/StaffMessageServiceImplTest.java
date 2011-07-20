@@ -145,21 +145,37 @@ public class StaffMessageServiceImplTest {
         enc.setId(1L);
         enc.setPatient(patient);
         enc.setName("ANC");
+
+        ExpectedEncounter eddEncounter = new ExpectedEncounter();
+        eddEncounter.setId(1L);
+        eddEncounter.setPatient(patient);
+        eddEncounter.setName("EDD");
+
         List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
         expectedEncounters.add(enc);
+        expectedEncounters.add(eddEncounter);
 
         ExpectedObs obs = new ExpectedObs();
         obs.setId(1L);
         obs.setPatient(patient);
         obs.setName("TT1");
         List<ExpectedObs> expectedObservations = new ArrayList<ExpectedObs>();
+
+        ExpectedObs obs2 = new ExpectedObs();
+        obs2.setId(2L);
+        obs2.setPatient(patient);
+        obs2.setName("TT2");
+
         expectedObservations.add(obs);
+        expectedObservations.add(obs2);
 
         WebServicePatientModelConverterImpl converter = new WebServicePatientModelConverterImpl();
         converter.setRegistrarBean(registrarBean);
 
         CareConfiguration careConfigurationForANC = new CareConfiguration(1L, "ANC", 3);
-        CareConfiguration careConfigurationForTT1 = new CareConfiguration(2L, "TT1", 3);
+        CareConfiguration careConfigurationForEDD = new CareConfiguration(2L, "EDD", 3);
+        CareConfiguration careConfigurationForTT1 = new CareConfiguration(3L, "TT1", 3);
+        CareConfiguration careConfigurationForTT2 = new CareConfiguration(4L, "TT2", 3);
 
         Date someDate = new Date();
 
@@ -168,22 +184,33 @@ public class StaffMessageServiceImplTest {
         expect(contextService.getAdministrationService()).andReturn(adminService).times(2);
         expect(motechService.getBlackoutSettings()).andReturn(null);
         expect(motechService.getAllFacilities()).andReturn(facilities);
+        expect(motechService.getCareConfigurationFor("EDD")).andReturn(careConfigurationForEDD);
+        expect(motechService.getCareConfigurationFor("TT2")).andReturn(careConfigurationForTT2);
         expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn(maxResults.toString()).times(2);
         expect(motechService.getExpectedEncounter(null, facilities.get(0), careGroups, null, null, someDate, someDate, maxResults)).andReturn(expectedEncounters);
         expect(motechService.getExpectedObs(null, facilities.get(0), careGroups, null, null, someDate, someDate, maxResults)).andReturn(expectedObservations);
-        expect(motechService.getCommunityByPatient(same(patient))).andReturn(null).times(2);
+        expect(motechService.getCommunityByPatient(same(patient))).andReturn(null).times(4);
 
         expect(mobileService.sendDefaulterMessage(EasyMock.<String>isNull(), eq("0123456789"), EasyMock.<Care[]>anyObject(),
                 EasyMock.<CareMessageGroupingStrategy>anyObject(), EasyMock.<MediaType>anyObject(), EasyMock.<Date>anyObject(), EasyMock.<Date>isNull()))
                 .andReturn(MessageStatus.FAILED);
 
         expect(motechService.getDefaultedEncounterAlertFor(enc)).andReturn(new DefaultedExpectedEncounterAlert(enc, careConfigurationForANC, 1, 2));
+        expect(motechService.getDefaultedEncounterAlertFor(eddEncounter)).andReturn(null);
+
         expect(motechService.getDefaultedObsAlertFor(obs)).andReturn((new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 1, 1)));
+        expect(motechService.getDefaultedObsAlertFor(obs2)).andReturn(null);
 
         motechService.saveOrUpdateDefaultedEncounterAlert(equalsExpectedEncounterAlert(new DefaultedExpectedEncounterAlert(enc, careConfigurationForANC, 1 , 3)));
         expectLastCall();
 
+        motechService.saveOrUpdateDefaultedEncounterAlert(equalsExpectedEncounterAlert(new DefaultedExpectedEncounterAlert(enc, careConfigurationForEDD, 0 , 1)));
+        expectLastCall();
+
         motechService.saveOrUpdateDefaultedObsAlert(equalsExpectedObsAlert(new DefaultedExpectedObsAlert(obs, careConfigurationForTT1, 1, 2)));
+        expectLastCall();
+
+        motechService.saveOrUpdateDefaultedObsAlert(equalsExpectedObsAlert(new DefaultedExpectedObsAlert(obs2, careConfigurationForTT2, 0, 1)));
         expectLastCall();
 
         replay(contextService, motechService, adminService, mobileService);

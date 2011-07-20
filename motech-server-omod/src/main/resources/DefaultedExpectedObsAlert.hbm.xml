@@ -8,5 +8,7 @@
         <many-to-one name="careConfiguration" column="care_id" />
 		<property name="alertsDelivered" type="java.lang.Integer" column="alerts_delivered" />
         <property name="alertAttempts" type="java.lang.Integer" column="alert_attempts"/>
+        <property name="lastAttempted" type="java.util.Date" column="last_attempted"/>
+        <property name="lastDelivered" type="java.util.Date" column="last_delivered"/>
 	</class>
 </hibernate-mapping>

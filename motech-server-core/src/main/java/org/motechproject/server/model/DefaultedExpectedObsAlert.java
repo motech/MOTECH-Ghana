@@ -1,5 +1,7 @@
 package org.motechproject.server.model;
 
+import java.util.Date;
+
 public class DefaultedExpectedObsAlert {
 
     private Long id;
@@ -7,6 +9,8 @@ public class DefaultedExpectedObsAlert {
     private CareConfiguration careConfiguration;
     private Integer alertsDelivered;
     private Integer alertAttempts;
+    private Date lastAttempted;
+    private Date lastDelivered;
 
     public DefaultedExpectedObsAlert() {
     }
@@ -21,6 +25,10 @@ public class DefaultedExpectedObsAlert {
         this.careConfiguration = careConfiguration;
         this.alertsDelivered = alertsDelivered;
         this.alertAttempts = alertAttempts;
+        this.lastAttempted = new Date();
+        if (alertsDelivered > 0) {
+            this.lastDelivered = new Date();
+        }
     }
 
     public Boolean isFor(ExpectedObs obs) {
@@ -33,9 +41,18 @@ public class DefaultedExpectedObsAlert {
 
     public void delivered() {
         alertsDelivered = alertsDelivered + 1;
+        lastDelivered = new Date();
     }
 
     public void attempted() {
         alertAttempts = alertAttempts + 1;
+        lastAttempted = new Date();
+    }
+
+    public Boolean isSameAs(DefaultedExpectedObsAlert other) {
+        return expectedObs.equals(other.expectedObs)
+                && alertsDelivered.equals(other.alertsDelivered)
+                && alertAttempts.equals(other.alertAttempts);
+
     }
 }
