@@ -15,10 +15,11 @@ public interface StaffMessageService {
                                Date deliveryDate, Date deliveryTime,
                                String[] careGroups,
                                boolean sendUpcoming,
-                               boolean blackoutEnabled);
+                               boolean blackoutEnabled,
+                               boolean sendNoUpcomingAndNoDefaultsMessages);
 
 
-    void sendUpcomingMessages(Date startDate, Date endDate, Date deliveryDate, String[] careGroups, Facility facility);
+    void sendUpcomingMessages(Date startDate, Date endDate, Date deliveryDate, String[] careGroups, Facility facility, Boolean sendNoUpcomingMessage);
 
-    void sendDefaulterMessages(Date startDate, Date deliveryDate, String[] careGroups, Facility facility);
+    void sendDefaulterMessages(Date startDate, Date deliveryDate, String[] careGroups, Facility facility, Boolean sendNoDeafulterMessage);
 }

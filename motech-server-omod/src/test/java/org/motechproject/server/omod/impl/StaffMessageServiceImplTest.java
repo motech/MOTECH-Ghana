@@ -129,7 +129,7 @@ public class StaffMessageServiceImplTest {
 
         replay(contextService, motechService, adminService, mobileService);
 
-        staffMessageServiceImpl.sendStaffCareMessages(someDate, someDate, someDate, someDate, careGroups, false, true);
+        staffMessageServiceImpl.sendStaffCareMessages(someDate, someDate, someDate, someDate, careGroups, false, true, true);
 
         verify(contextService, motechService, adminService,  mobileService);
 
@@ -215,7 +215,7 @@ public class StaffMessageServiceImplTest {
 
         replay(contextService, motechService, adminService, mobileService);
 
-        staffMessageServiceImpl.sendStaffCareMessages(someDate, someDate, someDate, someDate, careGroups, false, true);
+        staffMessageServiceImpl.sendStaffCareMessages(someDate, someDate, someDate, someDate, careGroups, false, true, true);
 
         verify(contextService, motechService, adminService, mobileService);
 
@@ -282,7 +282,7 @@ public class StaffMessageServiceImplTest {
 
         replay(contextService, motechService, adminService, mobileService);
 
-        staffMessageServiceImpl.sendStaffCareMessages(someDate, someDate, someDate, someDate, careGroups, false, true);
+        staffMessageServiceImpl.sendStaffCareMessages(someDate, someDate, someDate, someDate, careGroups, false, true, true);
 
         verify(contextService, motechService, adminService,  mobileService);
 
@@ -359,7 +359,7 @@ public class StaffMessageServiceImplTest {
                 forDate, forDate,
                 careGroups,
                 false,
-                false);
+                false, true);
 
         verify(contextService, adminService, motechService, mobileService, rctService);
 
@@ -449,7 +449,7 @@ public class StaffMessageServiceImplTest {
                 forDate, forDate,
                 careGroups,
                 true,
-                false);
+                false, true);
 
         verify(contextService, adminService, motechService, mobileService, rctService);
 
@@ -496,7 +496,7 @@ public class StaffMessageServiceImplTest {
                 forDate, forDate,
                 careGroups,
                 false,
-                false);
+                false, true);
 
         verify(contextService, adminService, motechService, mobileService);
 
@@ -566,7 +566,7 @@ public class StaffMessageServiceImplTest {
                 forDate, forDate,
                 careGroups,
                 true,
-                false);
+                false, true);
 
         verify(contextService, adminService, motechService, mobileService, rctService);
 
@@ -671,12 +671,64 @@ public class StaffMessageServiceImplTest {
                 forDate, forDate,
                 careGroups,
                 false,
-                false);
+                false, true);
 
         verify(contextService, adminService, motechService, mobileService, rctService);
 
         assertEquals(CareMessageGroupingStrategy.COMMUNITY, capturedStrategy.getValue());
     }
+
+
+    @Test
+    public void shouldNotSendDefaulterMessagesIfTaskSoConfigured() {
+        Date forDate = new Date();
+        String careGroups[] = {"ANC", "TT", "IPT"};
+
+        Location location = new Location();
+        location.setName("Test Facility");
+        location.setRegion("Upper East");
+        location.setCountyDistrict(new KassenaNankana().toString());
+
+        Facility facility = new Facility();
+        facility.setLocation(location);
+        facility.setPhoneNumber("+1 555 123-1234");
+        facility.setAdditionalPhoneNumber1("+ 2 555 123-1234");
+
+        List<Facility> facilities = new ArrayList<Facility>();
+        facilities.add(facility);
+
+
+        Patient p = new Patient(5716);
+
+
+        List<ExpectedEncounter> emptyEncounters = new ArrayList<ExpectedEncounter>();
+        List<ExpectedObs> emptyObs = new ArrayList<ExpectedObs>();
+
+        boolean sendNoDefaulterAndNoUpcomingCareMessage = false;
+
+
+        expect(contextService.getMotechService()).andReturn(motechService).anyTimes();
+        expect(contextService.getAdministrationService()).andReturn(adminService).times(2);
+
+        expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn("35").anyTimes();
+        expect(motechService.getExpectedEncounter(null, facility, careGroups, null, null, forDate, forDate, 35)).andReturn(emptyEncounters);
+        expect(motechService.getExpectedObs(null, facility, careGroups, null, null, forDate, forDate, 35)).andReturn(emptyObs);
+
+        expect(motechService.getAllFacilities()).andReturn(facilities);
+
+        replay(contextService, adminService, motechService, mobileService, rctService);
+
+
+        staffMessageServiceImpl.sendStaffCareMessages(forDate, forDate,
+                forDate, forDate,
+                careGroups,
+                false,
+                false, sendNoDefaulterAndNoUpcomingCareMessage);
+
+        verify(contextService, adminService, motechService, mobileService, rctService);
+
+    }
+
 
     private static DefaultedExpectedEncounterAlert equalsExpectedEncounterAlert(DefaultedExpectedEncounterAlert alert) {
         reportMatcher(new DefaultedExpectedEncounterAlertMatcher(alert));

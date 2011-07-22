@@ -36,8 +36,8 @@ package org.motechproject.server.omod.tasks;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.motechproject.server.service.ContextService;
 import org.motechproject.server.omod.impl.ContextServiceImpl;
+import org.motechproject.server.service.ContextService;
 import org.motechproject.server.util.MotechConstants;
 import org.openmrs.scheduler.tasks.AbstractTask;
 
@@ -46,60 +46,62 @@ import java.util.Date;
 
 public class StaffCareMessagingTask extends AbstractTask {
 
-	private static Log log = LogFactory.getLog(StaffCareMessagingTask.class);
+    private static Log log = LogFactory.getLog(StaffCareMessagingTask.class);
 
-	private ContextService contextService;
+    private ContextService contextService;
 
-	public StaffCareMessagingTask() {
-		contextService = new ContextServiceImpl();
-	}
+    public StaffCareMessagingTask() {
+        contextService = new ContextServiceImpl();
+    }
 
-	public void setContextService(ContextService contextService) {
-		this.contextService = contextService;
-	}
+    public void setContextService(ContextService contextService) {
+        this.contextService = contextService;
+    }
 
-	@Override
-	public void execute() {
-		long start = System.currentTimeMillis();
-		log.debug("Executing Task - Sending Care Messages to all Staff");
+    @Override
+    public void execute() {
+        long start = System.currentTimeMillis();
+        log.debug("Executing Task - Sending Care Messages to all Staff");
 
-		Boolean sendUpcoming = Boolean.valueOf(taskDefinition.getProperty(MotechConstants.TASK_PROPERTY_SEND_UPCOMING));
-		String careGroupsProperty = taskDefinition.getProperty(MotechConstants.TASK_PROPERTY_CARE_GROUPS);
-		String[] careGroups = StringUtils.split(careGroupsProperty, MotechConstants.TASK_PROPERTY_CARE_GROUPS_DELIMITER);
-		Boolean avoidBlackout = Boolean.valueOf(taskDefinition.getProperty(MotechConstants.TASK_PROPERTY_AVOID_BLACKOUT));
-		String deliveryTimeString = this.taskDefinition.getProperty(MotechConstants.TASK_PROPERTY_DELIVERY_TIME);
+        Boolean sendUpcoming = Boolean.valueOf(taskDefinition.getProperty(MotechConstants.TASK_PROPERTY_SEND_UPCOMING));
+        String careGroupsProperty = taskDefinition.getProperty(MotechConstants.TASK_PROPERTY_CARE_GROUPS);
+        String[] careGroups = StringUtils.split(careGroupsProperty, MotechConstants.TASK_PROPERTY_CARE_GROUPS_DELIMITER);
+        Boolean avoidBlackout = Boolean.valueOf(taskDefinition.getProperty(MotechConstants.TASK_PROPERTY_AVOID_BLACKOUT));
+        String deliveryTimeString = this.taskDefinition.getProperty(MotechConstants.TASK_PROPERTY_DELIVERY_TIME);
+        Boolean sendNoDefaulterAndNoUpcomingCareMessage = Boolean.valueOf(taskDefinition.getProperty(MotechConstants.TASK_PROPERTY_SEND_NO_DEFAULTER_AND_NO_UPCOMING_CARE_MESSAGE));
 
-		Date today = new Date();
+        Date today = new Date();
         final long repeatIntervalInMilliSeconds = taskDefinition.getRepeatInterval() * 1000;
         Date endDate = new Date(today.getTime() + repeatIntervalInMilliSeconds);
-		Date deliveryDate = null;
+        Date deliveryDate = null;
 
-		Date deliveryTime = null;
-		if (deliveryTimeString != null) {
-			SimpleDateFormat timeFormat = new SimpleDateFormat(MotechConstants.TIME_FORMAT_DELIVERY_TIME);
-			try {
-				deliveryTime = timeFormat.parse(deliveryTimeString);
-			} catch (Exception e) {
-				log.error("Error parsing staff messaging task " + "delivery time", e);
-			}
-		}
-		// If the delivery time property is set,
-		// use the current date as the delivery date
-		// otherwise the delivery time is null for immediate messaging
-		if (deliveryTime != null) {
-			deliveryDate = today;
-		}
+        Date deliveryTime = null;
+        if (deliveryTimeString != null) {
+            SimpleDateFormat timeFormat = new SimpleDateFormat(MotechConstants.TIME_FORMAT_DELIVERY_TIME);
+            try {
+                deliveryTime = timeFormat.parse(deliveryTimeString);
+            } catch (Exception e) {
+                log.error("Error parsing staff messaging task " + "delivery time", e);
+            }
+        }
+        // If the delivery time property is set,
+        // use the current date as the delivery date
+        // otherwise the delivery time is null for immediate messaging
+        if (deliveryTime != null) {
+            deliveryDate = today;
+        }
 
-		// Session required for Task to get RegistrarBean through Context
-		try {
-			contextService.openSession();
-			contextService.getStaffMessageService().sendStaffCareMessages(today, endDate, deliveryDate, deliveryTime,careGroups, sendUpcoming, avoidBlackout);
-		} finally {
-			contextService.closeSession();
-		}
-		long end = System.currentTimeMillis();
-		long runtime = (end - start) / 1000;
-		log.info("executed for " + runtime + " seconds");
-	}
+        // Session required for Task to get RegistrarBean through Context
+        try {
+            contextService.openSession();
+            contextService.getStaffMessageService().sendStaffCareMessages(today, endDate, deliveryDate, deliveryTime, careGroups, sendUpcoming,
+                    avoidBlackout, sendNoDefaulterAndNoUpcomingCareMessage);
+        } finally {
+            contextService.closeSession();
+        }
+        long end = System.currentTimeMillis();
+        long runtime = (end - start) / 1000;
+        log.info("executed for " + runtime + " seconds");
+    }
 
 }

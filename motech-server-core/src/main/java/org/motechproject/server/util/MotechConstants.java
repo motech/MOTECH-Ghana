@@ -94,6 +94,7 @@ public final class MotechConstants {
 	public static final String TASK_MESSAGEPROGRAM_UPDATE = "MessageProgram Update Task";
 	public static final String TASK_PROPERTY_DELIVERY_TIME = "deliveryTime";
 	public static final String TASK_PROPERTY_SEND_UPCOMING = "sendUpcoming";
+	public static final String TASK_PROPERTY_SEND_NO_DEFAULTER_AND_NO_UPCOMING_CARE_MESSAGE = "sendNoDefaulterAndNoUpcomingCareMessage";
 	public static final String TASK_PROPERTY_CARE_GROUPS = "careGroups";
 	public static final String TASK_PROPERTY_CARE_GROUPS_DELIMITER = ",";
 	public static final String TASK_PROPERTY_AVOID_BLACKOUT = "avoidBlackout";

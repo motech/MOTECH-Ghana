@@ -3367,4 +3367,16 @@
         </sql>
     </diff>
 
+    <diff>
+        <version>5.8</version>
+        <author>Thoughtworks</author>
+        <date>July 22 2011</date>
+        <description>Adding configuration data for weekly tasks</description>
+        <sql>
+            insert into scheduler_task_config_property(name,value,task_config_id) values('sendNoDefaulterAndNoUpcomingCareMessage','false',4);
+            insert into scheduler_task_config_property(name,value,task_config_id) values('sendNoDefaulterAndNoUpcomingCareMessage','true',5);
+            insert into scheduler_task_config_property(name,value,task_config_id) values('sendNoDefaulterAndNoUpcomingCareMessage','true',6);
+        </sql>
+    </diff>
+
 </sqldiff>

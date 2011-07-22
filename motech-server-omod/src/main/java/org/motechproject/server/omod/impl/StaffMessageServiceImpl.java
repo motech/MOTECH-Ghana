@@ -67,7 +67,8 @@ public class StaffMessageServiceImpl implements StaffMessageService {
                                       Date deliveryDate, Date deliveryTime,
                                       String[] careGroups,
                                       boolean sendUpcoming,
-                                      boolean blackoutEnabled) {
+                                      boolean blackoutEnabled,
+                                      boolean sendNoDefaulterAndNoUpcomingCareMessage) {
 
         final boolean shouldBlackOut = blackoutEnabled && isMessageTimeWithinBlackoutPeriod(deliveryDate);
         if (shouldBlackOut) {
@@ -80,14 +81,14 @@ public class StaffMessageServiceImpl implements StaffMessageService {
             if (facilityPhoneNumberOrLocationNotAvailable(facility)) {
                 continue;
             }
-            sendDefaulterMessages(startDate, deliveryDate, careGroups, facility);
+            sendDefaulterMessages(startDate, deliveryDate, careGroups, facility, sendNoDefaulterAndNoUpcomingCareMessage);
             if (sendUpcoming) {
-                sendUpcomingMessages(startDate, endDate, deliveryDate, careGroups, facility);
+                sendUpcomingMessages(startDate, endDate, deliveryDate, careGroups, facility, sendNoDefaulterAndNoUpcomingCareMessage);
             }
         }
     }
 
-    public void sendUpcomingMessages(Date startDate, Date endDate, Date deliveryDate, String[] careGroups, Facility facility) {
+    public void sendUpcomingMessages(Date startDate, Date endDate, Date deliveryDate, String[] careGroups, Facility facility, Boolean sendNoUpcomingCareMessage) {
 
         List<ExpectedEncounter> upcomingEncounters = rctService.filterRCTEncounters(getUpcomingExpectedEncounters(facility, careGroups, startDate, endDate));
         List<ExpectedObs> upcomingObs = rctService.filterRCTObs(getUpcomingExpectedObs(facility, careGroups, startDate, endDate));
@@ -99,13 +100,13 @@ public class StaffMessageServiceImpl implements StaffMessageService {
             Care[] upcomingCares = careModelConverter.upcomingToWebServiceCares(upcomingEncounters, upcomingObs, true);
             log.info("Sending upcoming care message to " + facility.name() + " at " + facilityPhoneNumber);
             sendStaffUpcomingCareMessage(deliveryDate, upcomingCares, getCareMessageGroupingStrategy(facility.getLocation()), facility);
-        } else {
+        } else if (sendNoUpcomingCareMessage) {
             sendNoUpcomingCareMessage(facility);
         }
     }
 
-    public void sendDefaulterMessages(Date startDate, Date deliveryDate, String[] careGroups, Facility facility) {
-        log.debug("Starting Sending of defaulter messages for " + facility.getLocation().getName());
+    public void sendDefaulterMessages(Date startDate, Date deliveryDate, String[] careGroups, Facility facility, Boolean sendNoDefaulterMessage) {
+        log.info("Starting Sending of defaulter messages for " + facility.getLocation().getName());
         List<ExpectedEncounter> defaultedExpectedEncounters = getDefaultedExpectedEncounters(facility, careGroups, startDate);
         List<ExpectedObs> defaultedExpectedObs = getDefaultedExpectedObs(facility, careGroups, startDate);
 
@@ -120,7 +121,7 @@ public class StaffMessageServiceImpl implements StaffMessageService {
             Boolean alertsSent = sendStaffDefaultedCareMessage(facility, deliveryDate, defaultedCares, getCareMessageGroupingStrategy(facility.getLocation()));
             incrementDefaultedEncountersAlertCount(filteredDefaultedEncounters, alertsSent);
             incrementDefaultedObservationsAlertCount(filteredDefaultedExpectedObs, alertsSent);
-        } else {
+        } else if (sendNoDefaulterMessage) {
             sendNoDefaultersMessage(facility);
         }
     }
