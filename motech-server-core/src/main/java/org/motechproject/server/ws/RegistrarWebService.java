@@ -37,10 +37,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.motechproject.server.model.ExpectedEncounter;
 import org.motechproject.server.model.ExpectedObs;
+import org.motechproject.server.model.IncomingMessage;
 import org.motechproject.server.model.ghana.Community;
 import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.svc.*;
+import org.motechproject.server.svc.impl.IncomingMessageProcessorImpl;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.*;
 import org.motechproject.ws.rct.RCTRegistrationConfirmation;
@@ -77,6 +79,7 @@ public class RegistrarWebService implements RegistrarService {
     MessageSourceBean messageBean;
     RCTService rctService;
     WebServiceCareModelConverter careModelConverter;
+    IncomingMessageProcessorImpl messageProcessor;
 
     @WebMethod
     public void recordPatientHistory(
@@ -1319,6 +1322,11 @@ public class RegistrarWebService implements RegistrarService {
         return staff == null ? new MotechStaff() : new MotechStaff(staff.getSystemId(), staff.getGivenName(), staff.getFamilyName());
     }
 
+    @WebMethod
+    public Response processSMS(@WebParam(name = "sms") SMS sms) {
+        return  messageProcessor.process(new IncomingMessage(sms));
+    }
+
     private void returnRegistrationError(String error) throws ValidationException {
         ValidationErrors registrationErrors = new ValidationErrors();
         registrationErrors.add(messageBean.getMessage(error, "error"));
@@ -1440,5 +1448,6 @@ public class RegistrarWebService implements RegistrarService {
         }
         return community;
     }
+
 
 }

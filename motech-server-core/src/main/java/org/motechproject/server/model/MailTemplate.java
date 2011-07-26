@@ -1,4 +1,4 @@
-package org.motechproject.server.omod.web.model;
+package org.motechproject.server.model;
 
 import java.util.Map;
 

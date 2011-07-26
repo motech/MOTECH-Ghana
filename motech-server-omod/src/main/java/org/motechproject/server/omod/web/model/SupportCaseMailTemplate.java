@@ -1,6 +1,7 @@
 package org.motechproject.server.omod.web.model;
 
 import org.apache.velocity.app.VelocityEngine;
+import org.motechproject.server.model.MailTemplate;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import java.util.Map;

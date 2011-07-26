@@ -1,5 +1,5 @@
-#if(${staff.isKnown()})
-Support: Case reported by ${staff.firstName} ${staff.lastName} on ${case.dateRaisedOn}
+#if(${staff.getSystemId()})
+Support: Case reported by ${staff.getGivenName()} ${staff.getFamilyName()} on ${case.dateRaisedOn}
 #else
 Support: Case reported by unknown staff on ${case.dateRaisedOn}
 #end

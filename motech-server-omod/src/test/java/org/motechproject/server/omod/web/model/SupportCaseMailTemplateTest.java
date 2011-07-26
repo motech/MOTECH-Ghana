@@ -3,6 +3,8 @@ package org.motechproject.server.omod.web.model;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.server.model.SupportCase;
+import org.openmrs.PersonName;
+import org.openmrs.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -25,10 +27,9 @@ public class SupportCaseMailTemplateTest {
     @Test
     public void shouldCreateTextFromTemplate() throws ParseException {
         Map data = new HashMap();
-        WebStaff staff = new WebStaff();
-        staff.setFirstName("Joe");
-        staff.setLastName("Jee");
-        staff.setStaffId("465");
+        User staff = new User();
+        staff.setSystemId("465");
+        staff.addName(new PersonName("Joe","J","Jee"));
 
         SupportCase supportCase = new SupportCase();
         supportCase.setDateRaisedOn("2011-06-06 10:10:10");
@@ -50,7 +51,7 @@ public class SupportCaseMailTemplateTest {
         supportCase.setDateRaisedOn("2011-06-06 10:10:10");
         supportCase.setDescription("Network Failure");
 
-        data.put("staff",new WebStaff());
+        data.put("staff",new User());
         data.put("case",supportCase);
 
 

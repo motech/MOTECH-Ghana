@@ -6,50 +6,49 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.server.model.Email;
 import org.motechproject.server.model.IncomingMessage;
-import org.motechproject.server.omod.web.model.MailTemplate;
+import org.motechproject.server.model.MailTemplate;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.strategy.SupportCaseExtractionStrategy;
 import org.motechproject.server.svc.MailingService;
 import org.motechproject.server.svc.OpenmrsBean;
+import org.motechproject.server.svc.impl.SupportCaseServiceImpl;
 import org.motechproject.server.util.MailingConstants;
 import org.motechproject.server.util.MotechConstants;
+import org.motechproject.ws.Response;
 import org.openmrs.PersonName;
 import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.servlet.ModelAndView;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:mail-template-context.xml")
-public class SupportCaseControllerTest {
+public class SupportCaseServiceTest {
 
     @Autowired
     private MailTemplate mailTemplate;
 
     @Test
     public void shouldSendErrorMessageBackIfCompleteInformationNotPresent() {
-        SupportCaseController controller = new SupportCaseController();
+        SupportCaseServiceImpl service = new SupportCaseServiceImpl();
         IncomingMessage message = new IncomingMessage();
-        ModelAndView modelAndView = controller.mailToSupport(message);
-        assertEquals("/module/motechmodule/response", modelAndView.getViewName());
-        assertEquals(MailingConstants.INSUFFICIENT_INFO_FOR_SUPPORT_CASE, modelAndView.getModelMap().get("response"));
+        Response response = service.mailToSupport(message);
+        assertEquals(MailingConstants.INSUFFICIENT_INFO_FOR_SUPPORT_CASE, response.getContent());
     }
 
     @Test
     public void shouldSendErrorMessageBackIfKeyIsNotSupport() {
-        SupportCaseController controller = new SupportCaseController();
+        SupportCaseServiceImpl service = new SupportCaseServiceImpl();
         IncomingMessage message = new IncomingMessage();
         message.setText("TEST 465 Hello");
         message.setKey("TEST");
         message.setCode("1982");
-        ModelAndView modelAndView = controller.mailToSupport(message);
-        assertEquals("/module/motechmodule/response", modelAndView.getViewName());
-        assertEquals(MailingConstants.INSUFFICIENT_INFO_FOR_SUPPORT_CASE, modelAndView.getModelMap().get("response"));
+        Response response = service.mailToSupport(message);
+        assertEquals(MailingConstants.INSUFFICIENT_INFO_FOR_SUPPORT_CASE, response.getContent());
     }
 
     @Test
@@ -60,12 +59,12 @@ public class SupportCaseControllerTest {
         OpenmrsBean openmrsBean = createMock(OpenmrsBean.class);
         AdministrationService administrationService = createMock(AdministrationService.class);
 
-        SupportCaseController controller = new SupportCaseController();
-        controller.setOpenmrsBean(openmrsBean);
-        controller.setMailingService(mailingService);
-        controller.setContextService(contextService);
-        controller.setMessageContentExtractionStrategy(new SupportCaseExtractionStrategy());
-        controller.setMailTemplate(mailTemplate);
+        SupportCaseServiceImpl service = new SupportCaseServiceImpl();
+        service.setOpenmrsBean(openmrsBean);
+        service.setMailingService(mailingService);
+        service.setContextService(contextService);
+        service.setMessageContentExtractionStrategy(new SupportCaseExtractionStrategy());
+        service.setMailTemplate(mailTemplate);
 
         IncomingMessage message = new IncomingMessage();
 
@@ -96,12 +95,11 @@ public class SupportCaseControllerTest {
 
         replay(openmrsBean, contextService, administrationService, mailingService);
 
-        ModelAndView modelAndView = controller.mailToSupport(message);
+        Response response = service.mailToSupport(message);
 
         verify(openmrsBean, contextService, administrationService, mailingService);
 
-        assertEquals("/module/motechmodule/response", modelAndView.getViewName());
-        assertEquals(MailingConstants.SUPPORT_CASE_CREATION_ACKNOWLEDGEMENT, modelAndView.getModelMap().get("response"));
+        assertEquals(MailingConstants.SUPPORT_CASE_CREATION_ACKNOWLEDGEMENT, response.getContent());
 
     }
 

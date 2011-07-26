@@ -3,6 +3,7 @@ package org.motechproject.server.model;
 import org.apache.commons.lang.StringUtils;
 import org.motechproject.server.strategy.MessageContentExtractionStrategy;
 import org.motechproject.ws.RequestParameterBuilder;
+import org.motechproject.ws.SMS;
 
 import java.io.UnsupportedEncodingException;
 
@@ -15,6 +16,17 @@ public class IncomingMessage {
     private String code;
     private String time;
     private static final String AMP = "&";
+
+    public IncomingMessage() {
+    }
+
+    public IncomingMessage(SMS sms) {
+        text = sms.getText();
+        number = sms.getNumber();
+        key = sms.getKey();
+        code = sms.getCode();
+        time = sms.getTime();
+    }
 
     public String getText() {
         return text;
@@ -64,24 +76,24 @@ public class IncomingMessage {
         return StringUtils.isNotBlank(value);
     }
 
-    public String extractDateWith(MessageContentExtractionStrategy strategy)  {
+    public String extractDateWith(MessageContentExtractionStrategy strategy) {
         return strategy.extractDateFrom(time);
     }
 
-    public String extractPhoneNumberWith(MessageContentExtractionStrategy strategy)  {
+    public String extractPhoneNumberWith(MessageContentExtractionStrategy strategy) {
         return strategy.extractPhoneNumberFrom(number);
     }
 
-    public String extractSenderWith(MessageContentExtractionStrategy strategy)  {
+    public String extractSenderWith(MessageContentExtractionStrategy strategy) {
         return strategy.extractSenderFrom(text);
     }
 
-    public String extractDescriptionWith(MessageContentExtractionStrategy strategy)  {
+    public String extractDescriptionWith(MessageContentExtractionStrategy strategy) {
         return strategy.extractDescriptionFrom(text);
     }
 
     public String requestParameters() throws UnsupportedEncodingException {
-        RequestParameterBuilder builder = new RequestParameterBuilder("?","UTF-8");
+        RequestParameterBuilder builder = new RequestParameterBuilder("?", "UTF-8");
         builder.append("text", text);
         builder.append("number", number);
         builder.append("key", key);
