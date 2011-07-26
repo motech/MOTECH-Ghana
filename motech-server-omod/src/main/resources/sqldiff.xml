@@ -3379,4 +3379,14 @@
         </sql>
     </diff>
 
+    <diff>
+        <version>5.9</version>
+        <author>Thoughtworks</author>
+        <date>July 26 2011</date>
+        <description>Renaming language from Fanti to Fante</description>
+        <sql>
+            update motechmodule_message_language set name = 'Fante' where code = 'fan';
+        </sql>
+    </diff>
+
 </sqldiff>
