@@ -210,9 +210,6 @@
     <bean id="expectedEncountersFilter" class="org.motechproject.server.filters.ExpectedEncounterFilterChain">
         <property name="filters">
             <util:list>
-                <bean class="org.motechproject.server.filters.ExpectedEncounterFilterForRCT">
-                    <property name="condition" ref="rctCondition"/>
-                </bean>
                 <bean class="org.motechproject.server.filters.ExpectedEncounterMaxAlertsFilter">
                     <property name="contextService" ref="contextService"/>
                 </bean>
@@ -223,19 +220,11 @@
     <bean id="expectedObsFilter" class="org.motechproject.server.filters.ExpectedObsFilterChain">
         <property name="filters">
             <util:list>
-                <bean class="org.motechproject.server.filters.ExpectedObsFilterForRCT">
-                    <property name="condition" ref="rctCondition"/>
-                </bean>
                 <bean class="org.motechproject.server.filters.ExpectedObsMaxAlertsFilter">
                     <property name="contextService" ref="contextService"/>
                 </bean>
             </util:list>
         </property>
-    </bean>
-
-    <bean id="rctCondition" class="org.motechproject.server.filters.condition.RCTCondition">
-        <property name="contextService" ref="contextService"/>
-        <property name="rctService" ref="rctService"/>
     </bean>
 
     <bean id="mobileClient"   class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">

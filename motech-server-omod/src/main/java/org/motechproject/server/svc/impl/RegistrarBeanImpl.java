@@ -2773,41 +2773,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
     }
 
 
-    public List<ExpectedEncounter> filterRCTEncounters(List<ExpectedEncounter> allDefaulters) {
-        List<ExpectedEncounter> toBeRemoved = new ArrayList<ExpectedEncounter>();
-        for (ExpectedEncounter allDefaulter : allDefaulters) {
-            ExpectedEncounter expectedEncounter = allDefaulter;
-            if (meetsFilteringCriteria(expectedEncounter.getPatient())) {
-                toBeRemoved.add(expectedEncounter);
-            }
-        }
-        allDefaulters.removeAll(toBeRemoved);
-        return allDefaulters;
-    }
-
-    private boolean meetsFilteringCriteria(Patient patient) {
-        if (patient == null) return true;
-        if (rctService.isPatientRegisteredAndInTreatmentGroup(patient)) return false;
-        return isFromUpperEast(patient) && (patient.getId()) > 5717;
-    }
-
-    private Boolean isFromUpperEast(Patient patient) {
-        Facility facility = getFacilityByPatient(patient);
-        return facility != null && facility.isInRegion("Upper East");
-    }
-
-    public List<ExpectedObs> filterRCTObs(List<ExpectedObs> allDefaulters) {
-        List<ExpectedObs> toBeRemoved = new ArrayList<ExpectedObs>();
-        for (ExpectedObs allDefaulter : allDefaulters) {
-            ExpectedObs expectedObs = allDefaulter;
-            if (meetsFilteringCriteria(expectedObs.getPatient())) {
-                toBeRemoved.add(expectedObs);
-            }
-        }
-        allDefaulters.removeAll(toBeRemoved);
-        return allDefaulters;
-    }
-
     /* NotificationTask methods start */
 
     public void sendMessages(Date startDate, Date endDate, boolean sendImmediate) {

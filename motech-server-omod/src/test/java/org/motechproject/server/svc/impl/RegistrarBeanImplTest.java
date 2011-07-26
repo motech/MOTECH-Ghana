@@ -732,69 +732,6 @@ public class RegistrarBeanImplTest extends TestCase {
     }
 
 
-    public void testFilteringStaffCareMessages() {
-        Patient p1 = new Patient(5716);
-        Patient p2 = new Patient(5717);
-        Patient p3 = new Patient(5718);
-        Patient p4 = new Patient(5719);
-        Patient p5 = new Patient(5720);
-        Patient p6 = new Patient(5721);
-        Patient p7 = new Patient(5722);
-
-        Facility facilityInUpperEast = getFacilityWithRegion("Upper East");
-        Facility facilityInCentral = getFacilityWithRegion("Central");
-
-        expect(contextService.getMotechService()).andReturn(motechService).times(12);
-        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p1)).andReturn(false).times(2);
-        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p2)).andReturn(false).times(2);
-        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p3)).andReturn(false).times(2);
-        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p4)).andReturn(false).times(2);
-        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p5)).andReturn(true).times(2);
-        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p6)).andReturn(false).times(2);
-        expect(rctService.isPatientRegisteredAndInTreatmentGroup(p7)).andReturn(false).times(2);
-
-        expect(motechService.facilityFor(p1)).andReturn(facilityInUpperEast).times(2);
-        expect(motechService.facilityFor(p2)).andReturn(facilityInUpperEast).times(2);
-        expect(motechService.facilityFor(p3)).andReturn(facilityInUpperEast).times(2);
-        expect(motechService.facilityFor(p4)).andReturn(facilityInUpperEast).times(2);
-        expect(motechService.facilityFor(p6)).andReturn(facilityInCentral).times(2);
-        expect(motechService.facilityFor(p7)).andReturn(facilityInUpperEast).times(2);
-
-
-        List<ExpectedObs> expObs = expectedObservationsFor(p1, p2, p3, p4, p5, p6, p7);
-        List<ExpectedEncounter> expEnc = expectedEncountersFor(p1, p2, p3, p4, p5, p6, p7);
-
-        replay(rctService, motechService, contextService);
-        List<ExpectedObs> filteredObs = registrarBean.filterRCTObs(new ArrayList(expObs));
-        List<ExpectedEncounter> filteredEnc = registrarBean.filterRCTEncounters(new ArrayList(expEnc));
-
-        verify(rctService, motechService, contextService);
-
-        assertEquals(4, filteredObs.size());
-        ExpectedObs obs1 = filteredObs.get(0);
-        ExpectedObs obs2 = filteredObs.get(1);
-        ExpectedObs obs3 = filteredObs.get(2);
-        ExpectedObs obs4 = filteredObs.get(3);
-        assertEquals(p1.getPatientId(), obs1.getPatient().getPatientId());
-        assertEquals(p2.getPatientId(), obs2.getPatient().getPatientId());
-        assertEquals(p5.getPatientId(), obs3.getPatient().getPatientId());
-        assertEquals(p6.getPatientId(), obs4.getPatient().getPatientId());
-
-        assertEquals(4, filteredEnc.size());
-        ExpectedEncounter enc1 = filteredEnc.get(0);
-        ExpectedEncounter enc2 = filteredEnc.get(1);
-        ExpectedEncounter enc3 = filteredEnc.get(2);
-        ExpectedEncounter enc4 = filteredEnc.get(3);
-
-        assertEquals(p1.getPatientId(), enc1.getPatient().getPatientId());
-        assertEquals(p2.getPatientId(), enc2.getPatient().getPatientId());
-        assertEquals(p5.getPatientId(), enc3.getPatient().getPatientId());
-        assertEquals(p6.getPatientId(), enc4.getPatient().getPatientId());
-
-    }
-
-
-
     private List<ExpectedEncounter> expectedEncountersFor(Patient... patients) {
         List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
         Long id = 1L;
