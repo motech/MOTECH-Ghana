@@ -6,9 +6,12 @@ import org.motechproject.server.model.db.MessageProcessorDAO;
 import org.motechproject.server.svc.IncomingMessageProcessor;
 import org.motechproject.server.svc.SupportCaseService;
 import org.motechproject.server.svc.WebClient;
+import org.motechproject.server.util.MailingConstants;
 import org.motechproject.ws.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.UnsupportedEncodingException;
 
 public class IncomingMessageProcessorImpl implements IncomingMessageProcessor {
 
@@ -16,31 +19,22 @@ public class IncomingMessageProcessorImpl implements IncomingMessageProcessor {
     private MessageProcessorDAO dao;
 
     @Autowired
-    private SupportCaseService supportCaseService ;
-
-    @Autowired
     private WebClient webClient;
 
     @Transactional
-    public Response process(IncomingMessage incomingMessage) {
+    public Response process(IncomingMessage incomingMessage) throws UnsupportedEncodingException {
         log(incomingMessage);
-        if(incomingMessage.isFor("SUPPORT")){
-            return supportCaseService.mailToSupport(incomingMessage);
-        }
-        return sendDataToExternalURL(incomingMessage);
+        return responseFromMappedURL(incomingMessage);
     }
 
-    private Response sendDataToExternalURL(IncomingMessage incomingMessage) {
-        MessageProcessorURL url = processorURL(incomingMessage.getKey());
-        return webClient.sendDataTo(url);
-    }
-
-    private MessageProcessorURL processorURL(String key) {
-        MessageProcessorURL processorURL = dao.urlFor(key);
-        if(processorURL == null){
-            processorURL = dao.urlFor("DEFAULT");
+    private Response responseFromMappedURL(IncomingMessage incomingMessage) throws UnsupportedEncodingException {
+        MessageProcessorURL processorURL = dao.urlFor(incomingMessage.getKey());
+        if(processorURL != null){
+            StringBuilder url = new StringBuilder(processorURL.getUrl());
+            url.append(incomingMessage.requestParameters());
+            return webClient.get(url.toString());
         }
-        return processorURL;
+        return new Response(MailingConstants.KEY_NOT_SUPPORTED);
     }
 
 
@@ -50,10 +44,6 @@ public class IncomingMessageProcessorImpl implements IncomingMessageProcessor {
 
     public void setDao(MessageProcessorDAO dao) {
         this.dao = dao;
-    }
-
-    public void setSupportCaseService(SupportCaseService supportCaseService) {
-        this.supportCaseService = supportCaseService;
     }
 
     public void setWebClient(WebClient webClient) {

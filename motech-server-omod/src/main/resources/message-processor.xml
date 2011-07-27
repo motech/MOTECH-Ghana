@@ -32,9 +32,10 @@
         <property name="resourceLoaderPath" value="classpath:org/motechproject/server/omod/web/model"/>
     </bean>
 
-    <bean id="defaultURLProcessor" class="org.motechproject.server.model.MessageProcessorURL">
-        <constructor-arg index="0" value="SUPPORT"/>
-        <constructor-arg index="1" value="redirect:/module/motechmodule/supportcase.form"/>
-    </bean>
+    <bean id="messageProcessor" class="org.motechproject.server.svc.impl.IncomingMessageProcessorImpl"/>
+
+    <bean id="supportCaseService" class="org.motechproject.server.svc.impl.SupportCaseServiceImpl"/>
+
+    <bean id="webClient" class="org.motechproject.server.svc.impl.HttpClient"/>
 
 </beans>

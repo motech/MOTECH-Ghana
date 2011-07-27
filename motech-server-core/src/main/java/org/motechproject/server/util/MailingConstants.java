@@ -5,6 +5,9 @@ public class MailingConstants {
     public static final String INSUFFICIENT_INFO_FOR_SUPPORT_CASE = "Welcome to MOTECH. Your keyword is invalid. Please use the correct format to send your message";
     public static final String FAILED_TO_RAISE_SUPPORT_CASE = "Welcome to MOTECH . Support case could not be raised";
     public static final String SUPPORT_CASE_CREATION_ACKNOWLEDGEMENT = "Welcome to MOTECH. Your message has been submitted to the support team";
+    public static final String MESSAGE_ACKNOWLEDGEMENT = "Welcome to MOTECH. Your message has been received";
+    public static final String MESSAGE_PROCESSING_FAILED = "Welcome to MOTECH. Your message could not be processed";
+    public static final String KEY_NOT_SUPPORTED = "Welcome to MOTECH. Your keyword is invalid. Please use the correct format to send your message";
 
     public static final String TRANSPORT_PROTOCOL = "mail.transport_protocol";
     public static final String SMTP_HOST = "mail.smtp_host";

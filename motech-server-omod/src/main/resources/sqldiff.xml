@@ -3389,4 +3389,16 @@
         </sql>
     </diff>
 
+    <diff>
+        <version>6.0</version>
+        <author>Thoughtworks</author>
+        <date>July 27 2011</date>
+        <description>Remving default url mapping</description>
+        <sql>
+            alter table motechmodule_url modify column url text not null;
+            delete from motechmodule_url where message_key = 'DEFAULT';
+            update motechmodule_url set url = 'http://localhost/openmrs/module/motechmodule/support.form' where message_key = 'SUPPORT';
+        </sql>
+    </diff>
+
 </sqldiff>

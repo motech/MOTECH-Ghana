@@ -43,6 +43,7 @@ import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.model.rct.RCTFacility;
 import org.motechproject.server.svc.*;
 import org.motechproject.server.svc.impl.IncomingMessageProcessorImpl;
+import org.motechproject.server.util.MailingConstants;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.ws.*;
 import org.motechproject.ws.rct.RCTRegistrationConfirmation;
@@ -53,6 +54,7 @@ import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.PersonName;
 import org.openmrs.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -79,7 +81,7 @@ public class RegistrarWebService implements RegistrarService {
     MessageSourceBean messageBean;
     RCTService rctService;
     WebServiceCareModelConverter careModelConverter;
-    IncomingMessageProcessorImpl messageProcessor;
+    IncomingMessageProcessor messageProcessor;
 
     @WebMethod
     public void recordPatientHistory(
@@ -1324,7 +1326,12 @@ public class RegistrarWebService implements RegistrarService {
 
     @WebMethod
     public Response processSMS(@WebParam(name = "sms") SMS sms) {
-        return  messageProcessor.process(new IncomingMessage(sms));
+        try {
+            return messageProcessor.process(new IncomingMessage(sms));
+        } catch (Exception e) {
+            log.fatal("Exception while processing sms from " + sms.getNumber(), e);
+            return new Response(MailingConstants.MESSAGE_PROCESSING_FAILED);
+        }
     }
 
     private void returnRegistrationError(String error) throws ValidationException {
@@ -1449,5 +1456,8 @@ public class RegistrarWebService implements RegistrarService {
         return community;
     }
 
-
+    @WebMethod(exclude = true)
+    public void setMessageProcessor(IncomingMessageProcessor messageProcessor) {
+        this.messageProcessor = messageProcessor;
+    }
 }

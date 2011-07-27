@@ -185,6 +185,7 @@
         <property name="careModelConverter" ref="careModelConverter"/>
         <property name="messageBean" ref="messageSourceBean"/>
         <property name="rctService" ref="rctBeanProxy"/>
+        <property name="messageProcessor" ref="messageProcessor"/>
     </bean>
 
     <bean id="messageSourceBean" class="org.motechproject.server.svc.impl.MessageSourceBeanImpl">

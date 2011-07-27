@@ -1,8 +1,8 @@
 package org.motechproject.server.svc;
 
-import org.motechproject.server.model.MessageProcessorURL;
+import org.motechproject.server.model.IncomingMessage;
 import org.motechproject.ws.Response;
 
 public interface WebClient {
-    Response sendDataTo(MessageProcessorURL url);
+    Response get(String fromUrl);
 }
