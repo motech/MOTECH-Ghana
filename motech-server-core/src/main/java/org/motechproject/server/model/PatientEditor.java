@@ -62,23 +62,37 @@ public class PatientEditor {
         return this;
     }
 
-    public PatientEditor editPreferredName(PersonName preferredName) {
-        Boolean removePreferredName = StringUtils.isBlank(preferredName.getGivenName());
-        Set<PersonName> personNames = patient.getNames();
-        for (PersonName currentName : personNames) {
-            if (currentName.isVoided()) continue;
-            if (!currentName.isPreferred()) continue;
+    public PatientEditor editPreferredName(PersonName newPreferredName) {
+        Boolean preferredNameIsBlank = StringUtils.isBlank(newPreferredName.getGivenName());
 
-            if (removePreferredName) {
-                patient.removeName(currentName);
-                return this;
-            }
-            updateName(preferredName, currentName);
-            return this;
+        PersonName existingPreferredName = getPreferredName();
+        boolean createName = existingPreferredName == null && !preferredNameIsBlank;
+        boolean updateName = existingPreferredName != null && !preferredNameIsBlank;
+        boolean deleteName = existingPreferredName != null && preferredNameIsBlank;
+
+        if(createName){
+            newPreferredName.setPreferred(true);
+            patient.addName(newPreferredName);
         }
-        preferredName.setPreferred(true);
-        patient.addName(preferredName);
+
+        if(updateName){
+            updateName(newPreferredName,existingPreferredName);
+        }
+
+        if(deleteName){
+            patient.removeName(existingPreferredName);
+        }
+
         return this;
+    }
+
+    private PersonName getPreferredName() {
+        for (PersonName name : patient.getNames()) {
+            if (!name.isVoided() && name.isPreferred()) {
+                return name;
+            }
+        }
+        return null;
     }
 
     private void updateName(PersonName fromName, PersonName toName) {
@@ -94,7 +108,7 @@ public class PatientEditor {
         }
 
         PersonAddress oldAddress = patient.getPersonAddress();
-        if(!oldAddress.equalsContent(newAddress)){
+        if (!oldAddress.equalsContent(newAddress)) {
             oldAddress.setVoided(true);
             oldAddress.setVoidReason("Address edited");
             patient.addAddress(newAddress);

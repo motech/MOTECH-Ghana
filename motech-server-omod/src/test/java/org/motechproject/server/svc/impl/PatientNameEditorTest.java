@@ -77,14 +77,45 @@ public class PatientNameEditorTest {
         name2.setPreferred(true);
         patient.addName(name2);
         PatientEditor editor = new PatientEditor(patient);
-        PersonName personName = new PersonName("firstName", "middleName", "familyName");
-        personName.setPreferred(true);
-        Patient editedPatient = editor.editName(personName).done();
+        PersonName newPreferredName = new PersonName("firstName", "middleName", "familyName");
+        newPreferredName.setPreferred(true);
+        Patient editedPatient = editor.editName(newPreferredName).done();
         Set<PersonName> personNames = editedPatient.getNames();
         assertTrue(personNames.size() == 2);
         assertEquals("firstName", editedPatient.getGivenName());
         assertEquals("middleName", editedPatient.getMiddleName());
         assertEquals("familyName", editedPatient.getFamilyName());
+    }
+
+    @Test
+    public void doNotSetPreferredNameIfNotGiven() {
+        Patient patient = new Patient();
+        PersonName john = new PersonName("John", "J", "Jovi");
+        patient.addName(john);
+
+        PatientEditor editor = new PatientEditor(patient);
+        
+        patient = editor.editPreferredName(new PersonName("","","")).done();
+
+        assertEquals(1,patient.getNames().size());
+        assertEquals("John",patient.getGivenName());
+    }
+
+    @Test
+    public void deletePreferredName() {
+        Patient patient = new Patient();
+        PersonName john = new PersonName("John", "J", "Jovi");
+        john.setPreferred(true);
+        PersonName jonny = new PersonName("Jonny", "J", "Jovi");
+        patient.addName(john);
+        patient.addName(jonny);
+
+        PatientEditor editor = new PatientEditor(patient);
+
+        patient = editor.editPreferredName(new PersonName("","","")).done();
+
+        assertEquals(1,patient.getNames().size());
+        assertEquals("Jonny",patient.getGivenName());
     }
 
 }
