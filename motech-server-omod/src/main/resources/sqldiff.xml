@@ -3373,9 +3373,9 @@
         <date>July 22 2011</date>
         <description>Adding configuration data for weekly tasks</description>
         <sql>
-            insert into scheduler_task_config_property(name,value,task_config_id) values('sendNoDefaulterAndNoUpcomingCareMessage','false',4);
-            insert into scheduler_task_config_property(name,value,task_config_id) values('sendNoDefaulterAndNoUpcomingCareMessage','true',5);
-            insert into scheduler_task_config_property(name,value,task_config_id) values('sendNoDefaulterAndNoUpcomingCareMessage','true',6);
+            insert into scheduler_task_config_property(name,value,task_config_id) values('sendNoDefaulterAndNoUpcomingCareMessage','false',(select task_config_id from scheduler_task_config where name = 'Daily Nurse Care Messaging Task'));
+            insert into scheduler_task_config_property(name,value,task_config_id) values('sendNoDefaulterAndNoUpcomingCareMessage','true',(select task_config_id from scheduler_task_config where name = 'Weekly Nurse Care Messaging Task'));
+            insert into scheduler_task_config_property(name,value,task_config_id) values('sendNoDefaulterAndNoUpcomingCareMessage','true',(select task_config_id from scheduler_task_config where name = 'Weekly EDD Nurse Care Messaging Task'));
         </sql>
     </diff>
 
