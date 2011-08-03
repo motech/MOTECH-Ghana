@@ -1294,28 +1294,7 @@ public class RegistrarWebService implements RegistrarService {
                                                       @WebParam(name = "ownership") ContactNumberType ownership,
                                                       @WebParam(name = "regPhone") String regPhone) throws ValidationException {
 
-        ValidationErrors errors = new ValidationErrors();
-        validatePhoneNumber(regPhone, "regPhone", errors);
-        User staff = validateStaffId(staffId, errors, "StaffID");
-        validateFacility(facilityId, errors, "facilityId");
-        org.openmrs.Patient patient = validateMotechId(motechId, errors, "MotechID", true);
-        RCTFacility rctFacility = validateIfFacilityCoveredInRCT(facilityId, errors, "facilityId");
-        if (patient != null) {
-            validateIfPatientAlredayRegisterdForRCT(motechId, errors, "motechId");
-        }
-
-        throwExceptionIfValidationFailed(errors);
-
-        updatePatientPhoneDetails(ownership, regPhone, staff, patient);
-        Patient motechPatient = patientModelConverter.patientToWebService(patient, false);
-
-        RCTRegistrationConfirmation confirmation = rctService.register(motechPatient, staff, rctFacility);
-
-        if (confirmation.getErrors()) {
-            returnRegistrationError(confirmation.getText());
-        }
-
-        return confirmation;
+        return new RCTRegistrationConfirmation("RCT Registrations stopped",false);
     }
 
     @WebMethod
@@ -1331,29 +1310,6 @@ public class RegistrarWebService implements RegistrarService {
         } catch (Exception e) {
             log.fatal("Exception while processing sms from " + sms.getNumber(), e);
             return new Response(MailingConstants.MESSAGE_PROCESSING_FAILED);
-        }
-    }
-
-    private void returnRegistrationError(String error) throws ValidationException {
-        ValidationErrors registrationErrors = new ValidationErrors();
-        registrationErrors.add(messageBean.getMessage(error, "error"));
-        throw new ValidationException("Errors in Patient Query request", registrationErrors);
-    }
-
-    private void throwExceptionIfValidationFailed(ValidationErrors errors) throws ValidationException {
-        if (errors.getErrors().size() > 0) {
-            throw new ValidationException("Errors in Patient Query request",
-                    errors);
-        }
-    }
-
-    private void updatePatientPhoneDetails(ContactNumberType ownership, String regPhone, User staff, org.openmrs.Patient patient) {
-        registrarBean.editPatient(staff, null, patient, null, regPhone, ownership, null, null, null, null);
-    }
-
-    private void validateIfPatientAlredayRegisterdForRCT(Integer motechId, ValidationErrors errors, String fieldName) {
-        if (rctService.isPatientRegisteredIntoRCT(motechId)) {
-            errors.add(messageBean.getMessage("motechmodule.rct.exists", fieldName));
         }
     }
 

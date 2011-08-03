@@ -65,7 +65,7 @@ public class StaffMessageServiceImplTest {
         expectedEncounterFilterChain.setFilters(new ArrayList<Filter<ExpectedEncounter>>());
         ExpectedObsFilterChain expectedObsFilterChain = new ExpectedObsFilterChain();
         expectedObsFilterChain.setFilters(new ArrayList<Filter<ExpectedObs>>());
-        staffMessageServiceImpl = new StaffMessageServiceImpl(contextService, mobileService, rctService);
+        staffMessageServiceImpl = new StaffMessageServiceImpl(contextService, mobileService);
         staffMessageServiceImpl.setExpectedEncountersFilter(expectedEncounterFilterChain);
         staffMessageServiceImpl.setExpectedObsFilter(expectedObsFilterChain);
 
@@ -433,12 +433,6 @@ public class StaffMessageServiceImplTest {
         expect(mobileService.sendBulkCaresMessage(capture(capturedMessageId), capture(capturedPhoneNumber), capture(capturedCares), capture(capturedStrategy), capture(capturedMediaType), capture(capturedStartDate),
                 capture(capturedEndDate))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
 
-        Capture<List<ExpectedEncounter>> defaultedEncounters = new Capture<List<ExpectedEncounter>>();
-        expect(rctService.filterRCTEncounters(capture(defaultedEncounters))).andReturn(encounters);
-
-        Capture<List<ExpectedObs>> defaulteObs = new Capture<List<ExpectedObs>>();
-        expect(rctService.filterRCTObs(capture(defaulteObs))).andReturn(emptyObs);
-
 
         motechService.saveOrUpdateDefaultedEncounterAlert(EasyMock.<DefaultedExpectedEncounterAlert>anyObject());
         expectLastCall().atLeastOnce();
@@ -553,12 +547,6 @@ public class StaffMessageServiceImplTest {
 
         expect(mobileService.sendMessage(capture(capturedDefaulterMessage), capture(capturedDefaulterPhoneNumber))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
         expect(mobileService.sendMessage(capture(capturedUpcomingCareMessage), capture(capturedUpcomingCarePhoneNumber))).andReturn(org.motechproject.ws.MessageStatus.DELIVERED);
-
-        Capture<List<ExpectedEncounter>> defaultedEncounters = new Capture<List<ExpectedEncounter>>();
-        expect(rctService.filterRCTEncounters(capture(defaultedEncounters))).andReturn(emptyEncounters);
-
-        Capture<List<ExpectedObs>> defaulteObs = new Capture<List<ExpectedObs>>();
-        expect(rctService.filterRCTObs(capture(defaulteObs))).andReturn(emptyObs);
 
         replay(contextService, adminService, motechService, mobileService, rctService);
 

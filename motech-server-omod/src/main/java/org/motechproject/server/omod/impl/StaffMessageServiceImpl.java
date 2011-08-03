@@ -10,7 +10,6 @@ import org.motechproject.server.model.ghana.Facility;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.service.MotechService;
 import org.motechproject.server.service.StaffMessageService;
-import org.motechproject.server.svc.RCTService;
 import org.motechproject.server.util.DateUtil;
 import org.motechproject.server.util.MotechConstants;
 import org.motechproject.server.ws.WebServiceCareModelConverter;
@@ -41,10 +40,6 @@ public class StaffMessageServiceImpl implements StaffMessageService {
     @Autowired
     private ContextService contextService;
 
-    @Autowired
-    @Qualifier("rctBeanProxy")
-    private RCTService rctService;
-
     private MessageService mobileService;
 
     @Autowired
@@ -56,11 +51,10 @@ public class StaffMessageServiceImpl implements StaffMessageService {
 
     public StaffMessageServiceImpl(
             ContextService contextService,
-            MessageService mobileService,
-            RCTService rctService) {
+            MessageService mobileService
+    ) {
         this.contextService = contextService;
         this.mobileService = mobileService;
-        this.rctService = rctService;
     }
 
     public void sendStaffCareMessages(Date startDate, Date endDate,
@@ -90,8 +84,8 @@ public class StaffMessageServiceImpl implements StaffMessageService {
 
     public void sendUpcomingMessages(Date startDate, Date endDate, Date deliveryDate, String[] careGroups, Facility facility, Boolean sendNoUpcomingCareMessage) {
 
-        List<ExpectedEncounter> upcomingEncounters = rctService.filterRCTEncounters(getUpcomingExpectedEncounters(facility, careGroups, startDate, endDate));
-        List<ExpectedObs> upcomingObs = rctService.filterRCTObs(getUpcomingExpectedObs(facility, careGroups, startDate, endDate));
+        List<ExpectedEncounter> upcomingEncounters = getUpcomingExpectedEncounters(facility, careGroups, startDate, endDate);
+        List<ExpectedObs> upcomingObs = getUpcomingExpectedObs(facility, careGroups, startDate, endDate);
 
         final String facilityPhoneNumber = facility.getPhoneNumber();
         final boolean upcomingEventsPresent = !(upcomingEncounters.isEmpty() && upcomingObs.isEmpty());
