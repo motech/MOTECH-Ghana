@@ -40,7 +40,8 @@ import org.motechproject.server.filters.ExpectedEncounterFilterChain;
 import org.motechproject.server.filters.ExpectedObsFilterChain;
 import org.motechproject.server.filters.Filter;
 import org.motechproject.server.model.*;
-import org.motechproject.server.model.ghana.Facility;
+import org.motechproject.server.omod.MotechUserRepository;
+import org.motechproject.server.omod.PersonAttributeTypeEnum;
 import org.motechproject.server.service.ContextService;
 import org.motechproject.server.service.MotechService;
 import org.motechproject.server.svc.RCTService;
@@ -53,6 +54,7 @@ import org.motechproject.ws.mobile.MessageService;
 import org.openmrs.*;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.PersonService;
+import org.openmrs.api.UserService;
 
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -731,6 +733,37 @@ public class RegistrarBeanImplTest extends TestCase {
         verify(motechService, contextService);
     }
 
+    public void test_shouldNotChangePasswordWhenStaffIsUpdated() {
+        User staff = new User(1);
+        staff.addName(new PersonName("James","J","J"));
+
+        PersonAttributeType staffAttributeType = new PersonAttributeType(1);
+        staffAttributeType.setName(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_STAFF_TYPE.getAttributeName());
+
+        PersonAttributeType staffPhoneAttributeType = new PersonAttributeType(2);
+        staffAttributeType.setName(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeName());
+
+        UserService userService = createMock(UserService.class);
+
+        registrarBean.setUserService(userService);
+        registrarBean.setMotechUserRepository(new MotechUserRepository(null,null,personService,null));
+
+        expect(userService.getUserByUsername("465")).andReturn(staff);
+        expect(userService.saveUser(eq(staff),isNull(String.class))).andReturn(staff);
+        expect(personService.
+                getPersonAttributeTypeByName(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_STAFF_TYPE.getAttributeName()))
+                .andReturn(staffAttributeType);
+        expect(personService.
+                getPersonAttributeTypeByName(PersonAttributeTypeEnum.PERSON_ATTRIBUTE_PHONE_NUMBER.getAttributeName()))
+                .andReturn(staffPhoneAttributeType);
+
+        replay(userService,personService);
+
+        User user = registrarBean.registerStaff("James", "J", "0123456789", "CHO", "465");
+
+        verify(userService,personService);
+    }
+
 
     private List<ExpectedEncounter> expectedEncountersFor(Patient... patients) {
         List<ExpectedEncounter> expectedEncounters = new ArrayList<ExpectedEncounter>();
@@ -759,11 +792,10 @@ public class RegistrarBeanImplTest extends TestCase {
     }
 
 
-    private Facility getFacilityWithRegion(String region) {
-        Facility facility = new Facility();
-        Location location = new Location();
-        location.setRegion(region);
-        facility.setLocation(location);
-        return facility;
+    private void createType(User user, String typeValue) {
+        PersonAttributeType staffTypeAttrType = PersonAttributeTypeEnum.PERSON_ATTRIBUTE_STAFF_TYPE.
+                getAttributeType(personService);
+        user.addAttribute(new PersonAttribute(staffTypeAttrType, typeValue));
     }
+
 }

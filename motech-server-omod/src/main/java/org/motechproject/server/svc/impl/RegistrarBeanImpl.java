@@ -130,13 +130,14 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public User registerStaff(String firstName, String lastName, String phone,
                               String staffType, String staffId) {
-        User staff = null;
+        User staff;
         if (staffId != null) {
             staff = motechUserRepository.updateUser(getStaffBySystemId(staffId), new WebStaff(firstName, lastName, phone, staffType));
+            return userService.saveUser(staff,null);
         } else {
             staff = motechUserRepository.newUser(new WebStaff(firstName, lastName, phone, staffType));
+            return userService.saveUser(staff, generatePassword(8));
         }
-        return userService.saveUser(staff, generatePassword(8));
     }
 
 
@@ -3504,5 +3505,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
 
     public void setObservationBean(ObservationBean observationBean) {
         this.observationBean = observationBean;
+    }
+
+    public void setMotechUserRepository(MotechUserRepository motechUserRepository) {
+        this.motechUserRepository = motechUserRepository;
     }
 }
