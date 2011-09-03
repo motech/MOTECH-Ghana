@@ -327,7 +327,7 @@ public class StaffMessageServiceImpl implements StaffMessageService {
         builder.append("\n");
         for (Care care : cares)
             for (Patient patient : care.getPatients())
-                builder.append(care.getName() + "|" + patient.getLastName() + "|" + patient.getMotechId() + "|" + patient.getCommunity() + "|" + care.getDate() + "\n");
+                builder.append(care.getName() + "|" + patient.getMotechId() + "|" + patient.getLastName() + "|" + patient.getBirthDate() + "|" + patient.getCommunity() + "|" + care.getDate() + "\n");
         return builder.toString();
     }
 
