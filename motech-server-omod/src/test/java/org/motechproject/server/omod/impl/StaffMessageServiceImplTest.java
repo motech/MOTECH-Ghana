@@ -408,11 +408,11 @@ public class StaffMessageServiceImplTest {
         expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn("35").anyTimes();
         expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
                 null, forDate, forDate, 35)).andReturn(encounters);
-        expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
+        expect(motechService.getExpectedEncounter(null, facility, careGroups, forDate,
                 forDate, null, forDate, 35)).andReturn(encounters);
         expect(motechService.getExpectedObs(null, facility, careGroups, null,
                 null, forDate, forDate, 35)).andReturn(emptyObs);
-        expect(motechService.getExpectedObs(null, facility, careGroups, null,
+        expect(motechService.getExpectedObs(null, facility, careGroups, forDate,
                 forDate, null, forDate, 35)).andReturn(emptyObs);
 
         expect(motechService.getCareConfigurationFor(EasyMock.<String>anyObject())).andReturn(EasyMock.<CareConfiguration>anyObject());
@@ -533,11 +533,11 @@ public class StaffMessageServiceImplTest {
         expect(adminService.getGlobalProperty(MotechConstants.GLOBAL_PROPERTY_MAX_QUERY_RESULTS)).andReturn("35").anyTimes();
         expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
                 null, forDate, forDate, 35)).andReturn(emptyEncounters);
-        expect(motechService.getExpectedEncounter(null, facility, careGroups, null,
+        expect(motechService.getExpectedEncounter(null, facility, careGroups, forDate,
                 forDate, null, forDate, 35)).andReturn(emptyEncounters);
         expect(motechService.getExpectedObs(null, facility, careGroups, null,
                 null, forDate, forDate, 35)).andReturn(emptyObs);
-        expect(motechService.getExpectedObs(null, facility, careGroups, null,
+        expect(motechService.getExpectedObs(null, facility, careGroups, forDate ,
                 forDate, null, forDate, 35)).andReturn(emptyObs);
 
         Capture<String> capturedDefaulterMessage = new Capture<String>();
