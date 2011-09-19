@@ -12,6 +12,6 @@ public class TT1Condition implements Condition<ExpectedObs> {
     public Boolean metBy(ExpectedObs expectedObs) {
         DateUtil dateUtil = new DateUtil();
         return expectedObs.getName().equalsIgnoreCase(TT_1) &&
-                (expectedObs.getLateObsDatetime() == null || !dateUtil.isSameYear(new Date(), expectedObs.getLateObsDatetime()));
+                (expectedObs.getLateObsDatetime() == null || dateUtil.isYearOld(expectedObs.getLateObsDatetime()));
     }
 }
