@@ -81,13 +81,13 @@
 				</bean>
 				<bean class="org.motechproject.server.service.ExpectedCareEvent">
 					<property name="name" value="PNC3" />
-					<property name="minValue" value="12" />
+					<property name="minValue" value="39" />
 					<property name="minPeriod" value="day" />
-					<property name="dueValue" value="14" />
+					<property name="dueValue" value="41" />
 					<property name="duePeriod" value="day" />
 					<property name="lateValue" value="0" />
 					<property name="latePeriod" value="day" />
-					<property name="maxValue" value="21" />
+					<property name="maxValue" value="48" />
 					<property name="maxPeriod" value="day" />
 				</bean>
 			</list>
