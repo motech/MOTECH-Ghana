@@ -3337,10 +3337,16 @@
            insert into motechmodule_user_type(user_type,description) values('CHO','Community Health Operator');
            insert into motechmodule_user_type(user_type,description) values('CHN','Community Health Nurse');
            insert into motechmodule_user_type(user_type,description) values('Midwife','Takes care of deliveries');
-           insert into motechmodule_user_type(user_type,description) values('HEW','');
+           insert into motechmodule_user_type(user_type,description) values('HEW','Health Extension Worker');
            insert into motechmodule_user_type(user_type,description) values('CHV','Community Health Volunteer');
            insert into motechmodule_user_type(user_type,description) values('HPO','Health Promotion Officer');
            insert into motechmodule_user_type(user_type,description) values('Field Agent','MoTeCH Field Agent');
+           insert into motechmodule_user_type(user_type,description) values('SMC','Senior Midwifery Officer');
+           insert into motechmodule_user_type(user_type,description) values('HA','Health Assistant');
+           insert into motechmodule_user_type(user_type,description) values('PHA','Principal Health Assistant');
+           insert into motechmodule_user_type(user_type,description) values('EN','Enrolled Nurse');
+           insert into motechmodule_user_type(user_type,description) values('SSN','Senior Staff Nurse');
+           insert into motechmodule_user_type(user_type,description) values('PWA','Principal Ward Assistant');
         </sql>
     </diff>
 
