@@ -2573,12 +2573,9 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 Date attemptDate = recentMessage.getAttemptDate();
                 // Check if current message date is valid for user
                 // preferences or blackout in case these have changed
-                if (userPreferenceBased) {
-                    attemptDate = findPreferredMessageDate(recipient,
-                            attemptDate, currentDate, true);
-                } else {
-                    attemptDate = adjustDateForBlackout(attemptDate);
-                }
+                
+                attemptDate = adjustDateForBlackout(attemptDate);
+                
                 if (!attemptDate.equals(recentMessage.getAttemptDate())) {
                     // Recompute from original scheduled message date
                     // Allows possibly adjusting to an earlier week or day
