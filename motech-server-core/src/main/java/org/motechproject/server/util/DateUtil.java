@@ -32,10 +32,6 @@
  */
 package org.motechproject.server.util;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Period;
-
 import java.util.Calendar;
 import java.util.Date;
 
@@ -70,12 +66,5 @@ public final class DateUtil {
         calendar.set(Calendar.MINUTE, minutes);
         calendar.set(Calendar.SECOND, seconds);
         return calendar;
-    }
-
-    public boolean isYearOld(Date date) {
-        DateTime start = new DateTime(date);
-        DateTime end = new DateTime(new Date());
-        Days days = Days.daysBetween(start, end);
-        return days.getDays() >= 365;
     }
 }

@@ -1385,7 +1385,6 @@ public class RegistrarBeanImpl implements RegistrarBean, OpenmrsBean {
                 }
 
                 WebServicePatientModelConverterImpl wsModelConverter = new WebServicePatientModelConverterImpl();
-                wsModelConverter.setContextService(contextService);
                 wsModelConverter.setRegistrarBean(this);
                 org.motechproject.ws.Patient wsPatient = wsModelConverter
                         .patientToWebService(patient, true);

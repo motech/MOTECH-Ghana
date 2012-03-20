@@ -26,7 +26,9 @@ public class DefaultedExpectedObsAlert {
         this.alertsDelivered = alertsDelivered;
         this.alertAttempts = alertAttempts;
         this.lastAttempted = new Date();
-        if (alertsDelivered > 0) this.lastDelivered = new Date();
+        if (alertsDelivered > 0) {
+            this.lastDelivered = new Date();
+        }
     }
 
     public Boolean isFor(ExpectedObs obs) {

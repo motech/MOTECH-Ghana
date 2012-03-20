@@ -83,10 +83,4 @@ public class DateUtilTest {
         assertEquals(20, calendar.get(Calendar.SECOND));
     }
 
-    @Test
-    public void shouldCheckForYearOldDates() {
-        assertFalse(dateUtil.isYearOld(new Date()));
-        assertTrue(dateUtil.isYearOld(DateUtils.addYears(new Date(), -1)));
-    }
-
 }

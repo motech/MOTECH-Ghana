@@ -63,7 +63,7 @@
         </layout>
     </appender>
 
-
+    
     <appender name="SCHEDULER" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="File" value="${catalina.base}/logs/motech-scheduler.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
@@ -73,7 +73,7 @@
         </layout>
     </appender>
 
-    <appender name="HIBERNATE-LOGFILE" class="org.apache.log4j.DailyRollingFileAppender">
+     <appender name="HIBERNATE-LOGFILE" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="File" value="${catalina.base}/logs/hibernate.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
         <layout class="org.apache.log4j.PatternLayout">
@@ -82,19 +82,12 @@
         </layout>
     </appender>
 
-    <appender name="ALERTS-SERVER-LOGFILE" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="${catalina.base}/logs/motech-server-alerts.log"/>
-        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern"
-                   value="%d %-5p %m%n"/>
-        </layout>
-    </appender>
-
 
     <logger name="${corePackage}">
         <level value="INFO"/>
+        <appender-ref ref="MOTECH-SERVER-LOGFILE"/>
     </logger>
+
 
     <logger name="${modulePackage}">
         <level value="INFO"/>
@@ -110,28 +103,24 @@
         <appender-ref ref="RCT-LOGFILE"/>
     </logger>
 
-    <logger name="motech.scheduler">
+     <logger name="motech.scheduler">
         <level value="INFO"/>
         <appender-ref ref="SCHEDULER"/>
     </logger>
 
-    <logger name="org.motechproject.server.omod.impl.StaffMessageServiceImpl">
-        <level value="INFO"/>
-        <appender-ref ref="ALERTS-SERVER-LOGFILE"/>
-    </logger>
-
-    <!--Enable this to view the sql statements that hibernate generates-->
-    <logger name="org.hibernate.SQL">
-        <level value="DEBUG"/>
-        <appender-ref ref="HIBERNATE-LOGFILE"/>
-    </logger>
+    
+     <!--Enable this to view the sql statements that hibernate generates-->
+     <!--<logger name="org.hibernate.SQL">-->
+         <!--<level value="DEBUG" />-->
+         <!--<appender-ref ref="HIBERNATE-LOGFILE"/>-->
+     <!--</logger>-->
 
 
     <!-- Avoid hibernate proxy warnings -->
-    <!--<logger name="org.hibernate.engine.StatefulPersistenceContext.ProxyWarnLog">-->
-        <!--<level value="ERROR"/>-->
-        <!--<appender-ref ref="HIBERNATE-LOGFILE"/>-->
-    <!--</logger>-->
+    <logger name="org.hibernate.engine.StatefulPersistenceContext.ProxyWarnLog">
+        <level value="ERROR"/>
+        <appender-ref ref="HIBERNATE-LOGFILE"/>
+    </logger>
 
 
     <root>

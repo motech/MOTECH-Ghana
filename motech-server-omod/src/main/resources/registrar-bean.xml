@@ -223,14 +223,9 @@
                 <bean class="org.motechproject.server.filters.ExpectedObsMaxAlertsFilter">
                     <property name="contextService" ref="contextService"/>
                 </bean>
-                <bean class="org.motechproject.server.filters.ExpectedObsFilterForTT1">
-                    <property name="condition" ref="tt1Condition"/>
-                </bean>
             </util:list>
         </property>
     </bean>
-
-    <bean id="tt1Condition" class="org.motechproject.server.filters.condition.TT1Condition"></bean>
 
     <bean id="mobileClient"   class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
         <property name="serviceInterface" value="org.motechproject.ws.mobile.MessageService" />
